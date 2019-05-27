@@ -1,0 +1,15 @@
+package TestCase::Lib::SPVM::HTTP::Client {
+  use SPVM::HTTP::Client;
+  use SPVM::HTTP::Headers;
+
+  sub test_basic : int ($file : string) {
+    my $client = SPVM::HTTP::Client->new_with(hash([(object)
+      _socket_tmpfile => $file
+    ]));
+    $client->{default_headers} = SPVM::HTTP::Headers->new_with(hash([(object)
+      "X-Foo" => "Bar",
+    ]));
+    $client->request("GET", "http://www.example.com/foo?p=123", undef);
+    return 1;
+  }
+}

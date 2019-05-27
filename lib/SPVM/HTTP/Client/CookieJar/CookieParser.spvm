@@ -1,0 +1,103 @@
+package SPVM::HTTP::Client::CookieJar::CookieParser {
+  use SPVM::Hash;
+  use SPVM::Math::StringToNumber;
+  use SPVM::Time;
+
+  has name : public string;
+  has value : public string;
+  has expires : public long;
+  has max_age : public long;
+  has domain : public string;
+  has path : public string;
+  has secure : public int;
+  has http_only : public int;
+
+  has extensions : public SPVM::Hash;
+
+  private sub RFC1123_FORMAT : string () {
+    return "%a, %d %b %Y %H:%M:%S GMT";
+  }
+
+  private sub trim_space : string ($string : string) {
+    my $cut_forward = "";
+    my $ret = "";
+    my $length = length $string;
+    my $found_space = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      if (!$found_space && $string->[$i] == ' ') {
+        next;
+      }
+      $found_space = 1;
+      $cut_forward .= [$string->[$i]];
+    }
+
+    $length = length $cut_forward;
+    $found_space = 0;
+    for (my $i = $length - 1; $i >= 0; --$i) {
+      if (!$found_space && $cut_forward->[$i] == ' ') {
+        next;
+      }
+      $found_space = 1;
+      $ret = [$cut_forward->[$i]] . $ret;
+    }
+    return $ret;
+  }
+
+  private sub set_attribute_value : void ($self : self, $av : string) {
+    my $key_length = index($av, "=", 0);
+    if ($key_length < 0) {
+      $av = trim_space($av);
+      if (length($av) == 0) {
+        return;
+      }
+      my $lc_av = lc($av);
+      if ($lc_av eq "secure") {
+        $self->{secure} = 1;
+      }
+      elsif ($lc_av eq "httponly") {
+        $self->{http_only} = 1;
+      }
+      else {
+        $self->{extensions}->set($av, 1);
+      }
+    }
+    else {
+      my $key = trim_space(substr($av, 0, $key_length));
+      my $val = trim_space(substr($av, $key_length + 1,
+          length $av - $key_length - 1));
+      my $lc_key = lc($key);
+      if ($lc_key eq "expires") {
+        $self->{expires} = SPVM::Time->timegm(
+            SPVM::Time->strptime($val, RFC1123_FORMAT()));
+      }
+      elsif ($lc_key eq "max-age") {
+        $self->{max_age} = SPVM::Math::StringToNumber->from($val)->to_long;
+      }
+      elsif ($lc_key eq "domain") {
+        $self->{domain} = $val;
+      }
+      elsif ($lc_key eq "path") {
+        $self->{path} = $val;
+      }
+      else {
+        $self->{extensions}->set($key, $val);
+      }
+    }
+  }
+
+  sub parse : SPVM::HTTP::Client::CookieJar::CookieParser ($string : string) {
+    my $self = new SPVM::HTTP::Client::CookieJar::CookieParser;
+    $self->{extensions} = SPVM::Hash->new;
+    my $items = split(";", $string, -1);
+    my $kv = split("=", $items->[0], -1);
+    unless (@$kv == 2) {
+      die "name-value pair is broken.";
+    }
+    $self->{name} = trim_space($kv->[0]);
+    $self->{value} = trim_space($kv->[1]);
+    for (my $i = 1; $i < @$items; ++$i) {
+      $self->set_attribute_value($items->[$i]);
+    }
+    return $self;
+  }
+}

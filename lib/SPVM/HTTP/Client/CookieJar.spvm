@@ -1,0 +1,244 @@
+package SPVM::HTTP::Client::CookieJar {
+  use SPVM::HTTP::Client::CookieJar::Cookie;
+  use SPVM::HTTP::Client::CookieJar::CookieParser;
+  use SPVM::HTTP::URL;
+
+  has jar : SPVM::Hash;
+  has public_suffix_not_allowed : int;
+
+  sub new : SPVM::HTTP::Client::CookieJar () {
+    my $self = new SPVM::HTTP::Client::CookieJar;
+    $self->{jar} = SPVM::Hash->new;
+    return $self;
+  }
+
+  private sub seems_not_ip : int ($string : string) {
+    my $len = length $string;
+    unless ($len) {
+      return 1;
+    }
+    for (my $i = 0; $i < $len; ++$i) {
+      unless ($string->[$i] == '.' || $string->[$i] >= '0' && $string->[$i] <= '9') {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  private sub ends_with : int ($source : string, $suffix : string) {
+    my $source_len = length $source;
+    my $suffix_len = length $suffix;
+    return substr($source, $source_len - $suffix_len, $suffix_len) eq $suffix;
+  }
+
+  private sub domain_match : int ($self : self, $string : string,
+      $domain_string : string) {
+    $string = lc($string);
+    $domain_string = lc($domain_string);
+    my $string_len = length $string;
+    my $domain_string_len = length $domain_string;
+    if ($string_len < $domain_string_len) {
+      return 0;
+    }
+    elsif ($string_len == $domain_string_len) {
+      return $string eq $domain_string;
+    }
+    else {
+      unless (ends_with($string, $domain_string)) {
+        return 0;
+      }
+      unless ($string->[$string_len - $domain_string_len - 1] == '.') {
+        return 0;
+      }
+      unless (seems_not_ip($string)) {
+        return 0;
+      }
+      return 1;
+    }
+  }
+
+  private sub path_match : int ($self : self, $url_path : string,
+      $cookie_path : string) {
+    if ($url_path eq $cookie_path) {
+      return 1;
+    }
+    if (starts_with($url_path, $cookie_path)) {
+      my $url_path_len = length $url_path;
+      my $cookie_path_len = length $cookie_path;
+      if ($cookie_path->[$cookie_path_len - 1] == '/') {
+        return 1;
+      }
+      if ($cookie_path_len < $url_path_len &&
+          $url_path->[$cookie_path_len] == '/') {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  private sub default_path : string ($self : self, $url_path : string) {
+    my $length = length $url_path;
+    if ($length < 2 || $url_path->[0] != '/') {
+      return "/";
+    }
+    my $rsep = rindex($url_path, "/", $length - 1);
+    if ($rsep == 0) {
+      return "/";
+    }
+    return substr($url_path, 0, $rsep);
+  }
+
+  sub _cookie_from_jar : SPVM::HTTP::Client::CookieJar::Cookie ($self : self,
+      $name : string, $domain : string, $path : string) {
+    if (my $cookie = ((SPVM::Hash)$self->{jar})->get("$name<>$domain<>$path")) {
+      return (SPVM::HTTP::Client::CookieJar::Cookie)$cookie;
+    }
+    return undef;
+  }
+
+  private sub update_cookie : void ($self : self,
+      $cookie : SPVM::HTTP::Client::CookieJar::Cookie) {
+    $self->{jar}->set(
+        $cookie->{name} . "<>" .
+        $cookie->{domain} . "<>" .
+        $cookie->{path}, $cookie);
+  }
+
+  private sub public_suffix : string ($domain : string) {
+    die "public_suffix_not_allowed is not implemented yet.";
+  }
+
+  # RFC 6265 5.3 Storage Model
+  sub add : int ($self : self, $url : string, $cookie_string : string) {
+    my $parse : SPVM::HTTP::Client::CookieJar::CookieParser;
+    eval {
+      $parse = SPVM::HTTP::Client::CookieJar::CookieParser->parse($cookie_string);
+    };
+    if ($@) {
+      $@ = undef;
+      return 0;
+    }
+    my $request_url = SPVM::HTTP::URL->parse($url);
+    $request_url->force_root_path_slashed;
+
+    my $cookie = SPVM::HTTP::Client::CookieJar::Cookie->new;
+
+    $cookie->{name} = $parse->{name};
+    $cookie->{value} = $parse->{value};
+    my $now = $cookie->{creation_time}
+        = $cookie->{last_access_time}
+        = SPVM::Time->time();
+
+    if ($parse->{max_age}) {
+      $cookie->{persistent} = 1;
+      $cookie->{expiry_time} = $now + $parse->{max_age};
+    }
+    elsif ($parse->{expires}) {
+      $cookie->{persistent} = 1;
+      $cookie->{expiry_time} = SPVM::Long->new($parse->{expires});
+    }
+    else {
+      $cookie->{persistent} = 0;
+      $cookie->{expiry_time} = undef;
+    }
+
+    if ($parse->{domain}) {
+      $cookie->{domain} = $parse->{domain};
+    }
+
+    if ($self->{public_suffix_not_allowed} && public_suffix($cookie->{domain})) {
+      if ($cookie->{domain} eq $request_url->{host}) {
+        $cookie->{domain} = undef;
+      }
+      else {
+        return 0;
+      }
+    }
+
+    if ($cookie->{domain}) {
+      unless ($self->domain_match($request_url->{host}, $cookie->{domain})) {
+        return 0;
+      }
+      $cookie->{host_only} = 0;
+      $cookie->{domain} = $parse->{domain};
+    }
+    else {
+      $cookie->{host_only} = 1;
+      $cookie->{domain} = $request_url->{host};
+    }
+
+    if (!$parse->{path} || length($parse->{path}) < 2 ||
+        $parse->{path}->[0] != '/') {
+      $cookie->{path} = $self->default_path($request_url->{path});
+    }
+    else {
+      $cookie->{path} = $parse->{path};
+    }
+
+    $cookie->{secure} = $parse->{secure};
+    $cookie->{http_only} = $parse->{http_only}; # meaningless for SPVM user agents.
+
+    if (my $old = $self->_cookie_from_jar(
+        $cookie->{name}, $cookie->{domain}, $cookie->{path})) {
+      $cookie->{creation_time} =
+          ((SPVM::HTTP::Client::CookieJar::Cookie)$old)->{creation_time};
+    }
+
+    $self->update_cookie($cookie);
+    return 1;
+  }
+
+  sub cookies_for : SPVM::HTTP::Client::CookieJar::Cookie[] ($self : self,
+      $url : string) {
+    my $request = SPVM::HTTP::URL->parse($url);
+    $request->force_root_path_slashed;
+    my $matched = SPVM::List->new;
+    my $all_cookies = $self->{jar}->values;
+    my $now = SPVM::Time->time();
+    for (my $i = 0; $i < @$all_cookies; ++$i) {
+      my $cookie = (SPVM::HTTP::Client::CookieJar::Cookie)$all_cookies->[$i];
+      if ($cookie->{host_only} && $request->{host} ne $cookie->{domain}) {
+        next;
+      }
+      if ($cookie->{secure} && $request->{scheme} ne "https") {
+        next;
+      }
+      if ($cookie->{expiry_time} && $cookie->{expiry_time}->val < $now) {
+        next;
+      }
+      unless ($self->domain_match($request->{host}, $cookie->{domain})) {
+        next;
+      }
+      unless ($self->path_match($request->{path}, $cookie->{path})) {
+        next;
+      }
+      $matched->push($cookie);
+    }
+    my $ret = new SPVM::HTTP::Client::CookieJar::Cookie[$matched->length];
+    for (my $i = 0; $i < $matched->length; ++$i) {
+      $ret->[$i] = (SPVM::HTTP::Client::CookieJar::Cookie)($matched->get($i));
+    }
+    sorto($ret, sub : int ($self : self, $lhs : object, $rhs : object) {
+      my $l = (SPVM::HTTP::Client::CookieJar::Cookie)$lhs;
+      my $r = (SPVM::HTTP::Client::CookieJar::Cookie)$rhs;
+      if (length $l->{path} > length $r->{path} ||
+          $l->{creation_time} < $r->{creation_time}) {
+        return -1;
+      }
+      return 1;
+    });
+    return $ret;
+  }
+
+  sub cookie_header : string ($self : self, $url : string) {
+    my $ret = "";
+    my $matched = $self->cookies_for($url);
+    for (my $i = 0; $i < @$matched; ++$i) {
+      if ($i > 0) {
+        $ret .= "; ";
+      }
+      $ret .= $matched->[$i]->to_str;
+    }
+    return $ret;
+  }
+}

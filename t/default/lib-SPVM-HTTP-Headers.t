@@ -14,7 +14,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # SPVM::HTTP::Headers
 {
   ok(TestCase::Lib::SPVM::HTTP::Headers->test_new_with);
-  ok(TestCase::Lib::SPVM::HTTP::Headers->test_add_header);
+  ok(TestCase::Lib::SPVM::HTTP::Headers->test_new_with_when_not_lowercase_key);
+  ok(TestCase::Lib::SPVM::HTTP::Headers->test_add);
   ok(TestCase::Lib::SPVM::HTTP::Headers->test_append_to_buffer);
 }
 

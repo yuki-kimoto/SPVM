@@ -1,8 +1,8 @@
 package SPVM::HTTP::Headers {
   use SPVM::Hash;
-  use SPVM::HTTP::Cookies;
   use SPVM::Math::StringToNumber;
   use SPVM::StringBuffer;
+  use SPVM::StringList;
 
   has referer           : ro string;
   has expires           : ro int;
@@ -11,150 +11,219 @@ package SPVM::HTTP::Headers {
   has content_type      : ro string;
   has content_length    : ro int;
   has content_encoding  : ro string;
-  has cookies           : ro SPVM::HTTP::Cookies;
-  has extra             : ro SPVM::Hash;
+  has host              : ro string;
+  has extra             : SPVM::Hash;
+  has header_case       : ro SPVM::Hash;
 
-  private sub add_header_fallback
-      : void ($self : self, $k : string, $v : string) {
+  private sub make_header_case : void ($self : self) {
+    $self->{header_case} = SPVM::Hash->new;
+    my $request_headers = REQUEST_HEADERS();
+    my $entity_headers = ENTITY_HEADERS();
+    for (my $i = 0; $i < @$request_headers; ++$i) {
+      $self->{header_case}->set(lc($request_headers->[$i]), $request_headers->[$i]);
+    }
+    for (my $i = 0; $i < @$entity_headers; ++$i) {
+      $self->{header_case}->set(lc($entity_headers->[$i]), $entity_headers->[$i]);
+    }
+  }
+
+  private sub REQUEST_HEADERS : string[] () {
+    return [
+      "Accept", "Accept-Charset", "Accept-Encoding", "Accept-Language",
+      "Authorization", "Expect", "From", "Host",
+      "If-Match", "If-Modified-Since", "If-None-Match", "If-Range", "If-Unmodified-Since",
+      "Max-Forwards", "Proxy-Authorization", "Range", "Referer", "TE", "User-Agent",
+    ];
+  }
+
+  private sub ENTITY_HEADERS : string[] () {
+    return [
+      "Allow", "Content-Encoding", "Content-Language", "Content-Length", "Content-Location",
+      "Content-MD5", "Content-Range", "Content-Type", "Expires", "Last-Modified",
+    ];
+  }
+
+  private sub add_extra : void ($self : self, $k : string, $v : string) {
     unless ($self->{extra}) {
       $self->{extra} = SPVM::Hash->new;
     }
-    $self->{extra}->set($k, $v);
+    if (my $c = $self->{extra}->get($k)) {
+      if ($c isa SPVM::StringList) {
+        ((SPVM::StringList)$c)->push($v);
+      }
+      elsif ($c isa string) {
+        $self->{extra}->set($k, SPVM::StringList->new_with_array([(string)$c, $v]));
+      }
+      else {
+        die "Unexpected type of extra value";
+      }
+    }
+    else {
+      $self->{extra}->set($k, $v);
+    }
   }
 
   sub new : SPVM::HTTP::Headers () {
     my $self = new SPVM::HTTP::Headers;
+    $self->make_header_case;
     return $self;
   }
 
   sub new_with : SPVM::HTTP::Headers ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Headers;
-    if ($args->exists("referer")) {
-      $self->{referer} = (string)($args->get("referer"));
-    }
-    if ($args->exists("expires")) {
-      $self->{expires} = ((SPVM::Int)($args->get("expires")))->val;
-    }
-    if ($args->exists("last_modified")) {
-      $self->{last_modified} = ((SPVM::Int)($args->get("last_modified")))->val;
-    }
-    if ($args->exists("if_modified_since")) {
-      $self->{if_modified_since} = ((SPVM::Int)($args->get("if_modified_since")))->val;
-    }
-    if ($args->exists("content_type")) {
-      $self->{content_type} = (string)($args->get("content_type"));
-    }
-    if ($args->exists("content_length")) {
-      $self->{content_length} = ((SPVM::Int)($args->get("content_length")))->val;
-    }
-    if ($args->exists("content_encoding")) {
-      $self->{content_encoding} = (string)($args->get("content_encoding"));
-    }
-    if ($args->exists("cookies")) {
-      $self->{cookies} = (SPVM::HTTP::Cookies)($args->get("cookies"));
-    }
-    if ($args->exists("extra")) {
-      $self->{extra} = (SPVM::Hash)$args->get("extra");
+    $self->make_header_case;
+    my $keys = $args->keys;
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $self->add($keys->[$i], $args->get($keys->[$i]));
     }
     return $self;
   }
 
-  sub add_header : void ($self : self, $header : string[]...) {
+  private sub to_s : string ($o : object) {
+    return (string)$o;
+  }
+
+  private sub to_i : int ($o : object) {
+    return ((SPVM::Int)$o)->val;
+  }
+ 
+  sub add : void ($self : self, $header : object[]...) {
     unless (@$header == 2) {
       die "Invalid size of args";
     }
-    my $k = $header->[0];
+    my $k = lc((string)($header->[0]));
     my $v = $header->[1];
     my $k0 = (int)($k->[0]);
     switch ($k0) {
-      case 67: #'C':
-        if ($k eq "Content-Type") {
-          $self->{content_type} = $v;
-        } elsif ($k eq "Content-Length") {
-          eval {
+      case 99: #'c':
+        if ($k eq "content-type" || $k eq "content_type") {
+          $self->{content_type} = to_s($v);
+        } elsif ($k eq "content-length" || $k eq "content_length") {
+          if ($v isa SPVM::Int) {
+            $self->{content_length} = to_i($v);
+          } else {
             $self->{content_length} =
-              SPVM::Math::StringToNumber->from($v)->to_int();
-          };
-          if ($@) {
-            warn("Contains non value characters. Exception: " . $@);
-            $@ = undef;
-            return;
+              SPVM::Math::StringToNumber->from(to_s($v))->to_int;
           }
-        } elsif ($k eq "Content-Encoding") {
-          $self->{content_encoding} = $v;
-        } elsif ($k eq "Cookie") {
-          $self->{cookies} = SPVM::HTTP::Cookies->parse_cookie_string($v);
-        } elsif ($k eq "Set-Cookie") {
-          warn("Set-Cookie header is not implemented yet. Ignored.");
-=pod
-          unless ($self->{cookies}) {
-            $self->{cookies} = SPVM::HTTP::Cookies->new;
-          }
-          $self->{cookies}->incr_parse_set_cookie($v);
-=cut
+        } elsif ($k eq "content-encoding" || $k eq "content_encoding") {
+          $self->{content_encoding} = to_s($v);
         } else {
-          $self->add_header_fallback($k, $v);
+          $self->add_extra($k, to_s($v));
         }
         last;
-      case 73: #'I':
-        if ($k eq "If-Modified-Since") {
-          eval {
+      case 104: #'h':
+        if ($k eq "host") {
+          $self->{host} = to_s($v);
+        }
+        else {
+          $self->add_extra($k, to_s($v));
+        }
+        last;
+      case 105: #'i':
+        if ($k eq "if-modified-since" || $k eq "if_modified_since") {
+          if ($v isa SPVM::Int) {
+            $self->{if_modified_since} = to_i($v);
+          } else {
             $self->{if_modified_since} =
-              SPVM::Math::StringToNumber->from($v)->to_int();
-          };
-          if ($@) {
-            warn("Contains non value characters. Exception: " . $@);
-            $@ = undef;
-            return;
+              SPVM::Math::StringToNumber->from(to_s($v))->to_int;
           }
         } else {
-          $self->add_header_fallback($k, $v);
+          $self->add_extra($k, to_s($v));
         }
         last;
-      case 76: #'L':
-        if ($k eq "Last-Modified") {
-          eval {
+      case 108: #'l':
+        if ($k eq "last-modified" || $k eq "last_modified") {
+          if ($v isa SPVM::Int) {
+            $self->{last_modified} = to_i($v);
+          } else {
             $self->{last_modified} =
-              SPVM::Math::StringToNumber->from($v)->to_int();
-          };
-          if ($@) {
-            warn("Contains non value characters. Exception: " . $@);
-            $@ = undef;
-            return;
+              SPVM::Math::StringToNumber->from(to_s($v))->to_int;
           }
         } else {
-          $self->add_header_fallback($k, $v);
+          $self->add_extra($k, to_s($v));
         }
         last;
-      case 82: #'R':
-        if ($k eq "Referer" || $k eq "Referrer") {
-          $self->{referer} = $v;
+      case 114: #'r':
+        if ($k eq "referer" || $k eq "referrer") {
+          $self->{referer} = to_s($v);
         } else {
-          $self->add_header_fallback($k, $v);
+          $self->add_extra($k, to_s($v));
         }
         last;
-      case 69: #'E':
-        if ($k eq "Expires") {
-          eval {
+      case 101: #'e':
+        if ($k eq "expires") {
+          if ($v isa SPVM::Int) {
+            $self->{expires} = to_i($v);
+          } else {
             $self->{expires} =
-              SPVM::Math::StringToNumber->from($v)->to_int();
-          };
-          if ($@) {
-            warn("Contains non value characters. Exception: " . $@);
-            $@ = undef;
-            return;
+              SPVM::Math::StringToNumber->from(to_s($v))->to_int;
           }
         } else {
-          $self->add_header_fallback($k, $v);
+          $self->add_extra($k, to_s($v));
         }
         last;
       default:
-        $self->add_header_fallback($k, $v);
+        # Note: Use input string as header case if it is not predefined.
+        unless ($self->{header_case}->exists($k)) {
+          my $hk = (string)($header->[0]);
+          $self->{header_case}->set($k, $hk);
+        }
+        $self->add_extra($k, to_s($v));
         last;
     }
   }
 
+  sub get : object ($self : self, $key : string) {
+    my $lc_key = lc($key);
+    my $ch = (int)($lc_key->[0]);
+    switch ($ch) {
+      case 99: #'c':
+        if ($lc_key eq "content-type" || $lc_key eq "content_type") {
+          return $self->{content_type};
+        }
+        elsif ($lc_key eq "content-length" || $lc_key eq "content_length") {
+          return $self->{content_length};
+        }
+        elsif ($lc_key eq "content-encoding" || $lc_key eq "content_encoding") {
+          return $self->{content_encoding};
+        }
+        last;
+      case 104: #'h':
+        if ($lc_key eq "host") {
+          return $self->{host};
+        }
+        last;
+      case 105: #'i':
+        if ($lc_key eq "if-modified-since" || $lc_key eq "if_modified_since") {
+          return $self->{if_modified_since};
+        }
+        last;
+      case 108: #'l':
+        if ($lc_key eq "last-modified" || $lc_key eq "last_modified") {
+          return $self->{last_modified};
+        }
+        last;
+      case 114: #'r':
+        if ($lc_key eq "referer" || $lc_key eq "referrer") {
+          return $self->{referer};
+        }
+        last;
+      case 101: #'e':
+        if ($lc_key eq "expires") {
+          return $self->{expires};
+        }
+        last;
+      default:
+        last;
+    }
+    unless ($self->{extra}) {
+      return undef;
+    }
+    return $self->{extra}->get($lc_key);
+  }
+
   sub append_to_buffer : void ($self : self, $buffer : SPVM::StringBuffer) {
+    # TODO: Control fields should be listed first.
     if ($self->{referer}) {
       $buffer->append_string("Referer: " . $self->{referer} . "\r\n");
     }
@@ -163,6 +232,9 @@ package SPVM::HTTP::Headers {
     }
     if ($self->{last_modified}) {
       $buffer->append_string("Last-Modified: " . $self->{last_modified} . "\r\n");
+    }
+    if ($self->{host}) {
+      $buffer->append_string("Host: " . $self->{host} . "\r\n");
     }
     if ($self->{if_modified_since}) {
       $buffer->append_string("If-Modified-Since: " . $self->{if_modified_since} . "\r\n");
@@ -180,8 +252,12 @@ package SPVM::HTTP::Headers {
       my $keys = $self->{extra}->keys();
       if (@$keys) {
         for (my $i = 0; $i < @$keys; ++$i) {
-          $buffer->append_string($keys->[$i] . ": " .
-            (string)($self->{extra}->get($keys->[$i])) . "\r\n");
+          my $hc = (string)$self->{header_case}->get($keys->[$i]);
+          unless ($hc) {
+            die "Not found header case of '" . $keys->[$i] . "'";
+          }
+          my $v = (string)($self->{extra}->get($keys->[$i]));
+          $buffer->append_string("$hc: $v\r\n");
         }
       }
     }

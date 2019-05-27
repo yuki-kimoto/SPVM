@@ -9,6 +9,7 @@ package SPVM::Time {
   native sub time : long ();
   native sub localtime : SPVM::Time::Info ($time : long);
   native sub gmtime : SPVM::Time::Info ($time : long);
+  native sub setlocale : void ($locale : string);
   
   # Note: Time zone is not supported
   native sub strptime : SPVM::Time::Info ($str : string, $format : string);

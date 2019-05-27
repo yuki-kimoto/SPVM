@@ -1,0 +1,67 @@
+package SPVM::HTTP::Client {
+  use SPVM::HTTP::Client::Handle;
+  use SPVM::HTTP::Client::Request;
+  use SPVM::HTTP::Headers;
+  use SPVM::HTTP::URL;
+
+  has default_headers : public SPVM::HTTP::Headers;
+  has timeout : public double;
+
+  has _socket_tmpfile : string;
+
+  sub new : SPVM::HTTP::Client () {
+    my $self = new SPVM::HTTP::Client;
+    $self->{default_headers} = SPVM::HTTP::Headers->new;
+    $self->{timeout} = 60;
+    return $self;
+  }
+
+  sub new_with : SPVM::HTTP::Client ($args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client;
+    $self->{default_headers} = SPVM::HTTP::Headers->new;
+    $self->{timeout} = 60;
+    if (my $o = $args->get("_socket_tmpfile")) {
+      $self->{_socket_tmpfile} = (string)$o;
+    }
+    return $self;
+  }
+
+  private sub _prepare_headers : void ($self : self,
+      $request : SPVM::HTTP::Client::Request) {
+    $request->{headers} = $self->{default_headers};
+    $request->{headers}->add("Host", $request->host_port);
+  }
+
+  private sub _open_handle : SPVM::HTTP::Client::Handle ($self : self,
+      $host : string, $port : int) {
+    my $handle = SPVM::HTTP::Client::Handle->new_with(hash([(object)
+      timeout => $self->{timeout},
+    ]));
+    return $handle->connect(hash([(object)
+      host => $host,
+      port => $port,
+      _socket_tmpfile => $self->{_socket_tmpfile},
+    ]));
+  }
+
+  sub request : void ($self : self, $method : string,
+      $url : string, $args : SPVM::Hash) {
+
+    my $u = SPVM::HTTP::URL->parse($url);
+    $u->force_root_path_slashed;
+
+    my $request = SPVM::HTTP::Client::Request->new_with(hash([(object)
+      method  => $method,
+      scheme  => $u->{scheme},
+      host    => $u->{host},
+      port    => $u->{port},
+      path    => $u->{path},
+      query   => $u->{params},
+    ]));
+
+    $self->_prepare_headers($request);
+
+    my $handle = $self->_open_handle($request->{host}, $request->{port});
+    $handle->write_request($request);
+  }
+}

@@ -8,14 +8,15 @@ package SPVM::CORE {
 
   native sub chomp : void ($string : string);
   native sub rand : int ($seed_ref : int&);
+  native sub sleep : void ($seconds : long);
   
   precompile sub lc : string($str : string) {
     
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    for (my $i = 0; $i < length $str; $i++) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    for (my $i = 0; $i < $length; $i++) {
       my $char = $str->[$i];
       if ($char >= 'A' && $char <= 'Z') {
         $new_str->[$i] = (byte)($str->[$i] + 32);
@@ -31,13 +32,19 @@ package SPVM::CORE {
 
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    if (length $str > 0) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    if ($length > 0) {
       my $char = $str->[0];
       if ($char >= 'A' && $char <= 'Z') {
         $new_str->[0] = (byte)($char + 32);
       }
+      else {
+        $new_str->[0] = $char;
+      }
+    }
+    for (my $i = 1; $i < $length; ++$i) {
+      $new_str->[$i] = $str->[$i];
     }
     return (string)$new_str;
   }
@@ -46,9 +53,9 @@ package SPVM::CORE {
 
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    for (my $i = 0; $i < length $str; $i++) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    for (my $i = 0; $i < $length; $i++) {
       my $char = $str->[$i];
       if ($char >= 'a' && $char <= 'z') {
         $new_str->[$i] = (byte)($str->[$i] - 32);
@@ -64,13 +71,19 @@ package SPVM::CORE {
 
     unless ($str) { die "String must be defined"; }
     
-    my $offset = 32;
-    my $new_str = (byte[])copy_str($str);
-    if (length $str > 0) {
+    my $length = length $str;
+    my $new_str = new byte [$length];
+    if ($length > 0) {
       my $char = $str->[0];
       if ($char >= 'a' && $char <= 'z') {
         $new_str->[0] = (byte)($char - 32);
       }
+      else {
+        $new_str->[0] = $char;
+      }
+    }
+    for (my $i = 1; $i < $length; ++$i) {
+      $new_str->[$i] = $str->[$i];
     }
     return (string)$new_str;
   }
@@ -181,7 +194,42 @@ package SPVM::CORE {
     }
     return -1;
   }
-  
+
+  precompile sub rindex : int ($text : string, $search : string, $from : int) {
+    my $text_len = length $text;
+    my $search_len = length $search;
+    if ($from > $text_len - $search_len) {
+      $from = $text_len - $search_len;
+    }
+    for (my $i = $from; $i >= 0; --$i) {
+      my $match = 1;
+      for (my $j = 0; $j < $search_len; ++$j) {
+        if ($text->[$i + $j] != $search->[$j]) {
+          $match = 0;
+          last;
+        }
+      }
+      if ($match) {
+        return $i;
+      }
+    }
+    return -1;
+  }
+
+  precompile sub starts_with : int ($source : string, $prefix : string) {
+    my $source_len = length $source;
+    my $prefix_len = length $prefix;
+    unless ($source_len >= $prefix_len) {
+      return 0;
+    }
+    for (my $i = 0; $i < $prefix_len; ++$i) {
+      unless ($prefix->[$i] == $source->[$i]) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
   precompile sub contains : int ($text : string, $pattern : string) {
     if (!$text) {
       die "Target string must be defined";
