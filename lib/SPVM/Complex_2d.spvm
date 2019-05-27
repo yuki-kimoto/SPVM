@@ -1,4 +1,4 @@
-package SPVM::Complex_2d : value_t {
+package SPVM::Complex_2d : mulnum_t {
   has re : double;
   has im : double;
 }

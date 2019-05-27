@@ -1526,6 +1526,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_OP_new_op_my(compiler, my, compiler->cur_file, compiler->cur_line);
                   return MY;
                 }
+                else if (strcmp(keyword, "mulnum_t") == 0) {
+                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_MULNUM_T, compiler->cur_file, compiler->cur_line);
+                  yylvalp->opval = op_descriptor;
+                  return DESCRIPTOR;
+                }
                 break;
               case 'n' :
                 if (strcmp(keyword, "native") == 0) {
@@ -1666,11 +1671,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (strcmp(keyword, "void") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_VOID);
                   return VOID;
-                }
-                else if (strcmp(keyword, "value_t") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_VALUE_T, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
                 }
                 break;
               case 'w' :

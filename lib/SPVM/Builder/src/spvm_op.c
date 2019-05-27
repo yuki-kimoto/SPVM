@@ -1397,7 +1397,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
           break;
         }
         default:
-          assert(SPVM_TYPE_is_value_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
+          assert(SPVM_TYPE_is_multi_numeric_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag));
           type = SPVM_TYPE_new(compiler);
           type->basic_type = term_type->basic_type;
           type->dimension = term_type->dimension;
@@ -1596,7 +1596,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           package->flag |= SPVM_PACKAGE_C_FLAG_POINTER;
           category_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_VALUE_T:
+        case SPVM_DESCRIPTOR_C_ID_MULNUM_T:
           package->category = SPVM_PACKAGE_C_CATEGORY_VALUE;
           category_descriptors_count++;
           break;
@@ -1613,7 +1613,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
     if (category_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "callback, value_t, pointer can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "callback, mulnum_t, pointer can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
       SPVM_COMPILER_error(compiler, "private, public can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
@@ -1707,11 +1707,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
 
-          SPVM_TYPE* arg_value_type = SPVM_TYPE_new(compiler);
-          arg_value_type->basic_type = package_var->type->basic_type;
-          arg_value_type->dimension = package_var->type->dimension;
-          arg_value_type->flag = package_var->type->flag;
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_value_type, op_decl->file, op_decl->line);
+          SPVM_TYPE* arg_multi_numeric_type = SPVM_TYPE_new(compiler);
+          arg_multi_numeric_type->basic_type = package_var->type->basic_type;
+          arg_multi_numeric_type->dimension = package_var->type->dimension;
+          arg_multi_numeric_type->flag = package_var->type->flag;
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_multi_numeric_type, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value);
@@ -1813,11 +1813,11 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_decl->file, op_decl->line);
           SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type);
 
-          SPVM_TYPE* arg_value_type = SPVM_TYPE_new(compiler);
-          arg_value_type->basic_type = field->type->basic_type;
-          arg_value_type->dimension = field->type->dimension;
-          arg_value_type->flag = field->type->flag;
-          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_value_type, op_decl->file, op_decl->line);
+          SPVM_TYPE* arg_multi_numeric_type = SPVM_TYPE_new(compiler);
+          arg_multi_numeric_type->basic_type = field->type->basic_type;
+          arg_multi_numeric_type->dimension = field->type->dimension;
+          arg_multi_numeric_type->flag = field->type->flag;
+          SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_multi_numeric_type, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, field->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value);

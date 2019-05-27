@@ -680,7 +680,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_set_and_get_value_t_int : int ($points : TestCase::Point_3i[]) {
+  sub spvm_set_and_get_mulnum_t_int : int ($points : TestCase::Point_3i[]) {
     
     if ($points->[1]{x} == INT32_MIN()) {
       if ($points->[1]{y} == 1) {

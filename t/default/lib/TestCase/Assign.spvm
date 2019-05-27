@@ -14,7 +14,7 @@ package TestCase::Assign {
     return 0;
   }
   
-  sub assign_return_value_value_type : int () {
+  sub assign_return_value_multi_numeric_type : int () {
     my $z1 : SPVM::Complex_2d;
     $z1->{re} = 1;
     $z1->{im} = 2;

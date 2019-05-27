@@ -5,7 +5,7 @@
 
 const char* const SPVM_DESCRIPTOR_C_ID_NAMES[] = {
   "callback_t",
-  "value_t",
+  "mulnum_t",
   "pointer_t",
   "native",
   "precompile",

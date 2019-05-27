@@ -1,2 +1,2 @@
-package TestCase::CompileError::Value::FieldsZero : value_t {
+package TestCase::CompileError::Value::FieldsZero : mulnum_t {
 }

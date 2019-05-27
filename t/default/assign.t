@@ -20,7 +20,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   ok(TestCase::Assign->assign_return_value_ref);
   ok(TestCase::Assign->assign_return_value_value_field);
-  ok(TestCase::Assign->assign_return_value_value_type);
+  ok(TestCase::Assign->assign_return_value_multi_numeric_type);
 
   ok(TestCase::Assign->assign_return_value_byte);
   ok(TestCase::Assign->assign_return_value_short);

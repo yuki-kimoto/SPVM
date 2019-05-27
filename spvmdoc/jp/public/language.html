@@ -201,7 +201,7 @@
               たとえば<a href="#language-type-value">値型</a>が
             </p>
             <p>
-              package Point_2i : value_t { has x : int; has y : int; }
+              package Point_2i : mulnum_t { has x : int; has y : int; }
             </p>
             <p>
               として定義されていた場合は、フィールドの型がint型で、フィールドの個数が2なので
@@ -378,7 +378,7 @@ allow byte BEGIN case die default double elsif else enum eq
 eval for float gt ge has if callback_t isa int last length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
-sub string short scalar undef unless use void value_t while
+sub string short scalar undef unless use void mulnum_t while
 weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 </pre>
 
@@ -1236,7 +1236,7 @@ package Point : public {
         </tr>
         <tr>
           <td>
-            <b>value_t</b>
+            <b>mulnum_t</b>
           </td>
           <td>
             このパッケージは「<a href="#language-type-value">値型</a>」になります。
@@ -1255,7 +1255,7 @@ package Point : public {
         「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
       </p>
       <p>
-        「callback_t」「value_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
+        「callback_t」「mulnum_t」「pointer_t」のひとつより多くが同時に指定されている場合は、コンパイル時エラーが発生します。
       </p>
       
       <p>
@@ -2790,18 +2790,18 @@ my $ret = $foo->bar(2);
         値は、連続した数値を表現します。たとえば、連続した32bit符号付整数が3つであるとか、連続した倍精度浮動小数点が2つなどです。3次元の点、複素数、四元数などを表現することが想定されています。
       </p>
       <p>
-        値を使用するには、最初に、値型を定義します。値型は、<a href="#language-package-definition">パッケージの定義</a>において、value_tデスクリプタを指定することで定義できます。
+        値を使用するには、最初に、値型を定義します。値型は、<a href="#language-package-definition">パッケージの定義</a>において、mulnum_tデスクリプタを指定することで定義できます。
       </p>
 <pre>
 # 連続した32bit符号付整数が3つ
-package Point_3i : value_t {
+package Point_3i : mulnum_t {
   has x : int;
   has y : int;
   has z : int;
 }
 
 連続した倍精度浮動小数点が2つ
-package Complex_2d : value_t {
+package Complex_2d : mulnum_t {
   re : double;
   im : double;
 }
@@ -6787,7 +6787,7 @@ package Foo : callback_t {
 }
 
 # 値型
-package Foo : value_t {
+package Foo : mulnum_t {
 
 }
 </pre>
@@ -7264,10 +7264,10 @@ $bytes->[1] = 'd';
         値型とは、連続した数値を表現できる型です。
       </p>
       <p>
-        パッケージの定義において「value_t」デスクリプタを指定することで、値型を定義できます。
+        パッケージの定義において「mulnum_t」デスクリプタを指定することで、値型を定義できます。
       </p>
 <pre>
-package Point_3i : value_t {
+package Point_3i : mulnum_t {
   has x : int;
   has y : int;
   has z : int;

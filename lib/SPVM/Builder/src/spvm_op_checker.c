@@ -495,8 +495,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                   
-                  SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
-                  if (!(case_value_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_value_type->dimension == 0)) {
+                  SPVM_TYPE* case_multi_numeric_type = SPVM_OP_get_type(compiler, op_constant);
+                  if (!(case_multi_numeric_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_multi_numeric_type->dimension == 0)) {
                     SPVM_COMPILER_error(compiler, "case value must be int constant at %s line %d\n", case_info->op_case_info->file, case_info->op_case_info->line);
                     return;
                   }
@@ -1037,7 +1037,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     return;
                   }
                   else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
-                    SPVM_COMPILER_error(compiler, "Can't create object of value_t package at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Can't create object of mulnum_t package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
                   else if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
@@ -1102,7 +1102,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (SPVM_TYPE_is_numeric_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
                 compile_time_check = 1;
               }
-              else if (SPVM_TYPE_is_value_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
+              else if (SPVM_TYPE_is_multi_numeric_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
                 compile_time_check = 1;
               }
               else if (SPVM_TYPE_is_any_object_type(compiler, check_type->basic_type->id, check_type->dimension, check_type->flag)) {
@@ -2238,7 +2238,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_var = op_cur->first;
               SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
-              if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_value_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
+              if (!(SPVM_TYPE_is_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag) || SPVM_TYPE_is_multi_numeric_type(compiler, var_type->basic_type->id, var_type->dimension, var_type->flag))) {
                 SPVM_COMPILER_error(compiler, "Refernece target must be numeric type or value type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
@@ -2939,7 +2939,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (SPVM_TYPE_is_class_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
                   is_valid_invoker_type = 1;
                 }
-                else if (SPVM_TYPE_is_value_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
+                else if (SPVM_TYPE_is_multi_numeric_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
                   is_valid_invoker_type = 1;
                 }
                 else if (SPVM_TYPE_is_value_ref_type(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag)) {
@@ -3019,16 +3019,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_HASH_insert(package->info_field_id_symtable, field_id_string, sizeof(int32_t), op_cur->uv.field_access->field);
               }
               
-              // If invocker is array access and array access object is value_t, this op become array field access
+              // If invocker is array access and array access object is mulnum_t, this op become array field access
               if (op_term_invocker->id == SPVM_OP_C_ID_ARRAY_ACCESS) {
                 SPVM_OP* op_array_access = op_term_invocker;
                 
                 SPVM_TYPE* array_element_type = SPVM_OP_get_type(compiler, op_array_access);
                 
-                int32_t is_basic_type_value_t = SPVM_TYPE_basic_type_is_value_type(compiler, array_element_type->basic_type->id, array_element_type->dimension, array_element_type->flag);
-                if (is_basic_type_value_t) {
+                int32_t is_basic_type_mulnum_t = SPVM_TYPE_basic_type_is_multi_numeric_type(compiler, array_element_type->basic_type->id, array_element_type->dimension, array_element_type->flag);
+                if (is_basic_type_mulnum_t) {
                   if (array_element_type->dimension != 0) {
-                    SPVM_COMPILER_error(compiler, "value_t array field access must be 1-dimension array at %s line %d\n", op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "mulnum_t array field access must be 1-dimension array at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
                   else {
@@ -3224,7 +3224,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 is_valid = 0;
               }
               // Dist type is value type
-              else if (SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+              else if (SPVM_TYPE_is_multi_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                 is_valid = 0;
               }
               // Dist type is object type
@@ -3880,9 +3880,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           SPVM_MY* my = op_cur->uv.var->my;
                           
                           SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
-                          int32_t type_is_value_t = SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag);
+                          int32_t type_is_mulnum_t = SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag);
                           
-                          if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_value_t) {
+                          if (SPVM_TYPE_is_object_type(compiler, type->basic_type->id, type->dimension, type->flag) && !type_is_mulnum_t) {
                             SPVM_OP* op_block_current = SPVM_LIST_fetch(op_block_stack, op_block_stack->length - 1);
                             op_block_current->uv.block->have_object_var_decl = 1;
                           }
@@ -3957,7 +3957,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
             
             int32_t type_width;
-            if (SPVM_TYPE_is_value_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
+            if (SPVM_TYPE_is_multi_numeric_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag)) {
               SPVM_PACKAGE* value_package =  my_type->basic_type->package;
               type_width = value_package->fields->length;
             }
@@ -4037,7 +4037,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             SPVM_OP_CHECKER_free_mem_id(compiler, ref_mem_stack, my);
                           }
-                          else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                          else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             SPVM_PACKAGE* value_package =  type->basic_type->package;
                             
                             SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
@@ -4135,7 +4135,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                               SPVM_OP_CHECKER_free_mem_id(compiler, ref_mem_stack, my);
                             }
-                            else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                               SPVM_PACKAGE* value_package =  type->basic_type->package;
                               
                               SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
@@ -4227,7 +4227,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           else if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             mem_id = SPVM_OP_CHECKER_get_mem_id(compiler, ref_mem_stack, my);
                           }
-                          else if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                          else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                             SPVM_PACKAGE* value_package =  type->basic_type->package;
                             
                             SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
@@ -4504,8 +4504,8 @@ SPVM_OP* SPVM_OP_CHECKER_check_assign(SPVM_COMPILER* compiler, SPVM_TYPE* dist_t
     }
   }
   // Dist type is value type
-  else if (SPVM_TYPE_is_value_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
-    if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+  else if (SPVM_TYPE_is_multi_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+    if (SPVM_TYPE_is_multi_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
       if (dist_type->basic_type->id == src_type->basic_type->id && dist_type->dimension == src_type->dimension) {
         can_assign = 1;
       }
@@ -4726,7 +4726,7 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     // Reference type must be numeric refernce type or value reference type
     if (SPVM_TYPE_is_ref_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       if (!(SPVM_TYPE_is_numeric_ref_type(compiler, type->basic_type->id, type->dimension, type->flag) || SPVM_TYPE_is_value_ref_type(compiler, type->basic_type->id, type->dimension, type->flag))) {
-        SPVM_COMPILER_error(compiler, "Reference type must be numeric refernce type or value_t reference type \"%s\"\\ at %s line %d\n", basic_type_name, op_type->file, op_type->line);
+        SPVM_COMPILER_error(compiler, "Reference type must be numeric refernce type or mulnum_t reference type \"%s\"\\ at %s line %d\n", basic_type_name, op_type->file, op_type->line);
         return;
       }
     }
@@ -5037,22 +5037,22 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       SPVM_HASH_insert(compiler->string_symtable, package->module_rel_file, strlen(package->module_rel_file) + 1, (void*)(intptr_t)string_pool_id);
     }
     
-    // value_t package limitation
+    // mulnum_t package limitation
     if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
       // Can't have subroutines
       if (package->subs->length > 0) {
-        SPVM_COMPILER_error(compiler, "value_t package can't have subroutines at %s line %d\n", package->op_package->file, package->op_package->line);
+        SPVM_COMPILER_error(compiler, "mulnum_t package can't have subroutines at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }
       // Can't have package variables
       if (package->package_vars->length > 0) {
-        SPVM_COMPILER_error(compiler, "value_t package can't have package variables at %s line %d\n", package->op_package->file, package->op_package->line);
+        SPVM_COMPILER_error(compiler, "mulnum_t package can't have package variables at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }
       
       // At least have one field
       if (package->fields->length == 0) {
-        SPVM_COMPILER_error(compiler, "value_t package have at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
+        SPVM_COMPILER_error(compiler, "mulnum_t package have at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }
       // Minilal value fields length is 1
@@ -5070,7 +5070,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_FIELD* first_field = SPVM_LIST_fetch(fields, 0);
         SPVM_TYPE* first_field_type = SPVM_OP_get_type(compiler, first_field->op_field);
         if (!SPVM_TYPE_is_numeric_type(compiler, first_field_type->basic_type->id, first_field_type->dimension, first_field_type->flag)) {
-          SPVM_COMPILER_error(compiler, "value_t package must have numeric field at %s line %d\n", first_field->op_field->file, first_field->op_field->line);
+          SPVM_COMPILER_error(compiler, "mulnum_t package must have numeric field at %s line %d\n", first_field->op_field->file, first_field->op_field->line);
           return;
         }
         else {
@@ -5129,11 +5129,11 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     for (int32_t package_var_index = 0; package_var_index < package->package_vars->length; package_var_index++) {
       SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, package_var_index);
       SPVM_TYPE* package_var_type = SPVM_OP_get_type(compiler, package_var->op_package_var);
-      int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
+      int32_t is_mulnum_t = SPVM_TYPE_is_multi_numeric_type(compiler, package_var_type->basic_type->id, package_var_type->dimension, package_var_type->flag);
       
       // valut_t can't become package variable
-      if (is_value_t) {
-        SPVM_COMPILER_error(compiler, "value_t type can't become package variable at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "mulnum_t type can't become package variable at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
         return;
       }
 
@@ -5167,9 +5167,9 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
 
       // valut_t can't become field
-      int32_t is_value_t = SPVM_TYPE_is_value_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
-      if (is_value_t) {
-        SPVM_COMPILER_error(compiler, "value_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
+      int32_t is_mulnum_t = SPVM_TYPE_is_multi_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      if (is_mulnum_t) {
+        SPVM_COMPILER_error(compiler, "mulnum_t type can't become field at %s line %d\n", field->op_field->file, field->op_field->line);
         return;
       }
       
@@ -5209,10 +5209,10 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
 
         SPVM_TYPE* arg_type = SPVM_OP_get_type(compiler, arg_my->op_my);
         
-        int32_t is_arg_type_is_value_type = SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
+        int32_t is_arg_type_is_multi_numeric_type = SPVM_TYPE_is_multi_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         int32_t is_arg_type_is_value_ref_type = SPVM_TYPE_is_value_ref_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag);
         
-        if (is_arg_type_is_value_type || is_arg_type_is_value_ref_type) {
+        if (is_arg_type_is_multi_numeric_type || is_arg_type_is_value_ref_type) {
           arg_allow_count += arg_type->basic_type->package->fields->length;
         }
         else {

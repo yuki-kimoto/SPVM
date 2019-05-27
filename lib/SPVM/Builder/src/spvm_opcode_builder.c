@@ -396,7 +396,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       // Initialized not initialized variable
                       if (!op_cur->uv.var->is_initialized && !op_cur->uv.var->is_arg) {
                         // Value type
-                        if (SPVM_TYPE_is_value_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+                        if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
                           SPVM_PACKAGE* value_package = type->basic_type->package;
                           assert(package);
                           
@@ -650,7 +650,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }
-                          else if (SPVM_TYPE_is_value_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                          else if (SPVM_TYPE_is_multi_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                             SPVM_PACKAGE* value_package = type_dist->basic_type->package;
                             assert(value_package);
                             
@@ -830,7 +830,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   
                                   SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                                 }
-                                else if (SPVM_TYPE_is_value_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
+                                else if (SPVM_TYPE_is_multi_numeric_type(compiler, arg_type->basic_type->id, arg_type->dimension, arg_type->flag)) {
 
                                   SPVM_PACKAGE* value_package = arg_type->basic_type->package;
                                   assert(package);
@@ -1003,7 +1003,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             }
                             // Value type
-                            else if (SPVM_TYPE_is_value_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
+                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
 
                               SPVM_PACKAGE* value_package = call_sub_return_type->basic_type->package;
                               assert(package);
@@ -1106,7 +1106,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             }
                             // Value type
-                            else if (SPVM_TYPE_is_value_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
+                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag)) {
 
                               SPVM_PACKAGE* value_package = call_sub_return_type->basic_type->package;
                               assert(package);
@@ -1375,7 +1375,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                             }
                             // Value field access
-                            else if (SPVM_TYPE_is_value_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                            else if (SPVM_TYPE_is_multi_numeric_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                               SPVM_OPCODE opcode;
                               memset(&opcode, 0, sizeof(SPVM_OPCODE));
                               
@@ -1641,7 +1641,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_DEREF : {
                           SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
                           
-                          if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                          if (SPVM_TYPE_is_multi_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_FIELD* first_field = SPVM_LIST_fetch(src_type->basic_type->package->fields, 0);
                           
                             SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, first_field->op_field);
@@ -1743,7 +1743,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in;
                           SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src->first);
-                          if (SPVM_TYPE_is_value_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                          if (SPVM_TYPE_is_multi_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                             SPVM_PACKAGE* value_package = src_type->basic_type->package;
                             assert(package);
                             
@@ -3236,7 +3236,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         }
                         case SPVM_OP_C_ID_VAR : {
                           // Value type
-                          if (SPVM_TYPE_is_value_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
+                          if (SPVM_TYPE_is_multi_numeric_type(compiler, type_dist->basic_type->id, type_dist->dimension, type_dist->flag)) {
                             SPVM_PACKAGE* value_package = type_dist->basic_type->package;
                             assert(package);
                             
@@ -4003,7 +4003,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_OBJECT);
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                               }
-                              else if (SPVM_TYPE_is_value_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
+                              else if (SPVM_TYPE_is_multi_numeric_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                                 SPVM_PACKAGE* value_package = return_type->basic_type->package;
                                 assert(package);
                                 
@@ -4478,7 +4478,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                         SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                       }
-                      else if (SPVM_TYPE_is_value_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
+                      else if (SPVM_TYPE_is_multi_numeric_type(compiler, invocant_type->basic_type->id, invocant_type->dimension, invocant_type->flag)) {
                         SPVM_OPCODE opcode;
                         memset(&opcode, 0, sizeof(SPVM_OPCODE));
                         
