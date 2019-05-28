@@ -251,11 +251,6 @@ typedef void* SPVM_VALUE_object;
 } while (0)\
 
 struct SPVM_env {
-  void* exception_object;
-  void* native_mortal_stack;
-  void* native_mortal_stack_top;
-  void* native_mortal_stack_capacity;
-  void* runtime;
   void* runtime_package_vars_heap_offset;
   void* object_header_byte_size;
   void* object_ref_count_offset;
@@ -268,6 +263,11 @@ struct SPVM_env {
   void* long_object_basic_type_id;
   void* float_object_basic_type_id;
   void* double_object_basic_type_id;
+  void* exception_object;
+  void* native_mortal_stack;
+  void* native_mortal_stack_top;
+  void* native_mortal_stack_capacity;
+  void* runtime;
   int32_t (*memory_blocks_count)(SPVM_ENV* env);
   void* (*new_env)(SPVM_ENV*);
   void (*free_env)(SPVM_ENV*);
