@@ -1,11 +1,12 @@
 package SPVM::HTTP::Client::Handle {
   use SPVM::HTTP::Client::Request;
+  use SPVM::HTTP::Client::Response;
   use SPVM::HTTP::Client::Handle::SocketWrapper;
   use SPVM::HTTP::Headers;
   use SPVM::StringBuffer;
 
   has timeout : public double;
-  has socket : public SPVM::HTTP::Client::Handle::SocketWrapper;
+  has socket : public SPVM::IO::Socket;
 
   sub new_with : SPVM::HTTP::Client::Handle ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Client::Handle;
@@ -26,14 +27,8 @@ package SPVM::HTTP::Client::Handle {
     }
     my $port = ((SPVM::Int)($args->get("port")))->val;
 
-    if (my $o = $args->get("_socket_tmpfile")) {
-      $self->{socket} =
-          SPVM::HTTP::Client::Handle::SocketWrapper->new_io_file((string)$o);
-    }
-    else {
-      $self->{socket} = SPVM::HTTP::Client::Handle::SocketWrapper
-          ->new_io_socket($host, $port);
-    }
+    $self->{socket} = SPVM::IO::Socket->new($host, $port);
+
     return $self;
   }
 
@@ -72,5 +67,13 @@ package SPVM::HTTP::Client::Handle {
     $self->write_request_header(
         $request->{method}, $request->path_query, $request->{headers});
     #$self->_write_body();
+  }
+
+  sub read_response_header : SPVM::HTTP::Client::Response ($self : self) {
+    return undef;
+  }
+
+  sub read_body : int ($self : self, $response : SPVM::HTTP::Client::Response) {
+    return 0;
   }
 }
