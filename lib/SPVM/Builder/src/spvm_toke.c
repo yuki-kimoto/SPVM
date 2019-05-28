@@ -46,6 +46,10 @@ int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
   }
 }
 
+int32_t SPVM_TOKE_is_valid_unicode_codepoint(int32_t uc) {
+  return (((uint32_t)uc)-0xd800 > 0x07ff) && ((uint32_t)uc < 0x110000);
+}
+
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
@@ -920,7 +924,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
                         char *end;
                         int32_t unicode = (int32_t)strtoll(unicode_chars, &end, 16);
-                        int32_t valid = SPVM_UNICODE_codepoint_valid(unicode);
+                        
+                        int32_t valid = SPVM_TOKE_is_valid_unicode_codepoint(unicode);
                         if (valid) {
                           char utf8_chars[4];
                           int32_t byte_length = SPVM_UNICODE_convert_unicode_to_utf8(unicode, (uint8_t*)utf8_chars);
