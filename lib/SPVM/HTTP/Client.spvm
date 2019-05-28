@@ -62,3 +62,83 @@ package SPVM::HTTP::Client {
     my $known_message_length = $handle->read_body($response);
   }
 }
+
+package SPVM::HTTP::Client::Handle {
+  use SPVM::HTTP::Client::Request;
+  use SPVM::HTTP::Client::Response;
+  use SPVM::HTTP::Client::Handle::SocketWrapper;
+  use SPVM::HTTP::Headers;
+  use SPVM::StringBuffer;
+
+  has timeout : public double;
+  has socket : public SPVM::IO::Socket;
+
+  sub new_with : SPVM::HTTP::Client::Handle ($args : SPVM::Hash) {
+    my $self = new SPVM::HTTP::Client::Handle;
+    if (my $o = $args->get("timeout")) {
+      $self->{timeout} = ((SPVM::Double)$o)->val;
+    }
+    return $self;
+  }
+
+  sub connect : SPVM::HTTP::Client::Handle ($self : self, $args : SPVM::Hash) {
+    unless ($args->exists("host")) {
+      die "Missing argument 'host'.";
+    }
+    my $host = (string)($args->get("host"));
+
+    unless ($args->exists("port")) {
+      die "Missing argument 'port'.";
+    }
+    my $port = ((SPVM::Int)($args->get("port")))->val;
+
+    $self->{socket} = SPVM::IO::Socket->new($host, $port);
+
+    return $self;
+  }
+
+  sub write : void ($self : self, $buf : SPVM::StringBuffer) {
+    my $len = $buf->length;
+    my $off = 0;
+    while (1) {
+      my $writable = $buf->substr($off, $len)->to_str;
+      my $write_length = $self->{socket}->write($writable, $len);
+      $len -= $write_length;
+      $off += $write_length;
+      unless ($len > 0) {
+        last;
+      }
+    }
+  }
+
+  sub write_header_lines : void ($self : self,
+      $headers : SPVM::HTTP::Headers, $prefix_data : string) {
+    my $buf = SPVM::StringBuffer->new;
+    if ($prefix_data) {
+      $buf->append_string($prefix_data);
+    }
+    $headers->append_to_buffer($buf);
+    $buf->append_string("\r\n");
+    $self->write($buf);
+  }
+
+  sub write_request_header : void ($self : self, $method : string,
+      $path_query : string, $headers : SPVM::HTTP::Headers) {
+    $self->write_header_lines($headers, "$method $path_query\r\n");
+  }
+
+  sub write_request : void ($self : self,
+      $request : SPVM::HTTP::Client::Request) {
+    $self->write_request_header(
+        $request->{method}, $request->path_query, $request->{headers});
+    #$self->_write_body();
+  }
+
+  sub read_response_header : SPVM::HTTP::Client::Response ($self : self) {
+    return undef;
+  }
+
+  sub read_body : int ($self : self, $response : SPVM::HTTP::Client::Response) {
+    return 0;
+  }
+}
