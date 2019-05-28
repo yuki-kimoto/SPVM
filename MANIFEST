@@ -164,6 +164,7 @@ lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
 lib/SPVM/HTTP/Client/Handle.spvm
 lib/SPVM/HTTP/Client/Handle/SocketWrapper.spvm
 lib/SPVM/HTTP/Client/Request.spvm
+lib/SPVM/HTTP/Client/Response.spvm
 lib/SPVM/HTTP/Headers.spvm
 lib/SPVM/HTTP/URL.spvm
 lib/SPVM/HTTP/URL/Encode.spvm
