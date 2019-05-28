@@ -26,7 +26,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringBuffer->test_to_barray);
   ok(TestCase::Lib::SPVM::StringBuffer->test_equals);
   ok(TestCase::Lib::SPVM::StringBuffer->test_to_str);
-  ok(TestCase::Lib::SPVM::StringBuffer->test_index_with_string);
+  ok(TestCase::Lib::SPVM::StringBuffer->test_index);
 }
 
 # All object is freed
