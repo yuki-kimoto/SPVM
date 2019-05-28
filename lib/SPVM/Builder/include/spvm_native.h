@@ -312,14 +312,6 @@ struct SPVM_env {
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
-  void* (*i_to_str_raw)(SPVM_ENV* env, int32_t value);
-  void* (*i_to_str)(SPVM_ENV* env, int32_t value);
-  void* (*l_to_str_raw)(SPVM_ENV* env, int64_t value);
-  void* (*l_to_str)(SPVM_ENV* env, int64_t value);
-  void* (*f_to_str_raw)(SPVM_ENV* env, float value);
-  void* (*f_to_str)(SPVM_ENV* env, float value);
-  void* (*d_to_str_raw)(SPVM_ENV* env, double value);
-  void* (*d_to_str)(SPVM_ENV* env, double value);
   void* (*new_stack_trace_raw)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
   void* (*new_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
   int32_t (*len)(SPVM_ENV*, void*);
