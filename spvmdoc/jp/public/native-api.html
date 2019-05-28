@@ -65,6 +65,138 @@
       <p>
         作成したネイティブサブルーチンは、SPVMから呼び出すことができます。
       </p>
+      <h2 id="native-api-list">ネイティブAPIの一覧</h2>
+      <ul class="list">
+        <li><a href="#native-api-list-index">ネイティブAPIのインデックス</a></li>
+      </ul>
+
+      <h3 id="native-api-list-index">ネイティブAPIのインデックス</h3>
+      <p>
+        ネイティブAPIは、名前に対応するインデックスを持っています。この番号は、ネイティブサブルーチンののバイナリ互換性を保つために、維持されます。新しいAPIの追加の場合は、末尾に追加されます。
+      </p>
+
+<pre>
+0     runtime_package_vars_heap_offset
+1     object_header_byte_size
+2     weaken_backref_head
+3     object_ref_count_offset
+4     object_basic_type_id_offset
+5     object_type_dimension_offset
+6     object_runtime_type_offset
+7     object_flag_offset
+8     object_length_offset
+9     byte_object_basic_type_id
+10    short_object_basic_type_id
+11    int_object_basic_type_id
+12    long_object_basic_type_id
+13    float_object_basic_type_id
+14    double_object_basic_type_id
+15    runtime
+16    exception_object
+17    native_mortal_stack
+18    native_mortal_stack_top
+19    native_mortal_stack_capacity
+20    basic_type_id
+21    field_id
+22    field_offset
+23    pkgvar_id
+24    sub_id
+25    method_sub_id
+26    new_obj_raw
+27    new_obj
+28    new_barray_raw
+29    new_barray
+30    new_sarray_raw
+31    new_sarray
+32    new_iarray_raw
+33    new_iarray
+34    new_larray_raw
+35    new_larray
+36    new_farray_raw
+37    new_farray
+38    new_darray_raw
+39    new_darray
+40    new_oarray_raw
+41    new_oarray
+42    new_marray_raw
+43    new_marray
+44    new_varray_raw
+45    new_varray
+46    new_str_raw
+47    new_str
+48    new_str_len_raw
+49    new_str_len
+50    new_pointer_raw
+51    new_pointer
+52    concat_raw
+53    concat
+54    new_stack_trace_raw
+55    new_stack_trace
+56    len
+57    belems
+58    selems
+59    ielems
+60    lelems
+61    felems
+62    delems
+63    oelems
+64    set_oelems
+65    bfield
+66    sfield
+67    ifield
+68    lfield
+69    ffield
+70    dfield
+71    ofield
+72    set_bfield
+73    set_sfield
+74    set_ifield
+75    set_lfield
+76    set_ffield
+77    set_dfield
+78    set_ofield
+79    bpkgvar
+80    spkgvar
+81    ipkgvar
+82    lpkgvar
+83    fpkgvar
+84    dpkgvar
+85    opkgvar
+86    set_bpkgvar
+87    set_spkgvar
+88    set_ipkgvar
+89    set_lpkgvar
+90    set_fpkgvar
+91    set_dpkgvar
+92    set_opkgvar
+93    pointer
+94    set_pointer
+95    call_sub
+96    exception
+97    set_exception
+98    ref_count
+99    inc_ref_count
+100   dec_ref_count
+101   enter_scope
+102   push_mortal
+103   leave_scope
+104   remove_mortal
+105   is_type
+106   has_callback
+107   object_basic_type_id
+108   object_type_dimension
+109   weaken
+110   isweak
+111   unweaken
+112   alloc_memory_block_zero
+113   free_memory_block
+114   memory_blocks_count
+115   type_name_raw
+116   type_name
+117   new_env
+118   free_env
+</pre>
+
     </div>
     <div class="footer">
       <div><a href="javascript:void(0)" class="to-top">▲</a></div>
