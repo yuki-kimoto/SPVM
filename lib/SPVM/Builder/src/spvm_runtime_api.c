@@ -38,13 +38,56 @@
 
 
 
-  SPVM_RUNTIME_WEAKEN_BACKREF* weaken_backref_head;
-  int32_t ref_count;
-  int32_t basic_type_id;
-  uint8_t type_dimension;
-  uint8_t runtime_type;
-  uint8_t flag;
-  int32_t length;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -74,15 +117,12 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     NULL, // native_mortal_stack
     NULL, // native_mortal_stack_top
     NULL, // native_mortal_stack_capacity
-    SPVM_RUNTIME_API_exception,
-    SPVM_RUNTIME_API_set_exception,
     SPVM_RUNTIME_API_basic_type_id,
     SPVM_RUNTIME_API_field_id,
     SPVM_RUNTIME_API_field_offset,
     SPVM_RUNTIME_API_pkgvar_id,
     SPVM_RUNTIME_API_sub_id,
     SPVM_RUNTIME_API_method_sub_id,
-    SPVM_RUNTIME_API_call_sub,
     SPVM_RUNTIME_API_new_obj_raw,
     SPVM_RUNTIME_API_new_obj,
     SPVM_RUNTIME_API_new_barray_raw,
@@ -152,9 +192,9 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_set_opkgvar,
     SPVM_RUNTIME_API_pointer,
     SPVM_RUNTIME_API_set_pointer,
-    SPVM_RUNTIME_API_weaken,
-    SPVM_RUNTIME_API_isweak,
-    SPVM_RUNTIME_API_unweaken,
+    SPVM_RUNTIME_API_call_sub,
+    SPVM_RUNTIME_API_exception,
+    SPVM_RUNTIME_API_set_exception,
     SPVM_RUNTIME_API_ref_count,
     SPVM_RUNTIME_API_inc_ref_count,
     SPVM_RUNTIME_API_dec_ref_count,
@@ -166,6 +206,9 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_has_callback,
     SPVM_RUNTIME_API_object_basic_type_id,
     SPVM_RUNTIME_API_object_type_dimension,
+    SPVM_RUNTIME_API_weaken,
+    SPVM_RUNTIME_API_isweak,
+    SPVM_RUNTIME_API_unweaken,
     SPVM_RUNTIME_API_alloc_memory_block_zero,
     SPVM_RUNTIME_API_free_memory_block,
     SPVM_RUNTIME_API_memory_blocks_count,
