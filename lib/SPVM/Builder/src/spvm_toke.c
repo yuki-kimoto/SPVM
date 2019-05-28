@@ -8,7 +8,6 @@
 
 
 #include "spvm_compiler.h"
-#include "spvm_toke.h"
 #include "spvm_yacc_util.h"
 #include "spvm_yacc.h"
 #include "spvm_op.h"
@@ -26,7 +25,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
-#include "spvm_unicode.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
