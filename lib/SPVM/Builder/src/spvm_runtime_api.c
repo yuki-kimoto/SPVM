@@ -853,7 +853,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         if (object) {
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
-          int_vars[0] = (object_basic_type_id == check_basic_type_id && object_type_dimension == check_type_dimension);
+          int_vars[0] = env->is_type(env, object, check_basic_type_id, check_type_dimension);
         }
         else {
           int_vars[0] = 0;
