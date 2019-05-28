@@ -59,25 +59,38 @@ package SPVM::HTTP::Client {
     $handle->write_request($request);
 
     my $response = $handle->read_response_header;
-    my $known_message_length = $handle->read_body($response);
+    warn("$method - $url");
+    warn("parsed status line:");
+    warn("protocol: " . $response->protocol);
+    warn("status: " . $response->status);
+    warn("reason: " . $response->reason);
+    #my $known_message_length = $handle->read_body($response);
   }
 }
 
 package SPVM::HTTP::Client::Handle {
   use SPVM::HTTP::Client::Request;
   use SPVM::HTTP::Client::Response;
-  use SPVM::HTTP::Client::Handle::SocketWrapper;
   use SPVM::HTTP::Headers;
+  use SPVM::IO::Socket;
   use SPVM::StringBuffer;
 
   has timeout : public double;
   has socket : public SPVM::IO::Socket;
+  has rbuf : SPVM::StringBuffer;
+
+  our $_BUFSIZE : rw int;
+
+  BEGIN {
+    $_BUFSIZE = 32768;
+  }
 
   sub new_with : SPVM::HTTP::Client::Handle ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Client::Handle;
     if (my $o = $args->get("timeout")) {
       $self->{timeout} = ((SPVM::Double)$o)->val;
     }
+    $self->{rbuf} = SPVM::StringBuffer->new;
     return $self;
   }
 
@@ -86,14 +99,12 @@ package SPVM::HTTP::Client::Handle {
       die "Missing argument 'host'.";
     }
     my $host = (string)($args->get("host"));
-
     unless ($args->exists("port")) {
       die "Missing argument 'port'.";
     }
     my $port = ((SPVM::Int)($args->get("port")))->val;
-
     $self->{socket} = SPVM::IO::Socket->new($host, $port);
-
+    $self->{rbuf} = SPVM::StringBuffer->new;
     return $self;
   }
 
@@ -134,8 +145,96 @@ package SPVM::HTTP::Client::Handle {
     #$self->_write_body();
   }
 
-  sub read_response_header : SPVM::HTTP::Client::Response ($self : self) {
+  private sub _extract_line : string ($self : self) {
+    my $index = $self->{rbuf}->index("\n", 0);
+    if ($index < 0) {
+      return undef;
+    }
+    my $ret = $self->{rbuf}->substr(0, $index + 1)->to_str;
+    $self->{rbuf} = $self->{rbuf}->substr(
+        $index + 1, $self->{rbuf}->length - $index - 1);
+    return $ret;
+  }
+
+  sub readline : string ($self : self) {
+    while (1) {
+      if (my $line = $self->_extract_line) {
+        return $line;
+      }
+      my $buf = new byte [$_BUFSIZE];
+      my $r = $self->{socket}->read($buf);
+      if ($r > 0) {
+        $self->{rbuf}->append_bytes(sliceb($buf, 0, $r));
+      }
+      elsif ($r == 0) {
+        die "Unexpected end of stream while looking for line";
+      }
+    }
+    return $self->{rbuf}->to_str;
+  }
+
+  private sub _read_as : void ($target : string, $token : string, $pos : int&) {
+    unless (index($target, $token, $$pos) == 0) {
+      die "Malformed string. '$token' is expected: '$target'";
+    }
+    $$pos += length $token;
+  }
+
+  private sub _read_as_ws : void ($target : string, $pos : int&) {
+    unless ($target->[$$pos] == ' ' || $target->[$$pos] == '\t') {
+      die "Malformed string. No white spaces: '$target'";
+    }
+    my $len = length $target;
+    for (; $$pos < $len &&
+        $target->[$$pos] == ' ' ||
+        $target->[$$pos] == '\t';
+        ++$$pos) {}
+  }
+
+  private sub _capture : string ($target : string, $length : int, $pos : int&) {
+    my $ret = "";
+    eval {
+      $ret = substr($target, $$pos, $length);
+    };
+    if ($@) {
+      die "Malformed string, parse failed at " . $$pos . ". string: '$target'";
+    }
+    $$pos += $length;
+    return $ret;
+  }
+
+  private sub _as_digits : int ($string : string) {
+    my $length = length $string;
+    my $ret = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      $ret *= 10;
+      $ret += $string->[$i] - '0';
+    }
+    return $ret;
+  }
+
+  sub read_header_lines : SPVM::Hash ($self : self) {
     return undef;
+  }
+
+  sub read_response_header : SPVM::HTTP::Client::Response ($self : self) {
+    my $line = $self->readline;
+    my $pos = 0;
+    _read_as($line, "HTTP/", \$pos);
+    my $version = _capture($line, 3, \$pos);
+    unless ($version eq "1.0" || $version eq "1.1") {
+      die "Unsupported HTTP protocol HTTP/$version";
+    }
+    _read_as_ws($line, \$pos);
+    my $status = _capture($line, 3, \$pos);
+    _read_as_ws($line, \$pos);
+    my $reason = substr($line, $pos, length($line) - $pos - 2);
+    return SPVM::HTTP::Client::Response->new_with(hash([(object)
+      protocol => "HTTP/$version",
+      status   => _as_digits($status),
+      reason   => $reason,
+      headers  => $self->read_header_lines,
+    ]));
   }
 
   sub read_body : int ($self : self, $response : SPVM::HTTP::Client::Response) {
