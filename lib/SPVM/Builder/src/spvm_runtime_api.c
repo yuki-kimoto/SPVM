@@ -38,6 +38,13 @@
 
 
 
+  SPVM_RUNTIME_WEAKEN_BACKREF* weaken_backref_head;
+  int32_t ref_count;
+  int32_t basic_type_id;
+  uint8_t type_dimension;
+  uint8_t runtime_type;
+  uint8_t flag;
+  int32_t length;
 
 
 
@@ -49,9 +56,12 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   void* env_init[]  = {
     (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_offset
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, weaken_backref_head), // weaken_backref_head
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_dimension_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_type_dimension_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, runtime_type), // object_runtime_type_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT, // byte_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT, // short_object_basic_type_id

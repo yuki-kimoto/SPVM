@@ -253,9 +253,12 @@ typedef void* SPVM_VALUE_object;
 struct SPVM_env {
   void* runtime_package_vars_heap_offset;
   void* object_header_byte_size;
+  void* object_weaken_backref_head_offset;
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
   void* object_type_dimension_offset;
+  void* object_type_runtime_type_offset;
+  void* object_type_flag_offset;
   void* object_length_offset;
   void* byte_object_basic_type_id;
   void* short_object_basic_type_id;
