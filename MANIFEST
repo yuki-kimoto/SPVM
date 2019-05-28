@@ -74,10 +74,7 @@ lib/SPVM/Builder/include/spvm_sub.h
 lib/SPVM/Builder/include/spvm_switch_info.h
 lib/SPVM/Builder/include/spvm_toke.h
 lib/SPVM/Builder/include/spvm_type.h
-lib/SPVM/Builder/include/spvm_unicode.h
 lib/SPVM/Builder/include/spvm_use.h
-lib/SPVM/Builder/include/spvm_utf8proc.h
-lib/SPVM/Builder/include/spvm_utf8proc_data.c
 lib/SPVM/Builder/include/spvm_util_allocator.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_yacc.h
@@ -119,9 +116,7 @@ lib/SPVM/Builder/src/spvm_sub.c
 lib/SPVM/Builder/src/spvm_switch_info.c
 lib/SPVM/Builder/src/spvm_toke.c
 lib/SPVM/Builder/src/spvm_type.c
-lib/SPVM/Builder/src/spvm_unicode.c
 lib/SPVM/Builder/src/spvm_use.c
-lib/SPVM/Builder/src/spvm_utf8proc.c
 lib/SPVM/Builder/src/spvm_util_allocator.c
 lib/SPVM/Builder/src/spvm_var.c
 lib/SPVM/Builder/src/spvm_yacc.c
