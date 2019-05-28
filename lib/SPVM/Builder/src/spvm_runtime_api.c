@@ -69,11 +69,11 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,  // long_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT, // float_object_basic_type_id
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT, // double_object_basic_type_id
+    runtime,
     NULL, // exception_object
     NULL, // native_mortal_stack
     NULL, // native_mortal_stack_top
     NULL, // native_mortal_stack_capacity
-    runtime,
     SPVM_RUNTIME_API_memory_blocks_count,
     SPVM_RUNTIME_API_new_env,
     SPVM_RUNTIME_API_free_env,

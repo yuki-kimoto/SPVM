@@ -266,11 +266,11 @@ struct SPVM_env {
   void* long_object_basic_type_id;
   void* float_object_basic_type_id;
   void* double_object_basic_type_id;
+  void* runtime;
   void* exception_object;
   void* native_mortal_stack;
   void* native_mortal_stack_top;
   void* native_mortal_stack_capacity;
-  void* runtime;
   int32_t (*memory_blocks_count)(SPVM_ENV* env);
   void* (*new_env)(SPVM_ENV*);
   void (*free_env)(SPVM_ENV*);
