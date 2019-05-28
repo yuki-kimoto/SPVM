@@ -1,6 +1,7 @@
 0.0435 2018-05-24
   - Try to show NA in CPAN testers
   - rename value_t package descriptor to mulnum_t
+  - chomp return value instead of replacing argument string
 0.0434 2018-05-21
   - add  SPVM::StringList
   - remove SPVM::list

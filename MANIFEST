@@ -197,8 +197,6 @@ lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
 lib/SPVM/MIME/Base64.spvm
-lib/SPVM/MIME/Decoder.spvm
-lib/SPVM/MIME/Encoder.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/ShortList.spvm

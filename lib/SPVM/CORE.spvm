@@ -6,7 +6,28 @@ package SPVM::CORE {
   use SPVM::Comparator;
   use SPVM::Stringer;
 
-  native sub chomp : void ($string : string);
+  sub chomp : string ($string : string) {
+    unless ($string) {
+      return undef;
+    }
+    
+    my $new_string : string;
+    my $length = length $string;
+    if ($length == 0) {
+      $new_string = copy_str($string);
+    }
+    else {
+      if ($string->[$length - 1] == '\n') {
+        $new_string = (string)sliceb((byte[])$string, 0, $length - 1);
+      }
+      else {
+        $new_string = copy_str($string);
+      }
+    }
+    
+    return $new_string;
+  }
+  
   native sub rand : int ($seed_ref : int&);
   native sub sleep : void ($seconds : long);
   
