@@ -379,19 +379,19 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
-  sub test_index_with_string : int () {
+  sub test_index : int () {
     my $buf = SPVM::StringBuffer->new;
     $buf->append_string("hogehogefuga");
-    unless ($buf->index_with_string("hoge", 0) == 0) {
+    unless ($buf->index("hoge", 0) == 0) {
       return 0;
     }
-    unless ($buf->index_with_string("hoge", 1) == 4) {
+    unless ($buf->index("hoge", 1) == 4) {
       return 0;
     }
-    unless ($buf->index_with_string("fuga", 0) == 8) {
+    unless ($buf->index("fuga", 0) == 8) {
       return 0;
     }
-    unless ($buf->index_with_string("foo", 0) == -1) {
+    unless ($buf->index("foo", 0) == -1) {
       return 0;
     }
     return 1;

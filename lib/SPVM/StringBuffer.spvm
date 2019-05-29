@@ -212,7 +212,7 @@ package SPVM::StringBuffer {
     $self->{length} += $replace_length - $length;
   }
 
-  sub index_with_string : int ($self : self, $search : string, $from_index : int) {
+  sub index : int ($self : self, $search : string, $from_index : int) {
     my $slen = length $search;
     for (my $i = $from_index; $i < $self->{length} - $slen + 1; ++$i) {
       my $found = 1;
