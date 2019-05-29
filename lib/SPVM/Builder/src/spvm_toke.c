@@ -8,7 +8,6 @@
 
 
 #include "spvm_compiler.h"
-#include "spvm_toke.h"
 #include "spvm_yacc_util.h"
 #include "spvm_yacc.h"
 #include "spvm_op.h"
@@ -26,7 +25,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
-#include "spvm_unicode.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -40,6 +38,39 @@ int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
   // SP, CR, LF, HT, FF
   if (ch == 0x20 || ch == 0x0D || ch == 0x0A || ch == 0x09 || ch == 0x0C) {
     return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
+int32_t SPVM_TOKE_is_valid_unicode_codepoint(int32_t uc) {
+  return (((uint32_t)uc)-0xd800 > 0x07ff) && ((uint32_t)uc < 0x110000);
+}
+
+int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8(int32_t uc, uint8_t* dst) {
+  if (uc < 0x00) {
+    return 0;
+  } else if (uc < 0x80) {
+    dst[0] = (uint8_t)uc;
+    return 1;
+  } else if (uc < 0x800) {
+    dst[0] = (uint8_t)(0xC0 + (uc >> 6));
+    dst[1] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 2;
+  // Note: we allow encoding 0xd800-0xdfff here, so as not to change
+  // the API, however, these are actually invalid in UTF-8
+  } else if (uc < 0x10000) {
+    dst[0] = (uint8_t)(0xE0 + (uc >> 12));
+    dst[1] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
+    dst[2] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 3;
+  } else if (uc < 0x110000) {
+    dst[0] = (uint8_t)(0xF0 + (uc >> 18));
+    dst[1] = (uint8_t)(0x80 + ((uc >> 12) & 0x3F));
+    dst[2] = (uint8_t)(0x80 + ((uc >> 6) & 0x3F));
+    dst[3] = (uint8_t)(0x80 + (uc & 0x3F));
+    return 4;
   }
   else {
     return 0;
@@ -920,10 +951,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
                         char *end;
                         int32_t unicode = (int32_t)strtoll(unicode_chars, &end, 16);
-                        int32_t valid = SPVM_UNICODE_codepoint_valid(unicode);
+                        
+                        int32_t valid = SPVM_TOKE_is_valid_unicode_codepoint(unicode);
                         if (valid) {
                           char utf8_chars[4];
-                          int32_t byte_length = SPVM_UNICODE_convert_unicode_to_utf8(unicode, (uint8_t*)utf8_chars);
+                          int32_t byte_length = SPVM_TOKE_convert_unicode_codepoint_to_utf8(unicode, (uint8_t*)utf8_chars);
                           for (int32_t byte_index = 0; byte_index < byte_length; byte_index++) {
                             str[str_length] = utf8_chars[byte_index];
                             str_length++;

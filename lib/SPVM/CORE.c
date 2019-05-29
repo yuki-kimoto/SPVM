@@ -14,30 +14,6 @@
 
 static const char* MFILE = "SPVM/CORE.c";
 
-int32_t SPNATIVE__SPVM__CORE__chomp(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  void* obj_str = stack[0].oval;
-  if (!obj_str) {
-    return SPVM_SUCCESS;
-  }
-  char* str = (char*)env->belems(env, obj_str);
-  int32_t len = env->len(env, obj_str);
-  
-  if (len == 0) {
-    return SPVM_SUCCESS;
-  }
-  
-  if (str[len - 1] != '\n') {
-    return SPVM_SUCCESS;
-  }
-
-  
-  str[len - 1] = '\0';
-  *(int32_t*)((intptr_t)obj_str + (intptr_t)env->object_length_offset) = len - 1;
-
-  return SPVM_SUCCESS;
-}
-
 // https://github.com/lattera/glibc/blob/master/stdlib/rand_r.c
 static int
 SPVM_rand_r (unsigned int *seed)

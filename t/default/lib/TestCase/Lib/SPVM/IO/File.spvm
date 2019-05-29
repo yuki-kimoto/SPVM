@@ -268,7 +268,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "abcd") {
         return 0;
       }
@@ -276,7 +276,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "fghi") {
         return 0;
       }
@@ -284,7 +284,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "klm") {
         return 0;
       }
@@ -292,7 +292,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line == undef) {
         return 0;
       }
@@ -308,7 +308,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     my $lstrings = SPVM::List->new;
     while (my $line = $fh->readline) {
-      chomp($line);
+      $line = chomp($line);
       $lstrings->push($line);
     }
     my $strings = $lstrings->to_strarray;
@@ -328,7 +328,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "abcd") {
         return 0;
       }
@@ -336,7 +336,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "fghi") {
         return 0;
       }
@@ -344,7 +344,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "") {
         return 0;
       }
@@ -352,7 +352,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "klm") {
         return 0;
       }
@@ -360,7 +360,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line == undef) {
         return 0;
       }
@@ -376,7 +376,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") {
         return 0;
       }
@@ -384,7 +384,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "fghi") {
         return 0;
       }
@@ -392,7 +392,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line eq "klm") {
         return 0;
       }
@@ -400,7 +400,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      chomp($line);
+      $line = chomp($line);
       unless ($line == undef) {
         return 0;
       }

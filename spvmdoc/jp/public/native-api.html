@@ -1,0 +1,374 @@
+<html>
+  <head>
+    <title>SPVMネイティブAPI仕様 1.0 ベータ</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/images/spvm-logo.png">
+    <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <script type="text/javascript" src="/js/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="/js/google-code-prettify/prettify.js"></script>
+    <link  type="text/css" rel="stylesheet" href="/js/google-code-prettify/prettify.css"/>
+    <script>
+      $(function(){
+        // google code prettifyの有効化
+        $("pre").addClass("prettyprint");
+        function init(event){
+          prettyPrint();
+        }
+        if(window.addEventListener)window.addEventListener("load",init,false);
+        else if(window.attachEvent)window.attachEvent("onload",init);
+        
+        $(".to-top").click(function() {
+          // ページの一番上までスクロールさせます。
+          $('body, html').animate({scrollTop: 0}, 300, 'linear');;
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <h1>
+          <a style="color:#333;text-decoration:none;" href="/language.html"><img src="/images/spvm-logo.png">SPVMネイティブAPI仕様 1.0ベータ</a>
+        </h1>
+      </div>
+    </div>
+    
+    <div class="container">
+      <div>
+        <a href="/">SPVMドキュメント</a> &gt SPVMネイティブAPI仕様
+      </div>
+      
+      <h2 id="native-api-summary">SPVMネイティブAPI仕様</a></h2>
+      <p>
+        <b>SPVMネイティブAPI仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。SPVMネイティブAPI仕様は、警告なく変更されることがあります。
+      </p>
+      <p>
+        最終更新日 2019年5月29日
+      </p>
+      
+      <h2 id="native-api-toc">目次</h2>
+      <ul class="toc">
+        <li><a href="#native-api-summary">SPVMネイティブAPIとは</a></li>
+        <li><a href="#native-api-native-sub-declaration">ネイティブサブルーチンの宣言</a></li>
+        <li><a href="#native-api-native-sub-definition">ネイティブサブルーチンの定義</a></li>
+        <li><a href="#native-api-native-sub-compile">ネイティブサブルーチンのコンパイル</a></li>
+        <li><a href="#native-api-native-sub-get-arg">引数と戻り値</a></li>
+        <li><a href="#native-api-list">ネイティブAPIの一覧</a></li>
+      </ul>
+      
+      <h2 id="native-api-summary">SPVMネイティブAPIとは</h2>
+      <p>
+        SPVMネイティブAPIとは、SPVMのネイティブサブルーチンの中で呼び出すことのできるC言語のAPIのことです。SPVMのネイティブサブルーチンの仕様についてもここに記述されます。
+      </p>
+      <ul class="list">
+        <li>ネイティブサブルーチンの定義方法</li>
+        <li>SPVMのサブルーチンの引数をネイティブサブルーチンで受け取る</li>
+        <li>ネイティブサブルーチンの戻り値を、SPVMのサブルーチンの戻り値として返す</li>
+        <li>SPVMの配列の要素をC言語の配列として取得</li>
+      </ul>
+      <p>
+        作成したネイティブサブルーチンは、SPVMから呼び出すことができます。
+      </p>
+
+      <h2 id="native-api-native-sub-declaration">SPVMネイティブサブルーチンの宣言</h2>
+      <p>
+        SPVMネイティブサブルーチンの宣言は、サブルーチンのディスクリプタ「native」を使うことによって行います。サブルーチンのブロックを書かずに、セミコロンで終わります。以下は、Foo::Barというモジュールの中で宣言する場合の例です。
+      </p>
+<pre>
+# Foo/Bar.spvm
+package Foo::Bar {
+  native sub sum : int ($num1 : int, $num2 : int);
+}
+</pre>
+
+      <h2 id="native-api-native-sub-definition">ネイティブサブルーチンの定義</h2>
+      <p>
+        ネイティブサブルーチンの定義は、ネイティブソースファイルの中で行います。ネイティブソースファイルは、SPVMのモジュールの拡張子を、対象の言語の拡張子に変えたものになります。たとえばC言語であれば「.c」に変えたものです。C++であれば、「.cpp」に変えたものです。これは、ネイティブサブルーチンの設定において、変更することができます。
+      </p>
+<pre>
+# モジュール名がFoo::Barの場合のネイティブソースファイル
+Foo/Bar.c
+</pre>
+      <p>
+        ネイティブソースファイルを作成するときは、合わせてネイティブ設定ファイルを作成する必要があります。ネイティブ設定ファイルは、SPVMのモジュールの拡張子を「.config」に変えたものになります。ネイティブ設定ファイルが存在しない場合は、例外が発生します。
+      </p>
+<pre>
+# モジュール名がFoo::Barの場合のネイティブ設定ファイル
+Foo/Bar.config
+</pre>
+
+     <p>
+       ネイティブ設定ファイルはPerlのソースコードです。SPVM::Builder::Configオブジェクトをソースコードの最後に記述して、返却しなければなりません。そうでない場合は、例外が発生します。
+     </p>
+     <p>
+       SPVMと同じC99で、C言語を書きたい場合は、以下のように記述します。
+     </p>
+     
+<pre>
+use strict;
+use warnings;
+
+use SPVM::Builder::Config;
+my $bconf = SPVM::Builder::Config->new_c99;
+
+$bconf;
+</pre>
+      <p>
+        C99以外でコンパイルしたい場合や、ライブラリを追加したい場合はSPVM::Builder::Configのドキュメントのサンプルを見てください。
+      </p>
+      <p>
+        ネイティブサブルーチンの定義は、ネイティブソースファイルの中で行います。この場合の例は「Foo/Bar.c」です。
+      </p>
+
+<pre>
+#include "spvm_native.h"
+
+int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t num1 = stack[0].ival;
+  int32_t num2 = stakc[1].ival;
+  
+  int32_t total = num1 + num2;
+  
+  stack[0].ival = total;
+
+  return SPVM_SUCCESS;
+}
+</pre>
+
+      <p>
+        ネイティブソースファイルの先頭で「spvm_native.h」をインクルードしてください。このヘッダファイルには、SPVMネイティブAPIと必要な構造体が定義されています。
+      </p>
+      <p>
+        ネイティブサブルーチンの定義は、簡単なC言語の関数です。
+      </p>
+      <p>
+        ネイティブサブルーチンのCにおける関数名は「SPNATIVE__」で始まり、モジュール名の「::」を「__」に変換したものが続き、「__」が続き、サブルーチン名で終わります。SPVMにおけるサブルーチン名との対応が正しくない場合は、コンパイルエラーが発生します。
+      </p>
+      <p>
+        引数は二つで、第一引数は、実行環境の情報を持った「SPVM_ENV* env」で、第二引数は引数と戻り値に利用される「SPVM_VALUE* stack」です。
+      </p>
+      <p>
+        戻り値の型は「int32_t」です。サブルーチンが例外を発生させる場合は「SPVM_EXCEPTION」、それ以外の場合は「SPVM_SUCCESS」を返却します。
+      </p>
+      <p>
+        上記のサンプルでは、SPVMのint型の引数を二つ受け取り、合計を計算し、戻り値を返すということを行っています。
+      </p>
+      
+      <h2 id="native-api-native-sub-compile">ネイティブサブルーチンのコンパイル</h2>
+      <p>
+        ネイティブサブルーチンは、Perlをコンパイルしたコンパイラで、コンパイルされて、OSに応じた、動的に読み可能な共有ライブラリにコンパイルされます。Unix/Linuxにおいては、共有ライブラリ(.so)、Windowsにおいてはダイナミックリンクライブラリ(.dll)などです。
+      </p>
+      <p>
+        動的に読み可能な共有ライブラリへのコンパイルは、SPVMのコンパイル時に行われます。コンパイルのときに、ビルドディレクトリが存在していなければなりません。ビルドディレクトリが存在しない場合は、例外が発生します。
+      </p>
+      <p>
+        ビルドディレクトリのデフォルトは、実行したPerlスクリプトが存在するディレクトリの「spvm_build」ディレクトリで、環境変数「SPVM_BUILD_DIR」で変更することができます。
+      </p>
+      <p>
+        PerlからSPVMネイティブサブルーチンを利用したい場合は実行したPerlスクリプトが存在するディレクトリに「spvm_build」ディレクトリ作成します。
+      </p>
+<pre>
+script.pl
+spvm_build/
+</pre>
+      <p>
+        中間的に生成されるオブジェクトファイルは、ビルドディレクトリの下の「work/object」の下に生成されます。オブジェクトファイル名は、SPVMのモジュールの拡張子を「.o」に変えたものになります。
+      </p>
+<pre>
+spvm_build/work/object/Foo/Bar.o
+</pre>
+      <p>
+        動的に読み可能な共有ライブラリは、ビルドディレクトリの下の「work/lib」の下に生成されます。動的に読み可能な共有ライブラリのファイル名は、SPVMのモジュールの拡張子を、OSに応じた、動的に読み可能な共有ライブラリの拡張子に変えたものになります。
+      </p>
+<pre>
+# Unix/Linux
+spvm_build/work/object/Foo/Bar.so
+
+# Windows
+spvm_build/work/object/Foo/Bar.dll
+</pre>
+      <h2 id="native-api-native-sub-get-arg">引数の取得</h2>
+      <ul class="list">
+        <li><a href="native-api-native-sub-get-arg-stack">引数のスタック</a></li>
+        <li><a href="native-api-native-sub-get-arg-byte">byte型の引数の取得</a></li>
+        <li><a href="native-api-native-sub-get-arg-short">short型の引数の取得</a></li>
+        <li><a href="native-api-native-sub-get-arg-int">int型の引数の取得</a></li>
+        <li><a href="native-api-native-sub-get-arg-long">long型の引数の取得</a></li>
+        <li><a href="native-api-native-sub-get-arg-float">float型の引数の取得</a></li>
+        <li><a href="native-api-native-sub-get-arg-double">double型の引数の取得</a></li>
+      </ul>
+      
+      <h3 href="#native-api-native-sub-get-arg-stack">引数のスタック</h3>
+      <p>
+        引数のスタックとは、ネイティブサブルーチンの定義における第二引数で渡される「SPVM_VALUE* stack」のことです。
+      </p>
+<pre>
+int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+}
+</pre>
+      <p>
+        SPVM_VALUEは、SPVMの値を格納するためのC言語の共用体です。数値型、オブジェクト型、リファレンス型の値を保存できます。
+      </p>
+      <p>
+        「SPVM_VALUE* stack」の「SPVM_VALUE型の配列」の先頭のポインタです。SPVM側からコールされたネイティブサブルーチンの引数の値がこの配列に設定されます。
+      </p>
+      <p>
+        たとえば、int型の第一引数の値を取得する場合は、以下のように書きます。
+      </p>
+<pre>
+int32_t args1 = stack[0].ival;
+</pre>
+      <p>
+        たとえば、long型の第二引数の値を取得する場合は、以下のように書きます。
+      </p>
+<pre>
+int64_t args2 = stack[0].lval;
+</pre>
+
+      <h3 href="#native-api-native-sub-get-arg-byte">byte型の引数の取得</h3>
+      <p>
+        byte型の引数を取得するには、
+      </p>
+
+      <h2 id="native-api-list">ネイティブAPIの一覧</h2>
+      <ul class="list">
+        <li><a href="#native-api-list-index">ネイティブAPIのインデックス</a></li>
+      </ul>
+
+      <h3 id="native-api-list-index">ネイティブAPIのインデックス</h3>
+      <p>
+        ネイティブAPIは、名前に対応するインデックスを持っています。この番号は、ネイティブサブルーチンののバイナリ互換性を保つために、維持されます。新しいAPIの追加の場合は、末尾に追加されます。
+      </p>
+      <h2 id="native-api-native-sub-definition">ネイティブサブルーチンの定義</h2>
+
+<pre>
+0     runtime_package_vars_heap_offset
+1     object_header_byte_size
+2     weaken_backref_head
+3     object_ref_count_offset
+4     object_basic_type_id_offset
+5     object_type_dimension_offset
+6     object_runtime_type_offset
+7     object_flag_offset
+8     object_length_offset
+9     byte_object_basic_type_id
+10    short_object_basic_type_id
+11    int_object_basic_type_id
+12    long_object_basic_type_id
+13    float_object_basic_type_id
+14    double_object_basic_type_id
+15    runtime
+16    exception_object
+17    native_mortal_stack
+18    native_mortal_stack_top
+19    native_mortal_stack_capacity
+20    basic_type_id
+21    field_id
+22    field_offset
+23    pkgvar_id
+24    sub_id
+25    method_sub_id
+26    new_obj_raw
+27    new_obj
+28    new_barray_raw
+29    new_barray
+30    new_sarray_raw
+31    new_sarray
+32    new_iarray_raw
+33    new_iarray
+34    new_larray_raw
+35    new_larray
+36    new_farray_raw
+37    new_farray
+38    new_darray_raw
+39    new_darray
+40    new_oarray_raw
+41    new_oarray
+42    new_marray_raw
+43    new_marray
+44    new_varray_raw
+45    new_varray
+46    new_str_raw
+47    new_str
+48    new_str_len_raw
+49    new_str_len
+50    new_pointer_raw
+51    new_pointer
+52    concat_raw
+53    concat
+54    new_stack_trace_raw
+55    new_stack_trace
+56    len
+57    belems
+58    selems
+59    ielems
+60    lelems
+61    felems
+62    delems
+63    oelems
+64    set_oelems
+65    bfield
+66    sfield
+67    ifield
+68    lfield
+69    ffield
+70    dfield
+71    ofield
+72    set_bfield
+73    set_sfield
+74    set_ifield
+75    set_lfield
+76    set_ffield
+77    set_dfield
+78    set_ofield
+79    bpkgvar
+80    spkgvar
+81    ipkgvar
+82    lpkgvar
+83    fpkgvar
+84    dpkgvar
+85    opkgvar
+86    set_bpkgvar
+87    set_spkgvar
+88    set_ipkgvar
+89    set_lpkgvar
+90    set_fpkgvar
+91    set_dpkgvar
+92    set_opkgvar
+93    pointer
+94    set_pointer
+95    call_sub
+96    exception
+97    set_exception
+98    ref_count
+99    inc_ref_count
+100   dec_ref_count
+101   enter_scope
+102   push_mortal
+103   leave_scope
+104   remove_mortal
+105   is_type
+106   has_callback
+107   object_basic_type_id
+108   object_type_dimension
+109   weaken
+110   isweak
+111   unweaken
+112   alloc_memory_block_zero
+113   free_memory_block
+114   memory_blocks_count
+115   type_name_raw
+116   type_name
+117   new_env
+118   free_env
+</pre>
+
+    </div>
+    <div class="footer">
+      <div><a href="javascript:void(0)" class="to-top">▲</a></div>
+      <a href="https://github.com/yuki-kimoto/SPVM">SPVMプロジェクト</a>
+    </div>
+  </body>
+</html>
