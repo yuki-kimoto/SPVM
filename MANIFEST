@@ -156,8 +156,6 @@ lib/SPVM/HTTP/Client.spvm
 lib/SPVM/HTTP/Client/CookieJar.spvm
 lib/SPVM/HTTP/Client/CookieJar/Cookie.spvm
 lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
-lib/SPVM/HTTP/Client/Handle.spvm
-lib/SPVM/HTTP/Client/Handle/SocketWrapper.spvm
 lib/SPVM/HTTP/Client/Request.spvm
 lib/SPVM/HTTP/Client/Response.spvm
 lib/SPVM/HTTP/Headers.spvm
@@ -282,6 +280,7 @@ spvmdoc/jp/public/js/google-code-prettify/prettify.js
 spvmdoc/jp/public/js/google-code-prettify/run_prettify.js
 spvmdoc/jp/public/js/jquery-1.9.0.min.js
 spvmdoc/jp/public/language.html
+spvmdoc/jp/public/native-api.html
 spvmdoc/jp/serve.pl
 t/copy_default_to_precompile.pl
 t/create_use_all_testcase.pl
