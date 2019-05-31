@@ -1,30 +1,32 @@
 package SPVM::HTTP::Client {
   use SPVM::HTTP::Client::Handle;
-  use SPVM::HTTP::Client::Request;
-  use SPVM::HTTP::Headers;
   use SPVM::HTTP::URL;
+  use SPVM::StringList;
 
-  has default_headers : public SPVM::HTTP::Headers;
+  has default_headers : public SPVM::Hash;
   has timeout : public double;
 
   sub new : SPVM::HTTP::Client () {
     my $self = new SPVM::HTTP::Client;
-    $self->{default_headers} = SPVM::HTTP::Headers->new;
+    $self->{default_headers} = hash([]);
     $self->{timeout} = 60;
     return $self;
   }
 
   sub new_with : SPVM::HTTP::Client ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Client;
-    $self->{default_headers} = SPVM::HTTP::Headers->new;
+    $self->{default_headers} = hash([]);
     $self->{timeout} = 60;
     return $self;
   }
 
-  private sub _prepare_headers : void ($self : self,
-      $request : SPVM::HTTP::Client::Request) {
-    $request->{headers} = $self->{default_headers};
-    $request->{headers}->add("Host", $request->host_port);
+  private sub _prepare_headers : SPVM::Hash ($self : self, $host : string, $port : int) {
+    my $headers = $self->{default_headers};
+    if ($port) {
+      $host .= ":$port";
+    }
+    $headers->set("Host", $host);
+    return $headers;
   }
 
   private sub _open_handle : SPVM::HTTP::Client::Handle ($self : self,
@@ -43,20 +45,15 @@ package SPVM::HTTP::Client {
 
     my $u = SPVM::HTTP::URL->parse($url);
     $u->force_root_path_slashed;
-
-    my $request = SPVM::HTTP::Client::Request->new_with(hash([(object)
-      method  => $method,
-      scheme  => $u->{scheme},
-      host    => $u->{host},
-      port    => $u->{port},
-      path    => $u->{path},
-      query   => $u->{params},
-    ]));
-
-    $self->_prepare_headers($request);
-
-    my $handle = $self->_open_handle($request->{host}, $request->{port});
-    $handle->write_request($request);
+    my $host = $u->{host};
+    my $port = $u->{port};
+    my $path_query = $u->{path};
+    if ($u->{params}) {
+      $path_query .= "?" . $u->to_str;
+    }
+    my $headers = $self->_prepare_headers($host, $port);
+    my $handle = $self->_open_handle($host, $port);
+    $handle->write_request($method, $path_query, $headers);
 
     my $response = $handle->read_response_header;
     warn("$method - $url");
@@ -89,9 +86,7 @@ package SPVM::HTTP::Client {
 }
 
 package SPVM::HTTP::Client::Handle {
-  use SPVM::HTTP::Client::Request;
   use SPVM::HTTP::Client::Response;
-  use SPVM::HTTP::Headers;
   use SPVM::IO::Socket;
   use SPVM::StringBuffer;
 
@@ -150,25 +145,27 @@ package SPVM::HTTP::Client::Handle {
   }
 
   sub write_header_lines : void ($self : self,
-      $headers : SPVM::HTTP::Headers, $prefix_data : string) {
+      $headers : SPVM::Hash, $prefix_data : string) {
     my $buf = SPVM::StringBuffer->new;
     if ($prefix_data) {
       $buf->append_string($prefix_data);
     }
-    $headers->append_to_buffer($buf);
+    my $ks = $headers->keys;
+    for (my $i = 0; $i < @$ks; ++$i) {
+      $buf->append_string($ks->[$i] . ":" . (string)($headers->get($ks->[$i])));
+    }
     $buf->append_string("\r\n");
     $self->write($buf);
   }
 
   sub write_request_header : void ($self : self, $method : string,
-      $path_query : string, $headers : SPVM::HTTP::Headers) {
+      $path_query : string, $headers : SPVM::Hash) {
     $self->write_header_lines($headers, "$method $path_query\r\n");
   }
 
-  sub write_request : void ($self : self,
-      $request : SPVM::HTTP::Client::Request) {
-    $self->write_request_header(
-        $request->{method}, $request->path_query, $request->{headers});
+  sub write_request : void ($self : self, $method : string, $path_query : string,
+      $headers : SPVM::Hash) {
+    $self->write_request_header($method, $path_query, $headers);
     #$self->_write_body();
   }
 
