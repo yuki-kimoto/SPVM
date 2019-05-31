@@ -1,9 +1,10 @@
+0.0436 2018-05-31
+  - allow switch case byte constant. byte constant is converted to int constant.
 0.0435 2018-05-24
   - Try to show NA in CPAN testers
   - rename value_t package descriptor to mulnum_t
   - chomp return value instead of replacing argument string
   - remove utf8proc dependency of SPVM core
-  - allow switch case byte constant. byte constant is converted to int constant.
 0.0434 2018-05-21
   - add  SPVM::StringList
   - remove SPVM::list
