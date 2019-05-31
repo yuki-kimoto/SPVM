@@ -17,28 +17,6 @@ package SPVM::Regex {
     return $self;
   }
 
-=pod
-  private sub is_need_escape : int ($uchar : int) {
-    
-    switch($uchar) {
-      case '\\':
-      case '^':
-      case '.':
-      case '$':
-      case '|':
-      case '(':
-      case ')':
-      case '[':
-      case ']':
-      case '*':
-      case '+':
-      case '?':
-      case '{':
-      case '}':
-    }
-  }
-=cut
-
   private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
     
     my $pos = 0;
@@ -49,11 +27,10 @@ package SPVM::Regex {
           die "Not yet implemented ^";
         case '^':
           die "Not yet implemented ^";
-          break;
         case '.':
           die "Not yet implemented .";
         case '$':
-          die "Not yet implemented $";
+          die "Not yet implemented \$";
         case '|':
           die "Not yet implemented |";
         case '(':
@@ -74,7 +51,12 @@ package SPVM::Regex {
           die "Not yet implemented {";
         case '}':
           die "Not yet implemented }";
-        default:
+        default: {
+          my $pattern = new SPVM::Regex::Pattern;
+          $pattern->{type} = SPVM::Regex::Pattern->CHAR_PATTERN;
+          
+          
+        }
           
       }
     }
@@ -108,4 +90,6 @@ package SPVM::Regex::CharRange {
   
   has u32_max : int;
   has u32_min : int;
+  has is_negative : int;
+  
 }
