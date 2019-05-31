@@ -1,6 +1,6 @@
 package SPVM::Regex {
+  use SPVM::Unicode (uchar);
   
-  has re_str : string;
   has pattern_start : SPVM::Regex::Pattern;
   
   sub new : SPVM::Regex ($re_str : string) {
@@ -10,13 +10,23 @@ package SPVM::Regex {
       die "Regex string must be specified\n";
     }
     
-    $self->{re_str} = copy_str($re_str);
+    my $pattern_start = $self->compile($re_str);
+    
+    $self->{pattern_start} = $pattern_start;
+    
+    return $self;
   }
   
-  private sub compile : void ($self : self) {
+  private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
+  
+    my $pos = 0;
+    while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
+      warn("AAAAAAAA $uchar");
+    }
+
     my $node = new SPVM::Regex::Pattern;
     
-    $self->{pattern_start} = $node;
+    return $node;
   }
   
   sub match : byte[][] ($self : self, $str : string) {
@@ -35,7 +45,6 @@ package SPVM::Regex::Pattern {
   
   has type : int;
   has next_patterns : SPVM::Regex::Pattern[];
-  has string_byte_length : int;
   has char_ranges : SPVM::Regex::CharRange[];
 }
 
