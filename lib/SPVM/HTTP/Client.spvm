@@ -64,6 +64,26 @@ package SPVM::HTTP::Client {
     warn("protocol: " . $response->protocol);
     warn("status: " . $response->status);
     warn("reason: " . $response->reason);
+    warn("headers keys:");
+    my $ks = $response->headers->keys;
+    for (my $i = 0; $i < @$ks; ++$i) {
+      warn("-- [$i]: " . $ks->[$i]);
+    }
+    warn("headers vals:");
+    my $vs = $response->headers->values;
+    for (my $i = 0; $i < @$vs; ++$i) {
+      if ($vs->[$i] isa string) {
+        warn("-- [$i]: " . (string)$vs->[$i]);
+      }
+      else {
+        # Note: Not tried yet. Prepare a web site sending multiple header fields which have same field names.
+        my $sl = (SPVM::StringList)$vs->[$i];
+        warn("-- [$i]: ");
+        for (my $k = 0; $k < $sl->length; ++$k) {
+          warn("---- [$k]: " . (string)$sl->get($k));
+        }
+      }
+    }
     #my $known_message_length = $handle->read_body($response);
   }
 }
@@ -78,6 +98,7 @@ package SPVM::HTTP::Client::Handle {
   has timeout : public double;
   has socket : public SPVM::IO::Socket;
   has rbuf : SPVM::StringBuffer;
+  has max_header_lines : int;
 
   our $_BUFSIZE : rw int;
 
@@ -91,6 +112,12 @@ package SPVM::HTTP::Client::Handle {
       $self->{timeout} = ((SPVM::Double)$o)->val;
     }
     $self->{rbuf} = SPVM::StringBuffer->new;
+    if (my $o = $args->get("max_header_lines")) {
+      $self->{max_header_lines} = ((SPVM::Int)$o)->val;
+    }
+    else {
+      $self->{max_header_lines} = 64;
+    }
     return $self;
   }
 
@@ -151,8 +178,13 @@ package SPVM::HTTP::Client::Handle {
       return undef;
     }
     my $ret = $self->{rbuf}->substr(0, $index + 1)->to_str;
-    $self->{rbuf} = $self->{rbuf}->substr(
-        $index + 1, $self->{rbuf}->length - $index - 1);
+    if ($self->{rbuf}->length == $index + 1) {
+      $self->{rbuf} = undef;
+    }
+    else {
+      $self->{rbuf} = $self->{rbuf}->substr(
+          $index + 1, $self->{rbuf}->length - $index - 1);
+    }
     return $ret;
   }
 
@@ -213,8 +245,66 @@ package SPVM::HTTP::Client::Handle {
     return $ret;
   }
 
-  sub read_header_lines : SPVM::Hash ($self : self) {
+  private sub _trim_left : string ($string : string) {
+    my $length = length $string;
+    for (my $i = 0; $i < $length; ++$i) {
+      if ($string->[$i] != ' ') {
+        return substr($string, $i, $length - $i);
+      }
+    }
+    return "";
+  }
+
+  private sub _header_field : string[] ($line : string) {
+    my $length = length $line;
+    my $name = "";
+    for (my $i = 0; $i < $length; ++$i) {
+      my $c = $line->[$i];
+      if ($c == ':') {
+        my $value = substr($line, $i + 1, index($line, "\n", $i + 1) - $i - 1);
+        $value = _trim_left($value);
+        return [$name, $value];
+      }
+      unless (('\x00' <= $c && $c <= '\x1F') || $c == '\x7F') { # control codes
+        $name .= [$c];
+      }
+    }
     return undef;
+  }
+
+  sub read_header_lines : SPVM::Hash ($self : self) {
+    my $lines = 0;
+    my $headers = hash([]);
+    while (1) {
+      if (++$lines >= $self->{max_header_lines}) {
+        die "Header lines exceeds maximum number allowed of " . $self->{max_header_lines};
+      }
+      my $line = $self->readline;
+      if (my $header_field = _header_field($line)) {
+        my $field_name = lc($header_field->[0]);
+        my $field_value = $header_field->[1];
+        if (my $o = $headers->get($field_name)) {
+          my $p : SPVM::StringList;
+          if ($o isa string) {
+            $p = SPVM::StringList->new_with_array([(string)$o]);
+          }
+          else {
+            $p = (SPVM::StringList)$o;
+          }
+          $p->push($field_value);
+        }
+        else {
+          $headers->set($field_name, $field_value);
+        }
+      }
+      elsif ($line eq "\r\n" || $line eq "\n") {
+        last;
+      }
+      else {
+        die "Malformed header line: '$line'";
+      }
+    }
+    return $headers;
   }
 
   sub read_response_header : SPVM::HTTP::Client::Response ($self : self) {
