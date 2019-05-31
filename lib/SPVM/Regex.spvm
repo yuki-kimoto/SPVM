@@ -17,10 +17,23 @@ package SPVM::Regex {
     return $self;
   }
   
-  private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
+  private sub is_special_char : int ($uchar : int) {
+    my $is_special_char = 0;
+    
+    switch ($uchar) {
+      case '[':
+      case ']':
+        $is_special_char = 1;
+    }
+    
+    return $is_special_char;
+  }
   
+  private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
+    
     my $pos = 0;
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
+      
       warn("AAAAAAAA $uchar");
     }
 

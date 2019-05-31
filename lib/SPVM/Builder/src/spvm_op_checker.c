@@ -494,9 +494,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "case value must be constant at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
+
+                  // Upgrade byte to int
+                  if (constant->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE) {
+                    constant->type = SPVM_TYPE_create_int_type(compiler);
+                    constant->value.ival = (int32_t)constant->value.bval;
+                  }
                   
-                  SPVM_TYPE* case_multi_numeric_type = SPVM_OP_get_type(compiler, op_constant);
-                  if (!(case_multi_numeric_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_multi_numeric_type->dimension == 0)) {
+                  SPVM_TYPE* case_value_type = SPVM_OP_get_type(compiler, op_constant);
+                  if (!(case_value_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_INT && case_value_type->dimension == 0)) {
                     SPVM_COMPILER_error(compiler, "case value must be int constant at %s line %d\n", case_info->op_case_info->file, case_info->op_case_info->line);
                     return;
                   }

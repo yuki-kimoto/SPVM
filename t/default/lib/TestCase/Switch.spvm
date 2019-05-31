@@ -1,4 +1,27 @@
 package TestCase::Switch {
+
+  sub switch_constant_byte : int () {
+    {
+      my $char = (int)'[';
+      
+      my $success = 0;
+      switch ($char) {
+        case 3:
+          last;
+        case ']':
+          last;
+        case '[':
+          $success = 1;
+          last;
+      }
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   
   # Switch - nest
   sub switch_nest : int () {
