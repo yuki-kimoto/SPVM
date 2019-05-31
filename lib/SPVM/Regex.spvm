@@ -16,25 +16,67 @@ package SPVM::Regex {
     
     return $self;
   }
-  
-  private sub is_special_char : int ($uchar : int) {
-    my $is_special_char = 0;
+
+=pod
+  private sub is_need_escape : int ($uchar : int) {
     
-    switch ($uchar) {
+    switch($uchar) {
+      case '\\':
+      case '^':
+      case '.':
+      case '$':
+      case '|':
+      case '(':
+      case ')':
       case '[':
       case ']':
-        $is_special_char = 1;
+      case '*':
+      case '+':
+      case '?':
+      case '{':
+      case '}':
     }
-    
-    return $is_special_char;
   }
-  
+=cut
+
   private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
     
     my $pos = 0;
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       
-      warn("AAAAAAAA $uchar");
+      switch ($uchar) {
+        case '\\':
+          die "Not yet implemented ^";
+        case '^':
+          die "Not yet implemented ^";
+          break;
+        case '.':
+          die "Not yet implemented .";
+        case '$':
+          die "Not yet implemented $";
+        case '|':
+          die "Not yet implemented |";
+        case '(':
+          die "Not yet implemented (";
+        case ')':
+          die "Not yet implemented )";
+        case '[':
+          die "Not yet implemented [";
+        case ']':
+          die "Not yet implemented ]";
+        case '*':
+          die "Not yet implemented *";
+        case '+':
+          die "Not yet implemented +";
+        case '?':
+          die "Not yet implemented ?";
+        case '{':
+          die "Not yet implemented {";
+        case '}':
+          die "Not yet implemented }";
+        default:
+          
+      }
     }
 
     my $node = new SPVM::Regex::Pattern;
