@@ -1,7 +1,7 @@
 package SPVM::Regex {
   
   has re_str : string;
-  has automaton_start : SPVM::Regex::AutomatonNode;
+  has pattern_start : SPVM::Regex::Pattern;
   
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
@@ -13,10 +13,10 @@ package SPVM::Regex {
     $self->{re_str} = copy_str($re_str);
   }
   
-  private sub compile : SPVM::Regex ($self : self) {
-    my $node = new SPVM::Regex::AutomatonNode;
+  private sub compile : void ($self : self) {
+    my $node = new SPVM::Regex::Pattern;
     
-    $self->{automaton_start} = $node;
+    $self->{pattern_start} = $node;
   }
   
   sub match : byte[][] ($self : self, $str : string) {
@@ -25,7 +25,23 @@ package SPVM::Regex {
   }
 }
 
-package SPVM::Regex::AutomatonNode {
+package SPVM::Regex::Pattern {
+  enum {
+    START,
+    CHAR_PATTERN,
+    END,
+  }
   allow SPVM::Regex;
   
+  has type : int;
+  has next_patterns : SPVM::Regex::Pattern[];
+  has string_byte_length : int;
+  has char_ranges : SPVM::Regex::CharRange[];
+}
+
+package SPVM::Regex::CharRange {
+  allow SPVM::Regex::Pattern;
+  
+  has u32_max : int;
+  has u32_min : int;
 }
