@@ -893,6 +893,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                else if (*char_ptr == '$') {
+                  str[str_length] = '$';
+                  str_length++;
+                  char_ptr++;
+                }
                 // Hex ascii code
                 else if (*char_ptr == 'x') {
                   char_ptr++;
