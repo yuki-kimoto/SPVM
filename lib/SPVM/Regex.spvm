@@ -20,6 +20,7 @@ package SPVM::Regex {
   private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
     
     my $pos = 0;
+    my $pattern_start : SPVM::Regex::Pattern;
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       
       switch ($uchar) {
@@ -53,11 +54,12 @@ package SPVM::Regex {
           die "Not yet implemented }";
         default: {
           my $pattern = new SPVM::Regex::Pattern;
-          $pattern->{type} = SPVM::Regex::Pattern->CHAR_PATTERN;
+          $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
           
-          
+          unless ($pattern_start) {
+            $pattern_start = $pattern;
+          }
         }
-          
       }
     }
 
@@ -73,23 +75,17 @@ package SPVM::Regex {
 }
 
 package SPVM::Regex::Pattern {
+  allow SPVM::Regex;
+
   enum {
+    PATTERN,
     START,
-    CHAR_PATTERN,
     END,
   }
-  allow SPVM::Regex;
   
   has type : int;
-  has next_patterns : SPVM::Regex::Pattern[];
-  has char_ranges : SPVM::Regex::CharRange[];
-}
-
-package SPVM::Regex::CharRange {
-  allow SPVM::Regex::Pattern;
-  
-  has u32_max : int;
-  has u32_min : int;
-  has is_negative : int;
-  
+  has patterns : object[];
+  has max_repeat : int;
+  has min_repeat : int;
+  has is_captured : int;
 }
