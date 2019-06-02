@@ -6,19 +6,15 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Switch';
+use SPVM 'TestCase::Lib::SPVM::Regex';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# Switch
+# SPVM::Regex
 {
-  ok(TestCase::Switch->switch_nest());
-  ok(TestCase::Switch->switch_lookup_switch());
-  ok(TestCase::Switch->switch_table_switch());
-  ok(TestCase::Switch->switch_constant_byte());
+  ok(TestCase::Lib::SPVM::Regex->match);
 }
-
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();

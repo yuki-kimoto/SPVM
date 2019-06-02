@@ -1,0 +1,13 @@
+package TestCase::Lib::SPVM::Regex {
+  use SPVM::Regex;
+  
+  sub match : int () {
+    my $re = SPVM::Regex->new("abc");
+
+    my $str = "zabcz";
+
+    my $match = $re->match($str);
+
+    return 1;
+  }
+}

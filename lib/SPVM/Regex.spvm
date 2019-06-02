@@ -1,0 +1,69 @@
+package SPVM::Regex {
+  use SPVM::Unicode (uchar);
+  
+  has pattern_start : SPVM::Regex::Pattern;
+  
+  sub new : SPVM::Regex ($re_str : string) {
+    my $self = new SPVM::Regex;
+    
+    unless ($re_str) {
+      die "Regex string must be specified\n";
+    }
+    
+    my $pattern_start = $self->compile($re_str);
+    
+    $self->{pattern_start} = $pattern_start;
+    
+    return $self;
+  }
+  
+  private sub is_special_char : int ($uchar : int) {
+    my $is_special_char = 0;
+    
+    switch ($uchar) {
+      case '[':
+      case ']':
+        $is_special_char = 1;
+    }
+    
+    return $is_special_char;
+  }
+  
+  private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
+    
+    my $pos = 0;
+    while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
+      
+      warn("AAAAAAAA $uchar");
+    }
+
+    my $node = new SPVM::Regex::Pattern;
+    
+    return $node;
+  }
+  
+  sub match : byte[][] ($self : self, $str : string) {
+    
+    return undef;
+  }
+}
+
+package SPVM::Regex::Pattern {
+  enum {
+    START,
+    CHAR_PATTERN,
+    END,
+  }
+  allow SPVM::Regex;
+  
+  has type : int;
+  has next_patterns : SPVM::Regex::Pattern[];
+  has char_ranges : SPVM::Regex::CharRange[];
+}
+
+package SPVM::Regex::CharRange {
+  allow SPVM::Regex::Pattern;
+  
+  has u32_max : int;
+  has u32_min : int;
+}
