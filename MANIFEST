@@ -156,9 +156,7 @@ lib/SPVM/HTTP/Client.spvm
 lib/SPVM/HTTP/Client/CookieJar.spvm
 lib/SPVM/HTTP/Client/CookieJar/Cookie.spvm
 lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
-lib/SPVM/HTTP/Client/Request.spvm
 lib/SPVM/HTTP/Client/Response.spvm
-lib/SPVM/HTTP/Headers.spvm
 lib/SPVM/HTTP/URL.spvm
 lib/SPVM/HTTP/URL/Encode.spvm
 lib/SPVM/HTTP/URL/Escape.spvm
@@ -241,6 +239,7 @@ solo/lib/TestCase/XGetter.spvm
 solo/solo_Makefile.PL
 solo/spvm_build/.gitkeep
 SPVM.xs
+SPVM.xsc
 spvm_build/.gitkeep
 spvmdoc/jp/public/css/common.css
 spvmdoc/jp/public/exchange-api.html
@@ -426,7 +425,6 @@ t/default/lib/TestCase/Lib/SPVM/Hash.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/Client.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/Client/CookieJar.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
-t/default/lib/TestCase/Lib/SPVM/HTTP/Headers.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Encode.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Escape.spvm
