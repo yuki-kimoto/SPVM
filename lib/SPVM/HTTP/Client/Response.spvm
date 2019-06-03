@@ -1,7 +1,9 @@
 package SPVM::HTTP::Client::Response {
-  has protocol : ro string;
-  has status : ro int;
-  has reason : ro string;
+  has protocol : public string;
+  has status : public int;
+  has reason : public string;
+  has headers : public SPVM::Hash;
+  has content : public string;
 
   sub new_with : SPVM::HTTP::Client::Response ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Client::Response;
@@ -14,6 +16,10 @@ package SPVM::HTTP::Client::Response {
     if (my $o = $args->get("reason")) {
       $self->{reason} = (string)$o;
     }
+    if (my $o = $args->get("headers")) {
+      $self->{headers} = (SPVM::Hash)$o;
+    }
+    $self->{content} = "";
     return $self;
   }
 }
