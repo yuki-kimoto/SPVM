@@ -216,6 +216,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_type_name,
     SPVM_RUNTIME_API_new_env,
     SPVM_RUNTIME_API_free_env,
+    NULL, // call_sub_depth
   };
   
   int32_t env_length = 255;
@@ -382,9 +383,23 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
   
+  // Call sub depth
+  int32_t call_sub_depth = (int32_t)(intptr_t)env->call_sub_depth;
+  if (call_sub_depth == 1000) {
+    const char* sub_name = &runtime->string_pool[sub->name_id];
+    SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+    const char* package_name = &runtime->string_pool[sub_package->name_id];
+    const char* file = &runtime->string_pool[sub->file_id];
+    int32_t line = sub->line;
+    fprintf(stderr, "[Warning]Deep recursion on subroutine in %s->%s at %s line %d\n", package_name, sub_name, file, line);
+  }
+  call_sub_depth++;
+  env->call_sub_depth = (void*)(intptr_t)call_sub_depth;
 
   // Runtime package
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[sub->package_id];
+  
+  int32_t exception_flag;
   
   // Call native sub
   if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
@@ -394,7 +409,7 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
     // Call native subrotuine
     int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
     assert(native_address != NULL);
-    int32_t exception_flag = (*native_address)(env, stack);
+    exception_flag = (*native_address)(env, stack);
     
     // Increment ref count of return value
     if (!exception_flag) {
@@ -436,18 +451,25 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
       void* exception = env->new_str_raw(env, "Error");
       env->set_exception(env, exception);
     }
-    
-    return exception_flag;
   }
   // Call precompiled sub
   else if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
     int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
-    return (*precompile_address)(env, stack);
+    exception_flag = (*precompile_address)(env, stack);
   }
   // Call sub virtual machine
   else {
-    return SPVM_RUNTIME_API_call_sub_vm(env, sub_id, stack);
+    exception_flag = SPVM_RUNTIME_API_call_sub_vm(env, sub_id, stack);
   }
+  
+  // Reduce call stack depth
+  {
+    int32_t call_sub_depth = (int32_t)(intptr_t)env->call_sub_depth;
+    call_sub_depth--;
+    env->call_sub_depth = (void*)(intptr_t)call_sub_depth;
+  }
+  
+  return exception_flag;
 }
 
 int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
@@ -5411,7 +5433,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         
         if (object->ref_count < 1) {
           printf("Invalid reference count in DESTROY()\n");
-          abort();
+          exit(EXIT_FAILURE);
         }
       }
       
@@ -6030,14 +6052,14 @@ void* SPVM_RUNTIME_API_safe_malloc_zero(int64_t byte_size) {
   
   if ((uint64_t)byte_size > SIZE_MAX) {
     fprintf(stderr, "Failed to allocate memory. Specified memroy size is too big\n");
-    abort();
+    exit(EXIT_FAILURE);
   }
   
   void* block = calloc(1, (size_t)byte_size);
   
   if (block == NULL) {
     fprintf(stderr, "Failed to allocate memory. calloc function return NULL\n");
-    abort();
+    exit(EXIT_FAILURE);
   }
   
   return block;
