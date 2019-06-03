@@ -3594,7 +3594,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3612,7 +3612,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3630,7 +3630,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3648,7 +3648,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3667,7 +3667,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3685,7 +3685,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3703,7 +3703,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3721,7 +3721,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3738,7 +3738,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3755,7 +3755,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3772,7 +3772,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3789,7 +3789,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3806,7 +3806,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3823,7 +3823,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3841,7 +3841,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_str_raw(env, "Object must be not undef.");
+          void* exception = env->new_str_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
