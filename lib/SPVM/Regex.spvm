@@ -1,7 +1,7 @@
 package SPVM::Regex {
   use SPVM::Unicode (uchar);
   
-  has pattern_start : SPVM::Regex::Pattern;
+  has pattern_root : SPVM::Regex::Pattern;
   
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
@@ -10,9 +10,9 @@ package SPVM::Regex {
       die "Regex string must be specified\n";
     }
     
-    my $pattern_start = $self->compile($re_str);
+    my $pattern_root = $self->compile($re_str);
     
-    $self->{pattern_start} = $pattern_start;
+    $self->{pattern_root} = $pattern_root;
     
     return $self;
   }
@@ -20,7 +20,7 @@ package SPVM::Regex {
   private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
     
     my $pos = 0;
-    my $pattern_start : SPVM::Regex::Pattern;
+    my $pattern_root : SPVM::Regex::Pattern;
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       
       switch ($uchar) {
@@ -56,8 +56,8 @@ package SPVM::Regex {
           my $pattern = new SPVM::Regex::Pattern;
           $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
           
-          unless ($pattern_start) {
-            $pattern_start = $pattern;
+          unless ($pattern_root) {
+            $pattern_root = $pattern;
           }
         }
       }
@@ -87,5 +87,5 @@ package SPVM::Regex::Pattern {
   has patterns : object[];
   has max_repeat : int;
   has min_repeat : int;
-  has is_captured : int;
+  has capture_index : int;
 }
