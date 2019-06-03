@@ -480,12 +480,18 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_SWITCH_INFO* switch_info = op_cur->uv.switch_info;
               SPVM_LIST* cases = switch_info->case_infos;
-              int32_t length = cases->length;
+              int32_t cases_length = cases->length;
               
+              // Need at least one case
+              if (cases_length == 0) {
+                SPVM_COMPILER_error(compiler, "Switch statement need at least one case statement in  at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+
               // Check case type
               {
                 int32_t i;
-                for (i = 0; i < length; i++) {
+                for (i = 0; i < cases_length; i++) {
                   SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(cases, i);
                   SPVM_OP* op_constant = case_info->op_case_info->first;
                   SPVM_CONSTANT* constant = op_constant->uv.constant;
@@ -546,7 +552,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Decide switch type
               double range = (double)max - (double)min;
-              if (4.0 + range <= (3.0 + 2.0 * (double) length) * 1.5) {
+              if (4.0 + range <= (3.0 + 2.0 * (double) cases_length) * 1.5) {
                 switch_info->id = SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH;
               }
               else {
