@@ -20,7 +20,9 @@ package SPVM::Regex {
   private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
     
     my $pos = 0;
-    my $pattern_root : SPVM::Regex::Pattern;
+    my $pattern_root = new SPVM::Regex::Pattern;
+    $pattern_root->{type} = SPVM::Regex::Pattern->ROOT;
+    
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       
       switch ($uchar) {
@@ -53,12 +55,9 @@ package SPVM::Regex {
         case '}':
           die "Not yet implemented }";
         default: {
-          my $pattern = new SPVM::Regex::Pattern;
-          $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
           
-          unless ($pattern_root) {
-            $pattern_root = $pattern;
-          }
+          
+          
         }
       }
     }
@@ -68,7 +67,12 @@ package SPVM::Regex {
     return $node;
   }
   
-  sub match : byte[][] ($self : self, $str : string) {
+  sub match : string[] ($self : self, $str : string) {
+    
+    return undef;
+  }
+
+  sub replace : string ($self : self, $target : string, $replace : string) {
     
     return undef;
   }
@@ -78,6 +82,7 @@ package SPVM::Regex::Pattern {
   allow SPVM::Regex;
 
   enum {
+    ROOT,
     PATTERN,
     START,
     END,
