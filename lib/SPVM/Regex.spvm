@@ -1,5 +1,6 @@
 package SPVM::Regex {
   use SPVM::Unicode (uchar);
+  use SPVM::List;
   
   has pattern_root : SPVM::Regex::Pattern;
   
@@ -22,6 +23,7 @@ package SPVM::Regex {
     my $pos = 0;
     my $pattern_root = new SPVM::Regex::Pattern;
     $pattern_root->{type} = SPVM::Regex::Pattern->ROOT;
+    $pattern_root->{patterns} = SPVM::List->new;
     
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       
@@ -56,15 +58,18 @@ package SPVM::Regex {
           die "Not yet implemented }";
         default: {
           
+          # Create charcter set
+          my $negate_flag = 0;
+          my $uchar_min = $uchar;
+          my $uchar_max = $uchar;
           
-          
+          my $char_set = [$negate_flag, $uchar_min, $uchar_max];
+          $pattern_root->{patterns}->push($char_set);
         }
       }
     }
-
-    my $node = new SPVM::Regex::Pattern;
     
-    return $node;
+    return $pattern_root ;
   }
   
   sub match : string[] ($self : self, $str : string) {
@@ -89,7 +94,7 @@ package SPVM::Regex::Pattern {
   }
   
   has type : int;
-  has patterns : object[];
+  has patterns : SPVM::List;
   has max_repeat : int;
   has min_repeat : int;
   has capture_index : int;
