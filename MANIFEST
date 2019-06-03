@@ -239,7 +239,6 @@ solo/lib/TestCase/XGetter.spvm
 solo/solo_Makefile.PL
 solo/spvm_build/.gitkeep
 SPVM.xs
-SPVM.xsc
 spvm_build/.gitkeep
 spvmdoc/jp/public/css/common.css
 spvmdoc/jp/public/exchange-api.html
