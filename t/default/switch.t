@@ -17,6 +17,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Switch->switch_lookup_switch());
   ok(TestCase::Switch->switch_table_switch());
   ok(TestCase::Switch->switch_constant_byte());
+  ok(TestCase::Switch->switch_no_default());
 }
 
 

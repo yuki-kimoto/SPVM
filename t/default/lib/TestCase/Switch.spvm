@@ -1,4 +1,19 @@
 package TestCase::Switch {
+  
+  sub switch_no_default : int () {
+    my $i = 0;
+    switch ($i) {
+      case 1:
+        1;
+    }
+    my $p = 5;
+    
+    unless ($p == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
 
   sub switch_constant_byte : int () {
     {

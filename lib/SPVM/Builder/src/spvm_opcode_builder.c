@@ -3844,12 +3844,15 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
                           int32_t max = case_info_max->constant->value.ival;
 
+                          // Default branch
+                          int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
+                          if (default_opcode_rel_index == 0) {
+                            default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
+                          }
+                          package->constant_pool->values[switch_info->constant_pool_id] = default_opcode_rel_index;
+
                           // Table switch constant pool
                           if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
-                            // Default
-                            int32_t default_bracnh = switch_info->default_opcode_rel_index;
-                            
-                            package->constant_pool->values[switch_info->constant_pool_id] = default_bracnh;
                             
                             // Min
                             int32_t min = package->constant_pool->values[switch_info->constant_pool_id + 1];
@@ -3879,16 +3882,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 package->constant_pool->values[switch_info->constant_pool_id + 3 + offset] = found_case_info->opcode_rel_index;
                               }
                               else {
-                                package->constant_pool->values[switch_info->constant_pool_id + 3 + offset] = default_bracnh;
+                                package->constant_pool->values[switch_info->constant_pool_id + 3 + offset] = default_opcode_rel_index;
                               }
                             }
                           }
                           // Lookup switch constant pool
                           else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
-                            // Default
-                            package->constant_pool->values[switch_info->constant_pool_id] = switch_info->default_opcode_rel_index;
-                            
-                            // Case length
                             
                             // Match values and branchs
                             for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
@@ -3917,6 +3916,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_DEFAULT: {
                           if (switch_info_stack->length > 0) {
                             SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
+                            
                             switch_info->default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
                           }
                           break;
