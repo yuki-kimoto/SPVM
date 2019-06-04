@@ -230,6 +230,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 int32_t mortal_top = mortal_stack->length;
                 SPVM_LIST_push(mortal_top_stack, (void*)(intptr_t)mortal_top);
               }
+              case SPVM_OP_C_ID_CASE: {
+                if (switch_info_stack->length > 0) {
+                  SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
+                  int32_t opcode_rel_index = opcode_array->length - sub_opcodes_base;
+                  op_cur->uv.case_info->opcode_rel_index = opcode_rel_index;
+                }
+                break;
+              }
             }
             
             // [END]Preorder traversal position
@@ -3905,14 +3913,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
-                        case SPVM_OP_C_ID_CASE: {
-                          if (switch_info_stack->length > 0) {
-                            SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
-                            int32_t opcode_rel_index = opcode_array->length - sub_opcodes_base;
-                            op_assign_src->uv.case_info->opcode_rel_index = opcode_rel_index;
-                          }
-                          break;
-                        }
                         case SPVM_OP_C_ID_DEFAULT: {
                           if (switch_info_stack->length > 0) {
                             SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
@@ -4073,7 +4073,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           break;
                         }
                         case SPVM_OP_C_ID_LAST: {
-                          // GOTO end of loop init block
+                          // GOTO end of loop init block or switch block
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_GOTO);

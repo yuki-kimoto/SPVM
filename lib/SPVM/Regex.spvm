@@ -28,34 +28,48 @@ package SPVM::Regex {
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       
       switch ($uchar) {
-        case '\\':
+        case '\\': {
           die "Not yet implemented ^";
-        case '^':
+        }
+        case '^': {
           die "Not yet implemented ^";
-        case '.':
+        }
+        case '.': {
           die "Not yet implemented .";
-        case '$':
+        }
+        case '$': {
           die "Not yet implemented \$";
-        case '|':
+        }
+        case '|': {
           die "Not yet implemented |";
-        case '(':
+        }
+        case '(': {
           die "Not yet implemented (";
-        case ')':
+        }
+        case ')': {
           die "Not yet implemented )";
-        case '[':
+        }
+        case '[': {
           die "Not yet implemented [";
-        case ']':
+        }
+        case ']': {
           die "Not yet implemented ]";
-        case '*':
+        }
+        case '*': {
           die "Not yet implemented *";
-        case '+':
+        }
+        case '+': {
           die "Not yet implemented +";
-        case '?':
+        }
+        case '?': {
           die "Not yet implemented ?";
-        case '{':
+        }
+        case '{': {
           die "Not yet implemented {";
-        case '}':
+        }
+        case '}': {
           die "Not yet implemented }";
+        }
         default: {
           
           # Create charcter set

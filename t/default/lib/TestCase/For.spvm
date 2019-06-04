@@ -27,8 +27,9 @@ package TestCase::For {
       }
       
       switch ($i) {
-        case 1:
+        case 1: {
           last;
+        }
         default:
           $num1++;
       }

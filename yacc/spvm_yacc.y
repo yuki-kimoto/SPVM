@@ -505,9 +505,14 @@ switch_statement
     }
 
 case_statement
-  : CASE expression ':'
+  : CASE expression ':' block
     {
-      $$ = SPVM_OP_build_case_statement(compiler, $1, $2);
+      $$ = SPVM_OP_build_case_statement(compiler, $1, $2, $4);
+    }
+  | CASE expression ':'
+    {
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_case_statement(compiler, $1, $2, op_block);
     }
 
 default_statement

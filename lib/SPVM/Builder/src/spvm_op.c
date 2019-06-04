@@ -880,12 +880,14 @@ SPVM_OP* SPVM_OP_build_switch_statement(SPVM_COMPILER* compiler, SPVM_OP* op_swi
   return op_switch;
 }
 
-SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_info, SPVM_OP* op_term) {
+SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_info, SPVM_OP* op_term, SPVM_OP* op_block) {
   
   SPVM_CASE_INFO* case_info = SPVM_CASE_INFO_new(compiler);
   
   SPVM_OP_insert_child(compiler, op_case_info, op_case_info->last, op_term);
   op_term->flag = SPVM_OP_C_FLAG_CONSTANT_CASE;
+
+  SPVM_OP_insert_child(compiler, op_case_info, op_case_info->last, op_block);
   
   case_info->op_case_info = op_case_info;
   
