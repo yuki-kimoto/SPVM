@@ -238,6 +238,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 }
                 break;
               }
+              case SPVM_OP_C_ID_DEFAULT: {
+                if (switch_info_stack->length > 0) {
+                  SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
+                  switch_info->default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
+                }
+                break;
+              }
             }
             
             // [END]Preorder traversal position
@@ -3911,14 +3918,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             assert(0);
                           }
                           
-                          break;
-                        }
-                        case SPVM_OP_C_ID_DEFAULT: {
-                          if (switch_info_stack->length > 0) {
-                            SPVM_SWITCH_INFO* switch_info = SPVM_LIST_fetch(switch_info_stack, switch_info_stack->length - 1);
-                            
-                            switch_info->default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
-                          }
                           break;
                         }
                         case SPVM_OP_C_ID_DIE: {

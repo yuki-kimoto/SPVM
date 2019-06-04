@@ -896,6 +896,13 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
   return op_case_info;
 }
 
+SPVM_OP* SPVM_OP_build_default_statement(SPVM_COMPILER* compiler, SPVM_OP* op_default, SPVM_OP* op_block) {
+  
+  SPVM_OP_insert_child(compiler, op_default, op_default->last, op_block);
+  
+  return op_default;
+}
+
 SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condition, int32_t is_not) {
   // Condition
   int32_t id;

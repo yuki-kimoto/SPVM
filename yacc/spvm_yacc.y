@@ -516,7 +516,15 @@ case_statement
     }
 
 default_statement
-  : DEFAULT ':'
+  : DEFAULT ':' block
+    {
+      $$ = SPVM_OP_build_default_statement(compiler, $1, $3);
+    }
+  | DEFAULT ':'
+    {
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_default_statement(compiler, $1, op_block);
+    }
 
 if_require_statement
   : IF '(' require ')' block
