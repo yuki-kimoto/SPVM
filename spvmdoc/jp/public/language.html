@@ -375,7 +375,7 @@ $
       </p>
 <pre>
 allow byte BEGIN case die default double elsif else enum eq
-eval for float gt ge has if callback_t isa int last length
+eval for float gt ge has if callback_t isa int last break length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
 sub string short scalar undef unless use void mulnum_t while
@@ -413,8 +413,8 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 <pre>
 %token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
-%token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT EVAL
-%token <opval> NAME VAR_NAME CONSTANT PACKAGE_VAR_NAME EXCEPTION_VAR
+%token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
+%token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
 %token <opval> RETURN WEAKEN DIE CURRENT_PACKAGE UNWEAKEN '[' '{' '('
@@ -427,14 +427,14 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
-%type <opval> block eval_block begin_block if_require_statement
+%type <opval> block eval_block begin_block switch_block if_require_statement
 %type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> deref ref assign inc dec allow
 %type <opval> new array_init
-%type <opval> my_var var package_var_access
-%type <opval> expression opt_expressions expressions opt_expression
+%type <opval> my_var var
+%type <opval> expression opt_expressions expressions opt_expression case_statements
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
@@ -599,13 +599,23 @@ while_statement
   : WHILE '(' expression ')' block
 
 switch_statement
-  : SWITCH '(' expression ')' block
+  : SWITCH '(' expression ')' switch_block
+
+switch_block
+  : '{' case_statements '}'
+  | '{' case_statements default_statement '}'
+
+case_statements
+  : case_statements case_statement
+  | case_statement
 
 case_statement
-  : CASE expression ':'
+  : CASE expression ':' block
+  | CASE expression ':'
 
 default_statement
-  : DEFAULT ':'
+  : DEFAULT ':' block
+  | DEFAULT ':'
 
 if_require_statement
   : IF '(' require ')' block
@@ -889,6 +899,9 @@ sub_names
         </tr>
         <tr>
           <td>LAST</td><td>last</td>
+        </tr>
+        <tr>
+          <td>BREAK</td><td>break</td>
         </tr>
         <tr>
           <td>NEXT</td><td>next</td>
@@ -2217,13 +2230,13 @@ my $flag3 = Foo->FLAG3;
 switch ($num) {
   case Foo->FLAG1:
   
-    last;
+    break;
   case Foo->FLAG2:
     
-    last:
+    break:
   case Foo->FLAG3:
   
-    last:
+    break:
   default:
   
 }
@@ -5935,6 +5948,7 @@ a * (b + c)
         <li><a href="#language-statement-ifrequire">if require文</a></li>
         <li><a href="#language-statement-next">next文</a></li>
         <li><a href="#language-statement-last">last文</a></li>
+        <li><a href="#language-statement-break">break文</a></li>
         <li><a href="#language-statement-return">return文</a></li>
         <li><a href="#language-statement-die">die文</a></li>
         <li><a href="#language-statement-weaken">weaken文</a></li>
@@ -6077,20 +6091,25 @@ my $num = 1;
       </p>
 <pre>
 switch (条件式) {
-  case 定数1:
+  case 定数1: {
   
-  case 定数2:
+  }
+  case 定数2: {
   
-  case 定数n:
+  }
+  case 定数n: {
   
-  default:
+  }
+  default: {
+  
+  }
 }
 </pre>
       <p>
         条件式は、<a href="#language-expression">式</a>を指定できます。条件式には、<a href="#language-type-convertion-bool">ブール型変換</a>が実行されます。
       </p>
       <p>
-        case文で指定される定数は、int型の定数でなければなりません。enum型の値や、int型の定数サブルーチンは、int型の定数として、構文解析時に展開されるので、利用することができます。
+        case文で指定される定数は、byte型かint型の定数でなければなりません。byte型の定数の場合は、コンパイル時に、int型に型変換されます。enum型の値や、int型の定数サブルーチンは、int型の定数として、構文解析時に展開されるので、利用することができます。
       </p>
       <p>
         case文に指定される定数は、重複してはいけません。重複している場合は、コンパイル時エラーが発生します。
@@ -6102,18 +6121,45 @@ switch (条件式) {
         マッチしなかった場合でdefault文が指定されている場合は、default文の位置にジャンプします。default文が指定されていなかった場合は、switchブロックは実行されません。
       </p>
       <p>
-        switchブロックの中で、last文を使用した場合は、switchブロックから抜けることができます。
+        switch文には、少なくともひとつのcase文が必要です。そうでない場合は、コンパイルエラーが発生します。
+      </p>
+      <p>
+        default文は省略可能です。
+      </p>
+      <p>
+        switchブロックの直下に記述できるのはcase文とdefault文だけです。
+      </p>
+      <p>
+        caseとdefaultのブロックは省略することができます。
+      </p>
+<pre>
+switch (条件式) {
+  case 定数1:
+  case 定数2:
+  {
+    
+  }
+  default:
+}
+</pre>
+      <p>
+        switchブロックの中で、break文を使用した場合は、switchブロックから抜けることができます。
       </p>
 
 <pre>
 switch (条件式) {
-  case 定数1:
-    last;
-  case 定数2:
-    last;
-  case 定数n:
-    last;
-  default:
+  case 定数1: {
+    break;
+  }
+  case 定数2: {
+    break;
+  }
+  case 定数n: {
+    break;
+  }
+  default: {
+  
+  }
 }
 </pre>
 
@@ -6126,31 +6172,49 @@ switch (条件式) {
 <pre>
 my $code = 2;
 switch ($code) {
-  case 1:
+  case 1: {
     print("1\n");
-    last;
-  case 2:
+    break;
+  }
+  case 2: {
     print("2\n");
-    last;
-  case 3:
+    break;
+  }
+  case 3: {
     print("3\n");
-    last;
-  default:
+    break;
+  }
+  case 4:
+  case 5:
+  {
+    print("4 or 5\n"); {
+    break;
+  }
+  default: {
     print("Other\n");
+  }
 }
 </pre>
       <p>
-        last文を書かない場合は、下にあるcase文やdefault文も実行されてしまうので注意してください。以下のように書いてしまうと「2」「3」「Other」と表示されます。
+        break文を書かない場合は、下にあるcase文やdefault文も実行されてしまうので注意してください。以下のように書いてしまうと「2」「3」「4 or 5」「Other」と表示されます。
       </p>
 <pre>
 my $code = 2;
 switch ($code) {
-  case 1:
+  case 1: {
     print("1\n");
-  case 2:
-    print("2\n");
-  case 3:
-    print("3\n");
+  }
+  case 2: {
+    print("2\n"); {
+  }
+  case 3: {
+    print("3\n"); {
+  }
+  case 4:
+  case 5:
+  {
+    print("4 or 5\n"); {
+  }
   default:
     print("Other\n");
 }
@@ -6457,13 +6521,24 @@ next;
 
       <h3 id="language-statement-last">last文</h3>
       <p>
-        「last文」は、ループあるいはswitchブロックを脱出するための文です。<a href="#language-block-statement-while">whileブロック</a>、<a href="#language-block-statement-for">forブロック</a>、<a href="#language-block-statement-switch">switchブロック</a>の中で使うことができます。
+        「last文」は、ループを脱出するための文です。<a href="#language-block-statement-while">whileブロック</a>、<a href="#language-block-statement-for">forブロック</a>の中で使うことができます。
       </p>
       <p>
-        実際の動作については<a href="#language-statement-while">while文</a>、<a href="#language-statement-for">for文</a>、<a href="#language-statement-switch">switch文</a>の解説を見てください。
+        実際の動作については<a href="#language-statement-while">while文</a>、<a href="#language-statement-for">for文</a>の解説を見てください。
       </p>
 <pre>
 last;
+</pre>
+
+      <h3 id="language-statement-break">break文</h3>
+      <p>
+        「break文」は、switchブロックを脱出するための文です。<a href="#language-block-statement-switch">switchブロック</a>の中で使うことができます。
+      </p>
+      <p>
+        実際の動作については<a href="#language-statement-switch">switch文</a>の解説を見てください。
+      </p>
+<pre>
+break;
 </pre>
 
       <h3 id="language-statement-expression">式文</h3>
