@@ -537,10 +537,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_COMPILER_error(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
-              op_cur->uv.switch_info->constant_pool_id = package->info_switch_infos->length;
               SPVM_LIST_push(package->info_switch_infos, op_cur->uv.switch_info);
-              
-              op_cur->uv.switch_info->constant_pool_id_new = package->constant_pool->length;
               
               // Min
               SPVM_CASE_INFO* case_info_mini = SPVM_LIST_fetch(switch_info->case_infos, 0);
@@ -558,6 +555,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else {
                 switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
               }
+              
+              // Switch info constant pool id
+              op_cur->uv.switch_info->constant_pool_id = package->constant_pool->length;
               
               // Table switch constant pool
               if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
