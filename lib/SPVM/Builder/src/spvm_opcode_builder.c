@@ -3826,9 +3826,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                           opcode_switch_info.operand0 = mem_id_in;
 
-                          opcode_switch_info.operand1 = switch_info->constant_pool_id_new;
-                          
-                          opcode_switch_info.operand2 = switch_info->constant_pool_id;
+                          opcode_switch_info.operand1 = switch_info->constant_pool_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
                           
@@ -3851,13 +3849,13 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             // Default
                             int32_t default_bracnh = switch_info->default_opcode_rel_index;
                             
-                            package->constant_pool->values[switch_info->constant_pool_id_new] = default_bracnh;
+                            package->constant_pool->values[switch_info->constant_pool_id] = default_bracnh;
                             
                             // Min
-                            int32_t min = package->constant_pool->values[switch_info->constant_pool_id_new + 1];
+                            int32_t min = package->constant_pool->values[switch_info->constant_pool_id + 1];
                             
                             // Max
-                            int32_t max = package->constant_pool->values[switch_info->constant_pool_id_new + 2];
+                            int32_t max = package->constant_pool->values[switch_info->constant_pool_id + 2];
                             
                             // Length
                             int32_t range = max - min + 1;
@@ -3878,17 +3876,17 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               // Branch
                               int32_t offset = i - min;
                               if (found_case_info) {
-                                package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = found_case_info->opcode_rel_index;
+                                package->constant_pool->values[switch_info->constant_pool_id + 3 + offset] = found_case_info->opcode_rel_index;
                               }
                               else {
-                                package->constant_pool->values[switch_info->constant_pool_id_new + 3 + offset] = default_bracnh;
+                                package->constant_pool->values[switch_info->constant_pool_id + 3 + offset] = default_bracnh;
                               }
                             }
                           }
                           // Lookup switch constant pool
                           else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
                             // Default
-                            package->constant_pool->values[switch_info->constant_pool_id_new] = switch_info->default_opcode_rel_index;
+                            package->constant_pool->values[switch_info->constant_pool_id] = switch_info->default_opcode_rel_index;
                             
                             // Case length
                             
@@ -3899,7 +3897,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               // Match value
                               
                               // Branch
-                              package->constant_pool->values[(switch_info->constant_pool_id_new + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
+                              package->constant_pool->values[(switch_info->constant_pool_id + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
                             }
                           }
                           else {
