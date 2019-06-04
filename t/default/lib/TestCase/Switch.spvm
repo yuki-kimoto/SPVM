@@ -209,8 +209,9 @@ package TestCase::Switch {
         $success3 = 0;
         last;
       }
-      default:
+      default: {
         $success3 = 1;
+      }
     }
     
     if ($success1) {

@@ -137,8 +137,9 @@ package SPVM::JSON {
             $chars->push(SPVM::Int->new('\r'));
             last;
           }
-          default:
+          default: {
             _die_with_dump_remain("Undefined special char", $s, $$i, $end);
+          }
         }
         $special_char_expected = 0;
       }

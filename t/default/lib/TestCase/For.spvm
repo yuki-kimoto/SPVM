@@ -30,8 +30,9 @@ package TestCase::For {
         case 1: {
           last;
         }
-        default:
+        default: {
           $num1++;
+        }
       }
       $num1++;
     }

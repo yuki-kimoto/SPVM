@@ -1,6 +1,6 @@
 %pure-parser
-%parse-param	{ SPVM_COMPILER* compiler }
-%lex-param	{ SPVM_COMPILER* compiler }
+%parse-param  { SPVM_COMPILER* compiler }
+%lex-param  { SPVM_COMPILER* compiler }
 
 %{
   #include <stdio.h>
@@ -33,14 +33,14 @@
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
-%type <opval> block eval_block begin_block if_require_statement
+%type <opval> block eval_block begin_block switch_block if_require_statement
 %type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> deref ref assign inc dec allow
 %type <opval> new array_init
 %type <opval> my_var var
-%type <opval> expression opt_expressions expressions opt_expression
+%type <opval> expression opt_expressions expressions opt_expression case_statements
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
@@ -68,11 +68,11 @@ grammar
     }
 
 opt_packages
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	packages
+  | packages
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -120,11 +120,11 @@ package_block
     }
 
 opt_declarations
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	declarations
+  | declarations
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -209,11 +209,11 @@ enumeration_block
     }
 
 opt_enumeration_values
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	enumeration_values
+  | enumeration_values
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -298,11 +298,11 @@ anon_sub
      }
 
 opt_args
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	args
+  | args
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -380,11 +380,11 @@ invocant
     }
 
 opt_descriptors
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	descriptors
+  | descriptors
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -414,11 +414,11 @@ descriptors
   | DESCRIPTOR
 
 opt_statements
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	statements
+  | statements
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -499,9 +499,43 @@ while_statement
     }
 
 switch_statement
-  : SWITCH '(' expression ')' block
+  : SWITCH '(' expression ')' switch_block
     {
       $$ = SPVM_OP_build_switch_statement(compiler, $1, $3, $5);
+    }
+
+switch_block
+  : '{' case_statements '}'
+    {
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
+      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
+      $$ = SPVM_OP_build_switch_block(compiler, op_block, $2, NULL);
+    }
+  | '{' case_statements default_statement '}'
+    {
+      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
+      op_block->uv.block->id = SPVM_BLOCK_C_ID_SWITCH;
+      $$ = SPVM_OP_build_switch_block(compiler, op_block, $2, $3);
+    }
+
+case_statements
+  : case_statements case_statement
+    {
+      SPVM_OP* op_list;
+      if ($1->id == SPVM_OP_C_ID_LIST) {
+        op_list = $1;
+      }
+      else {
+        op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
+        SPVM_OP_insert_child(compiler, op_list, op_list->last, $1);
+      }
+      SPVM_OP_insert_child(compiler, op_list, op_list->last, $2);
+      
+      $$ = op_list;
+    }
+  | case_statement
+    {
+      $$ = $1;
     }
 
 case_statement
@@ -587,11 +621,11 @@ eval_block
     }
 
 opt_expressions
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	expressions
+  | expressions
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -635,14 +669,14 @@ expression
   | '(' expressions ')'
     {
       if ($2->id == SPVM_OP_C_ID_LIST) {
-			  SPVM_OP* op_expression = $2->first;
-	      SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, compiler->cur_file, compiler->cur_line);
-			  while ((op_expression = SPVM_OP_sibling(compiler, op_expression))) {
-			    SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_expression);
-  	      SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_expression);
-  	      op_expression = op_stab;
-			  }
-			  $$ = op_sequence;
+        SPVM_OP* op_expression = $2->first;
+        SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, compiler->cur_file, compiler->cur_line);
+        while ((op_expression = SPVM_OP_sibling(compiler, op_expression))) {
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_expression);
+          SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_expression);
+          op_expression = op_stab;
+        }
+        $$ = op_sequence;
       }
       else {
         $$ = $2;
@@ -1130,11 +1164,11 @@ sub_name
   : NAME
 
 opt_sub_names
-  :	/* Empty */
+  : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  |	sub_names
+  | sub_names
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
