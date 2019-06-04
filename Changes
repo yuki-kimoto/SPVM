@@ -5,6 +5,7 @@
   - case statement need block if your want to write statements.
   - default statement need block if your want to write statements.
   - switch statement only have case stetement and last of default statement
+  - add break statement to escape from switch block, and last is only used to escape from loop block
 0.0435 2018-05-24
   - Try to show NA in CPAN testers
   - rename value_t package descriptor to mulnum_t

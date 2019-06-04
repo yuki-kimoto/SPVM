@@ -1288,13 +1288,13 @@ SPVM::Test - SPVM test module
       switch($num) {
         case TestCase::EnumD->THREE():
           print(1 . "\n");
-          last;
+          break;
         case TestCase::EnumD->FORE():
           print(2 . "\n");
-          last;
+          break;
         case 5:
           print(3 . "\n");
-          last;
+          break;
         default:
           print(5 . "\n");
       }
@@ -1306,13 +1306,13 @@ SPVM::Test - SPVM test module
       switch ($num) {
         case 1:
           print(1 . "\n");
-          last;
+          break;
         case 3:
           print(2 . "\n");
-          last;
+          break;
         case 10000:
           print(2 . "\n");
-          last;
+          break;
         default:
           print(5 . "\n");
       }

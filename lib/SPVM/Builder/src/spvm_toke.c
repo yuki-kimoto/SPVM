@@ -1427,7 +1427,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               case 'b' :
-                if (strcmp(keyword, "byte") == 0) {
+                if (strcmp(keyword, "break") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BREAK);
+                  return BREAK;
+                }
+                else if (strcmp(keyword, "byte") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BYTE);
                   return BYTE;
                 }

@@ -432,8 +432,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               break;
             }
             case SPVM_OP_C_ID_LAST: {
-              if (check_ast_info->loop_block_stack_length == 0 && check_ast_info->op_switch_stack->length == 0) {
-                SPVM_COMPILER_error(compiler, "last statement must be in loop block or switch block at %s line %d\n", op_cur->file, op_cur->line);
+              if (check_ast_info->loop_block_stack_length == 0) {
+                SPVM_COMPILER_error(compiler, "last statement must be in loop block at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
+            case SPVM_OP_C_ID_BREAK: {
+              if (check_ast_info->op_switch_stack->length == 0) {
+                SPVM_COMPILER_error(compiler, "break statement must be in switch block or switch block at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -3716,6 +3723,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_DIE:
                         case SPVM_OP_C_ID_LAST:
                         case SPVM_OP_C_ID_NEXT:
+                        case SPVM_OP_C_ID_BREAK:
                         case SPVM_OP_C_ID_ADD:
                         case SPVM_OP_C_ID_SUBTRACT:
                         case SPVM_OP_C_ID_MULTIPLY:

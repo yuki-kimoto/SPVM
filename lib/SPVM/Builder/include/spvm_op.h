@@ -175,6 +175,7 @@ enum {
   SPVM_OP_C_ID_FREE_TMP,
   SPVM_OP_C_ID_REFCNT,
   SPVM_OP_C_ID_ALLOW,
+  SPVM_OP_C_ID_BREAK,
 };
 
 extern const char* const SPVM_OP_C_ID_NAMES[];

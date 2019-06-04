@@ -175,6 +175,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "FREE_TMP",
   "REFCNT",
   "ALLOW",
+  "BREAK",
 };
 
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current, SPVM_OP* op_package_dist) {
@@ -1198,6 +1199,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CASE:
     case SPVM_OP_C_ID_LAST:
     case SPVM_OP_C_ID_NEXT:
+    case SPVM_OP_C_ID_BREAK:
     case SPVM_OP_C_ID_DIE:
     {
       // Dummy int variable

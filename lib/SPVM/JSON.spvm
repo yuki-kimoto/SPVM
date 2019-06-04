@@ -123,19 +123,19 @@ package SPVM::JSON {
           case 92: # '\\'
           {
             $chars->push(SPVM::Int->new($got_char));
-            last;
+            break;
           }
           case 116: { # 't'
             $chars->push(SPVM::Int->new('\t'));
-            last;
+            break;
           }
           case 110: { # 'n'
             $chars->push(SPVM::Int->new('\n'));
-            last;
+            break;
           }
           case 114: { # 'r'
             $chars->push(SPVM::Int->new('\r'));
-            last;
+            break;
           }
           default: {
             _die_with_dump_remain("Undefined special char", $s, $$i, $end);
@@ -466,23 +466,23 @@ package SPVM::JSON {
         case 9: {# '\t'
           # Note: Decoded char from literal ASCII tab will be encoded with "\\t" (non-reversible).
           $special = 't';
-          last;
+          break;
         }
         case 10: { # '\n'
           $special = 'n';
-          last;
+          break;
         }
         case 13: { # '\r'
           $special = 'r';
-          last;
+          break;
         }
         case 34: { # '"'
           $special = '"';
-          last;
+          break;
         }
         case 92: { # '\\'
           $special = '\\';
-          last;
+          break;
         }
         default: # FIXME: segmentation fault
       }

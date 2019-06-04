@@ -23,14 +23,14 @@ package TestCase::Switch {
       my $success = 0;
       switch ($char) {
         case 3: {
-          last;
+          break;
         }
         case ']': {
-          last;
+          break;
         }
         case '[': {
           $success = 1;
-          last;
+          break;
         }
       }
       
@@ -48,32 +48,32 @@ package TestCase::Switch {
     switch (3) {
       case 1: {
         $success1 = 0;
-        last;
+        break;
       }
       case 3: {
         switch (5) {
           case 2: {
             $success1 = 0;
-            last;
+            break;
           }
           case 5: {
             $success1 = 1;
-            last;
+            break;
           }
           case 6: {
             $success1 = 0;
-            last;
+            break;
           }
           default: {
             $success1 = 0;
-            last;
+            break;
           }
         }
-        last;
+        break;
       }
       case 10000: {
         $success1 = 0;
-        last;
+        break;
       }
       default:
     }
@@ -87,15 +87,15 @@ package TestCase::Switch {
     switch (1) {
       case 1: {
         $success1 = 1;
-        last;
+        break;
       }
       case 3: {
         $success1 = 0;
-        last;
+        break;
       }
       case 10000: {
         $success1 = 0;
-        last;
+        break;
       }
       default:
     }
@@ -103,15 +103,15 @@ package TestCase::Switch {
     switch (3) {
       case 1: {
         $success2 = 0;
-        last;
+        break;
       }
       case 3: {
         $success2 = 1;
-        last;
+        break;
       }
       case 10000: {
         $success2 = 0;
-        last;
+        break;
       }
       default:
     }
@@ -119,28 +119,28 @@ package TestCase::Switch {
     switch (10000) {
       case 3: {
         $success3 = 0;
-        last;
+        break;
       }
       case 1: {
         $success3 = 0;
-        last;
+        break;
       }
       case 10000: {
         $success3 = 1;
-        last;
+        break;
       }
       default:
     }
     my $success4 : int;
     switch (2) {
       case 1: {
-        last;
+        break;
       }
       case 3: {
-        last;
+        break;
       }
       case 10000: {
-        last;
+        break;
       }
       default: {
         $success4 = 1;
@@ -166,15 +166,15 @@ package TestCase::Switch {
     switch(3) {
       case 3: {
         $success1 = 1;
-        last;
+        break;
       }
       case 4: {
         $success1 = 0;
-        last;
+        break;
       }
       case 5: {
         $success1 = 0;
-        last;
+        break;
       }
       default:
     }
@@ -183,15 +183,15 @@ package TestCase::Switch {
     switch(4) {
       case 3: {
         $success2 = 0;
-        last;
+        break;
       }
       case 4: {
         $success2 = 1;
-        last;
+        break;
       }
       case 5: {
         $success2 = 0;
-        last;
+        break;
       }
       default:
     }
@@ -199,15 +199,15 @@ package TestCase::Switch {
     switch(10) {
       case 3: {
         $success3 = 0;
-        last;
+        break;
       }
       case 4: {
         $success3 = 0;
-        last;
+        break;
       }
       case 5: {
         $success3 = 0;
-        last;
+        break;
       }
       default: {
         $success3 = 1;
