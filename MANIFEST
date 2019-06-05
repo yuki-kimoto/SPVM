@@ -189,6 +189,7 @@ lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
 lib/SPVM/MIME/Base64.spvm
+lib/SPVM/Regex.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/ShortList.spvm
@@ -438,6 +439,7 @@ t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
 t/default/lib/TestCase/Lib/SPVM/MIME/Base64.spvm
+t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
 t/default/lib/TestCase/Lib/SPVM/ShortList.spvm
 t/default/lib/TestCase/Lib/SPVM/StringBuffer.spvm
