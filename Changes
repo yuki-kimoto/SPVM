@@ -1,4 +1,4 @@
-0.0436 2018-05-31
+0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character
   - fix switch no default statement bug
@@ -6,12 +6,17 @@
   - default statement need block if your want to write statements.
   - switch statement only have case stetement and last of default statement
   - add break statement to escape from switch block, and last is only used to escape from loop block
-0.0435 2018-05-24
+  - Try to show NA in CPAN testers again
+    In Makefile.PL, add the following lines
+    warn "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
+    die "OS unsupported\n";
+
+0.0435 2019-05-24
   - Try to show NA in CPAN testers
   - rename value_t package descriptor to mulnum_t
   - chomp return value instead of replacing argument string
   - remove utf8proc dependency of SPVM core
-0.0434 2018-05-21
+0.0434 2019-05-21
   - add  SPVM::StringList
   - remove SPVM::list
   - In any object array argument of SPVM::call_sub, array reference is converted to any object array
@@ -27,7 +32,7 @@
   - remove SPVM::Time::Moment, SPVM::Time::Format
   - remove getenv for Windows compatibility
   - fix winsocket bugs and exe bugs
-0.0433 2018-05-08
+0.0433 2019-05-08
   - Change IO::File::write, IO::Socket::write to 
       sub write : int ($self : self, $buffer : string, $legnth : int);
   - add fileno to SPVM::IO::Socket
@@ -42,10 +47,10 @@
   - rename memmove to memmoveb
   - add memcpys, memcpyi, memcpyl, memcpyf, memcpyd
   - add memmoves, memmovei, memmovel, memmovef, memmoved
-0.0432 2018-04-29
+0.0432 2019-04-29
   - Allow lower case package variable name and allow upper case lexical variable name
     This is same implementation as Perl
-0.0431 2018-04-27
+0.0431 2019-04-27
   - move time function to SPVM::Time module
     because time module need to define _XOPEN_SOURCE for thread safe portability on unix/linux and Windows/minGW
   - add Time::localtime, Time::gmtime
@@ -56,11 +61,11 @@
   - add chomp function
   - remove gets_chomp
   - rename gets to readline
-0.0430 2018-04-24
+0.0430 2019-04-24
   - add SPVM::hash function
   - add SPVM::list function
   - fix any object return value bug
-0.0429 2018-04-23
+0.0429 2019-04-23
   - LICENSE is changed from MIT to same one as Perl.
     because SPVM is cpan module and SPVM want to use glibc code.
   - add rand function
@@ -69,7 +74,7 @@
   - SPVM::call_sub can receive numeric array
   - SPVM::call_sub can receive string array
   - add to_strs to SPVM::Data::Array
-0.0428 2018-04-22
+0.0428 2019-04-22
   - rename new_list to list
   - rename new_hash to hash
   - add contains function
@@ -111,27 +116,27 @@
   - add SPVM_SET_OPKGVAR macro
   - add lc, uc, lcfirst, ucfirst functions
   - rename interface_t to callback_t
-0.0427 2018-04-17
+0.0427 2019-04-17
   - add getenv function
   - add SPVM::Errno module
   - Errno tests become more portable
   - add strerror function
-0.0426 2018-04-15
+0.0426 2019-04-15
   - --no-as-needed is not portable. so I remove it again.
   - Create SPVM::Math module and math functions is moved to SPVM::Math.
-0.0425 2018-04-12
+0.0425 2019-04-12
   - add dl_error message
   - add -Wl,--no-as-needed for newer Ubuntu.
-0.0424 2018-04-09
+0.0424 2019-04-09
   - add get_ext to SPVM::Builder::Config
   - add set_ext to SPVM::Builder::Config
   - config file is required always in native
   - source extension become always one
   - If config file modified time is newer than object file, compile is done
   - fix FreeBSD getc bug. getc is replaced with fgetc
-0.0423 2018-04-08
+0.0423 2019-04-08
   - SPVM_DIE don't need to write "at %s line %d"
-0.0422 2018-04-06
+0.0422 2019-04-06
   - rename croak keyword to die
   - rename cache of SPVM::Builder::Config to get_cache
   - rename quiet of SPVM::Builder::Config to get_quiet
@@ -140,7 +145,7 @@
       
       SPVM_DIE("Hello %s at %s line %d", "foo", "bar.c", __LINE__);
   - dependency of dll is detected automatically
-0.0421 2018-04-05
+0.0421 2019-04-05
   - add quiet to SPVM::Builder::Config
   - add set_quiet to SPVM::Builder::Config
   - add cache to SPVM::Builder::Config
@@ -149,9 +154,9 @@
   - add set_cache to SPVM::Builder::Config
   - add new_cpp to SPVM::Builder::Config
   - fix no needed object file is compiled bug
-0.0420 2018-04-03
+0.0420 2019-04-03
   - fix before relase bugs
-0.0419 2018-04-03
+0.0419 2019-04-03
   - add env->alloc_memory_block_zero
   - add env->free_memory_block
   - add socket modules
@@ -165,9 +170,9 @@
   - add env->remove_mortal function
   - add new_default method to SPVM::Builder::Config
 
-0.0418 2018-03-01
+0.0418 2019-03-01
   - fix t/exe/exe.t bug
-0.0417 2018-03-01
+0.0417 2019-03-01
   - add private and public descriptor to sub declaration
   - add allow syntax to allow to accsess to private things.
     
@@ -175,7 +180,7 @@
   - rename SPVM::Stringer::to_string to to_str
   - fix spvmcc compile bugs
 
-0.0416 2018-02-19
+0.0416 2019-02-19
   - native sub routine prefix is changed from SPVM_NATIVE_ to SPNATIVE__
     // Before
 		int32_t SPVM_NATIVE_TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -192,14 +197,14 @@
   - fix isweak and unweaken bugs
   - syntax tree become more assign statements
   - comparison operator and logical operator become expression and return value
-0.0415 2018-02-06
+0.0415 2019-02-06
   - remove weken array, unweaken array, isweak array because of array elements move operation performance
   - add fgets
   - add fgets_chomp
   - Exception in destructor is changed to warning
   - add ref_count core function
   - fix precompile double, float constant precice and sign bug
-0.0414 2018-01-29
+0.0414 2019-01-29
   - add sequencial operator
     # $z is 3
     my $z = (1, 2, 3);
@@ -217,7 +222,7 @@
   - fix package var inline expansion bug
   - remove SPVM::BuildDir module, and document SPVM_BUILD_DIR environment variable and default build directory become script diretory/spvm_build
   - fix POSIX barewaord test bugs
-0.0413 2018-01-22
+0.0413 2019-01-22
   - add replaceb
   - add replaces
   - add replacei
@@ -237,7 +242,7 @@
   - add equals_strarray
   - fix bug SPVM::CORE is not basic type
   - anon sub precompile have some bugs, so I suppress it for a while
-0.0412 2018-01-17
+0.0412 2019-01-17
   - add oarray type to implement sort algorithm
   - fix native and precompile file path bug
   - add equals_barray core function
@@ -278,11 +283,11 @@
   - add joinf
   - add joind
   - add joino
-0.0411 2018-01-16
+0.0411 2019-01-16
   - remove rest of list context @ error check becuase SPVM can not define list context correctly
-0.0410 2018-01-16
+0.0410 2019-01-16
   - Fix realese of 0.0409
-0.0409 2018-01-16
+0.0409 2019-01-16
   - remove new Foo[] {x, y, z} syntax. Use [(Foo)x, y, z] instead.
   - Simplify native source file and config path
     change Foo/Bar.native/Bar.c to Foo/Bar.native.c
@@ -290,7 +295,7 @@
   - add default include path spvm_build/include
   - add default library path spvm_build/lib
   - rename SPVM::Builder::C to SPVM::Builder::CC
-0.0408 2018-01-11
+0.0408 2019-01-11
   - remove list context @ error check becuase SPVM can not define list context correctly
   - fix string comparison operator undef occur exception
   - add new_list core func
@@ -299,7 +304,7 @@
   - add unweaken and isweak statement
   - fat camma left name become string literal
     x => 1, y => 2
-0.0407 2018-01-08
+0.0407 2019-01-08
   - Change SPVM::Bool to SPVM::JSON::Bool
   - rename interface descriptor to interface_t
   - remove floating point x % y
@@ -307,7 +312,7 @@
   - isa operator can check any object type
   - empty array init type become object[]
     my $objects = [];
-0.0406 2018-01-04
+0.0406 2019-01-04
   - add signbit CORE func
   - add signbitf CORE func
   - add specification some tests
