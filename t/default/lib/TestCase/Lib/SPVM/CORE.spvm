@@ -567,6 +567,77 @@ package TestCase::Lib::SPVM::CORE {
     return 0;
   }
 
+  sub test_joinb : int () {
+    my $nums = [(byte)1, 2, INT8_MIN()];
+    
+    my $join = joinb(",", $nums);
+    
+    if ($join eq "1,2,-128") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub test_joins : int () {
+    my $nums = [(short)1, 2, INT16_MIN()];
+    
+    my $join = joins(",", $nums);
+    
+    if ($join eq "1,2,-32768") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub test_joini : int () {
+    my $nums = [(int)1, 2, INT32_MIN()];
+    
+    my $join = joini(",", $nums);
+    
+    if ($join eq "1,2,-2147483648") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub test_joinl : int () {
+    my $nums = [(long)1, 2, INT64_MIN()];
+    
+    my $join = joinl(",", $nums);
+    
+    if ($join eq "1,2,-9223372036854775808") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub test_joinf : int () {
+    my $nums = [(float)1, 2, 2.45f];
+    
+    my $join = joinf(",", $nums);
+    
+    if ($join eq "1,2,2.45") {
+      return 1;
+    }
+    
+    return 0;
+  }
+  sub test_joind : int () {
+    my $nums = [(double)1, 2, 2.45];
+    
+    my $join = joind(",", $nums);
+    
+    if ($join eq "1,2,2.45") {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
   sub test_byte_constant : int () {
     if ((int)INT8_MIN() == (int)(byte)-128) {
       if ((int)INT8_MAX() == (int)(byte)127) {

@@ -4,7 +4,6 @@ package SPVM::CORE {
   use SPVM::List;
   use SPVM::Hash;
   use SPVM::Comparator;
-  use SPVM::Stringer;
 
   sub chomp : string ($string : string) {
     unless ($string) {
@@ -1067,20 +1066,6 @@ package SPVM::CORE {
     
     return $join;
   }
-  sub joino : string ($sep : string, $objects : oarray) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$objects; $i++) {
-      my $stringer = (SPVM::Stringer)$objects->[$i];
-      my $string = $stringer->to_str();
-      $join .= $string;
-      if ($i != @$objects - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
   native sub print : void ($value : string);
   native sub warn : void ($value : string);
 
@@ -1107,7 +1092,4 @@ package SPVM::CORE {
 
   # hasher function
   native sub murmur_hash : long ($string : string, $seed : int);
-  
-  # TODO: Windows compatibility
-  # native sub getenv : string ($name : string);
 }

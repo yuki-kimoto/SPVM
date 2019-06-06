@@ -1,0 +1,18 @@
+package SPVM::ArrayUtil {
+  use SPVM::Stringer;
+  
+  sub joino : string ($sep : string, $objects : oarray) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$objects; $i++) {
+      my $stringer = (SPVM::Stringer)$objects->[$i];
+      my $string = $stringer->to_str();
+      $join .= $string;
+      if ($i != @$objects - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+}

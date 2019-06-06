@@ -9,6 +9,8 @@
   - rename SPVM::DoubleList->new_with_array to newa
   - remove SPVM::Hash->new_with_capacity
   - add SPVM::Hash->new_opt
+  - add SPVM::ArrayUtil;
+  - move SPVM::CORE::joino to SPVM::ArrayUtil
 0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character

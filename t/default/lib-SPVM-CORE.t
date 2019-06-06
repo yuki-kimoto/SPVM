@@ -184,8 +184,16 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_sorto);
 }
 
-
-ok(TestCase::Lib::SPVM::CORE->test_join);
+# join
+{
+  ok(TestCase::Lib::SPVM::CORE->test_join);
+  ok(TestCase::Lib::SPVM::CORE->test_joinb);
+  ok(TestCase::Lib::SPVM::CORE->test_joins);
+  ok(TestCase::Lib::SPVM::CORE->test_joini);
+  ok(TestCase::Lib::SPVM::CORE->test_joinl);
+  ok(TestCase::Lib::SPVM::CORE->test_joinf);
+  ok(TestCase::Lib::SPVM::CORE->test_joind);
+}
 
 # type_name
 {
