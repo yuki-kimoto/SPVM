@@ -7,6 +7,8 @@
   - rename SPVM::LongList->new_with_array to newa
   - rename SPVM::FloatList->new_with_array to newa
   - rename SPVM::DoubleList->new_with_array to newa
+  - remove SPVM::Hash->new_with_capacity
+  - add SPVM::Hash->new_opt
 0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character

@@ -20,7 +20,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_new_with_capacity : int () {
-    my $hash = SPVM::Hash->new_with_capacity(10);
+    my $hash = SPVM::Hash->new_opt([(object)capacity => 10]);
     unless ($hash->_bucket_count == 10) {
       return 0;
     }
@@ -166,7 +166,7 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_delete_with_no_hash_collision : int () {
     my $capacity = 16;
-    my $hash = SPVM::Hash->new_with_capacity($capacity);
+    my $hash = SPVM::Hash->new_opt([(object)capacity => $capacity]);
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
     unless (SPVM::Hash->_index_by_key("alice", $hash->_bucket_count)
@@ -234,7 +234,7 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_load_factor : int () {
     my $capacity = 16;
-    my $hash = SPVM::Hash->new_with_capacity($capacity);
+    my $hash = SPVM::Hash->new_opt([(object)capacity => $capacity]);
     $hash->{max_load_factor} = 0.5;
     $hash->set("A", SPVM::Int->new(1));
     
@@ -250,8 +250,8 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_rehash : int () {
     my $initial_capacity = 16;
-    my $hash = SPVM::Hash->new_with_capacity($initial_capacity);
-    my $hash_2 = SPVM::Hash->new_with_capacity($initial_capacity + 1);
+    my $hash = SPVM::Hash->new_opt([(object)capacity => $initial_capacity]);
+    my $hash_2 = SPVM::Hash->new_opt([(object)capacity => $initial_capacity + 1]);
     for (my $i = 0; $i < $initial_capacity + 1; ++$i) {
       my $byte_key = (byte []) "A";
       $byte_key->[0] += $i;
@@ -284,9 +284,9 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_rehash_with_max_load_factor_0_5 : int () {
     my $initial_capacity = 16;
-    my $hash = SPVM::Hash->new_with_capacity($initial_capacity);
+    my $hash = SPVM::Hash->new_opt([(object)capacity => $initial_capacity]);
     $hash->{max_load_factor} = 0.5;
-    my $hash_2 = SPVM::Hash->new_with_capacity($initial_capacity);
+    my $hash_2 = SPVM::Hash->new_opt([(object)capacity => $initial_capacity]);
     for (my $i = 0; $i < $initial_capacity; ++$i) {
       my $byte_key = (byte []) "A";
       $byte_key->[0] += $i;
@@ -319,8 +319,8 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_set_rehash_when_max_load_factor_changes : int () {
     my $initial_capacity = 16;
-    my $hash = SPVM::Hash->new_with_capacity($initial_capacity);
-    my $hash_2 = SPVM::Hash->new_with_capacity($initial_capacity);
+    my $hash = SPVM::Hash->new_opt([(object)capacity => $initial_capacity]);
+    my $hash_2 = SPVM::Hash->new_opt([(object)capacity => $initial_capacity]);
     for (my $i = 0; $i < $initial_capacity - 1; ++$i) {
       my $byte_key = (byte []) "A";
       $byte_key->[0] += $i;
@@ -430,7 +430,7 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_many_hash_collisions : int () {
     my $capacity = 16;
-    my $hash = SPVM::Hash->new_with_capacity($capacity);
+    my $hash = SPVM::Hash->new_opt([(object)capacity => $capacity]);
     $hash->{max_load_factor} = 1024 * 16 + 1; # large enough not to rehash.
     my $keys = new string [1024];
     my $vals = new object [1024];
