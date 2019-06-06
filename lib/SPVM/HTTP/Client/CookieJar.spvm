@@ -2,6 +2,7 @@ package SPVM::HTTP::Client::CookieJar {
   use SPVM::HTTP::Client::CookieJar::Cookie;
   use SPVM::HTTP::Client::CookieJar::CookieParser;
   use SPVM::HTTP::URL;
+  use SPVM::Sort(sorto);
 
   has jar : SPVM::Hash;
   has public_suffix_not_allowed : int;

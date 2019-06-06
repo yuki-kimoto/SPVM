@@ -11,6 +11,8 @@
   - add SPVM::Hash->new_opt
   - add SPVM::ArrayUtil;
   - move SPVM::CORE::joino to SPVM::ArrayUtil
+  - add SPVM::Sort;
+  - move SPVM::CORE::sortb, sorts, sorti, sortl, sortf, sortd, sorto to SPVM::Sort
 0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character

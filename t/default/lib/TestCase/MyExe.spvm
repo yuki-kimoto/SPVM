@@ -12,25 +12,25 @@ package TestCase::MyExe {
     # sort
     {
       # sortb
-      ok(TestCase::Lib::SPVM::CORE->test_sortb);
+      ok(TestCase::Lib::SPVM::Sort->test_sortb);
 
       # sorts
-      ok(TestCase::Lib::SPVM::CORE->test_sorts);
+      ok(TestCase::Lib::SPVM::Sort->test_sorts);
 
       # sorti
-      ok(TestCase::Lib::SPVM::CORE->test_sorti);
+      ok(TestCase::Lib::SPVM::Sort->test_sorti);
 
       # sortl
-      ok(TestCase::Lib::SPVM::CORE->test_sortl);
+      ok(TestCase::Lib::SPVM::Sort->test_sortl);
 
       # sortf
-      ok(TestCase::Lib::SPVM::CORE->test_sortf);
+      ok(TestCase::Lib::SPVM::Sort->test_sortf);
 
       # sortd
-      ok(TestCase::Lib::SPVM::CORE->test_sortd);
+      ok(TestCase::Lib::SPVM::Sort->test_sortd);
 
       # sortd
-      ok(TestCase::Lib::SPVM::CORE->test_sorto);
+      ok(TestCase::Lib::SPVM::Sort->test_sorto);
     }
     
     # join

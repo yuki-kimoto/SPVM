@@ -518,12 +518,6 @@ sub build_dll_precompile_dist {
 
   my $lib_dir = 'blib/lib';
   
-  my $category = $self->category;
-  
-  my $module_base_name = $package_name;
-  $module_base_name =~ s/^.+:://;
-  my $config_file = "$src_dir/$module_base_name.config";
-
   $self->create_source_precompile(
     $package_name,
     $sub_names,
