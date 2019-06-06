@@ -8,9 +8,6 @@
 #include <float.h>
 #include <complex.h>
 #include <memory.h>
-#include <fcntl.h>
-#include <assert.h>
-#include <unistd.h>
 
 static const char* MFILE = "SPVM/CORE.c";
 

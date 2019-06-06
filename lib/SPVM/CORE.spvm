@@ -5,8 +5,6 @@ package SPVM::CORE {
   use SPVM::Hash;
   use SPVM::Comparator;
   use SPVM::Stringer;
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
 
   sub chomp : string ($string : string) {
     unless ($string) {
