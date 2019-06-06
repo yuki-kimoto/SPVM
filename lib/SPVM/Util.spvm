@@ -1,4 +1,4 @@
-package SPVM::ArrayUtil {
+package SPVM::Util {
   use SPVM::Stringer;
   
   sub joino : string ($sep : string, $objects : oarray) {

@@ -1,5 +1,5 @@
-package TestCase::Lib::SPVM::ArrayUtil {
-  use SPVM::ArrayUtil(joino);
+package TestCase::Lib::SPVM::Util {
+  use SPVM::Util(joino);
   use TestCase::Minimal;
   
   sub test_joino : int () {

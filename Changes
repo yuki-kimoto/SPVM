@@ -9,8 +9,8 @@
   - rename SPVM::DoubleList->new_with_array to newa
   - remove SPVM::Hash->new_with_capacity
   - add SPVM::Hash->new_opt
-  - add SPVM::ArrayUtil;
-  - move SPVM::CORE::joino to SPVM::ArrayUtil
+  - add SPVM::Util;
+  - move SPVM::CORE::joino to SPVM::Util
   - add SPVM::Sort;
   - move SPVM::CORE::sortb, sorts, sorti, sortl, sortf, sortd, sorto to SPVM::Sort
   - If SPVM::call_sub argument is array of any object and element is non-ref scalar, it is encoded to UTF-8 and converted to byte[]

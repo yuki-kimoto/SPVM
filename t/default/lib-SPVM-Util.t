@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::ArrayUtil';
+use SPVM 'TestCase::Lib::SPVM::Util';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # join
 {
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_joino);
+  ok(TestCase::Lib::SPVM::Util->test_joino);
 }
 
 # All object is freed
