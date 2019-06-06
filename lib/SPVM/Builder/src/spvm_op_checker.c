@@ -2412,14 +2412,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (compiler->error_count > 0) {
                 return;
               }
-              SPVM_CALL_SUB* call_sub = op_cur->uv.call_sub;
-              if (!call_sub->sub) {
-                SPVM_COMPILER_error(compiler, "Unknown sub \"%s\" at %s line %d\n", call_sub->op_name->uv.name, op_cur->file, op_cur->line);
-                return;
-              }
               
               SPVM_OP* op_list_args = op_cur->last;
               
+              SPVM_CALL_SUB* call_sub = op_call_sub->uv.call_sub;
               const char* sub_name = call_sub->sub->op_name->uv.name;
 
               if (call_sub->call_type_id != call_sub->sub->call_type_id) {
@@ -4767,25 +4763,30 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
     return;
   }
   
+  SPVM_PACKAGE* found_package;
   SPVM_SUB* found_sub;
   
   const char* sub_name = call_sub->op_name->uv.name;
   // Method call
   if (call_sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
-    const char* basic_type_name = type->basic_type->name;
-    
-    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    
-    if (package) {
+    if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
+      const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
+      SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", type_name, sub_name, op_call_sub->file, op_call_sub->line);
+      return;
+    }
+    else {
+      const char* basic_type_name = type->basic_type->name;
+      
+      SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
+      assert(package);
+      
+      found_package = package;
       found_sub = SPVM_HASH_fetch(
         package->sub_symtable,
         sub_name,
         strlen(sub_name)
       );
-    }
-    else {
-      found_sub = NULL;
     }
   }
   // Class method call
@@ -4793,22 +4794,20 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
     if (call_sub->op_invocant) {
       const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
       SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+      assert(package);
       
-      if (package) {
-        found_sub = SPVM_HASH_fetch(
-          package->sub_symtable,
-          sub_name,
-          strlen(sub_name)
-        );
-      }
-      else {
-        found_sub = NULL;
-      }
+      found_package = package;
+      found_sub = SPVM_HASH_fetch(
+        package->sub_symtable,
+        sub_name,
+        strlen(sub_name)
+      );
     }
     // Subroutine call
     else {
       // Search current pacakge
       SPVM_PACKAGE* package = op_package_current->uv.package;
+      found_package = package;
       found_sub = SPVM_HASH_fetch(
         package->sub_symtable,
         sub_name,
@@ -4844,6 +4843,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
       // Search core functions
       if (!found_sub) {
         SPVM_PACKAGE* core_package = SPVM_HASH_fetch(compiler->package_symtable, "SPVM::CORE", strlen("SPVM::CORE"));
+        found_package = core_package;
         if (core_package) {
           found_sub = SPVM_HASH_fetch(
             core_package->sub_symtable,
@@ -4860,6 +4860,11 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
   
   if (found_sub) {
     call_sub->sub = found_sub;
+  }
+  else {
+    assert(found_package);
+    SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", found_package->name, sub_name, op_call_sub->file, op_call_sub->line);
+    return;
   }
 }
 
