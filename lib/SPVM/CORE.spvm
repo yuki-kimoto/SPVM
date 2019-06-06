@@ -1,7 +1,7 @@
 package SPVM::CORE {
   
   # This is same as default loaded module list.
-  use SPVM::List;
+  use SPVM::StringList;
 
   sub chomp : string ($string : string) {
     unless ($string) {
@@ -297,7 +297,7 @@ package SPVM::CORE {
       die "Separator must not be empty string";
     }
     
-    my $separated_strings_list = SPVM::List->new;
+    my $separated_strings_list = SPVM::StringList->new;
     
     my $match_start = 0;
     my $string_base = 0;
@@ -336,7 +336,7 @@ package SPVM::CORE {
       $separated_strings_list->push($separated_string);
     }
     
-    my $separated_strings = $separated_strings_list->to_strarray;
+    my $separated_strings = $separated_strings_list->to_array;
     
     return $separated_strings;
   }
