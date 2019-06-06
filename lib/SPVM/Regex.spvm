@@ -2,31 +2,32 @@ package SPVM::Regex {
   use SPVM::Unicode (uchar);
   use SPVM::List;
   
-  has pattern_root : SPVM::Regex::Pattern;
+  has patterns : SPVM::List;
   
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
     
-    unless ($re_str) {
-      die "Regex string must be specified\n";
-    }
+    $self->{patterns} = SPVM::List->new;
     
-    my $pattern_root = $self->compile($re_str);
-    
-    $self->{pattern_root} = $pattern_root;
+    $self->compile($re_str);
     
     return $self;
   }
 
-  private sub compile : SPVM::Regex::Pattern ($self : self, $re_str : string) {
+  private sub compile : void ($self : self, $re_str : string) {
+    
+    unless ($re_str) {
+      die "Regex string must be defined";
+    }
+    
+    my $re_str_length = length $re_str;
+    
+    if ($re_str_length == 0) {
+      die "Regex string must have length";
+    }
     
     my $pos = 0;
-    my $pattern_root = new SPVM::Regex::Pattern;
-    $pattern_root->{type} = SPVM::Regex::Pattern->ROOT;
-    $pattern_root->{patterns} = SPVM::List->new;
-    
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
-      
       switch ($uchar) {
         case '\\': {
           die "Not yet implemented ^";
@@ -71,26 +72,44 @@ package SPVM::Regex {
           die "Not yet implemented }";
         }
         default: {
+          my $pattern = new SPVM::Regex::Pattern;
           
-          # Create charcter set
-          my $negate_flag = 0;
-          my $uchar_min = $uchar;
-          my $uchar_max = $uchar;
+          $pattern->{negate} = 0;
           
-          my $char_set = [$negate_flag, $uchar_min, $uchar_max];
-          $pattern_root->{patterns}->push($char_set);
+          my $uchar_mim_maxs = [$uchar, $uchar];
+          $pattern->{uchar_mim_maxs} = $uchar_mim_maxs;
+          
+          $self->{patterns}->push($pattern);
         }
       }
     }
-    
-    return $pattern_root ;
   }
   
   sub match : string[] ($self : self, $str : string) {
     
+    my $patterns = $self->{patterns};
+    
+    my $patterns_length = $patterns->length;
+    
+    for (my $i = 0; $i < $patterns_length; $i++) {
+      my $pattern = (SPVM::Regex::Pattern)$patterns->get($i);
+      
+      my $type = $pattern->{type};
+      
+      if ($type == SPVM::Regex::Pattern->PATTERN) {
+        my $negate = $pattern->{negate};
+        my $max_repeat = $pattern->{max_repeat};
+        my $min_repeat = $pattern->{min_repeat};
+        my $uchar_min_maxs = $pattern->{uchar_mim_maxs};
+      }
+      else {
+        die "Not implemented";
+      }
+    }
+    
     return undef;
   }
-
+  
   sub replace : string ($self : self, $target : string, $replace : string) {
     
     return undef;
@@ -99,17 +118,18 @@ package SPVM::Regex {
 
 package SPVM::Regex::Pattern {
   allow SPVM::Regex;
-
+  
   enum {
-    ROOT,
+    RE_START,
+    RE_END,
     PATTERN,
-    START,
-    END,
+    CAPTURE_START,
+    CAPTURE_END,
   }
   
-  has type : int;
-  has patterns : SPVM::List;
+  has negate : byte;
+  has type : byte;
   has max_repeat : int;
   has min_repeat : int;
-  has capture_index : int;
+  has uchar_mim_maxs : int[];
 }
