@@ -1,4 +1,3 @@
-
 package TestCase::ExchangeAPI {
   use TestCase::Point_3b;
   use TestCase::Point_3s;
@@ -336,16 +335,6 @@ package TestCase::ExchangeAPI {
   sub return_any_object_only : object ($values : object) {
     
     return $values;
-  }
-
-  sub return_hash_only : SPVM::Hash ($hash : SPVM::Hash) {
-    
-    return $hash;
-  }
-
-  sub return_list_only : SPVM::List ($list : SPVM::List) {
-    
-    return $list;
   }
 
   sub return_string_array_only : string[] ($values : string[]) {

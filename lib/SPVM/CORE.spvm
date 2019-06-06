@@ -2,7 +2,6 @@ package SPVM::CORE {
   
   # This is same as default loaded module list.
   use SPVM::List;
-  use SPVM::Hash;
 
   sub chomp : string ($string : string) {
     unless ($string) {

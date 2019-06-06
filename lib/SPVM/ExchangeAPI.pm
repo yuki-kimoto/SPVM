@@ -143,29 +143,6 @@ sub new_varray_from_bin {
   SPVM::ExchangeAPI::_new_varray_from_bin($env, $basic_type_name, $elems);
 }
 
-sub hash {
-  my ($env, $hash) = @_;
-  
-  my $spvm_hash = SPVM::Hash->new;
-  for my $key (keys %$hash) {
-    my $value = $hash->{$key};
-    $spvm_hash->set($key => $value);
-  }
-  
-  return $spvm_hash;
-}
-
-sub list {
-  my ($env, $list) = @_;
-  
-  my $spvm_list = SPVM::List->new;
-  for my $value (@$list) {
-    $spvm_list->push($value);
-  }
-  
-  return $spvm_list;
-}
-
 sub set_exception {
   my ($env, $exception) = @_;
   

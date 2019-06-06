@@ -22,7 +22,6 @@ SPVM::Int->new(1);
 SPVM::Long->new(1);
 SPVM::Float->new(1);
 SPVM::Double->new(1);
-SPVM::Hash->new;
 SPVM::List->new;
 
 ok(1);

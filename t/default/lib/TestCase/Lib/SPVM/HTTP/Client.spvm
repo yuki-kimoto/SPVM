@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::HTTP::Client {
   use SPVM::HTTP::Client;
+  use SPVM::Hash;
 
   sub test_basic : int () {
     my $client = SPVM::HTTP::Client->new;
