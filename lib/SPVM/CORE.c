@@ -1118,11 +1118,3 @@ int32_t SPNATIVE__SPVM__CORE__murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__sleep(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void) env;
-
-  uint32_t seconds = stack[0].lval;
-  sleep(seconds);
-
-  return SPVM_SUCCESS;
-}

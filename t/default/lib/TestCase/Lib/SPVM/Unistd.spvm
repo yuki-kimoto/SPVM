@@ -1,0 +1,7 @@
+package TestCase::Lib::SPVM::Unistd {
+  use SPVM::Unistd(sleep);
+  
+  sub test_sleep : void () {
+    sleep(2);
+  }
+}
