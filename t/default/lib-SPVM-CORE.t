@@ -101,11 +101,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_contains);
 }
 
-# split
-{
-  ok(TestCase::Lib::SPVM::CORE->test_split);
-}
-
 # new_oarray_proto
 {
   # sliceb

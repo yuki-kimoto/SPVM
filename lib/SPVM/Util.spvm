@@ -1,5 +1,6 @@
 package SPVM::Util {
   use SPVM::Stringer;
+  use SPVM::StringList;
   
   sub joino : string ($sep : string, $objects : oarray) {
     my $join = "";
@@ -15,4 +16,61 @@ package SPVM::Util {
     
     return $join;
   }
+
+  precompile sub split : string[] ($sep : string, $string : string, $max : int) {
+    my $string_length = length $string;
+    my $sep_length = length $sep;
+    
+    unless ($max < 0) {
+      die "Max must be minus value.";
+    }
+    if ($sep_length == 0) {
+      die "Separator must not be empty string";
+    }
+    
+    my $separated_strings_list = SPVM::StringList->new;
+    
+    my $match_start = 0;
+    my $string_base = 0;
+    for (my $string_index = 0; $string_index < $string_length; $string_index++) {
+      if ($string->[$string_index] == $sep->[0]) {
+        $match_start = 1;
+      }
+      
+      if ($match_start) {
+        my $match = 1;
+        for (my $sep_index = 0; $sep_index < $sep_length; $sep_index++) {
+          if ($string_index + $sep_index > $string_length - 1) {
+            $match = 0;
+            last;
+          }
+          else {
+            unless ($string->[$string_index + $sep_index] == $sep->[$sep_index]) {
+              $match = 0;
+              last;
+            }
+          }
+        }
+        if ($match) {
+          my $separated_string = substr($string, $string_base, $string_index - $string_base);
+          $separated_strings_list->push($separated_string);
+          $string_base = $string_index + $sep_length;
+          $string_index += $sep_length - 1;
+        }
+      }
+    }
+    if ($string_base == $string_length) {
+      $separated_strings_list->push("");
+    }
+    else {
+      my $separated_string = substr($string, $string_base, $string_length - $string_base);
+      $separated_strings_list->push($separated_string);
+    }
+    
+    my $separated_strings = $separated_strings_list->to_array;
+    
+    return $separated_strings;
+  }
+  
+
 }

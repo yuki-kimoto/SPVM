@@ -130,6 +130,7 @@ sub MY::postamble {
     # Precompile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::CORE');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');
   }
   
   return $make_rule;

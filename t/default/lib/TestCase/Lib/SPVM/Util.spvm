@@ -1,5 +1,5 @@
 package TestCase::Lib::SPVM::Util {
-  use SPVM::Util(joino);
+  use SPVM::Util(joino, split);
   use TestCase::Minimal;
   
   sub test_joino : int () {
@@ -18,4 +18,85 @@ package TestCase::Lib::SPVM::Util {
     
     return 0;
   }
+
+  sub test_split : int () {
+    {
+      my $str = "foo,bar,baz";
+      my $split_strs = split(",", $str, -1);
+      unless (equals_strarray($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    
+    {
+      my $str = "foo,bar,";
+      my $split_strs = split(",", $str, -1);
+      unless (equals_strarray($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = ",foo,,bar,,";
+      my $split_strs = split(",", $str, -1);
+      unless (equals_strarray($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foo : bar : baz";
+      my $split_strs = split(" : ", $str, -1);
+      unless (equals_strarray($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $str = "foo : bar : ";
+      my $split_strs = split(" : ", $str, -1);
+      unless (equals_strarray($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $str = " : foo :  : bar :  : ";
+      my $split_strs = split(" : ", $str, -1);
+      unless (equals_strarray($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foo---bar---baz";
+      my $split_strs = split("---", $str, -1);
+      unless (equals_strarray($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $str = "foo---bar---";
+      my $split_strs = split("---", $str, -1);
+      unless (equals_strarray($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $str = "---foo------bar------";
+      my $split_strs = split("---", $str, -1);
+      unless (equals_strarray($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foo--!bar---baz";
+      my $split_strs = split("---", $str, -1);
+      unless (equals_strarray($split_strs, ["foo--!bar", "baz"])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+
 }
