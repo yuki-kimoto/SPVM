@@ -1,9 +1,9 @@
 package TestCase::Lib::SPVM::LongList {
   use SPVM::LongList;
 
-  sub new_with_array : int () {
+  sub newa : int () {
     {
-      my $list = SPVM::LongList->new_with_array([(long)3, 5, INT64_MAX()]);
+      my $list = SPVM::LongList->newa([(long)3, 5, INT64_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::LongList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::LongList->new_with_array([(long)3, 5, INT64_MAX()]);
+      my $list = SPVM::LongList->newa([(long)3, 5, INT64_MAX()]);
       
       my $array = $list->to_array;
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::LongList {
 
   sub get : int () {
     {
-      my $list = SPVM::LongList->new_with_array([(long)3, 5, INT64_MAX()]);
+      my $list = SPVM::LongList->newa([(long)3, 5, INT64_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::LongList {
 
   sub set : int () {
     {
-      my $list = SPVM::LongList->new_with_array([(long)0, 0, 0]);
+      my $list = SPVM::LongList->newa([(long)0, 0, 0]);
       
       $list->set(0 => 3);
       $list->set(1 => 5);

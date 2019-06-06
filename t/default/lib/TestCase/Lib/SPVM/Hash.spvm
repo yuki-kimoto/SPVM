@@ -36,8 +36,8 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_new_with_array : int () {
-    my $hash = SPVM::Hash->new_with_array([(object)"a","1","b",SPVM::Int->new(2)]);
+  sub test_newa : int () {
+    my $hash = SPVM::Hash->newa([(object)"a","1","b",SPVM::Int->new(2)]);
     unless ($hash->_bucket_count == 2) {
       return 0;
     }
@@ -59,8 +59,8 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_new_with_array_allocated_capacity_should_power_of_2 : int () {
-    my $hash = SPVM::Hash->new_with_array([(object)"a","1","b","2","c","3"]);
+  sub test_newa_allocated_capacity_should_power_of_2 : int () {
+    my $hash = SPVM::Hash->newa([(object)"a","1","b","2","c","3"]);
     unless ($hash->_bucket_count == 4) {
       return 0;
     }
@@ -73,9 +73,9 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_new_with_array_die_when_odd_number_array : int () {
+  sub test_newa_die_when_odd_number_array : int () {
     eval {
-      SPVM::Hash->new_with_array([(object)"a", "1", "b"]);
+      SPVM::Hash->newa([(object)"a", "1", "b"]);
     };
     unless ($@) {
       return 0;
@@ -84,9 +84,9 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_new_with_array_do_not_refer_caller_key : int () {
+  sub test_newa_do_not_refer_caller_key : int () {
     my $data = [(object)"a","1"];
-    my $hash = SPVM::Hash->new_with_array($data);
+    my $hash = SPVM::Hash->newa($data);
     $data->[0] = "b";
     unless ($hash->exists("a")) {
       return 0;
@@ -130,7 +130,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_get : int () {
-    my $hash = SPVM::Hash->new_with_array([(object) "a", SPVM::Int->new(1), "b", undef, "c", "str"]);
+    my $hash = SPVM::Hash->newa([(object) "a", SPVM::Int->new(1), "b", undef, "c", "str"]);
     unless (((SPVM::Int)($hash->get("a")))->val == 1) {
       return 0;
     }

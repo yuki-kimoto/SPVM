@@ -10,14 +10,14 @@ package SPVM::HTTP::Client {
 
   sub new : SPVM::HTTP::Client () {
     my $self = new SPVM::HTTP::Client;
-    $self->{default_headers} = hash([]);
+    $self->{default_headers} = SPVM::Hash->newa([]);
     $self->{timeout} = 60;
     return $self;
   }
 
   sub new_with : SPVM::HTTP::Client ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Client;
-    $self->{default_headers} = hash([]);
+    $self->{default_headers} = SPVM::Hash->newa([]);
     $self->{timeout} = 60;
     return $self;
   }
@@ -33,10 +33,10 @@ package SPVM::HTTP::Client {
 
   private sub _open_handle : SPVM::HTTP::Client::Handle ($self : self,
       $host : string, $port : int) {
-    my $handle = SPVM::HTTP::Client::Handle->new_with(hash([(object)
+    my $handle = SPVM::HTTP::Client::Handle->new_with(SPVM::Hash->newa([(object)
       timeout => $self->{timeout},
     ]));
-    return $handle->connect(hash([(object)
+    return $handle->connect(SPVM::Hash->newa([(object)
       host => $host,
       port => $port,
     ]));
@@ -286,7 +286,7 @@ package SPVM::HTTP::Client::Handle {
   private sub _read_header_lines : SPVM::Hash ($self : self, $headers : SPVM::Hash) {
     my $lines = 0;
     unless ($headers) {
-      $headers = hash([]);
+      $headers = SPVM::Hash->newa([]);
     }
     while (1) {
       if (++$lines >= $self->{max_header_lines}) {
@@ -299,7 +299,7 @@ package SPVM::HTTP::Client::Handle {
         if (my $o = $headers->get($field_name)) {
           my $p : SPVM::StringList;
           if ($o isa string) {
-            $p = SPVM::StringList->new_with_array([(string)$o]);
+            $p = SPVM::StringList->newa([(string)$o]);
           }
           else {
             $p = (SPVM::StringList)$o;
@@ -332,7 +332,7 @@ package SPVM::HTTP::Client::Handle {
     my $status = _capture($line, 3, \$pos);
     _read_as_ws($line, \$pos);
     my $reason = substr($line, $pos, length($line) - $pos - 2);
-    return SPVM::HTTP::Client::Response->new_with(hash([(object)
+    return SPVM::HTTP::Client::Response->new_with(SPVM::Hash->newa([(object)
       protocol => "HTTP/$version",
       status   => _as_digits($status),
       reason   => $reason,

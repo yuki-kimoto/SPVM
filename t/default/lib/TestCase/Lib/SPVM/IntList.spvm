@@ -1,9 +1,9 @@
 package TestCase::Lib::SPVM::IntList {
   use SPVM::IntList;
 
-  sub new_with_array : int () {
+  sub newa : int () {
     {
-      my $list = SPVM::IntList->new_with_array([3, 5, INT32_MAX()]);
+      my $list = SPVM::IntList->newa([3, 5, INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::IntList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::IntList->new_with_array([3, 5, INT32_MAX()]);
+      my $list = SPVM::IntList->newa([3, 5, INT32_MAX()]);
       
       my $array = $list->to_array;
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::IntList {
 
   sub get : int () {
     {
-      my $list = SPVM::IntList->new_with_array([3, 5, INT32_MAX()]);
+      my $list = SPVM::IntList->newa([3, 5, INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -100,7 +100,7 @@ package TestCase::Lib::SPVM::IntList {
 
   sub set : int () {
     {
-      my $list = SPVM::IntList->new_with_array([0, 0, 0]);
+      my $list = SPVM::IntList->newa([0, 0, 0]);
       
       $list->set(0 => 3);
       $list->set(1 => 5);

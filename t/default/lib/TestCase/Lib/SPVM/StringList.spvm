@@ -1,9 +1,9 @@
 package TestCase::Lib::SPVM::StringList {
   use SPVM::StringList;
 
-  sub new_with_array : int () {
+  sub newa : int () {
     {
-      my $list = SPVM::StringList->new_with_array([(string)"abc", "def", "ABC"]);
+      my $list = SPVM::StringList->newa([(string)"abc", "def", "ABC"]);
       
       unless ($list->get(0) eq "abc") {
         return 0;
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::StringList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::StringList->new_with_array([(string)"abc", "def", "ABC"]);
+      my $list = SPVM::StringList->newa([(string)"abc", "def", "ABC"]);
       
       my $array = $list->to_array;
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::StringList {
 
   sub get : int () {
     {
-      my $list = SPVM::StringList->new_with_array([(string)"abc", "def", "ABC"]);
+      my $list = SPVM::StringList->newa([(string)"abc", "def", "ABC"]);
       
       unless ($list->get(0) eq "abc") {
         return 0;
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::StringList {
 
   sub set : int () {
     {
-      my $list = SPVM::StringList->new_with_array([(string)0, 0, 0]);
+      my $list = SPVM::StringList->newa([(string)0, 0, 0]);
       
       $list->set(0 => "abc");
       $list->set(1 => "def");

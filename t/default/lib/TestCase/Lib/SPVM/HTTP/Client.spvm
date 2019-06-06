@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::HTTP::Client {
 
   sub test_basic : int () {
     my $client = SPVM::HTTP::Client->new;
-    $client->{default_headers} = hash([(object)
+    $client->{default_headers} = SPVM::Hash->newa([(object)
       "X-Foo" => "Bar",
     ]);
     $client->request("GET", "http://www.google.com/?q=spvm", undef);

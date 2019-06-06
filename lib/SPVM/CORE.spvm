@@ -1,10 +1,12 @@
 package SPVM::CORE {
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
+  
+  # This is same as default loaded module list.
   use SPVM::List;
   use SPVM::Hash;
   use SPVM::Comparator;
   use SPVM::Stringer;
+  use SPVM::Complex_2f;
+  use SPVM::Complex_2d;
 
   sub chomp : string ($string : string) {
     unless ($string) {
@@ -833,10 +835,6 @@ package SPVM::CORE {
   native sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   native sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   native sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
-  
-  sub hash : SPVM::Hash ($objects : object[]) {
-    return SPVM::Hash->new_with_array($objects);
-  }
   
   sub copy_str : string ($string : string) {
     my $bytes = (byte[])$string;
