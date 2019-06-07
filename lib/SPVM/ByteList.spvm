@@ -15,7 +15,7 @@ package SPVM::ByteList {
     return $self;
   }
 
-  sub new_with_array : SPVM::ByteList ($array : byte[]) {
+  sub newa : SPVM::ByteList ($array : byte[]) {
     my $self = new SPVM::ByteList;
     my $length = @$array;
     

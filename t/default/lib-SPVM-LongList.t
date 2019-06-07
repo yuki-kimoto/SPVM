@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::LongList->push);
   ok(TestCase::Lib::SPVM::LongList->pop);
-  ok(TestCase::Lib::SPVM::LongList->new_with_array);
+  ok(TestCase::Lib::SPVM::LongList->newa);
   ok(TestCase::Lib::SPVM::LongList->unshift);
   ok(TestCase::Lib::SPVM::LongList->shift);
   ok(TestCase::Lib::SPVM::LongList->length);

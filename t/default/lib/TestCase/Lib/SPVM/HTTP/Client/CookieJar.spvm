@@ -1,6 +1,7 @@
 package TestCase::Lib::SPVM::HTTP::Client::CookieJar {
   use SPVM::HTTP::Client::CookieJar;
   use SPVM::Time;
+  use SPVM::Unistd(sleep);
 
   sub test_add_key_value : int () {
     my $cookiejar = SPVM::HTTP::Client::CookieJar->new;

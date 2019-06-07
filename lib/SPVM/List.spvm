@@ -94,7 +94,7 @@ package SPVM::List : private {
     return $self;
   }
 
-  sub new_with_array : SPVM::List ($objects : object[]) {
+  sub newa : SPVM::List ($objects : object[]) {
     my $self = new SPVM::List;
     $self->{capacity} = @$objects;
     $self->{values} = new object [@$objects];

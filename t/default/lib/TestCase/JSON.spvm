@@ -167,7 +167,7 @@ package TestCase::JSON {
   }
 
   sub test_format_name_separator : int () {
-    my $hash = SPVM::Hash->new_with_array([(object) "key", "value"]);
+    my $hash = SPVM::Hash->newa([(object) "key", "value"]);
     my $json = SPVM::JSON->new;
     $json->{space_before} = 0;
     $json->{space_after} = 0;
@@ -193,7 +193,7 @@ package TestCase::JSON {
   }
 
   sub test_format_indent : int () {
-    my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
+    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::List->newa([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
     $json->{indent} = 1;
     $json->{indent_length} = 2;
@@ -208,7 +208,7 @@ package TestCase::JSON {
   }
 
   sub test_format_pretty : int () {
-    my $hash = SPVM::Hash->new_with_array([(object) "a", "v1", "b", "v2", "c", SPVM::List->new_with_array([(object) "x", "y"])]);
+    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::List->newa([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
     $json->{canonical} = 1;
     $json->pretty(1);

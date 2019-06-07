@@ -1,10 +1,6 @@
 package SPVM::CORE {
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
-  use SPVM::List;
-  use SPVM::Hash;
-  use SPVM::Comparator;
-  use SPVM::Stringer;
+  
+  # Don't use any modules
 
   sub chomp : string ($string : string) {
     unless ($string) {
@@ -29,7 +25,6 @@ package SPVM::CORE {
   }
   
   native sub rand : int ($seed_ref : int&);
-  native sub sleep : void ($seconds : long);
   
   precompile sub lc : string($str : string) {
     
@@ -288,61 +283,6 @@ package SPVM::CORE {
   native sub init_native_constants : void ();
 
   native sub strerror : string ($errno : int);
-  
-  precompile sub split : string[] ($sep : string, $string : string, $max : int) {
-    my $string_length = length $string;
-    my $sep_length = length $sep;
-    
-    unless ($max < 0) {
-      die "Max must be minus value.";
-    }
-    if ($sep_length == 0) {
-      die "Separator must not be empty string";
-    }
-    
-    my $separated_strings_list = SPVM::List->new;
-    
-    my $match_start = 0;
-    my $string_base = 0;
-    for (my $string_index = 0; $string_index < $string_length; $string_index++) {
-      if ($string->[$string_index] == $sep->[0]) {
-        $match_start = 1;
-      }
-      
-      if ($match_start) {
-        my $match = 1;
-        for (my $sep_index = 0; $sep_index < $sep_length; $sep_index++) {
-          if ($string_index + $sep_index > $string_length - 1) {
-            $match = 0;
-            last;
-          }
-          else {
-            unless ($string->[$string_index + $sep_index] == $sep->[$sep_index]) {
-              $match = 0;
-              last;
-            }
-          }
-        }
-        if ($match) {
-          my $separated_string = substr($string, $string_base, $string_index - $string_base);
-          $separated_strings_list->push($separated_string);
-          $string_base = $string_index + $sep_length;
-          $string_index += $sep_length - 1;
-        }
-      }
-    }
-    if ($string_base == $string_length) {
-      $separated_strings_list->push("");
-    }
-    else {
-      my $separated_string = substr($string, $string_base, $string_length - $string_base);
-      $separated_strings_list->push($separated_string);
-    }
-    
-    my $separated_strings = $separated_strings_list->to_strarray;
-    
-    return $separated_strings;
-  }
   
   native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
 
@@ -627,71 +567,6 @@ package SPVM::CORE {
   native sub reversed : void ($nums : double[]);
   native sub reverseo : void ($nums : oarray);
   
-  native sub sortb : void ($nums : byte[]);
-  native sub sorts : void ($nums : short[]);
-  native sub sorti : void ($nums : int[]);
-  native sub sortl : void ($nums : long[]);
-  native sub sortf : void ($nums : float[]);
-  native sub sortd : void ($nums : double[]);
-
-  precompile sub _merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
-      my $i = $left;
-      my $j = $mid + 1;
-      my $k = 0;
-      while ($i <= $mid && $j <= $right) {
-          $i = $left;
-          $j = $mid + 1;
-          $k = 0;
-          while ($i <= $mid && $j <= $right) {
-              if ($comparator->compare($a->[$i], $a->[$j]) <= 0) {
-                  $b->[$k] = $a->[$i];
-                  $i++;
-              } else {
-                  $b->[$k] = $a->[$j];
-                  $j++;
-              }
-              $k++;
-          }
-          if ($i == $mid + 1) {
-              while ($j <= $right) {
-                  $b->[$k] = $a->[$j]; 
-                  $j++;
-                  $k++;
-              }
-          } else {
-              while($i <= $mid) {
-                  $b->[$k] = $a->[$i];
-                  $i++;
-                  $k++;
-              }
-          }
-      }
-      for ($i = 0; $i < $k; $i++) {
-        $a->[$i + $left] = $b->[$i];
-      }
-  }
-
-  precompile sub _merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
-      if ($left == $right) {
-        return;
-      }
-
-      my $mid = ($left + $right) / 2;
-
-      _merge_sort($a, $b, $left, $mid, $n, $comparator);
-      _merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-      _merge($a, $b, $left, $mid, $right, $n, $comparator);
-  }
-  
-  precompile sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
-    if ($objs == undef) {
-      die "Array must be defined";
-    }
-    my $length = @$objs;
-    my $b = new_oarray_proto($objs, $length);
-    _merge_sort($objs, $b, 0, $length - 1, $length, $comparator);
-  }
-  
   precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
@@ -833,10 +708,6 @@ package SPVM::CORE {
   native sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   native sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
   native sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
-  
-  sub hash : SPVM::Hash ($objects : object[]) {
-    return SPVM::Hash->new_with_array($objects);
-  }
   
   sub copy_str : string ($string : string) {
     my $bytes = (byte[])$string;
@@ -1071,20 +942,6 @@ package SPVM::CORE {
     
     return $join;
   }
-  sub joino : string ($sep : string, $objects : oarray) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$objects; $i++) {
-      my $stringer = (SPVM::Stringer)$objects->[$i];
-      my $string = $stringer->to_str();
-      $join .= $string;
-      if ($i != @$objects - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
   native sub print : void ($value : string);
   native sub warn : void ($value : string);
 
@@ -1111,7 +968,4 @@ package SPVM::CORE {
 
   # hasher function
   native sub murmur_hash : long ($string : string, $seed : int);
-  
-  # TODO: Windows compatibility
-  # native sub getenv : string ($name : string);
 }

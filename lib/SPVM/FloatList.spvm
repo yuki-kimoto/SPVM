@@ -15,7 +15,7 @@ package SPVM::FloatList {
     return $self;
   }
 
-  sub new_with_array : SPVM::FloatList ($array : float[]) {
+  sub newa : SPVM::FloatList ($array : float[]) {
     my $self = new SPVM::FloatList;
     my $length = @$array;
     

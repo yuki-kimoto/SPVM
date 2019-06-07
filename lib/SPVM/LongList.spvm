@@ -15,7 +15,7 @@ package SPVM::LongList {
     return $self;
   }
 
-  sub new_with_array : SPVM::LongList ($array : long[]) {
+  sub newa : SPVM::LongList ($array : long[]) {
     my $self = new SPVM::LongList;
     my $length = @$array;
     

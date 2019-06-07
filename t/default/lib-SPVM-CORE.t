@@ -101,11 +101,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_contains);
 }
 
-# split
-{
-  ok(TestCase::Lib::SPVM::CORE->test_split);
-}
-
 # new_oarray_proto
 {
   # sliceb
@@ -160,32 +155,16 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_reverseo);
 }
 
-# sort
+# join
 {
-  # sortb
-  ok(TestCase::Lib::SPVM::CORE->test_sortb);
-
-  # sorts
-  ok(TestCase::Lib::SPVM::CORE->test_sorts);
-
-  # sorti
-  ok(TestCase::Lib::SPVM::CORE->test_sorti);
-
-  # sortl
-  ok(TestCase::Lib::SPVM::CORE->test_sortl);
-
-  # sortf
-  ok(TestCase::Lib::SPVM::CORE->test_sortf);
-
-  # sortd
-  ok(TestCase::Lib::SPVM::CORE->test_sortd);
-
-  # sortd
-  ok(TestCase::Lib::SPVM::CORE->test_sorto);
+  ok(TestCase::Lib::SPVM::CORE->test_join);
+  ok(TestCase::Lib::SPVM::CORE->test_joinb);
+  ok(TestCase::Lib::SPVM::CORE->test_joins);
+  ok(TestCase::Lib::SPVM::CORE->test_joini);
+  ok(TestCase::Lib::SPVM::CORE->test_joinl);
+  ok(TestCase::Lib::SPVM::CORE->test_joinf);
+  ok(TestCase::Lib::SPVM::CORE->test_joind);
 }
-
-
-ok(TestCase::Lib::SPVM::CORE->test_join);
 
 # type_name
 {

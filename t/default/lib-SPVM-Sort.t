@@ -1,0 +1,40 @@
+use lib "t/lib";
+use TestAuto;
+
+use strict;
+use warnings;
+
+use Test::More 'no_plan';
+
+use SPVM 'TestCase::Lib::SPVM::Sort';
+
+# Start objects count
+my $start_memory_blocks_count = SPVM::memory_blocks_count();
+
+# sort
+{
+  # sortb
+  ok(TestCase::Lib::SPVM::Sort->test_sortb);
+
+  # sorts
+  ok(TestCase::Lib::SPVM::Sort->test_sorts);
+
+  # sorti
+  ok(TestCase::Lib::SPVM::Sort->test_sorti);
+
+  # sortl
+  ok(TestCase::Lib::SPVM::Sort->test_sortl);
+
+  # sortf
+  ok(TestCase::Lib::SPVM::Sort->test_sortf);
+
+  # sortd
+  ok(TestCase::Lib::SPVM::Sort->test_sortd);
+
+  # sortd
+  ok(TestCase::Lib::SPVM::Sort->test_sorto);
+}
+
+# All object is freed
+my $end_memory_blocks_count = SPVM::memory_blocks_count();
+is($end_memory_blocks_count, $start_memory_blocks_count);

@@ -1,3 +1,23 @@
+0.0437 2019-06-06
+  - rename SPVM::List->new_with_array to newa
+  - rename SPVM::Hash->new_with_array to newa
+  - rename SPVM::ByteList->new_with_array to newa
+  - rename SPVM::ShortList->new_with_array to newa
+  - rename SPVM::IntList->new_with_array to newa
+  - rename SPVM::LongList->new_with_array to newa
+  - rename SPVM::FloatList->new_with_array to newa
+  - rename SPVM::DoubleList->new_with_array to newa
+  - remove SPVM::Hash->new_with_capacity
+  - add SPVM::Hash->new_opt
+  - add SPVM::Util;
+  - move SPVM::CORE::joino to SPVM::Util
+  - move SPVM::CORE::split to SPVM::Util
+  - add SPVM::Sort;
+  - move SPVM::CORE::sortb, sorts, sorti, sortl, sortf, sortd, sorto to SPVM::Sort
+  - If SPVM::call_sub argument is array of any object and element is non-ref scalar, it is encoded to UTF-8 and converted to byte[]
+  - add SPVM::Unistd
+  - move SPVM::CORE::sleep to SPVM::Unistd
+
 0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character
@@ -21,7 +41,7 @@
   - remove SPVM::list
   - In any object array argument of SPVM::call_sub, array reference is converted to any object array
     
-      SPVM::List->new_with_array([SPVM::Int->new(1), SPVM::Double->new(2.5), undef])
+      SPVM::List->newa([SPVM::Int->new(1), SPVM::Double->new(2.5), undef])
   - Fix value fields 16 length bug.
   - add complex double and float operation +, -, *, /
   - rename new_dcomplex to complex

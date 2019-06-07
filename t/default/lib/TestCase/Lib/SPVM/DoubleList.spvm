@@ -1,9 +1,9 @@
 package TestCase::Lib::SPVM::DoubleList {
   use SPVM::DoubleList;
 
-  sub new_with_array : int () {
+  sub newa : int () {
     {
-      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, DBL_MIN()]);
+      my $list = SPVM::DoubleList->newa([(double)3, 5, DBL_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::DoubleList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, DBL_MIN()]);
+      my $list = SPVM::DoubleList->newa([(double)3, 5, DBL_MIN()]);
       
       my $array = $list->to_array;
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::DoubleList {
 
   sub get : int () {
     {
-      my $list = SPVM::DoubleList->new_with_array([(double)3, 5, DBL_MIN()]);
+      my $list = SPVM::DoubleList->newa([(double)3, 5, DBL_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::DoubleList {
 
   sub set : int () {
     {
-      my $list = SPVM::DoubleList->new_with_array([(double)0, 0, 0]);
+      my $list = SPVM::DoubleList->newa([(double)0, 0, 0]);
       
       $list->set(0 => 3);
       $list->set(1 => 5);

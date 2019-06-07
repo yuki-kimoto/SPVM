@@ -2066,9 +2066,28 @@ call_sub(...)
                         SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                         if (SvOK(sv_value)) {
+                          
+                          // Convert non-ref scalar to byte[]
+                          if (!SvROK(sv_value)) {
+                            // Copy
+                            sv_value = sv_2mortal(newSVsv(sv_value));
+                            
+                            // Encode to UTF-8
+                            sv_utf8_encode(sv_value);
+                            
+                            int32_t length = sv_len(sv_value);
+                            const char* chars = SvPV_nolen(sv_value);
+                            
+                            void* string = env->new_str_len_raw(env, chars, length);
+                            env->inc_ref_count(env, string);
+                            
+                            sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::Array");
+                          }
+                          
                           if (!sv_derived_from(sv_value, "SPVM::Data")) {
                             croak("Element of %dth argument of %s::%s() must inherit SPVM::Data object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                           }
+                          
                           env->set_oelem(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
                         }
                         else {

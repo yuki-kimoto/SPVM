@@ -1,9 +1,9 @@
 package TestCase::Lib::SPVM::FloatList {
   use SPVM::FloatList;
 
-  sub new_with_array : int () {
+  sub newa : int () {
     {
-      my $list = SPVM::FloatList->new_with_array([(float)3, 5, FLT_MIN()]);
+      my $list = SPVM::FloatList->newa([(float)3, 5, FLT_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::FloatList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::FloatList->new_with_array([(float)3, 5, FLT_MIN()]);
+      my $list = SPVM::FloatList->newa([(float)3, 5, FLT_MIN()]);
       
       my $array = $list->to_array;
       
@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::FloatList {
 
   sub get : int () {
     {
-      my $list = SPVM::FloatList->new_with_array([(float)3, 5, FLT_MIN()]);
+      my $list = SPVM::FloatList->newa([(float)3, 5, FLT_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::FloatList {
 
   sub set : int () {
     {
-      my $list = SPVM::FloatList->new_with_array([(float)0, 0, 0]);
+      my $list = SPVM::FloatList->newa([(float)0, 0, 0]);
       
       $list->set(0 => 3);
       $list->set(1 => 5);

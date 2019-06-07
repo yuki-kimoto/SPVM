@@ -22,6 +22,9 @@ use SPVM 'TestCase'; my $use_test_line = __LINE__;
 use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
 
+use SPVM 'SPVM::Hash';
+use SPVM 'SPVM::List';
+
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;
@@ -185,7 +188,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   # Pass hash
   {
-    my $hash = TestCase::ExchangeAPI->return_hash_only(SPVM::hash({x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)}));
+    my $hash = SPVM::Hash->newa([x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)]);
     is($hash->get("x")->val, 1);
     is($hash->get("y")->val, 2.5);
   }
@@ -195,12 +198,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   # Pass list
   {
-    my $hash = TestCase::ExchangeAPI->return_list_only(SPVM::List->new_with_array([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]));
-    my $x = $hash->get(0);
+    my $list = SPVM::List->newa([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
+    my $x = $list->get(0);
     
-    is($hash->get(0)->val, 1);
-    is($hash->get(1)->val, 2.5);
-    ok(!defined $hash->get(2));
+    is($list->get(0)->val, 1);
+    is($list->get(1)->val, 2.5);
+    ok(!defined $list->get(2));
   }
 }
 
