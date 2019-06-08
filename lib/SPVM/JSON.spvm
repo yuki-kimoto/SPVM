@@ -7,7 +7,6 @@ package SPVM::JSON {
   use SPVM::JSON::Bool;
   use SPVM::Math::BigDecimal;
   use SPVM::Math::BigInteger;
-  use SPVM::Math::StringToNumber;
   use SPVM::Math;
 
   has indent : public int;
