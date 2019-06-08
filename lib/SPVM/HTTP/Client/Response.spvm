@@ -4,6 +4,8 @@ package SPVM::HTTP::Client::Response {
   has reason : public string;
   has headers : public SPVM::Hash;
   has content : public string;
+  has success : public int;
+  has url : public string;
 
   sub new_with : SPVM::HTTP::Client::Response ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Client::Response;
@@ -20,6 +22,8 @@ package SPVM::HTTP::Client::Response {
       $self->{headers} = (SPVM::Hash)$o;
     }
     $self->{content} = "";
+    $self->{success} = 0;
+    $self->{url} = "";
     return $self;
   }
 }
