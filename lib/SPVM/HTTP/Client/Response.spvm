@@ -7,7 +7,7 @@ package SPVM::HTTP::Client::Response {
   has success : public int;
   has url : public string;
 
-  sub new_with : SPVM::HTTP::Client::Response ($args : SPVM::Hash) {
+  sub new_opt : SPVM::HTTP::Client::Response ($args : SPVM::Hash) {
     my $self = new SPVM::HTTP::Client::Response;
     if (my $o = $args->get("protocol")) {
       $self->{protocol} = (string)$o;
@@ -25,5 +25,17 @@ package SPVM::HTTP::Client::Response {
     $self->{success} = 0;
     $self->{url} = "";
     return $self;
+  }
+
+  sub to_str : string ($self : self) {
+    my $hkeys = $self->{headers}->keys;
+    my $headers = "";
+    for (my $i = 0; $i < @$hkeys; ++$i) {
+      my $key = (string)$hkeys->[$i];
+      my $val = (string)$self->{headers}->get($key);
+      $headers .= "$key: $val\r\n";
+    }
+    return $self->{protocol} . " " . $self->{status} . " " . $self->{reason} . "\r\n" .
+        "$headers\r\n" . $self->{content};
   }
 }

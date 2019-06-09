@@ -5,8 +5,8 @@ package TestCase::Lib::SPVM::HTTP::Client {
   sub test_basic : int () {
     my $client = SPVM::HTTP::Client->new;
     $client->{default_headers} = SPVM::Hash->new;
-    $client->request("GET", "http://www.google.com", undef);
-    $client->request("HEAD", "http://www.google.com", undef);
+    $client->request("GET", "http://testserver.spvm.info", undef);
+    $client->request("HEAD", "http://testserver.spvm.info", undef);
     return 1;
   }
 }

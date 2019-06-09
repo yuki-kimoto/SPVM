@@ -3,8 +3,6 @@ package SPVM::HTTP::Client {
   use SPVM::HTTP::URL;
   use SPVM::StringList;
 
-  use SPVM::IO::File; # For creating response content's file. TODO: Remove this.
-
   has default_headers : public SPVM::Hash;
   has timeout : public double;
 
@@ -58,31 +56,7 @@ package SPVM::HTTP::Client {
     $handle->write_request($method, $path_query, $headers);
 
     my $response = $handle->read_response_header;
-    warn("$method - $url");
-    warn("parsed status line:");
-    warn("protocol: " . $response->{protocol});
-    warn("status: " . $response->{status});
-    warn("reason: " . $response->{reason});
-    warn("headers keys:");
-    my $ks = $response->{headers}->keys;
-    for (my $i = 0; $i < @$ks; ++$i) {
-      warn("-- [$i]: " . $ks->[$i]);
-    }
-    warn("headers vals:");
-    my $vs = $response->{headers}->values;
-    for (my $i = 0; $i < @$vs; ++$i) {
-      if ($vs->[$i] isa string) {
-        warn("-- [$i]: " . (string)$vs->[$i]);
-      }
-      else {
-        # Note: Not tried yet. Prepare a web site sending multiple header fields which have same field names.
-        my $sl = (SPVM::StringList)$vs->[$i];
-        warn("-- [$i]: ");
-        for (my $k = 0; $k < $sl->length; ++$k) {
-          warn("---- [$k]: " . (string)$sl->get($k));
-        }
-      }
-    }
+
     my $known_message_length : int;
     if ($method eq "HEAD" || ($response->{status} == 204 || $response->{status} == 304)) {
       $known_message_length = 1;
@@ -94,19 +68,9 @@ package SPVM::HTTP::Client {
     $response->{success} = $response->{status} / 100 == 2;
     $response->{url} = $url;
 
-    # Output content to a temporary file.
-    {
-      my $tmpfile = "t/test_files_tmp/client_content.html";
-      warn("\nWrite content in '$tmpfile'");
-      my $fh = SPVM::IO::File->open($tmpfile, "w");
-      unless ($fh) {
-        die "Can't open file $tmpfile";
-      }
-      {
-        my $write_length = $fh->write($response->{content}, length $response->{content});
-        warn("write_length: $write_length");
-      }
-    }
+    warn("-----------------");
+    warn($response->to_str);
+    warn("-----------------");
   }
 }
 
@@ -180,9 +144,6 @@ package SPVM::HTTP::Client::Handle {
       $buf->append_string($ks->[$i] . ": " . (string)($headers->get($ks->[$i])) . "\r\n");
     }
     $buf->append_string("\r\n");
-    warn("----------------");
-    warn($buf->to_str);
-    warn("----------------");
     $self->write($buf);
   }
 
@@ -346,7 +307,7 @@ package SPVM::HTTP::Client::Handle {
     my $status = _capture($line, 3, \$pos);
     _read_as_ws($line, \$pos);
     my $reason = substr($line, $pos, length($line) - $pos - 2);
-    return SPVM::HTTP::Client::Response->new_with(SPVM::Hash->newa([(object)
+    return SPVM::HTTP::Client::Response->new_opt(SPVM::Hash->newa([(object)
       protocol => "HTTP/$version",
       status   => _as_digits($status),
       reason   => $reason,
