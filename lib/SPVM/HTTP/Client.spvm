@@ -13,9 +13,9 @@ package SPVM::HTTP::Client {
     return $self;
   }
 
-  sub new_opt : SPVM::HTTP::Client ($args : SPVM::Hash) {
+  sub new_opt : SPVM::HTTP::Client ($args : object[]) {
     my $self = new SPVM::HTTP::Client;
-    $self->{default_headers} = SPVM::Hash->newa([]);
+    $self->{default_headers} = SPVM::Hash->newa($args);
     $self->{timeout} = 60;
     return $self;
   }
@@ -31,9 +31,9 @@ package SPVM::HTTP::Client {
 
   private sub _open_handle : SPVM::HTTP::Client::Handle ($self : self,
       $host : string, $port : int) {
-    my $handle = SPVM::HTTP::Client::Handle->new_opt(SPVM::Hash->newa([(object)
+    my $handle = SPVM::HTTP::Client::Handle->new_opt([(object)
       timeout => $self->{timeout},
-    ]));
+    ]);
     return $handle->connect(SPVM::Hash->newa([(object)
       host => $host,
       port => $port,
@@ -90,13 +90,14 @@ package SPVM::HTTP::Client::Handle {
     $_BUFSIZE = 32768;
   }
 
-  sub new_opt : SPVM::HTTP::Client::Handle ($args : SPVM::Hash) {
+  sub new_opt : SPVM::HTTP::Client::Handle ($args : object[]) {
+    my $h = SPVM::Hash->newa($args);
     my $self = new SPVM::HTTP::Client::Handle;
-    if (my $o = $args->get("timeout")) {
+    if (my $o = $h->get("timeout")) {
       $self->{timeout} = ((SPVM::Double)$o)->val;
     }
     $self->{rbuf} = SPVM::StringBuffer->new;
-    if (my $o = $args->get("max_header_lines")) {
+    if (my $o = $h->get("max_header_lines")) {
       $self->{max_header_lines} = ((SPVM::Int)$o)->val;
     }
     else {
@@ -307,12 +308,12 @@ package SPVM::HTTP::Client::Handle {
     my $status = _capture($line, 3, \$pos);
     _read_as_ws($line, \$pos);
     my $reason = substr($line, $pos, length($line) - $pos - 2);
-    return SPVM::HTTP::Client::Response->new_opt(SPVM::Hash->newa([(object)
+    return SPVM::HTTP::Client::Response->new_opt([(object)
       protocol => "HTTP/$version",
       status   => _as_digits($status),
       reason   => $reason,
       headers  => $self->_read_header_lines(undef),
-    ]));
+    ]);
   }
 
   private sub _read_hex_length : int ($self : self) {
