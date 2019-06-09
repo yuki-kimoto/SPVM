@@ -148,9 +148,20 @@ package SPVM::HTTP::Client::Handle {
     if ($prefix_data) {
       $buf->append_string($prefix_data);
     }
+    my $control_fields = ["host", "cache-control", "expect", "max-forwards", "pragma", "range", "te"];
+    my $seen = SPVM::Hash->new;
+    for (my $i = 0; $i < @$control_fields; ++$i) {
+      if (my $v = $headers->get($control_fields->[$i])) {
+        $buf->append_string($control_fields->[$i] . ": " . (string)$v . "\r\n");
+        $seen->set($control_fields->[$i], 1);
+      }
+    }
     my $ks = $headers->keys;
     for (my $i = 0; $i < @$ks; ++$i) {
-      $buf->append_string($ks->[$i] . ": " . (string)($headers->get($ks->[$i])) . "\r\n");
+      unless ($seen->get($ks->[$i])) {
+        $buf->append_string($ks->[$i] . ": " .
+            (string)($headers->get($ks->[$i])) . "\r\n");
+      }
     }
     $buf->append_string("\r\n");
     $self->write($buf);
