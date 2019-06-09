@@ -3,10 +3,12 @@ package TestCase::Lib::SPVM::HTTP::Client {
   use SPVM::Hash;
 
   sub test_basic : int () {
-    my $client = SPVM::HTTP::Client->new;
-    $client->{default_headers} = SPVM::Hash->new;
+    my $client = SPVM::HTTP::Client->new_opt([(object)
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ]),
+    ]);
     $client->request("GET", "http://testserver.spvm.info", undef);
     $client->request("HEAD", "http://testserver.spvm.info", undef);
+    $client->request("GET", "http://153.121.46.88:3010", undef);
     return 1;
   }
 }

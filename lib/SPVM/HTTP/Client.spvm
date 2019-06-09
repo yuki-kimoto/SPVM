@@ -14,18 +14,25 @@ package SPVM::HTTP::Client {
   }
 
   sub new_opt : SPVM::HTTP::Client ($args : object[]) {
+
+    my $h = SPVM::Hash->newa($args);
     my $self = new SPVM::HTTP::Client;
-    $self->{default_headers} = SPVM::Hash->newa($args);
+    my $headers = (SPVM::Hash)$h->get("default_headers");
+    $self->{default_headers} = SPVM::Hash->new;
+    my $keys = $headers->keys;
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $self->{default_headers}->set(lc($keys->[$i]), $headers->get($keys->[$i]));
+    }
     $self->{timeout} = 60;
     return $self;
   }
 
   private sub _prepare_headers : SPVM::Hash ($self : self, $host : string, $port : int) {
-    my $headers = $self->{default_headers};
+    my $headers = $self->{default_headers}->copy;
     if ($port && $port != 80) {
       $host .= ":$port";
     }
-    $headers->set("Host", $host);
+    $headers->set("host", $host);
     return $headers;
   }
 
@@ -41,7 +48,7 @@ package SPVM::HTTP::Client {
   }
 
   sub request : void ($self : self, $method : string,
-      $url : string, $args : SPVM::Hash) {
+      $url : string, $args : object[]) {
 
     my $u = SPVM::HTTP::URL->parse($url);
     $u->force_root_path_slashed;
@@ -125,6 +132,7 @@ package SPVM::HTTP::Client::Handle {
     my $off = 0;
     while (1) {
       my $writable = $buf->substr($off, $len)->to_str;
+      warn($writable);
       my $write_length = $self->{socket}->write($writable, $len);
       $len -= $write_length;
       $off += $write_length;
