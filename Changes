@@ -18,6 +18,7 @@
   - add SPVM::Unistd
   - move SPVM::CORE::sleep to SPVM::Unistd
   - fix siwtch and for block bug. 
+  - remove SPVM::hash function
 0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character
