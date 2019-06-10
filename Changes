@@ -20,6 +20,8 @@
   - fix siwtch and for block bug. 
   - remove SPVM::hash function
   - Last statement of case block must be break statement
+  - fix FreeBSD bus error in SPVM.XS
+  - fix value return type width bug
 0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character
