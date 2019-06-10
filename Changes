@@ -1,4 +1,4 @@
-0.0437 2019-06-06
+0.0437 2019-06-10
   - rename SPVM::List->new_with_array to newa
   - rename SPVM::Hash->new_with_array to newa
   - rename SPVM::ByteList->new_with_array to newa
@@ -17,7 +17,7 @@
   - If SPVM::call_sub argument is array of any object and element is non-ref scalar, it is encoded to UTF-8 and converted to byte[]
   - add SPVM::Unistd
   - move SPVM::CORE::sleep to SPVM::Unistd
-
+  - fix siwtch and for block bug. 
 0.0436 2019-06-06
   - allow switch case byte constant. byte constant is converted to int constant.
   - add $ to string escape character
