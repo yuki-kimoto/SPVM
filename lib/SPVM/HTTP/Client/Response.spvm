@@ -1,4 +1,6 @@
 package SPVM::HTTP::Client::Response {
+  use SPVM::Hash;
+
   has protocol : public string;
   has status : public int;
   has reason : public string;
@@ -7,23 +9,36 @@ package SPVM::HTTP::Client::Response {
   has success : public int;
   has url : public string;
 
-  sub new_with : SPVM::HTTP::Client::Response ($args : SPVM::Hash) {
+  sub new_opt : SPVM::HTTP::Client::Response ($args : object[]) {
+    my $h = SPVM::Hash->newa($args);
     my $self = new SPVM::HTTP::Client::Response;
-    if (my $o = $args->get("protocol")) {
+    if (my $o = $h->get("protocol")) {
       $self->{protocol} = (string)$o;
     }
-    if (my $o = $args->get("status")) {
+    if (my $o = $h->get("status")) {
       $self->{status} = ((SPVM::Int)$o)->val;
     }
-    if (my $o = $args->get("reason")) {
+    if (my $o = $h->get("reason")) {
       $self->{reason} = (string)$o;
     }
-    if (my $o = $args->get("headers")) {
+    if (my $o = $h->get("headers")) {
       $self->{headers} = (SPVM::Hash)$o;
     }
     $self->{content} = "";
     $self->{success} = 0;
     $self->{url} = "";
     return $self;
+  }
+
+  sub to_str : string ($self : self) {
+    my $hkeys = $self->{headers}->keys;
+    my $headers = "";
+    for (my $i = 0; $i < @$hkeys; ++$i) {
+      my $key = (string)$hkeys->[$i];
+      my $val = (string)$self->{headers}->get($key);
+      $headers .= "$key: $val\r\n";
+    }
+    return $self->{protocol} . " " . $self->{status} . " " . $self->{reason} . "\r\n" .
+        "$headers\r\n" . $self->{content};
   }
 }

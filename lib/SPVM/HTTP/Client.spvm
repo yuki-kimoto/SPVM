@@ -3,8 +3,6 @@ package SPVM::HTTP::Client {
   use SPVM::HTTP::URL;
   use SPVM::StringList;
 
-  use SPVM::IO::File; # For creating response content's file. TODO: Remove this.
-
   has default_headers : public SPVM::Hash;
   has timeout : public double;
 
@@ -15,27 +13,34 @@ package SPVM::HTTP::Client {
     return $self;
   }
 
-  sub new_opt : SPVM::HTTP::Client ($args : SPVM::Hash) {
+  sub new_opt : SPVM::HTTP::Client ($args : object[]) {
+
+    my $h = SPVM::Hash->newa($args);
     my $self = new SPVM::HTTP::Client;
-    $self->{default_headers} = SPVM::Hash->newa([]);
+    my $headers = (SPVM::Hash)$h->get("default_headers");
+    $self->{default_headers} = SPVM::Hash->new;
+    my $keys = $headers->keys;
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $self->{default_headers}->set(lc($keys->[$i]), $headers->get($keys->[$i]));
+    }
     $self->{timeout} = 60;
     return $self;
   }
 
   private sub _prepare_headers : SPVM::Hash ($self : self, $host : string, $port : int) {
-    my $headers = $self->{default_headers};
+    my $headers = $self->{default_headers}->copy;
     if ($port && $port != 80) {
       $host .= ":$port";
     }
-    $headers->set("Host", $host);
+    $headers->set("host", $host);
     return $headers;
   }
 
   private sub _open_handle : SPVM::HTTP::Client::Handle ($self : self,
       $host : string, $port : int) {
-    my $handle = SPVM::HTTP::Client::Handle->new_opt(SPVM::Hash->newa([(object)
+    my $handle = SPVM::HTTP::Client::Handle->new_opt([(object)
       timeout => $self->{timeout},
-    ]));
+    ]);
     return $handle->connect(SPVM::Hash->newa([(object)
       host => $host,
       port => $port,
@@ -43,7 +48,7 @@ package SPVM::HTTP::Client {
   }
 
   sub request : void ($self : self, $method : string,
-      $url : string, $args : SPVM::Hash) {
+      $url : string, $args : object[]) {
 
     my $u = SPVM::HTTP::URL->parse($url);
     $u->force_root_path_slashed;
@@ -58,31 +63,7 @@ package SPVM::HTTP::Client {
     $handle->write_request($method, $path_query, $headers);
 
     my $response = $handle->read_response_header;
-    warn("$method - $url");
-    warn("parsed status line:");
-    warn("protocol: " . $response->{protocol});
-    warn("status: " . $response->{status});
-    warn("reason: " . $response->{reason});
-    warn("headers keys:");
-    my $ks = $response->{headers}->keys;
-    for (my $i = 0; $i < @$ks; ++$i) {
-      warn("-- [$i]: " . $ks->[$i]);
-    }
-    warn("headers vals:");
-    my $vs = $response->{headers}->values;
-    for (my $i = 0; $i < @$vs; ++$i) {
-      if ($vs->[$i] isa string) {
-        warn("-- [$i]: " . (string)$vs->[$i]);
-      }
-      else {
-        # Note: Not tried yet. Prepare a web site sending multiple header fields which have same field names.
-        my $sl = (SPVM::StringList)$vs->[$i];
-        warn("-- [$i]: ");
-        for (my $k = 0; $k < $sl->length; ++$k) {
-          warn("---- [$k]: " . (string)$sl->get($k));
-        }
-      }
-    }
+
     my $known_message_length : int;
     if ($method eq "HEAD" || ($response->{status} == 204 || $response->{status} == 304)) {
       $known_message_length = 1;
@@ -94,19 +75,9 @@ package SPVM::HTTP::Client {
     $response->{success} = $response->{status} / 100 == 2;
     $response->{url} = $url;
 
-    # Output content to a temporary file.
-    {
-      my $tmpfile = "t/test_files_tmp/client_content.html";
-      warn("\nWrite content in '$tmpfile'");
-      my $fh = SPVM::IO::File->open($tmpfile, "w");
-      unless ($fh) {
-        die "Can't open file $tmpfile";
-      }
-      {
-        my $write_length = $fh->write($response->{content}, length $response->{content});
-        warn("write_length: $write_length");
-      }
-    }
+    warn("-----------------");
+    warn($response->to_str);
+    warn("-----------------");
   }
 }
 
@@ -126,13 +97,14 @@ package SPVM::HTTP::Client::Handle {
     $_BUFSIZE = 32768;
   }
 
-  sub new_opt : SPVM::HTTP::Client::Handle ($args : SPVM::Hash) {
+  sub new_opt : SPVM::HTTP::Client::Handle ($args : object[]) {
+    my $h = SPVM::Hash->newa($args);
     my $self = new SPVM::HTTP::Client::Handle;
-    if (my $o = $args->get("timeout")) {
+    if (my $o = $h->get("timeout")) {
       $self->{timeout} = ((SPVM::Double)$o)->val;
     }
     $self->{rbuf} = SPVM::StringBuffer->new;
-    if (my $o = $args->get("max_header_lines")) {
+    if (my $o = $h->get("max_header_lines")) {
       $self->{max_header_lines} = ((SPVM::Int)$o)->val;
     }
     else {
@@ -160,6 +132,7 @@ package SPVM::HTTP::Client::Handle {
     my $off = 0;
     while (1) {
       my $writable = $buf->substr($off, $len)->to_str;
+      warn($writable);
       my $write_length = $self->{socket}->write($writable, $len);
       $len -= $write_length;
       $off += $write_length;
@@ -175,14 +148,22 @@ package SPVM::HTTP::Client::Handle {
     if ($prefix_data) {
       $buf->append_string($prefix_data);
     }
+    my $control_fields = ["host", "cache-control", "expect", "max-forwards", "pragma", "range", "te"];
+    my $seen = SPVM::Hash->new;
+    for (my $i = 0; $i < @$control_fields; ++$i) {
+      if (my $v = $headers->get($control_fields->[$i])) {
+        $buf->append_string($control_fields->[$i] . ": " . (string)$v . "\r\n");
+        $seen->set($control_fields->[$i], 1);
+      }
+    }
     my $ks = $headers->keys;
     for (my $i = 0; $i < @$ks; ++$i) {
-      $buf->append_string($ks->[$i] . ": " . (string)($headers->get($ks->[$i])) . "\r\n");
+      unless ($seen->get($ks->[$i])) {
+        $buf->append_string($ks->[$i] . ": " .
+            (string)($headers->get($ks->[$i])) . "\r\n");
+      }
     }
     $buf->append_string("\r\n");
-    warn("----------------");
-    warn($buf->to_str);
-    warn("----------------");
     $self->write($buf);
   }
 
@@ -346,12 +327,12 @@ package SPVM::HTTP::Client::Handle {
     my $status = _capture($line, 3, \$pos);
     _read_as_ws($line, \$pos);
     my $reason = substr($line, $pos, length($line) - $pos - 2);
-    return SPVM::HTTP::Client::Response->new_with(SPVM::Hash->newa([(object)
+    return SPVM::HTTP::Client::Response->new_opt([(object)
       protocol => "HTTP/$version",
       status   => _as_digits($status),
       reason   => $reason,
       headers  => $self->_read_header_lines(undef),
-    ]));
+    ]);
   }
 
   private sub _read_hex_length : int ($self : self) {

@@ -240,4 +240,13 @@ package SPVM::Hash {
     }
     return $retval;
   }
+
+  sub copy : SPVM::Hash ($self : self) {
+    my $ret = SPVM::Hash->new;
+    my $keys = $self->keys;
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $ret->set($keys->[$i], $self->get($keys->[$i]));
+    }
+    return $ret;
+  }
 }
