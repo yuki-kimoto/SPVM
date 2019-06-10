@@ -2228,17 +2228,21 @@ my $flag3 = Foo->FLAG3;
       </p>
 <pre>
 switch ($num) {
-  case Foo->FLAG1:
+  case Foo->FLAG1: {
   
     break;
-  case Foo->FLAG2:
+  }
+  case Foo->FLAG2: {
     
     break:
-  case Foo->FLAG3:
+  }
+  case Foo->FLAG3: {
   
     break:
-  default:
+  }
+  default: {
   
+  }
 }
 </pre>
       <h2 id="language-begin-block">BEGINブロック</h2>
@@ -6092,13 +6096,15 @@ my $num = 1;
 <pre>
 switch (条件式) {
   case 定数1: {
-  
+    
+    break;
   }
   case 定数2: {
-  
+    
+    break;
   }
   case 定数n: {
-  
+    break;
   }
   default: {
   
@@ -6137,13 +6143,13 @@ switch (条件式) {
   case 定数1:
   case 定数2:
   {
-    
+    break;
   }
   default:
 }
 </pre>
       <p>
-        switchブロックの中で、break文を使用した場合は、switchブロックから抜けることができます。
+        break文を使用した場合は、switchブロックから抜けることができます。
       </p>
 
 <pre>
@@ -6162,6 +6168,9 @@ switch (条件式) {
   }
 }
 </pre>
+      <p>
+        caseのブロックが存在する場合は、最後の文はbreak文でなければなりません。そうでない場合は、コンパイルエラーが発生します。
+      </p>
 
       <p>
         <b>switch文のサンプル</b>
@@ -6193,30 +6202,6 @@ switch ($code) {
   default: {
     print("Other\n");
   }
-}
-</pre>
-      <p>
-        break文を書かない場合は、下にあるcase文やdefault文も実行されてしまうので注意してください。以下のように書いてしまうと「2」「3」「4 or 5」「Other」と表示されます。
-      </p>
-<pre>
-my $code = 2;
-switch ($code) {
-  case 1: {
-    print("1\n");
-  }
-  case 2: {
-    print("2\n"); {
-  }
-  case 3: {
-    print("3\n"); {
-  }
-  case 4:
-  case 5:
-  {
-    print("4 or 5\n"); {
-  }
-  default:
-    print("Other\n");
 }
 </pre>
 
