@@ -8,13 +8,13 @@ package TestCase::Lib::SPVM::Regex {
   }
 
   sub match : int () {
-    
-    # Match same string
+
+    # Match string
     {
       my $re = SPVM::Regex->new("abc");
-      my $target = "abc";
+      my $target = "zabcz";
       
-      my $match = $re->match("abc");
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -29,6 +29,26 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
     
+    # Match same string
+    {
+      my $re = SPVM::Regex->new("abc");
+      my $target = "abc";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($match isa string[]) {
+        return 0;
+      }
+      
+      unless (@$match == 0) {
+        return 0;
+      }
+    }
+
     return 1;
   }
 

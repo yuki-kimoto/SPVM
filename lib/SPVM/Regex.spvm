@@ -186,13 +186,16 @@ package SPVM::Regex {
         if ($match_uchar_repeat) {
           $pattern_index++;
           $target_index += $repeat_count;
+          if ($pattern_index == $patterns_length) {
+            last;
+          }
         }
         else {
           last;
         }
       }
       
-      if ($target_index == @$target_uchars) {
+      if ($pattern_index == $patterns_length) {
         $match_all = 1;
         last;
       }
