@@ -1,7 +1,7 @@
 package SPVM::Regex {
   use SPVM::Unicode (uchar);
   use SPVM::List;
-  
+
   has patterns : SPVM::List;
   
   sub new : SPVM::Regex ($re_str : string) {
@@ -26,63 +26,95 @@ package SPVM::Regex {
       die "Regex string must have length";
     }
     
+    my $before_is_charset = 0;
     my $pos = 0;
+    my $patterns = $self->{patterns};
+
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       switch ($uchar) {
         case '\\': {
           die "Not yet implemented ^";
+          $before_is_charset = 0;
           break;
         }
         case '^': {
           die "Not yet implemented ^";
+          $before_is_charset = 0;
           break;
         }
         case '.': {
           die "Not yet implemented .";
+          $before_is_charset = 0;
           break;
         }
         case '$': {
           die "Not yet implemented \$";
+          $before_is_charset = 0;
           break;
         }
         case '|': {
           die "Not yet implemented |";
+          $before_is_charset = 0;
           break;
         }
         case '(': {
           die "Not yet implemented (";
+          $before_is_charset = 0;
           break;
         }
         case ')': {
           die "Not yet implemented )";
+          $before_is_charset = 0;
           break;
         }
         case '[': {
           die "Not yet implemented [";
+          $before_is_charset = 0;
           break;
         }
         case ']': {
           die "Not yet implemented ]";
+          $before_is_charset = 0;
           break;
         }
         case '*': {
-          die "Not yet implemented *";
+          unless ($before_is_charset) {
+            die "Regex compile error";
+          }
+          my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+          $before_pattern->{min_repeat} = 0;
+          $before_pattern->{max_repeat} = -1;
+          $before_is_charset = 0;
           break;
         }
         case '+': {
-          die "Not yet implemented +";
+          unless ($before_is_charset) {
+            die "Regex compile error";
+          }
+          my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+          $before_pattern->{min_repeat} = 1;
+          $before_pattern->{max_repeat} = -1;
+          $before_is_charset = 0;
           break;
         }
         case '?': {
-          die "Not yet implemented ?";
+          unless ($before_is_charset) {
+            die "Regex compile error";
+          }
+          my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+          $before_pattern->{min_repeat} = 0;
+          $before_pattern->{max_repeat} = 1;
+          $before_is_charset = 0;
           break;
         }
         case '{': {
           die "Not yet implemented {";
+          $before_is_charset = 0;
           break;
         }
         case '}': {
           die "Not yet implemented }";
+          $before_is_charset = 0;
           break;
         }
         default: {
@@ -96,7 +128,9 @@ package SPVM::Regex {
           $pattern->{max_repeat} = 1;
           $pattern->{min_repeat} = 1;
           
-          $self->{patterns}->push($pattern);
+          $patterns->push($pattern);
+          
+          $before_is_charset = 1;
         }
       }
     }
