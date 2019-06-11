@@ -204,6 +204,11 @@ package SPVM::Regex {
             # Increment repeat count
             if ($match_uchar) {
               $repeat_count++;
+              $target_index++;
+              if ($target_index == @$target_uchars) {
+                last;
+              }
+              $target_uchar = $target_uchars->[$target_index];
             }
             else {
               last;
@@ -219,7 +224,6 @@ package SPVM::Regex {
         
         if ($match_uchar_repeat) {
           $pattern_index++;
-          $target_index += $repeat_count;
           if ($pattern_index == $patterns_length) {
             last;
           }
