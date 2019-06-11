@@ -546,8 +546,7 @@ case_statement
     }
   | CASE expression ':'
     {
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_case_statement(compiler, $1, $2, op_block);
+      $$ = SPVM_OP_build_case_statement(compiler, $1, $2, NULL);
     }
 
 default_statement
@@ -557,8 +556,7 @@ default_statement
     }
   | DEFAULT ':'
     {
-      SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_default_statement(compiler, $1, op_block);
+      $$ = SPVM_OP_build_default_statement(compiler, $1, NULL);
     }
 
 if_require_statement

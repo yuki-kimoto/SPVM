@@ -31,45 +31,59 @@ package SPVM::Regex {
       switch ($uchar) {
         case '\\': {
           die "Not yet implemented ^";
+          break;
         }
         case '^': {
           die "Not yet implemented ^";
+          break;
         }
         case '.': {
           die "Not yet implemented .";
+          break;
         }
         case '$': {
           die "Not yet implemented \$";
+          break;
         }
         case '|': {
           die "Not yet implemented |";
+          break;
         }
         case '(': {
           die "Not yet implemented (";
+          break;
         }
         case ')': {
           die "Not yet implemented )";
+          break;
         }
         case '[': {
           die "Not yet implemented [";
+          break;
         }
         case ']': {
           die "Not yet implemented ]";
+          break;
         }
         case '*': {
           die "Not yet implemented *";
+          break;
         }
         case '+': {
           die "Not yet implemented +";
+          break;
         }
         case '?': {
           die "Not yet implemented ?";
+          break;
         }
         case '{': {
           die "Not yet implemented {";
+          break;
         }
         case '}': {
           die "Not yet implemented }";
+          break;
         }
         default: {
           my $pattern = new SPVM::Regex::Pattern;

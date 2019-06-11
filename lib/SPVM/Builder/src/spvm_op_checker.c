@@ -653,6 +653,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Numeric type
               else if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag))
               {
+                // Convert byte or short type to int type
+                SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
                 is_valid_type = 1;
               }
               // Object type

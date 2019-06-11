@@ -1,5 +1,95 @@
 package TestCase::If {
   
+  sub if_bool : int () {
+    
+    # Bool - byte true
+    {
+      my $pass = 0;
+      if ((byte)1) {
+        $pass = 1;
+      }
+      else {
+        $pass = 0;
+      }
+      
+      unless ($pass) {
+        return 0;
+      }
+    }
+
+    # Bool - short
+    {
+      my $pass = 0;
+      if ((short)1) {
+        $pass = 1;
+      }
+      if ((short)0) {
+        $pass = 0;
+      }
+      unless ($pass) {
+        return 0;
+      }
+    }
+    
+    # Bool - int
+    {
+      my $pass = 0;
+      if (1) {
+        $pass = 1;
+      }
+      if (0) {
+        $pass = 0;
+      }
+      unless ($pass) {
+        return 0;
+      }
+    }
+
+    # Bool - long
+    {
+      my $pass = 0;
+      if (1L) {
+        $pass = 1;
+      }
+      if (0L) {
+        $pass = 0;
+      }
+      unless ($pass) {
+        return 0;
+      }
+    }
+
+    # Bool - float
+    {
+      my $pass = 0;
+      if (1.5f) {
+        $pass = 1;
+      }
+      if (0.0f) {
+        $pass = 0;
+      }
+      unless ($pass) {
+        return 0;
+      }
+    }
+
+    # Bool - double
+    {
+      my $pass = 0;
+      if (1.5) {
+        $pass = 1;
+      }
+      if (0.0) {
+        $pass = 0;
+      }
+      unless ($pass) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub if_true : int () {
     
     if (1) {

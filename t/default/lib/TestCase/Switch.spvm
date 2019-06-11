@@ -5,6 +5,7 @@ package TestCase::Switch {
     switch ($i) {
       case 1: {
         1;
+        break;
       }
     }
     my $p = 5;

@@ -19,7 +19,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0436';
+our $VERSION = '0.0437';
 
 my $SPVM_ENV;
 my $BUILDER;
@@ -100,8 +100,6 @@ sub new_str_from_bin { SPVM::ExchangeAPI::new_str_from_bin($SPVM_ENV, @_) }
 sub new_oarray { SPVM::ExchangeAPI::new_oarray($SPVM_ENV, @_) }
 sub new_varray { SPVM::ExchangeAPI::new_varray($SPVM_ENV, @_) }
 sub new_varray_from_bin { SPVM::ExchangeAPI::new_varray_from_bin($SPVM_ENV, @_) }
-
-sub hash { SPVM::ExchangeAPI::hash($SPVM_ENV, @_) }
 
 1;
 

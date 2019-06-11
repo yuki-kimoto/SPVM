@@ -173,8 +173,6 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head2 call_sub
 
-=head2 hash
-
 =head2 memory_blocks_count
 
 =head2 new_barray

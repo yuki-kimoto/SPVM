@@ -1,7 +1,6 @@
 package SPVM::Math::BigDecimal {
   use SPVM::List; # TODO: Replace SPVM::Text
   use SPVM::Byte;
-  use SPVM::Math::StringToNumber;
 
   # { digits: "12345", exp: 3 } => "1.2345e3"
   has digits : private ro string; # leading & trailing 0 are not included.
@@ -66,7 +65,7 @@ package SPVM::Math::BigDecimal {
     }
     if ($exp_pos >= 0) {
       my $exp_str = sliceb((byte [])$val, $exp_pos, $length - $exp_pos);
-      $self->{exp} += SPVM::Math::StringToNumber->from($exp_str)->to_int;
+      $self->{exp} += stoi($exp_str);
     }
 
     my $digits_length = $digits->length;
