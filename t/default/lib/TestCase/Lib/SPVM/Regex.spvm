@@ -49,7 +49,62 @@ package TestCase::Lib::SPVM::Regex {
     
     return 1;
   }
-  
+
+  sub match_zero_more : int () {
+    # Match *
+    {
+      # Match * - "zabcz"
+      {
+        my $re = SPVM::Regex->new("ab*c");
+        my $target = "zabcz";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      # Match * - "zabbcz"
+      {
+        my $re = SPVM::Regex->new("ab*c");
+        my $target = "zabbcz";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      # Match * - "zacz"
+      {
+        my $re = SPVM::Regex->new("ab*c");
+        my $target = "zacz";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      # Not Match * - "zabbdz"
+      {
+        my $re = SPVM::Regex->new("ab*c");
+        my $target = "zabbdz";
+        
+        my $match = $re->match($target);
+        
+        if ($match) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+
   sub match : int () {
 
     # Match string
@@ -94,20 +149,4 @@ package TestCase::Lib::SPVM::Regex {
 
     return 1;
   }
-
-=pod
-  sub match : int () {
-    my $re = SPVM::Regex->new("abc");
-    
-    my $str = "zabcz";
-    
-    my $matches = $re->match($str);
-    
-    unless ($matched) {
-      return 0;
-    }
-    
-    return 1;
-  }
-=cut
 }
