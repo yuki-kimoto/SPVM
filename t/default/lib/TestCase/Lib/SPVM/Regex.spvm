@@ -7,6 +7,31 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub match : int () {
+    
+    # Match same string
+    {
+      my $re = SPVM::Regex->new("abc");
+      my $target = "abc";
+      
+      my $match = $re->match("abc");
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($match isa string[]) {
+        return 0;
+      }
+      
+      unless (@$match == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
 =pod
   sub match : int () {
     my $re = SPVM::Regex->new("abc");

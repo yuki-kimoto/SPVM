@@ -14,6 +14,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # SPVM::Regex
 {
   ok(TestCase::Lib::SPVM::Regex->compile);
+  ok(TestCase::Lib::SPVM::Regex->match);
 }
 
 # All object is freed
