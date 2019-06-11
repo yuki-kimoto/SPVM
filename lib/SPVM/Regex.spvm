@@ -87,6 +87,7 @@ package SPVM::Regex {
         }
         default: {
           my $pattern = new SPVM::Regex::Pattern;
+          $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
           
           $pattern->{negate} = 0;
           
@@ -125,8 +126,8 @@ package SPVM::Regex {
         
         my $patterns = $self->{patterns};
         my $patterns_length = $patterns->length;
-        for (my $i = 0; $i < $patterns_length; $i++) {
-          my $pattern = (SPVM::Regex::Pattern)$patterns->get($i);
+        for (my $pattern_index = 0; $pattern_index < $patterns_length; $pattern_index++) {
+          my $pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
           
           my $type = $pattern->{type};
           
@@ -141,9 +142,13 @@ package SPVM::Regex {
               # Match uchar
               my $match_uchar = 0;
               my $uchar_min_maxs = $pattern->{uchar_mim_maxs};
-              for (my $min_max_index = 0; $min_max_index < @$uchar_min_maxs; $min_max_index++) {
-                my $uchar_min = $uchar_min_maxs->[$i];
-                my $uchar_max = $uchar_min_maxs->[$i + 1];
+              my $ppp = 2;
+              $ppp += 2;
+              
+              for (my $min_max_index = 0; $min_max_index < @$uchar_min_maxs; $min_max_index += 2) {
+                
+                my $uchar_min = $uchar_min_maxs->[$min_max_index];
+                my $uchar_max = $uchar_min_maxs->[$min_max_index + 1];
                 
                 my $match_uchar_range = 0;
                 if ($target_uchar >= $uchar_min && $target_uchar <= $uchar_max) {
