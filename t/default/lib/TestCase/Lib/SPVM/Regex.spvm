@@ -6,7 +6,48 @@ package TestCase::Lib::SPVM::Regex {
     
     return 1;
   }
+  
+  sub match_one_more : int () {
+    # Match +
+    {
+      # Match + - "zabcz"
+      {
+        my $re = SPVM::Regex->new("ab+c");
+        my $target = "zabcz";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
 
+      # Match + - "zabbcz"
+      {
+        my $re = SPVM::Regex->new("ab+c");
+        my $target = "zabbcz";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      # Not Match + - "zacz"
+      {
+        my $re = SPVM::Regex->new("ab+c");
+        my $target = "zacz";
+        
+        my $match = $re->match($target);
+        
+        if ($match) {
+          return 0;
+        }
+      }
+    }
+  }
+  
   sub match : int () {
 
     # Match string
