@@ -1,6 +1,5 @@
 package SPVM::HTTP::Client::CookieJar::CookieParser {
   use SPVM::Hash;
-  use SPVM::Math::StringToNumber;
   use SPVM::Time;
   use SPVM::Util(split);
 
@@ -72,7 +71,7 @@ package SPVM::HTTP::Client::CookieJar::CookieParser {
             SPVM::Time->strptime($val, RFC1123_FORMAT()));
       }
       elsif ($lc_key eq "max-age") {
-        $self->{max_age} = SPVM::Math::StringToNumber->from($val)->to_long;
+        $self->{max_age} = stol($val);
       }
       elsif ($lc_key eq "domain") {
         $self->{domain} = $val;

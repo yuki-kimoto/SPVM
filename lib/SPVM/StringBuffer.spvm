@@ -26,6 +26,7 @@ package SPVM::StringBuffer {
     my $self = new SPVM::StringBuffer;
     my $default_capacity = 16;
     $self->{value} = new byte [$default_capacity];
+    $self->{length} = 0;
     return $self;
   }
 
@@ -35,6 +36,7 @@ package SPVM::StringBuffer {
       die "capacity must be positive";
     }
     $self->{value} = new byte [$capacity];
+    $self->{length} = 0;
     return $self;
   }
 

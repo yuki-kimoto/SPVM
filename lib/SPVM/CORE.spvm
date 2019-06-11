@@ -942,6 +942,108 @@ package SPVM::CORE {
     
     return $join;
   }
+
+  precompile sub stoi : int ($str : string) {
+
+    unless ($str) { die "String must be defined"; }
+
+    my $length = length $str;
+    unless ($length) { die "String is empty"; }
+
+    my $ret = 0;
+    my $begin = 0;
+    my $sign = 1;
+
+    if ($str->[0] == '-') {
+      $sign = -1;
+      ++$begin;
+    }
+    elsif ($str->[0] == '+') {
+      ++$begin;
+    }
+
+    for (my $i = $begin; $i < $length; ++$i) {
+      $ret = 10 * $ret + $str->[$i] - '0';
+    }
+
+    return $ret * $sign;
+  }
+
+  precompile sub stol : long ($str : string) {
+
+    unless ($str) { die "String must be defined"; }
+
+    my $length = length $str;
+    unless ($length) { die "String is empty"; }
+
+    my $ret = 0L;
+    my $begin = 0;
+    my $sign = 1;
+
+    if ($str->[0] == '-') {
+      $sign = -1;
+      ++$begin;
+    }
+    elsif ($str->[0] == '+') {
+      ++$begin;
+    }
+
+    for (my $i = $begin; $i < $length; ++$i) {
+      $ret *= 10L;
+      $ret += $str->[$i] - '0';
+    }
+
+    return $ret * $sign;
+  }
+
+  precompile sub hexi : int ($str : string) {
+
+    unless ($str) { die "String must be defined"; }
+
+    my $length = length $str;
+    unless ($length) { die "String is empty"; }
+
+    my $res = 0;
+    $str = uc($str);
+    for (my $i = 0; $i < $length; ++$i) {
+      if ('0' <= $str->[$i] && $str->[$i] <= '9') {
+        $res = 16 * $res + $str->[$i] - '0';
+      }
+      elsif ('A' <= $str->[$i] && $str->[$i] <= 'F') {
+        $res = 16 * $res + ($str->[$i] - 'A' + 10);
+      }
+      else {
+        die "Length is not hex: '$str'";
+      }
+    }
+
+    return $res;
+  }
+
+  precompile sub hexl : long ($str : string) {
+
+    unless ($str) { die "String must be defined"; }
+
+    my $length = length $str;
+    unless ($length) { die "String is empty"; }
+
+    my $res : long = 0L;
+    $str = uc($str);
+    for (my $i = 0; $i < $length; ++$i) {
+      if ('0' <= $str->[$i] && $str->[$i] <= '9') {
+        $res = 16 * $res + $str->[$i] - '0';
+      }
+      elsif ('A' <= $str->[$i] && $str->[$i] <= 'F') {
+        $res = 16 * $res + ($str->[$i] - 'A' + 10);
+      }
+      else {
+        die "Length is not hex: '$str'";
+      }
+    }
+
+    return $res;
+  }
+
   native sub print : void ($value : string);
   native sub warn : void ($value : string);
 

@@ -96,7 +96,6 @@
         <li><a href="#exchange-api-perl-binary-to-spvm-value-array">Perlのバイナリ列をSPVMの値の配列型に変換 - SPVM::new_varray_from_bin</a></li>
         <li><a href="#exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</a></li>
         <li><a href="#exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_str</a></li>
-        <li><a href="#exchange-api-perl-array-ref-to-spvm-hash-ref-to-SPVM-Hash">PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換 - SPVM::hash</a></li>
       </ul>
 
       <h3 id="exchange-api-perl-scalar-to-SPVM-Byte">Perlのスカラ値をSPVMのSPVM::Byte型に変換 - SPVM::Byte-&gt;new</h3>
@@ -645,18 +644,6 @@ my $spvm_double_array = SPVM::new_darray_from_bin($perl_binary);
         第二引数は、ハッシュリファレンスを要素に持つ、配列リファレンスです。ハッシュのリファレンスのキーには、複数数値型のすべてのフィールドの値が含まれていなければなりません。そうでない場合は、例外が発生します。
       </p>
 
-      <h3 id="exchange-api-perl-array-ref-to-spvm-hash-ref-to-SPVM-Hash">PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換 - SPVM::hash</h3>
-      <p>
-        PerlのハッシュリファレンスをSPVMのSPVM::Hash型に変換するにはSPVM::hash関数を使用します。
-      </p>
-<pre>
-my $perl_hash_ref = {x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)};
-my $spvm_hash = SPVM::hash($perl_hash_ref);
-</pre>
-      <p>
-        ハッシュのキーは、UTF-8にエンコードされます。値は、PerlのSPVM::Dataオブジェクトか、そのサブクラスである必要があります。そうでない場合は、例外が発生します。
-      </p>
-
       <h2 id="exchange-api-spvm-data-to-perl-data">SPVMのデータ構造をPerlのデータ構造に変換する</h2>
       <ul class="toc">
         <li><a href="#exchange-api-spvm-array-to-perl-array-ref">SPVMの配列をPerlの配列リファレンスに変換 - to_elems</a></li>
@@ -991,7 +978,7 @@ Foo->call_double_ref(\$num_double);
         SPVMのサブルーチンの定義の引数の型が、double[]型で、引数に渡される値が、配列リファレンスであった場合は、double[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値は<a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perlのスカラ値をSPVMの数値型に変換する規則</a>によって変換されます。
       </p>
       <p>
-        SPVMのサブルーチンの定義の引数の型が、object[]型で、引数に渡される値が、配列リファレンスであった場合は、object[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値が未定義値であった場合は、SPVMの未定義に変換され、PerlのSPVM::Dataオブジェクトであれば、変換はされません。それ以外の場合は、例外が発生します。
+        SPVMのサブルーチンの定義の引数の型が、object[]型で、引数に渡される値が、配列リファレンスであった場合は、object[]を表現するPerlのSPVM::Data::Arrayオブジェクトに変換されます。要素の値が未定義値であった場合は、SPVMの未定義に変換され、リファレンスでないスカラ値であった場合は、UTF-8にエンコードされ、SPVMのbyte[]型に変換され、PerlのSPVM::Dataオブジェクトであれば、変換はされません。それ以外の場合は、例外が発生します。
       </p>
       
       <h3 id="exchange-api-call-spvm-sub-convert-return-value">戻り値における変換</h3>

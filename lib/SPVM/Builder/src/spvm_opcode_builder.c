@@ -235,6 +235,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                 
                 int32_t mortal_top = mortal_stack->length;
                 SPVM_LIST_push(mortal_top_stack, (void*)(intptr_t)mortal_top);
+                break;
               }
               case SPVM_OP_C_ID_CASE: {
                 if (switch_info_stack->length > 0) {

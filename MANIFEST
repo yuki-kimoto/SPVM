@@ -185,7 +185,6 @@ lib/SPVM/Math.config
 lib/SPVM/Math.spvm
 lib/SPVM/Math/BigDecimal.spvm
 lib/SPVM/Math/BigInteger.spvm
-lib/SPVM/Math/StringToNumber.spvm
 lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
 lib/SPVM/MIME/Base64.spvm
@@ -193,6 +192,9 @@ lib/SPVM/Regex.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/ShortList.spvm
+lib/SPVM/Sort.c
+lib/SPVM/Sort.config
+lib/SPVM/Sort.spvm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
 lib/SPVM/StringList.spvm
@@ -203,6 +205,10 @@ lib/SPVM/Time/Info.spvm
 lib/SPVM/Unicode.c
 lib/SPVM/Unicode.config
 lib/SPVM/Unicode.spvm
+lib/SPVM/Unistd.c
+lib/SPVM/Unistd.config
+lib/SPVM/Unistd.spvm
+lib/SPVM/Util.spvm
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
@@ -375,6 +381,7 @@ t/default/lib/TestCase/CompileError/String/CharacterAssign.spvm
 t/default/lib/TestCase/CompileError/Sub/Begin.spvm
 t/default/lib/TestCase/CompileError/Subtract/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Subtract/RightIsNotNumeric.spvm
+t/default/lib/TestCase/CompileError/Switch/NoLastBreak.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/TestCase/CompileError/UnaryMinus/NotNumeric.spvm
@@ -442,10 +449,13 @@ t/default/lib/TestCase/Lib/SPVM/MIME/Base64.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
 t/default/lib/TestCase/Lib/SPVM/ShortList.spvm
+t/default/lib/TestCase/Lib/SPVM/Sort.spvm
 t/default/lib/TestCase/Lib/SPVM/StringBuffer.spvm
 t/default/lib/TestCase/Lib/SPVM/StringList.spvm
 t/default/lib/TestCase/Lib/SPVM/Time.spvm
 t/default/lib/TestCase/Lib/SPVM/Unicode.spvm
+t/default/lib/TestCase/Lib/SPVM/Unistd.spvm
+t/default/lib/TestCase/Lib/SPVM/Util.spvm
 t/default/lib/TestCase/LINEN.spvm
 t/default/lib/TestCase/LINER.spvm
 t/default/lib/TestCase/LINERN.spvm

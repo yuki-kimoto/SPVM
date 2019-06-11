@@ -13,6 +13,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # while
 {
+  ok(TestCase::If->if_bool());
   ok(TestCase::If->if_true());
   ok(TestCase::If->if_false());
   ok(TestCase::If->elsif_match());
