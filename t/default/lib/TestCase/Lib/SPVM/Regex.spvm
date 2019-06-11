@@ -46,6 +46,8 @@ package TestCase::Lib::SPVM::Regex {
         }
       }
     }
+    
+    return 1;
   }
   
   sub match : int () {
