@@ -36,6 +36,11 @@ use SPVM 'TestCase::Lib::SPVM::CORE';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# isdigit
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isdigit);
+}
+
 # rand
 {
   ok(TestCase::Lib::SPVM::CORE->test_rand);

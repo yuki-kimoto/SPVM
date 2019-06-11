@@ -1,7 +1,9 @@
 package SPVM::CORE {
   
-  # Don't use any modules
-
+  # SPVM::CORE is core function of SPVM
+  # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
+  # Don't use any system calls except for standard I/O and standard error.
+  
   sub chomp : string ($string : string) {
     unless ($string) {
       return undef;
@@ -23,6 +25,8 @@ package SPVM::CORE {
     
     return $new_string;
   }
+
+  native sub isdigit : int ($char : int);
   
   native sub rand : int ($seed_ref : int&);
   

@@ -8,6 +8,7 @@
 #include <float.h>
 #include <complex.h>
 #include <memory.h>
+#include <ctype.h>
 
 static const char* MFILE = "SPVM/CORE.c";
 
@@ -35,6 +36,18 @@ SPVM_rand_r (unsigned int *seed)
   *seed = next;
 
   return result;
+}
+
+
+int32_t SPNATIVE__SPVM__CORE__isdigit(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t ch = stack[0].ival;
+  
+  int32_t is_valid = isdigit(ch);
+  
+  stack[0].ival = is_valid;
+
+  return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {

@@ -1,3 +1,5 @@
+0.0437 2019-06-11
+  - add SPVM::CORE::isdigit function
 0.0437 2019-06-10
   - rename SPVM::List->new_with_array to newa
   - rename SPVM::Hash->new_with_array to newa
