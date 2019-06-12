@@ -54,15 +54,15 @@ int32_t SPNATIVE__SPVM__CORE__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   char *end;
   errno = 0;
-  int64_t num = (int64_t)strtoll(string, &end, digit);
+  long long int num = strtoll(string, &end, digit);
   if (*end != '\0') {
     SPVM_DIE("Invalid number format", MFILE, __LINE__);
   }
-  else if (errno == ERANGE) {
-    SPVM_DIE("[ERANGE]Out of range", MFILE, __LINE__);
+  else if (errno == ERANGE || num < INT64_MIN || num > INT64_MAX) {
+    SPVM_DIE("Out of range", MFILE, __LINE__);
   }
   
-  stack[0].lval = num;
+  stack[0].lval = (int64_t)num;
 
   return SPVM_SUCCESS;
 }

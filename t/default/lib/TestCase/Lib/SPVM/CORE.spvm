@@ -84,9 +84,21 @@ package TestCase::Lib::SPVM::CORE {
       $@ = undef;
     }
 
-    # Out of range
+    # Out of range max + 1
     {
-      my $string = "-111112147483648";
+      my $string = "2147483648";
+      eval {
+        strtoi($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-2147483649";
       eval {
         strtoi($string, 10);
       };
@@ -98,7 +110,115 @@ package TestCase::Lib::SPVM::CORE {
     
     return 1;
   }
-  
+
+  sub test_strtol : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-9223372036854775808";
+      my $num = strtol($string, 10);
+      unless ($num isa long) {
+        return 0;
+      }
+      
+      unless ($num == -9223372036854775808L) {
+        return 0;
+      }
+    }
+
+    # 10 digit max
+    {
+      my $string = "9223372036854775807";
+      my $num = strtol($string, 10);
+      unless ($num isa int) {
+        return 0;
+      }
+      
+      unless ($num == 9223372036854775807L) {
+        return 0;
+      }
+    }
+
+    # 2 digit
+    {
+      my $string = "11";
+      my $num = strtol($string, 2);
+      
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+    
+    # 8 digit
+    {
+      my $string = "11";
+      my $num = strtol($string, 8);
+      
+      unless ($num == 9) {
+        return 0;
+      }
+    }
+    
+    # 16 digit
+    {
+      my $string = "FF";
+      my $num = strtol($string, 16);
+      
+      unless ($num == 255) {
+        return 0;
+      }
+    }
+    
+    # Invalid string format
+    {
+      my $string = "10oppp";
+      eval {
+        strtol($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    # Invalid digit
+    {
+      my $string = "10";
+      eval {
+        strtol($string, 100);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range max + 1
+    {
+      my $string = "9223372036854775808";
+      eval {
+        strtol($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-9223372036854775809";
+      eval {
+        strtol($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
   sub test_isdigit : int () {
     {
       my $ok = isdigit('/');
