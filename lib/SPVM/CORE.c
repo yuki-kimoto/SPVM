@@ -51,6 +51,10 @@ int32_t SPNATIVE__SPVM__CORE__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* string = (const char*)env->belems(env, obj_string);
   
   int32_t digit = stack[1].ival;
+
+  if (!(digit == 2 || digit == 8 || digit == 10 || digit == 16)) {
+    SPVM_DIE("Digit must be 2, 8, 10, 16", MFILE, __LINE__);
+  }
   
   char *end;
   errno = 0;

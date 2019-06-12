@@ -39,6 +39,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # strtoi
 {
   ok(TestCase::Lib::SPVM::CORE->test_strtoi);
+  ok(TestCase::Lib::SPVM::CORE->test_strtol);
+  ok(TestCase::Lib::SPVM::CORE->test_strtof);
+  ok(TestCase::Lib::SPVM::CORE->test_strtod);
 }
 
 # isdigit

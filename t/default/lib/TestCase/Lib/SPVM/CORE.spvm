@@ -124,14 +124,11 @@ package TestCase::Lib::SPVM::CORE {
         return 0;
       }
     }
-
+    
     # 10 digit max
     {
       my $string = "9223372036854775807";
       my $num = strtol($string, 10);
-      unless ($num isa int) {
-        return 0;
-      }
       
       unless ($num == 9223372036854775807L) {
         return 0;
@@ -209,6 +206,64 @@ package TestCase::Lib::SPVM::CORE {
       my $string = "-9223372036854775809";
       eval {
         strtol($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub test_strtof : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = strtof($string);
+      unless ($num isa float) {
+        return 0;
+      }
+      
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        strtof($string);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub test_strtod : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = strtod($string);
+      unless ($num isa double) {
+        return 0;
+      }
+      
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        strtod($string);
       };
       unless ($@) {
         return 0;
