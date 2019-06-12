@@ -4,6 +4,11 @@ package SPVM::CORE {
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for standard I/O and standard error.
   
+  native sub strtoi : int ($string : string, $digit : int);
+  native sub strtol : long ($string : string, $digit : int);
+  native sub strtof : float ($string : string);
+  native sub strtod : double ($string : string);
+  
   sub chomp : string ($string : string) {
     unless ($string) {
       return undef;
