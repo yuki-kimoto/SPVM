@@ -3,9 +3,12 @@ package SPVM::Regex {
   use SPVM::List;
 
   has patterns : SPVM::List;
+  has match_start : int;
+  has match_end : int;
   
   enum {
     START,
+    CONTINUE,
     QUANTIFIER_MIN,
     QUANTIFIER_MAX,
   }
@@ -42,21 +45,30 @@ package SPVM::Regex {
     my $status = START();
 
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
+      if ($self->{match_end}) {
+        die "\$ must be last of regex";
+      }
+      
       switch ($uchar) {
         case '\\': {
           die "Not yet implemented ^";
           break;
         }
         case '^': {
-          die "Not yet implemented ^";
+          unless ($status == START()) {
+            die "Regex compile error";
+          }
+          
+          $self->{match_start} = 1;
+          
           break;
         }
         case '.': {
-          die "Not yet implemented .";
+          die ". is not yet implemented";
           break;
         }
         case '$': {
-          die "Not yet implemented \$";
+          $self->{match_end} = 1;
           break;
         }
         case '|': {
@@ -125,7 +137,7 @@ package SPVM::Regex {
           my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
           $last_pattern->{max_repeat} = $quantifier_max;
           
-          $status = START();
+          $status = CONTINUE();
           $before_is_charset = 0;
           $quantifier_max_str = "";
           break;
