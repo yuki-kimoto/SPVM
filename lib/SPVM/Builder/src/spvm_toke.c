@@ -830,7 +830,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           if (*compiler->bufptr == '\0') {
             SPVM_COMPILER_error(compiler, "Can't find string terminator '\"' anywhere before EOF at %s line %d\n", compiler->cur_file, compiler->cur_line);
-            continue;
+            SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, "", 0, compiler->cur_file, compiler->cur_line);
+            yylvalp->opval = op_constant;
+            return CONSTANT;
           }
           
           int32_t str_tmp_len = (int32_t)(compiler->bufptr - cur_token_ptr) * 4;
