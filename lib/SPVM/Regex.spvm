@@ -4,6 +4,12 @@ package SPVM::Regex {
 
   has patterns : SPVM::List;
   
+  enum {
+    START,
+    QUANTIFIER_MIN,
+    QUANTIFIER_MAX,
+  }
+  
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
     
@@ -29,52 +35,48 @@ package SPVM::Regex {
     my $before_is_charset = 0;
     my $pos = 0;
     my $patterns = $self->{patterns};
+    
+    my $quantifier_min_str = "";
+    my $quantifier_max_str = "";
+    
+    my $status = START();
 
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       switch ($uchar) {
         case '\\': {
           die "Not yet implemented ^";
-          $before_is_charset = 0;
           break;
         }
         case '^': {
           die "Not yet implemented ^";
-          $before_is_charset = 0;
           break;
         }
         case '.': {
           die "Not yet implemented .";
-          $before_is_charset = 0;
           break;
         }
         case '$': {
           die "Not yet implemented \$";
-          $before_is_charset = 0;
           break;
         }
         case '|': {
-          die "Not yet implemented |";
-          $before_is_charset = 0;
+          die "| is not implemented";
           break;
         }
         case '(': {
           die "Not yet implemented (";
-          $before_is_charset = 0;
           break;
         }
         case ')': {
           die "Not yet implemented )";
-          $before_is_charset = 0;
           break;
         }
         case '[': {
           die "Not yet implemented [";
-          $before_is_charset = 0;
           break;
         }
         case ']': {
           die "Not yet implemented ]";
-          $before_is_charset = 0;
           break;
         }
         case '*': {
@@ -108,29 +110,66 @@ package SPVM::Regex {
           break;
         }
         case '{': {
-          die "Not yet implemented {";
+          unless ($before_is_charset) {
+            die "Regex compile error";
+          }
+          $status = QUANTIFIER_MIN();
           $before_is_charset = 0;
           break;
         }
         case '}': {
-          die "Not yet implemented }";
+          unless ($status == QUANTIFIER_MAX()) {
+            die "Regex compile error";
+          }
+          my $quantifier_max = strtoi($quantifier_max_str, 10);
+          my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+          $last_pattern->{max_repeat} = $quantifier_max;
+          
+          $status == START();
           $before_is_charset = 0;
+          $quantifier_max_str = "";
           break;
         }
         default: {
-          my $pattern = new SPVM::Regex::Pattern;
-          $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-          
-          $pattern->{negate} = 0;
-          
-          my $uchar_mim_maxs = [$uchar, $uchar];
-          $pattern->{uchar_mim_maxs} = $uchar_mim_maxs;
-          $pattern->{max_repeat} = 1;
-          $pattern->{min_repeat} = 1;
-          
-          $patterns->push($pattern);
-          
-          $before_is_charset = 1;
+          if ($status == QUANTIFIER_MIN()) {
+            if (isdigit($uchar)) {
+              $quantifier_min_str .= $uchar;
+            }
+            elsif ($uchar == ',') {
+              my $quantifier_min = strtoi($quantifier_min_str, 10);
+              my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+              $last_pattern->{min_repeat} = $quantifier_min;
+              
+              $status == QUANTIFIER_MAX();
+              $quantifier_min_str .= "";
+            }
+            else {
+              die "Quantifier min must be non-fractional number";
+            }
+          }
+          elsif ($status == QUANTIFIER_MAX()) {
+            if (isdigit($uchar)) {
+              $quantifier_max_str .= $uchar;
+            }
+            else {
+              die "Quantifier max must be non-fractional number";
+            }
+          }
+          else {
+            my $pattern = new SPVM::Regex::Pattern;
+            $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
+            
+            $pattern->{negate} = 0;
+            
+            my $uchar_mim_maxs = [$uchar, $uchar];
+            $pattern->{uchar_mim_maxs} = $uchar_mim_maxs;
+            $pattern->{max_repeat} = 1;
+            $pattern->{min_repeat} = 1;
+            
+            $patterns->push($pattern);
+            
+            $before_is_charset = 1;
+          }
         }
       }
     }
