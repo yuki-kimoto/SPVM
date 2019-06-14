@@ -125,7 +125,7 @@ package SPVM::Regex {
           my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
           $last_pattern->{max_repeat} = $quantifier_max;
           
-          $status == START();
+          $status = START();
           $before_is_charset = 0;
           $quantifier_max_str = "";
           break;
@@ -133,14 +133,14 @@ package SPVM::Regex {
         default: {
           if ($status == QUANTIFIER_MIN()) {
             if (isdigit($uchar)) {
-              $quantifier_min_str .= $uchar;
+              $quantifier_min_str .= $uchar - '0';
             }
             elsif ($uchar == ',') {
               my $quantifier_min = strtoi($quantifier_min_str, 10);
               my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
               $last_pattern->{min_repeat} = $quantifier_min;
               
-              $status == QUANTIFIER_MAX();
+              $status = QUANTIFIER_MAX();
               $quantifier_min_str .= "";
             }
             else {
@@ -149,7 +149,7 @@ package SPVM::Regex {
           }
           elsif ($status == QUANTIFIER_MAX()) {
             if (isdigit($uchar)) {
-              $quantifier_max_str .= $uchar;
+              $quantifier_max_str .= $uchar - '0';
             }
             else {
               die "Quantifier max must be non-fractional number";
