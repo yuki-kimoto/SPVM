@@ -209,8 +209,9 @@ package SPVM::Regex {
     
     my $target_base_index = 0;
     my $match_all = 0;
+    my $target_index = 0;
     while ($target_base_index < @$target_uchars) {
-      my $target_index = $target_base_index;
+      $target_index = $target_base_index;
       my $pattern_index = 0;
       
       while ($target_index < @$target_uchars) {
@@ -299,7 +300,17 @@ package SPVM::Regex {
     }
     
     if ($match_all) {
-      return new string[0];
+      if ($self->{match_end}) {
+        if ($target_index == @$target_uchars) {
+          return new string[0];
+        }
+        else {
+          return undef;
+        }
+      }
+      else {
+        return new string[0];
+      }
     }
     else {
       return undef;

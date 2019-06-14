@@ -7,6 +7,37 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub match_end : int () {
+    # Match $
+    {
+      # Match $ - "zabbc"
+      {
+        my $re = SPVM::Regex->new("ab+c\$");
+        my $target = "zabbc";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+      
+      # Not Match $ - "zabbcz"
+      {
+        my $re = SPVM::Regex->new("ab+c\$");
+        my $target = "zabbcz";
+        
+        my $match = $re->match($target);
+        
+        if ($match) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+
   sub match_start : int () {
     # Match ^
     {
@@ -21,7 +52,6 @@ package TestCase::Lib::SPVM::Regex {
           return 0;
         }
       }
-      
       
       # Not Match ^ - "zabbcz"
       {
