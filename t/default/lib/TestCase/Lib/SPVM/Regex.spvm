@@ -57,6 +57,56 @@ package TestCase::Lib::SPVM::Regex {
         }
       }
     }
+
+    # Match {11,13}
+    {
+      # Match {11,13} - "zabbbbbbbbbbbcz"
+      {
+        my $re = SPVM::Regex->new("ab{11,13}c");
+        my $target = "zabbbbbbbbbbbcz";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+      
+      # Match {11,13} - "zabbbcz"
+      {
+        my $re = SPVM::Regex->new("ab{11,13}c");
+        my $target = "zabbbbbbbbbbbbbcz";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
+      }
+
+      # Not Match {11,13} - "zacz"
+      {
+        my $re = SPVM::Regex->new("ab{11,13}c");
+        my $target = "zabbbbbbbbbbcz";
+        
+        my $match = $re->match($target);
+        
+        if ($match) {
+          return 0;
+        }
+      }
+      # Not Match {11,13} - "zabbbbcz"
+      {
+        my $re = SPVM::Regex->new("ab{11,13}c");
+        my $target = "zabbbbbbbbbbbbbbcz";
+        
+        my $match = $re->match($target);
+        
+        if ($match) {
+          return 0;
+        }
+      }
+    }
     
     return 1;
   }
