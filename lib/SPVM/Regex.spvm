@@ -289,7 +289,12 @@ package SPVM::Regex {
         last;
       }
       else {
-        $target_base_index++;
+        if ($self->{match_start}) {
+          last;
+        }
+        else {
+          $target_base_index++;
+        }
       }
     }
     
