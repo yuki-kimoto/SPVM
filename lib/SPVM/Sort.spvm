@@ -46,7 +46,7 @@ package SPVM::Sort {
   }
 
   precompile sub _merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
-      if ($left == $right) {
+      if ($left >= $right) {
         return;
       }
 
