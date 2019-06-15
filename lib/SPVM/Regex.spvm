@@ -64,7 +64,7 @@ package SPVM::Regex {
           break;
         }
         case '.': {
-          die ". is not yet implemented";
+          die ". is not implemented";
           break;
         }
         case '$': {
@@ -320,6 +320,42 @@ package SPVM::Regex {
   sub replace : string ($self : self, $target : string, $replace : string) {
     
     return undef;
+  }
+  
+  private duplicate : int ($self, $pattern1, $pattern2) {
+    my $uchar_min_maxs1 = $pattern1->uchar_min_maxs;
+    my $uchar_min_maxs2 = $pattern2->uchar_min_maxs;
+    
+    my $duplicate = 1;
+    for (my $min_max_index1 = 0; $min_max_index1 < @$uchar_min_maxs1; $min_max_index1 += 2) {
+      my $uchar_min1 = $uchar_min_maxs1->[$min_max_index];
+      my $uchar_max1 = $uchar_min_maxs1->[$min_max_index + 1];
+      my $negate1 = (int)$pattern1->negate;
+      
+      for (my $min_max_index2 = 0; $min_max_index2 < @$uchar_min_maxs2; $min_max_index2 += 2) {
+        my $uchar_min2 = $uchar_min_maxs2->[$min_max_index];
+        my $uchar_max2 = $uchar_min_maxs2->[$min_max_index + 2];
+        my $negate2 = (int)$pattern2->negate;
+        
+        if ($negate1 && $negate2) {
+          if ($uchar_min2 > $uchar_max1 && $ucahr_max2 > $uchar_max1) {
+            $duplicate = 0;
+          }
+          elsif ($uchar_min2 < $uchar_min1 && $ucahr_max2 > $uchar_min1
+        }
+        elsif ($negate1 && !$negate2) {
+          
+        }
+        elsif (!$negate1 && $negate2) {
+          
+        }
+        elsif (!$negate1 && !$negate2) {
+          
+        }
+      }
+    }
+    
+    
   }
 }
 
