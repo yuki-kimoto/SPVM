@@ -65,4 +65,18 @@ package SPVM::Sort {
     my $b = new_oarray_proto($objs, $length);
     _merge_sort($objs, $b, 0, $length - 1, $length, $comparator);
   }
+
+  sub sortstr : void ($strs : string[]) {
+    sorto($strs, sub : int ($self : self, $a : object, $b : object) {
+      if ((string)$a le (string)$b) {
+        return -1;
+      }
+      elsif ((string)$a ge (string)$b) {
+        return +1;
+      }
+      else {
+        return 0;
+      }
+    });
+  }
 }
