@@ -65,7 +65,7 @@ package SPVM::Math::BigDecimal {
     }
     if ($exp_pos >= 0) {
       my $exp_str = sliceb((byte [])$val, $exp_pos, $length - $exp_pos);
-      $self->{exp} += stoi($exp_str);
+      $self->{exp} += strtoi($exp_str, 10);
     }
 
     my $digits_length = $digits->length;

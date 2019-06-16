@@ -2,6 +2,7 @@ package SPVM::HTTP::Client {
   use SPVM::HTTP::Client::Handle;
   use SPVM::HTTP::URL;
   use SPVM::StringList;
+  use SPVM::Sort (sortstr);
 
   has default_headers : public SPVM::Hash;
   has timeout : public double;
@@ -342,7 +343,7 @@ package SPVM::HTTP::Client::Handle {
     }
     my $length : int;
     eval {
-      $length = hexi(substr($line, 0, length($line) - 2));
+      $length = strtoi(substr($line, 0, length($line) - 2), 16);
     };
     if ($@) {
       die "Malformed chunk-size. " . $@;
@@ -422,7 +423,7 @@ package SPVM::HTTP::Client::Handle {
       $response : SPVM::HTTP::Client::Response, $content_length : SPVM::Int) {
     if (!$content_length) {
       if (my $o = $response->{headers}->get("content-length")) {
-        $content_length = stoi((string)$o);
+        $content_length = strtoi((string)$o, 10);
       }
     }
     if ($content_length) {
@@ -471,5 +472,51 @@ package SPVM::HTTP::Client::Handle {
     else {
       return $self->_read_content_body($response, undef);
     }
+  }
+
+  sub www_form_urlencode : string ($self : self, $data : object[]) {
+    unless (@$data % 2 == 0) {
+      die 'form data reference must have an even number of terms';
+    }
+    my $params = SPVM::List->newa($data);
+    my $terms = SPVM::StringList->new;
+    for (my $i = 0; $i < @$params; $i += 2) {
+      my $key = (string)$params->[$i];
+      my $val = $params->[$i + 1];
+      if ($val isa SPVM::StringList) {
+        my $multivals = ((SPVM::StringList)$val)->to_array;
+        for (my $k = 0; $k < @$multivals; ++$k) {
+          $params->push($key);
+          $params->push($multivals->[$k]);
+        }
+      }
+      else {
+        $terms->push(join("=", [$self->_url_escape($key), $self->_url_escape($val)]));
+      }
+    }
+    return join("&", sortstr($terms->to_array));
+  }
+
+  private sub _Hex : string () {
+    return "0123456789ABCDEF";
+  }
+
+  private sub _url_escape : string ($s : string) {
+    my $res = SPVM::ByteList->new;
+    for (my $i = 0; $i < @$s; ++$i) {
+      if (('A' <= $s->[$i] && $s->[$i] <= 'Z') ||
+          ('a' <= $s->[$i] && $s->[$i] <= 'z') ||
+          ('0' <= $s->[$i] && $s->[$i] <= '9') ||
+          $s->[$i] == '-' || $s->[$i] == '.' ||
+          $s->[$i] == '_' || $s->[$i] == '~') {
+        $res->push($s->[$i]);
+      }
+      else {
+        $res->push('%');
+        $res->push(_Hex()->[$s->[$i] >>> 4]);
+        $res->push(_Hex()->[$s->[$i] & 0x0F]);
+      }
+    }
+    return (string)$res->to_array;
   }
 }
