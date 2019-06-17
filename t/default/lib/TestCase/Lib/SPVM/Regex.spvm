@@ -10,7 +10,7 @@ package TestCase::Lib::SPVM::Regex {
 
   sub match_not_number : int () {
 
-    # Match number
+    # Match not number
     {
       my $re = SPVM::Regex->new("0\\D+9");
       my $target = "0abc9";
@@ -35,6 +35,20 @@ package TestCase::Lib::SPVM::Regex {
       
       unless ($match) {
         return 0;
+      }
+    }
+    
+    # Match number and not number
+    {
+      {
+        my $re = SPVM::Regex->new("\\d+\\D+\\d+");
+        my $target = "123abc789";
+        
+        my $match = $re->match($target);
+        
+        unless ($match) {
+          return 0;
+        }
       }
     }
     
@@ -63,6 +77,7 @@ package TestCase::Lib::SPVM::Regex {
       unless ($@) {
         return 0;
       }
+      
       $@ = undef;
     }
 
@@ -70,6 +85,7 @@ package TestCase::Lib::SPVM::Regex {
     {
        SPVM::Regex->new("aa");
        SPVM::Regex->new("a{3,3}a");
+       SPVM::Regex->new("\\d\\D\\d");
     }
     
     return 1;
