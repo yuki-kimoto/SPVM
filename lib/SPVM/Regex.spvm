@@ -173,8 +173,8 @@ package SPVM::Regex {
             
             $pattern->{negate} = 0;
             
-            my $uchar_mim_maxs = [$uchar, $uchar];
-            $pattern->{uchar_mim_maxs} = $uchar_mim_maxs;
+            my $uchar_min_maxs = [$uchar, $uchar];
+            $pattern->{uchar_min_maxs} = $uchar_min_maxs;
             $pattern->{max_repeat} = 1;
             $pattern->{min_repeat} = 1;
             
@@ -229,7 +229,7 @@ package SPVM::Regex {
           for (my $repeat_index = 0; $repeat_index < $max_repeat; $repeat_index++) {
             # Match uchar
             my $match_uchar = 0;
-            my $uchar_min_maxs = $pattern->{uchar_mim_maxs};
+            my $uchar_min_maxs = $pattern->{uchar_min_maxs};
             
             for (my $min_max_index = 0; $min_max_index < @$uchar_min_maxs; $min_max_index += 2) {
               
@@ -322,40 +322,75 @@ package SPVM::Regex {
     return undef;
   }
   
-  private duplicate : int ($self, $pattern1, $pattern2) {
-    my $uchar_min_maxs1 = $pattern1->uchar_min_maxs;
-    my $uchar_min_maxs2 = $pattern2->uchar_min_maxs;
+  private sub duplicate : int ($self : self, $pattern1 : SPVM::Regex::Pattern, $pattern2 : SPVM::Regex::Pattern) {
+    my $uchar_min_maxs1 = $pattern1->{uchar_min_maxs};
+    my $uchar_min_maxs2 = $pattern2->{uchar_min_maxs};
     
-    my $duplicate = 1;
-    for (my $min_max_index1 = 0; $min_max_index1 < @$uchar_min_maxs1; $min_max_index1 += 2) {
-      my $uchar_min1 = $uchar_min_maxs1->[$min_max_index];
-      my $uchar_max1 = $uchar_min_maxs1->[$min_max_index + 1];
-      my $negate1 = (int)$pattern1->negate;
-      
-      for (my $min_max_index2 = 0; $min_max_index2 < @$uchar_min_maxs2; $min_max_index2 += 2) {
-        my $uchar_min2 = $uchar_min_maxs2->[$min_max_index];
-        my $uchar_max2 = $uchar_min_maxs2->[$min_max_index + 2];
-        my $negate2 = (int)$pattern2->negate;
-        
-        if ($negate1 && $negate2) {
-          if ($uchar_min2 > $uchar_max1 && $ucahr_max2 > $uchar_max1) {
+    my $duplicate : int;
+    my $negate1 = (int)$pattern1->{negate};
+    my $negate2 = (int)$pattern2->{negate};
+    if ($negate1 && $negate2) {
+      $duplicate = 1;
+    }
+    elsif (!$negate1 && !$negate2) {
+      $duplicate = 1;
+      for (my $min_max_index1 = 0; $min_max_index1 < @$uchar_min_maxs1; $min_max_index1 += 2) {
+        my $uchar_min1 = $uchar_min_maxs1->[$min_max_index1];
+        my $uchar_max1 = $uchar_min_maxs1->[$min_max_index1 + 1];
+        for (my $min_max_index2 = 0; $min_max_index2 < @$uchar_min_maxs2; $min_max_index2 += 2) {
+          my $uchar_min2 = $uchar_min_maxs2->[$min_max_index2];
+          my $uchar_max2 = $uchar_min_maxs2->[$min_max_index2 + 1];
+          if ($uchar_min2 > $uchar_max1 && $uchar_max2 > $uchar_max1) {
             $duplicate = 0;
           }
-          elsif ($uchar_min2 < $uchar_min1 && $ucahr_max2 > $uchar_min1
+          elsif ($uchar_min2 < $uchar_min1 && $uchar_max2 > $uchar_min1) {
+            $duplicate = 0;
+          }
         }
-        elsif ($negate1 && !$negate2) {
-          
+      }
+    }
+    elsif ($negate1 && !$negate2) {
+      $duplicate = 0;
+      for (my $min_max_index2 = 0; $min_max_index2 < @$uchar_min_maxs2; $min_max_index2 += 2) {
+        my $uchar_min2 = $uchar_min_maxs2->[$min_max_index2];
+        my $uchar_max2 = $uchar_min_maxs2->[$min_max_index2 + 1];
+        my $one_no_duplicate = 0;
+        for (my $min_max_index1 = 0; $min_max_index1 < @$uchar_min_maxs1; $min_max_index1 += 2) {
+          my $uchar_min1 = $uchar_min_maxs1->[$min_max_index1];
+          my $uchar_max1 = $uchar_min_maxs1->[$min_max_index1 + 1];
+          if ($uchar_min2 >= $uchar_min1 && $uchar_max2 <= $uchar_max1) {
+            $one_no_duplicate = 1;
+            last;
+          }
         }
-        elsif (!$negate1 && $negate2) {
-          
+        unless ($one_no_duplicate) {
+          $duplicate = 1;
+          last;
         }
-        elsif (!$negate1 && !$negate2) {
-          
+      }
+    }
+    elsif (!$negate1 && $negate2) {
+      $duplicate = 0;
+      for (my $min_max_index1 = 0; $min_max_index1 < @$uchar_min_maxs1; $min_max_index1 += 2) {
+        my $uchar_min1 = $uchar_min_maxs1->[$min_max_index1];
+        my $uchar_max1 = $uchar_min_maxs1->[$min_max_index1 + 1];
+        my $one_no_duplicate = 0;
+        for (my $min_max_index2 = 0; $min_max_index2 < @$uchar_min_maxs2; $min_max_index2 += 2) {
+          my $uchar_min2 = $uchar_min_maxs2->[$min_max_index2];
+          my $uchar_max2 = $uchar_min_maxs2->[$min_max_index2 + 1];
+          if ($uchar_min1 >= $uchar_min2 && $uchar_max1 <= $uchar_max2) {
+            $one_no_duplicate = 1;
+            last;
+          }
+        }
+        unless ($one_no_duplicate) {
+          $duplicate = 1;
+          last;
         }
       }
     }
     
-    
+    return $duplicate;
   }
 }
 
@@ -374,5 +409,5 @@ package SPVM::Regex::Pattern {
   has type : byte;
   has max_repeat : int;
   has min_repeat : int;
-  has uchar_mim_maxs : int[];
+  has uchar_min_maxs : int[];
 }
