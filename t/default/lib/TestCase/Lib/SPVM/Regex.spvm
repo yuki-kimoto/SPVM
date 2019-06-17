@@ -7,6 +7,23 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+
+  sub match_not_number : int () {
+
+    # Match number
+    {
+      my $re = SPVM::Regex->new("0\\D+9");
+      my $target = "0abc9";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   sub match_number : int () {
 
     # Match number
