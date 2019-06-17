@@ -7,6 +7,40 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub invalid_regex : int () {
+    # Invalid - Charset after variable quantifier is duplicate
+    {
+      eval { SPVM::Regex->new("a*a"); };
+      unless ($@) {
+        return 0;
+      }
+
+      eval { SPVM::Regex->new("a?a"); };
+      unless ($@) {
+        return 0;
+      }
+
+      eval { SPVM::Regex->new("a+a"); };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval { SPVM::Regex->new("a{1,3}a"); };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Valid - aa
+    {
+       SPVM::Regex->new("aa");
+       SPVM::Regex->new("a{3,3}a");
+    }
+    
+    return 1;
+  }
+
   sub match_end : int () {
     # Match $
     {
