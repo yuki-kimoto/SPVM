@@ -185,6 +185,32 @@ package SPVM::Regex {
         }
       }
     }
+    
+    # Check patterns
+    for (my $pattern_index = 0; $pattern_index < $patterns->length; $pattern_index++) {
+      
+      if ($pattern_index == 0) {
+        next;
+      }
+      
+      my $before_is_variable_quantifier = 0;
+      my $before_pattern =(SPVM::Regex::Pattern)$patterns->get($pattern_index - 1);
+      
+      if ($before_pattern->{min_repeat} != $before_pattern->{max_repeat}) {
+        $before_is_variable_quantifier = 1;
+      }
+      
+      # Check duplicatation charset
+      if ($before_is_variable_quantifier) {
+        my $cur_pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
+        
+        my $duplicate_charset = $self->duplicate($before_pattern, $cur_pattern);
+        
+        if ($duplicate_charset) {
+          die "Invalid regex. Charset after variable quantifier is duplicate";
+        }
+      }
+    }
   }
   
   sub match : string[] ($self : self, $target : string) {
