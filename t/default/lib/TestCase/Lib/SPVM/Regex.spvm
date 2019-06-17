@@ -7,6 +7,23 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub match_number : int () {
+
+    # Match number
+    {
+      my $re = SPVM::Regex->new("a\\d+c");
+      my $target = "za0123456789cz";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub invalid_regex : int () {
     # Invalid - Charset after variable quantifier is duplicate
     {
