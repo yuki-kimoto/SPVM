@@ -7,6 +7,71 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub match_not_word : int () {
+
+    # Match not number
+    {
+      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $target = "0-:9";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+    
+    # Match not a-z
+    {
+      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $target = "ab`{yz";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Match not A-Z
+    {
+      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $target = "AB`{YZ";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Match not _
+    {
+      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $target = "_^`_";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # not Match 
+    {
+      my $re = SPVM::Regex->new("\\W+");
+      my $target = "azAZ_09";
+      
+      my $match = $re->match($target);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub match_word : int () {
 
     # Match number
