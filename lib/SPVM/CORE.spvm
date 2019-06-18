@@ -33,6 +33,40 @@ package SPVM::CORE {
 
   native sub isdigit : int ($char : int);
   
+  sub ispspace : int ($char : int) {
+    my $ispspace = 0;
+    switch ($char) {
+      case ' ':
+      case '\r':
+      case '\n':
+      case '\t':
+      case '\f':
+      {
+        $ispspace = 1;
+        break;
+      }
+    }
+    return $ispspace;
+  }
+
+  sub ispword : int ($char : int) {
+    my $ispword = 0;
+    
+    if ($char >= 'a' && $char <= 'z') {
+      $ispword = 1;
+    }
+    elsif ($char >= 'A' && $char <= 'Z') {
+      $ispword = 1;
+    }
+    elsif ($char == '_') {
+      $ispword = 1;
+    }
+    elsif ($char >= '0' && $char <= '9') {
+      $ispword = 1;
+    }
+    return $ispword;
+  }
+
   native sub rand : int ($seed_ref : int&);
   
   precompile sub lc : string($str : string) {
