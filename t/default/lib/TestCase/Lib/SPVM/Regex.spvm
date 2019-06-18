@@ -11,7 +11,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match not space
     {
-      my $re = SPVM::Regex->new("\\s+\\S+\\s+");
+      my $re = SPVM::Regex->new("\s+\S+\s+");
       my $target = "\f\tzacz \r\n";
       
       my $match = $re->match($target);
@@ -23,7 +23,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Not Match not space
     {
-      my $re = SPVM::Regex->new("\\S+");
+      my $re = SPVM::Regex->new("\S+");
       my $target = "\f\t \r\n";
       
       my $match = $re->match($target);
@@ -39,7 +39,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match space
     {
-      my $re = SPVM::Regex->new("a\\s+c");
+      my $re = SPVM::Regex->new("a\s+c");
       my $target = "za\f\t\r\n cz";
       
       my $match = $re->match($target);
@@ -51,7 +51,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Not Match
     {
-      my $re = SPVM::Regex->new("\\s+");
+      my $re = SPVM::Regex->new("\s+");
       my $target = "\aabc\0";
       
       my $match = $re->match($target);
@@ -68,7 +68,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match not number
     {
-      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "0-:9";
       
       my $match = $re->match($target);
@@ -80,7 +80,7 @@ package TestCase::Lib::SPVM::Regex {
     
     # Match not a-z
     {
-      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "ab`{yz";
       
       my $match = $re->match($target);
@@ -92,7 +92,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match not A-Z
     {
-      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "AB`{YZ";
       
       my $match = $re->match($target);
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match not _
     {
-      my $re = SPVM::Regex->new("\\w\\W+\\w");
+      my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "_^`_";
       
       my $match = $re->match($target);
@@ -116,7 +116,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # not Match 
     {
-      my $re = SPVM::Regex->new("\\W+");
+      my $re = SPVM::Regex->new("\W+");
       my $target = "azAZ_09";
       
       my $match = $re->match($target);
@@ -133,7 +133,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match number
     {
-      my $re = SPVM::Regex->new("\\-\\w+\\:");
+      my $re = SPVM::Regex->new("\-\w+\:");
       my $target = "-0123456789:";
       
       my $match = $re->match($target);
@@ -145,7 +145,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match a-z
     {
-      my $re = SPVM::Regex->new("\\`\\w+\\{");
+      my $re = SPVM::Regex->new("\`\w+\{");
       my $target = "`abyz{";
       
       my $match = $re->match($target);
@@ -157,7 +157,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match A-Z
     {
-      my $re = SPVM::Regex->new("\\`\\w+\\{");
+      my $re = SPVM::Regex->new("\`\w+\{");
       my $target = "`ABYZ{";
       
       my $match = $re->match($target);
@@ -169,7 +169,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match _
     {
-      my $re = SPVM::Regex->new("\\^\\w+\\`");
+      my $re = SPVM::Regex->new("\^\w+\`");
       my $target = "^__`";
       
       my $match = $re->match($target);
@@ -181,7 +181,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match Not
     {
-      my $re = SPVM::Regex->new("\\w+");
+      my $re = SPVM::Regex->new("\w+");
       my $target = "{}あいう";
       
       my $match = $re->match($target);
@@ -198,7 +198,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match not number
     {
-      my $re = SPVM::Regex->new("0\\D+9");
+      my $re = SPVM::Regex->new("0\D+9");
       my $target = "0abc9";
       
       my $match = $re->match($target);
@@ -215,7 +215,7 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match number
     {
-      my $re = SPVM::Regex->new("a\\d+c");
+      my $re = SPVM::Regex->new("a\d+c");
       my $target = "za0123456789cz";
       
       my $match = $re->match($target);
@@ -228,7 +228,7 @@ package TestCase::Lib::SPVM::Regex {
     # Match number and not number
     {
       {
-        my $re = SPVM::Regex->new("\\d+\\D+\\d+");
+        my $re = SPVM::Regex->new("\d+\D+\d+");
         my $target = "123abc789";
         
         my $match = $re->match($target);
@@ -265,12 +265,12 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
 
-      eval { SPVM::Regex->new("\\d+\\D*\\d+"); };
+      eval { SPVM::Regex->new("\d+\D*\d+"); };
       unless ($@) {
         return 0;
       }
 
-      eval { SPVM::Regex->new("\\d+\\D?\\d+"); };
+      eval { SPVM::Regex->new("\d+\D?\d+"); };
       unless ($@) {
         return 0;
       }
@@ -282,7 +282,7 @@ package TestCase::Lib::SPVM::Regex {
     {
        SPVM::Regex->new("aa");
        SPVM::Regex->new("a{3,3}a");
-       SPVM::Regex->new("\\d\\D\\d");
+       SPVM::Regex->new("\d\D\d");
     }
     
     return 1;

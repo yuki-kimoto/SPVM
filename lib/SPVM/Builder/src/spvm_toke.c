@@ -900,6 +900,48 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                else if (*char_ptr == 's') {
+                  str[str_length] = '\\';
+                  str_length++;
+                  str[str_length] = 's';
+                  str_length++;
+                  char_ptr++;
+                }
+                else if (*char_ptr == 'S') {
+                  str[str_length] = '\\';
+                  str_length++;
+                  str[str_length] = 'S';
+                  str_length++;
+                  char_ptr++;
+                }
+                else if (*char_ptr == 'd') {
+                  str[str_length] = '\\';
+                  str_length++;
+                  str[str_length] = 'd';
+                  str_length++;
+                  char_ptr++;
+                }
+                else if (*char_ptr == 'D') {
+                  str[str_length] = '\\';
+                  str_length++;
+                  str[str_length] = 'D';
+                  str_length++;
+                  char_ptr++;
+                }
+                else if (*char_ptr == 'w') {
+                  str[str_length] = '\\';
+                  str_length++;
+                  str[str_length] = 'w';
+                  str_length++;
+                  char_ptr++;
+                }
+                else if (*char_ptr == 'W') {
+                  str[str_length] = '\\';
+                  str_length++;
+                  str[str_length] = 'W';
+                  str_length++;
+                  char_ptr++;
+                }
                 // Hex ascii code
                 else if (*char_ptr == 'x') {
                   char_ptr++;
@@ -982,7 +1024,29 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 else {
-                  SPVM_COMPILER_error(compiler, "Invalid escape character in string literal %c at %s line %d\n", *char_ptr, compiler->cur_file, compiler->cur_line);
+                  int32_t is_pword = 0;
+                  if (*char_ptr >= 'a' && *char_ptr <= 'z') {
+                    is_pword = 1;
+                  }
+                  else if (*char_ptr >= 'A' && *char_ptr <= 'Z') {
+                    is_pword = 1;
+                  }
+                  else if (*char_ptr >= '0' && *char_ptr <= '9') {
+                    is_pword = 1;
+                  }
+                  else if (*char_ptr == '_') {
+                    is_pword = 1;
+                  }
+                  if (is_pword) {
+                    SPVM_COMPILER_error(compiler, "Invalid escape character in string literal %c at %s line %d\n", *char_ptr, compiler->cur_file, compiler->cur_line);
+                  }
+                  else {
+                    str[str_length] = '\\';
+                    str_length++;
+                    str[str_length] = *char_ptr;
+                    str_length++;
+                    char_ptr++;
+                  }
                 }
               }
               else {
