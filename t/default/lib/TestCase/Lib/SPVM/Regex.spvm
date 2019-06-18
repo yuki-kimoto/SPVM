@@ -56,6 +56,18 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
+
+    # Match Not
+    {
+      my $re = SPVM::Regex->new("\\w+");
+      my $target = "{}あいう";
+      
+      my $match = $re->match($target);
+      
+      if ($match) {
+        return 0;
+      }
+    }
     
     return 1;
   }
