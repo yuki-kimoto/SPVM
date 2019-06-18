@@ -94,7 +94,7 @@ package SPVM::Regex {
               
               $pattern->{negate} = 0;
               
-              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_'];
+              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
               $pattern->{uchar_min_maxs} = $uchar_min_maxs;
               $pattern->{max_repeat} = 1;
               $pattern->{min_repeat} = 1;
@@ -109,7 +109,7 @@ package SPVM::Regex {
               $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
               
               $pattern->{negate} = 1;
-              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_'];
+              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
               $pattern->{uchar_min_maxs} = $uchar_min_maxs;
               $pattern->{max_repeat} = 1;
               $pattern->{min_repeat} = 1;
@@ -125,7 +125,7 @@ package SPVM::Regex {
               
               $pattern->{negate} = 0;
               
-              my $uchar_min_maxs = [(int)' ', '\t', '\f', '\r', '\n'];
+              my $uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
               $pattern->{uchar_min_maxs} = $uchar_min_maxs;
               $pattern->{max_repeat} = 1;
               $pattern->{min_repeat} = 1;
@@ -140,7 +140,7 @@ package SPVM::Regex {
               $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
               
               $pattern->{negate} = 1;
-              my $uchar_min_maxs = [(int)' ', '\t', '\f', '\r', '\n'];
+              my $uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
               $pattern->{uchar_min_maxs} = $uchar_min_maxs;
               $pattern->{max_repeat} = 1;
               $pattern->{min_repeat} = 1;
