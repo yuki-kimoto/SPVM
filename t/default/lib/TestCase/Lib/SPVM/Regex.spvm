@@ -7,6 +7,35 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub match_space : int () {
+
+    # Match space
+    {
+      my $re = SPVM::Regex->new("a\\s+c");
+      my $target = "za\f\t\r\n cz";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Not Match
+    {
+      my $re = SPVM::Regex->new("\\s+");
+      my $target = "\aabc\0";
+      
+      my $match = $re->match($target);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub match_not_word : int () {
 
     # Match not number
