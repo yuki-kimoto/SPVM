@@ -82,6 +82,11 @@ package TestCase::Lib::SPVM::Regex {
       unless ($@) {
         return 0;
       }
+
+      eval { SPVM::Regex->new("\\d+\\D?\\d+"); };
+      unless ($@) {
+        return 0;
+      }
       
       $@ = undef;
     }
