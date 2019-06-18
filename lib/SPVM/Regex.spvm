@@ -361,6 +361,10 @@ package SPVM::Regex {
       while ($target_index < @$target_uchars) {
         my $target_uchar = $target_uchars->[$target_index];
         my $pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
+        my $max_repeat = $pattern->{max_repeat};
+        my $min_repeat = $pattern->{min_repeat};
+        my $uchar_min_maxs = $pattern->{uchar_min_maxs};
+        my $negate = $pattern->{negate};
         
         my $type = $pattern->{type};
         
@@ -368,33 +372,34 @@ package SPVM::Regex {
         my $repeat_count = 0;
         if ($type == SPVM::Regex::Pattern->PATTERN) {
           # Match uchar repeat
-          my $max_repeat = $pattern->{max_repeat};
-          my $min_repeat = $pattern->{min_repeat};
-          
           for (my $repeat_index = 0; $repeat_index < $max_repeat; $repeat_index++) {
             # Match uchar
-            my $match_uchar = 0;
-            my $uchar_min_maxs = $pattern->{uchar_min_maxs};
-            
-            for (my $min_max_index = 0; $min_max_index < @$uchar_min_maxs; $min_max_index += 2) {
-              
-              my $uchar_min = $uchar_min_maxs->[$min_max_index];
-              my $uchar_max = $uchar_min_maxs->[$min_max_index + 1];
-              
-              my $match_uchar_range = 0;
-              if ($target_uchar >= $uchar_min && $target_uchar <= $uchar_max) {
-                $match_uchar_range = 1;
+            my $match_uchar : int;
+            # Match in not range
+            if ($negate) {
+              my $match_uchar_count = 0;
+              for (my $min_max_index = 0; $min_max_index < @$uchar_min_maxs; $min_max_index += 2) {
+                my $uchar_min = $uchar_min_maxs->[$min_max_index];
+                my $uchar_max = $uchar_min_maxs->[$min_max_index + 1];
+                if ($target_uchar >= $uchar_min && $target_uchar <= $uchar_max) {
+                  $match_uchar_count++;
+                }
               }
-              
-              my $negate = $pattern->{negate};
-              if ($negate) {
-                $match_uchar = !$match_uchar_range;
+              if ($match_uchar_count == 0) {
+                $match_uchar = 1;
               }
-              else {
-                $match_uchar = $match_uchar_range;
-              }
-              if ($match_uchar) {
-                last;
+            }
+            # Match in range
+            else {
+              $match_uchar = 0;
+              for (my $min_max_index = 0; $min_max_index < @$uchar_min_maxs; $min_max_index += 2) {
+                my $uchar_min = $uchar_min_maxs->[$min_max_index];
+                my $uchar_max = $uchar_min_maxs->[$min_max_index + 1];
+                
+                if ($target_uchar >= $uchar_min && $target_uchar <= $uchar_max) {
+                  $match_uchar = 1;
+                  last;
+                }
               }
             }
             
