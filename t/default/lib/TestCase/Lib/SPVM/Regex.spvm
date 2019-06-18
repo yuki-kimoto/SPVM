@@ -7,7 +7,6 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
-
   sub match_not_number : int () {
 
     # Match not number
@@ -24,6 +23,7 @@ package TestCase::Lib::SPVM::Regex {
     
     return 1;
   }
+
   sub match_number : int () {
 
     # Match number
@@ -74,6 +74,11 @@ package TestCase::Lib::SPVM::Regex {
       }
       
       eval { SPVM::Regex->new("a{1,3}a"); };
+      unless ($@) {
+        return 0;
+      }
+
+      eval { SPVM::Regex->new("\\d+\\D*\\d+"); };
       unless ($@) {
         return 0;
       }

@@ -295,19 +295,37 @@ package SPVM::Regex {
       
       my $before_is_variable_quantifier = 0;
       my $before_pattern =(SPVM::Regex::Pattern)$patterns->get($pattern_index - 1);
+      my $cur_pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
       
+      # Check duplicatation charset
       if ($before_pattern->{min_repeat} != $before_pattern->{max_repeat}) {
         $before_is_variable_quantifier = 1;
       }
-      
-      # Check duplicatation charset
       if ($before_is_variable_quantifier) {
-        my $cur_pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
-        
         my $duplicate_charset = $self->duplicate($before_pattern, $cur_pattern);
         
         if ($duplicate_charset) {
           die "Invalid regex. Charset after variable quantifier is duplicate";
+        }
+      }
+      
+      # 0 width regular expression is forbidden
+      my $no_zero_quantifier_pattern : SPVM::Regex::Pattern;
+      my $find_zere_quantifier = 0;
+      for (my $before_pattern_index = $pattern_index - 1; $before_pattern_index >= 0; $before_pattern_index--) {
+        my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($before_pattern_index);
+        if ($before_pattern->{min_repeat} == 0) {
+          $find_zere_quantifier = 1;
+        }
+        else {
+          $no_zero_quantifier_pattern = $before_pattern;
+          last;
+        }
+      }
+      if ($find_zere_quantifier && $no_zero_quantifier_pattern) {
+        my $duplicate_charset = $self->duplicate($no_zero_quantifier_pattern, $cur_pattern);
+        if ($duplicate_charset) {
+          die "Invalid regex. Zero width Charset after variable quantifier is duplicate";
         }
       }
     }
@@ -459,18 +477,20 @@ package SPVM::Regex {
       $duplicate = 1;
     }
     elsif (!$negate1 && !$negate2) {
-      $duplicate = 1;
+      $duplicate = 0;
       for (my $min_max_index1 = 0; $min_max_index1 < @$uchar_min_maxs1; $min_max_index1 += 2) {
         my $uchar_min1 = $uchar_min_maxs1->[$min_max_index1];
         my $uchar_max1 = $uchar_min_maxs1->[$min_max_index1 + 1];
         for (my $min_max_index2 = 0; $min_max_index2 < @$uchar_min_maxs2; $min_max_index2 += 2) {
           my $uchar_min2 = $uchar_min_maxs2->[$min_max_index2];
           my $uchar_max2 = $uchar_min_maxs2->[$min_max_index2 + 1];
-          if ($uchar_min2 > $uchar_max1 && $uchar_max2 > $uchar_max1) {
-            $duplicate = 0;
+          if ($uchar_min2 >= $uchar_min1 && $uchar_min2 <= $uchar_max1) {
+            $duplicate = 1;
+            last;
           }
-          elsif ($uchar_min2 < $uchar_min1 && $uchar_max2 > $uchar_min1) {
-            $duplicate = 0;
+          elsif ($uchar_max2 >= $uchar_min1 && $uchar_max2 <= $uchar_max1) {
+            $duplicate = 1;
+            last;
           }
         }
       }
