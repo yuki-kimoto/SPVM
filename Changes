@@ -6,7 +6,7 @@
     This is expanded to \s, \S, \d, \D, \w, \W
   - add escape character \:, \- etc which is ascii characters except for perl word character
     This is expanded to \:, \-.
-  - fix variable memory id bug. Removed memory ID optimization
+  - fix variable memory id bug
 0.0437 2019-06-10
   - rename SPVM::List->new_with_array to newa
   - rename SPVM::Hash->new_with_array to newa
