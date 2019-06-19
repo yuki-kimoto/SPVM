@@ -18,6 +18,7 @@ enum {
 struct SPVM_block {
   int32_t id;
   int32_t have_object_var_decl;
+  int32_t is_push_mem_id_stack;
 };
 
 SPVM_BLOCK* SPVM_BLOCK_new(SPVM_COMPILER* compiler);
