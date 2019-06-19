@@ -452,10 +452,6 @@ statement
   | for_statement
   | while_statement
   | block
-    {
-      SPVM_OP* op_block = $1;
-      op_block->uv.block->is_push_mem_id_stack = 1;
-    }
   | switch_statement
   | case_statement
   | default_statement
@@ -579,9 +575,6 @@ if_statement
       // if is wraped with block to allow the following syntax
       //  if (my $var = 3) { ... }
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, $1->file, $1->line);
-      
-      op_block->uv.block->is_push_mem_id_stack = 1;
-
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
       $$ = op_block;
@@ -593,7 +586,6 @@ if_statement
       // if is wraped with block to allow the following syntax
       //  if (my $var = 3) { ... }
       SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, $1->file, $1->line);
-      op_block->uv.block->is_push_mem_id_stack = 1;
       SPVM_OP_insert_child(compiler, op_block, op_block->last, op_if);
       
       $$ = op_block;

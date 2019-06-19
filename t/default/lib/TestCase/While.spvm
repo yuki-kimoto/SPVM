@@ -1,20 +1,5 @@
 package TestCase::While {
   use TestCase::Minimal;
-
-  sub condition_my_var_mem_id : int () {
-    while (my $uchar = 5) {
-      my $is_char = 10;
-
-      my $num = 1;
-      
-      unless ($uchar == 5) {
-        return 0;
-      }
-      last;
-    }
-    
-    return 1;
-  }
   
   sub basic : int () {
   

@@ -856,8 +856,6 @@ SPVM_OP* SPVM_OP_build_eval(SPVM_COMPILER* compiler, SPVM_OP* op_eval, SPVM_OP* 
   // eval block
   op_eval_block->uv.block->id = SPVM_BLOCK_C_ID_EVAL;
   
-  op_eval_block->uv.block->is_push_mem_id_stack = 1;
-  
   return op_eval;
 }
 
@@ -915,8 +913,6 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
     }
     
     SPVM_OP_insert_child(compiler, op_case_info, op_case_info->last, op_block);
-    
-    op_block->uv.block->is_push_mem_id_stack = 1;
   }
   
   case_info->op_case_info = op_case_info;
@@ -972,7 +968,7 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   // Set block flag
   op_block_statements->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
-  
+
   // Outer block for initialize loop variable
   SPVM_OP* op_block_init = SPVM_OP_new_op_block(compiler, op_for->file, op_for->line);
   op_block_init->uv.block->id = SPVM_BLOCK_C_ID_LOOP_INIT;
@@ -997,8 +993,6 @@ SPVM_OP* SPVM_OP_build_for_statement(SPVM_COMPILER* compiler, SPVM_OP* op_for, S
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
   
-  op_block_init->uv.block->is_push_mem_id_stack = 1;
-  
   return op_loop;
 }
 
@@ -1020,7 +1014,7 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   
   // Set block flag
   op_block_statements->uv.block->id = SPVM_BLOCK_C_ID_LOOP_STATEMENTS;
-
+  
   // Next value. This is null.
   SPVM_OP* op_term_increment = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NULL, op_while->file, op_while->line);
 
@@ -1037,8 +1031,6 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   SPVM_OP_insert_child(compiler, op_block_init, op_block_init->last, op_loop_increment);
   
   SPVM_OP_insert_child(compiler, op_loop, op_loop->last, op_block_init);
-
-  op_block_init->uv.block->is_push_mem_id_stack = 1;
   
   return op_loop;
 }
@@ -1047,9 +1039,7 @@ SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op
   
   SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_use);
   SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_block);
-
-  op_block->uv.block->is_push_mem_id_stack = 1;
-
+  
   return op_if_require;
 }
 
@@ -2528,7 +2518,6 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
         SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_return);
       }
     }
-    op_block->uv.block->is_push_mem_id_stack = 1;
   }
   
   // Save block
