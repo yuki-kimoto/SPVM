@@ -142,7 +142,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
-
+    
     # Match a-z
     {
       my $re = SPVM::Regex->new("\`\w+\{");

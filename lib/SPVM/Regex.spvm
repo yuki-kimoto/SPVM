@@ -11,6 +11,7 @@ package SPVM::Regex {
     CONTINUE,
     QUANTIFIER_MIN,
     QUANTIFIER_MAX,
+    CHAR_CLASS,
   }
   
   sub new : SPVM::Regex ($re_str : string) {
@@ -150,6 +151,25 @@ package SPVM::Regex {
               
               break;
             }
+            default: {
+              if (ispword($next_uchar)) {
+                die "Invalid regex escape character";
+              }
+              # \: \- etc
+              else {
+                my $pattern = new SPVM::Regex::Pattern;
+                $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
+                
+                $pattern->{negate} = 0;
+                my $uchar_min_maxs = [(int)$next_uchar, $next_uchar];
+                $pattern->{uchar_min_maxs} = $uchar_min_maxs;
+                $pattern->{max_repeat} = 1;
+                $pattern->{min_repeat} = 1;
+                $patterns->push($pattern);
+                
+                $before_is_charset = 1;
+              }
+            }
           }
           
           break;
@@ -164,7 +184,7 @@ package SPVM::Regex {
           break;
         }
         case '.': {
-          die ". is not implemented";
+          die ". is not supported";
           break;
         }
         case '$': {
@@ -172,7 +192,7 @@ package SPVM::Regex {
           break;
         }
         case '|': {
-          die "| is not implemented";
+          die "| is not supported";
           break;
         }
         case '(': {
@@ -303,7 +323,6 @@ package SPVM::Regex {
       }
       if ($before_is_variable_quantifier) {
         my $duplicate_charset = $self->duplicate($before_pattern, $cur_pattern);
-        
         if ($duplicate_charset) {
           die "Invalid regex. Charset after variable quantifier is duplicate";
         }
