@@ -2241,20 +2241,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
                 check_ast_info->eval_block_stack_length--;
               }
-              else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
-                // Move condition to last sibling
-                SPVM_OP* op_term_init = op_cur->first;
-                SPVM_OP* op_condition = op_cur->first->sibparent;
-                SPVM_OP* op_block_statements = op_cur->first->sibparent->sibparent;
-                SPVM_OP* op_loop_increment = op_cur->first->sibparent->sibparent->sibparent;
-                
-                op_term_init->sibparent = op_block_statements;
-                op_loop_increment->sibparent = op_condition;
-                op_loop_increment->moresib = 1;
-                
-                op_condition->sibparent = op_cur;
-                op_condition->moresib = 0;
-              }
               
               break;
             }
@@ -4230,6 +4216,21 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                           }
+                        }
+
+                        // Move loop condition to last sibling before opcode building
+                        if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_LOOP_INIT) {
+                          SPVM_OP* op_term_init = op_cur->first;
+                          SPVM_OP* op_condition = op_cur->first->sibparent;
+                          SPVM_OP* op_block_statements = op_cur->first->sibparent->sibparent;
+                          SPVM_OP* op_loop_increment = op_cur->first->sibparent->sibparent->sibparent;
+                          
+                          op_term_init->sibparent = op_block_statements;
+                          op_loop_increment->sibparent = op_condition;
+                          op_loop_increment->moresib = 1;
+                          
+                          op_condition->sibparent = op_cur;
+                          op_condition->moresib = 0;
                         }
                         
                         break;
