@@ -17,6 +17,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::While->next);
   ok(TestCase::While->last);
   ok(TestCase::While->condition_my);
+  ok(TestCase::While->condition_my_var_mem_id);
 }
 
 
