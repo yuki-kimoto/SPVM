@@ -50,7 +50,10 @@ package SPVM::Regex {
         die "\$ must be last of regex";
       }
       
-      my $is_char = 0;
+      my $cur_is_char = 0;
+      my $cur_uchar_min_maxs : int[];
+      my $cur_negate = 0;
+      
       switch ($uchar) {
         case '\\': {
           my $next_uchar = uchar($re_str, \$pos);
@@ -286,17 +289,16 @@ package SPVM::Regex {
             }
           }
           else {
-            $is_char = 1;
+            $cur_is_char = 1;
+            $cur_uchar_min_maxs = [$uchar, $uchar];
           }
         }
       }
-      if ($is_char) {
-        my $uchar_min_maxs = [$uchar, $uchar];
-
+      if ($cur_is_char) {
         my $pattern = new SPVM::Regex::Pattern;
         $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-        $pattern->{negate} = 0;
-        $pattern->{uchar_min_maxs} = $uchar_min_maxs;
+        $pattern->{negate} = (byte)$cur_negate;
+        $pattern->{uchar_min_maxs} = $cur_uchar_min_maxs;
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
         $patterns->push($pattern);
