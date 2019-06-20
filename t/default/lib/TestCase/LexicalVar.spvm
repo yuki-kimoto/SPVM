@@ -56,6 +56,19 @@ package TestCase::LexicalVar {
         return 0;
       }
     }
+
+    # Multiple field and array access
+    {
+      my $minimals = new TestCase::Minimal[2];
+      $minimals->[1] = new TestCase::Minimal;
+      $minimals->[1]{x} = 5;
+      
+      my $string = "a $minimals->[1]{x}b $minimals->[ 1 ]{ x }c";
+      
+      unless ($string eq "a 5b 5c") {
+        return 0;
+      }
+    }
     
     return 1;
   }

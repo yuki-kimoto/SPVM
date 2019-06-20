@@ -872,7 +872,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     }
                     if (is_access) {
                       while (1) {
-                        if (isalnum(*next_double_quote_start_bufptr) || *next_double_quote_start_bufptr == '_' ||  *next_double_quote_start_bufptr == '{' || *next_double_quote_start_bufptr == '[') {
+                        if (isalnum(*next_double_quote_start_bufptr) || *next_double_quote_start_bufptr == '_' ||  *next_double_quote_start_bufptr == '{' || *next_double_quote_start_bufptr == '[' || *next_double_quote_start_bufptr == ' ') {
                           next_double_quote_start_bufptr++;
                         }
                         else if (*next_double_quote_start_bufptr == '}' || *next_double_quote_start_bufptr == ']') {
