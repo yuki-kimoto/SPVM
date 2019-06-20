@@ -11,8 +11,8 @@ package TestCase::Lib::SPVM::Regex {
 
     # Match char class
     {
-      my $re = SPVM::Regex->new("[bcd]+");
-      my $target = "zabcz";
+      my $re = SPVM::Regex->new("[bcdあ]+");
+      my $target = "zabcあz";
       
       my $match = $re->match($target);
       
