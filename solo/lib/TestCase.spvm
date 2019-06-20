@@ -73,6 +73,23 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $foo = 2;
+      my $bar = 3;
+      my $str = "foo $foo ${bar} rrr";
+    }
+    {
+      my $foo = 2;
+      my $str = "foo $foo bar";
+    }
+    
+    {
+      "aaaa$";
+    }
+    {
+      "aaaa\\";
+    }
+    
+    {
       my $i = 0;
       switch ($i) {
         case 1: {

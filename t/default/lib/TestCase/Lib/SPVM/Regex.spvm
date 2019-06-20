@@ -7,6 +7,75 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub match_char_class_range : int ()  {
+    # Match char class range
+    {
+      my $re = SPVM::Regex->new("[0-9]+");
+      my $target = "z09az";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Not Match char class range
+    {
+      my $re = SPVM::Regex->new("[0-9a-c]+");
+      my $target = "zz";
+      
+      my $match = $re->match($target);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub match_char_class : int () {
+
+    # Match char class
+    {
+      my $re = SPVM::Regex->new("[bcdあ]+");
+      my $target = "zabcあz";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Match char class \d
+    {
+      my $re = SPVM::Regex->new("[\da]+");
+      my $target = "z01az";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Not Match char class
+    {
+      my $re = SPVM::Regex->new("[bcd\d]+");
+      my $target = "ae";
+      
+      my $match = $re->match($target);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub match_not_space : int () {
 
     # Match not space
@@ -293,7 +362,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       # Match $ - "zabbc"
       {
-        my $re = SPVM::Regex->new("ab+c\$");
+        my $re = SPVM::Regex->new("ab+c$");
         my $target = "zabbc";
         
         my $match = $re->match($target);
@@ -305,7 +374,7 @@ package TestCase::Lib::SPVM::Regex {
       
       # Not Match $ - "zabbcz"
       {
-        my $re = SPVM::Regex->new("ab+c\$");
+        my $re = SPVM::Regex->new("ab+c$");
         my $target = "zabbcz";
         
         my $match = $re->match($target);

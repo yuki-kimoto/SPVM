@@ -1,4 +1,27 @@
 package TestCase::Literal::String {
+
+  sub edge_case : int () {
+    
+    # String literal last character is \\
+    {
+      my $str = "aaaa\\";
+      
+      unless ($str->[4] == '\\') {
+        return 0;
+      }
+    }
+
+    # String literal last allow $
+    {
+      my $str = "aaaa$";
+      
+      unless ($str->[4] == '$') {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   sub characters : int () {
     my $string = "abc";
     

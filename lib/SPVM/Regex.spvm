@@ -1,6 +1,7 @@
 package SPVM::Regex {
   use SPVM::Unicode (uchar);
   use SPVM::List;
+  use SPVM::IntList;
 
   has patterns : SPVM::List;
   has match_start : int;
@@ -44,13 +45,20 @@ package SPVM::Regex {
     my $quantifier_max_str = "";
     
     my $status = STATUS_START();
+    
+    my $char_class_uchar_min_maxs_list : SPVM::IntList;
+    
+    my $before_is_char_class_range = 0;
 
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       if ($self->{match_end}) {
         die "\$ must be last of regex";
       }
       
-      my $is_char = 0;
+      my $cur_is_char = 0;
+      my $cur_uchar_min_maxs : int[];
+      my $cur_negate = 0;
+      
       switch ($uchar) {
         case '\\': {
           my $next_uchar = uchar($re_str, \$pos);
@@ -60,93 +68,36 @@ package SPVM::Regex {
           
           switch ($next_uchar) {
             case 'd': {
-              my $uchar_min_maxs = [(int)'0', '9'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 0;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9'];
               break;
             }
             case 'D': {
-              my $uchar_min_maxs = [(int)'0', '9'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 1;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9'];
+              $cur_negate = 1;
               break;
             }
             case 'w': {
-              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 0;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
               break;
             }
             case 'W': {
-              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 1;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+              $cur_negate = 1;
               break;
             }
             case 's': {
-              my $uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 0;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
               break;
             }
             case 'S': {
-              my $uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 1;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+              $cur_negate = 1;
               break;
             }
             default: {
@@ -156,151 +107,203 @@ package SPVM::Regex {
               # \: \- etc
               else {
                 my $uchar_min_maxs = [(int)$next_uchar, $next_uchar];
-
-                my $pattern = new SPVM::Regex::Pattern;
-                $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-                $pattern->{negate} = 0;
-                $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-                $pattern->{max_repeat} = 1;
-                $pattern->{min_repeat} = 1;
-                $patterns->push($pattern);
-                
-                $before_is_charset = 1;
+                if ($status == STATUS_CHAR_CLASS()) {
+                  $char_class_uchar_min_maxs_list->push($uchar_min_maxs->[0]);
+                  $char_class_uchar_min_maxs_list->push($uchar_min_maxs->[1]);
+                }
+                else {
+                  $cur_is_char = 1;
+                  $cur_uchar_min_maxs = $uchar_min_maxs;
+                }
               }
             }
           }
           
           break;
         }
-        case '^': {
-          unless ($status == STATUS_START()) {
-            die "Regex compile error";
-          }
-          
-          $self->{match_start} = 1;
-          
-          break;
-        }
-        case '.': {
-          die ". is not supported";
-          break;
-        }
-        case '$': {
-          $self->{match_end} = 1;
-          break;
-        }
-        case '|': {
-          die "| is not supported";
-          break;
-        }
-        case '(': {
-          die "Not yet implemented (";
-          break;
-        }
-        case ')': {
-          die "Not yet implemented )";
-          break;
-        }
-        case '[': {
-          die "Not yet implemented [";
-          break;
-        }
-        case ']': {
-          die "Not yet implemented ]";
-          break;
-        }
-        case '*': {
-          unless ($before_is_charset) {
-            die "Regex compile error";
-          }
-          my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
-          $before_pattern->{min_repeat} = 0;
-          $before_pattern->{max_repeat} = INT32_MAX();
-          $before_is_charset = 0;
-          break;
-        }
-        case '+': {
-          unless ($before_is_charset) {
-            die "Regex compile error";
-          }
-          my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
-          $before_pattern->{min_repeat} = 1;
-          $before_pattern->{max_repeat} = INT32_MAX();
-          $before_is_charset = 0;
-          break;
-        }
-        case '?': {
-          unless ($before_is_charset) {
-            die "Regex compile error";
-          }
-          my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
-          $before_pattern->{min_repeat} = 0;
-          $before_pattern->{max_repeat} = 1;
-          $before_is_charset = 0;
-          break;
-        }
-        case '{': {
-          unless ($before_is_charset) {
-            die "Regex compile error";
-          }
-          $status = STATUS_QUANTIFIER_MIN();
-          $before_is_charset = 0;
-          break;
-        }
-        case '}': {
-          unless ($status == STATUS_QUANTIFIER_MAX()) {
-            die "Regex compile error";
-          }
-          my $quantifier_max = strtoi($quantifier_max_str, 10);
-          my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
-          $last_pattern->{max_repeat} = $quantifier_max;
-          
-          $status = STATUS_CONTINUE();
-          $before_is_charset = 0;
-          $quantifier_max_str = "";
-          break;
-        }
         default: {
-          if ($status == STATUS_QUANTIFIER_MIN()) {
-            if (isdigit($uchar)) {
-              $quantifier_min_str .= $uchar - '0';
-            }
-            elsif ($uchar == ',') {
-              my $quantifier_min = strtoi($quantifier_min_str, 10);
-              my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
-              $last_pattern->{min_repeat} = $quantifier_min;
+          if ($status == STATUS_CHAR_CLASS()) {
+            if ($uchar == ']') {
+              $status = STATUS_CONTINUE();
+              $cur_uchar_min_maxs = $char_class_uchar_min_maxs_list->to_array;
+              if (@$cur_uchar_min_maxs == 0) {
+                die "Emtpy character class";
+              }
+              for (my $i = 0; $i < @$cur_uchar_min_maxs; $i += 2) {
+                my $min = $cur_uchar_min_maxs->[$i];
+                my $max = $cur_uchar_min_maxs->[$i + 1];
+                if ($max < $min) {
+                  die "Invalid range character class";
+                }
+              }
               
-              $status = STATUS_QUANTIFIER_MAX();
-              $quantifier_min_str .= "";
+              $char_class_uchar_min_maxs_list = SPVM::IntList->new;
+              $cur_is_char = 1;
+            }
+            elsif ($uchar == '-') {
+              if ($before_is_char_class_range) {
+                die "- must not be repeat";
+              }
+              else {
+                $before_is_char_class_range = 1;
+              }
             }
             else {
-              die "Quantifier min must be non-fractional number";
-            }
-          }
-          elsif ($status == STATUS_QUANTIFIER_MAX()) {
-            if (isdigit($uchar)) {
-              $quantifier_max_str .= $uchar - '0';
-            }
-            else {
-              die "Quantifier max must be non-fractional number";
+              if ($before_is_char_class_range) {
+                if ($char_class_uchar_min_maxs_list->length == 0) {
+                  die "- start not found";
+                }
+                else {
+                  $char_class_uchar_min_maxs_list->set($char_class_uchar_min_maxs_list->length - 1, $uchar);
+                  $before_is_char_class_range = 0;
+                }
+              }
+              else {
+                $char_class_uchar_min_maxs_list->push($uchar);
+                $char_class_uchar_min_maxs_list->push($uchar);
+              }
             }
           }
           else {
-            $is_char = 1;
+            switch ($uchar) {
+              case '^': {
+                if ($status == STATUS_CHAR_CLASS()) {
+                  # Only first
+                  if ($char_class_uchar_min_maxs_list->length == 0) {
+                    $cur_negate = 1;
+                  }
+                }
+                elsif ($status != STATUS_START()) {
+                  die "Regex compile error";
+                }
+                
+                $self->{match_start} = 1;
+                
+                break;
+              }
+              case '.': {
+                die ". is not supported";
+                break;
+              }
+              case '$': {
+                $self->{match_end} = 1;
+                break;
+              }
+              case '|': {
+                die "| is not supported";
+                break;
+              }
+              case '(': {
+                die "Not yet implemented (";
+                break;
+              }
+              case ')': {
+                die "Not yet implemented )";
+                break;
+              }
+              case '[': {
+                $status = STATUS_CHAR_CLASS();
+                $char_class_uchar_min_maxs_list = SPVM::IntList->new;
+                $before_is_char_class_range = 0;
+                break;
+              }
+              case ']': {
+                die "] must be end of character class";
+                break;
+              }
+              case '*': {
+                unless ($before_is_charset) {
+                  die "Regex compile error";
+                }
+                my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                $before_pattern->{min_repeat} = 0;
+                $before_pattern->{max_repeat} = INT32_MAX();
+                $before_is_charset = 0;
+                break;
+              }
+              case '+': {
+                unless ($before_is_charset) {
+                  die "Regex compile error";
+                }
+                my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                $before_pattern->{min_repeat} = 1;
+                $before_pattern->{max_repeat} = INT32_MAX();
+                $before_is_charset = 0;
+                break;
+              }
+              case '?': {
+                unless ($before_is_charset) {
+                  die "Regex compile error";
+                }
+                my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                $before_pattern->{min_repeat} = 0;
+                $before_pattern->{max_repeat} = 1;
+                $before_is_charset = 0;
+                break;
+              }
+              case '{': {
+                unless ($before_is_charset) {
+                  die "Regex compile error";
+                }
+                $status = STATUS_QUANTIFIER_MIN();
+                $before_is_charset = 0;
+                break;
+              }
+              case '}': {
+                unless ($status == STATUS_QUANTIFIER_MAX()) {
+                  die "Regex compile error";
+                }
+                my $quantifier_max = strtoi($quantifier_max_str, 10);
+                my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                $last_pattern->{max_repeat} = $quantifier_max;
+                
+                $status = STATUS_CONTINUE();
+                $before_is_charset = 0;
+                $quantifier_max_str = "";
+                break;
+              }
+              default: {
+                if ($status == STATUS_QUANTIFIER_MIN()) {
+                  if (isdigit($uchar)) {
+                    $quantifier_min_str .= $uchar - '0';
+                  }
+                  elsif ($uchar == ',') {
+                    my $quantifier_min = strtoi($quantifier_min_str, 10);
+                    my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                    $last_pattern->{min_repeat} = $quantifier_min;
+                    
+                    $status = STATUS_QUANTIFIER_MAX();
+                    $quantifier_min_str .= "";
+                  }
+                  else {
+                    die "Quantifier min must be non-fractional number";
+                  }
+                }
+                elsif ($status == STATUS_QUANTIFIER_MAX()) {
+                  if (isdigit($uchar)) {
+                    $quantifier_max_str .= $uchar - '0';
+                  }
+                  else {
+                    die "Quantifier max must be non-fractional number";
+                  }
+                }
+                else {
+                  $cur_is_char = 1;
+                  $cur_uchar_min_maxs = [$uchar, $uchar];
+                }
+              }
+            }
           }
         }
       }
-      if ($is_char) {
-        my $uchar_min_maxs = [$uchar, $uchar];
-
+      if ($cur_is_char) {
         my $pattern = new SPVM::Regex::Pattern;
         $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-        $pattern->{negate} = 0;
-        $pattern->{uchar_min_maxs} = $uchar_min_maxs;
+        $pattern->{negate} = (byte)$cur_negate;
+        $pattern->{uchar_min_maxs} = $cur_uchar_min_maxs;
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
         $patterns->push($pattern);
-        
         $before_is_charset = 1;
       }
     }
