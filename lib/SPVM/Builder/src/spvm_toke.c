@@ -102,11 +102,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t state_var_expansion = compiler->state_var_expansion;
   compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
 
-  char* next_double_quote_start_ptr = NULL;
-
   while(1) {
     // Get current character
     char ch = *compiler->bufptr;
+    
+    // "aaa $foo bar" is interupted "aaa $foo " . "bar"
+    if (compiler->bufptr == compiler->next_double_quote_start_bufptr) {
+      compiler->next_double_quote_start_bufptr = NULL;
+      state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT;
+    }
     
     // Variable expansion state
     if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT) {
@@ -784,10 +788,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '"': {
         if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
-          // $var-> is invalid
-          if (*compiler->bufptr == '-' && *(compiler->bufptr + 1) == '>') {
-            SPVM_COMPILER_error(compiler, "Don't support variable expansion of array access or field access at %s line %d\n", compiler->cur_file, compiler->cur_line);
-          }
+          // Nothing
         }
         else {
           compiler->bufptr++;
@@ -825,59 +826,75 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT;
                 
                 // Pending next string literal start
-                next_double_quote_start_ptr = compiler->bufptr + 1;
+                char* next_double_quote_start_bufptr = compiler->bufptr + 1;
                 
                 int32_t var_have_brace = 0;
-                if (*(next_double_quote_start_ptr + 1) == '{') {
-                  next_double_quote_start_ptr++;
+                if (*next_double_quote_start_bufptr == '{') {
+                  next_double_quote_start_bufptr++;
                   var_have_brace = 1;
                 }
                 
-                // Pend variable
-                while (1) {
-                  if (isalnum(*next_double_quote_start_ptr) || *next_double_quote_start_ptr == '_' || *next_double_quote_start_ptr == '@' || *next_double_quote_start_ptr == ':') {
-                    next_double_quote_start_ptr++;
-                  }
-                  else if (*next_double_quote_start_ptr == '}') {
-                    if (var_have_brace) {
-                      next_double_quote_start_ptr++;
-                      break;
+                if (*next_double_quote_start_bufptr == '@') {
+                  next_double_quote_start_bufptr++;
+                  if (var_have_brace) {
+                    if (*next_double_quote_start_bufptr == '}') {
+                      next_double_quote_start_bufptr++;
                     }
-                  }
-                  else {
                     break;
                   }
                 }
+                else {
                 
-                // Pend Field access or array access(only support field access or constant array accsess)
-                if (!var_have_brace) {
-                  int32_t is_access = 0;
-                  if (*next_double_quote_start_ptr == '-' && *(next_double_quote_start_ptr + 1) == '>') {
-                    is_access = 1;
-                    next_double_quote_start_ptr += 2;
-                  }
-                  if (is_access) {
-                    while (1) {
-                      if (isalnum(*next_double_quote_start_ptr) || *next_double_quote_start_ptr == '_' ||  *next_double_quote_start_ptr == '{' || *next_double_quote_start_ptr == '[') {
-                        next_double_quote_start_ptr++;
-                      }
-                      else if (*next_double_quote_start_ptr == '}' || *next_double_quote_start_ptr == ']') {
-                        if ((*(next_double_quote_start_ptr + 1) == '-' && *(next_double_quote_start_ptr + 2) == '>')) {
-                          next_double_quote_start_ptr += 2;
-                        }
-                        else if (*(next_double_quote_start_ptr + 1) == '{' || *(next_double_quote_start_ptr + 1) == '[') {
-                          next_double_quote_start_ptr++;
-                        }
-                        else {
-                          next_double_quote_start_ptr++;
-                          break;
-                        }
-                      }
-                      else {
+                  // Pend variable
+                  while (1) {
+                    if (isalnum(*next_double_quote_start_bufptr) || *next_double_quote_start_bufptr == '_') {
+                      next_double_quote_start_bufptr++;
+                    }
+                    else if (*next_double_quote_start_bufptr == ':' && *(next_double_quote_start_bufptr + 1) == ':') {
+                      next_double_quote_start_bufptr += 2;
+                    }
+                    else if (*next_double_quote_start_bufptr == '}') {
+                      if (var_have_brace) {
+                        next_double_quote_start_bufptr++;
                         break;
                       }
                     }
+                    else {
+                      break;
+                    }
                   }
+                  
+                  // Pend Field access or array access(only support field access or constant array accsess)
+                  if (!var_have_brace) {
+                    int32_t is_access = 0;
+                    if (*next_double_quote_start_bufptr == '-' && *(next_double_quote_start_bufptr + 1) == '>') {
+                      is_access = 1;
+                      next_double_quote_start_bufptr += 2;
+                    }
+                    if (is_access) {
+                      while (1) {
+                        if (isalnum(*next_double_quote_start_bufptr) || *next_double_quote_start_bufptr == '_' ||  *next_double_quote_start_bufptr == '{' || *next_double_quote_start_bufptr == '[') {
+                          next_double_quote_start_bufptr++;
+                        }
+                        else if (*next_double_quote_start_bufptr == '}' || *next_double_quote_start_bufptr == ']') {
+                          if ((*(next_double_quote_start_bufptr + 1) == '-' && *(next_double_quote_start_bufptr + 2) == '>')) {
+                            next_double_quote_start_bufptr += 2;
+                          }
+                          else if (*(next_double_quote_start_bufptr + 1) == '{' || *(next_double_quote_start_bufptr + 1) == '[') {
+                            next_double_quote_start_bufptr++;
+                          }
+                          else {
+                            next_double_quote_start_bufptr++;
+                            break;
+                          }
+                        }
+                        else {
+                          break;
+                        }
+                      }
+                    }
+                  }
+                  compiler->next_double_quote_start_bufptr = next_double_quote_start_bufptr;
                 }
               }
             }
@@ -1217,11 +1234,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
 
             yylvalp->opval = op_name;
-            
-            // Variable expansion next state is double quote
-            if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_VAR) {
-              compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_SECOND_CONCAT;
-            }
             
             // Package variable
             return VAR_NAME;

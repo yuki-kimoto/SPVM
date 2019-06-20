@@ -111,6 +111,8 @@ struct SPVM_compiler {
   
   // String symbol table
   SPVM_HASH* string_symtable;
+  
+  char* next_double_quote_start_bufptr;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
