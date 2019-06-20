@@ -840,7 +840,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     if (*next_double_quote_start_bufptr == '}') {
                       next_double_quote_start_bufptr++;
                     }
-                    break;
                   }
                 }
                 else {
@@ -894,8 +893,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       }
                     }
                   }
-                  compiler->next_double_quote_start_bufptr = next_double_quote_start_bufptr;
                 }
+                compiler->next_double_quote_start_bufptr = next_double_quote_start_bufptr;
               }
             }
             // End of source file
@@ -1178,6 +1177,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             yylvalp->opval = op_exception_var;
             return EXCEPTION_VAR;
           }
+          // Exception variable with {}
+          else if (*(compiler->bufptr + 1) == '{' && *(compiler->bufptr + 2) == '@' && *(compiler->bufptr + 3) == '}') {
+            compiler->bufptr += 4;
+            SPVM_OP* op_exception_var = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_EXCEPTION_VAR, compiler->cur_file, compiler->cur_line);
+            yylvalp->opval = op_exception_var;
+            return EXCEPTION_VAR;
+          }
           // Lexical variable or Package variable
           else {
             compiler->bufptr++;
@@ -1197,7 +1203,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               isalnum(*compiler->bufptr)
               || (*compiler->bufptr) == '_'
               || (*compiler->bufptr == ':' && *(compiler->bufptr + 1) == ':')
-              || (*compiler->bufptr) == '@'
             )
             {
               if (*compiler->bufptr == ':') {
