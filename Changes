@@ -3,6 +3,7 @@
   - add SPVM::CORE::ispspace function
   - add SPVM::CORE::ispword function
   - fix while condition my memmory id wrong bug
+  - fix "aaa\\" can't parsing bug
 0.0437 2019-06-10
   - rename SPVM::List->new_with_array to newa
   - rename SPVM::Hash->new_with_array to newa

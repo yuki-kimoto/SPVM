@@ -17,6 +17,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Literal::String->escape());
   ok(TestCase::Literal::String->escape_ascii());
   ok(TestCase::Literal::String->escape_unicode());
+  ok(TestCase::Literal::String->edge_case());
 }
 
 # All object is freed

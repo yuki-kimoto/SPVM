@@ -73,6 +73,10 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      "aaaa\\";
+    }
+    
+    {
       my $i = 0;
       switch ($i) {
         case 1: {

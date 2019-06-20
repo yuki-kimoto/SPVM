@@ -807,13 +807,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         else {
           int32_t finish = 0;
+          
           while(1) {
             // End of string literal
-            if (*compiler->bufptr == '"' && *(compiler->bufptr - 1) != '\\') {
+            if (*compiler->bufptr == '"') {
               finish = 1;
             }
             // Variable expansion
-            else if (*compiler->bufptr == '$' && *(compiler->bufptr - 1) != '\\') {
+            else if (*compiler->bufptr == '$') {
               finish = 1;
               next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT;
             }
@@ -825,7 +826,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               break;
             }
             else {
-              compiler->bufptr++;
+              // Escape is always 2 characters
+              if (*compiler->bufptr == '\\') {
+                compiler->bufptr += 2;
+              }
+              else {
+                compiler->bufptr++;
+              }
             }
           }
           if (*compiler->bufptr == '\0') {
