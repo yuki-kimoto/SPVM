@@ -821,6 +821,31 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else {
                 finish = 1;
                 next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT;
+                
+                // Pending next string literal start
+                char* pending_bufptr = compiler->bufptr + 1;
+                
+                int32_t var_have_brace = 0;
+                if (*(pending_bufptr + 1) == '{') {
+                  pending_bufptr++;
+                  var_have_brace = 1;
+                }
+                
+                // Pend variable
+                while (1) {
+                  if (isalnum(*pending_bufptr) || *pending_bufptr == '_' || *pending_bufptr == '@' || *pending_bufptr == ':') {
+                    pending_bufptr++;
+                  }
+                  else if (*pending_bufptr == '}') {
+                    if (var_have_brace) {
+                      pending_bufptr++;
+                      break;
+                    }
+                  }
+                  else {
+                    break;
+                  }
+                }
               }
             }
             // End of source file
