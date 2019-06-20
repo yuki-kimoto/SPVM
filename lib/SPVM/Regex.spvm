@@ -1,6 +1,7 @@
 package SPVM::Regex {
   use SPVM::Unicode (uchar);
   use SPVM::List;
+  use SPVM::IntList;
 
   has patterns : SPVM::List;
   has match_start : int;
@@ -44,6 +45,8 @@ package SPVM::Regex {
     my $quantifier_max_str = "";
     
     my $status = STATUS_START();
+    
+    my $char_class_uchar_min_maxs_list : SPVM::IntList;
 
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       if ($self->{match_end}) {
@@ -110,7 +113,13 @@ package SPVM::Regex {
           break;
         }
         case '^': {
-          unless ($status == STATUS_START()) {
+          if ($status == STATUS_CHAR_CLASS()) {
+            # Only first
+            if ($char_class_uchar_min_maxs_list->length == 0) {
+              $cur_negate = 1;
+            }
+          }
+          elsif ($status != STATUS_START()) {
             die "Regex compile error";
           }
           
@@ -139,7 +148,8 @@ package SPVM::Regex {
           break;
         }
         case '[': {
-          die "Not yet implemented [";
+          $status = STATUS_CHAR_CLASS();
+          $char_class_uchar_min_maxs_list = SPVM::IntList->new;
           break;
         }
         case ']': {
