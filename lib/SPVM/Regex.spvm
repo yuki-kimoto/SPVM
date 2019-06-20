@@ -159,6 +159,14 @@ package SPVM::Regex {
             if (@$cur_uchar_min_maxs == 0) {
               die "Emtpy character class";
             }
+            for (my $i = 0; $i < @$cur_uchar_min_maxs; $i += 2) {
+              my $min = $cur_uchar_min_maxs->[$i];
+              my $max = $cur_uchar_min_maxs->[$i + 1];
+              if ($max < $min) {
+                die "Invalid range character class";
+              }
+            }
+            
             $char_class_uchar_min_maxs_list = SPVM::IntList->new;
           }
           break;
