@@ -1,4 +1,6 @@
 package TestCase::LexicalVar {
+  use TestCase::Minimal;
+  
   our $VAR_PREC : int;
   
   BEGIN {
@@ -34,12 +36,25 @@ package TestCase::LexicalVar {
     {
       $@ = "Error";
       
-      my $string = "a $@ b ${@} c";
+      my $string = "a $@b ${@}c";
       
-      unless ($string eq "a Error b Error c") {
+      unless ($string eq "a Errorb Errorc") {
         return 0;
       }
       $@ = undef;
+    }
+
+    # Field and hash access
+    {
+      my $nums = [1, 2, 3];
+      my $minimal = TestCase::Minimal->new;
+      $minimal->{x} = 5;
+      
+      my $string = "a $nums->[1]b $minimal->{x}c";
+      
+      unless ($string eq "a 2b 5c") {
+        return 0;
+      }
     }
     
     return 1;
