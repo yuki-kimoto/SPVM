@@ -101,7 +101,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   // Expect variable expansion state
   int32_t state_var_expansion = compiler->state_var_expansion;
   compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
-  
+
+  char* next_double_quote_start_ptr = NULL;
+
   while(1) {
     // Get current character
     char ch = *compiler->bufptr;
@@ -823,27 +825,58 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT;
                 
                 // Pending next string literal start
-                char* pending_bufptr = compiler->bufptr + 1;
+                next_double_quote_start_ptr = compiler->bufptr + 1;
                 
                 int32_t var_have_brace = 0;
-                if (*(pending_bufptr + 1) == '{') {
-                  pending_bufptr++;
+                if (*(next_double_quote_start_ptr + 1) == '{') {
+                  next_double_quote_start_ptr++;
                   var_have_brace = 1;
                 }
                 
                 // Pend variable
                 while (1) {
-                  if (isalnum(*pending_bufptr) || *pending_bufptr == '_' || *pending_bufptr == '@' || *pending_bufptr == ':') {
-                    pending_bufptr++;
+                  if (isalnum(*next_double_quote_start_ptr) || *next_double_quote_start_ptr == '_' || *next_double_quote_start_ptr == '@' || *next_double_quote_start_ptr == ':') {
+                    next_double_quote_start_ptr++;
                   }
-                  else if (*pending_bufptr == '}') {
+                  else if (*next_double_quote_start_ptr == '}') {
                     if (var_have_brace) {
-                      pending_bufptr++;
+                      next_double_quote_start_ptr++;
                       break;
                     }
                   }
                   else {
                     break;
+                  }
+                }
+                
+                // Pend Field access or array access(only support field access or constant array accsess)
+                if (!var_have_brace) {
+                  int32_t is_access = 0;
+                  if (*next_double_quote_start_ptr == '-' && *(next_double_quote_start_ptr + 1) == '>') {
+                    is_access = 1;
+                    next_double_quote_start_ptr += 2;
+                  }
+                  if (is_access) {
+                    while (1) {
+                      if (isalnum(*next_double_quote_start_ptr) || *next_double_quote_start_ptr == '_' ||  *next_double_quote_start_ptr == '{' || *next_double_quote_start_ptr == '[') {
+                        next_double_quote_start_ptr++;
+                      }
+                      else if (*next_double_quote_start_ptr == '}' || *next_double_quote_start_ptr == ']') {
+                        if ((*(next_double_quote_start_ptr + 1) == '-' && *(next_double_quote_start_ptr + 2) == '>')) {
+                          next_double_quote_start_ptr += 2;
+                        }
+                        else if (*(next_double_quote_start_ptr + 1) == '{' || *(next_double_quote_start_ptr + 1) == '[') {
+                          next_double_quote_start_ptr++;
+                        }
+                        else {
+                          next_double_quote_start_ptr++;
+                          break;
+                        }
+                      }
+                      else {
+                        break;
+                      }
+                    }
                   }
                 }
               }
