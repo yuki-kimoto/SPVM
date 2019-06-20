@@ -362,7 +362,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       # Match $ - "zabbc"
       {
-        my $re = SPVM::Regex->new("ab+c\$");
+        my $re = SPVM::Regex->new("ab+c$");
         my $target = "zabbc";
         
         my $match = $re->match($target);
@@ -374,7 +374,7 @@ package TestCase::Lib::SPVM::Regex {
       
       # Not Match $ - "zabbcz"
       {
-        my $re = SPVM::Regex->new("ab+c\$");
+        my $re = SPVM::Regex->new("ab+c$");
         my $target = "zabbcz";
         
         my $match = $re->match($target);
