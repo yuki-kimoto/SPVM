@@ -21,9 +21,21 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
 
+    # Match char class \d
+    {
+      my $re = SPVM::Regex->new("[\da]+");
+      my $target = "z01az";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
     # Not Match char class
     {
-      my $re = SPVM::Regex->new("[bcd]+");
+      my $re = SPVM::Regex->new("[bcd\d]+");
       my $target = "ae";
       
       my $match = $re->match($target);
