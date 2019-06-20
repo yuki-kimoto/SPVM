@@ -815,8 +815,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             // Variable expansion
             else if (*compiler->bufptr == '$') {
-              finish = 1;
-              next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT;
+              if (*(compiler->bufptr + 1) == '"') {
+                // Last $ is allow
+              }
+              else {
+                finish = 1;
+                next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT;
+              }
             }
             // End of source file
             else if (*compiler->bufptr == '\0') {

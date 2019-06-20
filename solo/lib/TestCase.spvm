@@ -73,6 +73,9 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      "aaaa$";
+    }
+    {
       "aaaa\\";
     }
     
