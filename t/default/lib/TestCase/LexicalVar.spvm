@@ -44,6 +44,18 @@ package TestCase::LexicalVar {
       $@ = undef;
     }
 
+    # Dereference variable
+    {
+      my $num = 5;
+      my $num_ref = \$num;
+      
+      my $string = "a $$num_ref b $${num_ref}c";
+      
+      unless ($string eq "a 5 b 5c") {
+        return 0;
+      }
+    }
+
     # Field and hash access
     {
       my $nums = [1, 2, 3];

@@ -827,6 +827,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 // Pending next string literal start
                 char* next_double_quote_start_bufptr = compiler->bufptr + 1;
+
+                int32_t var_is_ref = 0;
+                if (*next_double_quote_start_bufptr == '$') {
+                  *next_double_quote_start_bufptr++;
+                  var_is_ref = 1;
+                }
                 
                 int32_t var_have_brace = 0;
                 if (*next_double_quote_start_bufptr == '{') {
@@ -864,7 +870,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                   
                   // Pend Field access or array access(only support field access or constant array accsess)
-                  if (!var_have_brace) {
+                  if (!var_have_brace && !var_is_ref) {
                     int32_t is_access = 0;
                     if (*next_double_quote_start_bufptr == '-' && *(next_double_quote_start_bufptr + 1) == '>') {
                       is_access = 1;
