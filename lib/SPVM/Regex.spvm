@@ -47,6 +47,8 @@ package SPVM::Regex {
     my $status = STATUS_START();
     
     my $char_class_uchar_min_maxs_list : SPVM::IntList;
+    
+    my $before_is_char_class_range = 0;
 
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       if ($self->{match_end}) {
@@ -138,9 +140,28 @@ package SPVM::Regex {
               $char_class_uchar_min_maxs_list = SPVM::IntList->new;
               $cur_is_char = 1;
             }
+            elsif ($uchar == '-') {
+              if ($before_is_char_class_range) {
+                die "- must not be repeat";
+              }
+              else {
+                $before_is_char_class_range = 1;
+              }
+            }
             else {
-              $char_class_uchar_min_maxs_list->push($uchar);
-              $char_class_uchar_min_maxs_list->push($uchar);
+              if ($before_is_char_class_range) {
+                if ($char_class_uchar_min_maxs_list->length == 0) {
+                  die "- start not found";
+                }
+                else {
+                  $char_class_uchar_min_maxs_list->set($char_class_uchar_min_maxs_list->length - 1, $uchar);
+                  $before_is_char_class_range = 0;
+                }
+              }
+              else {
+                $char_class_uchar_min_maxs_list->push($uchar);
+                $char_class_uchar_min_maxs_list->push($uchar);
+              }
             }
           }
           else {
@@ -183,6 +204,7 @@ package SPVM::Regex {
               case '[': {
                 $status = STATUS_CHAR_CLASS();
                 $char_class_uchar_min_maxs_list = SPVM::IntList->new;
+                $before_is_char_class_range = 0;
                 break;
               }
               case ']': {

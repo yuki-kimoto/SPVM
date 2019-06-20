@@ -7,6 +7,34 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub match_char_class_range : int ()  {
+    # Match char class range
+    {
+      my $re = SPVM::Regex->new("[0-9]+");
+      my $target = "z09az";
+      
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Not Match char class range
+    {
+      my $re = SPVM::Regex->new("[0-9a-c]+");
+      my $target = "zz";
+      
+      my $match = $re->match($target);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub match_char_class : int () {
 
     # Match char class
