@@ -153,7 +153,14 @@ package SPVM::Regex {
           break;
         }
         case ']': {
-          die "Not yet implemented ]";
+          if ($status == STATUS_CHAR_CLASS()) {
+            $status = STATUS_CONTINUE();
+            $cur_uchar_min_maxs = $char_class_uchar_min_maxs_list->to_array;
+            if (@$cur_uchar_min_maxs == 0) {
+              die "Emtpy character class";
+            }
+            $char_class_uchar_min_maxs_list = SPVM::IntList->new;
+          }
           break;
         }
         case '*': {
