@@ -2,6 +2,7 @@ package TestCase::LexicalVar {
   use TestCase::Minimal;
   
   our $VAR_PREC : int;
+  our $VAR_EXPANSION1 : int;
   
   BEGIN {
     $VAR_PREC = 11;
@@ -52,6 +53,17 @@ package TestCase::LexicalVar {
       my $string = "a $$num_ref b $${num_ref}c";
       
       unless ($string eq "a 5 b 5c") {
+        return 0;
+      }
+    }
+    
+    # Package variable
+    {
+      $VAR_EXPANSION1 = 6;
+      
+      my $string = "a $TestCase::LexicalVar::VAR_EXPANSION1 b";
+      
+      unless ($string eq "a 6 b") {
         return 0;
       }
     }
