@@ -63,93 +63,36 @@ package SPVM::Regex {
           
           switch ($next_uchar) {
             case 'd': {
-              my $uchar_min_maxs = [(int)'0', '9'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 0;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9'];
               break;
             }
             case 'D': {
-              my $uchar_min_maxs = [(int)'0', '9'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 1;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9'];
+              $cur_negate = 1;
               break;
             }
             case 'w': {
-              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 0;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
               break;
             }
             case 'W': {
-              my $uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 1;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+              $cur_negate = 1;
               break;
             }
             case 's': {
-              my $uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 0;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
               break;
             }
             case 'S': {
-              my $uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
-
-              my $pattern = new SPVM::Regex::Pattern;
-              $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-              $pattern->{negate} = 1;
-              $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-              $pattern->{max_repeat} = 1;
-              $pattern->{min_repeat} = 1;
-              $patterns->push($pattern);
-              
-              $before_is_charset = 1;
-              
+              $cur_is_char = 1;
+              $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+              $cur_negate = 1;
               break;
             }
             default: {
@@ -158,17 +101,8 @@ package SPVM::Regex {
               }
               # \: \- etc
               else {
-                my $uchar_min_maxs = [(int)$next_uchar, $next_uchar];
-
-                my $pattern = new SPVM::Regex::Pattern;
-                $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
-                $pattern->{negate} = 0;
-                $pattern->{uchar_min_maxs} = $uchar_min_maxs;
-                $pattern->{max_repeat} = 1;
-                $pattern->{min_repeat} = 1;
-                $patterns->push($pattern);
-                
-                $before_is_charset = 1;
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)$next_uchar, $next_uchar];
               }
             }
           }
@@ -302,7 +236,6 @@ package SPVM::Regex {
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
         $patterns->push($pattern);
-        
         $before_is_charset = 1;
       }
     }
