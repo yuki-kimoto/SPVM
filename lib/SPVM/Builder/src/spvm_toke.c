@@ -127,6 +127,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     switch (ch) {
       case '\0': {
         compiler->cur_file = NULL;
+        free(compiler->cur_src);
         compiler->cur_src = NULL;
         compiler->bufptr = NULL;
         compiler->befbufptr = NULL;
@@ -234,7 +235,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 return 0;
               }
               fseek(fh, 0, SEEK_SET);
-              char* cur_src = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_size + 1);
+              char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
               if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
                 SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                 return 0;
