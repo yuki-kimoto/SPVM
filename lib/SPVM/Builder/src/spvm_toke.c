@@ -242,6 +242,30 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               fclose(fh);
               cur_src[file_size] = '\0';
+
+              // Convert \r\n to \n
+              char* cur_src_nl = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+              int32_t replace_count = 0;
+              int32_t cur_src_pos = 0;
+              int32_t cur_src_nl_pos = 0;
+              while (cur_src_pos < file_size) {
+                int32_t ch = cur_src[cur_src_pos];
+                int32_t ch_next = cur_src[cur_src_pos + 1];
+                
+                if (ch == '\r' && ch_next == '\n') {
+                  cur_src_nl[cur_src_pos - replace_count] = '\n';
+                  replace_count++;
+                  cur_src_pos += 2;
+                }
+                else {
+                  cur_src_nl[cur_src_pos - replace_count] = ch;
+                  cur_src_pos++;
+                }
+                cur_src_nl_pos++;
+              }
+              cur_src_nl[cur_src_nl_pos] = '\0';
+              free(cur_src);
+              cur_src = cur_src_nl;
               
               compiler->cur_src = cur_src;
               compiler->bufptr = cur_src;
@@ -831,7 +855,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
                 int32_t var_is_ref = 0;
                 if (*next_double_quote_start_bufptr == '$') {
-                  *next_double_quote_start_bufptr++;
+                  next_double_quote_start_bufptr++;
                   var_is_ref = 1;
                 }
                 
