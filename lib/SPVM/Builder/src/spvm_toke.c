@@ -257,10 +257,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   nl_merge_count++;
                   cur_src_pos += 2;
                 }
-                else if (ch == '\r') {
-                  cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
-                  cur_src_pos++;
-                }
                 else {
                   cur_src_nl[cur_src_pos - nl_merge_count] = ch;
                   cur_src_pos++;
@@ -297,17 +293,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         compiler->bufptr++;
         continue;
       case '\r':
-        compiler->bufptr++;
-        if (*compiler->bufptr == '\n') {
-          compiler->bufptr++;
-          compiler->cur_line++;
-        }
-        else {
-          compiler->cur_line++;
-        }
-        
-        compiler->line_start_ptr = compiler->bufptr;
-        continue;
       case '\n':
         compiler->bufptr++;
         compiler->cur_line++;
