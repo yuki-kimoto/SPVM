@@ -1,147 +1,207 @@
 package SPVM::Math::BigDecimal {
-  use SPVM::List; # TODO: Replace SPVM::Text
-  use SPVM::Byte;
+  use SPVM::ByteList;
 
   # { digits: "12345", exp: 3 } => "1.2345e3"
-  has digits : private ro string; # leading & trailing 0 are not included.
-  has exp : private ro int;
+  has digits : string; # leading & trailing 0 are not included.
+  has exp : int;
+  has sign : int;
 
-  sub _validate_and_set : void ($self : self, $val : string) {
-    my $length = length $val;
-    unless ($length > 0) {
-      die "val must not be empty";
-    }
-    if ($val->[0] == '.') {
-      die "Cannot start with '.'";
-    }
-    if ($length > 2 && $val->[0] == '0' && $val->[1] != '.') {
-      die "If the first character is '0', the next character must be '.'";
-    }
-    if ($val->[$length - 1] == '.') {
-      die "'.' cannot exist at the end of digits";
-    }
-
-    my $digits = SPVM::List->new;
-    my $dot_pos = -1;
-    my $exp_pos = -1;
-    for (my $i = 0; $i < $length; ++$i) {
-      if ('0' <= $val->[$i] && $val->[$i] <= '9') {
-        $digits->push(SPVM::Byte->new($val->[$i]));
-      }
-      elsif ($val->[$i] == '.' && $dot_pos == -1) {
-        $dot_pos = $i;
-      }
-      elsif (($val->[$i] == 'e' || $val->[$i] == 'E') && $exp_pos == -1) {
-        ++$i;
-        $exp_pos = $i;
-        unless ($i < $length) {
-          die "digits must exist after e/E";
-        }
-        if ($val->[$i] == '+') {
-          ++$i;
-          $exp_pos = $i;
-        }
-        elsif ($val->[$i] == '-') {
-          ++$i;
-        }
-        unless ($i < $length) {
-          die "digits must exist after e/E";
-        }
-        while ($i < $length) {
-          unless ('0' <= $val->[$i] && $val->[$i] <= '9') {
-            die "Not digit or '+'/'-' characters are allowed after 'e'/'E'";
-          }
-          ++$i;
-        }
-        last;
-      }
-      else {
-        die "Invalid decimal: '$val'";
-      }
-    }
-    $self->{exp} = 0;
-    if ($dot_pos >= 0) {
-      $self->{exp} += $dot_pos - 1;
-    }
-    if ($exp_pos >= 0) {
-      my $exp_str = sliceb((byte [])$val, $exp_pos, $length - $exp_pos);
-      $self->{exp} += stoi($exp_str);
-    }
-
-    my $digits_length = $digits->length;
-
-    # remove leading 0
-    for (my $i = 0; $i < $digits_length; ++$i) {
-      if (((SPVM::Byte)($digits->get(0)))->val == '0') {
-        --$self->{exp};
-        $digits->shift;
-      }
-      else {
-        last;
-      }
-    }
-
-    # remove trailing 0
-    $digits_length = $digits->length;
-    for (my $i = 0; $i < $digits_length; ++$i) {
-      if (((SPVM::Byte)($digits->get($digits->length - 1)))->val == '0') {
-        $digits->pop;
-      }
-      else {
-        last;
-      }
-    }
-
-    my $byte_digits = new byte [$digits->length];
-    for (my $i = 0; $i < @$byte_digits; ++$i) {
-      $byte_digits->[$i] = $digits->shift;
-    }
-    $self->{digits} = (string)$byte_digits;
+  private sub _malformed_decimal : void ($string : string) {
+    die "Malformed decimal: $string";
   }
 
-  sub new : SPVM::Math::BigDecimal ($val : string) {
+  private sub _read_digits : void ($val : string, $length : int,
+      $pos : int&, $result : SPVM::ByteList) {
+    for (; $$pos < $length; ++$$pos) {
+      if (isdigit($val->[$$pos])) {
+        $result->push($val->[$$pos]);
+      }
+      else {
+        last;
+      }
+    }
+  }
+
+  private sub _right_trim_zero : SPVM::ByteList ($digits : SPVM::ByteList) {
+    while ($digits->length && $digits->get($digits->length - 1) == '0') {
+      $digits->pop;
+    }
+    return $digits;
+  }
+
+  private sub _read_valid_exponents : void ($self : self, $val : string,
+      $length : int, $pos : int) {
+    my $exp_sign = 1;
+    if ($val->[$pos] == '+') {
+      ++$pos;
+    }
+    elsif ($val->[$pos] == '-') {
+      ++$pos;
+      $exp_sign = -1;
+    }
+    my $exp = SPVM::ByteList->new;
+    _read_digits($val, $length, \$pos, $exp);
+    unless ($pos == $length) {
+      _malformed_decimal($val);
+    }
+    $self->{exp} += $exp_sign * strtoi((string)($exp->to_array), 10);
+  }
+
+  private sub _read_valid_big_decimal : void ($self : self, $val : string) {
+
+    my $length = length $val;
+
+    if ($length == 0) {
+      _malformed_decimal($val);
+    }
+
+    my $pos = 0;
+
+    $self->{sign} = 1;
+
+    if ($val->[0] == '+') {
+      $pos = 1;
+    }
+    elsif ($val->[0] == '-') {
+      $pos = 1;
+      $self->{sign} = -1;
+    }
+
+    # One digit
+    if ($length - $pos == 1) {
+      if (isdigit($val->[0])) {
+        $self->{digits} = $val;
+        $self->{exp} = 0;
+        return;
+      }
+      else {
+        _malformed_decimal($val);
+      }
+    }
+
+    # Double (starts with '0.')
+    # 0.0123 -> ("123", -2)
+    if ($val->[$pos] == '0') {
+      unless ($val->[++$pos] == '.') {
+        _malformed_decimal($val);
+      }
+      ++$pos;
+      my $floating_digits = SPVM::ByteList->new;
+      _read_digits($val, $length, \$pos, $floating_digits);
+
+      $self->{exp} = -1;
+      for (my $i = 0; $floating_digits->length > 0; ++$i) {
+        my $c = $floating_digits->get(0);
+        if ($c == '0') {
+          $floating_digits->shift;
+          --$self->{exp};
+        }
+        else {
+          last;
+        }
+      }
+      if ($floating_digits->length == 0) {
+        $self->{digits} = "0";
+        $self->{exp} = 0;
+        return;
+      }
+
+      _right_trim_zero($floating_digits);
+      $self->{digits} = (string)($floating_digits->to_array);
+
+      # exponents
+      if ($pos < $length) {
+        if ($val->[$pos] == 'e' || $val->[$pos] == 'E') {
+          $self->_read_valid_exponents($val, $length, ++$pos);
+        }
+        else {
+          _malformed_decimal($val);
+        }
+      }
+      return;
+    }
+
+    # Read integer part
+    my $start_digit_pos = $pos;
+    my $digits = SPVM::ByteList->new;
+    _read_digits($val, $length, \$pos, $digits);
+
+    # Integer
+    # 10000 -> ("1", 4)
+    if ($pos == $length) {
+      $self->{digits} = (string)(_right_trim_zero($digits)->to_array);
+      $self->{exp} = $length - 1;
+      return;
+    }
+
+    # Double
+    # 123.45 -> ("12345", 2)
+    if ($val->[$pos] == '.') {
+      ++$pos;
+      if ($pos == $length) {
+        _malformed_decimal($val);
+      }
+      $self->{exp} = $pos - 2 - $start_digit_pos;
+      _read_digits($val, $length, \$pos, $digits);
+      _right_trim_zero($digits);
+
+      # Double (no exponents)
+      if ($pos == $length) {
+        # 10.2300 -> (1.023, 1)
+        $self->{digits} = (string)($digits->to_array);
+        return;
+      }
+    }
+
+    # Double (exponents)
+    if ($val->[$pos] == 'e' || $val->[$pos] == 'E') {
+      $self->{digits} = (string)($digits->to_array);
+      $self->_read_valid_exponents($val, $length, ++$pos);
+    }
+    else {
+      _malformed_decimal($val);
+    }
+  }
+
+  sub new : SPVM::Math::BigDecimal () {
     my $self = new SPVM::Math::BigDecimal;
-    $self->_validate_and_set($val);
+    $self->{digits} = "0";
+    $self->{exp} = 0;
+    return $self;
+  }
+
+  sub newstr : SPVM::Math::BigDecimal ($val : string) {
+    my $self = new SPVM::Math::BigDecimal;
+    $self->_read_valid_big_decimal($val);
     return $self;
   }
 
   sub to_str : string ($self : self) {
-    if ($self->{exp} == 0) {
-      my $digits_length = length($self->{digits});
-      my $ret = new byte [$digits_length + 1];
-      $ret->[0] = $self->{digits}->[0];
-      $ret->[1] = '.';
-      for (my $i = 0; $i < $digits_length - 1; ++$i) {
-        $ret->[$i + 2] = $self->{digits}->[$i + 1];
+
+    my $ret = "";
+
+    if ($self->{sign} < 0) {
+      $ret = "-";
+    }
+
+    my $exp_str = "" . $self->{exp};
+
+    my $digits_length = length $self->{digits};
+
+    if ($digits_length == 1) {
+      $ret .= [$self->{digits}->[0]];
+      if ($self->{exp} != 0) {
+        $ret .= "e$exp_str";
       }
       return $ret;
     }
     else {
-      my $exp_str = "" . $self->{exp};
-      my $digits_length = length($self->{digits});
-      my $exp_length = length($exp_str);
-      if ($digits_length == 1) {
-        my $ret = new byte [$exp_length + 2];
-        $ret->[0] = $self->{digits}->[0];
-        $ret->[1] = 'e';
-        for (my $i = 0; $i < $exp_length; ++$i) {
-          $ret->[$i + 2] = $exp_str->[$i];
-        }
-        return $ret;
+      $ret .= [$self->{digits}->[0], '.'];
+      $ret .= substr($self->{digits}, 1, $digits_length - 1);
+      if ($self->{exp} != 0) {
+        $ret .= "e$exp_str";
       }
-      else {
-        my $ret = new byte [$digits_length + $exp_length + 2];
-        $ret->[0] = $self->{digits}->[0];
-        $ret->[1] = '.';
-        for (my $i = 0; $i < $digits_length - 1; ++$i) {
-          $ret->[$i + 2] = $self->{digits}->[$i + 1];
-        }
-        $ret->[$digits_length + 1] = 'e';
-        for (my $i = 0; $i < $exp_length; ++$i) {
-          $ret->[$i + $digits_length + 2] = $exp_str->[$i];
-        }
-        return $ret;
-      }
+      return $ret;
     }
   }
 

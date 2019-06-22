@@ -1,0 +1,118 @@
+package TestCase::Lib::SPVM::Math::BigDecimal {
+  use SPVM::Math::BigDecimal;
+
+  sub basic : int () {
+    {
+      # constructor
+      my $expected = "0";
+      my $val = SPVM::Math::BigDecimal->new;
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # integer
+      my $expected = "1";
+      my $val = SPVM::Math::BigDecimal->newstr("1");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # integer
+      my $expected = "2e100";
+      my $val = SPVM::Math::BigDecimal->newstr("2e100");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # integer
+      my $expected = "1.000000000000000000000000000001e30";
+      my $val = SPVM::Math::BigDecimal->newstr("1000000000000000000000000000001");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # signed double (+)
+      my $expected = "1.23e1";
+      my $val = SPVM::Math::BigDecimal->newstr("+12.3");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # signed double (-)
+      my $expected = "-1.23e1";
+      my $val = SPVM::Math::BigDecimal->newstr("-12.3");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # signed double (+, e)
+      my $expected = "1.23e4";
+      my $val = SPVM::Math::BigDecimal->newstr("+12.3e+3");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # signed double (-)
+      my $expected = "-1.23e-2";
+      my $val = SPVM::Math::BigDecimal->newstr("-12.3e-3");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # 0.xxx
+      my $expected = "1e-6";
+      my $val = SPVM::Math::BigDecimal->newstr("0.000001");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # big decimal
+      my $expected = "1.00000000000000000000000000000000000000001e20";
+      my $val = SPVM::Math::BigDecimal->newstr("100000000000000000000.000000000000000000001");
+      unless ($val->to_str eq $expected) {
+        warn("expected: '$expected'");
+        warn("actual: '" . $val->to_str . "'");
+        return 0;
+      }
+    }
+    {
+      # invalid value
+      my $str = "10.0.0";
+      eval {
+        my $val = SPVM::Math::BigDecimal->newstr($str);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+}
