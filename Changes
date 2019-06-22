@@ -1,4 +1,4 @@
-0.0438 2019-06-11
+0.0438 2019-06-22
   - add SPVM::CORE::isdigit function
   - add SPVM::CORE::ispspace function
   - add SPVM::CORE::ispword function
@@ -7,11 +7,13 @@
   - allow "aaa$" in string literal
   - support variable expansion field access, array constant index access, dereference, exception variable, package variable
   - \r\n is converted to \n in source code parsing
+  - \r is converted to \n in source code parsing
   - support private enum
       private enum {
         ONE,
         TOW
       }
+  - fix multi line string literal line number bug
 0.0437 2019-06-10
   - rename SPVM::List->new_with_array to newa
   - rename SPVM::Hash->new_with_array to newa
