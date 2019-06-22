@@ -1,5 +1,5 @@
 package SPVM::Math::BigInteger {
-  has val : private ro string;
+  has val : string;
 
   sub _validate : void ($val : string) {
     my $length = length $val;
@@ -16,7 +16,13 @@ package SPVM::Math::BigInteger {
     }
   }
 
-  sub new : SPVM::Math::BigInteger ($val : string) {
+  sub new : SPVM::Math::BigInteger () {
+    my $self = new SPVM::Math::BigInteger;
+    $self->{val} = "0";
+    return $self;
+  }
+
+  sub newstr : SPVM::Math::BigInteger ($val : string) {
     my $self = new SPVM::Math::BigInteger;
     _validate($val);
     $self->{val} = $val;
