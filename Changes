@@ -6,6 +6,12 @@
   - fix "aaa\\" can't parsing bug
   - allow "aaa$" in string literal
   - support variable expansion field access, array constant index access, dereference, exception variable, package variable
+  - \r\n is converted to \n in source code parsing
+  - support private enum
+      private enum {
+        ONE,
+        TOW
+      }
 0.0437 2019-06-10
   - rename SPVM::List->new_with_array to newa
   - rename SPVM::Hash->new_with_array to newa

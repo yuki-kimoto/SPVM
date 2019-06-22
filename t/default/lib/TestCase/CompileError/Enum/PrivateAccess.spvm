@@ -1,0 +1,6 @@
+package TestCase::CompileError::Enum::PrivateAccess {
+  use TestCase::Enum;
+  sub main : int () {
+    TestCase::Enum->PRIVATE_VALUE;
+  }
+}

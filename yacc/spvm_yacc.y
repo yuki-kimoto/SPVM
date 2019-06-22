@@ -195,9 +195,9 @@ allow
 
 
 enumeration
-  : ENUM enumeration_block
+  : opt_descriptors ENUM enumeration_block
     {
-      $$ = SPVM_OP_build_enumeration(compiler, $1, $2);
+      $$ = SPVM_OP_build_enumeration(compiler, $2, $3, $1);
     }
 
 enumeration_block 

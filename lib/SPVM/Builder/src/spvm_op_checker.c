@@ -2426,7 +2426,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private) {
                 if (!SPVM_OP_is_allowed(compiler, sub->package->op_package, call_sub->sub->package->op_package)) {
-                  SPVM_COMPILER_error(compiler, "Can't call private subroutine %s::%s at %s line %d\n", package->name, sub->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Can't call private subroutine %s::%s at %s line %d\n", call_sub->sub->package->name, call_sub->sub->name, op_cur->file, op_cur->line);
                   return;
                 }
               }

@@ -2584,10 +2584,40 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   return op_sub;
 }
 
-SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block) {
+SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumeration, SPVM_OP* op_enumeration_block, SPVM_OP* op_descriptors) {
   
-  // Build OP_SUB
   SPVM_OP_insert_child(compiler, op_enumeration, op_enumeration->last, op_enumeration_block);
+  
+  SPVM_OP* op_enumeration_values = op_enumeration_block->first;
+  SPVM_OP* op_sub = op_enumeration_values->first;
+  while ((op_sub = SPVM_OP_sibling(compiler, op_sub))) {
+    SPVM_SUB* sub = op_sub->uv.sub;
+
+    // Descriptors
+    int32_t access_control_descriptors_count = 0;
+    if (op_descriptors) {
+      SPVM_OP* op_descriptor = op_descriptors->first;
+      while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
+        SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
+        
+        switch (descriptor->id) {
+          case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+            sub->flag |= SPVM_SUB_C_FLAG_PRIVATE;
+            access_control_descriptors_count++;
+            break;
+          case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+            // Default is public
+            access_control_descriptors_count++;
+            break;
+          default:
+            SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+        }
+      }
+      if (access_control_descriptors_count > 1) {
+        SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d\n", op_sub->file, op_sub->line);
+      }
+    }
+  }
   
   // Reset enum information
   compiler->current_enum_value = 0;
