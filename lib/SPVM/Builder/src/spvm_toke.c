@@ -257,6 +257,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   nl_merge_count++;
                   cur_src_pos += 2;
                 }
+                else if (ch == '\r') {
+                  cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
+                  cur_src_pos++;
+                }
                 else {
                   cur_src_nl[cur_src_pos - nl_merge_count] = ch;
                   cur_src_pos++;
@@ -292,7 +296,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\f':
         compiler->bufptr++;
         continue;
-      case '\r':
       case '\n':
         compiler->bufptr++;
         compiler->cur_line++;
@@ -523,7 +526,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '#':
         compiler->bufptr++;
         while(1) {
-          if (*compiler->bufptr == '\r' || *compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
+          if (*compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
             break;
           }
           else {
@@ -535,10 +538,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       
       case '=':
         // POD
-        if (compiler->bufptr == compiler->cur_src || *(compiler->bufptr - 1) == '\n' || *(compiler->bufptr - 1) == '\r') {
+        if (compiler->bufptr == compiler->cur_src || *(compiler->bufptr - 1) == '\n') {
           while (1) {
             compiler->bufptr++;
-            if (*compiler->bufptr == '\n' || *compiler->bufptr == '\r') {
+            if (*compiler->bufptr == '\n') {
               compiler->cur_line++;
             }
             
@@ -555,7 +558,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->bufptr += 4;
               
               while (1) {
-                if (*compiler->bufptr == '\r' || *compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
+                if (*compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
                   break;
                 }
                 compiler->bufptr++;
