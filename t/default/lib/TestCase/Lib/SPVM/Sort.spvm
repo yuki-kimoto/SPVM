@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::Sort {
   use TestCase::Minimal;
-  use SPVM::Sort(sortb, sorts, sorti, sortl, sortf, sortd, sorto);
+  use SPVM::Sort(sortb, sorts, sorti, sortl, sortf, sortd, sorto, sortstr);
   
   sub test_sortb : int () {
     {
@@ -93,6 +93,16 @@ package TestCase::Lib::SPVM::Sort {
       unless (equals_oarray($ms, [$m11, $m12, $m15, $m10, $m14, $m13])) {
         return 0;
       }
+    }
+    return 1;
+  }
+
+  sub test_sortstr : int () {
+    my $strs = ["aba", "ab", "abc", "a"];
+    my $expected = ["a", "ab", "aba", "abc"];
+    sortstr($strs);
+    unless (equals_strarray($strs, $expected)) {
+      return 0;
     }
     return 1;
   }

@@ -46,7 +46,7 @@ package SPVM::Sort {
   }
 
   precompile sub _merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
-      if ($left == $right) {
+      if ($left >= $right) {
         return;
       }
 
@@ -64,5 +64,19 @@ package SPVM::Sort {
     my $length = @$objs;
     my $b = new_oarray_proto($objs, $length);
     _merge_sort($objs, $b, 0, $length - 1, $length, $comparator);
+  }
+
+  sub sortstr : void ($strs : string[]) {
+    sorto($strs, sub : int ($self : self, $a : object, $b : object) {
+      if ((string)$a le (string)$b) {
+        return -1;
+      }
+      elsif ((string)$a ge (string)$b) {
+        return +1;
+      }
+      else {
+        return 0;
+      }
+    });
   }
 }

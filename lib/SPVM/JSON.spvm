@@ -8,6 +8,7 @@ package SPVM::JSON {
   use SPVM::Math::BigDecimal;
   use SPVM::Math::BigInteger;
   use SPVM::Math;
+  use SPVM::Sort (sortstr);
 
   has indent : public int;
   has indent_length : public int;
@@ -188,10 +189,10 @@ package SPVM::JSON {
       }
       my $num = sliceb((byte [])$s, $begin, $end_of_digits - $begin);
       if ($is_double) {
-        return SPVM::Math::BigDecimal->new($num);
+        return SPVM::Math::BigDecimal->newstr($num);
       }
       else {
-        return SPVM::Math::BigInteger->new($num);
+        return SPVM::Math::BigInteger->newstr($num);
       }
     }
 
@@ -442,19 +443,6 @@ package SPVM::JSON {
     return (string)$indent_bytes;
   }
 
-  # TODO: Use separated sort function from this module
-  sub _sort_keys : void ($keys : string[]) {
-    for (my $i = 0; $i < @$keys - 1; ++$i) {
-      for (my $j = @$keys - 1; $j > $i; $j--) {
-        if ($keys->[$j - 1] gt $keys->[$j]) {
-          my $temp = $keys->[$j - 1];
-          $keys->[$j - 1] = $keys->[$j];
-          $keys->[$j] = $temp;
-        }
-      }
-    }
-  }
-
   sub _escape_string : string ($string : string) {
     my $length = length $string;
     my $chars = SPVM::List->new;
@@ -520,7 +508,7 @@ package SPVM::JSON {
       my $hash = (SPVM::Hash)$o;
       my $keys = $hash->keys;
       if ($self->{canonical}) {
-        _sort_keys($keys); # TODO: Use separated sort function from this module
+        sortstr($keys);
       }
       for (my $i = 0; $i < @$keys; ++$i) {
         if ($i > 0) {

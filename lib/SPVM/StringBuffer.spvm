@@ -74,13 +74,7 @@ package SPVM::StringBuffer {
 
   # O($self->{length} + $buffer)
   sub prepend : void ($self : self, $buffer : SPVM::StringBuffer) {
-    
-    # TODO: Think how to deal with capacity.
-    my $capacity = @$self->{value}; # capacity is not shrunk.
-    if ($capacity < $self->{length} + $buffer->{length}) { # don't consider about x2 allocation.
-      $capacity = $self->{length} + $buffer->{length};
-    }
-    my $new_string = new byte [$capacity];
+    my $new_string = new byte [$self->{length} + $buffer->{length}];
     for (my $i = 0; $i < $buffer->{length}; ++$i) {
       $new_string->[$i] = $buffer->{value}->[$i];
     }
@@ -88,7 +82,7 @@ package SPVM::StringBuffer {
       $new_string->[$buffer->{length} + $i] = $self->{value}[$i];
     }
     $self->{value} = $new_string;
-    $self->{length} += $buffer->{length};
+    $self->{length} = @$new_string;
   }
 
   sub append : void ($self : self, $buffer : SPVM::StringBuffer) {
