@@ -366,6 +366,7 @@ t/default/lib/TestCase/CompileError/Convert/ConvertToInterface.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToRef.spvm
 t/default/lib/TestCase/CompileError/Divide/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Divide/RightIsNotNumeric.spvm
+t/default/lib/TestCase/CompileError/Enum/PrivateAccess.spvm
 t/default/lib/TestCase/CompileError/Field/Private.spvm
 t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
