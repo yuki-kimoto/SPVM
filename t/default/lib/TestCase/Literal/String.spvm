@@ -1,7 +1,7 @@
 package TestCase::Literal::String {
 
   sub edge_case : int () {
-    
+
     # String literal last character is \\
     {
       my $str = "aaaa\\";
@@ -23,14 +23,36 @@ package TestCase::Literal::String {
     return 1;
   }
   sub characters : int () {
-    my $string = "abc";
     
-    unless (length $string == 3) {
-      return 0;
+    # Characters
+    {
+      my $string = "abc";
+      
+      unless (length $string == 3) {
+        return 0;
+      }
+      
+      unless ($string->[0] == 'a' && $string->[1] == 'b' && $string->[2] == 'c') {
+        return 0;
+      }
     }
-    
-    unless ($string->[0] == 'a' && $string->[1] == 'b' && $string->[2] == 'c') {
-      return 0;
+
+    # Multi lines
+    {
+      my $foo = 5;
+      my $str = 
+"ab
+cd
+$foo
+ef"
+;
+      unless ($str eq "ab\ncd\n5\nef") {
+        return 0;
+      }
+      
+      unless (__LINE__ == 53) {
+        return 0;
+      }
     }
     
     return 1;

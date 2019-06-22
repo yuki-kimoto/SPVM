@@ -299,7 +299,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\n':
         compiler->bufptr++;
         compiler->cur_line++;
-        
         compiler->line_start_ptr = compiler->bufptr;
         continue;
       // Cancat
@@ -933,7 +932,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr += 2;
               }
               else {
-                compiler->bufptr++;
+                if (*compiler->bufptr == '\n') {
+                  compiler->bufptr++;
+                  compiler->cur_line++;
+                  compiler->line_start_ptr = compiler->bufptr;
+                }
+                else {
+                  compiler->bufptr++;
+                }
               }
             }
           }
