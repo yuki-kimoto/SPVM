@@ -5,6 +5,15 @@ package TestCase::LINERN {
     unless ($line == 3) {
       return 0;
     }
+    
+    {
+      my $str = "a
+b";
+      unless ($str eq "a\nb") {
+        return 0;
+      }
+    }
     return 1;
   }
 }
+
