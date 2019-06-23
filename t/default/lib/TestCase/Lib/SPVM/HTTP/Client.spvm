@@ -8,6 +8,12 @@ package TestCase::Lib::SPVM::HTTP::Client {
     ]);
     $client->request("GET", "http://testserver.spvm.info", undef);
     $client->request("HEAD", "http://testserver.spvm.info", undef);
+    $client->request("POST", "http://testserver.spvm.info/echo", [(object)
+      content => "post content",
+      headers => SPVM::Hash->newa([(object)
+        "content-length" => 12,
+      ]),
+    ]);
     #$client->request("GET", "http://153.121.46.88:3010", undef);
     return 1;
   }
