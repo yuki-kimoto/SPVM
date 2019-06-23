@@ -9,6 +9,12 @@ package SPVM::HTTP::Client {
   has default_headers : public SPVM::Hash;
   has timeout : public double;
 
+  our $_Hex : public ro string;
+
+  BEGIN {
+    $_Hex = "0123456789ABCDEF";
+  }
+
   sub new : SPVM::HTTP::Client () {
     my $self = new SPVM::HTTP::Client;
     $self->{default_headers} = SPVM::Hash->newa([]);
@@ -28,6 +34,72 @@ package SPVM::HTTP::Client {
     }
     $self->{timeout} = 60;
     return $self;
+  }
+
+  sub post_form : void ($self : self, $url : string, $data : object[]) {
+    my $form = $self->www_form_urlencode($data);
+    $self->request("POST", $url, [(object)
+      content => $form,
+      headers => SPVM::Hash->newa([(object)
+        "content-type"   => "application/x-www-form-urlencoded",
+        "content-length" => length $form,
+      ]),
+    ]);
+  }
+
+  sub www_form_urlencode : string ($self : self, $data : object[]) {
+    unless (@$data % 2 == 0) {
+      die "form data reference must have an even number of terms";
+    }
+    my $params = SPVM::List->newa($data);
+    my $terms = SPVM::StringList->new;
+    for (my $i = 0; $i < $params->length; $i += 2) {
+      my $key = (string)$params->get($i);
+      my $val = $params->get($i + 1);
+      if ($val isa SPVM::StringList) {
+        my $multivals = ((SPVM::StringList)$val)->to_array;
+        for (my $k = 0; $k < @$multivals; ++$k) {
+          $params->push($key);
+          $params->push($multivals->[$k]);
+        }
+      }
+      else {
+        my $string_val : string;
+        if ($val isa string) {
+          $string_val = (string)$val;
+        }
+        elsif ($val isa SPVM::Int) {
+          $string_val = "" . ((SPVM::Int)$val)->val;
+        }
+        else {
+          die "Unexpected parameter value type. key: $key";
+        }
+        $terms->push(join("=", [$self->_url_escape($key), $self->_url_escape($string_val)]));
+      }
+    }
+    my $terms_array = $terms->to_array;
+    SPVM::Sort->sortstr($terms_array);
+    return join("&", $terms_array);
+  }
+
+  private sub _url_escape : string ($self : self, $s : string) {
+    my $res = SPVM::ByteList->new;
+    my $length = length $s;
+    for (my $i = 0; $i < $length; ++$i) {
+      if (('A' <= $s->[$i] && $s->[$i] <= 'Z') ||
+          ('a' <= $s->[$i] && $s->[$i] <= 'z') ||
+          ('0' <= $s->[$i] && $s->[$i] <= '9') ||
+          $s->[$i] == '-' || $s->[$i] == '.' ||
+          $s->[$i] == '_' || $s->[$i] == '~') {
+        $res->push($s->[$i]);
+      }
+      else {
+        $res->push('%');
+        $res->push($_Hex->[($s->[$i] & 0xFF) >>> 4]);
+        $res->push($_Hex->[$s->[$i] & 0x0F]);
+      }
+    }
+    return (string)$res->to_array;
   }
 
   private sub _prepare_headers : SPVM::Hash ($self : self,
@@ -103,9 +175,9 @@ package SPVM::HTTP::Client {
     $response->{success} = $response->{status} / 100 == 2;
     $response->{url} = $url;
 
-    warn("-----------------");
+    warn("-------- begin response ---------");
     warn($response->to_str);
-    warn("-----------------");
+    warn("--------- end response ----------");
   }
 }
 
@@ -159,9 +231,11 @@ package SPVM::HTTP::Client::Handle {
     my $len = $buf->length;
     my $off = 0;
     while (1) {
-      my $writable = $buf->substr($off, $len)->to_str;
-      warn($writable);
-      my $write_length = $self->{socket}->write($writable, $len);
+      my $data = $buf->substr($off, $len)->to_str;
+      warn("-------- begin write --------");
+      warn($data);
+      warn("--------- end write ---------");
+      my $write_length = $self->{socket}->write($data, $len);
       $len -= $write_length;
       $off += $write_length;
       unless ($len > 0) {
@@ -222,7 +296,7 @@ package SPVM::HTTP::Client::Handle {
   private sub _to_hex : string ($val : int) {
     my $res = SPVM::ByteList->new;
     while (1) {
-      $res->push(_Hex()->[$val % 16]);
+      $res->push($SPVM::HTTP::Client::_Hex->[$val % 16]);
       $val /= 16;
     }
     return (string)$res->to_array;
@@ -547,54 +621,5 @@ package SPVM::HTTP::Client::Handle {
     else {
       return $self->_read_content_body($response, undef);
     }
-  }
-
-  sub www_form_urlencode : string ($self : self, $data : object[]) {
-    unless (@$data % 2 == 0) {
-      die "form data reference must have an even number of terms";
-    }
-    my $params = SPVM::List->newa($data);
-    my $terms = SPVM::StringList->new;
-    for (my $i = 0; $i < $params->length; $i += 2) {
-      my $key = (string)$params->get($i);
-      my $val = $params->get($i + 1);
-      if ($val isa SPVM::StringList) {
-        my $multivals = ((SPVM::StringList)$val)->to_array;
-        for (my $k = 0; $k < @$multivals; ++$k) {
-          $params->push($key);
-          $params->push($multivals->[$k]);
-        }
-      }
-      else {
-        $terms->push(join("=", [$self->_url_escape($key), $self->_url_escape((string)$val)]));
-      }
-    }
-    my $terms_array = $terms->to_array;
-    SPVM::Sort->sortstr($terms_array);
-    return join("&", $terms_array);
-  }
-
-  private sub _Hex : string () {
-    return "0123456789ABCDEF";
-  }
-
-  private sub _url_escape : string ($self : self, $s : string) {
-    my $res = SPVM::ByteList->new;
-    my $length = length $s;
-    for (my $i = 0; $i < $length; ++$i) {
-      if (('A' <= $s->[$i] && $s->[$i] <= 'Z') ||
-          ('a' <= $s->[$i] && $s->[$i] <= 'z') ||
-          ('0' <= $s->[$i] && $s->[$i] <= '9') ||
-          $s->[$i] == '-' || $s->[$i] == '.' ||
-          $s->[$i] == '_' || $s->[$i] == '~') {
-        $res->push($s->[$i]);
-      }
-      else {
-        $res->push('%');
-        $res->push(_Hex()->[$s->[$i] >>> 4]);
-        $res->push(_Hex()->[$s->[$i] & 0x0F]);
-      }
-    }
-    return (string)$res->to_array;
   }
 }
