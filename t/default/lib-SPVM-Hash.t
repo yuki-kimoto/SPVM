@@ -31,6 +31,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Hash->test_set_rehash_when_max_load_factor_changes);
   ok(TestCase::Lib::SPVM::Hash->test_keys);
   ok(TestCase::Lib::SPVM::Hash->test_values);
+  ok(TestCase::Lib::SPVM::Hash->test_each);
   ok(TestCase::Lib::SPVM::Hash->test_many_hash_collisions);
   ok(TestCase::Lib::SPVM::Hash->test_copy);
 }

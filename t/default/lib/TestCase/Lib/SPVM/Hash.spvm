@@ -2,6 +2,7 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Int;
   use SPVM::Hash;
   use SPVM::Comparator;
+  use SPVM::List;
 
   sub test_murmur_hash : int () {
     my $seed = 123456789;
@@ -426,6 +427,43 @@ package TestCase::Lib::SPVM::Hash {
       return 1;
     };
     return _same_unordered_objects($hash->values, $vals, $comparator);
+  }
+
+  sub test_each : int () {
+    my $hash = SPVM::Hash->new;
+    my $keys = [(object) "a", "bb", "12345"];
+    my $vals = [(object) SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $hash->set((string)$keys->[$i], $vals->[$i]);
+    }
+    my $comparator_keys = sub : int ($self : self, $lhs : object, $rhs : object) {
+      my $s = (string)$lhs;
+      my $t = (string)$rhs;
+      unless ($s eq $t) {
+        return 0;
+      }
+      return 1;
+    };
+    my $comparator_vals = sub : int ($self : self, $lhs : object, $rhs : object) {
+      my $x = (SPVM::Int)$lhs;
+      my $y = (SPVM::Int)$rhs;
+      unless ($x->val == $y->val) {
+        return 0;
+      }
+      return 1;
+    };
+    my $each = $hash->each;
+    unless (@$each == @$keys) {
+      return 0;
+    }
+    my $got_keys = SPVM::List->new;
+    my $got_vals = SPVM::List->new;
+    for (my $i = 0; $i < @$each; ++$i) {
+      $got_keys->push($each->[$i]->[0]);
+      $got_vals->push($each->[$i]->[1]);
+    }
+    return _same_unordered_objects($got_keys->to_array, $keys, $comparator_keys) && 
+        _same_unordered_objects($got_vals->to_array, $vals, $comparator_vals);
   }
 
   sub test_many_hash_collisions : int () {
