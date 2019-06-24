@@ -71,7 +71,7 @@ package SPVM::HTTP::Client::CookieJar::CookieParser {
             SPVM::Time->strptime($val, RFC1123_FORMAT()));
       }
       elsif ($lc_key eq "max-age") {
-        $self->{max_age} = strtol($val);
+        $self->{max_age} = strtol($val, 10);
       }
       elsif ($lc_key eq "domain") {
         $self->{domain} = $val;
