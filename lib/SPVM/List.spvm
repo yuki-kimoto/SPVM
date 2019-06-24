@@ -36,6 +36,15 @@ package SPVM::List : private {
     return $strings;
   }
 
+  sub to_array : object[] ($self : self) {
+    my $length = $self->{length};
+    my $objects = new object[$length];
+    for (my $i = 0; $i < $length; $i++) {
+      $objects->[$i] = $self->{values}[$i];
+    }
+    return $objects;
+  }
+
   sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
     my $new_values = new object [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {

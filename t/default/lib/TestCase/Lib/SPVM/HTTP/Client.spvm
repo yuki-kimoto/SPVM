@@ -8,7 +8,26 @@ package TestCase::Lib::SPVM::HTTP::Client {
     ]);
     $client->request("GET", "http://testserver.spvm.info", undef);
     $client->request("HEAD", "http://testserver.spvm.info", undef);
-    #$client->request("GET", "http://153.121.46.88:3010", undef);
+    $client->request("POST", "http://testserver.spvm.info/echo", [(object)
+      content => "post content",
+      headers => SPVM::Hash->newa([(object)
+        "content-length" => 12,
+      ]),
+    ]);
+    my $form = $client->www_form_urlencode([(object)
+      param1 => "val1",
+      param2 => 123,
+    ]);
+    $client->request("POST", "http://testserver.spvm.info/echo", [(object)
+      content => $form,
+      headers => SPVM::Hash->newa([(object)
+        "content-length" => length $form,
+      ]),
+    ]);
+    $client->post_form("http://testserver.spvm.info/echo", [(object)
+      key         => "value",
+      "あいう abc" => "値 123",
+    ]);
     return 1;
   }
 }

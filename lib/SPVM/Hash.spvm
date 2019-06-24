@@ -247,6 +247,20 @@ package SPVM::Hash {
     return $retval;
   }
 
+  sub each : object[][] ($self : self) {
+    my $retval = new object[][$self->{count}];
+    # iterate entries
+    my $count = 0;
+    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
+      my $ref = $self->{entries}->[$i];
+      while ($ref) {
+        $retval->[$count++] = [(object) copy_str($ref->{key}), $ref->{val}];
+        $ref = $ref->{next_entry};
+      }
+    }
+    return $retval;
+  }
+
   sub copy : SPVM::Hash ($self : self) {
     my $ret = SPVM::Hash->new;
     my $keys = $self->keys;
