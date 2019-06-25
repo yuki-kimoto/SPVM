@@ -98,6 +98,20 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
+
+    # Capture error
+    {
+      eval { SPVM::Regex->new(")abc"); };
+      unless ($@) {
+        return 0;
+      }
+      eval { SPVM::Regex->new("((abc)"); };
+      unless ($@) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
     
     return 1;
   }
