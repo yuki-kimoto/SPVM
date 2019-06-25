@@ -8,7 +8,7 @@ package TestCase::Lib::SPVM::Regex {
   }
 
   sub match_capture : int ()  {
-    # Match char class range
+    # Capture a char
     {
       my $re = SPVM::Regex->new("a(b)c");
       my $target = "zabcz";
@@ -19,6 +19,21 @@ package TestCase::Lib::SPVM::Regex {
       }
       
       unless ($re->captures(0) eq "b") {
+        return 0;
+      }
+    }
+
+    # Capture a char UTF-8
+    {
+      my $re = SPVM::Regex->new("あ(い)う");
+      my $target = "んあいうん";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->captures(0) eq "い") {
         return 0;
       }
     }
