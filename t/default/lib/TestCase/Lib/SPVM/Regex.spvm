@@ -37,6 +37,22 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
+
+    # Capture a char zero width
+    {
+      my $re = SPVM::Regex->new("a(b?)c");
+      my $target = "zacz";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->captures(0) eq "") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
   
