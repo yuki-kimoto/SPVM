@@ -8,7 +8,6 @@ package TestCase::Lib::SPVM::Regex {
   }
 
   sub match_capture : int ()  {
-=pod
     # Capture a char
     {
       my $re = SPVM::Regex->new("a(b)c");
@@ -19,7 +18,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($re->captures(0) eq "b") {
+      unless ($re->caps(1) eq "b") {
         return 0;
       }
     }
@@ -34,7 +33,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($re->captures(0) eq "い") {
+      unless ($re->caps(1) eq "い") {
         return 0;
       }
     }
@@ -49,12 +48,11 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($re->captures(0) eq "") {
+      unless ($re->caps(1) eq "") {
         return 0;
       }
     }
 
-=cut
     # Capture char class and quantifier
     {
       my $re = SPVM::Regex->new("\-(\w+)\-");
@@ -65,7 +63,38 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($re->captures(0) eq "abc89") {
+      unless ($re->caps(1) eq "abc89") {
+        return 0;
+      }
+    }
+
+    # Capture many strings 
+    {
+      my $re = SPVM::Regex->new("\-(\w+) (\w+) (\w+) (\w+) (\w+)");
+      my $target = "-abc1 abc2 abc3 abc4 abc5 abc6-";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->caps(1) eq "abc1") {
+        return 0;
+      }
+
+      unless ($re->caps(2) eq "abc2") {
+        return 0;
+      }
+
+      unless ($re->caps(3) eq "abc3") {
+        return 0;
+      }
+
+      unless ($re->caps(4) eq "abc4") {
+        return 0;
+      }
+
+      unless ($re->caps(5) eq "abc5") {
         return 0;
       }
     }

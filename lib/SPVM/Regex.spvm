@@ -17,8 +17,11 @@ package SPVM::Regex {
     STATUS_CHAR_CLASS,
   }
   
-  sub captures : string ($self : self, $index : int) {
-    return $self->{captures}[$index];
+  sub caps : string ($self : self, $index : int) {
+    unless ($index > 0) {
+      die "Invalid capture index";
+    }
+    return $self->{captures}[$index - 1];
   }
   
   sub new : SPVM::Regex ($re_str : string) {
