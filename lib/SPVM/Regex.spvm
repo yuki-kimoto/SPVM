@@ -17,6 +17,7 @@ package SPVM::Regex {
     STATUS_CHAR_CLASS,
   }
   
+  
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
     
@@ -53,7 +54,11 @@ package SPVM::Regex {
     my $char_class_uchar_min_maxs_list : SPVM::IntList;
     
     my $before_is_char_class_range = 0;
-
+    
+    my $is_capture = 0;
+    my $is_capture_start = 0;
+    my $is_capture_end = 0;
+    
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       if ($self->{match_end}) {
         die "\$ must be last of regex";
@@ -198,11 +203,23 @@ package SPVM::Regex {
                 break;
               }
               case '(': {
-                die "Not yet implemented (";
+                if ($is_capture) {
+                  die "Invalid capture start";
+                }
+                else {
+                  $is_capture = 1;
+                  $is_capture_start = 1;
+                }
                 break;
               }
               case ')': {
-                die "Not yet implemented )";
+                if ($is_capture) {
+                  $is_capture_end = 1;
+                  $is_capture = 0;
+                }
+                else {
+                  die "Invalid capture end";
+                }
                 break;
               }
               case '[': {
@@ -307,8 +324,20 @@ package SPVM::Regex {
         $pattern->{uchar_min_maxs} = $cur_uchar_min_maxs;
         $pattern->{max_repeat} = 1;
         $pattern->{min_repeat} = 1;
+
+        if ($is_capture_start) {
+          $pattern->{capture_start} = 1;
+          $is_capture_start = 0;
+        }
+
+        if ($is_capture_end) {
+          $pattern->{capture_end} = 1;
+          $is_capture_end = 0;
+        }
+        
         $patterns->push($pattern);
         $before_is_charset = 1;
+        
       }
     }
     
@@ -582,7 +611,8 @@ package SPVM::Regex::Pattern {
     CAPTURE_START,
     CAPTURE_END,
   }
-  
+  has capture_start : byte;
+  has capture_end : byte;
   has negate : byte;
   has type : byte;
   has max_repeat : int;
