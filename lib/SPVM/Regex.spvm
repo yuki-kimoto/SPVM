@@ -7,7 +7,7 @@ package SPVM::Regex {
   has match_start : int;
   has match_end : int;
   
-  has matches : ro string[];
+  has captures : ro string[];
   
   enum {
     STATUS_START,
@@ -25,7 +25,7 @@ package SPVM::Regex {
     
     $self->compile($re_str);
     
-    $self->{matches} = new string[255];
+    $self->{captures} = new string[255];
     
     return $self;
   }
@@ -57,7 +57,6 @@ package SPVM::Regex {
     
     my $is_capture = 0;
     my $is_capture_start = 0;
-    my $is_capture_end = 0;
     
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
       if ($self->{match_end}) {
@@ -214,8 +213,9 @@ package SPVM::Regex {
               }
               case ')': {
                 if ($is_capture) {
-                  $is_capture_end = 1;
                   $is_capture = 0;
+                  my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                  $before_pattern->{capture_end} = 1;
                 }
                 else {
                   die "Invalid capture end";
@@ -317,6 +317,7 @@ package SPVM::Regex {
           }
         }
       }
+
       if ($cur_is_char) {
         my $pattern = new SPVM::Regex::Pattern;
         $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
@@ -328,11 +329,6 @@ package SPVM::Regex {
         if ($is_capture_start) {
           $pattern->{capture_start} = 1;
           $is_capture_start = 0;
-        }
-
-        if ($is_capture_end) {
-          $pattern->{capture_end} = 1;
-          $is_capture_end = 0;
         }
         
         $patterns->push($pattern);
@@ -408,18 +404,25 @@ package SPVM::Regex {
       
       my $pattern_index = 0;
       
+      my $capture_start_index = -1;
+      my $capture_count = 0;
       while (1) {
+        my $pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
+        my $max_repeat = $pattern->{max_repeat};
+        my $min_repeat = $pattern->{min_repeat};
+        my $uchar_min_maxs = $pattern->{uchar_min_maxs};
+        my $negate = $pattern->{negate};
+        
+        if ($pattern->{capture_start}) {
+          $capture_start_index = $target_index;
+        }
+        
         my $target_before_index = $target_index;
         my $target_uchar = uchar($target, \$target_index);
         unless ($target_uchar >= 0) {
           last;
         }
         
-        my $pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
-        my $max_repeat = $pattern->{max_repeat};
-        my $min_repeat = $pattern->{min_repeat};
-        my $uchar_min_maxs = $pattern->{uchar_min_maxs};
-        my $negate = $pattern->{negate};
         
         my $type = $pattern->{type};
         
@@ -484,6 +487,13 @@ package SPVM::Regex {
         }
         
         if ($match_uchar_repeat) {
+          if ($pattern->{capture_end}) {
+            $self->{captures}[$capture_count] = substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
+            $capture_count++;
+            if ($capture_count > 255) {
+              die "Too many captures";
+            }
+          }
           $pattern_index++;
           $target_index = $repeat_before_target_index;
           if ($pattern_index == $patterns_length) {
