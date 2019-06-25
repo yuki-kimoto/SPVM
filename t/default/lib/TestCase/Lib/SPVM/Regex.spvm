@@ -18,7 +18,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($re->captures->[0] eq "b") {
+      unless ($re->captures(0) eq "b") {
         return 0;
       }
     }
