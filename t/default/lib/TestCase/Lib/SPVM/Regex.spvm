@@ -8,6 +8,7 @@ package TestCase::Lib::SPVM::Regex {
   }
 
   sub match_capture : int ()  {
+=pod
     # Capture a char
     {
       my $re = SPVM::Regex->new("a(b)c");
@@ -49,6 +50,22 @@ package TestCase::Lib::SPVM::Regex {
       }
       
       unless ($re->captures(0) eq "") {
+        return 0;
+      }
+    }
+
+=cut
+    # Capture char class and quantifier
+    {
+      my $re = SPVM::Regex->new("\-(\w+)\-");
+      my $target = "-abc89-";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->captures(0) eq "abc89") {
         return 0;
       }
     }
