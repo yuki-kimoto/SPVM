@@ -391,29 +391,30 @@ package SPVM::Regex {
       die "Target string must be defined";
     }
     
-    # Convert to Unicode codepoint
-    my $target_uchars_list = SPVM::IntList->new;
-    {
-      my $target_index = 0;
-      while ((my $target_uchar = uchar($target, \$target_index)) >= 0) {
-        $target_uchars_list->push($target_uchar);
-      }
-    }
-    
-    my $target_uchars = $target_uchars_list->to_array;
-
     my $patterns = $self->{patterns};
     my $patterns_length = $patterns->length;
     
     my $target_base_index = 0;
     my $match_all = 0;
     my $target_index = 0;
-    while ($target_base_index < @$target_uchars) {
-      $target_index = $target_base_index;
+    while (1) {
+      my $target_base_index_before = $target_base_index;
+      my $target_base_uchar = uchar($target, \$target_base_index);
+      unless ($target_base_uchar >= 0) {
+        last;
+      }
+      
+      $target_index =  $target_base_index_before;
+      
       my $pattern_index = 0;
       
-      while ($target_index < @$target_uchars) {
-        my $target_uchar = $target_uchars->[$target_index];
+      while (1) {
+        my $target_before_index = $target_index;
+        my $target_uchar = uchar($target, \$target_index);
+        unless ($target_uchar >= 0) {
+          last;
+        }
+        
         my $pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
         my $max_repeat = $pattern->{max_repeat};
         my $min_repeat = $pattern->{min_repeat};
@@ -424,6 +425,8 @@ package SPVM::Regex {
         
         my $match_uchar_repeat = 0;
         my $repeat_count = 0;
+        my $repeat_before_target_index = $target_before_index;
+        
         if ($type == SPVM::Regex::Pattern->PATTERN) {
           # Match uchar repeat
           for (my $repeat_index = 0; $repeat_index < $max_repeat; $repeat_index++) {
@@ -460,10 +463,13 @@ package SPVM::Regex {
             # Increment repeat count
             if ($match_uchar) {
               $repeat_count++;
-              if ($target_index + $repeat_count == @$target_uchars) {
+              $repeat_before_target_index = $target_index;
+              $target_uchar = uchar($target, \$target_index);
+              if ($target_index == length $target) {
                 last;
               }
-              $target_uchar = $target_uchars->[$target_index + $repeat_count];
+              
+              $target_before_index = $target_index;
             }
             else {
               last;
@@ -477,10 +483,9 @@ package SPVM::Regex {
           die "Not implemented";
         }
         
-        $target_index += $repeat_count;
-        
         if ($match_uchar_repeat) {
           $pattern_index++;
+          $target_index = $repeat_before_target_index;
           if ($pattern_index == $patterns_length) {
             last;
           }
@@ -498,15 +503,12 @@ package SPVM::Regex {
         if ($self->{match_start}) {
           last;
         }
-        else {
-          $target_base_index++;
-        }
       }
     }
     
     if ($match_all) {
       if ($self->{match_end}) {
-        if ($target_index == @$target_uchars) {
+        if ($target_index == length $target) {
           return new string[0];
         }
         else {

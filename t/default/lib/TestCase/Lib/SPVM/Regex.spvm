@@ -371,7 +371,7 @@ package TestCase::Lib::SPVM::Regex {
           return 0;
         }
       }
-      
+
       # Not Match $ - "zabbcz"
       {
         my $re = SPVM::Regex->new("ab+c$");
