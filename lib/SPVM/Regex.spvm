@@ -7,6 +7,8 @@ package SPVM::Regex {
   has match_start : int;
   has match_end : int;
   
+  has matches : ro string[];
+  
   enum {
     STATUS_START,
     STATUS_CONTINUE,
@@ -21,6 +23,8 @@ package SPVM::Regex {
     $self->{patterns} = SPVM::List->new;
     
     $self->compile($re_str);
+    
+    $self->{matches} = new string[255];
     
     return $self;
   }
