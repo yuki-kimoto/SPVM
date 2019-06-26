@@ -544,8 +544,35 @@ package SPVM::Regex {
     return $really_match;
   }
   
-  sub replace : int ($self : self, $target : string, $target_base_index : int, $replace : object) {
+  sub replace : string ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
     
+    my $match = $self->match($target, $target_base_index);
+    
+    if ($match) {
+      my $match_start = $self->match_start;
+      my $match_end = $self->match_end;
+      
+      my $replace = (string)$replace_object;
+      
+      my $match_length = $match_end - $match_start;
+      my $replace_length = length $replace;
+      my $target_length = length $target;
+      
+      my $result_length = $target_length + $replace_length - $match_length;
+      
+      my $result = new byte[$result_length];
+      
+      my $rest_length = $target_length - $match_end;
+      
+      memcpyb($result, 0, (byte[])$target, 0, $match_start);
+      memcpyb($result, $match_start, (byte[])$replace, 0, $replace_length);
+      memcpyb($result, $match_start + $replace_length, (byte[])$target, $match_end, $rest_length);
+      
+      return (string)$result;
+    }
+    else {
+      return undef;
+    }
   }
   
   private sub duplicate : int ($self : self, $pattern1 : SPVM::Regex::Pattern, $pattern2 : SPVM::Regex::Pattern) {
