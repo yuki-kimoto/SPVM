@@ -22,6 +22,21 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
+
+    # Replace offset
+    {
+      my $re = SPVM::Regex->new("abc");
+      my $target = "ppzabczabczabcz";
+      my $result = $re->replace($target, 6, "ABC");
+      
+      unless ($result) {
+        return 0;
+      }
+      
+      unless ($result eq "ppzabczABCzabcz") {
+        return 0;
+      }
+    }
     
     return 1;
   }
