@@ -12,6 +12,8 @@ package SPVM::Regex {
   has match_start : ro int;
   has match_end : ro int;
   
+  has replaced : ro string;
+  
   enum {
     STATUS_START,
     STATUS_CONTINUE,
@@ -544,11 +546,13 @@ package SPVM::Regex {
     return $really_match;
   }
   
-  sub replace : string ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
+  sub replace : int ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
     
     my $match = $self->match($target, $target_base_index);
-    
+    my $match_count = 0;
     if ($match) {
+      $match_count++;
+      
       my $match_start = $self->match_start;
       my $match_end = $self->match_end;
       
@@ -568,13 +572,12 @@ package SPVM::Regex {
       memcpyb($result, $match_start, (byte[])$replace, 0, $replace_length);
       memcpyb($result, $match_start + $replace_length, (byte[])$target, $match_end, $rest_length);
       
-      return (string)$result;
+      $self->{replaced} = $result;
     }
-    else {
-      return undef;
-    }
+    
+    return $match_count;
   }
-  
+
   private sub duplicate : int ($self : self, $pattern1 : SPVM::Regex::Pattern, $pattern2 : SPVM::Regex::Pattern) {
     my $uchar_min_maxs1 = $pattern1->{uchar_min_maxs};
     my $uchar_min_maxs2 = $pattern2->{uchar_min_maxs};

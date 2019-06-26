@@ -18,7 +18,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($result eq "ppzABCz") {
+      unless ($re->replaced eq "ppzABCz") {
         return 0;
       }
     }
@@ -33,7 +33,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($result eq "ppzabczABCzabcz") {
+      unless ($re->replaced eq "ppzabczABCzabcz") {
         return 0;
       }
     }
@@ -48,7 +48,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
       
-      unless ($result eq "zABCz") {
+      unless ($re->replaced eq "zABCz") {
         return 0;
       }
     }
