@@ -9,6 +9,9 @@ package SPVM::Regex {
   
   has captures : string[];
   
+  has match_start : ro int;
+  has match_end : ro int;
+  
   enum {
     STATUS_START,
     STATUS_CONTINUE,
@@ -524,22 +527,19 @@ package SPVM::Regex {
       }
     }
     
+    my $really_match = 0;
     if ($match_all) {
       if ($self->{string_end}) {
         if ($target_index == length $target) {
-          return 1;
-        }
-        else {
-          return 0;
+          $really_match = 1;
         }
       }
       else {
-        return 1;
+        $really_match = 1;
       }
     }
-    else {
-      return 0;
-    }
+    
+    return $really_match;
   }
   
   sub replace : int ($self : self, $target : string, $replace : object) {
