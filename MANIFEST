@@ -157,8 +157,6 @@ lib/SPVM/HTTP/Client/CookieJar/Cookie.spvm
 lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
 lib/SPVM/HTTP/Client/Response.spvm
 lib/SPVM/HTTP/URL.spvm
-lib/SPVM/HTTP/URL/Encode.spvm
-lib/SPVM/HTTP/URL/Escape.spvm
 lib/SPVM/HTTP/URL/Parameters.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
@@ -433,8 +431,6 @@ t/default/lib/TestCase/Lib/SPVM/HTTP/Client.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/Client/CookieJar.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL.spvm
-t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Encode.spvm
-t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Escape.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Parameters.spvm
 t/default/lib/TestCase/Lib/SPVM/Int.spvm
 t/default/lib/TestCase/Lib/SPVM/IntList.spvm
@@ -445,6 +441,8 @@ t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
+t/default/lib/TestCase/Lib/SPVM/Math/BigDecimal.spvm
+t/default/lib/TestCase/Lib/SPVM/Math/BigInteger.spvm
 t/default/lib/TestCase/Lib/SPVM/MIME/Base64.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
