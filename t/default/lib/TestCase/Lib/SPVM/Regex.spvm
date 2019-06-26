@@ -8,7 +8,7 @@ package TestCase::Lib::SPVM::Regex {
   }
   
   sub match_start_and_end : int () {
-    # Match start
+    # Match start and end
     {
       my $re = SPVM::Regex->new("abc");
       my $target = "ppzabcz";
@@ -19,6 +19,9 @@ package TestCase::Lib::SPVM::Regex {
       }
       
       unless ($re->match_start == 3) {
+        return 0;
+      }
+      unless ($re->match_end == 6) {
         return 0;
       }
     }
@@ -36,6 +39,9 @@ package TestCase::Lib::SPVM::Regex {
       unless ($re->match_start == 6) {
         return 0;
       }
+      unless ($re->match_end == 24) {
+        return 0;
+      }
     }
 
     # Match start zero width
@@ -49,6 +55,28 @@ package TestCase::Lib::SPVM::Regex {
       }
       
       unless ($re->match_start == 2) {
+        return 0;
+      }
+      unless ($re->match_end == 3) {
+        return 0;
+      }
+    }
+
+
+    # Match start zero width only
+    {
+      my $re = SPVM::Regex->new("b*");
+      my $target = "zzcz";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->match_start == 0) {
+        return 0;
+      }
+      unless ($re->match_end == 0) {
         return 0;
       }
     }

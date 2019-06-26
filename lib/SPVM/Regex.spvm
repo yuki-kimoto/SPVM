@@ -542,6 +542,7 @@ package SPVM::Regex {
     
     if ($really_match) {
       $self->{match_start} = $target_base_index_before;
+      $self->{match_end} = $target_index;
     }
     
     return $really_match;
