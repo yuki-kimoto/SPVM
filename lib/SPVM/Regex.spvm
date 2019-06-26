@@ -2,6 +2,7 @@ package SPVM::Regex {
   use SPVM::Unicode (uchar);
   use SPVM::List;
   use SPVM::IntList;
+  use SPVM::Hash;
 
   has patterns : SPVM::List;
   has string_start : int;
@@ -545,19 +546,33 @@ package SPVM::Regex {
     
     return $really_match;
   }
+
+  sub replace  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
+    return $self->replace_opt($target, $target_base_index, $replace_object, [(object)replace_all => 0]);
+  }
+
+  sub replace_all  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
+    return $self->replace_opt($target, $target_base_index, $replace_object, [(object)replace_all => 1]);
+  }
   
-  sub replace : string ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
+  private sub replace_opt  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object, $opta : object[]) {
     
+    my $opt = SPVM::Hash->newa($opta);
+    
+    my $replace_all = 0;
+    if (my $replace_all_obj = $opt->get("replace_all")) {
+      $replace_all = (int)$replace_all_obj;
+    }
     $self->{replace_count} = 0;
     
     unless ($target) {
       return $target;
     }
     
-    my $match = $self->match($target, $target_base_index);
     my $result : byte[];
     my $replace_count = 0;
-    if ($match) {
+    while (my $match = $self->match($target, $target_base_index)) {
+      
       my $match_start = $self->match_start;
       my $match_end = $self->match_end;
       
@@ -578,6 +593,10 @@ package SPVM::Regex {
       memcpyb($result, $match_start + $replace_length, (byte[])$target, $match_end, $rest_length);
       
       $replace_count++;
+      
+      unless ($replace_all) {
+        last;
+      }
     }
     
     if ($replace_count == 0) {
