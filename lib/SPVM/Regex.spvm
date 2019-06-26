@@ -386,8 +386,12 @@ package SPVM::Regex {
       }
     }
   }
-  
+
   sub match : int ($self : self, $target : string) {
+    return $self->execute($target, undef);
+  }
+  
+  private sub execute : int ($self : self, $target : string, $replace : object) {
     
     unless ($target) {
       die "Target string must be defined";
@@ -540,9 +544,8 @@ package SPVM::Regex {
     }
   }
   
-  sub replace : string ($self : self, $target : string, $replace : string) {
-    
-    return undef;
+  sub replace : int ($self : self, $target : string, $replace : object) {
+    return $self->execute($target, $replace);
   }
   
   private sub duplicate : int ($self : self, $pattern1 : SPVM::Regex::Pattern, $pattern2 : SPVM::Regex::Pattern) {
