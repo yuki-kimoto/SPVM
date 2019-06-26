@@ -37,6 +37,21 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
+
+    # Match start zero width
+    {
+      my $re = SPVM::Regex->new("b*c");
+      my $target = "zzcz";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->match_start == 2) {
+        return 0;
+      }
+    }
     
     return 1;
   }
