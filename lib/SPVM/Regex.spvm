@@ -404,8 +404,9 @@ package SPVM::Regex {
     
     my $match_all = 0;
     my $target_index = 0;
+    my $target_base_index_before : int;
     while (1) {
-      my $target_base_index_before = $target_base_index;
+      $target_base_index_before = $target_base_index;
       my $target_base_uchar = uchar($target, \$target_base_index);
       unless ($target_base_uchar >= 0) {
         last;
@@ -537,6 +538,10 @@ package SPVM::Regex {
       else {
         $really_match = 1;
       }
+    }
+    
+    if ($really_match) {
+      $self->{match_start} = $target_base_index_before;
     }
     
     return $really_match;

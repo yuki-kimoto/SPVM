@@ -6,7 +6,41 @@ package TestCase::Lib::SPVM::Regex {
     
     return 1;
   }
+  
+  sub match_start_and_end : int () {
+    # Match start
+    {
+      my $re = SPVM::Regex->new("abc");
+      my $target = "ppzabcz";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->match_start == 3) {
+        return 0;
+      }
+    }
 
+    # Match start UTF-8
+    {
+      my $re = SPVM::Regex->new("あい[かきくけこ]+う");
+      my $target = "んんあいかくこうん";
+      my $match = $re->match($target);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->match_start == 6) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub match_capture : int ()  {
     # Capture a char
     {
