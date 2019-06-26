@@ -556,6 +556,7 @@ package SPVM::Regex {
     
     my $match = $self->match($target, $target_base_index);
     my $result : byte[];
+    my $replace_count = 0;
     if ($match) {
       my $match_start = $self->match_start;
       my $match_end = $self->match_end;
@@ -576,11 +577,14 @@ package SPVM::Regex {
       memcpyb($result, $match_start, (byte[])$replace, 0, $replace_length);
       memcpyb($result, $match_start + $replace_length, (byte[])$target, $match_end, $rest_length);
       
-      $self->{replace_count} = 1;
+      $replace_count++;
     }
-    else {
+    
+    if ($replace_count == 0) {
       $result = (byte[])copy_str($target);
     }
+    
+    $self->{replace_count} = $replace_count;
     
     return (string)$result;
   }
