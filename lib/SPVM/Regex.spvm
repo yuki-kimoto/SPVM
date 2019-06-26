@@ -3,6 +3,7 @@ package SPVM::Regex {
   use SPVM::List;
   use SPVM::IntList;
   use SPVM::Hash;
+  use SPVM::StringBuffer;
 
   has patterns : SPVM::List;
   has string_start : int;
@@ -571,6 +572,7 @@ package SPVM::Regex {
     
     my $result : byte[];
     my $replace_count = 0;
+    my $result_buffer = SPVM::StringBuffer->new;
     while (my $match = $self->match($target, $target_base_index)) {
       
       my $match_start = $self->match_start;
@@ -588,6 +590,9 @@ package SPVM::Regex {
       
       my $rest_length = $target_length - $match_end;
       
+      my $before_result = (string)sliceb($result, $target_base_index, $match_start - $target_base_index);
+      $result_buffer->append_string($before_result);
+      
       memcpyb($result, 0, (byte[])$target, 0, $match_start);
       memcpyb($result, $match_start, (byte[])$replace, 0, $replace_length);
       memcpyb($result, $match_start + $replace_length, (byte[])$target, $match_end, $rest_length);
@@ -595,6 +600,7 @@ package SPVM::Regex {
       $replace_count++;
       
       unless ($replace_all) {
+        
         last;
       }
     }
