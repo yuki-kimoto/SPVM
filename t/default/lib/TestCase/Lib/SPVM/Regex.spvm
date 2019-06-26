@@ -14,11 +14,11 @@ package TestCase::Lib::SPVM::Regex {
       my $target = "ppzabcz";
       my $result = $re->replace($target, 0, "ABC");
       
-      unless ($result) {
+      unless ($re->replace_count == 1) {
         return 0;
       }
       
-      unless ($re->replaced eq "ppzABCz") {
+      unless ($result eq "ppzABCz") {
         return 0;
       }
     }
@@ -29,11 +29,11 @@ package TestCase::Lib::SPVM::Regex {
       my $target = "ppzabczabczabcz";
       my $result = $re->replace($target, 6, "ABC");
       
-      unless ($result) {
+      unless ($re->replace_count == 1) {
         return 0;
       }
       
-      unless ($re->replaced eq "ppzabczABCzabcz") {
+      unless ($result eq "ppzabczABCzabcz") {
         return 0;
       }
     }
@@ -44,11 +44,26 @@ package TestCase::Lib::SPVM::Regex {
       my $target = "za123bz";
       my $result = $re->replace($target, 0, "ABC");
       
-      unless ($result) {
+      unless ($re->replace_count == 1) {
         return 0;
       }
       
-      unless ($re->replaced eq "zABCz") {
+      unless ($result eq "zABCz") {
+        return 0;
+      }
+    }
+
+    # Replace - Not replaced
+    {
+      my $re = SPVM::Regex->new("a\d+b");
+      my $target = "pppp";
+      my $result = $re->replace($target, 0, "ABC");
+      
+      unless ($re->replace_count == 0) {
+        return 0;
+      }
+      
+      unless ($result eq "pppp") {
         return 0;
       }
     }
