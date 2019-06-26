@@ -37,6 +37,21 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
+
+    # Replace with number
+    {
+      my $re = SPVM::Regex->new("a\d+b");
+      my $target = "za123bz";
+      my $result = $re->replace($target, 0, "ABC");
+      
+      unless ($result) {
+        return 0;
+      }
+      
+      unless ($result eq "zABCz") {
+        return 0;
+      }
+    }
     
     return 1;
   }
