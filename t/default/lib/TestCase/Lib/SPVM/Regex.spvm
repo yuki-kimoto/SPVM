@@ -785,14 +785,6 @@ package TestCase::Lib::SPVM::Regex {
       unless ($match) {
         return 0;
       }
-      
-      unless ($match isa string[]) {
-        return 0;
-      }
-      
-      unless (@$match == 0) {
-        return 0;
-      }
     }
     
     # Match same string
@@ -803,14 +795,6 @@ package TestCase::Lib::SPVM::Regex {
       my $match = $re->match($target);
       
       unless ($match) {
-        return 0;
-      }
-      
-      unless ($match isa string[]) {
-        return 0;
-      }
-      
-      unless (@$match == 0) {
         return 0;
       }
     }
