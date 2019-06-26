@@ -4,8 +4,8 @@ package SPVM::Regex {
   use SPVM::IntList;
 
   has patterns : SPVM::List;
-  has match_start : int;
-  has match_end : int;
+  has string_start : int;
+  has string_end : int;
   
   has captures : string[];
   
@@ -65,7 +65,7 @@ package SPVM::Regex {
     my $is_capture_start = 0;
     
     while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
-      if ($self->{match_end}) {
+      if ($self->{string_end}) {
         die "\$ must be last of regex";
       }
       
@@ -191,7 +191,7 @@ package SPVM::Regex {
                   die "Regex compile error";
                 }
                 
-                $self->{match_start} = 1;
+                $self->{string_start} = 1;
                 
                 break;
               }
@@ -200,7 +200,7 @@ package SPVM::Regex {
                 break;
               }
               case '$': {
-                $self->{match_end} = 1;
+                $self->{string_end} = 1;
                 break;
               }
               case '|': {
@@ -518,14 +518,14 @@ package SPVM::Regex {
         last;
       }
       else {
-        if ($self->{match_start}) {
+        if ($self->{string_start}) {
           last;
         }
       }
     }
     
     if ($match_all) {
-      if ($self->{match_end}) {
+      if ($self->{string_end}) {
         if ($target_index == length $target) {
           return 1;
         }
