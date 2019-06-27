@@ -4785,7 +4785,11 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
       const char* basic_type_name = type->basic_type->name;
       
       SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-      assert(package);
+      
+      if (!package) {
+        SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", basic_type_name, sub_name, op_call_sub->file, op_call_sub->line);
+        return;
+      }
       
       found_package = package;
       found_sub = SPVM_HASH_fetch(
