@@ -610,16 +610,18 @@ package SPVM::Regex {
             my $capture = $self->caps((int)$replace_elem_object);
             $replace_buffer->append_string($capture);
           }
-          elsif ($replace_elem_object isa SPVM::Stringer) {
-            my $stringer = (SPVM::Stringer)$replace_elem_object;
-            my $cb_result = $stringer->to_str;
-            $replace_buffer->append_string($cb_result);
-          }
           else {
             die "Invalid replace argument element";
           }
         }
         
+        $replace = $replace_buffer->to_str;
+      }
+      elsif ($replace_object isa SPVM::Stringer) {
+        my $replace_buffer = SPVM::StringBuffer->new;
+        my $stringer = (SPVM::Stringer)$replace_object;
+        my $cb_result = $stringer->to_str;
+        $replace_buffer->append_string($cb_result);
         $replace = $replace_buffer->to_str;
       }
       else {

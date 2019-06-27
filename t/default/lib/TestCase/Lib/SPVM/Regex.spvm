@@ -22,6 +22,23 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
+
+    # Replace all callback
+    {
+      my $re = SPVM::Regex->new("a(bc)");
+      my $target = "ppzabczabcz";
+      my $result = $re->replace_all($target, 0, [$re : SPVM::Regex] sub : string ($self : self) {
+        return "ABC" . $re->caps(1) . "PQRS";
+      });
+      
+      unless ($re->replace_count == 2) {
+        return 0;
+      }
+      
+      unless ($result eq "ppzABCbcPQRSzABCbcPQRSz") {
+        return 0;
+      }
+    }
     
     return 1;
   }
