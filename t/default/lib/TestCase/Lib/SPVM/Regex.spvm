@@ -8,7 +8,7 @@ package TestCase::Lib::SPVM::Regex {
   }
 
   sub replace_all : int () {
-    # Replace
+    # Replace all
     {
       my $re = SPVM::Regex->new("abc");
       my $target = "ppzabczabcz";
@@ -23,7 +23,7 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
 
-    # Replace offset
+    # Replace all offset
     {
       my $re = SPVM::Regex->new("abc");
       my $target = "ppzabczabczabcz";
@@ -38,7 +38,7 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
 
-    # Replace with number
+    # Replace all with number
     {
       my $re = SPVM::Regex->new("a\d+b");
       my $target = "za123bz";
@@ -53,7 +53,7 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
 
-    # Replace - Not replace_all
+    # Replace all - Not replace_all
     {
       my $re = SPVM::Regex->new("a\d+b");
       my $target = "pppp";

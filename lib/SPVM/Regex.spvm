@@ -4,6 +4,7 @@ package SPVM::Regex {
   use SPVM::IntList;
   use SPVM::Hash;
   use SPVM::StringBuffer;
+  use SPVM::Stringer;
 
   has patterns : SPVM::List;
   has string_start : int;
@@ -591,7 +592,37 @@ package SPVM::Regex {
       my $match_start = $self->match_start;
       my $match_end = $self->match_end;
       
-      my $replace = (string)$replace_object;
+      my $replace : string;
+      if ($replace_object isa string) {
+        $replace = (string)$replace_object;
+      }
+      elsif ($replace_object isa object[]) {
+        my $replace_objects = (object[])$replace_object;
+        
+        my $replace_buffer = SPVM::StringBuffer->new;
+        for (my $i = 0; $i < @$replace_objects; $i++) {
+          my $replace_elem_object = $replace_objects->[$i];
+          
+          if ($replace_elem_object isa string) {
+            $replace_buffer->append_string((string)$replace_elem_object);
+          }
+          elsif ($replace_elem_object isa SPVM::Int) {
+            my $capture = $self->caps((int)$replace_elem_object);
+            $replace_buffer->append_string($capture);
+          }
+          elsif ($replace_elem_object isa SPVM::Stringer) {
+            my $stringer = (SPVM::Stringer)$replace_elem_object;
+            my $cb_result = $stringer->to_str;
+            $replace_buffer->append_string($cb_result);
+          }
+          else {
+            die "Invalid replace argument element";
+          }
+        }
+      }
+      else {
+        die "Invalid replace argument";
+      }
       
       my $match_length = $match_end - $match_start;
       my $replace_length = length $replace;
