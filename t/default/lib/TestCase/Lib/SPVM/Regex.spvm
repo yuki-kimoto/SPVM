@@ -7,6 +7,25 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub replace_all_capture : int () {
+    # Replace all capture
+    {
+      my $re = SPVM::Regex->new("a(bc)");
+      my $target = "ppzabczabcz";
+      my $result = $re->replace_all($target, 0, [(object)"ABC", 1, "PQR"]);
+      
+      unless ($re->replace_count == 2) {
+        return 0;
+      }
+      
+      unless ($result eq "ppzABCbcPQRzABCbcPQRz") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub replace_all : int () {
     # Replace all
     {

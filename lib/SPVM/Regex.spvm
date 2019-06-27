@@ -619,6 +619,8 @@ package SPVM::Regex {
             die "Invalid replace argument element";
           }
         }
+        
+        $replace = $replace_buffer->to_str;
       }
       else {
         die "Invalid replace argument";
