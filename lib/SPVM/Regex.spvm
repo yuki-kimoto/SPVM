@@ -609,9 +609,9 @@ package SPVM::Regex {
       $replace_count++;
       
       unless ($replace_all) {
-        
         last;
       }
+      $target_base_index = $match_end;
     }
     
     

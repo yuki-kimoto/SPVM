@@ -7,6 +7,70 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
+  sub replace_all : int () {
+    # Replace
+    {
+      my $re = SPVM::Regex->new("abc");
+      my $target = "ppzabczabcz";
+      my $result = $re->replace_all($target, 0, "ABC");
+      
+      unless ($re->replace_count == 2) {
+        return 0;
+      }
+      
+      unless ($result eq "ppzABCzABCz") {
+        return 0;
+      }
+    }
+
+    # Replace offset
+    {
+      my $re = SPVM::Regex->new("abc");
+      my $target = "ppzabczabczabcz";
+      my $result = $re->replace_all($target, 6, "ABC");
+      
+      unless ($re->replace_count == 2) {
+        return 0;
+      }
+      
+      unless ($result eq "ppzabczABCzABCz") {
+        return 0;
+      }
+    }
+
+    # Replace with number
+    {
+      my $re = SPVM::Regex->new("a\d+b");
+      my $target = "za123bz";
+      my $result = $re->replace_all($target, 0, "ABC");
+      
+      unless ($re->replace_count == 1) {
+        return 0;
+      }
+      
+      unless ($result eq "zABCz") {
+        return 0;
+      }
+    }
+
+    # Replace - Not replace_all
+    {
+      my $re = SPVM::Regex->new("a\d+b");
+      my $target = "pppp";
+      my $result = $re->replace_all($target, 0, "ABC");
+      
+      unless ($re->replace_count == 0) {
+        return 0;
+      }
+      
+      unless ($result eq "pppp") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub replace : int () {
     # Replace
     {
