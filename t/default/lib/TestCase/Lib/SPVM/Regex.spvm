@@ -67,7 +67,7 @@ package TestCase::Lib::SPVM::Regex {
         return 0;
       }
     }
-    
+
     return 1;
   }
   

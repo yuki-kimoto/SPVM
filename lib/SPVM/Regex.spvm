@@ -562,6 +562,8 @@ package SPVM::Regex {
   
   private sub replace_opt  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object, $opta : object[]) {
     
+    my $original_target_base_index = $target_base_index;
+    
     my $opt = SPVM::Hash->newa($opta);
     
     my $replace_all = 0;
@@ -578,6 +580,12 @@ package SPVM::Regex {
     my $replace_count = 0;
     my $result_buffer = SPVM::StringBuffer->new;
     my $target_length = length $target;
+    
+    if ($target_base_index > 0) {
+      my $first_string = substr($target, 0, $target_base_index);
+      $result_buffer->append_string($first_string);
+    }
+    
     while (my $match = $self->match_repeat($target, $target_base_index)) {
       
       my $match_start = $self->match_start;
@@ -594,13 +602,9 @@ package SPVM::Regex {
       
       my $rest_length = $target_length - $match_end;
       
-      my $before_result = (string)sliceb($result, $target_base_index, $match_start - $target_base_index);
+      my $before_result = (string)sliceb((byte[])$target, $target_base_index, $match_start - $target_base_index);
       $result_buffer->append_string($before_result);
       $result_buffer->append_string($replace);
-      
-      memcpyb($result, 0, (byte[])$target, 0, $match_start);
-      memcpyb($result, $match_start, (byte[])$replace, 0, $replace_length);
-      memcpyb($result, $match_start + $replace_length, (byte[])$target, $match_end, $rest_length);
       
       $replace_count++;
       
@@ -620,7 +624,7 @@ package SPVM::Regex {
       my $rest_string = substr($target, $match_end, $rest_length);
       $result_buffer->append_string($rest_string);
       
-      # $result = (byte[])$result_buffer->to_str;
+      $result = (byte[])$result_buffer->to_str;
     }
     
     $self->{replace_count} = $replace_count;
