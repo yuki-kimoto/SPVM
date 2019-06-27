@@ -76,7 +76,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("abc");
       my $target = "ppzabcz";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -94,7 +94,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("あい[かきくけこ]+う");
       my $target = "んんあいかくこうん";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -112,7 +112,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("b*c");
       my $target = "zzcz";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -131,7 +131,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("b*");
       my $target = "zzcz";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -153,7 +153,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("a(b)c");
       my $target = "zabcz";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -168,7 +168,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("あ(い)う");
       my $target = "んあいうん";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -183,7 +183,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("a(b?)c");
       my $target = "zacz";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -198,7 +198,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("\-(\w+)\-");
       my $target = "-abc89-";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -213,7 +213,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("\-(\w+) (\w+) (\w+) (\w+) (\w+)");
       my $target = "-abc1 abc2 abc3 abc4 abc5 abc6-";
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -263,7 +263,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("[0-9]+");
       my $target = "z09az";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -275,7 +275,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("[0-9a-c]+");
       my $target = "zz";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       if ($match) {
         return 0;
@@ -292,7 +292,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("[bcdあ]+");
       my $target = "zabcあz";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -304,7 +304,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("[\da]+");
       my $target = "z01az";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -316,7 +316,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("[bcd\d]+");
       my $target = "ae";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       if ($match) {
         return 0;
@@ -333,7 +333,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\s+\S+\s+");
       my $target = "\f\tzacz \r\n";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -345,7 +345,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\S+");
       my $target = "\f\t \r\n";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       if ($match) {
         return 0;
@@ -361,7 +361,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("a\s+c");
       my $target = "za\f\t\r\n cz";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -373,7 +373,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\s+");
       my $target = "\aabc\0";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       if ($match) {
         return 0;
@@ -390,7 +390,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "0-:9";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -402,7 +402,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "ab`{yz";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -414,7 +414,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "AB`{YZ";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -426,7 +426,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\w\W+\w");
       my $target = "_^`_";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -438,7 +438,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\W+");
       my $target = "azAZ_09";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       if ($match) {
         return 0;
@@ -455,7 +455,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\-\w+\:");
       my $target = "-0123456789:";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -467,7 +467,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\`\w+\{");
       my $target = "`abyz{";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -479,7 +479,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\`\w+\{");
       my $target = "`ABYZ{";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -491,7 +491,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\^\w+\`");
       my $target = "^__`";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -503,7 +503,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("\w+");
       my $target = "{}あいう";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       if ($match) {
         return 0;
@@ -520,7 +520,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("0\D+9");
       my $target = "0abc9";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -537,7 +537,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("a\d+c");
       my $target = "za0123456789cz";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -550,7 +550,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("\d+\D+\d+");
         my $target = "123abc789";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -615,7 +615,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab+c$");
         my $target = "zabbc";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -627,7 +627,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab+c$");
         my $target = "zabbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -646,7 +646,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("^ab+c");
         my $target = "abbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -658,7 +658,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("^ab+c");
         my $target = "zabbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -677,7 +677,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{1,3}c");
         my $target = "zabcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -689,7 +689,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{1,3}c");
         my $target = "zabbbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -701,7 +701,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{1,3}c");
         my $target = "zacz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -712,7 +712,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{1,3}c");
         my $target = "zabbbbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -727,7 +727,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{11,13}c");
         my $target = "zabbbbbbbbbbbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -739,7 +739,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{11,13}c");
         my $target = "zabbbbbbbbbbbbbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -751,7 +751,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{11,13}c");
         my $target = "zabbbbbbbbbbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -762,7 +762,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab{11,13}c");
         my $target = "zabbbbbbbbbbbbbbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -781,7 +781,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab?c");
         my $target = "zabcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -793,7 +793,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab?c");
         my $target = "zabbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -805,7 +805,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab?c");
         my $target = "zacz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -824,7 +824,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab+c");
         my $target = "zabcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -836,7 +836,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab+c");
         my $target = "zabbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -848,7 +848,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab+c");
         my $target = "zacz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -867,7 +867,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab*c");
         my $target = "zabcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -879,7 +879,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab*c");
         my $target = "zabbcz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -891,7 +891,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab*c");
         my $target = "zacz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         unless ($match) {
           return 0;
@@ -903,7 +903,7 @@ package TestCase::Lib::SPVM::Regex {
         my $re = SPVM::Regex->new("ab*c");
         my $target = "zabbdz";
         
-        my $match = $re->match($target, 0);
+        my $match = $re->match($target);
         
         if ($match) {
           return 0;
@@ -921,7 +921,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("abc");
       my $target = "zabcz";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;
@@ -933,7 +933,7 @@ package TestCase::Lib::SPVM::Regex {
       my $re = SPVM::Regex->new("abc");
       my $target = "abc";
       
-      my $match = $re->match($target, 0);
+      my $match = $re->match($target);
       
       unless ($match) {
         return 0;

@@ -393,7 +393,11 @@ package SPVM::Regex {
     }
   }
   
-  sub match : int ($self : self, $target : string, $target_base_index : int) {
+  sub match : int ($self : self, $target : string) {
+    return $self->match_repeat($target, 0);
+  }
+  
+  sub match_repeat : int ($self : self, $target : string, $target_base_index : int) {
     
     unless ($target) {
       die "Target string must be defined";
@@ -573,7 +577,7 @@ package SPVM::Regex {
     my $result : byte[];
     my $replace_count = 0;
     my $result_buffer = SPVM::StringBuffer->new;
-    while (my $match = $self->match($target, $target_base_index)) {
+    while (my $match = $self->match_repeat($target, $target_base_index)) {
       
       my $match_start = $self->match_start;
       my $match_end = $self->match_end;
