@@ -9,6 +9,9 @@ use TestFile;
 
 use SPVM 'TestCase::Lib::SPVM::HTTP::Client';
 
+# Copy test_files to test_files_tmp with replacing os newline
+TestFile::copy_test_files_tmp_replace_newline();
+
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 

@@ -1,33 +1,80 @@
 package TestCase::Lib::SPVM::HTTP::Client {
   use SPVM::HTTP::Client;
   use SPVM::Hash;
+  use SPVM::IO::File;
+
+  private sub _dump_response : void ($response : SPVM::HTTP::Client::Response) {
+    warn("response\n" .
+        "\tstatus: $response->{status}\n" .
+        "\tcontent: '$response->{content}'");
+  }
 
   sub test_basic : int () {
     my $client = SPVM::HTTP::Client->new_opt([(object)
       default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ]),
     ]);
-    $client->request("GET", "http://testserver.spvm.info", undef);
-    $client->request("HEAD", "http://testserver.spvm.info", undef);
-    $client->request("POST", "http://testserver.spvm.info/echo", [(object)
+    if (my $response = $client->request("GET", "http://testserver.spvm.info", undef)) {
+      _dump_response($response);
+    }
+    if (my $response = $client->request("HEAD", "http://testserver.spvm.info", undef)) {
+      _dump_response($response);
+    }
+    if (my $response = $client->request("POST", "http://testserver.spvm.info/echo", [(object)
       content => "post content",
       headers => SPVM::Hash->newa([(object)
         "content-length" => 12,
       ]),
-    ]);
+    ])) {
+      _dump_response($response);
+    }
     my $form = $client->www_form_urlencode([(object)
       param1 => "val1",
       param2 => 123,
     ]);
-    $client->request("POST", "http://testserver.spvm.info/echo", [(object)
+    if (my $response = $client->request("POST", "http://testserver.spvm.info/echo", [(object)
       content => $form,
       headers => SPVM::Hash->newa([(object)
         "content-length" => length $form,
       ]),
-    ]);
+    ])) {
+      _dump_response($response);
+    }
     $client->post_form("http://testserver.spvm.info/echo", [(object)
       key         => "value",
       "あいう abc" => "値 123",
     ]);
+    {
+      my $file = "t/test_files_tmp/small.txt";
+      warn ("output file: $file");
+      my $fh = SPVM::IO::File->open($file, "w");
+      unless ($fh) {
+        die "Can't open file $file";
+      }
+      my $data_cb = [$fh : SPVM::IO::File] sub : void ($self : self, $append : string, $target : object) {
+        $fh->write($append, length $append);
+      };
+      if (my $response = $client->request("GET", "http://testserver.spvm.info/chunk/text", [(object)
+        data_callback => $data_cb,
+      ])) {
+        _dump_response($response);
+      }
+    }
+    {
+      my $file = "t/test_files_tmp/images.tar.gz";
+      warn ("output file: $file");
+      my $fh = SPVM::IO::File->open($file, "w");
+      unless ($fh) {
+        die "Can't open file $file";
+      }
+      my $data_cb = [$fh : SPVM::IO::File] sub : void ($self : self, $append : string, $target : object) {
+        $fh->write($append, length $append);
+      };
+      if (my $response = $client->request("GET", "http://testserver.spvm.info/chunk/images", [(object)
+        data_callback => $data_cb,
+      ])) {
+        _dump_response($response);
+      }
+    }
     return 1;
   }
 }
