@@ -1015,6 +1015,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                // Excape for regular expression \s
                 else if (*char_ptr == 's') {
                   str[str_length] = '\\';
                   str_length++;
@@ -1022,6 +1023,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                // Excape for regular expression \S
                 else if (*char_ptr == 'S') {
                   str[str_length] = '\\';
                   str_length++;
@@ -1029,6 +1031,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                // Excape for regular expression \d
                 else if (*char_ptr == 'd') {
                   str[str_length] = '\\';
                   str_length++;
@@ -1036,6 +1039,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                // Excape for regular expression \D
                 else if (*char_ptr == 'D') {
                   str[str_length] = '\\';
                   str_length++;
@@ -1043,6 +1047,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                // Excape for regular expression \w
                 else if (*char_ptr == 'w') {
                   str[str_length] = '\\';
                   str_length++;
@@ -1050,6 +1055,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
+                // Excape for regular expression \W
                 else if (*char_ptr == 'W') {
                   str[str_length] = '\\';
                   str_length++;
@@ -1139,20 +1145,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 else {
-                  int32_t is_pword = 0;
-                  if (*char_ptr >= 'a' && *char_ptr <= 'z') {
-                    is_pword = 1;
-                  }
-                  else if (*char_ptr >= 'A' && *char_ptr <= 'Z') {
-                    is_pword = 1;
-                  }
-                  else if (*char_ptr >= '0' && *char_ptr <= '9') {
-                    is_pword = 1;
-                  }
-                  else if (*char_ptr == '_') {
-                    is_pword = 1;
-                  }
-                  if (is_pword) {
+                  if (isalnum(*char_ptr)) {
                     SPVM_COMPILER_error(compiler, "Invalid escape character in string literal %c at %s line %d\n", *char_ptr, compiler->cur_file, compiler->cur_line);
                   }
                   else {

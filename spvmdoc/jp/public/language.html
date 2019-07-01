@@ -4497,6 +4497,62 @@ package Foo::Bar {
             Unicodeのコードポイントを16進数で指定します。UTF-8に変換されます。16進数は「0～9」「a～f」「A～F」で表現します。
           </td>
         </tr>
+        <tr>
+          <td>
+            <b>\s</b>
+          </td>
+          <td>
+            Asciiコードの92、115の並び「\s」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\S</b>
+          </td>
+          <td>
+            Asciiコードの92、83の並び「\S」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\d</b>
+          </td>
+          <td>
+            Asciiコードの92、100の並び「\d」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\D</b>
+          </td>
+          <td>
+            Asciiコードの92、68の並び「\D」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\w</b>
+          </td>
+          <td>
+            Asciiコードの92、119の並び「\w」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\W</b>
+          </td>
+          <td>
+            Asciiコードの92、87の並び「\W」
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>\の後ろに「a～z」「A～Z」「0-9」「"」「'」「\」「$」以外のAsciiコードがきた場合</b>
+          </td>
+          <td>
+            Asciiコードの92、アスキーコードで表現される文字の並び。たとえば「\-」の場合は「\-」。
+          </td>
+        </tr>
       </table>
       <p>
         Unicodeのコードポイントを指定するエスケープ文字以外は、<a href="#language-literal-character">文字リテラル</a>のエスケープ文字と共通です。
@@ -8043,7 +8099,6 @@ sub foo : void ($thread_id : int) {
       <p>
         複数数値型のフィールドの個数の最大値は、16個で、少なくともひとつのフィールドが必要です。そうでない場合は、コンパイル時エラーが発生します。
       </p>
-
     </div>
     <div class="footer">
       <div><a href="javascript:void(0)" class="to-top">▲</a></div>
