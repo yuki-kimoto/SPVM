@@ -503,7 +503,7 @@ allow
   : ALLOW basic_type ';'
 
 enumeration
-  : ENUM enumeration_block
+  : opt_descriptors ENUM enumeration_block
 
 enumeration_block 
   : '{' opt_enumeration_values '}'
@@ -2214,6 +2214,53 @@ enum {
       <p>
         enumの定義が不正な場合は、コンパイル時エラーが発生します。
       </p>
+      
+      <p>
+        <b>列挙デスクリプタ</b>
+      </p>
+      <p>
+        列挙には、デスクリプタを指定することができます。
+      </p>
+<pre>
+private enum {
+  FLAG1,
+  FLAG2 = 4,
+  FLAG3,
+}
+</pre>
+      <p>
+        列挙で指定できるデスクリプタの一覧です。
+      </p>
+      <table>
+        <tr>
+          <th>
+            デスクリプタ名
+          </th>
+          <th>
+            役割
+          </th>
+        </tr>
+        <tr>
+          <td>
+            <b>public</b>
+          </td>
+          <td>
+            この列挙は、外部のパッケージからアクセスできます。デフォルトの設定です。
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <b>private</b>
+          </td>
+          <td>
+            この列挙は、外部のパッケージからアクセスできません。
+          </td>
+        </tr>
+      </table>
+      <p>
+        「public」と「private」の両方のデスクリプタが指定された場合は、コンパイル時エラーが発生します。
+      </p>
+      
       <h3 id="language-enum-call">列挙の呼び出し</h3>
       <p>
         列挙は、定数サブルーチンのエイリアスなので、サブルーチン呼び出しとまったく同じ方法で呼び出すことができます。
