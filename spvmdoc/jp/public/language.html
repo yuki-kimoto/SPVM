@@ -235,12 +235,12 @@
         SPVMのソースコードは「<a href="#language-parser-space-character">空白文字</a>」「<a href="#language-comment">コメント</a>」「<a href="#language-pod">POD</a>」「<a href="#language-literal">リテラル</a>」「<a href="#language-parser-identifier">識別子</a>」「<a href="#language-parser-keyword">キーワード</a>」「<a href="#language-parser-separator">区切り文字</a>」「<a href="#language-parser-operator">演算子</a>」で構成されます。
       </p>
       
-      <h3 id="language-parser-line-terminater">行終端</h3><!-- 2019/2/27 almost ok -->
+      <h3 id="language-parser-line-terminater">行終端</h3><!-- 2019/7/1 check -->
       <p>
         SPVMのソースコードの行終端は、ASCIIコードの「LF」「CR」「CR LF」です。
       </p>
       <p>
-        行終端が現れたときは、適切に行番号がインクリメントされます。
+        行終端が現れたときは、適切に行番号がインクリメントされます。ソースコード中の行終端は、ASCIIコードの「LF」として扱われます。
       </p>
       
       <h3 id="language-parser-space-character">空白文字</h3><!-- 2019/2/27 almost ok -->
