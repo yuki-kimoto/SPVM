@@ -4029,6 +4029,7 @@ package Foo::Bar {
         <li><a href="#language-literal-floating-point">浮動小数点リテラル</a></li>
         <li><a href="#language-literal-character">文字リテラル</a></li>
         <li><a href="#language-literal-string">文字列リテラル</a></li>
+        <li><a href="#language-literal-string-variable-expansion">変数展開</a></li>
       </ul>
       <h3 id="language-literal-integer">整数リテラル</h2>
       <p>
@@ -4573,7 +4574,64 @@ package Foo::Bar {
 "\x0D\x0A"
 "\N{U+3042}\N{U+3044}\N{U+3046}"
 </pre>
+
+      <h3 id="language-literal-string-variable-expansion">変数展開</h2>
+      <p>
+        文字列リテラル中のレキシカル変数、パッケージ変数、デリファレンス、フィールドアクセス、定数の添え字の配列アクセス、例外変数の場合は、変数展開が行われます。
+      </p>
+<pre>
+"AAA $foo BBB"
+"AAA $FOO BBB"
+"AAA $$foo BBB"
+"AAA $foo->{x} BBB"
+"AAA $foo->[3] BBB"
+"AAA $foo->{x}[3] BBB"
+"AAA $@ BBB"
+</pre>
+      <p>
+        上記は、以下のように展開されます。
+      </p>
+<pre>
+"AAA" . $foo . "BBB"
+"AAA" . $FOO . "BBB"
+"AAA" . $$foo . "BBB"
+"AAA" . $foo->{x} . "BBB"
+"AAA" . $foo->[3] . "BBB"
+"AAA" . $foo->{x}[3] . "BBB"
+"AAA" . $@ . "BBB"
+</pre>
       
+      <p>
+        変数名の終わりを表すために「{」と「}」で変数名を囲むことができます。
+      </p>
+<pre>
+"AAA ${foo}_ccc BBB"
+</pre>
+      <p>
+        上記は、以下のように展開されます。
+      </p>
+<pre>
+"AAA " . ${foo} . "_ccc BBB"
+</pre>
+      <p>
+        「{」と「}」の囲みがない場合は、変数名として正しい文字列までを変数として解釈します。デリファレンスの場合も同じです。
+      </p>
+      <p>
+        変数名の後ろに「->」が続いた場合は、フィールドアクセス、あるいは、配列アクセスと解釈します。
+      </p>
+      <p>
+        1. その後ろに、続く文字が「a-z」「A-Z」「0-9」「_」「{」「[」であった場合は、解釈を進めます。
+      </p>
+      <p>
+        2. 「1.」の後ろに続く文字が「}」「]」であった場合は、その次の文字が「->」「{」「[」であった場合は、解釈を進め、1に戻ります。そうでない場合は、解釈を止めます。
+      </p>
+      <p>
+        末尾の$は変数展開の開始としては扱われず「$」として扱われます。
+      </p>
+<pre>
+"AAA$"
+</pre>
+
       <h2 id="language-string">文字列</h2>
       <p>
         SPVMの文字列のデータ表現は、byte型の配列です。特別な内部表現を持たない、単なるバイト列です。

@@ -13,6 +13,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # String literal
 {
+  ok(TestCase::Literal::String->var_expansion);
   ok(TestCase::Literal::String->characters());
   ok(TestCase::Literal::String->escape());
   ok(TestCase::Literal::String->escape_ascii());
