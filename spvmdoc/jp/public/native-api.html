@@ -587,6 +587,14 @@ stack[1].dval = retval_im;
 118   free_env
 </pre>
 
+      <h2 id="native-api-call">ネイティブAPIの呼び出し</h2>
+      <p>
+        ネイティブAPIは、引数に渡された「SPVM_ENV* env」から呼び出すことができます。第一引数に、envを渡さなければならないことに注意してください。
+      </p>
+<pre>
+int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+</pre>
+      
       <h2 id="native-api-list">ネイティブAPIの一覧</h2>
       <ul class="list">
         <li><a href="#native-api-native-sub-api-runtime_package_vars_heap_offset">runtime_package_vars_heap_offset</a></li>
@@ -790,8 +798,14 @@ stack[1].dval = retval_im;
       <p>
         ネイティブ呼び出しで利用されるモータルスタックの容量。内部的に利用されます。
       </p>
-      
       <h3 id="native-api-native-sub-api-basic_type_id">basic_type_id</h3>
+      <p>
+        基本型の名前を指定して、基本型のIDを取得します。存在しない場合は、0より小さい値が返されます。
+      </p>
+<pre>
+int32_t (*basic_type_id)(SPVM_ENV*, const char*);
+</pre>
+      
       <h3 id="native-api-native-sub-api-field_id">field_id</h3>
       <h3 id="native-api-native-sub-api-field_offset">field_offset</h3>
       <h3 id="native-api-native-sub-api-pkgvar_id">pkgvar_id</h3>
