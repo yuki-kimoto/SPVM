@@ -131,16 +131,16 @@ void SPVM_OP_CHECKER_add_type_info_to_constant_pool(SPVM_COMPILER* compiler, SPV
 
     // Runtime type
     int32_t runtime_basic_type_id;
-    int32_t runtime_type_dimension;
+    int32_t runtime_type_category_dimension;
     const char* runtime_basic_type_name;
     if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
       runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
-      runtime_type_dimension = type->dimension + 1;
+      runtime_type_category_dimension = type->dimension + 1;
       runtime_basic_type_name = "byte";
     }
     else {
       runtime_basic_type_id = type->basic_type->id;
-      runtime_type_dimension = type->dimension;
+      runtime_type_category_dimension = type->dimension;
       runtime_basic_type_name = type->basic_type->name;
     }
     
@@ -152,19 +152,19 @@ void SPVM_OP_CHECKER_add_type_info_to_constant_pool(SPVM_COMPILER* compiler, SPV
     }
     
     // runtime type constant pool id
-    char runtime_type_id_string[sizeof(int32_t) * 2];
-    memcpy(runtime_type_id_string, &runtime_basic_type_id, sizeof(int32_t));
-    memcpy((char*)(runtime_type_id_string + sizeof(int32_t)), &runtime_type_dimension, sizeof(int32_t));
+    char runtime_type_category_id_string[sizeof(int32_t) * 2];
+    memcpy(runtime_type_category_id_string, &runtime_basic_type_id, sizeof(int32_t));
+    memcpy((char*)(runtime_type_category_id_string + sizeof(int32_t)), &runtime_type_category_dimension, sizeof(int32_t));
     
-    int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit2_value_symtable, runtime_type_id_string, sizeof(int32_t) * 2);
+    int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit2_value_symtable, runtime_type_category_id_string, sizeof(int32_t) * 2);
     if (found_constant_pool_id > 0) {
       type->constant_pool_id = found_constant_pool_id;
     }
     else {
       int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, runtime_basic_type_id);
-      SPVM_CONSTANT_POOL_push_int(package->constant_pool, runtime_type_dimension);
+      SPVM_CONSTANT_POOL_push_int(package->constant_pool, runtime_type_category_dimension);
       type->constant_pool_id = constant_pool_id;
-      SPVM_HASH_insert(package->constant_pool_32bit2_value_symtable, runtime_type_id_string, sizeof(int32_t) * 2, (void*)(intptr_t)constant_pool_id);
+      SPVM_HASH_insert(package->constant_pool_32bit2_value_symtable, runtime_type_category_id_string, sizeof(int32_t) * 2, (void*)(intptr_t)constant_pool_id);
     }
   }
 }
@@ -3978,11 +3978,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {
             SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
             SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
-            my->runtime_type = SPVM_TYPE_get_runtime_type(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+            my->runtime_type_category = SPVM_TYPE_get_runtime_type_category(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
           }
 
           // Resolve return runtime type
-          sub->return_runtime_type = SPVM_TYPE_get_runtime_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
+          sub->return_runtime_type_category = SPVM_TYPE_get_runtime_type_category(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
           
           // Arg alloc length
           int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
@@ -5209,7 +5209,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
       
       // Set runtime type
-      field->runtime_type = SPVM_TYPE_get_runtime_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      field->runtime_type_category = SPVM_TYPE_get_runtime_type_category(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
 
       // Add field name to string pool
       int32_t found_name_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, (char*)field->name, strlen(field->name) + 1);

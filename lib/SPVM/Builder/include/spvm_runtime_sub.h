@@ -30,7 +30,7 @@ struct SPVM_runtime_sub {
   uint8_t return_type_dimension;
   uint8_t call_type_id;
   uint8_t args_alloc_length;
-  uint8_t return_runtime_type;
+  uint8_t return_runtime_type_category;
 };
 
 SPVM_RUNTIME_SUB* SPVM_RUNTIME_SUB_new();

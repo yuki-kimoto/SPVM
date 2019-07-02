@@ -56,7 +56,7 @@ struct SPVM_sub {
   int32_t double_vars_alloc_length;
   int32_t object_vars_alloc_length;
   int32_t ref_vars_alloc_length;
-  int32_t return_runtime_type;
+  int32_t return_runtime_type_category;
   int8_t have_vaarg;
   int8_t is_package_var_setter;
   int8_t is_package_var_getter;
