@@ -813,8 +813,27 @@ int32_t (*basic_type_id)(SPVM_ENV* env, const char* basic_type_name);
 <pre>
 int32_t (*field_id)(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
 </pre>
+      <p>
+        シグネチャは、フィールドの型名と同一です。
+      </p>
+      
       <h3 id="native-api-native-sub-api-field_offset">field_offset</h3>
+      <p>
+        フィールドIDを指定して、フィールドのオフセットを取得します。フィールドIDはfield_idで取得した有効なフィールドIDである必要があります。
+      </p>
+<pre>
+int32_t (*field_offset)(SPVM_ENV* env, int32_t field_id);
+</pre>
       <h3 id="native-api-native-sub-api-pkgvar_id">pkgvar_id</h3>
+      <p>
+        パッケージ名とパッケージ変数名とシグネチャを指定して、パッケージ変数IDを取得します。パッケージ変数が存在しない場合は、0より小さい値が返されます。
+      </p>
+<pre>
+int32_t (*pkgvar_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
+</pre>
+      <p>
+        シグネチャは、パッケージ変数の型名と同一です。
+      </p>
       <h3 id="native-api-native-sub-api-sub_id">sub_id</h3>
       <h3 id="native-api-native-sub-api-method_sub_id">method_sub_id</h3>
       <h3 id="native-api-native-sub-api-new_obj_raw">new_obj_raw</h3>
