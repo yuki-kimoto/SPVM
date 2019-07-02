@@ -1,3 +1,5 @@
+0.0439 2019-07-02
+  - rename runtime_type to runtime_type_category
 0.0438 2019-06-22
   - add SPVM::CORE::isdigit function
   - add SPVM::CORE::ispspace function
