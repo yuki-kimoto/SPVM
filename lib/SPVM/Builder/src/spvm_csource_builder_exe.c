@@ -213,8 +213,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".type_dimension = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->type_dimension);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".runtime_type = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->runtime_type);
+    SPVM_STRING_BUFFER_add(string_buffer, ".runtime_type_category = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_field->runtime_type_category);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
     SPVM_STRING_BUFFER_add(string_buffer, ",\n");
@@ -424,8 +424,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".args_alloc_length = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->args_alloc_length);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".return_runtime_type = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->return_runtime_type);
+    SPVM_STRING_BUFFER_add(string_buffer, ".return_runtime_type_category = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_sub->return_runtime_type_category);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, "}");
 
@@ -463,8 +463,8 @@ void SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(SPVM_ENV* env, SPVM_STRING_BUFFE
     SPVM_STRING_BUFFER_add(string_buffer, ".type_dimension = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->type_dimension);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
-    SPVM_STRING_BUFFER_add(string_buffer, ".runtime_type = ");
-    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->runtime_type);
+    SPVM_STRING_BUFFER_add(string_buffer, ".runtime_type_category = ");
+    SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->runtime_type_category);
     SPVM_STRING_BUFFER_add(string_buffer, ", ");
     SPVM_STRING_BUFFER_add(string_buffer, ".type_width = ");
     SPVM_STRING_BUFFER_add_int(string_buffer, runtime_arg->type_width);

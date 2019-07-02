@@ -14,7 +14,7 @@ struct SPVM_runtime_field {
   uint16_t index;
   uint16_t flag;
   uint8_t type_dimension;
-  uint8_t runtime_type;
+  uint8_t runtime_type_category;
 };
 
 SPVM_RUNTIME_FIELD* SPVM_RUNTIME_FIELD_new();

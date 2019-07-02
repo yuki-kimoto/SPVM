@@ -9,7 +9,7 @@ struct SPVM_my {
   SPVM_OP* op_name;
   int32_t id;
   int32_t mem_id;
-  int32_t runtime_type;
+  int32_t runtime_type_category;
   int32_t type_width;
   int8_t is_tmp;
 };

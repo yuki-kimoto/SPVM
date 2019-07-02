@@ -18,7 +18,7 @@ struct SPVM_field {
   int32_t id;
   int32_t index;
   int32_t flag;
-  int32_t runtime_type;
+  int32_t runtime_type_category;
   int32_t is_captured;
   int32_t offset;
   int32_t has_setter;

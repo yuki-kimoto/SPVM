@@ -1523,7 +1523,7 @@ call_sub(...)
 
       SV* sv_value = ST(arg_index + arg_start);
       
-      switch (arg->runtime_type) {
+      switch (arg->runtime_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_BYTE : {
           int8_t value = (int8_t)SvIV(sv_value);
           stack[arg_var_id].bval = value;
@@ -2626,7 +2626,7 @@ call_sub(...)
   // Return
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
-  switch (sub->return_runtime_type) {
+  switch (sub->return_runtime_type_category) {
     case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE:
     case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT:
     case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT:
@@ -2778,7 +2778,7 @@ call_sub(...)
       
       SPVM_RUNTIME_ARG* arg = &runtime->args[sub->arg_ids_base + arg_index];
       int32_t ref_stack_id = ref_stack_ids[arg_index];
-      switch (arg->runtime_type) {
+      switch (arg->runtime_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setiv(sv_value_deref, ref_stack[ref_stack_id].bval);
@@ -2914,7 +2914,7 @@ call_sub(...)
   // Success
   else {
     int32_t return_count;
-    if (sub->return_runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VOID) {
+    if (sub->return_runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_VOID) {
       return_count = 0;
     }
     else {
@@ -2960,7 +2960,7 @@ to_elems(...)
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
 
-    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
+    if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       
       for (int32_t index = 0; index < length; index++) {
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
@@ -3021,7 +3021,7 @@ to_elems(...)
         av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
-    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
+    else if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       for (int32_t index = 0; index < length; index++) {
         // Element type id
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
@@ -3164,7 +3164,7 @@ to_bin(...)
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
 
-    if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
+    if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
@@ -3214,7 +3214,7 @@ to_bin(...)
           croak("Invalid type at %s line %d\n", MFILE, __LINE__);
       }
     }
-    else if (array->runtime_type == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
+    else if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       croak("Objec type is not supported at %s line %d\n", MFILE, __LINE__);
     }
     else {

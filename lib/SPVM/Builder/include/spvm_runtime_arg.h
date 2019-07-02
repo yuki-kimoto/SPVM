@@ -9,7 +9,7 @@ struct SPVM_runtime_arg {
   uint16_t mem_id;
   uint16_t type_flag;
   uint8_t type_dimension;
-  uint8_t runtime_type;
+  uint8_t runtime_type_category;
   uint8_t type_width;
 };
 
