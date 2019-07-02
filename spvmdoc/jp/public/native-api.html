@@ -803,10 +803,16 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         基本型の名前を指定して、基本型のIDを取得します。存在しない場合は、0より小さい値が返されます。
       </p>
 <pre>
-int32_t (*basic_type_id)(SPVM_ENV*, const char*);
+int32_t (*basic_type_id)(SPVM_ENV* env, const char* basic_type_name);
 </pre>
       
       <h3 id="native-api-native-sub-api-field_id">field_id</h3>
+      <p>
+        パッケージ名と、フィールド名と、シグネチャを指定して、フィールドのIDを取得します。フィールドが存在しない場合は、0より小さい値が返されます。
+      </p>
+<pre>
+int32_t (*field_id)(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
+</pre>
       <h3 id="native-api-native-sub-api-field_offset">field_offset</h3>
       <h3 id="native-api-native-sub-api-pkgvar_id">pkgvar_id</h3>
       <h3 id="native-api-native-sub-api-sub_id">sub_id</h3>
