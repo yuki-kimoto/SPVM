@@ -711,25 +711,86 @@ stack[1].dval = retval_im;
       </ul>
 
       <h3 id="native-api-native-sub-api-runtime_package_vars_heap_offset">runtime_package_vars_heap_offset</h3>
+      <p>
+        ランタイム構造体におけるパッケージ変数の保存領域のポインタへのオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-object_header_byte_size">object_header_byte_size</h3>
-      <h3 id="native-api-native-sub-api-weaken_backref_head">weaken_backref_head</h3>
+      <p>
+        オブジェクトのヘッダーのバイトサイズ。内部的に利用されます。
+      </p>
+      <h3 id="native-api-native-sub-api-object_weaken_backref_head_offset">object_weaken_backref_head_offset</h3>
+      <p>
+        オブジェクト構造体におけるウィークリファレンスのバックリファレンスへのポインタへのオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-object_ref_count_offset">object_ref_count_offset</h3>
+      <p>
+        オブジェクト構造体におけるリファレンスカウントのオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-object_basic_type_id_offset">object_basic_type_id_offset</h3>
+      <p>
+        オブジェクト構造体における基本型IDのオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-object_type_dimension_offset">object_type_dimension_offset</h3>
+      <p>
+        オブジェクト構造体における型の次元のオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-object_runtime_type_category_offset">object_runtime_type_category_offset</h3>
+      <p>
+        オブジェクト構造体におけるランタイムタイプのカテゴリーのオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-object_flag_offset">object_flag_offset</h3>
+      <p>
+        オブジェクト構造体におけるフラグのオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-object_length_offset">object_length_offset</h3>
+      <p>
+        オブジェクト構造体における長さのオフセット。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-byte_object_basic_type_id">byte_object_basic_type_id</h3>
+      <p>
+        SPVM::Byte型の基本型のID。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-short_object_basic_type_id">short_object_basic_type_id</h3>
+      <p>
+        SPVM::Short型の基本型のID。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-int_object_basic_type_id">int_object_basic_type_id</h3>
+      <p>
+        SPVM::Int型の基本型のID。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-long_object_basic_type_id">long_object_basic_type_id</h3>
+      <p>
+        SPVM::Long型の基本型のID。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-float_object_basic_type_id">float_object_basic_type_id</h3>
+      <p>
+        SPVM::Float型の基本型のID。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-double_object_basic_type_id">double_object_basic_type_id</h3>
+      <p>
+        SPVM::Double型の基本型のID。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-runtime">runtime</h3>
+      <p>
+        SPVMのランタイムへのポインタ。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-exception_object">exception_object</h3>
+      <p>
+        例外オブジェクト。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-native_mortal_stack">native_mortal_stack</h3>
+      <p>
+        ネイティブ呼び出しで利用されるモータルスタック。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-native_mortal_stack_top">native_mortal_stack_top</h3>
+      <p>
+        ネイティブ呼び出しで利用されるモータルスタックのトップ位置。内部的に利用されます。
+      </p>
       <h3 id="native-api-native-sub-api-native_mortal_stack_capacity">native_mortal_stack_capacity</h3>
+      <p>
+        ネイティブ呼び出しで利用されるモータルスタックの容量。内部的に利用されます。
+      </p>
+      
       <h3 id="native-api-native-sub-api-basic_type_id">basic_type_id</h3>
       <h3 id="native-api-native-sub-api-field_id">field_id</h3>
       <h3 id="native-api-native-sub-api-field_offset">field_offset</h3>
@@ -829,7 +890,6 @@ stack[1].dval = retval_im;
       <h3 id="native-api-native-sub-api-type_name">type_name</h3>
       <h3 id="native-api-native-sub-api-new_env">new_env</h3>
       <h3 id="native-api-native-sub-api-free_env">free_env</h3>
-
     </div>
     <div class="footer">
       <div><a href="javascript:void(0)" class="to-top">▲</a></div>
