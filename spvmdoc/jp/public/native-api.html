@@ -1031,7 +1031,7 @@ void* (*new_barray)(SPVM_ENV* env, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t byte_array_obj = env->new_barray(env, 100);
+void* byte_array_obj = env->new_barray(env, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_sarray_raw">new_sarray_raw</h3>
@@ -1056,7 +1056,7 @@ void* (*new_sarray)(SPVM_ENV* env, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t short_array_obj = env->new_sarray(env, 100);
+void* short_array_obj = env->new_sarray(env, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_iarray_raw">new_iarray_raw</h3>
@@ -1081,7 +1081,7 @@ void* (*new_iarray)(SPVM_ENV* env, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t int_array_obj = env->new_iarray(env, 100);
+void* int_array_obj = env->new_iarray(env, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_larray_raw">new_larray_raw</h3>
@@ -1106,7 +1106,7 @@ void* (*new_larray)(SPVM_ENV* env, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t long_array_obj = env->new_larray(env, 100);
+void* long_array_obj = env->new_larray(env, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_farray_raw">new_farray_raw</h3>
@@ -1131,7 +1131,7 @@ void* (*new_farray)(SPVM_ENV* env, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t float_array_obj = env->new_farray(env, 100);
+void* float_array_obj = env->new_farray(env, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_darray_raw">new_darray_raw</h3>
@@ -1156,7 +1156,7 @@ void* (*new_darray)(SPVM_ENV* env, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t double_array_obj = env->new_darray(env, 100);
+void* double_array_obj = env->new_darray(env, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_oarray_raw">new_oarray_raw</h3>
@@ -1184,7 +1184,7 @@ void* (*new_oarray)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
       </p>
 <pre>
 int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
-int32_t object_array_obj = env->new_oarray(env, basic_type_id, 100);
+void* object_array_obj = env->new_oarray(env, basic_type_id, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_marray_raw">new_marray_raw</h3>
@@ -1214,7 +1214,7 @@ void* (*new_marray_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_di
 <pre>
 // new SPVM::Int[][][100]
 int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
-int32_t multi_array_obj = env->new_marray(env, basic_type_id, 2, 100);
+void* multi_array_obj = env->new_marray(env, basic_type_id, 2, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_varray_raw">new_varray_raw</h3>
@@ -1240,22 +1240,52 @@ void* (*new_varray)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
       </p>
 <pre>
 int32_t basic_type_id = env->basic_type_id(env, "SPVM::Complex_2d");
-int32_t value_array_obj = env->new_varray(env, basic_type_id, 100);
+void* value_array_obj = env->new_varray(env, basic_type_id, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_str_raw">new_str_raw</h3>
       <p>
+        C言語の文字列を指定して、文字列型のオブジェクトを生成し、返却します。文字列は「\0」で終端していなければなりません。
+      </p>
+<pre>
+void* (*new_str_raw)(SPVM_ENV* env, const char* bytes);
+</pre>
+      <p>
         この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_strを使用してください。
       </p>
-      
+
       <h3 id="native-api-native-sub-api-new_str">new_str</h3>
+      <p>
+        C言語の文字列を指定して、文字列型のオブジェクトを生成し、返却します。文字列は「\0」で終端していなければなりません。モータルスタックに新しく生成されたオブジェクトを追加します。
+      </p>
+<pre>
+void* (*new_str)(SPVM_ENV* env, const char* bytes);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+void* str_obj = env->new_str(env, "Hello World");
+</pre>
       
       <h3 id="native-api-native-sub-api-new_str_len_raw">new_str_len_raw</h3>
+      <p>
+        C言語の文字列と長さを指定して、文字列型のオブジェクトを生成し、返却します。
+      </p>
+<pre>
+void* (*new_str_len_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
+</pre>
       <p>
         この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_str_lenを使用してください。
       </p>
       
       <h3 id="native-api-native-sub-api-new_str_len">new_str_len</h3>
+      <p>
+        C言語の文字列と長さを指定して、文字列型のオブジェクトを生成し、返却します。モータルスタックに新しく生成されたオブジェクトを追加します。
+      </p>
+<pre>
+void* (*new_str_len)(SPVM_ENV* env, const char* bytes, int32_t length);
+</pre>
       
       <h3 id="native-api-native-sub-api-new_pointer_raw">new_pointer_raw</h3>
       <p>
