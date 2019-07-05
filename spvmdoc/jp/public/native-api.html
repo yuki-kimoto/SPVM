@@ -1286,6 +1286,12 @@ void* (*new_str_len_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
 <pre>
 void* (*new_str_len)(SPVM_ENV* env, const char* bytes, int32_t length);
 </pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+void* str_obj = env->new_str_len(env, "Hello\0World", 11);
+</pre>
       
       <h3 id="native-api-native-sub-api-new_pointer_raw">new_pointer_raw</h3>
       <p>
