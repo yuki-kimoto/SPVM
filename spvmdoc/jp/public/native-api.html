@@ -43,7 +43,7 @@
         <b>SPVMネイティブAPI仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。SPVMネイティブAPI仕様は、警告なく変更されることがあります。
       </p>
       <p>
-        最終更新日 2019年6月5日
+        最終更新日 2019年7月8日
       </p>
       
       <h2 id="native-api-toc">目次</h2>
@@ -56,6 +56,7 @@
         <li><a href="#native-api-native-sub-set-retval">戻り値の設定</a></li>
         <li><a href="#native-api-native-sub-scope">ネイティブサブルーチンのスコープ</a></li>
         <li><a href="#native-api-native-sub-exception">ネイティブサブルーチンにおける例外</a></li>
+        <li><a href="#native-api-use-pointer-type">ポインタ型の利用</a></li>
         <li><a href="#native-api-list">ネイティブAPIの一覧</a></li>
       </ul>
       
@@ -537,6 +538,121 @@ SPVM_DIE("Error. Values must be %d and %d", 3, 5, "Foo/Bar.c", __LINE__);
       </p>
       <p>
         例外はenvに保存されているので、スレッドローカルなデータです。
+      </p>
+
+      <h2 id="native-api-use-pointer-type">ポインタ型の利用</h2>
+      <p>
+        SPVMには、ポインタ型という型が存在しますが、利用方法について解説します。
+      </p>
+      <p>
+        ポインタ型の定義は、SPVMのパッケージ定義で、pointer_tデスクリプタを指定します。ポインタ型は、フィールド定義を持つことはできません。この例では、C標準の「struct tm」をポインタ型として利用する方法を解説します。
+      </p>
+<pre>
+# MyTimeInfo.spvm
+package MyTimeInfo : pointer_t {
+  
+  # Constructor
+  native sub new : MyTimeInfo();
+  
+  # Get second
+  native sub sec : int ($self : self);
+  
+  # Destructor
+  native sub DESTROY : ($self : self);
+}
+</pre>
+      <p>
+        newとうコンストラクタ、secという秒の情報をとるメソッド、DESTROYというデストラクタを定義しています。これらは、ネイティブサブルーチンです。
+      </p>
+      <p>
+        次にC言語側での定義です。
+      </p>
+<pre>
+# MyTimeInfo.c
+
+int32_t SPNATIVE__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  // Alloc strcut tm
+  void* tm_ptr = env->alloc_memory_block_zero(sizeof(struct tm));
+  
+  // Create strcut tm instance
+  void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
+  
+  stack[0].oval = tm_obj;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* tm_obj = stack[0].oval;
+  
+  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  
+  stack[0].ival = tm_ptr->tm_sec;
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* tm_obj = stack[0].oval;
+  
+  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  
+  env->free_memory_block(tm_ptr);
+  
+  return SPVM_SUCCESS;
+}
+</pre>
+      <p>
+        コンストラクタnewでは、まず「struct tm」のメモリを、alloc_memory_block_zero関数で、割り当てます。これは、SPVMでメモリブロックを一つ確保する関数です。mallocでの同様のことがかのうですが、この関数は、メモリブロックのカウントを一つ増やすので、メモリリークの発見が容易になります。
+      </p>
+<pre>
+  // Alloc strcut tm
+  void* tm_ptr = env->alloc_memory_block_zero(sizeof(struct tm));
+</pre>
+      <p>
+        次に、new_pointer関数を使って、確保したメモリに、MyTimeInfoを関連付けた新しいポインタ型のオブジェクトを作成します。
+      </p>
+<pre>
+  // Create strcut tm instance
+  void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
+</pre>
+      <p>
+        これを戻り値として返せば、コンストラクタの完成です。
+      </p>
+<pre>
+  stack[0].ival = tm_ptr->tm_sec;
+  
+  return SPVM_SUCCESS;
+</pre>
+      <p>
+        次に、tm_secの値を取得してみましょう。secメソッドです。pointer関数を使うと、ポインタ型のオブジェクトから「struct tm」として割り当てられたメモリのポインタを取得することができます。
+      </p>
+<pre>
+  void* tm_obj = stack[0].oval;
+  
+  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  
+  stack[0].ival = tm_ptr->tm_sec;
+</pre>
+      <p>
+        最後はデストラクタです。確保されたメモリは、自動的には解放されないので、必ずデストラクタを定義しましょう。
+      </p>
+<pre>
+int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  void* tm_obj = stack[0].oval;
+  
+  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  
+  env->free_memory_block(tm_ptr);
+  
+  return SPVM_SUCCESS;
+}
+</pre>
+      <p>
+        free_memory_block関数を実行してメモリを開放します。alloc_memory_block_zeroで確保したメモリは、必ずfree_memory_block関数で解放しましょう。メモリを開放し、メモリブロック数のカウントを一つ減らします。
       </p>
 
       <h2 id="native-api-index">ネイティブAPIのインデックス</h2>
@@ -1295,10 +1411,31 @@ void* str_obj = env->new_str_len(env, "Hello\0World", 11);
       
       <h3 id="native-api-native-sub-api-new_pointer_raw">new_pointer_raw</h3>
       <p>
+        基本型IDとC言語のポインタを指定して、ポインタ型のオブジェクトを生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでかつ、ポインタ型として有効でなければなりません。
+      </p>
+
+<pre>
+void* (*new_pointer_raw)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
+</pre>
+
+      <p>
         この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_pointerを使用してください。
       </p>
       
       <h3 id="native-api-native-sub-api-new_pointer">new_pointer</h3>
+      <p>
+        基本型IDとC言語のポインタを指定して、ポインタ型のオブジェクトを生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでかつ、ポインタ型として有効でなければなりません。モータルスタックに新しく生成されたオブジェクトを追加します。
+      </p>
+<pre>
+void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+void* pointer = malloc(sizeof(struct tm));
+void* pointer_obj = env->new_pointer(env, "MyTimeInfo", pointer);
+</pre>
       
       <h3 id="native-api-native-sub-api-concat_raw">concat_raw</h3>
       <p>
