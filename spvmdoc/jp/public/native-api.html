@@ -1439,24 +1439,147 @@ void* pointer_obj = env->new_pointer(env, "MyTimeInfo", pointer);
       
       <h3 id="native-api-native-sub-api-concat_raw">concat_raw</h3>
       <p>
+        ふたつのbyte[]型の文字列を結合した新しいbyte[]型のオブジェクトを返却します。
+      </p>
+<pre>
+void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);
+</pre>
+
+      <p>
         この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、concatを使用してください。
       </p>
       
       <h3 id="native-api-native-sub-api-concat">concat</h3>
+      <p>
+        ふたつのbyte[]型の文字列を結合した新しいbyte[]型のオブジェクトを返却します。モータルスタックに新しく生成されたオブジェクトを追加します。
+      </p>
+<pre>
+void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
+</pre>
       
       <h3 id="native-api-native-sub-api-new_stack_trace_raw">new_stack_trace_raw</h3>
+      <p>
+        byte[]型の例外メッセージと、パッケージ名、サブルーチン名、ファイル名と行番号を指定すると、byte[]型の例外メッセージの末尾に、パッケージ名、サブルーチン名、ファイル名と行番号の文字列を追加した文字列を返却します。
+      </p>
+<pre>
+void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+</pre>
       <p>
         この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_stack_traceを使用してください。
       </p>
       
       <h3 id="native-api-native-sub-api-new_stack_trace">new_stack_trace</h3>
+      <p>
+        byte[]型の例外メッセージと、パッケージ名、サブルーチン名、ファイル名と行番号を指定すると、string型の例外メッセージの末尾に、パッケージ名、サブルーチン名、ファイル名と行番号の文字列を追加した新しいstring型のオブジェクトを返却します。モータルスタックに新しく生成されたオブジェクトを追加します。
+      </p>
+<pre>
+void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+</pre>
+      
       <h3 id="native-api-native-sub-api-len">len</h3>
+      <p>
+        配列を指定すると、配列の長さを返却します。
+      </p>
+<pre>
+int32_t (*len)(SPVM_ENV*, void* array);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+int32_t length = env->len(env, array);
+</pre>
+
       <h3 id="native-api-native-sub-api-belems">belems</h3>
+      <p>
+        byte[]型の配列を指定すると、内部的に保有しているC言語のint8_t[]型の配列の先頭のポインタを返却します。
+      </p>
+<pre>
+int8_t* (*belems)(SPVM_ENV* env, void* array);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+int8_t* values = env->belems(env, array);
+values[3] = 5;
+</pre>
+
       <h3 id="native-api-native-sub-api-selems">selems</h3>
+      <p>
+        short[]型の配列を指定すると、内部的に保有しているC言語のint16_t[]型の配列の先頭のポインタを返却します。
+      </p>
+<pre>
+int16_t* (*selems)(SPVM_ENV* env, void* array);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+int16_t* values = env->selems(env, array);
+values[3] = 5;
+</pre>
+
       <h3 id="native-api-native-sub-api-ielems">ielems</h3>
+      <p>
+        int[]型の配列を指定すると、内部的に保有しているC言語のint32_t[]型の配列の先頭のポインタを返却します。
+      </p>
+<pre>
+int32_t* (*ielems)(SPVM_ENV* env, void* array);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+int32_t* values = env->ielems(env, array);
+values[3] = 5;
+</pre>
+
       <h3 id="native-api-native-sub-api-lelems">lelems</h3>
+      <p>
+        long[]型の配列を指定すると、内部的に保有しているC言語のint64_t[]型の配列の先頭のポインタを返却します。
+      </p>
+<pre>
+int64_t* (*lelems)(SPVM_ENV* env, void* array);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+int64_t* values = env->lelems(env, array);
+values[3] = 5;
+</pre>
+
       <h3 id="native-api-native-sub-api-felems">felems</h3>
+      <p>
+        float[]型の配列を指定すると、内部的に保有しているC言語のfloat[]型の配列の先頭のポインタを返却します。
+      </p>
+<pre>
+float* (*felems)(SPVM_ENV* env, void* array);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+float* values = env->felems(env, array);
+values[3] = 1.5f;
+</pre>
+
       <h3 id="native-api-native-sub-api-delems">delems</h3>
+      <p>
+       double[]型の配列を指定すると、内部的に保有しているC言語のdouble[]型の配列の先頭のポインタを返却します。
+      </p>
+<pre>
+double* (*delems)(SPVM_ENV* env, void* array);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+double* values = env->delems(env, array);
+values[3] = 1.5;
+</pre>
+
       <h3 id="native-api-native-sub-api-oelems">oelems</h3>
       <h3 id="native-api-native-sub-api-set_oelems">set_oelems</h3>
       <h3 id="native-api-native-sub-api-bfield">bfield</h3>
