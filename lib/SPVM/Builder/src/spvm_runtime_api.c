@@ -160,8 +160,8 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_lelems,
     SPVM_RUNTIME_API_felems,
     SPVM_RUNTIME_API_delems,
-    SPVM_RUNTIME_API_oelems,
-    SPVM_RUNTIME_API_set_oelems,
+    SPVM_RUNTIME_API_oelem,
+    SPVM_RUNTIME_API_set_oelem,
     SPVM_RUNTIME_API_bfield,
     SPVM_RUNTIME_API_sfield,
     SPVM_RUNTIME_API_ifield,
@@ -5348,7 +5348,7 @@ double* SPVM_RUNTIME_API_delems(SPVM_ENV* env, SPVM_OBJECT* object) {
   return (SPVM_VALUE_double*)((intptr_t)object + env->object_header_byte_size);
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_oelems(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index) {
+SPVM_OBJECT* SPVM_RUNTIME_API_oelem(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index) {
   (void)env;
   
   SPVM_OBJECT* oval = SPVM_RUNTIME_API_GET_OBJECT_NO_WEAKEN_ADDRESS(((SPVM_VALUE_object*)((intptr_t)array + env->object_header_byte_size))[index]);
@@ -5356,7 +5356,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_oelems(SPVM_ENV* env, SPVM_OBJECT* array, int32_t 
   return oval;
 }
 
-void SPVM_RUNTIME_API_set_oelems(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* oval) {
+void SPVM_RUNTIME_API_set_oelem(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* oval) {
   (void)env;
   
   void* object_address = &((SPVM_VALUE_object*)((intptr_t)array + env->object_header_byte_size))[index];

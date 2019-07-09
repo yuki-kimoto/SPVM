@@ -724,8 +724,8 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 60    lelems
 61    felems
 62    delems
-63    oelems
-64    set_oelems
+63    oelem
+64    set_oelem
 65    bfield
 66    sfield
 67    ifield
@@ -855,8 +855,8 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-lelems">lelems</a></li>
         <li><a href="#native-api-native-sub-api-felems">felems</a></li>
         <li><a href="#native-api-native-sub-api-delems">delems</a></li>
-        <li><a href="#native-api-native-sub-api-oelems">oelems</a></li>
-        <li><a href="#native-api-native-sub-api-set_oelems">set_oelems</a></li>
+        <li><a href="#native-api-native-sub-api-oelem">oelem</a></li>
+        <li><a href="#native-api-native-sub-api-set_oelem">set_oelem</a></li>
         <li><a href="#native-api-native-sub-api-bfield">bfield</a></li>
         <li><a href="#native-api-native-sub-api-sfield">sfield</a></li>
         <li><a href="#native-api-native-sub-api-ifield">ifield</a></li>
@@ -1567,7 +1567,7 @@ values[3] = 1.5f;
 
       <h3 id="native-api-native-sub-api-delems">delems</h3>
       <p>
-       double[]型の配列を指定すると、内部的に保有しているC言語のdouble[]型の配列の先頭のポインタを返却します。
+        double[]型の配列を指定すると、内部的に保有しているC言語のdouble[]型の配列の先頭のポインタを返却します。
       </p>
 <pre>
 double* (*delems)(SPVM_ENV* env, void* array);
@@ -1580,8 +1580,21 @@ double* values = env->delems(env, array);
 values[3] = 1.5;
 </pre>
 
-      <h3 id="native-api-native-sub-api-oelems">oelems</h3>
-      <h3 id="native-api-native-sub-api-set_oelems">set_oelems</h3>
+      <h3 id="native-api-native-sub-api-oelem">oelem</h3>
+      <p>
+        オブジェクト型の配列と添え字を指定して、要素のオブジェクトを取得します。
+      </p>
+<pre>
+void* (*oelem)(SPVM_ENV* env, void* array, int32_t index);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+void* object = env->oelem(env, array, 3);
+</pre>
+
+      <h3 id="native-api-native-sub-api-set_oelem">set_oelem</h3>
       <h3 id="native-api-native-sub-api-bfield">bfield</h3>
       <h3 id="native-api-native-sub-api-sfield">sfield</h3>
       <h3 id="native-api-native-sub-api-ifield">ifield</h3>
