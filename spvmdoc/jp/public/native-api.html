@@ -1582,7 +1582,7 @@ values[3] = 1.5;
 
       <h3 id="native-api-native-sub-api-oelem">oelem</h3>
       <p>
-        オブジェクト型の配列と添え字を指定して、要素のオブジェクトを取得します。
+        オブジェクト型の配列と添え字を指定して、要素のオブジェクトを取得します。もし要素が弱参照になっていた場合は、弱参照が取り除かれます。
       </p>
 <pre>
 void* (*oelem)(SPVM_ENV* env, void* array, int32_t index);
@@ -1595,6 +1595,18 @@ void* object = env->oelem(env, array, 3);
 </pre>
 
       <h3 id="native-api-native-sub-api-set_oelem">set_oelem</h3>
+      <p>
+        オブジェクト型の配列と添え字と要素のオブジェクトを指定すると、対応する添え字の位置に要素のオブジェクトが代入されます。要素のオブジェクトが弱参照になっていた場合は、弱参照が取り除かれます。もともと代入されていたオブジェクトのリファレンスカウントは、1減らされます。
+      </p>
+<pre>
+void (*set_oelem)(SPVM_ENV* env, void* array, int32_t index, void* value);
+</pre>
+      <p>
+        サンプル:
+      </p>
+<pre>
+env->oelem(env, array, 3, object);
+</pre>
       <h3 id="native-api-native-sub-api-bfield">bfield</h3>
       <h3 id="native-api-native-sub-api-sfield">sfield</h3>
       <h3 id="native-api-native-sub-api-ifield">ifield</h3>
