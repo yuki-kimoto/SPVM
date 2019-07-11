@@ -385,13 +385,13 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   
   // Call sub depth
   int32_t call_sub_depth = (int32_t)(intptr_t)env->call_sub_depth;
-  if (call_sub_depth == 1000) {
+  if (call_sub_depth > 1000) {
     const char* sub_name = &runtime->string_pool[sub->name_id];
     SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
     const char* package_name = &runtime->string_pool[sub_package->name_id];
     const char* file = &runtime->string_pool[sub->file_id];
     int32_t line = sub->line;
-    fprintf(stderr, "[Warning]Deep recursion on subroutine in %s->%s at %s line %d\n", package_name, sub_name, file, line);
+    fprintf(stderr, "Deep recursion on subroutine in \"%s::%s\" at %s line %d\n", package_name, sub_name, file, line);
   }
   call_sub_depth++;
   env->call_sub_depth = (void*)(intptr_t)call_sub_depth;
@@ -5428,7 +5428,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         if (exception_flag) {
           void* exception = env->exception(env);
           char* exception_str = (char*)env->belems(env, exception);
-          fprintf(stderr, "Warning(Exception in DESTROY):%s\n", exception_str);
+          fprintf(stderr, "(in cleanup) %s\n", exception_str);
         }
         
         if (object->ref_count < 1) {
