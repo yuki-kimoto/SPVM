@@ -1443,6 +1443,10 @@ void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
 void* pointer = malloc(sizeof(struct tm));
 void* pointer_obj = env->new_pointer(env, "MyTimeInfo", pointer);
 </pre>
+
+      <p>
+        詳しいサンプルについては<a href="#native-api-use-pointer-type">ポインタ型の利用</a>を見てください。
+      </p>
       
       <h3 id="native-api-native-sub-api-concat_raw">concat_raw</h3>
       <p>
@@ -2048,7 +2052,31 @@ env->set_opkgvar(env, pkgvar_id, pkgvar_value);
 </pre>
 
       <h3 id="native-api-native-sub-api-pointer">pointer</h3>
+      <p>
+        ポインタ型のオブジェクトを指定して、オブジェクトの内部に保存されているC言語のポインタを返却します。
+      </p>
+<pre>
+void* (*pointer)(SPVM_ENV* env, void* pointer_object);
+</pre>
+
+      <p>
+        サンプル:
+      </p>
+<pre>
+strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+</pre>
+      <p>
+        詳しいサンプルについては<a href="#native-api-use-pointer-type">ポインタ型の利用</a>を見てください。
+      </p>
+
       <h3 id="native-api-native-sub-api-set_pointer">set_pointer</h3>
+      <p>
+        ポインタ型のオブジェクトと、C言語のポインタを指定すると、ポインタ型のオブジェクトの内部データに、C言語のポインタが保存されます。
+      </p>
+<pre>
+void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
+</pre>
+      
       <h3 id="native-api-native-sub-api-call_sub">call_sub</h3>
       <h3 id="native-api-native-sub-api-exception">exception</h3>
       <h3 id="native-api-native-sub-api-set_exception">set_exception</h3>
@@ -2067,12 +2095,77 @@ env->set_opkgvar(env, pkgvar_id, pkgvar_value);
       <h3 id="native-api-native-sub-api-isweak">isweak</h3>
       <h3 id="native-api-native-sub-api-unweaken">unweaken</h3>
       <h3 id="native-api-native-sub-api-alloc_memory_block_zero">alloc_memory_block_zero</h3>
+      <p>
+        サイズをバイトで指定すると、メモリブロックを割り当て、割り当てられたメモリブロックのポインタを返却します。メモリブロックのビットはすべて0で初期化されます。メモリブロックカウントが1増加します。
+      </p>
+<pre>
+void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);
+</pre>
+
       <h3 id="native-api-native-sub-api-free_memory_block">free_memory_block</h3>
+      <p>
+        メモリブロックを指定すると、解放します。メモリブロックカウントが1減少します。
+      </p>
+<pre>
+void (*free_memory_block)(SPVM_ENV* env, void* block);
+</pre>
+
       <h3 id="native-api-native-sub-api-memory_blocks_count">memory_blocks_count</h3>
+      <p>
+        現在のメモリブロックの数を返却します。
+      </p>
+<pre>
+int32_t (*memory_blocks_count)(SPVM_ENV* env);
+</pre>
+      <p>
+        メモリブロックは、オブジェクトを生成した場合、alloc_memory_block_zero関数を呼び出した場合、weaken関数でバックリファレンスが追加された場合に、1増加します。
+      </p>
+
       <h3 id="native-api-native-sub-api-type_name_raw">type_name_raw</h3>
+      <p>
+        オブジェクトを指定すると、型名を保存した新しいbyte[]型のオブジェクトを返却します。
+      </p>
+<pre>
+void* (*type_name_raw)(SPVM_ENV* env, void* object);
+</pre>
+      <p>
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、type_nameを使用してください。
+      </p>
+
       <h3 id="native-api-native-sub-api-type_name">type_name</h3>
+      <p>
+        オブジェクトを指定すると、型名を保存した新しいbyte[]型のオブジェクトを返却します。モータルスタックに新しく生成されたオブジェクトを追加します。
+      </p>
+<pre>
+void* (*type_name)(SPVM_ENV* env, void* object);
+</pre>
       <h3 id="native-api-native-sub-api-new_env">new_env</h3>
+      <p>
+        現在の実行環境を元にした、新しい実行環境を作成します。
+      </p>
+<pre>
+SPVM_ENV* (*new_env)(SPVM_ENV* env);
+</pre>
+      <p>
+        この関数は、新しいスレッドにおいて、新しい実行環境を生成したい場合に、利用してください。
+      </p>
+      <p>
+        例外オブジェクト、モータルスタックの情報は、初期化されます。
+      </p>
+      <p>
+        パッケージ変数は、元の実行環境と共有します。
+      </p>
+      <p>
+        メモリブロックの数は、元の実行環境と共有します。
+      </p>
+
       <h3 id="native-api-native-sub-api-free_env">free_env</h3>
+      <p>
+        実行環境を開放します。
+      </p>
+<pre>
+void (*free_env)(SPVM_ENV* env);
+</pre>
     </div>
     <div class="footer">
       <div><a href="javascript:void(0)" class="to-top">▲</a></div>

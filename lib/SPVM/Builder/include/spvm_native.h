@@ -390,8 +390,8 @@ struct SPVM_env {
   void (*set_fpkgvar)(SPVM_ENV* env, int32_t pkgvar_id, float value);
   void (*set_dpkgvar)(SPVM_ENV* env, int32_t pkgvar_id, double value);
   void (*set_opkgvar)(SPVM_ENV* env, int32_t pkgvar_id, void* value);
-  void* (*pointer)(SPVM_ENV* env, void*);
-  void (*set_pointer)(SPVM_ENV* env, void*, void*);
+  void* (*pointer)(SPVM_ENV* env, void* pointer_object);
+  void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   void* (*exception)(SPVM_ENV* env);
   void (*set_exception)(SPVM_ENV* env, void* exception);
@@ -414,8 +414,8 @@ struct SPVM_env {
   int32_t (*memory_blocks_count)(SPVM_ENV* env);
   void* (*type_name_raw)(SPVM_ENV* env, void* object);
   void* (*type_name)(SPVM_ENV* env, void* object);
-  void* (*new_env)(SPVM_ENV*);
-  void (*free_env)(SPVM_ENV*);
+  SPVM_ENV* (*new_env)(SPVM_ENV* env);
+  void (*free_env)(SPVM_ENV* env);
   void* call_sub_depth;
 };
 #endif
