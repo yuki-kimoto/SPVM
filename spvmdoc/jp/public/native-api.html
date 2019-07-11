@@ -2078,11 +2078,53 @@ void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
 </pre>
       
       <h3 id="native-api-native-sub-api-call_sub">call_sub</h3>
+      
       <h3 id="native-api-native-sub-api-exception">exception</h3>
+      <p>
+        例外として保存されているbyte[]型のオブジェクトを返却します。
+      </p>
+<pre>
+void* (*exception)(SPVM_ENV* env);
+</pre>
+      
       <h3 id="native-api-native-sub-api-set_exception">set_exception</h3>
+      <p>
+        byte[]型のオブジェクトを指定すると、例外として保存します。
+      </p>
+<pre>
+void (*set_exception)(SPVM_ENV* env, void* exception);
+</pre>
+      
       <h3 id="native-api-native-sub-api-ref_count">ref_count</h3>
+      <p>
+        オブジェクトを指定すると、オブジェクトのリファレンスカウントを返却します。
+      </p>
+<pre>
+int32_t (*ref_count)(SPVM_ENV* env, void* object);
+</pre>
+
       <h3 id="native-api-native-sub-api-inc_ref_count">inc_ref_count</h3>
+      <p>
+        オブジェクトを指定すると、オブジェクトのリファレンスカウントを1増やします。
+      </p>
+<pre>
+void (*inc_ref_count)(SPVM_ENV* env, void* object);
+</pre>
+      <p>
+        このメソッドは、使うべき、特別な理由がある場合のみ使用してください。通常は、リファレンスカウントは、自動的に管理されています。
+      </p>
+      
       <h3 id="native-api-native-sub-api-dec_ref_count">dec_ref_count</h3>
+      <p>
+        オブジェクトを指定すると、オブジェクトのリファレンスカウントを1減らします。リファレンスカウントが0になった場合、オブジェクトを解放します。
+      </p>
+<pre>
+void (*dec_ref_count)(SPVM_ENV* env, void* object);
+</pre>
+      <p>
+        このメソッドは、使うべき、特別な理由がある場合のみ使用してください。通常は、リファレンスカウントは、自動的に管理されています。
+      </p>
+      
       <h3 id="native-api-native-sub-api-enter_scope">enter_scope</h3>
       <h3 id="native-api-native-sub-api-push_mortal">push_mortal</h3>
       <h3 id="native-api-native-sub-api-leave_scope">leave_scope</h3>
