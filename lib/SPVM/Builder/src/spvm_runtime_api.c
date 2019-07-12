@@ -243,7 +243,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
 int32_t SPVM_RUNTIME_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {
   (void)env;
   
-  int32_t removed = 0;
+  int32_t remove_count = 0;
   if (remove_object != NULL) {
     SPVM_RUNTIME* runtime = env->runtime;
 
@@ -252,21 +252,20 @@ int32_t SPVM_RUNTIME_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_st
       SPVM_OBJECT* object = ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index];
       
       if (remove_object == object) {
-        removed = 1;
+        remove_count++;
         match_mortal_stack_index = mortal_stack_index;
         SPVM_RUNTIME_API_dec_ref_count(env, object);
-        break;
       }
     }
     
-    if (removed) {
+    if (remove_count) {
       for (int32_t mortal_stack_index = match_mortal_stack_index; mortal_stack_index < (intptr_t)env->native_mortal_stack_top; mortal_stack_index++) {
         ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index] = ((SPVM_OBJECT**)(env->native_mortal_stack))[mortal_stack_index + 1];
       }
-      env->native_mortal_stack_top = (void*)((intptr_t)env->native_mortal_stack_top - 1);
+      env->native_mortal_stack_top = (void*)((intptr_t)env->native_mortal_stack_top - remove_count);
     }
   }
-  return removed;
+  return remove_count;
 }
 
 SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {

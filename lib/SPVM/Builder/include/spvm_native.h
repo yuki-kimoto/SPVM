@@ -400,8 +400,8 @@ struct SPVM_env {
   void (*dec_ref_count)(SPVM_ENV* env, void* object);
   int32_t (*enter_scope)(SPVM_ENV* env);
   void (*push_mortal)(SPVM_ENV* env, void* object);
-  void (*leave_scope)(SPVM_ENV* env, int32_t original_mortal_stack_top);
-  int32_t (*remove_mortal)(SPVM_ENV* env, int32_t original_mortal_stack_top, void* remove_object);
+  void (*leave_scope)(SPVM_ENV* env, int32_t scope_id);
+  int32_t (*remove_mortal)(SPVM_ENV* env, int32_t scope_id, void* remove_object);
   int32_t (*is_type)(SPVM_ENV* env, void* object, int32_t basic_type_id, int32_t type_dimension);
   int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
   int32_t (*object_basic_type_id)(SPVM_ENV* env, void* object);

@@ -2126,9 +2126,37 @@ void (*dec_ref_count)(SPVM_ENV* env, void* object);
       </p>
       
       <h3 id="native-api-native-sub-api-enter_scope">enter_scope</h3>
+      <p>
+        新しいスコープを作成し、スコープIDを返却します。
+      </p>
+<pre>
+int32_t (*enter_scope)(SPVM_ENV* env);
+</pre>
+
       <h3 id="native-api-native-sub-api-push_mortal">push_mortal</h3>
+      <p>
+        モータルスタックに、オブジェクトを追加します。
+      </p>
+<pre>
+void (*push_mortal)(SPVM_ENV* env, void* object);
+</pre>
+
       <h3 id="native-api-native-sub-api-leave_scope">leave_scope</h3>
+      <p>
+        スコープIDを指定して、スコープを終了します。スコープIDは、enter_scope関数で取得したIDでなければなりません。
+      </p>
+<pre>
+void (*leave_scope)(SPVM_ENV* env, int32_t scope_id);
+</pre>
+
       <h3 id="native-api-native-sub-api-remove_mortal">remove_mortal</h3>
+      <p>
+        スコープIDと、オブジェクトを指定すると、指定されたオブジェクトをモータルスタックから削除します。
+      </p>
+<pre>
+int32_t (*remove_mortal)(SPVM_ENV* env, int32_t scope_id, void* remove_object);
+</pre>
+
       <h3 id="native-api-native-sub-api-is_type">is_type</h3>
       <h3 id="native-api-native-sub-api-has_callback">has_callback</h3>
       <h3 id="native-api-native-sub-api-object_basic_type_id">object_basic_type_id</h3>
