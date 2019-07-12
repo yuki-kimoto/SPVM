@@ -310,7 +310,6 @@ t/default/divide.t
 t/default/enum.t
 t/default/exception.t
 t/default/exchange-api.t
-t/default/extension.t
 t/default/fat-camma.t
 t/default/for.t
 t/default/if.t
@@ -513,6 +512,7 @@ t/default/literal-string.t
 t/default/literal-undef.t
 t/default/logical-operator.t
 t/default/multiply.t
+t/default/native-api.t
 t/default/numeric-operator.t
 t/default/object.t
 t/default/package_var.t

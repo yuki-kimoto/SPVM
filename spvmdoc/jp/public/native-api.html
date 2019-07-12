@@ -43,7 +43,7 @@
         <b>SPVMネイティブAPI仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。SPVMネイティブAPI仕様は、警告なく変更されることがあります。
       </p>
       <p>
-        最終更新日 2019年7月10日
+        最終更新日 2019年7月12日
       </p>
       
       <h2 id="native-api-toc">目次</h2>
@@ -2143,7 +2143,7 @@ void (*push_mortal)(SPVM_ENV* env, void* object);
 
       <h3 id="native-api-native-sub-api-leave_scope">leave_scope</h3>
       <p>
-        スコープIDを指定して、スコープを終了します。スコープIDは、enter_scope関数で取得したIDでなければなりません。
+        スコープIDを指定して、そのスコープを終了し、モータルスタックに格納されている、オブジェクトのリファレンスカウントを1減らします。リファレンスカウントが0になったオブジェクトは解放されます。スコープIDは、enter_scope関数で取得したIDでなければなりません。
       </p>
 <pre>
 void (*leave_scope)(SPVM_ENV* env, int32_t scope_id);
@@ -2164,6 +2164,7 @@ int32_t (*remove_mortal)(SPVM_ENV* env, int32_t scope_id, void* remove_object);
       <h3 id="native-api-native-sub-api-weaken">weaken</h3>
       <h3 id="native-api-native-sub-api-isweak">isweak</h3>
       <h3 id="native-api-native-sub-api-unweaken">unweaken</h3>
+      
       <h3 id="native-api-native-sub-api-alloc_memory_block_zero">alloc_memory_block_zero</h3>
       <p>
         サイズをバイトで指定すると、メモリブロックを割り当て、割り当てられたメモリブロックのポインタを返却します。メモリブロックのビットはすべて0で初期化されます。メモリブロックカウントが1増加します。
