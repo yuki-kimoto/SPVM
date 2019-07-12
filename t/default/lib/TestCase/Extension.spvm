@@ -697,10 +697,10 @@ package TestCase::Extension {
   native sub call_float_sub_exception_native : float ();
   native sub call_double_sub_exception_native : double ();
   native sub call_object_sub_exception_native : double ();
-
   
   native sub mortal_api : int ();
   native sub enter_scope_leave_scope : int ();
+  native sub push_mortal_multi : int ();
   
   sub my_value : int ($value : int) { return $value; }
   

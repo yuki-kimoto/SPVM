@@ -887,3 +887,15 @@ int32_t SPNATIVE__TestCase__Extension__native_call_sub(SPVM_ENV* env, SPVM_VALUE
   
   return SPVM_SUCCESS;
 }
+
+int32_t SPNATIVE__TestCase__Extension__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  void* iarray = env->new_iarray_raw(env, 10);
+  
+  env->push_mortal(env, iarray);
+  env->push_mortal(env, iarray);
+  
+  return SPVM_SUCCESS;
+}

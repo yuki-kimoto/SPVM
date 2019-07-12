@@ -31,6 +31,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Extension->fpkgvar);
   ok(TestCase::Extension->dpkgvar);
   ok(TestCase::Extension->opkgvar);
+  ok(TestCase::Extension->push_mortal_multi);
 }
 
 # has_callback
