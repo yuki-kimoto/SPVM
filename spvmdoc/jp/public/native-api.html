@@ -43,7 +43,7 @@
         <b>SPVMネイティブAPI仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。SPVMネイティブAPI仕様は、警告なく変更されることがあります。
       </p>
       <p>
-        最終更新日 2019年7月12日
+        最終更新日 2019年7月16日
       </p>
       
       <h2 id="native-api-toc">目次</h2>
@@ -54,6 +54,7 @@
         <li><a href="#native-api-native-sub-compile">ネイティブサブルーチンのコンパイル</a></li>
         <li><a href="#native-api-native-sub-get-arg">引数の取得</a></li>
         <li><a href="#native-api-native-sub-set-retval">戻り値の設定</a></li>
+        <li><a href="#native-api-native-call-sub">サブルーチンの呼び出し</a></li>
         <li><a href="#native-api-native-sub-scope">ネイティブサブルーチンのスコープ</a></li>
         <li><a href="#native-api-native-sub-exception">ネイティブサブルーチンにおける例外</a></li>
         <li><a href="#native-api-use-pointer-type">ポインタ型の利用</a></li>
@@ -461,6 +462,48 @@ double retval_re;
 double retval_im;
 stack[0].dval = retval_re;
 stack[1].dval = retval_im;
+</pre>
+
+      <h2 id="native-api-native-call-sub">サブルーチンの呼び出し</h2>
+      <p>
+        SPVMのサブルーチンを呼び出すには、最初に、<a href="#native-api-native-sub-api-sub_id">sub_id</a>関数か、<a href="#native-api-native-sub-api-method_sub_id">method_sub_id</a>関数を使ってサブルーチンのIDを取得します
+      </p>
+<pre>
+// メソッドでないサブルーチンの場合
+int32_t sub_id = env->sub_id(env, "Foo", "sum", "int(int,int)");
+
+// メソッドの場合
+int32_t sub_id = env->method_sub_id(env, object, "sum", "int(self,int,int)");
+</pre>
+      <p>
+        sub_idが0より小さい場合は、サブルーチンが見つからなかったことを示します。以下のように、例外処理をしておくと安全です。
+      </p>
+<pre>
+if (sub_id < 0) {
+  SPVM_DIE("Can't find sub id", "Foo/Bar.c", __LINE__);
+}
+</pre>
+      <p>
+        SPVMのサブルーチンの引数を、サブルーチン呼び出しを行う前に、stackに設定します。
+      </p>
+<pre>
+  stack[0].ival = 1;
+  stack[0].ival = 2;
+</pre>
+      <p>
+        SPVMのサブルーチンを呼び出すには<a href="#native-api-native-sub-api-call_sub">call_sub</a>関数を使用します。
+      </p>
+<pre>
+int32_t exception_flag = env->call_sub(env, sub_id, stack);
+</pre>
+      <p>
+        サブルーチンで例外が発生した場合は0以外、例外が発生しなかった場合は、0が返されます。
+      </p>
+      <p>
+        サブルーチンの戻り値は、スタックの最初の要素に保存されています。
+      </p>
+<pre>
+int32_t total = stack[0].ival;
 </pre>
 
       <h2 id="native-api-native-sub-scope">ネイティブサブルーチンのスコープ</h2>
@@ -1103,7 +1146,7 @@ int32_t (*method_sub_id)(SPVM_ENV* env, void* object, const char* method_name, c
         サンプル:
       </p>
 <pre>
-int32_t sub_id = env->method_sub_id(env, object, "method", "int(long,string)");
+int32_t sub_id = env->method_sub_id(env, object, "method", "int(self,long,string)");
 </pre>
 
       <h3 id="native-api-native-sub-api-new_obj_raw">new_obj_raw</h3>
@@ -2078,7 +2121,16 @@ void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
 </pre>
       
       <h3 id="native-api-native-sub-api-call_sub">call_sub</h3>
-      
+      <p>
+        サブルーチンIDと引数を指定して、サブルーチンを呼び出します。戻り値は、サブルーチンで例外が発生した場合は0以外を、例外が発生しなかった場合は0を返却します。
+      </p>
+<pre>
+int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+</pre>
+      <p>
+        サブルーチンの戻り値は「args[0]」に、設定されます。
+      </p>
+
       <h3 id="native-api-native-sub-api-exception">exception</h3>
       <p>
         例外として保存されているbyte[]型のオブジェクトを返却します。
@@ -2158,12 +2210,60 @@ int32_t (*remove_mortal)(SPVM_ENV* env, int32_t scope_id, void* remove_object);
 </pre>
 
       <h3 id="native-api-native-sub-api-is_type">is_type</h3>
+      <p>
+        オブジェクトと基本型IDと型の次元を指定すると、オブジェクトが、基本型IDと型の次元の両方に一致した場合、0以外の値を、そうでない場合は、0を返します。
+      </p>
+<pre>
+int32_t (*is_type)(SPVM_ENV* env, void* object, int32_t basic_type_id, int32_t type_dimension);
+</pre>
+
       <h3 id="native-api-native-sub-api-has_callback">has_callback</h3>
+      <p>
+        オブジェクトとコールバック型の基本型IDを指定すると、オブジェクトが、コールバック型に適合した場合は0以外の値を、そうでない場合は、0を返します。
+      </p>
+<pre>
+int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
+</pre>
+
       <h3 id="native-api-native-sub-api-object_basic_type_id">object_basic_type_id</h3>
+      <p>
+        オブジェクトの基本型IDを取得します。
+      </p>
+<pre>
+int32_t (*object_basic_type_id)(SPVM_ENV* env, void* object);
+</pre>
+
       <h3 id="native-api-native-sub-api-object_type_dimension">object_type_dimension</h3>
+      <p>
+        オブジェクトの型の次元を取得します。
+      </p>
+<pre>
+int32_t (*object_type_dimension)(SPVM_ENV* env, void* object);
+</pre>
+
       <h3 id="native-api-native-sub-api-weaken">weaken</h3>
+      <p>
+        オブジェクトのアドレスを指定すると、オブジェクトを弱参照にします。
+      </p>
+<pre>
+void (*weaken)(SPVM_ENV* env, void** object_address);
+</pre>
+
       <h3 id="native-api-native-sub-api-isweak">isweak</h3>
+      <p>
+        オブジェクトのアドレスを指定すると、オブジェクトが弱参照の場合は、0以外の値を、そうでない場合は、0を返します。
+      </p>
+<pre>
+int32_t (*isweak)(SPVM_ENV* env, void** object);
+</pre>
+
       <h3 id="native-api-native-sub-api-unweaken">unweaken</h3>
+      <p>
+        オブジェクトのアドレスを指定すると、オブジェクトの弱参照を解除します。
+      </p>
+<pre>
+void (*unweaken)(SPVM_ENV* env, void** object_address);
+</pre>
       
       <h3 id="native-api-native-sub-api-alloc_memory_block_zero">alloc_memory_block_zero</h3>
       <p>
