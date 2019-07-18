@@ -5,7 +5,6 @@ package SPVM::IO::Socket {
   native sub new : SPVM::IO::Socket ($host : string, $port : int);
   native sub read : int ($self : self, $buffer : byte[]);
   native sub write : int ($self : self, $buffer : string, $legnth : int);
-  native sub shutdown : void ($self : self);
   native sub close : void ($self : self);
   native sub fileno : int ($self : self);
   

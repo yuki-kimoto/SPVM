@@ -1,6 +1,7 @@
 #include "spvm_native.h"
 
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <signal.h>
@@ -18,37 +19,9 @@
 # include <unistd.h>
 # define closesocket(fd) close(fd)
 #endif
-#include <stdio.h>
-
-#if !defined SHUT_RD
-#  define SHUT_RD 0
-#endif
-#if !defined SHUT_WR
-#  define SHUT_WR 1
-#endif
-#if !defined SHUT_RDWR
-#  define SHUT_RDWR 2
-#endif
-
 
 // Module file name
 static const char* MFILE = "SPVM/IO/Socket.c";
-
-int32_t SPNATIVE__SPVM__IO__Socket__shutdown(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  void* obj_socket = stack[0].oval;
-  
-  int32_t handle;
-  SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
-  
-  int32_t success = shutdown(handle, SHUT_WR);
-  
-  if (success != 0) {
-    SPVM_DIE("Can't shutdown send operation", MFILE, __LINE__);
-  }
-  
-  return SPVM_SUCCESS;
-}
 
 int32_t SPNATIVE__SPVM__IO__Socket__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   
