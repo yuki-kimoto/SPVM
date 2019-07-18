@@ -67,48 +67,46 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Ignore SIGPIPE
   signal(SIGPIPE, SIG_IGN);
 
+  // Dest string. Domain or IP address
   void* obj_deststr = stack[0].oval;
   const char* deststr = (const char*)env->belems(env, obj_deststr);
+  
+  // Port
   int32_t port = stack[1].ival;
   
+  // Socket handle
   int32_t handle = socket(AF_INET, SOCK_STREAM, 0);
-  
   if (handle < 0) {
     SPVM_DIE("Can't create socket", MFILE, __LINE__);
   }
   
+  // Socket information
   struct sockaddr_in server;
-  server.sin_addr.s_addr = inet_addr(deststr);
   server.sin_family = AF_INET;
+  server.sin_addr.s_addr = inet_addr(deststr);
   server.sin_port = htons(port);
   
+  // Get IP address from domain
   if (server.sin_addr.s_addr == 0xffffffff) {
+    // Find host
     struct hostent *host;
-    
     host = gethostbyname(deststr);
     if (host == NULL) {
-      if (h_errno == HOST_NOT_FOUND) {
-        fprintf(stderr, "host not found : %s\n", deststr);
-        SPVM_DIE("Exception", MFILE, __LINE__);
-      }
-      return 1;
+      SPVM_DIE("host not found : %s", deststr, MFILE, __LINE__);
     }
     
+    // No IP address
     unsigned int **addrptr = (unsigned int **)host->h_addr_list;
-    
-    while (*addrptr != NULL) {
-      server.sin_addr.s_addr = *(*addrptr);
-      if (connect(handle,
-        (struct sockaddr *)&server,
-        sizeof(server)) == 0) {
-          break;
-      }
-
-      addrptr++;
-    }
     if (*addrptr == NULL) {
-      SPVM_DIE("Connect", MFILE, __LINE__);
+      SPVM_DIE("Can't get ip address from host information : %s", deststr, MFILE, __LINE__);
     }
+    server.sin_addr.s_addr = *(*addrptr);
+  }
+  
+  // Connect
+  int32_t ret = connect(handle, (struct sockaddr *)&server, sizeof(server));
+  if (ret != 0) {
+    SPVM_DIE("Can't connect to HTTP server : %s:%d", deststr, port, MFILE, __LINE__);
   }
   
   // Create SPVM::IO::Socket object

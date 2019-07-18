@@ -1,5 +1,6 @@
-0.0439 2019-07-02
+0.0439 2019-07-18
   - rename runtime_type to runtime_type_category
+  - fix IO::Socket connect with IP address bug
 0.0438 2019-06-22
   - add SPVM::CORE::isdigit function
   - add SPVM::CORE::ispspace function
