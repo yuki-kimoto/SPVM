@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <signal.h>
 
 #ifdef _WIN32
 # include <ws2tcpip.h>
@@ -89,6 +90,9 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   WSADATA wsa;
   WSAStartup(MAKEWORD(2, 2), &wsa);
 #endif
+  
+  // Ignore SIGPIPE
+  signal(SIGPIPE, SIG_IGN);
 
   void* obj_deststr = stack[0].oval;
   const char* deststr = (const char*)env->belems(env, obj_deststr);
@@ -104,7 +108,7 @@ int32_t SPNATIVE__SPVM__IO__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
   server.sin_addr.s_addr = inet_addr(deststr);
   server.sin_family = AF_INET;
   server.sin_port = htons(port);
-
+  
   if (server.sin_addr.s_addr == 0xffffffff) {
     struct hostent *host;
     
@@ -154,13 +158,14 @@ int32_t SPNATIVE__SPVM__IO__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t handle;
   SPVM_IFIELD(env, handle, obj_socket, "SPVM::IO::Socket", "handle", MFILE, __LINE__);
-
+  
   if (handle < 0) {
     SPVM_DIE("Handle is closed", MFILE, __LINE__);
   }
   
   /* HTTPリクエスト送信 */
   int32_t write_length = send(handle, buffer, length, 0);
+  
   if (write_length < 0) {
     SPVM_DIE("Socket write error", MFILE, __LINE__);
   }

@@ -272,6 +272,7 @@ package SPVM::HTTP::Client::Handle {
         last;
       }
     }
+    
     return $off;
   }
 
