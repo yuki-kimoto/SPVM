@@ -40,13 +40,16 @@ size_t calc_decoded_length(size_t n) {
   return (n * 3 + 3) / 4 + 10;
 }
 
-int32_t SPNATIVE__SPVM__MIME__Base64__encode_b64(SPVM_ENV *env, SPVM_VALUE *stack) {
-  if (!stack[0].oval) {
+int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
+  
+  void* self_obj = stack[0].oval;
+  
+  if (!stack[1].oval) {
     SPVM_DIE("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
   }
 
-  const char* input = (const char*)env->belems(env, stack[0].oval);
-  const size_t length = env->len(env, stack[0].oval);
+  const char* input = (const char*)env->belems(env, stack[1].oval);
+  const size_t length = env->len(env, stack[1].oval);
   const size_t encoded_capacity = calc_encoded_length(length);
   
   void* obuffer = env->new_barray_raw(env, encoded_capacity + 1);
@@ -123,13 +126,16 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode_b64(SPVM_ENV *env, SPVM_VALUE *stac
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__MIME__Base64__decode_b64(SPVM_ENV *env, SPVM_VALUE *stack) {
-  if (!stack[0].oval) {
+int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
+
+  void* self_obj = stack[0].oval;
+
+  if (!stack[1].oval) {
     SPVM_DIE("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
   }
 
-  const char* input = (const char*)env->belems(env, stack[0].oval);
-  const size_t length = env->len(env, stack[0].oval);
+  const char* input = (const char*)env->belems(env, stack[1].oval);
+  const size_t length = env->len(env, stack[1].oval);
   size_t input_index = 0;
   uint32_t buf = 0;
   size_t buf_iter = 0;

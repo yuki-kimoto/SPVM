@@ -2,8 +2,8 @@ package TestCase::Lib::SPVM::MIME::Base64 {
   use SPVM::MIME::Base64;
 
   private sub round_trip : string ($string : string) {
-    my $encoder = SPVM::MIME::Base64->new;
-    return $encoder->decode($encoder->encode($string));
+    my $b64 = SPVM::MIME::Base64->new;
+    return $b64->decode($b64->encode($string));
   }
 
   sub test_basic : int () {
@@ -14,7 +14,7 @@ package TestCase::Lib::SPVM::MIME::Base64 {
   }
 
   sub test_all : int () {
-    my $encoder = SPVM::MIME::Base64->new;
+    my $b64 = SPVM::MIME::Base64->new;
     for (my $case_index = 0; $case_index < 300; $case_index++) {
       my $bytes = new byte[$case_index];
       for (my $c = 0; $c < $case_index; $c++) {

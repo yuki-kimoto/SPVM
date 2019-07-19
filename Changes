@@ -1,6 +1,16 @@
 0.0439 2019-07-18
   - rename runtime_type to runtime_type_category
   - fix IO::Socket connect with IP address bug
+  - cleanup SPVM::MIME::Base64 interface
+      package SPVM::MIME::Base64 {
+        sub new : SPVM::MIME::Base64 () {
+          return new SPVM::MIME::Base64;
+        }
+        
+        native sub encode : string ($self : self, $string : string);
+        native sub decode : string ($self : self, $string : string);
+      }
+
 0.0438 2019-06-22
   - add SPVM::CORE::isdigit function
   - add SPVM::CORE::ispspace function
