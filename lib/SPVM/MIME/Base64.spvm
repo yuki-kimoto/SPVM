@@ -3,6 +3,6 @@ package SPVM::MIME::Base64 {
     return new SPVM::MIME::Base64;
   }
   
-  native sub encode : string ($self : self, $string : string);
-  native sub decode : string ($self : self, $string : string);
+  native sub encode : string ($self : self, $binary : string);
+  native sub decode : string ($self : self, $base64_text : string);
 }
