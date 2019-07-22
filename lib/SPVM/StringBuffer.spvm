@@ -24,10 +24,6 @@ package SPVM::StringBuffer {
     $self->{value} = $new_string;
   }
 
-  sub to_barray : byte[] ($self : self) {
-    return sliceb($self->{value}, 0, $self->{length});
-  }
-
   sub new : SPVM::StringBuffer () {
     my $self = new SPVM::StringBuffer;
     my $default_capacity = DEFAULT_CAPACITY();
