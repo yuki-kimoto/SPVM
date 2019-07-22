@@ -10,7 +10,8 @@
         native sub encode : string ($self : self, $string : string);
         native sub decode : string ($self : self, $string : string);
       }
-
+  - refactoring SPVM::StringBuffer
+  
 0.0438 2019-06-22
   - add SPVM::CORE::isdigit function
   - add SPVM::CORE::ispspace function
