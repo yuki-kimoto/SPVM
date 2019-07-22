@@ -146,29 +146,6 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
-  sub test_prepend : int () {
-    my $buffer = SPVM::StringBuffer->new;
-    my $buffer2 = SPVM::StringBuffer->new;
-    $buffer2->push("abc");
-    
-    $buffer->prepend($buffer2);
-    unless ($buffer->to_str eq "abc") {
-      return 0;
-    }
-    my $buffer3 = SPVM::StringBuffer->new;
-    $buffer3->push("def");
-    $buffer->prepend($buffer3);
-    unless ($buffer->to_str eq "defabc") {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_prepend_copy_on_write : int () {
-    warn("TODO: prepend copy-on-write test is not implemented yet");
-    return 0;
-  }
-
   sub test_append : int () {
     my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
     my $buffer2 = SPVM::StringBuffer->new;
@@ -208,26 +185,6 @@ package TestCase::Lib::SPVM::StringBuffer {
       return 0;
     }
     $buffer->push ("f");
-    unless ($buffer->to_str eq "abcdef" && $buffer->capacity == 6) {
-      warn("actual string: " . $buffer->to_str . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_append_bytes : int () {
-    my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
-    $buffer->append_bytes(['a', 'b', 'c']);
-    unless ($buffer->to_str eq "abc" && $buffer->capacity == 3) {
-      warn("actual string: " . $buffer->to_str . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    $buffer->append_bytes(['d', 'e']);
-    unless ($buffer->to_str eq "abcde" && $buffer->capacity == 6) {
-      warn("actual string: " . $buffer->to_str . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    $buffer->push (['f']);
     unless ($buffer->to_str eq "abcdef" && $buffer->capacity == 6) {
       warn("actual string: " . $buffer->to_str . ", capacity: " . $buffer->capacity);
       return 0;

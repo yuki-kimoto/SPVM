@@ -384,7 +384,7 @@ package SPVM::HTTP::Client::Handle {
       my $buf = new byte [$_BUFSIZE];
       my $r = $self->{socket}->read($buf);
       if ($r > 0) {
-        $self->{rbuf}->append_bytes(sliceb($buf, 0, $r));
+        $self->{rbuf}->push((string)sliceb($buf, 0, $r));
       }
       elsif ($r == 0) {
         die "Unexpected end of stream while looking for line";
@@ -568,7 +568,7 @@ package SPVM::HTTP::Client::Handle {
 
       if ($read_len) {
         $updated = 1;
-        $buf->append_bytes(sliceb($chunk, 0, $read_len));
+        $buf->push((string)sliceb($chunk, 0, $read_len));
         $len -= $read_len;
       }
       else {
