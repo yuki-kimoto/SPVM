@@ -131,21 +131,6 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
-  sub test_copy : int () {
-    my $buffer = SPVM::StringBuffer->new;
-    $buffer->push("a");
-    my $content = $buffer->_copy_value;
-    unless (refcnt $content == 1) {
-      return 0;
-    }
-    my $copied_text = $buffer->copy;
-    unless (refcnt $content == 2) {
-      warn("One copy runs but refcnt: " . refcnt $content);
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_append : int () {
     my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
     my $buffer2 = SPVM::StringBuffer->new;

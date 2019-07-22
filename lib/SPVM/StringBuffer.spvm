@@ -74,13 +74,6 @@ package SPVM::StringBuffer {
     return $new_text;
   }
 
-  sub copy : SPVM::StringBuffer ($self : self) {
-    my $ret = SPVM::StringBuffer->new;
-    $ret->{value}      = $self->{value};
-    $ret->{length}      = $self->{length};
-    return $ret;
-  }
-
   sub append : void ($self : self, $buffer : SPVM::StringBuffer) {
     my $capacity = @$self->{value};
     if ($self->{length} + $buffer->{length} > $capacity) {
