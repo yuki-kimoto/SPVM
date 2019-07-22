@@ -261,7 +261,7 @@ package SPVM::HTTP::Client::Handle {
     my $len = $buf->length;
     my $off = 0;
     while (1) {
-      my $data = $buf->substr($off, $len)->to_str;
+      my $data = $buf->substr($off, $len);
       warn("-------- begin write --------");
       warn($data);
       warn("--------- end write ---------");
@@ -365,13 +365,14 @@ package SPVM::HTTP::Client::Handle {
     if ($index < 0) {
       return undef;
     }
-    my $ret = $self->{rbuf}->substr(0, $index + 1)->to_str;
+    my $ret = $self->{rbuf}->substr(0, $index + 1);
     if ($self->{rbuf}->length == $index + 1) {
       $self->{rbuf} = SPVM::StringBuffer->new;
     }
     else {
-      $self->{rbuf} = $self->{rbuf}->substr(
-          $index + 1, $self->{rbuf}->length - $index - 1);
+      my $new_buffer = SPVM::StringBuffer->new;
+      $new_buffer->push($self->{rbuf}->substr($index + 1, $self->{rbuf}->length - $index - 1));
+      $self->{rbuf} = $new_buffer;
     }
     return $ret;
   }
@@ -546,9 +547,11 @@ package SPVM::HTTP::Client::Handle {
       if ($take > $got) {
         $take = $got;
       }
-      $buf->append($self->{rbuf}->substr(0, $take));
+      $buf->push($self->{rbuf}->substr(0, $take));
       if ($got > $take) {
-        $self->{rbuf} = $self->{rbuf}->substr($take, $got - $take);
+        my $new_buffer = SPVM::StringBuffer->new;
+        $new_buffer->push($self->{rbuf}->substr($take, $got - $take));
+        $self->{rbuf} = $new_buffer;
       }
       else {
         $self->{rbuf} = SPVM::StringBuffer->new;

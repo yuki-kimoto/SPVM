@@ -55,13 +55,13 @@ package TestCase::Lib::SPVM::StringBuffer {
   sub test_substr : int () {
     my $buffer = SPVM::StringBuffer->new;
     $buffer->push("abcd");
-    unless ($buffer->substr(1, 2)->to_str eq "bc") {
+    unless ($buffer->substr(1, 2) eq "bc") {
       return 0;
     }
     eval {
       my $buffer = SPVM::StringBuffer->new;
       $buffer->push("a");
-      $buffer->substr(1, 1)->to_str;
+      $buffer->substr(1, 1);
     };
     unless ($@) {
       return 0;
@@ -69,7 +69,7 @@ package TestCase::Lib::SPVM::StringBuffer {
     eval {
       my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
       $buffer->push("a");
-      $buffer->substr(0, 2)->to_str;
+      $buffer->substr(0, 2);
     };
     unless ($@) {
       return 0;
@@ -103,37 +103,11 @@ package TestCase::Lib::SPVM::StringBuffer {
       my $buffer = SPVM::StringBuffer->new;
       $buffer->push("abc");
       my $buffer_sub = $buffer->substr(1, 1);
-      my $temp = (byte[])$buffer_sub->to_str;
+      my $temp = (byte[])$buffer_sub;
       unless (refcnt $temp == 3) {
         warn("substr is used and text_sub is created. string is referenced by text's and text_sub fields and temp, but refcnt: " . refcnt $temp);
         return 0;
       }
-    }
-    return 1;
-  }
-
-  sub test_append : int () {
-    my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
-    my $buffer2 = SPVM::StringBuffer->new;
-    $buffer2->push("abc");
-    $buffer->append($buffer2);
-    unless ($buffer->to_str eq "abc" && $buffer->capacity == 3) {
-      warn("actual string: " . $buffer->to_str . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    my $buffer3 = SPVM::StringBuffer->new;
-    $buffer3->push("de");
-    $buffer->append($buffer3);
-    unless ($buffer->to_str eq "abcde" && $buffer->capacity == 6) {
-      warn("actual string: " . $buffer->to_str . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    my $buffer4 = SPVM::StringBuffer->new;
-    $buffer4->push("f");
-    $buffer->append($buffer4);
-    unless ($buffer->to_str eq "abcdef" && $buffer->capacity == 6) {
-      warn("actual string: " . $buffer->to_str . ", capacity: " . $buffer->capacity);
-      return 0;
     }
     return 1;
   }

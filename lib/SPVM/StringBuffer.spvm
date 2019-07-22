@@ -52,20 +52,16 @@ package SPVM::StringBuffer {
     return $self;
   }
 
-  sub substr : SPVM::StringBuffer ($self : self, $offset : int, $length : int) {
+  sub substr : byte[] ($self : self, $offset : int, $length : int) {
     if ($offset >= $self->{length}) {
       die("substr offset is greater or equal than string length");
-      return SPVM::StringBuffer->new;
     }
     
-    my $new_capacity = $length;
-    
-    my $new_text = SPVM::StringBuffer->new_opt([(object)capacity => $new_capacity]);
+    my $new_text = new byte[$length];
     
     for (my $i = 0; $i < $length; $i++) {
-      $new_text->{value}[$i] = $self->{value}[$offset + $i];
+      $new_text->[$i] = $self->{value}[$offset + $i];
     }
-    $new_text->{length} = $length;
     
     return $new_text;
   }
@@ -138,5 +134,9 @@ package SPVM::StringBuffer {
 
   sub to_str : string ($self : self) {
     return (string)(sliceb($self->{value}, 0, $self->{length}));
+  }
+
+  sub clear : void ($self : self) {
+    $self->{length} = 0;
   }
 }
