@@ -280,13 +280,13 @@ package SPVM::HTTP::Client::Handle {
       $headers : SPVM::Hash, $prefix_data : string) {
     my $buf = SPVM::StringBuffer->new;
     if ($prefix_data) {
-      $buf->append_string($prefix_data);
+      $buf->push($prefix_data);
     }
     my $control_fields = ["host", "cache-control", "expect", "max-forwards", "pragma", "range", "te"];
     my $seen = SPVM::Hash->new;
     for (my $i = 0; $i < @$control_fields; ++$i) {
       if (my $v = $headers->get($control_fields->[$i])) {
-        $buf->append_string($control_fields->[$i] . ": " . (string)$v . "\r\n");
+        $buf->push($control_fields->[$i] . ": " . (string)$v . "\r\n");
         $seen->set($control_fields->[$i], 1);
       }
     }
@@ -304,10 +304,10 @@ package SPVM::HTTP::Client::Handle {
         else {
           die "Unexpected header value type. key: " . $ks->[$i];
         }
-        $buf->append_string($ks->[$i] . ": $val\r\n");
+        $buf->push($ks->[$i] . ": $val\r\n");
       }
     }
-    $buf->append_string("\r\n");
+    $buf->push("\r\n");
     $self->write($buf);
   }
 
@@ -317,7 +317,8 @@ package SPVM::HTTP::Client::Handle {
   }
 
   sub write_content_body : void ($self : self, $content_length : int, $content : string) {
-    my $buffer = SPVM::StringBuffer->new_with_string($content);
+    my $buffer = SPVM::StringBuffer->new;
+    $buffer->push($content);
     my $len = $self->write($buffer);
     unless ($len == $content_length) {
       die "Content-Length mismatch (got: $len expected: $content_length)";
@@ -336,8 +337,8 @@ package SPVM::HTTP::Client::Handle {
   sub write_chunked_body : void ($self : self, $content : string) {
     my $len = length $content;
     my $buffer = SPVM::StringBuffer->new;
-    $buffer->append_string(_to_hex($len) . "\r\n$content\r\n");
-    $buffer->append_string("0\r\n");
+    $buffer->push(_to_hex($len) . "\r\n$content\r\n");
+    $buffer->push("0\r\n");
     $self->write($buffer);
   }
 

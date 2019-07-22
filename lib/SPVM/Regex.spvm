@@ -584,7 +584,7 @@ package SPVM::Regex {
     
     if ($target_base_index > 0) {
       my $first_string = substr($target, 0, $target_base_index);
-      $result_buffer->append_string($first_string);
+      $result_buffer->push($first_string);
     }
     
     while (my $match = $self->match_repeat($target, $target_base_index)) {
@@ -604,11 +604,11 @@ package SPVM::Regex {
           my $replace_elem_object = $replace_objects->[$i];
           
           if ($replace_elem_object isa string) {
-            $replace_buffer->append_string((string)$replace_elem_object);
+            $replace_buffer->push((string)$replace_elem_object);
           }
           elsif ($replace_elem_object isa SPVM::Int) {
             my $capture = $self->caps((int)$replace_elem_object);
-            $replace_buffer->append_string($capture);
+            $replace_buffer->push($capture);
           }
           else {
             die "Invalid replace argument element";
@@ -621,7 +621,7 @@ package SPVM::Regex {
         my $replace_buffer = SPVM::StringBuffer->new;
         my $stringer = (SPVM::Stringer)$replace_object;
         my $cb_result = $stringer->to_str;
-        $replace_buffer->append_string($cb_result);
+        $replace_buffer->push($cb_result);
         $replace = $replace_buffer->to_str;
       }
       else {
@@ -638,8 +638,8 @@ package SPVM::Regex {
       my $rest_length = $target_length - $match_end;
       
       my $before_result = (string)sliceb((byte[])$target, $target_base_index, $match_start - $target_base_index);
-      $result_buffer->append_string($before_result);
-      $result_buffer->append_string($replace);
+      $result_buffer->push($before_result);
+      $result_buffer->push($replace);
       
       $replace_count++;
       
@@ -657,7 +657,7 @@ package SPVM::Regex {
       my $match_end = $self->match_end;
       my $rest_length = $target_length - $match_end;
       my $rest_string = substr($target, $match_end, $rest_length);
-      $result_buffer->append_string($rest_string);
+      $result_buffer->push($rest_string);
       
       $result = (byte[])$result_buffer->to_str;
     }

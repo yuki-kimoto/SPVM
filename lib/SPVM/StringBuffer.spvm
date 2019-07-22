@@ -60,13 +60,6 @@ package SPVM::StringBuffer {
     return $self;
   }
 
-  sub new_with_string : SPVM::StringBuffer ($string : string) {
-    my $self = new SPVM::StringBuffer;
-    $self->{value} = (byte [])$string;
-    $self->{length} = @$self->{value};
-    return $self;
-  }
-
   sub substr : SPVM::StringBuffer ($self : self, $offset : int, $length : int) {
     if ($offset >= $self->{length}) {
       die("substr offset is greater or equal than string length");
@@ -154,7 +147,7 @@ package SPVM::StringBuffer {
     }
   }
 
-  sub append_string : void ($self : self, $string : string) {
+  sub push  : void ($self : self, $string : string) {
     my $length = length($string);
     my $capacity = @$self->{value};
     if ($self->{length} + $length > $capacity) {
