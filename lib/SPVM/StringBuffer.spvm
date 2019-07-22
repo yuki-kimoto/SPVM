@@ -66,30 +66,6 @@ package SPVM::StringBuffer {
     return $new_text;
   }
 
-  sub append : void ($self : self, $buffer : SPVM::StringBuffer) {
-    my $capacity = @$self->{value};
-    if ($self->{length} + $buffer->{length} > $capacity) {
-      # O($new_capacity)
-      my $new_capacity : int;
-      if ($self->{length} + $buffer->{length} > $capacity * 2) {
-        $new_capacity = $self->{length} + $buffer->{length};
-      } else {
-        $new_capacity = $capacity * 2;
-      }
-      $self->_reallocate($new_capacity);
-      for (my $i = 0; $i < $buffer->{length}; ++$i) {
-        $self->{value}[$self->{length} + $i] = $buffer->{value}->[$i];
-      }
-      $self->{length} += $buffer->{length};
-    }
-    else {
-      for (my $i = 0; $i < $buffer->{length}; ++$i) {
-        $self->{value}[$self->{length} + $i] = $buffer->{value}->[$i];
-      }
-      $self->{length} += $buffer->{length};
-    }
-  }
-
   sub push  : void ($self : self, $string : string) {
     my $length = length($string);
     my $capacity = @$self->{value};
@@ -115,9 +91,9 @@ package SPVM::StringBuffer {
     }
   }
 
-  sub index : int ($self : self, $search : string, $from_index : int) {
+  sub index : int ($self : self, $search : string, $offset : int) {
     my $slen = length $search;
-    for (my $i = $from_index; $i < $self->{length} - $slen + 1; ++$i) {
+    for (my $i = $offset; $i < $self->{length} - $slen + 1; ++$i) {
       my $found = 1;
       for (my $j = 0; $j < $slen; ++$j) {
         if ($self->{value}[$i + $j] != $search->[$j]) {
