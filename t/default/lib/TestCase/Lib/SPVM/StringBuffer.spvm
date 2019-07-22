@@ -12,24 +12,8 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
-  sub check_string : int ($target : SPVM::StringBuffer, $expected : byte []) {
-    unless ($target->capacity == @$expected) {
-      return 0;
-    }
-    my $target_value = $target->_copy_value;
-    for (my $i = 0; $i < $target->capacity; ++$i) {
-      unless ($target_value->[$i] == $expected->[$i]) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
   sub test_ctor_default : int () {
     unless (check_fields(SPVM::StringBuffer->new, 16, 0)) {
-      return 0;
-    }
-    unless (check_string(SPVM::StringBuffer->new, new byte[16])) {
       return 0;
     }
     return 1;
@@ -37,9 +21,6 @@ package TestCase::Lib::SPVM::StringBuffer {
 
   sub test_new_opt : int () {
     unless (check_fields(SPVM::StringBuffer->new_opt([(object)capacity => 20000]), 20000, 0)) {
-      return 0;
-    }
-    unless (check_string(SPVM::StringBuffer->new_opt([(object)capacity => 20000]), new byte[20000])) {
       return 0;
     }
     eval {
@@ -103,7 +84,7 @@ package TestCase::Lib::SPVM::StringBuffer {
     {
       my $buffer = SPVM::StringBuffer->new;
       $buffer->push("abc");
-      my $temp = $buffer->_copy_value;
+      my $temp = (byte[])$buffer->to_str;
       unless (refcnt $temp == 2) { # referenced by field and temp
         return 0;
       }
@@ -112,7 +93,7 @@ package TestCase::Lib::SPVM::StringBuffer {
       my $buffer = SPVM::StringBuffer->new;
       $buffer->push("abc");
       $buffer->substr(1, 1);
-      my $temp = $buffer->_copy_value;
+      my $temp = (byte[])$buffer->to_str;
       unless (refcnt $temp == 2) {
         warn("substr is used. string is referenced by text's field and temp, but refcnt: " . refcnt $temp);
         return 0;
@@ -122,7 +103,7 @@ package TestCase::Lib::SPVM::StringBuffer {
       my $buffer = SPVM::StringBuffer->new;
       $buffer->push("abc");
       my $buffer_sub = $buffer->substr(1, 1);
-      my $temp = $buffer_sub->_copy_value;
+      my $temp = (byte[])$buffer_sub->to_str;
       unless (refcnt $temp == 3) {
         warn("substr is used and text_sub is created. string is referenced by text's and text_sub fields and temp, but refcnt: " . refcnt $temp);
         return 0;

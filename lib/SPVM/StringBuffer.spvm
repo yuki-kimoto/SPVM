@@ -12,10 +12,6 @@ package SPVM::StringBuffer {
     return @$self->{value};
   }
   
-  sub _copy_value : byte[] ($self : self) {
-    return copy_barray($self->{value});
-  }
-  
   private sub _reallocate : void ($self : self, $new_capacity : int) {
     my $new_string = new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
