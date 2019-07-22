@@ -37,34 +37,26 @@ package SPVM::StringBuffer {
   }
   
   sub new_opt : SPVM::StringBuffer ($options : object[]) {
-    my $options_h = SPVM::Hash->new_opt($options);
+    my $options_h = SPVM::Hash->newa($options);
     
     my $self = new SPVM::StringBuffer;
 
     my $default_capacity : int;
     if ($options_h->exists("capacity")) {
-      $default_capacity = (int)$options_h->get("capacity");
+      $default_capacity = (int)$options_h->delete("capacity");
     }
     else {
       $default_capacity = DEFAULT_CAPACITY();
     }
-    if ($default_capacity < 0) {
+    
+    # Minimal capacity is 1
+    if ($default_capacity < 1) {
       die "Invalid capacity";
     }
-     
+    
     $self->{value} = new byte [$default_capacity];
     $self->{length} = 0;
     
-    return $self;
-  }
-
-  sub new_with_capacity : SPVM::StringBuffer ($capacity : int) {
-    my $self = new SPVM::StringBuffer;
-    unless ($capacity > 0) {
-      die "capacity must be positive";
-    }
-    $self->{value} = new byte [$capacity];
-    $self->{length} = 0;
     return $self;
   }
 
@@ -83,7 +75,7 @@ package SPVM::StringBuffer {
     
     my $new_capacity = $length;
     
-    my $new_text = SPVM::StringBuffer->new_with_capacity($new_capacity);
+    my $new_text = SPVM::StringBuffer->new_opt([(object)capacity => $new_capacity]);
     
     for (my $i = 0; $i < $length; $i++) {
       $new_text->{value}[$i] = $self->{value}[$offset + $i];

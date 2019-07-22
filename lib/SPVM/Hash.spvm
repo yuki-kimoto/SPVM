@@ -173,6 +173,7 @@ package SPVM::Hash {
   sub exists : int ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
+    
     unless ($ref) {
       return 0;
     }

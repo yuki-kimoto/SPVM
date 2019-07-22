@@ -72,21 +72,21 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_ctor_with_capacity : int () {
-    unless (check_fields(SPVM::StringBuffer->new_with_capacity(20000), 20000, 0)) {
+    unless (check_fields(SPVM::StringBuffer->new_opt([(object)capacity => 20000]), 20000, 0)) {
       return 0;
     }
-    unless (check_string(SPVM::StringBuffer->new_with_capacity(20000), new byte[20000])) {
+    unless (check_string(SPVM::StringBuffer->new_opt([(object)capacity => 20000]), new byte[20000])) {
       return 0;
     }
     eval {
-      SPVM::StringBuffer->new_with_capacity(0);
+      SPVM::StringBuffer->new_opt([(object)capacity => 0]);
     };
     unless ($@) {
       return 0;
     }
     $@ = undef;
     eval {
-      SPVM::StringBuffer->new_with_capacity(-1);
+      SPVM::StringBuffer->new_opt([(object)capacity => -1]);
     };
     unless ($@) {
       return 0;
@@ -209,7 +209,7 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_append : int () {
-    my $buffer = SPVM::StringBuffer->new_with_capacity(1);
+    my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
     $buffer->append(SPVM::StringBuffer->new_with_string("abc"));
     unless ($buffer->to_barray eq "abc" && $buffer->capacity == 3) {
       warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
@@ -229,7 +229,7 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_append_string : int () {
-    my $buffer = SPVM::StringBuffer->new_with_capacity(1);
+    my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
     $buffer->append_string("abc");
     unless ($buffer->to_barray eq "abc" && $buffer->capacity == 3) {
       warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
@@ -249,7 +249,7 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_append_bytes : int () {
-    my $buffer = SPVM::StringBuffer->new_with_capacity(1);
+    my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
     $buffer->append_bytes(['a', 'b', 'c']);
     unless ($buffer->to_barray eq "abc" && $buffer->capacity == 3) {
       warn("actual string: " . $buffer->to_barray . ", capacity: " . $buffer->capacity);
@@ -340,7 +340,7 @@ package TestCase::Lib::SPVM::StringBuffer {
     unless (SPVM::StringBuffer->new_with_string("abc")->to_barray eq "abc") {
       return 0;
     }
-    my $buffer = SPVM::StringBuffer->new_with_capacity(100);
+    my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 100]);
     $buffer->replace(0, 1, "a");
     unless ($buffer->to_barray eq "a") {
       return 0;
@@ -350,7 +350,7 @@ package TestCase::Lib::SPVM::StringBuffer {
 
   sub test_equals : int () {
     my $lhs = SPVM::StringBuffer->new_with_string("abc");
-    my $rhs = SPVM::StringBuffer->new_with_capacity(100);
+    my $rhs = SPVM::StringBuffer->new_opt([(object)capacity => 100]);
     $rhs->replace(0, 0, "abc");
     unless ($lhs->equals($rhs) && $rhs->equals($lhs)) {
       return 0;
@@ -363,14 +363,14 @@ package TestCase::Lib::SPVM::StringBuffer {
 
   sub test_to_str : int () {
     {
-      my $minimal_buf = SPVM::StringBuffer->new_with_capacity(1);
+      my $minimal_buf = SPVM::StringBuffer->new_opt([(object)capacity => 1]);
       $minimal_buf->append_string("a");
       unless ($minimal_buf->to_str eq "a") {
         return 0;
       }
     }
     {
-      my $large_buf = SPVM::StringBuffer->new_with_capacity(1000000);
+      my $large_buf = SPVM::StringBuffer->new_opt([(object)capacity => 1000000]);
       $large_buf->append_string("b");
       unless ($large_buf->to_str eq "b") {
         return 0;
