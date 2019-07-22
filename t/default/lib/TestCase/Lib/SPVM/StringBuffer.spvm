@@ -12,42 +12,6 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
-  sub equals_text_deeply : int ($got : SPVM::StringBuffer, $expected : SPVM::StringBuffer) {
-    unless ($got->length == $expected->length) {
-      warn("Length mismatch. Try check_fields() first");
-      return 0;
-    }
-    my $got_value = $got->_copy_value;
-    my $expected_value = $expected->_copy_value;
-    
-    for (my $i = 0; $i < $expected->length; $i++) {
-      unless ($got_value->[$i] == $expected_value->[$i]) {
-        my $warn_message = "String mismatch.";
-        $warn_message .= "\tgot:      ";
-        for (my $j = 0; $j < $got->length; $j++) {
-          if ($got_value->[$j] == 0) {
-            $warn_message .= "(none)";
-          }
-          else {
-            $warn_message .= $got_value->[$j];
-          }
-        }
-        $warn_message .= "\n\texpected: ";
-        for (my $j = 0; $j < $expected->length; $j++) {
-          if ($expected_value->[$j] == 0) {
-            $warn_message .= "(none) ";
-          }
-          else {
-            $warn_message .= $expected_value->[$j] . " ";
-          }
-        }
-        warn ($warn_message);
-        return 0;
-      }
-    }
-    return 1;
-  }
-
   sub check_string : int ($target : SPVM::StringBuffer, $expected : byte []) {
     unless ($target->capacity == @$expected) {
       return 0;
@@ -355,22 +319,6 @@ package TestCase::Lib::SPVM::StringBuffer {
     my $buffer = SPVM::StringBuffer->new_opt([(object)capacity => 100]);
     $buffer->replace(0, 1, "a");
     unless ($buffer->to_barray eq "a") {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_equals : int () {
-    my $lhs = SPVM::StringBuffer->new;
-    $lhs->push("abc");
-    my $rhs = SPVM::StringBuffer->new_opt([(object)capacity => 100]);
-    $rhs->replace(0, 0, "abc");
-    unless ($lhs->equals($rhs) && $rhs->equals($lhs)) {
-      return 0;
-    }
-    my $buffer2 = SPVM::StringBuffer->new;
-    $buffer2->push("ab");
-    unless (!$lhs->equals($buffer2)) {
       return 0;
     }
     return 1;

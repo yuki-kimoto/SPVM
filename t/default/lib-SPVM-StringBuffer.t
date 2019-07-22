@@ -23,7 +23,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringBuffer->test_append_bytes);
   ok(TestCase::Lib::SPVM::StringBuffer->test_replace);
   ok(TestCase::Lib::SPVM::StringBuffer->test_to_barray);
-  ok(TestCase::Lib::SPVM::StringBuffer->test_equals);
   ok(TestCase::Lib::SPVM::StringBuffer->test_to_str);
   ok(TestCase::Lib::SPVM::StringBuffer->test_index);
 }
