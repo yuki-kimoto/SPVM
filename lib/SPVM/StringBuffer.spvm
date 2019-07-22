@@ -56,13 +56,6 @@ package SPVM::StringBuffer {
     return $self;
   }
 
-  sub new_with_string : SPVM::StringBuffer ($string : string) {
-    my $self = new SPVM::StringBuffer;
-    $self->{value} = (byte [])$string;
-    $self->{length} = @$self->{value};
-    return $self;
-  }
-
   sub substr : SPVM::StringBuffer ($self : self, $offset : int, $length : int) {
     if ($offset >= $self->{length}) {
       die("substr offset is greater or equal than string length");
@@ -173,55 +166,6 @@ package SPVM::StringBuffer {
       }
       $self->{length} += $length;
     }
-  }
-
-  sub replace : void ($self : self, $offset : int, $length : int, $replace : string) {
-    if ($offset > $self->{length}) {
-      warn("replace offset past end of string");
-      $offset = $self->{length};
-      $length = 0;
-    }
-
-    if ($length > $self->{length} - $offset) {
-      $length = $self->{length} - $offset;
-    }
-
-    my $replace_length = 0;
-    if ($replace) {
-      $replace_length = length($replace);
-    }
-
-    my $capacity = @$self->{value};
-    if ($self->{length} - $length + $replace_length > $capacity) {
-      # O($new_string_length)
-      $self->_reallocate($self->{length} - $length + $replace_length);
-    }
-
-    my $last_sequence_length = $self->{length} - $offset - $length;
-    if ($length > $replace_length) {
-      # move last sequence to forward
-      for (my $i = 0; $i < $last_sequence_length; ++$i) {
-        my $origin = $offset + $length + $i;
-        my $target = $offset + $replace_length + $i;
-        $self->{value}[$target] = $self->{value}[$origin];
-      }
-    }
-    else {
-      # move last sequence to backward
-      for (my $i = 0; $i < $last_sequence_length; ++$i) {
-        my $origin = $self->{length} - 1 - $i;
-        my $target = $offset + $replace_length + $last_sequence_length - 1 - $i;
-        $self->{value}[$target] = $self->{value}[$origin];
-      }
-    }
-
-    # replace with new array
-    for (my $i = 0; $i < $replace_length; ++$i) {
-      my $target = $offset + $i;
-      $self->{value}[$target] = $replace->[$i];
-    }
-
-    $self->{length} += $replace_length - $length;
   }
 
   sub index : int ($self : self, $search : string, $from_index : int) {
