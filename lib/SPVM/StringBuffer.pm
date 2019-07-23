@@ -1,5 +1,7 @@
 package SPVM::StringBuffer;
 
+use SPVM 'SPVM::StringBuffer';
+
 1;
 
 =head1 NAME

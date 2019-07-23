@@ -1,5 +1,7 @@
 package SPVM::MIME::Base64;
 
+use SPVM 'SPVM::MIME::Base64';
+
 1;
 
 =head1 NAME
@@ -7,7 +9,9 @@ package SPVM::MIME::Base64;
 SPVM::MIME::Base64 - Base64 encode/decode
 
 =head1 SYNOPSYS
-
+  
+  use SPVM::MIME::Base64;
+  
   my $b64 = SPVM::MIME::Base64->new;
   my $text = $b64->encode($binary);
   my $binary = $b64->decode($text);
