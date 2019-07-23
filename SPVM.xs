@@ -1514,7 +1514,7 @@ call_sub(...)
     int32_t arg_index;
     // Check argument count
     if (items - arg_start != sub->arg_ids_length) {
-      croak("Argument count of %s::%s() is defferent at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+      croak("Invalid invocant or arguments count in %s->%s() at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
     }
     
     int32_t arg_var_id = 0;

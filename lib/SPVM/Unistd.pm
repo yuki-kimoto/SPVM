@@ -2,22 +2,24 @@ package SPVM::Unistd;
 
 use SPVM 'SPVM::Unistd';
 
+1;
+
 =head1 NAME
 
 SPVM::Unistd - Unix standard library
 
 =head1 SYNOPSYS
   
-  use SPVM::Unistd (sleep);
+  use SPVM::Unistd;
   
   # Sleep 3 seconds
-  sleep(3);
+  SPVM::Unistd->sleep(3);
 
 =head1 DESCRIPTION
 
 Unix standard library.
 
-=head1 METHODS
+=head1 CLASS METHODS
 
 =head2 sleep
 

@@ -11,7 +11,9 @@ use SPVM 'SPVM::Byte';
 SPVM::Byte - Byte object
 
 =head1 SYNOPSYS
-
+  
+  use SPVM::Byte;
+  
   my $byte_object = SPVM::Byte->new(5);
   my $byte_value = $byte_object->val;
 
@@ -21,13 +23,15 @@ L<SPVM::Byte> object stores a byte value.
 
 This object is immutable.
 
-=head1 METHODS
+=head1 CLASS METHODS
 
 =head2 new
 
   sub new : SPVM::Byte ($value : byte)
 
 Create a new L<SPVM::Byte> object with specific C<byte> value.
+
+=head1 INSTANCE METHODS
 
 =head2 val
 

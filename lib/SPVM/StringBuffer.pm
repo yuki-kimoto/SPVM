@@ -39,19 +39,7 @@ SPVM::StringBuffer - String buffer
 
 String buffer. Performance is better than concat operator when many strings is joined.
 
-=head1 METHODS
-
-=head2 length
-
-  sub length : int ($self : self)
-
-Get string length.
-
-=head2 capacity
-
-  sub capacity : int ($self : self)
-
-Get capacity of string buffer.
+=head1 CLASS METHODS
 
 =head2 new
 
@@ -72,6 +60,20 @@ Create new L<SPVM::StringBuffer> object with options.
 Capacity of string buffer. Capacity must be more than 0.
 
 =back
+
+=head1 INSTANCE METHODS
+
+=head2 length
+
+  sub length : int ($self : self)
+
+Get string length.
+
+=head2 capacity
+
+  sub capacity : int ($self : self)
+
+Get capacity of string buffer.
 
 =head2 push
 
