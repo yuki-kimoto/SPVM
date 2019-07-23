@@ -4,7 +4,7 @@ use SPVM 'SPVM::Byte';
 
 1;
 
-# Check document 2019/07/03 almost ok.
+# Check document 2019/07/23 almost ok.
 
 =head1 NAME
 
@@ -19,7 +19,7 @@ SPVM::Byte - Byte object
 
 =head1 DESCRIPTION
 
-L<SPVM::Byte> object stores a byte value.
+L<SPVM::Byte> object stores a C<byte> value.
 
 This object is immutable.
 
@@ -37,4 +37,4 @@ Create a new L<SPVM::Byte> object with specific C<byte> value.
 
   sub val : byte ($self : self)
 
-Get C<byte> value.
+Get a C<byte> value.

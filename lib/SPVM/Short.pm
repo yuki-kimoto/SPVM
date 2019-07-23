@@ -1,32 +1,40 @@
 package SPVM::Short;
 
+use SPVM 'SPVM::Short';
+
 1;
+
+# Check document 2019/07/23 almost ok.
 
 =head1 NAME
 
 SPVM::Short - Short object
 
 =head1 SYNOPSYS
-
+  
+  use SPVM::Short;
+  
   my $short_object = SPVM::Short->new(5);
   my $short_value = $short_object->val;
 
 =head1 DESCRIPTION
 
-Short object.
+L<SPVM::Short> object stores a C<short> value.
 
-=head1 CONSTRUCTOR
+This object is immutable.
+
+=head1 CLASS METHODS
 
 =head2 new
 
   sub new : SPVM::Short ($value : short)
 
-Create L<SPVM::Short> object with specified C<short> value.
+Create a new L<SPVM::Short> object with specific C<short> value.
 
-=head1 METHODS
+=head1 INSTANCE METHODS
 
 =head2 val
 
   sub val : short ($self : self)
 
-Get C<short> value.
+Get a C<short> value.
