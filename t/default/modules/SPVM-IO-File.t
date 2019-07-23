@@ -16,47 +16,48 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # Copy test_files to test_files_tmp with replacing os newline
 TestFile::copy_test_files_tmp_replace_newline();
 
+my $test_dir = "$FindBin::Bin/../..";
 {
   # open
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+    my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_open($sp_file));
   }
   
   # close
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+    my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_close($sp_file));
   }
   
   # read
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+    my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_read($sp_file));
   }
   
   # write
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fwrite.txt");
+    my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fwrite.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_write($sp_file));
   }
   
   # readline
   {
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline($sp_file));
     }
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline_while($sp_file));
     }
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/file_eof.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/file_eof.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline_eof($sp_file));
     }
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/long_line.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/long_line.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline_long_line($sp_file));
     }
   }
@@ -64,32 +65,32 @@ TestFile::copy_test_files_tmp_replace_newline();
   # readline and chomp
   {
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp($sp_file));
     }
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_while($sp_file));
     }
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/file_eof.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/file_eof.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_eof($sp_file));
     }
     {
-      my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/long_line.txt");
+      my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/long_line.txt");
       ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_long_line($sp_file));
     }
   }
 
   # slurp
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+    my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_slurp($sp_file));
   }
 
   # fileno
   {
-    my $sp_file = SPVM::new_str("$FindBin::Bin/../test_files_tmp/fread.txt");
+    my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_fileno($sp_file));
   }
 }
