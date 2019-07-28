@@ -4,8 +4,6 @@ package TestCase::JSON {
   use SPVM::Int;
   use SPVM::Double;
   use SPVM::JSON::Bool;
-  use SPVM::Math::BigInteger;
-  use SPVM::Math::BigDecimal;
 
   our $DEFAULT_JSON : SPVM::JSON;
 
@@ -80,57 +78,6 @@ package TestCase::JSON {
       }
       my $re_got = (SPVM::Double)($DEFAULT_JSON->decode($DEFAULT_JSON->encode($got)));
       unless ($re_got->val == $expected->[$i]) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  sub test_digits_big_integer : int () {
-    my $json = SPVM::JSON->new;
-    $json->{num_policy} = SPVM::JSON->NUM_ALLOW_BIGNUM;
-    my $test = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890";
-    my $val = $json->decode($test);
-    unless ($val isa SPVM::Math::BigInteger) {
-      return 0;
-    }
-    my $got = (SPVM::Math::BigInteger)$val;
-    unless ($got->to_str eq $test) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_digits_big_decimal : int () {
-    my $json = SPVM::JSON->new;
-    $json->{num_policy} = SPVM::JSON->NUM_ALLOW_BIGNUM;
-    my $inputs = [
-      "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679",
-      "123.45",
-      "0.0123",
-      "123.45e10",
-      "123.45e-10",
-      "0.0001e+10",
-      "0.00010100000e-10",
-    ];
-    my $expected = [
-      "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679",
-      "1.2345e2",
-      "1.23e-2",
-      "1.2345e12",
-      "1.2345e-8",
-      "1e6",
-      "1.01e-14",
-    ];
-    for (my $i = 0; $i < @$inputs; ++$i) {
-      my $val = $json->decode($inputs->[$i]);
-      unless ($val isa SPVM::Math::BigDecimal) {
-        return 0;
-      }
-      my $got = (SPVM::Math::BigDecimal)
-      $val;
-      unless ($got->to_str eq $expected->[$i]) {
-        warn("got: " . $got->to_str . "\nexpected: " . $expected->[$i]);
         return 0;
       }
     }
