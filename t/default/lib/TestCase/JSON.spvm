@@ -73,11 +73,11 @@ package TestCase::JSON {
     ];
     for (my $i = 0; $i < @$input; $i++) {
       my $got = (SPVM::Double)($DEFAULT_JSON->decode($input->[$i]));
-      unless ($got->val == $expected->[$i]) {
+      unless (("" . $got->val) eq ("" . $expected->[$i])) {
         return 0;
       }
       my $re_got = (SPVM::Double)($DEFAULT_JSON->decode($DEFAULT_JSON->encode($got)));
-      unless ($re_got->val == $expected->[$i]) {
+      unless (("" . $re_got->val) eq ("" . $expected->[$i])) {
         return 0;
       }
     }
