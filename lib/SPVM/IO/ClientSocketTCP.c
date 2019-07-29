@@ -21,7 +21,7 @@
 #endif
 
 // Module file name
-static const char* MFILE = "SPVM/IO/Socket.c";
+static const char* MFILE = "SPVM/IO/ClientSocketTCP.c";
 
 int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   

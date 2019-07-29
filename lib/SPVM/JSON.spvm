@@ -5,8 +5,6 @@ package SPVM::JSON {
   use SPVM::Long;
   use SPVM::Double;
   use SPVM::JSON::Bool;
-  use SPVM::Math::BigDecimal;
-  use SPVM::Math::BigInteger;
   use SPVM::Math;
   use SPVM::Sort (sortstr);
 

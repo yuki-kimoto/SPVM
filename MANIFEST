@@ -180,8 +180,6 @@ lib/SPVM/LongList.spvm
 lib/SPVM/Math.c
 lib/SPVM/Math.config
 lib/SPVM/Math.spvm
-lib/SPVM/Math/BigDecimal.spvm
-lib/SPVM/Math/BigInteger.spvm
 lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
 lib/SPVM/MIME/Base64.pm
