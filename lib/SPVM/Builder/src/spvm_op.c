@@ -907,8 +907,8 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
     SPVM_OP* op_statements = op_block->first;
     if (op_statements) {
       SPVM_OP* op_last_statement = op_statements->last;
-      if (!(op_last_statement && op_last_statement->id == SPVM_OP_C_ID_BREAK)) {
-        SPVM_COMPILER_error(compiler, "Last statement of case block must be break statement at %s line %d\n", op_block->file, op_block->line);
+      if (!(op_last_statement && (op_last_statement->id == SPVM_OP_C_ID_BREAK || op_last_statement->id == SPVM_OP_C_ID_RETURN))) {
+        SPVM_COMPILER_error(compiler, "Last statement of case block must be break or return statement at %s line %d\n", op_block->file, op_block->line);
       }
     }
     

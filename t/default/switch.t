@@ -13,11 +13,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Switch
 {
-  ok(TestCase::Switch->switch_nest());
-  ok(TestCase::Switch->switch_lookup_switch());
-  ok(TestCase::Switch->switch_table_switch());
-  ok(TestCase::Switch->switch_constant_byte());
-  ok(TestCase::Switch->switch_no_default());
+  ok(TestCase::Switch->switch_return);
+  ok(TestCase::Switch->switch_nest);
+  ok(TestCase::Switch->switch_lookup_switch);
+  ok(TestCase::Switch->switch_table_switch);
+  ok(TestCase::Switch->switch_constant_byte);
+  ok(TestCase::Switch->switch_no_default);
 }
 
 
