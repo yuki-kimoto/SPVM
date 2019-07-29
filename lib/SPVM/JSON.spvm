@@ -765,12 +765,6 @@ package SPVM::JSON {
     elsif ($o isa SPVM::Double) {
       return (string)(((SPVM::Double)$o)->val);
     }
-    elsif ($o isa SPVM::Math::BigInteger) {
-      return ((SPVM::Math::BigInteger)$o)->to_str;
-    }
-    elsif ($o isa SPVM::Math::BigDecimal) {
-      return ((SPVM::Math::BigDecimal)$o)->to_str;
-    }
     elsif ($o isa SPVM::JSON::Bool) {
       if (((SPVM::JSON::Bool)$o)->val) {
         return "true";
