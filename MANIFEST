@@ -161,15 +161,15 @@ lib/SPVM/HTTP/URL/Parameters.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
 lib/SPVM/IntList.spvm
+lib/SPVM/IO/ClientSocketTCP.c
+lib/SPVM/IO/ClientSocketTCP.config
+lib/SPVM/IO/ClientSocketTCP.spvm
 lib/SPVM/IO/File.c
 lib/SPVM/IO/File.config
 lib/SPVM/IO/File.spvm
 lib/SPVM/IO/Select.c
 lib/SPVM/IO/Select.config
 lib/SPVM/IO/Select.spvm
-lib/SPVM/IO/Socket.c
-lib/SPVM/IO/Socket.config
-lib/SPVM/IO/Socket.spvm
 lib/SPVM/JSON.spvm
 lib/SPVM/JSON/Bool.pm
 lib/SPVM/JSON/Bool.spvm
@@ -184,6 +184,7 @@ lib/SPVM/Math/BigDecimal.spvm
 lib/SPVM/Math/BigInteger.spvm
 lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
+lib/SPVM/MIME/Base64.pm
 lib/SPVM/MIME/Base64.spvm
 lib/SPVM/Regex.spvm
 lib/SPVM/Short.pm
@@ -192,6 +193,7 @@ lib/SPVM/ShortList.spvm
 lib/SPVM/Sort.c
 lib/SPVM/Sort.config
 lib/SPVM/Sort.spvm
+lib/SPVM/StringBuffer.pm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.spvm
 lib/SPVM/StringList.spvm
@@ -204,6 +206,7 @@ lib/SPVM/Unicode.config
 lib/SPVM/Unicode.spvm
 lib/SPVM/Unistd.c
 lib/SPVM/Unistd.config
+lib/SPVM/Unistd.pm
 lib/SPVM/Unistd.spvm
 lib/SPVM/Util.spvm
 Makefile.PL
@@ -246,6 +249,7 @@ SPVM.xs
 spvm_build/.gitkeep
 spvmdoc/jp/public/css/common.css
 spvmdoc/jp/public/exchange-api.html
+spvmdoc/jp/public/faq.html
 spvmdoc/jp/public/images/list-arrow.png
 spvmdoc/jp/public/images/spvm-logo.png
 spvmdoc/jp/public/index.html
@@ -283,6 +287,8 @@ spvmdoc/jp/public/js/google-code-prettify/run_prettify.js
 spvmdoc/jp/public/js/jquery-1.9.0.min.js
 spvmdoc/jp/public/language.html
 spvmdoc/jp/public/native-api.html
+spvmdoc/jp/public/purpose.html
+spvmdoc/jp/public/tutorial.html
 spvmdoc/jp/serve.pl
 t/copy_default_to_precompile.pl
 t/create_use_all_testcase.pl
@@ -433,9 +439,9 @@ t/default/lib/TestCase/Lib/SPVM/HTTP/URL.spvm
 t/default/lib/TestCase/Lib/SPVM/HTTP/URL/Parameters.spvm
 t/default/lib/TestCase/Lib/SPVM/Int.spvm
 t/default/lib/TestCase/Lib/SPVM/IntList.spvm
+t/default/lib/TestCase/Lib/SPVM/IO/ClientSocketTCP.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/File.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/Select.spvm
-t/default/lib/TestCase/Lib/SPVM/IO/Socket.spvm
 t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
