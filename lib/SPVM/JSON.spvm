@@ -21,11 +21,22 @@ package SPVM::JSON {
   enum {
     NUM_DEFAULT,
     NUM_ALLOW_LONG,
-    NUM_ALLOW_BIGNUM,
   }
 
-  sub _die_with_dump_remain : void ($die_message : string, $s : string, $start : int, $end : int) {
-    die $die_message . "\nRemains... '" . (string)(sliceb((byte [])$s, $start, $end - $start)) . "'";
+  sub DBL_DIG : int () {
+    return 15;
+  }
+
+  sub LDBL_DIG : int () {
+    return 18;
+  }
+
+  sub ERR : void ($die_message : string, $s : string, $start : int, $end : int) {
+    my $remains = "";
+    if ($end - $start >= 0) {
+      $remains = substr($s, $start, $end - $start);
+    }
+    die $die_message . "\nRemains... '$remains'";
   }
 
   sub _skip_comment : void ($s : string, $i : int&, $end : int) {
@@ -52,7 +63,7 @@ package SPVM::JSON {
       elsif ($s->[$$i] == '/') {
         ++$$i;
         unless ($$i < $end) {
-          _die_with_dump_remain("Unexpected token '/'", $s, $$i, $end);
+          ERR("Unexpected token '/'", $s, $$i, $end);
         }
         if ($s->[$$i] == '/') {
           $comment = 1;
@@ -61,7 +72,7 @@ package SPVM::JSON {
           $comment = 2;
         }
         else {
-          _die_with_dump_remain("Unexpected token '/'", $s, $$i, $end);
+          ERR("Unexpected token '/'", $s, $$i, $end);
         }
       }
       elsif ($comment == 0) {
@@ -87,19 +98,19 @@ package SPVM::JSON {
   sub _skip_spaces_at_not_end : void ($self : self, $s : string, $i : int&, $end : int) {
     $self->_skip_spaces($s, $i, $end);
     if ($$i == $end) {
-      _die_with_dump_remain("Incomplete JSON", $s, $$i, $end);
+      ERR("Incomplete JSON", $s, $$i, $end);
     }
   }
 
   sub _expect_token : void ($s : string, $i : int&, $end : int, $expected : string) {
     my $length = length $expected;
     unless ($$i + $length <= $end) {
-      _die_with_dump_remain("Expected token: $expected doesn't exist", $s, $$i, $end);
+      ERR("Expected token: $expected doesn't exist", $s, $$i, $end);
     }
     my $begin = $$i;
     while (1) {
       unless ($s->[$$i] == $expected->[$$i - $begin]) {
-        _die_with_dump_remain("Expected token: $expected doesn't exist", $s, $$i, $end);
+        ERR("Expected token: $expected doesn't exist", $s, $$i, $end);
       }
       ++$$i;
       if ($$i - $begin == $length) {
@@ -138,7 +149,7 @@ package SPVM::JSON {
             break;
           }
           default: {
-            _die_with_dump_remain("Undefined special char", $s, $$i, $end);
+            ERR("Undefined special char", $s, $$i, $end);
           }
         }
         $special_char_expected = 0;
@@ -148,14 +159,14 @@ package SPVM::JSON {
       }
       else {
         if (!$self->{relaxed} && $got_char == '\t') {
-          _die_with_dump_remain("Literal ASCII tab characters are not allowed in string", $s, $$i, $end);
+          ERR("Literal ASCII tab characters are not allowed in string", $s, $$i, $end);
         }
         $chars->push(SPVM::Int->new($got_char));
       }
       ++$$i;
     }
     if ($$i == $end) {
-      _die_with_dump_remain("Invalid string. end-quote doesn't exist", $s, $$i, $end);
+      ERR("Invalid string. end-quote doesn't exist", $s, $$i, $end);
     }
     _expect_token($s, $i, $end, "\"");
     my $chars_length = $chars->length;
@@ -167,140 +178,329 @@ package SPVM::JSON {
     return (string)$value;
   }
 
-  sub _decode_digits : object ($self : self, $s : string, $i : int&, $end : int) {
-    my $end_of_digits = -1;
-    my $is_double = 0;
-    if ($self->{num_policy} == NUM_ALLOW_BIGNUM()) {
-      my $begin = $$i;
-      for (; $$i < $end; ++$$i) {
-        if ($s->[$$i] == 'e' || $s->[$$i] == 'E' || $s->[$$i] == '.') {
-          $is_double = 1;
+  sub _atof_scan1 : double ($s : string, $i : int, $end : int,
+      $accum : double&, $expo : int&, $postdp : int, $maxdepth : int) {
+    my $long_accum : long = 0;
+    my $expo_accum = 0;
+
+    # if we recurse too deep, skip all remaining digits
+    # to avoid a stack overflow attack
+    if (--$maxdepth <= 0) {
+      while ($i < $end && ($s->[$i] - '0') < 10) {
+        ++$i;
+      }
+    }
+
+    while ($i < $end) {
+      if ($s->[$i] == '.') {
+        ++$i;
+        _atof_scan1($s, $i, $end, $accum, $expo, 1, $maxdepth);
+        last;
+      }
+      elsif ($s->[$i] == 'e' || $s->[$i] == 'E') {
+        my $exp2 = 0;
+        my $neg = 0;
+
+        ++$i;
+
+        if ($i >= $end) {
+          ERR ("malformed number (no digits after e/E)", $s, $i, $end);
         }
-        else {
-          unless (('0' <= $s->[$$i] && $s->[$$i] <= '9') ||
-              $s->[$$i] == '+' || $s->[$$i] == '-') {
-            $end_of_digits = $$i;
+
+        if ($s->[$i] == '-') {
+          ++$i;
+          $neg = 1;
+        }
+        elsif ($s->[$i] == '+') {
+          ++$i;
+        }
+
+        if ($i >= $end) {
+          ERR ("malformed number (no digits after e/E)", $s, $i, $end);
+        }
+
+        while ($i < $end) {
+          my $dig = $s->[$i] - '0';
+          if ($dig < 10) {
+            $exp2 = $exp2 * 10 + $s->[$i++] - '0';
+          }
+          else {
             last;
           }
         }
-      }
-      if ($end_of_digits == -1) {
-        $end_of_digits = $end;
-      }
-      my $num = sliceb((byte [])$s, $begin, $end_of_digits - $begin);
-      if ($is_double) {
-        return SPVM::Math::BigDecimal->newstr($num);
-      }
-      else {
-        return SPVM::Math::BigInteger->newstr($num);
-      }
-    }
 
-    my $digits : long = 0;
-    my $offset = 0;
-    my $has_digit = 0;
-    my $has_sign = 0;
-    my $decimal_stat = 0; # 0: '.' hasn't appeared yet. 1: '.' or 'e' has already appeared. 2: value is "0" or next char should be '.'
-    if ($s->[$$i] == '-') {
-      ++$$i;
-      $has_sign = 1;
-    }
-    if ($s->[$$i] == '0') {
-      ++$$i;
-      $has_digit = 1;
-      $decimal_stat = 2;
-    }
-    while ($$i < $end) {
-      if ($s->[$$i] == '.') {
-        if ($decimal_stat == 1) {
-          _die_with_dump_remain("Invalid digits. Dot should appear at most once", $s, $$i, $end);
-        }
-        unless ($has_digit) {
-          _die_with_dump_remain("Invalid digits. Not found digits before dot", $s, $$i, $end);
-        }
-        $decimal_stat = 1;
-        ++$$i;
-        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          _die_with_dump_remain("Invalid digits. Not found digits after dot", $s, $$i, $end);
-        }
-        $digits *= 10;
-        $digits += $s->[$$i++] - '0';
-        ++$offset;
-      }
-      elsif ($decimal_stat == 2) {
-        # value is "0"
-        last;
-      }
-      elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9') {
-        $has_digit = 1;
-        if ($decimal_stat == 1) {
-          $digits *= 10;
-          $digits += $s->[$$i++] - '0';
-          ++$offset;
+        if ($neg) {
+          $$expo -= $exp2;
         }
         else {
-          $digits *= 10;
-          $digits += $s->[$$i++] - '0';
+          $$expo += $exp2;
         }
+        last;
       }
-      elsif ($s->[$$i] == 'e' || $s->[$$i] == 'E') {
-        ++$$i;
-        $decimal_stat = 1;
-        unless ($$i < $end) {
-          _die_with_dump_remain("Invalid digits. digits must exist after e/E", $s, $$i, $end);
+      elsif ($s->[$i] >= '0' && $s->[$i] <= '9') {
+        my $dig = $s->[$i] - '0';
+
+        ++$i;
+
+        $long_accum = $long_accum * 10 + $dig;
+        ++$expo_accum;
+
+        # if we have too many digits, then recurse for more
+        # we actually do this for rather few digits
+        if ($long_accum >= (INT64_MAX() - 9) / 10) {
+          if ($postdp) {
+            $$expo -= $expo_accum;
+          }
+          _atof_scan1($s, $i, $end, $accum, $expo, $postdp, $maxdepth);
+          if ($postdp) {
+            $$expo += $expo_accum;
+          }
+          last;
         }
-        my $side : int; # -1: "e+XX", +1: "e-XX"
-        if ($s->[$$i] == '+') {
-          ++$$i;
-          $side = -1;
-        }
-        elsif ($s->[$$i] == '-') {
-          ++$$i;
-          $side = +1;
-        }
-        unless ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          _die_with_dump_remain("Invalid digits. digits must exist after e/E", $s, $$i, $end);
-        }
-        my $exp = $s->[$$i++] - '0';
-        while ($$i < $end && '0' <= $s->[$$i] && $s->[$$i] <= '9') {
-          $exp *= 10;
-          $exp += $s->[$$i++] - '0';
-        }
-        $offset += $side * $exp;
       }
       else {
-        # digits has decoded.
         last;
       }
     }
 
-    unless ($has_digit) {
-      _die_with_dump_remain("Invalid digits. Not found digits after '-'", $s, $$i, $end);
+    if ($postdp) {
+      $$expo -= $expo_accum;
     }
-    if ($decimal_stat == 1) {
-      my $value = (double) $digits / SPVM::Math->pow(10, $offset);
-      if ($has_sign) {
-        $value *= -1;
-      }
-      return SPVM::Double->new($value);
+
+    $$accum += $long_accum * SPVM::Math->pow(10, $$expo);
+    $$expo += $expo_accum;
+  }
+
+  sub _atof : double ($s : string, $start : int, $end : int) {
+    my $accum = 0.0;
+    my $expo = 0;
+    my $neg = 0;
+
+    if ($s->[$start] == '-') {
+      ++$start;
+      $neg = 1;
     }
-    elsif ($self->{num_policy} == NUM_DEFAULT()) {
-      my $value = (int)$digits;
-      if ($has_sign) {
-        $value *= -1;
-      }
-      return SPVM::Int->new($value);
-    }
-    elsif ($self->{num_policy} == NUM_ALLOW_LONG()) {
-      my $value = $digits;
-      if ($has_sign) {
-        $value *= -1;
-      }
-      return SPVM::Long->new($value);
+
+    # a recursion depth of ten gives us >>500 bits
+    _atof_scan1($s, $start, $end, \$accum, \$expo, 0, 10);
+
+    if ($neg) {
+      return -$accum;
     }
     else {
-      die "Unexpected num_policy: " . $self->{num_policy};
+      return $accum;
     }
+  }
+
+  # https://metacpan.org/pod/Cpanel::JSON::XS#number
+  sub _decode_num : object ($self : self, $s : string, $i : int&, $end : int) {
+    if ($s->[$$i] == 'n') {
+      if ($$i + 2 < $end && substr($s, $$i, 3) eq "nan") {
+        $$i += 3;
+      }
+      elsif ($$i + 3 < $end && substr($s, $$i, 4) eq "null") {
+        $$i += 4;
+      }
+      else {
+        ERR("malformed number.", $s, $$i, $end);
+      }
+      return undef;
+    }
+
+    my $is_double = 0;
+    my $start = $$i;
+
+    # minus
+    if ($s->[$$i] == '-') {
+      ++$$i;
+    }
+
+    if ($s->[$$i] == 'i') {
+      if ($$i + 2 < $end && substr($s, $$i, 3) eq "inf") {
+        $$i += 3;
+      }
+      else {
+        ERR("malformed number.", $s, $$i, $end);
+      }
+      return undef;
+    }
+
+    if ($s->[$$i] == '0') {
+      ++$$i;
+      if ($$i < $end && ($s->[$$i] >= '0' && $s->[$$i] <= '9')) {
+        ERR("malformed number (leading zero must not be followed by another digit)", $s, $$i, $end);
+      }
+    }
+    elsif ($$i >= $end || $s->[$$i] < '0' || $s->[$$i] > '9') {
+      ERR ("malformed number (no digits after initial minus)", $s, $$i, $end);
+    }
+
+    while ($$i < $end && $s->[$$i] >= '0' && $s->[$$i] <= '9') {
+      ++$$i;
+    }
+
+    # frac
+    if ($$i < $end && $s->[$$i] == '.') {
+      ++$$i;
+      if ($$i >= $end || $s->[$$i] < '0' || $s->[$$i] > '9') {
+        ERR ("malformed number (no digits after decimal point)", $s, $$i, $end);
+      }
+      while ($$i < $end && $s->[$$i] >= '0' && $s->[$$i] <= '9') {
+        ++$$i;
+      }
+
+      $is_double = 1;
+    }
+
+    # exp
+    if ($$i < $end && ($s->[$$i] == 'e' || $s->[$$i] == 'E')) {
+      ++$$i;
+
+      if ($$i < $end && ($s->[$$i] == '-' || $s->[$$i] == '+')) {
+        ++$$i;
+      }
+
+      if ($$i >= $end || $s->[$$i] < '0' || $s->[$$i] > '9') {
+        ERR ("malformed number (no digits after exp sign)", $s, $$i, $end);
+      }
+
+      while ($$i < $end && ($s->[$$i] >= '0' && $s->[$$i] <= '9')) {
+        ++$$i;
+      }
+
+      $is_double = 1;
+    }
+
+    if (!$is_double) {
+      my $len = $$i - $start;
+
+      if ($s->[$start] == '-') {
+        switch ($len) {
+          case 2: {
+            return -(                                                                                                      $s->[$start + 1] - '0' *     1);
+            break;
+          }
+          case 3: {
+            return -(                                                                              $s->[$start + 1] * 10 + $s->[$start + 2] - '0' *    11);
+            break;
+          }
+          case 4: {
+            return -(                                                     $s->[$start + 1] * 100 + $s->[$start + 2] * 10 + $s->[$start + 3] - '0' *   111);
+            break;
+          }
+          case 5: {
+            return -(                           $s->[$start + 1] * 1000 + $s->[$start + 2] * 100 + $s->[$start + 3] * 10 + $s->[$start + 4] - '0' *  1111);
+            break;
+          }
+          case 6: {
+            return -($s->[$start + 1] * 10000 + $s->[$start + 2] * 1000 + $s->[$start + 3] * 100 + $s->[$start + 4] * 10 + $s->[$start + 5] - '0' * 11111);
+            break;
+          }
+        }
+      }
+      else {
+        switch ($len) {
+          case 1: {
+            return (                                                                                                           $s->[$start] - '0' *     1);
+            break;
+          }
+          case 2: {
+            return (                                                                                   $s->[$start] * 10 + $s->[$start + 1] - '0' *    11);
+            break;
+          }
+          case 3: {
+            return (                                                          $s->[$start] * 100 + $s->[$start + 1] * 10 + $s->[$start + 2] - '0' *   111);
+            break;
+          }
+          case 4: {
+            return (                                $s->[$start] * 1000 + $s->[$start + 1] * 100 + $s->[$start + 2] * 10 + $s->[$start + 3] - '0' *  1111);
+            break;
+          }
+          case 5: {
+            return (     $s->[$start] * 10000 + $s->[$start + 1] * 1000 + $s->[$start + 2] * 100 + $s->[$start + 3] * 10 + $s->[$start + 4] - '0' * 11111);
+            break;
+          }
+        }
+      }
+
+      my $grok_non_neg = sub : int ($self : self,
+          $s : string, $start : int, $len : int, $val : long&) {
+        my $number_type = 0;
+        $$val = 0;
+        for (my $i = 0; $i < $len; ++$i) {
+          if ($$val <= (long)INT32_MAX()) {
+            $$val = $$val * 10 + $s->[$start + $i] - '0';
+          }
+          elsif ($$val < INT64_MAX() / 10 ||
+              ($$val == INT64_MAX() / 10 && $s->[$start + $i] - '0' <= INT64_MAX() % 10)) {
+            $number_type = 1;
+            $$val = $$val * 10 + $s->[$start + $i] - '0';
+          }
+          else {
+            return -1;
+          }
+        }
+        return $number_type;
+      };
+
+      my $grok_neg = sub : int ($self : self,
+          $s : string, $start : int, $len : int, $val : long&) {
+        my $number_type = 0;
+        $$val = 0;
+        for (my $i = 0; $i < $len; ++$i) {
+          if ($$val >= (long)INT32_MIN()) {
+            $$val = $$val * 10 - ($s->[$start + $i] - '0');
+          }
+          elsif ($$val > INT64_MIN() / 10 ||
+              ($$val == INT64_MIN() / 10 &&
+                  $s->[$start + $i] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
+            $number_type = 1;
+            $$val = $$val * 10 - ($s->[$start + $i] - '0');
+          }
+          else {
+            return -1;
+          }
+        }
+        return $number_type;
+      };
+
+      my $val : long;
+      my $number_type = 0;
+
+      if ($s->[$start] == '-') {
+        $number_type = $grok_neg->($s, $start + 1, $len - 1, \$val);
+        if ($number_type == 0) {
+          return (int)$val;
+        }
+        elsif ($number_type == 1) {
+          return $val;
+        }
+      }
+      else {
+        $number_type = $grok_non_neg->($s, $start, $len, \$val);
+        if ($number_type == 0) {
+          return (int)$val;
+        }
+        elsif ($number_type == 1) {
+          return $val;
+        }
+      }
+
+      if ($s->[$start] == '-') {
+        --$len;
+      }
+
+      # does not fit into long, try double
+      if (DBL_DIG() >= $len) {
+        return _atof($s, $start, $end);
+      }
+
+      # everything else fails, convert it to a string
+      return substr($s, $start, $$i - $start);
+    }
+
+    # loss of precision here
+    return _atof($s, $start, $end);
   }
 
   sub _decode_true : SPVM::JSON::Bool ($self : self, $s : string, $i : int&, $end : int) {
@@ -383,51 +583,38 @@ package SPVM::JSON {
 
   sub _decode_value : object ($self : self, $s : string, $i : int&, $end : int) {
     $self->_skip_spaces_at_not_end($s, $i, $end);
-    # undef mapped values (prefix match)
-    if ($s->[$$i] == 'n') {
-      if ($$i + 2 < $end && $s->[$$i + 1] == 'a' && $s->[$$i + 2] == 'n') {
-        $$i += 3;
-        return undef;
+    my $c = (int)($s->[$$i]);
+    switch ($c) {
+      case '{': {
+        # objects
+        return $self->_decode_hash($s, $i, $end);
+        break;
       }
-      elsif ($$i + 3 < $end && $s->[$$i + 1] == 'u' && $s->[$$i + 2] == 'l' && $s->[$$i + 3] == 'l') {
-        $$i += 4;
-        return undef;
+      case '[': {
+        return $self->_decode_list($s, $i, $end);
+        break;
       }
-    }
-    elsif ($$i + 2 < $end && $s->[$$i] == 'i' && $s->[$$i + 1] == 'n' && $s->[$$i + 2] == 'f') {
-      $$i += 3;
-      return undef;
-    }
-    elsif ($$i + 3 < $end && $s->[$$i] == '-' && $s->[$$i + 1] == 'i' && $s->[$$i + 2] == 'n' && $s->[$$i + 3] == 'f') {
-      $$i += 4;
-      return undef;
-    }
-
-    # objects
-    elsif ($s->[$$i] == '{') {
-      return $self->_decode_hash($s, $i, $end);
-    }
-    elsif ($s->[$$i] == '[') {
-      return $self->_decode_list($s, $i, $end);
-    }
-
-    # primitives
-    elsif ($s->[$$i] == '"') {
-      return $self->_decode_string($s, $i, $end);
-    }
-    elsif ('0' <= $s->[$$i] && $s->[$$i] <= '9' || $s->[$$i] == '-') {
-      return $self->_decode_digits($s, $i, $end);
-    }
-    elsif ($s->[$$i] == 't') {
-      return $self->_decode_true($s, $i, $end);
-    }
-    elsif ($s->[$$i] == 'f') {
-      return $self->_decode_false($s, $i, $end);
-    }
-
-    # unknown token
-    else {
-      _die_with_dump_remain("Unexpected token.", $s, $$i, $end);
+      case '"': {
+        return $self->_decode_string($s, $i, $end);
+        break;
+      }
+      case '-': case 'i': case 'n':
+      case '0': case '1': case '2': case '3': case '4':
+      case '5': case '6': case '7': case '8': case '9': {
+        return $self->_decode_num($s, $i, $end);
+        break;
+      }
+      case 't': {
+        return $self->_decode_true($s, $i, $end);
+        break;
+      }
+      case 'f': {
+        return $self->_decode_false($s, $i, $end);
+        break;
+      }
+      default: {
+        ERR("Unexpected token.", $s, $$i, $end);
+      }
     }
   }
 
@@ -471,7 +658,6 @@ package SPVM::JSON {
           $special = '\\';
           break;
         }
-        default: # FIXME: segmentation fault
       }
       if ($special == -1) {
         $chars->push(SPVM::Int->new($got_char));
@@ -602,8 +788,7 @@ package SPVM::JSON {
 
   sub _field_check : void ($self : self) {
     unless ($self->{num_policy} == NUM_DEFAULT() ||
-        $self->{num_policy} == NUM_ALLOW_LONG() ||
-        $self->{num_policy} == NUM_ALLOW_BIGNUM()) {
+        $self->{num_policy} == NUM_ALLOW_LONG()) {
       die "Not allowed value is set to num_policy field";
     }
   }
@@ -637,7 +822,7 @@ package SPVM::JSON {
     my $ret = $self->_decode_value($json_text, \$iter, $length);
     $self->_skip_spaces($json_text, \$iter, $length);
     unless ($iter == $length) {
-      _die_with_dump_remain("Not all json_text is decoded yet", $json_text, $iter, $length);
+      ERR("Not all json_text is decoded yet", $json_text, $iter, $length);
     }
     return $ret;
   }
