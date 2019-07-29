@@ -11,6 +11,7 @@
         native sub decode : string ($self : self, $string : string);
       }
   - refactoring SPVM::StringBuffer
+  - rename SPVM::IO::Socket to SPVM::IO::ClientSocketTCP
   
 0.0438 2019-06-22
   - add SPVM::CORE::isdigit function
