@@ -15,21 +15,6 @@ package TestCase::Lib::SPVM::HTTP::URL::Parameters {
     return 1;
   }
 
-  sub test_encode : int () {
-    my $params = SPVM::HTTP::URL::Parameters->new;
-    $params->add("foo" => "尾骶骨𠮷 🤔");
-    $params->add("hoge" => "fuga");
-    $params->add("foo" => "piyo");
-    $params->{use_form_encoder} = 1;
-    my $got = $params->to_str();
-    my $expected = "foo=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7+%F0%9F%A4%94&foo=piyo&hoge=fuga";
-    unless ($got eq $expected) {
-      warn("failed to encode parameters.\n     got: '$got'\nexpected: '$expected'");
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_parse : int () {
     my $params = SPVM::HTTP::URL::Parameters->parse(
         "foo=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%F0%9F%A4%94&hoge=fuga&foo=piyo");
