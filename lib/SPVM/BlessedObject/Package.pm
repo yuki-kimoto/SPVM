@@ -1,16 +1,16 @@
-package SPVM::Data::Package;
+package SPVM::BlessedObject::Package;
 
-use base 'SPVM::Data';
+use base 'SPVM::BlessedObject';
 
 1;
 
 =head1 NAME
 
-SPVM::Data::Package - SPVM object
+SPVM::BlessedObject::Package - package based object class
 
 =head1 DESCRIPTION
 
-SPVM::Data::Package is wrapper of SPVM object.
+SPVM::BlessedObject::Package is wrapper of SPVM object.
 
 You can call all methods of SPVM object.
 

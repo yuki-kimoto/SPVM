@@ -18,6 +18,9 @@ examples/native/zlib/lib/MyZlib.config
 examples/native/zlib/lib/MyZlib.spvm
 examples/native/zlib/zlib.pl
 lib/SPVM.pm
+lib/SPVM/BlessedObject.pm
+lib/SPVM/BlessedObject/Array.pm
+lib/SPVM/BlessedObject/Package.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
@@ -132,9 +135,6 @@ lib/SPVM/CORE.c
 lib/SPVM/CORE.config
 lib/SPVM/CORE.pm
 lib/SPVM/CORE.spvm
-lib/SPVM/Data.pm
-lib/SPVM/Data/Array.pm
-lib/SPVM/Data/Package.pm
 lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm
@@ -157,6 +157,7 @@ lib/SPVM/HTTP/Client/CookieJar/Cookie.spvm
 lib/SPVM/HTTP/Client/CookieJar/CookieParser.spvm
 lib/SPVM/HTTP/Client/Response.spvm
 lib/SPVM/HTTP/URL.spvm
+lib/SPVM/HTTP/URL/Escape.spvm
 lib/SPVM/HTTP/URL/Parameters.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm

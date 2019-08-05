@@ -92,7 +92,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
   }
 }
 
-MODULE = SPVM::Data		PACKAGE = SPVM::Data
+MODULE = SPVM::BlessedObject		PACKAGE = SPVM::BlessedObject
 
 SV*
 DESTROY(...)
@@ -505,7 +505,7 @@ new_barray(...)
     }
     
     // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -543,7 +543,7 @@ new_barray_from_bin(...)
     memcpy(elems, binary, array_length);
     
     // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -592,7 +592,7 @@ new_sarray(...)
     }
     
     // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -630,7 +630,7 @@ new_sarray_from_bin(...)
     memcpy(elems, binary, array_length * sizeof(int16_t));
     
     // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -679,7 +679,7 @@ new_iarray(...)
     }
     
     // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -716,7 +716,7 @@ new_iarray_from_bin(...)
     memcpy(elems, binary, array_length * sizeof(int32_t));
     
     // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -765,7 +765,7 @@ new_larray(...)
     }
     
     // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -803,7 +803,7 @@ new_larray_from_bin(...)
     memcpy(elems, binary, array_length * sizeof(int64_t));
     
     // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -852,7 +852,7 @@ new_farray(...)
     }
     
     // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -890,7 +890,7 @@ new_farray_from_bin(...)
     memcpy(elems, binary, array_length * sizeof(float));
     
     // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -939,7 +939,7 @@ new_darray(...)
     }
     
     // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -976,7 +976,7 @@ new_darray_from_bin(...)
     memcpy(elems, binary, array_length * sizeof(double));
     
     // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
     sv_array = &PL_sv_undef;
@@ -1032,7 +1032,7 @@ _new_oarray(...)
     if (!SvOK(sv_element)) {
       env->set_oelem(env, array, index, NULL);
     }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::Data::Package")) {
+    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::Package")) {
       SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
       
       if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
@@ -1043,12 +1043,12 @@ _new_oarray(...)
       }
     }
     else {
-      croak("Element must be SPVM::Data object at %s line %d\n", MFILE, __LINE__);
+      croak("Element must be SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
     }
   }
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1099,7 +1099,7 @@ _new_marray(...)
     if (!SvOK(sv_element)) {
       env->set_oelem(env, array, index, NULL);
     }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::Data")) {
+    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
       SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
       
       if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
@@ -1110,7 +1110,7 @@ _new_marray(...)
       }
     }
     else {
-      croak("Element must be inherit SPVM::Data object at %s line %d\n", MFILE, __LINE__);
+      croak("Element must be inherit SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
     }
   }
   
@@ -1118,7 +1118,7 @@ _new_marray(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1236,7 +1236,7 @@ _new_varray(...)
   }
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1378,7 +1378,7 @@ _new_varray_from_bin(...)
   env->inc_ref_count(env, array);
   
   // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
@@ -1856,7 +1856,7 @@ call_sub(...)
               void* string = env->new_str_len_raw(env, chars, length);
               env->inc_ref_count(env, string);
               
-              sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::Array");
+              sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::Array");
             }
             // Value is array refence
             else if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
@@ -1913,7 +1913,7 @@ call_sub(...)
                 }
 
                 // New sv array
-                SV* sv_marray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                SV* sv_marray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                 sv_value = sv_marray;
               }
               // 1-dimension array
@@ -1937,7 +1937,7 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                     sv_value = sv_array;
                     break;
                   }
@@ -1959,7 +1959,7 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                     sv_value = sv_array;
                     break;
                   }
@@ -1982,7 +1982,7 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                     
                     sv_value = sv_array;
                     break;
@@ -2005,7 +2005,7 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                     sv_value = sv_array;
                     break;
                   }
@@ -2027,7 +2027,7 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                     sv_value = sv_array;
                     break;
                   }
@@ -2049,7 +2049,7 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                     sv_value = sv_array;
                     break;
                   }
@@ -2081,11 +2081,11 @@ call_sub(...)
                             void* string = env->new_str_len_raw(env, chars, length);
                             env->inc_ref_count(env, string);
                             
-                            sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::Data::Array");
+                            sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::Array");
                           }
                           
-                          if (!sv_derived_from(sv_value, "SPVM::Data")) {
-                            croak("Element of %dth argument of %s::%s() must inherit SPVM::Data object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                          if (!sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+                            croak("Element of %dth argument of %s::%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                           }
                           
                           env->set_oelem(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
@@ -2097,7 +2097,7 @@ call_sub(...)
                     }
                     
                     // New sv array
-                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::Data::Array");
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                     sv_value = sv_array;
                     break;
                   }
@@ -2107,7 +2107,7 @@ call_sub(...)
               }
             }
             
-            if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::Data")) {
+            if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
               SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
               int32_t arg_basic_type_id = arg->basic_type_id;
               int32_t arg_type_dimension = arg->type_dimension;
@@ -2129,7 +2129,7 @@ call_sub(...)
               stack[arg_var_id].oval = object;
             }
             else {
-              croak("%dth argument of %s::%s() must be inherit SPVM::Data at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+              croak("%dth argument of %s::%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
             }
           }
           
@@ -2701,7 +2701,7 @@ call_sub(...)
           env->inc_ref_count(env, return_value);
           
           if (sub->return_type_dimension > 0 || sub->return_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::Data::Array");
+            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
           }
           else if (sub->return_type_dimension == 0) {
             SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[env->object_basic_type_id(env, return_value)];
@@ -2941,9 +2941,9 @@ to_elems(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
 
-  // Array must be SPVM::Data::Array or SPVM::Data::Array
-  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Array must be SPVM::Data::Array object at %s line %d\n", MFILE, __LINE__);
+  // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
+    croak("Array must be SPVM::BlessedObject::Array object at %s line %d\n", MFILE, __LINE__);
   }
   
   // Get object
@@ -3036,7 +3036,7 @@ to_elems(...)
           int32_t element_type_is_array_type = element_type_dimension > 0;
           SV* sv_value;
           if (element_type_is_array_type) {
-            sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
+            sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::BlessedObject::Array");
           }
           else {
             const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
@@ -3145,9 +3145,9 @@ to_bin(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
 
-  // Array must be SPVM::Data::Array object or SPVM::Data::Sgtring
-  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::Data::Array"))) {
-    croak("Data must be SPVM::Data::Array at %s line %d\n", MFILE, __LINE__);
+  // Array must be SPVM::BlessedObject::Array object or SPVM::BlessedObject::Sgtring
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
+    croak("Data must be SPVM::BlessedObject::Array at %s line %d\n", MFILE, __LINE__);
   }
   
   // Get object

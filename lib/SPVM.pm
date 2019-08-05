@@ -7,9 +7,9 @@ use warnings;
 use DynaLoader;
 use File::Basename 'basename', 'dirname';
 
-use SPVM::Data;
-use SPVM::Data::Array;
-use SPVM::Data::Package;
+use SPVM::BlessedObject;
+use SPVM::BlessedObject::Array;
+use SPVM::BlessedObject::Package;
 use FindBin;
 
 use SPVM::Builder;

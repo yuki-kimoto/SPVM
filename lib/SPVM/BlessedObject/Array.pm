@@ -1,6 +1,6 @@
-package SPVM::Data::Array;
+package SPVM::BlessedObject::Array;
 
-use base 'SPVM::Data';
+use base 'SPVM::BlessedObject';
 
 use SPVM::ExchangeAPI;
 
@@ -42,7 +42,7 @@ sub to_str {
 
 =head1 NAME
 
-SPVM::Data::Array - SPVM Array
+SPVM::BlessedObject::Array - SPVM Array
 
 =head1 METHODS
 

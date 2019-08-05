@@ -273,7 +273,7 @@ sub bind_to_perl {
       my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
       unless ($package_name_h->{$package_name}) {
         
-        my $code = "package $package_name; our \@ISA = ('SPVM::Data::Package');";
+        my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
         eval $code;
         
         if (my $error = $@) {
