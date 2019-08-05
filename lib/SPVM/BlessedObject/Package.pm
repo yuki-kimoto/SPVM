@@ -6,15 +6,17 @@ use base 'SPVM::BlessedObject';
 
 =head1 NAME
 
-SPVM::BlessedObject::Package - package based object class
+SPVM::BlessedObject::Package - Package based blessed object
 
 =head1 DESCRIPTION
 
-SPVM::BlessedObject::Package is wrapper of SPVM object.
+SPVM::BlessedObject::Package is package based blessed object.
 
-You can call all methods of SPVM object.
+This object contains package based SPVM object.
 
-An example:
+You can call all methods declaraed in the package.
+
+=head1 SYNOPSYS
 
   # lib/Point.spvm
   package Point {

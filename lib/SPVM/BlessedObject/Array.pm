@@ -14,14 +14,6 @@ sub to_elems {
   SPVM::ExchangeAPI::to_elems($env, $self);
 }
 
-sub to_strs {
-  my $self = shift;
-  
-  my $env = $self->{env};
-  
-  SPVM::ExchangeAPI::to_strs($env, $self);
-}
-
 sub to_bin {
   my $self = shift;
 
@@ -38,11 +30,39 @@ sub to_str {
   SPVM::ExchangeAPI::to_str($env, $self);
 }
 
+sub to_strs {
+  my $self = shift;
+  
+  my $env = $self->{env};
+  
+  SPVM::ExchangeAPI::to_strs($env, $self);
+}
+
 1;
 
 =head1 NAME
 
-SPVM::BlessedObject::Array - SPVM Array
+SPVM::BlessedObject::Array - Array based blessed object
+
+=head2 DESCRIPTION
+
+SPVM::BlessedObject::Array is array based blessed object.
+
+This object contains SPVM array object.
+
+=head1 SYNOPSYS
+  
+  # Convert SPVM array to Perl array reference
+  my $nums = $spvm_nums->to_elems;
+
+  # Convert SPVM array to Perl binary data
+  my $binary = $spvm_nums->to_bin;
+  
+  # Convert SPVM array to perl text str(decoded str).
+  my $str = $spvm_str->to_str;
+
+  # Convert SPVM array to perl array reference which contains decoded strings.
+  my $strs = $spvm_strs->to_strs;
 
 =head1 METHODS
 
@@ -66,8 +86,12 @@ An exmaple when array is int array:
 
 =head2 to_str
 
-  my $string = $spvm_nums->to_str;
+  my $str = $spvm_str->to_str;
 
-Convert SPVM array to perl text string(decoded string).
+Convert SPVM array to perl text str(decoded str).
 
-This method have mean only when SPVM array is byte array.
+=head2 to_strs
+
+  my $strs = $spvm_strs->to_strs;
+
+Convert SPVM array to perl array reference which contains decoded strings.
