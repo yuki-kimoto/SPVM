@@ -1,4 +1,4 @@
-0.0439 2019-07-18
+0.0439 2019-08-05
   - rename runtime_type to runtime_type_category
   - fix IO::Socket connect with IP address bug
   - cleanup SPVM::MIME::Base64 interface
