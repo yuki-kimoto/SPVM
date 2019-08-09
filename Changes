@@ -2,6 +2,7 @@
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array
   - Rename SPVM::Data::Package to SPVM::BlessedObject::Package
+  - remove SPVM::Util->split 3rd argument
 0.0439 2019-08-05
   - rename runtime_type to runtime_type_category
   - fix IO::Socket connect with IP address bug

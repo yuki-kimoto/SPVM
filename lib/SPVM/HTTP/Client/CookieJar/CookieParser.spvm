@@ -88,8 +88,8 @@ package SPVM::HTTP::Client::CookieJar::CookieParser {
   sub parse : SPVM::HTTP::Client::CookieJar::CookieParser ($string : string) {
     my $self = new SPVM::HTTP::Client::CookieJar::CookieParser;
     $self->{extensions} = SPVM::Hash->new;
-    my $items = split(";", $string, -1);
-    my $kv = split("=", $items->[0], -1);
+    my $items = split(";", $string);
+    my $kv = split("=", $items->[0]);
     unless (@$kv == 2) {
       die "name-value pair is broken.";
     }

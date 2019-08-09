@@ -2,7 +2,7 @@ package SPVM::Util {
   use SPVM::Stringer;
   use SPVM::StringList;
   
-  sub joino : string ($sep : string, $objects : oarray) {
+  precompile sub joino : string ($sep : string, $objects : oarray) {
     my $join = "";
     
     for (my $i = 0; $i < @$objects; $i++) {
@@ -17,13 +17,10 @@ package SPVM::Util {
     return $join;
   }
 
-  precompile sub split : string[] ($sep : string, $string : string, $max : int) {
+  precompile sub split : string[] ($sep : string, $string : string) {
     my $string_length = length $string;
     my $sep_length = length $sep;
     
-    unless ($max < 0) {
-      die "Max must be minus value.";
-    }
     if ($sep_length == 0) {
       die "Separator must not be empty string";
     }
@@ -71,6 +68,4 @@ package SPVM::Util {
     
     return $separated_strings;
   }
-  
-
 }
