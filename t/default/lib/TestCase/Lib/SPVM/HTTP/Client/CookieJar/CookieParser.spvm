@@ -12,7 +12,6 @@ package TestCase::Lib::SPVM::HTTP::Client::CookieJar::CookieParser {
   }
 
   sub test_parse_expires : int () {
-    SPVM::Time->setlocale("C");
     my $now = SPVM::Time->time;
     my $expires_val = SPVM::Time->strftime(
         "%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($now));

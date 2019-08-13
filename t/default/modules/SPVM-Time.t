@@ -69,9 +69,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Time->test_strftime);
 }
 
-# mktime
+# timelocal
 {
-  ok(TestCase::Lib::SPVM::Time->test_mktime);
+  ok(TestCase::Lib::SPVM::Time->test_timelocal);
 }
 
 # timegm

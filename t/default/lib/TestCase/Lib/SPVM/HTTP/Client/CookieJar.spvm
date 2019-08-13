@@ -14,7 +14,6 @@ package TestCase::Lib::SPVM::HTTP::Client::CookieJar {
   }
 
   sub test_add_expires : int () {
-    SPVM::Time->setlocale("C");
     my $time = 1557622506;
     my $expires = SPVM::Time->strftime("%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($time));
     my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
@@ -27,7 +26,6 @@ package TestCase::Lib::SPVM::HTTP::Client::CookieJar {
   }
 
   sub test_add_max_age : int () {
-    SPVM::Time->setlocale("C");
     my $now = SPVM::Time->time;
     my $max_age = 100;
     my $cookiejar = SPVM::HTTP::Client::CookieJar->new;
@@ -40,7 +38,6 @@ package TestCase::Lib::SPVM::HTTP::Client::CookieJar {
   }
 
   sub test_add_prioritize_max_age_over_expires : int () {
-    SPVM::Time->setlocale("C");
     my $now = SPVM::Time->time;
     my $max_age = 100;
     my $expires = SPVM::Time->strftime("%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($now + 10000));

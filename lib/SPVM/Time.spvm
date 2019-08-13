@@ -2,14 +2,9 @@ package SPVM::Time {
   use SPVM::Time::Info;
   use SPVM::Math (pow);
   
-  private sub _MonthDays : int[] () {
-    return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  }
-  
   native sub time : long ();
   native sub localtime : SPVM::Time::Info ($time : long);
   native sub gmtime : SPVM::Time::Info ($time : long);
-  native sub setlocale : void ($locale : string);
   
   # Note: Time zone is not supported
   native sub strptime : SPVM::Time::Info ($str : string, $format : string);
@@ -17,11 +12,7 @@ package SPVM::Time {
   # Note: Time zone is not supported
   native sub strftime : string ($format : string, $time_info : SPVM::Time::Info);
   
-  native sub mktime : long ($time_info : SPVM::Time::Info);
-
-  private sub SECS_PER_MINUTE : int () { return 60; }
-  private sub SECS_PER_HOUR : int () { return 3600; }
-  private sub SECS_PER_DAY : int () { return 86400; }
+  native sub timelocal : long ($time_info : SPVM::Time::Info);
 
   sub timegm : long ($time_info : SPVM::Time::Info) {
       
@@ -80,6 +71,14 @@ package SPVM::Time {
         + ( SECS_PER_DAY() * $days );
   }
 
+  private sub SECS_PER_MINUTE : int () { return 60; }
+  private sub SECS_PER_HOUR : int () { return 3600; }
+  private sub SECS_PER_DAY : int () { return 86400; }
+
+  private sub _MonthDays : int[] () {
+    return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  }
+  
   private sub _is_leap_year : int ($year : int) {
     if ($year % 4) {
       return 0;

@@ -10,16 +10,6 @@
 
 static const char* MFILE = "SPVM/Time.c";
 
-int32_t SPNATIVE__SPVM__Time__setlocale(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  void* obj_str = stack[0].oval;
-  if (!obj_str) { SPVM_DIE("String must be defined", MFILE, __LINE__); }
-  const char* locale = (const char*)env->belems(env, obj_str);
-  setlocale(LC_TIME, locale);
-
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
@@ -468,7 +458,7 @@ int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Time__mktime(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Time__timelocal(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
   if (!obj_time_info) { SPVM_DIE("SPVM::Time::Info object must be defined", MFILE, __LINE__); }
