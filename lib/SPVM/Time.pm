@@ -20,6 +20,18 @@ SPVM::Time - Time manipulation
   
   # GM time information
   my $time_info = SPVM::Time->gmtime(SPVM::Time->time);
+  
+  # Convert L<SPVM::Time::Info> which is local time zone to calender time as same as time method format.
+  my $time = SPVM::Time->timelocal($time_info);
+  
+  # Convert L<SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
+  my $time = SPVM::Time->timegm($time_info);
+  
+  # Parse string and convert it to a L<SPVM::Time::Info> object.
+  my $time_info = SPVM::Time->strptime("2019-12-15 10:24:55", "%Y-%m-%d %H:%M:%S")
+  
+  # Convert SPVM::Time::Info to string by specific format.
+  my $datetime_str = SPVM::Time->strftime("%Y-%m-%d %H:%M:%S", $time_info)
 
 =head1 DESCRIPTION
 
@@ -43,7 +55,7 @@ Example:
 
   sub localtime : SPVM::Time::Info ($time : long)
 
-Converts a time as returned by the time function to a L<SPVM::Time::Info> object
+Converts a time as returned by the time method to a L<SPVM::Time::Info> object
 with the time analyzed for the local time zone.
 
 Example:
@@ -88,15 +100,45 @@ time()).
 
   sub timelocal : long ($time_info : SPVM::Time::Info)
 
+timelocal method convert L<SPVM::Time::Info> which is local time zone to calender time as same as time method format.
+
+wday and yday is ignored.
+
+  my $time = SPVM::Time->timelocal($time_info);
+
 =head2 timegm
 
   sub timegm : long ($time_info : SPVM::Time::Info)
 
-=head2 strptime
+timegm method convert L<SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
 
-  sub strptime : SPVM::Time::Info ($str : string, $format : string)
+wday and yday is ignored.
+
+  my $time = SPVM::Time->timegm($time_info);
 
 =head2 strftime
 
   sub strftime : string ($format : string, $time_info : SPVM::Time::Info)
 
+Convert SPVM::Time::Info to string by specific format.
+
+  my $datetime_str = SPVM::Time->strftime("%Y-%m-%d %H:%M:%S", $time_info)
+
+Supported Format:
+
+  %Y is replaced by the year with century as a decimal number.
+  %m is replaced by the month as a decimal number (01-12).
+  %d is replaced by the day of the month as a decimal number (01-31).
+  %H is replaced by the hour (24-hour clock) as a decimal number (00-23).
+  %M is replaced by the minute as a decimal number (00-59).
+  %S is replaced by the second as a decimal number (00-60).
+
+=head2 strptime
+
+  sub strptime : SPVM::Time::Info ($str : string, $format : string)
+
+Parse string and convert it to a L<SPVM::Time::Info> object.
+
+  my $time_info = SPVM::Time->strptime("2019-12-15 10:24:55", "%Y-%m-%d %H:%M:%S")
+
+See strftime method about supported format.
