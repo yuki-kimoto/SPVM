@@ -66,6 +66,7 @@ package SPVM::Regex {
     my $status = STATUS_START();
     
     my $char_class_uchar_min_maxs_list : SPVM::IntList;
+    my $char_class_negate = 0;
     
     my $before_is_char_class_range = 0;
     
@@ -161,6 +162,7 @@ package SPVM::Regex {
               
               $char_class_uchar_min_maxs_list = SPVM::IntList->new;
               $cur_is_char = 1;
+              $cur_negate = $char_class_negate;
             }
             elsif ($uchar == '-') {
               if ($before_is_char_class_range) {
@@ -171,18 +173,23 @@ package SPVM::Regex {
               }
             }
             else {
-              if ($before_is_char_class_range) {
-                if ($char_class_uchar_min_maxs_list->length == 0) {
-                  die "- start not found";
-                }
-                else {
-                  $char_class_uchar_min_maxs_list->set($char_class_uchar_min_maxs_list->length - 1, $uchar);
-                  $before_is_char_class_range = 0;
-                }
+              if ($uchar == '^' && $char_class_uchar_min_maxs_list->length == 0) {
+                $char_class_negate = 1;
               }
               else {
-                $char_class_uchar_min_maxs_list->push($uchar);
-                $char_class_uchar_min_maxs_list->push($uchar);
+                if ($before_is_char_class_range) {
+                  if ($char_class_uchar_min_maxs_list->length == 0) {
+                    die "- start not found";
+                  }
+                  else {
+                    $char_class_uchar_min_maxs_list->set($char_class_uchar_min_maxs_list->length - 1, $uchar);
+                    $before_is_char_class_range = 0;
+                  }
+                }
+                else {
+                  $char_class_uchar_min_maxs_list->push($uchar);
+                  $char_class_uchar_min_maxs_list->push($uchar);
+                }
               }
             }
           }
@@ -190,10 +197,7 @@ package SPVM::Regex {
             switch ($uchar) {
               case '^': {
                 if ($status == STATUS_CHAR_CLASS()) {
-                  # Only first
-                  if ($char_class_uchar_min_maxs_list->length == 0) {
-                    $cur_negate = 1;
-                  }
+                  die "Unexpected";
                 }
                 elsif ($status != STATUS_START()) {
                   die "Regex compile error";
