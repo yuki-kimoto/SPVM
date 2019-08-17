@@ -4,6 +4,7 @@
   - Rename SPVM::Data::Package to SPVM::BlessedObject::Package
   - remove SPVM::Util->split 3rd argument
   - rename SPVM::Time->mktime to SPVM::Time->timelocal
+  - fix SPVM::Regex character class negation bug
 0.0439 2019-08-05
   - rename runtime_type to runtime_type_category
   - fix IO::Socket connect with IP address bug
