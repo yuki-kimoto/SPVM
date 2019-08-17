@@ -17,7 +17,13 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # SPVM::HTTP::Client
 {
-  ok(TestCase::Lib::SPVM::HTTP::Client->test_basic);
+  ok(TestCase::Lib::SPVM::HTTP::Client->test_get);
+  ok(TestCase::Lib::SPVM::HTTP::Client->test_head);
+  ok(TestCase::Lib::SPVM::HTTP::Client->test_post);
+  ok(TestCase::Lib::SPVM::HTTP::Client->test_post_form);
+  ok(TestCase::Lib::SPVM::HTTP::Client->test_post_form_syntax_sugar);
+  ok(TestCase::Lib::SPVM::HTTP::Client->test_get_chunk_small);
+  ok(TestCase::Lib::SPVM::HTTP::Client->test_get_chunk_large);
 }
 
 

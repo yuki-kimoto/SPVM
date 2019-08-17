@@ -37,9 +37,9 @@ package SPVM::HTTP::Client {
     return $self;
   }
 
-  sub post_form : void ($self : self, $url : string, $data : object[]) {
+  sub post_form : SPVM::HTTP::Client::Response ($self : self, $url : string, $data : object[]) {
     my $form = $self->www_form_urlencode($data);
-    $self->request("POST", $url, [(object)
+    return $self->request("POST", $url, [(object)
       content => $form,
       headers => SPVM::Hash->newa([(object)
         "content-type"   => "application/x-www-form-urlencoded",
@@ -262,9 +262,6 @@ package SPVM::HTTP::Client::Handle {
     my $off = 0;
     while (1) {
       my $data = $buf->substr($off, $len);
-      warn("-------- begin write --------");
-      warn($data);
-      warn("--------- end write ---------");
       my $write_length = $self->{socket}->write($data, $len);
       $len -= $write_length;
       $off += $write_length;
