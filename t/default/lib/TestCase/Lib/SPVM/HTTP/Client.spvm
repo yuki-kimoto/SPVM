@@ -2,79 +2,156 @@ package TestCase::Lib::SPVM::HTTP::Client {
   use SPVM::HTTP::Client;
   use SPVM::Hash;
   use SPVM::IO::File;
+  use SPVM::StringBuffer;
 
-  private sub _dump_response : void ($response : SPVM::HTTP::Client::Response) {
-    warn("response\n" .
-        "\tstatus: $response->{status}\n" .
-        "\tcontent: '$response->{content}'");
+  sub test_get : int () {
+    my $client = SPVM::HTTP::Client->new_opt([(object)
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ])
+    ]);
+
+    my $response = $client->request("GET", "http://testserver.spvm.info", undef);
+
+    unless ($response &&
+        $response->{status} == 200 &&
+        $response->{headers} &&
+        strtoi((string)$response-> {headers}->get("content-length"), 10) == 5 &&
+        $response->{content} eq "Test\n") {
+      return 0;
+    }
+
+    return 1;
   }
 
-  sub test_basic : int () {
+  sub test_head : int () {
     my $client = SPVM::HTTP::Client->new_opt([(object)
-      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ]),
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ])
     ]);
-    if (my $response = $client->request("GET", "http://testserver.spvm.info", undef)) {
-      _dump_response($response);
+
+    my $response = $client->request("HEAD", "http://testserver.spvm.info", undef);
+
+    unless ($response &&
+        $response->{status} == 200 &&
+        $response->{headers} &&
+        strtoi((string)$response->{headers}->get("content-length"), 10) == 5 &&
+        $response->{content} eq "") {
+      return 0;
     }
-    if (my $response = $client->request("HEAD", "http://testserver.spvm.info", undef)) {
-      _dump_response($response);
-    }
-    if (my $response = $client->request("POST", "http://testserver.spvm.info/echo", [(object)
+
+    return 1;
+  }
+
+  sub test_post : int () {
+    my $client = SPVM::HTTP::Client->new_opt([(object)
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ])
+    ]);
+
+    my $response = $client->request("POST", "http://testserver.spvm.info/echo", [(object)
       content => "post content",
       headers => SPVM::Hash->newa([(object)
         "content-length" => 12,
       ]),
-    ])) {
-      _dump_response($response);
+    ]);
+
+    unless ($response &&
+        $response->{status} == 200 &&
+        strtoi((string)$response->{headers}->get("content-length"), 10) == 27 &&
+        $response->{content} eq "Echo server: 'post content'") {
+      return 0;
     }
+
+    return 1;
+  }
+
+  sub test_post_form : int () {
+    my $client = SPVM::HTTP::Client->new_opt([(object)
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ])
+    ]);
+
     my $form = $client->www_form_urlencode([(object)
       param1 => "val1",
       param2 => 123,
     ]);
-    if (my $response = $client->request("POST", "http://testserver.spvm.info/echo", [(object)
+    my $response = $client->request("POST", "http://testserver.spvm.info/echo", [(object)
       content => $form,
       headers => SPVM::Hash->newa([(object)
         "content-length" => length $form,
       ]),
-    ])) {
-      _dump_response($response);
+    ]);
+
+    unless ($response &&
+        $response->{status} == 200 &&
+        strtoi((string)$response->{headers}->get("content-length"), 10) == 37 &&
+        $response->{content} eq "Echo server: 'param1=val1&param2=123'") {
+      return 0;
     }
-    $client->post_form("http://testserver.spvm.info/echo", [(object)
+
+    return 1;
+  }
+
+  sub test_post_form_syntax_sugar : int () {
+    my $client = SPVM::HTTP::Client->new_opt([(object)
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ])
+    ]);
+
+    my $response = $client->post_form("http://testserver.spvm.info/echo", [(object)
       key         => "value",
       "あいう abc" => "値 123",
     ]);
-    {
-      my $file = "t/test_files_tmp/small.txt";
-      warn ("output file: $file");
-      my $fh = SPVM::IO::File->open($file, "w");
-      unless ($fh) {
-        die "Can't open file $file";
-      }
-      my $data_cb = [$fh : SPVM::IO::File] sub : void ($self : self, $append : string, $target : object) {
-        $fh->write($append, length $append);
-      };
-      if (my $response = $client->request("GET", "http://testserver.spvm.info/chunk/text", [(object)
-        data_callback => $data_cb,
-      ])) {
-        _dump_response($response);
-      }
+
+    unless ($response &&
+        $response->{status} == 200 &&
+        strtoi((string)$response->{headers}->get("content-length"), 10) == 74 &&
+        $response->{content} eq "Echo server: '%E3%81%82%E3%81%84%E3%81%86%20abc=%E5%80%A4%20123&key=value'") {
+      return 0;
     }
-    {
-      my $file = "t/test_files_tmp/images.tar.gz";
-      warn ("output file: $file");
-      my $fh = SPVM::IO::File->open($file, "w");
-      unless ($fh) {
-        die "Can't open file $file";
-      }
-      my $data_cb = [$fh : SPVM::IO::File] sub : void ($self : self, $append : string, $target : object) {
-        $fh->write($append, length $append);
-      };
-      if (my $response = $client->request("GET", "http://testserver.spvm.info/chunk/images", [(object)
-        data_callback => $data_cb,
-      ])) {
-        _dump_response($response);
-      }
+
+    return 1;
+  }
+
+  sub test_get_chunk_small : int () {
+    my $client = SPVM::HTTP::Client->new_opt([(object)
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ])
+    ]);
+
+    my $data = SPVM::StringBuffer->new;
+    my $cb1 = [$data : SPVM::StringBuffer] sub : void ($self : self, $append : string, $target : object) {
+      $data->push($append);
+    };
+
+    my $response = $client->request("GET", "http://testserver.spvm.info/chunk/text", [(object)
+      data_callback => $cb1,
+    ]);
+
+    unless ($response &&
+        $response->{status} == 200 &&
+        (string)$response->{headers}->get("transfer-encoding") eq "chunked" &&
+        $data->to_str eq "abcdefg\n12345\nあいう") {
+      return 0;
     }
+
+    return 1;
+  }
+
+  sub test_get_chunk_large : int () {
+    my $client = SPVM::HTTP::Client->new_opt([(object)
+      default_headers => SPVM::Hash->newa([(object) Accept => "*/*" ])
+    ]);
+
+    my $byte_data = [0];
+    my $cb2 = [$byte_data : int []] sub : void ($self : self, $append : string, $target : object) {
+      $byte_data->[0] += length $append;
+    };
+    my $response = $client->request("GET", "http://testserver.spvm.info/chunk/images", [(object)
+      data_callback => $cb2,
+    ]);
+
+    unless ($response &&
+        $response->{status} == 200 &&
+        (string)$response->{headers}->get("transfer-encoding") eq "chunked" &&
+        $byte_data->[0] == 3979989) {
+      return 0;
+    }
+
     return 1;
   }
 }
