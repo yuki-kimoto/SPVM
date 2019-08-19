@@ -1,0 +1,5 @@
+package TestCase::CompileError::Literal::InvalidCharacterLitera {
+  sub main : int () {
+    "\A";
+  }
+}

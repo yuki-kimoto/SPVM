@@ -369,7 +369,11 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   while (1) {
     found_ptr = strchr(found_ptr, '%');
     if (found_ptr) {
-      if (*(found_ptr + 1) == 's') {
+      if (*(found_ptr + 1) == 'c') {
+        int arg = va_arg(args, int);
+        message_length++;
+      }
+      else if (*(found_ptr + 1) == 's') {
         char* arg = va_arg(args, char*);
         message_length += strlen(arg);
       }

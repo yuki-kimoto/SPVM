@@ -14,6 +14,22 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Literal
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Literal::InvalidCharacterLiteral');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Literal::IntOutOfRange');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Enum
 {
   {
@@ -147,16 +163,6 @@ use lib "$FindBin::Bin/lib";
   {
     my $build = SPVM::Builder->new;
     $build->use('TestCase::CompileError::Sub::Begin');
-    my $success = $build->compile_spvm();
-    ok($success == 0);
-  }
-}
-
-# Literal
-{
-  {
-    my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Literal::IntOutOfRange');
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
