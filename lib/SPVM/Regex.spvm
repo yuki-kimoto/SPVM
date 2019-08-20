@@ -26,10 +26,10 @@ package SPVM::Regex {
   }
   
   sub caps : string ($self : self, $index : int) {
-    unless ($index > 0) {
+    unless ($index >= 0) {
       die "Invalid capture index";
     }
-    return $self->{captures}[$index - 1];
+    return $self->{captures}[$index];
   }
   
   sub new : SPVM::Regex ($re_str : string) {
