@@ -249,6 +249,15 @@ package TestCase::Lib::SPVM::Regex {
   }
   
   sub match_capture : int ()  {
+    # Capture zero more only
+    {
+      my $re = SPVM::Regex->new("(a*)");
+      $re->match("aaa");
+      unless ($re->caps(1) eq "aaa") {
+        return 0;
+      }
+    }
+    
     # Capture a char
     {
       my $re = SPVM::Regex->new("a(b)c");
@@ -303,6 +312,7 @@ package TestCase::Lib::SPVM::Regex {
       unless ($match) {
         return 0;
       }
+
       
       unless ($re->caps(1) eq "abc89") {
         return 0;
@@ -352,6 +362,15 @@ package TestCase::Lib::SPVM::Regex {
       }
       
       $@ = undef;
+    }
+    
+    # Capture zero more only
+    {
+      my $re = SPVM::Regex->new("(a*)");
+      $re->match("aaa");
+      unless ($re->caps(1) eq "aaa") {
+        return 0;
+      }
     }
     
     return 1;

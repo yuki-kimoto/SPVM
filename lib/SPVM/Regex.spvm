@@ -456,6 +456,7 @@ package SPVM::Regex {
           for (my $repeat_index = 0; $repeat_index < $max_repeat; $repeat_index++) {
             # Match uchar
             my $match_uchar : int;
+            
             # Match in not range
             if ($negate) {
               my $match_uchar_count = 0;
@@ -488,10 +489,12 @@ package SPVM::Regex {
             if ($match_uchar) {
               $repeat_count++;
               $repeat_before_target_index = $target_index;
-              $target_uchar = uchar($target, \$target_index);
+
               if ($target_index == length $target) {
                 last;
               }
+              
+              $target_uchar = uchar($target, \$target_index);
               
               $target_before_index = $target_index;
             }
