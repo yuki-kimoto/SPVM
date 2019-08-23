@@ -1,0 +1,114 @@
+package SPVM::DoubleList;
+
+use SPVM 'SPVM::DoubleList';
+
+1;
+
+=head1 NAME
+
+SPVM::DoubleList - Continuous dynamic double array
+
+=head1 SYNOPSYS
+  
+  use SPVM::DoubleList;
+  
+  # Create a double list
+  my $double_list = SPVM::DoubleList->new;
+
+  # Create a double list with array
+  my $double_list = SPVM::DoubleList->newa([1.5, 2.5, 3.5]);
+  
+  # Get list length
+  my $length = $double_list->length;
+  
+  # Push double value
+  $double_list->push(3.5);
+
+  # Pop double value.
+  my $double_value = $double_list->pop;
+
+  # Unshift double value.
+  $double_list->unshift(3.5);
+  
+  # Shift double value.
+  my $double_value = $double_list->shift;
+  
+  # Set double value.
+  $double_list->set(2, 3.5);
+
+  # Get double value.
+  my $double_value = $double_list->get(2);
+
+  # Convert SPVM::DoubleList to double array.
+  my $double_array = $double_list->to_array;
+
+=head1 DESCRIPTION
+
+L<SPVM::DoubleList> is continuous dynamic double array.
+
+=head1 CLASS METHODS
+
+=head2 new
+
+    sub new : SPVM::DoubleList ()
+
+Create a new L<SPVM::DoubleList> object.
+
+=head2 newa
+
+    sub newa : SPVM::DoubleList ($array : double[])
+
+Create a new L<SPVM::DoubleList> object with specific C<double> array.
+
+=head1 INSTANCE METHODS
+
+=head2 length
+  
+  sub length : int ()
+
+Get list length.
+
+=head2 push
+  
+  sub push : void ($self : self, $value : double)
+
+Appending the value to the end of list.
+
+=head2 pop
+
+  sub pop : double ($self : self)
+
+Pops and returns the last value of the list, shortening the array by one element
+If there are no elements in the list, exception occur.
+
+=head2 unshift
+
+  sub unshift : void ($self : self, $value : double)
+
+Appending the value to the top of list.
+
+=head2 shift
+
+  sub shift : double ($self : self)
+
+Shifts the first value of the list off and returns it, shortening
+the array by 1 and moving everything down.
+If there are no elements in the list, exception occur.
+
+=head2 set
+
+  sub set : void ($self : self, $index : int, $value : double)
+
+Set the value with index.
+
+=head2 get
+
+  sub get : double ($self : self, $index : int)
+
+Get the value with index.
+
+=head2 to_array
+
+  sub to_array : double[] ($self : self)
+
+Convert L<SPVM::DoubleList> to double array.

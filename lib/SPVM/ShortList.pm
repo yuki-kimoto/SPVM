@@ -1,0 +1,114 @@
+package SPVM::ShortList;
+
+use SPVM 'SPVM::ShortList';
+
+1;
+
+=head1 NAME
+
+SPVM::ShortList - Continuous dynamic short array
+
+=head1 SYNOPSYS
+  
+  use SPVM::ShortList;
+  
+  # Create a short list
+  my $short_list = SPVM::ShortList->new;
+
+  # Create a short list with array
+  my $short_list = SPVM::ShortList->newa([(short)1, 2, 3]);
+  
+  # Get list length
+  my $length = $short_list->length;
+  
+  # Push short value
+  $short_list->push((short)3);
+
+  # Pop short value.
+  my $short_value = $short_list->pop;
+
+  # Unshift short value.
+  $short_list->unshift((short)3);
+  
+  # Shift short value.
+  my $short_value = $short_list->shift;
+  
+  # Set short value.
+  $short_list->set(2, (short)3);
+
+  # Get short value.
+  my $short_value = $short_list->get(2);
+
+  # Convert SPVM::ShortList to short array.
+  my $short_array = $short_list->to_array;
+
+=head1 DESCRIPTION
+
+L<SPVM::ShortList> is continuous dynamic short array.
+
+=head1 CLASS METHODS
+
+=head2 new
+
+    sub new : SPVM::ShortList ()
+
+Create a new L<SPVM::ShortList> object.
+
+=head2 newa
+
+    sub newa : SPVM::ShortList ($array : short[])
+
+Create a new L<SPVM::ShortList> object with specific C<short> array.
+
+=head1 INSTANCE METHODS
+
+=head2 length
+  
+  sub length : int ()
+
+Get list length.
+
+=head2 push
+  
+  sub push : void ($self : self, $value : short)
+
+Appending the value to the end of list.
+
+=head2 pop
+
+  sub pop : short ($self : self)
+
+Pops and returns the last value of the list, shortening the array by one element
+If there are no elements in the list, exception occur.
+
+=head2 unshift
+
+  sub unshift : void ($self : self, $value : short)
+
+Appending the value to the top of list.
+
+=head2 shift
+
+  sub shift : short ($self : self)
+
+Shifts the first value of the list off and returns it, shortening
+the array by 1 and moving everything down.
+If there are no elements in the list, exception occur.
+
+=head2 set
+
+  sub set : void ($self : self, $index : int, $value : short)
+
+Set the value with index.
+
+=head2 get
+
+  sub get : short ($self : self, $index : int)
+
+Get the value with index.
+
+=head2 to_array
+
+  sub to_array : short[] ($self : self)
+
+Convert L<SPVM::ShortList> to short array.
