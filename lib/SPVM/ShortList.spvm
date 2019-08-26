@@ -67,7 +67,6 @@ package SPVM::ShortList {
     }
     
     my $value = $self->{values}[$length - 1];
-    $self->{values}[$length - 1] = undef;
     $self->{length}--;
     
     return $value;
