@@ -1,7 +1,6 @@
 package SPVM::ObjectList {
   has values   : object[];
   has capacity : int;
-  has offset   : int; # range of offset: [-capacity, -1)
   has length   : ro int;
 
   sub capacity : int ($self : self) {
@@ -22,7 +21,6 @@ package SPVM::ObjectList {
     my $default_capacity = 16;
     $self->{capacity} = $default_capacity;
     $self->{values} = new object [$default_capacity];
-    $self->{offset} = -$default_capacity;
     return $self;
   }
 
@@ -33,7 +31,6 @@ package SPVM::ObjectList {
     }
     $self->{capacity} = $capacity;
     $self->{values} = new object [$capacity];
-    $self->{offset} = -$capacity;
     return $self;
   }
 
@@ -45,67 +42,78 @@ package SPVM::ObjectList {
       $self->{values}[$i] = $objects->[$i];
     }
     $self->{length} = @$objects;
-    $self->{offset} = -@$objects;
+
     return $self;
   }
 
   sub push : void ($self : self, $value : object) {
     if ($self->{length} + 1 > $self->{capacity}) {
-      $self->_reallocate;
+      $self->_extend;
     }
-    my $index = $self->{offset} + $self->{length};
-    if ($index < 0) { $index += $self->{capacity}; }
+    my $index = $self->{length};
     $self->{values}[$index] = $value;
     ++$self->{length};
   }
 
   sub pop : object ($self : self) {
-    if ($self->{length} - 1 < 0) {
-      return undef;
+    if ($self->{length} <= 0) {
+      die "Can't pop";
     }
-    my $target = $self->{offset} + $self->{length} - 1 + $self->{capacity};
-    my $ret = $self->{values}[$target];
-    $self->{values}[$target] = undef;
+    
+    my $index = $self->{length};
+    
+    my $ret = $self->{values}[$index - 1];
+    $self->{values}[$index - 1] = undef;
     --$self->{length};
+    
     return $ret;
   }
 
   sub unshift : void ($self : self, $value : object) {
-    if ($self->{length} + 1 > $self->{capacity}) {
-      $self->_reallocate;
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length > $capacity - 1) {
+      $self->_extend;
     }
-    if (--$self->{offset} < -$self->{capacity}) {
-      $self->{offset} = -1;
+    
+    my $values = $self->{values};
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $values->[$length - $i] = $values->[$length - $i - 1];
     }
-    $self->{values}[$self->{offset} + $self->{capacity}] = $value;
-    ++$self->{length};
+    
+    $values->[0] = $value;
+    $self->{length}++;
   }
 
   sub shift : object ($self : self) {
-    if ($self->{length} - 1 < 0) {
-      return undef;
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length == 0) {
+      die "Can't shift";
     }
-    my $ret = $self->{values}[$self->{offset} + $self->{capacity}];
-    $self->{values}[$self->{offset} + $self->{capacity}] = undef;
-    --$self->{length};
-    if (++$self->{offset} > -1) {
-      $self->{offset} = -$self->{capacity};
+    
+    my $values = $self->{values};
+    
+    my $value = $values->[0];
+    
+    for (my $i = 0; $i < $length - 1; $i++) {
+      $values->[$i] = $values->[$i + 1];
     }
-    return $ret;
+    
+    $self->{length}--;
+    
+    return $value;
   }
 
   sub set : void ($self : self, $index : int, $value : object) {
-    my $target = $self->{offset} + $index;
-    if ($target < 0) { $target += $self->{capacity}; }
-    else { $target %= $self->{capacity}; }
-    $self->{values}[$target] = $value;
+    $self->{values}[$index] = $value;
   }
 
   sub get : object ($self : self, $index : int) {
-    my $target = $self->{offset} + $index;
-    if ($target < 0) { $target += $self->{capacity}; }
-    else { $target %= $self->{capacity}; }
-    return $self->{values}[$target];
+    return $self->{values}[$index];
   }
 
   # range of $cut_offset: [0, $cut_length]
@@ -132,14 +140,14 @@ package SPVM::ObjectList {
 
     if ($self->{length} - $cut_length + $replace_length > $self->{capacity}) {
       # O($new_values_length)
-      $self->_reallocate_with_capacity($self->{length} - $cut_length + $replace_length);
+      $self->_extend_with_capacity($self->{length} - $cut_length + $replace_length);
     }
 
     # extract elements
     # O($cut_length)
     my $extracted = new object [$cut_length];
     for (my $i = 0; $i < $cut_length; ++$i) {
-      my $target = $self->{offset} + $i;
+      my $target = $i;
       if ($target > 0) { $target -= $self->{capacity}; } # to avoid overflow on the next statement
       $target += $cut_offset;
       if ($target < 0) { $target += $self->{capacity}; }
@@ -150,17 +158,17 @@ package SPVM::ObjectList {
     # move last sequence to forward
     if ($cut_length > $replace_length) {
       for (my $i = 0; $i < $last_sequence_length; ++$i) {
-        my $origin = $self->{offset} + $cut_offset + $cut_length + $i;
+        my $origin = $cut_offset + $cut_length + $i;
         if ($origin < 0) { $origin += $self->{capacity}; }
         if ($origin >= $self->{capacity}) { $origin -= $self->{capacity}; }
-        my $target = $self->{offset} + $cut_offset + $replace_length + $i;
+        my $target = $cut_offset + $replace_length + $i;
         if ($target < 0) { $target += $self->{capacity}; }
         if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
         $self->{values}[$target] = $self->{values}[$origin];
       }
       # deallocate unused sequence
       for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
-        my $target = $self->{offset} + $cut_offset + $replace_length + $last_sequence_length + $i;
+        my $target = $cut_offset + $replace_length + $last_sequence_length + $i;
         if ($target < 0) { $target += $self->{capacity}; }
         if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
         $self->{values}[$target] = undef;
@@ -169,9 +177,9 @@ package SPVM::ObjectList {
     else {
       # move last sequence to backward
       for (my $i = 0; $i < $last_sequence_length; ++$i) {
-        my $origin = $self->{offset} + $self->{length} - 1 - $i;
+        my $origin = $self->{length} - 1 - $i;
         if ($origin < 0) { $origin += $self->{capacity}; }
-        my $target = $self->{offset} + $cut_offset + $replace_length + $last_sequence_length - 1 - $i;
+        my $target = $cut_offset + $replace_length + $last_sequence_length - 1 - $i;
         if ($target < 0) { $target += $self->{capacity}; }
         if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
         $self->{values}[$target] = $self->{values}[$origin];
@@ -180,7 +188,7 @@ package SPVM::ObjectList {
 
     # replace with new array
     for (my $i = 0; $i < $replace_length; ++$i) {
-      my $target = $self->{offset} + $cut_offset + $i;
+      my $target = $cut_offset + $i;
       if ($target < 0) {
         $target += $self->{capacity};
       }
@@ -193,29 +201,31 @@ package SPVM::ObjectList {
     return $extracted;
   }
 
-  private sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
+  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
     my $new_values = new object [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
-      my $target = $self->{offset} + $i;
+      my $target = $i;
       if ($target < 0) { $target += $self->{capacity}; };
       $new_values->[$i] = $self->{values}[$target];
     }
-    $self->{offset} = -$new_capacity;
     $self->{capacity} = $new_capacity;
     $self->{values} = $new_values;
   }
 
-  private sub _reallocate : void ($self : self) {
-    my $new_capacity : int;
-    if ($self->{capacity} > INT32_MAX() / 2) {
-      $new_capacity = INT32_MAX();
+  private sub _extend : void ($self : self) {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new object[$new_capacity];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_values->[$i] = $values->[$i];
     }
-    else {
-      $new_capacity = $self->{capacity} * 2;
-    }
-    unless ($new_capacity) {
-      $new_capacity = 1;
-    }
-    $self->_reallocate_with_capacity($new_capacity);
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
   }
 }

@@ -175,9 +175,14 @@ package TestCase::Lib::SPVM::ObjectList {
     unless (equals_list_deeply($list, SPVM::ObjectList->new)) {
       return 0;
     }
-    unless ($list->pop == undef) { # empty list returns undef
+    eval {
+      $list->pop;
+    };
+    unless ($@) {
       return 0;
     }
+    $@ = undef;
+    
     return 1;
   }
 
@@ -235,9 +240,14 @@ package TestCase::Lib::SPVM::ObjectList {
     unless (check_fields($list, 3, -3, 0)) {
       return 0;
     }
-    unless ($list->shift == undef) { # empty list returns undef
+    eval {
+      $list->shift;
+    };
+    unless ($@) {
       return 0;
     }
+    $@ = undef;
+    
     unless (equals_list_deeply($list, SPVM::ObjectList->newa(new object[0]))) {
       return 0;
     }
