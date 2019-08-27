@@ -4,10 +4,10 @@ package TestCase::Lib::SPVM::List {
 
   sub check_fields : int ($list : SPVM::List, $capacity : int, $offset : int, $length : int) {
     # check_fields fields
-    unless ($list->_capacity == $capacity && $list->_offset == $offset && $list->length == $length) {
+    unless ($list->capacity == $capacity && $list->length == $length) {
       warn("List fields mismatch.\n\t" .
-          "got:      (capacity: " . $list->_capacity . ", offset: " . $list->_offset . ", length: " . $list->length . ")\n\t" .
-          "expected: (capacity: " . $capacity . ", offset: " . $offset . ", length: " . $length . ")");
+          "got:      (capacity: " . $list->capacity . ", length: " . $list->length . ")\n\t" .
+          "expected: (capacity: " . $capacity . ", length: " . $length . ")");
       return 0;
     }
     return 1;
@@ -18,41 +18,19 @@ package TestCase::Lib::SPVM::List {
       warn("Length mismatch. Try check_fields() first");
       return 0;
     }
+    my $all_match = 1;
     for (my $i = 0; $i < $expected->length; $i++) {
-      my $got_index = $i + $got->_offset;
-      if ($got_index < 0) {
-        $got_index += $got->_capacity;
-      }
-      my $expected_index = $i + $expected->_offset;
-      if ($expected_index < 0) {
-        $expected_index += $expected->_capacity;
-      }
-      unless ($got->_values->[$got_index] == $expected->_values->[$expected_index]) {
-        warn("List mismatch.");
-        print("\tgot:      ");
-        for (my $j = 0; $j < $got->length; $j++) {
-          if ($got->get($j) == undef) {
-            print("(undef) ");
-          }
-          else {
-            print(((SPVM::Int)$got->get($j))->val . " ");
-          }
-        }
-        print("\n");
-        print("\texpected: ");
-        for (my $j = 0; $j < $expected->length; $j++) {
-          if ($expected->get($j) == undef) {
-            print("(undef) ");
-          }
-          else {
-            print(((SPVM::Int)$expected->get($j))->val . " ");
-          }
-        }
-        print("\n");
-        return 0;
+      unless ($got->get($i) == $expected->get($i)) {
+        $all_match = 0;
       }
     }
-    return 1;
+    
+    if ($all_match) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
   }
 
   sub equals_array : int ($got : object [], $expected : object []) {
@@ -73,17 +51,11 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields(SPVM::List->new, 16, -16, 0)) {
       return 0;
     }
-    unless (equals_array(SPVM::List->new->_values, new object[16])) {
-      return 0;
-    }
     return 1;
   }
 
   sub test_ctor_with_capacity : int () {
     unless (check_fields(SPVM::List->new_with_capacity(20000), 20000, -20000, 0)) {
-      return 0;
-    }
-    unless (equals_array(SPVM::List->new_with_capacity(20000)->_values, new object[20000])) {
       return 0;
     }
     eval {
@@ -108,15 +80,9 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 0, 0, 0)) {
       return 0;
     }
-    unless (equals_array($list->_values, new object[0])) {
-      return 0;
-    }
 
     $list = SPVM::List->newa(new object[1]);
     unless (check_fields($list, 1, -1, 1)) {
-      return 0;
-    }
-    unless (equals_array($list->_values, new object[1])) {
       return 0;
     }
 
@@ -126,9 +92,6 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 1, -1, 1)) {
       return 0;
     }
-    unless (equals_array($list->_values, $vals)) {
-      return 0;
-    }
 
     my $v2 = SPVM::Int->new(2);
     $vals = new object[4];
@@ -136,9 +99,6 @@ package TestCase::Lib::SPVM::List {
     $vals->[3] = $v2;
     $list = SPVM::List->newa($vals);
     unless (check_fields($list, 4, -4, 4)) {
-      return 0;
-    }
-    unless (equals_array($list->_values, $vals)) {
       return 0;
     }
 
@@ -213,9 +173,6 @@ package TestCase::Lib::SPVM::List {
       return 0;
     }
     unless (equals_list_deeply($list, SPVM::List->new)) {
-      return 0;
-    }
-    unless (equals_array($list->_values, new object[3])) {
       return 0;
     }
     unless ($list->pop == undef) { # empty list returns undef
@@ -553,15 +510,6 @@ package TestCase::Lib::SPVM::List {
       return 0;
     }
     unless (equals_list_deeply($list, SPVM::List->newa([(object) $vi1, $vi2, $v2]))) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_splice_deallocation : int () {
-    my $list = SPVM::List->newa([(object) SPVM::Int->new(1), SPVM::Int->new(2)]);
-    $list->splice(1, 1, undef);
-    unless ($list->_values->[1] == undef) {
       return 0;
     }
     return 1;

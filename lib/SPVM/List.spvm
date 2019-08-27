@@ -1,9 +1,13 @@
-package SPVM::List : private {
-  has values   : private object[];
-  has capacity : private int;
-  has offset   : private int; # range of offset: [-capacity, -1)
+package SPVM::List {
+  has values   : object[];
+  has capacity : int;
+  has offset   : int; # range of offset: [-capacity, -1)
   has length   : ro int;
-  
+
+  sub capacity : int ($self : self) {
+    return $self->{capacity};
+  }
+
   sub to_array : object[] ($self : self) {
     my $length = $self->{length};
     my $objects = new object[$length];
@@ -11,44 +15,6 @@ package SPVM::List : private {
       $objects->[$i] = $self->{values}[$i];
     }
     return $objects;
-  }
-
-  sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
-    my $new_values = new object [$new_capacity];
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      my $target = $self->{offset} + $i;
-      if ($target < 0) { $target += $self->{capacity}; };
-      $new_values->[$i] = $self->{values}[$target];
-    }
-    $self->{offset} = -$new_capacity;
-    $self->{capacity} = $new_capacity;
-    $self->{values} = $new_values;
-  }
-
-  sub _reallocate : void ($self : self) {
-    my $new_capacity : int;
-    if ($self->{capacity} > INT32_MAX() / 2) {
-      $new_capacity = INT32_MAX();
-    }
-    else {
-      $new_capacity = $self->{capacity} * 2;
-    }
-    unless ($new_capacity) {
-      $new_capacity = 1;
-    }
-    $self->_reallocate_with_capacity($new_capacity);
-  }
-
-  sub _values : object[] ($self : self) {
-    return $self->{values};
-  }
-
-  sub _capacity : int ($self : self) {
-    return $self->{capacity};
-  }
-
-  sub _offset : int ($self : self) {
-    return $self->{offset};
   }
 
   sub new : SPVM::List () {
@@ -225,5 +191,31 @@ package SPVM::List : private {
     $self->{length} += $replace_length - $cut_length;
 
     return $extracted;
+  }
+
+  private sub _reallocate_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_values = new object [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $self->{offset} + $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{offset} = -$new_capacity;
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
+  }
+
+  private sub _reallocate : void ($self : self) {
+    my $new_capacity : int;
+    if ($self->{capacity} > INT32_MAX() / 2) {
+      $new_capacity = INT32_MAX();
+    }
+    else {
+      $new_capacity = $self->{capacity} * 2;
+    }
+    unless ($new_capacity) {
+      $new_capacity = 1;
+    }
+    $self->_reallocate_with_capacity($new_capacity);
   }
 }
