@@ -1,6 +1,6 @@
 package TestCase::JSON {
   use SPVM::JSON;
-  use SPVM::List;
+  use SPVM::ObjectList;
   use SPVM::Int;
   use SPVM::Double;
   use SPVM::JSON::Bool;
@@ -140,7 +140,7 @@ package TestCase::JSON {
   }
 
   sub test_format_indent : int () {
-    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::List->newa([(object) "x", "y"])]);
+    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::ObjectList->newa([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
     $json->{indent} = 1;
     $json->{indent_length} = 2;
@@ -155,7 +155,7 @@ package TestCase::JSON {
   }
 
   sub test_format_pretty : int () {
-    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::List->newa([(object) "x", "y"])]);
+    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::ObjectList->newa([(object) "x", "y"])]);
     my $json = SPVM::JSON->new;
     $json->{canonical} = 1;
     $json->pretty(1);

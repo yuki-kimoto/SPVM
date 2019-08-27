@@ -127,7 +127,9 @@ lib/SPVM/Builder/src/spvm_yacc_util.c
 lib/SPVM/Builder/Util.pm
 lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
+lib/SPVM/ByteList.pm
 lib/SPVM/ByteList.spvm
+lib/SPVM/Comparator.pm
 lib/SPVM/Comparator.spvm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.spvm
@@ -139,6 +141,7 @@ lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
+lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
 lib/SPVM/Errno.c
 lib/SPVM/Errno.config
@@ -149,6 +152,7 @@ lib/SPVM/FileHandle.config
 lib/SPVM/FileHandle.spvm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
+lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
 lib/SPVM/Hash.spvm
 lib/SPVM/HTTP/Client.spvm
@@ -161,6 +165,7 @@ lib/SPVM/HTTP/URL/Escape.spvm
 lib/SPVM/HTTP/URL/Parameters.spvm
 lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
+lib/SPVM/IntList.pm
 lib/SPVM/IntList.spvm
 lib/SPVM/IO/ClientSocketTCP.c
 lib/SPVM/IO/ClientSocketTCP.config
@@ -174,9 +179,9 @@ lib/SPVM/IO/Select.spvm
 lib/SPVM/JSON.spvm
 lib/SPVM/JSON/Bool.pm
 lib/SPVM/JSON/Bool.spvm
-lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
+lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
 lib/SPVM/Math.c
 lib/SPVM/Math.config
@@ -185,20 +190,27 @@ lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
 lib/SPVM/MIME/Base64.pm
 lib/SPVM/MIME/Base64.spvm
+lib/SPVM/ObjectList.spvm
 lib/SPVM/Regex.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
+lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
 lib/SPVM/Sort.c
 lib/SPVM/Sort.config
+lib/SPVM/Sort.pm
 lib/SPVM/Sort.spvm
 lib/SPVM/StringBuffer.pm
 lib/SPVM/StringBuffer.spvm
+lib/SPVM/Stringer.pm
 lib/SPVM/Stringer.spvm
+lib/SPVM/StringList.pm
 lib/SPVM/StringList.spvm
 lib/SPVM/Time.c
 lib/SPVM/Time.config
+lib/SPVM/Time.pm
 lib/SPVM/Time.spvm
+lib/SPVM/Time/Info.pm
 lib/SPVM/Time/Info.spvm
 lib/SPVM/Unicode.c
 lib/SPVM/Unicode.config
@@ -207,6 +219,7 @@ lib/SPVM/Unistd.c
 lib/SPVM/Unistd.config
 lib/SPVM/Unistd.pm
 lib/SPVM/Unistd.spvm
+lib/SPVM/Util.pm
 lib/SPVM/Util.spvm
 Makefile.PL
 MANIFEST			This list of files
@@ -373,6 +386,7 @@ t/default/lib/TestCase/CompileError/Field/Private.spvm
 t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
 t/default/lib/TestCase/CompileError/Literal/IntOutOfRange.spvm
+t/default/lib/TestCase/CompileError/Literal/InvalidCharacterLiteral.spvm
 t/default/lib/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
@@ -441,11 +455,11 @@ t/default/lib/TestCase/Lib/SPVM/IntList.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/ClientSocketTCP.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/File.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/Select.spvm
-t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
 t/default/lib/TestCase/Lib/SPVM/MIME/Base64.spvm
+t/default/lib/TestCase/Lib/SPVM/ObjectList.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
 t/default/lib/TestCase/Lib/SPVM/ShortList.spvm

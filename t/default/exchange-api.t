@@ -23,7 +23,7 @@ use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
 
 use SPVM 'SPVM::Hash';
-use SPVM 'SPVM::List';
+use SPVM 'SPVM::ObjectList';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -198,7 +198,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 {
   # Pass list
   {
-    my $list = SPVM::List->newa([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
+    my $list = SPVM::ObjectList->newa([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
     my $x = $list->get(0);
     
     is($list->get(0)->val, 1);

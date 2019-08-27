@@ -1,6 +1,6 @@
 package SPVM::JSON {
   use SPVM::Hash;
-  use SPVM::List;
+  use SPVM::ObjectList;
   use SPVM::Int;
   use SPVM::Long;
   use SPVM::Double;
@@ -118,7 +118,7 @@ package SPVM::JSON {
   }
 
   sub _decode_string : string ($self : self, $s : string, $i : int&, $end : int) {
-    my $chars = SPVM::List->new;
+    my $chars = SPVM::ObjectList->new;
     _expect_token($s, $i, $end, "\"");
     my $special_char_expected = 0;
     while (1) {
@@ -550,9 +550,9 @@ package SPVM::JSON {
     return $hash;
   }
 
-  sub _decode_list : SPVM::List ($self : self, $s : string, $i : int&, $end : int) {
+  sub _decode_list : SPVM::ObjectList ($self : self, $s : string, $i : int&, $end : int) {
     _expect_token($s, $i, $end, "[");
-    my $list = SPVM::List->new;
+    my $list = SPVM::ObjectList->new;
     my $has_element = 0;
     while (1) {
       # end of list
@@ -630,7 +630,7 @@ package SPVM::JSON {
 
   sub _escape_string : string ($string : string) {
     my $length = length $string;
-    my $chars = SPVM::List->new;
+    my $chars = SPVM::ObjectList->new;
     for (my $i = 0; $i < $length; ++$i) {
       my $got_char = (int)($string->[$i]);
       my $special = -1;
@@ -724,13 +724,13 @@ package SPVM::JSON {
       $text .= "}";
       return $text;
     }
-    elsif ($o isa SPVM::List) {
+    elsif ($o isa SPVM::ObjectList) {
       my $text = "";
       $text .= "[";
       if ($self->{indent}) {
         $text .= "\n";
       }
-      my $list = (SPVM::List)$o;
+      my $list = (SPVM::ObjectList)$o;
       my $length = $list->length;
       for (my $i = 0; $i < $length; ++$i) {
         if ($i > 0) {

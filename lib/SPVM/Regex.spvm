@@ -1,12 +1,12 @@
 package SPVM::Regex {
   use SPVM::Unicode (uchar);
-  use SPVM::List;
+  use SPVM::ObjectList;
   use SPVM::IntList;
   use SPVM::Hash;
   use SPVM::StringBuffer;
   use SPVM::Stringer;
 
-  has patterns : SPVM::List;
+  has patterns : SPVM::ObjectList;
   has string_start : int;
   has string_end : int;
   
@@ -35,7 +35,7 @@ package SPVM::Regex {
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
     
-    $self->{patterns} = SPVM::List->new;
+    $self->{patterns} = SPVM::ObjectList->new;
     
     $self->compile($re_str);
     

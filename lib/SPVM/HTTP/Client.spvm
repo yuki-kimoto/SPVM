@@ -3,7 +3,7 @@ package SPVM::HTTP::Client {
   use SPVM::HTTP::URL;
   use SPVM::StringList;
   use SPVM::ByteList;
-  use SPVM::List;
+  use SPVM::ObjectList;
   use SPVM::Sort (sortstr);
 
   has default_headers : public SPVM::Hash;
@@ -52,7 +52,7 @@ package SPVM::HTTP::Client {
     unless (@$data % 2 == 0) {
       die "form data reference must have an even number of terms";
     }
-    my $params = SPVM::List->newa($data);
+    my $params = SPVM::ObjectList->newa($data);
     my $terms = SPVM::StringList->new;
     for (my $i = 0; $i < $params->length; $i += 2) {
       my $key = (string)$params->get($i);

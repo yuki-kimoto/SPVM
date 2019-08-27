@@ -1,4 +1,4 @@
-package SPVM::List {
+package SPVM::ObjectList {
   has values   : object[];
   has capacity : int;
   has offset   : int; # range of offset: [-capacity, -1)
@@ -17,8 +17,8 @@ package SPVM::List {
     return $objects;
   }
 
-  sub new : SPVM::List () {
-    my $self = new SPVM::List;
+  sub new : SPVM::ObjectList () {
+    my $self = new SPVM::ObjectList;
     my $default_capacity = 16;
     $self->{capacity} = $default_capacity;
     $self->{values} = new object [$default_capacity];
@@ -26,8 +26,8 @@ package SPVM::List {
     return $self;
   }
 
-  sub new_with_capacity : SPVM::List ($capacity : int) {
-    my $self = new SPVM::List;
+  sub new_with_capacity : SPVM::ObjectList ($capacity : int) {
+    my $self = new SPVM::ObjectList;
     unless ($capacity > 0) {
       die "capacity must be positive";
     }
@@ -37,8 +37,8 @@ package SPVM::List {
     return $self;
   }
 
-  sub newa : SPVM::List ($objects : object[]) {
-    my $self = new SPVM::List;
+  sub newa : SPVM::ObjectList ($objects : object[]) {
+    my $self = new SPVM::ObjectList;
     $self->{capacity} = @$objects;
     $self->{values} = new object [@$objects];
     for (my $i = 0; $i < @$objects; ++$i) {
