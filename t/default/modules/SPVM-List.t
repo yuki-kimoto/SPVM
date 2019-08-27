@@ -30,7 +30,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::List->test_splice_offset_is_valid_when_removed);
   ok(TestCase::Lib::SPVM::List->test_splice_offset_is_valid_when_appended);
   ok(TestCase::Lib::SPVM::List->test_splice_deallocation);
-  ok(TestCase::Lib::SPVM::List->test_to_iarray);
   ok(TestCase::Lib::SPVM::List->test_to_array);
 }
 

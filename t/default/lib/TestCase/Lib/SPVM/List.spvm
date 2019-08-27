@@ -567,25 +567,6 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_to_iarray : int () {
-    my $list = SPVM::List->new;
-    $list->push(1);
-    $list->push(2);
-    $list->push(3);
-
-    my $nums = $list->to_iarray;
-
-    unless ($nums isa int[]) {
-      return 0;
-    }
-
-    unless ($nums->[0] == 1 && $nums->[1] == 2 && $nums->[2] == 3) {
-      return 0;
-    }
-
-    return 1;
-  }
-
   sub test_to_array : int () {
     my $list = SPVM::List->newa([(object)"abc", 1, 3.14]);
     my $objects = $list->to_array;

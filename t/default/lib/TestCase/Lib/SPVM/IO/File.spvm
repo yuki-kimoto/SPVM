@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::IO::File {
   use SPVM::IO::File;
-  use SPVM::List;
+  use SPVM::StringList;
 
   sub test_fileno : int ($file : string) {
     {
@@ -169,11 +169,11 @@ package TestCase::Lib::SPVM::IO::File {
       die "Can't open file $file";
     }
     
-    my $lstrings = SPVM::List->new;
+    my $lstrings = SPVM::StringList->new;
     while (my $line = $fh->readline) {
       $lstrings->push($line);
     }
-    my $strings = $lstrings->to_strarray;
+    my $strings = $lstrings->to_array;
     
     unless (equals_strarray($strings, ["abcd\n", "fghi\n", "klm\n"])) {
       return 0;
@@ -307,12 +307,12 @@ package TestCase::Lib::SPVM::IO::File {
       die "Can't open file $file";
     }
     
-    my $lstrings = SPVM::List->new;
+    my $lstrings = SPVM::StringList->new;
     while (my $line = $fh->readline) {
       $line = chomp($line);
       $lstrings->push($line);
     }
-    my $strings = $lstrings->to_strarray;
+    my $strings = $lstrings->to_array;
     
     unless (equals_strarray($strings, ["abcd", "fghi", "klm"])) {
       return 0;

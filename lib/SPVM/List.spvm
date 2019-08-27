@@ -4,38 +4,6 @@ package SPVM::List : private {
   has offset   : private int; # range of offset: [-capacity, -1)
   has length   : ro int;
   
-  sub to_iarray : int[] ($self : self) {
-    my $length = $self->{length};
-    my $nums = new int[$length];
-    for (my $i = 0; $i < $length; $i++) {
-      my $values = $self->{values};
-      my $value = $values->[$i];
-      if ($value isa SPVM::Int) {
-        $nums->[$i] = (int)$value;
-      }
-      else {
-        die "Can't convert to int type element";
-      }
-    }
-    return $nums;
-  }
-
-  sub to_strarray : string[] ($self : self) {
-    my $length = $self->{length};
-    my $strings = new string[$length];
-    for (my $i = 0; $i < $length; $i++) {
-      my $values = $self->{values};
-      my $value = $values->[$i];
-      if ($value isa string) {
-        $strings->[$i] = (string)$value;
-      }
-      else {
-        die "Can't convert to int type element";
-      }
-    }
-    return $strings;
-  }
-
   sub to_array : object[] ($self : self) {
     my $length = $self->{length};
     my $objects = new object[$length];
