@@ -14,7 +14,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # SPVM::Hash
 {
   ok(TestCase::Lib::SPVM::Hash->test_murmur_hash);
-  ok(TestCase::Lib::SPVM::Hash->test_new_with_capacity);
+  ok(TestCase::Lib::SPVM::Hash->test_new_capacity);
   ok(TestCase::Lib::SPVM::Hash->test_newa);
   ok(TestCase::Lib::SPVM::Hash->test_newa_allocated_capacity_should_power_of_2);
   ok(TestCase::Lib::SPVM::Hash->test_newa_die_when_odd_number_array);

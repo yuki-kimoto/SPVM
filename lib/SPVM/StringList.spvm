@@ -33,23 +33,6 @@ package SPVM::StringList {
     return $self;
   }
   
-  private sub _extend : void ($self : self) {
-    my $capacity = $self->{capacity};
-    my $length = $self->{length};
-    my $values = $self->{values};
-    
-    my $new_capacity = $capacity * 2;
-    
-    my $new_values = new string[$new_capacity];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_values->[$i] = $values->[$i];
-    }
-    
-    $self->{values} = $new_values;
-    $self->{capacity} = $new_capacity;
-  }
-  
   sub push : void ($self : self, $value : string) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
@@ -67,7 +50,7 @@ package SPVM::StringList {
     my $length = $self->length;
     
     if ($length == 0) {
-      die "Can't pop";
+      die "Length must be more than 0 for pop";
     }
     
     my $value = $self->{values}[$length - 1];
@@ -100,7 +83,7 @@ package SPVM::StringList {
     my $capacity = $self->{capacity};
     
     if ($length == 0) {
-      die "Can't shift";
+      die "Length must be more than 0 for shift";
     }
     
     my $values = $self->{values};
@@ -159,5 +142,22 @@ package SPVM::StringList {
     }
     
     return $array;
+  }
+
+  private sub _extend : void ($self : self) {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new string[$new_capacity];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_values->[$i] = $values->[$i];
+    }
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
   }
 }

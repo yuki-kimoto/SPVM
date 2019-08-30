@@ -24,7 +24,7 @@ package SPVM::ObjectList {
     return $self;
   }
 
-  sub new_with_capacity : SPVM::ObjectList ($capacity : int) {
+  sub new_capacity : SPVM::ObjectList ($capacity : int) {
     my $self = new SPVM::ObjectList;
     unless ($capacity > 0) {
       die "capacity must be positive";
@@ -54,10 +54,10 @@ package SPVM::ObjectList {
     $self->{values}[$index] = $value;
     ++$self->{length};
   }
-
+  
   sub pop : object ($self : self) {
     if ($self->{length} <= 0) {
-      die "Can't pop";
+      die "Length must be more than 0 for pop";
     }
     
     my $index = $self->{length};
@@ -92,7 +92,7 @@ package SPVM::ObjectList {
     my $capacity = $self->{capacity};
     
     if ($length == 0) {
-      die "Can't shift";
+      die "Length must be more than 0 for shift";
     }
     
     my $values = $self->{values};
@@ -109,13 +109,54 @@ package SPVM::ObjectList {
   }
 
   sub set : void ($self : self, $index : int, $value : object) {
+    my $length = $self->length;
+
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
     $self->{values}[$index] = $value;
   }
 
   sub get : object ($self : self, $index : int) {
+    my $length = $self->length;
+
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
     return $self->{values}[$index];
   }
 
+  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_values = new object [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
+  }
+
+  private sub _extend : void ($self : self) {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new object[$new_capacity];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_values->[$i] = $values->[$i];
+    }
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
+  }
+  
+  # splice is EXPERIMENTAL
   # range of $cut_offset: [0, $cut_length]
   # O($self->{capacity})
   sub splice : object[] ($self : self, $cut_offset : int, $cut_length : int, $replace : object[]) {
@@ -199,33 +240,5 @@ package SPVM::ObjectList {
     $self->{length} += $replace_length - $cut_length;
 
     return $extracted;
-  }
-
-  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
-    my $new_values = new object [$new_capacity];
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      my $target = $i;
-      if ($target < 0) { $target += $self->{capacity}; };
-      $new_values->[$i] = $self->{values}[$target];
-    }
-    $self->{capacity} = $new_capacity;
-    $self->{values} = $new_values;
-  }
-
-  private sub _extend : void ($self : self) {
-    my $capacity = $self->{capacity};
-    my $length = $self->{length};
-    my $values = $self->{values};
-    
-    my $new_capacity = $capacity * 2;
-    
-    my $new_values = new object[$new_capacity];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_values->[$i] = $values->[$i];
-    }
-    
-    $self->{values} = $new_values;
-    $self->{capacity} = $new_capacity;
   }
 }

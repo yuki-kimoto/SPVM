@@ -55,18 +55,18 @@ package TestCase::Lib::SPVM::ObjectList {
   }
 
   sub test_ctor_with_capacity : int () {
-    unless (check_fields(SPVM::ObjectList->new_with_capacity(20000), 20000, -20000, 0)) {
+    unless (check_fields(SPVM::ObjectList->new_capacity(20000), 20000, -20000, 0)) {
       return 0;
     }
     eval {
-      SPVM::ObjectList->new_with_capacity(0);
+      SPVM::ObjectList->new_capacity(0);
     };
     unless ($@) {
       return 0;
     }
     $@ = undef;
     eval {
-      SPVM::ObjectList->new_with_capacity(-1);
+      SPVM::ObjectList->new_capacity(-1);
     };
     unless ($@) {
       return 0;
@@ -116,7 +116,7 @@ package TestCase::Lib::SPVM::ObjectList {
   }
 
   sub test_push : int () {
-    my $list = SPVM::ObjectList->new_with_capacity(1);
+    my $list = SPVM::ObjectList->new_capacity(1);
 
     my $v1 = SPVM::Int->new(1);
     $list->push($v1);
@@ -187,7 +187,7 @@ package TestCase::Lib::SPVM::ObjectList {
   }
 
   sub test_unshift : int () {
-    my $list = SPVM::ObjectList->new_with_capacity(1);
+    my $list = SPVM::ObjectList->new_capacity(1);
 
     my $v1 = SPVM::Int->new(1);
     $list->unshift($v1);
@@ -255,7 +255,7 @@ package TestCase::Lib::SPVM::ObjectList {
   }
 
   sub test_offset_by_alternate_push_and_shift : int () {
-    my $list = SPVM::ObjectList->new_with_capacity(4);
+    my $list = SPVM::ObjectList->new_capacity(4);
     for (my $i = 0; $i < 16; $i++) {
       $list->push(1);
       $list->shift;
@@ -267,7 +267,7 @@ package TestCase::Lib::SPVM::ObjectList {
   }
 
   sub test_offset_by_alternate_unshift_and_pop : int () {
-    my $list = SPVM::ObjectList->new_with_capacity(4);
+    my $list = SPVM::ObjectList->new_capacity(4);
     for (my $i = 0; $i < 16; $i++) {
       $list->unshift(1);
       $list->pop;
@@ -486,7 +486,7 @@ package TestCase::Lib::SPVM::ObjectList {
   }
 
   sub test_splice_offset_is_valid_when_removed : int () {
-    my $list = SPVM::ObjectList->new_with_capacity(2);
+    my $list = SPVM::ObjectList->new_capacity(2);
     my $v1 = SPVM::Int->new(1);
     my $v2 = SPVM::Int->new(2);
     $list->unshift($v1);
@@ -505,7 +505,7 @@ package TestCase::Lib::SPVM::ObjectList {
   }
 
   sub test_splice_offset_is_valid_when_appended : int () {
-    my $list = SPVM::ObjectList->new_with_capacity(3);
+    my $list = SPVM::ObjectList->new_capacity(3);
     my $v1 = SPVM::Int->new(1);
     my $v2 = SPVM::Int->new(2);
     my $vi1 = SPVM::Int->new(3);

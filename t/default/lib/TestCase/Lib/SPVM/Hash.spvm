@@ -20,7 +20,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_new_with_capacity : int () {
+  sub test_new_capacity : int () {
     my $hash = SPVM::Hash->new_opt([(object)capacity => 10]);
     unless ($hash->_bucket_count == 10) {
       return 0;
