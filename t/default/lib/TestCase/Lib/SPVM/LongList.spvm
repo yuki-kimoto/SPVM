@@ -26,6 +26,22 @@ package TestCase::Lib::SPVM::LongList {
     return 1;
   }
 
+  sub new_capacity : int () {
+    {
+      my $list = SPVM::LongList->new_capacity(32);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      
+      unless ($list->capacity == 32) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub to_array : int () {
     {
       my $list = SPVM::LongList->newa([(long)3, 5, INT64_MAX()]);

@@ -1,11 +1,7 @@
 package SPVM::ObjectList {
   has values   : object[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
-
-  sub capacity : int ($self : self) {
-    return $self->{capacity};
-  }
 
   sub to_array : object[] ($self : self) {
     my $length = $self->{length};

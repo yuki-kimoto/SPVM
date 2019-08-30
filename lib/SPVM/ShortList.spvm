@@ -1,6 +1,6 @@
 package SPVM::ShortList {
   has values   : short[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
   
   sub new : SPVM::ShortList () {
@@ -12,6 +12,16 @@ package SPVM::ShortList {
     $self->{length} = 0;
     $self->{values} = $values;
     
+    return $self;
+  }
+
+  sub new_capacity : SPVM::ShortList ($capacity : int) {
+    my $self = new SPVM::ShortList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new short[$capacity];
     return $self;
   }
 

@@ -1,6 +1,6 @@
 package SPVM::IntList {
   has values   : int[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
   
   sub new : SPVM::IntList () {
@@ -12,6 +12,16 @@ package SPVM::IntList {
     $self->{length} = 0;
     $self->{values} = $values;
     
+    return $self;
+  }
+
+  sub new_capacity : SPVM::IntList ($capacity : int) {
+    my $self = new SPVM::IntList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new int[$capacity];
     return $self;
   }
 

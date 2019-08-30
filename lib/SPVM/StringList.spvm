@@ -1,6 +1,6 @@
 package SPVM::StringList {
   has values   : string[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
   
   sub new : SPVM::StringList () {
@@ -12,6 +12,16 @@ package SPVM::StringList {
     $self->{length} = 0;
     $self->{values} = $values;
     
+    return $self;
+  }
+
+  sub new_capacity : SPVM::StringList ($capacity : int) {
+    my $self = new SPVM::StringList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new string[$capacity];
     return $self;
   }
 

@@ -1,6 +1,6 @@
 package SPVM::LongList {
   has values   : long[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
   
   sub new : SPVM::LongList () {
@@ -12,6 +12,16 @@ package SPVM::LongList {
     $self->{length} = 0;
     $self->{values} = $values;
     
+    return $self;
+  }
+
+  sub new_capacity : SPVM::LongList ($capacity : int) {
+    my $self = new SPVM::LongList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new long[$capacity];
     return $self;
   }
 

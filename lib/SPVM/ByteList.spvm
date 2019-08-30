@@ -1,6 +1,6 @@
 package SPVM::ByteList {
   has values   : byte[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
   
   sub new : SPVM::ByteList () {
@@ -12,6 +12,16 @@ package SPVM::ByteList {
     $self->{length} = 0;
     $self->{values} = $values;
     
+    return $self;
+  }
+
+  sub new_capacity : SPVM::ByteList ($capacity : int) {
+    my $self = new SPVM::ByteList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new byte[$capacity];
     return $self;
   }
 

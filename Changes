@@ -9,6 +9,24 @@
   - SPVM::Regex caps start index become 0
   - remove to_iarray and to_strarray from SPVM::List
   - rename SPVM::List to SPVM::ObjectList
+  - rename SPVM::ObjectList::new_with_capacity to new_capacity
+  - add SPVM::ByteList::new_capacity
+  - add SPVM::ShortList::new_capacity
+  - add SPVM::IntList::new_capacity
+  - add SPVM::LongList::new_capacity
+  - add SPVM::FloatList::new_capacity
+  - add SPVM::DoubleList::new_capacity
+  - add SPVM::StringList::new_capacity
+
+  - add SPVM::ByteList::capacity
+  - add SPVM::ShortList::capacity
+  - add SPVM::IntList::capacity
+  - add SPVM::LongList::capacity
+  - add SPVM::FloatList::capacity
+  - add SPVM::DoubleList::capacity
+  - add SPVM::StringList::capacity
+  - add SPVM::ObjectList::capacity
+  
 0.0439 2019-08-05
   - rename runtime_type to runtime_type_category
   - fix IO::Socket connect with IP address bug

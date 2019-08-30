@@ -1,6 +1,6 @@
 package SPVM::DoubleList {
   has values   : double[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
   
   sub new : SPVM::DoubleList () {
@@ -12,6 +12,16 @@ package SPVM::DoubleList {
     $self->{length} = 0;
     $self->{values} = $values;
     
+    return $self;
+  }
+
+  sub new_capacity : SPVM::DoubleList ($capacity : int) {
+    my $self = new SPVM::DoubleList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new double [$capacity];
     return $self;
   }
 
