@@ -17,7 +17,6 @@
   - add SPVM::FloatList::new_capacity
   - add SPVM::DoubleList::new_capacity
   - add SPVM::StringList::new_capacity
-
   - add SPVM::ByteList::capacity
   - add SPVM::ShortList::capacity
   - add SPVM::IntList::capacity
