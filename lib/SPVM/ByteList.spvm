@@ -24,7 +24,7 @@ package SPVM::ByteList {
     $self->{values} = new byte[$capacity];
     return $self;
   }
-
+  
   sub newa : SPVM::ByteList ($array : byte[]) {
     my $self = new SPVM::ByteList;
     my $length = @$array;
@@ -54,6 +54,29 @@ package SPVM::ByteList {
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
+  }
+  
+  sub insert : void ($self : self, $index : int, $value : byte) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0 && $index <= $length) {
+      die "Out of range";
+    }
+    
+    if ($length > $capacity - 1) {
+      $self->_extend;
+    }
+    
+    my $values = $self->{values};
+    if ($index != $length) {
+      my $dist_index = $index + 1;
+      my $move_length = $length - $index;
+      memmoveb($values, $dist_index, $values, $index, $move_length);
+    }
+    $values->[$index] = $value;
+    
+    $self->{length}++;
   }
   
   sub push : void ($self : self, $value : byte) {
