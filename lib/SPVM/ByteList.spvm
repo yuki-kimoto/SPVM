@@ -78,7 +78,28 @@ package SPVM::ByteList {
     
     $self->{length}++;
   }
-  
+
+  sub remove : byte ($self : self, $index : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0 && $index < $length) {
+      die "Out of range";
+    }
+    
+    my $values = $self->{values};
+    my $remove_value = $values->[$index];
+
+    my $dist_index = $index;
+    my $src_index = $index + 1;
+    my $move_length = $length - $index;
+    memmoveb($values, $dist_index, $values, $src_index, $move_length);
+    
+    $self->{length}--;
+    
+    return $remove_value;
+  }
+
   sub push : void ($self : self, $value : byte) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
