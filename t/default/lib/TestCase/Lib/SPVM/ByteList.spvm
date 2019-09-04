@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::ByteList {
   use SPVM::ByteList;
-
+  
   sub newa : int () {
     {
       my $list = SPVM::ByteList->newa([(byte)3, 5, INT8_MAX()]);
@@ -22,6 +22,66 @@ package TestCase::Lib::SPVM::ByteList {
         return 0;
       }
     }
+    
+    return 1;
+  }
+
+  sub insert : int () {
+    # Insert to first
+    {
+      my $list = SPVM::ByteList->newa([(byte)1, 2, 3]);
+      $list->insert(0 => 4);
+      unless (equals_barray($list->to_array, [(byte)4, 1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Insert
+    {
+      my $list = SPVM::ByteList->newa([(byte)1, 2, 3]);
+      $list->insert(2 => 4);
+      unless (equals_barray($list->to_array, [(byte)1, 2, 4, 3])) {
+        return 0;
+      }
+    }
+
+    # Insert to last
+    {
+      my $list = SPVM::ByteList->newa([(byte)1, 2, 3]);
+      $list->insert(3 => 4);
+      unless (equals_barray($list->to_array, [(byte)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # Extend
+    {
+      my $list = SPVM::ByteList->newa([(byte)1, 2, 3]);
+      $list->insert(0 => 4);
+      unless ($list->capacity == 6) {
+        return 0;
+      }
+    }
+    
+    # Exception - insert to -1
+    eval {
+      my $list = SPVM::ByteList->newa([(byte)1, 2, 3]);
+      $list->insert(-1 => 2);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+
+    # Exception - insert to length + 1
+    eval {
+      my $list = SPVM::ByteList->newa([(byte)1, 2, 3]);
+      $list->insert(4 => 2);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
     
     return 1;
   }
