@@ -92,7 +92,7 @@ package SPVM::ByteList {
 
     my $dist_index = $index;
     my $src_index = $index + 1;
-    my $move_length = $length - $index;
+    my $move_length = $length - $index - 1;
     memmoveb($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
