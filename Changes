@@ -1,4 +1,4 @@
-0.0440 2019-08-20
+0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array
   - Rename SPVM::Data::Package to SPVM::BlessedObject::Package
@@ -25,6 +25,7 @@
   - add SPVM::DoubleList::capacity
   - add SPVM::StringList::capacity
   - add SPVM::ObjectList::capacity
+  - add insert, remove method to SPVM::ByteList, SPVM::ShortList, SPVM::IntList, SPVM::LongList, SPVM::FloatList, SPVM::DoubleList, SPVM::StringList, SPVM::ObjectList
   
 0.0439 2019-08-05
   - rename runtime_type to runtime_type_category
