@@ -42,7 +42,7 @@ package SPVM::StringList {
     
     return $self;
   }
-  
+
   sub push : void ($self : self, $value : string) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
