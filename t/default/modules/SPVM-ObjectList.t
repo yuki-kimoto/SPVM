@@ -30,6 +30,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::ObjectList->test_splice_offset_is_valid_when_removed);
   ok(TestCase::Lib::SPVM::ObjectList->test_splice_offset_is_valid_when_appended);
   ok(TestCase::Lib::SPVM::ObjectList->test_to_array);
+  ok(TestCase::Lib::SPVM::ObjectList->insert);
+  ok(TestCase::Lib::SPVM::ObjectList->remove);
 }
 
 # All object is freed

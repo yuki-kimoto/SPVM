@@ -2,6 +2,155 @@ package TestCase::Lib::SPVM::ObjectList {
   use SPVM::Int;
   use SPVM::ObjectList;
 
+  sub insert : int () {
+    # Insert to first
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = SPVM::ObjectList->newa([(object)$x1, $x2, $x3]);
+      $list->insert(0 => $x4);
+      unless (equals_oarray($list->to_array, [$x4, $x1, $x2, $x3])) {
+        return 0;
+      }
+    }
+
+    # Insert
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = SPVM::ObjectList->newa([(object)$x1, $x2, $x3]);
+      $list->insert(2 => $x4);
+      unless (equals_oarray($list->to_array, [$x1, $x2, $x4, $x3])) {
+        return 0;
+      }
+    }
+
+    # Insert to last
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = SPVM::ObjectList->newa([(object)$x1, $x2, $x3]);
+      $list->insert(3 => $x4);
+      unless (equals_oarray($list->to_array, [$x1, $x2, $x3, $x4])) {
+        return 0;
+      }
+    }
+
+    # Extend
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+
+      my $list = SPVM::ObjectList->newa([(object)$x1, $x2, $x3]);
+      $list->insert(0 => $x4);
+      unless ($list->capacity == 6) {
+        return 0;
+      }
+    }
+    
+    # Exception - insert to -1
+    eval {
+      my $list = SPVM::ObjectList->newa([(object)"1", "2", "3"]);
+      $list->insert(-1 => "2");
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+
+    # Exception - insert to length + 1
+    eval {
+      my $list = SPVM::ObjectList->newa([(object)"1", "2", "3"]);
+      $list->insert(4 => "2");
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub remove : int () {
+    # Remove
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = SPVM::ObjectList->newa([(object)$x1, $x2, $x3, $x4]);
+      my $value = $list->remove(1);
+      unless (equals_oarray($list->to_array, [$x1, $x3, $x4])) {
+        return 0;
+      }
+      unless ($value == $x2) {
+        return 0;
+      }
+    }
+
+    # Remove last
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+      
+      my $list = SPVM::ObjectList->newa([(object)$x1, $x2, $x3]);
+      $list->remove(2);
+      unless (equals_oarray($list->to_array, [$x1, $x2])) {
+        return 0;
+      }
+    }
+
+    # Remove first
+    {
+      my $x1 = "1";
+      my $x2 = "2";
+      my $x3 = "3";
+      my $x4 = "4";
+
+      my $list = SPVM::ObjectList->newa([(object)$x1, $x2, $x3]);
+      $list->remove(0);
+      unless (equals_oarray($list->to_array, [$x2, $x3])) {
+        return 0;
+      }
+    }
+
+    # Exception - remove to -1
+    eval {
+      my $list = SPVM::ObjectList->newa([(object)"1", "2", "3"]);
+      $list->remove(-1);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+
+    # Exception - remove to length
+    eval {
+      my $list = SPVM::ObjectList->newa([(object)"1", "2", "3"]);
+      $list->remove(3);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+
   sub check_fields : int ($list : SPVM::ObjectList, $capacity : int, $offset : int, $length : int) {
     # check_fields fields
     unless ($list->capacity == $capacity && $list->length == $length) {
