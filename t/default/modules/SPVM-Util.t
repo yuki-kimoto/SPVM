@@ -21,6 +21,13 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Util->test_split);
 }
 
+# sprintf
+{
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_basic);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_uuv);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_warn);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

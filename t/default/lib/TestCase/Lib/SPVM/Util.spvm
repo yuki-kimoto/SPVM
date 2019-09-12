@@ -1,5 +1,5 @@
 package TestCase::Lib::SPVM::Util {
-  use SPVM::Util(joino, split);
+  use SPVM::Util(joino, split, sprintf);
   use TestCase::Minimal;
   
   sub test_joino : int () {
@@ -98,5 +98,129 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
+  sub test_sprintf_basic : int () {
+    my $got = sprintf("hoge:%c, fuga:%s, piyo:%d, bar:%f\n", 'a', "string", 123, 3.14);
+    my $expected = "hoge:a, fuga:string, piyo:123, bar:3.14\n";
+    unless ($got eq $expected) {
+      warn("got: '$got'\nexpected: '$expected'");
+      return 0;
+    }
+    return 1;
+  }
 
+  sub test_sprintf_uuv : int () {
+    # Use of uninitialized value in sprintf (%c)
+    {
+      my $got = sprintf("hoge:%c", undef);
+      my $expected = "hoge:";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Use of uninitialized value in sprintf (%s)
+    {
+      my $got = sprintf("hoge:%s", undef);
+      my $expected = "hoge:";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Use of uninitialized value in sprintf (%d)
+    {
+      my $got = sprintf("hoge:%d", undef);
+      my $expected = "hoge:0";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Use of uninitialized value in sprintf (%f)
+    {
+      my $got = sprintf("hoge:%f", undef);
+      my $expected = "hoge:0";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_sprintf_warn : int () {
+    # Invalid conversion (end of string)
+    {
+      my $got = sprintf("%d%", 1);
+      my $expected = "1%";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Invalid conversion (unknown specifier)
+    {
+      my $got = sprintf("%d%k", 1);
+      my $expected = "1%k";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Redundant argument
+    {
+      my $got = sprintf("%d", 1, 2);
+      my $expected = "1";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Missing argument
+    {
+      my $got = sprintf("%d%d", 1);
+      my $expected = "10";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Argument type is inconsistent with specifier (%c)
+    {
+      my $got = sprintf("hoge:%c", 1); # 1 is converted to SPVM::Int
+      my $expected = "hoge:";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Argument type is inconsistent with specifier (%s)
+    {
+      my $got = sprintf("hoge:%s", 1);
+      my $expected = "hoge:";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Argument type is inconsistent with specifier (%d)
+    {
+      my $got = sprintf("hoge:%d", "str");
+      my $expected = "hoge:0";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    # Argument type is inconsistent with specifier (%f)
+    {
+      my $got = sprintf("hoge:%f", "str");
+      my $expected = "hoge:0";
+      unless ($got eq $expected) {
+        warn("got: '$got'\nexpected: '$expected'");
+        return 0;
+      }
+    }
+    return 1;
+  }
 }
