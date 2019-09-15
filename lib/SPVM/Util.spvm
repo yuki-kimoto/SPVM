@@ -1,7 +1,6 @@
 package SPVM::Util {
-  use SPVM::ByteList;
-  use SPVM::IntList;
   use SPVM::Stringer;
+  use SPVM::StringBuffer;
   use SPVM::StringList;
   use SPVM::List;
   
@@ -72,169 +71,100 @@ package SPVM::Util {
     return $separated_strings;
   }
 
-  private precompile sub _sprintf_parse_format : SPVM::List ($format : string) {
-    my $length = length $format;
-    my $parsed_format = SPVM::List->new;
-    my $text_begin = 0;
+  precompile sub sprintf : string ($format : string, $args : object[]...) {
+    my $format_length = length $format;
     my $index = 0;
-    my $placeholders_count_check = 0;
 
-    while ($index < $length) {
-      my $cand_text_end = $index;
-
-      my $ch = $format->[$index++];
-
-      if ($ch == '%') {
-        if ($index == $length) {
-          warn("Invalid conversion in sprintf: end of string");
-          last;
-        }
-
-        my $type = $format->[$index++];
-        if ($type == '%') {
-          next;
-        }
-
-        if ($text_begin < $cand_text_end) { # avoid (begin:0, end:0)
-          my $text_range = SPVM::IntList->newa([$text_begin, $cand_text_end]);
-          $parsed_format->push($text_range);
-        }
-
-        # only supports simple syntax. TODO: %[flags][width][.precision][length]type
-        switch ((int)$type) {
-          case 'c': case 's': case 'd': case 'f': {
-            my $placeholder = SPVM::ByteList->newa([$type]); # TODO: %[flags][width][.precision][length]type
-            $parsed_format->push($placeholder);
-            ++$placeholders_count_check;
-            break;
-          }
-          default: {
-            # "hoge%dfuga%kpiyo" is expanded like "hoge1fuga%kpiyo"
-            # "%k" is treated as plain text.
-            warn("Invalid conversion in sprintf: \"%" . [$type] ."\"");
-            my $begin_invalid_placeholder = $cand_text_end;
-            my $end_invalid_placeholder   = $index;
-            my $text_range = SPVM::IntList->newa(
-                [$begin_invalid_placeholder, $end_invalid_placeholder]);
-            $parsed_format->push($text_range);
-            break;
-          }
-        }
-
-        $text_begin = $index;
-      }
-    }
-
-    if ($text_begin < $length) {
-      my $text_range = SPVM::IntList->newa([$text_begin, $length]);
-      $parsed_format->push($text_range);
-    }
-
-    $parsed_format->push($placeholders_count_check);
-
-    return $parsed_format;
-  }
-
-  private precompile sub _sprintf_insert_args : string ($format : string, $args : object[],
-      $parsed_format : SPVM::List) {
-
-    my $placeholders_count_check = ((SPVM::Int)$parsed_format->pop)->val;
-    if ($placeholders_count_check < @$args) {
-      warn("Redundant argument in sprintf");
-    }
-    elsif ($placeholders_count_check > @$args) {
-      warn("Missing argument in sprintf");
-    }
-
-    my $parsed_format_length = $parsed_format->length;
-    my $output = "";
+    my $output = SPVM::StringBuffer->new;
     my $args_index = 0;
 
-    for (my $array_index = 0; $array_index < $parsed_format_length; ++$array_index) {
-      my $current_parsed_format = $parsed_format->get($array_index);
-      if ($current_parsed_format isa SPVM::ByteList) {
-        my $current_arg : object;
-        if ($args_index < @$args) {
-          $current_arg = $args->[$args_index++];
+    while ($index < $format_length) {
+      if ($format->[$index] == '%') {
+
+        unless ($index + 1 < $format_length) {
+          die "Invalid conversion in sprintf: end of string";
         }
 
-        my $placeholder = (SPVM::ByteList)$current_parsed_format;
-        my $type = $placeholder->get(0);
+        my $type = $format->[++$index];
 
         switch ((int)$type) {
+          case '%': {
+            $output->push("%");
+            break;
+          }
           case 'c': {
-            if (!$current_arg) {
-              warn("Use of uninitialized value in sprintf");
-            }
-            elsif ($current_arg isa SPVM::Byte) {
-              $output .= [((SPVM::Byte)$current_arg)->val];
+            if ($args_index < @$args) {
+              my $arg = (SPVM::Byte)$args->[$args_index++];
+              $output->push([$arg->val]);
             }
             else {
-              warn("Argument isn't SPVM::Byte in sprintf");
+              die "Missing argument in sprintf";
             }
             break;
           }
           case 's': {
-            if (!$current_arg) {
-              warn("Use of uninitialized value in sprintf");
-            }
-            elsif ($current_arg isa string) {
-              $output .= (string)$current_arg;
+            if ($args_index < @$args) {
+              my $arg = (string)$args->[$args_index++];
+              $output->push($arg);
             }
             else {
-              warn("Argument isn't string in sprintf");
+              die "Missing argument in sprintf";
             }
             break;
           }
           case 'd': {
-            if (!$current_arg) {
-              warn("Use of uninitialized value in sprintf");
-              $output .= "0";
-            }
-            elsif ($current_arg isa SPVM::Int) {
-              my $val = ((SPVM::Int)$current_arg)->val;
-              $output .= $val;
+            if ($args_index < @$args) {
+              my $arg = (SPVM::Int)$args->[$args_index++];
+              $output->push($arg->val);
             }
             else {
-              warn("Argument isn't SPVM::Int in sprintf");
-              $output .= "0";
+              die "Missing argument in sprintf";
+            }
+            break;
+          }
+          case 'l': {
+            if ($index + 1 < $format_length &&
+                $format->[$index + 1] == 'd') {
+              ++$index;
+              my $arg = (SPVM::Long)$args->[$args_index++];
+              $output->push($arg->val);
+            }
+            else {
+              die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
             }
             break;
           }
           case 'f': {
-            if (!$current_arg) {
-              warn("Use of uninitialized value in sprintf");
-              $output .= "0";
-            }
-            elsif ($current_arg isa SPVM::Double) {
-              my $val = ((SPVM::Double)$current_arg)->val;
-              $output .= $val;
+            if ($args_index < @$args) {
+              my $arg = (SPVM::Double)$args->[$args_index++];
+              $output->push($arg->val);
             }
             else {
-              warn("Argument isn't SPVM::Double in sprintf");
-              $output .= "0";
+              die "Missing argument in sprintf";
             }
             break;
           }
+          case 'U': {
+            die "Not implemented yet";
+            break;
+          }
           default: {
-            die "[BUG] Unknown conversion in sprintf: \"%" . [$type] ."\"";
+            die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
             break;
           }
         }
       }
       else {
-        my $text_range = (SPVM::IntList)$current_parsed_format;
-        my $begin = $text_range->get(0);
-        my $end = $text_range->get(1);
-        $output .= sliceb((byte [])$format, $begin, $end - $begin);
+        $output->push((string)[$format->[$index]]);
       }
+
+      ++$index;
     }
 
-    return $output;
-  }
+    if ($args_index < @$args) {
+      die "Redundant argument in sprintf";
+    }
 
-  precompile sub sprintf : string ($format : string, $args : object[]...) {
-    my $parsed_format = _sprintf_parse_format($format);
-    return _sprintf_insert_args($format, $args, $parsed_format);
+    return $output->to_str;
   }
 }

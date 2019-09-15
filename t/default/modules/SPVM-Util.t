@@ -23,9 +23,12 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # sprintf
 {
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_basic);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_uuv);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_warn);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_d);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_ld);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_f);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_c);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_s);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_all);
 }
 
 # All object is freed
