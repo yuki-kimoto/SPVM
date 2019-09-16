@@ -77,85 +77,90 @@ package SPVM::Util {
 
     my $output = SPVM::StringBuffer->new;
     my $args_index = 0;
+    my $text_length = 0;
 
     while ($index < $format_length) {
-      if ($format->[$index] == '%') {
-
-        unless ($index + 1 < $format_length) {
-          die "Invalid conversion in sprintf: end of string";
-        }
-
-        my $type = $format->[++$index];
-
-        switch ((int)$type) {
-          case '%': {
-            $output->push("%");
-            break;
-          }
-          case 'c': {
-            if ($args_index < @$args) {
-              my $arg = (SPVM::Byte)$args->[$args_index++];
-              $output->push([$arg->val]);
-            }
-            else {
-              die "Missing argument in sprintf";
-            }
-            break;
-          }
-          case 's': {
-            if ($args_index < @$args) {
-              my $arg = (string)$args->[$args_index++];
-              $output->push($arg);
-            }
-            else {
-              die "Missing argument in sprintf";
-            }
-            break;
-          }
-          case 'd': {
-            if ($args_index < @$args) {
-              my $arg = (SPVM::Int)$args->[$args_index++];
-              $output->push($arg->val);
-            }
-            else {
-              die "Missing argument in sprintf";
-            }
-            break;
-          }
-          case 'l': {
-            if ($index + 1 < $format_length &&
-                $format->[$index + 1] == 'd') {
-              ++$index;
-              my $arg = (SPVM::Long)$args->[$args_index++];
-              $output->push($arg->val);
-            }
-            else {
-              die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
-            }
-            break;
-          }
-          case 'f': {
-            if ($args_index < @$args) {
-              my $arg = (SPVM::Double)$args->[$args_index++];
-              $output->push($arg->val);
-            }
-            else {
-              die "Missing argument in sprintf";
-            }
-            break;
-          }
-          case 'U': {
-            die "Not implemented yet";
-            break;
-          }
-          default: {
-            die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
-            break;
-          }
-        }
+      while ($index + $text_length < $format_length &&
+          $format->[$index + $text_length] != '%') {
+        ++$text_length;
       }
-      else {
-        $output->push((string)[$format->[$index]]);
+      if ($index + $text_length + 1 < $format_length &&
+          $format->[$index + $text_length + 1] == '%') {
+        ++$text_length;
+        next;
+      }
+
+      $output->push(sliceb((byte[])$format, $index, $text_length));
+      $index += $text_length;
+      $text_length = 0;
+
+      unless ($index + 1 < $format_length) {
+        die "Invalid conversion in sprintf: end of string";
+      }
+
+      my $type = $format->[++$index];
+
+      switch ((int)$type) {
+        case 'c': {
+          if ($args_index < @$args) {
+            my $arg = (SPVM::Byte)$args->[$args_index++];
+            $output->push([$arg->val]);
+          }
+          else {
+            die "Missing argument in sprintf";
+          }
+          break;
+        }
+        case 's': {
+          if ($args_index < @$args) {
+            my $arg = (string)$args->[$args_index++];
+            $output->push($arg);
+          }
+          else {
+            die "Missing argument in sprintf";
+          }
+          break;
+        }
+        case 'd': {
+          if ($args_index < @$args) {
+            my $arg = (SPVM::Int)$args->[$args_index++];
+            $output->push($arg->val);
+          }
+          else {
+            die "Missing argument in sprintf";
+          }
+          break;
+        }
+        case 'l': {
+          if ($index + 1 < $format_length &&
+              $format->[$index + 1] == 'd') {
+            ++$index;
+            my $arg = (SPVM::Long)$args->[$args_index++];
+            $output->push($arg->val);
+          }
+          else {
+            die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
+          }
+          break;
+        }
+        case 'f': {
+          if ($args_index < @$args) {
+            my $arg = (SPVM::Double)$args->[$args_index++];
+            $output->push($arg->val);
+          }
+          else {
+            die "Missing argument in sprintf";
+          }
+          break;
+        }
+        case 'U': {
+          die "Not implemented yet";
+          break;
+        }
+        default: {
+          die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
+          break;
+        }
       }
 
       ++$index;
