@@ -39,6 +39,12 @@ SPVM::StringList - Continuous dynamic string array
   # Get string value.
   my $string_value = $string_list->get(2);
 
+  # Insert string value
+  $string_list->insert(1, "abc");
+
+  # Remove string value
+  my $string_value = $string_list->remove(1);
+
   # Convert SPVM::StringList to string array.
   my $string_array = $string_list->to_array;
 
@@ -106,6 +112,16 @@ Set the value with index.
   sub get : string ($self : self, $index : int)
 
 Get the value with index.
+
+=head2 insert
+
+  sub insert : void ($self : self, $index : int, $value : string)
+
+Insert a element to the specific index.
+
+=head2 remove
+
+  sub remove : string ($self : self, $index : int)
 
 =head2 to_array
 

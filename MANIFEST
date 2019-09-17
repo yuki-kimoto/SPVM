@@ -149,6 +149,7 @@ lib/SPVM/Errno.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/FileHandle.c
 lib/SPVM/FileHandle.config
+lib/SPVM/FileHandle.pm
 lib/SPVM/FileHandle.spvm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
@@ -190,6 +191,7 @@ lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
 lib/SPVM/MIME/Base64.pm
 lib/SPVM/MIME/Base64.spvm
+lib/SPVM/ObjectList.pm
 lib/SPVM/ObjectList.spvm
 lib/SPVM/Regex.spvm
 lib/SPVM/Short.pm

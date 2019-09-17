@@ -39,6 +39,12 @@ SPVM::LongList - Continuous dynamic long array
   # Get long value.
   my $long_value = $long_list->get(2);
 
+  # Insert long value
+  $long_list->insert(1, 3);
+
+  # Remove long value
+  my $long_value = $long_list->remove(1);
+
   # Convert SPVM::LongList to long array.
   my $long_array = $long_list->to_array;
 
@@ -107,6 +113,18 @@ Set the value with index.
 
 Get the value with index.
 
+=head2 insert
+
+  sub insert : void ($self : self, $index : int, $value : long)
+
+Insert a element to the specific index.
+
+=head2 remove
+
+  sub remove : long ($self : self, $index : int)
+
+Remove and return the element which is specified by the index.
+  
 =head2 to_array
 
   sub to_array : long[] ($self : self)
