@@ -189,6 +189,7 @@ lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
 lib/SPVM/Math.c
 lib/SPVM/Math.config
+lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
 lib/SPVM/MIME/Base64.c
 lib/SPVM/MIME/Base64.config
