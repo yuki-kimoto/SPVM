@@ -131,7 +131,9 @@ lib/SPVM/ByteList.pm
 lib/SPVM/ByteList.spvm
 lib/SPVM/Comparator.pm
 lib/SPVM/Comparator.spvm
+lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
+lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
 lib/SPVM/CORE.c
 lib/SPVM/CORE.config
@@ -145,6 +147,7 @@ lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
 lib/SPVM/Errno.c
 lib/SPVM/Errno.config
+lib/SPVM/Errno.pm
 lib/SPVM/Errno.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/FileHandle.c
