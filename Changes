@@ -1,5 +1,5 @@
-0.0440 2019-09-17
-
+0.0440 2019-09-18
+  - add pi method to SPVM::Math
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array

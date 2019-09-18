@@ -2,6 +2,15 @@
 
 #include <math.h>
 
+int32_t SPNATIVE__SPVM__Math__pi(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  stack[0].dval = atan(1.0) * 4.0;
+  
+  return SPVM_SUCCESS;;
+}
+
 int32_t SPNATIVE__SPVM__Math__isinff(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

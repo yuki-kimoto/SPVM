@@ -13,6 +13,7 @@ package SPVM::Math {
   native sub isfinite : int ($x : double);
   native sub isnan : int ($x : double);
 
+  native sub pi : double ();
   
   # Trigonometric functions
   native sub acos : double ($x : double);
