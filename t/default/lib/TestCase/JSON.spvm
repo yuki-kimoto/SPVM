@@ -52,13 +52,6 @@ package TestCase::JSON {
     return _validate($DEFAULT_JSON, $tests, $tests);
   }
 
-  sub test_digits_long : int () {
-    my $tests = ["[100000000000,-100000000000]"];
-    my $json = SPVM::JSON->new;
-    $json->{num_policy} = SPVM::JSON->NUM_ALLOW_LONG;
-    return _validate($json, $tests, $tests);
-  }
-
   sub test_digits_double : int () {
     my $input = [
       "0.123", "-0.123", "3.14", "-3.14", "123.987", "-123.987",

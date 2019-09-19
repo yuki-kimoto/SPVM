@@ -10,8 +10,6 @@ package SPVM::JSON {
   
   has canonical : rw byte;
   
-  has num_policy : public int;
-
   enum {
     NUM_DEFAULT,
     NUM_ALLOW_LONG,
@@ -674,20 +672,12 @@ package SPVM::JSON {
     }
   }
 
-  sub _field_check : void ($self : self) {
-    unless ($self->{num_policy} == NUM_DEFAULT() ||
-        $self->{num_policy} == NUM_ALLOW_LONG()) {
-      die "Not allowed value is set to num_policy field";
-    }
-  }
-
   sub new : SPVM::JSON () {
     my $json = new SPVM::JSON;
     return $json;
   }
 
   sub encode : string ($self : self, $object : object) {
-    $self->_field_check;
     unless ($object) {
       return "";
     }
@@ -695,7 +685,6 @@ package SPVM::JSON {
   }
 
   sub decode : object ($self : self, $json_text : string) {
-    $self->_field_check;
     my $length = length $json_text;
     my $iter = 0;
     $self->_skip_spaces($json_text, \$iter, $length);
