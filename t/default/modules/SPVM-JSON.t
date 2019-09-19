@@ -11,9 +11,9 @@ use SPVM 'TestCase::JSON';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# SPVM::JSON
+# encode
 {
-  ok(TestCase::JSON->test_empty);
+  ok(TestCase::JSON->encode_null);
   ok(TestCase::JSON->test_flat_hash);
   ok(TestCase::JSON->test_flat_list);
   ok(TestCase::JSON->test_digits_int);
@@ -23,10 +23,13 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->test_spaces);
   ok(TestCase::JSON->test_format_name_separator);
   ok(TestCase::JSON->test_special_chars);
-  ok(TestCase::JSON->test_null);
   ok(TestCase::JSON->test_map_inf_nan_to_undef);
 }
 
+# decode
+{
+  ok(TestCase::JSON->decode_null);
+}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();

@@ -682,9 +682,6 @@ package SPVM::JSON {
   }
 
   sub encode : string ($self : self, $object : object) {
-    unless ($object) {
-      return "";
-    }
     return $self->_encode_recursive($object, 0);
   }
 
