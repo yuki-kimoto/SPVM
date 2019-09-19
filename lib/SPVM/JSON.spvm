@@ -603,10 +603,12 @@ package SPVM::JSON {
     return (string)$escaped;
   }
 
-  sub _encode_value : string ($self : self, $o : object, $depth : int) {
+  sub _encode_recursive : string ($self : self, $o : object, $depth : int) {
+    
+    my $json : string;
     if ($o == undef) {
       # null/inf/-inf/nan
-      return "null";
+      $json = "null";
     }
     # objects
     elsif ($o isa SPVM::Hash) {
@@ -626,10 +628,10 @@ package SPVM::JSON {
         unless ($hash->exists($keys->[$i])) {
           die "Unexpected error. Not found key: " . $keys->[$i];
         }
-        $text .= $self->_encode_value($hash->get($keys->[$i]), $depth + 1);
+        $text .= $self->_encode_recursive($hash->get($keys->[$i]), $depth + 1);
       }
       $text .= "}";
-      return $text;
+      $json = $text;
     }
     elsif ($o isa SPVM::ObjectList) {
       my $text = "";
@@ -640,36 +642,38 @@ package SPVM::JSON {
         if ($i > 0) {
           $text .= ",";
         }
-        $text .= $self->_encode_value($list->get($i), $depth + 1);
+        $text .= $self->_encode_recursive($list->get($i), $depth + 1);
       }
       $text .= "]";
-      return $text;
+      $json = $text;
     }
     # primitives
     elsif ($o isa string) {
       my $escaped = _escape_string((string)$o);
-      return "\"" . $escaped . "\"";
+      $json = "\"" . $escaped . "\"";
     }
     elsif ($o isa SPVM::Int) {
-      return (string)(((SPVM::Int)$o)->val);
+      $json = (string)(((SPVM::Int)$o)->val);
     }
     elsif ($o isa SPVM::Long) {
-      return (string)(((SPVM::Long)$o)->val);
+      $json = (string)(((SPVM::Long)$o)->val);
     }
     elsif ($o isa SPVM::Double) {
-      return (string)(((SPVM::Double)$o)->val);
+      $json = (string)(((SPVM::Double)$o)->val);
     }
     elsif ($o isa SPVM::JSON::Bool) {
       if (((SPVM::JSON::Bool)$o)->val) {
-        return "true";
+        $json = "true";
       }
       else {
-        return "false";
+        $json = "false";
       }
     }
     else {
       die "Unknown object type";
     }
+    
+    return $json;
   }
 
   sub new : SPVM::JSON () {
@@ -681,7 +685,7 @@ package SPVM::JSON {
     unless ($object) {
       return "";
     }
-    return $self->_encode_value($object, 0);
+    return $self->_encode_recursive($object, 0);
   }
 
   sub decode : object ($self : self, $json_text : string) {
