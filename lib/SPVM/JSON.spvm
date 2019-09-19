@@ -487,7 +487,7 @@ package SPVM::JSON {
 
       # value
       $self->_skip_spaces_at_not_end($s, $i, $end);
-      $hash->set($key, $self->_decode_value($s, $i, $end));
+      $hash->set($key, $self->_decode_recursive($s, $i, $end));
     }
     _expect_token($s, $i, $end, "}");
     return $hash;
@@ -512,13 +512,13 @@ package SPVM::JSON {
       else {
         $has_element = 1;
       }
-      $list->push($self->_decode_value($s, $i, $end));
+      $list->push($self->_decode_recursive($s, $i, $end));
     }
     _expect_token($s, $i, $end, "]");
     return $list;
   }
 
-  sub _decode_value : object ($self : self, $s : string, $i : int&, $end : int) {
+  sub _decode_recursive : object ($self : self, $s : string, $i : int&, $end : int) {
     $self->_skip_spaces_at_not_end($s, $i, $end);
     my $c = (int)($s->[$$i]);
     switch ($c) {
@@ -695,7 +695,7 @@ package SPVM::JSON {
     if ($iter == $length) {
       return undef;
     }
-    my $ret = $self->_decode_value($json_text, \$iter, $length);
+    my $ret = $self->_decode_recursive($json_text, \$iter, $length);
     $self->_skip_spaces($json_text, \$iter, $length);
     unless ($iter == $length) {
       ERR("Not all json_text is decoded yet", $json_text, $iter, $length);
