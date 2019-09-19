@@ -603,18 +603,18 @@ package SPVM::JSON {
     return (string)$escaped;
   }
 
-  sub _encode_recursive : string ($self : self, $o : object, $depth : int) {
+  sub _encode_recursive : string ($self : self, $spvm_data : object, $depth : int) {
     
     my $json : string;
-    if ($o == undef) {
+    if ($spvm_data == undef) {
       # null/inf/-inf/nan
       $json = "null";
     }
     # objects
-    elsif ($o isa SPVM::Hash) {
+    elsif ($spvm_data isa SPVM::Hash) {
       my $text = "";
       $text .= "{";
-      my $hash = (SPVM::Hash)$o;
+      my $hash = (SPVM::Hash)$spvm_data;
       my $keys = $hash->keys;
       if ($self->canonical) {
         sortstr($keys);
@@ -633,10 +633,10 @@ package SPVM::JSON {
       $text .= "}";
       $json = $text;
     }
-    elsif ($o isa SPVM::ObjectList) {
+    elsif ($spvm_data isa SPVM::ObjectList) {
       my $text = "";
       $text .= "[";
-      my $list = (SPVM::ObjectList)$o;
+      my $list = (SPVM::ObjectList)$spvm_data;
       my $length = $list->length;
       for (my $i = 0; $i < $length; ++$i) {
         if ($i > 0) {
@@ -648,21 +648,21 @@ package SPVM::JSON {
       $json = $text;
     }
     # primitives
-    elsif ($o isa string) {
-      my $escaped = _escape_string((string)$o);
+    elsif ($spvm_data isa string) {
+      my $escaped = _escape_string((string)$spvm_data);
       $json = "\"" . $escaped . "\"";
     }
-    elsif ($o isa SPVM::Int) {
-      $json = (string)(((SPVM::Int)$o)->val);
+    elsif ($spvm_data isa SPVM::Int) {
+      $json = (string)(((SPVM::Int)$spvm_data)->val);
     }
-    elsif ($o isa SPVM::Long) {
-      $json = (string)(((SPVM::Long)$o)->val);
+    elsif ($spvm_data isa SPVM::Long) {
+      $json = (string)(((SPVM::Long)$spvm_data)->val);
     }
-    elsif ($o isa SPVM::Double) {
-      $json = (string)(((SPVM::Double)$o)->val);
+    elsif ($spvm_data isa SPVM::Double) {
+      $json = (string)(((SPVM::Double)$spvm_data)->val);
     }
-    elsif ($o isa SPVM::JSON::Bool) {
-      if (((SPVM::JSON::Bool)$o)->val) {
+    elsif ($spvm_data isa SPVM::JSON::Bool) {
+      if (((SPVM::JSON::Bool)$spvm_data)->val) {
         $json = "true";
       }
       else {
