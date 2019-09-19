@@ -672,7 +672,7 @@ package SPVM::JSON {
       }
     }
     else {
-      die "Unknown object type";
+      die "Invalid data type";
     }
     
     return $json;
