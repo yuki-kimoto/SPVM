@@ -23,8 +23,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->test_nest_object);
   ok(TestCase::JSON->test_spaces);
   ok(TestCase::JSON->test_format_name_separator);
-  ok(TestCase::JSON->test_format_indent);
-  ok(TestCase::JSON->test_format_pretty);
   ok(TestCase::JSON->test_special_chars);
   ok(TestCase::JSON->test_null);
   ok(TestCase::JSON->test_map_inf_nan_to_undef);

@@ -9,7 +9,7 @@ package TestCase::JSON {
 
   BEGIN {
     $DEFAULT_JSON = SPVM::JSON->new;
-    $DEFAULT_JSON->{canonical} = 1;
+    $DEFAULT_JSON->set_canonical(1);
   }
 
   sub _validate : int ($json : SPVM::JSON, $input : string[], $expected : string[]) {
@@ -55,7 +55,6 @@ package TestCase::JSON {
   sub test_digits_long : int () {
     my $tests = ["[100000000000,-100000000000]"];
     my $json = SPVM::JSON->new;
-    $json->{canonical} = 1;
     $json->{num_policy} = SPVM::JSON->NUM_ALLOW_LONG;
     return _validate($json, $tests, $tests);
   }
@@ -116,60 +115,7 @@ package TestCase::JSON {
   sub test_format_name_separator : int () {
     my $hash = SPVM::Hash->newa([(object) "key", "value"]);
     my $json = SPVM::JSON->new;
-    $json->{space_before} = 0;
-    $json->{space_after} = 0;
     unless ($json->encode($hash) eq "{\"key\":\"value\"}") {
-      return 0;
-    }
-    $json->{space_before} = 1;
-    $json->{space_after} = 0;
-    unless ($json->encode($hash) eq "{\"key\" :\"value\"}") {
-      return 0;
-    }
-    $json->{space_before} = 0;
-    $json->{space_after} = 1;
-    unless ($json->encode($hash) eq "{\"key\": \"value\"}") {
-      return 0;
-    }
-    $json->{space_before} = 1;
-    $json->{space_after} = 1;
-    unless ($json->encode($hash) eq "{\"key\" : \"value\"}") {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_format_indent : int () {
-    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::ObjectList->newa([(object) "x", "y"])]);
-    my $json = SPVM::JSON->new;
-    $json->{indent} = 1;
-    $json->{indent_length} = 2;
-    $json->{canonical} = 1;
-    my $expected = "{\n  \"a\":\"v1\",\n  \"b\":\"v2\",\n  \"c\":[\n    \"x\",\n    \"y\"\n  ]\n}";
-    my $actual = $json->encode($hash);
-    unless ($expected eq $actual) {
-      warn ("expected:\n$expected\nactual:\n$actual");
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_format_pretty : int () {
-    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::ObjectList->newa([(object) "x", "y"])]);
-    my $json = SPVM::JSON->new;
-    $json->{canonical} = 1;
-    $json->pretty(1);
-    my $expected = "{\n   \"a\" : \"v1\",\n   \"b\" : \"v2\",\n   \"c\" : [\n      \"x\",\n      \"y\"\n   ]\n}";
-    my $actual = $json->encode($hash);
-    unless ($expected eq $actual) {
-      warn ("expected:\n$expected\nactual:\n$actual");
-      return 0;
-    }
-    $json->pretty(0);
-    $expected = "{\"a\":\"v1\",\"b\":\"v2\",\"c\":[\"x\",\"y\"]}";
-    $actual = $json->encode($hash);
-    unless ($expected eq $actual) {
-      warn ("expected:\n$expected\nactual:\n$actual");
       return 0;
     }
     return 1;

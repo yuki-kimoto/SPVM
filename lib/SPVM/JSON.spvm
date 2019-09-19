@@ -1,18 +1,15 @@
 package SPVM::JSON {
+  use SPVM::JSON::Bool;
   use SPVM::Hash;
   use SPVM::ObjectList;
   use SPVM::Int;
   use SPVM::Long;
   use SPVM::Double;
-  use SPVM::JSON::Bool;
   use SPVM::Math;
   use SPVM::Sort (sortstr);
-
-  has indent : public int;
-  has indent_length : public int;
-  has space_before : public int;
-  has space_after : public int;
-  has canonical : public int;
+  
+  has canonical : rw byte;
+  
   has num_policy : public int;
 
   enum {
@@ -562,18 +559,6 @@ package SPVM::JSON {
     }
   }
 
-  sub _make_indent : string ($self : self, $depth : int) {
-    unless ($depth > 0 && $self->{indent} && $self->{indent_length} > 0) {
-      return "";
-    }
-    my $sum_length = $self->{indent_length} * $depth;
-    my $indent_bytes = new byte [$sum_length];
-    for (my $i = 0; $i < $sum_length; ++$i) {
-      $indent_bytes->[$i] = ' ';
-    }
-    return (string)$indent_bytes;
-  }
-
   sub _escape_string : string ($string : string) {
     my $length = length $string;
     my $chars = SPVM::ObjectList->new;
@@ -628,44 +613,22 @@ package SPVM::JSON {
     # objects
     elsif ($o isa SPVM::Hash) {
       my $text = "";
-      if ($self->{indent}) {
-        $text .= $self->_make_indent($depth);
-      }
       $text .= "{";
-      if ($self->{indent}) {
-        $text .= "\n";
-      }
       my $hash = (SPVM::Hash)$o;
       my $keys = $hash->keys;
-      if ($self->{canonical}) {
+      if ($self->canonical) {
         sortstr($keys);
       }
       for (my $i = 0; $i < @$keys; ++$i) {
         if ($i > 0) {
           $text .= ",";
-          if ($self->{indent}) {
-            $text .= "\n";
-          }
-        }
-        if ($self->{indent}) {
-          $text .= $self->_make_indent($depth + 1);
         }
         $text .= "\"" . $keys->[$i] . "\"";
-        if ($self->{space_before}) {
-          $text .= " ";
-        }
         $text .= ":";
-        if ($self->{space_after}) {
-          $text .= " ";
-        }
         unless ($hash->exists($keys->[$i])) {
           die "Unexpected error. Not found key: " . $keys->[$i];
         }
         $text .= $self->_encode_value($hash->get($keys->[$i]), $depth + 1);
-      }
-      if ($self->{indent}) {
-        $text .= "\n";
-        $text .= $self->_make_indent($depth);
       }
       $text .= "}";
       return $text;
@@ -673,26 +636,13 @@ package SPVM::JSON {
     elsif ($o isa SPVM::ObjectList) {
       my $text = "";
       $text .= "[";
-      if ($self->{indent}) {
-        $text .= "\n";
-      }
       my $list = (SPVM::ObjectList)$o;
       my $length = $list->length;
       for (my $i = 0; $i < $length; ++$i) {
         if ($i > 0) {
           $text .= ",";
-          if ($self->{indent}) {
-            $text .= "\n";
-          }
-        }
-        if ($self->{indent}) {
-          $text .= $self->_make_indent($depth + 1);
         }
         $text .= $self->_encode_value($list->get($i), $depth + 1);
-      }
-      if ($self->{indent}) {
-        $text .= "\n";
-        $text .= $self->_make_indent($depth);
       }
       $text .= "]";
       return $text;
@@ -733,10 +683,6 @@ package SPVM::JSON {
 
   sub new : SPVM::JSON () {
     my $json = new SPVM::JSON;
-    $json->{indent} = 0;
-    $json->{indent_length} = 0;
-    $json->{space_before} = 0;
-    $json->{space_after} = 0;
     return $json;
   }
 
@@ -762,20 +708,5 @@ package SPVM::JSON {
       ERR("Not all json_text is decoded yet", $json_text, $iter, $length);
     }
     return $ret;
-  }
-
-  sub pretty : void ($self : self, $pretty : int) {
-    if ($pretty) {
-      $self->{indent} = 1;
-      $self->{indent_length} = 3;
-      $self->{space_before} = 1;
-      $self->{space_after} = 1;
-    }
-    else {
-      $self->{indent} = 0;
-      $self->{indent_length} = 0;
-      $self->{space_before} = 0;
-      $self->{space_after} = 0;
-    }
   }
 }
