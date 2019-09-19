@@ -628,8 +628,8 @@ package SPVM::JSON {
         $buffer->push("\"");
         $buffer->push($keys->[$i]);
         $buffer->push("\":");
-        my $json_tmp = $self->_encode_recursive($hash->get($keys->[$i]), $depth + 1);
-        $buffer->push($json_tmp);
+        my $json_part = $self->_encode_recursive($hash->get($keys->[$i]), $depth + 1);
+        $buffer->push($json_part);
       }
       $buffer->push("}");
       
@@ -637,18 +637,21 @@ package SPVM::JSON {
     }
     # Array
     elsif ($spvm_data isa SPVM::ObjectList) {
-      my $text = "";
-      $text .= "[";
+      my $buffer = SPVM::StringBuffer->new;
+      $buffer->push("[");
+      
       my $list = (SPVM::ObjectList)$spvm_data;
       my $length = $list->length;
       for (my $i = 0; $i < $length; ++$i) {
         if ($i > 0) {
-          $text .= ",";
+          $buffer->push(",");
         }
-        $text .= $self->_encode_recursive($list->get($i), $depth + 1);
+        my $json_part = $self->_encode_recursive($list->get($i), $depth + 1);
+        $buffer->push($json_part);
       }
-      $text .= "]";
-      $json = $text;
+      $buffer->push("]");
+      
+      $json = $buffer->to_str;
     }
     # string
     elsif ($spvm_data isa string) {
