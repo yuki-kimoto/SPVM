@@ -4778,7 +4778,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
     if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", type_name, sub_name, op_call_sub->file, op_call_sub->line);
+      SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", type_name, sub_name, op_call_sub->file, op_call_sub->line);
       return;
     }
     else {
@@ -4787,7 +4787,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
       SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
       
       if (!package) {
-        SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", basic_type_name, sub_name, op_call_sub->file, op_call_sub->line);
+        SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", basic_type_name, sub_name, op_call_sub->file, op_call_sub->line);
         return;
       }
       
@@ -4873,7 +4873,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
   }
   else {
     assert(found_package);
-    SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", found_package->name, sub_name, op_call_sub->file, op_call_sub->line);
+    SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", found_package->name, sub_name, op_call_sub->file, op_call_sub->line);
     return;
   }
 }
