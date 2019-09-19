@@ -11,17 +11,14 @@ package SPVM::JSON {
   
   has canonical : rw byte;
   
-  enum {
+  private enum {
     NUM_DEFAULT,
     NUM_ALLOW_LONG,
   }
-
-  sub DBL_DIG : int () {
-    return 15;
-  }
-
-  sub LDBL_DIG : int () {
-    return 18;
+  
+  private enum {
+    DBL_DIG = 15,
+    LDBL_DIG = 18
   }
 
   sub ERR : void ($die_message : string, $s : string, $start : int, $end : int) {
@@ -664,7 +661,6 @@ package SPVM::JSON {
     }
     # double
     elsif ($spvm_data isa SPVM::Double) {
-      # TODO: sprintf
       $json = (string)(((SPVM::Double)$spvm_data)->val);
     }
     # bool
