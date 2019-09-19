@@ -606,11 +606,12 @@ package SPVM::JSON {
   sub _encode_recursive : string ($self : self, $spvm_data : object, $depth : int) {
     
     my $json : string;
+    
+    # undef
     if ($spvm_data == undef) {
-      # null/inf/-inf/nan
       $json = "null";
     }
-    # objects
+    # Hash
     elsif ($spvm_data isa SPVM::Hash) {
       my $text = "";
       $text .= "{";
@@ -633,6 +634,7 @@ package SPVM::JSON {
       $text .= "}";
       $json = $text;
     }
+    # Array
     elsif ($spvm_data isa SPVM::ObjectList) {
       my $text = "";
       $text .= "[";
@@ -647,20 +649,20 @@ package SPVM::JSON {
       $text .= "]";
       $json = $text;
     }
-    # primitives
+    # string
     elsif ($spvm_data isa string) {
       my $escaped = _escape_string((string)$spvm_data);
       $json = "\"" . $escaped . "\"";
     }
+    # int
     elsif ($spvm_data isa SPVM::Int) {
       $json = (string)(((SPVM::Int)$spvm_data)->val);
     }
-    elsif ($spvm_data isa SPVM::Long) {
-      $json = (string)(((SPVM::Long)$spvm_data)->val);
-    }
+    # double
     elsif ($spvm_data isa SPVM::Double) {
       $json = (string)(((SPVM::Double)$spvm_data)->val);
     }
+    # bool
     elsif ($spvm_data isa SPVM::JSON::Bool) {
       if (((SPVM::JSON::Bool)$spvm_data)->val) {
         $json = "true";
