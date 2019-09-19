@@ -13,7 +13,6 @@ package SPVM::JSON {
   has space_before : public int;
   has space_after : public int;
   has canonical : public int;
-  has relaxed : public int;
   has num_policy : public int;
 
   enum {
@@ -37,53 +36,8 @@ package SPVM::JSON {
     die $die_message . "\nRemains... '$remains'";
   }
 
-  sub _skip_comment : void ($s : string, $i : int&, $end : int) {
-    my $comment = 0;
-    for (; $$i < $end ; ++$$i) {
-      if ($comment == 1 && $s->[$$i] == '\n') {
-        return;
-      }
-      if ($comment == 2) {
-        unless ($s->[$$i] == '*') {
-          next;
-        }
-        ++$$i;
-        unless ($$i < $end) {
-          return; # no */ is allowed
-        }
-        if ($s->[$$i] == '/') {
-          $comment = 0;
-        }
-      }
-      elsif ($s->[$$i] == '#') {
-        $comment = 1;
-      }
-      elsif ($s->[$$i] == '/') {
-        ++$$i;
-        unless ($$i < $end) {
-          ERR("Unexpected token '/'", $s, $$i, $end);
-        }
-        if ($s->[$$i] == '/') {
-          $comment = 1;
-        }
-        elsif ($s->[$$i] == '*') {
-          $comment = 2;
-        }
-        else {
-          ERR("Unexpected token '/'", $s, $$i, $end);
-        }
-      }
-      elsif ($comment == 0) {
-        return;
-      }
-    }
-  }
-
   sub _skip_spaces : void ($self : self, $s : string, $i : int&, $end : int) {
     for (; 1 ; ++$$i) {
-      if ($self->{relaxed}) {
-        _skip_comment($s, $i, $end);
-      }
       if ($$i == $end) {
         return;
       }
@@ -156,7 +110,7 @@ package SPVM::JSON {
         $special_char_expected = 1;
       }
       else {
-        if (!$self->{relaxed} && $got_char == '\t') {
+        if ($got_char == '\t') {
           ERR("Literal ASCII tab characters are not allowed in string", $s, $$i, $end);
         }
         $chars->push(SPVM::Int->new($got_char));
@@ -526,10 +480,6 @@ package SPVM::JSON {
       if ($has_element) {
         _expect_token($s, $i, $end, ",");
         $self->_skip_spaces_at_not_end($s, $i, $end);
-        # allow last comma
-        if ($self->{relaxed} && $s->[$$i] == '}') {
-          last;
-        }
       }
       else {
         $has_element = 1;
@@ -565,10 +515,6 @@ package SPVM::JSON {
       if ($has_element) {
         _expect_token($s, $i, $end, ",");
         $self->_skip_spaces_at_not_end($s, $i, $end);
-        # allow last comma
-        if ($self->{relaxed} && $s->[$$i] == ']') {
-          last;
-        }
       }
       else {
         $has_element = 1;
@@ -791,7 +737,6 @@ package SPVM::JSON {
     $json->{indent_length} = 0;
     $json->{space_before} = 0;
     $json->{space_after} = 0;
-    $json->{relaxed} = 1;
     return $json;
   }
 

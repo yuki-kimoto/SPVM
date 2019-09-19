@@ -175,27 +175,6 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_relaxed : int () {
-    my $inputs  = ["{\"k\":1,}","[1,]","{\"a\":1# comment\n,\"b\":2, ##\n\"c\":3,//xyz\n\"d\" /*multiple\ncomments//x#y*\nz*/:4}","\"\t\""];
-    my $outputs = ["{\"k\":1}","[1]","{\"a\":1,\"b\":2,\"c\":3,\"d\":4}","\"\\t\""];
-    my $json = SPVM::JSON->new;
-    $json->{relaxed} = 1;
-    unless (_validate($DEFAULT_JSON, $inputs, $outputs)) {
-      return 0;
-    }
-    $json->{relaxed} = 0;
-    for (my $i = 0; $i < @$inputs; $i++) {
-      eval {
-        $json->encode($json->decode($inputs->[$i]));
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
-    }
-    return 1;
-  }
-
   sub test_special_chars : int () {
     my $tests = ["\"\\\"\\\\\\t\\n\\r\""];
     unless (_validate($DEFAULT_JSON, $tests, $tests)) {
