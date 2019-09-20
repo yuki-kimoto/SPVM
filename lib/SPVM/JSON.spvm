@@ -655,9 +655,25 @@ package SPVM::JSON {
       my $escaped = _escape_string((string)$spvm_data);
       $json = "\"" . $escaped . "\"";
     }
+    # byte
+    elsif ($spvm_data isa SPVM::Byte) {
+      $json = (string)(double)(((SPVM::Byte)$spvm_data)->val);
+    }
+    # short
+    elsif ($spvm_data isa SPVM::Short) {
+      $json = (string)(double)(((SPVM::Short)$spvm_data)->val);
+    }
     # int
     elsif ($spvm_data isa SPVM::Int) {
-      $json = (string)(((SPVM::Int)$spvm_data)->val);
+      $json = (string)(double)(((SPVM::Int)$spvm_data)->val);
+    }
+    # long
+    elsif ($spvm_data isa SPVM::Long) {
+      $json = (string)(double)(((SPVM::Long)$spvm_data)->val);
+    }
+    # float
+    elsif ($spvm_data isa SPVM::Float) {
+      $json = (string)(double)(((SPVM::Float)$spvm_data)->val);
     }
     # double
     elsif ($spvm_data isa SPVM::Double) {
