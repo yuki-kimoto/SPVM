@@ -241,6 +241,45 @@ package SPVM::JSON {
     }
   }
 
+  private sub _grok_non_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
+    my $number_type = 0;
+    $$val = 0;
+    for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
+      if ($$val <= (long)INT32_MAX()) {
+        $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
+      }
+      elsif ($$val < INT64_MAX() / 10 ||
+          ($$val == INT64_MAX() / 10 && $json_str->[$start + $digit_index] - '0' <= INT64_MAX() % 10)) {
+        $number_type = 1;
+        $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
+      }
+      else {
+        return -1;
+      }
+    }
+    return $number_type;
+  }
+
+  private sub _grok_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
+    my $number_type = 0;
+    $$val = 0;
+    for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
+      if ($$val >= (long)INT32_MIN()) {
+        $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
+      }
+      elsif ($$val > INT64_MIN() / 10 ||
+          ($$val == INT64_MIN() / 10 &&
+              $json_str->[$start + $digit_index] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
+        $number_type = 1;
+        $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
+      }
+      else {
+        return -1;
+      }
+    }
+    return $number_type;
+  }
+
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
   private sub _decode_num : object ($self : self, $json_str : string, $iter : int&, $end : int) {
     if ($json_str->[$$iter] == 'n') {
@@ -372,52 +411,11 @@ package SPVM::JSON {
         }
       }
 
-      my $grok_non_neg = sub : int ($self : self,
-          $json_str : string, $start : int, $len : int, $val : long&) {
-        my $number_type = 0;
-        $$val = 0;
-        for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
-          if ($$val <= (long)INT32_MAX()) {
-            $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
-          }
-          elsif ($$val < INT64_MAX() / 10 ||
-              ($$val == INT64_MAX() / 10 && $json_str->[$start + $digit_index] - '0' <= INT64_MAX() % 10)) {
-            $number_type = 1;
-            $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
-          }
-          else {
-            return -1;
-          }
-        }
-        return $number_type;
-      };
-
-      my $grok_neg = sub : int ($self : self,
-          $json_str : string, $start : int, $len : int, $val : long&) {
-        my $number_type = 0;
-        $$val = 0;
-        for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
-          if ($$val >= (long)INT32_MIN()) {
-            $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
-          }
-          elsif ($$val > INT64_MIN() / 10 ||
-              ($$val == INT64_MIN() / 10 &&
-                  $json_str->[$start + $digit_index] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
-            $number_type = 1;
-            $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
-          }
-          else {
-            return -1;
-          }
-        }
-        return $number_type;
-      };
-
       my $val : long;
       my $number_type = 0;
 
       if ($json_str->[$start] == '-') {
-        $number_type = $grok_neg->($json_str, $start + 1, $len - 1, \$val);
+        $number_type = _grok_neg($json_str, $start + 1, $len - 1, \$val);
         if ($number_type == 0) {
           return (int)$val;
         }
@@ -426,7 +424,7 @@ package SPVM::JSON {
         }
       }
       else {
-        $number_type = $grok_non_neg->($json_str, $start, $len, \$val);
+        $number_type = _grok_non_neg($json_str, $start, $len, \$val);
         if ($number_type == 0) {
           return (int)$val;
         }
