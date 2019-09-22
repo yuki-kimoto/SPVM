@@ -267,9 +267,76 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_flat_list : int () {
-    my $tests = ["[]", "[1,2,3]", "[\"abc\",\"123\"]", "[123,\"abc\",0,\"123abc\",3.1415]"];
-    return _validate($DEFAULT_JSON, $tests, $tests);
+  sub encode_flat_list : int () {
+    {
+      my $input    = SPVM::ObjectList->new;
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::ObjectList->newa([(object) 1, 2, 3]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[1,2,3]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::ObjectList->newa([(object) "abc", "def"]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[\"abc\",\"def\"]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::ObjectList->newa([(object) 0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[0,3.14,\"abc\",true]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub decode_flat_list : int () {
+    {
+      my $input    = "[]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->new;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "[3,2,1]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) 3, 2, 1]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "[\"def\",\"abc\"]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) "def", "abc"]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "[0,3.14,\"abc\",true]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) 0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
   }
 
   sub test_digits_int : int () {
