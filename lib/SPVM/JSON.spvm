@@ -567,11 +567,11 @@ package SPVM::JSON {
 
   precompile private sub _escape_string : string ($string : string) {
     my $length = length $string;
-    my $chars = SPVM::ObjectList->new;
-    for (my $str_index = 0; $str_index < $length; ++$str_index) {
-      my $got_char = (int)($string->[$str_index]);
-      my $special = -1;
-      switch ($got_char) {
+    my $buffer = SPVM::StringBuffer->new;
+    for (my $i = 0; $i < $length; ++$i) {
+      my $char = $string->[$i];
+      my $special : byte = -1;
+      switch ((int)$char) {
         case 9: {# '\t'
           # Note: Decoded char from literal ASCII tab will be encoded with "\\t" (non-reversible).
           $special = 't';
@@ -595,20 +595,14 @@ package SPVM::JSON {
         }
       }
       if ($special == -1) {
-        $chars->push(SPVM::Int->new($got_char));
+        $buffer->push_char($char);
       }
       else {
-        $chars->push(SPVM::Int->new('\\'));
-        $chars->push(SPVM::Int->new($special));
+        $buffer->push_char('\\');
+        $buffer->push_char($special);
       }
     }
-    my $chars_length = $chars->length;
-    my $escaped = new byte [$chars_length];
-    for (my $k = 0; $k < $chars_length; ++$k) {
-      my $got = ((SPVM::Int)$chars->shift)->val;
-      $escaped->[$k] = (byte)$got;
-    }
-    return (string)$escaped;
+    return $buffer->to_str;
   }
 
   precompile private sub _encode_recursive : string ($self : self, $spvm_data : object, $depth : int) {
