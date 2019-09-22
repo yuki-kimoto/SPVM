@@ -461,21 +461,117 @@ package TestCase::JSON {
   }
 
   sub encode_string : int () {
-    my $input = "str";
-    my $got = $DEFAULT_JSON->encode($input);
-    my $expected = "\"str\"";
-    unless ($got eq $expected) {
-      return 0;
+    {
+      my $input = "str";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"str\"";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    # special characters
+    # '\'
+    {
+      my $input = "\\";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\\\\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '"'
+    {
+      my $input = "\"";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\\"\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\t'
+    {
+      my $input = "\t";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\t\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\n'
+    {
+      my $input = "\n";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\n\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\r'
+    {
+      my $input = "\r";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\r\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
     }
     return 1;
   }
 
   sub decode_string : int () {
-    my $input = "\"str\"";
-    my $got = $DEFAULT_JSON->decode($input);
-    my $expected = "str";
-    unless (_equals($got, $expected)) {
-      return 0;
+    {
+      my $input = "\"str\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "str";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # special characters
+    # '\'
+    {
+      my $input = "\"\\\\\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\\";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '"'
+    {
+      my $input = "\"\\\"\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\t'
+    {
+      my $input = "\"\\t\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\t";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\n'
+    {
+      my $input = "\"\\n\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\n";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\r'
+    {
+      my $input = "\"\\r\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\r";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
     }
     return 1;
   }
@@ -529,14 +625,6 @@ package TestCase::JSON {
       "I" => "EOF",
     ]);
     unless (_equals($got, $expected)) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_special_chars : int () {
-    my $tests = ["\"\\\"\\\\\\t\\n\\r\""];
-    unless (_validate($DEFAULT_JSON, $tests, $tests)) {
       return 0;
     }
     return 1;
