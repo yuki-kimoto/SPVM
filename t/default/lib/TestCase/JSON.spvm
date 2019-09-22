@@ -4,12 +4,125 @@ package TestCase::JSON {
   use SPVM::Int;
   use SPVM::Double;
   use SPVM::JSON::Bool;
+  use SPVM::Hash;
+  use SPVM::Sort (sortstr);
 
   our $DEFAULT_JSON : SPVM::JSON;
 
   BEGIN {
     $DEFAULT_JSON = SPVM::JSON->new;
     $DEFAULT_JSON->set_canonical(1);
+  }
+
+  sub _equals : int ($lhs : object, $rhs : object) {
+    if ($lhs == undef) {
+      unless ($rhs == undef) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::Hash) {
+      unless ($rhs isa SPVM::Hash) {
+        return 0;
+      }
+
+      my $l_hash = (SPVM::Hash)$lhs;
+      my $r_hash = (SPVM::Hash)$lhs;
+
+      my $l_keys = $l_hash->keys;
+      my $r_keys = $r_hash->keys;
+
+      if (@$l_keys == 0) {
+        unless (@$r_keys == 0) {
+          return 0;
+        }
+      }
+      else {
+        sortstr($l_keys);
+        sortstr($r_keys);
+
+        for (my $key_index = 0; $key_index < @$l_keys; ++$key_index) {
+          my $key = $l_keys->[$key_index];
+          unless ($l_keys->[$key_index] eq $r_keys->[$key_index]) {
+            return 0;
+          }
+          unless (_equals($l_hash->get($key), $r_hash->get($key))) {
+            return 0;
+          }
+        }
+      }
+    }
+    elsif ($lhs isa SPVM::ObjectList) {
+      unless ($rhs isa SPVM::ObjectList) {
+        return 0;
+      }
+
+      my $l_list = (SPVM::ObjectList)$lhs;
+      my $r_list = (SPVM::ObjectList)$rhs;
+
+      unless ($l_list->length == $r_list->length) {
+        return 0;
+      }
+
+      my $length = $l_list->length;
+      for (my $list_index = 0; $list_index < $length; ++$list_index) {
+        unless (_equals($l_list->get($list_index), $r_list->get($list_index))) {
+          return 0;
+        }
+      }
+    }
+    elsif ($lhs isa string) {
+      unless ($rhs isa string) {
+        return 0;
+      }
+
+      my $l_str = (string)$lhs;
+      my $r_str = (string)$rhs;
+
+      unless ($l_str eq $r_str) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::Int) {
+      unless ($rhs isa SPVM::Int) {
+        return 0;
+      }
+
+      my $l_int = (SPVM::Int)$lhs;
+      my $r_int = (SPVM::Int)$rhs;
+
+      unless ($l_int->val == $r_int->val) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::JSON::Bool) {
+      unless ($rhs isa SPVM::JSON::Bool) {
+        return 0;
+      }
+
+      my $l_bool = (SPVM::JSON::Bool)$lhs;
+      my $r_bool = (SPVM::JSON::Bool)$rhs;
+
+      unless ($l_bool->val == $r_bool->val) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::Double) {
+      unless ($rhs isa SPVM::Double) {
+        return 0;
+      }
+
+      my $l_dbl = (SPVM::Double)$lhs;
+      my $r_dbl = (SPVM::Double)$rhs;
+
+      unless ($l_dbl->val == $r_dbl->val) {
+        return 0;
+      }
+    }
+    else {
+      die "Not implemented type is used in \$lhs";
+    }
+
+    return 1;
   }
 
   sub _validate : int ($json : SPVM::JSON, $input : string[], $expected : string[]) {
