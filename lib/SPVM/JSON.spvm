@@ -21,15 +21,15 @@ package SPVM::JSON {
     LDBL_DIG = 18
   }
 
-  precompile private sub _custom_die : void ($die_message : string, $json_str : string, $start : int) {
-    my $end = length $json_str;
+  precompile private sub _custom_die : void ($die_message : string, $json : string, $start : int) {
+    my $end = length $json;
     my $max_dump_length = 10;
     if ($max_dump_length > $end - $start) {
       $max_dump_length = $end - $start;
     }
     my $hint = "";
     if ($max_dump_length > 0) {
-      $hint = "near '" . substr($json_str, $start, $end - $start) . "'";
+      $hint = "near '" . substr($json, $start, $end - $start) . "'";
     }
     else {
       $hint = "end of string";
@@ -37,28 +37,28 @@ package SPVM::JSON {
     die $die_message . " ... $hint";
   }
 
-  precompile private sub _skip_spaces : void ($self : self, $json_str : string, $iter : int&) {
-    my $end = length $json_str;
+  precompile private sub _skip_spaces : void ($self : self, $json : string, $iter : int&) {
+    my $end = length $json;
     for (; 1 ; ++$$iter) {
       if ($$iter == $end) {
         return;
       }
-      unless ($json_str->[$$iter] == ' ' || $json_str->[$$iter] == '\n' || $json_str->[$$iter] == '\t' || $json_str->[$$iter] == '\r') {
+      unless ($json->[$$iter] == ' ' || $json->[$$iter] == '\n' || $json->[$$iter] == '\t' || $json->[$$iter] == '\r') {
         last;
       }
     }
   }
 
-  precompile private sub _expect_token : void ($json_str : string, $iter : int&, $expected : string) {
-    my $end = length $json_str;
+  precompile private sub _expect_token : void ($json : string, $iter : int&, $expected : string) {
+    my $end = length $json;
     my $length = length $expected;
     unless ($$iter + $length <= $end) {
-      _custom_die("Expected token: $expected doesn't exist", $json_str, $$iter);
+      _custom_die("Expected token: $expected doesn't exist", $json, $$iter);
     }
     my $begin = $$iter;
     while (1) {
-      unless ($json_str->[$$iter] == $expected->[$$iter - $begin]) {
-        _custom_die("Expected token: $expected doesn't exist", $json_str, $$iter);
+      unless ($json->[$$iter] == $expected->[$$iter - $begin]) {
+        _custom_die("Expected token: $expected doesn't exist", $json, $$iter);
       }
       ++$$iter;
       if ($$iter - $begin == $length) {
@@ -67,18 +67,18 @@ package SPVM::JSON {
     }
   }
 
-  precompile private sub _decode_string : string ($self : self, $json_str : string, $iter : int&) {
-    my $end = length $json_str;
+  precompile private sub _decode_string : string ($self : self, $json : string, $iter : int&) {
+    my $end = length $json;
     my $buffer = SPVM::StringBuffer->new;
 
-    _expect_token($json_str, $iter, "\"");
+    _expect_token($json, $iter, "\"");
 
     my $special_char_expected = 0;
     while (1) {
-      if ($$iter >= $end || (!$special_char_expected && $json_str->[$$iter] == '"')) {
+      if ($$iter >= $end || (!$special_char_expected && $json->[$$iter] == '"')) {
         last;
       }
-      my $char = $json_str->[$$iter];
+      my $char = $json->[$$iter];
       if ($special_char_expected) {
         switch ((int)$char) {
           case 34: # '"'
@@ -100,7 +100,7 @@ package SPVM::JSON {
             break;
           }
           default: {
-            _custom_die("Undefined special char", $json_str, $$iter);
+            _custom_die("Undefined special char", $json, $$iter);
           }
         }
         $special_char_expected = 0;
@@ -110,67 +110,67 @@ package SPVM::JSON {
       }
       else {
         if ($char == '\t') {
-          _custom_die("Literal ASCII tab characters are not allowed in string", $json_str, $$iter);
+          _custom_die("Literal ASCII tab characters are not allowed in string", $json, $$iter);
         }
         $buffer->push_char($char);
       }
       ++$$iter;
     }
     if ($$iter == $end) {
-      _custom_die("Invalid string. end-quote doesn't exist", $json_str, $$iter);
+      _custom_die("Invalid string. end-quote doesn't exist", $json, $$iter);
     }
 
-    _expect_token($json_str, $iter, "\"");
+    _expect_token($json, $iter, "\"");
 
     return (string)$buffer->to_str;
   }
 
-  precompile private sub _atof_scan1 : double ($json_str : string, $iter : int,
+  precompile private sub _atof_scan1 : double ($json : string, $iter : int,
       $accum : double&, $expo : int&, $postdp : int, $maxdepth : int) {
-    my $end = length $json_str;
+    my $end = length $json;
     my $long_accum : long = 0;
     my $expo_accum = 0;
 
     # if we recurse too deep, skip all remaining digits
     # to avoid a stack overflow attack
     if (--$maxdepth <= 0) {
-      while ($iter < $end && ($json_str->[$iter] - '0') < 10) {
+      while ($iter < $end && ($json->[$iter] - '0') < 10) {
         ++$iter;
       }
     }
 
     while ($iter < $end) {
-      if ($json_str->[$iter] == '.') {
+      if ($json->[$iter] == '.') {
         ++$iter;
-        _atof_scan1($json_str, $iter, $accum, $expo, 1, $maxdepth);
+        _atof_scan1($json, $iter, $accum, $expo, 1, $maxdepth);
         last;
       }
-      elsif ($json_str->[$iter] == 'e' || $json_str->[$iter] == 'E') {
+      elsif ($json->[$iter] == 'e' || $json->[$iter] == 'E') {
         my $exp2 = 0;
         my $neg = 0;
 
         ++$iter;
 
         if ($iter >= $end) {
-          _custom_die ("malformed number (no digits after e/E)", $json_str, $iter);
+          _custom_die ("malformed number (no digits after e/E)", $json, $iter);
         }
 
-        if ($json_str->[$iter] == '-') {
+        if ($json->[$iter] == '-') {
           ++$iter;
           $neg = 1;
         }
-        elsif ($json_str->[$iter] == '+') {
+        elsif ($json->[$iter] == '+') {
           ++$iter;
         }
 
         if ($iter >= $end) {
-          _custom_die ("malformed number (no digits after e/E)", $json_str, $iter);
+          _custom_die ("malformed number (no digits after e/E)", $json, $iter);
         }
 
         while ($iter < $end) {
-          my $dig = $json_str->[$iter] - '0';
+          my $dig = $json->[$iter] - '0';
           if ($dig < 10) {
-            $exp2 = $exp2 * 10 + $json_str->[$iter++] - '0';
+            $exp2 = $exp2 * 10 + $json->[$iter++] - '0';
           }
           else {
             last;
@@ -185,8 +185,8 @@ package SPVM::JSON {
         }
         last;
       }
-      elsif ($json_str->[$iter] >= '0' && $json_str->[$iter] <= '9') {
-        my $dig = $json_str->[$iter] - '0';
+      elsif ($json->[$iter] >= '0' && $json->[$iter] <= '9') {
+        my $dig = $json->[$iter] - '0';
 
         ++$iter;
 
@@ -199,7 +199,7 @@ package SPVM::JSON {
           if ($postdp) {
             $$expo -= $expo_accum;
           }
-          _atof_scan1($json_str, $iter, $accum, $expo, $postdp, $maxdepth);
+          _atof_scan1($json, $iter, $accum, $expo, $postdp, $maxdepth);
           if ($postdp) {
             $$expo += $expo_accum;
           }
@@ -219,18 +219,18 @@ package SPVM::JSON {
     $$expo += $expo_accum;
   }
 
-  precompile private sub _atof : double ($json_str : string, $start : int) {
+  precompile private sub _atof : double ($json : string, $start : int) {
     my $accum = 0.0;
     my $expo = 0;
     my $neg = 0;
 
-    if ($json_str->[$start] == '-') {
+    if ($json->[$start] == '-') {
       ++$start;
       $neg = 1;
     }
 
     # a recursion depth of ten gives us >>500 bits
-    _atof_scan1($json_str, $start, \$accum, \$expo, 0, 10);
+    _atof_scan1($json, $start, \$accum, \$expo, 0, 10);
 
     if ($neg) {
       return -$accum;
@@ -240,17 +240,17 @@ package SPVM::JSON {
     }
   }
 
-  precompile private sub _grok_non_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
+  precompile private sub _grok_non_neg : int ($json : string, $start : int, $len : int, $val : long&) {
     my $number_type = 0;
     $$val = 0;
     for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
       if ($$val <= (long)INT32_MAX()) {
-        $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
+        $$val = $$val * 10 + $json->[$start + $digit_index] - '0';
       }
       elsif ($$val < INT64_MAX() / 10 ||
-          ($$val == INT64_MAX() / 10 && $json_str->[$start + $digit_index] - '0' <= INT64_MAX() % 10)) {
+          ($$val == INT64_MAX() / 10 && $json->[$start + $digit_index] - '0' <= INT64_MAX() % 10)) {
         $number_type = 1;
-        $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
+        $$val = $$val * 10 + $json->[$start + $digit_index] - '0';
       }
       else {
         return -1;
@@ -259,18 +259,18 @@ package SPVM::JSON {
     return $number_type;
   }
 
-  precompile private sub _grok_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
+  precompile private sub _grok_neg : int ($json : string, $start : int, $len : int, $val : long&) {
     my $number_type = 0;
     $$val = 0;
     for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
       if ($$val >= (long)INT32_MIN()) {
-        $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
+        $$val = $$val * 10 - ($json->[$start + $digit_index] - '0');
       }
       elsif ($$val > INT64_MIN() / 10 ||
           ($$val == INT64_MIN() / 10 &&
-              $json_str->[$start + $digit_index] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
+              $json->[$start + $digit_index] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
         $number_type = 1;
-        $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
+        $$val = $$val * 10 - ($json->[$start + $digit_index] - '0');
       }
       else {
         return -1;
@@ -280,17 +280,17 @@ package SPVM::JSON {
   }
 
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
-  precompile private sub _decode_num : object ($self : self, $json_str : string, $iter : int&) {
-    my $end = length $json_str;
-    if ($json_str->[$$iter] == 'n') {
-      if ($$iter + 2 < $end && substr($json_str, $$iter, 3) eq "nan") {
+  precompile private sub _decode_num : object ($self : self, $json : string, $iter : int&) {
+    my $end = length $json;
+    if ($json->[$$iter] == 'n') {
+      if ($$iter + 2 < $end && substr($json, $$iter, 3) eq "nan") {
         $$iter += 3;
       }
-      elsif ($$iter + 3 < $end && substr($json_str, $$iter, 4) eq "null") {
+      elsif ($$iter + 3 < $end && substr($json, $$iter, 4) eq "null") {
         $$iter += 4;
       }
       else {
-        _custom_die("malformed number.", $json_str, $$iter);
+        _custom_die("malformed number.", $json, $$iter);
       }
       return undef;
     }
@@ -299,41 +299,41 @@ package SPVM::JSON {
     my $start = $$iter;
 
     # minus
-    if ($json_str->[$$iter] == '-') {
+    if ($json->[$$iter] == '-') {
       ++$$iter;
     }
 
-    if ($json_str->[$$iter] == 'i') {
-      if ($$iter + 2 < $end && substr($json_str, $$iter, 3) eq "inf") {
+    if ($json->[$$iter] == 'i') {
+      if ($$iter + 2 < $end && substr($json, $$iter, 3) eq "inf") {
         $$iter += 3;
       }
       else {
-        _custom_die("malformed number.", $json_str, $$iter);
+        _custom_die("malformed number.", $json, $$iter);
       }
       return undef;
     }
 
-    if ($json_str->[$$iter] == '0') {
+    if ($json->[$$iter] == '0') {
       ++$$iter;
-      if ($$iter < $end && ($json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9')) {
-        _custom_die("malformed number (leading zero must not be followed by another digit)", $json_str, $$iter);
+      if ($$iter < $end && ($json->[$$iter] >= '0' && $json->[$$iter] <= '9')) {
+        _custom_die("malformed number (leading zero must not be followed by another digit)", $json, $$iter);
       }
     }
-    elsif ($$iter >= $end || $json_str->[$$iter] < '0' || $json_str->[$$iter] > '9') {
-      _custom_die ("malformed number (no digits after initial minus)", $json_str, $$iter);
+    elsif ($$iter >= $end || $json->[$$iter] < '0' || $json->[$$iter] > '9') {
+      _custom_die ("malformed number (no digits after initial minus)", $json, $$iter);
     }
 
-    while ($$iter < $end && $json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9') {
+    while ($$iter < $end && $json->[$$iter] >= '0' && $json->[$$iter] <= '9') {
       ++$$iter;
     }
 
     # frac
-    if ($$iter < $end && $json_str->[$$iter] == '.') {
+    if ($$iter < $end && $json->[$$iter] == '.') {
       ++$$iter;
-      if ($$iter >= $end || $json_str->[$$iter] < '0' || $json_str->[$$iter] > '9') {
-        _custom_die ("malformed number (no digits after decimal point)", $json_str, $$iter);
+      if ($$iter >= $end || $json->[$$iter] < '0' || $json->[$$iter] > '9') {
+        _custom_die ("malformed number (no digits after decimal point)", $json, $$iter);
       }
-      while ($$iter < $end && $json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9') {
+      while ($$iter < $end && $json->[$$iter] >= '0' && $json->[$$iter] <= '9') {
         ++$$iter;
       }
 
@@ -341,18 +341,18 @@ package SPVM::JSON {
     }
 
     # exp
-    if ($$iter < $end && ($json_str->[$$iter] == 'e' || $json_str->[$$iter] == 'E')) {
+    if ($$iter < $end && ($json->[$$iter] == 'e' || $json->[$$iter] == 'E')) {
       ++$$iter;
 
-      if ($$iter < $end && ($json_str->[$$iter] == '-' || $json_str->[$$iter] == '+')) {
+      if ($$iter < $end && ($json->[$$iter] == '-' || $json->[$$iter] == '+')) {
         ++$$iter;
       }
 
-      if ($$iter >= $end || $json_str->[$$iter] < '0' || $json_str->[$$iter] > '9') {
-        _custom_die ("malformed number (no digits after exp sign)", $json_str, $$iter);
+      if ($$iter >= $end || $json->[$$iter] < '0' || $json->[$$iter] > '9') {
+        _custom_die ("malformed number (no digits after exp sign)", $json, $$iter);
       }
 
-      while ($$iter < $end && ($json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9')) {
+      while ($$iter < $end && ($json->[$$iter] >= '0' && $json->[$$iter] <= '9')) {
         ++$$iter;
       }
 
@@ -362,26 +362,26 @@ package SPVM::JSON {
     if (!$is_double) {
       my $len = $$iter - $start;
 
-      if ($json_str->[$start] == '-') {
+      if ($json->[$start] == '-') {
         switch ($len) {
           case 2: {
-            return -(                                                                                                      $json_str->[$start + 1] - '0' *     1);
+            return -(                                                                                                      $json->[$start + 1] - '0' *     1);
             break;
           }
           case 3: {
-            return -(                                                                              $json_str->[$start + 1] * 10 + $json_str->[$start + 2] - '0' *    11);
+            return -(                                                                              $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *    11);
             break;
           }
           case 4: {
-            return -(                                                     $json_str->[$start + 1] * 100 + $json_str->[$start + 2] * 10 + $json_str->[$start + 3] - '0' *   111);
+            return -(                                                     $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *   111);
             break;
           }
           case 5: {
-            return -(                           $json_str->[$start + 1] * 1000 + $json_str->[$start + 2] * 100 + $json_str->[$start + 3] * 10 + $json_str->[$start + 4] - '0' *  1111);
+            return -(                           $json->[$start + 1] * 1000 + $json->[$start + 2] * 100 + $json->[$start + 3] * 10 + $json->[$start + 4] - '0' *  1111);
             break;
           }
           case 6: {
-            return -($json_str->[$start + 1] * 10000 + $json_str->[$start + 2] * 1000 + $json_str->[$start + 3] * 100 + $json_str->[$start + 4] * 10 + $json_str->[$start + 5] - '0' * 11111);
+            return -($json->[$start + 1] * 10000 + $json->[$start + 2] * 1000 + $json->[$start + 3] * 100 + $json->[$start + 4] * 10 + $json->[$start + 5] - '0' * 11111);
             break;
           }
         }
@@ -389,23 +389,23 @@ package SPVM::JSON {
       else {
         switch ($len) {
           case 1: {
-            return (                                                                                                           $json_str->[$start] - '0' *     1);
+            return (                                                                                                           $json->[$start] - '0' *     1);
             break;
           }
           case 2: {
-            return (                                                                                   $json_str->[$start] * 10 + $json_str->[$start + 1] - '0' *    11);
+            return (                                                                                   $json->[$start] * 10 + $json->[$start + 1] - '0' *    11);
             break;
           }
           case 3: {
-            return (                                                          $json_str->[$start] * 100 + $json_str->[$start + 1] * 10 + $json_str->[$start + 2] - '0' *   111);
+            return (                                                          $json->[$start] * 100 + $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *   111);
             break;
           }
           case 4: {
-            return (                                $json_str->[$start] * 1000 + $json_str->[$start + 1] * 100 + $json_str->[$start + 2] * 10 + $json_str->[$start + 3] - '0' *  1111);
+            return (                                $json->[$start] * 1000 + $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *  1111);
             break;
           }
           case 5: {
-            return (     $json_str->[$start] * 10000 + $json_str->[$start + 1] * 1000 + $json_str->[$start + 2] * 100 + $json_str->[$start + 3] * 10 + $json_str->[$start + 4] - '0' * 11111);
+            return (     $json->[$start] * 10000 + $json->[$start + 1] * 1000 + $json->[$start + 2] * 100 + $json->[$start + 3] * 10 + $json->[$start + 4] - '0' * 11111);
             break;
           }
         }
@@ -414,8 +414,8 @@ package SPVM::JSON {
       my $val : long;
       my $number_type = 0;
 
-      if ($json_str->[$start] == '-') {
-        $number_type = _grok_neg($json_str, $start + 1, $len - 1, \$val);
+      if ($json->[$start] == '-') {
+        $number_type = _grok_neg($json, $start + 1, $len - 1, \$val);
         if ($number_type == 0) {
           return (int)$val;
         }
@@ -424,7 +424,7 @@ package SPVM::JSON {
         }
       }
       else {
-        $number_type = _grok_non_neg($json_str, $start, $len, \$val);
+        $number_type = _grok_non_neg($json, $start, $len, \$val);
         if ($number_type == 0) {
           return (int)$val;
         }
@@ -433,150 +433,150 @@ package SPVM::JSON {
         }
       }
 
-      if ($json_str->[$start] == '-') {
+      if ($json->[$start] == '-') {
         --$len;
       }
 
       # does not fit into long, try double
       if (DBL_DIG() >= $len) {
-        return _atof($json_str, $start);
+        return _atof($json, $start);
       }
 
       # everything else fails, convert it to a string
-      return substr($json_str, $start, $$iter - $start);
+      return substr($json, $start, $$iter - $start);
     }
 
     # loss of precision here
-    return _atof($json_str, $start);
+    return _atof($json, $start);
   }
 
-  precompile private sub _decode_true : SPVM::JSON::Bool ($self : self, $json_str : string, $iter : int&) {
-    _expect_token($json_str, $iter, "true");
+  precompile private sub _decode_true : SPVM::JSON::Bool ($self : self, $json : string, $iter : int&) {
+    _expect_token($json, $iter, "true");
     return SPVM::JSON::Bool->TRUE;
   }
 
-  precompile private sub _decode_false : SPVM::JSON::Bool ($self : self, $json_str : string, $iter : int&) {
-    _expect_token($json_str, $iter, "false");
+  precompile private sub _decode_false : SPVM::JSON::Bool ($self : self, $json : string, $iter : int&) {
+    _expect_token($json, $iter, "false");
     return SPVM::JSON::Bool->FALSE;
   }
 
-  precompile private sub _decode_hash : SPVM::Hash ($self : self, $json_str : string, $iter : int&) {
-    my $end = length $json_str;
+  precompile private sub _decode_hash : SPVM::Hash ($self : self, $json : string, $iter : int&) {
+    my $end = length $json;
     my $hash = SPVM::Hash->new;
     my $has_element = 0;
 
-    _expect_token($json_str, $iter, "{");
+    _expect_token($json, $iter, "{");
 
     while (1) {
-      $self->_skip_spaces($json_str, $iter);
+      $self->_skip_spaces($json, $iter);
       if ($$iter == $end) {
-        _custom_die("Incomplete object in JSON: end of string", $json_str, $$iter);
+        _custom_die("Incomplete object in JSON: end of string", $json, $$iter);
       }
 
       # end of hash
-      if ($json_str->[$$iter] == '}') {
+      if ($json->[$$iter] == '}') {
         last;
       }
 
       # comma
       if ($has_element) {
-        _expect_token($json_str, $iter, ",");
-        $self->_skip_spaces($json_str, $iter);
+        _expect_token($json, $iter, ",");
+        $self->_skip_spaces($json, $iter);
       }
       else {
         $has_element = 1;
       }
 
       # key
-      my $key = $self->_decode_string($json_str, $iter);
+      my $key = $self->_decode_string($json, $iter);
 
       # separator
-      $self->_skip_spaces($json_str, $iter);
-      _expect_token($json_str, $iter, ":");
+      $self->_skip_spaces($json, $iter);
+      _expect_token($json, $iter, ":");
 
       # value
-      $self->_skip_spaces($json_str, $iter);
-      $hash->set($key, $self->_decode_recursive($json_str, $iter));
+      $self->_skip_spaces($json, $iter);
+      $hash->set($key, $self->_decode_recursive($json, $iter));
     }
 
-    _expect_token($json_str, $iter, "}");
+    _expect_token($json, $iter, "}");
 
     return $hash;
   }
 
-  precompile private sub _decode_list : SPVM::ObjectList ($self : self, $json_str : string, $iter : int&) {
-    my $end = length $json_str;
+  precompile private sub _decode_list : SPVM::ObjectList ($self : self, $json : string, $iter : int&) {
+    my $end = length $json;
     my $list = SPVM::ObjectList->new;
     my $has_element = 0;
 
-    _expect_token($json_str, $iter, "[");
+    _expect_token($json, $iter, "[");
 
     while (1) {
-      $self->_skip_spaces($json_str, $iter);
+      $self->_skip_spaces($json, $iter);
       if ($$iter == $end) {
-        _custom_die("Incomplete array in JSON: end of string", $json_str, $$iter);
+        _custom_die("Incomplete array in JSON: end of string", $json, $$iter);
       }
 
       # end of list
-      if ($json_str->[$$iter] == ']') {
+      if ($json->[$$iter] == ']') {
         last;
       }
 
       # comma
       if ($has_element) {
-        _expect_token($json_str, $iter, ",");
-        $self->_skip_spaces($json_str, $iter);
+        _expect_token($json, $iter, ",");
+        $self->_skip_spaces($json, $iter);
       }
       else {
         $has_element = 1;
       }
-      $list->push($self->_decode_recursive($json_str, $iter));
+      $list->push($self->_decode_recursive($json, $iter));
     }
 
-    _expect_token($json_str, $iter, "]");
+    _expect_token($json, $iter, "]");
 
     return $list;
   }
 
-  precompile private sub _decode_recursive : object ($self : self, $json_str : string, $iter : int&) {
-    my $end = length $json_str;
+  precompile private sub _decode_recursive : object ($self : self, $json : string, $iter : int&) {
+    my $end = length $json;
 
-    $self->_skip_spaces($json_str, $iter);
+    $self->_skip_spaces($json, $iter);
     if ($$iter == $end) {
-      _custom_die("Incomplete JSON", $json_str, $$iter);
+      _custom_die("Incomplete JSON", $json, $$iter);
     }
 
-    my $c = (int)($json_str->[$$iter]);
+    my $c = (int)($json->[$$iter]);
     switch ($c) {
       case '{': {
         # objects
-        return $self->_decode_hash($json_str, $iter);
+        return $self->_decode_hash($json, $iter);
         break;
       }
       case '[': {
-        return $self->_decode_list($json_str, $iter);
+        return $self->_decode_list($json, $iter);
         break;
       }
       case '"': {
-        return $self->_decode_string($json_str, $iter);
+        return $self->_decode_string($json, $iter);
         break;
       }
       case '-': case 'i': case 'n':
       case '0': case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8': case '9': {
-        return $self->_decode_num($json_str, $iter);
+        return $self->_decode_num($json, $iter);
         break;
       }
       case 't': {
-        return $self->_decode_true($json_str, $iter);
+        return $self->_decode_true($json, $iter);
         break;
       }
       case 'f': {
-        return $self->_decode_false($json_str, $iter);
+        return $self->_decode_false($json, $iter);
         break;
       }
       default: {
-        _custom_die("Unexpected token.", $json_str, $$iter);
+        _custom_die("Unexpected token.", $json, $$iter);
       }
     }
   }
@@ -724,17 +724,17 @@ package SPVM::JSON {
     return $self->_encode_recursive($object, 0);
   }
 
-  precompile sub decode : object ($self : self, $json_text : string) {
-    my $length = length $json_text;
+  precompile sub decode : object ($self : self, $json : string) {
+    my $length = length $json;
     my $iter = 0;
-    $self->_skip_spaces($json_text, \$iter);
+    $self->_skip_spaces($json, \$iter);
     if ($iter == $length) {
       return undef;
     }
-    my $ret = $self->_decode_recursive($json_text, \$iter);
-    $self->_skip_spaces($json_text, \$iter);
+    my $ret = $self->_decode_recursive($json, \$iter);
+    $self->_skip_spaces($json, \$iter);
     unless ($iter == $length) {
-      _custom_die("Not all json_text is decoded yet", $json_text, $iter);
+      _custom_die("Not all json_text is decoded yet", $json, $iter);
     }
     return $ret;
   }
