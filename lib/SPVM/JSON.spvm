@@ -630,7 +630,7 @@ package SPVM::JSON {
     # Hash
     elsif ($spvm_data isa SPVM::Hash) {
       my $buffer = SPVM::StringBuffer->new;
-      $buffer->push("{");
+      $buffer->push_char('{');
       my $hash = (SPVM::Hash)$spvm_data;
       my $keys = $hash->keys;
       if ($self->canonical) {
@@ -638,33 +638,34 @@ package SPVM::JSON {
       }
       for (my $keys_index = 0; $keys_index < @$keys; ++$keys_index) {
         if ($keys_index > 0) {
-          $buffer->push(",");
+          $buffer->push_char(',');
         }
-        $buffer->push("\"");
+        $buffer->push_char('"');
         $buffer->push($keys->[$keys_index]);
-        $buffer->push("\":");
+        $buffer->push_char('"');
+        $buffer->push_char(':');
         my $json_part = $self->_encode_recursive($hash->get($keys->[$keys_index]), $depth + 1);
         $buffer->push($json_part);
       }
-      $buffer->push("}");
+      $buffer->push_char('}');
       
       $json = $buffer->to_str;
     }
     # Array
     elsif ($spvm_data isa SPVM::ObjectList) {
       my $buffer = SPVM::StringBuffer->new;
-      $buffer->push("[");
+      $buffer->push_char('[');
       
       my $list = (SPVM::ObjectList)$spvm_data;
       my $length = $list->length;
       for (my $list_index = 0; $list_index < $length; ++$list_index) {
         if ($list_index > 0) {
-          $buffer->push(",");
+          $buffer->push_char(',');
         }
         my $json_part = $self->_encode_recursive($list->get($list_index), $depth + 1);
         $buffer->push($json_part);
       }
-      $buffer->push("]");
+      $buffer->push_char(']');
       
       $json = $buffer->to_str;
     }
