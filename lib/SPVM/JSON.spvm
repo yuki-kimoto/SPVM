@@ -723,17 +723,15 @@ package SPVM::JSON {
   }
 
   precompile sub decode : object ($self : self, $json : string) {
-    my $length = length $json;
     my $iter = 0;
+    my $spvm_data = $self->_decode_recursive($json, \$iter);
+
     $self->_skip_spaces($json, \$iter);
-    if ($iter == $length) {
-      return undef;
-    }
-    my $ret = $self->_decode_recursive($json, \$iter);
-    $self->_skip_spaces($json, \$iter);
+    my $length = length $json;
     unless ($iter == $length) {
       _custom_die("Not all json_text is decoded yet", $json, $iter);
     }
-    return $ret;
+
+    return $spvm_data;
   }
 }
