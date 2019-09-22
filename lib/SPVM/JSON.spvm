@@ -65,32 +65,32 @@ package SPVM::JSON {
   }
 
   precompile private sub _decode_string : string ($self : self, $json_str : string, $iter : int&, $end : int) {
-    my $chars = SPVM::ObjectList->new;
+    my $buffer = SPVM::StringBuffer->new;
     _expect_token($json_str, $iter, $end, "\"");
     my $special_char_expected = 0;
     while (1) {
       if ($$iter >= $end || (!$special_char_expected && $json_str->[$$iter] == '"')) {
         last;
       }
-      my $got_char = $json_str->[$$iter];
+      my $char = $json_str->[$$iter];
       if ($special_char_expected) {
-        switch ((int)$got_char) {
+        switch ((int)$char) {
           case 34: # '"'
           case 92: # '\\'
           {
-            $chars->push(SPVM::Int->new($got_char));
+            $buffer->push_char($char);
             break;
           }
           case 116: { # 't'
-            $chars->push(SPVM::Int->new('\t'));
+            $buffer->push_char('\t');
             break;
           }
           case 110: { # 'n'
-            $chars->push(SPVM::Int->new('\n'));
+            $buffer->push_char('\n');
             break;
           }
           case 114: { # 'r'
-            $chars->push(SPVM::Int->new('\r'));
+            $buffer->push_char('\r');
             break;
           }
           default: {
@@ -99,14 +99,14 @@ package SPVM::JSON {
         }
         $special_char_expected = 0;
       }
-      elsif ($got_char == '\\') {
+      elsif ($char == '\\') {
         $special_char_expected = 1;
       }
       else {
-        if ($got_char == '\t') {
+        if ($char == '\t') {
           _custom_die("Literal ASCII tab characters are not allowed in string", $json_str, $$iter, $end);
         }
-        $chars->push(SPVM::Int->new($got_char));
+        $buffer->push_char($char);
       }
       ++$$iter;
     }
@@ -114,13 +114,7 @@ package SPVM::JSON {
       _custom_die("Invalid string. end-quote doesn't exist", $json_str, $$iter, $end);
     }
     _expect_token($json_str, $iter, $end, "\"");
-    my $chars_length = $chars->length;
-    my $value = new byte [$chars_length];
-    for (my $k = 0; $k < $chars_length; ++$k) {
-      my $got = ((SPVM::Int)$chars->shift)->val;
-      $value->[$k] = (byte)$got;
-    }
-    return (string)$value;
+    return (string)$buffer->to_str;
   }
 
   precompile private sub _atof_scan1 : double ($json_str : string, $iter : int, $end : int,
