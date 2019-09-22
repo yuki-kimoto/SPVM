@@ -21,7 +21,7 @@ package SPVM::JSON {
     LDBL_DIG = 18
   }
 
-  private sub _custom_die : void ($die_message : string, $json_str : string, $start : int, $end : int) {
+  precompile private sub _custom_die : void ($die_message : string, $json_str : string, $start : int, $end : int) {
     my $max_dump_length = 10;
     if ($max_dump_length > $end - $start) {
       $max_dump_length = $end - $start;
@@ -33,7 +33,7 @@ package SPVM::JSON {
     die $die_message . " near: '$remains'";
   }
 
-  private sub _skip_spaces : void ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _skip_spaces : void ($self : self, $json_str : string, $iter : int&, $end : int) {
     for (; 1 ; ++$$iter) {
       if ($$iter == $end) {
         return;
@@ -44,14 +44,14 @@ package SPVM::JSON {
     }
   }
 
-  private sub _skip_spaces_at_not_end : void ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _skip_spaces_at_not_end : void ($self : self, $json_str : string, $iter : int&, $end : int) {
     $self->_skip_spaces($json_str, $iter, $end);
     if ($$iter == $end) {
       _custom_die("Incomplete JSON", $json_str, $$iter, $end);
     }
   }
 
-  private sub _expect_token : void ($json_str : string, $iter : int&, $end : int, $expected : string) {
+  precompile private sub _expect_token : void ($json_str : string, $iter : int&, $end : int, $expected : string) {
     my $length = length $expected;
     unless ($$iter + $length <= $end) {
       _custom_die("Expected token: $expected doesn't exist", $json_str, $$iter, $end);
@@ -68,7 +68,7 @@ package SPVM::JSON {
     }
   }
 
-  private sub _decode_string : string ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _decode_string : string ($self : self, $json_str : string, $iter : int&, $end : int) {
     my $chars = SPVM::ObjectList->new;
     _expect_token($json_str, $iter, $end, "\"");
     my $special_char_expected = 0;
@@ -127,7 +127,7 @@ package SPVM::JSON {
     return (string)$value;
   }
 
-  private sub _atof_scan1 : double ($json_str : string, $iter : int, $end : int,
+  precompile private sub _atof_scan1 : double ($json_str : string, $iter : int, $end : int,
       $accum : double&, $expo : int&, $postdp : int, $maxdepth : int) {
     my $long_accum : long = 0;
     my $expo_accum = 0;
@@ -220,7 +220,7 @@ package SPVM::JSON {
     $$expo += $expo_accum;
   }
 
-  private sub _atof : double ($json_str : string, $start : int, $end : int) {
+  precompile private sub _atof : double ($json_str : string, $start : int, $end : int) {
     my $accum = 0.0;
     my $expo = 0;
     my $neg = 0;
@@ -241,7 +241,7 @@ package SPVM::JSON {
     }
   }
 
-  private sub _grok_non_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
+  precompile private sub _grok_non_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
     my $number_type = 0;
     $$val = 0;
     for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
@@ -260,7 +260,7 @@ package SPVM::JSON {
     return $number_type;
   }
 
-  private sub _grok_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
+  precompile private sub _grok_neg : int ($json_str : string, $start : int, $len : int, $val : long&) {
     my $number_type = 0;
     $$val = 0;
     for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
@@ -281,7 +281,7 @@ package SPVM::JSON {
   }
 
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
-  private sub _decode_num : object ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _decode_num : object ($self : self, $json_str : string, $iter : int&, $end : int) {
     if ($json_str->[$$iter] == 'n') {
       if ($$iter + 2 < $end && substr($json_str, $$iter, 3) eq "nan") {
         $$iter += 3;
@@ -450,17 +450,17 @@ package SPVM::JSON {
     return _atof($json_str, $start, $end);
   }
 
-  private sub _decode_true : SPVM::JSON::Bool ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _decode_true : SPVM::JSON::Bool ($self : self, $json_str : string, $iter : int&, $end : int) {
     _expect_token($json_str, $iter, $end, "true");
     return SPVM::JSON::Bool->TRUE;
   }
 
-  private sub _decode_false : SPVM::JSON::Bool ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _decode_false : SPVM::JSON::Bool ($self : self, $json_str : string, $iter : int&, $end : int) {
     _expect_token($json_str, $iter, $end, "false");
     return SPVM::JSON::Bool->FALSE;
   }
 
-  private sub _decode_hash : SPVM::Hash ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _decode_hash : SPVM::Hash ($self : self, $json_str : string, $iter : int&, $end : int) {
     my $hash = SPVM::Hash->new;
     my $has_element = 0;
     _expect_token($json_str, $iter, $end, "{");
@@ -495,7 +495,7 @@ package SPVM::JSON {
     return $hash;
   }
 
-  private sub _decode_list : SPVM::ObjectList ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _decode_list : SPVM::ObjectList ($self : self, $json_str : string, $iter : int&, $end : int) {
     _expect_token($json_str, $iter, $end, "[");
     my $list = SPVM::ObjectList->new;
     my $has_element = 0;
@@ -520,7 +520,7 @@ package SPVM::JSON {
     return $list;
   }
 
-  private sub _decode_recursive : object ($self : self, $json_str : string, $iter : int&, $end : int) {
+  precompile private sub _decode_recursive : object ($self : self, $json_str : string, $iter : int&, $end : int) {
     $self->_skip_spaces_at_not_end($json_str, $iter, $end);
     my $c = (int)($json_str->[$$iter]);
     switch ($c) {
@@ -557,7 +557,7 @@ package SPVM::JSON {
     }
   }
 
-  private sub _escape_string : string ($string : string) {
+  precompile private sub _escape_string : string ($string : string) {
     my $length = length $string;
     my $chars = SPVM::ObjectList->new;
     for (my $str_index = 0; $str_index < $length; ++$str_index) {
@@ -603,7 +603,7 @@ package SPVM::JSON {
     return (string)$escaped;
   }
 
-  private sub _encode_recursive : string ($self : self, $spvm_data : object, $depth : int) {
+  precompile private sub _encode_recursive : string ($self : self, $spvm_data : object, $depth : int) {
     
     my $json : string;
     
@@ -697,16 +697,16 @@ package SPVM::JSON {
     return $json;
   }
 
-  sub new : SPVM::JSON () {
+  precompile sub new : SPVM::JSON () {
     my $json = new SPVM::JSON;
     return $json;
   }
 
-  sub encode : string ($self : self, $object : object) {
+  precompile sub encode : string ($self : self, $object : object) {
     return $self->_encode_recursive($object, 0);
   }
 
-  sub decode : object ($self : self, $json_text : string) {
+  precompile sub decode : object ($self : self, $json_text : string) {
     my $length = length $json_text;
     my $iter = 0;
     $self->_skip_spaces($json_text, \$iter, $length);
