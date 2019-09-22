@@ -441,6 +441,26 @@ package TestCase::JSON {
     return 1;
   }
 
+  sub encode_string : int () {
+    my $input = "str";
+    my $got = $DEFAULT_JSON->encode($input);
+    my $expected = "\"str\"";
+    unless ($got eq $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub decode_string : int () {
+    my $input = "\"str\"";
+    my $got = $DEFAULT_JSON->decode($input);
+    my $expected = "str";
+    unless (_equals($got, $expected)) {
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_root_is_primitive : int () {
     my $tests = ["\"abc\"", "123", "true"];
     return _validate($DEFAULT_JSON, $tests, $tests);
