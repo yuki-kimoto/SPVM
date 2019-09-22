@@ -137,9 +137,134 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_flat_hash : int () {
-    my $tests = ["{}", "{\"digit\":42}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"A\":0.1,\"ABC\":false,\"a\":1,\"qwerty\":\"asdfg\"}"];
-    return _validate($DEFAULT_JSON, $tests, $tests);
+  sub encode_flat_hash : int () {
+    {
+      my $input    = SPVM::Hash->new;
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "int" => 42 ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"int\":42}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "string" => "vstr" ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"string\":\"vstr\"}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "double" => 0.123 ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"double\":0.123}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "bool_true" => SPVM::JSON::Bool->TRUE]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"bool_true\":true}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "bool_false" => SPVM::JSON::Bool->FALSE]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"bool_false\":false}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object)
+        "bool"   => SPVM::JSON::Bool->FALSE,
+        "double" => 0.1,
+        "int"    => 1,
+        "str"    => "hoge",
+      ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"bool\":false,\"double\":0.1,\"int\":1,\"str\":\"hoge\"}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub decode_flat_hash : int () {
+    {
+      my $input    = "{}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->new;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"int\":42}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "int" => 42 ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"string\":\"vstr\"}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "string" => "vstr" ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"double\":0.123}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "double" => 0.123 ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"bool_true\":true}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "bool_true" => SPVM::JSON::Bool->TRUE]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"bool_false\":false}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "bool_false" => SPVM::JSON::Bool->FALSE]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"double\":0.1,\"bool\":false,\"int\":1,\"str\":\"hoge\"}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object)
+        "bool"   => SPVM::JSON::Bool->FALSE,
+        "double" => 0.1,
+        "int"    => 1,
+        "str"    => "hoge",
+      ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
   }
 
   sub test_flat_list : int () {
