@@ -47,13 +47,6 @@ package SPVM::JSON {
     }
   }
 
-  precompile private sub _skip_spaces_at_not_end : void ($self : self, $json_str : string, $iter : int&, $end : int) {
-    $self->_skip_spaces($json_str, $iter, $end);
-    if ($$iter == $end) {
-      _custom_die("Incomplete JSON", $json_str, $$iter, $end);
-    }
-  }
-
   precompile private sub _expect_token : void ($json_str : string, $iter : int&, $end : int, $expected : string) {
     my $length = length $expected;
     unless ($$iter + $length <= $end) {
@@ -468,8 +461,12 @@ package SPVM::JSON {
     my $has_element = 0;
     _expect_token($json_str, $iter, $end, "{");
     while (1) {
+      $self->_skip_spaces($json_str, $iter, $end);
+      if ($$iter == $end) {
+        _custom_die("Incomplete object in JSON: end of string", $json_str, $$iter, $end);
+      }
+
       # end of hash
-      $self->_skip_spaces_at_not_end($json_str, $iter, $end);
       if ($json_str->[$$iter] == '}') {
         last;
       }
@@ -477,7 +474,7 @@ package SPVM::JSON {
       # comma
       if ($has_element) {
         _expect_token($json_str, $iter, $end, ",");
-        $self->_skip_spaces_at_not_end($json_str, $iter, $end);
+        $self->_skip_spaces($json_str, $iter, $end);
       }
       else {
         $has_element = 1;
@@ -487,11 +484,11 @@ package SPVM::JSON {
       my $key = $self->_decode_string($json_str, $iter, $end);
 
       # separator
-      $self->_skip_spaces_at_not_end($json_str, $iter, $end);
+      $self->_skip_spaces($json_str, $iter, $end);
       _expect_token($json_str, $iter, $end, ":");
 
       # value
-      $self->_skip_spaces_at_not_end($json_str, $iter, $end);
+      $self->_skip_spaces($json_str, $iter, $end);
       $hash->set($key, $self->_decode_recursive($json_str, $iter, $end));
     }
     _expect_token($json_str, $iter, $end, "}");
@@ -503,8 +500,12 @@ package SPVM::JSON {
     my $list = SPVM::ObjectList->new;
     my $has_element = 0;
     while (1) {
+      $self->_skip_spaces($json_str, $iter, $end);
+      if ($$iter == $end) {
+        _custom_die("Incomplete array in JSON: end of string", $json_str, $$iter, $end);
+      }
+
       # end of list
-      $self->_skip_spaces_at_not_end($json_str, $iter, $end);
       if ($json_str->[$$iter] == ']') {
         last;
       }
@@ -512,7 +513,7 @@ package SPVM::JSON {
       # comma
       if ($has_element) {
         _expect_token($json_str, $iter, $end, ",");
-        $self->_skip_spaces_at_not_end($json_str, $iter, $end);
+        $self->_skip_spaces($json_str, $iter, $end);
       }
       else {
         $has_element = 1;
@@ -524,7 +525,11 @@ package SPVM::JSON {
   }
 
   precompile private sub _decode_recursive : object ($self : self, $json_str : string, $iter : int&, $end : int) {
-    $self->_skip_spaces_at_not_end($json_str, $iter, $end);
+    $self->_skip_spaces($json_str, $iter, $end);
+    if ($$iter == $end) {
+      _custom_die("Incomplete JSON", $json_str, $$iter, $end);
+    }
+
     my $c = (int)($json_str->[$$iter]);
     switch ($c) {
       case '{': {
