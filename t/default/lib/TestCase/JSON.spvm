@@ -339,9 +339,32 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_digits_int : int () {
-    my $tests = ["[0,1,-1]"];
-    return _validate($DEFAULT_JSON, $tests, $tests);
+  sub encode_int : int () {
+    my $test_case_json = ["-1", "0", "1"];
+    my $test_case_int  = [-1, 0, 1];
+    for (my $i = 0; $i < @$test_case_json; ++$i) {
+      my $input    = SPVM::Int->new($test_case_int->[$i]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = $test_case_json->[$i];
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub decode_int : int () {
+    my $test_case_json = ["-1", "0", "1"];
+    my $test_case_int  = [-1, 0, 1];
+    for (my $i = 0; $i < @$test_case_json; ++$i) {
+      my $input    = $test_case_json->[$i];
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Int->new($test_case_int->[$i]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
   }
 
   sub test_digits_double : int () {
