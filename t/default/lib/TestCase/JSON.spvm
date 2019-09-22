@@ -264,6 +264,17 @@ package TestCase::JSON {
         return 0;
       }
     }
+    {
+      my $input    = " { \"key\" \n\t: 123\t,\n\t\t\"list\" :\n[\t1\t,\r2\t,\t3\n]}\r\r";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object)
+        "key"  => 123,
+        "list" => SPVM::ObjectList->newa([(object) 1, 2, 3])
+      ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
     return 1;
   }
 
@@ -332,6 +343,14 @@ package TestCase::JSON {
       my $input    = "[0,3.14,\"abc\",true]";
       my $got      = $DEFAULT_JSON->decode($input);
       my $expected = SPVM::ObjectList->newa([(object) 0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = " [ 1, 3.14\n, true \t , \"a\" ] ";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) 1, 3.14, SPVM::JSON::Bool->TRUE, "a"]);
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -513,20 +532,6 @@ package TestCase::JSON {
       return 0;
     }
     return 1;
-  }
-
-  sub test_spaces : int () {
-    my $inputs = [
-      # Root type is "hash"
-      " { \"key\" \n\t: 123\t,\n\t\t\"list\" :\n[\t1\t,\r2\t,\t3\n]}\r\r",
-      # Root type is "list"
-      " [ 1, 3.14\n, true \t , \"a\" ] " # primitives: Int, Double, Bool, string
-    ];
-    my $outputs = [
-      "{\"key\":123,\"list\":[1,2,3]}",
-      "[1,3.14,true,\"a\"]"
-    ];
-    return _validate($DEFAULT_JSON, $inputs, $outputs);
   }
 
   sub test_format_name_separator : int () {
