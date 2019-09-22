@@ -21,7 +21,7 @@ package SPVM::JSON {
     LDBL_DIG = 18
   }
 
-  sub ERR : void ($die_message : string, $json_str : string, $start : int, $end : int) {
+  sub _custom_die : void ($die_message : string, $json_str : string, $start : int, $end : int) {
     my $max_dump_length = 10;
     if ($max_dump_length > $end - $start) {
       $max_dump_length = $end - $start;
@@ -47,19 +47,19 @@ package SPVM::JSON {
   sub _skip_spaces_at_not_end : void ($self : self, $json_str : string, $iter : int&, $end : int) {
     $self->_skip_spaces($json_str, $iter, $end);
     if ($$iter == $end) {
-      ERR("Incomplete JSON", $json_str, $$iter, $end);
+      _custom_die("Incomplete JSON", $json_str, $$iter, $end);
     }
   }
 
   sub _expect_token : void ($json_str : string, $iter : int&, $end : int, $expected : string) {
     my $length = length $expected;
     unless ($$iter + $length <= $end) {
-      ERR("Expected token: $expected doesn't exist", $json_str, $$iter, $end);
+      _custom_die("Expected token: $expected doesn't exist", $json_str, $$iter, $end);
     }
     my $begin = $$iter;
     while (1) {
       unless ($json_str->[$$iter] == $expected->[$$iter - $begin]) {
-        ERR("Expected token: $expected doesn't exist", $json_str, $$iter, $end);
+        _custom_die("Expected token: $expected doesn't exist", $json_str, $$iter, $end);
       }
       ++$$iter;
       if ($$iter - $begin == $length) {
@@ -98,7 +98,7 @@ package SPVM::JSON {
             break;
           }
           default: {
-            ERR("Undefined special char", $json_str, $$iter, $end);
+            _custom_die("Undefined special char", $json_str, $$iter, $end);
           }
         }
         $special_char_expected = 0;
@@ -108,14 +108,14 @@ package SPVM::JSON {
       }
       else {
         if ($got_char == '\t') {
-          ERR("Literal ASCII tab characters are not allowed in string", $json_str, $$iter, $end);
+          _custom_die("Literal ASCII tab characters are not allowed in string", $json_str, $$iter, $end);
         }
         $chars->push(SPVM::Int->new($got_char));
       }
       ++$$iter;
     }
     if ($$iter == $end) {
-      ERR("Invalid string. end-quote doesn't exist", $json_str, $$iter, $end);
+      _custom_die("Invalid string. end-quote doesn't exist", $json_str, $$iter, $end);
     }
     _expect_token($json_str, $iter, $end, "\"");
     my $chars_length = $chars->length;
@@ -153,7 +153,7 @@ package SPVM::JSON {
         ++$iter;
 
         if ($iter >= $end) {
-          ERR ("malformed number (no digits after e/E)", $json_str, $iter, $end);
+          _custom_die ("malformed number (no digits after e/E)", $json_str, $iter, $end);
         }
 
         if ($json_str->[$iter] == '-') {
@@ -165,7 +165,7 @@ package SPVM::JSON {
         }
 
         if ($iter >= $end) {
-          ERR ("malformed number (no digits after e/E)", $json_str, $iter, $end);
+          _custom_die ("malformed number (no digits after e/E)", $json_str, $iter, $end);
         }
 
         while ($iter < $end) {
@@ -251,7 +251,7 @@ package SPVM::JSON {
         $$iter += 4;
       }
       else {
-        ERR("malformed number.", $json_str, $$iter, $end);
+        _custom_die("malformed number.", $json_str, $$iter, $end);
       }
       return undef;
     }
@@ -269,7 +269,7 @@ package SPVM::JSON {
         $$iter += 3;
       }
       else {
-        ERR("malformed number.", $json_str, $$iter, $end);
+        _custom_die("malformed number.", $json_str, $$iter, $end);
       }
       return undef;
     }
@@ -277,11 +277,11 @@ package SPVM::JSON {
     if ($json_str->[$$iter] == '0') {
       ++$$iter;
       if ($$iter < $end && ($json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9')) {
-        ERR("malformed number (leading zero must not be followed by another digit)", $json_str, $$iter, $end);
+        _custom_die("malformed number (leading zero must not be followed by another digit)", $json_str, $$iter, $end);
       }
     }
     elsif ($$iter >= $end || $json_str->[$$iter] < '0' || $json_str->[$$iter] > '9') {
-      ERR ("malformed number (no digits after initial minus)", $json_str, $$iter, $end);
+      _custom_die ("malformed number (no digits after initial minus)", $json_str, $$iter, $end);
     }
 
     while ($$iter < $end && $json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9') {
@@ -292,7 +292,7 @@ package SPVM::JSON {
     if ($$iter < $end && $json_str->[$$iter] == '.') {
       ++$$iter;
       if ($$iter >= $end || $json_str->[$$iter] < '0' || $json_str->[$$iter] > '9') {
-        ERR ("malformed number (no digits after decimal point)", $json_str, $$iter, $end);
+        _custom_die ("malformed number (no digits after decimal point)", $json_str, $$iter, $end);
       }
       while ($$iter < $end && $json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9') {
         ++$$iter;
@@ -310,7 +310,7 @@ package SPVM::JSON {
       }
 
       if ($$iter >= $end || $json_str->[$$iter] < '0' || $json_str->[$$iter] > '9') {
-        ERR ("malformed number (no digits after exp sign)", $json_str, $$iter, $end);
+        _custom_die ("malformed number (no digits after exp sign)", $json_str, $$iter, $end);
       }
 
       while ($$iter < $end && ($json_str->[$$iter] >= '0' && $json_str->[$$iter] <= '9')) {
@@ -554,7 +554,7 @@ package SPVM::JSON {
         break;
       }
       default: {
-        ERR("Unexpected token.", $json_str, $$iter, $end);
+        _custom_die("Unexpected token.", $json_str, $$iter, $end);
       }
     }
   }
@@ -718,7 +718,7 @@ package SPVM::JSON {
     my $ret = $self->_decode_recursive($json_text, \$iter, $length);
     $self->_skip_spaces($json_text, \$iter, $length);
     unless ($iter == $length) {
-      ERR("Not all json_text is decoded yet", $json_text, $iter, $length);
+      _custom_die("Not all json_text is decoded yet", $json_text, $iter, $length);
     }
     return $ret;
   }
