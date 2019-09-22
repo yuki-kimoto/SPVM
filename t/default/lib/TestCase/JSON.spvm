@@ -461,11 +461,55 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_nest_object : int () {
-    my $tests = [
-      "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"elem\",\"ents\",{\"key\":\"value\"}]}},\"end\":\"eof\"}"
-    ];
-    unless (_validate($DEFAULT_JSON, $tests, $tests)) {
+  sub encode_nested_hash : int () {
+    my $input = SPVM::Hash->newa([(object)
+      "A" => SPVM::Hash->newa([(object)
+        "B" => 1,
+        "C" => SPVM::Hash->newa([(object)
+          "D" => 0.1,
+          "E" => SPVM::JSON::Bool->TRUE,
+          "F" => "str",
+          "G" => SPVM::ObjectList->newa([(object)
+            "abc",
+            123,
+            SPVM::Hash->newa([(object)
+              "H" => "val",
+            ]),
+          ]),
+        ])
+      ]),
+      "I" => "EOF",
+    ]);
+    my $got = $DEFAULT_JSON->encode($input);
+    my $expected = "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"abc\",123,{\"H\":\"val\"}]}},\"I\":\"EOF\"}";
+    unless ($got eq $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub decode_nested_hash : int () {
+    my $input = "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"abc\",123,{\"H\":\"val\"}]}},\"I\":\"EOF\"}";
+    my $got = $DEFAULT_JSON->decode($input);
+    my $expected = SPVM::Hash->newa([(object)
+      "A" => SPVM::Hash->newa([(object)
+        "B" => 1,
+        "C" => SPVM::Hash->newa([(object)
+          "D" => 0.1,
+          "E" => SPVM::JSON::Bool->TRUE,
+          "F" => "str",
+          "G" => SPVM::ObjectList->newa([(object)
+            "abc",
+            123,
+            SPVM::Hash->newa([(object)
+              "H" => "val",
+            ]),
+          ]),
+        ])
+      ]),
+      "I" => "EOF",
+    ]);
+    unless (_equals($got, $expected)) {
       return 0;
     }
     return 1;

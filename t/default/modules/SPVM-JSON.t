@@ -20,7 +20,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->encode_double);
   ok(TestCase::JSON->encode_bool);
   ok(TestCase::JSON->encode_string);
-  ok(TestCase::JSON->test_nest_object);
+  ok(TestCase::JSON->encode_nested_hash);
   ok(TestCase::JSON->test_spaces);
   ok(TestCase::JSON->test_format_name_separator);
   ok(TestCase::JSON->test_special_chars);
@@ -36,6 +36,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->decode_double);
   ok(TestCase::JSON->decode_bool);
   ok(TestCase::JSON->decode_string);
+  ok(TestCase::JSON->decode_nested_hash);
 }
 
 # All object is freed
