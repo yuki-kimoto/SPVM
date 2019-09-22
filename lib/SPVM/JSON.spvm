@@ -365,48 +365,38 @@ package SPVM::JSON {
       if ($json->[$start] == '-') {
         switch ($len) {
           case 2: {
-            return -(                                                                                                      $json->[$start + 1] - '0' *     1);
-            break;
+            return -(                                                                                                                  $json->[$start + 1] - '0' *     1);
           }
           case 3: {
-            return -(                                                                              $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *    11);
-            break;
+            return -(                                                                                       $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *    11);
           }
           case 4: {
-            return -(                                                     $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *   111);
-            break;
+            return -(                                                           $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *   111);
           }
           case 5: {
-            return -(                           $json->[$start + 1] * 1000 + $json->[$start + 2] * 100 + $json->[$start + 3] * 10 + $json->[$start + 4] - '0' *  1111);
-            break;
+            return -(                              $json->[$start + 1] * 1000 + $json->[$start + 2] * 100 + $json->[$start + 3] * 10 + $json->[$start + 4] - '0' *  1111);
           }
           case 6: {
             return -($json->[$start + 1] * 10000 + $json->[$start + 2] * 1000 + $json->[$start + 3] * 100 + $json->[$start + 4] * 10 + $json->[$start + 5] - '0' * 11111);
-            break;
           }
         }
       }
       else {
         switch ($len) {
           case 1: {
-            return (                                                                                                           $json->[$start] - '0' *     1);
-            break;
+            return (                                                                                                                       $json->[$start] - '0' *     1);
           }
           case 2: {
-            return (                                                                                   $json->[$start] * 10 + $json->[$start + 1] - '0' *    11);
-            break;
+            return (                                                                                            $json->[$start] * 10 + $json->[$start + 1] - '0' *    11);
           }
           case 3: {
-            return (                                                          $json->[$start] * 100 + $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *   111);
-            break;
+            return (                                                                $json->[$start] * 100 + $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *   111);
           }
           case 4: {
-            return (                                $json->[$start] * 1000 + $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *  1111);
-            break;
+            return (                                   $json->[$start] * 1000 + $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *  1111);
           }
           case 5: {
             return (     $json->[$start] * 10000 + $json->[$start + 1] * 1000 + $json->[$start + 2] * 100 + $json->[$start + 3] * 10 + $json->[$start + 4] - '0' * 11111);
-            break;
           }
         }
       }
@@ -549,29 +539,23 @@ package SPVM::JSON {
       case '{': {
         # objects
         return $self->_decode_hash($json, $iter);
-        break;
       }
       case '[': {
         return $self->_decode_list($json, $iter);
-        break;
       }
       case '"': {
         return $self->_decode_string($json, $iter);
-        break;
       }
       case '-': case 'i': case 'n':
       case '0': case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8': case '9': {
         return $self->_decode_num($json, $iter);
-        break;
       }
       case 't': {
         return $self->_decode_true($json, $iter);
-        break;
       }
       case 'f': {
         return $self->_decode_false($json, $iter);
-        break;
       }
       default: {
         _custom_die("Unexpected token.", $json, $$iter);
