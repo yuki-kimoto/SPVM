@@ -26,11 +26,14 @@ package SPVM::JSON {
     if ($max_dump_length > $end - $start) {
       $max_dump_length = $end - $start;
     }
-    my $remains = "";
-    if ($max_dump_length >= 0) {
-      $remains = substr($json_str, $start, $end - $start);
+    my $hint = "";
+    if ($max_dump_length > 0) {
+      $hint = "near '" . substr($json_str, $start, $end - $start) . "'";
     }
-    die $die_message . " near: '$remains'";
+    else {
+      $hint = "end of string";
+    }
+    die $die_message . " ... $hint";
   }
 
   precompile private sub _skip_spaces : void ($self : self, $json_str : string, $iter : int&, $end : int) {
