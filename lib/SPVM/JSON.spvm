@@ -22,11 +22,15 @@ package SPVM::JSON {
   }
 
   sub ERR : void ($die_message : string, $json_str : string, $start : int, $end : int) {
+    my $max_dump_length = 10;
+    if ($max_dump_length > $end - $start) {
+      $max_dump_length = $end - $start;
+    }
     my $remains = "";
-    if ($end - $start >= 0) {
+    if ($max_dump_length >= 0) {
       $remains = substr($json_str, $start, $end - $start);
     }
-    die $die_message . "\nRemains... '$remains'";
+    die $die_message . " near: '$remains'";
   }
 
   sub _skip_spaces : void ($self : self, $json_str : string, $iter : int&, $end : int) {
