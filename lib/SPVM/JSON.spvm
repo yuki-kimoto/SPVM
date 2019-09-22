@@ -372,14 +372,14 @@ package SPVM::JSON {
           $json_str : string, $start : int, $len : int, $val : long&) {
         my $number_type = 0;
         $$val = 0;
-        for (my $i = 0; $i < $len; ++$i) {
+        for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
           if ($$val <= (long)INT32_MAX()) {
-            $$val = $$val * 10 + $json_str->[$start + $i] - '0';
+            $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
           }
           elsif ($$val < INT64_MAX() / 10 ||
-              ($$val == INT64_MAX() / 10 && $json_str->[$start + $i] - '0' <= INT64_MAX() % 10)) {
+              ($$val == INT64_MAX() / 10 && $json_str->[$start + $digit_index] - '0' <= INT64_MAX() % 10)) {
             $number_type = 1;
-            $$val = $$val * 10 + $json_str->[$start + $i] - '0';
+            $$val = $$val * 10 + $json_str->[$start + $digit_index] - '0';
           }
           else {
             return -1;
@@ -392,15 +392,15 @@ package SPVM::JSON {
           $json_str : string, $start : int, $len : int, $val : long&) {
         my $number_type = 0;
         $$val = 0;
-        for (my $i = 0; $i < $len; ++$i) {
+        for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
           if ($$val >= (long)INT32_MIN()) {
-            $$val = $$val * 10 - ($json_str->[$start + $i] - '0');
+            $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
           }
           elsif ($$val > INT64_MIN() / 10 ||
               ($$val == INT64_MIN() / 10 &&
-                  $json_str->[$start + $i] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
+                  $json_str->[$start + $digit_index] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
             $number_type = 1;
-            $$val = $$val * 10 - ($json_str->[$start + $i] - '0');
+            $$val = $$val * 10 - ($json_str->[$start + $digit_index] - '0');
           }
           else {
             return -1;
@@ -558,8 +558,8 @@ package SPVM::JSON {
   sub _escape_string : string ($string : string) {
     my $length = length $string;
     my $chars = SPVM::ObjectList->new;
-    for (my $i = 0; $i < $length; ++$i) {
-      my $got_char = (int)($string->[$i]);
+    for (my $str_index = 0; $str_index < $length; ++$str_index) {
+      my $got_char = (int)($string->[$str_index]);
       my $special = -1;
       switch ($got_char) {
         case 9: {# '\t'
@@ -618,14 +618,14 @@ package SPVM::JSON {
       if ($self->canonical) {
         sortstr($keys);
       }
-      for (my $i = 0; $i < @$keys; ++$i) {
-        if ($i > 0) {
+      for (my $keys_index = 0; $keys_index < @$keys; ++$keys_index) {
+        if ($keys_index > 0) {
           $buffer->push(",");
         }
         $buffer->push("\"");
-        $buffer->push($keys->[$i]);
+        $buffer->push($keys->[$keys_index]);
         $buffer->push("\":");
-        my $json_part = $self->_encode_recursive($hash->get($keys->[$i]), $depth + 1);
+        my $json_part = $self->_encode_recursive($hash->get($keys->[$keys_index]), $depth + 1);
         $buffer->push($json_part);
       }
       $buffer->push("}");
@@ -639,11 +639,11 @@ package SPVM::JSON {
       
       my $list = (SPVM::ObjectList)$spvm_data;
       my $length = $list->length;
-      for (my $i = 0; $i < $length; ++$i) {
-        if ($i > 0) {
+      for (my $list_index = 0; $list_index < $length; ++$list_index) {
+        if ($list_index > 0) {
           $buffer->push(",");
         }
-        my $json_part = $self->_encode_recursive($list->get($i), $depth + 1);
+        my $json_part = $self->_encode_recursive($list->get($list_index), $depth + 1);
         $buffer->push($json_part);
       }
       $buffer->push("]");
