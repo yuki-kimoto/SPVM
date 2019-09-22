@@ -644,12 +644,19 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_map_inf_nan_to_undef : int () {
-    my $inputs = ["inf", "-inf", "nan"];
-    for (my $i = 0; $i < @$inputs; ++$i) {
-      unless ($DEFAULT_JSON->decode($inputs->[$i]) == undef) {
-        return 0;
-      }
+  sub decode_inf : int () {
+    unless ($DEFAULT_JSON->decode("inf") == undef) {
+      return 0;
+    }
+    unless ($DEFAULT_JSON->decode("-inf") == undef) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub decode_nan : int () {
+    unless ($DEFAULT_JSON->decode("nan") == undef) {
+      return 0;
     }
     return 1;
   }

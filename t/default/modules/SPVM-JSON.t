@@ -21,12 +21,13 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->encode_bool);
   ok(TestCase::JSON->encode_string);
   ok(TestCase::JSON->encode_nested_hash);
-  ok(TestCase::JSON->test_map_inf_nan_to_undef);
 }
 
 # decode
 {
   ok(TestCase::JSON->decode_null);
+  ok(TestCase::JSON->decode_inf);
+  ok(TestCase::JSON->decode_nan);
   ok(TestCase::JSON->decode_flat_hash);
   ok(TestCase::JSON->decode_flat_list);
   ok(TestCase::JSON->decode_int);
