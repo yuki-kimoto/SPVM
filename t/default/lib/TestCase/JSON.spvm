@@ -534,15 +534,6 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_format_name_separator : int () {
-    my $hash = SPVM::Hash->newa([(object) "key", "value"]);
-    my $json = SPVM::JSON->new;
-    unless ($json->encode($hash) eq "{\"key\":\"value\"}") {
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_special_chars : int () {
     my $tests = ["\"\\\"\\\\\\t\\n\\r\""];
     unless (_validate($DEFAULT_JSON, $tests, $tests)) {
