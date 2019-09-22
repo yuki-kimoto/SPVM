@@ -367,24 +367,34 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_digits_double : int () {
-    my $input = [
-      "0.123", "-0.123", "3.14", "-3.14", "123.987", "-123.987",
-      "1.23456e+1", "1.23456e-1", "1.23456e+08", "1.23456e-08", "1.23456e+008", "1.23456e-008",
-      "1.23456e+018", "1.23456e-018", "9.9e-100", "9.9e+300", "-1.23e+123"
-    ];
-    my $expected = [
+  sub encode_double : int () {
+    my $test_case  = [
       0.123, -0.123, 3.14, -3.14, 123.987, -123.987,
       1.23456e+1, 1.23456e-1, 1.23456e+08, 1.23456e-08, 1.23456e+008, 1.23456e-008,
       1.23456e+018, 1.23456e-018, 9.9e-100, 9.9e+300, -1.23e+123
     ];
-    for (my $i = 0; $i < @$input; $i++) {
-      my $got = (SPVM::Double)($DEFAULT_JSON->decode($input->[$i]));
-      unless (("" . $got->val) eq ("" . $expected->[$i])) {
+    for (my $i = 0; $i < @$test_case; ++$i) {
+      my $input    = SPVM::Double->new($test_case->[$i]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "" . $test_case->[$i];
+      unless ($got eq $expected) {
         return 0;
       }
-      my $re_got = (SPVM::Double)($DEFAULT_JSON->decode($DEFAULT_JSON->encode($got)));
-      unless (("" . $re_got->val) eq ("" . $expected->[$i])) {
+    }
+    return 1;
+  }
+
+  sub decode_double : int () {
+    my $test_case  = [
+      0.123, -0.123, 3.14, -3.14, 123.987, -123.987,
+      1.23456e+1, 1.23456e-1, 1.23456e+08, 1.23456e-08, 1.23456e+008, 1.23456e-008,
+      1.23456e+018, 1.23456e-018, 9.9e-100, 9.9e+300, -1.23e+123
+    ];
+    for (my $i = 0; $i < @$test_case; ++$i) {
+      my $input    = "" . $test_case->[$i];
+      my $got      = "" . ((SPVM::Double)$DEFAULT_JSON->decode($input))->val;
+      my $expected = "" . $test_case->[$i];
+      unless ($got eq $expected) {
         return 0;
       }
     }
