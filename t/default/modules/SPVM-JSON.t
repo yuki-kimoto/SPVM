@@ -20,7 +20,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->encode_double);
   ok(TestCase::JSON->encode_bool);
   ok(TestCase::JSON->encode_string);
-  ok(TestCase::JSON->test_root_is_primitive);
   ok(TestCase::JSON->test_nest_object);
   ok(TestCase::JSON->test_spaces);
   ok(TestCase::JSON->test_format_name_separator);
