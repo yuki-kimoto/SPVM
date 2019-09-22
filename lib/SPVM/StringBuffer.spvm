@@ -64,17 +64,11 @@ package SPVM::StringBuffer {
         $new_capacity = $capacity * 2;
       }
       $self->_reallocate($new_capacity);
-      for (my $i = 0; $i < $length; ++$i) {
-        $self->{value}[$self->{length} + $i] = $string->[$i];
-      }
-      $self->{length} += $length;
     }
-    else {
-      for (my $i = 0; $i < $length; ++$i) {
-        $self->{value}[$self->{length} + $i] = $string->[$i];
-      }
-      $self->{length} += $length;
+    for (my $i = 0; $i < $length; ++$i) {
+      $self->{value}[$self->{length} + $i] = $string->[$i];
     }
+    $self->{length} += $length;
   }
 
   sub to_str : string ($self : self) {
