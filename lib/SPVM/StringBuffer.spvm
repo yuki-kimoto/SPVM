@@ -71,6 +71,15 @@ package SPVM::StringBuffer {
     $self->{length} += $length;
   }
 
+  sub push_char  : void ($self : self, $char : byte) {
+    my $capacity = @$self->{value};
+    if ($self->{length} + 1 > $capacity) {
+      my $new_capacity = $capacity * 2;
+      $self->_reallocate($new_capacity);
+    }
+    $self->{value}[$self->{length}++] = $char;
+  }
+
   sub to_str : string ($self : self) {
     return (string)(sliceb($self->{value}, 0, $self->{length}));
   }
