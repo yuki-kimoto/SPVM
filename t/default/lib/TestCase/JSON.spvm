@@ -401,6 +401,46 @@ package TestCase::JSON {
     return 1;
   }
 
+  sub encode_bool : int () {
+    {
+      my $input = SPVM::JSON::Bool->TRUE;
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "true";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input = SPVM::JSON::Bool->FALSE;
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "false";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub decode_bool : int () {
+    {
+      my $input = "true";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::JSON::Bool->TRUE;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input = "false";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::JSON::Bool->FALSE;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
   sub test_root_is_primitive : int () {
     my $tests = ["\"abc\"", "123", "true"];
     return _validate($DEFAULT_JSON, $tests, $tests);
