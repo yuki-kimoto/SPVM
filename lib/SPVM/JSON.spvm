@@ -495,7 +495,6 @@ package SPVM::JSON {
       _expect_token($json, $iter, ":");
 
       # value
-      $self->_skip_spaces($json, $iter);
       $hash->set($key, $self->_decode_recursive($json, $iter));
     }
 
@@ -525,7 +524,6 @@ package SPVM::JSON {
       # comma
       if ($has_element) {
         _expect_token($json, $iter, ",");
-        $self->_skip_spaces($json, $iter);
       }
       else {
         $has_element = 1;
