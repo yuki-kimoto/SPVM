@@ -4,7 +4,7 @@ package SPVM::Unicode {
   
   native sub uchar : int ($str : string, $offset_ref : int&);
   
-  native sub uchar_to_utf8 : int ($uchar : int, $utf8_bytes : byte[]);
+  native sub uchar_to_utf8 : string ($uchar : int);
   
   precompile sub u16 : short[] ($str : string) {
     my $pos = 0;
@@ -32,12 +32,8 @@ package SPVM::Unicode {
     my $utf8_bytes = new byte[4];
     for (my $i = 0; $i < @$uchars; $i++) {
       my $uchar = $uchars->[$i];
-      my $len = uchar_to_utf8($uchar, $utf8_bytes);
-      if ($len == 0) {
-        die "Can't convert part of utf16 string to utf8";
-      }
-      my $ustr = (string)sliceb($utf8_bytes, 0, $len);
-      $ustrs_list->push($ustr);
+      my $utf8_str = uchar_to_utf8($uchar);
+      $ustrs_list->push($utf8_str);
     }
     
     my $ustrs = $ustrs_list->to_array;
