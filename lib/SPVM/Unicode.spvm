@@ -1,6 +1,6 @@
 package SPVM::Unicode {
   use SPVM::IntList;
-  use SPVM::StringList;
+  use SPVM::StringBuffer;
   
   native sub uchar : int ($str : string, $offset_ref : int&);
   
@@ -27,18 +27,16 @@ package SPVM::Unicode {
   precompile sub utf16_to_utf8 : string ($u16_chars : short[]) {
     my $uchars = utf16_to_utf32($u16_chars);
     
-    my $ustrs_list = SPVM::StringList->new;
+    my $buffer = SPVM::StringBuffer->new;
     
     my $utf8_bytes = new byte[4];
     for (my $i = 0; $i < @$uchars; $i++) {
       my $uchar = $uchars->[$i];
       my $utf8_str = uchar_to_utf8($uchar);
-      $ustrs_list->push($utf8_str);
+      $buffer->push($utf8_str);
     }
     
-    my $ustrs = $ustrs_list->to_array;
-    
-    my $str = join("", $ustrs);
+    my $str = $buffer->to_str;
     
     return $str;
   }
@@ -123,7 +121,7 @@ package SPVM::Unicode {
     return $code_point_string;
   }
 
-  private sub _is_utf16_high_surrogate : int($ch : int) {
+  private precompile sub _is_utf16_high_surrogate : int ($ch : int) {
     if ($ch >= 0xD800 && $ch < 0xDC00) {
       return 1;
     }
@@ -132,7 +130,7 @@ package SPVM::Unicode {
     }
   }
 
-  private sub _is_utf16_low_surrogate : int($ch : int) {
+  private precompile sub _is_utf16_low_surrogate : int ($ch : int) {
     if ($ch >= 0xDC00 && $ch < 0xE000) {
       return 1;
     }
