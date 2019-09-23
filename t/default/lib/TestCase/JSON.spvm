@@ -125,18 +125,6 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub _validate : int ($json : SPVM::JSON, $input : string[], $expected : string[]) {
-    for (my $i = 0; $i < @$input; $i++) {
-      my $decoded = $json->decode($input->[$i]);
-      my $actual = $json->encode($decoded);
-      unless ($actual eq $expected->[$i]) {
-        warn("input: " . $input->[$i] . "\nexpected: " . $expected->[$i] . "\nactual: $actual");
-        return 0;
-      }
-    }
-    return 1;
-  }
-
   sub encode_flat_hash : int () {
     {
       my $input    = SPVM::Hash->new;
