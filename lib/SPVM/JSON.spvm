@@ -248,17 +248,6 @@ package SPVM::JSON {
       $neg = 1;
     }
 
-    if ($json->[$$iter] == 'i') {
-      my $end = length $json;
-      if ($$iter + 2 < $end && substr($json, $$iter, 3) eq "inf") {
-        $$iter += 3;
-        return undef;
-      }
-      else {
-        _decode_error("malformed number.", $json, $$iter);
-      }
-    }
-
     # a recursion depth of ten gives us >>500 bits
     _atof_scan1($json, $iter, \$accum, \$expo, 0, 10);
 
@@ -272,18 +261,20 @@ package SPVM::JSON {
 
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
   precompile private sub _decode_num : object ($self : self, $json : string, $iter : int&) {
-    my $end = length $json;
-    if ($json->[$$iter] == 'n') {
-      if ($$iter + 2 < $end && substr($json, $$iter, 3) eq "nan") {
-        $$iter += 3;
+
+    switch ((int)$json->[$$iter]) {
+      case 'i': {
+        unless (_expect_or_rewind($json, $iter, "inf")) {
+          _decode_error("malformed number.", $json, $$iter);
+        }
+        return undef;
       }
-      elsif ($$iter + 3 < $end && substr($json, $$iter, 4) eq "null") {
-        $$iter += 4;
+      case '-': {
+        if (_expect_or_rewind($json, $iter, "-inf")) {
+          return undef;
+        }
+        break;
       }
-      else {
-        _decode_error("malformed number.", $json, $$iter);
-      }
-      return undef;
     }
 
     return _atof($json, $iter);
@@ -395,7 +386,7 @@ package SPVM::JSON {
       case '"': {
         return $self->_decode_string($json, $iter);
       }
-      case '-': case 'i': case 'n':
+      case '-': case 'i':
       case '0': case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8': case '9': {
         return $self->_decode_num($json, $iter);
@@ -405,6 +396,13 @@ package SPVM::JSON {
       }
       case 'f': {
         return $self->_decode_false($json, $iter);
+      }
+      case 'n': {
+        unless (_expect_or_rewind($json, $iter, "nan") ||
+                _expect_or_rewind($json, $iter, "null")) {
+          _decode_error("malformed number.", $json, $$iter);
+        }
+        return undef;
       }
       default: {
         _decode_error("Unexpected token.", $json, $$iter);
