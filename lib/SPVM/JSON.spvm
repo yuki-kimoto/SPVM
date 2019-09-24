@@ -144,7 +144,7 @@ package SPVM::JSON {
     return (string)$buffer->to_str;
   }
 
-  precompile private sub _atof_scan1 : double ($json : string, $iter : int&,
+  precompile private sub _decode_num_recursive : double ($self : self, $json : string, $iter : int&,
       $accum : double&, $expo : int&, $postdp : int, $maxdepth : int) {
     my $end = length $json;
     my $long_accum : long = 0;
@@ -161,7 +161,7 @@ package SPVM::JSON {
     while ($$iter < $end) {
       if ($json->[$$iter] == '.') {
         ++$$iter;
-        _atof_scan1($json, $iter, $accum, $expo, 1, $maxdepth);
+        $self->_decode_num_recursive($json, $iter, $accum, $expo, 1, $maxdepth);
         last;
       }
       elsif ($json->[$$iter] == 'e' || $json->[$$iter] == 'E') {
@@ -218,7 +218,7 @@ package SPVM::JSON {
           if ($postdp) {
             $$expo -= $expo_accum;
           }
-          _atof_scan1($json, $iter, $accum, $expo, $postdp, $maxdepth);
+          $self->_decode_num_recursive($json, $iter, $accum, $expo, $postdp, $maxdepth);
           if ($postdp) {
             $$expo += $expo_accum;
           }
@@ -236,27 +236,6 @@ package SPVM::JSON {
 
     $$accum += $long_accum * SPVM::Math->pow(10, $$expo);
     $$expo += $expo_accum;
-  }
-
-  precompile private sub _atof : SPVM::Double ($json : string, $iter : int&) {
-    my $accum = 0.0;
-    my $expo = 0;
-    my $neg = 0;
-
-    if ($json->[$$iter] == '-') {
-      ++$$iter;
-      $neg = 1;
-    }
-
-    # a recursion depth of ten gives us >>500 bits
-    _atof_scan1($json, $iter, \$accum, \$expo, 0, 10);
-
-    if ($neg) {
-      return -$accum;
-    }
-    else {
-      return $accum;
-    }
   }
 
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
@@ -277,7 +256,24 @@ package SPVM::JSON {
       }
     }
 
-    return _atof($json, $iter);
+    my $accum = 0.0;
+    my $expo = 0;
+    my $neg = 0;
+
+    if ($json->[$$iter] == '-') {
+      ++$$iter;
+      $neg = 1;
+    }
+
+    # a recursion depth of ten gives us >>500 bits
+    $self->_decode_num_recursive($json, $iter, \$accum, \$expo, 0, 10);
+
+    if ($neg) {
+      return -$accum;
+    }
+    else {
+      return $accum;
+    }
   }
 
   precompile private sub _decode_true : SPVM::JSON::Bool ($self : self, $json : string, $iter : int&) {
