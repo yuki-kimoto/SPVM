@@ -200,14 +200,6 @@ package TestCase::JSON {
       }
     }
     {
-      my $input    = "{\"int\":42}";
-      my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::Hash->newa([(object) "int" => 42 ]);
-      unless (_equals($got, $expected)) {
-        return 0;
-      }
-    }
-    {
       my $input    = "{\"string\":\"vstr\"}";
       my $got      = $DEFAULT_JSON->decode($input);
       my $expected = SPVM::Hash->newa([(object) "string" => "vstr" ]);
@@ -245,7 +237,6 @@ package TestCase::JSON {
       my $expected = SPVM::Hash->newa([(object)
         "bool"   => SPVM::JSON::Bool->FALSE,
         "double" => 0.1,
-        "int"    => 1,
         "str"    => "hoge",
       ]);
       unless (_equals($got, $expected)) {
@@ -256,8 +247,8 @@ package TestCase::JSON {
       my $input    = " { \"key\" \n\t: 123\t,\n\t\t\"list\" :\n[\t1\t,\r2\t,\t3\n]}\r\r";
       my $got      = $DEFAULT_JSON->decode($input);
       my $expected = SPVM::Hash->newa([(object)
-        "key"  => 123,
-        "list" => SPVM::ObjectList->newa([(object) 1, 2, 3])
+        "key"  => 123.0,
+        "list" => SPVM::ObjectList->newa([(object) 1.0, 2.0, 3.0])
       ]);
       unless (_equals($got, $expected)) {
         return 0;
@@ -314,7 +305,7 @@ package TestCase::JSON {
     {
       my $input    = "[3,2,1]";
       my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::ObjectList->newa([(object) 3, 2, 1]);
+      my $expected = SPVM::ObjectList->newa([(object) 3.0, 2.0, 1.0]);
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -330,15 +321,15 @@ package TestCase::JSON {
     {
       my $input    = "[0,3.14,\"abc\",true]";
       my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::ObjectList->newa([(object) 0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      my $expected = SPVM::ObjectList->newa([(object) 0.0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
       unless (_equals($got, $expected)) {
         return 0;
       }
     }
     {
-      my $input    = " [ 1, 3.14\n, true \t , \"a\" ] ";
+      my $input    = " [ 3.14\n, true \t , \"a\" ] ";
       my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::ObjectList->newa([(object) 1, 3.14, SPVM::JSON::Bool->TRUE, "a"]);
+      my $expected = SPVM::ObjectList->newa([(object) 3.14, SPVM::JSON::Bool->TRUE, "a"]);
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -354,20 +345,6 @@ package TestCase::JSON {
       my $got      = $DEFAULT_JSON->encode($input);
       my $expected = $test_case_json->[$i];
       unless ($got eq $expected) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  sub decode_int : int () {
-    my $test_case_json = ["-1", "0", "1"];
-    my $test_case_int  = [-1, 0, 1];
-    for (my $i = 0; $i < @$test_case_json; ++$i) {
-      my $input    = $test_case_json->[$i];
-      my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::Int->new($test_case_int->[$i]);
-      unless (_equals($got, $expected)) {
         return 0;
       }
     }
@@ -596,14 +573,14 @@ package TestCase::JSON {
     my $got = $DEFAULT_JSON->decode($input);
     my $expected = SPVM::Hash->newa([(object)
       "A" => SPVM::Hash->newa([(object)
-        "B" => 1,
+        "B" => 1.0,
         "C" => SPVM::Hash->newa([(object)
           "D" => 0.1,
           "E" => SPVM::JSON::Bool->TRUE,
           "F" => "str",
           "G" => SPVM::ObjectList->newa([(object)
             "abc",
-            123,
+            123.0,
             SPVM::Hash->newa([(object)
               "H" => "val",
             ]),

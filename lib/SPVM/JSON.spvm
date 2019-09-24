@@ -240,45 +240,6 @@ package SPVM::JSON {
     }
   }
 
-  precompile private sub _grok_non_neg : int ($json : string, $start : int, $len : int, $val : long&) {
-    my $number_type = 0;
-    $$val = 0;
-    for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
-      if ($$val <= (long)INT32_MAX()) {
-        $$val = $$val * 10 + $json->[$start + $digit_index] - '0';
-      }
-      elsif ($$val < INT64_MAX() / 10 ||
-          ($$val == INT64_MAX() / 10 && $json->[$start + $digit_index] - '0' <= INT64_MAX() % 10)) {
-        $number_type = 1;
-        $$val = $$val * 10 + $json->[$start + $digit_index] - '0';
-      }
-      else {
-        return -1;
-      }
-    }
-    return $number_type;
-  }
-
-  precompile private sub _grok_neg : int ($json : string, $start : int, $len : int, $val : long&) {
-    my $number_type = 0;
-    $$val = 0;
-    for (my $digit_index = 0; $digit_index < $len; ++$digit_index) {
-      if ($$val >= (long)INT32_MIN()) {
-        $$val = $$val * 10 - ($json->[$start + $digit_index] - '0');
-      }
-      elsif ($$val > INT64_MIN() / 10 ||
-          ($$val == INT64_MIN() / 10 &&
-              $json->[$start + $digit_index] - '0' <= -(INT64_MIN() + INT64_MIN() / 10 * 10))) {
-        $number_type = 1;
-        $$val = $$val * 10 - ($json->[$start + $digit_index] - '0');
-      }
-      else {
-        return -1;
-      }
-    }
-    return $number_type;
-  }
-
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
   precompile private sub _decode_num : object ($self : self, $json : string, $iter : int&) {
     my $end = length $json;
@@ -295,7 +256,6 @@ package SPVM::JSON {
       return undef;
     }
 
-    my $is_double = 0;
     my $start = $$iter;
 
     # minus
@@ -336,8 +296,6 @@ package SPVM::JSON {
       while ($$iter < $end && $json->[$$iter] >= '0' && $json->[$$iter] <= '9') {
         ++$$iter;
       }
-
-      $is_double = 1;
     }
 
     # exp
@@ -355,85 +313,6 @@ package SPVM::JSON {
       while ($$iter < $end && ($json->[$$iter] >= '0' && $json->[$$iter] <= '9')) {
         ++$$iter;
       }
-
-      $is_double = 1;
-    }
-
-    if (!$is_double) {
-      my $len = $$iter - $start;
-
-      if ($json->[$start] == '-') {
-        switch ($len) {
-          case 2: {
-            return -(                                                                                                                  $json->[$start + 1] - '0' *     1);
-          }
-          case 3: {
-            return -(                                                                                       $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *    11);
-          }
-          case 4: {
-            return -(                                                           $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *   111);
-          }
-          case 5: {
-            return -(                              $json->[$start + 1] * 1000 + $json->[$start + 2] * 100 + $json->[$start + 3] * 10 + $json->[$start + 4] - '0' *  1111);
-          }
-          case 6: {
-            return -($json->[$start + 1] * 10000 + $json->[$start + 2] * 1000 + $json->[$start + 3] * 100 + $json->[$start + 4] * 10 + $json->[$start + 5] - '0' * 11111);
-          }
-        }
-      }
-      else {
-        switch ($len) {
-          case 1: {
-            return (                                                                                                                       $json->[$start] - '0' *     1);
-          }
-          case 2: {
-            return (                                                                                            $json->[$start] * 10 + $json->[$start + 1] - '0' *    11);
-          }
-          case 3: {
-            return (                                                                $json->[$start] * 100 + $json->[$start + 1] * 10 + $json->[$start + 2] - '0' *   111);
-          }
-          case 4: {
-            return (                                   $json->[$start] * 1000 + $json->[$start + 1] * 100 + $json->[$start + 2] * 10 + $json->[$start + 3] - '0' *  1111);
-          }
-          case 5: {
-            return (     $json->[$start] * 10000 + $json->[$start + 1] * 1000 + $json->[$start + 2] * 100 + $json->[$start + 3] * 10 + $json->[$start + 4] - '0' * 11111);
-          }
-        }
-      }
-
-      my $val : long;
-      my $number_type = 0;
-
-      if ($json->[$start] == '-') {
-        $number_type = _grok_neg($json, $start + 1, $len - 1, \$val);
-        if ($number_type == 0) {
-          return (int)$val;
-        }
-        elsif ($number_type == 1) {
-          return $val;
-        }
-      }
-      else {
-        $number_type = _grok_non_neg($json, $start, $len, \$val);
-        if ($number_type == 0) {
-          return (int)$val;
-        }
-        elsif ($number_type == 1) {
-          return $val;
-        }
-      }
-
-      if ($json->[$start] == '-') {
-        --$len;
-      }
-
-      # does not fit into long, try double
-      if (DBL_DIG() >= $len) {
-        return _atof($json, $start);
-      }
-
-      # everything else fails, convert it to a string
-      return substr($json, $start, $$iter - $start);
     }
 
     # loss of precision here
