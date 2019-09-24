@@ -125,7 +125,7 @@ package SPVM::JSON {
     return (string)$buffer->to_str;
   }
 
-  precompile private sub _atof_scan1 : double ($json : string, $iter : int,
+  precompile private sub _atof_scan1 : double ($json : string, $iter : int&,
       $accum : double&, $expo : int&, $postdp : int, $maxdepth : int) {
     my $end = length $json;
     my $long_accum : long = 0;
@@ -134,43 +134,43 @@ package SPVM::JSON {
     # if we recurse too deep, skip all remaining digits
     # to avoid a stack overflow attack
     if (--$maxdepth <= 0) {
-      while ($iter < $end && ($json->[$iter] - '0') < 10) {
-        ++$iter;
+      while ($$iter < $end && ($json->[$$iter] - '0') < 10) {
+        ++$$iter;
       }
     }
 
-    while ($iter < $end) {
-      if ($json->[$iter] == '.') {
-        ++$iter;
+    while ($$iter < $end) {
+      if ($json->[$$iter] == '.') {
+        ++$$iter;
         _atof_scan1($json, $iter, $accum, $expo, 1, $maxdepth);
         last;
       }
-      elsif ($json->[$iter] == 'e' || $json->[$iter] == 'E') {
+      elsif ($json->[$$iter] == 'e' || $json->[$$iter] == 'E') {
         my $exp2 = 0;
         my $neg = 0;
 
-        ++$iter;
+        ++$$iter;
 
-        if ($iter >= $end) {
-          _decode_error("malformed number (no digits after e/E)", $json, $iter);
+        if ($$iter >= $end) {
+          _decode_error("malformed number (no digits after e/E)", $json, $$iter);
         }
 
-        if ($json->[$iter] == '-') {
-          ++$iter;
+        if ($json->[$$iter] == '-') {
+          ++$$iter;
           $neg = 1;
         }
-        elsif ($json->[$iter] == '+') {
-          ++$iter;
+        elsif ($json->[$$iter] == '+') {
+          ++$$iter;
         }
 
-        if ($iter >= $end) {
-          _decode_error("malformed number (no digits after e/E)", $json, $iter);
+        if ($$iter >= $end) {
+          _decode_error("malformed number (no digits after e/E)", $json, $$iter);
         }
 
-        while ($iter < $end) {
-          my $dig = $json->[$iter] - '0';
+        while ($$iter < $end) {
+          my $dig = $json->[$$iter] - '0';
           if ($dig < 10) {
-            $exp2 = $exp2 * 10 + $json->[$iter++] - '0';
+            $exp2 = $exp2 * 10 + $json->[$$iter++] - '0';
           }
           else {
             last;
@@ -185,10 +185,10 @@ package SPVM::JSON {
         }
         last;
       }
-      elsif ($json->[$iter] >= '0' && $json->[$iter] <= '9') {
-        my $dig = $json->[$iter] - '0';
+      elsif ($json->[$$iter] >= '0' && $json->[$$iter] <= '9') {
+        my $dig = $json->[$$iter] - '0';
 
-        ++$iter;
+        ++$$iter;
 
         $long_accum = $long_accum * 10 + $dig;
         ++$expo_accum;
@@ -219,18 +219,29 @@ package SPVM::JSON {
     $$expo += $expo_accum;
   }
 
-  precompile private sub _atof : double ($json : string, $start : int) {
+  precompile private sub _atof : SPVM::Double ($json : string, $iter : int&) {
     my $accum = 0.0;
     my $expo = 0;
     my $neg = 0;
 
-    if ($json->[$start] == '-') {
-      ++$start;
+    if ($json->[$$iter] == '-') {
+      ++$$iter;
       $neg = 1;
     }
 
+    if ($json->[$$iter] == 'i') {
+      my $end = length $json;
+      if ($$iter + 2 < $end && substr($json, $$iter, 3) eq "inf") {
+        $$iter += 3;
+        return undef;
+      }
+      else {
+        _decode_error("malformed number.", $json, $$iter);
+      }
+    }
+
     # a recursion depth of ten gives us >>500 bits
-    _atof_scan1($json, $start, \$accum, \$expo, 0, 10);
+    _atof_scan1($json, $iter, \$accum, \$expo, 0, 10);
 
     if ($neg) {
       return -$accum;
@@ -256,67 +267,7 @@ package SPVM::JSON {
       return undef;
     }
 
-    my $start = $$iter;
-
-    # minus
-    if ($json->[$$iter] == '-') {
-      ++$$iter;
-    }
-
-    if ($json->[$$iter] == 'i') {
-      if ($$iter + 2 < $end && substr($json, $$iter, 3) eq "inf") {
-        $$iter += 3;
-      }
-      else {
-        _decode_error("malformed number.", $json, $$iter);
-      }
-      return undef;
-    }
-
-    if ($json->[$$iter] == '0') {
-      ++$$iter;
-      if ($$iter < $end && ($json->[$$iter] >= '0' && $json->[$$iter] <= '9')) {
-        _decode_error("malformed number (leading zero must not be followed by another digit)", $json, $$iter);
-      }
-    }
-    elsif ($$iter >= $end || $json->[$$iter] < '0' || $json->[$$iter] > '9') {
-      _decode_error("malformed number (no digits after initial minus)", $json, $$iter);
-    }
-
-    while ($$iter < $end && $json->[$$iter] >= '0' && $json->[$$iter] <= '9') {
-      ++$$iter;
-    }
-
-    # frac
-    if ($$iter < $end && $json->[$$iter] == '.') {
-      ++$$iter;
-      if ($$iter >= $end || $json->[$$iter] < '0' || $json->[$$iter] > '9') {
-        _decode_error("malformed number (no digits after decimal point)", $json, $$iter);
-      }
-      while ($$iter < $end && $json->[$$iter] >= '0' && $json->[$$iter] <= '9') {
-        ++$$iter;
-      }
-    }
-
-    # exp
-    if ($$iter < $end && ($json->[$$iter] == 'e' || $json->[$$iter] == 'E')) {
-      ++$$iter;
-
-      if ($$iter < $end && ($json->[$$iter] == '-' || $json->[$$iter] == '+')) {
-        ++$$iter;
-      }
-
-      if ($$iter >= $end || $json->[$$iter] < '0' || $json->[$$iter] > '9') {
-        _decode_error("malformed number (no digits after exp sign)", $json, $$iter);
-      }
-
-      while ($$iter < $end && ($json->[$$iter] >= '0' && $json->[$$iter] <= '9')) {
-        ++$$iter;
-      }
-    }
-
-    # loss of precision here
-    return _atof($json, $start);
+    return _atof($json, $iter);
   }
 
   precompile private sub _decode_true : SPVM::JSON::Bool ($self : self, $json : string, $iter : int&) {
