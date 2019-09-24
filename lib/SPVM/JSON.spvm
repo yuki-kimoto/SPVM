@@ -49,29 +49,48 @@ package SPVM::JSON {
     }
   }
 
+  precompile private sub _expect_char : void ($json : string, $iter : int&, $expected : byte) {
+    my $end = length $json;
+    unless ($$iter + 1 <= $end && $json->[$$iter] == $expected) {
+      _decode_error("Expected char: '" . [$expected] . "' doesn't exist", $json, $$iter);
+    }
+    ++$$iter;
+  }
+
   precompile private sub _expect_token : void ($json : string, $iter : int&, $expected : string) {
     my $end = length $json;
     my $length = length $expected;
     unless ($$iter + $length <= $end) {
       _decode_error("Expected token: $expected doesn't exist", $json, $$iter);
     }
-    my $begin = $$iter;
-    while (1) {
-      unless ($json->[$$iter] == $expected->[$$iter - $begin]) {
-        _decode_error("Expected token: $expected doesn't exist", $json, $$iter);
-      }
-      ++$$iter;
-      if ($$iter - $begin == $length) {
-        last;
-      }
+    my $got = substr($json, $$iter, $length);
+    if ($got eq $expected) {
+      $$iter += $length;
     }
+    else {
+      _decode_error("Expected token: $expected doesn't exist", $json, $$iter);
+    }
+  }
+
+  precompile private sub _expect_or_rewind : int ($json : string, $iter : int&, $expected : string) {
+    my $end = length $json;
+    my $length = length $expected;
+    unless ($$iter + $length <= $end) {
+      return 0;
+    }
+    my $got = substr($json, $$iter, $length);
+    if ($got eq $expected) {
+      $$iter += $length;
+      return 1;
+    }
+    return 0;
   }
 
   precompile private sub _decode_string : string ($self : self, $json : string, $iter : int&) {
     my $end = length $json;
     my $buffer = SPVM::StringBuffer->new;
 
-    _expect_token($json, $iter, "\"");
+    _expect_char($json, $iter, '"');
 
     my $special_char_expected = 0;
     while (1) {
@@ -120,7 +139,7 @@ package SPVM::JSON {
       _decode_error("Invalid string. end-quote doesn't exist", $json, $$iter);
     }
 
-    _expect_token($json, $iter, "\"");
+    _expect_char($json, $iter, '\"');
 
     return (string)$buffer->to_str;
   }
@@ -285,7 +304,7 @@ package SPVM::JSON {
     my $hash = SPVM::Hash->new;
     my $has_element = 0;
 
-    _expect_token($json, $iter, "{");
+    _expect_char($json, $iter, '{');
 
     while (1) {
       $self->_skip_spaces($json, $iter);
@@ -300,7 +319,7 @@ package SPVM::JSON {
 
       # comma
       if ($has_element) {
-        _expect_token($json, $iter, ",");
+        _expect_char($json, $iter, ',');
         $self->_skip_spaces($json, $iter);
       }
       else {
@@ -312,13 +331,13 @@ package SPVM::JSON {
 
       # separator
       $self->_skip_spaces($json, $iter);
-      _expect_token($json, $iter, ":");
+      _expect_char($json, $iter, ':');
 
       # value
       $hash->set($key, $self->_decode_recursive($json, $iter));
     }
 
-    _expect_token($json, $iter, "}");
+    _expect_char($json, $iter, '}');
 
     return $hash;
   }
@@ -328,7 +347,7 @@ package SPVM::JSON {
     my $list = SPVM::ObjectList->new;
     my $has_element = 0;
 
-    _expect_token($json, $iter, "[");
+    _expect_char($json, $iter, '[');
 
     while (1) {
       $self->_skip_spaces($json, $iter);
@@ -343,7 +362,7 @@ package SPVM::JSON {
 
       # comma
       if ($has_element) {
-        _expect_token($json, $iter, ",");
+        _expect_char($json, $iter, ',');
       }
       else {
         $has_element = 1;
@@ -351,7 +370,7 @@ package SPVM::JSON {
       $list->push($self->_decode_recursive($json, $iter));
     }
 
-    _expect_token($json, $iter, "]");
+    _expect_char($json, $iter, ']');
 
     return $list;
   }
