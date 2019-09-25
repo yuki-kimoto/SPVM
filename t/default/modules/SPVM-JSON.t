@@ -30,7 +30,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::JSON->decode_nan);
   ok(TestCase::JSON->decode_flat_hash);
   ok(TestCase::JSON->decode_flat_list);
-  ok(TestCase::JSON->decode_int);
   ok(TestCase::JSON->decode_double);
   ok(TestCase::JSON->decode_bool);
   ok(TestCase::JSON->decode_string);
