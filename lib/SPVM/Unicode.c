@@ -16362,8 +16362,11 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
     uchar = dst;
     *offset_ref += uchar_len;
   }
-  else {
+  else if (uchar_len == 0) {
     uchar = -1;
+  }
+  else if (uchar_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
+    uchar = -2;
   }
   
   stack[0].ival = uchar;
@@ -16380,7 +16383,8 @@ int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack)
   int32_t utf8_len = (int32_t)spvm_utf8proc_encode_char((spvm_utf8proc_int32_t)uchar, (spvm_utf8proc_uint8_t*)tmp_utf8_bytes);
   
   if (utf8_len == 0) {
-    SPVM_DIE("Invalid unicode point", MFILE, __LINE__);
+    stack[0].oval = NULL;
+    return SPVM_SUCCESS;
   }
   
   void* obj_utf8_bytes = env->new_barray(env, utf8_len);

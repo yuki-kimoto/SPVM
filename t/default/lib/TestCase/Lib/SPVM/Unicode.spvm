@@ -1,6 +1,14 @@
 package TestCase::Lib::SPVM::Unicode {
   use SPVM::Unicode;
   
+  sub ERROR_INVALID_UTF8 : int () {
+    
+    unless (SPVM::Unicode->ERROR_INVALID_UTF8 == -2) {
+      return 0;
+    }
+    
+    return 1;
+  }
   sub uchar : int () {
     
     {
@@ -214,7 +222,7 @@ package TestCase::Lib::SPVM::Unicode {
     # サロゲートペア含む
     my $str = "あ𠮷a";
     
-    my $u16chars = SPVM::Unicode->u16($str);
+    my $u16chars = SPVM::Unicode->utf8_to_utf16($str);
     
     unless (@$u16chars == 4) {
       return 0;

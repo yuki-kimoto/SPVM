@@ -1,12 +1,16 @@
 package SPVM::Unicode {
   use SPVM::IntList;
   use SPVM::StringBuffer;
-  
+
+  enum {
+    ERROR_INVALID_UTF8 = -2,
+  }
+ 
   native sub uchar : int ($str : string, $offset_ref : int&);
   
   native sub uchar_to_utf8 : string ($uchar : int);
   
-  precompile sub u16 : short[] ($str : string) {
+  precompile sub utf8_to_utf16 : short[] ($str : string) {
     my $pos = 0;
     my $uchars_list = SPVM::IntList->new;
     while ((my $uchar = uchar($str, \$pos)) >= 0) {
@@ -19,13 +23,13 @@ package SPVM::Unicode {
     
     my $uchars = $uchars_list->to_array;
     
-    my $u16_chars = utf32_to_utf16($uchars);
+    my $utf16_chars = utf32_to_utf16($uchars);
     
-    return $u16_chars;
+    return $utf16_chars;
   }
   
-  precompile sub utf16_to_utf8 : string ($u16_chars : short[]) {
-    my $uchars = utf16_to_utf32($u16_chars);
+  precompile sub utf16_to_utf8 : string ($utf16_chars : short[]) {
+    my $uchars = utf16_to_utf32($utf16_chars);
     
     my $buffer = SPVM::StringBuffer->new;
     
@@ -60,7 +64,7 @@ package SPVM::Unicode {
       }
     }
     
-    # Convert conde point to UTF-16
+    # Convert code point to UTF-16
     my $utf16_string = new short[$length];
     my $pos = 0;
     

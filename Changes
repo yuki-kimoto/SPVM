@@ -1,5 +1,7 @@
-0.0440 2019-09-18
+0.0441 2019-09-25
   - add pi method to SPVM::Math
+  - cleanup SPVM::Unicode. Many methods is remaned.
+  - cleanup SPVM::JSON. Many options is removed.
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array
