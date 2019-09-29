@@ -382,6 +382,16 @@ package TestCase::JSON {
         return 0;
       }
     }
+    {
+      eval {
+        $DEFAULT_JSON->decode("-");
+      };
+      unless ($@ && contains($@, "malformed number (no digits after '-')")) {
+        $@ = undef;
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 

@@ -231,6 +231,10 @@ package SPVM::JSON {
     my $neg = 0;
 
     if ($json->[$$iter] == '-') {
+      my $length = length $json;
+      unless ($$iter + 1 < $length && isdigit($json->[$$iter + 1])) {
+        _decode_error("malformed number (no digits after '-')", $json, $$iter);
+      }
       ++$$iter;
       $neg = 1;
     }
