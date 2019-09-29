@@ -521,6 +521,33 @@ package TestCase::JSON {
         return 0;
       }
     }
+    # '/'
+    {
+      my $input = "\"\\/\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "/";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\b'
+    {
+      my $input = "\"\\b\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\b";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\f'
+    {
+      my $input = "\"\\f\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\f";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
     # '\n'
     {
       my $input = "\"\\n\"";

@@ -87,8 +87,17 @@ package SPVM::JSON {
       if ($special_char_expected) {
         switch ((int)$char) {
           case '"':
-          case '\\': {
+          case '\\':
+          case '/': {
             $buffer->push_char($char);
+            break;
+          }
+          case 'b': {
+            $buffer->push_char('\b');
+            break;
+          }
+          case 'f': {
+            $buffer->push_char('\f');
             break;
           }
           case 'n': {
@@ -390,6 +399,18 @@ package SPVM::JSON {
         }
         case '\\': {
           $special = '\\';
+          break;
+        }
+        case '/': {
+          $special = '/';
+          break;
+        }
+        case '\b': {
+          $special = 'b';
+          break;
+        }
+        case '\f': {
+          $special = 'f';
           break;
         }
         case '\n': {
