@@ -554,7 +554,11 @@ package SPVM::JSON {
     my $iter = 0;
     my $spvm_data = $self->_decode_recursive($json, \$iter);
 
+    # allow $json to have trailing spaces.
     $self->_skip_spaces($json, \$iter);
+
+    # do not allow $json to have non-space string after a json object,
+    # something like `{"key":1} [1,2]`
     my $length = length $json;
     unless ($iter == $length) {
       _decode_error("garbage after JSON object", $json, $iter);
