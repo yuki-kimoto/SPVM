@@ -548,6 +548,27 @@ package TestCase::JSON {
         return 0;
       }
     }
+    # control characters are not allowed
+    {
+      for (my $ch : byte = 0; $ch <= 31; ++$ch) {
+        eval {
+          $DEFAULT_JSON->decode("\"" . [ $ch ] . "\"");
+        };
+        unless ($@ && contains($@, "Control ASCII characters are not allowed in string")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+      eval {
+        $DEFAULT_JSON->decode("\"" . [ (byte)127 ] . "\"");
+      };
+      unless ($@ && contains($@, "Control ASCII characters are not allowed in string")) {
+        $@ = undef;
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 

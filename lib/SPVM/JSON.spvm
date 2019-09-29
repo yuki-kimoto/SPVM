@@ -114,8 +114,8 @@ package SPVM::JSON {
         $special_char_expected = 1;
       }
       else {
-        if ($char == '\t') {
-          _decode_error("Literal ASCII tab characters are not allowed in string", $json, $$iter);
+        if ($char <= 31 || $char == 127) {
+          _decode_error("Control ASCII characters are not allowed in string", $json, $$iter);
         }
         $buffer->push_char($char);
       }
