@@ -91,16 +91,16 @@ package SPVM::JSON {
             $buffer->push_char($char);
             break;
           }
-          case 't': {
-            $buffer->push_char('\t');
-            break;
-          }
           case 'n': {
             $buffer->push_char('\n');
             break;
           }
           case 'r': {
             $buffer->push_char('\r');
+            break;
+          }
+          case 't': {
+            $buffer->push_char('\t');
             break;
           }
           default: {
@@ -384,9 +384,12 @@ package SPVM::JSON {
       my $char = $string->[$i];
       my $special : byte = -1;
       switch ((int)$char) {
-        case '\t': {
-          # Note: Decoded char from literal ASCII tab will be encoded with "\\t" (non-reversible).
-          $special = 't';
+        case '"': {
+          $special = '"';
+          break;
+        }
+        case '\\': {
+          $special = '\\';
           break;
         }
         case '\n': {
@@ -397,12 +400,9 @@ package SPVM::JSON {
           $special = 'r';
           break;
         }
-        case '"': {
-          $special = '"';
-          break;
-        }
-        case '\\': {
-          $special = '\\';
+        case '\t': {
+          # Note: Decoded char from literal ASCII tab will be encoded with "\\t" (non-reversible).
+          $special = 't';
           break;
         }
       }

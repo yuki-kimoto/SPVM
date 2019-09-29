@@ -445,15 +445,6 @@ package TestCase::JSON {
       }
     }
     # special characters
-    # '\'
-    {
-      my $input = "\\";
-      my $got = $DEFAULT_JSON->encode($input);
-      my $expected = "\"\\\\\"";
-      unless (_equals($got, $expected)) {
-        return 0;
-      }
-    }
     # '"'
     {
       my $input = "\"";
@@ -463,11 +454,11 @@ package TestCase::JSON {
         return 0;
       }
     }
-    # '\t'
+    # '\'
     {
-      my $input = "\t";
+      my $input = "\\";
       my $got = $DEFAULT_JSON->encode($input);
-      my $expected = "\"\\t\"";
+      my $expected = "\"\\\\\"";
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -490,6 +481,15 @@ package TestCase::JSON {
         return 0;
       }
     }
+    # '\t'
+    {
+      my $input = "\t";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\t\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
     return 1;
   }
 
@@ -503,15 +503,6 @@ package TestCase::JSON {
       }
     }
     # special characters
-    # '\'
-    {
-      my $input = "\"\\\\\"";
-      my $got = $DEFAULT_JSON->decode($input);
-      my $expected = "\\";
-      unless (_equals($got, $expected)) {
-        return 0;
-      }
-    }
     # '"'
     {
       my $input = "\"\\\"\"";
@@ -521,11 +512,11 @@ package TestCase::JSON {
         return 0;
       }
     }
-    # '\t'
+    # '\'
     {
-      my $input = "\"\\t\"";
+      my $input = "\"\\\\\"";
       my $got = $DEFAULT_JSON->decode($input);
-      my $expected = "\t";
+      my $expected = "\\";
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -544,6 +535,15 @@ package TestCase::JSON {
       my $input = "\"\\r\"";
       my $got = $DEFAULT_JSON->decode($input);
       my $expected = "\r";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\t'
+    {
+      my $input = "\"\\t\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\t";
       unless (_equals($got, $expected)) {
         return 0;
       }
