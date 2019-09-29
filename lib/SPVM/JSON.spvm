@@ -72,20 +72,6 @@ package SPVM::JSON {
     }
   }
 
-  precompile private sub _expect_or_rewind : int ($json : string, $iter : int&, $expected : string) {
-    my $end = length $json;
-    my $length = length $expected;
-    unless ($$iter + $length <= $end) {
-      return 0;
-    }
-    my $got = substr($json, $$iter, $length);
-    if ($got eq $expected) {
-      $$iter += $length;
-      return 1;
-    }
-    return 0;
-  }
-
   precompile private sub _decode_string : string ($self : self, $json : string, $iter : int&) {
     my $end = length $json;
     my $buffer = SPVM::StringBuffer->new;
@@ -240,22 +226,6 @@ package SPVM::JSON {
 
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
   precompile private sub _decode_num : object ($self : self, $json : string, $iter : int&) {
-
-    switch ((int)$json->[$$iter]) {
-      case 'i': {
-        unless (_expect_or_rewind($json, $iter, "inf")) {
-          _decode_error("malformed number.", $json, $$iter);
-        }
-        return undef;
-      }
-      case '-': {
-        if (_expect_or_rewind($json, $iter, "-inf")) {
-          return undef;
-        }
-        break;
-      }
-    }
-
     my $accum = 0.0;
     my $expo = 0;
     my $neg = 0;
@@ -382,7 +352,7 @@ package SPVM::JSON {
       case '"': {
         return $self->_decode_string($json, $iter);
       }
-      case '-': case 'i':
+      case '-':
       case '0': case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8': case '9': {
         return $self->_decode_num($json, $iter);
@@ -394,10 +364,7 @@ package SPVM::JSON {
         return $self->_decode_false($json, $iter);
       }
       case 'n': {
-        unless (_expect_or_rewind($json, $iter, "nan") ||
-                _expect_or_rewind($json, $iter, "null")) {
-          _decode_error("malformed number.", $json, $$iter);
-        }
+        _expect_token($json, $iter, "null");
         return undef;
       }
       default: {
