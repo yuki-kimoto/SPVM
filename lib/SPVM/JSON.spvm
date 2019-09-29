@@ -557,7 +557,7 @@ package SPVM::JSON {
     $self->_skip_spaces($json, \$iter);
     my $length = length $json;
     unless ($iter == $length) {
-      _decode_error("Not all json_text is decoded yet", $json, $iter);
+      _decode_error("garbage after JSON object", $json, $iter);
     }
 
     return $spvm_data;
