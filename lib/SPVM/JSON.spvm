@@ -295,7 +295,8 @@ package SPVM::JSON {
       _expect_char($json, $iter, ':');
 
       # value
-      $hash->set($key, $self->_decode_recursive($json, $iter));
+      my $value = $self->_decode_recursive($json, $iter);
+      $hash->set($key, $value);
     }
 
     _expect_char($json, $iter, '}');
