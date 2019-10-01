@@ -392,10 +392,10 @@ package SPVM::Regex {
   }
   
   sub match : int ($self : self, $target : string) {
-    return $self->match_repeat($target, 0);
+    return $self->match_offset($target, 0);
   }
   
-  sub match_repeat : int ($self : self, $target : string, $target_base_index : int) {
+  sub match_offset : int ($self : self, $target : string, $target_base_index : int) {
     
     unless ($target) {
       die "Target string must be defined";
@@ -587,7 +587,7 @@ package SPVM::Regex {
       $result_buffer->push($first_string);
     }
     
-    while (my $match = $self->match_repeat($target, $target_base_index)) {
+    while (my $match = $self->match_offset($target, $target_base_index)) {
       
       my $match_start = $self->match_start;
       my $match_end = $self->match_end;
