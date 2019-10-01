@@ -10,26 +10,19 @@ package SPVM::Regex {
   has string_start : int;
   has string_end : int;
   
-  has captures : string[];
+  has caps : ro string[];
   
   has match_start : ro int;
   has match_end : ro int;
   
   has replace_count : ro int;
   
-  enum {
+  private enum {
     STATUS_START,
     STATUS_CONTINUE,
     STATUS_QUANTIFIER_MIN,
     STATUS_QUANTIFIER_MAX,
     STATUS_CHAR_CLASS,
-  }
-  
-  sub caps : string ($self : self, $index : int) {
-    unless ($index >= 0) {
-      die "Invalid capture index";
-    }
-    return $self->{captures}[$index];
   }
   
   sub new : SPVM::Regex ($re_str : string) {
@@ -39,7 +32,7 @@ package SPVM::Regex {
     
     $self->compile($re_str);
     
-    $self->{captures} = new string[255];
+    $self->{caps} = new string[256];
     
     return $self;
   }
@@ -512,7 +505,7 @@ package SPVM::Regex {
         
         if ($match_uchar_repeat) {
           if ($pattern->{capture_end}) {
-            $self->{captures}[$capture_count] = substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
+            $self->{caps}[$capture_count] = substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
             $capture_count++;
             if ($capture_count > 255) {
               die "Too many captures";
@@ -614,7 +607,7 @@ package SPVM::Regex {
             $replace_buffer->push((string)$replace_elem_object);
           }
           elsif ($replace_elem_object isa SPVM::Int) {
-            my $capture = $self->caps((int)$replace_elem_object);
+            my $capture = $self->caps->[(int)$replace_elem_object];
             $replace_buffer->push($capture);
           }
           else {
