@@ -4,6 +4,9 @@
   - cleanup SPVM::JSON. Many options is removed.
   - cleanup SPVM::Regex.
     caps method return captured string array.
+    remove match_end method
+    add match_length method
+    
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array

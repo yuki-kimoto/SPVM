@@ -185,7 +185,7 @@ package TestCase::Lib::SPVM::Regex {
       unless ($re->match_start == 3) {
         return 0;
       }
-      unless ($re->match_end == 6) {
+      unless ($re->match_length == 3) {
         return 0;
       }
     }
@@ -203,7 +203,7 @@ package TestCase::Lib::SPVM::Regex {
       unless ($re->match_start == 6) {
         return 0;
       }
-      unless ($re->match_end == 24) {
+      unless ($re->match_length == 18) {
         return 0;
       }
     }
@@ -221,7 +221,7 @@ package TestCase::Lib::SPVM::Regex {
       unless ($re->match_start == 2) {
         return 0;
       }
-      unless ($re->match_end == 3) {
+      unless ($re->match_length == 1) {
         return 0;
       }
     }
@@ -240,7 +240,7 @@ package TestCase::Lib::SPVM::Regex {
       unless ($re->match_start == 0) {
         return 0;
       }
-      unless ($re->match_end == 0) {
+      unless ($re->match_length == 0) {
         return 0;
       }
     }

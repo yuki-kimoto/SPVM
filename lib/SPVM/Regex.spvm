@@ -13,7 +13,7 @@ package SPVM::Regex {
   has caps : ro string[];
   
   has match_start : ro int;
-  has match_end : ro int;
+  has match_length : ro int;
   
   has replace_count : ro int;
   
@@ -547,7 +547,7 @@ package SPVM::Regex {
     
     if ($really_match) {
       $self->{match_start} = $target_base_index_before;
-      $self->{match_end} = $target_index;
+      $self->{match_length} = $target_index - $self->{match_start};
     }
     
     return $really_match;
@@ -590,7 +590,7 @@ package SPVM::Regex {
     while (my $match = $self->match_offset($target, $target_base_index)) {
       
       my $match_start = $self->match_start;
-      my $match_end = $self->match_end;
+      my $match_end = $match_start + $self->match_length;
       
       my $replace : string;
       if ($replace_object isa string) {
@@ -628,7 +628,7 @@ package SPVM::Regex {
         die "Invalid replace argument";
       }
       
-      my $match_length = $match_end - $match_start;
+      my $match_length = $self->match_length;
       my $replace_length = length $replace;
       
       my $result_length = $target_length + $replace_length - $match_length;
@@ -654,7 +654,7 @@ package SPVM::Regex {
       $result = (byte[])copy_str($target);
     }
     else {
-      my $match_end = $self->match_end;
+      my $match_end = $self->match_start + $self->match_length;
       my $rest_length = $target_length - $match_end;
       my $rest_string = substr($target, $match_end, $rest_length);
       $result_buffer->push($rest_string);

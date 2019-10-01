@@ -32,7 +32,13 @@ Get the strings captured by "match" method.
 
   sub match_start : int ()
 
-Get the start byte offset of the string matched by "match" method.
+Get the start byte offset of the string matched by "match" method or "match_offset" method.
+
+=head2 match_length
+
+  sub match_length : int ()
+
+Get the byte length of the string matched by "match" method or "match_offset" method.
 
 =head2 replace_count
 
