@@ -4425,7 +4425,7 @@ int32_t SPVM_RUNTIME_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_
     SPVM_RUNTIME_SUB* sub_callback = &runtime->subs[callback_package->subs_base];
     
     const char* sub_callback_signature = &runtime->string_pool[sub_callback->signature_id];
-    if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
+    if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
       SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
       if (strcmp(sub_callback_signature, &runtime->string_pool[sub->signature_id]) == 0) {
         has_callback = 1;
@@ -5735,7 +5735,7 @@ int32_t SPVM_RUNTIME_API_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const
   
   // Package which have only anon sub
   int32_t sub_id;
-  if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
+  if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
     // Subroutine name
     SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
      

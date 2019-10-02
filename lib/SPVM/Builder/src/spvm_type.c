@@ -207,7 +207,7 @@ int32_t SPVM_TYPE_has_callback(
   SPVM_PACKAGE* callback = callback_basic_type->package;
   
   // Package which have only anon sub
-  if (package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
+  if (package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
     assert(package->subs->length == 1);
     assert(callback->subs->length == 1);
     SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback->subs, 0);
