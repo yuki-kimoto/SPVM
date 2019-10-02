@@ -6,19 +6,19 @@ use SPVM 'SPVM::Util';
 
 =head1 NAME
 
-SPVM::Util - Unix standard library
+SPVM::Util - Variouse utilities
 
 =head1 SYNOPSYS
   
   use SPVM::Util;
   
-  # Stringify all object and join them by separator
+  # Stringify all object and join them by the specific separator
   my $objects = new Foo[3];
   my $str = SPVM::Util->joino(",", $objects);
   
-  # Sleep 3 seconds
-  
-  SPVM::Util->sleep(3);
+  # split a string by the specific separator
+  my $str = "foo,bar,baz";
+  my $splited_strs = split(",", $str);
 
 =head1 DESCRIPTION
 
@@ -31,10 +31,10 @@ Unix standard library.
   sub joino : string ($sep : string, $objects : oarray)
 
 Stringify all objects and join them by specific separator.
-Each object must be assigned to L<SPVM::Stringer>.
+Each object must have to_str method defined in L<SPVM::Stringer>. otherwise a exception occur.
 
 =head2 split
 
   sub split : string[] ($sep : string, $string : string)
 
-Split string by separator.
+Split a string by the specific separator.

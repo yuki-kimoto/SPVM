@@ -6,13 +6,13 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM::Math;
+use SPVM::Unicode;
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 {
-  SPVM::Math->sin(3);
+  SPVM::Unicode->ERROR_INVALID_UTF8;
 }
 
 # All object is freed

@@ -1,5 +1,15 @@
-0.0440 2019-09-18
+0.0441 2019-10-02
   - add pi method to SPVM::Math
+  - cleanup SPVM::Unicode. Many methods is remaned.
+  - cleanup SPVM::JSON. Many options is removed.
+  - cleanup SPVM::Regex.
+  - SPVM::Regex::caps method return captured string array.
+  - SPVM::Regex::remove match_end method
+  - add SPVM::Regex::match_length method
+  - SPVM::Regex::replace method is separated to replace and replace_cb
+  - SPVM::Regex::replace_all method is separated to replace_all and replace_all_cb
+  - SPVM::Regex::match_offset is merged to SPVM::Regex::match
+  - remove call_sub_depth and remove deep recursion check.
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array
