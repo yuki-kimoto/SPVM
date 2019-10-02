@@ -3,11 +3,11 @@
   - cleanup SPVM::Unicode. Many methods is remaned.
   - cleanup SPVM::JSON. Many options is removed.
   - cleanup SPVM::Regex.
-    caps method return captured string array.
-    remove match_end method
-    add match_length method
-    replace method is separated to replace and replace_cb
-    replace_all method is separated to replace_all and replace_all_cb
+  - SPVM::Regex::caps method return captured string array.
+  - SPVM::Regex::remove match_end method
+  - add SPVM::Regex::match_length method
+  - SPVM::Regex::replace method is separated to replace and replace_cb
+  - SPVM::Regex::replace_all method is separated to replace_all and replace_all_cb
     
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
