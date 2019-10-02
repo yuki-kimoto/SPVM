@@ -423,7 +423,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %type <opval> opt_packages packages package package_block refcnt
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
+%type <opval> sub cb_obj opt_args args arg invocant has use require our string_length
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -531,7 +531,7 @@ sub
   : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
 
-anon_sub
+cb_obj
   : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
 
@@ -737,7 +737,7 @@ assign
 new
   : NEW basic_type
   | NEW array_type_with_length
-  | anon_sub
+  | cb_obj
 
 array_init
   : '[' opt_expressions ']'
@@ -1431,7 +1431,7 @@ if (require Foo) {
 }
 </pre>
      <p>
-       ひとつのテクニックとして、if require構文と<a href="#language-type-callback">コールバック型</a>と<a href="#language-sub-anon">無名サブルーチン</a>を使うと、モジュールを選択的に利用することができます。以下の例では、Foo->method1とBar->mehtod2を選択的に選んで実行しています。
+       ひとつのテクニックとして、if require構文と<a href="#language-type-callback">コールバック型</a>と<a href="#language-sub-new-callback-object">コールバックオブジェクトの生成</a>を使うと、モジュールを選択的に利用することができます。以下の例では、Foo->method1とBar->mehtod2を選択的に選んで実行しています。
      </p>
 <pre>
 package SomeCallback : callback_t {
@@ -1443,7 +1443,7 @@ my $callback : SomeCallback;
 
 unless ($inteface) {
   if (require Foo) {
-    $callback = sub : int ($self : self, $arg : int) {
+    $callback = sub foo : int ($self : self, $arg : int) {
       Foo->method1($arg);
     };
   }
@@ -1451,7 +1451,7 @@ unless ($inteface) {
 
 unless ($inteface) {
   if (require Bar) {
-    $callback = sub : int ($self : self, $arg : int) {
+    $callback = sub foo : int ($self : self, $arg : int) {
       Bar->method2($arg);
     }
   }
@@ -1824,7 +1824,7 @@ $z_ref->{im} = 3;
       <ul class="list">
         <li><a href="#language-sub-definition">サブルーチンの定義</a></li>
         <li><a href="#language-sub-constant">定数サブルーチン</a></li>
-        <li><a href="#language-sub-anon">無名サブルーチン</a></li>
+        <li><a href="#language-sub-new-callback-object">コールバックオブジェクトの生成</a></li>
         <li><a href="#language-sub-capture">キャプチャ</a></li>
         <li><a href="#language-sub-method">メソッド</a></li>
         <li><a href="#language-sub-signature">シグネチャ</a></li>
@@ -1972,45 +1972,45 @@ sub foo : double () { return 5.0; }
 sub foo : int () { return 5 + 3; }
 </pre>
 
-      <h3 id="language-sub-anon">無名サブルーチン</h3>
+      <h3 id="language-sub-new-callback-object">コールバックオブジェクトの生成</h3>
       <p>
-        無名サブルーチンとは、名前を持たないサブルーチンのことです。
+        コールバックオブジェクトの生成とは、コールバックの用途で、特別な構文を使って、コールバック型に適合するオブジェクトを生成する文法のことです。
       </p>
 <pre>
-sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+sub サブルーチン名 : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
   
 }
 </pre>
       <p>
-        無名サブルーチンを定義すると、内部的に、パッケージの定義がおこなわれ、そのパッケージを元にしたオブジェクトが生成され、<a href="#language-expression">式</a>として返されます。以下のように変数に代入することが可能です。
+        コールバックオブジェクトの生成を行うと、内部的に、パッケージの定義がおこなわれ、そのパッケージを元にしたオブジェクトが生成され、<a href="#language-expression">式</a>として返されます。以下のように変数に代入することが可能です。
       </p>
 <pre>
-my $anon_sub = sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+my $cb_obj = sub サブルーチン名 : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
   
 };
 </pre>
       <p>
-        無名サブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
+        コールバックオブジェクトの生成で定義されるサブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
       </p>
       <p>
-        <b>無名サブルーチンのサンプル</b>
+        <b>コールバックオブジェクトの生成のサンプル</b>
       </p>
 <pre>
-my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator = sub compare : int ($self : self, $x1 : object, $x2 : object) {
   
 }
 </pre>
       <p>
-        無名サブルーチンは、呼び出すことができます。無名サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
+        コールバックオブジェクトの生成によって生成されたオブジェクトは、通常のオブジェクトなので、メソッドを呼び出すことができます。コールバックオブジェクトの生成の呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
       <p>
 
       <h3 id="language-sub-capture">キャプチャ</h3>
       <p>
-        無名サブルーチンにおいては、キャプチャという構文を使って、無名サブルーチンの外側で定義された変数を、無名サブルーチンの内側で使うことができます。
+        コールバックオブジェクトの生成においては、キャプチャという構文を使って、コールバックオブジェクトの生成によって定義されたサブルーチンの外側で定義された変数を、コールバックオブジェクトの生成によって定義されたサブルーチンの内側で使うことができます。
       </p>
 <pre>
 # キャプチャ
-[変数名1 : 型1, 変数名2 : 型2] sub : int ($self : self, $x1 : object, $x2 : object) {
+[変数名1 : 型1, 変数名2 : 型2] sub サブルーチン名 : int ($self : self, $x1 : object, $x2 : object) {
   
 };
 </pre>
@@ -2021,12 +2021,11 @@ my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
 my $foo = 1;
 my $bar = 5L;
 
-my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator = [$foo : int, $bar : long] sub compare : int ($self : self, $x1 : object, $x2 : object) {
   
   print "$foo\n";
   print "$bar\n";
 }
-
 </pre>
       <p>
         キャプチャで使用する変数名は、<a href="#language-parser-identifier-field-name">フィールド名</a>の先頭に「$」を付けたものでなければなりません。
@@ -2041,7 +2040,7 @@ my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object
         キャプチャ変数と同名の<a href="#language-package-var">パッケージ変数</a>が存在する場合は、キャプチャ変数にアクセスします。
       </p>
       <p>
-        無名サブルーチンとキャプチャをシンタックスシュガーを使わないで記述すると次のようになります。
+        コールバックオブジェクトの生成とキャプチャをシンタックスシュガーを使わないで記述すると次のようになります。
       </p>
 <pre>
 package ComapartorImpl {
@@ -2526,7 +2525,7 @@ while (my $bar = 1) {
       <h4 id="language-block-statement-sub">サブルーチンブロック</h4>
 <pre>
 # サブルーチンのブロック
-sub : int () {
+sub foo : int () {
 
 }
 </pre>
@@ -3854,24 +3853,24 @@ my $point = new Point;
 $point->set_x(3);
 </pre>
       <p>
-        <a href="#language-sub-anon">無名サブルーチン</a>の呼び出しは、メソッドの呼び出しになります。この場合は、名前なしで呼び出すことができます。
+        <a href="#language-sub-new-callback-object">コールバックオブジェクトの生成</a>で作成されたオブジェクトは、通常のオブジェクトなのでメソッドを呼び出すことができます。
       </p>
 <pre>
-オブジェクト->(引数1, 引数2, 引数3, ..., 引数n);
+オブジェクト->サブルーチン名(引数1, 引数2, 引数3, ..., 引数n);
 </pre>
 
       <p>
-        <b>無名サブルーチンの呼び出しのサンプル</b>
+        <b>コールバックオブジェクトの生成で生成されたオブジェクトからメソッドを呼び出すサンプル</b>
       </p>
       <p>
-        無名サブルーチンの呼び出しのサンプルです。
+        コールバックオブジェクトの生成で生成されたオブジェクトからメソッドを呼び出すサンプルです。
       </p>
 <pre>
-my $anon_sub = sub : int ($self: self, $num1 : int, $num2 : int) {
+my $cb_obj = sub foo : int ($self: self, $num1 : int, $num2 : int) {
   return $num1 + $num2;
 };
 
-my $ret = $anon_sub->(1, 2);
+my $ret = $cb_obj->foo(1, 2);
 </pre>
 
       <h3 id="language-operator-deref-get">デリファレンスによる値の取得</h3>
@@ -7209,7 +7208,7 @@ package SomeComparator {
 my $comparator : comparator = new SomeComparator;
 </pre>
       <p>
-        2. コールバック型として定義されたサブルーチンと同一のシグネチャを持つ無名サブルーチンは、コールバック型に適合します。
+        2. コールバック型として定義されたサブルーチンと同一のシグネチャを持つコールバックオブジェクトの生成は、コールバック型に適合します。
       </p>
 <pre>
 # コールバック型の定義
@@ -7218,7 +7217,7 @@ package SPVM::Comparator : callback_t {
 }
 
 # コールバック型への代入
-my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator : comparator = sub compare : int ($self : self, $x1 : object, $x2 : object) {
   
 }
 </pre>
