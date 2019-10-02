@@ -7,27 +7,13 @@ package TestCase::Lib::SPVM::Regex {
     return 1;
   }
 
-  sub replace_all_capture : int () {
-    # Replace all capture
-    {
-      my $re = SPVM::Regex->new("a(bc)");
-      my $target = "ppzabczabcz";
-      my $result = $re->replace_all($target, 0, [(object)"ABC", 0, "PQR"]);
-      
-      unless ($re->replace_count == 2) {
-        return 0;
-      }
-      
-      unless ($result eq "ppzABCbcPQRzABCbcPQRz") {
-        return 0;
-      }
-    }
+  sub replace_all_cb : int () {
 
-    # Replace all callback
+    # Replace all callback with capture
     {
       my $re = SPVM::Regex->new("a(bc)");
       my $target = "ppzabczabcz";
-      my $result = $re->replace_all($target, 0, [$re : SPVM::Regex] sub : string ($self : self) {
+      my $result = $re->replace_all_cb($target, 0, [$re : SPVM::Regex] sub : string ($self : self) {
         return "ABC" . $re->caps->[0] . "PQRS";
       });
       
@@ -168,6 +154,24 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
 
+    return 1;
+  }
+
+  sub replace_cb : int () {
+    # Replace callback with capture
+    {
+      my $re = SPVM::Regex->new("a(bc)");
+      my $target = "ppzabcz";
+      my $result = $re->replace_cb($target, 0, [$re : SPVM::Regex] sub : string ($self : self) { return "AB" . $re->caps->[0] . "C"; });
+      
+      unless ($re->replace_count == 1) {
+        return 0;
+      }
+      
+      unless ($result eq "ppzABbcCz") {
+        return 0;
+      }
+    }
     return 1;
   }
   

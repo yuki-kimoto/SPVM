@@ -552,13 +552,21 @@ package SPVM::Regex {
     
     return $really_match;
   }
-
-  sub replace  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
-    return $self->replace_opt($target, $target_base_index, $replace_object, [(object)replace_all => 0]);
+  
+  sub replace  : string ($self : self, $target : string, $target_base_index : int, $replace : string) {
+    return $self->replace_opt($target, $target_base_index, $replace, [(object)replace_all => 0]);
   }
 
-  sub replace_all  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object) {
-    return $self->replace_opt($target, $target_base_index, $replace_object, [(object)replace_all => 1]);
+  sub replace_cb  : string ($self : self, $target : string, $target_base_index : int, $replace_cb : SPVM::Stringer) {
+    return $self->replace_opt($target, $target_base_index, $replace_cb, [(object)replace_all => 0]);
+  }
+
+  sub replace_all  : string ($self : self, $target : string, $target_base_index : int, $replace : string) {
+    return $self->replace_opt($target, $target_base_index, $replace, [(object)replace_all => 1]);
+  }
+
+  sub replace_all_cb  : string ($self : self, $target : string, $target_base_index : int, $replace_cb : SPVM::Stringer) {
+    return $self->replace_opt($target, $target_base_index, $replace_cb, [(object)replace_all => 1]);
   }
   
   private sub replace_opt  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object, $opta : object[]) {

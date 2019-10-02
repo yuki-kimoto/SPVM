@@ -1,4 +1,4 @@
-0.0441 2019-10-01
+0.0441 2019-10-02
   - add pi method to SPVM::Math
   - cleanup SPVM::Unicode. Many methods is remaned.
   - cleanup SPVM::JSON. Many options is removed.
@@ -6,6 +6,8 @@
     caps method return captured string array.
     remove match_end method
     add match_length method
+    replace method is separated to replace and replace_cb
+    replace_all method is separated to replace_all and replace_all_cb
     
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
