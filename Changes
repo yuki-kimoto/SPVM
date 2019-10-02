@@ -8,7 +8,7 @@
   - add SPVM::Regex::match_length method
   - SPVM::Regex::replace method is separated to replace and replace_cb
   - SPVM::Regex::replace_all method is separated to replace_all and replace_all_cb
-    
+  - SPVM::Regex::match_offset is merged to SPVM::Regex::match
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array
