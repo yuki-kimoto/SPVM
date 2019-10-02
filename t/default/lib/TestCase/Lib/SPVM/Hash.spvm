@@ -400,7 +400,7 @@ package TestCase::Lib::SPVM::Hash {
     for (my $i = 0; $i < @$keys; $i++) {
       $rhs->[$i] = $keys->[$i];
     }
-    my $comparator = sub : int ($self : self, $lhs : object, $rhs : object) {
+    my $comparator = sub compare : int ($self : self, $lhs : object, $rhs : object) {
       my $s = (string)$lhs;
       my $t = (string)$rhs;
       unless ($s eq $t) {
@@ -418,7 +418,7 @@ package TestCase::Lib::SPVM::Hash {
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
-    my $comparator = sub : int ($self : self, $lhs : object, $rhs : object) {
+    my $comparator = sub compare : int ($self : self, $lhs : object, $rhs : object) {
       my $x = (SPVM::Int)$lhs;
       my $y = (SPVM::Int)$rhs;
       unless ($x->val == $y->val) {
@@ -436,7 +436,7 @@ package TestCase::Lib::SPVM::Hash {
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set((string)$keys->[$i], $vals->[$i]);
     }
-    my $comparator_keys = sub : int ($self : self, $lhs : object, $rhs : object) {
+    my $comparator_keys = sub compare : int ($self : self, $lhs : object, $rhs : object) {
       my $s = (string)$lhs;
       my $t = (string)$rhs;
       unless ($s eq $t) {
@@ -444,7 +444,7 @@ package TestCase::Lib::SPVM::Hash {
       }
       return 1;
     };
-    my $comparator_vals = sub : int ($self : self, $lhs : object, $rhs : object) {
+    my $comparator_vals = sub compare : int ($self : self, $lhs : object, $rhs : object) {
       my $x = (SPVM::Int)$lhs;
       my $y = (SPVM::Int)$rhs;
       unless ($x->val == $y->val) {
@@ -504,7 +504,7 @@ package TestCase::Lib::SPVM::Hash {
     for (my $i = 0; $i < @$keys; $i++) {
       $rhs->[$i] = $keys->[$i];
     }
-    my $strcmp = sub : int ($self : self, $lhs : object, $rhs : object) {
+    my $strcmp = sub compare : int ($self : self, $lhs : object, $rhs : object) {
       my $s = (string)$lhs;
       my $t = (string)$rhs;
       unless ($s eq $t) {
@@ -517,7 +517,7 @@ package TestCase::Lib::SPVM::Hash {
     }
 
     # test values
-    my $intcmp = sub : int ($self : self, $lhs : object, $rhs : object) {
+    my $intcmp = sub compare : int ($self : self, $lhs : object, $rhs : object) {
       my $x = (SPVM::Int)$lhs;
       my $y = (SPVM::Int)$rhs;
       unless ($x->val == $y->val) {

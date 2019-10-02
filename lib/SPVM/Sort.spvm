@@ -67,7 +67,7 @@ package SPVM::Sort {
   }
 
   sub sortstr : void ($strs : string[]) {
-    sorto($strs, sub : int ($self : self, $a : object, $b : object) {
+    sorto($strs, sub compare : int ($self : self, $a : object, $b : object) {
       if (!$a || !$b) {
         die "Can't compare undef value";
       }

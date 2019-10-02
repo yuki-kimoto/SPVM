@@ -1723,7 +1723,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0);
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
 
           op_sub->uv.sub->is_package_var_getter = 1;
           op_sub->uv.sub->accessor_original_name = package_var->name;
@@ -1771,7 +1771,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0);
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
           
           op_sub->uv.sub->is_package_var_setter = 1;
           op_sub->uv.sub->accessor_original_name = package_var->name;
@@ -1823,7 +1823,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0);
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
           
           op_sub->uv.sub->is_field_getter = 1;
           op_sub->uv.sub->accessor_original_name = field->name;
@@ -1880,7 +1880,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0);
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
           
           op_sub->uv.sub->is_field_setter = 1;
           op_sub->uv.sub->accessor_original_name = field->name;
@@ -2043,7 +2043,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
         
-        if (sub->flag & SPVM_SUB_C_FLAG_ANON) {
+        if (sub->flag & SPVM_SUB_C_FLAG_NEW_CALLBACK_OBJECT) {
           package->flag |= SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE;
           assert(package->subs->length == 1);
           assert(is_anon);
@@ -2330,16 +2330,12 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_begin) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_begin, int32_t is_new_callback_object) {
   SPVM_SUB* sub = SPVM_SUB_new(compiler);
   
-  // Anon sub
-  if (!op_name_sub) {
-    sub->flag |= SPVM_SUB_C_FLAG_ANON;
-    
-    // Anon sub name
-    char* name_sub = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1);
-    op_name_sub = SPVM_OP_new_op_name(compiler, name_sub, op_sub->file, op_sub->line);
+  // New callback object
+  if (is_new_callback_object) {
+    sub->flag |= SPVM_SUB_C_FLAG_NEW_CALLBACK_OBJECT;
   }
   
   const char* sub_name = op_name_sub->uv.name;
@@ -2572,7 +2568,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, op_constant->uv.constant->type, op_name->file, op_name->line);
   
   // Build subroutine
-  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block, NULL, NULL, 0);
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block, NULL, NULL, 0, 0);
   
   // Set constant
   op_sub->uv.sub->op_inline = op_constant;

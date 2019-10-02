@@ -13,14 +13,14 @@ package TestCase::Callback {
   sub capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
-    my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self) {
+    my $cb_obj = [$capture1 : int, $capture2 : int] sub foo : int ($self : self) {
       
       my $total = $capture1 + $capture2;
       
       return $total;
     };
     
-    my $total = $anon_sub->();
+    my $total = $cb_obj->foo();
     unless ($total == 17) {
       return 0;
     }
@@ -32,12 +32,12 @@ package TestCase::Callback {
   
     my $var_prec = 13;
   
-    my $cb = [$var_prec : int] sub : int ($self : self) {
+    my $cb = [$var_prec : int] sub foo : int ($self : self) {
 
       return $var_prec;
     };
     
-    unless ($cb->() == 13) {
+    unless ($cb->foo() == 13) {
       return 0;
     }
     
@@ -62,7 +62,7 @@ package TestCase::Callback {
   }
   
   sub comparator : int () {
-      my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
+      my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         

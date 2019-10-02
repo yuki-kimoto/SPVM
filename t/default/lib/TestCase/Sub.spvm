@@ -153,10 +153,10 @@ package TestCase::Sub {
     return test_vaarg_pass_each_values("a", 1, 2, 3);
   }
   
-  sub anon_sub_capture : int () {
+  sub cb_obj_capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
-    my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+    my $cb_obj = [$capture1 : int, $capture2 : int] sub foo : int ($self : self, $x1 : object, $x2 : object) {
       
       unless ($capture1 == 7) {
         return 0;
@@ -179,15 +179,15 @@ package TestCase::Sub {
       return 1;
     };
     
-    return $anon_sub->(undef, undef);
+    return $cb_obj->foo(undef, undef);
   }
   
-  sub anon_sub_call_anon_sub : int () {
-    my $anon_sub = sub : int ($self : self, $x1 : int, $x2 : int) {
+  sub cb_obj_call_cb_obj : int () {
+    my $cb_obj = sub foo : int ($self : self, $x1 : int, $x2 : int) {
       return $x1 + $x2;
     };
     
-    my $total = $anon_sub->(1, 3);
+    my $total = $cb_obj->foo(1, 3);
     
     unless ($total == 4) {
       return 0;
@@ -196,14 +196,14 @@ package TestCase::Sub {
     return 1;
   }
 
-  sub anon_sub_call_anon_sub_from_callback : int () {
-    my $anon_sub = sub : int ($self : self, $x1 : object, $x2 : object) {
+  sub cb_obj_call_cb_obj_from_callback : int () {
+    my $cb_obj = sub compare : int ($self : self, $x1 : object, $x2 : object) {
       my $x1_num = (int)$x1;
       my $x2_num = (int)$x2;
       return $x1_num + $x2_num;
     };
     
-    my $comparator : SPVM::Comparator = $anon_sub;
+    my $comparator : SPVM::Comparator = $cb_obj;
     
     my $total = $comparator->compare(2, 3);
     
