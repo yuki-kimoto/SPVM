@@ -110,17 +110,17 @@ L<SPVM::Regex> do not support the following regular expression
 
 L<SPVM::Regex> do not support the same set of characters after quantifier.
       
-      # Compile error
-      SPVM::Regex->new("a*a");
-      SPVM::Regex->new("a?a");
-      SPVM::Regex->new("a+a");
-      SPVM::Regex->new("a{1,3}a")
+  # Compile error
+  SPVM::Regex->new("a*a");
+  SPVM::Regex->new("a?a");
+  SPVM::Regex->new("a+a");
+  SPVM::Regex->new("a{1,3}a")
       
 If 0 width quantifir is between two same set of characters after quantifier, it is invalid.
       
-      # Compile error
-      SPVM::Regex->new("\d+\D*\d+");
-      SPVM::Regex->new("\d+\D?\d+");
+  # Compile error
+  SPVM::Regex->new("\d+\D*\d+");
+  SPVM::Regex->new("\d+\D?\d+");
 
 =head1 CLASS METHODS
 
