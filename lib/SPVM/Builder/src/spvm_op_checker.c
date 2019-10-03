@@ -193,6 +193,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
     
     // [START]Preorder traversal position
     if (!op_cur->no_need_check) {
+      if (op_cur->id == SPVM_OP_C_ID_IF_REQUIRE) {
+        SPVM_USE* use = op_cur->first->uv.use;
+        SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, op_cur->first);
+        SPVM_OP* op_block_false = op_cur->last;
+        
+        // Execute false block
+        if (use->op_type->uv.type->basic_type->fail_load) {
+          SPVM_OP_cut_op(compiler, op_block_false);
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+          SPVM_OP_replace_op(compiler, op_stab, op_block_false);
+          op_cur = op_block_false;
+        }
+        // Execute true block
+        else {
+          SPVM_OP_cut_op(compiler, op_block_true);
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+          SPVM_OP_replace_op(compiler, op_stab, op_block_true);
+          op_cur = op_block_true;
+        }
+      }
       switch (op_cur->id) {
         // Start scope
         case SPVM_OP_C_ID_BLOCK: {
@@ -214,15 +234,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
         }
         case SPVM_OP_C_ID_SWITCH: {
           SPVM_LIST_push(check_ast_info->op_switch_stack, op_cur);
-          break;
-        }
-        case SPVM_OP_C_ID_IF_REQUIRE: {
-          SPVM_USE* use = op_cur->first->uv.use;
-          // Skip block
-          if (use->op_type->uv.type->basic_type->fail_load) {
-            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            op_cur = op_stab;
-          }
           break;
         }
       }

@@ -1,0 +1,17 @@
+package TestCase::IfRequire {
+  sub if_require : int () {
+    
+    # if require
+    {
+      my $foo = 0;
+      if (require SPVM::Util) {
+        $foo = 1;
+      }
+      unless ($foo == 1) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}
