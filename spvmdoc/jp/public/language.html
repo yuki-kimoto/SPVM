@@ -1420,44 +1420,28 @@ if (require Foo) {
 }
 </pre>
       <p>
-        if require文では、elsifやelseを続けることができないので注意してください。
-      </p>
-      <p>
-        一つの例を見てみましょう。以下の例で、Fooが存在しない場合は、コンパイルエラーにはならず、ifブロックの中身が存在しないことになります。そのため「my $foo = new Foo;」は、存在しないことになっているので、コンパイルエラーになりません。
+        if require文はelse文を続けることができます。elsif文は、指定できないので注意してください。
       </p>
 <pre>
 if (require Foo) {
-  my $foo = new Foo;
+  
+}
+else {
+  
 }
 </pre>
-     <p>
-       ひとつのテクニックとして、if require構文と<a href="#language-type-callback">コールバック型</a>と<a href="#language-sub-new-callback-object">コールバックオブジェクトの生成</a>を使うと、モジュールを選択的に利用することができます。以下の例では、Foo->method1とBar->mehtod2を選択的に選んで実行しています。
-     </p>
+      
+      <p>
+        一つの例を見てみましょう。以下の例で、Fooが存在しない場合は、コンパイルエラーにはならず、ifブロックがないことになります。そのため「$foo = new Foo;」は、存在しないことになっているので、コンパイルエラーになりません。elseブロックは存在するので、警告がされます。
+      </p>
 <pre>
-package SomeCallback : callback_t {
-  sub foo : int ($self : self, $arg : int);
+my $foo : object;
+if (require Foo) {
+  $foo = new Foo;
 }
-
-# 別の関数内
-my $callback : SomeCallback;
-
-unless ($inteface) {
-  if (require Foo) {
-    $callback = sub foo : int ($self : self, $arg : int) {
-      Foo->method1($arg);
-    };
-  }
+else {
+  warn("Warning: Can't load Foo");
 }
-
-unless ($inteface) {
-  if (require Bar) {
-    $callback = sub foo : int ($self : self, $arg : int) {
-      Bar->method2($arg);
-    }
-  }
-}
-
-my $result = $callback->foo(3);
 </pre>
 
       <h2 id="language-allow-access">アクセス許可</h2>
