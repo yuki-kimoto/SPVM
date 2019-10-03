@@ -30,6 +30,46 @@ SPVM::Regex - Regular expression
     my $cpa3 = $re->caps->[2];
   }
   
+  # Replace
+  {
+    my $re = SPVM::Regex->new("abc");
+    my $target = "ppzabcz";
+    
+    # "ppzABCz"
+    my $result = $re->replace($target, 0, "ABC");
+    
+    my $replace_count = $re->replace_count;
+  }
+
+  # Replace with a callback and capture
+  {
+    my $re = SPVM::Regex->new("a(bc)");
+    my $target = "ppzabcz";
+    
+    # "ppzABbcCz"
+    my $result = $re->replace_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self) { return "AB" . $re->caps->[0] . "C"; });
+  }
+
+  # Replace all
+  {
+    my $re = SPVM::Regex->new("abc");
+    my $target = "ppzabczabcz";
+    
+    # "ppzABCzABCz"
+    my $result = $re->replace_all($target, 0, "ABC");
+  }
+
+  # Replace all with a callback and capture
+  {
+    my $re = SPVM::Regex->new("a(bc)");
+    my $target = "ppzabczabcz";
+    
+    # "ppzABCbcPQRSzABCbcPQRSz"
+    my $result = $re->replace_all_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self) {
+      return "ABC" . $re->caps->[0] . "PQRS";
+    });
+  }
+  
 =head1 DESCRIPTION
 
 L<SPVM::Regex> provides regular expression functions.
@@ -59,6 +99,28 @@ L<SPVM::Regex> provides subset of Perl regular expression.
   
   # Capture
   (foo)
+
+Subset support only linear execution of pattern matching.
+
+L<SPVM::Regex> do not support the following regular expression
+
+  # Do not support
+  . any character except for \n
+  | or
+
+L<SPVM::Regex> do not support the same set of characters after quantifier.
+      
+      # Compile error
+      SPVM::Regex->new("a*a");
+      SPVM::Regex->new("a?a");
+      SPVM::Regex->new("a+a");
+      SPVM::Regex->new("a{1,3}a")
+      
+If 0 width quantifir is between two same set of characters after quantifier, it is invalid.
+      
+      # Compile error
+      SPVM::Regex->new("\d+\D*\d+");
+      SPVM::Regex->new("\d+\D?\d+");
 
 =head1 CLASS METHODS
 
