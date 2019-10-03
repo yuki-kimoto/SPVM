@@ -1035,10 +1035,14 @@ SPVM_OP* SPVM_OP_build_while_statement(SPVM_COMPILER* compiler, SPVM_OP* op_whil
   return op_loop;
 }
 
-SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block) {
+SPVM_OP* SPVM_OP_build_if_require_statement(SPVM_COMPILER* compiler, SPVM_OP* op_if_require, SPVM_OP* op_use, SPVM_OP* op_block_true, SPVM_OP* op_block_false) {
   
   SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_use);
-  SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_block);
+  SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_block_true);
+  if (!op_block_false) {
+    op_block_false = SPVM_OP_new_op_block(compiler, op_block_true->file, op_block_true->line);
+  }
+  SPVM_OP_insert_child(compiler, op_if_require, op_if_require->last, op_block_false);
   
   return op_if_require;
 }

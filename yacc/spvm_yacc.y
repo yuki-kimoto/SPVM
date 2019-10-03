@@ -564,9 +564,14 @@ if_require_statement
     {
       SPVM_OP* op_if_require = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF_REQUIRE, compiler->cur_file, compiler->cur_line);
       
-      $$ = SPVM_OP_build_if_require_statement(compiler, op_if_require, $3, $5);
+      $$ = SPVM_OP_build_if_require_statement(compiler, op_if_require, $3, $5, NULL);
     }
-
+  | IF '(' require ')' block ELSE block
+    {
+      SPVM_OP* op_if_require = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF_REQUIRE, compiler->cur_file, compiler->cur_line);
+      
+      $$ = SPVM_OP_build_if_require_statement(compiler, op_if_require, $3, $5, $6);
+    }
 if_statement
   : IF '(' expression ')' block else_statement
     {
