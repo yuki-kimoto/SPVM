@@ -1411,9 +1411,9 @@ package TestCase::Lib::SPVM::CORE {
   }
   
 
-  sub test_type_name : int () {
+  sub test_get_type_name : int () {
     my $minimal = TestCase::Minimal->new;
-    my $type_name = type_name($minimal);
+    my $type_name = get_type_name($minimal);
     
     unless ($type_name eq "TestCase::Minimal") {
       return 0;
@@ -1632,19 +1632,4 @@ package TestCase::Lib::SPVM::CORE {
     
     return 1;
   }
-
-=pod
-  # TODO: Windows compatibility
-  sub test_getenv : int () {
-    
-    my $value = getenv("SPVM_ENV_NAME");
-    
-    unless ($value && $value eq "SPVM_ENV_VALUE") {
-      return 0;
-    }
-    
-    return 1;
-  }
-=cut
-
 }

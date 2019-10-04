@@ -179,9 +179,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_joind);
 }
 
-# type_name
+# get_type_name
 {
-  ok(TestCase::Lib::SPVM::CORE->test_type_name);
+  ok(TestCase::Lib::SPVM::CORE->test_get_type_name);
 }
 
 # equals

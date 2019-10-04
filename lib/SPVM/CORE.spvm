@@ -310,6 +310,8 @@ package SPVM::CORE {
 
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
+
+  native sub get_type_name : string ($object : object);
   
   precompile sub index : int($source : string, $target : string, $fromIndex : int) {
     my $sourceCount = length $source;
@@ -1009,8 +1011,6 @@ package SPVM::CORE {
     
     return $slice;
   }
-
-  native sub type_name : string ($object : object);
 
   native sub warn : void ($value : string);
   
