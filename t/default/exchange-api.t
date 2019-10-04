@@ -1271,7 +1271,7 @@ is_deeply(
 
 # Complex
 {
-  my $z3 = SPVM::CORE->cadd({re => 0.25, im => 0.5}, {re => 0.5, im => 0.125});
+  my $z3 = TestCase::ExchangeAPI->add_complex({re => 0.25, im => 0.5}, {re => 0.5, im => 0.125});
   is_deeply($z3, {re => 0.75, im => 0.625});
 }
 
