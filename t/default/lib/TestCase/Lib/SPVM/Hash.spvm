@@ -13,7 +13,7 @@ package TestCase::Lib::SPVM::Hash {
     my $strings = ["a", "<>", "ABC", "1234", "asdfg", "zxcvbn", "1qazxsw", "3edcvfr4", "1234567890-=\\][poiuytrewqasdfghjkl;'"];
     my $hashes = [846967266L, 200612280L, 4178773334L, 1870759112L, 61159236L, 623182920L, 1738266155L, 123403562L, 4243681504L];
     for (my $i = 0; $i < @$strings; ++$i) {
-      unless (murmur_hash($strings->[$i], $seed) == $hashes->[$i]) {
+      unless (SPVM::Hash->murmur_hash($strings->[$i], $seed) == $hashes->[$i]) {
         return 0;
       }
     }

@@ -1013,6 +1013,4 @@ package SPVM::CORE {
   }
 
   native sub warn : void ($value : string);
-  
-  native sub murmur_hash : long ($string : string, $seed : int);
 }

@@ -121,6 +121,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::ClientSocketTCP');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Select');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Math');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Hash');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Errno');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Time');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unicode');
@@ -135,6 +136,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::JSON');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
   }
   
   return $make_rule;
