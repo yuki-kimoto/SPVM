@@ -4,7 +4,11 @@ SPVM::CORE - SPVM core functions
 
 =head1 CLASS METHODS
 
-=head2
+=head2 chompr
+
+  sub chompr : string ($string : string)
+
+Copy the string and remove the newline "\n" from the end of string and return it.
 
 =head2 print
 
