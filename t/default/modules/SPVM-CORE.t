@@ -242,9 +242,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   # copy_darray
   ok(TestCase::Lib::SPVM::CORE->test_copy_darray);
   
-  # copy_oarray
-  ok(TestCase::Lib::SPVM::CORE->test_copy_oarray);
-  
   # copy_strarray
   ok(TestCase::Lib::SPVM::CORE->test_copy_strarray);
 }

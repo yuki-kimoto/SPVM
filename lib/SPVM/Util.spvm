@@ -1,6 +1,19 @@
 package SPVM::Util {
   use SPVM::Stringer;
+  use SPVM::Cloner;
   use SPVM::StringList;
+
+  precompile sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
+    my $length = @$objects;
+    
+    my $new_objects = new object[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_objects->[$i] = $cloner->clone($objects->[$i]);
+    }
+    
+    return $new_objects;
+  }
   
   precompile sub joino : string ($sep : string, $objects : oarray) {
     my $join = "";

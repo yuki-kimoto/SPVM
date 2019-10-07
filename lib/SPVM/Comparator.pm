@@ -12,7 +12,7 @@ SPVM::Comparator - a callback class for comparation
   
   use SPVM::Comparator;
   
-  my $comparator : SPVM::Comparator = sub : int ($self : self, $x1 : object, $x2 : object); {
+  my $comparator : SPVM::Comparator = sub compare : int ($self : self, $x1 : object, $x2 : object); {
     return $x1 > $x2;
   };
   
@@ -20,7 +20,7 @@ SPVM::Comparator - a callback class for comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator> is a callback type to stringify object.
+L<SPVM::Comparator> is a callback type to compare objects.
 
 =head1 INSTANCE METHODS
 

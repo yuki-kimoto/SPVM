@@ -13,6 +13,9 @@
   - rename chomp to chompr
   - renmae complex_array to complex_darray
   - rename complex to complexd
+  - move SPVM::CORE::copy_oarray to SPVM::Util::copy_oarray.
+  - add SPVM::Cloner
+  - SPVM::Util::copy_oarray do deep clone using SPVM::Cloner.
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array

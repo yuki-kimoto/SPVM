@@ -1,0 +1,3 @@
+package SPVM::Cloner : callback_t {
+  sub clone : object ($self : self, $obj : object);
+}
