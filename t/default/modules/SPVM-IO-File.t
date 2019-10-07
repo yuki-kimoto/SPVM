@@ -62,23 +62,23 @@ my $test_dir = "$FindBin::Bin/../..";
     }
   }
   
-  # readline and chomp
+  # readline and chompr
   {
     {
       my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chompr($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/fread.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_while($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chompr_while($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/file_eof.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_eof($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chompr_eof($sp_file));
     }
     {
       my $sp_file = SPVM::new_str("$test_dir/test_files_tmp/long_line.txt");
-      ok(TestCase::Lib::SPVM::IO::File->test_readline_chomp_long_line($sp_file));
+      ok(TestCase::Lib::SPVM::IO::File->test_readline_chompr_long_line($sp_file));
     }
   }
 

@@ -1,10 +1,10 @@
 =head1 NAME
 
-SPVM::CORE - SPVM Standard Functions
+SPVM::CORE - SPVM core functions
 
-=head1 SPVM Standard Functions
+=head1 CLASS METHODS
 
-=head1 FUNCTIONS
+=head2
 
 =head2 print
 

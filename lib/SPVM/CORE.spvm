@@ -5,7 +5,7 @@ package SPVM::CORE {
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for standard I/O and standard error.
   
-  precompile sub chomp : string ($string : string) {
+  precompile sub chompr : string ($string : string) {
     unless ($string) {
       return undef;
     }
