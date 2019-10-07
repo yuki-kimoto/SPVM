@@ -12,6 +12,7 @@
   - remove call_sub_depth and remove deep recursion check.
   - rename chomp to chompr
   - renmae complex_array to complex_darray
+  - rename complex to complexd
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array

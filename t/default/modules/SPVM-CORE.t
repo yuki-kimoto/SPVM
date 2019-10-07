@@ -36,6 +36,14 @@ use SPVM 'TestCase::Lib::SPVM::CORE';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# Complex
+{
+  ok(TestCase::Lib::SPVM::CORE->test_complexf());
+  ok(TestCase::Lib::SPVM::CORE->test_complexd());
+  ok(TestCase::Lib::SPVM::CORE->test_complex_farray());
+  ok(TestCase::Lib::SPVM::CORE->test_complex_darray());
+}
+
 # strtoi
 {
   ok(TestCase::Lib::SPVM::CORE->test_strtoi);

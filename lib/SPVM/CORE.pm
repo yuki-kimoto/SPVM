@@ -10,17 +10,29 @@ SPVM::CORE - SPVM core functions
 
 Copy the string and remove the newline "\n" from the end of string and return it.
 
+=head2 complex_darray
+
+  sub complex_darray : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[])
+
+Create a new array of L<SPVM::Complex_2d> with real values and imaginary values.
+
 =head2 complex_farray
 
   sub complex_farray : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[])
 
 Create a new array of L<SPVM::Complex_2f> with real values and imaginary values.
 
-=head2 complex_darray
+=head2 complexf
 
-  sub complex_darray : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[])
+  sub complexf : SPVM::Complex_2f ($re : float, $im : float)
 
-Create a new array of L<SPVM::Complex_2d> with real values and imaginary values.
+Return a new value of L<SPVM::Complex_2f>.
+
+=head2 complexd
+
+sub complexd : SPVM::Complex_2d ($re : double, $im : double)
+
+Return a new value of L<SPVM::Complex_2d>.
 
 =head2 print
 
