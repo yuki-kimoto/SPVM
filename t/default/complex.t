@@ -31,7 +31,7 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Complex->test_complexf());
   ok(TestCase::Complex->test_complex());
   ok(TestCase::Complex->test_complex_farray());
-  ok(TestCase::Complex->test_complex_array());
+  ok(TestCase::Complex->test_complex_darray());
 }
 
 # All object is freed

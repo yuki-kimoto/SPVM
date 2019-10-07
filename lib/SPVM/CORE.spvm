@@ -41,7 +41,7 @@ package SPVM::CORE {
     return $z_array;
   }
   
-  precompile sub complex_array : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
+  precompile sub complex_darray : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
     if (@$re_values != @$im_values) {
       die "Real values length is different from imaginary values";
     }
