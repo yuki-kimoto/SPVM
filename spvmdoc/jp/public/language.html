@@ -1961,7 +1961,7 @@ sub foo : int () { return 5 + 3; }
         コールバックオブジェクトの生成とは、コールバックの用途で、特別な構文を使って、コールバック型に適合するオブジェクトを生成する文法のことです。
       </p>
 <pre>
-sub サブルーチン名 : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
   
 }
 </pre>
@@ -1969,18 +1969,18 @@ sub サブルーチン名 : 型名 ($self : self, 引数1, 引数2, ..., 引数n
         コールバックオブジェクトの生成を行うと、内部的に、パッケージの定義がおこなわれ、そのパッケージを元にしたオブジェクトが生成され、<a href="#language-expression">式</a>として返されます。以下のように変数に代入することが可能です。
       </p>
 <pre>
-my $cb_obj = sub サブルーチン名 : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+my $cb_obj = sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
   
 };
 </pre>
       <p>
-        コールバックオブジェクトの生成で定義されるサブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
+        コールバックオブジェクトの生成で定義されるサブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。また名前を持たないサブルーチンでなければなりません。
       </p>
       <p>
         <b>コールバックオブジェクトの生成のサンプル</b>
       </p>
 <pre>
-my $comparator = sub compare : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
   
 }
 </pre>
@@ -2005,7 +2005,7 @@ my $comparator = sub compare : int ($self : self, $x1 : object, $x2 : object) {
 my $foo = 1;
 my $bar = 5L;
 
-my $comparator = [$foo : int, $bar : long] sub compare : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object, $x2 : object) {
   
   print "$foo\n";
   print "$bar\n";
@@ -2031,7 +2031,7 @@ package ComapartorImpl {
   has foo : int;
   has bar : long;
   
-  sub compare : int ($self : self, $x1 : object, $x2 : object) {
+  sub : int ($self : self, $x1 : object, $x2 : object) {
     
     print $self->{foo} . "\n";
     print $self->{bar} . "\n";
@@ -2707,45 +2707,44 @@ $@
       
       <h2 id="language-callback">コールバック</h2>
       <p>
-        SPVMにおけるコールバック型とは、実装を持たないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてcallback_tデスクリプタを指定すると、コールバック型になります。
+        SPVMにおけるコールバック型とは、実装を持たない名前のないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてcallback_tデスクリプタを指定すると、コールバック型になります。
       </p>
       <p>
         コールバック型の目的は、異なるオブジェクトが、同じメソッド定義を持つときに、どちらも代入できる型を提供することにあります。C言語の関数ポインタに該当する機能をSPVMにおいて実現するものと考えてください。
       </p>
 <pre>
-package Foo1 : public {
-  sub bar : int ($self : self, $num : int) {
-    return $num * 2;
+package Foo1 {
+  sub new : Foo1 () {
+    new Foo1;
   }
-  
-  sub xxx : int () {
-    
+  sub : int ($self : self, $num : int) {
+    return 1 + $num;
   }
 }
 
-package Foo2 : public {
-  sub bar : int ($self : self, $num : int) {
-    return $num * 3;
+package Foo2 {
+  sub new : Foo2 () {
+    new Foo2;
   }
-  sub yyy : int () {
-    
+  sub : int ($self : self, $num : int) {
+    return 2 + $num;
   }
 }
 
 package FooCallback : callback_t {
-  sub bar : int ($self : self, $num : int);
+  sub : int ($self : self, $num : int);
 }
 </pre>
       
       <p>
-        Foo1とFoo2は同じメソッド定義「sub bar : int ($self : self, $num : int)」を持ちます。ここで、選択的にFoo1またはFoo2のメソッドを呼び出したいとします。
+        Foo1とFoo2は同じメソッド定義「sub : int ($self : self, $num : int)」を持ちます。ここで、選択的にFoo1またはFoo2のメソッドを呼び出したいとします。
       </p>
       <p>
         この場合に、同じメソッド定義を持つコールバック型FooCallbackを定義すると、この型にどちらのオブジェクトも代入できます。そして、このオブジェクトから、メソッドを呼び出すことができます。
       </p>
 <pre>
-my $foo1 = new Foo1;
-my $foo2 = new Foo2;
+my $foo1 = Foo1->new;
+my $foo2 = Foo2->new;
 
 my $foo : FooCallback;
 
@@ -2757,10 +2756,10 @@ else {
   $foo = $foo2;
 }
 
-my $ret = $foo->bar(2);
+my $ret = $foo->(5);
 </pre>
       <p>
-        $flagが1の場合は、Foo1のbarが、そうでない場合はFoo2のbarが呼び出されます。
+        $flagが1の場合は、Foo1の無名メソッドが、そうでない場合はFoo2の無名メソッドが呼び出されます。
       </p>
       <p>
         コールバック型の詳細については、<a href="#language-type-callback">コールバック型</a>を見てください。
@@ -3840,7 +3839,7 @@ $point->set_x(3);
         <a href="#language-sub-new-callback-object">コールバックオブジェクトの生成</a>で作成されたオブジェクトは、通常のオブジェクトなのでメソッドを呼び出すことができます。
       </p>
 <pre>
-オブジェクト->サブルーチン名(引数1, 引数2, 引数3, ..., 引数n);
+オブジェクト->(引数1, 引数2, 引数3, ..., 引数n);
 </pre>
 
       <p>
@@ -3850,11 +3849,11 @@ $point->set_x(3);
         コールバックオブジェクトの生成で生成されたオブジェクトからメソッドを呼び出すサンプルです。
       </p>
 <pre>
-my $cb_obj = sub foo : int ($self: self, $num1 : int, $num2 : int) {
+my $cb_obj = sub : int ($self: self, $num1 : int, $num2 : int) {
   return $num1 + $num2;
 };
 
-my $ret = $cb_obj->foo(1, 2);
+my $ret = $cb_obj->(1, 2);
 </pre>
 
       <h3 id="language-operator-deref-get">デリファレンスによる値の取得</h3>
@@ -7144,7 +7143,7 @@ package Foo : pointer_t {
       </p>
 <pre>
 package SPVM::Comparator : callback_t {
-  sub compare : int ($self : self, $x1 : object, $x2 : object);
+  sub : int ($self : self, $x1 : object, $x2 : object);
 }
 </pre>
       <p>
@@ -7152,6 +7151,9 @@ package SPVM::Comparator : callback_t {
       </p>
       <p>
         コールバック型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
+      </p>
+      <p>
+        コールバック型のサブルーチン名は、無名でなければなりません。
       </p>
       <p>
         コールバック型は「<a href="#language-field-definition">フィールドの定義</a>」「<a href="#language-package-var-definition">パッケージ変数の定義</a>」を持つことはできません。
@@ -7169,39 +7171,39 @@ package SPVM::Comparator : callback_t {
         コールバック型には、コールバックを満たしたクラス型のオブジェクトを代入できます。この場合、クラス型はコールバック型に適合するといいます。クラス型がコールバック型を満たすのは次の二つの場合です。
       </p>
       <p>
-        1. コールバック型として定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトは、コールバック型に適合します。
+        1. コールバック型として定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトは、コールバック型に代入できます。
       </p>
 <pre>
 # コールバック型の定義
 package SPVM::Comparator : callback_t {
-  sub compare : int ($self : self, $x1 : object, $x2 : object);
+  sub : int ($self : self, $x1 : object, $x2 : object);
 }
 
 # クラスの定義
 package SomeComparator {
-  sub compare : int ($self : self, $x1 : object, $x2 : object) {
-    
+  sub new : int () {
+    return new SomeComparator;
   }
   
-  sub foo : int () {
-  
+  sub : int ($self : self, $x1 : object, $x2 : object) {
+    
   }
 }
 
 # コールバック型への代入
-my $comparator : comparator = new SomeComparator;
+my $comparator : SPVM::Comparator = SomeComparator->new;
 </pre>
       <p>
-        2. コールバック型として定義されたサブルーチンと同一のシグネチャを持つコールバックオブジェクトの生成は、コールバック型に適合します。
+        2. コールバック型として定義されたサブルーチンと同一のシグネチャを持つコールバックオブジェクトの生成を行うと、コールバック型に代入できます。
       </p>
 <pre>
 # コールバック型の定義
 package SPVM::Comparator : callback_t {
-  sub compare : int ($self : self, $x1 : object, $x2 : object);
+  sub : int ($self : self, $x1 : object, $x2 : object);
 }
 
 # コールバック型への代入
-my $comparator : comparator = sub compare : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator : SPVM::Comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
   
 }
 </pre>
