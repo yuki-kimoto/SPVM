@@ -1,4 +1,4 @@
-0.0441 2019-10-07
+0.0441 2019-10-08
   - add pi method to SPVM::Math
   - cleanup SPVM::Unicode. Many methods is remaned.
   - cleanup SPVM::JSON. Many options is removed.
@@ -17,6 +17,7 @@
   - add SPVM::Cloner
   - SPVM::Util::copy_oarray do deep clone using SPVM::Cloner.
   - SPVM::Stringer argument change ($self : self) to ($self : self, $obj : object)
+  - add SPVM::Regex::Replacer and use this in SPVM::Regex::replace_cb and SPVM::Regex::replace_all_cb method
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array

@@ -273,11 +273,3 @@ package SPVM::Hash {
 
   native sub murmur_hash : long ($string : string, $seed : int);
 }
-
-package SPVM::Hash::Entry {
-  allow SPVM::Hash;
-
-  has key : string;
-  has val : object;
-  has next_entry : SPVM::Hash::Entry;
-}
