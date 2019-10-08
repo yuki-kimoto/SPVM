@@ -6,7 +6,7 @@ use SPVM 'SPVM::Comparator';
 
 =head1 NAME
 
-SPVM::Comparator - a callback class for comparation
+SPVM::Comparator - a callback type for comparation
 
 =head1 SYNOPSYS
   

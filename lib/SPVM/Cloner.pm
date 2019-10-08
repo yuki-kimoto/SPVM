@@ -6,7 +6,7 @@ use SPVM 'SPVM::Cloner';
 
 =head1 NAME
 
-SPVM::Cloner - a callback class for objectification
+SPVM::Cloner - a callback type to clone a object
 
 =head1 SYNOPSYS
   
@@ -26,7 +26,7 @@ SPVM::Cloner - a callback class for objectification
 
 =head1 DESCRIPTION
 
-L<SPVM::Cloner> is a callback type to clone object.
+L<SPVM::Cloner> is a callback type to clone a object.
 
 =head1 INSTANCE METHODS
 

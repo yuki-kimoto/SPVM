@@ -47,7 +47,9 @@ SPVM::Regex - Regular expression
     my $target = "ppzabcz";
     
     # "ppzABbcCz"
-    my $result = $re->replace_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self) { return "AB" . $re->caps->[0] . "C"; });
+    my $result = $re->replace_cb($target, 0, sub replace_to : string ($self : self, $re : SPVM::Regex) {
+      return "AB" . $re->caps->[0] . "C";
+    });
   }
 
   # Replace all
@@ -65,7 +67,7 @@ SPVM::Regex - Regular expression
     my $target = "ppzabczabcz";
     
     # "ppzABCbcPQRSzABCbcPQRSz"
-    my $result = $re->replace_all_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self) {
+    my $result = $re->replace_all_cb($target, 0, sub replace_to : string ($self : self, $re : SPVM::Regex) {
       return "ABC" . $re->caps->[0] . "PQRS";
     });
   }
@@ -174,9 +176,9 @@ Replace the target string specified with the start byte offset with replace stri
 
 =head2 replace_cb
 
-  sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Stringer)
+  sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer)
 
-Replace the target string specified with the start byte offset with replace callback. The callback must have "to_str" method defined in L<SPVM::Stringer>.
+Replace the target string specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<SPVM::Regex::Replacer>.
 
 =head2 replace_all
 
@@ -186,6 +188,6 @@ Replace all of the target strings specified with the start byte offset with repl
 
 =head2 replace_all_cb
 
-  sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Stringer)
+  sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer)
 
-Replace all of the target strings specified with the start byte offset with replace callback. The callback must have "to_str" method defined in L<SPVM::Stringer>.
+Replace all of the target strings specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<SPVM::Regex::Replacer>.

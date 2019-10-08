@@ -4,7 +4,7 @@ package SPVM::Regex {
   use SPVM::IntList;
   use SPVM::Hash;
   use SPVM::StringBuffer;
-  use SPVM::Stringer;
+  use SPVM::Regex::Replacer;
   use SPVM::Regex::Pattern;
 
   has patterns : SPVM::ObjectList;
@@ -554,7 +554,7 @@ package SPVM::Regex {
     return $self->replace_opt($target, $target_offset, $replace, [(object)replace_all => 0]);
   }
 
-  sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Stringer) {
+  sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
     return $self->replace_opt($target, $target_offset, $replace_cb, [(object)replace_all => 0]);
   }
 
@@ -562,7 +562,7 @@ package SPVM::Regex {
     return $self->replace_opt($target, $target_offset, $replace, [(object)replace_all => 1]);
   }
 
-  sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Stringer) {
+  sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
     return $self->replace_opt($target, $target_offset, $replace_cb, [(object)replace_all => 1]);
   }
   
@@ -622,10 +622,10 @@ package SPVM::Regex {
         
         $replace = $replace_buffer->to_str;
       }
-      elsif ($replace_object isa SPVM::Stringer) {
+      elsif ($replace_object isa SPVM::Regex::Replacer) {
         my $replace_buffer = SPVM::StringBuffer->new;
-        my $stringer = (SPVM::Stringer)$replace_object;
-        my $cb_result = $stringer->to_str(undef);
+        my $replacer = (SPVM::Regex::Replacer)$replace_object;
+        my $cb_result = $replacer->replace_to($self);
         $replace_buffer->push($cb_result);
         $replace = $replace_buffer->to_str;
       }

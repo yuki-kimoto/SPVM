@@ -14,4 +14,4 @@ SPVM::Regex::Pattern - Regular expression pattern
 
 =head1 DESCRIPTION
 
-This is SPVM::Regex internal data structure.
+L<SPVM::Regex::Pattern> is a internal data structure for L<SPVM::Regex>.

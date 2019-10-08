@@ -6,7 +6,7 @@ use SPVM 'SPVM::Stringer';
 
 =head1 NAME
 
-SPVM::Stringer - a callback class for stringification
+SPVM::Stringer - a callback type for stringification
 
 =head1 SYNOPSYS
   
