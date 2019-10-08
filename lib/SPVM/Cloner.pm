@@ -13,7 +13,13 @@ SPVM::Cloner - a callback class for objectification
   use SPVM::Cloner;
   
   my $cloner : SPVM::Cloner = sub clone : object ($self : self, $obj : object) {
-    return "Hello";
+    my $point = (SPVM::Point)$obj;
+    
+    my $new_point = SPVM::Point->new;
+    $new_point->set_x($point->x);
+    $new_point->set_y($point->y);
+    
+    return $new_point;
   };
   
   my $message = $cloner->clone;

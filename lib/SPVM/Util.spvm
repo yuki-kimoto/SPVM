@@ -15,13 +15,12 @@ package SPVM::Util {
     return $new_objects;
   }
   
-  precompile sub joino : string ($sep : string, $objects : oarray) {
+  precompile sub joino : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer) {
     my $join = "";
     
     for (my $i = 0; $i < @$objects; $i++) {
-      my $stringer = (SPVM::Stringer)$objects->[$i];
-      my $string = $stringer->to_str();
-      $join .= $string;
+      my $str = $stringer->to_str($objects->[$i]);
+      $join .= $str;
       if ($i != @$objects - 1) {
         $join .= $sep;
       }

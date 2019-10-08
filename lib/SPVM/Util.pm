@@ -14,7 +14,15 @@ SPVM::Util - Variouse utilities
   
   # Stringify all object and join them by the specific separator
   my $objects = new Foo[3];
-  my $str = SPVM::Util->joino(",", $objects);
+  my $str = SPVM::Util->joino(",", $objects, sub to_str : string ($self : self, $obj : object) {
+    my $point = (SPVM::Point)$obj;
+    my $x = $point->x;
+    my $y = $point->y;
+    
+    my $str = "($x, $y)";
+    
+    return $str;
+  });
   
   # split a string by the specific separator
   my $str = "foo,bar,baz";
@@ -28,7 +36,7 @@ Unix standard library.
 
 =head2 joino
 
-  sub joino : string ($sep : string, $objects : oarray)
+  sub joino : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer)
 
 Stringify all objects and join them by specific separator.
 Each object must have to_str method defined in L<SPVM::Stringer>. otherwise a exception occur.

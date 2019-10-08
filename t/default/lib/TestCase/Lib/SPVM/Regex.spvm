@@ -13,7 +13,7 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("a(bc)");
       my $target = "ppzabczabcz";
-      my $result = $re->replace_all_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self) {
+      my $result = $re->replace_all_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self, $obj : object) {
         return "ABC" . $re->caps->[0] . "PQRS";
       });
       
@@ -162,7 +162,9 @@ package TestCase::Lib::SPVM::Regex {
     {
       my $re = SPVM::Regex->new("a(bc)");
       my $target = "ppzabcz";
-      my $result = $re->replace_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self) { return "AB" . $re->caps->[0] . "C"; });
+      my $result = $re->replace_cb($target, 0, [$re : SPVM::Regex] sub to_str : string ($self : self, $obj : object) {
+        return "AB" . $re->caps->[0] . "C";
+      });
       
       unless ($re->replace_count == 1) {
         return 0;

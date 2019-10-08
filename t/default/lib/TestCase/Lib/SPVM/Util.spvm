@@ -53,7 +53,13 @@ package TestCase::Lib::SPVM::Util {
       TestCase::Minimal->newp(5, 6)
     ];
     
-    my $join = joino(",", $minimals);
+    my $join = joino(",", $minimals, sub to_str : string ($self : self, $obj : object) {
+      my $minimal = (TestCase::Minimal)$obj;
+      my $x = $minimal->x;
+      my $y = $minimal->y;
+      my $str = "($x,$y)";
+      return $str;
+    });
     
     if ($join eq "(1,2),(3,4),(5,6)") {
       return 1;
