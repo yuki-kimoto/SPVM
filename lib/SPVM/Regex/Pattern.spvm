@@ -1,0 +1,18 @@
+package SPVM::Regex::Pattern {
+  allow SPVM::Regex;
+  
+  enum {
+    RE_START,
+    RE_END,
+    PATTERN,
+    CAPTURE_START,
+    CAPTURE_END,
+  }
+  has capture_start : byte;
+  has capture_end : byte;
+  has negate : byte;
+  has type : byte;
+  has max_repeat : int;
+  has min_repeat : int;
+  has uchar_min_maxs : int[];
+}
