@@ -625,7 +625,7 @@ package SPVM::Regex {
       elsif ($replace_object isa SPVM::Regex::Replacer) {
         my $replace_buffer = SPVM::StringBuffer->new;
         my $replacer = (SPVM::Regex::Replacer)$replace_object;
-        my $cb_result = $replacer->replace_to($self);
+        my $cb_result = $replacer->($self);
         $replace_buffer->push($cb_result);
         $replace = $replace_buffer->to_str;
       }

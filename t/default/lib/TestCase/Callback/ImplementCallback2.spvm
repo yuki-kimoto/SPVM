@@ -5,14 +5,7 @@ package TestCase::Callback::ImplementCallback2 {
     return new TestCase::Callback::ImplementCallback2;
   }
   
-  sub foo : int ($self : self, $var1 : int, $var2 : long) {
-    return 2;
-  }
-  sub bar : TestCase::Minimal ($self : self, $var1 : TestCase::Minimal, $var2 : object) {
-    return undef;
-  }
-  
-  sub baz : int ($self : self) {
+  sub : int ($self : self, $var1 : int, $var2 : long) {
     return 2;
   }
 }

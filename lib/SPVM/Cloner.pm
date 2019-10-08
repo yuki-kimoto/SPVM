@@ -12,7 +12,7 @@ SPVM::Cloner - a callback type to clone a object
   
   use SPVM::Cloner;
   
-  my $cloner : SPVM::Cloner = sub clone : object ($self : self, $obj : object) {
+  my $cloner : SPVM::Cloner = sub : object ($self : self, $obj : object) {
     my $point = (SPVM::Point)$obj;
     
     my $new_point = SPVM::Point->new;
@@ -22,14 +22,12 @@ SPVM::Cloner - a callback type to clone a object
     return $new_point;
   };
   
-  my $message = $cloner->clone;
+  my $message = $cloner->();
 
 =head1 DESCRIPTION
 
 L<SPVM::Cloner> is a callback type to clone a object.
 
-=head1 INSTANCE METHODS
+=head1 CALLBACK METHOD
 
-=head2 clone
-
-  sub clone : object ($self : self, $obj : object);
+  sub : object ($self : self, $obj : object);

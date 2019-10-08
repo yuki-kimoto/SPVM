@@ -77,7 +77,7 @@ package TestCase::Lib::SPVM::Sort {
       my $m15 = TestCase::Minimal->newp(15, 402);
       
       my $ms = [$m10, $m11, $m12, $m13, $m14, $m15];
-      sorto($ms, sub compare : int ($self : self, $x1 : object, $x2 : object) {
+      sorto($ms, sub : int ($self : self, $x1 : object, $x2 : object) {
         my $m1 = (TestCase::Minimal)$x1;
         my $m2 = (TestCase::Minimal)$x2;
         if ($m1->y > $m2->y) {

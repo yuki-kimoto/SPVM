@@ -277,13 +277,21 @@ sub
      {
        $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0);
      }
+  | opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+     {
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0);
+     }
+  | opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg ')' ';'
+     {
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0);
+     }
 
 new_callback_object
-  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
+  : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 1);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 1);
      }
-  | '[' args ']' opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
+  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
        SPVM_OP* op_list_args;
        if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -294,7 +302,7 @@ new_callback_object
          SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
        }
        
-       $$ = SPVM_OP_build_sub(compiler, $5, $6, $8, $10, $4, $13, op_list_args, $11, 0, 1);
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, 0, 1);
      }
 
 opt_args

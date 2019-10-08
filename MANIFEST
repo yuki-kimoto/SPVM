@@ -129,6 +129,8 @@ lib/SPVM/Byte.pm
 lib/SPVM/Byte.spvm
 lib/SPVM/ByteList.pm
 lib/SPVM/ByteList.spvm
+lib/SPVM/Cloner.pm
+lib/SPVM/Cloner.spvm
 lib/SPVM/Comparator.pm
 lib/SPVM/Comparator.spvm
 lib/SPVM/Complex_2d.pm
@@ -158,7 +160,11 @@ lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
+lib/SPVM/Hash.c
+lib/SPVM/Hash.config
 lib/SPVM/Hash.spvm
+lib/SPVM/Hash/Entry.pm
+lib/SPVM/Hash/Entry.spvm
 lib/SPVM/HTTP/Client.spvm
 lib/SPVM/HTTP/Client/CookieJar.spvm
 lib/SPVM/HTTP/Client/CookieJar/Cookie.spvm
@@ -197,7 +203,12 @@ lib/SPVM/MIME/Base64.pm
 lib/SPVM/MIME/Base64.spvm
 lib/SPVM/ObjectList.pm
 lib/SPVM/ObjectList.spvm
+lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
+lib/SPVM/Regex/Pattern.pm
+lib/SPVM/Regex/Pattern.spvm
+lib/SPVM/Regex/Replacer.pm
+lib/SPVM/Regex/Replacer.spvm
 lib/SPVM/Short.pm
 lib/SPVM/Short.spvm
 lib/SPVM/ShortList.pm
@@ -220,6 +231,7 @@ lib/SPVM/Time/Info.pm
 lib/SPVM/Time/Info.spvm
 lib/SPVM/Unicode.c
 lib/SPVM/Unicode.config
+lib/SPVM/Unicode.pm
 lib/SPVM/Unicode.spvm
 lib/SPVM/Unistd.c
 lib/SPVM/Unistd.config
@@ -250,6 +262,7 @@ solo/lib/TestCase/ImplementCallback2.spvm
 solo/lib/TestCase/Inline.spvm
 solo/lib/TestCase/List.spvm
 solo/lib/TestCase/Minimal.spvm
+solo/lib/TestCase/Minimal/XGetter.spvm
 solo/lib/TestCase/Point_3b.spvm
 solo/lib/TestCase/Point_3d.spvm
 solo/lib/TestCase/Point_3f.spvm
@@ -260,7 +273,6 @@ solo/lib/TestCase/Pointer.spvm
 solo/lib/TestCase/Simple.spvm
 solo/lib/TestCase/Weaken.spvm
 solo/lib/TestCase/Weaken2.spvm
-solo/lib/TestCase/XGetter.spvm
 solo/solo_Makefile.PL
 solo/spvm_build/.gitkeep
 SPVM.xs
@@ -336,6 +348,7 @@ t/default/exception.t
 t/default/exchange-api.t
 t/default/fat-camma.t
 t/default/for.t
+t/default/if-require.t
 t/default/if.t
 t/default/increment.t
 t/default/inline.t
@@ -357,7 +370,6 @@ t/default/lib/TestCase/Callback/ImplementCallback2.spvm
 t/default/lib/TestCase/Comment/CR.spvm
 t/default/lib/TestCase/Comment/CRLF.spvm
 t/default/lib/TestCase/Comment/LF.spvm
-t/default/lib/TestCase/Comparator.spvm
 t/default/lib/TestCase/ComparisonOperator.spvm
 t/default/lib/TestCase/CompileError/Add/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Add/RightIsNotNumeric.spvm
@@ -434,6 +446,7 @@ t/default/lib/TestCase/FatCamma.spvm
 t/default/lib/TestCase/FILE.spvm
 t/default/lib/TestCase/For.spvm
 t/default/lib/TestCase/If.spvm
+t/default/lib/TestCase/IfRequire.spvm
 t/default/lib/TestCase/Increment.spvm
 t/default/lib/TestCase/Inline.spvm
 t/default/lib/TestCase/Isa.spvm

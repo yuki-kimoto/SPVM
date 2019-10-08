@@ -156,7 +156,7 @@ package TestCase::Sub {
   sub cb_obj_capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
-    my $cb_obj = [$capture1 : int, $capture2 : int] sub foo : int ($self : self, $x1 : object, $x2 : object) {
+    my $cb_obj = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
       
       unless ($capture1 == 7) {
         return 0;
@@ -179,15 +179,15 @@ package TestCase::Sub {
       return 1;
     };
     
-    return $cb_obj->foo(undef, undef);
+    return $cb_obj->(undef, undef);
   }
   
   sub cb_obj_call_cb_obj : int () {
-    my $cb_obj = sub foo : int ($self : self, $x1 : int, $x2 : int) {
+    my $cb_obj = sub : int ($self : self, $x1 : int, $x2 : int) {
       return $x1 + $x2;
     };
     
-    my $total = $cb_obj->foo(1, 3);
+    my $total = $cb_obj->(1, 3);
     
     unless ($total == 4) {
       return 0;
@@ -197,7 +197,7 @@ package TestCase::Sub {
   }
 
   sub cb_obj_call_cb_obj_from_callback : int () {
-    my $cb_obj = sub compare : int ($self : self, $x1 : object, $x2 : object) {
+    my $cb_obj = sub : int ($self : self, $x1 : object, $x2 : object) {
       my $x1_num = (int)$x1;
       my $x2_num = (int)$x2;
       return $x1_num + $x2_num;
@@ -205,7 +205,7 @@ package TestCase::Sub {
     
     my $comparator : SPVM::Comparator = $cb_obj;
     
-    my $total = $comparator->compare(2, 3);
+    my $total = $comparator->(2, 3);
     
     unless ($total == 5) {
       return 0;

@@ -1598,7 +1598,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   package->op_type = op_type;
   
   const char* package_name = op_type->uv.type->basic_type->name;
-  
+
   if (!is_anon && islower(package_name[0])) {
     SPVM_COMPILER_error(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
   }
@@ -2043,6 +2043,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Subroutine declarations
     {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+        if (package->subs->length != 1) {
+          SPVM_COMPILER_error(compiler, "Callback type must have only one method at %s line %d\n", package->op_package->file, package->op_package->line);
+        }
+      }
+
       int32_t i;
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
@@ -2084,9 +2090,15 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
         }
         
-        // Subroutine in callback package must be method
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
-          SPVM_COMPILER_error(compiler, "Subroutine in callback package must be method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+          // Subroutine having callback_t descriptor must be method
+          if (sub->call_type_id != SPVM_SUB_C_CALL_TYPE_ID_METHOD) {
+            SPVM_COMPILER_error(compiler, "The subroutine belonging to the package with a callback_t descriptor must be a method at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+          }
+          // Subroutine having callback_t descriptor must be anon
+          if (strlen(sub_name) != 0) {
+            SPVM_COMPILER_error(compiler, "The subroutine belonging to the package with a callback_t descriptor can't have the name at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+          }
         }
         
         // If Subroutine is anon, sub must be method
@@ -2342,6 +2354,9 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     sub->flag |= SPVM_SUB_C_FLAG_NEW_CALLBACK_OBJECT;
   }
   
+  if (op_name_sub == NULL) {
+    op_name_sub = SPVM_OP_new_op_name(compiler, "", op_sub->file, op_sub->line);
+  }
   const char* sub_name = op_name_sub->uv.name;
   
   // Block is sub block

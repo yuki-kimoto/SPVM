@@ -1,4 +1,4 @@
 package SPVM::Regex::Replacer : callback_t {
   use SPVM::Regex;
-  sub replace_to : string ($self : self, $re : SPVM::Regex);
+  sub : string ($self : self, $re : SPVM::Regex);
 }

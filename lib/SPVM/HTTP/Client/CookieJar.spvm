@@ -220,7 +220,7 @@ package SPVM::HTTP::Client::CookieJar {
     for (my $i = 0; $i < $matched->length; ++$i) {
       $ret->[$i] = (SPVM::HTTP::Client::CookieJar::Cookie)($matched->get($i));
     }
-    sorto($ret, sub compare : int ($self : self, $lhs : object, $rhs : object) {
+    sorto($ret, sub : int ($self : self, $lhs : object, $rhs : object) {
       my $l = (SPVM::HTTP::Client::CookieJar::Cookie)$lhs;
       my $r = (SPVM::HTTP::Client::CookieJar::Cookie)$rhs;
       if (length $l->{path} > length $r->{path} ||

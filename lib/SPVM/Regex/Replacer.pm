@@ -12,18 +12,16 @@ SPVM::Regex::Replacer - a callback type for the regex replacement
   
   use SPVM::Regex::Replacer;
   
-  my $replacer : SPVM::Regex::Replacer = sub replace_to : string ($self : self, $re : SPVM::Regex) {
+  my $replacer : SPVM::Regex::Replacer = sub : string ($self : self, $re : SPVM::Regex) {
     return "AB" . $re->caps->[0] . "C";
   });
   
-  my $message = $replacer->replace_to;
+  my $message = $replacer->();
 
 =head1 DESCRIPTION
 
 L<SPVM::Regex::Replacer> is a callback type for the regex replacement
 
-=head1 INSTANCE METHODS
+=head1 CALLBACK METHOD
 
-=head2 replace_to
-
-  sub replace_to : string ($self : self, $re : SPVM::Regex)
+  sub : string ($self : self, $re : SPVM::Regex)

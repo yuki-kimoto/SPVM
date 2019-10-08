@@ -1,3 +1,0 @@
-package TestCase::Comparator : callback_t {
-  sub compare : int ($self : self, $x : int, $y : int);
-}

@@ -14,7 +14,7 @@ SPVM::Util - Variouse utilities
   
   # Stringify all object and join them by the specific separator
   my $objects = new Foo[3];
-  my $str = SPVM::Util->joino(",", $objects, sub to_str : string ($self : self, $obj : object) {
+  my $str = SPVM::Util->joino(",", $objects, sub : string ($self : self, $obj : object) {
     my $point = (SPVM::Point)$obj;
     my $x = $point->x;
     my $y = $point->y;

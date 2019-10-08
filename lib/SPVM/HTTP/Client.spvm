@@ -152,7 +152,7 @@ package SPVM::HTTP::Client {
 
     if (!$data_cb || $response->{status} / 100 != 2) {
       if (my $max_size = $self->{max_size}) {
-        $data_cb = [$max_size : int] sub handle : void ($self : self, $append : string,
+        $data_cb = [$max_size : int] sub : void ($self : self, $append : string,
             $target : object) {
           my $response = (SPVM::HTTP::Client::Response)$target;
           $response->{content} .= $append;
@@ -162,7 +162,7 @@ package SPVM::HTTP::Client {
         };
       }
       else {
-        $data_cb = sub handle : void ($self : self, $append : string, $target : object) {
+        $data_cb = sub : void ($self : self, $append : string, $target : object) {
           ((SPVM::HTTP::Client::Response)$target)->{content} .= $append;
         };
       }
@@ -621,7 +621,7 @@ package SPVM::HTTP::Client::Handle {
         $self->_read($read, $buf, 0);
         $len -= $read;
       }
-      $data_cb->handle($buf->to_str, $response);
+      $data_cb->($buf->to_str, $response);
       return $self->{rbuf}->length == 0;
     }
     else {
@@ -631,7 +631,7 @@ package SPVM::HTTP::Client::Handle {
           last;
         }
       }
-      $data_cb->handle($buf->to_str, $response);
+      $data_cb->($buf->to_str, $response);
       return 0;
     }
   }
@@ -661,5 +661,5 @@ package SPVM::HTTP::Client::Handle {
 }
 
 package SPVM::HTTP::Client::DataHandler : callback_t {
-  sub handle : void ($self : self, $append : string, $target : object);
+  sub : void ($self : self, $append : string, $target : object);
 }

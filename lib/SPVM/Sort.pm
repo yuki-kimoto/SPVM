@@ -146,7 +146,15 @@ Sort object array itself which element fits L<SPVM::Comparator> by asc order.
 
 Object array must fit oarray type.
 
-  my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
+  my $minimals = new TestCase::Minimal[3];
+  $minimals->[0] = TestCase::Minimal->new;
+  $minimals->[0]{x} = 3;
+  $minimals->[1] = TestCase::Minimal->new;
+  $minimals->[1]{x} = 1;
+  $minimals->[2] = TestCase::Minimal->new;
+  $minimals->[2]{x} = 2;
+  
+  SPVM::Sort::sort_obj($minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
     my $minimal1 = (TestCase::Minimal)$object1;
     my $minimal2 = (TestCase::Minimal)$object2;
     
@@ -162,14 +170,4 @@ Object array must fit oarray type.
     else {
       return 0;
     }
-  };
-  
-  my $minimals = new TestCase::Minimal[3];
-  $minimals->[0] = TestCase::Minimal->new;
-  $minimals->[0]{x} = 3;
-  $minimals->[1] = TestCase::Minimal->new;
-  $minimals->[1]{x} = 1;
-  $minimals->[2] = TestCase::Minimal->new;
-  $minimals->[2]{x} = 2;
-  
-  SPVM::Sort::sort_obj($minimals, $comparator);
+  });

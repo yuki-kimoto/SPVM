@@ -47,7 +47,7 @@ SPVM::Regex - Regular expression
     my $target = "ppzabcz";
     
     # "ppzABbcCz"
-    my $result = $re->replace_cb($target, 0, sub replace_to : string ($self : self, $re : SPVM::Regex) {
+    my $result = $re->replace_cb($target, 0, sub : string ($self : self, $re : SPVM::Regex) {
       return "AB" . $re->caps->[0] . "C";
     });
   }
@@ -67,7 +67,7 @@ SPVM::Regex - Regular expression
     my $target = "ppzabczabcz";
     
     # "ppzABCbcPQRSzABCbcPQRSz"
-    my $result = $re->replace_all_cb($target, 0, sub replace_to : string ($self : self, $re : SPVM::Regex) {
+    my $result = $re->replace_all_cb($target, 0, sub : string ($self : self, $re : SPVM::Regex) {
       return "ABC" . $re->caps->[0] . "PQRS";
     });
   }

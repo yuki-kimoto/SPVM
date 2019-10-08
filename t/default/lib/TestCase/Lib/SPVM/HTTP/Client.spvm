@@ -114,7 +114,7 @@ package TestCase::Lib::SPVM::HTTP::Client {
     ]);
 
     my $data = SPVM::StringBuffer->new;
-    my $cb1 = [$data : SPVM::StringBuffer] sub foo : void ($self : self, $append : string, $target : object) {
+    my $cb1 = [$data : SPVM::StringBuffer] sub : void ($self : self, $append : string, $target : object) {
       $data->push($append);
     };
 
@@ -138,7 +138,7 @@ package TestCase::Lib::SPVM::HTTP::Client {
     ]);
 
     my $byte_data = [0];
-    my $cb2 = [$byte_data : int []] sub foo : void ($self : self, $append : string, $target : object) {
+    my $cb2 = [$byte_data : int []] sub : void ($self : self, $append : string, $target : object) {
       $byte_data->[0] += length $append;
     };
     my $response = $client->request("GET", "http://testserver.spvm.info/chunk/images", [(object)

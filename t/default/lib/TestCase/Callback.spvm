@@ -13,14 +13,14 @@ package TestCase::Callback {
   sub capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
-    my $cb_obj = [$capture1 : int, $capture2 : int] sub foo : int ($self : self) {
+    my $cb_obj = [$capture1 : int, $capture2 : int] sub : int ($self : self) {
       
       my $total = $capture1 + $capture2;
       
       return $total;
     };
     
-    my $total = $cb_obj->foo();
+    my $total = $cb_obj->();
     unless ($total == 17) {
       return 0;
     }
@@ -32,12 +32,12 @@ package TestCase::Callback {
   
     my $var_prec = 13;
   
-    my $cb = [$var_prec : int] sub foo : int ($self : self) {
+    my $cb = [$var_prec : int] sub : int ($self : self) {
 
       return $var_prec;
     };
     
-    unless ($cb->foo() == 13) {
+    unless ($cb->() == 13) {
       return 0;
     }
     
@@ -49,9 +49,9 @@ package TestCase::Callback {
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
       for (my $i = 0; $i < $change_cnt; $i++) {
-        my $ret = $comparator->compare($values->[$i], $values->[$i + 1]);
+        my $ret = $comparator->($values->[$i], $values->[$i + 1]);
         
-        if ($comparator->compare($values->[$i], $values->[$i + 1]) == 1) {
+        if ($comparator->($values->[$i], $values->[$i + 1]) == 1) {
           my $tmp_value = $values->[$i];
           $values->[$i] = $values->[$i + 1];
           $values->[$i + 1] = $tmp_value;
@@ -62,7 +62,7 @@ package TestCase::Callback {
   }
   
   sub comparator : int () {
-      my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
+      my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         
@@ -102,8 +102,8 @@ package TestCase::Callback {
     my $implement_callback1 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback1->new;
     my $implement_callback2 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback2->new;
     
-    my $num1 = $implement_callback1->foo(0, 0);
-    my $num2 = $implement_callback2->foo(0, 0);
+    my $num1 = $implement_callback1->(0, 0);
+    my $num2 = $implement_callback2->(0, 0);
 
     my $minimal = (TestCase::Minimal)$object;
     $minimal->{x} = 4;

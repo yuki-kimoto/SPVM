@@ -88,7 +88,7 @@ package TestCase::Isa {
 
   sub isa_match_callback : int () {
     
-    my $comparator = sub compare : int ($self : self, $object1 : object, $object2 : object) {
+    my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
       
     };
     if ($comparator isa SPVM::Comparator) {

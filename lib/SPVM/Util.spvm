@@ -9,7 +9,7 @@ package SPVM::Util {
     my $new_objects = new object[$length];
     
     for (my $i = 0; $i < $length; $i++) {
-      $new_objects->[$i] = $cloner->clone($objects->[$i]);
+      $new_objects->[$i] = $cloner->($objects->[$i]);
     }
     
     return $new_objects;
@@ -19,7 +19,7 @@ package SPVM::Util {
     my $join = "";
     
     for (my $i = 0; $i < @$objects; $i++) {
-      my $str = $stringer->to_str($objects->[$i]);
+      my $str = $stringer->($objects->[$i]);
       $join .= $str;
       if ($i != @$objects - 1) {
         $join .= $sep;

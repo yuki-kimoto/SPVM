@@ -4,7 +4,7 @@ package TestCase::Lib::SPVM::Util {
 
   sub test_copy_oarray : int () {
     my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(INT32_MIN())];
-    my $objects_out = copy_oarray($objects, sub clone : object ($self : self, $obj : object) {
+    my $objects_out = copy_oarray($objects, sub : object ($self : self, $obj : object) {
       my $int_obj = (SPVM::Int)$obj;
       my $new_int_obj = SPVM::Int->new($int_obj->val);
       return $new_int_obj;
@@ -53,7 +53,7 @@ package TestCase::Lib::SPVM::Util {
       TestCase::Minimal->newp(5, 6)
     ];
     
-    my $join = joino(",", $minimals, sub to_str : string ($self : self, $obj : object) {
+    my $join = joino(",", $minimals, sub : string ($self : self, $obj : object) {
       my $minimal = (TestCase::Minimal)$obj;
       my $x = $minimal->x;
       my $y = $minimal->y;
