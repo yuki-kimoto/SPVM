@@ -16,7 +16,8 @@ SPVM::Regex::Replacer - a callback type for the regex replacement
     return "AB" . $re->caps->[0] . "C";
   });
   
-  my $message = $replacer->();
+  my $re = SPVM::Regex->new("ab(c)");
+  my $str_for_replace = $replacer->($re);
 
 =head1 DESCRIPTION
 
@@ -25,3 +26,5 @@ L<SPVM::Regex::Replacer> is a callback type for the regex replacement
 =head1 CALLBACK METHOD
 
   sub : string ($self : self, $re : SPVM::Regex)
+
+This method must return a string for replacement in the method implementation.

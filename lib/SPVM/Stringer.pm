@@ -22,7 +22,8 @@ SPVM::Stringer - a callback type for stringification
     return $str;
   };
   
-  my $message = $stringer->();
+  my $point = SPVM::Point->new(1, 2);
+  my $str = $stringer->($point);
 
 =head1 DESCRIPTION
 
@@ -31,3 +32,5 @@ L<SPVM::Stringer> is a callback type to stringify a object.
 =head1 CALLBACK METHOD
 
   sub : string ($self : self, $obj : object)
+
+This method should receive a object and return the string expression in the method imlementaion.

@@ -159,6 +159,18 @@ Copy a double array.
 
 Copy a string array.
 
+=head2 equals_barray
+
+=head2 equals_sarray
+
+=head2 equals_iarray
+
+=head2 equals_farray
+
+=head2 equals_darray
+
+=head2 equals_strarray
+
 =head2 print
 
 Print string to stdout.
