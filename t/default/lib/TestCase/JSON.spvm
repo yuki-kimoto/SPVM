@@ -382,6 +382,16 @@ package TestCase::JSON {
         return 0;
       }
     }
+    {
+      eval {
+        $DEFAULT_JSON->decode("-");
+      };
+      unless ($@ && contains($@, "malformed number (no digits after '-')")) {
+        $@ = undef;
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 
@@ -435,15 +445,6 @@ package TestCase::JSON {
       }
     }
     # special characters
-    # '\'
-    {
-      my $input = "\\";
-      my $got = $DEFAULT_JSON->encode($input);
-      my $expected = "\"\\\\\"";
-      unless (_equals($got, $expected)) {
-        return 0;
-      }
-    }
     # '"'
     {
       my $input = "\"";
@@ -453,11 +454,11 @@ package TestCase::JSON {
         return 0;
       }
     }
-    # '\t'
+    # '\'
     {
-      my $input = "\t";
+      my $input = "\\";
       my $got = $DEFAULT_JSON->encode($input);
-      my $expected = "\"\\t\"";
+      my $expected = "\"\\\\\"";
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -480,6 +481,15 @@ package TestCase::JSON {
         return 0;
       }
     }
+    # '\t'
+    {
+      my $input = "\t";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\t\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
     return 1;
   }
 
@@ -493,15 +503,6 @@ package TestCase::JSON {
       }
     }
     # special characters
-    # '\'
-    {
-      my $input = "\"\\\\\"";
-      my $got = $DEFAULT_JSON->decode($input);
-      my $expected = "\\";
-      unless (_equals($got, $expected)) {
-        return 0;
-      }
-    }
     # '"'
     {
       my $input = "\"\\\"\"";
@@ -511,11 +512,38 @@ package TestCase::JSON {
         return 0;
       }
     }
-    # '\t'
+    # '\'
     {
-      my $input = "\"\\t\"";
+      my $input = "\"\\\\\"";
       my $got = $DEFAULT_JSON->decode($input);
-      my $expected = "\t";
+      my $expected = "\\";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '/'
+    {
+      my $input = "\"\\/\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "/";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\b'
+    {
+      my $input = "\"\\b\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\b";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\f'
+    {
+      my $input = "\"\\f\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\f";
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -537,6 +565,36 @@ package TestCase::JSON {
       unless (_equals($got, $expected)) {
         return 0;
       }
+    }
+    # '\t'
+    {
+      my $input = "\"\\t\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\t";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # control characters are not allowed
+    {
+      for (my $ch : byte = 0; $ch <= 31; ++$ch) {
+        eval {
+          $DEFAULT_JSON->decode("\"" . [ $ch ] . "\"");
+        };
+        unless ($@ && contains($@, "Control ASCII characters are not allowed in string")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+      eval {
+        $DEFAULT_JSON->decode("\"" . [ (byte)127 ] . "\"");
+      };
+      unless ($@ && contains($@, "Control ASCII characters are not allowed in string")) {
+        $@ = undef;
+        return 0;
+      }
+      $@ = undef;
     }
     return 1;
   }
@@ -604,23 +662,6 @@ package TestCase::JSON {
   
   sub decode_null : int () {
     unless ($DEFAULT_JSON->decode("null") == undef) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub decode_inf : int () {
-    unless ($DEFAULT_JSON->decode("inf") == undef) {
-      return 0;
-    }
-    unless ($DEFAULT_JSON->decode("-inf") == undef) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub decode_nan : int () {
-    unless ($DEFAULT_JSON->decode("nan") == undef) {
       return 0;
     }
     return 1;

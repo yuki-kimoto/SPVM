@@ -72,20 +72,6 @@ package SPVM::JSON {
     }
   }
 
-  precompile private sub _expect_or_rewind : int ($json : string, $iter : int&, $expected : string) {
-    my $end = length $json;
-    my $length = length $expected;
-    unless ($$iter + $length <= $end) {
-      return 0;
-    }
-    my $got = substr($json, $$iter, $length);
-    if ($got eq $expected) {
-      $$iter += $length;
-      return 1;
-    }
-    return 0;
-  }
-
   precompile private sub _decode_string : string ($self : self, $json : string, $iter : int&) {
     my $end = length $json;
     my $buffer = SPVM::StringBuffer->new;
@@ -100,22 +86,30 @@ package SPVM::JSON {
       my $char = $json->[$$iter];
       if ($special_char_expected) {
         switch ((int)$char) {
-          case 34: # '"'
-          case 92: # '\\'
-          {
+          case '"':
+          case '\\':
+          case '/': {
             $buffer->push_char($char);
             break;
           }
-          case 116: { # 't'
-            $buffer->push_char('\t');
+          case 'b': {
+            $buffer->push_char('\b');
             break;
           }
-          case 110: { # 'n'
+          case 'f': {
+            $buffer->push_char('\f');
+            break;
+          }
+          case 'n': {
             $buffer->push_char('\n');
             break;
           }
-          case 114: { # 'r'
+          case 'r': {
             $buffer->push_char('\r');
+            break;
+          }
+          case 't': {
+            $buffer->push_char('\t');
             break;
           }
           default: {
@@ -128,8 +122,8 @@ package SPVM::JSON {
         $special_char_expected = 1;
       }
       else {
-        if ($char == '\t') {
-          _decode_error("Literal ASCII tab characters are not allowed in string", $json, $$iter);
+        if ($char <= 31 || $char == 127) {
+          _decode_error("Control ASCII characters are not allowed in string", $json, $$iter);
         }
         $buffer->push_char($char);
       }
@@ -240,27 +234,15 @@ package SPVM::JSON {
 
   # https://metacpan.org/pod/Cpanel::JSON::XS#number
   precompile private sub _decode_num : object ($self : self, $json : string, $iter : int&) {
-
-    switch ((int)$json->[$$iter]) {
-      case 'i': {
-        unless (_expect_or_rewind($json, $iter, "inf")) {
-          _decode_error("malformed number.", $json, $$iter);
-        }
-        return undef;
-      }
-      case '-': {
-        if (_expect_or_rewind($json, $iter, "-inf")) {
-          return undef;
-        }
-        break;
-      }
-    }
-
     my $accum = 0.0;
     my $expo = 0;
     my $neg = 0;
 
     if ($json->[$$iter] == '-') {
+      my $length = length $json;
+      unless ($$iter + 1 < $length && isdigit($json->[$$iter + 1])) {
+        _decode_error("malformed number (no digits after '-')", $json, $$iter);
+      }
       ++$$iter;
       $neg = 1;
     }
@@ -321,7 +303,8 @@ package SPVM::JSON {
       _expect_char($json, $iter, ':');
 
       # value
-      $hash->set($key, $self->_decode_recursive($json, $iter));
+      my $value = $self->_decode_recursive($json, $iter);
+      $hash->set($key, $value);
     }
 
     _expect_char($json, $iter, '}');
@@ -382,7 +365,7 @@ package SPVM::JSON {
       case '"': {
         return $self->_decode_string($json, $iter);
       }
-      case '-': case 'i':
+      case '-':
       case '0': case '1': case '2': case '3': case '4':
       case '5': case '6': case '7': case '8': case '9': {
         return $self->_decode_num($json, $iter);
@@ -394,10 +377,7 @@ package SPVM::JSON {
         return $self->_decode_false($json, $iter);
       }
       case 'n': {
-        unless (_expect_or_rewind($json, $iter, "nan") ||
-                _expect_or_rewind($json, $iter, "null")) {
-          _decode_error("malformed number.", $json, $$iter);
-        }
+        _expect_token($json, $iter, "null");
         return undef;
       }
       default: {
@@ -413,25 +393,37 @@ package SPVM::JSON {
       my $char = $string->[$i];
       my $special : byte = -1;
       switch ((int)$char) {
-        case 9: {# '\t'
-          # Note: Decoded char from literal ASCII tab will be encoded with "\\t" (non-reversible).
-          $special = 't';
-          break;
-        }
-        case 10: { # '\n'
-          $special = 'n';
-          break;
-        }
-        case 13: { # '\r'
-          $special = 'r';
-          break;
-        }
-        case 34: { # '"'
+        case '"': {
           $special = '"';
           break;
         }
-        case 92: { # '\\'
+        case '\\': {
           $special = '\\';
+          break;
+        }
+        case '/': {
+          $special = '/';
+          break;
+        }
+        case '\b': {
+          $special = 'b';
+          break;
+        }
+        case '\f': {
+          $special = 'f';
+          break;
+        }
+        case '\n': {
+          $special = 'n';
+          break;
+        }
+        case '\r': {
+          $special = 'r';
+          break;
+        }
+        case '\t': {
+          # Note: Decoded char from literal ASCII tab will be encoded with "\\t" (non-reversible).
+          $special = 't';
           break;
         }
       }
@@ -554,10 +546,14 @@ package SPVM::JSON {
     my $iter = 0;
     my $spvm_data = $self->_decode_recursive($json, \$iter);
 
+    # allow $json to have trailing spaces.
     $self->_skip_spaces($json, \$iter);
+
+    # do not allow $json to have non-space string after a json object,
+    # something like `{"key":1} [1,2]`
     my $length = length $json;
     unless ($iter == $length) {
-      _decode_error("Not all json_text is decoded yet", $json, $iter);
+      _decode_error("garbage after JSON object", $json, $iter);
     }
 
     return $spvm_data;
