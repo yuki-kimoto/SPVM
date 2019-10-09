@@ -2,6 +2,83 @@
 
 SPVM::CORE - SPVM core functions
 
+=head2 DESCRIPTION
+
+SPVM::CORE is SPVM core functions.
+
+=head2 SYNOPSYS
+  
+  # Cut a newline
+  {
+    my $ret = chompr("abc\n");
+  }
+  
+  # Create a new float complex array
+  {
+    my $re_values = [1.5f, 2.5f, 3.5f];
+    my $im_values = [5.5f, 6.5f, 7.5f];
+    my $farray = complex_farray($re_values, $im_values);
+  }
+
+  # Create a new double complex array
+  {
+    my $re_values = [1.5, 2.5, 3.5];
+    my $im_values = [5.5, 6.5, 7.5];
+    my $farray = complex_darray($re_values, $im_values);
+  }
+  
+  # Create a new float complex value
+  {
+    my $z = complexf(1.5f, 2.5f);
+  }
+
+  # Create a new double complex value
+  {
+    my $z = complexd(1.5f, 2.5f);
+  }
+  
+  # Copy a byte array
+  {
+    my $nums = [(byte)1, 2, 3];
+    my $nums_copy = copy_barray($nums);
+  }
+
+  # Copy a string
+  {
+    my $str = "abc";
+    my $str_copy = copy_str($str);
+  }
+
+  # Copy a short array
+  {
+    my $nums = [(short)1, 2, 3];
+    my $nums_copy = copy_sarray($nums);
+  }
+
+  # Copy a int array
+  {
+    my $nums = [1, 2, 3];
+    my $nums_copy = copy_iarray($nums);
+  }
+
+  # Copy a long array
+  {
+    my $nums = [(long)1, 2, 3];
+    my $nums_copy = copy_larray($nums);
+  }
+
+  # Copy a float array
+  {
+    my $nums = [1.5f, 2.5f, 3.5f];
+    my $nums_copy = copy_farray($nums);
+  }
+
+  # Copy a double array
+  {
+    my $nums = [1.5, 2.5, 3.5];
+    my $nums_copy = copy_darray($nums);
+  }
+  
 =head1 CLASS METHODS
 
 =head2 chompr
@@ -22,17 +99,65 @@ Create a new array of L<SPVM::Complex_2f> with real values and imaginary values.
 
 Create a new array of L<SPVM::Complex_2d> with real values and imaginary values.
 
+=head2 complexf
+
+  sub complexf : SPVM::Complex_2f ($re : float, $im : float)
+
+Return a new value of L<SPVM::Complex_2f>.
+
 =head2 complexd
 
 sub complexd : SPVM::Complex_2d ($re : double, $im : double)
 
 Return a new value of L<SPVM::Complex_2d>.
 
-=head2 complexf
+=head2 copy_barray
 
-  sub complexf : SPVM::Complex_2f ($re : float, $im : float)
+  sub copy_barray : byte[] ($nums : byte[])
 
-Return a new value of L<SPVM::Complex_2f>.
+Copy a byte array.
+
+=head2 
+
+  sub copy_str : string ($string : string)
+
+Copy a string.
+
+=head2 
+
+  sub copy_sarray : short[] ($nums : short[])
+
+Copy a short array.
+  
+=head2 
+
+  sub copy_iarray : int[] ($nums : int[])
+
+Copy a int array.
+  
+=head2 
+
+  sub copy_larray : long[] ($nums : long[])
+
+Copy a long array.
+
+=head2 
+
+  sub copy_farray : float[] ($nums : float[])
+
+Copy a float array.
+
+=head2 
+
+  sub copy_darray : double[] ($nums : double[])
+
+Copy a double array.
+
+=head2 
+
+  sub copy_strarray : string[] ($strings : string[])
+
+Copy a string array.
 
 =head2 print
 
