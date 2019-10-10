@@ -212,9 +212,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   # equals_darray
   ok(TestCase::Lib::SPVM::CORE->test_equals_darray);
 
-  # equals_oarray
-  ok(TestCase::Lib::SPVM::CORE->test_equals_darray);
-
   # equals_strarray
   ok(TestCase::Lib::SPVM::CORE->test_equals_strarray);
 }

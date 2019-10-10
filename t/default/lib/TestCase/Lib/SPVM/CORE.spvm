@@ -2,8 +2,10 @@ package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
   use SPVM::Time (time);
-
-
+  use SPVM::EqualityChecker;
+  use SPVM::Util;
+  use SPVM::EqualityChecker::Address;
+  
   sub test_complex_farray : int () {
     my $z_array = complex_farray(
       [FLT_MIN(), 2, 4],
@@ -1074,6 +1076,7 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
   sub test_sliceo : int () {
+    
     {
       my $minimal1 = TestCase::Minimal->new;
       my $minimal2 = TestCase::Minimal->new;
@@ -1082,7 +1085,7 @@ package TestCase::Lib::SPVM::CORE {
       
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 0, 4);
-      unless (equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4])) {
+      unless (SPVM::Util->equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -1094,7 +1097,7 @@ package TestCase::Lib::SPVM::CORE {
       
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 1, 2);
-      unless (equals_oarray($slice, [$minimal2, $minimal3])) {
+      unless (SPVM::Util->equals_oarray($slice, [$minimal2, $minimal3], SPVM::EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -1217,7 +1220,7 @@ package TestCase::Lib::SPVM::CORE {
       
       my $nums = [$minimal1, $minimal2, $minimal3];
       reverseo($nums);
-      unless (equals_oarray($nums, [$minimal3, $minimal2, $minimal1])) {
+      unless (SPVM::Util->equals_oarray($nums, [$minimal3, $minimal2, $minimal1], SPVM::EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -1392,46 +1395,6 @@ package TestCase::Lib::SPVM::CORE {
     
     return 1;
   }
-
-  sub test_equals_oarray : int () {
-    my $minimal1 = TestCase::Minimal->new;
-    my $minimal2 = TestCase::Minimal->new;
-    my $minimal3 = TestCase::Minimal->new;
-    my $minimal4 = TestCase::Minimal->new;
-    my $nums1 = [$minimal1, $minimal2, $minimal3];
-    my $nums2 = [$minimal1, $minimal2, $minimal3];
-    my $nums3 = [$minimal1, $minimal2];
-    my $nums4 = [$minimal1, $minimal2, $minimal4];
-    my $nums5 = [(object)$minimal1, $minimal2, $minimal3];
-    
-    {
-      my $is_equals = equals_oarray($nums1, $nums2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_oarray($nums1, $nums3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_oarray($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_oarray($nums1, $nums5);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
 
   sub test_equals_strarray : int () {
     my $strings1 = ["abc", "def", "ghi"];

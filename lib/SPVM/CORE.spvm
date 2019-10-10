@@ -257,23 +257,6 @@ package SPVM::CORE {
     return $is_equals;
   }
 
-  precompile sub equals_oarray : int ($nums1 : oarray, $nums2 : oarray) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-
   precompile sub equals_strarray : int ($strings1 : string[], $strings2 : string[]) {
     my $is_equals = 1;
     if (@$strings1 == @$strings2) {

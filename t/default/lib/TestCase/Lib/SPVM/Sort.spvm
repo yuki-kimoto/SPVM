@@ -1,6 +1,8 @@
 package TestCase::Lib::SPVM::Sort {
   use TestCase::Minimal;
   use SPVM::Sort(sortb, sorts, sorti, sortl, sortf, sortd, sorto, sortstr);
+  use SPVM::Util (equals_oarray);
+  use SPVM::EqualityChecker::Address;
   
   sub test_sortb : int () {
     {
@@ -90,7 +92,7 @@ package TestCase::Lib::SPVM::Sort {
           return 0;
         }
       });
-      unless (equals_oarray($ms, [$m11, $m12, $m15, $m10, $m14, $m13])) {
+      unless (equals_oarray($ms, [$m11, $m12, $m15, $m10, $m14, $m13], SPVM::EqualityChecker::Address->new)) {
         return 0;
       }
     }
