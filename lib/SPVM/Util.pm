@@ -48,6 +48,16 @@ Unix standard library.
 
 Copy object array. You must specify a L<SPVM::Cloner> object to copy each element.
 
+=head2 equals_oarray
+
+  sub sub equals_oarray : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker)
+
+Check equality of two objects. You must sepecify a L<SPVM::EqualityChecker> object to check the equality of each element.
+
+$objs1 and $objs2 and $equality_checker must be defined, otherwise a exception occur.
+
+Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
+
 =head2 joino
 
   sub joino : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer)

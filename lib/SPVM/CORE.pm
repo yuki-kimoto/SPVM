@@ -161,15 +161,73 @@ Copy a string array.
 
 =head2 equals_barray
 
+  sub equals_barray : int ($nums1 : byte[], $nums2 : byte[])
+
+Check equality of two byte arrays.
+
+$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+
+If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+
 =head2 equals_sarray
+
+  sub equals_sarray : int ($nums1 : short[], $nums2 : short[])
+
+Check equality of two short arrays.
+
+$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+
+If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
 
 =head2 equals_iarray
 
+  sub equals_iarray : int ($nums1 : int[], $nums2 : int[])
+
+Check equality of two int arrays.
+
+$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+
+If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+
 =head2 equals_farray
+
+  sub equals_larray : int ($nums1 : long[], $nums2 : long[])
+
+Check equality of two long arrays.
+
+$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+
+If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
 
 =head2 equals_darray
 
+  sub equals_farray : int ($nums1 : float[], $nums2 : float[])
+
+Check equality of two float arrays.
+
+$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+
+If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+
 =head2 equals_strarray
+
+  sub equals_darray : int ($nums1 : double[], $nums2 : double[])
+
+Check equality of two double arrays.
+
+$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+
+If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+
+=head2 equals_strarray
+
+  sub equals_strarray : int ($strings1 : string[], $strings2 : string[])
+
+Check equality of two string arrays.
+
+$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+
+If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
 
 =head2 print
 

@@ -19,6 +19,9 @@
   - SPVM::Stringer argument change ($self : self) to ($self : self, $obj : object)
   - add SPVM::Regex::Replacer and use this in SPVM::Regex::replace_cb and SPVM::Regex::replace_all_cb method
   - subroutine belongging to package with callback_t descriptor must be anon subroutine.
+  - add SPVM::EqualityChecker
+  - add SPVM::EqualityChecker::Address
+  - SPVM::CORE::equals_oarray is moved to SPVM::Util and recieve SPVM::EqualityChecker as third argument
 0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array

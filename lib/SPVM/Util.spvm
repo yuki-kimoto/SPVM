@@ -16,11 +16,11 @@ package SPVM::Util {
     return $new_objects;
   }
 
-  precompile sub equals_oarray : int ($nums1 : oarray, $nums2 : oarray, $equality_checker : SPVM::EqualityChecker) {
+  precompile sub equals_oarray : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker) {
     my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if (!$equality_checker->($nums1->[$i], $nums2->[$i])) {
+    if (@$objs1 == @$objs2) {
+      for (my $i = 0; $i < @$objs1; $i++) {
+        if (!$equality_checker->($objs1->[$i], $objs2->[$i])) {
           $is_equals = 0;
           last;
         }
