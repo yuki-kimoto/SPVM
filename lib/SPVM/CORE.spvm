@@ -276,13 +276,7 @@ package SPVM::CORE {
 
   native sub E : double ();
 
-  native sub DBL_MAX : double ();
-  native sub DBL_MIN : double ();
-
-  native sub FLT_MAX : float ();
-  native sub FLT_MIN : float();
-
-  native sub get_type_name : string ($object : object);
+  native sub get_type_name : string ($obj : object);
   
   precompile sub index : int($source : string, $target : string, $fromIndex : int) {
     my $sourceCount = length $source;
@@ -326,6 +320,9 @@ package SPVM::CORE {
     return -1;
   }
 
+  native sub INT8_MIN : byte ();
+  native sub INT8_MAX : byte ();
+
   native sub INT16_MIN : short ();
   native sub INT16_MAX : short ();
 
@@ -335,8 +332,11 @@ package SPVM::CORE {
   native sub INT64_MIN : long ();
   native sub INT64_MAX : long ();
 
-  native sub INT8_MIN : byte ();
-  native sub INT8_MAX : byte ();
+  native sub DBL_MAX : double ();
+  native sub DBL_MIN : double ();
+
+  native sub FLT_MAX : float ();
+  native sub FLT_MIN : float();
 
   native sub isdigit : int ($char : int);
 

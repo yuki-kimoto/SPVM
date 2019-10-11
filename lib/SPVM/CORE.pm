@@ -117,43 +117,43 @@ Return a new value of L<SPVM::Complex_2d>.
 
 Copy a byte array.
 
-=head2 
+=head2 copy_str
 
   sub copy_str : string ($string : string)
 
 Copy a string.
 
-=head2 
+=head2 copy_sarray
 
   sub copy_sarray : short[] ($nums : short[])
 
 Copy a short array.
   
-=head2 
+=head2 copy_iarray
 
   sub copy_iarray : int[] ($nums : int[])
 
 Copy a int array.
   
-=head2 
+=head2 copy_larray
 
   sub copy_larray : long[] ($nums : long[])
 
 Copy a long array.
 
-=head2 
+=head2 copy_farray
 
   sub copy_farray : float[] ($nums : float[])
 
 Copy a float array.
 
-=head2 
+=head2 copy_darray
 
   sub copy_darray : double[] ($nums : double[])
 
 Copy a double array.
 
-=head2 
+=head2 copy_strarray
 
   sub copy_strarray : string[] ($strings : string[])
 
@@ -228,6 +228,18 @@ Check equality of two string arrays.
 $nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
 
 If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+
+=head2 E
+
+  sub E : double ()
+
+Get a napier number.
+
+=head2 get_type_name
+
+  sub get_type_name : string ($obj : object)
+
+Get the type name of the object.
 
 =head2 print
 
