@@ -147,6 +147,10 @@ lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
+lib/SPVM/EqualityChecker.pm
+lib/SPVM/EqualityChecker.spvm
+lib/SPVM/EqualityChecker/Address.pm
+lib/SPVM/EqualityChecker/Address.spvm
 lib/SPVM/Errno.c
 lib/SPVM/Errno.config
 lib/SPVM/Errno.pm
@@ -203,6 +207,8 @@ lib/SPVM/MIME/Base64.pm
 lib/SPVM/MIME/Base64.spvm
 lib/SPVM/ObjectList.pm
 lib/SPVM/ObjectList.spvm
+lib/SPVM/Point.pm
+lib/SPVM/Point.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
