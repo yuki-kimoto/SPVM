@@ -118,7 +118,7 @@ package SPVM::Regex {
               break;
             }
             default: {
-              if (ispword($next_uchar)) {
+              if (is_perl_word($next_uchar)) {
                 die "Invalid regex escape character";
               }
               # \: \- etc

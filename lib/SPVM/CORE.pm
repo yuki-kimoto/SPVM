@@ -79,6 +79,80 @@ SPVM::CORE is SPVM core functions.
     my $nums_copy = copy_darray($nums);
   }
   
+  # Copy a string array
+  {
+    my $strs = ["abc", "def", "ghi"]
+    my $strs_copy = copy_strarray($strs);
+  }
+  
+  # Check if the two byte arrays equal
+  {
+    my $nums1 = [(byte)1, 2];
+    my $nums2 = [(byte)1, 2];
+    my $ret = equals_barray($nums1, $nums2);
+  }
+
+  # Check if the two short arrays equal
+  {
+    my $nums1 = [(short)1, 2];
+    my $nums2 = [(short)1, 2];
+    my $ret = equals_sarray($nums1, $nums2);
+  }
+
+  # Check if the two int arrays equal
+  {
+    my $nums1 = [(int)1, 2];
+    my $nums2 = [(int)1, 2];
+    my $ret = equals_iarray($nums1, $nums2);
+  }
+
+  # Check if the two long arrays equal
+  {
+    my $nums1 = [(long)1, 2];
+    my $nums2 = [(long)1, 2];
+    my $ret = equals_larray($nums1, $nums2);
+  }
+
+  # Check if the two float arrays equal
+  {
+    my $nums1 = [(float)1, 2];
+    my $nums2 = [(float)1, 2];
+    my $ret = equals_farray($nums1, $nums2);
+  }
+
+  # Check if the two double arrays equal
+  {
+    my $nums1 = [(double)1, 2];
+    my $nums2 = [(double)1, 2];
+    my $ret = equals_darray($nums1, $nums2);
+  }
+
+  # Check if the two string arrays equal
+  {
+    my $strs1 = ["abc", "def"];
+    my $strs2 = ["abc", "def"];
+    my $ret = equals_strarray($strs1, $strs2);
+  }
+  
+  # Search substr
+  {
+    my $found_pos = index("pppabcde", "bcd", 2);
+  }
+
+  # print a string to STDOUT
+  {
+    print("Hello\n");
+  }
+
+  # print a string to STDERR
+  {
+    # print a string to STDERR
+    warn("Hello\n");
+    
+    # print a string to STDERR with line number
+    warn("Hello");
+  }
+
 =head1 CLASS METHODS
 
 =head2 chompr
@@ -117,23 +191,31 @@ Return a new value of L<SPVM::Complex_2d>.
 
 Copy a byte array.
 
+If the array is undefined, a exception occurs.
+
 =head2 copy_str
 
   sub copy_str : string ($string : string)
 
 Copy a string.
 
+If the array is undefined, a exception occurs.
+
 =head2 copy_sarray
 
   sub copy_sarray : short[] ($nums : short[])
 
 Copy a short array.
+
+If the array is undefined, a exception occurs.
   
 =head2 copy_iarray
 
   sub copy_iarray : int[] ($nums : int[])
 
 Copy a int array.
+
+If the array is undefined, a exception occurs.
   
 =head2 copy_larray
 
@@ -141,11 +223,15 @@ Copy a int array.
 
 Copy a long array.
 
+If the array is undefined, a exception occurs.
+
 =head2 copy_farray
 
   sub copy_farray : float[] ($nums : float[])
 
 Copy a float array.
+
+If the array is undefined, a exception occurs.
 
 =head2 copy_darray
 
@@ -153,81 +239,71 @@ Copy a float array.
 
 Copy a double array.
 
+If the array is undefined, a exception occurs.
+
 =head2 copy_strarray
 
   sub copy_strarray : string[] ($strings : string[])
 
 Copy a string array.
 
+If the array is undefined, a exception occurs.
+
 =head2 equals_barray
 
   sub equals_barray : int ($nums1 : byte[], $nums2 : byte[])
 
-Check equality of two byte arrays.
+Check if two byte arrays equal.
 
-$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
-
-If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+If at least one of the arrays is undefined, a excetpion occurs.
 
 =head2 equals_sarray
 
   sub equals_sarray : int ($nums1 : short[], $nums2 : short[])
 
-Check equality of two short arrays.
+Check if two short arrays equal.
 
-$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
-
-If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+If at least one of the arrays is undefined, a excetpion occurs.
 
 =head2 equals_iarray
 
   sub equals_iarray : int ($nums1 : int[], $nums2 : int[])
 
-Check equality of two int arrays.
+Check if two int arrays equal.
 
-$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+If at least one of the arrays is undefined, a excetpion occurs.
 
-If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
-
-=head2 equals_farray
+=head2 equals_larray
 
   sub equals_larray : int ($nums1 : long[], $nums2 : long[])
 
-Check equality of two long arrays.
+Check if two long arrays equal.
 
-$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+If at least one of the arrays is undefined, a excetpion occurs.
 
-If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
-
-=head2 equals_darray
+=head2 equals_farray
 
   sub equals_farray : int ($nums1 : float[], $nums2 : float[])
 
-Check equality of two float arrays.
+Check if two float arrays equal.
 
-$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
+If at least one of the arrays is undefined, a excetpion occurs.
 
-If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
-
-=head2 equals_strarray
+=head2 equals_darray
 
   sub equals_darray : int ($nums1 : double[], $nums2 : double[])
 
-Check equality of two double arrays.
+Check if two double arrays equal.
 
-$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
-
-If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+If at least one of the arrays is undefined, a excetpion occurs.
 
 =head2 equals_strarray
 
-  sub equals_strarray : int ($strings1 : string[], $strings2 : string[])
+  sub equals_strarray : int ($strs1 : double[], $strs2 : double[])
 
-Check equality of two string arrays.
+Check if two string arrays equal.
 
-$nums1 and $nums2 and $equality_checker must be defined, otherwise a exception occur.
-
-If the length of $nums1 and $nums2 is same and all element is same, Return 1. If not, return 0.
+If at least one of the arrays is undefined, a excetpion occurs.
 
 =head2 E
 
@@ -241,18 +317,18 @@ Get a napier number.
 
 Get the type name of the object.
 
-=head2 print
+=head2 index
 
-Print string to stdout.
+  sub index : int ($str : string, $substr : string, $posision : int)
 
-  sub print : void ($string : string);
-
-=head2 warn
-
-Print string with file name and line number to stderr. line break is added to end of string.
-
-  sub warn : void ($string : string);
-  
+index function searches for one string within another.
+It returns the position of the first occurrence of $substr in $str at or after $position. If $position is omitted, starts
+searching from the beginning of the string. $position before the
+beginning of the string or after its end is treated as if it were
+the beginning or the end, respectively. $position and the return
+value are based at zero. If the substring is not found, "index"
+returns -1.
+            
 =head2 INT8_MIN
 
 B<sub INT8_MIN : byte ()>
@@ -325,76 +401,15 @@ B<sub DBL_MAX : double ()>
 
 Wapper of DBL_MAX of C99 float library.
 
-=head2 copy_str
+=head2 print
 
-B<sub copy_str : string ($string : string)>
+Print string to stdout.
+
+  sub print : void ($string : string);
+
+=head2 warn
+
+Print string with file name and line number to stderr. line break is added to end of string.
+
+  sub warn : void ($string : string);
   
-  my $string = "abced";
-  my $string_copy = copy_str($string);
-
-Copy string.
-
-=head2 copy_barray
-
-B<sub copy_barray : byte[] ($nums : byte[])>
-
-  my $nums = [(byte)1, 2, 3];
-  my $nums_copy = copy_barray($nums);
-  
-Copy byte array.
-
-=head2 copy_sarray
-
-B<sub copy_sarray : short[] ($nums : short[])>
-
-  my $nums = [(short)1, 2, 3];
-  my $nums_copy = copy_sarray($nums);
-
-Copy short array.
-
-=head2 copy_iarray
-
-B<sub copy_iarray : int[] ($nums : int[])>
-
-  my $nums = [1, 2, 3];
-  my $nums_copy = copy_iarray($nums);
-
-Copy int array.
-
-=head2 copy_larray
-
-B<sub copy_larray : long[] ($nums : long[])>
-
-  my $nums = [(long)1, 2, 3];
-  my $nums_copy = copy_larray($nums);
-
-Copy long array.
-  
-=head2 copy_farray
-
-B<sub copy_farray : float[] ($nums : float[])>
-
-  my $nums = [0.5f, 0.25f, 0.3f];
-  my $nums_copy = copy_farray($nums);
-
-Copy float array.
-
-=head2 copy_darray
-
-B<sub copy_darray : double[] ($nums : double[])>
-
-  my $nums = [0.5, 0.25, 0.3];
-  my $nums_copy = copy_darray($nums);
-
-Copy double array.
-
-=head2 copy_oarray
-
-B<sub copy_oarray : object[] ($objects : object[])>
-
-  my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-  my $objects_copy = copy_oarray($objects);
-
-Copy object array.
-
-Array is sharrow copy, not deeply copy.

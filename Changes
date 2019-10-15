@@ -1,3 +1,20 @@
+0.0442 2019-10-15
+  - add ctype.h function to SPVM::CORE
+    isalnum
+    isalpha
+    isblank
+    iscntrl
+    isdigit
+    isgraph
+    islower
+    isprint
+    ispunct
+    isspace
+    isupper
+    isxdigi
+    tolower
+    toupper
+
 0.0441 2019-10-11
   - add pi method to SPVM::Math
   - cleanup SPVM::Unicode. Many methods is remaned.

@@ -278,39 +278,39 @@ package SPVM::CORE {
 
   native sub get_type_name : string ($obj : object);
   
-  precompile sub index : int($source : string, $target : string, $fromIndex : int) {
-    my $sourceCount = length $source;
-    my $targetCount = length $target;
+  precompile sub index : int ($str : string, $substr : string, $posision : int) {
+    my $strCount = length $str;
+    my $substrCount = length $substr;
     
-    if ($fromIndex >= $sourceCount) {
+    if ($posision >= $strCount) {
       my $ret : int;
-      if ($targetCount == 0) {
-        $ret = $sourceCount;
+      if ($substrCount == 0) {
+        $ret = $strCount;
       }
       else {
         $ret = -1;
       }
       return $ret;
     }
-    if ($fromIndex < 0) {
-      $fromIndex = 0;
+    if ($posision < 0) {
+      $posision = 0;
     }
-    if ($targetCount == 0) {
-      return $fromIndex;
+    if ($substrCount == 0) {
+      return $posision;
     }
 
-    my $first : byte  = $target->[0];
-    my $max : int = ($sourceCount - $targetCount);
+    my $first : byte  = $substr->[0];
+    my $max : int = ($strCount - $substrCount);
 
-    for (my $i = $fromIndex; $i <= $max; $i++) {
-      if ($source->[$i] != $first) {
-        while (++$i <= $max && $source->[$i] != $first) {}
+    for (my $i = $posision; $i <= $max; $i++) {
+      if ($str->[$i] != $first) {
+        while (++$i <= $max && $str->[$i] != $first) {}
       }
 
       if ($i <= $max) {
         my $j = $i + 1;
-        my $end = $j + $targetCount - 1;
-        for (my $k = 01; $j < $end && $source->[$j] == $target->[$k]; ($j++, $k++)) {}
+        my $end = $j + $substrCount - 1;
+        for (my $k = 01; $j < $end && $str->[$j] == $substr->[$k]; ($j++, $k++)) {}
 
         if ($j == $end) {
           return $i;
@@ -338,9 +338,144 @@ package SPVM::CORE {
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
 
-  native sub isdigit : int ($char : int);
+  precompile sub isalnum : int ($char : int) {
+    
+    if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
 
-  precompile sub ispspace : int ($char : int) {
+  precompile sub isalpha : int ($char : int) {
+    
+    if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isblank : int ($char : int) {
+    
+    if ($char >= ' ' ||  $char <= '\t') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub iscntrl : int ($char : int) {
+    
+    if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isdigit : int ($char : int) {
+    
+    if ($char >= '0' && $char <= '9') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isgraph : int ($char : int) {
+    
+    if ($char >= 0x21 && $char <= 0x7e) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub islower : int ($char : int) {
+    
+    if ($char >= 'a' && $char <= 'z') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isprint : int ($char : int) {
+    
+    if ($char >= 0x20 && $char <= 0x7e) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub ispunct : int ($char : int) {
+    
+    if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isspace : int ($char : int) {
+    
+    if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isupper : int ($char : int) {
+    
+    if ($char >= 'A' && $char <= 'Z') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isxdigit : int ($char : int) {
+    
+    if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub tolower : int ($char : int) {
+    
+    if ($char >= 'A' && $char <= 'Z') {
+      $char = $char + 0x20;
+    }
+    return $char;
+  }
+
+  precompile sub toupper : int ($char : int) {
+    
+    if ($char >= 'a' && $char <= 'z') {
+      $char = $char - 0x20;
+    }
+    return $char;
+  }
+  
+  # This is same as Perl \s
+  precompile sub is_perl_space : int ($char : int) {
     my $ispspace = 0;
     switch ($char) {
       case ' ':
@@ -356,7 +491,7 @@ package SPVM::CORE {
     return $ispspace;
   }
 
-  precompile sub ispword : int ($char : int) {
+  precompile sub is_perl_word : int ($char : int) {
     my $ispword = 0;
     
     if ($char >= 'a' && $char <= 'z') {
