@@ -401,6 +401,98 @@ B<sub DBL_MAX : double ()>
 
 Wapper of DBL_MAX of C99 float library.
 
+=head2 isalnum
+
+  sub isalnum : int ($char : int)
+
+If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return 1. If not, return 0.
+
+=head2 isalpha
+
+  sub isalpha : int ($char : int)
+
+If character is alphabetic('A'-'Z', 'a'-'z'), return 1. If not, return 0.
+
+=head2 isblank
+
+  sub isblank : int ($char : int)
+
+If character is blank(' ', '\t'), return 1. If not, return 0.
+
+=head2 iscntrl
+
+  sub iscntrl : int ($char : int)
+
+If character is a control character(0x00-0x1F, 0x7F), return 1. If not, return 0.
+
+=head2 isdigit
+
+  sub isdigit : int ($char : int)
+
+If character is decimal digit ('0'～'9'), return 1. If not, return 0.
+
+=head2 isgraph
+
+  sub isgraph : int ($char : int)
+
+If character has graphical representation(0x21-0x7E), return 1. If not, return 0.
+
+=head2 islower
+
+  sub islower : int ($char : int)
+
+If character is lowercase letter('a'-'z'), return 1. If not, return 0.
+
+=head2 isprint
+
+  sub isprint : int ($char : int)
+
+If character is printable(0x20-0x7E), return 1. If not, return 0.
+
+=head2 ispunct
+
+  sub ispunct : int ($char : int)
+
+If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return 1. If not, return 0.
+
+=head2 isspace
+
+  sub isspace : int ($char : int)
+
+If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not return 0.
+
+=head2 
+
+  sub isupper : int ($char : int)
+
+Check if character is uppercase letter
+
+=head2 
+
+  sub isxdigit : int ($char : int)
+
+Check if character is hexadecimal digit
+
+=head2 
+
+  sub tolower : int ($char : int)
+
+Convert uppercase letter to lowercase
+
+=head2 
+
+  sub toupper : int ($char : int)
+
+=head2 
+
+  sub is_perl_space : int ($char : int)
+
+Convert lowercase letter to uppercase
+
+=head2 
+
+  sub is_perl_word : int ($char : int)
+
 =head2 print
 
 Print string to stdout.
