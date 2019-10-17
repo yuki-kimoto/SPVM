@@ -8,58 +8,58 @@ package TestCase::Lib::SPVM::CORE {
   
   sub test_isalnum : int () {
     
-    if (isalnum('A' - 1)) {
-      return 0;
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
+        my $ret = isalnum($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isalnum($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
     }
-    unless (isalnum('A')) {
-      return 0;
-    }
-    unless (isalnum('H')) {
-      return 0;
-    }
-    unless (isalnum('Z')) {
-      return 0;
-    }
-    if (isalnum('Z' + 1)) {
-      return 0;
-    }
-
-    if (isalnum('a' - 1)) {
-      return 0;
-    }
-    unless (isalnum('a')) {
-      return 0;
-    }
-    unless (isalnum('h')) {
+    
+    unless ($ok) {
       return 0;
     }
     
-    unless (isalnum('z')) {
-      return 0;
-    }
-    if (isalnum('z' + 1)) {
-      return 0;
-    }
-    
-    if (isalnum('0' - 1)) {
-      return 0;
-    }
-    unless (isalnum('0')) {
-      return 0;
-    }
-    unless (isalnum('5')) {
-      return 0;
-    }
-    unless (isalnum('9')) {
-      return 0;
-    }
-    if (isalnum('9' + 1)) {
-      return 0;
-    }
-
     return 1;
   }
-  
+
+  sub test_isalpha : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
+        my $ret = isalpha($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isalpha($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub test_complex_farray : int () {
     my $z_array = complex_farray(
       [FLT_MIN(), 2, 4],
