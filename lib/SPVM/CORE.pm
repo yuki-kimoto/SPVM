@@ -459,39 +459,43 @@ If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x
 
   sub isspace : int ($char : int)
 
-If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not return 0.
+If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not, return 0.
 
-=head2 
+=head2 isupper
 
   sub isupper : int ($char : int)
 
-Check if character is uppercase letter
+If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
 
-=head2 
+=head2 isxdigit
 
   sub isxdigit : int ($char : int)
 
-Check if character is hexadecimal digit
+If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
 
-=head2 
+=head2 tolower
 
   sub tolower : int ($char : int)
 
-Convert uppercase letter to lowercase
+Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
 
-=head2 
+=head2 toupper
 
   sub toupper : int ($char : int)
 
-=head2 
+Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
+
+=head2 is_perl_space
 
   sub is_perl_space : int ($char : int)
 
-Convert lowercase letter to uppercase
+If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If not, return 0.
 
-=head2 
+=head2 is_perl_word
 
   sub is_perl_word : int ($char : int)
+
+If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
 
 =head2 print
 
