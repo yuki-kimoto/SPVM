@@ -52,6 +52,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_strtod);
 }
 
+# isalnum
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isalnum);
+}
+
 # isdigit
 {
   ok(TestCase::Lib::SPVM::CORE->test_isdigit);
