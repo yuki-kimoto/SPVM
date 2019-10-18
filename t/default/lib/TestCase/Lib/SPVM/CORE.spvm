@@ -60,6 +60,384 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
+  sub test_isblank : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= ' ' ||  $char <= '\t') {
+        my $ret = isblank($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isblank($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_iscntrl : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
+        my $ret = iscntrl($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = iscntrl($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isdigit : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= '0' && $char <= '9') {
+        my $ret = isdigit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isdigit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isgraph : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 0x21 && $char <= 0x7e) {
+        my $ret = isgraph($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isgraph($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_islower : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = islower($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = islower($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isprint : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 0x20 && $char <= 0x7e) {
+        my $ret = isprint($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isprint($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_ispunct : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+        my $ret = ispunct($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = ispunct($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isspace : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+        my $ret = isspace($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isspace($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isupper : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = isupper($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isupper($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isxdigit : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
+        my $ret = isxdigit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isxdigit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_tolower : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = tolower($char);
+        unless ($ret == $char + 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = tolower($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_toupper : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = toupper($char);
+        unless ($ret == $char - 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = toupper($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_is_perl_space : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
+        my $ret = is_perl_space($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_space($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_is_perl_word : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
+        my $ret = is_perl_word($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_word($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub test_complex_farray : int () {
     my $z_array = complex_farray(
       [FLT_MIN(), 2, 4],
@@ -376,36 +754,6 @@ package TestCase::Lib::SPVM::CORE {
         return 0;
       }
       $@ = undef;
-    }
-    
-    return 1;
-  }
-
-  sub test_isdigit : int () {
-    {
-      my $ok = isdigit('/');
-      if ($ok) {
-        return 0;
-      }
-    }
-    
-    {
-      my $ok = isdigit('0');
-      unless ($ok) {
-        return 0;
-      }
-    }
-    {
-      my $ok = isdigit('9');
-      unless ($ok) {
-        return 0;
-      }
-    }
-    {
-      my $ok = isdigit(':');
-      if ($ok) {
-        return 0;
-      }
     }
     
     return 1;

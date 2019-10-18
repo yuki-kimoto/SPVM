@@ -62,9 +62,79 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_isalpha);
 }
 
+# isalpha
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isblank);
+}
+
+# iscntrl
+{
+  ok(TestCase::Lib::SPVM::CORE->test_iscntrl);
+}
+
 # isdigit
 {
   ok(TestCase::Lib::SPVM::CORE->test_isdigit);
+}
+
+# isgraph
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isgraph);
+}
+
+# islower
+{
+  ok(TestCase::Lib::SPVM::CORE->test_islower);
+}
+
+# isprint
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isprint);
+}
+
+# isprint
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isprint);
+}
+
+# ispunct
+{
+  ok(TestCase::Lib::SPVM::CORE->test_ispunct);
+}
+
+# isspace
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isspace);
+}
+
+# isupper
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isupper);
+}
+
+# isxdigit
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isxdigit);
+}
+
+# tolower
+{
+  ok(TestCase::Lib::SPVM::CORE->test_tolower);
+}
+
+# toupper
+{
+  ok(TestCase::Lib::SPVM::CORE->test_toupper);
+}
+
+# is_perl_space
+{
+  ok(TestCase::Lib::SPVM::CORE->test_is_perl_space);
+}
+
+# is_perl_word
+{
+  ok(TestCase::Lib::SPVM::CORE->test_is_perl_word);
 }
 
 # rand
