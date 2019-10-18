@@ -320,17 +320,17 @@ package SPVM::CORE {
     return -1;
   }
 
-  native sub INT8_MIN : byte ();
-  native sub INT8_MAX : byte ();
+  sub INT8_MIN : byte () { return -128; }
+  sub INT8_MAX : byte () { return 127; }
 
-  native sub INT16_MIN : short ();
-  native sub INT16_MAX : short ();
+  sub INT16_MIN : short () { return -32768; }
+  sub INT16_MAX : short () { return 32767; }
 
-  native sub INT32_MIN : int ();
-  native sub INT32_MAX : int ();
+  sub INT32_MIN : int () { return -2147483648; }
+  sub INT32_MAX : int () { return 2147483647; }
 
-  native sub INT64_MIN : long ();
-  native sub INT64_MAX : long ();
+  sub INT64_MIN : long () { return -9223372036854775808L; }
+  sub INT64_MAX : long () { return 9223372036854775807L; }
 
   native sub DBL_MAX : double ();
   native sub DBL_MIN : double ();
