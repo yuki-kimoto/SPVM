@@ -646,19 +646,19 @@ package SPVM::CORE {
     return (string)$new_str;
   }
 
-  native sub memcpyb : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
-  native sub memcpys : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
-  native sub memcpyi : void ($dist_str : int[], $dist_offset : int, $src_str : int[], $src_offset : int, $length : int);
-  native sub memcpyl : void ($dist_str : long[], $dist_offset : int, $src_str : long[], $src_offset : int, $length : int);
-  native sub memcpyf : void ($dist_str : float[], $dist_offset : int, $src_str : float[], $src_offset : int, $length : int);
-  native sub memcpyd : void ($dist_str : double[], $dist_offset : int, $src_str : double[], $src_offset : int, $length : int);
+  native sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
-  native sub memmoveb : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
-  native sub memmoves : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
-  native sub memmovei : void ($dist_str : int[], $dist_offset : int, $src_str : int[], $src_offset : int, $length : int);
-  native sub memmovel : void ($dist_str : long[], $dist_offset : int, $src_str : long[], $src_offset : int, $length : int);
-  native sub memmovef : void ($dist_str : float[], $dist_offset : int, $src_str : float[], $src_offset : int, $length : int);
-  native sub memmoved : void ($dist_str : double[], $dist_offset : int, $src_str : double[], $src_offset : int, $length : int);
+  native sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
   native sub print : void ($value : string);
 

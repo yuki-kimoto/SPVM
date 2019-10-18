@@ -567,6 +567,210 @@ If separater is undef, a exception occurs.
 
 If string array is undef, a exception occurs.
 
+=head2 lc
+
+  sub lc : string($str : string)
+
+Convert uppercase string to lowercase string.
+
+=head2 lcfirst
+
+  sub lcfirst : string($str : string)
+
+Convert first chracter of string from uppercase to lowercase.
+
+=head2 memcpyb
+
+  sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
+
+Copy source byte array to destination byte array with the each offset and a length.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+If source byte array or destination array is undef, a exception occurs.
+
+If source byte array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memcpys
+
+  sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
+
+Copy source short array to destination short array with the each offset and a length.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+If source short array or destination array is undef, a exception occurs.
+
+If source short array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memcpyi
+  
+  sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
+
+Copy source int array to destination int array with the each offset and a length.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+If source int array or destination array is undef, a exception occurs.
+
+If source int array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memcpyl
+  
+  sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
+
+Copy source long array to destination long array with the each offset and a length.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+If source long array or destination array is undef, a exception occurs.
+
+If source long array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memcpyf
+  
+  sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
+
+Copy source float array to destination float array with the each offset and a length.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+If source float array or destination array is undef, a exception occurs.
+
+If source float array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memcpyd
+  
+  sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
+
+Copy source double array to destination double array with the each offset and a length.
+
+If source data range and destination data overlap, the result is not guaranteed.
+
+If source double array or destination array is undef, a exception occurs.
+
+If source double array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memmoveb
+
+  sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
+
+Copy source byte array to destination byte array with the each offset and a length.
+
+Even if source data range and destination data overlap, the result is guaranteed.
+
+If source byte array or destination array is undef, a exception occurs.
+
+If source byte array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memmoves
+
+  sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
+
+Copy source short array to destination short array with the each offset and a length.
+
+Even if source data range and destination data overlap, the result is guaranteed.
+
+If source short array or destination array is undef, a exception occurs.
+
+If source short array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memmovei
+  
+  sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
+
+Copy source int array to destination int array with the each offset and a length.
+
+Even if source data range and destination data overlap, the result is guaranteed.
+
+If source int array or destination array is undef, a exception occurs.
+
+If source int array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memmovel
+  
+  sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
+
+Copy source long array to destination long array with the each offset and a length.
+
+Even if source data range and destination data overlap, the result is guaranteed.
+
+If source long array or destination array is undef, a exception occurs.
+
+If source long array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memmovef
+  
+  sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
+
+Copy source float array to destination float array with the each offset and a length.
+
+Even if source data range and destination data overlap, the result is guaranteed.
+
+If source float array or destination array is undef, a exception occurs.
+
+If source float array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
+=head2 memmoved
+  
+  sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
+
+Copy source double array to destination double array with the each offset and a length.
+
+Even if source data range and destination data overlap, the result is guaranteed.
+
+If source double array or destination array is undef, a exception occurs.
+
+If source double array or destination array is undef, a exception occurs.
+
+If length is nagative, a exception occurs.
+
+If copy is not in the valid rainge, a exception occurs.
+
 =head2 print
 
 Print string to stdout.

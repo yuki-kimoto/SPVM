@@ -166,15 +166,15 @@ int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__CORE__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) {
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) {
     SPVM_DIE("Dist string must be defined", MFILE, __LINE__);
   }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) {
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) {
     SPVM_DIE("Source string must be defined", MFILE, __LINE__);
   }
   
@@ -189,34 +189,34 @@ int32_t SPNATIVE__SPVM__CORE__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
 
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memcpy((char*)(dist_str + dist_offset), (char*)(src_str + src_offset), length);
+  memcpy((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length);
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -229,34 +229,34 @@ int32_t SPNATIVE__SPVM__CORE__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
 
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memmove((char*)(dist_str + dist_offset), (char*)(src_str + src_offset), length);
+  memmove((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length);
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -269,34 +269,34 @@ int32_t SPNATIVE__SPVM__CORE__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
   
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memcpy((char*)(dist_str + dist_offset * sizeof(int16_t)), (char*)(src_str + src_offset * sizeof(int16_t)), length * sizeof(int16_t));
+  memcpy((char*)(dest_data + dest_offset * sizeof(int16_t)), (char*)(src_data + src_offset * sizeof(int16_t)), length * sizeof(int16_t));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -309,34 +309,34 @@ int32_t SPNATIVE__SPVM__CORE__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
 
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memmove((char*)(dist_str + dist_offset * sizeof(int16_t)), (char*)(src_str + src_offset * sizeof(int16_t)), length * sizeof(int16_t));
+  memmove((char*)(dest_data + dest_offset * sizeof(int16_t)), (char*)(src_data + src_offset * sizeof(int16_t)), length * sizeof(int16_t));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -349,34 +349,34 @@ int32_t SPNATIVE__SPVM__CORE__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
   
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memcpy((char*)(dist_str + dist_offset * sizeof(int32_t)), (char*)(src_str + src_offset * sizeof(int32_t)), length * sizeof(int32_t));
+  memcpy((char*)(dest_data + dest_offset * sizeof(int32_t)), (char*)(src_data + src_offset * sizeof(int32_t)), length * sizeof(int32_t));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -389,34 +389,34 @@ int32_t SPNATIVE__SPVM__CORE__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
 
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memmove((char*)(dist_str + dist_offset * sizeof(int32_t)), (char*)(src_str + src_offset * sizeof(int32_t)), length * sizeof(int32_t));
+  memmove((char*)(dest_data + dest_offset * sizeof(int32_t)), (char*)(src_data + src_offset * sizeof(int32_t)), length * sizeof(int32_t));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -429,34 +429,34 @@ int32_t SPNATIVE__SPVM__CORE__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
   
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memcpy((char*)(dist_str + dist_offset * sizeof(int64_t)), (char*)(src_str + src_offset * sizeof(int64_t)), length * sizeof(int64_t));
+  memcpy((char*)(dest_data + dest_offset * sizeof(int64_t)), (char*)(src_data + src_offset * sizeof(int64_t)), length * sizeof(int64_t));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -469,34 +469,34 @@ int32_t SPNATIVE__SPVM__CORE__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
 
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memmove((char*)(dist_str + dist_offset * sizeof(int64_t)), (char*)(src_str + src_offset * sizeof(int64_t)), length * sizeof(int64_t));
+  memmove((char*)(dest_data + dest_offset * sizeof(int64_t)), (char*)(src_data + src_offset * sizeof(int64_t)), length * sizeof(int64_t));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -509,34 +509,34 @@ int32_t SPNATIVE__SPVM__CORE__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
   
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memcpy((char*)(dist_str + dist_offset * sizeof(float)), (char*)(src_str + src_offset * sizeof(float)), length * sizeof(float));
+  memcpy((char*)(dest_data + dest_offset * sizeof(float)), (char*)(src_data + src_offset * sizeof(float)), length * sizeof(float));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -549,34 +549,34 @@ int32_t SPNATIVE__SPVM__CORE__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
 
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memmove((char*)(dist_str + dist_offset * sizeof(float)), (char*)(src_str + src_offset * sizeof(float)), length * sizeof(float));
+  memmove((char*)(dest_data + dest_offset * sizeof(float)), (char*)(src_data + src_offset * sizeof(float)), length * sizeof(float));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -589,34 +589,34 @@ int32_t SPNATIVE__SPVM__CORE__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
   
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memcpy((char*)(dist_str + dist_offset * sizeof(double)), (char*)(src_str + src_offset * sizeof(double)), length * sizeof(double));
+  memcpy((char*)(dest_data + dest_offset * sizeof(double)), (char*)(src_data + src_offset * sizeof(double)), length * sizeof(double));
   
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* obj_dist_str = stack[0].oval;
-  if (!obj_dist_str) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
+  void* obj_dest_data = stack[0].oval;
+  if (!obj_dest_data) { SPVM_DIE("Dist string must be defined", MFILE, __LINE__); }
   
-  int32_t dist_offset = stack[1].ival;
+  int32_t dest_offset = stack[1].ival;
   
-  void* obj_src_str = stack[2].oval;
-  if (!obj_src_str) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
+  void* obj_src_data = stack[2].oval;
+  if (!obj_src_data) { SPVM_DIE("Source string must be defined", MFILE, __LINE__); }
   
   int32_t src_offset = stack[3].ival;
   
@@ -629,21 +629,21 @@ int32_t SPNATIVE__SPVM__CORE__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dist_str = (char*)env->belems(env, obj_dist_str);
-  int32_t dist_str_len = env->len(env, obj_dist_str);
+  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_str = (char*)env->belems(env, obj_src_str);
-  int32_t src_str_len = env->len(env, obj_src_str);
+  char* src_data = (char*)env->belems(env, obj_src_data);
+  int32_t src_data_len = env->len(env, obj_src_data);
   
-  if (dist_offset + length > dist_str_len) {
-    SPVM_DIE("Copy is over dist string", MFILE, __LINE__);
+  if (dest_offset + length > dest_data_len) {
+    SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
   }
 
-  if (src_offset + length > src_str_len) {
-    SPVM_DIE("Copy is over source string", MFILE, __LINE__);
+  if (src_offset + length > src_data_len) {
+    SPVM_DIE("Copy is over source data", MFILE, __LINE__);
   }
   
-  memmove((char*)(dist_str + dist_offset * sizeof(double)), (char*)(src_str + src_offset * sizeof(double)), length * sizeof(double));
+  memmove((char*)(dest_data + dest_offset * sizeof(double)), (char*)(src_data + src_offset * sizeof(double)), length * sizeof(double));
   
   return SPVM_SUCCESS;
 }
