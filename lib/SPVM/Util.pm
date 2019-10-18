@@ -65,6 +65,10 @@ Return 1 if the length of $objs1 and $objs2 is same and all element is same, oth
 Stringify all objects and join them by specific separator.
 You must specify a L<SPVM::Stringer> object to stringify each element.
 
+If separater is undef, a exception occurs.
+
+If object array is undef, a exception occurs.
+
 =head2 split
 
   sub split : string[] ($sep : string, $string : string)

@@ -497,6 +497,76 @@ If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If 
 
 If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
 
+=head2 joinb
+
+  sub joinb : string ($sep : string, $nums : byte[])
+  
+Join a byte array as string with separater and return it.
+
+If separater is undef, a exception occurs.
+
+If byte array is undef, a exception occurs.
+
+=head2 joins
+
+  sub joins : string ($sep : string, $nums : short[])
+  
+Join a short array as string with separater and return it.
+
+If separater is undef, a exception occurs.
+
+If short array is undef, a exception occurs.
+
+=head2 joini
+
+  sub joini : string ($sep : string, $nums : int[])
+  
+Join a int array as string with separater and return it.
+
+If separater is undef, a exception occurs.
+
+If int array is undef, a exception occurs.
+
+=head2 joinl
+
+  sub joinl : string ($sep : string, $nums : long[])
+  
+Join a long array as string with separater and return it.
+
+If separater is undef, a exception occurs.
+
+If long array is undef, a exception occurs.
+
+=head2 joinf
+
+  sub joinf : string ($sep : string, $nums : float[])
+  
+Join a float array as string with separater and return it.
+
+If separater is undef, a exception occurs.
+
+If float array is undef, a exception occurs.
+
+=head2 joind
+
+  sub joind : string ($sep : string, $nums : double[])
+  
+Join a double array as string with separater and return it.
+
+If separater is undef, a exception occurs.
+
+If double array is undef, a exception occurs.
+
+=head2 join
+
+  sub join : string ($sep : string, $strings : string[])
+  
+Join a string array with separater and return it.
+
+If separater is undef, a exception occurs.
+
+If string array is undef, a exception occurs.
+
 =head2 print
 
 Print string to stdout.

@@ -509,20 +509,6 @@ package SPVM::CORE {
     return $ispword;
   }
 
-  precompile sub join : string ($sep : string, $strings : string[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$strings; $i++) {
-      my $string = $strings->[$i];
-      $join .= $string;
-      if ($i != @$strings - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-  
   precompile sub joinb : string ($sep : string, $nums : byte[]) {
     my $join = "";
     
@@ -607,6 +593,20 @@ package SPVM::CORE {
     return $join;
   }
 
+  precompile sub join : string ($sep : string, $strings : string[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$strings; $i++) {
+      my $string = $strings->[$i];
+      $join .= $string;
+      if ($i != @$strings - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  
   precompile sub lc : string($str : string) {
     
     unless ($str) { die "String must be defined"; }
