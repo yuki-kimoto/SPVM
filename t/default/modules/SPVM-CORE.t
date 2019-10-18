@@ -267,6 +267,16 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_joind);
 }
 
+# E
+{
+  ok(TestCase::Lib::SPVM::CORE->test_E);
+}
+
+# PI
+{
+  ok(TestCase::Lib::SPVM::CORE->test_PI);
+}
+
 # get_type_name
 {
   ok(TestCase::Lib::SPVM::CORE->test_get_type_name);

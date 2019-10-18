@@ -1007,21 +1007,3 @@ int32_t SPNATIVE__SPVM__CORE__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;
 }
-
-int32_t SPNATIVE__SPVM__CORE__PI(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  stack[0].dval = 3.14159265358979323846;
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__CORE__E(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  stack[0].dval = 2.7182818284590452354;
-  
-  return SPVM_SUCCESS;
-}

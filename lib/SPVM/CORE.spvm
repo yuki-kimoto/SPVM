@@ -274,7 +274,7 @@ package SPVM::CORE {
     return $is_equals;
   }
 
-  native sub E : double ();
+  sub E : double () { return 2.7182818284590452354; }
 
   native sub get_type_name : string ($obj : object);
   
@@ -662,7 +662,7 @@ package SPVM::CORE {
 
   native sub print : void ($value : string);
 
-  native sub PI : double ();
+  sub PI : double () { return 3.14159265358979323846; }
 
   native sub rand : int ($seed_ref : int&);
 
