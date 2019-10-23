@@ -386,11 +386,81 @@ package TestCase::JSON {
       eval {
         $DEFAULT_JSON->decode("-");
       };
-      unless ($@ && contains($@, "malformed number (no digits after '-')")) {
+      unless ($@ && contains($@, "malformed number (no digit after '-')")) {
         $@ = undef;
         return 0;
       }
       $@ = undef;
+    }
+    {
+      my $test_case = ["1e.", "1e+.", "1.."];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (improper position of '.')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1.e", "1e+e", "1ee"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (improper position of 'e')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1.}"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (no digit after '.')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1e}"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (no digit after 'e')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1e+}", "1e-}"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (no digit after exponential sign)")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
     }
     return 1;
   }

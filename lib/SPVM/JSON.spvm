@@ -138,124 +138,126 @@ package SPVM::JSON {
     return (string)$buffer->to_str;
   }
 
-  precompile private sub _decode_num_recursive : double ($self : self, $json : string, $iter : int&,
-      $accum : double&, $expo : int&, $postdp : int, $maxdepth : int) {
-    my $end = length $json;
-    my $long_accum : long = 0;
-    my $expo_accum = 0;
-
-    # if we recurse too deep, skip all remaining digits
-    # to avoid a stack overflow attack
-    if (--$maxdepth <= 0) {
-      while ($$iter < $end && ($json->[$$iter] - '0') < 10) {
-        ++$$iter;
-      }
-    }
-
-    while ($$iter < $end) {
-      if ($json->[$$iter] == '.') {
-        ++$$iter;
-        $self->_decode_num_recursive($json, $iter, $accum, $expo, 1, $maxdepth);
-        last;
-      }
-      elsif ($json->[$$iter] == 'e' || $json->[$$iter] == 'E') {
-        my $exp2 = 0;
-        my $neg = 0;
-
-        ++$$iter;
-
-        if ($$iter >= $end) {
-          _decode_error("malformed number (no digits after e/E)", $json, $$iter);
-        }
-
-        if ($json->[$$iter] == '-') {
-          ++$$iter;
-          $neg = 1;
-        }
-        elsif ($json->[$$iter] == '+') {
-          ++$$iter;
-        }
-
-        if ($$iter >= $end) {
-          _decode_error("malformed number (no digits after e/E)", $json, $$iter);
-        }
-
-        while ($$iter < $end) {
-          my $dig = $json->[$$iter] - '0';
-          if ($dig < 10) {
-            $exp2 = $exp2 * 10 + $json->[$$iter++] - '0';
-          }
-          else {
-            last;
-          }
-        }
-
-        if ($neg) {
-          $$expo -= $exp2;
-        }
-        else {
-          $$expo += $exp2;
-        }
-        last;
-      }
-      elsif ($json->[$$iter] >= '0' && $json->[$$iter] <= '9') {
-        my $dig = $json->[$$iter] - '0';
-
-        ++$$iter;
-
-        $long_accum = $long_accum * 10 + $dig;
-        ++$expo_accum;
-
-        # if we have too many digits, then recurse for more
-        # we actually do this for rather few digits
-        if ($long_accum >= (INT64_MAX() - 9) / 10) {
-          if ($postdp) {
-            $$expo -= $expo_accum;
-          }
-          $self->_decode_num_recursive($json, $iter, $accum, $expo, $postdp, $maxdepth);
-          if ($postdp) {
-            $$expo += $expo_accum;
-          }
-          last;
-        }
-      }
-      else {
-        last;
-      }
-    }
-
-    if ($postdp) {
-      $$expo -= $expo_accum;
-    }
-
-    $$accum += $long_accum * SPVM::Math->pow(10, $$expo);
-    $$expo += $expo_accum;
+  private enum {
+    DECODE_NUM_BEGIN,
+    DECODE_NUM_LEADING_DIGIT,
+    DECODE_NUM_DOT,
+    DECODE_NUM_FRAC,
+    DECODE_NUM_EXP,
+    DECODE_NUM_EXP_SIGN,
+    DECODE_NUM_EXP_DIGIT,
+    DECODE_NUM_END,
   }
 
-  # https://metacpan.org/pod/Cpanel::JSON::XS#number
   precompile private sub _decode_num : object ($self : self, $json : string, $iter : int&) {
-    my $accum = 0.0;
-    my $expo = 0;
-    my $neg = 0;
+    my $json_length = length $json;
+
+    my $iter_decode_begin = $$iter;
+
+    # validate number
+    my $state = DECODE_NUM_BEGIN();
 
     if ($json->[$$iter] == '-') {
-      my $length = length $json;
-      unless ($$iter + 1 < $length && isdigit($json->[$$iter + 1])) {
-        _decode_error("malformed number (no digits after '-')", $json, $$iter);
+      unless ($$iter + 1 < $json_length && isdigit($json->[$$iter + 1])) {
+        _decode_error("malformed number (no digit after '-')", $json, $$iter);
       }
+      $$iter += 2;
+    }
+    elsif (!isdigit($json->[$$iter])) {
+      die "[BUG] first character must be digit or '-'";
+    }
+
+    $state = DECODE_NUM_LEADING_DIGIT();
+
+    while ($state != DECODE_NUM_END()) {
+      my $ch = (int) $json->[$$iter];
+
+      switch($ch) {
+        case '.': {
+          unless ($state == DECODE_NUM_LEADING_DIGIT()) {
+            _decode_error("malformed number (improper position of '.')", $json, $$iter);
+          }
+          $state = DECODE_NUM_DOT();
+          break;
+        }
+        case 'e': {
+          switch ($state) {
+            case DECODE_NUM_DOT():
+            case DECODE_NUM_EXP():
+            case DECODE_NUM_EXP_SIGN():
+            case DECODE_NUM_EXP_DIGIT(): {
+              _decode_error("malformed number (improper position of 'e')", $json, $$iter);
+              break;
+            }
+            default: {
+              $state = DECODE_NUM_EXP();
+            }
+          }
+          break;
+        }
+        default: {
+          switch ($state) {
+            case DECODE_NUM_DOT(): {
+              unless (isdigit($ch)) {
+                _decode_error("malformed number (no digit after '.')", $json, $$iter);
+              }
+              $state = DECODE_NUM_FRAC();
+              break;
+            }
+            case DECODE_NUM_EXP(): {
+              if ($ch == '+' || $ch == '-') {
+                $state = DECODE_NUM_EXP_SIGN();
+              }
+              elsif (isdigit($ch)) {
+                $state = DECODE_NUM_EXP_DIGIT();
+              }
+              else {
+                _decode_error("malformed number (no digit after 'e')", $json, $$iter);
+              }
+              break;
+            }
+            case DECODE_NUM_EXP_SIGN(): {
+              unless (isdigit($ch)) {
+                _decode_error("malformed number (no digit after exponential sign)", $json, $$iter);
+              }
+              $state = DECODE_NUM_EXP_DIGIT();
+              break;
+            }
+            default: {
+              unless (isdigit($ch)) {
+                $state = DECODE_NUM_END();
+              }
+              break;
+            }
+          }
+          break;
+        }
+      }
+
+      if ($state == DECODE_NUM_END()) {
+        last;
+      }
+
       ++$$iter;
-      $neg = 1;
+
+      if ($json_length <= $$iter) {
+        unless ($state == DECODE_NUM_LEADING_DIGIT() ||
+                $state == DECODE_NUM_FRAC() ||
+                $state == DECODE_NUM_EXP_DIGIT()) {
+          _decode_error("malformed number (end of string)", $json, $$iter);
+        }
+        $state = DECODE_NUM_END();
+      }
     }
 
-    # a recursion depth of ten gives us >>500 bits
-    $self->_decode_num_recursive($json, $iter, \$accum, \$expo, 0, 10);
+    my $iter_decode_end = $$iter;
 
-    if ($neg) {
-      return -$accum;
-    }
-    else {
-      return $accum;
-    }
+    # decode number by strtod
+    my $decode_length = $iter_decode_end - $iter_decode_begin;
+    my $decode_string = substr($json, $iter_decode_begin, $decode_length);
+    my $result_number = strtod($decode_string);
+
+    return SPVM::Double->new($result_number);
   }
 
   precompile private sub _decode_true : SPVM::JSON::Bool ($self : self, $json : string, $iter : int&) {
