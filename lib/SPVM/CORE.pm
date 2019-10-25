@@ -771,6 +771,12 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
+=head2 new_oarray_proto
+
+  sub new_oarray_proto : oarray ($proto_array : oarray, $length : int)
+
+Create a new generic object array as the same type as the given array.
+
 =head2 print
 
   sub print : void ($string : string);

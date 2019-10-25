@@ -662,6 +662,8 @@ package SPVM::CORE {
   native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
   native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
+  native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
+
   native sub print : void ($value : string);
 
   sub PI : double () { return 3.14159265358979323846; }
@@ -831,33 +833,6 @@ package SPVM::CORE {
   native sub labs : long ($x : long);
 
   native sub strerror : string ($errno : int);
-  
-  native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
-
-  precompile sub replaceb : void ($nums : byte[], $offset : int, $replaces : byte[]) {
-    
-    if ($nums == undef) {
-      die "Array must be defined";
-    }
-    
-    my $array_length = @$nums;
-    
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
-    }
-    
-    my $length = @$replaces;
-    
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
-    }
-    
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $nums->[$pos] = $replaces->[$pos];
-      $pos++;
-    }
-  }
   
   native sub reverseb : void ($nums : byte[]);
   native sub reverses : void ($nums : short[]);
