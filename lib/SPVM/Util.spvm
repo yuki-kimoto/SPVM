@@ -127,37 +127,26 @@ package SPVM::Util {
         die "Invalid conversion in sprintf: end of string";
       }
 
+      unless ($args_index < @$args) {
+        die "Missing argument in sprintf";
+      }
+
       my $type = $format->[++$index];
 
       switch ((int)$type) {
         case 'c': {
-          if ($args_index < @$args) {
-            my $arg = (SPVM::Byte)$args->[$args_index++];
-            $output->push([$arg->val]);
-          }
-          else {
-            die "Missing argument in sprintf";
-          }
+          my $arg = (SPVM::Byte)$args->[$args_index++];
+          $output->push([$arg->val]);
           break;
         }
         case 's': {
-          if ($args_index < @$args) {
-            my $arg = (string)$args->[$args_index++];
-            $output->push($arg);
-          }
-          else {
-            die "Missing argument in sprintf";
-          }
+          my $arg = (string)$args->[$args_index++];
+          $output->push($arg);
           break;
         }
         case 'd': {
-          if ($args_index < @$args) {
-            my $arg = (SPVM::Int)$args->[$args_index++];
-            $output->push($arg->val);
-          }
-          else {
-            die "Missing argument in sprintf";
-          }
+          my $arg = (SPVM::Int)$args->[$args_index++];
+          $output->push($arg->val);
           break;
         }
         case 'l': {
@@ -173,13 +162,8 @@ package SPVM::Util {
           break;
         }
         case 'f': {
-          if ($args_index < @$args) {
-            my $arg = (SPVM::Double)$args->[$args_index++];
-            $output->push($arg->val);
-          }
-          else {
-            die "Missing argument in sprintf";
-          }
+          my $arg = (SPVM::Double)$args->[$args_index++];
+          $output->push($arg->val);
           break;
         }
         case 'U': {
