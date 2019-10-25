@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::IO::File {
   use SPVM::IO::File;
-  use SPVM::List;
+  use SPVM::StringList;
 
   sub test_fileno : int ($file : string) {
     {
@@ -169,11 +169,11 @@ package TestCase::Lib::SPVM::IO::File {
       die "Can't open file $file";
     }
     
-    my $lstrings = SPVM::List->new;
+    my $lstrings = SPVM::StringList->new;
     while (my $line = $fh->readline) {
       $lstrings->push($line);
     }
-    my $strings = $lstrings->to_strarray;
+    my $strings = $lstrings->to_array;
     
     unless (equals_strarray($strings, ["abcd\n", "fghi\n", "klm\n"])) {
       return 0;
@@ -261,7 +261,7 @@ package TestCase::Lib::SPVM::IO::File {
     return 1;
   }
 
-  sub test_readline_chomp : int ($file : string) {
+  sub test_readline_chompr : int ($file : string) {
     my $fh = SPVM::IO::File->open($file, "r");
     unless ($fh) {
       die "Can't open file $file";
@@ -269,7 +269,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "abcd") {
         return 0;
       }
@@ -277,7 +277,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "fghi") {
         return 0;
       }
@@ -285,7 +285,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "klm") {
         return 0;
       }
@@ -293,7 +293,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line == undef) {
         return 0;
       }
@@ -301,18 +301,18 @@ package TestCase::Lib::SPVM::IO::File {
     return 1;
   }
 
-  sub test_readline_chomp_while : int ($file : string) {
+  sub test_readline_chompr_while : int ($file : string) {
     my $fh = SPVM::IO::File->open($file, "r");
     unless ($fh) {
       die "Can't open file $file";
     }
     
-    my $lstrings = SPVM::List->new;
+    my $lstrings = SPVM::StringList->new;
     while (my $line = $fh->readline) {
-      $line = chomp($line);
+      $line = chompr($line);
       $lstrings->push($line);
     }
-    my $strings = $lstrings->to_strarray;
+    my $strings = $lstrings->to_array;
     
     unless (equals_strarray($strings, ["abcd", "fghi", "klm"])) {
       return 0;
@@ -321,7 +321,7 @@ package TestCase::Lib::SPVM::IO::File {
     return 1;
   }
 
-  sub test_readline_chomp_eof : int ($file : string) {
+  sub test_readline_chompr_eof : int ($file : string) {
     my $fh = SPVM::IO::File->open($file, "r");
     unless ($fh) {
       die "Can't open file $file";
@@ -329,7 +329,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "abcd") {
         return 0;
       }
@@ -337,7 +337,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "fghi") {
         return 0;
       }
@@ -345,7 +345,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "") {
         return 0;
       }
@@ -353,7 +353,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "klm") {
         return 0;
       }
@@ -361,7 +361,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line == undef) {
         return 0;
       }
@@ -369,7 +369,7 @@ package TestCase::Lib::SPVM::IO::File {
     return 1;
   }
 
-  sub test_readline_chomp_long_line : int ($file : string) {
+  sub test_readline_chompr_long_line : int ($file : string) {
     my $fh = SPVM::IO::File->open($file, "r");
     unless ($fh) {
       die "Can't open file $file";
@@ -377,7 +377,7 @@ package TestCase::Lib::SPVM::IO::File {
     
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa") {
         return 0;
       }
@@ -385,7 +385,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "fghi") {
         return 0;
       }
@@ -393,7 +393,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line eq "klm") {
         return 0;
       }
@@ -401,7 +401,7 @@ package TestCase::Lib::SPVM::IO::File {
 
     {
       my $line = $fh->readline;
-      $line = chomp($line);
+      $line = chompr($line);
       unless ($line == undef) {
         return 0;
       }

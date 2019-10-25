@@ -29,7 +29,7 @@
 %type <opval> opt_packages packages package package_block refcnt
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
+%type <opval> sub new_callback_object opt_args args arg invocant has use require our string_length
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -167,7 +167,7 @@ begin_block
       SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "BEGIN", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, $2, NULL, NULL, 1);
+      $$ = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, $2, NULL, NULL, 1, 0);
     }
     
 use
@@ -271,17 +271,25 @@ has
 sub
   : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, $10, NULL, $8, 0, 0);
      }
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0);
+       $$ = SPVM_OP_build_sub(compiler, $2, $3, $5, $7, $1, NULL, NULL, $8, 0, 0);
+     }
+  | opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+     {
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 0);
+     }
+  | opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg ')' ';'
+     {
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0);
      }
 
-anon_sub
+new_callback_object
   : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 1);
      }
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
@@ -294,7 +302,7 @@ anon_sub
          SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
        }
        
-       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, 0);
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, 0, 1);
      }
 
 opt_args
@@ -564,9 +572,14 @@ if_require_statement
     {
       SPVM_OP* op_if_require = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF_REQUIRE, compiler->cur_file, compiler->cur_line);
       
-      $$ = SPVM_OP_build_if_require_statement(compiler, op_if_require, $3, $5);
+      $$ = SPVM_OP_build_if_require_statement(compiler, op_if_require, $3, $5, NULL);
     }
-
+  | IF '(' require ')' block ELSE block
+    {
+      SPVM_OP* op_if_require = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_IF_REQUIRE, compiler->cur_file, compiler->cur_line);
+      
+      $$ = SPVM_OP_build_if_require_statement(compiler, op_if_require, $3, $5, $7);
+    }
 if_statement
   : IF '(' expression ')' block else_statement
     {
@@ -894,7 +907,7 @@ new
     {
       $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
-  | anon_sub
+  | new_callback_object
     {
       // Package
       SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, $1->file, $1->line);

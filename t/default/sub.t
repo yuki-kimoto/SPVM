@@ -41,9 +41,9 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Anon sub
 {
-  ok(TestCase::Sub->anon_sub_capture);
-  ok(TestCase::Sub->anon_sub_call_anon_sub);
-  ok(TestCase::Sub->anon_sub_call_anon_sub_from_callback);
+  ok(TestCase::Sub->cb_obj_capture);
+  ok(TestCase::Sub->cb_obj_call_cb_obj);
+  ok(TestCase::Sub->cb_obj_call_cb_obj_from_callback);
 }
 
 # Return value

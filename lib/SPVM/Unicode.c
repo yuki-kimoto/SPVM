@@ -16362,8 +16362,11 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
     uchar = dst;
     *offset_ref += uchar_len;
   }
-  else {
+  else if (uchar_len == 0) {
     uchar = -1;
+  }
+  else if (uchar_len == SPVM_UTF8PROC_ERROR_INVALIDUTF8) {
+    uchar = -2;
   }
   
   stack[0].ival = uchar;
@@ -16371,26 +16374,25 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Unicode__uchar_to_u8(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   int32_t uchar = stack[0].ival;
   
-  void* obj_u8_bytes = stack[1].oval;
-  if (obj_u8_bytes == NULL) {
-    SPVM_DIE("UTF-8 bytes must be defined", MFILE, __LINE__);
-  }
-  char* u8_bytes = (char*)env->belems(env, obj_u8_bytes);
-  int32_t u8_bytes_len = env->len(env, obj_u8_bytes);
-  if (u8_bytes_len < 4) {
-    SPVM_DIE("UTF-8 bytes must have 4 bytes", MFILE, __LINE__);
-  }
-  const char* str = (const char*)env->belems(env, obj_u8_bytes);
-  int32_t str_len = env->len(env, obj_u8_bytes);
+  char tmp_utf8_bytes[4];
+  int32_t utf8_len = (int32_t)spvm_utf8proc_encode_char((spvm_utf8proc_int32_t)uchar, (spvm_utf8proc_uint8_t*)tmp_utf8_bytes);
   
-  int32_t u8_len = (int32_t)spvm_utf8proc_encode_char((spvm_utf8proc_int32_t)uchar, (spvm_utf8proc_uint8_t*)u8_bytes);
+  if (utf8_len == 0) {
+    stack[0].oval = NULL;
+    return SPVM_SUCCESS;
+  }
   
-  stack[0].ival = u8_len;
+  void* obj_utf8_bytes = env->new_barray(env, utf8_len);
+  
+  char* utf8_bytes = (char*)env->belems(env, obj_utf8_bytes);
+  memcpy(utf8_bytes, tmp_utf8_bytes, utf8_len);
+  
+  stack[0].oval = obj_utf8_bytes;
   
   return SPVM_SUCCESS;
 }

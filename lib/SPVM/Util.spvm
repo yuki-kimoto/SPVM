@@ -1,16 +1,45 @@
 package SPVM::Util {
   use SPVM::Stringer;
+  use SPVM::Cloner;
+  use SPVM::EqualityChecker;
   use SPVM::StringBuffer;
   use SPVM::StringList;
-  use SPVM::List;
+
+  precompile sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
+    my $length = @$objects;
+    
+    my $new_objects = new object[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_objects->[$i] = $cloner->($objects->[$i]);
+    }
+    
+    return $new_objects;
+  }
+
+  precompile sub equals_oarray : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker) {
+    my $is_equals = 1;
+    if (@$objs1 == @$objs2) {
+      for (my $i = 0; $i < @$objs1; $i++) {
+        if (!$equality_checker->($objs1->[$i], $objs2->[$i])) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
   
-  precompile sub joino : string ($sep : string, $objects : oarray) {
+  precompile sub joino : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer) {
     my $join = "";
     
     for (my $i = 0; $i < @$objects; $i++) {
-      my $stringer = (SPVM::Stringer)$objects->[$i];
-      my $string = $stringer->to_str();
-      $join .= $string;
+      my $str = $stringer->($objects->[$i]);
+      $join .= $str;
       if ($i != @$objects - 1) {
         $join .= $sep;
       }

@@ -1,4 +1,46 @@
-0.0440 2019-08-20
+0.0442 2019-10-21
+  - add ctype.h function to SPVM::CORE
+    isalnum
+    isalpha
+    isblank
+    iscntrl
+    isdigit
+    isgraph
+    islower
+    isprint
+    ispunct
+    isspace
+    isupper
+    isxdigi
+    tolower
+    toupper
+  - add SPVM::CORE random method
+  
+0.0441 2019-10-11
+  - add pi method to SPVM::Math
+  - cleanup SPVM::Unicode. Many methods is remaned.
+  - cleanup SPVM::JSON. Many options is removed.
+  - cleanup SPVM::Regex.
+  - SPVM::Regex::caps method return captured string array.
+  - SPVM::Regex::remove match_end method
+  - add SPVM::Regex::match_length method
+  - SPVM::Regex::replace method is separated to replace and replace_cb
+  - SPVM::Regex::replace_all method is separated to replace_all and replace_all_cb
+  - SPVM::Regex::match_offset is merged to SPVM::Regex::match
+  - remove call_sub_depth and remove deep recursion check.
+  - rename chomp to chompr
+  - renmae complex_array to complex_darray
+  - rename complex to complexd
+  - move SPVM::CORE::copy_oarray to SPVM::Util::copy_oarray.
+  - add SPVM::Cloner
+  - SPVM::Util::copy_oarray do deep clone using SPVM::Cloner.
+  - SPVM::Stringer argument change ($self : self) to ($self : self, $obj : object)
+  - add SPVM::Regex::Replacer and use this in SPVM::Regex::replace_cb and SPVM::Regex::replace_all_cb method
+  - subroutine belongging to package with callback_t descriptor must be anon subroutine.
+  - add SPVM::EqualityChecker
+  - add SPVM::EqualityChecker::Address
+  - SPVM::CORE::equals_oarray is moved to SPVM::Util and recieve SPVM::EqualityChecker as third argument
+0.0440 2019-09-06
   - Rename SPVM::Data to SPVM::BlessedObject
   - Rename SPVM::Data::Array to SPVM::BlessedObject::Array
   - Rename SPVM::Data::Package to SPVM::BlessedObject::Package
@@ -7,6 +49,26 @@
   - fix SPVM::Regex character class negation bug
   - fix SPVM::Regex * capture bugs
   - SPVM::Regex caps start index become 0
+  - remove to_iarray and to_strarray from SPVM::List
+  - rename SPVM::List to SPVM::ObjectList
+  - rename SPVM::ObjectList::new_with_capacity to new_capacity
+  - add SPVM::ByteList::new_capacity
+  - add SPVM::ShortList::new_capacity
+  - add SPVM::IntList::new_capacity
+  - add SPVM::LongList::new_capacity
+  - add SPVM::FloatList::new_capacity
+  - add SPVM::DoubleList::new_capacity
+  - add SPVM::StringList::new_capacity
+  - add SPVM::ByteList::capacity
+  - add SPVM::ShortList::capacity
+  - add SPVM::IntList::capacity
+  - add SPVM::LongList::capacity
+  - add SPVM::FloatList::capacity
+  - add SPVM::DoubleList::capacity
+  - add SPVM::StringList::capacity
+  - add SPVM::ObjectList::capacity
+  - add insert, remove method to SPVM::ByteList, SPVM::ShortList, SPVM::IntList, SPVM::LongList, SPVM::FloatList, SPVM::DoubleList, SPVM::StringList, SPVM::ObjectList
+  
 0.0439 2019-08-05
   - rename runtime_type to runtime_type_category
   - fix IO::Socket connect with IP address bug

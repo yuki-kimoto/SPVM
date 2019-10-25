@@ -1,6 +1,100 @@
 package TestCase::Lib::SPVM::Util {
-  use SPVM::Util(joino, split, sprintf);
+  use SPVM::Util(joino, split, copy_oarray, equals_oarray, sprintf);
   use TestCase::Minimal;
+
+  sub test_equals_oarray : int () {
+    my $minimal1 = TestCase::Minimal->new;
+    my $minimal2 = TestCase::Minimal->new;
+    my $minimal3 = TestCase::Minimal->new;
+    my $minimal4 = TestCase::Minimal->new;
+    my $nums1 = [$minimal1, $minimal2, $minimal3];
+    my $nums2 = [$minimal1, $minimal2, $minimal3];
+    my $nums3 = [$minimal1, $minimal2];
+    my $nums4 = [$minimal1, $minimal2, $minimal4];
+    my $nums5 = [(object)$minimal1, $minimal2, $minimal3];
+
+    my $equality_checker = sub : int ($self : self, $obj1 : object, $obj2 : object) {
+      my $minimal1 = (TestCase::Minimal)$obj1;
+      my $minimal2 = (TestCase::Minimal)$obj2;
+      
+      if ($minimal1 == $minimal2) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    };
+    
+    {
+      my $is_equals = equals_oarray($nums1, $nums2, $equality_checker);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_oarray($nums1, $nums3, $equality_checker);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_oarray($nums1, $nums4, $equality_checker);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_oarray($nums1, $nums5, $equality_checker);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_copy_oarray : int () {
+    my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(INT32_MIN())];
+    my $objects_out = copy_oarray($objects, sub : object ($self : self, $obj : object) {
+      my $int_obj = (SPVM::Int)$obj;
+      my $new_int_obj = SPVM::Int->new($int_obj->val);
+      return $new_int_obj;
+    });
+
+    if ($objects->[0] == $objects_out->[0]) {
+      return 0;
+    }
+    
+    if ($objects->[1] == $objects_out->[1]) {
+      return 0;
+    }
+    
+    if ($objects->[2] == $objects_out->[2]) {
+      return 0;
+    }
+    
+    unless ((int)$objects_out->[0] == 1) {
+      return 0;
+    }
+    
+    unless ((int)$objects_out->[1] == 2) {
+      return 0;
+    }
+    
+    unless ((int)$objects_out->[2] == INT32_MIN()) {
+      return 0;
+    }
+    
+    unless (@$objects_out == 3) {
+      return 0;
+    }
+    
+    unless ($objects != $objects_out) {
+      return 0;
+    }
+    
+    return 1;
+  }
   
   sub test_joino : int () {
     
@@ -10,7 +104,13 @@ package TestCase::Lib::SPVM::Util {
       TestCase::Minimal->newp(5, 6)
     ];
     
-    my $join = joino(",", $minimals);
+    my $join = joino(",", $minimals, sub : string ($self : self, $obj : object) {
+      my $minimal = (TestCase::Minimal)$obj;
+      my $x = $minimal->x;
+      my $y = $minimal->y;
+      my $str = "($x,$y)";
+      return $str;
+    });
     
     if ($join eq "(1,2),(3,4),(5,6)") {
       return 1;

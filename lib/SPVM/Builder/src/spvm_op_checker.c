@@ -193,6 +193,26 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
     
     // [START]Preorder traversal position
     if (!op_cur->no_need_check) {
+      if (op_cur->id == SPVM_OP_C_ID_IF_REQUIRE) {
+        SPVM_USE* use = op_cur->first->uv.use;
+        SPVM_OP* op_block_true = SPVM_OP_sibling(compiler, op_cur->first);
+        SPVM_OP* op_block_false = op_cur->last;
+        
+        // Execute false block
+        if (use->op_type->uv.type->basic_type->fail_load) {
+          SPVM_OP_cut_op(compiler, op_block_false);
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+          SPVM_OP_replace_op(compiler, op_stab, op_block_false);
+          op_cur = op_block_false;
+        }
+        // Execute true block
+        else {
+          SPVM_OP_cut_op(compiler, op_block_true);
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+          SPVM_OP_replace_op(compiler, op_stab, op_block_true);
+          op_cur = op_block_true;
+        }
+      }
       switch (op_cur->id) {
         // Start scope
         case SPVM_OP_C_ID_BLOCK: {
@@ -214,15 +234,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
         }
         case SPVM_OP_C_ID_SWITCH: {
           SPVM_LIST_push(check_ast_info->op_switch_stack, op_cur);
-          break;
-        }
-        case SPVM_OP_C_ID_IF_REQUIRE: {
-          SPVM_USE* use = op_cur->first->uv.use;
-          // Skip block
-          if (use->op_type->uv.type->basic_type->fail_load) {
-            SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-            op_cur = op_stab;
-          }
           break;
         }
       }
@@ -918,7 +929,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_PACKAGE* new_package = type->basic_type->package;
                 
                 // Anon sub
-                if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
+                if (new_package && new_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
                   SPVM_OP* op_type = op_cur->first;
                   
                   SPVM_SUB* anon_sub = SPVM_LIST_fetch(new_package->subs, 0);
@@ -2985,7 +2996,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Default
               else {
                 // If anon sub, field is public
-                if (field->package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
+                if (field->package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
                   is_private = 0;
                 }
                 // If multi numeric type, field is public
@@ -4778,7 +4789,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
     if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", type_name, sub_name, op_call_sub->file, op_call_sub->line);
+      SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", type_name, sub_name, op_call_sub->file, op_call_sub->line);
       return;
     }
     else {
@@ -4787,7 +4798,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
       SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
       
       if (!package) {
-        SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", basic_type_name, sub_name, op_call_sub->file, op_call_sub->line);
+        SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", basic_type_name, sub_name, op_call_sub->file, op_call_sub->line);
         return;
       }
       
@@ -4873,7 +4884,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
   }
   else {
     assert(found_package);
-    SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", found_package->name, sub_name, op_call_sub->file, op_call_sub->line);
+    SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", found_package->name, sub_name, op_call_sub->file, op_call_sub->line);
     return;
   }
 }

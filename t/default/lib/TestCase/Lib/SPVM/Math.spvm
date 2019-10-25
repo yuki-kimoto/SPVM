@@ -1,5 +1,15 @@
 package TestCase::Lib::SPVM::Math {
   use SPVM::Math;
+  
+  sub test_pi : int () {
+    my $pi = SPVM::Math->pi;
+    
+    unless ($pi >= 3.141592653589793 && $pi <= 3.141592653589794) {
+      return 0;
+    }
+    
+    return 1;
+  }
 
   #
   # Integral type overflow is not defined in C99

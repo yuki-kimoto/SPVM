@@ -39,6 +39,12 @@ SPVM::IntList - Continuous dynamic int array
   # Get int value.
   my $int_value = $int_list->get(2);
 
+  # Insert int value
+  $int_list->insert(1, 3);
+
+  # Remove int value
+  my $int_value = $int_list->remove(1);
+
   # Convert SPVM::IntList to int array.
   my $int_array = $int_list->to_array;
 
@@ -106,6 +112,18 @@ Set the value with index.
   sub get : int ($self : self, $index : int)
 
 Get the value with index.
+
+=head2 insert
+
+  sub insert : void ($self : self, $index : int, $value : int)
+
+Insert a element to the specific index.
+
+=head2 remove
+
+  sub remove : int ($self : self, $index : int)
+
+Remove and return the element which is specified by the index.
 
 =head2 to_array
 

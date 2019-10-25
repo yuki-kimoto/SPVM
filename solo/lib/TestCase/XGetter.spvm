@@ -1,3 +1,0 @@
-package TestCase::XGetter : callback_t {
-  sub x : int ($self : self);
-}

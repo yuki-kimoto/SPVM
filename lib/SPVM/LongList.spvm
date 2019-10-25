@@ -1,6 +1,6 @@
 package SPVM::LongList {
   has values   : long[];
-  has capacity : int;
+  has capacity : ro int;
   has length   : ro int;
   
   sub new : SPVM::LongList () {
@@ -12,6 +12,16 @@ package SPVM::LongList {
     $self->{length} = 0;
     $self->{values} = $values;
     
+    return $self;
+  }
+
+  sub new_capacity : SPVM::LongList ($capacity : int) {
+    my $self = new SPVM::LongList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new long[$capacity];
     return $self;
   }
 
@@ -44,6 +54,50 @@ package SPVM::LongList {
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
+  }
+
+  sub insert : void ($self : self, $index : int, $value : long) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0 && $index <= $length) {
+      die "Out of range";
+    }
+    
+    if ($length > $capacity - 1) {
+      $self->_extend;
+    }
+    
+    my $values = $self->{values};
+    if ($index != $length) {
+      my $dist_index = $index + 1;
+      my $move_length = $length - $index;
+      memmovel($values, $dist_index, $values, $index, $move_length);
+    }
+    $values->[$index] = $value;
+    
+    $self->{length}++;
+  }
+
+  sub remove : long ($self : self, $index : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0 && $index < $length) {
+      die "Out of range";
+    }
+    
+    my $values = $self->{values};
+    my $remove_value = $values->[$index];
+
+    my $dist_index = $index;
+    my $src_index = $index + 1;
+    my $move_length = $length - $index - 1;
+    memmovel($values, $dist_index, $values, $src_index, $move_length);
+    
+    $self->{length}--;
+    
+    return $remove_value;
   }
   
   sub push : void ($self : self, $value : long) {

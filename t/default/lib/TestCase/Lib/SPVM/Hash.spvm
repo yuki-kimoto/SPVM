@@ -2,7 +2,7 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Int;
   use SPVM::Hash;
   use SPVM::Comparator;
-  use SPVM::List;
+  use SPVM::ObjectList;
 
   sub test_murmur_hash : int () {
     my $seed = 123456789;
@@ -13,14 +13,14 @@ package TestCase::Lib::SPVM::Hash {
     my $strings = ["a", "<>", "ABC", "1234", "asdfg", "zxcvbn", "1qazxsw", "3edcvfr4", "1234567890-=\\][poiuytrewqasdfghjkl;'"];
     my $hashes = [846967266L, 200612280L, 4178773334L, 1870759112L, 61159236L, 623182920L, 1738266155L, 123403562L, 4243681504L];
     for (my $i = 0; $i < @$strings; ++$i) {
-      unless (murmur_hash($strings->[$i], $seed) == $hashes->[$i]) {
+      unless (SPVM::Hash->murmur_hash($strings->[$i], $seed) == $hashes->[$i]) {
         return 0;
       }
     }
     return 1;
   }
 
-  sub test_new_with_capacity : int () {
+  sub test_new_capacity : int () {
     my $hash = SPVM::Hash->new_opt([(object)capacity => 10]);
     unless ($hash->_bucket_count == 10) {
       return 0;
@@ -366,7 +366,7 @@ package TestCase::Lib::SPVM::Hash {
     for (my $i = 0; $i < @$lhs; ++$i) {
       my $found = 0;
       for (my $j = 0; $j < @$rhs; ++$j) {
-        if (!$rhs_used->[$j] && $comparator->compare($lhs->[$i], $rhs->[$j])) {
+        if (!$rhs_used->[$j] && $comparator->($lhs->[$i], $rhs->[$j])) {
           $found = 1;
           $rhs_used->[$j] = 1;
           last;
@@ -456,8 +456,8 @@ package TestCase::Lib::SPVM::Hash {
     unless (@$each == @$keys) {
       return 0;
     }
-    my $got_keys = SPVM::List->new;
-    my $got_vals = SPVM::List->new;
+    my $got_keys = SPVM::ObjectList->new;
+    my $got_vals = SPVM::ObjectList->new;
     for (my $i = 0; $i < @$each; ++$i) {
       $got_keys->push($each->[$i]->[0]);
       $got_vals->push($each->[$i]->[1]);

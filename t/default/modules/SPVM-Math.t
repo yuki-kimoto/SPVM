@@ -35,8 +35,13 @@ use SPVM 'TestCase::Lib::SPVM::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+  ok(TestCase::Lib::SPVM::Math->test_pi);
+
+__END__
+
 # Call subroutine
 {
+  ok(TestCase::Lib::SPVM::Math->test_pi);
   ok(TestCase::Lib::SPVM::Math->test_sin);
   ok(TestCase::Lib::SPVM::Math->test_cos);
   ok(TestCase::Lib::SPVM::Math->test_tan);

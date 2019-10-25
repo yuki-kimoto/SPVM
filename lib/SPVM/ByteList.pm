@@ -35,9 +35,15 @@ SPVM::ByteList - Continuous dynamic byte array
   
   # Set byte value.
   $byte_list->set(2, (byte)3);
-
+  
   # Get byte value.
   my $byte_value = $byte_list->get(2);
+
+  # Insert byte value
+  $byte_list->insert(1, 3);
+
+  # Remove byte value
+  my $byte_value = $byte_list->remove(1);
 
   # Convert SPVM::ByteList to byte array.
   my $byte_array = $byte_list->to_array;
@@ -107,6 +113,18 @@ Set the value with index.
 
 Get the value with index.
 
+=head2 insert
+
+  sub insert : void ($self : self, $index : int, $value : byte)
+
+Insert a element to the specific index.
+
+=head2 remove
+
+  sub remove : byte ($self : self, $index : int)
+
+Remove and return the element which is specified by the index.
+  
 =head2 to_array
 
   sub to_array : byte[] ($self : self)

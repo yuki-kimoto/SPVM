@@ -1422,6 +1422,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           // double
           else if (constant_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_DOUBLE) {
+            
             double num = strtod(num_str, &end);
             if (*end != '\0') {
               SPVM_COMPILER_error(compiler, "Invalid double literal at %s line %d\n", compiler->cur_file, compiler->cur_line);

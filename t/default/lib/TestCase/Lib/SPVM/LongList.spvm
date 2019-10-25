@@ -26,6 +26,137 @@ package TestCase::Lib::SPVM::LongList {
     return 1;
   }
 
+  sub new_capacity : int () {
+    {
+      my $list = SPVM::LongList->new_capacity(32);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      
+      unless ($list->capacity == 32) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub insert : int () {
+    # Insert to first
+    {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->insert(0 => 4);
+      unless (equals_larray($list->to_array, [(long)4, 1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Insert
+    {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->insert(2 => 4);
+      unless (equals_larray($list->to_array, [(long)1, 2, 4, 3])) {
+        return 0;
+      }
+    }
+
+    # Insert to last
+    {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->insert(3 => 4);
+      unless (equals_larray($list->to_array, [(long)1, 2, 3, 4])) {
+        return 0;
+      }
+    }
+
+    # Extend
+    {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->insert(0 => 4);
+      unless ($list->capacity == 6) {
+        return 0;
+      }
+    }
+    
+    # Exception - insert to -1
+    eval {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->insert(-1 => 2);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+
+    # Exception - insert to length + 1
+    eval {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->insert(4 => 2);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub remove : int () {
+    # Remove
+    {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3, 4]);
+      my $value = $list->remove(1);
+      unless (equals_larray($list->to_array, [(long)1, 3, 4])) {
+        return 0;
+      }
+      unless ($value == 2) {
+        return 0;
+      }
+    }
+
+    # Remove last
+    {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->remove(2);
+      unless (equals_larray($list->to_array, [(long)1, 2])) {
+        return 0;
+      }
+    }
+
+    # Remove first
+    {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->remove(0);
+      unless (equals_larray($list->to_array, [(long)2, 3])) {
+        return 0;
+      }
+    }
+
+    # Exception - remove to -1
+    eval {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->remove(-1);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+
+    # Exception - remove to length
+    eval {
+      my $list = SPVM::LongList->newa([(long)1, 2, 3]);
+      $list->remove(3);
+    };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+
+
   sub to_array : int () {
     {
       my $list = SPVM::LongList->newa([(long)3, 5, INT64_MAX()]);

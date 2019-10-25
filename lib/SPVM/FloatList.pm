@@ -39,6 +39,12 @@ SPVM::FloatList - Continuous dynamic float array
   # Get float value.
   my $float_value = $float_list->get(2);
 
+  # Insert float value
+  $float_list->insert(1, 3);
+
+  # Remove float value
+  my $float_value = $float_list->remove(1);
+
   # Convert SPVM::FloatList to float array.
   my $float_array = $float_list->to_array;
 
@@ -107,6 +113,18 @@ Set the value with index.
 
 Get the value with index.
 
+=head2 insert
+
+  sub insert : void ($self : self, $index : int, $value : float)
+
+Insert a element to the specific index.
+
+=head2 remove
+
+  sub remove : float ($self : self, $index : int)
+
+Remove and return the element which is specified by the index.
+  
 =head2 to_array
 
   sub to_array : float[] ($self : self)

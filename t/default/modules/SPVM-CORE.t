@@ -36,6 +36,14 @@ use SPVM 'TestCase::Lib::SPVM::CORE';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
+# Complex
+{
+  ok(TestCase::Lib::SPVM::CORE->test_complexf());
+  ok(TestCase::Lib::SPVM::CORE->test_complexd());
+  ok(TestCase::Lib::SPVM::CORE->test_complex_farray());
+  ok(TestCase::Lib::SPVM::CORE->test_complex_darray());
+}
+
 # strtoi
 {
   ok(TestCase::Lib::SPVM::CORE->test_strtoi);
@@ -44,14 +52,99 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_strtod);
 }
 
+# isalnum
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isalnum);
+}
+
+# isalpha
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isalpha);
+}
+
+# isalpha
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isblank);
+}
+
+# iscntrl
+{
+  ok(TestCase::Lib::SPVM::CORE->test_iscntrl);
+}
+
 # isdigit
 {
   ok(TestCase::Lib::SPVM::CORE->test_isdigit);
 }
 
+# isgraph
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isgraph);
+}
+
+# islower
+{
+  ok(TestCase::Lib::SPVM::CORE->test_islower);
+}
+
+# isprint
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isprint);
+}
+
+# isprint
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isprint);
+}
+
+# ispunct
+{
+  ok(TestCase::Lib::SPVM::CORE->test_ispunct);
+}
+
+# isspace
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isspace);
+}
+
+# isupper
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isupper);
+}
+
+# isxdigit
+{
+  ok(TestCase::Lib::SPVM::CORE->test_isxdigit);
+}
+
+# tolower
+{
+  ok(TestCase::Lib::SPVM::CORE->test_tolower);
+}
+
+# toupper
+{
+  ok(TestCase::Lib::SPVM::CORE->test_toupper);
+}
+
+# is_perl_space
+{
+  ok(TestCase::Lib::SPVM::CORE->test_is_perl_space);
+}
+
+# is_perl_word
+{
+  ok(TestCase::Lib::SPVM::CORE->test_is_perl_word);
+}
+
 # rand
 {
   ok(TestCase::Lib::SPVM::CORE->test_rand);
+}
+
+# random
+{
+  ok(TestCase::Lib::SPVM::CORE->test_random);
 }
 
 # uc
@@ -97,11 +190,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # rindex
 {
   ok(TestCase::Lib::SPVM::CORE->test_rindex);
-}
-
-# starts_with
-{
-  ok(TestCase::Lib::SPVM::CORE->test_starts_with);
 }
 
 # strerror
@@ -179,9 +267,19 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_joind);
 }
 
-# type_name
+# E
 {
-  ok(TestCase::Lib::SPVM::CORE->test_type_name);
+  ok(TestCase::Lib::SPVM::CORE->test_E);
+}
+
+# PI
+{
+  ok(TestCase::Lib::SPVM::CORE->test_PI);
+}
+
+# get_type_name
+{
+  ok(TestCase::Lib::SPVM::CORE->test_get_type_name);
 }
 
 # equals
@@ -202,9 +300,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_equals_farray);
   
   # equals_darray
-  ok(TestCase::Lib::SPVM::CORE->test_equals_darray);
-
-  # equals_oarray
   ok(TestCase::Lib::SPVM::CORE->test_equals_darray);
 
   # equals_strarray
@@ -233,9 +328,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   
   # copy_darray
   ok(TestCase::Lib::SPVM::CORE->test_copy_darray);
-  
-  # copy_oarray
-  ok(TestCase::Lib::SPVM::CORE->test_copy_oarray);
   
   # copy_strarray
   ok(TestCase::Lib::SPVM::CORE->test_copy_strarray);

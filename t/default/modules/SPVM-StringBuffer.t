@@ -18,6 +18,8 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringBuffer->test_length);
   ok(TestCase::Lib::SPVM::StringBuffer->test_substr);
   ok(TestCase::Lib::SPVM::StringBuffer->test_push);
+  ok(TestCase::Lib::SPVM::StringBuffer->test_push_char);
+  ok(TestCase::Lib::SPVM::StringBuffer->test_push_range);
   ok(TestCase::Lib::SPVM::StringBuffer->test_to_str);
   ok(TestCase::Lib::SPVM::StringBuffer->test_index);
 }

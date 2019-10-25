@@ -216,7 +216,6 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_type_name,
     SPVM_RUNTIME_API_new_env,
     SPVM_RUNTIME_API_free_env,
-    NULL, // call_sub_depth
   };
   
   int32_t env_length = 255;
@@ -382,19 +381,6 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   // Sub
   SPVM_RUNTIME_SUB* sub = &runtime->subs[sub_id];
   
-  // Call sub depth
-  int32_t call_sub_depth = (int32_t)(intptr_t)env->call_sub_depth;
-  if (call_sub_depth > 1000) {
-    const char* sub_name = &runtime->string_pool[sub->name_id];
-    SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
-    const char* package_name = &runtime->string_pool[sub_package->name_id];
-    const char* file = &runtime->string_pool[sub->file_id];
-    int32_t line = sub->line;
-    fprintf(stderr, "Deep recursion on subroutine in \"%s::%s\" at %s line %d\n", package_name, sub_name, file, line);
-  }
-  call_sub_depth++;
-  env->call_sub_depth = (void*)(intptr_t)call_sub_depth;
-
   // Runtime package
   SPVM_RUNTIME_PACKAGE* package = &runtime->packages[sub->package_id];
   
@@ -459,13 +445,6 @@ int32_t SPVM_RUNTIME_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* sta
   // Call sub virtual machine
   else {
     exception_flag = SPVM_RUNTIME_API_call_sub_vm(env, sub_id, stack);
-  }
-  
-  // Reduce call stack depth
-  {
-    int32_t call_sub_depth = (int32_t)(intptr_t)env->call_sub_depth;
-    call_sub_depth--;
-    env->call_sub_depth = (void*)(intptr_t)call_sub_depth;
   }
   
   return exception_flag;
@@ -4446,7 +4425,7 @@ int32_t SPVM_RUNTIME_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_
     SPVM_RUNTIME_SUB* sub_callback = &runtime->subs[callback_package->subs_base];
     
     const char* sub_callback_signature = &runtime->string_pool[sub_callback->signature_id];
-    if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
+    if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
       SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
       if (strcmp(sub_callback_signature, &runtime->string_pool[sub->signature_id]) == 0) {
         has_callback = 1;
@@ -5756,7 +5735,7 @@ int32_t SPVM_RUNTIME_API_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const
   
   // Package which have only anon sub
   int32_t sub_id;
-  if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
+  if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
     // Subroutine name
     SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
      

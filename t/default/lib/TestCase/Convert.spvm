@@ -57,7 +57,7 @@ package TestCase::Convert {
     
     my $comparator2 = (SPVM::Comparator)$object;
     
-    if ($comparator2->compare(undef, undef) == 5) {
+    if ($comparator2->(undef, undef) == 5) {
       return 1;
     }
     

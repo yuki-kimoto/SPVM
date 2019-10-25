@@ -6,20 +6,20 @@ package SPVM::Hash {
   has entries : SPVM::Hash::Entry [];
   has max_load_factor : public rw double;
 
-  sub _bucket_count : int ($self : self) {
+  precompile sub _bucket_count : int ($self : self) {
     return $self->{bucket_count};
   }
 
-  sub _entries : SPVM::Hash::Entry [] ($self : self) {
+  precompile sub _entries : SPVM::Hash::Entry [] ($self : self) {
     return $self->{entries};
   }
 
-  sub _index_by_key : int ($key : string, $bucket_count : int) {
+  precompile sub _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = 123456789;
     return (int)(murmur_hash($key, $default_seed) % $bucket_count);
   }
 
-  sub _set_to_container : void ($entries : SPVM::Hash::Entry[], $bucket_count : int, $count_ref : int&,
+  precompile sub _set_to_container : void ($entries : SPVM::Hash::Entry[], $bucket_count : int, $count_ref : int&,
     $key : string, $val : object) {
     my $index = _index_by_key($key, $bucket_count);
     my $ref = $entries->[$index];
@@ -48,7 +48,7 @@ package SPVM::Hash {
     }
   }
 
-  sub _rehash : void ($self : self) {
+  precompile sub _rehash : void ($self : self) {
     my $new_bucket_count : int;
     if ($self->{bucket_count} > INT32_MAX() / 2) {
       if ($self->{bucket_count} == INT32_MAX()) {
@@ -73,7 +73,7 @@ package SPVM::Hash {
     $self->{entries} = $new_entries;
   }
 
-  sub new : SPVM::Hash () {
+  precompile sub new : SPVM::Hash () {
     my $self = new SPVM::Hash;
     my $default_capacity = 32;
     $self->{bucket_count} = $default_capacity;
@@ -83,7 +83,7 @@ package SPVM::Hash {
     return $self;
   }
 
-  sub newa : SPVM::Hash ($objects : object[]) {
+  precompile sub newa : SPVM::Hash ($objects : object[]) {
     unless (@$objects % 2 == 0) {
       die "Odd number of elements provided";
     }
@@ -109,7 +109,7 @@ package SPVM::Hash {
     return $self;
   }
 
-  sub new_opt : SPVM::Hash ($options : object[]) {
+  precompile sub new_opt : SPVM::Hash ($options : object[]) {
     my $self = new SPVM::Hash;
     
     if (@$options % 2 != 0) {
@@ -137,11 +137,11 @@ package SPVM::Hash {
     return $self;
   }
 
-  sub count : int ($self : self) {
+  precompile sub count : int ($self : self) {
     return $self->{count};
   }
 
-  sub set : void ($self : self, $key : string, $val : object) {
+  precompile sub set : void ($self : self, $key : string, $val : object) {
     unless ($key) {
       die "key must not be undef";
     }
@@ -153,7 +153,7 @@ package SPVM::Hash {
     $self->{count} = $count;
   }
 
-  sub get : object ($self : self, $key : string) {
+  precompile sub get : object ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {
@@ -170,7 +170,7 @@ package SPVM::Hash {
     }
   }
 
-  sub exists : int ($self : self, $key : string) {
+  precompile sub exists : int ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     
@@ -188,7 +188,7 @@ package SPVM::Hash {
     }
   }
 
-  sub delete : object ($self : self, $key : string) {
+  precompile sub delete : object ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     my $prev : SPVM::Hash::Entry = undef;
@@ -215,11 +215,11 @@ package SPVM::Hash {
     }
   }
 
-  sub load_factor : double ($self : self) {
+  precompile sub load_factor : double ($self : self) {
     return (double) $self->{count} / $self->{bucket_count};
   }
 
-  sub keys : string[] ($self : self) {
+  precompile sub keys : string[] ($self : self) {
     my $retval = new string[$self->{count}];
     # iterate entries
     my $count = 0;
@@ -234,7 +234,7 @@ package SPVM::Hash {
     return $retval;
   }
 
-  sub values : object[] ($self : self) {
+  precompile sub values : object[] ($self : self) {
     my $retval = new object[$self->{count}];
     # iterate entries
     my $count = 0;
@@ -248,7 +248,7 @@ package SPVM::Hash {
     return $retval;
   }
 
-  sub each : object[][] ($self : self) {
+  precompile sub each : object[][] ($self : self) {
     my $retval = new object[][$self->{count}];
     # iterate entries
     my $count = 0;
@@ -262,7 +262,7 @@ package SPVM::Hash {
     return $retval;
   }
 
-  sub copy : SPVM::Hash ($self : self) {
+  precompile sub copy : SPVM::Hash ($self : self) {
     my $ret = SPVM::Hash->new;
     my $keys = $self->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
@@ -270,12 +270,6 @@ package SPVM::Hash {
     }
     return $ret;
   }
-}
 
-package SPVM::Hash::Entry {
-  allow SPVM::Hash;
-
-  has key : string;
-  has val : object;
-  has next_entry : SPVM::Hash::Entry;
+  native sub murmur_hash : long ($string : string, $seed : int);
 }

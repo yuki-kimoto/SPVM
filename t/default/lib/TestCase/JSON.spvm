@@ -1,194 +1,667 @@
 package TestCase::JSON {
   use SPVM::JSON;
-  use SPVM::List;
+  use SPVM::ObjectList;
   use SPVM::Int;
   use SPVM::Double;
   use SPVM::JSON::Bool;
+  use SPVM::Hash;
+  use SPVM::Sort (sortstr);
 
   our $DEFAULT_JSON : SPVM::JSON;
 
   BEGIN {
     $DEFAULT_JSON = SPVM::JSON->new;
-    $DEFAULT_JSON->{canonical} = 1;
+    $DEFAULT_JSON->set_canonical(1);
   }
 
-  sub _validate : int ($json : SPVM::JSON, $input : string[], $expected : string[]) {
-    for (my $i = 0; $i < @$input; $i++) {
-      my $decoded = $json->decode($input->[$i]);
-      my $actual = $json->encode($decoded);
-      unless ($actual eq $expected->[$i]) {
-        warn("input: " . $input->[$i] . "\nexpected: " . $expected->[$i] . "\nactual: $actual");
+  sub _equals : int ($lhs : object, $rhs : object) {
+    if ($lhs == undef) {
+      unless ($rhs == undef) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::Hash) {
+      unless ($rhs isa SPVM::Hash) {
+        return 0;
+      }
+
+      my $l_hash = (SPVM::Hash)$lhs;
+      my $r_hash = (SPVM::Hash)$lhs;
+
+      my $l_keys = $l_hash->keys;
+      my $r_keys = $r_hash->keys;
+
+      if (@$l_keys == 0) {
+        unless (@$r_keys == 0) {
+          return 0;
+        }
+      }
+      else {
+        sortstr($l_keys);
+        sortstr($r_keys);
+
+        for (my $key_index = 0; $key_index < @$l_keys; ++$key_index) {
+          my $key = $l_keys->[$key_index];
+          unless ($l_keys->[$key_index] eq $r_keys->[$key_index]) {
+            return 0;
+          }
+          unless (_equals($l_hash->get($key), $r_hash->get($key))) {
+            return 0;
+          }
+        }
+      }
+    }
+    elsif ($lhs isa SPVM::ObjectList) {
+      unless ($rhs isa SPVM::ObjectList) {
+        return 0;
+      }
+
+      my $l_list = (SPVM::ObjectList)$lhs;
+      my $r_list = (SPVM::ObjectList)$rhs;
+
+      unless ($l_list->length == $r_list->length) {
+        return 0;
+      }
+
+      my $length = $l_list->length;
+      for (my $list_index = 0; $list_index < $length; ++$list_index) {
+        unless (_equals($l_list->get($list_index), $r_list->get($list_index))) {
+          return 0;
+        }
+      }
+    }
+    elsif ($lhs isa string) {
+      unless ($rhs isa string) {
+        return 0;
+      }
+
+      my $l_str = (string)$lhs;
+      my $r_str = (string)$rhs;
+
+      unless ($l_str eq $r_str) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::Int) {
+      unless ($rhs isa SPVM::Int) {
+        return 0;
+      }
+
+      my $l_int = (SPVM::Int)$lhs;
+      my $r_int = (SPVM::Int)$rhs;
+
+      unless ($l_int->val == $r_int->val) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::JSON::Bool) {
+      unless ($rhs isa SPVM::JSON::Bool) {
+        return 0;
+      }
+
+      my $l_bool = (SPVM::JSON::Bool)$lhs;
+      my $r_bool = (SPVM::JSON::Bool)$rhs;
+
+      unless ($l_bool->val == $r_bool->val) {
+        return 0;
+      }
+    }
+    elsif ($lhs isa SPVM::Double) {
+      unless ($rhs isa SPVM::Double) {
+        return 0;
+      }
+
+      my $l_dbl = (SPVM::Double)$lhs;
+      my $r_dbl = (SPVM::Double)$rhs;
+
+      unless ($l_dbl->val == $r_dbl->val) {
+        return 0;
+      }
+    }
+    else {
+      die "Not implemented type is used in \$lhs";
+    }
+
+    return 1;
+  }
+
+  sub encode_flat_hash : int () {
+    {
+      my $input    = SPVM::Hash->new;
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "int" => 42 ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"int\":42}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "string" => "vstr" ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"string\":\"vstr\"}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "double" => 0.123 ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"double\":0.123}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "bool_true" => SPVM::JSON::Bool->TRUE]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"bool_true\":true}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object) "bool_false" => SPVM::JSON::Bool->FALSE]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"bool_false\":false}";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::Hash->newa([(object)
+        "bool"   => SPVM::JSON::Bool->FALSE,
+        "double" => 0.1,
+        "int"    => 1,
+        "str"    => "hoge",
+      ]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "{\"bool\":false,\"double\":0.1,\"int\":1,\"str\":\"hoge\"}";
+      unless ($got eq $expected) {
         return 0;
       }
     }
     return 1;
   }
 
-  sub test_empty : int () {
-    my $input = [
-      # empty
-      "",
-      # spaces
-      " ", "\n", "\t", "\r",
-      # multiple spaces
-      " \r\n\t  \r\r\t\t\n "
-    ];
-    my $expected = ["", "", "", "", "", ""];
-    return _validate($DEFAULT_JSON, $input, $expected);
+  sub decode_flat_hash : int () {
+    {
+      my $input    = "{}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->new;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"string\":\"vstr\"}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "string" => "vstr" ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"double\":0.123}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "double" => 0.123 ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"bool_true\":true}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "bool_true" => SPVM::JSON::Bool->TRUE]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"bool_false\":false}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object) "bool_false" => SPVM::JSON::Bool->FALSE]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "{\"double\":0.1,\"bool\":false,\"int\":1,\"str\":\"hoge\"}";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object)
+        "bool"   => SPVM::JSON::Bool->FALSE,
+        "double" => 0.1,
+        "str"    => "hoge",
+      ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = " { \"key\" \n\t: 123\t,\n\t\t\"list\" :\n[\t1\t,\r2\t,\t3\n]}\r\r";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::Hash->newa([(object)
+        "key"  => 123.0,
+        "list" => SPVM::ObjectList->newa([(object) 1.0, 2.0, 3.0])
+      ]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
   }
 
-  sub test_flat_hash : int () {
-    my $tests = ["{}", "{\"digit\":42}", "{\"string\":\"vstr\"}", "{\"double\":0.123}", "{\"bool_true\":true}", "{\"bool_false\":false}", "{\"A\":0.1,\"ABC\":false,\"a\":1,\"qwerty\":\"asdfg\"}"];
-    return _validate($DEFAULT_JSON, $tests, $tests);
+  sub encode_flat_list : int () {
+    {
+      my $input    = SPVM::ObjectList->new;
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::ObjectList->newa([(object) 1, 2, 3]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[1,2,3]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::ObjectList->newa([(object) "abc", "def"]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[\"abc\",\"def\"]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input    = SPVM::ObjectList->newa([(object) 0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "[0,3.14,\"abc\",true]";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    return 1;
   }
 
-  sub test_flat_list : int () {
-    my $tests = ["[]", "[1,2,3]", "[\"abc\",\"123\"]", "[123,\"abc\",0,\"123abc\",3.1415]"];
-    return _validate($DEFAULT_JSON, $tests, $tests);
+  sub decode_flat_list : int () {
+    {
+      my $input    = "[]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->new;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "[3,2,1]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) 3.0, 2.0, 1.0]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "[\"def\",\"abc\"]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) "def", "abc"]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = "[0,3.14,\"abc\",true]";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) 0.0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input    = " [ 3.14\n, true \t , \"a\" ] ";
+      my $got      = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::ObjectList->newa([(object) 3.14, SPVM::JSON::Bool->TRUE, "a"]);
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
   }
 
-  sub test_digits_int : int () {
-    my $tests = ["[0,1,-1]"];
-    return _validate($DEFAULT_JSON, $tests, $tests);
+  sub encode_int : int () {
+    my $test_case_json = ["-1", "0", "1"];
+    my $test_case_int  = [-1, 0, 1];
+    for (my $i = 0; $i < @$test_case_json; ++$i) {
+      my $input    = SPVM::Int->new($test_case_int->[$i]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = $test_case_json->[$i];
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    return 1;
   }
 
-  sub test_digits_long : int () {
-    my $tests = ["[100000000000,-100000000000]"];
-    my $json = SPVM::JSON->new;
-    $json->{canonical} = 1;
-    $json->{num_policy} = SPVM::JSON->NUM_ALLOW_LONG;
-    return _validate($json, $tests, $tests);
-  }
-
-  sub test_digits_double : int () {
-    my $input = [
-      "0.123", "-0.123", "3.14", "-3.14", "123.987", "-123.987",
-      "1.23456e+1", "1.23456e-1", "1.23456e+08", "1.23456e-08", "1.23456e+008", "1.23456e-008",
-      "1.23456e+018", "1.23456e-018", "9.9e-100", "9.9e+300", "-1.23e+123"
-    ];
-    my $expected = [
+  sub encode_double : int () {
+    my $test_case  = [
       0.123, -0.123, 3.14, -3.14, 123.987, -123.987,
       1.23456e+1, 1.23456e-1, 1.23456e+08, 1.23456e-08, 1.23456e+008, 1.23456e-008,
       1.23456e+018, 1.23456e-018, 9.9e-100, 9.9e+300, -1.23e+123
     ];
-    for (my $i = 0; $i < @$input; $i++) {
-      my $got = (SPVM::Double)($DEFAULT_JSON->decode($input->[$i]));
-      unless (("" . $got->val) eq ("" . $expected->[$i])) {
+    for (my $i = 0; $i < @$test_case; ++$i) {
+      my $input    = SPVM::Double->new($test_case->[$i]);
+      my $got      = $DEFAULT_JSON->encode($input);
+      my $expected = "" . $test_case->[$i];
+      unless ($got eq $expected) {
         return 0;
       }
-      my $re_got = (SPVM::Double)($DEFAULT_JSON->decode($DEFAULT_JSON->encode($got)));
-      unless (("" . $re_got->val) eq ("" . $expected->[$i])) {
+    }
+    return 1;
+  }
+
+  sub decode_double : int () {
+    my $test_case  = [
+      0.123, -0.123, 3.14, -3.14, 123.987, -123.987,
+      1.23456e+1, 1.23456e-1, 1.23456e+08, 1.23456e-08, 1.23456e+008, 1.23456e-008,
+      1.23456e+018, 1.23456e-018, 9.9e-100, 9.9e+300, -1.23e+123
+    ];
+    for (my $i = 0; $i < @$test_case; ++$i) {
+      my $input    = "" . $test_case->[$i];
+      my $got      = "" . ((SPVM::Double)$DEFAULT_JSON->decode($input))->val;
+      my $expected = "" . $test_case->[$i];
+      unless ($got eq $expected) {
         return 0;
       }
     }
-    return 1;
-  }
-
-  sub test_root_is_primitive : int () {
-    my $tests = ["\"abc\"", "123", "true"];
-    return _validate($DEFAULT_JSON, $tests, $tests);
-  }
-
-  sub test_nest_object : int () {
-    my $tests = [
-      "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"elem\",\"ents\",{\"key\":\"value\"}]}},\"end\":\"eof\"}"
-    ];
-    unless (_validate($DEFAULT_JSON, $tests, $tests)) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_spaces : int () {
-    my $inputs = [
-      # Root type is "hash"
-      " { \"key\" \n\t: 123\t,\n\t\t\"list\" :\n[\t1\t,\r2\t,\t3\n]}\r\r",
-      # Root type is "list"
-      " [ 1, 3.14\n, true \t , \"a\" ] " # primitives: Int, Double, Bool, string
-    ];
-    my $outputs = [
-      "{\"key\":123,\"list\":[1,2,3]}",
-      "[1,3.14,true,\"a\"]"
-    ];
-    return _validate($DEFAULT_JSON, $inputs, $outputs);
-  }
-
-  sub test_format_name_separator : int () {
-    my $hash = SPVM::Hash->newa([(object) "key", "value"]);
-    my $json = SPVM::JSON->new;
-    $json->{space_before} = 0;
-    $json->{space_after} = 0;
-    unless ($json->encode($hash) eq "{\"key\":\"value\"}") {
-      return 0;
-    }
-    $json->{space_before} = 1;
-    $json->{space_after} = 0;
-    unless ($json->encode($hash) eq "{\"key\" :\"value\"}") {
-      return 0;
-    }
-    $json->{space_before} = 0;
-    $json->{space_after} = 1;
-    unless ($json->encode($hash) eq "{\"key\": \"value\"}") {
-      return 0;
-    }
-    $json->{space_before} = 1;
-    $json->{space_after} = 1;
-    unless ($json->encode($hash) eq "{\"key\" : \"value\"}") {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_format_indent : int () {
-    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::List->newa([(object) "x", "y"])]);
-    my $json = SPVM::JSON->new;
-    $json->{indent} = 1;
-    $json->{indent_length} = 2;
-    $json->{canonical} = 1;
-    my $expected = "{\n  \"a\":\"v1\",\n  \"b\":\"v2\",\n  \"c\":[\n    \"x\",\n    \"y\"\n  ]\n}";
-    my $actual = $json->encode($hash);
-    unless ($expected eq $actual) {
-      warn ("expected:\n$expected\nactual:\n$actual");
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_format_pretty : int () {
-    my $hash = SPVM::Hash->newa([(object) "a", "v1", "b", "v2", "c", SPVM::List->newa([(object) "x", "y"])]);
-    my $json = SPVM::JSON->new;
-    $json->{canonical} = 1;
-    $json->pretty(1);
-    my $expected = "{\n   \"a\" : \"v1\",\n   \"b\" : \"v2\",\n   \"c\" : [\n      \"x\",\n      \"y\"\n   ]\n}";
-    my $actual = $json->encode($hash);
-    unless ($expected eq $actual) {
-      warn ("expected:\n$expected\nactual:\n$actual");
-      return 0;
-    }
-    $json->pretty(0);
-    $expected = "{\"a\":\"v1\",\"b\":\"v2\",\"c\":[\"x\",\"y\"]}";
-    $actual = $json->encode($hash);
-    unless ($expected eq $actual) {
-      warn ("expected:\n$expected\nactual:\n$actual");
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_relaxed : int () {
-    my $inputs  = ["{\"k\":1,}","[1,]","{\"a\":1# comment\n,\"b\":2, ##\n\"c\":3,//xyz\n\"d\" /*multiple\ncomments//x#y*\nz*/:4}","\"\t\""];
-    my $outputs = ["{\"k\":1}","[1]","{\"a\":1,\"b\":2,\"c\":3,\"d\":4}","\"\\t\""];
-    my $json = SPVM::JSON->new;
-    $json->{relaxed} = 1;
-    unless (_validate($DEFAULT_JSON, $inputs, $outputs)) {
-      return 0;
-    }
-    $json->{relaxed} = 0;
-    for (my $i = 0; $i < @$inputs; $i++) {
+    {
       eval {
-        $json->encode($json->decode($inputs->[$i]));
+        $DEFAULT_JSON->decode("-");
       };
-      unless ($@) {
+      unless ($@ && contains($@, "malformed number (no digit after '-')")) {
+        $@ = undef;
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      my $test_case = ["1e.", "1e+.", "1.."];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (improper position of '.')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1.e", "1e+e", "1ee"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (improper position of 'e')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1.}"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (no digit after '.')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1e}"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (no digit after 'e')")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    {
+      my $test_case = ["1e+}", "1e-}"];
+      for (my $i = 0; $i < @$test_case; ++$i) {
+        my $input = $test_case->[$i];
+        eval {
+          $DEFAULT_JSON->decode($input);
+        };
+        unless ($@ && contains($@, "malformed number (no digit after exponential sign)")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+    }
+    return 1;
+  }
+
+  sub encode_bool : int () {
+    {
+      my $input = SPVM::JSON::Bool->TRUE;
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "true";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    {
+      my $input = SPVM::JSON::Bool->FALSE;
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "false";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub decode_bool : int () {
+    {
+      my $input = "true";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::JSON::Bool->TRUE;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    {
+      my $input = "false";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = SPVM::JSON::Bool->FALSE;
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub encode_string : int () {
+    {
+      my $input = "str";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"str\"";
+      unless ($got eq $expected) {
+        return 0;
+      }
+    }
+    # special characters
+    # '"'
+    {
+      my $input = "\"";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\\"\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\'
+    {
+      my $input = "\\";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\\\\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\n'
+    {
+      my $input = "\n";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\n\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\r'
+    {
+      my $input = "\r";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\r\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\t'
+    {
+      my $input = "\t";
+      my $got = $DEFAULT_JSON->encode($input);
+      my $expected = "\"\\t\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub decode_string : int () {
+    {
+      my $input = "\"str\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "str";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # special characters
+    # '"'
+    {
+      my $input = "\"\\\"\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\"";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\'
+    {
+      my $input = "\"\\\\\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\\";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '/'
+    {
+      my $input = "\"\\/\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "/";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\b'
+    {
+      my $input = "\"\\b\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\b";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\f'
+    {
+      my $input = "\"\\f\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\f";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\n'
+    {
+      my $input = "\"\\n\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\n";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\r'
+    {
+      my $input = "\"\\r\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\r";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # '\t'
+    {
+      my $input = "\"\\t\"";
+      my $got = $DEFAULT_JSON->decode($input);
+      my $expected = "\t";
+      unless (_equals($got, $expected)) {
+        return 0;
+      }
+    }
+    # control characters are not allowed
+    {
+      for (my $ch : byte = 0; $ch <= 31; ++$ch) {
+        eval {
+          $DEFAULT_JSON->decode("\"" . [ $ch ] . "\"");
+        };
+        unless ($@ && contains($@, "Control ASCII characters are not allowed in string")) {
+          $@ = undef;
+          return 0;
+        }
+        $@ = undef;
+      }
+      eval {
+        $DEFAULT_JSON->decode("\"" . [ (byte)127 ] . "\"");
+      };
+      unless ($@ && contains($@, "Control ASCII characters are not allowed in string")) {
+        $@ = undef;
         return 0;
       }
       $@ = undef;
@@ -196,36 +669,70 @@ package TestCase::JSON {
     return 1;
   }
 
-  sub test_special_chars : int () {
-    my $tests = ["\"\\\"\\\\\\t\\n\\r\""];
-    unless (_validate($DEFAULT_JSON, $tests, $tests)) {
+  sub encode_nested_hash : int () {
+    my $input = SPVM::Hash->newa([(object)
+      "A" => SPVM::Hash->newa([(object)
+        "B" => 1,
+        "C" => SPVM::Hash->newa([(object)
+          "D" => 0.1,
+          "E" => SPVM::JSON::Bool->TRUE,
+          "F" => "str",
+          "G" => SPVM::ObjectList->newa([(object)
+            "abc",
+            123,
+            SPVM::Hash->newa([(object)
+              "H" => "val",
+            ]),
+          ]),
+        ])
+      ]),
+      "I" => "EOF",
+    ]);
+    my $got = $DEFAULT_JSON->encode($input);
+    my $expected = "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"abc\",123,{\"H\":\"val\"}]}},\"I\":\"EOF\"}";
+    unless ($got eq $expected) {
       return 0;
     }
     return 1;
   }
 
-  sub test_null : int () {
+  sub decode_nested_hash : int () {
+    my $input = "{\"A\":{\"B\":1,\"C\":{\"D\":0.1,\"E\":true,\"F\":\"str\",\"G\":[\"abc\",123,{\"H\":\"val\"}]}},\"I\":\"EOF\"}";
+    my $got = $DEFAULT_JSON->decode($input);
+    my $expected = SPVM::Hash->newa([(object)
+      "A" => SPVM::Hash->newa([(object)
+        "B" => 1.0,
+        "C" => SPVM::Hash->newa([(object)
+          "D" => 0.1,
+          "E" => SPVM::JSON::Bool->TRUE,
+          "F" => "str",
+          "G" => SPVM::ObjectList->newa([(object)
+            "abc",
+            123.0,
+            SPVM::Hash->newa([(object)
+              "H" => "val",
+            ]),
+          ]),
+        ])
+      ]),
+      "I" => "EOF",
+    ]);
+    unless (_equals($got, $expected)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub encode_null : int () {
+    unless ($DEFAULT_JSON->encode(undef) eq "null") {
+      return 0;
+    }
+    return 1;
+  }
+  
+  sub decode_null : int () {
     unless ($DEFAULT_JSON->decode("null") == undef) {
-      warn("decoded value must be undef if root value is null");
       return 0;
-    }
-    unless ($DEFAULT_JSON->encode(undef) eq "") {
-      warn("encoded value must be empty is root value is undef");
-      return 0;
-    }
-    unless ($DEFAULT_JSON->encode($DEFAULT_JSON->decode("{\"a\":null}")) eq "{\"a\":null}") {
-      warn("value must remain null if it is not root");
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_map_inf_nan_to_undef : int () {
-    my $inputs = ["inf", "-inf", "nan"];
-    for (my $i = 0; $i < @$inputs; ++$i) {
-      unless ($DEFAULT_JSON->decode($inputs->[$i]) == undef) {
-        return 0;
-      }
     }
     return 1;
   }

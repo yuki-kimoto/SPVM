@@ -11,26 +11,28 @@ use SPVM 'TestCase::JSON';
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
-# SPVM::JSON
+# encode
 {
-  ok(TestCase::JSON->test_empty);
-  ok(TestCase::JSON->test_flat_hash);
-  ok(TestCase::JSON->test_flat_list);
-  ok(TestCase::JSON->test_digits_int);
-  ok(TestCase::JSON->test_digits_long);
-  ok(TestCase::JSON->test_digits_double);
-  ok(TestCase::JSON->test_root_is_primitive);
-  ok(TestCase::JSON->test_nest_object);
-  ok(TestCase::JSON->test_spaces);
-  ok(TestCase::JSON->test_format_name_separator);
-  ok(TestCase::JSON->test_format_indent);
-  ok(TestCase::JSON->test_format_pretty);
-  ok(TestCase::JSON->test_relaxed);
-  ok(TestCase::JSON->test_special_chars);
-  ok(TestCase::JSON->test_null);
-  ok(TestCase::JSON->test_map_inf_nan_to_undef);
+  ok(TestCase::JSON->encode_null);
+  ok(TestCase::JSON->encode_flat_hash);
+  ok(TestCase::JSON->encode_flat_list);
+  ok(TestCase::JSON->encode_int);
+  ok(TestCase::JSON->encode_double);
+  ok(TestCase::JSON->encode_bool);
+  ok(TestCase::JSON->encode_string);
+  ok(TestCase::JSON->encode_nested_hash);
 }
 
+# decode
+{
+  ok(TestCase::JSON->decode_null);
+  ok(TestCase::JSON->decode_flat_hash);
+  ok(TestCase::JSON->decode_flat_list);
+  ok(TestCase::JSON->decode_double);
+  ok(TestCase::JSON->decode_bool);
+  ok(TestCase::JSON->decode_string);
+  ok(TestCase::JSON->decode_nested_hash);
+}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::memory_blocks_count();

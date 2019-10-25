@@ -2,6 +2,491 @@ package TestCase::Lib::SPVM::CORE {
   use TestCase::Minimal;
   use SPVM::Errno;
   use SPVM::Time (time);
+  use SPVM::EqualityChecker;
+  use SPVM::Util;
+  use SPVM::EqualityChecker::Address;
+  
+  sub test_isalnum : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
+        my $ret = isalnum($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isalnum($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isalpha : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
+        my $ret = isalpha($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isalpha($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isblank : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= ' ' ||  $char <= '\t') {
+        my $ret = isblank($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isblank($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_iscntrl : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
+        my $ret = iscntrl($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = iscntrl($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isdigit : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= '0' && $char <= '9') {
+        my $ret = isdigit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isdigit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isgraph : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 0x21 && $char <= 0x7e) {
+        my $ret = isgraph($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isgraph($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_islower : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = islower($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = islower($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isprint : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 0x20 && $char <= 0x7e) {
+        my $ret = isprint($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isprint($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_ispunct : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+        my $ret = ispunct($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = ispunct($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isspace : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+        my $ret = isspace($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isspace($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isupper : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = isupper($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isupper($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_isxdigit : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
+        my $ret = isxdigit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isxdigit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_tolower : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = tolower($char);
+        unless ($ret == $char + 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = tolower($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_toupper : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = toupper($char);
+        unless ($ret == $char - 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = toupper($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_is_perl_space : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
+        my $ret = is_perl_space($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_space($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_is_perl_word : int () {
+    
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+      
+      if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
+        my $ret = is_perl_word($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_word($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+    
+    unless ($ok) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_complex_farray : int () {
+    my $z_array = complex_farray(
+      [FLT_MIN(), 2, 4],
+      [(float)1,  3, 5]
+    );
+
+    if ($z_array->[0]{re} == FLT_MIN() && $z_array->[0]{im} == 1
+      && $z_array->[1]{re} == 2 && $z_array->[1]{im} == 3
+      && $z_array->[2]{re} == 4 && $z_array->[2]{im} == 5)
+    {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub test_complex_darray : int () {
+    my $z_array = complex_darray(
+      [DBL_MIN(), 2, 4],
+      [(double)1, 3, 5]
+    );
+
+    if ($z_array->[0]{re} == DBL_MIN() && $z_array->[0]{im} == 1
+      && $z_array->[1]{re} == 2 && $z_array->[1]{im} == 3
+      && $z_array->[2]{re} == 4 && $z_array->[2]{im} == 5)
+    {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub test_complexf : int () {
+    my $z = complexf(FLT_MIN(), FLT_MIN() + 1);
+    if ($z->{re} == FLT_MIN() && $z->{im} == FLT_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub test_complexd : int () {
+    my $z = complexd(DBL_MIN(), DBL_MIN() + 1);
+    if ($z->{re} == DBL_MIN() && $z->{im} == DBL_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
 
   sub test_strtoi : int () {
     # 10 digit minimal and return type is int
@@ -274,55 +759,63 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-  sub test_isdigit : int () {
-    {
-      my $ok = isdigit('/');
-      if ($ok) {
-        return 0;
-      }
-    }
-    
-    {
-      my $ok = isdigit('0');
-      unless ($ok) {
-        return 0;
-      }
-    }
-    {
-      my $ok = isdigit('9');
-      unless ($ok) {
-        return 0;
-      }
-    }
-    {
-      my $ok = isdigit(':');
-      if ($ok) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
   sub test_rand : int () {
     my $seed = (int)time();
-    my $founds = new int[10];
+    my $founds_plus = new int[10];
+    my $founds_minus = new int[10];
+    my $rand = $seed;
     for (my $i = 0; $i < 100000; $i++) {
-      my $rand = rand(\$seed);
-      if ($rand < 0) {
-        return 0;
-      }
+      $rand = rand(\$rand);
+      
       my $dig0 = $rand % 10;
-      $founds->[$dig0] = 1;
+      if ($dig0 < 0) {
+        $founds_minus->[-$dig0] = 1;
+      }
+      else {
+        $founds_plus->[$dig0] = 1;
+      }
     }
     
-    unless (equals_iarray($founds, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+    unless (equals_iarray($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+      return 0;
+    }
+
+    unless (equals_iarray($founds_minus, [0, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
       return 0;
     }
     
     return 1;
   }
-  
+
+  sub test_random : int () {
+    my $seed = (int)time();
+    my $founds = new int[20];
+    my $rand = $seed;
+    for (my $i = 0; $i < 100000; $i++) {
+      $rand = rand(\$rand);
+      
+      my $random = (int)(random($rand) * 20);
+      $founds->[$random] = 1;
+    }
+    
+    unless (
+        equals_iarray(
+          $founds, 
+          [
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1
+          ]
+        )
+      )
+    {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub test_ucfirst : int () {
     {
       my $str = "@abc";
@@ -459,9 +952,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "bcd";
       my $replace = "AB";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
-      unless ($found_pos == 1) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 1) {
         return 0;
       }
       unless ($result_str eq "aABe") {
@@ -473,9 +966,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "bcd";
       my $replace = "AB";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 2, \$found_pos);
-      unless ($found_pos == -1) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 2, \$found_offset);
+      unless ($found_offset == -1) {
         return 0;
       }
       unless ($result_str eq $str) {
@@ -487,9 +980,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "abc";
       my $replace = "ABCD";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
-      unless ($found_pos == 0) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 0) {
         return 0;
       }
       unless ($result_str eq "ABCDde") {
@@ -501,9 +994,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "cde";
       my $replace = "ABCD";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
-      unless ($found_pos == 2) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 2) {
         return 0;
       }
       unless ($result_str eq "abABCD") {
@@ -515,9 +1008,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcdcd";
       my $substr = "cd";
       my $replace = "A";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 4, \$found_pos);
-      unless ($found_pos == 4) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 4, \$found_offset);
+      unless ($found_offset == 4) {
         return 0;
       }
       unless ($result_str eq "abcdA") {
@@ -529,10 +1022,10 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcd";
       my $substr = "bc";
       my $replace = "";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
       
-      unless ($found_pos == 1) {
+      unless ($found_offset == 1) {
         return 0;
       }
       unless ($result_str eq "ad") {
@@ -699,43 +1192,6 @@ package TestCase::Lib::SPVM::CORE {
       my $search = "pq";
       my $pos = rindex($target, $search, 2);
       unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_starts_with : int () {
-
-    {
-      my $target = "abc";
-      my $search = "ab";
-      unless (starts_with($target, $search)) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abc";
-      my $search = "abc";
-      unless (starts_with($target, $search)) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abc";
-      my $search = "abcd";
-      unless (! starts_with($target, $search)) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abc";
-      my $search = "bc";
-      unless (! starts_with($target, $search)) {
         return 0;
       }
     }
@@ -1023,6 +1479,7 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
   sub test_sliceo : int () {
+    
     {
       my $minimal1 = TestCase::Minimal->new;
       my $minimal2 = TestCase::Minimal->new;
@@ -1031,7 +1488,7 @@ package TestCase::Lib::SPVM::CORE {
       
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 0, 4);
-      unless (equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4])) {
+      unless (SPVM::Util->equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -1043,7 +1500,7 @@ package TestCase::Lib::SPVM::CORE {
       
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 1, 2);
-      unless (equals_oarray($slice, [$minimal2, $minimal3])) {
+      unless (SPVM::Util->equals_oarray($slice, [$minimal2, $minimal3], SPVM::EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -1166,7 +1623,7 @@ package TestCase::Lib::SPVM::CORE {
       
       my $nums = [$minimal1, $minimal2, $minimal3];
       reverseo($nums);
-      unless (equals_oarray($nums, [$minimal3, $minimal2, $minimal1])) {
+      unless (SPVM::Util->equals_oarray($nums, [$minimal3, $minimal2, $minimal1], SPVM::EqualityChecker::Address->new)) {
         return 0;
       }
     }
@@ -1342,46 +1799,6 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-  sub test_equals_oarray : int () {
-    my $minimal1 = TestCase::Minimal->new;
-    my $minimal2 = TestCase::Minimal->new;
-    my $minimal3 = TestCase::Minimal->new;
-    my $minimal4 = TestCase::Minimal->new;
-    my $nums1 = [$minimal1, $minimal2, $minimal3];
-    my $nums2 = [$minimal1, $minimal2, $minimal3];
-    my $nums3 = [$minimal1, $minimal2];
-    my $nums4 = [$minimal1, $minimal2, $minimal4];
-    my $nums5 = [(object)$minimal1, $minimal2, $minimal3];
-    
-    {
-      my $is_equals = equals_oarray($nums1, $nums2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_oarray($nums1, $nums3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_oarray($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_oarray($nums1, $nums5);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
-
   sub test_equals_strarray : int () {
     my $strings1 = ["abc", "def", "ghi"];
     my $strings2 = ["abc", "def", "ghi"];
@@ -1410,10 +1827,23 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
   
+  sub test_E : int () {
+    unless (E() == 2.7182818284590452354) {
+      return 0;
+    }
+    return 1;
+  }
 
-  sub test_type_name : int () {
+  sub test_PI : int () {
+    unless (PI() == 3.14159265358979323846) {
+      return 0;
+    }
+    return 1;
+  }
+  
+  sub test_get_type_name : int () {
     my $minimal = TestCase::Minimal->new;
-    my $type_name = type_name($minimal);
+    my $type_name = get_type_name($minimal);
     
     unless ($type_name eq "TestCase::Minimal") {
       return 0;
@@ -1571,45 +2001,6 @@ package TestCase::Lib::SPVM::CORE {
     return 1;
   }
 
-  sub test_copy_oarray : int () {
-    my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(INT32_MIN())];
-    my $objects_out = copy_oarray($objects);
-
-    unless ($objects->[0] == $objects_out->[0]) {
-      return 0;
-    }
-    
-    unless ($objects->[1] == $objects_out->[1]) {
-      return 0;
-    }
-    
-    unless ($objects->[2] == $objects_out->[2]) {
-      return 0;
-    }
-    
-    unless ((int)$objects->[0] == 1) {
-      return 0;
-    }
-    
-    unless ((int)$objects->[1] == 2) {
-      return 0;
-    }
-    
-    unless ((int)$objects->[2] == INT32_MIN()) {
-      return 0;
-    }
-    
-    unless (@$objects_out == 3) {
-      return 0;
-    }
-    
-    unless ($objects != $objects_out) {
-      return 0;
-    }
-    
-    return 1;
-  }
-
   sub test_copy_strarray : int () {
     my $strings = ["abc", "def", "hij"];
     my $strings_out = copy_strarray($strings);
@@ -1632,19 +2023,4 @@ package TestCase::Lib::SPVM::CORE {
     
     return 1;
   }
-
-=pod
-  # TODO: Windows compatibility
-  sub test_getenv : int () {
-    
-    my $value = getenv("SPVM_ENV_NAME");
-    
-    unless ($value && $value eq "SPVM_ENV_VALUE") {
-      return 0;
-    }
-    
-    return 1;
-  }
-=cut
-
 }

@@ -1,0 +1,14 @@
+package SPVM::EqualityChecker::Address {
+  sub new : SPVM::EqualityChecker::Address () {
+    return new SPVM::EqualityChecker::Address;
+  }
+  
+  sub : int ($self : self, $obj1 : object, $obj2 : object) {
+    if ($obj1 == $obj2) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+}

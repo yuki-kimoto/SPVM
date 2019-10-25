@@ -16,12 +16,15 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringList->push);
   ok(TestCase::Lib::SPVM::StringList->pop);
   ok(TestCase::Lib::SPVM::StringList->newa);
+  ok(TestCase::Lib::SPVM::StringList->new_capacity);
   ok(TestCase::Lib::SPVM::StringList->unshift);
   ok(TestCase::Lib::SPVM::StringList->shift);
   ok(TestCase::Lib::SPVM::StringList->length);
   ok(TestCase::Lib::SPVM::StringList->get);
   ok(TestCase::Lib::SPVM::StringList->set);
   ok(TestCase::Lib::SPVM::StringList->to_array);
+  ok(TestCase::Lib::SPVM::StringList->insert);
+  ok(TestCase::Lib::SPVM::StringList->remove);
 }
 
 # All object is freed

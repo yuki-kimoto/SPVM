@@ -39,6 +39,12 @@ SPVM::DoubleList - Continuous dynamic double array
   # Get double value.
   my $double_value = $double_list->get(2);
 
+  # Insert double value
+  $double_list->insert(1, 3);
+
+  # Remove double value
+  my $double_value = $double_list->remove(1);
+
   # Convert SPVM::DoubleList to double array.
   my $double_array = $double_list->to_array;
 
@@ -107,6 +113,18 @@ Set the value with index.
 
 Get the value with index.
 
+=head2 insert
+
+  sub insert : void ($self : self, $index : int, $value : double)
+
+Insert a element to the specific index.
+
+=head2 remove
+
+  sub remove : double ($self : self, $index : int)
+
+Remove and return the element which is specified by the index.
+  
 =head2 to_array
 
   sub to_array : double[] ($self : self)

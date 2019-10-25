@@ -1,15 +1,11 @@
 package SPVM::CORE {
   
+  # NOTE
   # SPVM::CORE is core function of SPVM
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for standard I/O and standard error.
   
-  native sub strtoi : int ($string : string, $digit : int);
-  native sub strtol : long ($string : string, $digit : int);
-  native sub strtof : float ($string : string);
-  native sub strtod : double ($string : string);
-  
-  sub chomp : string ($string : string) {
+  precompile sub chompr : string ($string : string) {
     unless ($string) {
       return undef;
     }
@@ -31,9 +27,457 @@ package SPVM::CORE {
     return $new_string;
   }
 
-  native sub isdigit : int ($char : int);
+  precompile sub complex_farray : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[]) {
+    if (@$re_values != @$im_values) {
+      die "Real values length is different from imaginary values";
+    }
+    
+    my $z_array = new SPVM::Complex_2f[@$re_values];
+    for (my $i = 0; $i < @$re_values; $i++) {
+      $z_array->[$i]{re} = $re_values->[$i];
+      $z_array->[$i]{im} = $im_values->[$i];
+    }
+    
+    return $z_array;
+  }
   
-  sub ispspace : int ($char : int) {
+  precompile sub complex_darray : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
+    if (@$re_values != @$im_values) {
+      die "Real values length is different from imaginary values";
+    }
+    
+    my $z_array = new SPVM::Complex_2d[@$re_values];
+    for (my $i = 0; $i < @$re_values; $i++) {
+      $z_array->[$i]{re} = $re_values->[$i];
+      $z_array->[$i]{im} = $im_values->[$i];
+    }
+    
+    return $z_array;
+  }
+
+  precompile sub complexf : SPVM::Complex_2f ($re : float, $im : float) {
+    my $z : SPVM::Complex_2f;
+    $z->{re} = $re;
+    $z->{im} = $im;
+    return $z;
+  }
+  
+  precompile sub complexd : SPVM::Complex_2d ($re : double, $im : double) {
+    my $z : SPVM::Complex_2d;
+    $z->{re} = $re;
+    $z->{im} = $im;
+    return $z;
+  }
+
+  precompile sub copy_barray : byte[] ($nums : byte[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new byte[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  precompile sub copy_str : string ($string : string) {
+    my $bytes = (byte[])$string;
+    
+    return (string)$bytes;
+  }
+  
+  precompile sub copy_sarray : short[] ($nums : short[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new short[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+  
+  precompile sub copy_iarray : int[] ($nums : int[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new int[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  precompile sub copy_larray : long[] ($nums : long[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new long[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  precompile sub copy_farray : float[] ($nums : float[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new float[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  precompile sub copy_darray : double[] ($nums : double[]) {
+    my $length = @$nums;
+    
+    my $new_nums = new double[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_nums->[$i] = $nums->[$i];
+    }
+    
+    return $new_nums;
+  }
+
+  precompile sub copy_strarray : string[] ($strings : string[]) {
+    my $length = @$strings;
+    
+    my $new_strings = new string[$length];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_strings->[$i] = copy_str($strings->[$i]);
+    }
+    
+    return $new_strings;
+  }
+
+  precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+
+  precompile sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+  precompile sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
+    my $is_equals = 1;
+    if (@$nums1 == @$nums2) {
+      for (my $i = 0; $i < @$nums1; $i++) {
+        if ($nums1->[$i] != $nums2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+
+  precompile sub equals_strarray : int ($strings1 : string[], $strings2 : string[]) {
+    my $is_equals = 1;
+    if (@$strings1 == @$strings2) {
+      for (my $i = 0; $i < @$strings1; $i++) {
+        if ($strings1->[$i] ne $strings2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+    
+    return $is_equals;
+  }
+
+  sub E : double () { return 2.7182818284590452354; }
+
+  native sub get_type_name : string ($obj : object);
+  
+  precompile sub index : int ($str : string, $substr : string, $posision : int) {
+    my $strCount = length $str;
+    my $substrCount = length $substr;
+    
+    if ($posision >= $strCount) {
+      my $ret : int;
+      if ($substrCount == 0) {
+        $ret = $strCount;
+      }
+      else {
+        $ret = -1;
+      }
+      return $ret;
+    }
+    if ($posision < 0) {
+      $posision = 0;
+    }
+    if ($substrCount == 0) {
+      return $posision;
+    }
+
+    my $first : byte  = $substr->[0];
+    my $max : int = ($strCount - $substrCount);
+
+    for (my $i = $posision; $i <= $max; $i++) {
+      if ($str->[$i] != $first) {
+        while (++$i <= $max && $str->[$i] != $first) {}
+      }
+
+      if ($i <= $max) {
+        my $j = $i + 1;
+        my $end = $j + $substrCount - 1;
+        for (my $k = 01; $j < $end && $str->[$j] == $substr->[$k]; ($j++, $k++)) {}
+
+        if ($j == $end) {
+          return $i;
+        }
+      }
+    }
+    return -1;
+  }
+
+  sub INT8_MIN : byte () { return -128; }
+  sub INT8_MAX : byte () { return 127; }
+
+  sub INT16_MIN : short () { return -32768; }
+  sub INT16_MAX : short () { return 32767; }
+
+  sub INT32_MIN : int () { return -2147483648; }
+  sub INT32_MAX : int () { return 2147483647; }
+
+  sub UINT32_MAX : long () { return 4294967295L; }
+
+  sub INT64_MIN : long () { return -9223372036854775808L; }
+  sub INT64_MAX : long () { return 9223372036854775807L; }
+
+  native sub DBL_MAX : double ();
+  native sub DBL_MIN : double ();
+
+  native sub FLT_MAX : float ();
+  native sub FLT_MIN : float();
+
+  precompile sub isalnum : int ($char : int) {
+    
+    if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isalpha : int ($char : int) {
+    
+    if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isblank : int ($char : int) {
+    
+    if ($char >= ' ' ||  $char <= '\t') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub iscntrl : int ($char : int) {
+    
+    if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isdigit : int ($char : int) {
+    
+    if ($char >= '0' && $char <= '9') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isgraph : int ($char : int) {
+    
+    if ($char >= 0x21 && $char <= 0x7e) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub islower : int ($char : int) {
+    
+    if ($char >= 'a' && $char <= 'z') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isprint : int ($char : int) {
+    
+    if ($char >= 0x20 && $char <= 0x7e) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub ispunct : int ($char : int) {
+    
+    if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isspace : int ($char : int) {
+    
+    if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isupper : int ($char : int) {
+    
+    if ($char >= 'A' && $char <= 'Z') {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub isxdigit : int ($char : int) {
+    
+    if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+  }
+
+  precompile sub tolower : int ($char : int) {
+    
+    if ($char >= 'A' && $char <= 'Z') {
+      $char = $char + 0x20;
+    }
+    return $char;
+  }
+
+  precompile sub toupper : int ($char : int) {
+    
+    if ($char >= 'a' && $char <= 'z') {
+      $char = $char - 0x20;
+    }
+    return $char;
+  }
+  
+  # This is same as Perl \s
+  precompile sub is_perl_space : int ($char : int) {
     my $ispspace = 0;
     switch ($char) {
       case ' ':
@@ -49,7 +493,7 @@ package SPVM::CORE {
     return $ispspace;
   }
 
-  sub ispword : int ($char : int) {
+  precompile sub is_perl_word : int ($char : int) {
     my $ispword = 0;
     
     if ($char >= 'a' && $char <= 'z') {
@@ -67,7 +511,103 @@ package SPVM::CORE {
     return $ispword;
   }
 
-  native sub rand : int ($seed_ref : int&);
+  precompile sub joinb : string ($sep : string, $nums : byte[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  
+  precompile sub joins : string ($sep : string, $nums : short[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  
+  precompile sub joini : string ($sep : string, $nums : int[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  
+  precompile sub joinl : string ($sep : string, $nums : long[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  
+  precompile sub joinf : string ($sep : string, $nums : float[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+  
+  precompile sub joind : string ($sep : string, $nums : double[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = (string)$nums->[$i];
+      $join .= $string;
+      if ($i != @$nums - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
+
+  precompile sub join : string ($sep : string, $strings : string[]) {
+    my $join = "";
+    
+    for (my $i = 0; $i < @$strings; $i++) {
+      my $string = $strings->[$i];
+      $join .= $string;
+      if ($i != @$strings - 1) {
+        $join .= $sep;
+      }
+    }
+    
+    return $join;
+  }
   
   precompile sub lc : string($str : string) {
     
@@ -108,6 +648,96 @@ package SPVM::CORE {
     return (string)$new_str;
   }
 
+  native sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
+
+  native sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
+
+  native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
+
+  native sub print : void ($value : string);
+
+  sub PI : double () { return 3.14159265358979323846; }
+
+  precompile sub rand : int ($seed_ref : int&) {
+    my $y = $$seed_ref;
+    $y = $y ^ ($y << 13);
+    $y = $y ^ ($y >>> 17);
+    $y = $y ^ ($y << 5);
+    return $y;
+  }
+
+  precompile sub random : double ($rand : int) {
+    my $random = (double)((long)$rand & 0xFFFFFFFFL) / (UINT32_MAX() + 1);
+    return $random;
+  }
+  
+  precompile sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
+    unless ($substr && length $substr > 0) {
+      die "Sub string must have length";
+    }
+    my $found_offset = index($str, $substr, $start_offset);
+    $$found_offset_ref = $found_offset;
+    if ($found_offset >= 0) {
+      my $str_len = length $str;
+      my $substr_len = length $substr;
+      my $replace_len = length $replace;
+      
+      my $result_str_len = $str_len + $replace_len - $substr_len;
+      my $result_str = new byte[$result_str_len];
+      
+      if ($found_offset > 0) {
+        memmoveb((byte[])$result_str, 0, (byte[])$str, 0, $found_offset);
+      }
+      memmoveb((byte[])$result_str, $found_offset, (byte[])$replace, 0, $replace_len);
+      
+      my $str_rest_offset = $found_offset + $substr_len;
+      my $str_rest_length = $str_len - $str_rest_offset;
+      my $result_rest_offset = $found_offset + $replace_len;
+      my $result_rest_length = $result_str_len - $result_rest_offset;
+      memmoveb((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
+      
+      return $result_str;
+    }
+    else {
+      my $copy_str = copy_str($str);
+      return $copy_str;
+    }
+  }
+
+  precompile sub replace_all : string ($str : string, $substr : string, $replace : string) {
+
+    unless ($str) { die "String must be defined"; }
+    
+    my $offset = 0;
+    my $found_offset : int;
+    my $substr_len = length $substr;
+    my $result_str = $str;
+    while (1) {
+      $result_str = replace($result_str, $substr, $replace, $offset, \$found_offset);
+      if ($found_offset >= 0) {
+        $offset = $found_offset + $substr_len;
+      }
+      else {
+        return $result_str;
+      }
+    }
+  }
+
+  native sub strtoi : int ($string : string, $digit : int);
+  native sub strtol : long ($string : string, $digit : int);
+  native sub strtof : float ($string : string);
+  native sub strtod : double ($string : string);
+  
   precompile sub uc : string($str : string) {
 
     unless ($str) { die "String must be defined"; }
@@ -147,123 +777,16 @@ package SPVM::CORE {
     return (string)$new_str;
   }
 
-  precompile sub replace_all : string ($str : string, $substr : string, $replace : string) {
-
-    unless ($str) { die "String must be defined"; }
-    
-    my $offset = 0;
-    my $found_pos : int;
+  precompile sub rindex : int ($str : string, $substr : string, $offset : int) {
+    my $str_len = length $str;
     my $substr_len = length $substr;
-    my $result_str = $str;
-    while (1) {
-      $result_str = replace($result_str, $substr, $replace, $offset, \$found_pos);
-      if ($found_pos >= 0) {
-        $offset = $found_pos + $substr_len;
-      }
-      else {
-        return $result_str;
-      }
+    if ($offset > $str_len - $substr_len) {
+      $offset = $str_len - $substr_len;
     }
-  }
-
-  precompile sub replace : string ($str : string, $substr : string, $replace : string, $from : int, $found_pos_ref : int&) {
-    unless ($substr && length $substr > 0) {
-      die "Sub string must have length";
-    }
-    my $found_pos = index($str, $substr, $from);
-    $$found_pos_ref = $found_pos;
-    if ($found_pos >= 0) {
-      my $str_len = length $str;
-      my $substr_len = length $substr;
-      my $replace_len = length $replace;
-      
-      my $result_str_len = $str_len + $replace_len - $substr_len;
-      my $result_str = new byte[$result_str_len];
-      
-      if ($found_pos > 0) {
-        memmoveb((byte[])$result_str, 0, (byte[])$str, 0, $found_pos);
-      }
-      memmoveb((byte[])$result_str, $found_pos, (byte[])$replace, 0, $replace_len);
-      
-      my $str_rest_offset = $found_pos + $substr_len;
-      my $str_rest_length = $str_len - $str_rest_offset;
-      my $result_rest_offset = $found_pos + $replace_len;
-      my $result_rest_length = $result_str_len - $result_rest_offset;
-      memmoveb((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
-      
-      return $result_str;
-    }
-    else {
-      my $copy_str = copy_str($str);
-      return $copy_str;
-    }
-  }
-
-  native sub memcpyb : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
-  native sub memmoveb : void ($dist_str : byte[], $dist_offset : int, $src_str : byte[], $src_offset : int, $length : int);
-  native sub memcpys : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
-  native sub memmoves : void ($dist_str : short[], $dist_offset : int, $src_str : short[], $src_offset : int, $length : int);
-  native sub memcpyi : void ($dist_str : int[], $dist_offset : int, $src_str : int[], $src_offset : int, $length : int);
-  native sub memmovei : void ($dist_str : int[], $dist_offset : int, $src_str : int[], $src_offset : int, $length : int);
-  native sub memcpyl : void ($dist_str : long[], $dist_offset : int, $src_str : long[], $src_offset : int, $length : int);
-  native sub memmovel : void ($dist_str : long[], $dist_offset : int, $src_str : long[], $src_offset : int, $length : int);
-  native sub memcpyf : void ($dist_str : float[], $dist_offset : int, $src_str : float[], $src_offset : int, $length : int);
-  native sub memmovef : void ($dist_str : float[], $dist_offset : int, $src_str : float[], $src_offset : int, $length : int);
-  native sub memcpyd : void ($dist_str : double[], $dist_offset : int, $src_str : double[], $src_offset : int, $length : int);
-  native sub memmoved : void ($dist_str : double[], $dist_offset : int, $src_str : double[], $src_offset : int, $length : int);
-  
-  precompile sub index : int($source : string, $target : string, $fromIndex : int) {
-    my $sourceCount = length $source;
-    my $targetCount = length $target;
-    
-    if ($fromIndex >= $sourceCount) {
-      my $ret : int;
-      if ($targetCount == 0) {
-        $ret = $sourceCount;
-      }
-      else {
-        $ret = -1;
-      }
-      return $ret;
-    }
-    if ($fromIndex < 0) {
-      $fromIndex = 0;
-    }
-    if ($targetCount == 0) {
-      return $fromIndex;
-    }
-
-    my $first : byte  = $target->[0];
-    my $max : int = ($sourceCount - $targetCount);
-
-    for (my $i = $fromIndex; $i <= $max; $i++) {
-      if ($source->[$i] != $first) {
-        while (++$i <= $max && $source->[$i] != $first) {}
-      }
-
-      if ($i <= $max) {
-        my $j = $i + 1;
-        my $end = $j + $targetCount - 1;
-        for (my $k = 01; $j < $end && $source->[$j] == $target->[$k]; ($j++, $k++)) {}
-
-        if ($j == $end) {
-          return $i;
-        }
-      }
-    }
-    return -1;
-  }
-
-  precompile sub rindex : int ($text : string, $search : string, $from : int) {
-    my $text_len = length $text;
-    my $search_len = length $search;
-    if ($from > $text_len - $search_len) {
-      $from = $text_len - $search_len;
-    }
-    for (my $i = $from; $i >= 0; --$i) {
+    for (my $i = $offset; $i >= 0; --$i) {
       my $match = 1;
-      for (my $j = 0; $j < $search_len; ++$j) {
-        if ($text->[$i + $j] != $search->[$j]) {
+      for (my $j = 0; $j < $substr_len; ++$j) {
+        if ($str->[$i + $j] != $substr->[$j]) {
           $match = 0;
           last;
         }
@@ -275,35 +798,21 @@ package SPVM::CORE {
     return -1;
   }
 
-  precompile sub starts_with : int ($source : string, $prefix : string) {
-    my $source_len = length $source;
-    my $prefix_len = length $prefix;
-    unless ($source_len >= $prefix_len) {
-      return 0;
-    }
-    for (my $i = 0; $i < $prefix_len; ++$i) {
-      unless ($prefix->[$i] == $source->[$i]) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  precompile sub contains : int ($text : string, $pattern : string) {
-    if (!$text) {
+  precompile sub contains : int ($str : string, $substr : string) {
+    if (!$str) {
       die "Target string must be defined";
     }
-    if (!$pattern) {
+    if (!$substr) {
       die "Search string must be defined";
     }
 
-    my $pat_len = length $pattern;
-    my $text_len = length $text;
+    my $pat_len = length $substr;
+    my $str_len = length $str;
     my $i = 0;
     my $j = 0;
     
-    while ($i < $text_len && $j < $pat_len) {
-      if ($text->[$i] == $pattern->[$j]) {
+    while ($i < $str_len && $j < $pat_len) {
+      if ($str->[$i] == $substr->[$j]) {
         $i++;
         $j++;
       } else {
@@ -323,36 +832,15 @@ package SPVM::CORE {
   native sub abs : int ($x : int);
   native sub labs : long ($x : long);
 
-  native sub init_native_constants : void ();
-
   native sub strerror : string ($errno : int);
   
-  native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
-
-  precompile sub replaceb : void ($nums : byte[], $offset : int, $replaces : byte[]) {
-    
-    if ($nums == undef) {
-      die "Array must be defined";
-    }
-    
-    my $array_length = @$nums;
-    
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
-    }
-    
-    my $length = @$replaces;
-    
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
-    }
-    
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $nums->[$pos] = $replaces->[$pos];
-      $pos++;
-    }
-  }
+  native sub reverseb : void ($nums : byte[]);
+  native sub reverses : void ($nums : short[]);
+  native sub reversei : void ($nums : int[]);
+  native sub reversel : void ($nums : long[]);
+  native sub reversef : void ($nums : float[]);
+  native sub reversed : void ($nums : double[]);
+  native sub reverseo : void ($nums : oarray);
 
   precompile sub substr : string ($string : string, $offset : int, $length : int) {
     
@@ -602,414 +1090,5 @@ package SPVM::CORE {
     return $slice;
   }
 
-  native sub reverseb : void ($nums : byte[]);
-  native sub reverses : void ($nums : short[]);
-  native sub reversei : void ($nums : int[]);
-  native sub reversel : void ($nums : long[]);
-  native sub reversef : void ($nums : float[]);
-  native sub reversed : void ($nums : double[]);
-  native sub reverseo : void ($nums : oarray);
-  
-  precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-
-  precompile sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-
-  precompile sub equals_oarray : int ($nums1 : oarray, $nums2 : oarray) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-
-  precompile sub equals_strarray : int ($strings1 : string[], $strings2 : string[]) {
-    my $is_equals = 1;
-    if (@$strings1 == @$strings2) {
-      for (my $i = 0; $i < @$strings1; $i++) {
-        if ($strings1->[$i] ne $strings2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  
-  native sub type_name : string ($object : object);
-  native sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
-  native sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
-  native sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
-  native sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
-  native sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
-  native sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
-  native sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
-  native sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
-  
-  sub copy_str : string ($string : string) {
-    my $bytes = (byte[])$string;
-    
-    return (string)$bytes;
-  }
-  
-  sub copy_barray : byte[] ($nums : byte[]) {
-    my $length = @$nums;
-    
-    my $new_nums = new byte[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-    
-    return $new_nums;
-  }
-
-  sub copy_sarray : short[] ($nums : short[]) {
-    my $length = @$nums;
-    
-    my $new_nums = new short[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-    
-    return $new_nums;
-  }
-  
-  sub copy_iarray : int[] ($nums : int[]) {
-    my $length = @$nums;
-    
-    my $new_nums = new int[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-    
-    return $new_nums;
-  }
-
-  sub copy_larray : long[] ($nums : long[]) {
-    my $length = @$nums;
-    
-    my $new_nums = new long[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-    
-    return $new_nums;
-  }
-
-  sub copy_farray : float[] ($nums : float[]) {
-    my $length = @$nums;
-    
-    my $new_nums = new float[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-    
-    return $new_nums;
-  }
-
-  sub copy_darray : double[] ($nums : double[]) {
-    my $length = @$nums;
-    
-    my $new_nums = new double[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_nums->[$i] = $nums->[$i];
-    }
-    
-    return $new_nums;
-  }
-
-  sub copy_oarray : object[] ($objects : object[]) {
-    my $length = @$objects;
-    
-    my $new_objects = new object[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_objects->[$i] = $objects->[$i];
-    }
-    
-    return $new_objects;
-  }
-
-  sub copy_strarray : string[] ($strings : string[]) {
-    my $length = @$strings;
-    
-    my $new_strings = new string[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_strings->[$i] = copy_str($strings->[$i]);
-    }
-    
-    return $new_strings;
-  }
-
-  sub complex_farray : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[]) {
-    if (@$re_values != @$im_values) {
-      die "Real values length is different from imaginary values";
-    }
-    
-    my $z_array = new SPVM::Complex_2f[@$re_values];
-    for (my $i = 0; $i < @$re_values; $i++) {
-      $z_array->[$i]{re} = $re_values->[$i];
-      $z_array->[$i]{im} = $im_values->[$i];
-    }
-    
-    return $z_array;
-  }
-  
-  sub complex_array : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[]) {
-    if (@$re_values != @$im_values) {
-      die "Real values length is different from imaginary values";
-    }
-    
-    my $z_array = new SPVM::Complex_2d[@$re_values];
-    for (my $i = 0; $i < @$re_values; $i++) {
-      $z_array->[$i]{re} = $re_values->[$i];
-      $z_array->[$i]{im} = $im_values->[$i];
-    }
-    
-    return $z_array;
-  }
-
-  sub complexf : SPVM::Complex_2f ($re : float, $im : float) {
-    my $z : SPVM::Complex_2f;
-    $z->{re} = $re;
-    $z->{im} = $im;
-    return $z;
-  }
-  sub complex : SPVM::Complex_2d ($re : double, $im : double) {
-    my $z : SPVM::Complex_2d;
-    $z->{re} = $re;
-    $z->{im} = $im;
-    return $z;
-  }
-  sub join : string ($sep : string, $strings : string[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$strings; $i++) {
-      my $string = $strings->[$i];
-      $join .= $string;
-      if ($i != @$strings - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-  sub joinb : string ($sep : string, $nums : byte[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $join .= $string;
-      if ($i != @$nums - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-  sub joins : string ($sep : string, $nums : short[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $join .= $string;
-      if ($i != @$nums - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-  sub joini : string ($sep : string, $nums : int[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $join .= $string;
-      if ($i != @$nums - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-  sub joinl : string ($sep : string, $nums : long[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $join .= $string;
-      if ($i != @$nums - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-  sub joinf : string ($sep : string, $nums : float[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $join .= $string;
-      if ($i != @$nums - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-  sub joind : string ($sep : string, $nums : double[]) {
-    my $join = "";
-    
-    for (my $i = 0; $i < @$nums; $i++) {
-      my $string = (string)$nums->[$i];
-      $join .= $string;
-      if ($i != @$nums - 1) {
-        $join .= $sep;
-      }
-    }
-    
-    return $join;
-  }
-
-  native sub print : void ($value : string);
   native sub warn : void ($value : string);
-
-  native sub PI : double ();
-  native sub E : double ();
-
-  native sub INT8_MIN : byte ();
-  native sub INT8_MAX : byte ();
-
-  native sub INT16_MIN : short ();
-  native sub INT16_MAX : short ();
-
-  native sub INT32_MIN : int ();
-  native sub INT32_MAX : int ();
-
-  native sub INT64_MIN : long ();
-  native sub INT64_MAX : long ();
-
-  native sub FLT_MAX : float ();
-  native sub FLT_MIN : float();
-  
-  native sub DBL_MAX : double ();
-  native sub DBL_MIN : double ();
-
-  # hasher function
-  native sub murmur_hash : long ($string : string, $seed : int);
 }

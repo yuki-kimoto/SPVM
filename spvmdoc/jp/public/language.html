@@ -423,7 +423,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %type <opval> opt_packages packages package package_block refcnt
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
+%type <opval> sub cb_obj opt_args args arg invocant has use require our string_length
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -531,7 +531,7 @@ sub
   : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
   | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
 
-anon_sub
+cb_obj
   : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
 
@@ -737,7 +737,7 @@ assign
 new
   : NEW basic_type
   | NEW array_type_with_length
-  | anon_sub
+  | cb_obj
 
 array_init
   : '[' opt_expressions ']'
@@ -1420,44 +1420,28 @@ if (require Foo) {
 }
 </pre>
       <p>
-        if require文では、elsifやelseを続けることができないので注意してください。
-      </p>
-      <p>
-        一つの例を見てみましょう。以下の例で、Fooが存在しない場合は、コンパイルエラーにはならず、ifブロックの中身が存在しないことになります。そのため「my $foo = new Foo;」は、存在しないことになっているので、コンパイルエラーになりません。
+        if require文はelse文を続けることができます。elsif文は、指定できないので注意してください。
       </p>
 <pre>
 if (require Foo) {
-  my $foo = new Foo;
+  
+}
+else {
+  
 }
 </pre>
-     <p>
-       ひとつのテクニックとして、if require構文と<a href="#language-type-callback">コールバック型</a>と<a href="#language-sub-anon">無名サブルーチン</a>を使うと、モジュールを選択的に利用することができます。以下の例では、Foo->method1とBar->mehtod2を選択的に選んで実行しています。
-     </p>
+      
+      <p>
+        一つの例を見てみましょう。以下の例で、Fooが存在しない場合は、コンパイルエラーにはならず、ifブロックがないことになります。そのため「$foo = new Foo;」は、存在しないことになっているので、コンパイルエラーになりません。elseブロックは存在するので、警告がされます。
+      </p>
 <pre>
-package SomeCallback : callback_t {
-  sub foo : int ($self : self, $arg : int);
+my $foo : object;
+if (require Foo) {
+  $foo = new Foo;
 }
-
-# 別の関数内
-my $callback : SomeCallback;
-
-unless ($inteface) {
-  if (require Foo) {
-    $callback = sub : int ($self : self, $arg : int) {
-      Foo->method1($arg);
-    };
-  }
+else {
+  warn("Warning: Can't load Foo");
 }
-
-unless ($inteface) {
-  if (require Bar) {
-    $callback = sub : int ($self : self, $arg : int) {
-      Bar->method2($arg);
-    }
-  }
-}
-
-my $result = $callback->foo(3);
 </pre>
 
       <h2 id="language-allow-access">アクセス許可</h2>
@@ -1824,7 +1808,7 @@ $z_ref->{im} = 3;
       <ul class="list">
         <li><a href="#language-sub-definition">サブルーチンの定義</a></li>
         <li><a href="#language-sub-constant">定数サブルーチン</a></li>
-        <li><a href="#language-sub-anon">無名サブルーチン</a></li>
+        <li><a href="#language-sub-new-callback-object">コールバックオブジェクトの生成</a></li>
         <li><a href="#language-sub-capture">キャプチャ</a></li>
         <li><a href="#language-sub-method">メソッド</a></li>
         <li><a href="#language-sub-signature">シグネチャ</a></li>
@@ -1972,9 +1956,9 @@ sub foo : double () { return 5.0; }
 sub foo : int () { return 5 + 3; }
 </pre>
 
-      <h3 id="language-sub-anon">無名サブルーチン</h3>
+      <h3 id="language-sub-new-callback-object">コールバックオブジェクトの生成</h3>
       <p>
-        無名サブルーチンとは、名前を持たないサブルーチンのことです。
+        コールバックオブジェクトの生成とは、コールバックの用途で、特別な構文を使って、コールバック型に適合するオブジェクトを生成する文法のことです。
       </p>
 <pre>
 sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
@@ -1982,18 +1966,18 @@ sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
 }
 </pre>
       <p>
-        無名サブルーチンを定義すると、内部的に、パッケージの定義がおこなわれ、そのパッケージを元にしたオブジェクトが生成され、<a href="#language-expression">式</a>として返されます。以下のように変数に代入することが可能です。
+        コールバックオブジェクトの生成を行うと、内部的に、パッケージの定義がおこなわれ、そのパッケージを元にしたオブジェクトが生成され、<a href="#language-expression">式</a>として返されます。以下のように変数に代入することが可能です。
       </p>
 <pre>
-my $anon_sub = sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
+my $cb_obj = sub : 型名 ($self : self, 引数1, 引数2, ..., 引数n) {
   
 };
 </pre>
       <p>
-        無名サブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
+        コールバックオブジェクトの生成で定義されるサブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。また名前を持たないサブルーチンでなければなりません。
       </p>
       <p>
-        <b>無名サブルーチンのサンプル</b>
+        <b>コールバックオブジェクトの生成のサンプル</b>
       </p>
 <pre>
 my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
@@ -2001,16 +1985,16 @@ my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
 }
 </pre>
       <p>
-        無名サブルーチンは、呼び出すことができます。無名サブルーチンの呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
+        コールバックオブジェクトの生成によって生成されたオブジェクトは、通常のオブジェクトなので、メソッドを呼び出すことができます。コールバックオブジェクトの生成の呼び出しについては、<a href="language-expression-callsub">サブルーチンの呼び出し</a>を見てください。
       <p>
 
       <h3 id="language-sub-capture">キャプチャ</h3>
       <p>
-        無名サブルーチンにおいては、キャプチャという構文を使って、無名サブルーチンの外側で定義された変数を、無名サブルーチンの内側で使うことができます。
+        コールバックオブジェクトの生成においては、キャプチャという構文を使って、コールバックオブジェクトの生成によって定義されたサブルーチンの外側で定義された変数を、コールバックオブジェクトの生成によって定義されたサブルーチンの内側で使うことができます。
       </p>
 <pre>
 # キャプチャ
-[変数名1 : 型1, 変数名2 : 型2] sub : int ($self : self, $x1 : object, $x2 : object) {
+[変数名1 : 型1, 変数名2 : 型2] sub サブルーチン名 : int ($self : self, $x1 : object, $x2 : object) {
   
 };
 </pre>
@@ -2026,7 +2010,6 @@ my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object
   print "$foo\n";
   print "$bar\n";
 }
-
 </pre>
       <p>
         キャプチャで使用する変数名は、<a href="#language-parser-identifier-field-name">フィールド名</a>の先頭に「$」を付けたものでなければなりません。
@@ -2041,14 +2024,14 @@ my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object
         キャプチャ変数と同名の<a href="#language-package-var">パッケージ変数</a>が存在する場合は、キャプチャ変数にアクセスします。
       </p>
       <p>
-        無名サブルーチンとキャプチャをシンタックスシュガーを使わないで記述すると次のようになります。
+        コールバックオブジェクトの生成とキャプチャをシンタックスシュガーを使わないで記述すると次のようになります。
       </p>
 <pre>
 package ComapartorImpl {
   has foo : int;
   has bar : long;
   
-  sub compare : int ($self : self, $x1 : object, $x2 : object) {
+  sub : int ($self : self, $x1 : object, $x2 : object) {
     
     print $self->{foo} . "\n";
     print $self->{bar} . "\n";
@@ -2526,7 +2509,7 @@ while (my $bar = 1) {
       <h4 id="language-block-statement-sub">サブルーチンブロック</h4>
 <pre>
 # サブルーチンのブロック
-sub : int () {
+sub foo : int () {
 
 }
 </pre>
@@ -2724,45 +2707,44 @@ $@
       
       <h2 id="language-callback">コールバック</h2>
       <p>
-        SPVMにおけるコールバック型とは、実装を持たないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてcallback_tデスクリプタを指定すると、コールバック型になります。
+        SPVMにおけるコールバック型とは、実装を持たない名前のないメソッドが一つだけ定義されたパッケージ型のことをいいます。<a href="#language-package-definition">パッケージの定義</a>においてcallback_tデスクリプタを指定すると、コールバック型になります。
       </p>
       <p>
         コールバック型の目的は、異なるオブジェクトが、同じメソッド定義を持つときに、どちらも代入できる型を提供することにあります。C言語の関数ポインタに該当する機能をSPVMにおいて実現するものと考えてください。
       </p>
 <pre>
-package Foo1 : public {
-  sub bar : int ($self : self, $num : int) {
-    return $num * 2;
+package Foo1 {
+  sub new : Foo1 () {
+    new Foo1;
   }
-  
-  sub xxx : int () {
-    
+  sub : int ($self : self, $num : int) {
+    return 1 + $num;
   }
 }
 
-package Foo2 : public {
-  sub bar : int ($self : self, $num : int) {
-    return $num * 3;
+package Foo2 {
+  sub new : Foo2 () {
+    new Foo2;
   }
-  sub yyy : int () {
-    
+  sub : int ($self : self, $num : int) {
+    return 2 + $num;
   }
 }
 
 package FooCallback : callback_t {
-  sub bar : int ($self : self, $num : int);
+  sub : int ($self : self, $num : int);
 }
 </pre>
       
       <p>
-        Foo1とFoo2は同じメソッド定義「sub bar : int ($self : self, $num : int)」を持ちます。ここで、選択的にFoo1またはFoo2のメソッドを呼び出したいとします。
+        Foo1とFoo2は同じメソッド定義「sub : int ($self : self, $num : int)」を持ちます。ここで、選択的にFoo1またはFoo2のメソッドを呼び出したいとします。
       </p>
       <p>
         この場合に、同じメソッド定義を持つコールバック型FooCallbackを定義すると、この型にどちらのオブジェクトも代入できます。そして、このオブジェクトから、メソッドを呼び出すことができます。
       </p>
 <pre>
-my $foo1 = new Foo1;
-my $foo2 = new Foo2;
+my $foo1 = Foo1->new;
+my $foo2 = Foo2->new;
 
 my $foo : FooCallback;
 
@@ -2774,10 +2756,10 @@ else {
   $foo = $foo2;
 }
 
-my $ret = $foo->bar(2);
+my $ret = $foo->(5);
 </pre>
       <p>
-        $flagが1の場合は、Foo1のbarが、そうでない場合はFoo2のbarが呼び出されます。
+        $flagが1の場合は、Foo1の無名メソッドが、そうでない場合はFoo2の無名メソッドが呼び出されます。
       </p>
       <p>
         コールバック型の詳細については、<a href="#language-type-callback">コールバック型</a>を見てください。
@@ -3854,24 +3836,24 @@ my $point = new Point;
 $point->set_x(3);
 </pre>
       <p>
-        <a href="#language-sub-anon">無名サブルーチン</a>の呼び出しは、メソッドの呼び出しになります。この場合は、名前なしで呼び出すことができます。
+        <a href="#language-sub-new-callback-object">コールバックオブジェクトの生成</a>で作成されたオブジェクトは、通常のオブジェクトなのでメソッドを呼び出すことができます。
       </p>
 <pre>
 オブジェクト->(引数1, 引数2, 引数3, ..., 引数n);
 </pre>
 
       <p>
-        <b>無名サブルーチンの呼び出しのサンプル</b>
+        <b>コールバックオブジェクトの生成で生成されたオブジェクトからメソッドを呼び出すサンプル</b>
       </p>
       <p>
-        無名サブルーチンの呼び出しのサンプルです。
+        コールバックオブジェクトの生成で生成されたオブジェクトからメソッドを呼び出すサンプルです。
       </p>
 <pre>
-my $anon_sub = sub : int ($self: self, $num1 : int, $num2 : int) {
+my $cb_obj = sub : int ($self: self, $num1 : int, $num2 : int) {
   return $num1 + $num2;
 };
 
-my $ret = $anon_sub->(1, 2);
+my $ret = $cb_obj->(1, 2);
 </pre>
 
       <h3 id="language-operator-deref-get">デリファレンスによる値の取得</h3>
@@ -7161,7 +7143,7 @@ package Foo : pointer_t {
       </p>
 <pre>
 package SPVM::Comparator : callback_t {
-  sub compare : int ($self : self, $x1 : object, $x2 : object);
+  sub : int ($self : self, $x1 : object, $x2 : object);
 }
 </pre>
       <p>
@@ -7169,6 +7151,9 @@ package SPVM::Comparator : callback_t {
       </p>
       <p>
         コールバック型は、サブルーチンの定義を一つだけ持ちます。サブルーチンは、<a href="#language-sub-method">メソッド</a>でなければなりません。
+      </p>
+      <p>
+        コールバック型のサブルーチン名は、無名でなければなりません。
       </p>
       <p>
         コールバック型は「<a href="#language-field-definition">フィールドの定義</a>」「<a href="#language-package-var-definition">パッケージ変数の定義</a>」を持つことはできません。
@@ -7186,39 +7171,39 @@ package SPVM::Comparator : callback_t {
         コールバック型には、コールバックを満たしたクラス型のオブジェクトを代入できます。この場合、クラス型はコールバック型に適合するといいます。クラス型がコールバック型を満たすのは次の二つの場合です。
       </p>
       <p>
-        1. コールバック型として定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトは、コールバック型に適合します。
+        1. コールバック型として定義されたサブルーチンと同一の名前とシグネチャを持つクラス型のオブジェクトは、コールバック型に代入できます。
       </p>
 <pre>
 # コールバック型の定義
 package SPVM::Comparator : callback_t {
-  sub compare : int ($self : self, $x1 : object, $x2 : object);
+  sub : int ($self : self, $x1 : object, $x2 : object);
 }
 
 # クラスの定義
 package SomeComparator {
-  sub compare : int ($self : self, $x1 : object, $x2 : object) {
-    
+  sub new : int () {
+    return new SomeComparator;
   }
   
-  sub foo : int () {
-  
+  sub : int ($self : self, $x1 : object, $x2 : object) {
+    
   }
 }
 
 # コールバック型への代入
-my $comparator : comparator = new SomeComparator;
+my $comparator : SPVM::Comparator = SomeComparator->new;
 </pre>
       <p>
-        2. コールバック型として定義されたサブルーチンと同一のシグネチャを持つ無名サブルーチンは、コールバック型に適合します。
+        2. コールバック型として定義されたサブルーチンと同一のシグネチャを持つコールバックオブジェクトの生成を行うと、コールバック型に代入できます。
       </p>
 <pre>
 # コールバック型の定義
 package SPVM::Comparator : callback_t {
-  sub compare : int ($self : self, $x1 : object, $x2 : object);
+  sub : int ($self : self, $x1 : object, $x2 : object);
 }
 
 # コールバック型への代入
-my $comparator : comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator : SPVM::Comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
   
 }
 </pre>
@@ -8077,7 +8062,7 @@ sub foo : void ($thread_id : int) {
       </p>
       <ul class="list">
         <li>SPVM::CORE</li>
-        <li>SPVM::List</li>
+        <li>SPVM::ObjectList</li>
         <li>SPVM::Hash</li>
         <li>SPVM::Byte</li>
         <li>SPVM::Short</li>

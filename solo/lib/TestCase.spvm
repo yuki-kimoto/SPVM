@@ -15,6 +15,7 @@ package TestCase {
   use TestCase::ComplexCalc;
   use SPVM::Complex_2d;
   use SPVM::Comparator;
+  use TestCase::Minimal::XGetter;
 
   use TestCase::Point_3b;
   use TestCase::Point_3s;
@@ -22,7 +23,6 @@ package TestCase {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
-  use TestCase::XGetter;
 
 =pod
 
@@ -180,20 +180,17 @@ SPVM::Test - SPVM test module
     print(__PACKAGE__ . "\n");
     
     {
-      my $x_getter : TestCase::XGetter;
+      my $minimal = TestCase::Minimal->new;
+      $minimal->set_x(78);
+      my $x_getter = TestCase::Minimal::XGetter->new;
+      print($x_getter->($minimal) . "\n");
+    }
+    
+    {
+      my $x_getter : TestCase::Minimal::XGetter;
       if (require TestCase::Minimal) {
-        my $minimal = TestCase::Minimal->new;
-        $minimal->set_x(78);
-        $x_getter = $minimal;
+        warn("reauire");
       }
-      
-      my $minimal_def = TestCase::Minimal->new;
-      $minimal_def->set_x(99);
-      unless ($x_getter) {
-        $x_getter = $minimal_def;
-      }
-      
-      print($x_getter->x . "\n");
     }
     
     if (require PPP) {
@@ -245,7 +242,7 @@ SPVM::Test - SPVM test module
     {
       my $capture1 = 7;
       my $capture2 = 10;
-      my $anon_sub = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+      my $cb_obj = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
         print($capture1 . "\n");
         print($capture2 . "\n");
 
@@ -256,21 +253,21 @@ SPVM::Test - SPVM test module
         return -1;
       };
       
-      $anon_sub->(undef, undef);
+      $cb_obj->(undef, undef);
     }
 
     {
-      my $anon_sub = sub : int ($self : self, $x1 : object, $x2 : object) {
+      my $cb_obj = sub : int ($self : self, $x1 : object, $x2 : object) {
         return -1;
       };
       
-      my $ret = $anon_sub->(undef, undef);
+      my $ret = $cb_obj->(undef, undef);
       
       print($ret . "\n");
       
-      my $comparator : SPVM::Comparator = $anon_sub;
+      my $comparator : SPVM::Comparator = $cb_obj;
       
-      my $ret2 = $comparator->compare(undef, undef);
+      my $ret2 = $comparator->(undef, undef);
       
       print($ret . "\n");
     }
@@ -420,11 +417,11 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $anon_sub = sub : long ($self : self, $x1 : long, $x2 : long) {
+      my $cb_obj = sub : long ($self : self, $x1 : long, $x2 : long) {
         return $x1 * $x2;
       };
       
-      my $ret = $anon_sub->(4L, 5L);
+      my $ret = $cb_obj->(4L, 5L);
       print($ret . "\n");
     }
 
@@ -665,8 +662,8 @@ SPVM::Test - SPVM test module
       my $implement_callback1 : TestCase::Callback1 = TestCase::ImplementCallback1->new;
       my $implement_callback2 : TestCase::Callback1 = TestCase::ImplementCallback2->new;
       
-      print($implement_callback1->foo(0, 0) . "\n");
-      print($implement_callback2->foo(0, 0) . "\n");
+      print($implement_callback1->(0, 0) . "\n");
+      print($implement_callback2->(0, 0) . "\n");
       
       my $minimal = (TestCase::Minimal)$object;
       
@@ -1824,9 +1821,9 @@ SPVM::Test - SPVM test module
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
       for (my $i = 0; $i < $change_cnt; $i++) {
-        my $ret = $comparator->compare($values->[$i], $values->[$i + 1]);
+        my $ret = $comparator->($values->[$i], $values->[$i + 1]);
         
-        if ($comparator->compare($values->[$i], $values->[$i + 1]) == 1) {
+        if ($comparator->($values->[$i], $values->[$i + 1]) == 1) {
           my $tmp_value = $values->[$i];
           $values->[$i] = $values->[$i + 1];
           $values->[$i + 1] = $tmp_value;
