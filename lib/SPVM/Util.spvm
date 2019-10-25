@@ -127,7 +127,7 @@ package SPVM::Util {
     my $index = 0;
 
     my $output = SPVM::StringBuffer->new;
-    my $args_index = 0;
+    my $specifier_count = 0;
     my $text_length = 0;
 
     while ($index < $format_length) {
@@ -149,7 +149,7 @@ package SPVM::Util {
         die "Invalid conversion in sprintf: end of string";
       }
 
-      unless ($args_index < @$args) {
+      unless ($specifier_count < @$args) {
         die "Missing argument in sprintf";
       }
 
@@ -170,28 +170,28 @@ package SPVM::Util {
 
       switch ($specifier_type) {
         case SPVM::Util->SPECIFIER_C: {
-          my $arg = (SPVM::Byte)$args->[$args_index++];
+          my $arg = (SPVM::Byte)$args->[$specifier_count];
           $output->push_char($arg->val);
           break;
         }
         case SPVM::Util->SPECIFIER_S: {
-          my $arg = (string)$args->[$args_index++];
+          my $arg = (string)$args->[$specifier_count];
           $output->push($arg);
           break;
         }
         case SPVM::Util->SPECIFIER_D: {
-          my $arg = (SPVM::Int)$args->[$args_index++];
+          my $arg = (SPVM::Int)$args->[$specifier_count];
           $output->push($arg->val);
           break;
         }
         case SPVM::Util->SPECIFIER_LD: {
           ++$index;
-          my $arg = (SPVM::Long)$args->[$args_index++];
+          my $arg = (SPVM::Long)$args->[$specifier_count];
           $output->push($arg->val);
           break;
         }
         case SPVM::Util->SPECIFIER_F: {
-          my $arg = (SPVM::Double)$args->[$args_index++];
+          my $arg = (SPVM::Double)$args->[$specifier_count];
           $output->push($arg->val);
           break;
         }
@@ -206,9 +206,10 @@ package SPVM::Util {
       }
 
       ++$index;
+      ++$specifier_count;
     }
 
-    if ($args_index < @$args) {
+    if ($specifier_count < @$args) {
       die "Redundant argument in sprintf";
     }
 
