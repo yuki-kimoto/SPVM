@@ -5,6 +5,10 @@ package SPVM::Util {
   use SPVM::StringBuffer;
   use SPVM::StringList;
 
+  BEGIN {
+    _setup_sprintf();
+  }
+
   precompile sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
     my $length = @$objects;
     
@@ -100,6 +104,24 @@ package SPVM::Util {
     return $separated_strings;
   }
 
+  private enum {
+    SPECIFIER_C,
+    SPECIFIER_D,
+    SPECIFIER_F,
+    SPECIFIER_S,
+    SPECIFIER_LD,
+  }
+
+  our $SPECIFIER_TYPE_OF : private ro byte[];
+
+  precompile sub _setup_sprintf : void () {
+    $SPECIFIER_TYPE_OF = new byte[128];
+    $SPECIFIER_TYPE_OF->[(int)'c'] = SPVM::Util->SPECIFIER_C;
+    $SPECIFIER_TYPE_OF->[(int)'d'] = SPVM::Util->SPECIFIER_D;
+    $SPECIFIER_TYPE_OF->[(int)'f'] = SPVM::Util->SPECIFIER_F;
+    $SPECIFIER_TYPE_OF->[(int)'s'] = SPVM::Util->SPECIFIER_S;
+  }
+
   precompile sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
     my $index = 0;
@@ -131,37 +153,44 @@ package SPVM::Util {
         die "Missing argument in sprintf";
       }
 
-      my $type = $format->[++$index];
+      ++$index; # read '%'
 
-      switch ((int)$type) {
-        case 'c': {
+      my $specifier_type : int;
+      if ($format->[$index] == 'l') {
+        if ($format->[$index + 1] == 'd') {
+          $specifier_type = SPVM::Util->SPECIFIER_LD;
+        }
+        else {
+          die "Invalid conversion in sprintf: \"%" . [$format->[$index]] ."\"";
+        }
+      }
+      else {
+        $specifier_type = $SPECIFIER_TYPE_OF->[$format->[$index]];
+      }
+
+      switch ($specifier_type) {
+        case SPVM::Util->SPECIFIER_C: {
           my $arg = (SPVM::Byte)$args->[$args_index++];
           $output->push_char($arg->val);
           break;
         }
-        case 's': {
+        case SPVM::Util->SPECIFIER_S: {
           my $arg = (string)$args->[$args_index++];
           $output->push($arg);
           break;
         }
-        case 'd': {
+        case SPVM::Util->SPECIFIER_D: {
           my $arg = (SPVM::Int)$args->[$args_index++];
           $output->push($arg->val);
           break;
         }
-        case 'l': {
-          if ($index + 1 < $format_length &&
-              $format->[$index + 1] == 'd') {
-            ++$index;
-            my $arg = (SPVM::Long)$args->[$args_index++];
-            $output->push($arg->val);
-          }
-          else {
-            die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
-          }
+        case SPVM::Util->SPECIFIER_LD: {
+          ++$index;
+          my $arg = (SPVM::Long)$args->[$args_index++];
+          $output->push($arg->val);
           break;
         }
-        case 'f': {
+        case SPVM::Util->SPECIFIER_F: {
           my $arg = (SPVM::Double)$args->[$args_index++];
           $output->push($arg->val);
           break;
@@ -171,7 +200,7 @@ package SPVM::Util {
           break;
         }
         default: {
-          die "Invalid conversion in sprintf: \"%" . [$type] ."\"";
+          die "Invalid conversion in sprintf: \"%" . [(byte) $specifier_type] ."\"";
           break;
         }
       }
