@@ -329,6 +329,8 @@ package SPVM::CORE {
   sub INT32_MIN : int () { return -2147483648; }
   sub INT32_MAX : int () { return 2147483647; }
 
+  sub UINT32_MAX : long () { return 4294967295L; }
+
   sub INT64_MIN : long () { return -9223372036854775808L; }
   sub INT64_MAX : long () { return 9223372036854775807L; }
 
@@ -664,15 +666,26 @@ package SPVM::CORE {
 
   sub PI : double () { return 3.14159265358979323846; }
 
-  native sub rand : int ($seed_ref : int&);
+  precompile sub rand : int ($seed_ref : int&) {
+    my $y = $$seed_ref;
+    $y = $y ^ ($y << 13);
+    $y = $y ^ ($y >>> 17);
+    $y = $y ^ ($y << 5);
+    return $y;
+  }
 
-  precompile sub replace : string ($str : string, $substr : string, $replace : string, $from : int, $found_pos_ref : int&) {
+  precompile sub random : double ($rand : int) {
+    my $random = (double)((long)$rand & 0xFFFFFFFFL) / (UINT32_MAX() + 1);
+    return $random;
+  }
+  
+  precompile sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
     unless ($substr && length $substr > 0) {
       die "Sub string must have length";
     }
-    my $found_pos = index($str, $substr, $from);
-    $$found_pos_ref = $found_pos;
-    if ($found_pos >= 0) {
+    my $found_offset = index($str, $substr, $start_offset);
+    $$found_offset_ref = $found_offset;
+    if ($found_offset >= 0) {
       my $str_len = length $str;
       my $substr_len = length $substr;
       my $replace_len = length $replace;
@@ -680,14 +693,14 @@ package SPVM::CORE {
       my $result_str_len = $str_len + $replace_len - $substr_len;
       my $result_str = new byte[$result_str_len];
       
-      if ($found_pos > 0) {
-        memmoveb((byte[])$result_str, 0, (byte[])$str, 0, $found_pos);
+      if ($found_offset > 0) {
+        memmoveb((byte[])$result_str, 0, (byte[])$str, 0, $found_offset);
       }
-      memmoveb((byte[])$result_str, $found_pos, (byte[])$replace, 0, $replace_len);
+      memmoveb((byte[])$result_str, $found_offset, (byte[])$replace, 0, $replace_len);
       
-      my $str_rest_offset = $found_pos + $substr_len;
+      my $str_rest_offset = $found_offset + $substr_len;
       my $str_rest_length = $str_len - $str_rest_offset;
-      my $result_rest_offset = $found_pos + $replace_len;
+      my $result_rest_offset = $found_offset + $replace_len;
       my $result_rest_length = $result_str_len - $result_rest_offset;
       memmoveb((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
       
@@ -704,13 +717,13 @@ package SPVM::CORE {
     unless ($str) { die "String must be defined"; }
     
     my $offset = 0;
-    my $found_pos : int;
+    my $found_offset : int;
     my $substr_len = length $substr;
     my $result_str = $str;
     while (1) {
-      $result_str = replace($result_str, $substr, $replace, $offset, \$found_pos);
-      if ($found_pos >= 0) {
-        $offset = $found_pos + $substr_len;
+      $result_str = replace($result_str, $substr, $replace, $offset, \$found_offset);
+      if ($found_offset >= 0) {
+        $offset = $found_offset + $substr_len;
       }
       else {
         return $result_str;
@@ -762,16 +775,16 @@ package SPVM::CORE {
     return (string)$new_str;
   }
 
-  precompile sub rindex : int ($text : string, $search : string, $from : int) {
-    my $text_len = length $text;
-    my $search_len = length $search;
-    if ($from > $text_len - $search_len) {
-      $from = $text_len - $search_len;
+  precompile sub rindex : int ($str : string, $substr : string, $offset : int) {
+    my $str_len = length $str;
+    my $substr_len = length $substr;
+    if ($offset > $str_len - $substr_len) {
+      $offset = $str_len - $substr_len;
     }
-    for (my $i = $from; $i >= 0; --$i) {
+    for (my $i = $offset; $i >= 0; --$i) {
       my $match = 1;
-      for (my $j = 0; $j < $search_len; ++$j) {
-        if ($text->[$i + $j] != $search->[$j]) {
+      for (my $j = 0; $j < $substr_len; ++$j) {
+        if ($str->[$i + $j] != $substr->[$j]) {
           $match = 0;
           last;
         }
@@ -783,35 +796,21 @@ package SPVM::CORE {
     return -1;
   }
 
-  precompile sub starts_with : int ($source : string, $prefix : string) {
-    my $source_len = length $source;
-    my $prefix_len = length $prefix;
-    unless ($source_len >= $prefix_len) {
-      return 0;
-    }
-    for (my $i = 0; $i < $prefix_len; ++$i) {
-      unless ($prefix->[$i] == $source->[$i]) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  precompile sub contains : int ($text : string, $pattern : string) {
-    if (!$text) {
+  precompile sub contains : int ($str : string, $substr : string) {
+    if (!$str) {
       die "Target string must be defined";
     }
-    if (!$pattern) {
+    if (!$substr) {
       die "Search string must be defined";
     }
 
-    my $pat_len = length $pattern;
-    my $text_len = length $text;
+    my $pat_len = length $substr;
+    my $str_len = length $str;
     my $i = 0;
     my $j = 0;
     
-    while ($i < $text_len && $j < $pat_len) {
-      if ($text->[$i] == $pattern->[$j]) {
+    while ($i < $str_len && $j < $pat_len) {
+      if ($str->[$i] == $substr->[$j]) {
         $i++;
         $j++;
       } else {
@@ -830,8 +829,6 @@ package SPVM::CORE {
   
   native sub abs : int ($x : int);
   native sub labs : long ($x : long);
-
-  native sub init_native_constants : void ();
 
   native sub strerror : string ($errno : int);
   

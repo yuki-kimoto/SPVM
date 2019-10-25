@@ -142,6 +142,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_rand);
 }
 
+# random
+{
+  ok(TestCase::Lib::SPVM::CORE->test_random);
+}
+
 # uc
 {
   ok(TestCase::Lib::SPVM::CORE->test_uc);
@@ -185,11 +190,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 # rindex
 {
   ok(TestCase::Lib::SPVM::CORE->test_rindex);
-}
-
-# starts_with
-{
-  ok(TestCase::Lib::SPVM::CORE->test_starts_with);
 }
 
 # strerror

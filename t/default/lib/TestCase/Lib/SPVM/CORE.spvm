@@ -761,23 +761,61 @@ package TestCase::Lib::SPVM::CORE {
 
   sub test_rand : int () {
     my $seed = (int)time();
-    my $founds = new int[10];
+    my $founds_plus = new int[10];
+    my $founds_minus = new int[10];
+    my $rand = $seed;
     for (my $i = 0; $i < 100000; $i++) {
-      my $rand = rand(\$seed);
-      if ($rand < 0) {
-        return 0;
-      }
+      $rand = rand(\$rand);
+      
       my $dig0 = $rand % 10;
-      $founds->[$dig0] = 1;
+      if ($dig0 < 0) {
+        $founds_minus->[-$dig0] = 1;
+      }
+      else {
+        $founds_plus->[$dig0] = 1;
+      }
     }
     
-    unless (equals_iarray($founds, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+    unless (equals_iarray($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+      return 0;
+    }
+
+    unless (equals_iarray($founds_minus, [0, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
       return 0;
     }
     
     return 1;
   }
-  
+
+  sub test_random : int () {
+    my $seed = (int)time();
+    my $founds = new int[20];
+    my $rand = $seed;
+    for (my $i = 0; $i < 100000; $i++) {
+      $rand = rand(\$rand);
+      
+      my $random = (int)(random($rand) * 20);
+      $founds->[$random] = 1;
+    }
+    
+    unless (
+        equals_iarray(
+          $founds, 
+          [
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1
+          ]
+        )
+      )
+    {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub test_ucfirst : int () {
     {
       my $str = "@abc";
@@ -914,9 +952,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "bcd";
       my $replace = "AB";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
-      unless ($found_pos == 1) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 1) {
         return 0;
       }
       unless ($result_str eq "aABe") {
@@ -928,9 +966,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "bcd";
       my $replace = "AB";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 2, \$found_pos);
-      unless ($found_pos == -1) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 2, \$found_offset);
+      unless ($found_offset == -1) {
         return 0;
       }
       unless ($result_str eq $str) {
@@ -942,9 +980,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "abc";
       my $replace = "ABCD";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
-      unless ($found_pos == 0) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 0) {
         return 0;
       }
       unless ($result_str eq "ABCDde") {
@@ -956,9 +994,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcde";
       my $substr = "cde";
       my $replace = "ABCD";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
-      unless ($found_pos == 2) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 2) {
         return 0;
       }
       unless ($result_str eq "abABCD") {
@@ -970,9 +1008,9 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcdcd";
       my $substr = "cd";
       my $replace = "A";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 4, \$found_pos);
-      unless ($found_pos == 4) {
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 4, \$found_offset);
+      unless ($found_offset == 4) {
         return 0;
       }
       unless ($result_str eq "abcdA") {
@@ -984,10 +1022,10 @@ package TestCase::Lib::SPVM::CORE {
       my $str = "abcd";
       my $substr = "bc";
       my $replace = "";
-      my $found_pos : int;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_pos);
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
       
-      unless ($found_pos == 1) {
+      unless ($found_offset == 1) {
         return 0;
       }
       unless ($result_str eq "ad") {
@@ -1154,43 +1192,6 @@ package TestCase::Lib::SPVM::CORE {
       my $search = "pq";
       my $pos = rindex($target, $search, 2);
       unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_starts_with : int () {
-
-    {
-      my $target = "abc";
-      my $search = "ab";
-      unless (starts_with($target, $search)) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abc";
-      my $search = "abc";
-      unless (starts_with($target, $search)) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abc";
-      my $search = "abcd";
-      unless (! starts_with($target, $search)) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abc";
-      my $search = "bc";
-      unless (! starts_with($target, $search)) {
         return 0;
       }
     }

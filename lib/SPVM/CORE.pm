@@ -136,7 +136,7 @@ SPVM::CORE is SPVM core functions.
   
   # Search substr
   {
-    my $found_pos = index("pppabcde", "bcd", 2);
+    my $found_offset = index("pppabcde", "bcd", 2);
   }
 
   # print a string to STDOUT
@@ -773,13 +773,152 @@ If copy is not in the valid rainge, a exception occurs.
 
 =head2 print
 
-Print string to stdout.
-
   sub print : void ($string : string);
+
+Print a string to stdout.
+
+=head2 rand
+
+  sub rand : int ($seed_ref : int&);
+
+Get random number(INT32_MIN to INT32_MAX) with a seed.
+
+The first seed is epoch time usually. Second seed is the return value.
+
+  use SPVM::Time;
+  my $rand1 = rand(SPVM::Time->time);
+  my $rand2 = rand($rand1);
+
+=head2 random
+
+  sub random : double ($rand : int)
+
+Convert the value got by "rand" method to double value, range [0.0, 1.0)
+
+  my $rand = rand(SPVM::Time->time);
+  my $random = random($rand);
+  
+=head2 replace
+
+  sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&)
+
+Replace the sub string in the string with a replace string and return the result string.
+
+You can specify a byte offset of the string.
+
+You can get the found byte offset by int reference.
+
+  my $str = "abcde";
+  my $substr = "bcd";
+  my $replace = "AB";
+  my $found_offset = 0;
+  my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+
+=head2 replace_all
+
+  sub replace_all : string ($str : string, $substr : string, $replace : string)
+
+Replace all the sub string in the string with a replace string and return the result string.
+
+  my $str = "foo bar foo bar foo";
+  my $substr = "bar";
+  my $replace = "AB";
+  my $result_str = replace_all($str, $substr, $replace);
+
+=head2 strtoi
+
+  sub strtoi : int ($string : string, $digit : int);
+
+Convert the string to a int value with a digit(2, 8, 10, 16).
+
+Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][one more than 0-9]. Internal of [] is optional.
+
+If convertion fails, a exception occuer.
+
+  my $string = "-2147483648";
+  my $num = strtoi($string, 10);
+
+=head2 strtol
+
+  sub strtol : long ($string : string, $digit : int);
+
+Convert the string to long value with digit(2, 8, 10, 16).
+
+Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][zero more than 0-9]. Internal of [] is optional.
+
+If the convertion fails, a exception occuer.
+
+  my $string = "-9223372036854775808";
+  my $num = strtol($string, 10);
+
+=head2 strtof
+
+  sub strtof : float ($string : string);
+
+Convert the string to float value.
+
+Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
+
+If the convertion fails, a exception occuer.
+
+  my $string = "1.25";
+  my $num = strtof($string);
+
+=head2 strtod
+
+  sub strtod : double ($string : string);
+
+Convert the string to float value.
+
+Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
+
+If the convertion fails, a exception occuer.
+
+  my $string = "1.25";
+  my $num = strtod($string);
+
+=head2 uc
+
+  sub uc : string($str : string)
+
+Convert a lowercase string to a uppercase string.
+
+If the string is undef, a exception occur.
+
+=head2 ucfirst
+
+  sub ucfirst : string($str : string)
+
+Convert the first character of a string to a uppercase character.
+
+If the string is undef, a exception occur.
+
+=head2 rindex
+
+  sub rindex : int ($str : string, $substr : string, $offset : int)
+
+Same as "index" function except that the search is the last of the string.
+
+=head2 contains
+
+  sub contains : int ($str : string, $substr : string)
+
+If the string contains the sub string, return 1. If not, return 0.
+
+=head2 abs
+
+  sub abs : int ($x : int);
+
+Get the abusolute value of a int value.
+
+=head2 labs
+
+  sub labs : long ($x : long);
+
+Get the abusolute value for a long value.
 
 =head2 warn
 
-Print string with file name and line number to stderr. line break is added to end of string.
-
   sub warn : void ($string : string);
-  
+
+Print string with file name and line number to stderr. line break is added to end of string.

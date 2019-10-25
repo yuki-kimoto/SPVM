@@ -117,33 +117,6 @@ int32_t SPNATIVE__SPVM__CORE__strtod(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-// https://github.com/lattera/glibc/blob/master/stdlib/rand_r.c
-static int
-SPVM_rand_r (unsigned int *seed)
-{
-  unsigned int next = *seed;
-  int result;
-
-  next *= 1103515245;
-  next += 12345;
-  result = (unsigned int) (next / 65536) % 2048;
-
-  next *= 1103515245;
-  next += 12345;
-  result <<= 10;
-  result ^= (unsigned int) (next / 65536) % 1024;
-
-  next *= 1103515245;
-  next += 12345;
-  result <<= 10;
-  result ^= (unsigned int) (next / 65536) % 1024;
-
-  *seed = next;
-
-  return result;
-}
-
-
 int32_t SPNATIVE__SPVM__CORE__isdigit(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t ch = stack[0].ival;
@@ -155,13 +128,30 @@ int32_t SPNATIVE__SPVM__CORE__isdigit(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
+// https://github.com/lattera/glibc/blob/master/stdlib/rand_r.c
+static int
+SPVM_rand_r (uint32_t *seed)
+{
+  uint32_t next = *seed;
+  int result;
 
-  uint32_t* next_ptr = (uint32_t*)stack[0].iref;
-  
-  stack[0].ival = (int32_t)SPVM_rand_r(next_ptr);
+  next *= 1103515245;
+  next += 12345;
+  result = (uint32_t) (next / 65536) % 2048;
 
-  return SPVM_SUCCESS;
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+
+  next *= 1103515245;
+  next += 12345;
+  result <<= 10;
+  result ^= (uint32_t) (next / 65536) % 1024;
+
+  *seed = next;
+
+  return result;
 }
 
 int32_t SPNATIVE__SPVM__CORE__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -699,38 +689,6 @@ int32_t SPNATIVE__SPVM__CORE__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
   int64_t value = (int64_t)labs(stack[0].lval);
   
   stack[0].lval = value;
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  // STDIN
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$STDIN", "SPVM::FileHandle");
-    if (pkgvar_id < 0) { abort(); }
-    int32_t fh_basic_type_id = env->basic_type_id(env, "SPVM::FileHandle");
-    if (fh_basic_type_id < 0) { abort(); }
-    void* ostdin = env->new_pointer(env, fh_basic_type_id, stdin);
-    env->set_opkgvar(env, pkgvar_id, ostdin);
-  }
-
-  // STDOUT
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$STDOUT", "SPVM::FileHandle");
-    if (pkgvar_id < 0) { abort(); }
-    int32_t fh_basic_type_id = env->basic_type_id(env, "SPVM::FileHandle");
-    if (fh_basic_type_id < 0) { abort(); }
-    void* ostdout = env->new_pointer(env, fh_basic_type_id, stdout);
-    env->set_opkgvar(env, pkgvar_id, ostdout);
-  }
-  
-  // EOF
-  {
-    int32_t pkgvar_id = env->pkgvar_id(env, "SPVM::CORE", "$EOF", "int");
-    if (pkgvar_id < 0) { abort(); }
-    env->set_ipkgvar(env, pkgvar_id, EOF);
-  }
   
   return SPVM_SUCCESS;
 }
