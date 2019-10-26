@@ -21,6 +21,16 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Util->test_split);
 }
 
+# sprintf
+{
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_d);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_ld);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_f);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_c);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_s);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_all);
+}
+
 # copy_oarray
 {
   ok(TestCase::Lib::SPVM::Util->test_copy_oarray);

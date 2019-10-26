@@ -1,5 +1,5 @@
 package TestCase::Lib::SPVM::Util {
-  use SPVM::Util(joino, split, copy_oarray, equals_oarray);
+  use SPVM::Util(joino, split, copy_oarray, equals_oarray, sprintf);
   use TestCase::Minimal;
 
   sub test_equals_oarray : int () {
@@ -198,5 +198,146 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
+  sub test_sprintf_d : int () {
+    my $got = sprintf("hoge:%d", 123);
+    my $expected = "hoge:123";
+    unless ($got eq $expected) {
+      return 0;
+    }
+    eval {
+      sprintf("hoge:%d", "str");
+    };
+    if (contains($@, "Can't cast")) {
+      $@ = undef;
+      return 1;
+    }
+    else {
+      warn($@);
+      return 0;
+    }
+  }
 
+  sub test_sprintf_ld : int () {
+    my $got = sprintf("hoge:%ld", 10000000000L);
+    my $expected = "hoge:10000000000";
+    unless ($got eq $expected) {
+      return 0;
+    }
+    eval {
+      sprintf("hoge:%ld", "str");
+    };
+    if (contains($@, "Can't cast")) {
+      $@ = undef;
+      return 1;
+    }
+    else {
+      warn($@);
+      return 0;
+    }
+  }
+
+  sub test_sprintf_f : int () {
+    my $got = sprintf("hoge:%f", 3.14);
+    my $expected = "hoge:3.14";
+    unless ($got eq $expected) {
+      return 0;
+    }
+    eval {
+      sprintf("hoge:%f", "str");
+    };
+    if (contains($@, "Can't cast")) {
+      $@ = undef;
+      return 1;
+    }
+    else {
+      warn($@);
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_c : int () {
+    my $got = sprintf("hoge:%c", 'c');
+    my $expected = "hoge:c";
+    unless ($got eq $expected) {
+      return 0;
+    }
+    eval {
+      sprintf("hoge:%c", "str");
+    };
+    if (contains($@, "Can't cast")) {
+      $@ = undef;
+      return 1;
+    }
+    else {
+      warn($@);
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_s : int () {
+    my $got = sprintf("hoge:%s", "str");
+    my $expected = "hoge:str";
+    unless ($got eq $expected) {
+      return 0;
+    }
+    eval {
+      sprintf("hoge:%str", 1);
+    };
+    if (contains($@, "Can't cast")) {
+      $@ = undef;
+      return 1;
+    }
+    else {
+      warn($@);
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_all : int () {
+    # Invalid conversion (end of string)
+    eval {
+      sprintf("%d%", 1);
+    };
+    if (contains($@, "Invalid conversion in sprintf: end of string")) {
+      $@ = undef;
+    }
+    else {
+      return 0;
+    }
+    # Invalid conversion (unknown specifier)
+    eval {
+      sprintf("%d%k", 1);
+    };
+    if (contains($@, "Invalid conversion in sprintf: \"%k\"")) {
+      $@ = undef;
+    }
+    else {
+      return 0;
+    }
+    # Redundant argument
+    eval {
+      sprintf("%d", 1, 2);
+    };
+    if (contains($@, "Redundant argument in sprintf")) {
+      $@ = undef;
+    }
+    else {
+      return 0;
+    }
+    # Missing argument
+    eval {
+      sprintf("%d%d", 1);
+    };
+    if (contains($@, "Missing argument in sprintf")) {
+      $@ = undef;
+    }
+    else {
+      return 0;
+    }
+
+    return 1;
+  }
 }

@@ -2,7 +2,12 @@ package SPVM::Util {
   use SPVM::Stringer;
   use SPVM::Cloner;
   use SPVM::EqualityChecker;
+  use SPVM::StringBuffer;
   use SPVM::StringList;
+
+  BEGIN {
+    _setup_sprintf();
+  }
 
   precompile sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
     my $length = @$objects;
@@ -97,5 +102,117 @@ package SPVM::Util {
     my $separated_strings = $separated_strings_list->to_array;
     
     return $separated_strings;
+  }
+
+  private enum {
+    SPECIFIER_C,
+    SPECIFIER_D,
+    SPECIFIER_F,
+    SPECIFIER_S,
+    SPECIFIER_LD,
+  }
+
+  our $SPECIFIER_TYPE_OF : private ro byte[];
+
+  precompile sub _setup_sprintf : void () {
+    $SPECIFIER_TYPE_OF = new byte[128];
+    $SPECIFIER_TYPE_OF->[(int)'c'] = SPVM::Util->SPECIFIER_C;
+    $SPECIFIER_TYPE_OF->[(int)'d'] = SPVM::Util->SPECIFIER_D;
+    $SPECIFIER_TYPE_OF->[(int)'f'] = SPVM::Util->SPECIFIER_F;
+    $SPECIFIER_TYPE_OF->[(int)'s'] = SPVM::Util->SPECIFIER_S;
+  }
+
+  precompile sub sprintf : string ($format : string, $args : object[]...) {
+    my $format_length = length $format;
+    my $index = 0;
+
+    my $output = SPVM::StringBuffer->new;
+    my $specifier_count = 0;
+    my $text_length = 0;
+
+    while ($index < $format_length) {
+      while ($index + $text_length < $format_length &&
+          $format->[$index + $text_length] != '%') {
+        ++$text_length;
+      }
+      if ($index + $text_length + 1 < $format_length &&
+          $format->[$index + $text_length + 1] == '%') {
+        ++$text_length;
+        next;
+      }
+
+      $output->push_range($format, $index, $text_length);
+      $index += $text_length;
+      $text_length = 0;
+
+      unless ($index + 1 < $format_length) {
+        die "Invalid conversion in sprintf: end of string";
+      }
+
+      unless ($specifier_count < @$args) {
+        die "Missing argument in sprintf";
+      }
+
+      ++$index; # read '%'
+
+      my $specifier_type : int;
+      if ($format->[$index] == 'l') {
+        if ($format->[$index + 1] == 'd') {
+          $specifier_type = SPVM::Util->SPECIFIER_LD;
+        }
+        else {
+          die "Invalid conversion in sprintf: \"%" . [$format->[$index]] ."\"";
+        }
+      }
+      else {
+        $specifier_type = $SPECIFIER_TYPE_OF->[$format->[$index]];
+      }
+
+      switch ($specifier_type) {
+        case SPVM::Util->SPECIFIER_C: {
+          my $arg = (SPVM::Byte)$args->[$specifier_count];
+          $output->push_char($arg->val);
+          break;
+        }
+        case SPVM::Util->SPECIFIER_S: {
+          my $arg = (string)$args->[$specifier_count];
+          $output->push($arg);
+          break;
+        }
+        case SPVM::Util->SPECIFIER_D: {
+          my $arg = (SPVM::Int)$args->[$specifier_count];
+          $output->push($arg->val);
+          break;
+        }
+        case SPVM::Util->SPECIFIER_LD: {
+          ++$index;
+          my $arg = (SPVM::Long)$args->[$specifier_count];
+          $output->push($arg->val);
+          break;
+        }
+        case SPVM::Util->SPECIFIER_F: {
+          my $arg = (SPVM::Double)$args->[$specifier_count];
+          $output->push($arg->val);
+          break;
+        }
+        case 'U': {
+          die "Not implemented yet";
+          break;
+        }
+        default: {
+          die "Invalid conversion in sprintf: \"%" . [(byte) $specifier_type] ."\"";
+          break;
+        }
+      }
+
+      ++$index;
+      ++$specifier_count;
+    }
+
+    if ($specifier_count < @$args) {
+      die "Redundant argument in sprintf";
+    }
+
+    return $output->to_str;
   }
 }
