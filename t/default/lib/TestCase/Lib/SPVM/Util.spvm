@@ -262,10 +262,10 @@ package TestCase::Lib::SPVM::Util {
 
   sub test_sprintf_f : int () {
     my $tests = [
-        [ sprintf("abc%f", 3.14),               "abc3.14"       ],
-        [ sprintf("%fabc", 3.14),               "3.14abc"       ],
-        [ sprintf("%fabc%f", 3.14, 2.71),       "3.14abc2.71"   ],
-        [ sprintf("%f%f%f", 3.14, 2.71, 2.67),  "3.142.712.67"  ],
+        [ sprintf("abc%f", 3.14),               "abc3.1400"           ],
+        [ sprintf("%fabc", 3.14),               "3.1400abc"           ],
+        [ sprintf("%fabc%f", 3.14, 2.71),       "3.1400abc2.7100"     ],
+        [ sprintf("%f%f%f", 3.14, 2.71, 2.67),  "3.14002.71002.6700"  ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {

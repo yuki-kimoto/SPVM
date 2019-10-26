@@ -4,6 +4,7 @@ package SPVM::Util {
   use SPVM::EqualityChecker;
   use SPVM::StringBuffer;
   use SPVM::StringList;
+  use SPVM::Math (fabs, floor, log10, pow);
 
   BEGIN {
     _setup_sprintf();
@@ -122,6 +123,76 @@ package SPVM::Util {
     $SPECIFIER_TYPE_OF->[(int)'s'] = SPVM::Util->SPECIFIER_S;
   }
 
+  # TODO: Add the 2nd argument for width.
+  precompile sub _convert_d_to_str : string ($value : int) {
+    my $string = "" . $value;
+    my $width = 1; # TODO: Move $width to the argument.
+
+    my $value_length = length $string;
+    if ($value_length < $width) {
+      my $buffer = SPVM::StringBuffer->new;
+      my $space_count = $width - $value_length;
+      for (my $i = 0; $i < $space_count; ++$i) {
+        $buffer->push_char(' ');
+      }
+      $buffer->push($string);
+      $string = $buffer->to_str;
+    }
+
+    return $string;
+  }
+
+  # TODO: Add the 2nd argument for width.
+  precompile sub _convert_ld_to_str : string ($value : long) {
+    my $string = "" . $value;
+    my $width = 1; # TODO: Move $width to the argument.
+
+    my $value_length = length $string;
+    if ($value_length < $width) {
+      my $buffer = SPVM::StringBuffer->new;
+      my $space_count = $width - $value_length;
+      for (my $i = 0; $i < $space_count; ++$i) {
+        $buffer->push_char(' ');
+      }
+      $buffer->push($string);
+      $string = $buffer->to_str;
+    }
+
+    return $string;
+  }
+
+  # TODO: Add the 2nd argument for precision.
+  precompile sub _convert_f_to_str : string ($double : double) {
+    my $buffer = SPVM::StringBuffer->new;
+    my $precision = 5; # TODO: Move $precision to the argument.
+
+    if ($double == 0) {
+      $buffer->push_char('0');
+      if ($precision > 1) {
+        $buffer->push_char('.');
+        for (my $i = 0; $i < $precision - 1; ++$precision) {
+          $buffer->push_char('0');
+        }
+      }
+      return $buffer->to_str;
+    }
+
+    # https://stackoverflow.com/a/29583280
+    my $exp = 1 + floor(log10(fabs($double))); # $double != 0
+    my $frac_mantissa = $double * pow(10 , -$exp);
+    for (my $i = 0; $i < $precision; ++$i) {
+      my $upper_pow = pow(10, $exp + $i);
+      my $digit = (byte)($frac_mantissa * $upper_pow);
+      if ($exp == $i) {
+        $buffer->push_char('.');
+      }
+      $buffer->push_char((byte)('0' + $digit));
+      $frac_mantissa -= $digit * pow(10, -($exp + $i));
+    }
+
+    return $buffer->to_str;
+  }
+
   precompile sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
     my $index = 0;
@@ -190,19 +261,22 @@ package SPVM::Util {
         case SPVM::Util->SPECIFIER_D: {
           ++$specifier_length;
           my $arg = (SPVM::Int)$args->[$specifier_count];
-          $output->push($arg->val);
+          my $str = _convert_d_to_str($arg->val);
+          $output->push($str);
           break;
         }
         case SPVM::Util->SPECIFIER_LD: {
           $specifier_length += 2;
           my $arg = (SPVM::Long)$args->[$specifier_count];
-          $output->push($arg->val);
+          my $str = _convert_ld_to_str($arg->val);
+          $output->push($str);
           break;
         }
         case SPVM::Util->SPECIFIER_F: {
           ++$specifier_length;
           my $arg = (SPVM::Double)$args->[$specifier_count];
-          $output->push($arg->val);
+          my $str = _convert_f_to_str($arg->val);
+          $output->push($str);
           break;
         }
         case 'U': {
