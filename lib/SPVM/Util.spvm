@@ -158,44 +158,49 @@ package SPVM::Util {
         die "Missing argument in sprintf";
       }
 
-      ++$index; # read '%'
+      my $specifier_length = 1; # '%'
 
       my $specifier_type : int;
-      if ($format->[$index] == 'l') {
-        if ($format->[$index + 1] == 'd') {
+      if ($format->[$index + $specifier_length] == 'l') {
+        if ($index + $specifier_length + 1 < $format_length &&
+            $format->[$index + $specifier_length + 1] == 'd') {
           $specifier_type = SPVM::Util->SPECIFIER_LD;
         }
         else {
-          die "Invalid conversion in sprintf: \"%" . [$format->[$index]] ."\"";
+          die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length + 1) ."\"";
         }
       }
       else {
-        $specifier_type = $SPECIFIER_TYPE_OF->[$format->[$index]];
+        $specifier_type = $SPECIFIER_TYPE_OF->[$format->[$index + $specifier_length]];
       }
 
       switch ($specifier_type) {
         case SPVM::Util->SPECIFIER_C: {
+          ++$specifier_length;
           my $arg = (SPVM::Byte)$args->[$specifier_count];
           $output->push_char($arg->val);
           break;
         }
         case SPVM::Util->SPECIFIER_S: {
+          ++$specifier_length;
           my $arg = (string)$args->[$specifier_count];
           $output->push($arg);
           break;
         }
         case SPVM::Util->SPECIFIER_D: {
+          ++$specifier_length;
           my $arg = (SPVM::Int)$args->[$specifier_count];
           $output->push($arg->val);
           break;
         }
         case SPVM::Util->SPECIFIER_LD: {
-          ++$index;
+          $specifier_length += 2;
           my $arg = (SPVM::Long)$args->[$specifier_count];
           $output->push($arg->val);
           break;
         }
         case SPVM::Util->SPECIFIER_F: {
+          ++$specifier_length;
           my $arg = (SPVM::Double)$args->[$specifier_count];
           $output->push($arg->val);
           break;
@@ -205,12 +210,12 @@ package SPVM::Util {
           break;
         }
         default: {
-          die "Invalid conversion in sprintf: \"%" . [$format->[$index]] . "\"";
+          die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length + 1) . "\"";
           break;
         }
       }
 
-      ++$index;
+      $index += $specifier_length;
       ++$specifier_count;
     }
 

@@ -247,6 +247,16 @@ package TestCase::Lib::SPVM::Util {
       }
       $@ = undef;
     }
+    {
+      eval {
+        sprintf("%l", 1L);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%l\"")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
     return 1;
   }
 
