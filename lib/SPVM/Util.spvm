@@ -105,7 +105,7 @@ package SPVM::Util {
   }
 
   private enum {
-    SPECIFIER_C,
+    SPECIFIER_C = 1,
     SPECIFIER_D,
     SPECIFIER_F,
     SPECIFIER_S,
@@ -128,25 +128,30 @@ package SPVM::Util {
 
     my $output = SPVM::StringBuffer->new;
     my $specifier_count = 0;
-    my $text_length = 0;
 
-    while ($index < $format_length) {
-      while ($index + $text_length < $format_length &&
-          $format->[$index + $text_length] != '%') {
-        ++$text_length;
+    while (1) {
+      my $next_index = $index;
+      while ($next_index < $format_length && $format->[$next_index] != '%') {
+        ++$next_index;
       }
-      if ($index + $text_length + 1 < $format_length &&
-          $format->[$index + $text_length + 1] == '%') {
-        ++$text_length;
+
+      if ($next_index + 1 == $format_length && $format->[$next_index] == '%') {
+        die "Invalid conversion in sprintf: end of string";
+      }
+
+      if ($next_index + 1 < $format_length &&
+          $format->[$next_index] == '%' && $format->[$next_index + 1] == '%') {
+        $next_index += 2;
         next;
       }
 
-      $output->push_range($format, $index, $text_length);
-      $index += $text_length;
-      $text_length = 0;
+      if (my $text_length = $next_index - $index) {
+        $output->push_range($format, $index, $text_length);
+        $index = $next_index;
+      }
 
       unless ($index + 1 < $format_length) {
-        die "Invalid conversion in sprintf: end of string";
+        last;
       }
 
       unless ($specifier_count < @$args) {
@@ -200,7 +205,7 @@ package SPVM::Util {
           break;
         }
         default: {
-          die "Invalid conversion in sprintf: \"%" . [(byte) $specifier_type] ."\"";
+          die "Invalid conversion in sprintf: \"%" . [$format->[$index]] . "\"";
           break;
         }
       }
