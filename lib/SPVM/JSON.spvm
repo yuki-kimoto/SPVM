@@ -10,16 +10,6 @@ package SPVM::JSON {
   use SPVM::StringBuffer;
   
   has canonical : rw byte;
-  
-  private enum {
-    NUM_DEFAULT,
-    NUM_ALLOW_LONG,
-  }
-  
-  private enum {
-    DBL_DIG = 15,
-    LDBL_DIG = 18
-  }
 
   precompile private sub _decode_error : void ($die_message : string, $json : string, $start : int) {
     my $end = length $json;
