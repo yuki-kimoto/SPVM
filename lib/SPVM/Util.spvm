@@ -4,6 +4,7 @@ package SPVM::Util {
   use SPVM::EqualityChecker;
   use SPVM::StringBuffer;
   use SPVM::StringList;
+  use SPVM::Unicode (uchar_to_utf8);
   use SPVM::Math (fabs, floor, log10, pow);
 
   BEGIN {
@@ -110,6 +111,7 @@ package SPVM::Util {
     SPECIFIER_D,
     SPECIFIER_F,
     SPECIFIER_S,
+    SPECIFIER_U,
     SPECIFIER_LD,
   }
 
@@ -121,6 +123,7 @@ package SPVM::Util {
     $SPECIFIER_TYPE_OF->[(int)'d'] = SPVM::Util->SPECIFIER_D;
     $SPECIFIER_TYPE_OF->[(int)'f'] = SPVM::Util->SPECIFIER_F;
     $SPECIFIER_TYPE_OF->[(int)'s'] = SPVM::Util->SPECIFIER_S;
+    $SPECIFIER_TYPE_OF->[(int)'U'] = SPVM::Util->SPECIFIER_U;
   }
 
   # TODO: Add the 2nd argument for width.
@@ -279,8 +282,11 @@ package SPVM::Util {
           $output->push($str);
           break;
         }
-        case 'U': {
-          die "Not implemented yet";
+        case SPVM::Util->SPECIFIER_U: {
+          ++$specifier_length;
+          my $arg = (SPVM::Int)$args->[$specifier_count];
+          my $utf8 = uchar_to_utf8($arg->val);
+          $output->push($utf8);
           break;
         }
         default: {

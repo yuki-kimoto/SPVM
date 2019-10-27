@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::Util {
   use SPVM::Util(joino, split, copy_oarray, equals_oarray, sprintf);
+  use SPVM::Unicode (uchar);
   use TestCase::Minimal;
 
   sub test_equals_oarray : int () {
@@ -328,6 +329,37 @@ package TestCase::Lib::SPVM::Util {
     {
       eval {
         sprintf("%s", 1);
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  private sub _first_uchar : int ($str : string) {
+    my $uchar_pos = 0;
+    return uchar($str, \$uchar_pos);
+  }
+
+  sub test_sprintf_U : int () {
+    my $tests = [
+        [ sprintf("abc%U", _first_uchar("あ")), "abcあ" ],
+        [ sprintf("%Uabc", _first_uchar("あ")), "あabc" ],
+        [ sprintf("%Uabc%U", _first_uchar("あ"), _first_uchar("い")), "あabcい" ],
+        [ sprintf("%U%U%U", _first_uchar("あ"), _first_uchar("い"), _first_uchar("う")), "あいう" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%U", "str");
       };
       unless ($@ && contains($@, "Can't cast")) {
         warn("got error: $@");
