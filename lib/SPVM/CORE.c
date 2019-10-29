@@ -638,18 +638,6 @@ int32_t SPNATIVE__SPVM__CORE__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__strerror(SPVM_ENV* env, SPVM_VALUE* stack) {
-  
-  int32_t error_number = stack[0].ival;
-  const char* string_error = strerror(error_number);
-  
-  void* obj_string_error = env->new_str(env, string_error);
-  
-  stack[0].oval = obj_string_error;
-  
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__CORE__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   void* obj_name = stack[0].oval;

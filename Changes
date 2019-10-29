@@ -15,6 +15,7 @@
     tolower
     toupper
   - add SPVM::CORE random method
+  - move strerror to SPVM::Errno
   
 0.0441 2019-10-11
   - add pi method to SPVM::Math

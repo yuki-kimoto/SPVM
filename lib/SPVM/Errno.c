@@ -19,6 +19,18 @@ int32_t SPNATIVE__SPVM__Errno__set_errno(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+int32_t SPNATIVE__SPVM__Errno__strerror(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int32_t error_number = stack[0].ival;
+  const char* string_error = strerror(error_number);
+  
+  void* obj_string_error = env->new_str(env, string_error);
+  
+  stack[0].oval = obj_string_error;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__Errno__E2BIG(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef E2BIG
   stack[0].ival = E2BIG;

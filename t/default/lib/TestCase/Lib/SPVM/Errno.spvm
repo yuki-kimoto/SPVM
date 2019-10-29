@@ -1,0 +1,14 @@
+package TestCase::Lib::SPVM::Errno {
+  use SPVM::Errno;
+  
+  sub test_strerror : int () {
+    
+    my $error = SPVM::Errno->strerror(SPVM::Errno->ENOENT);
+    
+    unless (length $error > 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

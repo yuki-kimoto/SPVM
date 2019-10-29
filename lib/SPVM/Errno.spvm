@@ -2,6 +2,8 @@ package SPVM::Errno {
   native sub errno : int();
   native sub set_errno : void ($errno : int);
 
+  native sub strerror : string ($errno : int);
+
   native sub E2BIG : int ();
   native sub EACCES : int ();
   native sub EADDRINUSE : int ();

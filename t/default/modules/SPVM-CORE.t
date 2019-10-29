@@ -192,11 +192,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_rindex);
 }
 
-# strerror
-{
-  ok(TestCase::Lib::SPVM::CORE->test_strerror);
-}
-
 # contains
 {
   ok(TestCase::Lib::SPVM::CORE->test_contains);

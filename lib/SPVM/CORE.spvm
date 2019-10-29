@@ -831,8 +831,6 @@ package SPVM::CORE {
   
   native sub abs : int ($x : int);
   native sub labs : long ($x : long);
-
-  native sub strerror : string ($errno : int);
   
   native sub reverseb : void ($nums : byte[]);
   native sub reverses : void ($nums : short[]);

@@ -8,6 +8,7 @@ use Errno;
 use Test::More 'no_plan';
 
 use SPVM 'SPVM::Errno';
+use SPVM 'TestCase::Lib::SPVM::Errno';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::memory_blocks_count();
@@ -109,6 +110,11 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
     if (defined &Errno::EXDEV) { ok(Errno::EXDEV() == SPVM::Errno->EXDEV) };
     if (defined &Errno::EOTHER) { ok(Errno::EOTHER() == SPVM::Errno->EOTHER) };
   }
+}
+
+# strerror
+{
+  ok(TestCase::Lib::SPVM::Errno->test_strerror);
 }
 
 # All object is freed
