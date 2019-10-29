@@ -1,3 +1,7 @@
+#ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE 600
+#endif
+
 #include "spvm_native.h"
 
 #include <errno.h>
@@ -22,11 +26,23 @@ int32_t SPNATIVE__SPVM__Errno__set_errno(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Errno__strerror(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t error_number = stack[0].ival;
-  const char* string_error = strerror(error_number);
+
+  char strerr[256] = {0};
+  int32_t ret;
+#ifdef _WIN32
+    ret = strerror_s(strerr, 256, error_number);
+#else
+    ret = strerror_r(error_number, strerr, 256);
+#endif
+  strerr[255] = '\0';
   
-  void* obj_string_error = env->new_str(env, string_error);
+  if (ret != 0) {
+    SPVM_DIE("strerror can't get a valid message", "SPVM/Errno.c", __LINE__);
+  }
   
-  stack[0].oval = obj_string_error;
+  void* obj_strerr = env->new_str(env, strerr);
+  
+  stack[0].oval = obj_strerr;
   
   return SPVM_SUCCESS;
 }
