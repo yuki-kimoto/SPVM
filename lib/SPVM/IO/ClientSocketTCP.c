@@ -25,10 +25,13 @@ static const char* MFILE = "SPVM/IO/ClientSocketTCP.c";
 
 int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  // Load WinSock DLL
 #ifdef _WIN32
+  // Load WinSock DLL
   WSADATA wsa;
   WSAStartup(MAKEWORD(2, 2), &wsa);
+#else
+  // Ignore SIGPIPE in unix like system
+  signal(SIGPIPE, SIG_IGN);
 #endif
   
   // Ignore SIGPIPE

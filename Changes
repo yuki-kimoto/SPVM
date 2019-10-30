@@ -17,6 +17,7 @@
   - add SPVM::CORE random method
   - move strerror to SPVM::Errno
   - strerror become thread safe
+  - Windows has no SIGPIPE
   
 0.0441 2019-10-11
   - add pi method to SPVM::Math
