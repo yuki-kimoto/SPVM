@@ -28,15 +28,16 @@ int32_t SPNATIVE__SPVM__Errno__strerror(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t error_number = stack[0].ival;
 
   char strerr[256] = {0};
-  int32_t ret;
+// Don't check the return value of strerror_s and strerror_r for portability
 #ifdef _WIN32
-    ret = strerror_s(strerr, 256, error_number);
+    strerror_s(strerr, 256, error_number);
 #else
-    ret = strerror_r(error_number, strerr, 256);
+    strerror_r(error_number, strerr, 256);
 #endif
   strerr[255] = '\0';
   
-  if (ret != 0) {
+  // If the first character is '\0', that means can't get an error string.
+  if (strerr[0] == '\0') {
     SPVM_DIE("strerror can't get a valid message", "SPVM/Errno.c", __LINE__);
   }
   
