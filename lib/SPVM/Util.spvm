@@ -140,37 +140,7 @@ package SPVM::Util {
     return $string;
   }
 
-  # TODO: Add the 2nd argument for precision.
-  precompile sub _convert_f_to_str : string ($double : double) {
-    my $buffer = SPVM::StringBuffer->new;
-    my $precision = 5; # TODO: Move $precision to the argument.
-
-    if ($double == 0) {
-      $buffer->push_char('0');
-      if ($precision > 1) {
-        $buffer->push_char('.');
-        for (my $i = 0; $i < $precision - 1; ++$precision) {
-          $buffer->push_char('0');
-        }
-      }
-      return $buffer->to_str;
-    }
-
-    # https://stackoverflow.com/a/29583280
-    my $exp = 1 + floor(log10(fabs($double))); # $double != 0
-    my $frac_mantissa = $double * pow(10 , -$exp);
-    for (my $i = 0; $i < $precision; ++$i) {
-      my $upper_pow = pow(10, $exp + $i);
-      my $digit = (byte)($frac_mantissa * $upper_pow);
-      if ($exp == $i) {
-        $buffer->push_char('.');
-      }
-      $buffer->push_char((byte)('0' + $digit));
-      $frac_mantissa -= $digit * pow(10, -($exp + $i));
-    }
-
-    return $buffer->to_str;
-  }
+  native sub _convert_f_to_str : string ($format : string, $value : double);
 
   precompile sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
@@ -246,7 +216,7 @@ package SPVM::Util {
       elsif ($specifier_char == 'f') {
         ++$specifier_length;
         my $arg = (SPVM::Double)$args->[$specifier_count];
-        my $str = _convert_f_to_str($arg->val);
+        my $str = _convert_f_to_str("%.4f", $arg->val);
         $output->push($str);
       }
       elsif ($specifier_char == 'U') {
