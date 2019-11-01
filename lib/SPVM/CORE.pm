@@ -923,6 +923,62 @@ Get the abusolute value of a int value.
 
 Get the abusolute value for a long value.
 
+=head2 reverseb
+
+  native sub reverseb : void ($nums : byte[]);
+
+Reverse the order of the elements of the byte array.
+
+If the argument is undef, a exception occurs.
+
+=head2 reverses
+
+  native sub reverses : void ($nums : short[]);
+
+Reverse the order of the elements of the short array.
+
+If the argument is undef, a exception occurs.
+
+=head2 reversei
+
+  native sub reversei : void ($nums : int[]);
+
+Reverse the order of the elements of the int array.
+
+If the argument is undef, a exception occurs.
+
+=head2 reversel
+
+  native sub reversel : void ($nums : long[]);
+
+Reverse the order of the elements of the long array.
+
+If the argument is undef, a exception occurs.
+
+=head2 reversef
+
+  native sub reversef : void ($nums : float[]);
+
+Reverse the order of the elements of the float array.
+
+If the argument is undef, a exception occurs.
+
+=head2 reversed
+
+  native sub reversed : void ($nums : double[]);
+
+Reverse the order of the elements of the double array.
+
+If the argument is undef, a exception occurs.
+
+=head2 reverseo
+
+  native sub reverseo : void ($objs : oarray);
+
+Reverse the order of the elements of the object array.
+
+If the argument is undef, a exception occurs.
+
 =head2 warn
 
   sub warn : void ($string : string);

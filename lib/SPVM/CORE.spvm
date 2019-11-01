@@ -838,7 +838,7 @@ package SPVM::CORE {
   native sub reversel : void ($nums : long[]);
   native sub reversef : void ($nums : float[]);
   native sub reversed : void ($nums : double[]);
-  native sub reverseo : void ($nums : oarray);
+  native sub reverseo : void ($objs : oarray);
 
   precompile sub substr : string ($string : string, $offset : int, $length : int) {
     
