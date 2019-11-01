@@ -190,6 +190,7 @@ lib/SPVM/IO/File.spvm
 lib/SPVM/IO/Select.c
 lib/SPVM/IO/Select.config
 lib/SPVM/IO/Select.spvm
+lib/SPVM/JSON.pm
 lib/SPVM/JSON.spvm
 lib/SPVM/JSON/Bool.pm
 lib/SPVM/JSON/Bool.spvm
@@ -466,6 +467,7 @@ t/default/lib/TestCase/Lib/SPVM/CORE.config
 t/default/lib/TestCase/Lib/SPVM/CORE.spvm
 t/default/lib/TestCase/Lib/SPVM/Double.spvm
 t/default/lib/TestCase/Lib/SPVM/DoubleList.spvm
+t/default/lib/TestCase/Lib/SPVM/Errno.spvm
 t/default/lib/TestCase/Lib/SPVM/FileHandle.spvm
 t/default/lib/TestCase/Lib/SPVM/Float.spvm
 t/default/lib/TestCase/Lib/SPVM/FloatList.spvm
