@@ -149,31 +149,43 @@ package SPVM::Util {
     my $output = SPVM::StringBuffer->new;
     my $specifier_count = 0;
 
-    while (1) {
-      my $next_index = $index;
-      while ($next_index < $format_length && $format->[$next_index] != '%') {
-        ++$next_index;
+    while ($index < $format_length) {
+
+      my $normal_str_end = $index;
+
+      # Search the next specifier '%' until the end of $format.
+      while ($normal_str_end < $format_length) {
+        if ($format->[$normal_str_end] != '%') {
+          # ignore "%%"
+          if ($normal_str_end + 1 < $format_length &&
+              $format->[$normal_str_end + 1] == '%') {
+            $normal_str_end += 2;
+          }
+          else {
+            last;
+          }
+        }
+        else {
+          ++$normal_str_end;
+        }
       }
 
-      if ($next_index + 1 == $format_length && $format->[$next_index] == '%') {
+      if ($format->[$normal_str_end] == '%' &&
+          $normal_str_end + 1 == $format_length) {
         die "Invalid conversion in sprintf: end of string";
       }
 
-      if ($next_index + 1 < $format_length &&
-          $format->[$next_index] == '%' && $format->[$next_index + 1] == '%') {
-        $next_index += 2;
-        next;
-      }
-
-      if (my $text_length = $next_index - $index) {
-        $output->push_range($format, $index, $text_length);
-        $index = $next_index;
+      # Output the normal sub-string of $format.
+      if (my $normal_str_length = $normal_str_end - $index) {
+        $output->push_range($format, $index, $normal_str_length);
+        $index = $normal_str_end;
       }
 
       unless ($index + 1 < $format_length) {
         last;
       }
 
+      # Output the next element of $args corresponding to the specifier.
       unless ($specifier_count < @$args) {
         die "Missing argument in sprintf";
       }
