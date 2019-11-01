@@ -39,6 +39,14 @@ Get a current error number;
 
 Set a current error number;
 
+=head strerror
+
+  sub strerror : string ($errno : int)
+
+Get a error string corresponding to the error number.
+
+This method is thread safe unlike strerror function of C language.
+
 =head2 E2BIG
 
   sub E2BIG : int ()
