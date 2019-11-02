@@ -3954,7 +3954,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.operand0 = mem_id_in;
                           int32_t rel_line = op_cur->line - sub->op_sub->line;
                           
-                          warn("BBBBBB %d %d %d", sub->op_sub->line, op_cur->line, rel_line);
                           opcode.operand1 = rel_line;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);

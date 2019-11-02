@@ -1,0 +1,12 @@
+package TestCase::Warn {
+  
+  sub test_warn : int () {
+    
+    warn "WARNLINEFILE";
+    warn;
+    warn "WARN\n";
+    warn 3;
+    
+    return 1;
+  }
+}
