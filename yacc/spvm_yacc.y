@@ -23,7 +23,7 @@
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
-%token <opval> RETURN WEAKEN DIE CURRENT_PACKAGE UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE WARN CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block refcnt
@@ -487,6 +487,14 @@ statement
   | DIE expression ';'
     {
       $$ = SPVM_OP_build_die(compiler, $1, $2);
+    }
+  | WARN ';'
+    {
+      $$ = SPVM_OP_build_warn(compiler, $1, NULL);
+    }
+  | WARN expression ';'
+    {
+      $$ = SPVM_OP_build_warn(compiler, $1, $2);
     }
   | weaken_field ';'
   | unweaken_field ';'

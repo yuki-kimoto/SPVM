@@ -115,6 +115,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "CONDITION",
   "CONDITION_NOT",
   "DIE",
+  "WARN",
   "SWITCH",
   "CASE",
   "DEFAULT",
@@ -176,6 +177,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "REFCNT",
   "ALLOW",
   "BREAK",
+  "WARN",
 };
 
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current, SPVM_OP* op_package_dist) {
@@ -1218,6 +1220,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NEXT:
     case SPVM_OP_C_ID_BREAK:
     case SPVM_OP_C_ID_DIE:
+    case SPVM_OP_C_ID_WARN:
     {
       // Dummy int variable
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
@@ -2991,7 +2994,7 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   
   if (!op_term) {
     // Default error message
-    op_term = SPVM_OP_new_op_constant_string(compiler, "Error", strlen("Error"), op_die->file, op_die->line);;
+    op_term = SPVM_OP_new_op_constant_string(compiler, "Died", strlen("Died"), op_die->file, op_die->line);;
   }
   
   // Exception variable
@@ -3008,6 +3011,18 @@ SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_die);
   
   return op_free_tmp;
+}
+
+SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* op_term) {
+  
+  if (!op_term) {
+    // Default warn message
+    op_term = SPVM_OP_new_op_constant_string(compiler, "Warning: something's wrong", strlen("Warning: something's wrong"), op_warn->file, op_warn->line);
+  }
+  
+  SPVM_OP_insert_child(compiler, op_warn, op_warn->last, op_term);
+  
+  return op_warn;
 }
 
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {

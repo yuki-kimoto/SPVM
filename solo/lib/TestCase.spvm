@@ -73,6 +73,12 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      warn "PPP";
+      warn;
+      warn "QQQ\n";
+    }
+    
+    {
       my $foo = 2;
       my $bar = 3;
       my $str = "foo $foo ${bar} rrr";
@@ -118,7 +124,7 @@ SPVM::Test - SPVM test module
         return 386;
       };
       
-      warn($cb->());
+      warn $cb->();
     }
     {
       my $z = (1, 2, 3);
@@ -130,14 +136,14 @@ SPVM::Test - SPVM test module
       my $nums : oarray = $minimals;
       my $nums2 : oarray = $nums;
       my $len = @$nums;
-      warn("$len");
+      warn "$len";
       # my $nums3 : TestCase::Minimal[] = $nums;
       my $nums4 = (TestCase::Minimal[])$nums;
-      warn($nums4->[0]{x});
+      warn $nums4->[0]{x};
       
       my $elem = $nums->[0];
       my $minimal = (TestCase::Minimal)$elem;
-      warn($minimal->{x});
+      warn $minimal->{x};
       
       $nums->[1] = TestCase::Minimal->new;
       # $nums->[1] = TestCase::Simple->new;
@@ -148,12 +154,12 @@ SPVM::Test - SPVM test module
     {
       my $object = (object)"aaaa";
       my $str2 = (string)$object;
-      warn("AAAAAAAAA $str2");
+      warn "AAAAAAAAA $str2";
     }
     {
       my $object = (object)['a', 'b', 'c'];
       my $str2 = (string)$object;
-      warn("AAAAAAAAA $str2");
+      warn "AAAAAAAAA $str2";
     }
     
     {
@@ -189,7 +195,7 @@ SPVM::Test - SPVM test module
     {
       my $x_getter : TestCase::Minimal::XGetter;
       if (require TestCase::Minimal) {
-        warn("reauire");
+        warn "reauire";
       }
     }
     
@@ -277,8 +283,8 @@ SPVM::Test - SPVM test module
       
       my $p = $i++;
       
-      warn($p);
-      warn($i);
+      warn $p;
+      warn $i;
     }
 
     {
@@ -310,7 +316,7 @@ SPVM::Test - SPVM test module
       
       ++$nums->[0];
       
-      warn($nums->[0]);
+      warn $nums->[0];
     }
 
     {
@@ -322,7 +328,7 @@ SPVM::Test - SPVM test module
       my $nums = new int[1];
       my $var2 = $nums->[0] = 5;
       
-      warn($var2);
+      warn $var2;
     }
 
     {
@@ -331,8 +337,8 @@ SPVM::Test - SPVM test module
       my $v3 : int;
       
       $v3 = $v2 = $v1 = 543;
-      warn($v2);
-      warn($v3);
+      warn $v2;
+      warn $v3;
     }
 
     {
@@ -341,7 +347,7 @@ SPVM::Test - SPVM test module
       my $var1 = 5;
       my $var2 = $nums->[0] = $var1;
       
-      warn($var2);
+      warn $var2;
     }
     {
       my $num : string = 1;
@@ -747,17 +753,17 @@ SPVM::Test - SPVM test module
       $test_case->{private_field};
     }
     
-    warn("warn");
-    warn(1);
-    warn(1L);
-    warn(0.5f);
-    warn(0.5);
+    warn "warn";
+    warn 1;
+    warn 1L;
+    warn 0.5f;
+    warn 0.5;
 
-    warn("warn");
-    warn(1);
-    warn(1L);
-    warn(0.5f);
-    warn(0.5);
+    warn "warn";
+    warn 1;
+    warn 1L;
+    warn 0.5f;
+    warn 0.5;
     
     # .
     {

@@ -2223,8 +2223,36 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_DIE: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+
+              if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+              }
+              
+              first_type = SPVM_OP_get_type(compiler, op_cur->first);
+
               if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_COMPILER_error(compiler, "die argument must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              break;
+            }
+            case SPVM_OP_C_ID_WARN: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
+                if (compiler->error_count > 0) {
+                  return;
+                }
+              }
+              
+              first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "warn argument must be string compatible type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               break;
@@ -3719,6 +3747,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_DEFAULT:
                         case SPVM_OP_C_ID_CASE:
                         case SPVM_OP_C_ID_DIE:
+                        case SPVM_OP_C_ID_WARN:
                         case SPVM_OP_C_ID_LAST:
                         case SPVM_OP_C_ID_NEXT:
                         case SPVM_OP_C_ID_BREAK:

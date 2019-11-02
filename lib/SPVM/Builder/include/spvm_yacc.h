@@ -87,45 +87,46 @@
      RETURN = 303,
      WEAKEN = 304,
      DIE = 305,
-     CURRENT_PACKAGE = 306,
-     UNWEAKEN = 307,
-     SPECIAL_ASSIGN = 308,
-     ASSIGN = 309,
-     LOGICAL_OR = 310,
-     LOGICAL_AND = 311,
-     BIT_XOR = 312,
-     BIT_OR = 313,
-     STRNE = 314,
-     STREQ = 315,
-     NUMNE = 316,
-     NUMEQ = 317,
-     ISA = 318,
-     STRLE = 319,
-     STRLT = 320,
-     STRGE = 321,
-     STRGT = 322,
-     NUMLE = 323,
-     NUMLT = 324,
-     NUMGE = 325,
-     NUMGT = 326,
-     SHIFT = 327,
-     REMAINDER = 328,
-     DIVIDE = 329,
-     MULTIPLY = 330,
-     REFCNT = 331,
-     ISWEAK = 332,
-     LENGTH = 333,
-     SCALAR = 334,
-     CONVERT = 335,
-     MINUS = 336,
-     PLUS = 337,
-     DEREF = 338,
-     REF = 339,
-     BIT_NOT = 340,
-     LOGICAL_NOT = 341,
-     DEC = 342,
-     INC = 343,
-     ARROW = 344
+     WARN = 306,
+     CURRENT_PACKAGE = 307,
+     UNWEAKEN = 308,
+     SPECIAL_ASSIGN = 309,
+     ASSIGN = 310,
+     LOGICAL_OR = 311,
+     LOGICAL_AND = 312,
+     BIT_XOR = 313,
+     BIT_OR = 314,
+     STRNE = 315,
+     STREQ = 316,
+     NUMNE = 317,
+     NUMEQ = 318,
+     ISA = 319,
+     STRLE = 320,
+     STRLT = 321,
+     STRGE = 322,
+     STRGT = 323,
+     NUMLE = 324,
+     NUMLT = 325,
+     NUMGE = 326,
+     NUMGT = 327,
+     SHIFT = 328,
+     REMAINDER = 329,
+     DIVIDE = 330,
+     MULTIPLY = 331,
+     REFCNT = 332,
+     ISWEAK = 333,
+     LENGTH = 334,
+     SCALAR = 335,
+     CONVERT = 336,
+     MINUS = 337,
+     PLUS = 338,
+     DEREF = 339,
+     REF = 340,
+     BIT_NOT = 341,
+     LOGICAL_NOT = 342,
+     DEC = 343,
+     INC = 344,
+     ARROW = 345
    };
 #endif
 /* Tokens.  */
@@ -177,45 +178,46 @@
 #define RETURN 303
 #define WEAKEN 304
 #define DIE 305
-#define CURRENT_PACKAGE 306
-#define UNWEAKEN 307
-#define SPECIAL_ASSIGN 308
-#define ASSIGN 309
-#define LOGICAL_OR 310
-#define LOGICAL_AND 311
-#define BIT_XOR 312
-#define BIT_OR 313
-#define STRNE 314
-#define STREQ 315
-#define NUMNE 316
-#define NUMEQ 317
-#define ISA 318
-#define STRLE 319
-#define STRLT 320
-#define STRGE 321
-#define STRGT 322
-#define NUMLE 323
-#define NUMLT 324
-#define NUMGE 325
-#define NUMGT 326
-#define SHIFT 327
-#define REMAINDER 328
-#define DIVIDE 329
-#define MULTIPLY 330
-#define REFCNT 331
-#define ISWEAK 332
-#define LENGTH 333
-#define SCALAR 334
-#define CONVERT 335
-#define MINUS 336
-#define PLUS 337
-#define DEREF 338
-#define REF 339
-#define BIT_NOT 340
-#define LOGICAL_NOT 341
-#define DEC 342
-#define INC 343
-#define ARROW 344
+#define WARN 306
+#define CURRENT_PACKAGE 307
+#define UNWEAKEN 308
+#define SPECIAL_ASSIGN 309
+#define ASSIGN 310
+#define LOGICAL_OR 311
+#define LOGICAL_AND 312
+#define BIT_XOR 313
+#define BIT_OR 314
+#define STRNE 315
+#define STREQ 316
+#define NUMNE 317
+#define NUMEQ 318
+#define ISA 319
+#define STRLE 320
+#define STRLT 321
+#define STRGE 322
+#define STRGT 323
+#define NUMLE 324
+#define NUMLT 325
+#define NUMGE 326
+#define NUMGT 327
+#define SHIFT 328
+#define REMAINDER 329
+#define DIVIDE 330
+#define MULTIPLY 331
+#define REFCNT 332
+#define ISWEAK 333
+#define LENGTH 334
+#define SCALAR 335
+#define CONVERT 336
+#define MINUS 337
+#define PLUS 338
+#define DEREF 339
+#define REF 340
+#define BIT_NOT 341
+#define LOGICAL_NOT 342
+#define DEC 343
+#define INC 344
+#define ARROW 345
 
 
 

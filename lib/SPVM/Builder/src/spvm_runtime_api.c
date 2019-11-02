@@ -3381,6 +3381,33 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         exception_flag = 1;
         break;
       }
+      case SPVM_OPCODE_C_ID_WARN: {
+        int32_t sub_id = sub->id;
+        int32_t rel_line = opcode->operand1;
+        int32_t line = sub->line + rel_line;
+        
+        const char* sub_name = &runtime->string_pool[sub->name_id];
+        SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
+        const char* package_name = &runtime->string_pool[sub_package->name_id];
+        const char* file = &runtime->string_pool[sub->file_id];
+        
+        void* object = object_vars[opcode->operand0];
+        
+        const char* bytes = (const char*)env->belems(env, object);
+        int32_t string_length = env->len(env, object);
+        
+        for (int32_t i = 0; i < string_length; i++) {
+          putc(bytes[i], stderr);
+        }
+        
+        // Add line and file information if last character is not '\n'
+        int32_t add_line_file;
+        if (bytes[string_length - 1] != '\n') {
+          fprintf(stderr, " at %s line %d\n", file, line);
+        }
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_RETURN_VOID:
       {
         opcode_rel_index = opcode->operand1;

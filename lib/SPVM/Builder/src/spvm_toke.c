@@ -1892,7 +1892,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 break;
               case 'w' :
-                if (strcmp(keyword, "while") == 0) {
+                if (strcmp(keyword, "warn") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WARN);
+                  return WARN;
+                }
+                else if (strcmp(keyword, "while") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WHILE);
                   return WHILE;
                 }
