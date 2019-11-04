@@ -17,3 +17,205 @@ SPVM subroutines is executed by the SPVM Runtime. its can be converted to shared
 SPVM Language can be converted to machine codes, and you can execute them as a single executable.
 
 Executables contain not only Unix/Linux/macOS/ios executable, but also Windows Native Executable, 
+
+=head1 C99 compliant
+
+=head2 C99-compliant compiler and runtime
+
+The source code for the SPVM compiler and SPVM runtime is written in C and conforms to C99.
+
+Note that this does not mean that the user cannot call C versions other than C99 (C11, GNU extensions, etc.) or code written in C ++ from SPVM. This means that the SPVM compiler and runtime must be C99 compliant.
+
+=head2 Correspondence of type with C99
+
+The SPVM type exactly matches the following C99 types:
+
+=begin html
+
+      <table>
+        <tr>
+          <th>
+            <b> SPVM type </ b>
+          </ th>
+          <th>
+            <b> C99 type </ b>
+          </ th>
+          <th>
+            <b> Description </ b>
+          </ th>
+        </ tr>
+        <tr>
+          <td>
+            <b> byte </ b>
+          </ td>
+          <td>
+            int8_t
+          </ td>
+          <td>
+            SPVM <a href="#language-type-byte"> byte type </a> matches C99 int8_t type.
+          </ td>
+        </ tr>
+        <tr>
+          <td>
+            <b> short </ b>
+          </ td>
+          <td>
+            int16_t
+          </ td>
+          <td>
+            The SPVM <a href="#language-type-short"> short </a> matches the C99 int16_t type.
+          </ td>
+        </ tr>
+        <tr>
+          <td>
+            <b> int </ b>
+          </ td>
+          <td>
+            int32_t
+          </ td>
+          <td>
+            SPVM <a href="#language-type-int"> int type </a> matches the C99 int32_t type.
+          </ td>
+        </ tr>
+        <tr>
+          <td>
+            <b> long </ b>
+          </ td>
+          <td>
+            int64_t
+          </ td>
+          <td>
+            SPVM <a href="#language-type-long"> long type </a> matches C99 int64_t type.
+          </ td>
+        </ tr>
+
+<tr>
+          <td>
+            <b> float </ b>
+          </ td>
+          <td>
+            float
+          </ td>
+          <td>
+            The SPVM <a href="#language-type-float"> float type </a> matches the C99 float type.
+          </ td>
+        <tr>
+          <td>
+            <b> double </ b>
+          </ td>
+          <td>
+            double
+          </ td>
+          <td>
+            SPVM <a href="#language-type-double"> double </a> matches C99 double.
+          </ td>
+        </ tr>
+        <tr>
+          <td>
+            <b> Object type </ b>
+          </ td>
+          <td>
+            void *
+          </ td>
+          <td>
+            The SPVM <a href="#language-type-object"> object type </a> matches the C99 void * type.
+          </ td>
+        </ tr>        
+<tr>
+          <td>
+            <b> Multiple numeric types </ b>
+          </ td>
+          <td>
+            Numeric array type that matches the number and length of multiple numeric fields
+          </ td>
+          <td>
+            <p>
+              For example, if <a href="#language-type-multi-numeric"> multiple numeric types </a>
+            </ p>
+            <p>
+              package Point_2i: mulnum_t {has x: int; has y: int;}
+            </ p>
+            <p>
+              If the field type is int type and the number of fields is 2,
+            </ p>
+            <p>
+              Matches the type declared in C99 "int32_t var [2];".
+            </ p>
+          </ td>
+        </ tr>
+      </table>
+
+=end html
+
+=head1 Parsing
+
+=head1 comment
+
+=head1 POD
+
+=head1 package
+
+=head1 module
+
+=head1 Permission
+
+=head1 Package variables
+
+=head1 field
+
+=head1 subroutine
+
+=head1 Enumeration
+
+=head1 BEGIN block
+
+=head1 Lexical variable
+
+=head1 block
+
+=head1 scope
+
+=head1 Array
+
+=head1 value
+
+=head1 An array of values
+
+=head1 reference
+
+=head1 warning
+
+=head1 Exception handling
+
+=head1 Callback
+
+=head1 Week reference
+
+=head1 formula
+
+=head1 literal
+
+=head1 Fat Comma
+
+=head1 String
+
+=head1 Undefined value
+
+=head1 operator
+
+=head1 Operator precedence
+
+=head1 Sentence
+
+=head1 Type
+
+=head1 Type inference
+
+=head1 Type conversion
+
+=head1 Thread safe
+
+=head1 Automatically loaded modules
+
+=head1 Restriction
+

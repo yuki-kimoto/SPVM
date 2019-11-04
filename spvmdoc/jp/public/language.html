@@ -37,53 +37,43 @@
       <div>
         <a href="/">SPVMドキュメント</a> &gt SPVM言語仕様
       </div>
-      <h2 id="language-summary">SPVM言語仕様</a></h2>
+      <h2>名前</h2>
       <p>
-        <b>SPVM 1.0の言語仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。言語仕様は、警告なく変更されることがあります。
+        SPVM::Guides::LanguageSpecification - SPVM 1.0 言語仕様
       </p>
       <p>
         最終更新日 2019年11月4日 (SPVM言語仕様は、現在95%の完成度)
       </p>
-      <h2 id="language-toc">目次</h2>
-      <ul class="toc">
-        <li><a href="#language-c99">C99準拠</a></li>
-        <li><a href="#language-parser">構文解析</a></li>
-        <li><a href="#language-comment">コメント</a></li>
-        <li><a href="#language-pod">POD</a></li>
-        <li><a href="#language-package">パッケージ</a></li>
-        <li><a href="#language-module">モジュール</a></li>
-        <li><a href="#language-allow-access">アクセス許可</a></li>
-        <li><a href="#language-package-var">パッケージ変数</a></li>
-        <li><a href="#language-field">フィールド</a></li>
-        <li><a href="#language-sub">サブルーチン</a></li>
-        <li><a href="#language-enum">列挙</a></li>
-        <li><a href="#language-begin-block">BEGINブロック</a></li>
-        <li><a href="#language-lex-var">レキシカル変数</a></li>
-        <li><a href="#language-block">ブロック</a></li>
-        <li><a href="#language-scope">スコープ</a></li>
-        <li><a href="#language-array">配列</a></li>
-        <li><a href="#language-value">値</a></li>
-        <li><a href="#language-value-array">値の配列</a></li>
-        <li><a href="#language-ref">リファレンス</a></li>
-        <li><a href="#language-warn">警告</a></li>
-        <li><a href="#language-exception">例外処理</a></li>
-        <li><a href="#language-callback">コールバック</a></li>
-        <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
-        <li><a href="#language-expresssion">式</a></li>
-        <li><a href="#language-literal">リテラル</a></li>
-        <li><a href="#language-fat-comma">ファットカンマ</a></li>
-        <li><a href="#language-string">文字列</a></li>
-        <li><a href="#language-undef">未定義値</a></li>
-        <li><a href="#language-operator">演算子</a></li>
-        <li><a href="#language-operator-precedence">演算子の優先順位</a></li>
-        <li><a href="#language-statement">文</a></li>
-        <li><a href="#language-type">型</a></li>
-        <li><a href="#language-type-inference">型推論</a></li>
-        <li><a href="#language-type-convertion">型変換</a></li>
-        <li><a href="#language-thread">スレッドセーフ</a></li>
-        <li><a href="#language-auto-loaded-module">自動的に読み込まれるモジュール</a></li>
-        <li><a href="#language-limitation">制限</a></li>
-      </ul>
+      
+      <h2 id="language-summary">説明</a></h2>
+      <p>
+        <b>SPVM 1.0の言語仕様</b>がこのドキュメントには記述されています。SPVMは、1.0のリリースに向けて、ベータテスト中です。言語仕様は、警告なく変更されることがあります。
+      </p>
+      <p>
+このドキュメントでは、SPVM 1.0言語仕様について説明します。
+SPVMは1.0リリースのベータテスト中です。
+言語仕様は警告なしに変更される場合があります。
+      </p>
+
+      <p>
+SPVM言語は、Perlから使用するように設計されています。 PerlはSPVMサブルーチンを呼び出すことができます。
+      </p>
+
+      <p>
+SPVM言語は、高速な配列操作と高速な数値計算を提供します。
+      </p>
+
+      <p>
+SPVMサブルーチンは、SPVMランタイムによって実行されます。共有ライブラリまたはDLLに変換できます。
+      </p>
+
+      <p>
+SPVM言語はマシンコードに変換でき、単一の実行可能ファイルとして実行できます。
+      </p>
+
+      <p>
+実行可能ファイルには、Unix / Linux / macOS / ios実行可能ファイルだけでなく、Windowsネイティブな実行ファイルも含みます。
+      </p>
       
       <h2 id="language-c99">C99準拠</h2><!-- 2019/2/27 almost ok -->
       <ul class="list">
