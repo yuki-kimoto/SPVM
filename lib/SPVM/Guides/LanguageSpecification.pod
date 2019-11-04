@@ -1,0 +1,19 @@
+=head1 NAME
+
+SPVM::Guides::LanguageSpecification - The SPVM 1.0 Language Specification
+
+=head1 DESCRIPTION
+
+The SPVM 1.0 Language Specification is described in this document.
+SPVM is in beta testing for the 1.0 release.
+Language specifications are subject to change without warning.
+
+SPVM Language is designed to be used from Perl. Perl can call SPVM subroutines.
+
+SPVM Language provides fast array operation and fast numeric calculation.
+
+SPVM subroutines is executed by the SPVM Runtime. its can be converted to shared libraries or DLL.
+
+SPVM Language can be converted to machine codes, and you can execute them as a single executable.
+
+Executables contain not only Unix/Linux/macOS/ios executable, but also Windows Native Executable, 
