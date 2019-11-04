@@ -65,6 +65,7 @@
         <li><a href="#language-value">値</a></li>
         <li><a href="#language-value-array">値の配列</a></li>
         <li><a href="#language-ref">リファレンス</a></li>
+        <li><a href="#language-warn">警告</a></li>
         <li><a href="#language-exception">例外処理</a></li>
         <li><a href="#language-callback">コールバック</a></li>
         <li><a href="#language-weak-ref">ウィークリファレンス</a></li>
@@ -374,7 +375,7 @@ $
         SPVMにおけるキーワードは以下です。
       </p>
 <pre>
-allow byte BEGIN case die default double elsif else enum eq
+allow byte BEGIN case die warn default double elsif else enum eq
 eval for float gt ge has if callback_t isa int last break length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
@@ -417,7 +418,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
-%token <opval> RETURN WEAKEN DIE CURRENT_PACKAGE UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE WARN CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_packages packages package package_block refcnt
@@ -588,6 +589,8 @@ statement
   | RETURN expression ';'
   | DIE ';'
   | DIE expression ';'
+  | WARN ';'
+  | WARN expression ';'
   | weaken_field ';'
   | unweaken_field ';'
   | ';'
@@ -992,6 +995,9 @@ sub_names
         </tr>
         <tr>
           <td>DIE</td><td>die</td>
+        </tr>
+        <tr>
+          <td>WARN</td><td>warn</td>
         </tr>
         <tr>
           <td>CURRENT_PACKAGE</td><td>__PACKAGE__</td>
@@ -2568,6 +2574,23 @@ switch (式) {
 
 }
 </pre>
+      <h2 id="language-warn">警告</h2>
+      <h3 id="language-exception-summary">警告を発生させる</h3>
+      <p>
+        警告を発生させるにはwarn文を使用します。
+      </p>
+<pre>
+warn 式;
+</pre>
+      <p>
+        式は、<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。
+      </p>
+      <p>
+        末尾が改行文字「\n」であった場合は、標準エラー出力に式で指定されている文字列が出力されます。
+      </p>
+      <p>
+        末尾が改行文字でない場合は、末尾にファイル名と行番号が追加され、標準エラー出力されます。
+      </p>
 
       <h2 id="language-exception">例外処理</h2>
       <ul class="list">
