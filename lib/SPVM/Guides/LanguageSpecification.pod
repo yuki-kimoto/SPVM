@@ -130,13 +130,13 @@ The SPVM type exactly matches the following C99 types:
           </ td>
           <td>
             <p>
-              For example, if <a href="#language-type-multi-numeric"> multiple numeric types </a>
+              For example, if <a href="#language-type-multi-numeric"> the multiple numeric type is</a>
             </ p>
             <p>
               <b>package Point_2i: mulnum_t {has x: int; has y: int;}</b>
             </ p>
             <p>
-              Matches the type declared in C99
+              It matches the type declared in C99
             </ p>
             <p>
               <b>int32_t var[2];</b>
