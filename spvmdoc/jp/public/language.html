@@ -622,6 +622,7 @@ default_statement
 
 if_require_statement
   : IF '(' require ')' block
+  | IF '(' require ')' block ELSE block
 
 if_statement
   : IF '(' expression ')' block else_statement
