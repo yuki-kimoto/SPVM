@@ -7,10 +7,6 @@ package SPVM::Util {
   use SPVM::Unicode (uchar_to_utf8);
   use SPVM::Math (fabs, floor, log10, pow);
 
-  BEGIN {
-    _setup_sprintf();
-  }
-
   precompile sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
     my $length = @$objects;
     
@@ -106,95 +102,53 @@ package SPVM::Util {
     return $separated_strings;
   }
 
-  private enum {
-    SPECIFIER_C = 1,
-    SPECIFIER_D,
-    SPECIFIER_F,
-    SPECIFIER_S,
-    SPECIFIER_U,
-    SPECIFIER_LD,
-  }
-
-  our $SPECIFIER_TYPE_OF : private ro byte[];
-
-  precompile sub _setup_sprintf : void () {
-    $SPECIFIER_TYPE_OF = new byte[128];
-    $SPECIFIER_TYPE_OF->[(int)'c'] = SPVM::Util->SPECIFIER_C;
-    $SPECIFIER_TYPE_OF->[(int)'d'] = SPVM::Util->SPECIFIER_D;
-    $SPECIFIER_TYPE_OF->[(int)'f'] = SPVM::Util->SPECIFIER_F;
-    $SPECIFIER_TYPE_OF->[(int)'s'] = SPVM::Util->SPECIFIER_S;
-    $SPECIFIER_TYPE_OF->[(int)'U'] = SPVM::Util->SPECIFIER_U;
-  }
-
   # TODO: Add the 2nd argument for width.
   precompile sub _convert_d_to_str : string ($value : int) {
-    my $string = "" . $value;
+    my $value_str = "$value";
     my $width = 1; # TODO: Move $width to the argument.
 
-    my $value_length = length $string;
-    if ($value_length < $width) {
-      my $buffer = SPVM::StringBuffer->new;
-      my $space_count = $width - $value_length;
-      for (my $i = 0; $i < $space_count; ++$i) {
-        $buffer->push_char(' ');
-      }
-      $buffer->push($string);
-      $string = $buffer->to_str;
+    my $value_length = length $value_str;
+    unless ($value_length < $width) {
+      return $value_str;
     }
 
-    return $string;
+    my $buffer = SPVM::StringBuffer->new;
+    my $space_count = $width - $value_length;
+    for (my $i = 0; $i < $space_count; ++$i) {
+      $buffer->push_char(' ');
+    }
+
+    $buffer->push($value_str);
+
+    my $result = $buffer->to_str;
+
+    return $result;
   }
 
   # TODO: Add the 2nd argument for width.
   precompile sub _convert_ld_to_str : string ($value : long) {
-    my $string = "" . $value;
+    my $value_str = "$value";
     my $width = 1; # TODO: Move $width to the argument.
 
-    my $value_length = length $string;
-    if ($value_length < $width) {
-      my $buffer = SPVM::StringBuffer->new;
-      my $space_count = $width - $value_length;
-      for (my $i = 0; $i < $space_count; ++$i) {
-        $buffer->push_char(' ');
-      }
-      $buffer->push($string);
-      $string = $buffer->to_str;
+    my $value_length = length $value_str;
+    unless ($value_length < $width) {
+      return $value_str;
     }
 
-    return $string;
-  }
-
-  # TODO: Add the 2nd argument for precision.
-  precompile sub _convert_f_to_str : string ($double : double) {
     my $buffer = SPVM::StringBuffer->new;
-    my $precision = 5; # TODO: Move $precision to the argument.
-
-    if ($double == 0) {
-      $buffer->push_char('0');
-      if ($precision > 1) {
-        $buffer->push_char('.');
-        for (my $i = 0; $i < $precision - 1; ++$precision) {
-          $buffer->push_char('0');
-        }
-      }
-      return $buffer->to_str;
+    my $space_count = $width - $value_length;
+    for (my $i = 0; $i < $space_count; ++$i) {
+      $buffer->push_char(' ');
     }
 
-    # https://stackoverflow.com/a/29583280
-    my $exp = 1 + floor(log10(fabs($double))); # $double != 0
-    my $frac_mantissa = $double * pow(10 , -$exp);
-    for (my $i = 0; $i < $precision; ++$i) {
-      my $upper_pow = pow(10, $exp + $i);
-      my $digit = (byte)($frac_mantissa * $upper_pow);
-      if ($exp == $i) {
-        $buffer->push_char('.');
-      }
-      $buffer->push_char((byte)('0' + $digit));
-      $frac_mantissa -= $digit * pow(10, -($exp + $i));
-    }
+    $buffer->push($value_str);
 
-    return $buffer->to_str;
+    my $result = $buffer->to_str;
+
+    return $result;
   }
+
+  native sub _convert_f_to_str : string ($format : string, $value : double);
 
   precompile sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
@@ -203,96 +157,96 @@ package SPVM::Util {
     my $output = SPVM::StringBuffer->new;
     my $specifier_count = 0;
 
-    while (1) {
-      my $next_index = $index;
-      while ($next_index < $format_length && $format->[$next_index] != '%') {
-        ++$next_index;
+    while ($index < $format_length) {
+
+      my $normal_str_end = $index;
+
+      # Search the next specifier '%' until the end of $format.
+      while ($normal_str_end < $format_length) {
+        if ($format->[$normal_str_end] != '%') {
+          # ignore "%%"
+          if ($normal_str_end + 1 < $format_length &&
+              $format->[$normal_str_end + 1] == '%') {
+            $normal_str_end += 2;
+          }
+          else {
+            last;
+          }
+        }
+        else {
+          ++$normal_str_end;
+        }
       }
 
-      if ($next_index + 1 == $format_length && $format->[$next_index] == '%') {
+      if ($format->[$normal_str_end] == '%' &&
+          $normal_str_end + 1 == $format_length) {
         die "Invalid conversion in sprintf: end of string";
       }
 
-      if ($next_index + 1 < $format_length &&
-          $format->[$next_index] == '%' && $format->[$next_index + 1] == '%') {
-        $next_index += 2;
-        next;
-      }
-
-      if (my $text_length = $next_index - $index) {
-        $output->push_range($format, $index, $text_length);
-        $index = $next_index;
+      # Output the normal sub-string of $format.
+      if (my $normal_str_length = $normal_str_end - $index) {
+        $output->push_range($format, $index, $normal_str_length);
+        $index = $normal_str_end;
       }
 
       unless ($index + 1 < $format_length) {
         last;
       }
 
+      # Output the next element of $args corresponding to the specifier.
       unless ($specifier_count < @$args) {
         die "Missing argument in sprintf";
       }
 
       my $specifier_length = 1; # '%'
+      my $specifier_char = $format->[$index + $specifier_length];
 
-      my $specifier_type : int;
-      if ($format->[$index + $specifier_length] == 'l') {
-        if ($index + $specifier_length + 1 < $format_length &&
-            $format->[$index + $specifier_length + 1] == 'd') {
-          $specifier_type = SPVM::Util->SPECIFIER_LD;
-        }
-        else {
-          die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length + 1) ."\"";
-        }
+      if ($specifier_char == 'c') {
+        ++$specifier_length;
+        my $arg = (SPVM::Byte)$args->[$specifier_count];
+        $output->push_char($arg->val);
       }
-      else {
-        $specifier_type = $SPECIFIER_TYPE_OF->[$format->[$index + $specifier_length]];
+      elsif ($specifier_char == 's') {
+        ++$specifier_length;
+        my $arg = (string)$args->[$specifier_count];
+        $output->push($arg);
       }
-
-      switch ($specifier_type) {
-        case SPVM::Util->SPECIFIER_C: {
-          ++$specifier_length;
-          my $arg = (SPVM::Byte)$args->[$specifier_count];
-          $output->push_char($arg->val);
-          break;
+      elsif ($specifier_char == 'd') {
+        ++$specifier_length;
+        my $arg = (SPVM::Int)$args->[$specifier_count];
+        my $str = _convert_d_to_str($arg->val);
+        $output->push($str);
+      }
+      elsif ($specifier_char == 'l') {
+        ++$specifier_length;
+        unless ($index + $specifier_length < $format_length) {
+          die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length) ."\"";
         }
-        case SPVM::Util->SPECIFIER_S: {
+        my $specifier_char_next = $format->[$index + $specifier_length];
+        if ($specifier_char_next == 'd') {
           ++$specifier_length;
-          my $arg = (string)$args->[$specifier_count];
-          $output->push($arg);
-          break;
-        }
-        case SPVM::Util->SPECIFIER_D: {
-          ++$specifier_length;
-          my $arg = (SPVM::Int)$args->[$specifier_count];
-          my $str = _convert_d_to_str($arg->val);
-          $output->push($str);
-          break;
-        }
-        case SPVM::Util->SPECIFIER_LD: {
-          $specifier_length += 2;
           my $arg = (SPVM::Long)$args->[$specifier_count];
           my $str = _convert_ld_to_str($arg->val);
           $output->push($str);
-          break;
         }
-        case SPVM::Util->SPECIFIER_F: {
-          ++$specifier_length;
-          my $arg = (SPVM::Double)$args->[$specifier_count];
-          my $str = _convert_f_to_str($arg->val);
-          $output->push($str);
-          break;
+        else {
+          die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length) ."\"";
         }
-        case SPVM::Util->SPECIFIER_U: {
-          ++$specifier_length;
-          my $arg = (SPVM::Int)$args->[$specifier_count];
-          my $utf8 = uchar_to_utf8($arg->val);
-          $output->push($utf8);
-          break;
-        }
-        default: {
-          die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length + 1) . "\"";
-          break;
-        }
+      }
+      elsif ($specifier_char == 'f') {
+        ++$specifier_length;
+        my $arg = (SPVM::Double)$args->[$specifier_count];
+        my $str = _convert_f_to_str("%.4f", $arg->val);
+        $output->push($str);
+      }
+      elsif ($specifier_char == 'U') {
+        ++$specifier_length;
+        my $arg = (SPVM::Int)$args->[$specifier_count];
+        my $utf8 = uchar_to_utf8($arg->val);
+        $output->push($utf8);
+      }
+      else {
+        die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length + 1) . "\"";
       }
 
       $index += $specifier_length;
