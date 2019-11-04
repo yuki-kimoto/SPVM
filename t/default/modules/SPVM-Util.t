@@ -29,7 +29,6 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Lib::SPVM::Util->test_sprintf_c);
   ok(TestCase::Lib::SPVM::Util->test_sprintf_s);
   ok(TestCase::Lib::SPVM::Util->test_sprintf_U);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_percent);
   ok(TestCase::Lib::SPVM::Util->test_sprintf_all);
 }
 
