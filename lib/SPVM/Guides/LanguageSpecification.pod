@@ -136,8 +136,11 @@ The SPVM type exactly matches the following C99 types:
               <b>package Point_2i: mulnum_t {has x: int; has y: int;}</b>
             </ p>
             <p>
-              Matches the type declared in C99 <b>"int32_t var[2];"</b>.
+              Matches the type declared in C99
             </ p>
+            <p>
+              <b>int32_t var[2];</b>
+            </p>
           </ td>
         </ tr>
       </table>
