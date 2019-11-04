@@ -372,7 +372,7 @@ package TestCase::Lib::SPVM::Util {
 
   sub test_sprintf_percent : int () {
     my $tests = [
-        [ sprintf("%d%%",    1), "1%%"   ],
+        [ sprintf("%d%%",    1), "1%"    ],
         [ sprintf("%%%d",    1), "%1"    ],
         [ sprintf("%d%%str", 1), "1%str" ],
     ];

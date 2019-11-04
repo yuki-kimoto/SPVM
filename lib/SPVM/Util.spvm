@@ -163,24 +163,26 @@ package SPVM::Util {
 
       # Search the next specifier '%' until the end of $format.
       while ($normal_str_end < $format_length) {
-        if ($format->[$normal_str_end] != '%') {
-          # ignore "%%"
-          if ($normal_str_end + 1 < $format_length &&
-              $format->[$normal_str_end + 1] == '%') {
-            $normal_str_end += 2;
-          }
-          else {
-            last;
-          }
+        if ($format->[$normal_str_end] == '%') {
+          last;
         }
         else {
           ++$normal_str_end;
         }
       }
 
-      if ($format->[$normal_str_end] == '%' &&
+      if ($normal_str_end < $format_length &&
+          $format->[$normal_str_end] == '%' &&
           $normal_str_end + 1 == $format_length) {
         die "Invalid conversion in sprintf: end of string";
+      }
+
+      if ($normal_str_end + 1 < $format_length &&
+          $format->[$normal_str_end + 1] == '%') {
+        my $normal_str_length = $normal_str_end + 1 - $index;
+        $output->push_range($format, $index, $normal_str_length);
+        $index = $normal_str_end + 2;
+        next;
       }
 
       # Output the normal sub-string of $format.
@@ -189,7 +191,7 @@ package SPVM::Util {
         $index = $normal_str_end;
       }
 
-      unless ($index + 1 < $format_length) {
+      unless ($index < $format_length) {
         last;
       }
 
