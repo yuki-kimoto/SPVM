@@ -63,7 +63,7 @@ The SPVM type exactly matches the following C99 types:
             int16_t
           </ td>
           <td>
-            The SPVM <a href="#language-type-short"> short type</a> matches the C99 int16_t type.
+            SPVM <a href="#language-type-short"> short type</a> matches the C99 int16_t type.
           </ td>
         </ tr>
         <tr>
@@ -97,7 +97,7 @@ The SPVM type exactly matches the following C99 types:
             float
           </ td>
           <td>
-            The SPVM <a href="#language-type-float"> float type </a> matches the C99 float type.
+            SPVM <a href="#language-type-float"> float type </a> matches the C99 float type.
           </ td>
         <tr>
           <td>
@@ -115,18 +115,18 @@ The SPVM type exactly matches the following C99 types:
             <b> Object type </ b>
           </ td>
           <td>
-            void *
+            void*
           </ td>
           <td>
-            The SPVM <a href="#language-type-object"> object type </a> matches the C99 void * type.
+            SPVM <a href="#language-type-object"> object type </a> matches the C99 void* type.
           </ td>
         </ tr>        
         <tr>
           <td>
-            <b> Multiple numeric types </ b>
+            <b> Multiple numeric type </ b>
           </ td>
           <td>
-            Numeric array type that matches tye type and the length of the fields of multiple numeric type
+            Numeric array type that matches tye type and the length of the fields of SPVM multiple numeric type
           </ td>
           <td>
             <p>
