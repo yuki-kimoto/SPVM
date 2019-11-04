@@ -63,7 +63,7 @@ The SPVM type exactly matches the following C99 types:
             int16_t
           </ td>
           <td>
-            The SPVM <a href="#language-type-short"> short </a> matches the C99 int16_t type.
+            The SPVM <a href="#language-type-short"> short type</a> matches the C99 int16_t type.
           </ td>
         </ tr>
         <tr>
@@ -107,7 +107,7 @@ The SPVM type exactly matches the following C99 types:
             double
           </ td>
           <td>
-            SPVM <a href="#language-type-double"> double </a> matches C99 double.
+            SPVM <a href="#language-type-double"> double type</a> matches C99 double.
           </ td>
         </ tr>
         <tr>
@@ -121,25 +121,22 @@ The SPVM type exactly matches the following C99 types:
             The SPVM <a href="#language-type-object"> object type </a> matches the C99 void * type.
           </ td>
         </ tr>        
-<tr>
+        <tr>
           <td>
             <b> Multiple numeric types </ b>
           </ td>
           <td>
-            Numeric array type that matches the number and length of multiple numeric fields
+            Numeric array type that matches tye type and the length of the fields of multiple numeric type
           </ td>
           <td>
             <p>
               For example, if <a href="#language-type-multi-numeric"> multiple numeric types </a>
             </ p>
             <p>
-              package Point_2i: mulnum_t {has x: int; has y: int;}
+              <b>package Point_2i: mulnum_t {has x: int; has y: int;}</b>
             </ p>
             <p>
-              If the field type is int type and the number of fields is 2,
-            </ p>
-            <p>
-              Matches the type declared in C99 "int32_t var [2];".
+              Matches the type declared in C99 <b>"int32_t var[2];"</b>.
             </ p>
           </ td>
         </ tr>
