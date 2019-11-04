@@ -898,26 +898,6 @@ int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  void* object = stack[0].oval;
-  
-  const char* bytes = (const char*)env->belems(env, object);
-  int32_t string_length = env->len(env, object);
-  
-  {
-    int32_t i;
-    for (i = 0; i < string_length; i++) {
-      putc(bytes[i], stderr);
-    }
-  }
-  
-  fprintf(stderr, "\n");
-  
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__CORE__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

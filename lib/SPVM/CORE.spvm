@@ -1087,6 +1087,4 @@ package SPVM::CORE {
     
     return $slice;
   }
-
-  native sub warn : void ($value : string);
 }
