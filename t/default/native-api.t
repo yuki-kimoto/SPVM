@@ -24,13 +24,13 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   ok(TestCase::Extension->set_fpkgvar);
   ok(TestCase::Extension->set_dpkgvar);
   ok(TestCase::Extension->set_opkgvar);
-  ok(TestCase::Extension->bpkgvar);
-  ok(TestCase::Extension->spkgvar);
-  ok(TestCase::Extension->ipkgvar);
-  ok(TestCase::Extension->lpkgvar);
-  ok(TestCase::Extension->fpkgvar);
-  ok(TestCase::Extension->dpkgvar);
-  ok(TestCase::Extension->opkgvar);
+  ok(TestCase::Extension->get_bpkgvar);
+  ok(TestCase::Extension->get_spkgvar);
+  ok(TestCase::Extension->get_ipkgvar);
+  ok(TestCase::Extension->get_lpkgvar);
+  ok(TestCase::Extension->get_fpkgvar);
+  ok(TestCase::Extension->get_dpkgvar);
+  ok(TestCase::Extension->get_opkgvar);
   ok(TestCase::Extension->push_mortal_multi);
 }
 

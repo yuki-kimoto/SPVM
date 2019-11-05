@@ -7,7 +7,7 @@
 
 static const char* MFILE = "TestCase/Extension.c";
 
-int32_t SPNATIVE__TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -19,7 +19,7 @@ int32_t SPNATIVE__TestCase__Extension__bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -31,7 +31,7 @@ int32_t SPNATIVE__TestCase__Extension__spkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -43,7 +43,7 @@ int32_t SPNATIVE__TestCase__Extension__ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -55,7 +55,7 @@ int32_t SPNATIVE__TestCase__Extension__lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -67,7 +67,7 @@ int32_t SPNATIVE__TestCase__Extension__fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -79,7 +79,7 @@ int32_t SPNATIVE__TestCase__Extension__dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 

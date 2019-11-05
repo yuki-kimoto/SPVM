@@ -783,13 +783,13 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 76    set_ffield
 77    set_dfield
 78    set_ofield
-79    bpkgvar
-80    spkgvar
-81    ipkgvar
-82    lpkgvar
-83    fpkgvar
-84    dpkgvar
-85    opkgvar
+79    get_bpkgvar
+80    get_spkgvar
+81    get_ipkgvar
+82    get_lpkgvar
+83    get_fpkgvar
+84    get_dpkgvar
+85    get_opkgvar
 86    set_bpkgvar
 87    set_spkgvar
 88    set_ipkgvar
@@ -914,13 +914,13 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-set_ffield">set_ffield</a></li>
         <li><a href="#native-api-native-sub-api-set_dfield">set_dfield</a></li>
         <li><a href="#native-api-native-sub-api-set_ofield">set_ofield</a></li>
-        <li><a href="#native-api-native-sub-api-bpkgvar">bpkgvar</a></li>
-        <li><a href="#native-api-native-sub-api-spkgvar">spkgvar</a></li>
-        <li><a href="#native-api-native-sub-api-ipkgvar">ipkgvar</a></li>
-        <li><a href="#native-api-native-sub-api-lpkgvar">lpkgvar</a></li>
-        <li><a href="#native-api-native-sub-api-fpkgvar">fpkgvar</a></li>
-        <li><a href="#native-api-native-sub-api-dpkgvar">dpkgvar</a></li>
-        <li><a href="#native-api-native-sub-api-opkgvar">opkgvar</a></li>
+        <li><a href="#native-api-native-sub-api-get_bpkgvar">get_bpkgvar</a></li>
+        <li><a href="#native-api-native-sub-api-get_spkgvar">get_spkgvar</a></li>
+        <li><a href="#native-api-native-sub-api-get_ipkgvar">get_ipkgvar</a></li>
+        <li><a href="#native-api-native-sub-api-get_lpkgvar">get_lpkgvar</a></li>
+        <li><a href="#native-api-native-sub-api-get_fpkgvar">get_fpkgvar</a></li>
+        <li><a href="#native-api-native-sub-api-get_dpkgvar">get_dpkgvar</a></li>
+        <li><a href="#native-api-native-sub-api-get_opkgvar">get_opkgvar</a></li>
         <li><a href="#native-api-native-sub-api-set_bpkgvar">set_bpkgvar</a></li>
         <li><a href="#native-api-native-sub-api-set_spkgvar">set_spkgvar</a></li>
         <li><a href="#native-api-native-sub-api-set_ipkgvar">set_ipkgvar</a></li>
@@ -1876,109 +1876,109 @@ void* object = env->new_obj(env, basic_type_id);
 env->set_ofield(env, object, field_id, object);
 </pre>
 
-      <h3 id="native-api-native-sub-api-bpkgvar">bpkgvar</h3>
+      <h3 id="native-api-native-sub-api-get_bpkgvar">get_bpkgvar</h3>
       <p>
         オブジェクトとパッケージ変数IDを指定すると、byte型のパッケージ変数の値をC言語のint8_t型の値として返却します。パッケージ変数IDはfield_id関数で取得した有効なパッケージ変数IDである必要があります。
       </p>
 <pre>
-int8_t (*bpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+int8_t (*get_bpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "byte");
-int8_t pkgvar_value = env->bpkgvar(env, object, pkgvar_id);
+int8_t pkgvar_value = env->get_bpkgvar(env, object, pkgvar_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-spkgvar">spkgvar</h3>
+      <h3 id="native-api-native-sub-api-get_spkgvar">get_spkgvar</h3>
       <p>
         オブジェクトとパッケージ変数IDを指定すると、short型のパッケージ変数の値をC言語のint16_t型の値として返却します。パッケージ変数IDはfield_id関数で取得した有効なパッケージ変数IDである必要があります。
       </p>
 <pre>
-int16_t (*spkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+int16_t (*get_spkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "short");
-int16_t pkgvar_value = env->spkgvar(env, object, pkgvar_id);
+int16_t pkgvar_value = env->get_spkgvar(env, object, pkgvar_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-ipkgvar">ipkgvar</h3>
+      <h3 id="native-api-native-sub-api-get_ipkgvar">get_ipkgvar</h3>
       <p>
         オブジェクトとパッケージ変数IDを指定すると、int型のパッケージ変数の値をC言語のint32_t型の値として返却します。パッケージ変数IDはfield_id関数で取得した有効なパッケージ変数IDである必要があります。
       </p>
 <pre>
-int32_t (*ipkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+int32_t (*get_ipkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "int");
-int32_t pkgvar_value = env->ipkgvar(env, object, pkgvar_id);
+int32_t pkgvar_value = env->get_ipkgvar(env, object, pkgvar_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-lpkgvar">lpkgvar</h3>
+      <h3 id="native-api-native-sub-api-get_lpkgvar">get_lpkgvar</h3>
       <p>
         オブジェクトとパッケージ変数IDを指定すると、long型のパッケージ変数の値をC言語のint64_t型の値として返却します。パッケージ変数IDはfield_id関数で取得した有効なパッケージ変数IDである必要があります。
       </p>
 <pre>
-int64_t (*lpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+int64_t (*get_lpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "long");
-int64_t pkgvar_value = env->lpkgvar(env, object, pkgvar_id);
+int64_t pkgvar_value = env->get_lpkgvar(env, object, pkgvar_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-fpkgvar">fpkgvar</h3>
+      <h3 id="native-api-native-sub-api-get_fpkgvar">get_fpkgvar</h3>
       <p>
         オブジェクトとパッケージ変数IDを指定すると、float型のパッケージ変数の値をC言語のfloat型の値として返却します。パッケージ変数IDはfield_id関数で取得した有効なパッケージ変数IDである必要があります。
       </p>
 <pre>
-float (*fpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+float (*get_fpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "float");
-float pkgvar_value = env->fpkgvar(env, object, pkgvar_id);
+float pkgvar_value = env->get_fpkgvar(env, object, pkgvar_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-dpkgvar">dpkgvar</h3>
+      <h3 id="native-api-native-sub-api-get_dpkgvar">get_dpkgvar</h3>
       <p>
         オブジェクトとパッケージ変数IDを指定すると、double型のパッケージ変数の値をC言語のdouble型の値として返却します。パッケージ変数IDはfield_id関数で取得した有効なパッケージ変数IDである必要があります。
       </p>
 <pre>
-double (*dpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+double (*get_dpkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "double");
-double pkgvar_value = env->dpkgvar(env, object, pkgvar_id);
+double pkgvar_value = env->get_dpkgvar(env, object, pkgvar_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-opkgvar">opkgvar</h3>
+      <h3 id="native-api-native-sub-api-get_opkgvar">get_opkgvar</h3>
       <p>
         オブジェクトとパッケージ変数IDを指定すると、オブジェクト型のパッケージ変数の値をC言語のvoid*型の値として返却します。パッケージ変数IDはfield_id関数で取得した有効なパッケージ変数IDである必要があります。
       </p>
 <pre>
-void* (*opkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
+void* (*get_opkgvar)(SPVM_ENV* env, int32_t pkgvar_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "SPVM::Int");
-void* pkgvar_value = env->bpkgvar(env, object, pkgvar_id);
+void* pkgvar_value = env->get_bpkgvar(env, object, pkgvar_id);
 </pre>
 
       <h3 id="native-api-native-sub-api-set_bpkgvar">set_bpkgvar</h3>
