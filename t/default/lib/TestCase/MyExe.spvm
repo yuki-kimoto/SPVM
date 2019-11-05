@@ -147,20 +147,20 @@ package TestCase::MyExe {
 
     # package variable access
     {
-      ok(TestCase::Extension->set_bpkgvar);
-      ok(TestCase::Extension->set_spkgvar);
-      ok(TestCase::Extension->set_ipkgvar);
-      ok(TestCase::Extension->set_lpkgvar);
-      ok(TestCase::Extension->set_fpkgvar);
-      ok(TestCase::Extension->set_dpkgvar);
-      ok(TestCase::Extension->set_opkgvar);
-      ok(TestCase::Extension->get_bpkgvar);
-      ok(TestCase::Extension->get_spkgvar);
-      ok(TestCase::Extension->get_ipkgvar);
-      ok(TestCase::Extension->get_lpkgvar);
-      ok(TestCase::Extension->get_fpkgvar);
-      ok(TestCase::Extension->get_dpkgvar);
-      ok(TestCase::Extension->get_opkgvar);
+      ok(TestCase::Extension->set_package_var_byte);
+      ok(TestCase::Extension->set_package_var_short);
+      ok(TestCase::Extension->set_package_var_int);
+      ok(TestCase::Extension->set_package_var_long);
+      ok(TestCase::Extension->set_package_var_float);
+      ok(TestCase::Extension->set_package_var_double);
+      ok(TestCase::Extension->set_package_var_object);
+      ok(TestCase::Extension->get_package_var_byte);
+      ok(TestCase::Extension->get_package_var_short);
+      ok(TestCase::Extension->get_package_var_int);
+      ok(TestCase::Extension->get_package_var_long);
+      ok(TestCase::Extension->get_package_var_float);
+      ok(TestCase::Extension->get_package_var_double);
+      ok(TestCase::Extension->get_package_var_object);
     }
 
     # has_callback

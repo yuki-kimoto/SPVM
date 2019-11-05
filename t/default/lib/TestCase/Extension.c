@@ -7,7 +7,7 @@
 
 static const char* MFILE = "TestCase/Extension.c";
 
-int32_t SPNATIVE__TestCase__Extension__get_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_package_var_byte_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -19,7 +19,7 @@ int32_t SPNATIVE__TestCase__Extension__get_bpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -31,7 +31,7 @@ int32_t SPNATIVE__TestCase__Extension__get_spkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_package_var_int_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -43,7 +43,7 @@ int32_t SPNATIVE__TestCase__Extension__get_ipkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_package_var_long_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -55,7 +55,7 @@ int32_t SPNATIVE__TestCase__Extension__get_lpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_package_var_float_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -67,7 +67,7 @@ int32_t SPNATIVE__TestCase__Extension__get_fpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_package_var_double_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -79,7 +79,7 @@ int32_t SPNATIVE__TestCase__Extension__get_dpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__get_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -91,7 +91,7 @@ int32_t SPNATIVE__TestCase__Extension__get_opkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_package_var_byte_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -100,7 +100,7 @@ int32_t SPNATIVE__TestCase__Extension__set_bpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_spkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -109,7 +109,7 @@ int32_t SPNATIVE__TestCase__Extension__set_spkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_ipkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_package_var_int_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -118,7 +118,7 @@ int32_t SPNATIVE__TestCase__Extension__set_ipkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_lpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_package_var_long_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -127,7 +127,7 @@ int32_t SPNATIVE__TestCase__Extension__set_lpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_fpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_package_var_float_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -136,7 +136,7 @@ int32_t SPNATIVE__TestCase__Extension__set_fpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_dpkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_package_var_double_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -145,7 +145,7 @@ int32_t SPNATIVE__TestCase__Extension__set_dpkgvar_test(SPVM_ENV* env, SPVM_VALU
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_opkgvar_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__Extension__set_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
