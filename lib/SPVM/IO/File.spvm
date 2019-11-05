@@ -1,13 +1,20 @@
 package SPVM::IO::File {
   use SPVM::FileHandle;
   
-  native sub SEEK_SET : int();
-  native sub SEEK_CUR : int();
-  native sub SEEK_END : int();
-  native sub EOF : int();
-  native sub STDIN : int();
-  native sub STDOUT : int();
-  native sub STDERR : int();
+  our $SEEK_SET : ro int;
+  our $SEEK_CUR : ro int;
+  our $SEEK_END : ro int;
+  
+  BEGIN {
+    init_package_vars();
+  }
+  
+  private native sub init_package_vars : void ();
+  
+  native sub EOF : int ();
+  native sub STDIN : int ();
+  native sub STDOUT : int ();
+  native sub STDERR : int ();
   
   has fh : ro SPVM::FileHandle;
   

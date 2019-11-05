@@ -1,3 +1,4 @@
+// Enable strerror_r, fileno
 #ifndef _XOPEN_SOURCE
 #  define _XOPEN_SOURCE 600
 #endif
@@ -11,6 +12,15 @@
 #include <errno.h>
 
 static const char* MFILE = "SPVM/IO/File.c";
+
+int32_t SPNATIVE__SPVM__IO__File__init_package_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  SPVM_SET_IPKGVAR(env, "SPVM::IO::File", "$SEEK_SET", SEEK_SET, MFILE, __LINE__);
+  SPVM_SET_IPKGVAR(env, "SPVM::IO::File", "$SEEK_CUR", SEEK_CUR, MFILE, __LINE__);
+  SPVM_SET_IPKGVAR(env, "SPVM::IO::File", "$SEEK_END", SEEK_END, MFILE, __LINE__);
+  
+  return SPVM_SUCCESS;
+}
 
 int32_t SPNATIVE__SPVM__IO__File__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
@@ -334,36 +344,6 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Can't open file \"%s\": %s", file_name, errstr, MFILE, __LINE__);
   }
   
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__SEEK_SET(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef SEEK_SET
-  stack[0].ival = SEEK_SET;
-#else
-  SPVM_DIE("Errno SEEK_SET is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__SEEK_CUR(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef SEEK_CUR
-  stack[0].ival = SEEK_CUR;
-#else
-  SPVM_DIE("Errno SEEK_CUR is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__SEEK_END(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef SEEK_END
-  stack[0].ival = SEEK_END;
-#else
-  SPVM_DIE("Errno SEEK_END is not defined", MFILE, __LINE__);
-#endif
-
   return SPVM_SUCCESS;
 }
 
