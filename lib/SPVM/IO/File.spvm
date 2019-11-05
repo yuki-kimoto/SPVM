@@ -1,12 +1,6 @@
 package SPVM::IO::File {
   use SPVM::FileHandle;
   
-  native sub O_RDONLY : int();
-  native sub O_WRONLY : int();
-  native sub O_RDWR : int();
-  native sub O_APPEND : int();
-  native sub O_CREAT : int();
-  native sub O_TRUNC : int();
   native sub SEEK_SET : int();
   native sub SEEK_CUR : int();
   native sub SEEK_END : int();

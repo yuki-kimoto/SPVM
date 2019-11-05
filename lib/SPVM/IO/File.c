@@ -337,66 +337,6 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__File__O_RDONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef O_RDONLY
-  stack[0].ival = O_RDONLY;
-#else
-  SPVM_DIE("Errno O_RDONLY is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__O_WRONLY(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef O_WRONLY
-  stack[0].ival = O_WRONLY;
-#else
-  SPVM_DIE("Errno O_WRONLY is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__O_RDWR(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef O_RDWR
-  stack[0].ival = O_RDWR;
-#else
-  SPVM_DIE("Errno O_RDWR is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__O_APPEND(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef O_APPEND
-  stack[0].ival = O_APPEND;
-#else
-  SPVM_DIE("Errno O_APPEND is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__O_CREAT(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef O_CREAT
-  stack[0].ival = O_CREAT;
-#else
-  SPVM_DIE("Errno O_CREAT is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__O_TRUNC(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef O_TRUNC
-  stack[0].ival = O_TRUNC;
-#else
-  SPVM_DIE("Errno O_TRUNC is not defined", MFILE, __LINE__);
-#endif
-
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__IO__File__SEEK_SET(SPVM_ENV* env, SPVM_VALUE* stack) {
 #ifdef SEEK_SET
   stack[0].ival = SEEK_SET;
@@ -458,7 +398,7 @@ int32_t SPNATIVE__SPVM__IO__File__STDOUT(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__IO__File__STDERR(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef stdout
+#ifdef stderr
   stack[0].ival = fileno(stderr);
 #else
   SPVM_DIE("Errno STDERR is not defined", MFILE, __LINE__);
