@@ -119,7 +119,7 @@ int32_t SPVM_STRING_BUFFER_add_package_var_id_name(SPVM_STRING_BUFFER* string_bu
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string) {
+int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, const char* string) {
   
   int32_t id = string_buffer->length;
   

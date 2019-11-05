@@ -20,7 +20,7 @@ int32_t SPVM_STRING_BUFFER_add_field_offset_name(SPVM_STRING_BUFFER* string_buff
 int32_t SPVM_STRING_BUFFER_add_sub_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name);
 int32_t SPVM_STRING_BUFFER_add_basic_type_id_name(SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name);
 int32_t SPVM_STRING_BUFFER_add_package_var_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* package_var_name);
-int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, char* string);
+int32_t SPVM_STRING_BUFFER_add(SPVM_STRING_BUFFER* string_buffer, const char* string);
 int32_t SPVM_STRING_BUFFER_add_len(SPVM_STRING_BUFFER* string_buffer, char* string, int32_t string_length);
 int32_t SPVM_STRING_BUFFER_add_hex_char(SPVM_STRING_BUFFER* string_buffer, char ch);
 int32_t SPVM_STRING_BUFFER_add_char(SPVM_STRING_BUFFER* string_buffer, int8_t value);
