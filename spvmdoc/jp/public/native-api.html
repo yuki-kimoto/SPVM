@@ -769,20 +769,20 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 62    delems
 63    oelem
 64    set_oelem
-65    bfield
-66    sfield
-67    ifield
-68    lfield
-69    ffield
-70    dfield
-71    ofield
-72    set_bfield
-73    set_sfield
-74    set_ifield
-75    set_lfield
-76    set_ffield
-77    set_dfield
-78    set_ofield
+65    get_field_byte
+66    get_field_short
+67    get_field_int
+68    get_field_long
+69    get_field_float
+70    get_field_double
+71    get_field_object
+72    set_field_byte
+73    set_field_short
+74    set_field_int
+75    set_field_long
+76    set_field_float
+77    set_field_double
+78    set_field_object
 79    get_package_var_byte
 80    get_package_var_short
 81    get_package_var_int
@@ -900,20 +900,20 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-delems">delems</a></li>
         <li><a href="#native-api-native-sub-api-oelem">oelem</a></li>
         <li><a href="#native-api-native-sub-api-set_oelem">set_oelem</a></li>
-        <li><a href="#native-api-native-sub-api-bfield">bfield</a></li>
-        <li><a href="#native-api-native-sub-api-sfield">sfield</a></li>
-        <li><a href="#native-api-native-sub-api-ifield">ifield</a></li>
-        <li><a href="#native-api-native-sub-api-lfield">lfield</a></li>
-        <li><a href="#native-api-native-sub-api-ffield">ffield</a></li>
-        <li><a href="#native-api-native-sub-api-dfield">dfield</a></li>
-        <li><a href="#native-api-native-sub-api-ofield">ofield</a></li>
-        <li><a href="#native-api-native-sub-api-set_bfield">set_bfield</a></li>
-        <li><a href="#native-api-native-sub-api-set_sfield">set_sfield</a></li>
-        <li><a href="#native-api-native-sub-api-set_ifield">set_ifield</a></li>
-        <li><a href="#native-api-native-sub-api-set_lfield">set_lfield</a></li>
-        <li><a href="#native-api-native-sub-api-set_ffield">set_ffield</a></li>
-        <li><a href="#native-api-native-sub-api-set_dfield">set_dfield</a></li>
-        <li><a href="#native-api-native-sub-api-set_ofield">set_ofield</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_byte">get_field_byte</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_short">get_field_short</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_int">get_field_int</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_long">get_field_long</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_float">get_field_float</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_double">get_field_double</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_object">get_field_object</a></li>
+        <li><a href="#native-api-native-sub-api-set_field_byte">set_field_byte</a></li>
+        <li><a href="#native-api-native-sub-api-set_field_short">set_field_short</a></li>
+        <li><a href="#native-api-native-sub-api-set_field_int">set_field_int</a></li>
+        <li><a href="#native-api-native-sub-api-set_field_long">set_field_long</a></li>
+        <li><a href="#native-api-native-sub-api-set_field_float">set_field_float</a></li>
+        <li><a href="#native-api-native-sub-api-set_field_double">set_field_double</a></li>
+        <li><a href="#native-api-native-sub-api-set_field_object">set_field_object</a></li>
         <li><a href="#native-api-native-sub-api-get_package_var_byte">get_package_var_byte</a></li>
         <li><a href="#native-api-native-sub-api-get_package_var_short">get_package_var_short</a></li>
         <li><a href="#native-api-native-sub-api-get_package_var_int">get_package_var_int</a></li>
@@ -1661,114 +1661,114 @@ void (*set_oelem)(SPVM_ENV* env, void* array, int32_t index, void* value);
 <pre>
 env->oelem(env, array, 3, object);
 </pre>
-      <h3 id="native-api-native-sub-api-bfield">bfield</h3>
+      <h3 id="native-api-native-sub-api-get_field_byte">get_field_byte</h3>
       <p>
         オブジェクトとフィールドIDを指定すると、byte型のフィールドの値をC言語のint8_t型の値として返却します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-int8_t (*bfield)(SPVM_ENV* env, void* object, int32_t field_id);
+int8_t (*get_field_byte)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "byte");
-int8_t field_value = env->bfield(env, object, field_id);
+int8_t field_value = env->get_field_byte(env, object, field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-sfield">sfield</h3>
+      <h3 id="native-api-native-sub-api-get_field_short">get_field_short</h3>
       <p>
         オブジェクトとフィールドIDを指定すると、short型のフィールドの値をC言語のint16_t型の値として返却します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  int16_t (*sfield)(SPVM_ENV* env, void* object, int32_t field_id);
+  int16_t (*get_field_short)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "short");
-int16_t field_value = env->sfield(env, object, field_id);
+int16_t field_value = env->get_field_short(env, object, field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-ifield">ifield</h3>
+      <h3 id="native-api-native-sub-api-get_field_int">get_field_int</h3>
       <p>
         オブジェクトとフィールドIDを指定すると、int型のフィールドの値をC言語のint32_t型の値として返却します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  int32_t (*ifield)(SPVM_ENV* env, void* object, int32_t field_id);
+  int32_t (*get_field_int)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "int");
-int32_t field_value = env->ifield(env, object, field_id);
+int32_t field_value = env->get_field_int(env, object, field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-lfield">lfield</h3>
+      <h3 id="native-api-native-sub-api-get_field_long">get_field_long</h3>
       <p>
         オブジェクトとフィールドIDを指定すると、long型のフィールドの値をC言語のint64_t型の値として返却します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  int64_t (*lfield)(SPVM_ENV* env, void* object, int32_t field_id);
+  int64_t (*get_field_long)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "long");
-int64_t field_value = env->lfield(env, object, field_id);
+int64_t field_value = env->get_field_long(env, object, field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-ffield">ffield</h3>
+      <h3 id="native-api-native-sub-api-get_field_float">get_field_float</h3>
       <p>
         オブジェクトとフィールドIDを指定すると、float型のフィールドの値をC言語のfloat型の値として返却します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  float (*ffield)(SPVM_ENV* env, void* object, int32_t field_id);
+  float (*get_field_float)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "float");
-float field_value = env->ffield(env, object, field_id);
+float field_value = env->get_field_float(env, object, field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-dfield">dfield</h3>
+      <h3 id="native-api-native-sub-api-get_field_double">get_field_double</h3>
       <p>
         オブジェクトとフィールドIDを指定すると、double型のフィールドの値をC言語のdouble型の値として返却します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  double (*dfield)(SPVM_ENV* env, void* object, int32_t field_id);
+  double (*get_field_double)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "double");
-double field_value = env->dfield(env, object, field_id);
+double field_value = env->get_field_double(env, object, field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-ofield">ofield</h3>
+      <h3 id="native-api-native-sub-api-get_field_object">get_field_object</h3>
       <p>
         オブジェクトとフィールドIDを指定すると、オブジェクト型のフィールドの値をC言語のvoid*型の値として返却します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。フィールドが弱参照である場合は、取り除かれます。
       </p>
 <pre>
-  void* (*ofield)(SPVM_ENV* env, void* object, int32_t field_id);
+  void* (*get_field_object)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "SPVM::Int");
-void* field_value = env->ofield(env, object, field_id);
+void* field_value = env->get_field_object(env, object, field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_bfield">set_bfield</h3>
+      <h3 id="native-api-native-sub-api-set_field_byte">set_field_byte</h3>
       <p>
         オブジェクトとフィールドIDとフィールドの値を指定すると、byte型のフィールドに値を設定します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  void (*set_bfield)(SPVM_ENV* env, void* object, int32_t field_id, int8_t value);
+  void (*set_field_byte)(SPVM_ENV* env, void* object, int32_t field_id, int8_t value);
 </pre>
       <p>
         サンプル:
@@ -1776,15 +1776,15 @@ void* field_value = env->ofield(env, object, field_id);
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "byte");
 int8_t field_value = 5;
-env->set_bfield(env, object, field_id, field_value);
+env->set_field_byte(env, object, field_id, field_value);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_sfield">set_sfield</h3>
+      <h3 id="native-api-native-sub-api-set_field_short">set_field_short</h3>
       <p>
         オブジェクトとフィールドIDとフィールドの値を指定すると、short型のフィールドに値を設定します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  void (*set_sfield)(SPVM_ENV* env, void* object, int32_t field_id, int16_t value);
+  void (*set_field_short)(SPVM_ENV* env, void* object, int32_t field_id, int16_t value);
 </pre>
       <p>
         サンプル:
@@ -1792,15 +1792,15 @@ env->set_bfield(env, object, field_id, field_value);
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "short");
 int16_t field_value = 5;
-env->set_sfield(env, object, field_id, field_value);
+env->set_field_short(env, object, field_id, field_value);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_ifield">set_ifield</h3>
+      <h3 id="native-api-native-sub-api-set_field_int">set_field_int</h3>
       <p>
         オブジェクトとフィールドIDとフィールドの値を指定すると、int型のフィールドに値を設定します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  void (*set_ifield)(SPVM_ENV* env, void* object, int32_t field_id, int32_t value);
+  void (*set_field_int)(SPVM_ENV* env, void* object, int32_t field_id, int32_t value);
 </pre>
       <p>
         サンプル:
@@ -1808,15 +1808,15 @@ env->set_sfield(env, object, field_id, field_value);
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "int");
 int32_t field_value = 5;
-env->set_ifield(env, object, field_id, field_value);
+env->set_field_int(env, object, field_id, field_value);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_lfield">set_lfield</h3>
+      <h3 id="native-api-native-sub-api-set_field_long">set_field_long</h3>
       <p>
         オブジェクトとフィールドIDとフィールドの値を指定すると、long型のフィールドに値を設定します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  void (*set_lfield)(SPVM_ENV* env, void* object, int32_t field_id, int64_t value);
+  void (*set_field_long)(SPVM_ENV* env, void* object, int32_t field_id, int64_t value);
 </pre>
       <p>
         サンプル:
@@ -1824,15 +1824,15 @@ env->set_ifield(env, object, field_id, field_value);
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "long");
 int64_t field_value = 5;
-env->set_lfield(env, object, field_id, field_value);
+env->set_field_long(env, object, field_id, field_value);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_ffield">set_ffield</h3>
+      <h3 id="native-api-native-sub-api-set_field_float">set_field_float</h3>
       <p>
         オブジェクトとフィールドIDとフィールドの値を指定すると、float型のフィールドに値を設定します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  void (*set_ffield)(SPVM_ENV* env, void* object, int32_t field_id, float value);
+  void (*set_field_float)(SPVM_ENV* env, void* object, int32_t field_id, float value);
 </pre>
       <p>
         サンプル:
@@ -1840,15 +1840,15 @@ env->set_lfield(env, object, field_id, field_value);
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "float");
 float field_value = 1.5f;
-env->set_ffield(env, object, field_id, field_value);
+env->set_field_float(env, object, field_id, field_value);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_dfield">set_dfield</h3>
+      <h3 id="native-api-native-sub-api-set_field_double">set_field_double</h3>
       <p>
         オブジェクトとフィールドIDとフィールドの値を指定すると、double型のフィールドに値を設定します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-  void (*set_dfield)(SPVM_ENV* env, void* object, int32_t field_id, double value);
+  void (*set_field_double)(SPVM_ENV* env, void* object, int32_t field_id, double value);
 </pre>
       <p>
         サンプル:
@@ -1856,15 +1856,15 @@ env->set_ffield(env, object, field_id, field_value);
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "double");
 double field_value = 1.55;
-env->set_dfield(env, object, field_id, field_value);
+env->set_field_double(env, object, field_id, field_value);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_ofield">set_ofield</h3>
+      <h3 id="native-api-native-sub-api-set_field_object">set_field_object</h3>
       <p>
         オブジェクトとフィールドIDとフィールドの値を指定すると、オブジェクト型のフィールドに値を設定します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。設定後の値は、リファレンスカウントが1増やされます。元の値は、リファレンスカウントが1減らされます。
       </p>
 <pre>
-  void (*set_ofield)(SPVM_ENV* env, void* object, int32_t field_id, void* value);
+  void (*set_field_object)(SPVM_ENV* env, void* object, int32_t field_id, void* value);
 </pre>
       <p>
         サンプル:
@@ -1873,7 +1873,7 @@ env->set_dfield(env, object, field_id, field_value);
 int32_t field_id = env->field_id(env, "Foo", "x", "SPVM::Int");
 int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
 void* object = env->new_obj(env, basic_type_id);
-env->set_ofield(env, object, field_id, object);
+env->set_field_object(env, object, field_id, object);
 </pre>
 
       <h3 id="native-api-native-sub-api-get_package_var_byte">get_package_var_byte</h3>

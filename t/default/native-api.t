@@ -63,21 +63,21 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 
 # Field
 {
-  ok(TestCase::Extension->bfield());
-  ok(TestCase::Extension->sfield());
-  ok(TestCase::Extension->ifield());
-  ok(TestCase::Extension->lfield());
-  ok(TestCase::Extension->ffield());
-  ok(TestCase::Extension->dfield());
-  ok(TestCase::Extension->ofield());
+  ok(TestCase::Extension->get_field_byte());
+  ok(TestCase::Extension->get_field_short());
+  ok(TestCase::Extension->get_field_int());
+  ok(TestCase::Extension->get_field_long());
+  ok(TestCase::Extension->get_field_float());
+  ok(TestCase::Extension->get_field_double());
+  ok(TestCase::Extension->get_field_object());
 
-  ok(TestCase::Extension->set_bfield());
-  ok(TestCase::Extension->set_sfield());
-  ok(TestCase::Extension->set_ifield());
-  ok(TestCase::Extension->set_lfield());
-  ok(TestCase::Extension->set_ffield());
-  ok(TestCase::Extension->set_dfield());
-  ok(TestCase::Extension->set_ofield());
+  ok(TestCase::Extension->set_field_byte());
+  ok(TestCase::Extension->set_field_short());
+  ok(TestCase::Extension->set_field_int());
+  ok(TestCase::Extension->set_field_long());
+  ok(TestCase::Extension->set_field_float());
+  ok(TestCase::Extension->set_field_double());
+  ok(TestCase::Extension->set_field_object());
 
 }
 

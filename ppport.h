@@ -1924,7 +1924,7 @@ new_logop|||
 new_numeric||5.006000|
 new_stackinfo||5.005000|
 new_version||5.009000|
-new_warnings_bitfield|||
+new_warnings_biget_tfield|||
 next_symbol|||
 nextargv|||
 nextchar|||

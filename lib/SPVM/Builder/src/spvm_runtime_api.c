@@ -162,20 +162,20 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_delems,
     SPVM_RUNTIME_API_oelem,
     SPVM_RUNTIME_API_set_oelem,
-    SPVM_RUNTIME_API_bfield,
-    SPVM_RUNTIME_API_sfield,
-    SPVM_RUNTIME_API_ifield,
-    SPVM_RUNTIME_API_lfield,
-    SPVM_RUNTIME_API_ffield,
-    SPVM_RUNTIME_API_dfield,
-    SPVM_RUNTIME_API_ofield,
-    SPVM_RUNTIME_API_set_bfield,
-    SPVM_RUNTIME_API_set_sfield,
-    SPVM_RUNTIME_API_set_ifield,
-    SPVM_RUNTIME_API_set_lfield,
-    SPVM_RUNTIME_API_set_ffield,
-    SPVM_RUNTIME_API_set_dfield,
-    SPVM_RUNTIME_API_set_ofield,
+    SPVM_RUNTIME_API_get_field_byte,
+    SPVM_RUNTIME_API_get_field_short,
+    SPVM_RUNTIME_API_get_field_int,
+    SPVM_RUNTIME_API_get_field_long,
+    SPVM_RUNTIME_API_get_field_float,
+    SPVM_RUNTIME_API_get_field_double,
+    SPVM_RUNTIME_API_get_field_object,
+    SPVM_RUNTIME_API_set_field_byte,
+    SPVM_RUNTIME_API_set_field_short,
+    SPVM_RUNTIME_API_set_field_int,
+    SPVM_RUNTIME_API_set_field_long,
+    SPVM_RUNTIME_API_set_field_float,
+    SPVM_RUNTIME_API_set_field_double,
+    SPVM_RUNTIME_API_set_field_object,
     SPVM_RUNTIME_API_get_package_var_byte,
     SPVM_RUNTIME_API_get_package_var_short,
     SPVM_RUNTIME_API_get_package_var_int,
@@ -3735,8 +3735,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          void* ofield = *(SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
-          SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], ofield);
+          void* get_field_object = *(SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
+          SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], get_field_object);
         }
         break;
       }
@@ -3855,8 +3855,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          void* ofield_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
-          SPVM_RUNTIME_API_OBJECT_ASSIGN(ofield_address, *(void**)&object_vars[opcode->operand2]);
+          void* get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
+          SPVM_RUNTIME_API_OBJECT_ASSIGN(get_field_object_address, *(void**)&object_vars[opcode->operand2]);
         }
         break;
       }
@@ -3873,8 +3873,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          void* ofield_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
-          SPVM_RUNTIME_API_OBJECT_ASSIGN(ofield_address, NULL);
+          void* get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
+          SPVM_RUNTIME_API_OBJECT_ASSIGN(get_field_object_address, NULL);
         }
         break;
       }
@@ -3890,8 +3890,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          void** ofield_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
-          env->weaken(env, ofield_address);
+          void** get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
+          env->weaken(env, get_field_object_address);
         }
         break;
       }
@@ -3907,8 +3907,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          void** ofield_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
-          env->unweaken(env, ofield_address);
+          void** get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
+          env->unweaken(env, get_field_object_address);
         }
         break;
       }
@@ -3924,8 +3924,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           exception_flag = 1;
         }
         else {
-          void** ofield_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
-          int_vars[0] = env->isweak(env, ofield_address);
+          void** get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + field_offset);
+          int_vars[0] = env->isweak(env, get_field_object_address);
         }
         break;
       }
@@ -5129,7 +5129,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_oarray_raw(SPVM_ENV* env, int32_t basic_type_i
   SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_byte_size);
 
   for (int32_t index = 0; index < length; index++) {
-    SPVM_OBJECT* ofield = ((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index];
+    SPVM_OBJECT* get_field_object = ((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index];
   }
 
   SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
@@ -5395,10 +5395,10 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
     if (object->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       int32_t length = object->length;
       for (int32_t index = 0; index < length; index++) {
-        SPVM_OBJECT** ofield_address = &(((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index]);
+        SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index]);
 
-        if (*ofield_address != NULL) {
-          SPVM_RUNTIME_API_dec_ref_count(env, *ofield_address);
+        if (*get_field_object_address != NULL) {
+          SPVM_RUNTIME_API_dec_ref_count(env, *get_field_object_address);
         }
       }
     }
@@ -5446,14 +5446,14 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       int32_t object_fields_offset = package->object_fields_offset;
       int32_t object_fields_length = package->object_fields_length;
       for (int32_t index = 0; index < object_fields_length; index++) {
-        SPVM_OBJECT** ofield_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
-        if (*ofield_address != NULL) {
+        SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
+        if (*get_field_object_address != NULL) {
           // If object is weak, unweaken
-          if (SPVM_RUNTIME_API_isweak(env, ofield_address)) {
-            SPVM_RUNTIME_API_unweaken(env, ofield_address);
+          if (SPVM_RUNTIME_API_isweak(env, get_field_object_address)) {
+            SPVM_RUNTIME_API_unweaken(env, get_field_object_address);
           }
           
-          SPVM_RUNTIME_API_dec_ref_count(env, *ofield_address);
+          SPVM_RUNTIME_API_dec_ref_count(env, *get_field_object_address);
         }
       }
     }
@@ -5839,7 +5839,7 @@ int32_t SPVM_RUNTIME_API_basic_type_id(SPVM_ENV* env, const char* basic_type_nam
   }
 }
 
-int8_t SPVM_RUNTIME_API_bfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+int8_t SPVM_RUNTIME_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5853,7 +5853,7 @@ int8_t SPVM_RUNTIME_API_bfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   return value;
 }
 
-int16_t SPVM_RUNTIME_API_sfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+int16_t SPVM_RUNTIME_API_get_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5867,7 +5867,7 @@ int16_t SPVM_RUNTIME_API_sfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fiel
   return value;
 }
 
-int32_t SPVM_RUNTIME_API_ifield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+int32_t SPVM_RUNTIME_API_get_field_int(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5881,7 +5881,7 @@ int32_t SPVM_RUNTIME_API_ifield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fiel
   return value;
 }
 
-int64_t SPVM_RUNTIME_API_lfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+int64_t SPVM_RUNTIME_API_get_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5895,7 +5895,7 @@ int64_t SPVM_RUNTIME_API_lfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fiel
   return value;
 }
 
-float SPVM_RUNTIME_API_ffield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+float SPVM_RUNTIME_API_get_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5909,7 +5909,7 @@ float SPVM_RUNTIME_API_ffield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_
   return value;
 }
 
-double SPVM_RUNTIME_API_dfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+double SPVM_RUNTIME_API_get_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5923,7 +5923,7 @@ double SPVM_RUNTIME_API_dfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   return value;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_ofield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
+SPVM_OBJECT* SPVM_RUNTIME_API_get_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5937,7 +5937,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_ofield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t
   return value;
 }
 
-void SPVM_RUNTIME_API_set_bfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int8_t value) {
+void SPVM_RUNTIME_API_set_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int8_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5949,7 +5949,7 @@ void SPVM_RUNTIME_API_set_bfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   *(SPVM_VALUE_byte*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
 }
 
-void SPVM_RUNTIME_API_set_sfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int16_t value) {
+void SPVM_RUNTIME_API_set_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int16_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5961,7 +5961,7 @@ void SPVM_RUNTIME_API_set_sfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   *(SPVM_VALUE_short*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
 }
 
-void SPVM_RUNTIME_API_set_ifield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int32_t value) {
+void SPVM_RUNTIME_API_set_field_int(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int32_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5973,7 +5973,7 @@ void SPVM_RUNTIME_API_set_ifield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   *(SPVM_VALUE_int*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
 }
 
-void SPVM_RUNTIME_API_set_lfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int64_t value) {
+void SPVM_RUNTIME_API_set_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, int64_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5985,7 +5985,7 @@ void SPVM_RUNTIME_API_set_lfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   *(SPVM_VALUE_long*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
 }
 
-void SPVM_RUNTIME_API_set_ffield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, float value) {
+void SPVM_RUNTIME_API_set_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, float value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5997,7 +5997,7 @@ void SPVM_RUNTIME_API_set_ffield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   *(SPVM_VALUE_float*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
 }
 
-void SPVM_RUNTIME_API_set_dfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, double value) {
+void SPVM_RUNTIME_API_set_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, double value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -6009,7 +6009,7 @@ void SPVM_RUNTIME_API_set_dfield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   *(SPVM_VALUE_double*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
 }
 
-void SPVM_RUNTIME_API_set_ofield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, SPVM_OBJECT* value) {
+void SPVM_RUNTIME_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id, SPVM_OBJECT* value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
@@ -6018,9 +6018,9 @@ void SPVM_RUNTIME_API_set_ofield(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
   
   // Get field value
-  void* ofield_address = (SPVM_VALUE_object*)((intptr_t)object + env->object_header_byte_size + field->offset);
+  void* get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + env->object_header_byte_size + field->offset);
 
-  SPVM_RUNTIME_API_OBJECT_ASSIGN(ofield_address, value);
+  SPVM_RUNTIME_API_OBJECT_ASSIGN(get_field_object_address, value);
 }
 
 void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
@@ -6207,6 +6207,6 @@ void SPVM_RUNTIME_API_set_package_var_object(SPVM_ENV* env, int32_t pkgvar_id, S
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  void* ofield_address = &runtime->package_vars_heap[pkgvar_id].oval;
-  SPVM_RUNTIME_API_OBJECT_ASSIGN(ofield_address, value);
+  void* get_field_object_address = &runtime->package_vars_heap[pkgvar_id].oval;
+  SPVM_RUNTIME_API_OBJECT_ASSIGN(get_field_object_address, value);
 }
