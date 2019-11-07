@@ -3352,7 +3352,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           const char* file = &runtime->string_pool[sub->file_id];
           
           // Exception stack trace
-          env->set_exception(env, env->new_stack_trace_raw(env, env->exception(env), package_name, sub_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), package_name, sub_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -3371,7 +3371,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           const char* file = &runtime->string_pool[sub->file_id];
 
           // Exception stack trace
-          env->set_exception(env, env->new_stack_trace_raw(env, env->exception(env), package_name, sub_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), package_name, sub_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -3935,7 +3935,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int_vars[opcode->operand0] = 0;
         }
         else {
-          int_vars[opcode->operand0] = env->ref_count(env, object);
+          int_vars[opcode->operand0] = env->get_ref_count(env, object);
         }
         break;
       }
@@ -4126,7 +4126,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_EXCEPTION_VAR: {
-        SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], env->exception(env));
+        SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], env->get_exception(env));
         
         break;
       }
@@ -5431,7 +5431,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         
         // Exception in destructor is changed to warning
         if (exception_flag) {
-          void* exception = env->exception(env);
+          void* exception = env->get_exception(env);
           char* exception_str = (char*)env->belems(env, exception);
           fprintf(stderr, "(in cleanup) %s\n", exception_str);
         }

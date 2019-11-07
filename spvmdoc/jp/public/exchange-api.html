@@ -1076,7 +1076,7 @@ SPVM::set_exception(undef);
         memory_blocks_count関数を使うと、確保されたメモリブロックの数を取得できます。
       </p>
 <pre>
-my $count = SPVM::memory_blocks_count();
+my $count = SPVM::get_memory_blocks_count();
 </pre>
       <p>
         SPVMランタイムは、オブジェクトを生成するとき、ウィークリファレンスを新しく作成するときに、ヒープからメモリを確保します。一回のメモリ取得の操作によって確保されたメモリをメモリブロックと呼びます。
@@ -1086,13 +1086,13 @@ my $count = SPVM::memory_blocks_count();
       </p>
 <pre>
 # 最初のメモリブロックカウント
-my $start_memory_blocks_count = SPVM::memory_blocks_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # 処理
 # ...
 
 # 最後のメモリブロックカウント
-my $end_memory_blocks_count = SPVM::memory_blocks_count();
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 unless ($end_memory_blocks_count == $start_memory_blocks_count) {
   die "Memroy leak";

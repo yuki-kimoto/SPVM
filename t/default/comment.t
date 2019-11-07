@@ -11,7 +11,7 @@ use SPVM 'TestCase::Comment::CR';
 use SPVM 'TestCase::Comment::CRLF';
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::memory_blocks_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
   ok(TestCase::Comment::LF->comment);
@@ -20,5 +20,5 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 }
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::memory_blocks_count();
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

@@ -13,7 +13,7 @@ use lib "$FindBin::Bin/lib";
 use SPVM;
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::memory_blocks_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Default loaded modules
 SPVM::Byte->new(1);
@@ -26,5 +26,5 @@ SPVM::Double->new(1);
 ok(1);
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::memory_blocks_count();
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

@@ -690,8 +690,8 @@ int32_t SPNATIVE__SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack)
     SPVM_DIE("Prototype array must be defined", MFILE, __LINE__);
   }
   
-  int32_t basic_type_id = env->object_basic_type_id(env, oarray);
-  int32_t element_dimension = env->object_type_dimension(env, oarray) - 1;
+  int32_t basic_type_id = env->get_object_basic_type_id(env, oarray);
+  int32_t element_dimension = env->get_object_type_dimension(env, oarray) - 1;
   
   void* new_oarray = env->new_marray(env, basic_type_id, element_dimension, length);
   
@@ -873,7 +873,7 @@ int32_t SPNATIVE__SPVM__CORE__get_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_EXCEPTION;
   }
   
-  void* type_name = env->type_name(env, object);
+  void* type_name = env->get_type_name(env, object);
   
   stack[0].oval = type_name;
   

@@ -41,7 +41,7 @@ my $FLT_MAX = POSIX::FLT_MAX();
 my $DBL_MAX = POSIX::DBL_MAX();
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::memory_blocks_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # set_exception
 {
@@ -63,13 +63,13 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
   # exception - string
   {
     SPVM::set_exception("あいう");
-    is(SPVM::exception, "あいう");
+    is(SPVM::get_exception, "あいう");
   }
 
   # exception - undef
   {
     SPVM::set_exception(undef);
-    ok(!SPVM::exception);
+    ok(!SPVM::get_exception);
   }
 }
 
@@ -1277,6 +1277,6 @@ is_deeply(
 
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::memory_blocks_count();
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
 

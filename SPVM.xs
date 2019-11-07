@@ -112,7 +112,7 @@ DESTROY(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  assert(env->ref_count(env, object));
+  assert(env->get_ref_count(env, object));
   
   // Decrement reference count
   env->dec_ref_count(env, object);
@@ -1385,7 +1385,7 @@ _new_varray_from_bin(...)
 }
 
 SV*
-_exception(...)
+_get_exception(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1395,7 +1395,7 @@ _exception(...)
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  void* str_exception = env->exception(env);
+  void* str_exception = env->get_exception(env);
   
   SV* sv_exception;
   if (str_exception) {
@@ -1439,7 +1439,7 @@ _set_exception(...)
 }
 
 SV*
-memory_blocks_count(...)
+get_memory_blocks_count(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -1449,7 +1449,7 @@ memory_blocks_count(...)
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  int32_t memory_blocks_count = env->memory_blocks_count(env);
+  int32_t memory_blocks_count = env->get_memory_blocks_count(env);
   SV* sv_memory_blocks_count = sv_2mortal(newSViv(memory_blocks_count));
   
   XPUSHs(sv_memory_blocks_count);
@@ -2704,7 +2704,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
           }
           else if (sub->return_type_dimension == 0) {
-            SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[env->object_basic_type_id(env, return_value)];
+            SPVM_RUNTIME_BASIC_TYPE* sub_return_basic_type = &runtime->basic_types[env->get_object_basic_type_id(env, return_value)];
             const char* basic_type_name = &runtime->string_pool[sub_return_basic_type->name_id];
 
             SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
@@ -2905,7 +2905,7 @@ call_sub(...)
   
   // Exception
   if (excetpion_flag) {
-    void* exception = env->exception(env);
+    void* exception = env->get_exception(env);
     int32_t length = env->len(env, exception);
     const char* exception_bytes = (char*)env->belems(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));

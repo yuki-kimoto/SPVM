@@ -6,7 +6,7 @@ int32_t SPNATIVE__SPVM__FileHandle__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   // File handle
   void* ofh = stack[0].oval;
   if (ofh != NULL) {
-    FILE* fh = (FILE*)env->pointer(env, ofh);
+    FILE* fh = (FILE*)env->get_pointer(env, ofh);
     if (fh) {
       int32_t ret = fclose(fh);
       env->set_pointer(env, ofh, NULL);

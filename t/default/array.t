@@ -9,7 +9,7 @@ use Test::More 'no_plan';
 use SPVM 'TestCase::Array';
 
 # Start objects count
-my $start_memory_blocks_count = SPVM::memory_blocks_count();
+my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Fat camma
 {
@@ -71,5 +71,5 @@ my $start_memory_blocks_count = SPVM::memory_blocks_count();
 SPVM::set_exception(undef);
 
 # All object is freed
-my $end_memory_blocks_count = SPVM::memory_blocks_count();
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

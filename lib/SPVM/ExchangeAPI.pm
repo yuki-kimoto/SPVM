@@ -151,10 +151,10 @@ sub set_exception {
   _set_exception($env, $exception);
 }
 
-sub exception {
+sub get_exception {
   my ($env) = @_;
   
-  my $exception = _exception($env);
+  my $exception = _get_exception($env);
   
   $exception = decode('UTF-8', $exception);
   

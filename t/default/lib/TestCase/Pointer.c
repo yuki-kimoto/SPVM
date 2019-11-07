@@ -34,7 +34,7 @@ int32_t SPNATIVE__TestCase__Pointer__get_x(SPVM_ENV* env, SPVM_VALUE* args) {
   void* self = args[0].oval;
   
   
-  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->pointer(env, self);
+  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->get_pointer(env, self);
   
   args[0].ival = pointer->x;
   
@@ -47,7 +47,7 @@ int32_t SPNATIVE__TestCase__Pointer__DESTROY(SPVM_ENV* env, SPVM_VALUE* args) {
   
   void* self = args[0].oval;
   
-  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->pointer(env, self);
+  struct TestCase__Pointer* pointer = (struct TestCase__Pointer*)env->get_pointer(env, self);
   
   free(pointer);
   
