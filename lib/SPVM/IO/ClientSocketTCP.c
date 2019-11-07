@@ -98,7 +98,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__read(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t length = env->len(env, obj_buffer);
   
   int32_t handle;
-  SPVM_FIELD_INT(env, handle, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
 
   if (handle < 0) {
     SPVM_DIE("Handle is closed", MFILE, __LINE__);
@@ -122,7 +122,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__write(SPVM_ENV* env, SPVM_VALUE* st
   int32_t length = stack[2].ival;
   
   int32_t handle;
-  SPVM_FIELD_INT(env, handle, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
   
   if (handle < 0) {
     SPVM_DIE("Handle is closed", MFILE, __LINE__);
@@ -145,7 +145,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__close(SPVM_ENV* env, SPVM_VALUE* st
   void* obj_socket = stack[0].oval;
   
   int32_t handle;
-  SPVM_FIELD_INT(env, handle, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
   
   if (handle >= 0) {
     int32_t ret = closesocket(handle);
@@ -167,7 +167,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__fileno(SPVM_ENV* env, SPVM_VALUE* s
   
   // File fh
   int32_t handle;
-  SPVM_FIELD_INT(env, handle, obj_self, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_self, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);
   
   stack[0].ival = handle;
 

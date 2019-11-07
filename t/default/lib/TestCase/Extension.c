@@ -12,7 +12,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_byte_test(SPVM_ENV* env, 
   (void)stack;
   
   int8_t value;
-  SPVM_PACKAGE_VAR_BYTE(env, value, "TestCase::Extension", "$BYTE_VALUE", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_BYTE(env, value, "TestCase::Extension", "$BYTE_VALUE", MFILE, __LINE__);
   
   stack[0].bval = value;
   
@@ -24,7 +24,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_short_test(SPVM_ENV* env,
   (void)stack;
 
   int16_t value;
-  SPVM_PACKAGE_VAR_SHORT(env, value,  "TestCase::Extension", "$SHORT_VALUE", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_SHORT(env, value,  "TestCase::Extension", "$SHORT_VALUE", MFILE, __LINE__);
   
   stack[0].sval = value;
 
@@ -36,7 +36,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_int_test(SPVM_ENV* env, S
   (void)stack;
 
   int32_t value;
-  SPVM_PACKAGE_VAR_INT(env, value, "TestCase::Extension", "$INT_VALUE", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_INT(env, value, "TestCase::Extension", "$INT_VALUE", MFILE, __LINE__);
   
   stack[0].ival = value;
   
@@ -48,7 +48,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_long_test(SPVM_ENV* env, 
   (void)stack;
   
   int64_t value;
-  SPVM_PACKAGE_VAR_LONG(env, value, "TestCase::Extension", "$LONG_VALUE", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_LONG(env, value, "TestCase::Extension", "$LONG_VALUE", MFILE, __LINE__);
   
   stack[0].lval = value;
   
@@ -60,7 +60,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_float_test(SPVM_ENV* env,
   (void)stack;
 
   float value;
-  SPVM_PACKAGE_VAR_FLOAT(env, value, "TestCase::Extension", "$FLOAT_VALUE", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_FLOAT(env, value, "TestCase::Extension", "$FLOAT_VALUE", MFILE, __LINE__);
   
   stack[0].fval = value;
   
@@ -72,7 +72,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_double_test(SPVM_ENV* env
   (void)stack;
 
   double value;
-  SPVM_PACKAGE_VAR_DOUBLE(env, value, "TestCase::Extension", "$DOUBLE_VALUE", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_DOUBLE(env, value, "TestCase::Extension", "$DOUBLE_VALUE", MFILE, __LINE__);
   
   stack[0].dval = value;
   
@@ -84,7 +84,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_object_test(SPVM_ENV* env
   (void)stack;
 
   void* value;
-  SPVM_PACKAGE_VAR_OBJECT(env, value, "TestCase::Extension", "$MINIMAL_VALUE", "TestCase::Minimal", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_OBJECT(env, value, "TestCase::Extension", "$MINIMAL_VALUE", "TestCase::Minimal", MFILE, __LINE__);
   
   stack[0].oval = value;
   
@@ -366,7 +366,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_byte(SPVM_ENV* env, 
   void* object = stack[0].oval;
   
   SPVM_VALUE_byte byte_value;
-  SPVM_FIELD_BYTE(env, byte_value, object, "TestCase::Simple", "byte_value", MFILE, __LINE__);
+  SPVM_GET_FIELD_BYTE(env, byte_value, object, "TestCase::Simple", "byte_value", MFILE, __LINE__);
   
   if (byte_value == INT8_MIN) {
     stack[0].ival = 1;
@@ -385,7 +385,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_short(SPVM_ENV* env,
   void* object = stack[0].oval;
   
   SPVM_VALUE_short short_value;
-  SPVM_FIELD_SHORT(env, short_value, object, "TestCase::Simple", "short_value", MFILE, __LINE__);
+  SPVM_GET_FIELD_SHORT(env, short_value, object, "TestCase::Simple", "short_value", MFILE, __LINE__);
   
   if (short_value == INT16_MIN) {
     stack[0].ival = 1;
@@ -404,7 +404,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_int(SPVM_ENV* env, S
   void* object = stack[0].oval;
   
   SPVM_VALUE_int int_value;
-  SPVM_FIELD_INT(env, int_value, object, "TestCase::Simple", "int_value", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, int_value, object, "TestCase::Simple", "int_value", MFILE, __LINE__);
   
   if (int_value == INT32_MIN) {
     stack[0].ival = 1;
@@ -423,7 +423,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_long(SPVM_ENV* env, 
   void* object = stack[0].oval;
   
   SPVM_VALUE_long long_value;
-  SPVM_FIELD_LONG(env, long_value, object, "TestCase::Simple", "long_value", MFILE, __LINE__);
+  SPVM_GET_FIELD_LONG(env, long_value, object, "TestCase::Simple", "long_value", MFILE, __LINE__);
   
   if (long_value == INT64_MIN) {
     stack[0].ival = 1;
@@ -442,7 +442,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_float(SPVM_ENV* env,
   void* object = stack[0].oval;
   
   SPVM_VALUE_float float_value;
-  SPVM_FIELD_FLOAT(env, float_value, object, "TestCase::Simple", "float_value", MFILE, __LINE__);
+  SPVM_GET_FIELD_FLOAT(env, float_value, object, "TestCase::Simple", "float_value", MFILE, __LINE__);
   
   if (float_value == FLT_MIN) {
     stack[0].ival = 1;
@@ -461,7 +461,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_double(SPVM_ENV* env
   void* object = stack[0].oval;
   
   SPVM_VALUE_double double_value;
-  SPVM_FIELD_DOUBLE(env, double_value, object, "TestCase::Simple", "double_value", MFILE, __LINE__);
+  SPVM_GET_FIELD_DOUBLE(env, double_value, object, "TestCase::Simple", "double_value", MFILE, __LINE__);
   
   if (double_value == DBL_MIN) {
     stack[0].ival = 1;
