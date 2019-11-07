@@ -15,9 +15,9 @@ static const char* MFILE = "SPVM/IO/File.c";
 
 int32_t SPNATIVE__SPVM__IO__File__init_package_vars(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::File", "$SEEK_SET", SEEK_SET, MFILE, __LINE__);
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::File", "$SEEK_CUR", SEEK_CUR, MFILE, __LINE__);
-  SPVM_SET_IPKGVAR(env, "SPVM::IO::File", "$SEEK_END", SEEK_END, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_SET", SEEK_SET, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_CUR", SEEK_CUR, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_END", SEEK_END, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
