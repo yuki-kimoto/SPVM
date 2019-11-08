@@ -164,6 +164,7 @@ lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
+lib/SPVM/Guides/LanguageSpecification.pod
 lib/SPVM/Hash.c
 lib/SPVM/Hash.config
 lib/SPVM/Hash.spvm
@@ -244,6 +245,8 @@ lib/SPVM/Unistd.c
 lib/SPVM/Unistd.config
 lib/SPVM/Unistd.pm
 lib/SPVM/Unistd.spvm
+lib/SPVM/Util.c
+lib/SPVM/Util.config
 lib/SPVM/Util.pm
 lib/SPVM/Util.spvm
 Makefile.PL
@@ -547,6 +550,7 @@ t/default/lib/TestCase/UnaryPlus.spvm
 t/default/lib/TestCase/Unless.spvm
 t/default/lib/TestCase/Value.spvm
 t/default/lib/TestCase/ValueArray.spvm
+t/default/lib/TestCase/Warn.spvm
 t/default/lib/TestCase/Weaken.spvm
 t/default/lib/TestCase/While.spvm
 t/default/literal-character.t
@@ -578,6 +582,7 @@ t/default/unary-plus.t
 t/default/unless.t
 t/default/value.t
 t/default/value_array.t
+t/default/warn.t
 t/default/weaken.t
 t/default/while.t
 t/exe/exe.t
