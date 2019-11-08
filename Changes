@@ -1,5 +1,6 @@
-0.0443 2019-11-02
+0.0443 2019-11-08
   - warn become keyword and add file and line number to the last of the message.
+  - rename many Native APIs
 0.0442 2019-10-21
   - add ctype.h function to SPVM::CORE
     isalnum
