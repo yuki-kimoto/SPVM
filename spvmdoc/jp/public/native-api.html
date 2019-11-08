@@ -520,7 +520,7 @@ int32_t total = stack[0].ival;
 env->push_mortal(env, object);
 </pre>
       <p>
-        通常は「new_obj」などのオブジェクトを生成するネイティブAPIは、自動的に生成されたオブジェクトをモータルスタックに追加するので、これを使う必要はありません。
+        通常は「new_object」などのオブジェクトを生成するネイティブAPIは、自動的に生成されたオブジェクトをモータルスタックに追加するので、これを使う必要はありません。
       </p>
       <p>
         スコープを作成するには「enter_scope」を使用します。戻り値は、そのスコープのIDです。
@@ -730,8 +730,8 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 23    pkgvar_id
 24    sub_id
 25    method_sub_id
-26    new_obj_raw
-27    new_obj
+26    new_object_raw
+27    new_object
 28    new_barray_raw
 29    new_barray
 30    new_sarray_raw
@@ -861,8 +861,8 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-pkgvar_id">pkgvar_id</a></li>
         <li><a href="#native-api-native-sub-api-sub_id">sub_id</a></li>
         <li><a href="#native-api-native-sub-api-method_sub_id">method_sub_id</a></li>
-        <li><a href="#native-api-native-sub-api-new_obj_raw">new_obj_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_obj">new_obj</a></li>
+        <li><a href="#native-api-native-sub-api-new_object_raw">new_object_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_object">new_object</a></li>
         <li><a href="#native-api-native-sub-api-new_barray_raw">new_barray_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_barray">new_barray</a></li>
         <li><a href="#native-api-native-sub-api-new_sarray_raw">new_sarray_raw</a></li>
@@ -1149,30 +1149,30 @@ int32_t (*method_sub_id)(SPVM_ENV* env, void* object, const char* method_name, c
 int32_t sub_id = env->method_sub_id(env, object, "method", "int(self,long,string)");
 </pre>
 
-      <h3 id="native-api-native-sub-api-new_obj_raw">new_obj_raw</h3>
+      <h3 id="native-api-native-sub-api-new_object_raw">new_object_raw</h3>
       <p>
         基本型IDを指定して、新しいオブジェクトを生成します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでなければなりません。
       </p>
 <pre>
-void* (*new_obj_raw)(SPVM_ENV* env, int32_t basic_type_id);
+void* (*new_object_raw)(SPVM_ENV* env, int32_t basic_type_id);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_objを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_objectを使用してください。
       </p>
 
-      <h3 id="native-api-native-sub-api-new_obj">new_obj</h3>
+      <h3 id="native-api-native-sub-api-new_object">new_object</h3>
       <p>
         基本型IDを指定して、新しいオブジェクトを生成し、返却します。基本型IDは、basic_type_idで取得した、正しい基本型IDでなければなりません。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_obj)(SPVM_ENV* env, int32_t basic_type_id);
+void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
-void* object = env->new_obj(env, basic_type_id);
+void* object = env->new_object(env, basic_type_id);
 </pre>
 
       <h3 id="native-api-native-sub-api-new_barray_raw">new_barray_raw</h3>
@@ -1872,7 +1872,7 @@ env->set_field_double(env, object, field_id, field_value);
 <pre>
 int32_t field_id = env->field_id(env, "Foo", "x", "SPVM::Int");
 int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
-void* object = env->new_obj(env, basic_type_id);
+void* object = env->new_object(env, basic_type_id);
 env->set_field_object(env, object, field_id, object);
 </pre>
 
@@ -2090,7 +2090,7 @@ void (*set_package_var_object)(SPVM_ENV* env, int32_t pkgvar_id, void* value);
 <pre>
 int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "SPVM::Int");
 int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
-void* object = env->new_obj(env, basic_type_id);
+void* object = env->new_object(env, basic_type_id);
 env->set_package_var_object(env, pkgvar_id, pkgvar_value);
 </pre>
 

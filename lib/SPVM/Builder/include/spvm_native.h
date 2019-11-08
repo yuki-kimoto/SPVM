@@ -49,7 +49,7 @@ typedef void* SPVM_VALUE_object;
 #define SPVM_NEW_OBJ(env, obj, package_name, file, line) do {\
   int32_t id = env->basic_type_id(env, package_name);\
   if (id < 0) { SPVM_DIE("Package \"%s\" not found", package_name, file, line); };\
-  obj = env->new_obj(env, id);\
+  obj = env->new_object(env, id);\
 } while (0)\
 
 #define SPVM_NEW_POINTER(env, obj, package_name, ptr, file, line) do {\
@@ -323,8 +323,8 @@ struct SPVM_env {
   int32_t (*pkgvar_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
   int32_t (*sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
   int32_t (*method_sub_id)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature);
-  void* (*new_obj_raw)(SPVM_ENV* env, int32_t basic_type_id);
-  void* (*new_obj)(SPVM_ENV* env, int32_t basic_type_id);
+  void* (*new_object_raw)(SPVM_ENV* env, int32_t basic_type_id);
+  void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
   void* (*new_barray_raw)(SPVM_ENV* env, int32_t length);
   void* (*new_barray)(SPVM_ENV* env, int32_t length);
   void* (*new_sarray_raw)(SPVM_ENV* env, int32_t length);

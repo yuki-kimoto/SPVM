@@ -74,15 +74,15 @@ int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
       if (pos >= capacity) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
-        void* new_obj_buffer = env->new_barray(env, new_capacity);
-        int8_t* new_buffer = env->get_elems_byte(env, new_obj_buffer);
+        void* new_object_buffer = env->new_barray(env, new_capacity);
+        int8_t* new_buffer = env->get_elems_byte(env, new_object_buffer);
         memcpy(new_buffer, buffer, capacity);
         
         int32_t removed = env->remove_mortal(env, scope_id, obj_buffer);
         assert(removed);
         
         capacity = new_capacity;
-        obj_buffer = new_obj_buffer;
+        obj_buffer = new_object_buffer;
         buffer = new_buffer;
       }
       
