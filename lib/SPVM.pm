@@ -94,8 +94,8 @@ sub new_farray_from_bin { SPVM::ExchangeAPI::new_farray_from_bin($SPVM_ENV, @_) 
 sub new_darray { SPVM::ExchangeAPI::new_darray($SPVM_ENV, @_) }
 sub new_darray_from_bin { SPVM::ExchangeAPI::new_darray_from_bin($SPVM_ENV, @_) }
 
-sub new_str { SPVM::ExchangeAPI::new_str($SPVM_ENV, @_) }
-sub new_str_from_bin { SPVM::ExchangeAPI::new_str_from_bin($SPVM_ENV, @_) }
+sub new_string { SPVM::ExchangeAPI::new_string($SPVM_ENV, @_) }
+sub new_string_from_bin { SPVM::ExchangeAPI::new_string_from_bin($SPVM_ENV, @_) }
 
 sub new_oarray { SPVM::ExchangeAPI::new_oarray($SPVM_ENV, @_) }
 sub new_varray { SPVM::ExchangeAPI::new_varray($SPVM_ENV, @_) }

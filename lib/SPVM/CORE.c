@@ -653,7 +653,7 @@ int32_t SPNATIVE__SPVM__CORE__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
     obj_value = NULL;
   }
   else {
-    obj_value = env->new_str(env, value);
+    obj_value = env->new_string(env, value);
   }
   
   stack[0].oval = obj_value;

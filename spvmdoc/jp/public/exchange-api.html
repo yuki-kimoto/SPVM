@@ -87,7 +87,7 @@
         <li><a href="#exchange-api-perl-array-ref-to-spvm-object-array">Perlの配列リファレンスをSPVMのオブジェクトの配列型に変換 - SPVM::new_oarray</a></li>
         <li><a href="#exchange-api-perl-array-ref-to-spvm-value-array">Perlの配列リファレンスをSPVMの値の配列型に変換 - SPVM::new_varray</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-byte-array">Perlのバイナリ列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_bin</a></li>
-        <li><a href="#exchange-api-perl-binary-to-spvm-string">Perlのバイナリ列をSPVMのstring型に変換 - SPVM::new_str_from_bin</a></li>
+        <li><a href="#exchange-api-perl-binary-to-spvm-string">Perlのバイナリ列をSPVMのstring型に変換 - SPVM::new_string_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-short-array">Perlのバイナリ列をSPVMのshort[]型に変換 - SPVM::new_sarray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-int-array">Perlのバイナリ列をSPVMのint[]型に変換 - SPVM::new_iarray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-long-array">Perlのバイナリ列をSPVMのlong[]型に変換 - SPVM::new_larray_from_bin</a></li>
@@ -95,7 +95,7 @@
         <li><a href="#exchange-api-perl-binary-to-spvm-double-array">Perlのバイナリ列をSPVMのdouble[]型に変換 - SPVM::new_darray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-value-array">Perlのバイナリ列をSPVMの値の配列型に変換 - SPVM::new_varray_from_bin</a></li>
         <li><a href="#exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</a></li>
-        <li><a href="#exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_str</a></li>
+        <li><a href="#exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_string</a></li>
       </ul>
 
       <h3 id="exchange-api-perl-scalar-to-SPVM-Byte">Perlのスカラ値をSPVMのSPVM::Byte型に変換 - SPVM::Byte-&gt;new</h3>
@@ -441,14 +441,14 @@ my $binary = "abc";
 my $spvm_byte_array = SPVM::new_barray_from_bin($perl_binary);
 </pre>
 
-      <h3 id="exchange-api-perl-binary-to-spvm-string">Perlのバイナリ列をSPVMのstring型に変換 - SPVM::new_str_from_bin</h3>
+      <h3 id="exchange-api-perl-binary-to-spvm-string">Perlのバイナリ列をSPVMのstring型に変換 - SPVM::new_string_from_bin</h3>
 
       <p>
-        Perlのバイナリ列をSPVMのstring型に変換するには、SPVM::new_str_from_bin関数を使います。
+        Perlのバイナリ列をSPVMのstring型に変換するには、SPVM::new_string_from_bin関数を使います。
       </p>
 <pre>
 my $perl_binary = pack('c3', 97, 98, 99);
-my $spvm_byte_array = SPVM::new_str_from_bin($perl_binary);
+my $spvm_byte_array = SPVM::new_string_from_bin($perl_binary);
 </pre>
       <p>
         第一引数にPerlのバイナリ列を受け取ります。
@@ -1038,13 +1038,13 @@ my $spvm_byte_array = SPVM::new_barray_from_str("あいうえお");
         第一引数が未定義値だった場合は、未定義値が返ります。
       </p>
 
-      <h3 id="exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_str</h3>
+      <h3 id="exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_string</h3>
       <p>
-        Perlの文字列をSPVMのstring型に変換するには、SPVM::new_str関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
+        Perlの文字列をSPVMのstring型に変換するには、SPVM::new_string関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
       </p>
 <pre>
 use utf8;
-my $spvm_string = SPVM::new_str("あいうえお");
+my $spvm_string = SPVM::new_string("あいうえお");
 </pre>
       <p>
         第一引数にPerlの文字列を受け取ります。

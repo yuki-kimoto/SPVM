@@ -18,7 +18,7 @@ int32_t SPNATIVE__SPVM__Util___convert_f_to_str(SPVM_ENV* env, SPVM_VALUE* stack
   const int result_len = snprintf(tmp_result, SPRINTF_MAX_RESULT_LEN, format, value);
   if (result_len < 0) { SPVM_DIE("snprintf fail", MFILE, __LINE__); }
 
-  stack[0].oval = env->new_str_len(env, tmp_result, result_len);
+  stack[0].oval = env->new_string_len(env, tmp_result, result_len);
 
   return SPVM_SUCCESS;
 }

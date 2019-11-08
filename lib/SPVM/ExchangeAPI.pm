@@ -40,9 +40,9 @@ sub new_barray_from_str {
   return SPVM::ExchangeAPI::new_barray_from_bin($env, $bin);
 }
 
-sub new_str { SPVM::ExchangeAPI::new_barray_from_str(@_) }
+sub new_string { SPVM::ExchangeAPI::new_barray_from_str(@_) }
 
-sub new_str_from_bin { SPVM::ExchangeAPI::new_barray_from_bin(@_) }
+sub new_string_from_bin { SPVM::ExchangeAPI::new_barray_from_bin(@_) }
 
 sub new_oarray {
   my ($env, $type_name, $elems) = @_;
@@ -203,9 +203,9 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head2 new_sarray_from_bin
 
-=head2 new_str
+=head2 new_string
 
-=head2 new_str_from_bin
+=head2 new_string_from_bin
 
 =head2 new_varray
 

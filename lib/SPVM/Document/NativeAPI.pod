@@ -43,8 +43,8 @@ If you need more performance or bind C/C++ functions, you can use L<Extension|SP
   void* (*new_marray)(SPVM_ENV*, int32_t, int32_t, int32_t);
   void* (*new_varray_raw)(SPVM_ENV*, int32_t, int32_t);
   void* (*new_varray)(SPVM_ENV*, int32_t, int32_t);
-  void* (*new_str_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
-  void* (*new_str)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_string_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer_raw)(SPVM_ENV*, int32_t basic_type_id, void* ptr);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);

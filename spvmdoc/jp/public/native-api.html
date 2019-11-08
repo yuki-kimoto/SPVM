@@ -561,10 +561,10 @@ return SPVM_EXCEPTION;
         例外が発生した場合は「SPVM_EXCEPTION」を返します。これは「0」以外の値として定義されています。
       <p>
       <p>
-        例外メッセージを、自分で設定したい場合は「new_str」で例外メッセージを作成して「set_exception」で設定できます。
+        例外メッセージを、自分で設定したい場合は「new_string」で例外メッセージを作成して「set_exception」で設定できます。
       </p>
 <pre>
-env->set_exception(env, env->new_str(env, "Exception occur");\
+env->set_exception(env, env->new_string(env, "Exception occur");\
 return SPVM_EXCEPTION;
 </pre>
       <p>
@@ -750,10 +750,10 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 43    new_marray
 44    new_varray_raw
 45    new_varray
-46    new_str_raw
-47    new_str
-48    new_str_len_raw
-49    new_str_len
+46    new_string_raw
+47    new_string
+48    new_string_len_raw
+49    new_string_len
 50    new_pointer_raw
 51    new_pointer
 52    concat_raw
@@ -881,10 +881,10 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-new_marray">new_marray</a></li>
         <li><a href="#native-api-native-sub-api-new_varray_raw">new_varray_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_varray">new_varray</a></li>
-        <li><a href="#native-api-native-sub-api-new_str_raw">new_str_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_str">new_str</a></li>
-        <li><a href="#native-api-native-sub-api-new_str_len_raw">new_str_len_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_str_len">new_str_len</a></li>
+        <li><a href="#native-api-native-sub-api-new_string_raw">new_string_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_string">new_string</a></li>
+        <li><a href="#native-api-native-sub-api-new_string_len_raw">new_string_len_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_string_len">new_string_len</a></li>
         <li><a href="#native-api-native-sub-api-new_pointer_raw">new_pointer_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_pointer">new_pointer</a></li>
         <li><a href="#native-api-native-sub-api-concat_raw">concat_raw</a></li>
@@ -1409,54 +1409,54 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Complex_2d");
 void* value_array_obj = env->new_varray(env, basic_type_id, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_str_raw">new_str_raw</h3>
+      <h3 id="native-api-native-sub-api-new_string_raw">new_string_raw</h3>
       <p>
         C言語の文字列を指定して、文字列型のオブジェクトを生成し、返却します。文字列は「\0」で終端していなければなりません。
       </p>
 <pre>
-void* (*new_str_raw)(SPVM_ENV* env, const char* bytes);
+void* (*new_string_raw)(SPVM_ENV* env, const char* bytes);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_strを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_stringを使用してください。
       </p>
 
-      <h3 id="native-api-native-sub-api-new_str">new_str</h3>
+      <h3 id="native-api-native-sub-api-new_string">new_string</h3>
       <p>
         C言語の文字列を指定して、文字列型のオブジェクトを生成し、返却します。文字列は「\0」で終端していなければなりません。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_str)(SPVM_ENV* env, const char* bytes);
+void* (*new_string)(SPVM_ENV* env, const char* bytes);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* str_obj = env->new_str(env, "Hello World");
+void* str_obj = env->new_string(env, "Hello World");
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_str_len_raw">new_str_len_raw</h3>
+      <h3 id="native-api-native-sub-api-new_string_len_raw">new_string_len_raw</h3>
       <p>
         C言語の文字列と長さを指定して、文字列型のオブジェクトを生成し、返却します。
       </p>
 <pre>
-void* (*new_str_len_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
+void* (*new_string_len_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_str_lenを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_string_lenを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_str_len">new_str_len</h3>
+      <h3 id="native-api-native-sub-api-new_string_len">new_string_len</h3>
       <p>
         C言語の文字列と長さを指定して、文字列型のオブジェクトを生成し、返却します。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_str_len)(SPVM_ENV* env, const char* bytes, int32_t length);
+void* (*new_string_len)(SPVM_ENV* env, const char* bytes, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* str_obj = env->new_str_len(env, "Hello\0World", 11);
+void* str_obj = env->new_string_len(env, "Hello\0World", 11);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_pointer_raw">new_pointer_raw</h3>

@@ -614,17 +614,17 @@ package SPVM::CORE {
     unless ($str) { die "String must be defined"; }
     
     my $length = length $str;
-    my $new_str = new byte [$length];
+    my $new_string = new byte [$length];
     for (my $i = 0; $i < $length; $i++) {
       my $char = $str->[$i];
       if ($char >= 'A' && $char <= 'Z') {
-        $new_str->[$i] = (byte)($str->[$i] + 32);
+        $new_string->[$i] = (byte)($str->[$i] + 32);
       }
       else {
-        $new_str->[$i] = $str->[$i];
+        $new_string->[$i] = $str->[$i];
       }
     }
-    return (string)$new_str;
+    return (string)$new_string;
   }
 
   precompile sub lcfirst : string($str : string) {
@@ -632,20 +632,20 @@ package SPVM::CORE {
     unless ($str) { die "String must be defined"; }
     
     my $length = length $str;
-    my $new_str = new byte [$length];
+    my $new_string = new byte [$length];
     if ($length > 0) {
       my $char = $str->[0];
       if ($char >= 'A' && $char <= 'Z') {
-        $new_str->[0] = (byte)($char + 32);
+        $new_string->[0] = (byte)($char + 32);
       }
       else {
-        $new_str->[0] = $char;
+        $new_string->[0] = $char;
       }
     }
     for (my $i = 1; $i < $length; ++$i) {
-      $new_str->[$i] = $str->[$i];
+      $new_string->[$i] = $str->[$i];
     }
-    return (string)$new_str;
+    return (string)$new_string;
   }
 
   native sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
@@ -743,17 +743,17 @@ package SPVM::CORE {
     unless ($str) { die "String must be defined"; }
     
     my $length = length $str;
-    my $new_str = new byte [$length];
+    my $new_string = new byte [$length];
     for (my $i = 0; $i < $length; $i++) {
       my $char = $str->[$i];
       if ($char >= 'a' && $char <= 'z') {
-        $new_str->[$i] = (byte)($str->[$i] - 32);
+        $new_string->[$i] = (byte)($str->[$i] - 32);
       }
       else {
-        $new_str->[$i] = $str->[$i];
+        $new_string->[$i] = $str->[$i];
       }
     }
-    return (string)$new_str;
+    return (string)$new_string;
   }
 
   precompile sub ucfirst : string($str : string) {
@@ -761,20 +761,20 @@ package SPVM::CORE {
     unless ($str) { die "String must be defined"; }
     
     my $length = length $str;
-    my $new_str = new byte [$length];
+    my $new_string = new byte [$length];
     if ($length > 0) {
       my $char = $str->[0];
       if ($char >= 'a' && $char <= 'z') {
-        $new_str->[0] = (byte)($char - 32);
+        $new_string->[0] = (byte)($char - 32);
       }
       else {
-        $new_str->[0] = $char;
+        $new_string->[0] = $char;
       }
     }
     for (my $i = 1; $i < $length; ++$i) {
-      $new_str->[$i] = $str->[$i];
+      $new_string->[$i] = $str->[$i];
     }
-    return (string)$new_str;
+    return (string)$new_string;
   }
 
   precompile sub rindex : int ($str : string, $substr : string, $offset : int) {

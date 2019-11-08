@@ -41,7 +41,7 @@ int32_t SPNATIVE__SPVM__Errno__strerror(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("strerror can't get a valid message", "SPVM/Errno.c", __LINE__);
   }
   
-  void* obj_strerr = env->new_str(env, strerr);
+  void* obj_strerr = env->new_string(env, strerr);
   
   stack[0].oval = obj_strerr;
   

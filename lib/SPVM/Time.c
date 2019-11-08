@@ -451,7 +451,7 @@ int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("strftime fail", MFILE, __LINE__);
   }
 
-  void* obj_str = env->new_str_len(env, str, strlen(str));
+  void* obj_str = env->new_string_len(env, str, strlen(str));
   
   stack[0].oval = obj_str;
   
