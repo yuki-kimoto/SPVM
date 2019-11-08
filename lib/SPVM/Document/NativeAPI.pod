@@ -60,12 +60,12 @@ If you need more performance or bind C/C++ functions, you can use L<Extension|SP
   void* (*new_stack_trace_raw)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
   void* (*new_stack_trace)(SPVM_ENV* env, void* excetpion, const char* package_name, const char* sub_name, const char* file, int32_t line);
   int32_t (*len)(SPVM_ENV*, void*);
-  int8_t* (*belems)(SPVM_ENV*, void*);
-  int16_t* (*selems)(SPVM_ENV*, void*);
-  int32_t* (*ielems)(SPVM_ENV*, void*);
-  int64_t* (*lelems)(SPVM_ENV*, void*);
-  float* (*felems)(SPVM_ENV*, void*);
-  double* (*delems)(SPVM_ENV*, void*);
+  int8_t* (*get_elems_byte)(SPVM_ENV*, void*);
+  int16_t* (*get_elems_short)(SPVM_ENV*, void*);
+  int32_t* (*get_elems_int)(SPVM_ENV*, void*);
+  int64_t* (*get_elems_long)(SPVM_ENV*, void*);
+  float* (*get_elems_float)(SPVM_ENV*, void*);
+  double* (*get_elems_double)(SPVM_ENV*, void*);
   void* (*oelem)(SPVM_ENV*, void*, int32_t index);
   void (*set_oelem)(SPVM_ENV*, void*, int32_t index, void* value);
   int32_t (*field_id)(SPVM_ENV*, const char*, const char*, const char*);

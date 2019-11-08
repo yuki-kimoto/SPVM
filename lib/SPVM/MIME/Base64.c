@@ -48,13 +48,13 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
     SPVM_DIE("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
   }
 
-  const char* input = (const char*)env->belems(env, stack[1].oval);
+  const char* input = (const char*)env->get_elems_byte(env, stack[1].oval);
   const size_t length = env->len(env, stack[1].oval);
   const size_t encoded_capacity = calc_encoded_length(length);
   
   void* obuffer = env->new_barray_raw(env, encoded_capacity + 1);
   env->inc_ref_count(env, obuffer);
-  char* result = (char *)(env->belems(env, obuffer));
+  char* result = (char *)(env->get_elems_byte(env, obuffer));
   size_t result_index = 0;
 
   for (size_t x = 0; x < length; x += 3) {
@@ -117,7 +117,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
   result[encoded_length] = 0;
 
   void* oline = env->new_barray_raw(env, encoded_length);
-  int8_t* line = env->belems(env, oline);
+  int8_t* line = env->get_elems_byte(env, oline);
   memcpy(line, result, encoded_length);
 
   env->dec_ref_count(env, obuffer);
@@ -134,7 +134,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
     SPVM_DIE("string must not be undef", "SPVM/MIME/Base64.c", __LINE__);
   }
 
-  const char* input = (const char*)env->belems(env, stack[1].oval);
+  const char* input = (const char*)env->get_elems_byte(env, stack[1].oval);
   const size_t length = env->len(env, stack[1].oval);
   size_t input_index = 0;
   uint32_t buf = 0;
@@ -143,7 +143,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
   const size_t decoded_capacity = calc_decoded_length(length);
   void* obuffer = env->new_barray_raw(env, decoded_capacity + 1);
   env->inc_ref_count(env, obuffer);
-  char* result = (char *)(env->belems(env, obuffer));
+  char* result = (char *)(env->get_elems_byte(env, obuffer));
   size_t result_index = 0;
 
   while (input_index < length) {
@@ -187,7 +187,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
   result[decoded_length] = 0;
 
   void* oline = env->new_barray_raw(env, decoded_length);
-  int8_t* line = env->belems(env, oline);
+  int8_t* line = env->get_elems_byte(env, oline);
   memcpy(line, result, decoded_length);
 
   env->dec_ref_count(env, obuffer);

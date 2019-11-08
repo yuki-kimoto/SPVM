@@ -67,12 +67,12 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char*
 int32_t SPVM_RUNTIME_API_object_header_byte_size(SPVM_ENV* env);
 int32_t SPVM_RUNTIME_API_len(SPVM_ENV* env, SPVM_OBJECT* array);
 
-int8_t* SPVM_RUNTIME_API_belems(SPVM_ENV* env, SPVM_OBJECT* array);
-int16_t* SPVM_RUNTIME_API_selems(SPVM_ENV* env, SPVM_OBJECT* array);
-int32_t* SPVM_RUNTIME_API_ielems(SPVM_ENV* env, SPVM_OBJECT* array);
-int64_t* SPVM_RUNTIME_API_lelems(SPVM_ENV* env, SPVM_OBJECT* array);
-float* SPVM_RUNTIME_API_felems(SPVM_ENV* env, SPVM_OBJECT* array);
-double* SPVM_RUNTIME_API_delems(SPVM_ENV* env, SPVM_OBJECT* array);
+int8_t* SPVM_RUNTIME_API_get_elems_byte(SPVM_ENV* env, SPVM_OBJECT* array);
+int16_t* SPVM_RUNTIME_API_get_elems_short(SPVM_ENV* env, SPVM_OBJECT* array);
+int32_t* SPVM_RUNTIME_API_get_elems_int(SPVM_ENV* env, SPVM_OBJECT* array);
+int64_t* SPVM_RUNTIME_API_get_elems_long(SPVM_ENV* env, SPVM_OBJECT* array);
+float* SPVM_RUNTIME_API_get_elems_float(SPVM_ENV* env, SPVM_OBJECT* array);
+double* SPVM_RUNTIME_API_get_elems_double(SPVM_ENV* env, SPVM_OBJECT* array);
 
 
 SPVM_OBJECT* SPVM_RUNTIME_API_oelem(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index);

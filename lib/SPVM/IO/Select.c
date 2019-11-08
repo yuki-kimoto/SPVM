@@ -23,7 +23,7 @@ int32_t SPNATIVE__SPVM__IO__Select___can_read(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   // Handles
   void* obj_handles = stack[1].oval;
-  int32_t* handles = env->ielems(env, obj_handles);
+  int32_t* handles = env->get_elems_int(env, obj_handles);
   int32_t handles_len = env->len(env, obj_handles);
   
   // Timeout
@@ -58,7 +58,7 @@ int32_t SPNATIVE__SPVM__IO__Select___can_read(SPVM_ENV* env, SPVM_VALUE* stack) 
   
   // Can handles
   void* obj_can_handles = env->new_iarray(env, success_count);
-  int32_t* can_handles = env->ielems(env, obj_can_handles);
+  int32_t* can_handles = env->get_elems_int(env, obj_can_handles);
   int32_t can_handles_index = 0;
   for (int32_t i = 0; i < handles_len; i++) {
     int32_t handle = handles[i];
@@ -79,7 +79,7 @@ int32_t SPNATIVE__SPVM__IO__Select___can_write(SPVM_ENV* env, SPVM_VALUE* stack)
   
   // Handles
   void* obj_handles = stack[1].oval;
-  int32_t* handles = env->ielems(env, obj_handles);
+  int32_t* handles = env->get_elems_int(env, obj_handles);
   int32_t handles_len = env->len(env, obj_handles);
   
   // Timeout
@@ -114,7 +114,7 @@ int32_t SPNATIVE__SPVM__IO__Select___can_write(SPVM_ENV* env, SPVM_VALUE* stack)
   
   // Can handles
   void* obj_can_handles = env->new_iarray(env, success_count);
-  int32_t* can_handles = env->ielems(env, obj_can_handles);
+  int32_t* can_handles = env->get_elems_int(env, obj_can_handles);
   int32_t can_handles_index = 0;
   for (int32_t i = 0; i < handles_len; i++) {
     int32_t handle = handles[i];
@@ -135,7 +135,7 @@ int32_t SPNATIVE__SPVM__IO__Select___has_exception(SPVM_ENV* env, SPVM_VALUE* st
   
   // Handles
   void* obj_handles = stack[1].oval;
-  int32_t* handles = env->ielems(env, obj_handles);
+  int32_t* handles = env->get_elems_int(env, obj_handles);
   int32_t handles_len = env->len(env, obj_handles);
   
   // Timeout
@@ -171,7 +171,7 @@ int32_t SPNATIVE__SPVM__IO__Select___has_exception(SPVM_ENV* env, SPVM_VALUE* st
   
   // Can handles
   void* obj_can_handles = env->new_iarray(env, success_count);
-  int32_t* can_handles = env->ielems(env, obj_can_handles);
+  int32_t* can_handles = env->get_elems_int(env, obj_can_handles);
   int32_t can_handles_index = 0;
   for (int32_t i = 0; i < handles_len; i++) {
     int32_t handle = handles[i];

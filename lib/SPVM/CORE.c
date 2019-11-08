@@ -19,7 +19,7 @@ int32_t SPNATIVE__SPVM__CORE__strtoi(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->belems(env, obj_string);
+  const char* string = (const char*)env->get_elems_byte(env, obj_string);
   
   int32_t digit = stack[1].ival;
   
@@ -48,7 +48,7 @@ int32_t SPNATIVE__SPVM__CORE__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->belems(env, obj_string);
+  const char* string = (const char*)env->get_elems_byte(env, obj_string);
   
   int32_t digit = stack[1].ival;
 
@@ -77,7 +77,7 @@ int32_t SPNATIVE__SPVM__CORE__strtof(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->belems(env, obj_string);
+  const char* string = (const char*)env->get_elems_byte(env, obj_string);
   
   char *end;
   errno = 0;
@@ -100,7 +100,7 @@ int32_t SPNATIVE__SPVM__CORE__strtod(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->belems(env, obj_string);
+  const char* string = (const char*)env->get_elems_byte(env, obj_string);
   
   char *end;
   errno = 0;
@@ -179,10 +179,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -219,10 +219,10 @@ int32_t SPNATIVE__SPVM__CORE__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -259,10 +259,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -299,10 +299,10 @@ int32_t SPNATIVE__SPVM__CORE__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -339,10 +339,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -379,10 +379,10 @@ int32_t SPNATIVE__SPVM__CORE__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -419,10 +419,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -459,10 +459,10 @@ int32_t SPNATIVE__SPVM__CORE__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -499,10 +499,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -539,10 +539,10 @@ int32_t SPNATIVE__SPVM__CORE__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -579,10 +579,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -619,10 +619,10 @@ int32_t SPNATIVE__SPVM__CORE__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Length must be zero or positive value", MFILE, __LINE__);
   }
   
-  char* dest_data = (char*)env->belems(env, obj_dest_data);
+  char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
   int32_t dest_data_len = env->len(env, obj_dest_data);
   
-  char* src_data = (char*)env->belems(env, obj_src_data);
+  char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
   int32_t src_data_len = env->len(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
@@ -644,7 +644,7 @@ int32_t SPNATIVE__SPVM__CORE__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (obj_name == NULL) {
     SPVM_DIE("Name must be defined", MFILE, __LINE__);
   }
-  const char* name = (const char*)env->belems(env, obj_name);
+  const char* name = (const char*)env->get_elems_byte(env, obj_name);
   
   const char* value = getenv(name);
   
@@ -713,7 +713,7 @@ int32_t SPNATIVE__SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
-  int8_t* nums = env->belems(env, onums);
+  int8_t* nums = env->get_elems_byte(env, onums);
   
   for(int32_t i = 0; i < array_length / 2; i++){
     int8_t tmp = nums[i];
@@ -737,7 +737,7 @@ int32_t SPNATIVE__SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
-  int16_t* nums = env->selems(env, onums);
+  int16_t* nums = env->get_elems_short(env, onums);
   
   for(int32_t i = 0; i < array_length / 2; i++){
     int16_t tmp = nums[i];
@@ -761,7 +761,7 @@ int32_t SPNATIVE__SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
-  int32_t* nums = env->ielems(env, onums);
+  int32_t* nums = env->get_elems_int(env, onums);
   
   for(int32_t i = 0; i < array_length / 2; i++){
     int32_t tmp = nums[i];
@@ -785,7 +785,7 @@ int32_t SPNATIVE__SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
-  int64_t* nums = env->lelems(env, onums);
+  int64_t* nums = env->get_elems_long(env, onums);
   
   for(int32_t i = 0; i < array_length / 2; i++){
     int64_t tmp = nums[i];
@@ -809,7 +809,7 @@ int32_t SPNATIVE__SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
-  float* nums = env->felems(env, onums);
+  float* nums = env->get_elems_float(env, onums);
   
   for(int32_t i = 0; i < array_length / 2; i++){
     float tmp = nums[i];
@@ -833,7 +833,7 @@ int32_t SPNATIVE__SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   
-  double* nums = env->delems(env, onums);
+  double* nums = env->get_elems_double(env, onums);
   
   for(int32_t i = 0; i < array_length / 2; i++){
     double tmp = nums[i];
@@ -885,7 +885,7 @@ int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* string = stack[0].oval;
   
-  const char* bytes = (const char*)env->belems(env, string);
+  const char* bytes = (const char*)env->get_elems_byte(env, string);
   int32_t string_length = env->len(env, string);
   
   {

@@ -231,7 +231,7 @@ typedef void* SPVM_VALUE_object;
   if (id < 0) { SPVM_DIE("Method not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
   int32_t exception_flag = env->call_sub(env, id, stack);\
   if (exception_flag) {\
-    const char* message = env->belems(env, env->exception(env));\
+    const char* message = env->get_elems_byte(env, env->exception(env));\
     if (id < 0) { SPVM_DIE("%s", message, file, line); };\
     return SPVM_EXCEPTION;\
   }\
@@ -244,7 +244,7 @@ typedef void* SPVM_VALUE_object;
   env->call_sub(env, id, stack);\
   int32_t exception_flag = env->call_sub(env, id, stack);\
   if (exception_flag) {\
-    const char* message = env->belems(env, env->exception(env));\
+    const char* message = env->get_elems_byte(env, env->exception(env));\
     if (id < 0) { SPVM_DIE("%s", message, file, line); };\
     return SPVM_EXCEPTION;\
   }\
@@ -354,12 +354,12 @@ struct SPVM_env {
   void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
   void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
   int32_t (*len)(SPVM_ENV* env, void* array);
-  int8_t* (*belems)(SPVM_ENV* env, void* array);
-  int16_t* (*selems)(SPVM_ENV* env, void* array);
-  int32_t* (*ielems)(SPVM_ENV* env, void* array);
-  int64_t* (*lelems)(SPVM_ENV* env, void* array);
-  float* (*felems)(SPVM_ENV* env, void* array);
-  double* (*delems)(SPVM_ENV* env, void* array);
+  int8_t* (*get_elems_byte)(SPVM_ENV* env, void* array);
+  int16_t* (*get_elems_short)(SPVM_ENV* env, void* array);
+  int32_t* (*get_elems_int)(SPVM_ENV* env, void* array);
+  int64_t* (*get_elems_long)(SPVM_ENV* env, void* array);
+  float* (*get_elems_float)(SPVM_ENV* env, void* array);
+  double* (*get_elems_double)(SPVM_ENV* env, void* array);
   void* (*oelem)(SPVM_ENV* env, void* array, int32_t index);
   void (*set_oelem)(SPVM_ENV* env, void* array, int32_t index, void* value);
   int8_t (*get_field_byte)(SPVM_ENV* env, void* object, int32_t field_id);

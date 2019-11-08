@@ -16344,7 +16344,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_str = stack[0].oval;
   
-  const char* str = (const char*)env->belems(env, obj_str);
+  const char* str = (const char*)env->get_elems_byte(env, obj_str);
   int32_t str_len = env->len(env, obj_str);
   
   int32_t* offset_ref = stack[1].iref;
@@ -16389,7 +16389,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack)
   
   void* obj_utf8_bytes = env->new_barray(env, utf8_len);
   
-  char* utf8_bytes = (char*)env->belems(env, obj_utf8_bytes);
+  char* utf8_bytes = (char*)env->get_elems_byte(env, obj_utf8_bytes);
   memcpy(utf8_bytes, tmp_utf8_bytes, utf8_len);
   
   stack[0].oval = obj_utf8_bytes;

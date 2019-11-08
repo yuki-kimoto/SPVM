@@ -761,12 +761,12 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 54    new_stack_trace_raw
 55    new_stack_trace
 56    len
-57    belems
-58    selems
-59    ielems
-60    lelems
-61    felems
-62    delems
+57    get_elems_byte
+58    get_elems_short
+59    get_elems_int
+60    get_elems_long
+61    get_elems_float
+62    get_elems_double
 63    oelem
 64    set_oelem
 65    get_field_byte
@@ -892,12 +892,12 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-new_stack_trace_raw">new_stack_trace_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_stack_trace">new_stack_trace</a></li>
         <li><a href="#native-api-native-sub-api-len">len</a></li>
-        <li><a href="#native-api-native-sub-api-belems">belems</a></li>
-        <li><a href="#native-api-native-sub-api-selems">selems</a></li>
-        <li><a href="#native-api-native-sub-api-ielems">ielems</a></li>
-        <li><a href="#native-api-native-sub-api-lelems">lelems</a></li>
-        <li><a href="#native-api-native-sub-api-felems">felems</a></li>
-        <li><a href="#native-api-native-sub-api-delems">delems</a></li>
+        <li><a href="#native-api-native-sub-api-get_elems_byte">get_elems_byte</a></li>
+        <li><a href="#native-api-native-sub-api-get_elems_short">get_elems_short</a></li>
+        <li><a href="#native-api-native-sub-api-get_elems_int">get_elems_int</a></li>
+        <li><a href="#native-api-native-sub-api-get_elems_long">get_elems_long</a></li>
+        <li><a href="#native-api-native-sub-api-get_elems_float">get_elems_float</a></li>
+        <li><a href="#native-api-native-sub-api-get_elems_double">get_elems_double</a></li>
         <li><a href="#native-api-native-sub-api-oelem">oelem</a></li>
         <li><a href="#native-api-native-sub-api-set_oelem">set_oelem</a></li>
         <li><a href="#native-api-native-sub-api-get_field_byte">get_field_byte</a></li>
@@ -1544,93 +1544,93 @@ int32_t (*len)(SPVM_ENV*, void* array);
 int32_t length = env->len(env, array);
 </pre>
 
-      <h3 id="native-api-native-sub-api-belems">belems</h3>
+      <h3 id="native-api-native-sub-api-get_elems_byte">get_elems_byte</h3>
       <p>
         byte[]型の配列を指定すると、内部的に保有しているC言語のint8_t[]型の配列の先頭のポインタを返却します。
       </p>
 <pre>
-int8_t* (*belems)(SPVM_ENV* env, void* array);
+int8_t* (*get_elems_byte)(SPVM_ENV* env, void* array);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-int8_t* values = env->belems(env, array);
+int8_t* values = env->get_elems_byte(env, array);
 values[3] = 5;
 </pre>
 
-      <h3 id="native-api-native-sub-api-selems">selems</h3>
+      <h3 id="native-api-native-sub-api-get_elems_short">get_elems_short</h3>
       <p>
         short[]型の配列を指定すると、内部的に保有しているC言語のint16_t[]型の配列の先頭のポインタを返却します。
       </p>
 <pre>
-int16_t* (*selems)(SPVM_ENV* env, void* array);
+int16_t* (*get_elems_short)(SPVM_ENV* env, void* array);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-int16_t* values = env->selems(env, array);
+int16_t* values = env->get_elems_short(env, array);
 values[3] = 5;
 </pre>
 
-      <h3 id="native-api-native-sub-api-ielems">ielems</h3>
+      <h3 id="native-api-native-sub-api-get_elems_int">get_elems_int</h3>
       <p>
         int[]型の配列を指定すると、内部的に保有しているC言語のint32_t[]型の配列の先頭のポインタを返却します。
       </p>
 <pre>
-int32_t* (*ielems)(SPVM_ENV* env, void* array);
+int32_t* (*get_elems_int)(SPVM_ENV* env, void* array);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-int32_t* values = env->ielems(env, array);
+int32_t* values = env->get_elems_int(env, array);
 values[3] = 5;
 </pre>
 
-      <h3 id="native-api-native-sub-api-lelems">lelems</h3>
+      <h3 id="native-api-native-sub-api-get_elems_long">get_elems_long</h3>
       <p>
         long[]型の配列を指定すると、内部的に保有しているC言語のint64_t[]型の配列の先頭のポインタを返却します。
       </p>
 <pre>
-int64_t* (*lelems)(SPVM_ENV* env, void* array);
+int64_t* (*get_elems_long)(SPVM_ENV* env, void* array);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-int64_t* values = env->lelems(env, array);
+int64_t* values = env->get_elems_long(env, array);
 values[3] = 5;
 </pre>
 
-      <h3 id="native-api-native-sub-api-felems">felems</h3>
+      <h3 id="native-api-native-sub-api-get_elems_float">get_elems_float</h3>
       <p>
         float[]型の配列を指定すると、内部的に保有しているC言語のfloat[]型の配列の先頭のポインタを返却します。
       </p>
 <pre>
-float* (*felems)(SPVM_ENV* env, void* array);
+float* (*get_elems_float)(SPVM_ENV* env, void* array);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-float* values = env->felems(env, array);
+float* values = env->get_elems_float(env, array);
 values[3] = 1.5f;
 </pre>
 
-      <h3 id="native-api-native-sub-api-delems">delems</h3>
+      <h3 id="native-api-native-sub-api-get_elems_double">get_elems_double</h3>
       <p>
         double[]型の配列を指定すると、内部的に保有しているC言語のdouble[]型の配列の先頭のポインタを返却します。
       </p>
 <pre>
-double* (*delems)(SPVM_ENV* env, void* array);
+double* (*get_elems_double)(SPVM_ENV* env, void* array);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-double* values = env->delems(env, array);
+double* values = env->get_elems_double(env, array);
 values[3] = 1.5;
 </pre>
 

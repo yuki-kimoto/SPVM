@@ -154,12 +154,12 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_new_stack_trace_raw,
     SPVM_RUNTIME_API_new_stack_trace,
     SPVM_RUNTIME_API_len,
-    SPVM_RUNTIME_API_belems,
-    SPVM_RUNTIME_API_selems,
-    SPVM_RUNTIME_API_ielems,
-    SPVM_RUNTIME_API_lelems,
-    SPVM_RUNTIME_API_felems,
-    SPVM_RUNTIME_API_delems,
+    SPVM_RUNTIME_API_get_elems_byte,
+    SPVM_RUNTIME_API_get_elems_short,
+    SPVM_RUNTIME_API_get_elems_int,
+    SPVM_RUNTIME_API_get_elems_long,
+    SPVM_RUNTIME_API_get_elems_float,
+    SPVM_RUNTIME_API_get_elems_double,
     SPVM_RUNTIME_API_oelem,
     SPVM_RUNTIME_API_set_oelem,
     SPVM_RUNTIME_API_get_field_byte,
@@ -862,8 +862,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_length_offset);
           int32_t length2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_length_offset);
           
-          SPVM_VALUE_byte* bytes1 = env->belems(env, object1);
-          SPVM_VALUE_byte* bytes2 = env->belems(env, object2);
+          SPVM_VALUE_byte* bytes1 = env->get_elems_byte(env, object1);
+          SPVM_VALUE_byte* bytes2 = env->get_elems_byte(env, object2);
           
           int32_t short_string_length = length1 < length2 ? length1 : length2;
           int32_t retval = memcmp(bytes1, bytes2, short_string_length);
@@ -1241,7 +1241,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       {
         void* src_string = object_vars[opcode->operand1];
         int32_t src_string_length = env->len(env, src_string);
-        int8_t* src_string_data = env->belems(env, src_string);
+        int8_t* src_string_data = env->get_elems_byte(env, src_string);
         void* string = env->new_str_len_raw(env, (const char*)src_string_data, src_string_length);
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
@@ -3393,7 +3393,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         void* object = object_vars[opcode->operand0];
         
-        const char* bytes = (const char*)env->belems(env, object);
+        const char* bytes = (const char*)env->get_elems_byte(env, object);
         int32_t string_length = env->len(env, object);
         
         for (int32_t i = 0; i < string_length; i++) {
@@ -4531,7 +4531,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) 
   
   void* type_name_barray = env->new_barray_raw(env, length);
   
-  char* cur = (char*)env->belems(env, type_name_barray);
+  char* cur = (char*)env->get_elems_byte(env, type_name_barray);
   
   sprintf(cur, "%s", basic_type_name);
   cur += strlen(basic_type_name);
@@ -4587,7 +4587,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* ex
   const char* at_part = " at ";
 
   // Exception
-  int8_t* exception_bytes = env->belems(env, exception);
+  int8_t* exception_bytes = env->get_elems_byte(env, exception);
   int32_t exception_length = env->len(env, exception);
   
   // Total string length
@@ -4609,7 +4609,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* ex
   
   // Create exception message
   void* new_exception = env->new_str_len_raw(env, NULL, total_length);
-  int8_t* new_exception_bytes = env->belems(env, new_exception);
+  int8_t* new_exception_bytes = env->get_elems_byte(env, new_exception);
   
   memcpy(
     (void*)(new_exception_bytes),
@@ -4646,7 +4646,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* except
 void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
   (void)env;
   
-  int8_t* bytes = env->belems(env, string);
+  int8_t* bytes = env->get_elems_byte(env, string);
   int32_t string_length = env->len(env, string);
   
   {
@@ -4666,9 +4666,9 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SP
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_barray_raw(env, string3_length);
   
-  int8_t* string1_bytes = SPVM_RUNTIME_API_belems(env, string1);
-  int8_t* string2_bytes = SPVM_RUNTIME_API_belems(env, string2);
-  int8_t* string3_bytes = SPVM_RUNTIME_API_belems(env, string3);
+  int8_t* string1_bytes = SPVM_RUNTIME_API_get_elems_byte(env, string1);
+  int8_t* string2_bytes = SPVM_RUNTIME_API_get_elems_byte(env, string2);
+  int8_t* string3_bytes = SPVM_RUNTIME_API_get_elems_byte(env, string3);
   
   if (string1_length > 0) {
     memcpy(string3_bytes, string1_bytes, string1_length);
@@ -5317,37 +5317,37 @@ int32_t SPVM_RUNTIME_API_len(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->length;
 }
 
-int8_t* SPVM_RUNTIME_API_belems(SPVM_ENV* env, SPVM_OBJECT* object) {
+int8_t* SPVM_RUNTIME_API_get_elems_byte(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
 
   return (SPVM_VALUE_byte*)((intptr_t)object + env->object_header_byte_size);
 }
 
-int16_t* SPVM_RUNTIME_API_selems(SPVM_ENV* env, SPVM_OBJECT* object) {
+int16_t* SPVM_RUNTIME_API_get_elems_short(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_short*)((intptr_t)object + env->object_header_byte_size);
 }
 
-int32_t* SPVM_RUNTIME_API_ielems(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t* SPVM_RUNTIME_API_get_elems_int(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_int*)((intptr_t)object + env->object_header_byte_size);
 }
 
-int64_t* SPVM_RUNTIME_API_lelems(SPVM_ENV* env, SPVM_OBJECT* object) {
+int64_t* SPVM_RUNTIME_API_get_elems_long(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_long*)((intptr_t)object + env->object_header_byte_size);
 }
 
-float* SPVM_RUNTIME_API_felems(SPVM_ENV* env, SPVM_OBJECT* object) {
+float* SPVM_RUNTIME_API_get_elems_float(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_float*)((intptr_t)object + env->object_header_byte_size);
 }
 
-double* SPVM_RUNTIME_API_delems(SPVM_ENV* env, SPVM_OBJECT* object) {
+double* SPVM_RUNTIME_API_get_elems_double(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return (SPVM_VALUE_double*)((intptr_t)object + env->object_header_byte_size);
@@ -5432,7 +5432,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         // Exception in destructor is changed to warning
         if (exception_flag) {
           void* exception = env->get_exception(env);
-          char* exception_str = (char*)env->belems(env, exception);
+          char* exception_str = (char*)env->get_elems_byte(env, exception);
           fprintf(stderr, "(in cleanup) %s\n", exception_str);
         }
         

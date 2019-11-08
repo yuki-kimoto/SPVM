@@ -39,7 +39,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__new(SPVM_ENV* env, SPVM_VALUE* stac
 
   // Dest string. Domain or IP address
   void* obj_deststr = stack[0].oval;
-  const char* deststr = (const char*)env->belems(env, obj_deststr);
+  const char* deststr = (const char*)env->get_elems_byte(env, obj_deststr);
   
   // Port
   int32_t port = stack[1].ival;
@@ -94,7 +94,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__new(SPVM_ENV* env, SPVM_VALUE* stac
 int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_socket = stack[0].oval;
   void* obj_buffer = stack[1].oval;
-  const char* buffer = (const char*)env->belems(env, obj_buffer);
+  const char* buffer = (const char*)env->get_elems_byte(env, obj_buffer);
   int32_t length = env->len(env, obj_buffer);
   
   int32_t handle;
@@ -118,7 +118,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__read(SPVM_ENV* env, SPVM_VALUE* sta
 int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_socket = stack[0].oval;
   void* obj_buffer = stack[1].oval;
-  const char* buffer = (const char*)env->belems(env, obj_buffer);
+  const char* buffer = (const char*)env->get_elems_byte(env, obj_buffer);
   int32_t length = stack[2].ival;
   
   int32_t handle;

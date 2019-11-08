@@ -509,7 +509,7 @@ int32_t SPNATIVE__TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VAL
   
   void* string = stack[0].oval;
   
-  int8_t* bytes = env->belems(env, string);
+  int8_t* bytes = env->get_elems_byte(env, string);
   
   int32_t length = (int32_t)strlen((char*)bytes);
   
@@ -665,11 +665,11 @@ int32_t SPNATIVE__TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* sta
   
   int32_t length = env->len(env, obj_nums1);
   
-  int32_t* nums1 = env->ielems(env, obj_nums1);
-  int32_t* nums2 = env->ielems(env, obj_nums2);
+  int32_t* nums1 = env->get_elems_int(env, obj_nums1);
+  int32_t* nums2 = env->get_elems_int(env, obj_nums2);
   
   void* onums3 = env->new_iarray(env, length);
-  int32_t* nums3 = env->ielems(env, onums3);
+  int32_t* nums3 = env->get_elems_int(env, onums3);
   
   for (int32_t i = 0; i < length; i++) {
     nums3[i] = nums1[i] + nums2[i];

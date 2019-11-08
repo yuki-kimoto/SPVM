@@ -60,7 +60,7 @@ int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t capacity = 80;
   void* obj_buffer = env->new_barray(env, capacity);
-  int8_t* buffer = env->belems(env, obj_buffer);
+  int8_t* buffer = env->get_elems_byte(env, obj_buffer);
   
   int32_t pos = 0;
   int32_t end_is_eof = 0;
@@ -75,7 +75,7 @@ int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
         void* new_obj_buffer = env->new_barray(env, new_capacity);
-        int8_t* new_buffer = env->belems(env, new_obj_buffer);
+        int8_t* new_buffer = env->get_elems_byte(env, new_obj_buffer);
         memcpy(new_buffer, buffer, capacity);
         
         int32_t removed = env->remove_mortal(env, scope_id, obj_buffer);
@@ -105,7 +105,7 @@ int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
     else {
       oline = env->new_barray(env, pos);
-      int8_t* line = env->belems(env, oline);
+      int8_t* line = env->get_elems_byte(env, oline);
       memcpy(line, buffer, pos);
     }
     
@@ -184,7 +184,7 @@ int32_t SPNATIVE__SPVM__IO__File__read(SPVM_ENV* env, SPVM_VALUE* stack) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  char* buffer = (char*)env->belems(env, obj_buffer);
+  char* buffer = (char*)env->get_elems_byte(env, obj_buffer);
   int32_t buffer_length = env->len(env, obj_buffer);
   if (buffer_length == 0) {
     stack[0].ival = 0;
@@ -217,7 +217,7 @@ int32_t SPNATIVE__SPVM__IO__File__write(SPVM_ENV* env, SPVM_VALUE* stack) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  char* buffer = (char*)env->belems(env, obj_buffer);
+  char* buffer = (char*)env->get_elems_byte(env, obj_buffer);
   
   int32_t read_length = fwrite(buffer, 1, length, fh);
   
@@ -256,7 +256,7 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  const char* file_name = (const char*)env->belems(env, obj_file_name);
+  const char* file_name = (const char*)env->get_elems_byte(env, obj_file_name);
   
   // Mode
   void* omode = stack[1].oval;
@@ -264,7 +264,7 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  const char* mode = (const char*)env->belems(env, omode);
+  const char* mode = (const char*)env->get_elems_byte(env, omode);
   
   // Check mode
   int32_t valid_mode;

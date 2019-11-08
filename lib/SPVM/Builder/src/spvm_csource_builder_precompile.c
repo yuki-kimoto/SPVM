@@ -1972,8 +1972,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t length1 = *(SPVM_VALUE_int*)((intptr_t)object1 + (intptr_t)env->object_length_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t lenght2 = *(SPVM_VALUE_int*)((intptr_t)object2 + (intptr_t)env->object_length_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE_byte* bytes1 = env->belems(env, object1);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE_byte* bytes2 = env->belems(env, object2);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE_byte* bytes1 = env->get_elems_byte(env, object1);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_VALUE_byte* bytes2 = env->get_elems_byte(env, object2);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t short_string_length = length1 < lenght2 ? length1 : lenght2;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t retval = memcmp(bytes1, bytes2, short_string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t cmp;\n");
@@ -2243,7 +2243,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t src_string_length = env->len(env, src_string);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_string_data = env->belems(env, src_string);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_string_data = env->get_elems_byte(env, src_string);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_str_len_raw(env, (const char*)src_string_data, src_string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_RUNTIME_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -4254,7 +4254,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    const char* bytes = (const char*)env->belems(env, object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* bytes = (const char*)env->get_elems_byte(env, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = env->len(env, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    for (int32_t i = 0; i < string_length; i++) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      putc(bytes[i], stderr);\n");

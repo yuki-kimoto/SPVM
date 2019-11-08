@@ -10,7 +10,7 @@ int32_t SPNATIVE__SPVM__Util___convert_f_to_str(SPVM_ENV* env, SPVM_VALUE* stack
   void* obj_format = stack[0].oval;
   if (!obj_format) { SPVM_DIE("Format must be defined", MFILE, __LINE__); }
 
-  const char* format = (const char*)env->belems(env, obj_format);
+  const char* format = (const char*)env->get_elems_byte(env, obj_format);
   const double value = stack[1].dval;
 
   char tmp_result[SPRINTF_MAX_RESULT_LEN] = {};
