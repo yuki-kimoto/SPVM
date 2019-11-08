@@ -103,7 +103,7 @@ package SPVM::Util {
   }
 
   # TODO: Add the 2nd argument for width.
-  precompile sub _convert_d_to_str : string ($value : int) {
+  precompile sub _convert_d_to_string : string ($value : int) {
     my $value_str = "$value";
     my $width = 1; # TODO: Move $width to the argument.
 
@@ -120,13 +120,13 @@ package SPVM::Util {
 
     $buffer->push($value_str);
 
-    my $result = $buffer->to_str;
+    my $result = $buffer->to_string;
 
     return $result;
   }
 
   # TODO: Add the 2nd argument for width.
-  precompile sub _convert_ld_to_str : string ($value : long) {
+  precompile sub _convert_ld_to_string : string ($value : long) {
     my $value_str = "$value";
     my $width = 1; # TODO: Move $width to the argument.
 
@@ -143,12 +143,12 @@ package SPVM::Util {
 
     $buffer->push($value_str);
 
-    my $result = $buffer->to_str;
+    my $result = $buffer->to_string;
 
     return $result;
   }
 
-  native sub _convert_f_to_str : string ($format : string, $value : double);
+  native sub _convert_f_to_string : string ($format : string, $value : double);
 
   precompile sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
@@ -216,7 +216,7 @@ package SPVM::Util {
       elsif ($specifier_char == 'd') {
         ++$specifier_length;
         my $arg = (SPVM::Int)$args->[$specifier_count];
-        my $str = _convert_d_to_str($arg->val);
+        my $str = _convert_d_to_string($arg->val);
         $output->push($str);
       }
       elsif ($specifier_char == 'l') {
@@ -228,7 +228,7 @@ package SPVM::Util {
         if ($specifier_char_next == 'd') {
           ++$specifier_length;
           my $arg = (SPVM::Long)$args->[$specifier_count];
-          my $str = _convert_ld_to_str($arg->val);
+          my $str = _convert_ld_to_string($arg->val);
           $output->push($str);
         }
         else {
@@ -238,7 +238,7 @@ package SPVM::Util {
       elsif ($specifier_char == 'f') {
         ++$specifier_length;
         my $arg = (SPVM::Double)$args->[$specifier_count];
-        my $str = _convert_f_to_str("%.4f", $arg->val);
+        my $str = _convert_f_to_string("%.4f", $arg->val);
         $output->push($str);
       }
       elsif ($specifier_char == 'U') {
@@ -259,6 +259,6 @@ package SPVM::Util {
       die "Redundant argument in sprintf";
     }
 
-    return $output->to_str;
+    return $output->to_string;
   }
 }

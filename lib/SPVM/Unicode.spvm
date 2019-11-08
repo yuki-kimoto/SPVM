@@ -40,7 +40,7 @@ package SPVM::Unicode {
       $buffer->push($utf8_str);
     }
     
-    my $str = $buffer->to_str;
+    my $str = $buffer->to_string;
     
     return $str;
   }

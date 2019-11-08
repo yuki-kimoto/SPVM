@@ -30,7 +30,7 @@ package SPVM::HTTP::Client::Response {
     return $self;
   }
 
-  sub to_str : string ($self : self) {
+  sub to_string : string ($self : self) {
     my $hkeys = $self->{headers}->keys;
     my $headers = "";
     for (my $i = 0; $i < @$hkeys; ++$i) {

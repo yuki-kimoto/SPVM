@@ -97,7 +97,7 @@ package SPVM::StringBuffer {
     $self->{length} += $length;
   }
 
-  sub to_str : string ($self : self) {
+  sub to_string : string ($self : self) {
     return (string)(sliceb($self->{value}, 0, $self->{length}));
   }
 

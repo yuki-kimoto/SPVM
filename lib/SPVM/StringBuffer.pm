@@ -20,7 +20,7 @@ SPVM::StringBuffer - String buffer
   $buffer->push("def");
   
   # Convert to string - abcdef
-  my $str = $buffer->to_str;
+  my $str = $buffer->to_string;
   
   # Cat sub string - bcd
   my $offset = 1;
@@ -81,9 +81,9 @@ Get capacity of string buffer.
 
 Push string to string buffer.
 
-=head2 to_str
+=head2 to_string
 
-  sub to_str : string ($self : self)
+  sub to_string : string ($self : self)
 
 Convert string buffer to string.
 

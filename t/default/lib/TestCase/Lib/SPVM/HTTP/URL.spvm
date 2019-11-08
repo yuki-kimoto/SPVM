@@ -13,9 +13,9 @@ package TestCase::Lib::SPVM::HTTP::URL {
     my $url = SPVM::HTTP::URL->parse(
       "http://www.example.com:8888/blog/posts?q=$q_escaped&p=$p_escaped&p=$p_escaped_2#$fragment_escaped");
     {
-      my $got = $url->to_str();
+      my $got = $url->to_string();
       my $expected = "http://www.example.com:8888/blog/posts?q=$q_escaped&p=$p_escaped&p=$p_escaped_2#$fragment_escaped";
-      unless ($url->to_str() eq $expected) {
+      unless ($url->to_string() eq $expected) {
         warn("     got: '$got'\nexpected: '$expected'");
         return 0;
       }
@@ -228,31 +228,31 @@ package TestCase::Lib::SPVM::HTTP::URL {
       my $url = SPVM::HTTP::URL->parse($test_url->[0]);
       unless ($url->has_trailing_slash == 0 &&
           $url->{path} eq $test_path->[0] &&
-          $url->to_str eq $test_url->[0]) {
+          $url->to_string eq $test_url->[0]) {
         return 0;
       }
       $url->force_trailing_slash;
       unless ($url->has_trailing_slash == 1 &&
           $url->{path} eq $test_path->[1] &&
-          $url->to_str eq $test_url->[1]) {
+          $url->to_string eq $test_url->[1]) {
         return 0;
       }
       $url->force_trailing_slash;
       unless ($url->has_trailing_slash == 1 &&
           $url->{path} eq $test_path->[1] &&
-          $url->to_str eq $test_url->[1]) {
+          $url->to_string eq $test_url->[1]) {
         return 0;
       }
       $url->remove_trailing_slash;
       unless ($url->has_trailing_slash == 0 &&
           $url->{path} eq $test_path->[0] &&
-          $url->to_str eq $test_url->[0]) {
+          $url->to_string eq $test_url->[0]) {
         return 0;
       }
       $url->remove_trailing_slash;
       unless ($url->has_trailing_slash == 0 &&
           $url->{path} eq $test_path->[0] &&
-          $url->to_str eq $test_url->[0]) {
+          $url->to_string eq $test_url->[0]) {
         return 0;
       }
     }

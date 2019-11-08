@@ -125,7 +125,7 @@ package TestCase::Lib::SPVM::HTTP::Client {
     unless ($response &&
         $response->{status} == 200 &&
         (string)$response->{headers}->get("transfer-encoding") eq "chunked" &&
-        $data->to_str eq "abcdefg\n12345\nあいう") {
+        $data->to_string eq "abcdefg\n12345\nあいう") {
       return 0;
     }
 

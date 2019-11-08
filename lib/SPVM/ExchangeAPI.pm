@@ -6,7 +6,7 @@ use warnings;
 use Encode 'encode', 'decode';
 use Carp 'confess';
 
-sub to_str {
+sub to_string {
   my $bin = SPVM::ExchangeAPI::to_bin(@_);
   
   my $string = decode('UTF-8', $bin);
@@ -14,7 +14,7 @@ sub to_str {
   return $string;
 }
 
-sub to_strs {
+sub to_strings {
   my $elems = SPVM::ExchangeAPI::to_elems(@_);
   
   my $strs = [];
@@ -22,7 +22,7 @@ sub to_strs {
   for (my $i = 0; $i < @$elems; $i++) {
     my $elem = $elems->[$i];
     if (defined $elem) {
-      $strs->[$i] = $elem->to_str;
+      $strs->[$i] = $elem->to_string;
     }
     else {
       $strs->[$i] = undef;
@@ -32,7 +32,7 @@ sub to_strs {
   return $strs;
 }
 
-sub new_barray_from_str {
+sub new_barray_from_string {
   my ($env, $string) = @_;
   
   my $bin = encode('UTF-8', $string);
@@ -40,7 +40,7 @@ sub new_barray_from_str {
   return SPVM::ExchangeAPI::new_barray_from_bin($env, $bin);
 }
 
-sub new_string { SPVM::ExchangeAPI::new_barray_from_str(@_) }
+sub new_string { SPVM::ExchangeAPI::new_barray_from_string(@_) }
 
 sub new_string_from_bin { SPVM::ExchangeAPI::new_barray_from_bin(@_) }
 
@@ -179,7 +179,7 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head2 new_barray_from_bin
 
-=head2 new_barray_from_str
+=head2 new_barray_from_string
 
 =head2 new_darray
 
@@ -217,6 +217,6 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head2 to_elems
 
-=head2 to_str
+=head2 to_string
 
-=head2 to_strs
+=head2 to_strings

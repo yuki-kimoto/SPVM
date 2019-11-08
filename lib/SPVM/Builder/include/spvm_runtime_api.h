@@ -185,14 +185,14 @@ void* SPVM_RUNTIME_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size)
 void SPVM_RUNTIME_API_free_memory_block(SPVM_ENV* env, void* block);
 void* SPVM_RUNTIME_API_safe_malloc_zero(int64_t byte_size);
 
-SPVM_OBJECT* SPVM_RUNTIME_API_i_to_str_raw(SPVM_ENV* env, int32_t value);
-SPVM_OBJECT* SPVM_RUNTIME_API_i_to_str(SPVM_ENV* env, int32_t value);
-SPVM_OBJECT* SPVM_RUNTIME_API_l_to_str_raw(SPVM_ENV* env, int64_t value);
-SPVM_OBJECT* SPVM_RUNTIME_API_l_to_str(SPVM_ENV* env, int64_t value);
-SPVM_OBJECT* SPVM_RUNTIME_API_f_to_str_raw(SPVM_ENV* env, float value);
-SPVM_OBJECT* SPVM_RUNTIME_API_f_to_str(SPVM_ENV* env, float value);
-SPVM_OBJECT* SPVM_RUNTIME_API_d_to_str_raw(SPVM_ENV* env, double value);
-SPVM_OBJECT* SPVM_RUNTIME_API_d_to_str(SPVM_ENV* env, double value);
+SPVM_OBJECT* SPVM_RUNTIME_API_i_to_string_raw(SPVM_ENV* env, int32_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_i_to_string(SPVM_ENV* env, int32_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_l_to_string_raw(SPVM_ENV* env, int64_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_l_to_string(SPVM_ENV* env, int64_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_f_to_string_raw(SPVM_ENV* env, float value);
+SPVM_OBJECT* SPVM_RUNTIME_API_f_to_string(SPVM_ENV* env, float value);
+SPVM_OBJECT* SPVM_RUNTIME_API_d_to_string_raw(SPVM_ENV* env, double value);
+SPVM_OBJECT* SPVM_RUNTIME_API_d_to_string(SPVM_ENV* env, double value);
 
 int8_t SPVM_RUNTIME_API_get_package_var_byte(SPVM_ENV* env, int32_t pkgvar_id);
 int16_t SPVM_RUNTIME_API_get_package_var_short(SPVM_ENV* env, int32_t pkgvar_id);

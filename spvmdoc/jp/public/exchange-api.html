@@ -91,10 +91,10 @@
         <li><a href="#exchange-api-perl-binary-to-spvm-short-array">Perlのバイナリ列をSPVMのshort[]型に変換 - SPVM::new_sarray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-int-array">Perlのバイナリ列をSPVMのint[]型に変換 - SPVM::new_iarray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-long-array">Perlのバイナリ列をSPVMのlong[]型に変換 - SPVM::new_larray_from_bin</a></li>
-        <li><a href="#exchange-api-perl-binary-to-spvm-float-array">Perlのバイナリ列をSPVMのfloat[]型に変換 - SPVM::new_barray_from_str</a></li>
+        <li><a href="#exchange-api-perl-binary-to-spvm-float-array">Perlのバイナリ列をSPVMのfloat[]型に変換 - SPVM::new_barray_from_string</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-double-array">Perlのバイナリ列をSPVMのdouble[]型に変換 - SPVM::new_darray_from_bin</a></li>
         <li><a href="#exchange-api-perl-binary-to-spvm-value-array">Perlのバイナリ列をSPVMの値の配列型に変換 - SPVM::new_varray_from_bin</a></li>
-        <li><a href="#exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</a></li>
+        <li><a href="#exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_string</a></li>
         <li><a href="#exchange-api-perl-string-to-spvm-string">Perlの文字列をSPVMのstring型に変換 - SPVM::new_string</a></li>
       </ul>
 
@@ -648,8 +648,8 @@ my $spvm_double_array = SPVM::new_darray_from_bin($perl_binary);
       <ul class="toc">
         <li><a href="#exchange-api-spvm-array-to-perl-array-ref">SPVMの配列をPerlの配列リファレンスに変換 - to_elems</a></li>
         <li><a href="#exchange-api-spvm-array-to-perl-binary">SPVMの配列をPerlのバイナリ列に変換 - to_bin</a></li>
-        <li><a href="#exchange-api-spvm-string-to-perl-string">SPVMの文字列をPerlの文字列に変換 - to_str</a></li>
-        <li><a href="#exchange-api-spvm-string-array-to-perl-string-array-ref">SPVMの文字列の配列をPerlの文字列の配列リファレンスに変換 - to_strs</a></li>
+        <li><a href="#exchange-api-spvm-string-to-perl-string">SPVMの文字列をPerlの文字列に変換 - to_string</a></li>
+        <li><a href="#exchange-api-spvm-string-array-to-perl-string-array-ref">SPVMの文字列の配列をPerlの文字列の配列リファレンスに変換 - to_strings</a></li>
       </ul>
       
       <h3 id="exchange-api-spvm-array-to-perl-array-ref">SPVMの配列をPerlの配列リファレンスに変換 - to_elems</h3>
@@ -686,12 +686,12 @@ my $perl_binary = $spvm_array->to_bin;
         SPVMの配列がそれ以外の型である場合は、例外が発生します。
       </p>
 
-      <h3 id="exchange-api-spvm-string-to-perl-string">SPVMの文字列をPerlの文字列に変換 - to_str</h3>
+      <h3 id="exchange-api-spvm-string-to-perl-string">SPVMの文字列をPerlの文字列に変換 - to_string</h3>
       <p>
-        SPVMの文字列をPerlの文字列に変換するにはSPVM::Data::Arrayのto_strメソッドを使用します。
+        SPVMの文字列をPerlの文字列に変換するにはSPVM::Data::Arrayのto_stringメソッドを使用します。
       </p>
 <pre>
-my $perl_array_ref = $spvm_array->to_str;
+my $perl_array_ref = $spvm_array->to_string;
 </pre>
       <p>
         SPVMの型がbyte[]型あるいはstring型である場合は、PerlのUTF-8でデコードされた文字列に変換されます。
@@ -703,12 +703,12 @@ my $perl_array_ref = $spvm_array->to_str;
         SPVMのデータが、上記以外の型である場合は、例外が発生します。
       </p>
 
-      <h3 id="exchange-api-spvm-string-array-to-perl-string-array-ref">SPVMの文字列の配列をPerlの文字列の配列リファレンスに変換 - to_strs</h3>
+      <h3 id="exchange-api-spvm-string-array-to-perl-string-array-ref">SPVMの文字列の配列をPerlの文字列の配列リファレンスに変換 - to_strings</h3>
       <p>
-        SPVMの文字列の配列をPerlの文字列の配列リファレンスに変換するにはSPVM::Data::Arrayのto_strsメソッドを使用します。
+        SPVMの文字列の配列をPerlの文字列の配列リファレンスに変換するにはSPVM::Data::Arrayのto_stringsメソッドを使用します。
       </p>
 <pre>
-my $perl_array_ref = $spvm_array->to_strs;
+my $perl_array_ref = $spvm_array->to_strings;
 </pre>
       <p>
         SPVMの型がbyte[][]型あるいはstring[]型である場合は、PerlのUTF-8でデコードされた文字列の配列のリファレンスに変換されます。
@@ -1017,13 +1017,13 @@ Foo->call_double_ref(\$num_double);
 my $exception = SPVM::exception();
 </pre>
 
-      <h3 id="exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_str</h3>
+      <h3 id="exchange-api-perl-string-to-spvm-byte-array">Perlの文字列をSPVMのbyte[]型に変換 - SPVM::new_barray_from_string</h3>
       <p>
-        Perlの文字列をSPVMのbyte[]型に変換するには、SPVM::new_barray_from_str関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
+        Perlの文字列をSPVMのbyte[]型に変換するには、SPVM::new_barray_from_string関数を使います。Perlの文字列は、ここではデコードされた文字列を指します。
       </p>
 <pre>
 use utf8;
-my $spvm_byte_array = SPVM::new_barray_from_str("あいうえお");
+my $spvm_byte_array = SPVM::new_barray_from_string("あいうえお");
 </pre>
       <p>
         第一引数にPerlの文字列を受け取ります。Perlの文字列は、ここではデコードされた文字列を指します。
@@ -1059,7 +1059,7 @@ my $spvm_string = SPVM::new_string("あいうえお");
         第一引数が未定義値だった場合は、未定義値が返ります。
       </p>
       <p>
-        この関数は実際には、<a href="#exchange-api-perl-string-to-spvm-byte-array">SPVM::new_barray_from_str</a>のエイリアスです。
+        この関数は実際には、<a href="#exchange-api-perl-string-to-spvm-byte-array">SPVM::new_barray_from_string</a>のエイリアスです。
       </p>
 
       <h3 id="exchange-api-utility-set_exception">SPVMの例外の設定 - set_exception</h3>

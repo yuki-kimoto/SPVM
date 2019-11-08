@@ -4,7 +4,7 @@ use base 'SPVM::BlessedObject';
 
 use SPVM::ExchangeAPI;
 
-use overload bool => sub {1}, '""' => sub { shift->to_str }, fallback => 1;
+use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
 sub to_elems {
   my $self = shift;
@@ -22,20 +22,20 @@ sub to_bin {
   SPVM::ExchangeAPI::to_bin($env, $self);
 }
 
-sub to_str {
+sub to_string {
   my $self = shift;
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_str($env, $self);
+  SPVM::ExchangeAPI::to_string($env, $self);
 }
 
-sub to_strs {
+sub to_strings {
   my $self = shift;
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_strs($env, $self);
+  SPVM::ExchangeAPI::to_strings($env, $self);
 }
 
 1;
@@ -59,10 +59,10 @@ This object contains SPVM array object.
   my $binary = $spvm_nums->to_bin;
   
   # Convert SPVM array to perl text str(decoded str).
-  my $str = $spvm_str->to_str;
+  my $str = $spvm_str->to_string;
 
   # Convert SPVM array to perl array reference which contains decoded strings.
-  my $strs = $spvm_strs->to_strs;
+  my $strs = $spvm_strs->to_strings;
 
 =head1 METHODS
 
@@ -84,14 +84,14 @@ An exmaple when array is int array:
 
   my @nums = unpack 'l*', $binary;
 
-=head2 to_str
+=head2 to_string
 
-  my $str = $spvm_str->to_str;
+  my $str = $spvm_str->to_string;
 
 Convert SPVM array to perl text str(decoded str).
 
-=head2 to_strs
+=head2 to_strings
 
-  my $strs = $spvm_strs->to_strs;
+  my $strs = $spvm_strs->to_strings;
 
 Convert SPVM array to perl array reference which contains decoded strings.

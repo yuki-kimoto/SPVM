@@ -77,7 +77,7 @@ sub call_sub { SPVM::ExchangeAPI::call_sub($SPVM_ENV, @_) }
 
 sub new_barray { SPVM::ExchangeAPI::new_barray($SPVM_ENV, @_) }
 sub new_barray_from_bin { SPVM::ExchangeAPI::new_barray_from_bin($SPVM_ENV, @_) }
-sub new_barray_from_str { SPVM::ExchangeAPI::new_barray_from_str($SPVM_ENV, @_) }
+sub new_barray_from_string { SPVM::ExchangeAPI::new_barray_from_string($SPVM_ENV, @_) }
 
 sub new_sarray { SPVM::ExchangeAPI::new_sarray($SPVM_ENV, @_) }
 sub new_sarray_from_bin { SPVM::ExchangeAPI::new_sarray_from_bin($SPVM_ENV, @_) }

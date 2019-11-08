@@ -177,8 +177,8 @@ package SPVM::HTTP::Client {
     my $host = $u->{host};
     my $port = $u->{port};
     my $path_query = $u->{path};
-    if ($u->{params} && $u->{params}->to_str ne "") {
-      $path_query .= "?" . $u->{params}->to_str;
+    if ($u->{params} && $u->{params}->to_string ne "") {
+      $path_query .= "?" . $u->{params}->to_string;
     }
     my $hash_args : SPVM::Hash;
     my $args_headers : SPVM::Hash;
@@ -388,7 +388,7 @@ package SPVM::HTTP::Client::Handle {
         die "Unexpected end of stream while looking for line";
       }
     }
-    return $self->{rbuf}->to_str;
+    return $self->{rbuf}->to_string;
   }
 
   private sub _read_as : void ($target : string, $token : string, $pos : int&) {
@@ -621,7 +621,7 @@ package SPVM::HTTP::Client::Handle {
         $self->_read($read, $buf, 0);
         $len -= $read;
       }
-      $data_cb->($buf->to_str, $response);
+      $data_cb->($buf->to_string, $response);
       return $self->{rbuf}->length == 0;
     }
     else {
@@ -631,7 +631,7 @@ package SPVM::HTTP::Client::Handle {
           last;
         }
       }
-      $data_cb->($buf->to_str, $response);
+      $data_cb->($buf->to_string, $response);
       return 0;
     }
   }

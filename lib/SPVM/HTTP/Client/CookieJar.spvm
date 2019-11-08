@@ -254,7 +254,7 @@ package SPVM::HTTP::Client::CookieJar {
       if ($i > 0) {
         $ret .= "; ";
       }
-      $ret .= $matched->[$i]->to_str;
+      $ret .= $matched->[$i]->to_string;
     }
     return $ret;
   }

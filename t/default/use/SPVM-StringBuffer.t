@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   my $buffer = SPVM::StringBuffer->new;
   $buffer->push("abc");
   $buffer->push("def");
-  my $str = $buffer->to_str;
+  my $str = $buffer->to_string;
   is($str, "abcdef");
 }
 

@@ -620,14 +620,14 @@ package SPVM::Regex {
           }
         }
         
-        $replace = $replace_buffer->to_str;
+        $replace = $replace_buffer->to_string;
       }
       elsif ($replace_object isa SPVM::Regex::Replacer) {
         my $replace_buffer = SPVM::StringBuffer->new;
         my $replacer = (SPVM::Regex::Replacer)$replace_object;
         my $cb_result = $replacer->($self);
         $replace_buffer->push($cb_result);
-        $replace = $replace_buffer->to_str;
+        $replace = $replace_buffer->to_string;
       }
       else {
         die "Invalid replace argument";
@@ -664,7 +664,7 @@ package SPVM::Regex {
       my $rest_string = substr($target, $match_end, $rest_length);
       $result_buffer->push($rest_string);
       
-      $result = (byte[])$result_buffer->to_str;
+      $result = (byte[])$result_buffer->to_string;
     }
     
     $self->{replace_count} = $replace_count;

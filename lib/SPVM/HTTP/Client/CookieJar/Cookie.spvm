@@ -17,7 +17,7 @@ package SPVM::HTTP::Client::CookieJar::Cookie {
     return new SPVM::HTTP::Client::CookieJar::Cookie;
   }
 
-  sub to_str : string ($self : self) {
+  sub to_string : string ($self : self) {
     return $self->{name} . "=" . $self->{value};
   }
 }

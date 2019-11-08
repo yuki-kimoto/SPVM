@@ -185,7 +185,7 @@ package SPVM::HTTP::URL {
     }
   }
 
-  sub to_str : string ($self : self) {
+  sub to_string : string ($self : self) {
     my $url = copy_str($self->{scheme}) . ":";
     $url .= "//" . $self->{host}; # TODO: escape by punycode if needed
     if ($self->{port} != 80) { # "host:80" is default
@@ -193,7 +193,7 @@ package SPVM::HTTP::URL {
     }
     $url .= $self->{path};
     if (@{$self->{params}->keys}) {
-      $url .= "?" . $self->{params}->to_str;
+      $url .= "?" . $self->{params}->to_string;
     }
     if (length($self->{fragment})) {
       $url .= "#" . SPVM::HTTP::URL::Escape->escape($self->{fragment});

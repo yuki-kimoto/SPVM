@@ -90,7 +90,7 @@ package SPVM::HTTP::URL::Parameters {
     return $self;
   }
 
-  sub to_str : string ($self : self) {
+  sub to_string : string ($self : self) {
     my $keys = $self->keys();
     unless (@$keys) {
       return "";

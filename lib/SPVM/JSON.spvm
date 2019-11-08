@@ -125,7 +125,7 @@ package SPVM::JSON {
 
     _expect_char($json, $iter, '\"');
 
-    return (string)$buffer->to_str;
+    return (string)$buffer->to_string;
   }
 
   private enum {
@@ -427,7 +427,7 @@ package SPVM::JSON {
         $buffer->push_char($special);
       }
     }
-    return $buffer->to_str;
+    return $buffer->to_string;
   }
 
   precompile private sub _encode_recursive : string ($self : self, $spvm_data : object, $depth : int) {
@@ -460,7 +460,7 @@ package SPVM::JSON {
       }
       $buffer->push_char('}');
       
-      $json = $buffer->to_str;
+      $json = $buffer->to_string;
     }
     # Array
     elsif ($spvm_data isa SPVM::ObjectList) {
@@ -478,7 +478,7 @@ package SPVM::JSON {
       }
       $buffer->push_char(']');
       
-      $json = $buffer->to_str;
+      $json = $buffer->to_string;
     }
     # string
     elsif ($spvm_data isa string) {
