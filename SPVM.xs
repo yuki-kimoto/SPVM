@@ -1400,7 +1400,7 @@ _get_exception(...)
   SV* sv_exception;
   if (str_exception) {
     const char* exception = (const char*)env->get_elems_byte(env, str_exception);
-    int32_t length = env->len(env, str_exception);
+    int32_t length = env->length(env, str_exception);
     
     sv_exception = sv_2mortal(newSVpv(exception, length));
   }
@@ -2906,7 +2906,7 @@ call_sub(...)
   // Exception
   if (excetpion_flag) {
     void* exception = env->get_exception(env);
-    int32_t length = env->len(env, exception);
+    int32_t length = env->length(env, exception);
     const char* exception_bytes = (char*)env->get_elems_byte(env, exception);
     SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
     croak("%s\n at %s line %d\n", SvPV_nolen(sv_exception), MFILE, __LINE__);
@@ -2949,7 +2949,7 @@ to_elems(...)
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = env->len(env, array);
+  int32_t length = env->length(env, array);
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;
@@ -3153,7 +3153,7 @@ to_bin(...)
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   
-  int32_t length = env->len(env, array);
+  int32_t length = env->length(env, array);
 
   int32_t basic_type_id = array->basic_type_id;
   int32_t dimension = array->type_dimension;

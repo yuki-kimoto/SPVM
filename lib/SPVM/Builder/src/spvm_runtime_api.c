@@ -153,7 +153,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_concat,
     SPVM_RUNTIME_API_new_stack_trace_raw,
     SPVM_RUNTIME_API_new_stack_trace,
-    SPVM_RUNTIME_API_len,
+    SPVM_RUNTIME_API_length,
     SPVM_RUNTIME_API_get_elems_byte,
     SPVM_RUNTIME_API_get_elems_short,
     SPVM_RUNTIME_API_get_elems_int,
@@ -1240,7 +1240,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_CONVERT_STRING_TO_BYTE_ARRAY:
       {
         void* src_string = object_vars[opcode->operand1];
-        int32_t src_string_length = env->len(env, src_string);
+        int32_t src_string_length = env->length(env, src_string);
         int8_t* src_string_data = env->get_elems_byte(env, src_string);
         void* string = env->new_str_len_raw(env, (const char*)src_string_data, src_string_length);
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
@@ -3394,7 +3394,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = object_vars[opcode->operand0];
         
         const char* bytes = (const char*)env->get_elems_byte(env, object);
-        int32_t string_length = env->len(env, object);
+        int32_t string_length = env->length(env, object);
         
         for (int32_t i = 0; i < string_length; i++) {
           putc(bytes[i], stderr);
@@ -4588,7 +4588,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* ex
 
   // Exception
   int8_t* exception_bytes = env->get_elems_byte(env, exception);
-  int32_t exception_length = env->len(env, exception);
+  int32_t exception_length = env->length(env, exception);
   
   // Total string length
   int32_t total_length = 0;
@@ -4647,7 +4647,7 @@ void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
   (void)env;
   
   int8_t* bytes = env->get_elems_byte(env, string);
-  int32_t string_length = env->len(env, string);
+  int32_t string_length = env->length(env, string);
   
   {
     int32_t i;
@@ -4660,8 +4660,8 @@ void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
 SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
   (void)env;
 
-  int32_t string1_length = SPVM_RUNTIME_API_len(env, string1);
-  int32_t string2_length = SPVM_RUNTIME_API_len(env, string2);
+  int32_t string1_length = SPVM_RUNTIME_API_length(env, string1);
+  int32_t string2_length = SPVM_RUNTIME_API_length(env, string2);
   
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_barray_raw(env, string3_length);
@@ -5311,7 +5311,7 @@ int32_t SPVM_RUNTIME_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object
   return object->basic_type_id;
 }
 
-int32_t SPVM_RUNTIME_API_len(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t SPVM_RUNTIME_API_length(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   return object->length;

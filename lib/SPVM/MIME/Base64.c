@@ -49,7 +49,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
   }
 
   const char* input = (const char*)env->get_elems_byte(env, stack[1].oval);
-  const size_t length = env->len(env, stack[1].oval);
+  const size_t length = env->length(env, stack[1].oval);
   const size_t encoded_capacity = calc_encoded_length(length);
   
   void* obuffer = env->new_barray_raw(env, encoded_capacity + 1);
@@ -135,7 +135,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
   }
 
   const char* input = (const char*)env->get_elems_byte(env, stack[1].oval);
-  const size_t length = env->len(env, stack[1].oval);
+  const size_t length = env->length(env, stack[1].oval);
   size_t input_index = 0;
   uint32_t buf = 0;
   size_t buf_iter = 0;

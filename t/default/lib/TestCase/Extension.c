@@ -663,7 +663,7 @@ int32_t SPNATIVE__TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_nums1 = stack[0].oval;
   void* obj_nums2 = stack[1].oval;
   
-  int32_t length = env->len(env, obj_nums1);
+  int32_t length = env->length(env, obj_nums1);
   
   int32_t* nums1 = env->get_elems_int(env, obj_nums1);
   int32_t* nums2 = env->get_elems_int(env, obj_nums2);

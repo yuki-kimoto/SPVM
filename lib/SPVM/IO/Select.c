@@ -24,7 +24,7 @@ int32_t SPNATIVE__SPVM__IO__Select___can_read(SPVM_ENV* env, SPVM_VALUE* stack) 
   // Handles
   void* obj_handles = stack[1].oval;
   int32_t* handles = env->get_elems_int(env, obj_handles);
-  int32_t handles_len = env->len(env, obj_handles);
+  int32_t handles_len = env->length(env, obj_handles);
   
   // Timeout
   double timeout = stack[2].dval;
@@ -80,7 +80,7 @@ int32_t SPNATIVE__SPVM__IO__Select___can_write(SPVM_ENV* env, SPVM_VALUE* stack)
   // Handles
   void* obj_handles = stack[1].oval;
   int32_t* handles = env->get_elems_int(env, obj_handles);
-  int32_t handles_len = env->len(env, obj_handles);
+  int32_t handles_len = env->length(env, obj_handles);
   
   // Timeout
   double timeout = stack[2].dval;
@@ -136,7 +136,7 @@ int32_t SPNATIVE__SPVM__IO__Select___has_exception(SPVM_ENV* env, SPVM_VALUE* st
   // Handles
   void* obj_handles = stack[1].oval;
   int32_t* handles = env->get_elems_int(env, obj_handles);
-  int32_t handles_len = env->len(env, obj_handles);
+  int32_t handles_len = env->length(env, obj_handles);
   
   // Timeout
   double timeout = stack[2].dval;

@@ -180,10 +180,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -220,10 +220,10 @@ int32_t SPNATIVE__SPVM__CORE__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -260,10 +260,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -300,10 +300,10 @@ int32_t SPNATIVE__SPVM__CORE__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -340,10 +340,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -380,10 +380,10 @@ int32_t SPNATIVE__SPVM__CORE__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -420,10 +420,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -460,10 +460,10 @@ int32_t SPNATIVE__SPVM__CORE__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -500,10 +500,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -540,10 +540,10 @@ int32_t SPNATIVE__SPVM__CORE__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -580,10 +580,10 @@ int32_t SPNATIVE__SPVM__CORE__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -620,10 +620,10 @@ int32_t SPNATIVE__SPVM__CORE__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   char* dest_data = (char*)env->get_elems_byte(env, obj_dest_data);
-  int32_t dest_data_len = env->len(env, obj_dest_data);
+  int32_t dest_data_len = env->length(env, obj_dest_data);
   
   char* src_data = (char*)env->get_elems_byte(env, obj_src_data);
-  int32_t src_data_len = env->len(env, obj_src_data);
+  int32_t src_data_len = env->length(env, obj_src_data);
   
   if (dest_offset + length > dest_data_len) {
     SPVM_DIE("Copy is over destination data", MFILE, __LINE__);
@@ -708,7 +708,7 @@ int32_t SPNATIVE__SPVM__CORE__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -732,7 +732,7 @@ int32_t SPNATIVE__SPVM__CORE__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -756,7 +756,7 @@ int32_t SPNATIVE__SPVM__CORE__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -780,7 +780,7 @@ int32_t SPNATIVE__SPVM__CORE__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -804,7 +804,7 @@ int32_t SPNATIVE__SPVM__CORE__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -828,7 +828,7 @@ int32_t SPNATIVE__SPVM__CORE__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -852,7 +852,7 @@ int32_t SPNATIVE__SPVM__CORE__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -886,7 +886,7 @@ int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* string = stack[0].oval;
   
   const char* bytes = (const char*)env->get_elems_byte(env, string);
-  int32_t string_length = env->len(env, string);
+  int32_t string_length = env->length(env, string);
   
   {
     int32_t i;

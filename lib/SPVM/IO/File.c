@@ -185,7 +185,7 @@ int32_t SPNATIVE__SPVM__IO__File__read(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   char* buffer = (char*)env->get_elems_byte(env, obj_buffer);
-  int32_t buffer_length = env->len(env, obj_buffer);
+  int32_t buffer_length = env->length(env, obj_buffer);
   if (buffer_length == 0) {
     stack[0].ival = 0;
     return SPVM_SUCCESS;

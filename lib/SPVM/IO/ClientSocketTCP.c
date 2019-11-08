@@ -95,7 +95,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__read(SPVM_ENV* env, SPVM_VALUE* sta
   void* obj_socket = stack[0].oval;
   void* obj_buffer = stack[1].oval;
   const char* buffer = (const char*)env->get_elems_byte(env, obj_buffer);
-  int32_t length = env->len(env, obj_buffer);
+  int32_t length = env->length(env, obj_buffer);
   
   int32_t handle;
   SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", MFILE, __LINE__);

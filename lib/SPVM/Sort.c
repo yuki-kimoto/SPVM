@@ -369,7 +369,7 @@ int32_t SPNATIVE__SPVM__Sort__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -393,7 +393,7 @@ int32_t SPNATIVE__SPVM__Sort__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -412,7 +412,7 @@ int32_t SPNATIVE__SPVM__Sort__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Array must be defined", MFILE, __LINE__);
   }
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -428,7 +428,7 @@ int32_t SPNATIVE__SPVM__Sort__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -444,7 +444,7 @@ int32_t SPNATIVE__SPVM__Sort__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
   
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }
@@ -460,7 +460,7 @@ int32_t SPNATIVE__SPVM__Sort__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* onums = stack[0].oval;
 
-  int32_t array_length = env->len(env, onums);
+  int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
     return SPVM_SUCCESS;
   }

@@ -65,7 +65,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char*
 
 // Get
 int32_t SPVM_RUNTIME_API_object_header_byte_size(SPVM_ENV* env);
-int32_t SPVM_RUNTIME_API_len(SPVM_ENV* env, SPVM_OBJECT* array);
+int32_t SPVM_RUNTIME_API_length(SPVM_ENV* env, SPVM_OBJECT* array);
 
 int8_t* SPVM_RUNTIME_API_get_elems_byte(SPVM_ENV* env, SPVM_OBJECT* array);
 int16_t* SPVM_RUNTIME_API_get_elems_short(SPVM_ENV* env, SPVM_OBJECT* array);
