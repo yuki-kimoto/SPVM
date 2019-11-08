@@ -81,7 +81,7 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__new(SPVM_ENV* env, SPVM_VALUE* stac
   
   // Create SPVM::IO::ClientSocketTCP object
   void* obj_socket;
-  SPVM_NEW_OBJ(env, obj_socket, "SPVM::IO::ClientSocketTCP", MFILE, __LINE__);
+  SPVM_NEW_OBJECT(env, obj_socket, "SPVM::IO::ClientSocketTCP", MFILE, __LINE__);
   
   // Set handle
   SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::IO::ClientSocketTCP", "handle", handle, MFILE, __LINE__);

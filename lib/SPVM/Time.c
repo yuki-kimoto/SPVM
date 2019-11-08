@@ -33,7 +33,7 @@ int32_t SPNATIVE__SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
 #endif
 
   void* obj_time_info;
-  SPVM_NEW_OBJ(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
+  SPVM_NEW_OBJECT(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
 
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "sec", resultp.tm_sec, MFILE, __LINE__);
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "min", resultp.tm_min, MFILE, __LINE__);
@@ -62,7 +62,7 @@ int32_t SPNATIVE__SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
 #endif
 
   void* obj_time_info;
-  SPVM_NEW_OBJ(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
+  SPVM_NEW_OBJECT(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
 
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "sec", resultp.tm_sec, MFILE, __LINE__);
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "min", resultp.tm_min, MFILE, __LINE__);
@@ -406,7 +406,7 @@ int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
 
   void* obj_time_info;
-  SPVM_NEW_OBJ(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
+  SPVM_NEW_OBJECT(env, obj_time_info, "SPVM::Time::Info", MFILE, __LINE__);
 
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "sec", resultp.tm_sec, MFILE, __LINE__);
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "min", resultp.tm_min, MFILE, __LINE__);

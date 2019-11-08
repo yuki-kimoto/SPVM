@@ -46,7 +46,7 @@ typedef void* SPVM_VALUE_object;
   return SPVM_EXCEPTION;\
 } while (0)\
 
-#define SPVM_NEW_OBJ(env, obj, package_name, file, line) do {\
+#define SPVM_NEW_OBJECT(env, obj, package_name, file, line) do {\
   int32_t id = env->basic_type_id(env, package_name);\
   if (id < 0) { SPVM_DIE("Package \"%s\" not found", package_name, file, line); };\
   obj = env->new_object(env, id);\
