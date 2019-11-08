@@ -470,10 +470,10 @@ stack[1].dval = retval_im;
       </p>
 <pre>
 // メソッドでないサブルーチンの場合
-int32_t sub_id = env->sub_id(env, "Foo", "sum", "int(int,int)");
+int32_t sub_id = env->get_sub_id(env, "Foo", "sum", "int(int,int)");
 
 // メソッドの場合
-int32_t sub_id = env->method_sub_id(env, object, "sum", "int(self,int,int)");
+int32_t sub_id = env->get_method_sub_id(env, object, "sum", "int(self,int,int)");
 </pre>
       <p>
         sub_idが0より小さい場合は、サブルーチンが見つからなかったことを示します。以下のように、例外処理をしておくと安全です。
@@ -629,7 +629,7 @@ int32_t SPNATIVE__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* tm_obj = stack[0].oval;
   
-  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  strcut tm* tm_ptr = (struct tm*)env->get_pointer(env, tm_obj);
   
   stack[0].ival = tm_ptr->tm_sec;
   
@@ -640,7 +640,7 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* tm_obj = stack[0].oval;
   
-  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  strcut tm* tm_ptr = (struct tm*)env->get_pointer(env, tm_obj);
   
   env->free_memory_block(tm_ptr);
   
@@ -670,12 +670,12 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 </pre>
       <p>
-        次に、tm_secの値を取得してみましょう。secメソッドです。pointer関数を使うと、ポインタ型のオブジェクトから「struct tm」として割り当てられたメモリのポインタを取得することができます。
+        次に、tm_secの値を取得してみましょう。secメソッドです。get_pointer関数を使うと、ポインタ型のオブジェクトから「struct tm」として割り当てられたメモリのポインタを取得することができます。
       </p>
 <pre>
   void* tm_obj = stack[0].oval;
   
-  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  strcut tm* tm_ptr = (struct tm*)env->get_pointer(env, tm_obj);
   
   stack[0].ival = tm_ptr->tm_sec;
 </pre>
@@ -687,7 +687,7 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* tm_obj = stack[0].oval;
   
-  strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+  strcut tm* tm_ptr = (struct tm*)env->get_pointer(env, tm_obj);
   
   env->free_memory_block(tm_ptr);
   
@@ -724,12 +724,12 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 17    native_mortal_stack
 18    native_mortal_stack_top
 19    native_mortal_stack_capacity
-20    basic_type_id
-21    field_id
-22    field_offset
-23    pkgvar_id
-24    sub_id
-25    method_sub_id
+20    get_basic_type_id
+21    get_field_id
+22    get_field_offset
+23    get_package_var_id
+24    get_sub_id
+25    get_method_sub_id
 26    new_object_raw
 27    new_object
 28    new_barray_raw
@@ -760,7 +760,7 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 53    concat
 54    new_stack_trace_raw
 55    new_stack_trace
-56    len
+56    length
 57    get_elems_byte
 58    get_elems_short
 59    get_elems_int
@@ -797,12 +797,12 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 90    set_package_var_float
 91    set_package_var_double
 92    set_package_var_object
-93    pointer
+93    get_pointer
 94    set_pointer
 95    call_sub
-96    exception
+96    get_exception
 97    set_exception
-98    ref_count
+98    get_ref_count
 99    inc_ref_count
 100   dec_ref_count
 101   enter_scope
@@ -811,16 +811,16 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 104   remove_mortal
 105   is_type
 106   has_callback
-107   object_basic_type_id
-108   object_type_dimension
+107   get_object_basic_type_id
+108   get_object_type_dimension
 109   weaken
 110   isweak
 111   unweaken
 112   alloc_memory_block_zero
 113   free_memory_block
-114   memory_blocks_count
-115   type_name_raw
-116   type_name
+114   get_memory_blocks_count
+115   get_type_name_raw
+116   get_type_name
 117   new_env
 118   free_env
 </pre>
@@ -830,7 +830,7 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
         ネイティブAPIは、引数に渡された「SPVM_ENV* env」から呼び出すことができます。第一引数に、envを渡さなければならないことに注意してください。
       </p>
 <pre>
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 </pre>
       
       <h2 id="native-api-list">ネイティブAPIの一覧</h2>
@@ -855,12 +855,12 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-native_mortal_stack">native_mortal_stack</a></li>
         <li><a href="#native-api-native-sub-api-native_mortal_stack_top">native_mortal_stack_top</a></li>
         <li><a href="#native-api-native-sub-api-native_mortal_stack_capacity">native_mortal_stack_capacity</a></li>
-        <li><a href="#native-api-native-sub-api-basic_type_id">basic_type_id</a></li>
-        <li><a href="#native-api-native-sub-api-field_id">field_id</a></li>
-        <li><a href="#native-api-native-sub-api-field_offset">field_offset</a></li>
-        <li><a href="#native-api-native-sub-api-pkgvar_id">pkgvar_id</a></li>
-        <li><a href="#native-api-native-sub-api-sub_id">sub_id</a></li>
-        <li><a href="#native-api-native-sub-api-method_sub_id">method_sub_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_basic_type_id">get_basic_type_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_id">get_field_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_field_offset">get_field_offset</a></li>
+        <li><a href="#native-api-native-sub-api-get_package_var_id">get_package_var_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_sub_id">get_sub_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_method_sub_id">get_method_sub_id</a></li>
         <li><a href="#native-api-native-sub-api-new_object_raw">new_object_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_object">new_object</a></li>
         <li><a href="#native-api-native-sub-api-new_barray_raw">new_barray_raw</a></li>
@@ -891,7 +891,7 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-concat">concat</a></li>
         <li><a href="#native-api-native-sub-api-new_stack_trace_raw">new_stack_trace_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_stack_trace">new_stack_trace</a></li>
-        <li><a href="#native-api-native-sub-api-len">len</a></li>
+        <li><a href="#native-api-native-sub-api-length">length</a></li>
         <li><a href="#native-api-native-sub-api-get_elems_byte">get_elems_byte</a></li>
         <li><a href="#native-api-native-sub-api-get_elems_short">get_elems_short</a></li>
         <li><a href="#native-api-native-sub-api-get_elems_int">get_elems_int</a></li>
@@ -928,12 +928,12 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-set_package_var_float">set_package_var_float</a></li>
         <li><a href="#native-api-native-sub-api-set_package_var_double">set_package_var_double</a></li>
         <li><a href="#native-api-native-sub-api-set_package_var_object">set_package_var_object</a></li>
-        <li><a href="#native-api-native-sub-api-pointer">pointer</a></li>
+        <li><a href="#native-api-native-sub-api-get_pointer">get_pointer</a></li>
         <li><a href="#native-api-native-sub-api-set_pointer">set_pointer</a></li>
         <li><a href="#native-api-native-sub-api-call_sub">call_sub</a></li>
-        <li><a href="#native-api-native-sub-api-exception">exception</a></li>
+        <li><a href="#native-api-native-sub-api-get_exception">get_exception</a></li>
         <li><a href="#native-api-native-sub-api-set_exception">set_exception</a></li>
-        <li><a href="#native-api-native-sub-api-ref_count">ref_count</a></li>
+        <li><a href="#native-api-native-sub-api-get_ref_count">get_ref_count</a></li>
         <li><a href="#native-api-native-sub-api-inc_ref_count">inc_ref_count</a></li>
         <li><a href="#native-api-native-sub-api-dec_ref_count">dec_ref_count</a></li>
         <li><a href="#native-api-native-sub-api-enter_scope">enter_scope</a></li>
@@ -942,16 +942,16 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-remove_mortal">remove_mortal</a></li>
         <li><a href="#native-api-native-sub-api-is_type">is_type</a></li>
         <li><a href="#native-api-native-sub-api-has_callback">has_callback</a></li>
-        <li><a href="#native-api-native-sub-api-object_basic_type_id">object_basic_type_id</a></li>
-        <li><a href="#native-api-native-sub-api-object_type_dimension">object_type_dimension</a></li>
+        <li><a href="#native-api-native-sub-api-get_object_basic_type_id">get_object_basic_type_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_object_type_dimension">get_object_type_dimension</a></li>
         <li><a href="#native-api-native-sub-api-weaken">weaken</a></li>
         <li><a href="#native-api-native-sub-api-isweak">isweak</a></li>
         <li><a href="#native-api-native-sub-api-unweaken">unweaken</a></li>
         <li><a href="#native-api-native-sub-api-alloc_memory_block_zero">alloc_memory_block_zero</a></li>
         <li><a href="#native-api-native-sub-api-free_memory_block">free_memory_block</a></li>
-        <li><a href="#native-api-native-sub-api-memory_blocks_count">memory_blocks_count</a></li>
-        <li><a href="#native-api-native-sub-api-type_name_raw">type_name_raw</a></li>
-        <li><a href="#native-api-native-sub-api-type_name">type_name</a></li>
+        <li><a href="#native-api-native-sub-api-get_memory_blocks_count">get_memory_blocks_count</a></li>
+        <li><a href="#native-api-native-sub-api-get_type_name_raw">get_type_name_raw</a></li>
+        <li><a href="#native-api-native-sub-api-get_type_name">get_type_name</a></li>
         <li><a href="#native-api-native-sub-api-new_env">new_env</a></li>
         <li><a href="#native-api-native-sub-api-free_env">free_env</a></li>
       </ul>
@@ -1056,26 +1056,26 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         ネイティブ呼び出しで利用されるモータルスタックの容量。内部的に利用されます。
       </p>
       
-      <h3 id="native-api-native-sub-api-basic_type_id">basic_type_id</h3>
+      <h3 id="native-api-native-sub-api-get_basic_type_id">basic_type_id</h3>
       <p>
         基本型の名前を指定して、基本型のIDを取得します。存在しない場合は、0より小さい値が返されます。
       </p>
 <pre>
-int32_t (*basic_type_id)(SPVM_ENV* env, const char* basic_type_name);
+int32_t (*get_basic_type_id)(SPVM_ENV* env, const char* basic_type_name);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 </pre>
 
-      <h3 id="native-api-native-sub-api-field_id">field_id</h3>
+      <h3 id="native-api-native-sub-api-get_field_id">field_id</h3>
       <p>
         パッケージ名と、フィールド名と、シグネチャを指定して、フィールドのIDを取得します。フィールドが存在しない場合は、0より小さい値が返されます。
       </p>
 <pre>
-int32_t (*field_id)(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
+int32_t (*get_field_id)(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
 </pre>
       <p>
         シグネチャは、フィールドの型名と同一です。
@@ -1084,23 +1084,23 @@ int32_t (*field_id)(SPVM_ENV* env, const char* package_name, const char* field_n
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "int");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "int");
 </pre>
       
-      <h3 id="native-api-native-sub-api-field_offset">field_offset</h3>
+      <h3 id="native-api-native-sub-api-get_field_offset">field_offset</h3>
       <p>
         フィールドIDを指定して、フィールドのオフセットを取得します。フィールドIDはfield_id関数で取得した有効なフィールドIDである必要があります。
       </p>
 <pre>
-int32_t (*field_offset)(SPVM_ENV* env, int32_t field_id);
+int32_t (*get_field_offset)(SPVM_ENV* env, int32_t field_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-pkgvar_id">pkgvar_id</h3>
+      <h3 id="native-api-native-sub-api-get_package_var_id">get_package_var_id</h3>
       <p>
         パッケージ名とパッケージ変数名とシグネチャを指定して、パッケージ変数IDを取得します。パッケージ変数が存在しない場合は、0より小さい値が返されます。
       </p>
 <pre>
-int32_t (*pkgvar_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
+int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
 </pre>
       <p>
         シグネチャは、パッケージ変数の型名と同一です。
@@ -1109,15 +1109,15 @@ int32_t (*pkgvar_id)(SPVM_ENV* env, const char* package_name, const char* packag
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "int");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
 </pre>
 
-      <h3 id="native-api-native-sub-api-sub_id">sub_id</h3>
+      <h3 id="native-api-native-sub-api-get_sub_id">get_sub_id</h3>
       <p>
         パッケージ名とサブルーチン名とシグネチャを指定して、サブルーチンIDを取得します。サブルーチンが存在しない場合は、0より小さい値が返されます。
       </p>
 <pre>
-int32_t (*sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
+int32_t (*get_sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
 </pre>
       <p>
         シグネチャは、次のフォーマットで指定します。空白を含んではいけません。
@@ -1129,12 +1129,12 @@ int32_t (*sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name,
         サンプル:
       </p>
 <pre>
-int32_t sub_id = env->sub_id(env, "Foo", "func", "int(long,string)");
+int32_t sub_id = env->get_sub_id(env, "Foo", "func", "int(long,string)");
 </pre>
 
-      <h3 id="native-api-native-sub-api-method_sub_id">method_sub_id</h3>
+      <h3 id="native-api-native-sub-api-get_method_sub_id">get_method_sub_id</h3>
 <pre>
-int32_t (*method_sub_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+int32_t (*get_method_sub_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 </pre>
       <p>
         オブジェクトとメソッド名を指定して、サブルーチンIDを取得します。メソッドが存在しない場合は、0より小さい値が返されます。
@@ -1146,7 +1146,7 @@ int32_t (*method_sub_id)(SPVM_ENV* env, void* object, const char* method_name, c
         サンプル:
       </p>
 <pre>
-int32_t sub_id = env->method_sub_id(env, object, "method", "int(self,long,string)");
+int32_t sub_id = env->get_method_sub_id(env, object, "method", "int(self,long,string)");
 </pre>
 
       <h3 id="native-api-native-sub-api-new_object_raw">new_object_raw</h3>
@@ -1171,7 +1171,7 @@ void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
         サンプル:
       </p>
 <pre>
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 void* object = env->new_object(env, basic_type_id);
 </pre>
 
@@ -1349,7 +1349,7 @@ void* (*new_oarray)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 void* object_array_obj = env->new_oarray(env, basic_type_id, 100);
 </pre>
       
@@ -1379,7 +1379,7 @@ void* (*new_marray_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_di
       </p>
 <pre>
 // new SPVM::Int[][][100]
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 void* multi_array_obj = env->new_marray(env, basic_type_id, 2, 100);
 </pre>
       
@@ -1405,7 +1405,7 @@ void* (*new_varray)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
         サンプル:
       </p>
 <pre>
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Complex_2d");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Complex_2d");
 void* value_array_obj = env->new_varray(env, basic_type_id, 100);
 </pre>
       
@@ -1672,7 +1672,7 @@ int8_t (*get_field_byte)(SPVM_ENV* env, void* object, int32_t field_id);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "byte");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "byte");
 int8_t field_value = env->get_field_byte(env, object, field_id);
 </pre>
 
@@ -1687,7 +1687,7 @@ int8_t field_value = env->get_field_byte(env, object, field_id);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "short");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "short");
 int16_t field_value = env->get_field_short(env, object, field_id);
 </pre>
 
@@ -1702,7 +1702,7 @@ int16_t field_value = env->get_field_short(env, object, field_id);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "int");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "int");
 int32_t field_value = env->get_field_int(env, object, field_id);
 </pre>
 
@@ -1717,7 +1717,7 @@ int32_t field_value = env->get_field_int(env, object, field_id);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "long");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "long");
 int64_t field_value = env->get_field_long(env, object, field_id);
 </pre>
 
@@ -1732,7 +1732,7 @@ int64_t field_value = env->get_field_long(env, object, field_id);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "float");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "float");
 float field_value = env->get_field_float(env, object, field_id);
 </pre>
 
@@ -1747,7 +1747,7 @@ float field_value = env->get_field_float(env, object, field_id);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "double");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "double");
 double field_value = env->get_field_double(env, object, field_id);
 </pre>
 
@@ -1759,7 +1759,7 @@ double field_value = env->get_field_double(env, object, field_id);
   void* (*get_field_object)(SPVM_ENV* env, void* object, int32_t field_id);
 </pre>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "SPVM::Int");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "SPVM::Int");
 void* field_value = env->get_field_object(env, object, field_id);
 </pre>
 
@@ -1774,7 +1774,7 @@ void* field_value = env->get_field_object(env, object, field_id);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "byte");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "byte");
 int8_t field_value = 5;
 env->set_field_byte(env, object, field_id, field_value);
 </pre>
@@ -1790,7 +1790,7 @@ env->set_field_byte(env, object, field_id, field_value);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "short");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "short");
 int16_t field_value = 5;
 env->set_field_short(env, object, field_id, field_value);
 </pre>
@@ -1806,7 +1806,7 @@ env->set_field_short(env, object, field_id, field_value);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "int");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "int");
 int32_t field_value = 5;
 env->set_field_int(env, object, field_id, field_value);
 </pre>
@@ -1822,7 +1822,7 @@ env->set_field_int(env, object, field_id, field_value);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "long");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "long");
 int64_t field_value = 5;
 env->set_field_long(env, object, field_id, field_value);
 </pre>
@@ -1838,7 +1838,7 @@ env->set_field_long(env, object, field_id, field_value);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "float");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "float");
 float field_value = 1.5f;
 env->set_field_float(env, object, field_id, field_value);
 </pre>
@@ -1854,7 +1854,7 @@ env->set_field_float(env, object, field_id, field_value);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "double");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "double");
 double field_value = 1.55;
 env->set_field_double(env, object, field_id, field_value);
 </pre>
@@ -1870,8 +1870,8 @@ env->set_field_double(env, object, field_id, field_value);
         サンプル:
       </p>
 <pre>
-int32_t field_id = env->field_id(env, "Foo", "x", "SPVM::Int");
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+int32_t field_id = env->get_field_id(env, "Foo", "x", "SPVM::Int");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 void* object = env->new_object(env, basic_type_id);
 env->set_field_object(env, object, field_id, object);
 </pre>
@@ -1887,7 +1887,7 @@ int8_t (*get_package_var_byte)(SPVM_ENV* env, int32_t pkgvar_id);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "byte");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "byte");
 int8_t pkgvar_value = env->get_package_var_byte(env, object, pkgvar_id);
 </pre>
 
@@ -1902,7 +1902,7 @@ int16_t (*get_package_var_short)(SPVM_ENV* env, int32_t pkgvar_id);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "short");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "short");
 int16_t pkgvar_value = env->get_package_var_short(env, object, pkgvar_id);
 </pre>
 
@@ -1917,7 +1917,7 @@ int32_t (*get_package_var_int)(SPVM_ENV* env, int32_t pkgvar_id);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "int");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
 int32_t pkgvar_value = env->get_package_var_int(env, object, pkgvar_id);
 </pre>
 
@@ -1932,7 +1932,7 @@ int64_t (*get_package_var_long)(SPVM_ENV* env, int32_t pkgvar_id);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "long");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "long");
 int64_t pkgvar_value = env->get_package_var_long(env, object, pkgvar_id);
 </pre>
 
@@ -1947,7 +1947,7 @@ float (*get_package_var_float)(SPVM_ENV* env, int32_t pkgvar_id);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "float");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "float");
 float pkgvar_value = env->get_package_var_float(env, object, pkgvar_id);
 </pre>
 
@@ -1962,7 +1962,7 @@ double (*get_package_var_double)(SPVM_ENV* env, int32_t pkgvar_id);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "double");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "double");
 double pkgvar_value = env->get_package_var_double(env, object, pkgvar_id);
 </pre>
 
@@ -1977,7 +1977,7 @@ void* (*get_package_var_object)(SPVM_ENV* env, int32_t pkgvar_id);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "SPVM::Int");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "SPVM::Int");
 void* pkgvar_value = env->get_package_var_byte(env, object, pkgvar_id);
 </pre>
 
@@ -1992,7 +1992,7 @@ void (*set_package_var_byte)(SPVM_ENV* env, int32_t pkgvar_id, int8_t value);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "byte");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "byte");
 int8_t pkgvar_value = 5;
 env->set_package_var_byte(env, pkgvar_id, pkgvar_value);
 </pre>
@@ -2008,7 +2008,7 @@ void (*set_package_var_short)(SPVM_ENV* env, int32_t pkgvar_id, int16_t value);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "short");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "short");
 int16_t pkgvar_value = 5;
 env->set_package_var_short(env, pkgvar_id, pkgvar_value);
 </pre>
@@ -2024,7 +2024,7 @@ void (*set_package_var_int)(SPVM_ENV* env, int32_t pkgvar_id, int32_t value);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "int");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
 int32_t pkgvar_value = 5;
 env->set_package_var_int(env, pkgvar_id, pkgvar_value);
 </pre>
@@ -2040,7 +2040,7 @@ void (*set_package_var_long)(SPVM_ENV* env, int32_t pkgvar_id, int64_t value);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "long");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "long");
 int64_t pkgvar_value = 5;
 env->set_package_var_long(env, pkgvar_id, pkgvar_value);
 </pre>
@@ -2056,7 +2056,7 @@ void (*set_package_var_float)(SPVM_ENV* env, int32_t pkgvar_id, float value);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "float");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "float");
 float pkgvar_value = 5;
 env->set_package_var_float(env, pkgvar_id, pkgvar_value);
 </pre>
@@ -2072,7 +2072,7 @@ void (*set_package_var_double)(SPVM_ENV* env, int32_t pkgvar_id, double value);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "double");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "double");
 double pkgvar_value = 5;
 env->set_package_var_double(env, pkgvar_id, pkgvar_value);
 </pre>
@@ -2088,25 +2088,25 @@ void (*set_package_var_object)(SPVM_ENV* env, int32_t pkgvar_id, void* value);
         サンプル:
       </p>
 <pre>
-int32_t pkgvar_id = env->pkgvar_id(env, "Foo", "$VAR", "SPVM::Int");
-int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
+int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "SPVM::Int");
+int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 void* object = env->new_object(env, basic_type_id);
 env->set_package_var_object(env, pkgvar_id, pkgvar_value);
 </pre>
 
-      <h3 id="native-api-native-sub-api-pointer">pointer</h3>
+      <h3 id="native-api-native-sub-api-get_pointer">get_pointer</h3>
       <p>
         ポインタ型のオブジェクトを指定して、オブジェクトの内部に保存されているC言語のポインタを返却します。
       </p>
 <pre>
-void* (*pointer)(SPVM_ENV* env, void* pointer_object);
+void* (*get_pointer)(SPVM_ENV* env, void* pointer_object);
 </pre>
 
       <p>
         サンプル:
       </p>
 <pre>
-strcut tm* tm_ptr = (struct tm*)env->pointer(env, tm_obj);
+strcut tm* tm_ptr = (struct tm*)env->get_pointer(env, tm_obj);
 </pre>
       <p>
         詳しいサンプルについては<a href="#native-api-use-pointer-type">ポインタ型の利用</a>を見てください。
@@ -2131,12 +2131,12 @@ int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
         サブルーチンの戻り値は「args[0]」に、設定されます。
       </p>
 
-      <h3 id="native-api-native-sub-api-exception">exception</h3>
+      <h3 id="native-api-native-sub-api-get_exception">get_exception</h3>
       <p>
         例外として保存されているbyte[]型のオブジェクトを返却します。
       </p>
 <pre>
-void* (*exception)(SPVM_ENV* env);
+void* (*get_exception)(SPVM_ENV* env);
 </pre>
       
       <h3 id="native-api-native-sub-api-set_exception">set_exception</h3>
@@ -2147,12 +2147,12 @@ void* (*exception)(SPVM_ENV* env);
 void (*set_exception)(SPVM_ENV* env, void* exception);
 </pre>
       
-      <h3 id="native-api-native-sub-api-ref_count">ref_count</h3>
+      <h3 id="native-api-native-sub-api-get_ref_count">get_ref_count</h3>
       <p>
         オブジェクトを指定すると、オブジェクトのリファレンスカウントを返却します。
       </p>
 <pre>
-int32_t (*ref_count)(SPVM_ENV* env, void* object);
+int32_t (*get_ref_count)(SPVM_ENV* env, void* object);
 </pre>
 
       <h3 id="native-api-native-sub-api-inc_ref_count">inc_ref_count</h3>
@@ -2225,20 +2225,20 @@ int32_t (*is_type)(SPVM_ENV* env, void* object, int32_t basic_type_id, int32_t t
 int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-object_basic_type_id">object_basic_type_id</h3>
+      <h3 id="native-api-native-sub-api-get_object_basic_type_id">get_object_basic_type_id</h3>
       <p>
         オブジェクトの基本型IDを取得します。
       </p>
 <pre>
-int32_t (*object_basic_type_id)(SPVM_ENV* env, void* object);
+int32_t (*get_object_basic_type_id)(SPVM_ENV* env, void* object);
 </pre>
 
-      <h3 id="native-api-native-sub-api-object_type_dimension">object_type_dimension</h3>
+      <h3 id="native-api-native-sub-api-object_type_dimension">get_object_type_dimension</h3>
       <p>
         オブジェクトの型の次元を取得します。
       </p>
 <pre>
-int32_t (*object_type_dimension)(SPVM_ENV* env, void* object);
+int32_t (*get_object_type_dimension)(SPVM_ENV* env, void* object);
 </pre>
 
       <h3 id="native-api-native-sub-api-weaken">weaken</h3>
@@ -2281,34 +2281,34 @@ void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);
 void (*free_memory_block)(SPVM_ENV* env, void* block);
 </pre>
 
-      <h3 id="native-api-native-sub-api-memory_blocks_count">memory_blocks_count</h3>
+      <h3 id="native-api-native-sub-api-get_memory_blocks_count">get_memory_blocks_count</h3>
       <p>
         現在のメモリブロックの数を返却します。
       </p>
 <pre>
-int32_t (*memory_blocks_count)(SPVM_ENV* env);
+int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
 </pre>
       <p>
         メモリブロックは、オブジェクトを生成した場合、alloc_memory_block_zero関数を呼び出した場合、weaken関数でバックリファレンスが追加された場合に、1増加します。
       </p>
 
-      <h3 id="native-api-native-sub-api-type_name_raw">type_name_raw</h3>
+      <h3 id="native-api-native-sub-api-get_type_name_raw">get_type_name_raw</h3>
       <p>
         オブジェクトを指定すると、型名を保存した新しいbyte[]型のオブジェクトを返却します。
       </p>
 <pre>
-void* (*type_name_raw)(SPVM_ENV* env, void* object);
+void* (*get_type_name_raw)(SPVM_ENV* env, void* object);
 </pre>
       <p>
         この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、type_nameを使用してください。
       </p>
 
-      <h3 id="native-api-native-sub-api-type_name">type_name</h3>
+      <h3 id="native-api-native-sub-api-get_type_name">get_type_name</h3>
       <p>
         オブジェクトを指定すると、型名を保存した新しいbyte[]型のオブジェクトを返却します。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*type_name)(SPVM_ENV* env, void* object);
+void* (*get_type_name)(SPVM_ENV* env, void* object);
 </pre>
       <h3 id="native-api-native-sub-api-new_env">new_env</h3>
       <p>

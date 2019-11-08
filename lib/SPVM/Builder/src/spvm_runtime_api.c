@@ -3125,7 +3125,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         break;
@@ -3138,7 +3138,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3154,7 +3154,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3170,7 +3170,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3186,7 +3186,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3202,7 +3202,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3218,7 +3218,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3234,7 +3234,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3250,7 +3250,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3269,7 +3269,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3288,7 +3288,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3307,7 +3307,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -3326,7 +3326,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
         const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        int32_t call_sub_id = env->method_sub_id(env, object, decl_sub_name, decl_sub_signature);
+        int32_t call_sub_id = env->get_method_sub_id(env, object, decl_sub_name, decl_sub_signature);
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -4383,7 +4383,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   int32_t scope_id = env->enter_scope(env);
   
   // new byte[][args_length] object
-  int32_t arg_type_basic_id = env->basic_type_id(env, "byte");
+  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
   void* cmd_args_obj = env->new_marray(env, arg_type_basic_id, 1, argc);
   
   // Set command line arguments
