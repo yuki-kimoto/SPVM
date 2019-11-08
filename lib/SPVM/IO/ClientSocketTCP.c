@@ -33,9 +33,6 @@ int32_t SPNATIVE__SPVM__IO__ClientSocketTCP__new(SPVM_ENV* env, SPVM_VALUE* stac
   // Ignore SIGPIPE in unix like system
   signal(SIGPIPE, SIG_IGN);
 #endif
-  
-  // Ignore SIGPIPE
-  signal(SIGPIPE, SIG_IGN);
 
   // Dest string. Domain or IP address
   void* obj_deststr = stack[0].oval;
