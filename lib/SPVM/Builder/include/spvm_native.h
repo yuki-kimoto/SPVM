@@ -360,8 +360,8 @@ struct SPVM_env {
   int64_t* (*get_elems_long)(SPVM_ENV* env, void* array);
   float* (*get_elems_float)(SPVM_ENV* env, void* array);
   double* (*get_elems_double)(SPVM_ENV* env, void* array);
-  void* (*oelem)(SPVM_ENV* env, void* array, int32_t index);
-  void (*set_oelem)(SPVM_ENV* env, void* array, int32_t index, void* value);
+  void* (*get_elem_object)(SPVM_ENV* env, void* array, int32_t index);
+  void (*set_elem_object)(SPVM_ENV* env, void* array, int32_t index, void* value);
   int8_t (*get_field_byte)(SPVM_ENV* env, void* object, int32_t field_id);
   int16_t (*get_field_short)(SPVM_ENV* env, void* object, int32_t field_id);
   int32_t (*get_field_int)(SPVM_ENV* env, void* object, int32_t field_id);

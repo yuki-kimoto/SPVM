@@ -858,9 +858,9 @@ int32_t SPNATIVE__SPVM__CORE__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   for(int32_t i = 0; i < array_length / 2; i++){
-    void* tmp = env->oelem(env, onums, i);
-    env->set_oelem(env, onums, i, env->oelem(env, onums, array_length - i - 1));
-    env->set_oelem(env, onums, array_length - i - 1, tmp);
+    void* tmp = env->get_elem_object(env, onums, i);
+    env->set_elem_object(env, onums, i, env->get_elem_object(env, onums, array_length - i - 1));
+    env->set_elem_object(env, onums, array_length - i - 1, tmp);
   }
   
   return SPVM_SUCCESS;

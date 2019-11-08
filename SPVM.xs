@@ -1030,13 +1030,13 @@ _new_oarray(...)
     SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
     
     if (!SvOK(sv_element)) {
-      env->set_oelem(env, array, index, NULL);
+      env->set_elem_object(env, array, index, NULL);
     }
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::Package")) {
       SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
       
       if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
-        env->set_oelem(env, array, index, object);
+        env->set_elem_object(env, array, index, object);
       }
       else {
         croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
@@ -1097,13 +1097,13 @@ _new_marray(...)
     SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
     
     if (!SvOK(sv_element)) {
-      env->set_oelem(env, array, index, NULL);
+      env->set_elem_object(env, array, index, NULL);
     }
     else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
       SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
       
       if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
-        env->set_oelem(env, array, index, object);
+        env->set_elem_object(env, array, index, object);
       }
       else {
         croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
@@ -1905,10 +1905,10 @@ call_sub(...)
                     const char* chars = SvPV_nolen(sv_str_value);
                     
                     void* string = env->new_str_len_raw(env, chars, length);
-                    env->set_oelem(env, array, i, string);
+                    env->set_elem_object(env, array, i, string);
                   }
                   else {
-                    env->set_oelem(env, array, i, NULL);
+                    env->set_elem_object(env, array, i, NULL);
                   }
                 }
 
@@ -2088,10 +2088,10 @@ call_sub(...)
                             croak("Element of %dth argument of %s::%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                           }
                           
-                          env->set_oelem(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
+                          env->set_elem_object(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
                         }
                         else {
-                          env->set_oelem(env, array, i, NULL);
+                          env->set_elem_object(env, array, i, NULL);
                         }
                       }
                     }
@@ -3027,7 +3027,7 @@ to_elems(...)
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
 
         // Index
-        SPVM_OBJECT* value = env->oelem(env, array, index);
+        SPVM_OBJECT* value = env->get_elem_object(env, array, index);
         if (value == NULL) {
           av_push(av_values, &PL_sv_undef);
         }

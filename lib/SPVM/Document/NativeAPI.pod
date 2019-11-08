@@ -66,8 +66,8 @@ If you need more performance or bind C/C++ functions, you can use L<Extension|SP
   int64_t* (*get_elems_long)(SPVM_ENV*, void*);
   float* (*get_elems_float)(SPVM_ENV*, void*);
   double* (*get_elems_double)(SPVM_ENV*, void*);
-  void* (*oelem)(SPVM_ENV*, void*, int32_t index);
-  void (*set_oelem)(SPVM_ENV*, void*, int32_t index, void* value);
+  void* (*get_elem_object)(SPVM_ENV*, void*, int32_t index);
+  void (*set_elem_object)(SPVM_ENV*, void*, int32_t index, void* value);
   int32_t (*field_id)(SPVM_ENV*, const char*, const char*, const char*);
   int8_t (*get_field_byte)(SPVM_ENV*, void*, int32_t);
   int16_t (*get_field_short)(SPVM_ENV*, void*, int32_t);

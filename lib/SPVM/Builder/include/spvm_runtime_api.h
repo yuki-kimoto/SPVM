@@ -75,7 +75,7 @@ float* SPVM_RUNTIME_API_get_elems_float(SPVM_ENV* env, SPVM_OBJECT* array);
 double* SPVM_RUNTIME_API_get_elems_double(SPVM_ENV* env, SPVM_OBJECT* array);
 
 
-SPVM_OBJECT* SPVM_RUNTIME_API_oelem(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index);
+SPVM_OBJECT* SPVM_RUNTIME_API_get_elem_object(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index);
 void* SPVM_RUNTIME_API_pointer(SPVM_ENV* env, SPVM_OBJECT* object);
 int8_t SPVM_RUNTIME_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
 int16_t SPVM_RUNTIME_API_get_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index);
@@ -93,7 +93,7 @@ void SPVM_RUNTIME_API_set_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t
 void SPVM_RUNTIME_API_set_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, float value);
 void SPVM_RUNTIME_API_set_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, double value);
 void SPVM_RUNTIME_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_index, SPVM_OBJECT* value);
-void SPVM_RUNTIME_API_set_oelem(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* value);
+void SPVM_RUNTIME_API_set_elem_object(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* value);
 void SPVM_RUNTIME_API_set_pointer(SPVM_ENV* env, SPVM_OBJECT* object, void* ptr);
 
 // Call Subroutine

@@ -767,8 +767,8 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 60    get_elems_long
 61    get_elems_float
 62    get_elems_double
-63    oelem
-64    set_oelem
+63    get_elem_object
+64    set_elem_object
 65    get_field_byte
 66    get_field_short
 67    get_field_int
@@ -898,8 +898,8 @@ int32_t basic_type_id = env->basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-get_elems_long">get_elems_long</a></li>
         <li><a href="#native-api-native-sub-api-get_elems_float">get_elems_float</a></li>
         <li><a href="#native-api-native-sub-api-get_elems_double">get_elems_double</a></li>
-        <li><a href="#native-api-native-sub-api-oelem">oelem</a></li>
-        <li><a href="#native-api-native-sub-api-set_oelem">set_oelem</a></li>
+        <li><a href="#native-api-native-sub-api-get_elem_object">get_elem_object</a></li>
+        <li><a href="#native-api-native-sub-api-set_elem_object">set_elem_object</a></li>
         <li><a href="#native-api-native-sub-api-get_field_byte">get_field_byte</a></li>
         <li><a href="#native-api-native-sub-api-get_field_short">get_field_short</a></li>
         <li><a href="#native-api-native-sub-api-get_field_int">get_field_int</a></li>
@@ -1634,32 +1634,32 @@ double* values = env->get_elems_double(env, array);
 values[3] = 1.5;
 </pre>
 
-      <h3 id="native-api-native-sub-api-oelem">oelem</h3>
+      <h3 id="native-api-native-sub-api-get_elem_object">get_elem_object</h3>
       <p>
         オブジェクト型の配列と添え字を指定して、要素のオブジェクトを取得します。もし要素が弱参照になっていた場合は、弱参照が取り除かれます。
       </p>
 <pre>
-void* (*oelem)(SPVM_ENV* env, void* array, int32_t index);
+void* (*get_elem_object)(SPVM_ENV* env, void* array, int32_t index);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* object = env->oelem(env, array, 3);
+void* object = env->get_elem_object(env, array, 3);
 </pre>
 
-      <h3 id="native-api-native-sub-api-set_oelem">set_oelem</h3>
+      <h3 id="native-api-native-sub-api-set_elem_object">set_elem_object</h3>
       <p>
         オブジェクト型の配列と添え字と要素のオブジェクトを指定すると、対応する添え字の位置に要素のオブジェクトが代入されます。要素のオブジェクトが弱参照になっていた場合は、弱参照が取り除かれます。もともと代入されていたオブジェクトのリファレンスカウントは、1減らされます。
       </p>
 <pre>
-void (*set_oelem)(SPVM_ENV* env, void* array, int32_t index, void* value);
+void (*set_elem_object)(SPVM_ENV* env, void* array, int32_t index, void* value);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-env->oelem(env, array, 3, object);
+env->get_elem_object(env, array, 3, object);
 </pre>
       <h3 id="native-api-native-sub-api-get_field_byte">get_field_byte</h3>
       <p>
