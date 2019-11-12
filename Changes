@@ -1,3 +1,5 @@
+0.0444 2019-11-12
+  - remove no needed SPVM::IO::File::EOF
 0.0443 2019-11-08
   - warn become keyword and add file and line number to the last of the message.
   - rename many Native APIs
