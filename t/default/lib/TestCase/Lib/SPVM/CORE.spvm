@@ -6,6 +6,65 @@ package TestCase::Lib::SPVM::CORE {
   use SPVM::Util;
   use SPVM::EqualityChecker::Address;
   
+  sub test_chomp_lf : int () {
+    {
+      my $str = "abc\n";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "abc";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub test_chomp_crlf : int () {
+    {
+      my $str = "abc\r\n";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "abc";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+    {
+      my $str = "a";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "a") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub test_isalnum : int () {
     
     my $ok = 1;

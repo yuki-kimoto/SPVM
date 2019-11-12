@@ -51,6 +51,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_strtof);
   ok(TestCase::Lib::SPVM::CORE->test_strtod);
 }
+# chomp_lf
+{
+  ok(TestCase::Lib::SPVM::CORE->test_chomp_lf);
+}
+# chomp_crlf
+{
+  ok(TestCase::Lib::SPVM::CORE->test_chomp_crlf);
+}
 
 # isalnum
 {

@@ -8,9 +8,14 @@ SPVM::CORE is SPVM core functions.
 
 =head2 SYNOPSYS
   
-  # Cut a newline
+  # Cut a newline LF
   {
-    my $ret = chompr("abc\n");
+    my $ret = chomp_lf("abc\n");
+  }
+  
+  # Cut a newline CR LF
+  {
+    my $ret = chomp_crlf("abc\r\n");
   }
   
   # Create a new float complex array
@@ -155,11 +160,17 @@ SPVM::CORE is SPVM core functions.
 
 =head1 CLASS METHODS
 
-=head2 chompr
+=head2 chomp_lf
 
-  sub chompr : string ($string : string)
+  sub chomp_lf : string ($string : string)
 
 Copy the string and remove the newline "\n" from the end of string and return it.
+
+=head2 chomp_crlf
+
+  sub chomp_crlf : string ($string : string)
+
+Copy the string and remove the newline "\r\n" from the end of string and return it.
 
 =head2 complex_farray
 

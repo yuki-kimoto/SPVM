@@ -5,7 +5,7 @@ package SPVM::CORE {
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for standard I/O and standard error.
   
-  precompile sub chompr : string ($string : string) {
+  precompile sub chomp_lf : string ($string : string) {
     unless ($string) {
       return undef;
     }
@@ -18,6 +18,28 @@ package SPVM::CORE {
     else {
       if ($string->[$length - 1] == '\n') {
         $new_string = (string)sliceb((byte[])$string, 0, $length - 1);
+      }
+      else {
+        $new_string = copy_str($string);
+      }
+    }
+    
+    return $new_string;
+  }
+
+  precompile sub chomp_crlf : string ($string : string) {
+    unless ($string) {
+      return undef;
+    }
+    
+    my $new_string : string;
+    my $length = length $string;
+    if ($length == 0 || $length == 1) {
+      $new_string = copy_str($string);
+    }
+    else {
+      if ($string->[$length - 2] == '\r' && $string->[$length - 1] == '\n') {
+        $new_string = (string)sliceb((byte[])$string, 0, $length - 2);
       }
       else {
         $new_string = copy_str($string);
