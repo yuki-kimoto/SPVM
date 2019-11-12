@@ -116,7 +116,7 @@ sub MY::postamble {
   unless (grep { $_ eq '-DSPVM_DONT_USE_CORE_LIB' } @defines) {
     # Native compile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::FileHandle');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::FileHandle');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::File');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::ClientSocketTCP');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Select');

@@ -1,4 +1,4 @@
-package SPVM::FileHandle : pointer_t {
+package SPVM::IO::FileHandle : pointer_t {
   
   native sub DESTROY : void ($self : self);
 }

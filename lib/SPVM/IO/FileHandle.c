@@ -1,7 +1,8 @@
 #include "spvm_native.h"
 #include <stdio.h>
 
-int32_t SPNATIVE__SPVM__FileHandle__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+int32_t SPNATIVE__SPVM__IO__FileHandle__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // File handle
   void* ofh = stack[0].oval;
@@ -12,7 +13,7 @@ int32_t SPNATIVE__SPVM__FileHandle__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
       env->set_pointer(env, ofh, NULL);
       
       if (ret == EOF) {
-        fprintf(stderr, "Can't close file handle at %s line %d", "SPVM/FileHandle", __LINE__);
+        fprintf(stderr, "Can't close file handle at %s line %d", "SPVM/IO/FileHandle", __LINE__);
       }
     }
   }

@@ -1,5 +1,5 @@
 package SPVM::IO::File {
-  use SPVM::FileHandle;
+  use SPVM::IO::FileHandle;
   
   our $SEEK_SET : ro int;
   our $SEEK_CUR : ro int;
@@ -15,7 +15,7 @@ package SPVM::IO::File {
   native sub STDOUT : int ();
   native sub STDERR : int ();
   
-  has fh : ro SPVM::FileHandle;
+  has fh : ro SPVM::IO::FileHandle;
   
   native sub open : SPVM::IO::File ($file_name : string, $mode : string);
   native sub close : int ($self : self);
