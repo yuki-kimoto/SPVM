@@ -4,7 +4,6 @@ package SPVM::IO::File {
   our $SEEK_SET : ro int;
   our $SEEK_CUR : ro int;
   our $SEEK_END : ro int;
-  our $EOF : ro int;
   
   BEGIN {
     init_package_vars();

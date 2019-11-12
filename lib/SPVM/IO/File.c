@@ -18,7 +18,6 @@ int32_t SPNATIVE__SPVM__IO__File__init_package_vars(SPVM_ENV* env, SPVM_VALUE* s
   SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_SET", SEEK_SET, MFILE, __LINE__);
   SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_CUR", SEEK_CUR, MFILE, __LINE__);
   SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_END", SEEK_END, MFILE, __LINE__);
-  SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$EOF", EOF, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
@@ -345,16 +344,6 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("Can't open file \"%s\": %s", file_name, errstr, MFILE, __LINE__);
   }
   
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__EOF(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef EOF
-  stack[0].ival = EOF;
-#else
-  SPVM_DIE("Errno EOF is not defined", MFILE, __LINE__);
-#endif
-
   return SPVM_SUCCESS;
 }
 
