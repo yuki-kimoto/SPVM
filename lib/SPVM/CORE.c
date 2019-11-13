@@ -888,11 +888,8 @@ int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* bytes = (const char*)env->get_elems_byte(env, string);
   int32_t string_length = env->length(env, string);
   
-  {
-    int32_t i;
-    for (i = 0; i < string_length; i++) {
-      putchar(bytes[i]);
-    }
+  for (int32_t i = 0; i < string_length; i++) {
+    putchar(bytes[i]);
   }
   
   return SPVM_SUCCESS;
