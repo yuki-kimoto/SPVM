@@ -4,6 +4,7 @@
   - rename chompr to chomp_lf
   - add chomp_crlf
   - add SPVM::IO::Stdout
+  - add SPVM::IO::Stderr
 0.0443 2019-11-08
   - warn become keyword and add file and line number to the last of the message.
   - rename many Native APIs

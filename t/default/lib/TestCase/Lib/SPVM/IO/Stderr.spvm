@@ -1,0 +1,18 @@
+package TestCase::Lib::SPVM::IO::Stderr {
+  use SPVM::IO::Stderr;
+
+  sub test_print : int () {
+    SPVM::IO::Stderr->print("Hello\n");
+    
+    return 1;
+  }
+
+  sub test_set_binmode : int () {
+    SPVM::IO::Stderr->set_binmode(1);
+    
+    
+    SPVM::IO::Stderr->set_binmode(0);
+    
+    return 1;
+  }
+}
