@@ -22,6 +22,29 @@ int32_t SPNATIVE__SPVM__IO__File__init_package_vars(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
+int32_t SPNATIVE__SPVM__IO__File__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+
+  // File fh
+  void* obj_fh;
+  SPVM_GET_FIELD_OBJECT(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", MFILE, __LINE__);
+  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
+
+#ifdef _WIN32
+  int32_t binmode = stack[0].ival;
+  if (binmode) {
+    _setmode(_fileno(fh), _O_BINARY);
+  }
+  else {
+    _setmode(_fileno(fh), _O_TEXT);
+  }
+#endif
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__IO__File__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;
