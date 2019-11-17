@@ -307,6 +307,7 @@ package SPVM::Util {
       die "Redundant argument in sprintf";
     }
 
-    return $buffer->to_string;
+    my $result = $buffer->to_string;
+    return $result;
   }
 }
