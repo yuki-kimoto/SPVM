@@ -206,28 +206,29 @@ package SPVM::Util {
         die "Missing argument in sprintf";
       }
 
-      my $specifier_length = 1; # '%'
+      my $specifier_base_index = $index;
+      ++$index; # '%'
 
       # %[flags][width][.precision][length]type
       my $pad_char = ' ';
       my $plus_sign = 0;
       my $left_justified = 0;
 
-      while ($index + $specifier_length < $format_length) {
-        my $flag = (int)($format->[$index + $specifier_length]);
+      while ($index < $format_length) {
+        my $flag = (int)($format->[$index]);
         switch($flag) {
           case '0': {
-            ++$specifier_length;
+            ++$index;
             $pad_char = '0';
             break;
           }
           case '+': {
-            ++$specifier_length;
+            ++$index;
             $plus_sign = 1;
             break;
           }
           case '-': {
-            ++$specifier_length;
+            ++$index;
             $left_justified = 1;
             break;
           }
@@ -239,40 +240,40 @@ package SPVM::Util {
       }
 
       my $width = 0;
-      while ($index + $specifier_length < $format_length) {
-        my $c = $format->[$index + $specifier_length];
+      while ($index < $format_length) {
+        my $c = $format->[$index];
         if ($c < '0' || '9' < $c) {
           last;
         }
         $width = $width * 10 + $c - '0';
-        ++$specifier_length;
+        ++$index;
       }
 
       # skip precision
-      if ($index + $specifier_length < $format_length &&
-          $format->[$index + $specifier_length] == '.') {
-        ++$specifier_length;
-        while ($index + $specifier_length < $format_length) {
-          my $c = $format->[$index + $specifier_length];
+      if ($index < $format_length && $format->[$index] == '.') {
+        ++$index;
+        while ($index < $format_length) {
+          my $c = $format->[$index];
           if ($c < '0' || '9' < $c) {
             last;
           }
-          ++$specifier_length;
+          ++$index;
         }
       }
 
-      unless ($index + $specifier_length < $format_length) {
-        die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length) . "\"";
+      unless ($index < $format_length) {
+        die "Invalid conversion in sprintf: \""
+            . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
       }
 
-      my $length_modifier = (int)($format->[$index + $specifier_length]);
+      my $length_modifier = (int)($format->[$index]);
       switch ($length_modifier) {
         case 'l': {
-          ++$specifier_length;
+          ++$index;
           break;
         }
         case 'L': {
-          ++$specifier_length;
+          ++$index;
           break;
         }
         default: {
@@ -280,25 +281,26 @@ package SPVM::Util {
         }
       }
 
-      unless ($index + $specifier_length < $format_length) {
-        die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length) . "\"";
+      unless ($index < $format_length) {
+        die "Invalid conversion in sprintf: \""
+            . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
       }
 
-      my $specifier_char = $format->[$index + $specifier_length];
+      my $specifier_char = $format->[$index];
       if ($specifier_char == 'c') {
-        ++$specifier_length;
+        ++$index;
         my $arg = (SPVM::Byte)$args->[$arg_count];
         my $str = _convert_c_to_string($arg->val, $left_justified, $pad_char, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 's') {
-        ++$specifier_length;
+        ++$index;
         my $arg = (string)$args->[$arg_count];
         my $str = _convert_s_to_string($arg, $left_justified, $pad_char, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 'd') {
-        ++$specifier_length;
+        ++$index;
         my $str = "";
         if ($length_modifier == 'l') {
           my $arg = (SPVM::Long)$args->[$arg_count];
@@ -310,23 +312,23 @@ package SPVM::Util {
         $output->push($str);
       }
       elsif ($specifier_char == 'f' || $specifier_char == 'g') {
-        ++$specifier_length;
+        ++$index;
         my $arg = (SPVM::Double)$args->[$arg_count];
-        my $specifier_str = substr($format, $index, $specifier_length);
+        my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
         my $str = _convert_f_to_string($specifier_str, $arg->val);
         $output->push($str);
       }
       elsif ($specifier_char == 'U') {
-        ++$specifier_length;
+        ++$index;
         my $arg = (SPVM::Int)$args->[$arg_count];
         my $utf8 = uchar_to_utf8($arg->val);
         $output->push($utf8);
       }
       else {
-        die "Invalid conversion in sprintf: \"" . substr($format, $index, $specifier_length + 1) . "\"";
+        die "Invalid conversion in sprintf: \""
+            . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
       }
 
-      $index += $specifier_length;
       ++$arg_count;
     }
 
