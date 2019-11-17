@@ -102,34 +102,6 @@ package SPVM::Util {
     return $separated_strings;
   }
 
-  precompile sub _convert_c_to_string : string ($value : byte, $left_justified : int, $pad_char : byte, $width : int) {
-    return _modify_specifier([$value], $left_justified, $pad_char, $width);
-  }
-
-  precompile sub _convert_s_to_string : string ($value : string, $left_justified : int, $pad_char : byte, $width : int) {
-    return _modify_specifier($value, $left_justified, $pad_char, $width);
-  }
-
-  precompile sub _convert_d_to_string : string ($value : int, $left_justified : int, $pad_char : byte, $plus_sign : int, $width : int) {
-    my $s = "";
-    if ($plus_sign && $value >= 0) {
-      $s = "+$value";
-    } else {
-      $s = "$value";
-    }
-    return _modify_specifier($s, $left_justified, $pad_char, $width);
-  }
-
-  precompile sub _convert_ld_to_string : string ($value : long, $left_justified : int, $pad_char : byte, $plus_sign : int, $width : int) {
-    my $s = "";
-    if ($plus_sign && $value >= 0) {
-      $s = "+$value";
-    } else {
-      $s = "$value";
-    }
-    return _modify_specifier($s, $left_justified, $pad_char, $width);
-  }
-
   precompile sub _modify_specifier : string ($value_str : string, $left_justified : int, $pad_char : byte, $width : int) {
     my $value_length = length $value_str;
 
@@ -154,7 +126,7 @@ package SPVM::Util {
     return $result;
   }
 
-  native sub _convert_f_to_string : string ($format : string, $value : double);
+  native sub _snsprintf_double : string ($format : string, $value : double);
 
   precompile sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
@@ -272,20 +244,26 @@ package SPVM::Util {
       my $specifier_char = $format->[$index];
       if ($specifier_char == 'c') {
         ++$index;
-        my $arg = (SPVM::Byte)$args->[$arg_count];
-        my $str = _convert_c_to_string($arg->val, $left_justified, $pad_char, $width);
+        my $arg = ((SPVM::Byte)$args->[$arg_count])->val;
+        my $str = _modify_specifier([$arg], $left_justified, $pad_char, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 's') {
         ++$index;
         my $arg = (string)$args->[$arg_count];
-        my $str = _convert_s_to_string($arg, $left_justified, $pad_char, $width);
+        my $str = _modify_specifier($arg, $left_justified, $pad_char, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 'd') {
         ++$index;
-        my $arg = (SPVM::Int)$args->[$arg_count];
-        my $str = _convert_d_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
+        my $arg = ((SPVM::Int)$args->[$arg_count])->val;
+        my $s = "";
+        if ($plus_sign && $arg >= 0) {
+          $s = "+$arg";
+        } else {
+          $s = "$arg";
+        }
+        my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 'l') {
@@ -294,15 +272,21 @@ package SPVM::Util {
               . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
         }
         $index += 2;
-        my $arg = (SPVM::Long)$args->[$arg_count];
-        my $str = _convert_ld_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
+        my $arg = ((SPVM::Long)$args->[$arg_count])->val;
+        my $s = "";
+        if ($plus_sign && $arg >= 0) {
+          $s = "+$arg";
+        } else {
+          $s = "$arg";
+        }
+        my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 'f' || $specifier_char == 'g') {
         ++$index;
         my $arg = (SPVM::Double)$args->[$arg_count];
         my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
-        my $str = _convert_f_to_string($specifier_str, $arg->val);
+        my $str = _snsprintf_double($specifier_str, $arg->val);
         $output->push($str);
       }
       elsif ($specifier_char == 'U') {

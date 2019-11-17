@@ -4,7 +4,7 @@ static const char* MFILE = "SPVM/Util.c";
 
 #define SPRINTF_MAX_RESULT_LEN 256
 
-int32_t SPNATIVE__SPVM__Util___convert_f_to_string(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   void* obj_format = stack[0].oval;
