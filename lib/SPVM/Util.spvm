@@ -132,7 +132,7 @@ package SPVM::Util {
     my $format_length = length $format;
     my $index = 0;
 
-    my $output = SPVM::StringBuffer->new;
+    my $buffer = SPVM::StringBuffer->new;
     my $arg_count = 0;
 
     while ($index < $format_length) {
@@ -158,14 +158,14 @@ package SPVM::Util {
       if ($normal_str_end + 1 < $format_length &&
           $format->[$normal_str_end + 1] == '%') {
         my $normal_str_length = $normal_str_end + 1 - $index;
-        $output->push_range($format, $index, $normal_str_length);
+        $buffer->push_range($format, $index, $normal_str_length);
         $index = $normal_str_end + 2;
         next;
       }
 
       # Output the normal sub-string of $format.
       if (my $normal_str_length = $normal_str_end - $index) {
-        $output->push_range($format, $index, $normal_str_length);
+        $buffer->push_range($format, $index, $normal_str_length);
         $index = $normal_str_end;
       }
 
@@ -246,13 +246,13 @@ package SPVM::Util {
         ++$index;
         my $arg = ((SPVM::Byte)$args->[$arg_count])->val;
         my $str = _modify_specifier([$arg], $left_justified, $pad_char, $width);
-        $output->push($str);
+        $buffer->push($str);
       }
       elsif ($specifier_char == 's') {
         ++$index;
         my $arg = (string)$args->[$arg_count];
         my $str = _modify_specifier($arg, $left_justified, $pad_char, $width);
-        $output->push($str);
+        $buffer->push($str);
       }
       elsif ($specifier_char == 'd') {
         ++$index;
@@ -264,7 +264,7 @@ package SPVM::Util {
           $s = "$arg";
         }
         my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
-        $output->push($str);
+        $buffer->push($str);
       }
       elsif ($specifier_char == 'l') {
         unless ($index + 1 < $format_length && $format->[$index + 1] == 'd') {
@@ -280,20 +280,20 @@ package SPVM::Util {
           $s = "$arg";
         }
         my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
-        $output->push($str);
+        $buffer->push($str);
       }
       elsif ($specifier_char == 'f' || $specifier_char == 'g') {
         ++$index;
         my $arg = (SPVM::Double)$args->[$arg_count];
         my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
         my $str = _snsprintf_double($specifier_str, $arg->val);
-        $output->push($str);
+        $buffer->push($str);
       }
       elsif ($specifier_char == 'U') {
         ++$index;
         my $arg = (SPVM::Int)$args->[$arg_count];
         my $utf8 = uchar_to_utf8($arg->val);
-        $output->push($utf8);
+        $buffer->push($utf8);
       }
       else {
         die "Invalid conversion in sprintf: \""
@@ -307,6 +307,6 @@ package SPVM::Util {
       die "Redundant argument in sprintf";
     }
 
-    return $output->to_string;
+    return $buffer->to_string;
   }
 }
