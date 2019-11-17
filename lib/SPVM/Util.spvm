@@ -269,22 +269,6 @@ package SPVM::Util {
             . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
       }
 
-      my $length_modifier = (int)($format->[$index]);
-      switch ($length_modifier) {
-        case 'l': {
-          ++$index;
-          break;
-        }
-        default: {
-          $length_modifier = 0;
-        }
-      }
-
-      unless ($index < $format_length) {
-        die "Invalid conversion in sprintf: \""
-            . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
-      }
-
       my $specifier_char = $format->[$index];
       if ($specifier_char == 'c') {
         ++$index;
@@ -300,14 +284,18 @@ package SPVM::Util {
       }
       elsif ($specifier_char == 'd') {
         ++$index;
-        my $str = "";
-        if ($length_modifier == 'l') {
-          my $arg = (SPVM::Long)$args->[$arg_count];
-          $str = _convert_ld_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
-        } else {
-          my $arg = (SPVM::Int)$args->[$arg_count];
-          $str = _convert_d_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
+        my $arg = (SPVM::Int)$args->[$arg_count];
+        my $str = _convert_d_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
+        $output->push($str);
+      }
+      elsif ($specifier_char == 'l') {
+        unless ($index + 1 < $format_length && $format->[$index + 1] == 'd') {
+          die "Invalid conversion in sprintf: \""
+              . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
         }
+        $index += 2;
+        my $arg = (SPVM::Long)$args->[$arg_count];
+        my $str = _convert_ld_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 'f' || $specifier_char == 'g') {
