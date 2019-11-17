@@ -275,10 +275,6 @@ package SPVM::Util {
           ++$index;
           break;
         }
-        case 'L': {
-          ++$index;
-          break;
-        }
         default: {
           $length_modifier = 0;
         }
