@@ -161,7 +161,7 @@ package SPVM::Util {
     my $index = 0;
 
     my $output = SPVM::StringBuffer->new;
-    my $specifier_count = 0;
+    my $arg_count = 0;
 
     while ($index < $format_length) {
 
@@ -202,7 +202,7 @@ package SPVM::Util {
       }
 
       # Output the next element of $args corresponding to the specifier.
-      unless ($specifier_count < @$args) {
+      unless ($arg_count < @$args) {
         die "Missing argument in sprintf";
       }
 
@@ -284,13 +284,13 @@ package SPVM::Util {
       my $specifier_char = $format->[$index + $specifier_length];
       if ($specifier_char == 'c') {
         ++$specifier_length;
-        my $arg = (SPVM::Byte)$args->[$specifier_count];
+        my $arg = (SPVM::Byte)$args->[$arg_count];
         my $str = _convert_c_to_string($arg->val, $left_justified, $pad_char, $width);
         $output->push($str);
       }
       elsif ($specifier_char == 's') {
         ++$specifier_length;
-        my $arg = (string)$args->[$specifier_count];
+        my $arg = (string)$args->[$arg_count];
         my $str = _convert_s_to_string($arg, $left_justified, $pad_char, $width);
         $output->push($str);
       }
@@ -298,24 +298,24 @@ package SPVM::Util {
         ++$specifier_length;
         my $str = "";
         if ($length_modifier == 'l') {
-          my $arg = (SPVM::Long)$args->[$specifier_count];
+          my $arg = (SPVM::Long)$args->[$arg_count];
           $str = _convert_ld_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
         } else {
-          my $arg = (SPVM::Int)$args->[$specifier_count];
+          my $arg = (SPVM::Int)$args->[$arg_count];
           $str = _convert_d_to_string($arg->val, $left_justified, $pad_char, $plus_sign, $width);
         }
         $output->push($str);
       }
       elsif ($specifier_char == 'f' || $specifier_char == 'g') {
         ++$specifier_length;
-        my $arg = (SPVM::Double)$args->[$specifier_count];
+        my $arg = (SPVM::Double)$args->[$arg_count];
         my $specifier_str = substr($format, $index, $specifier_length);
         my $str = _convert_f_to_string($specifier_str, $arg->val);
         $output->push($str);
       }
       elsif ($specifier_char == 'U') {
         ++$specifier_length;
-        my $arg = (SPVM::Int)$args->[$specifier_count];
+        my $arg = (SPVM::Int)$args->[$arg_count];
         my $utf8 = uchar_to_utf8($arg->val);
         $output->push($utf8);
       }
@@ -324,10 +324,10 @@ package SPVM::Util {
       }
 
       $index += $specifier_length;
-      ++$specifier_count;
+      ++$arg_count;
     }
 
-    if ($specifier_count < @$args) {
+    if ($arg_count < @$args) {
       die "Redundant argument in sprintf";
     }
 
