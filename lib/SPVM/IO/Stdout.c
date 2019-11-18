@@ -8,33 +8,24 @@
 
 static const char* MFILE = "SPVM/IO/Stdout.c";
 
-int32_t SPNATIVE__SPVM__IO__Stdout__print(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__IO__Stdout__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  (void)env;
+  FILE* fh = stdout;
   
-  void* string = stack[0].oval;
+  void* obj_io_file;
+  SPVM_NEW_OBJECT(env, obj_io_file, "SPVM::IO::File", MFILE, __LINE__);
+
+  void* obj_io_stdout;
+  SPVM_NEW_OBJECT(env, obj_io_stdout, "SPVM::IO::Stdout", MFILE, __LINE__);
+
+  void* obj_fh;
+  SPVM_NEW_POINTER(env, obj_fh, "SPVM::IO::FileHandle", fh, MFILE, __LINE__);
+  SPVM_SET_FIELD_OBJECT(env, obj_io_file, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", obj_fh, MFILE, __LINE__);
   
-  const char* bytes = (const char*)env->get_elems_byte(env, string);
-  int32_t string_length = env->length(env, string);
+  SPVM_SET_FIELD_OBJECT(env, obj_io_stdout, "SPVM::IO::Stdout", "fh", "SPVM::IO::File", obj_io_file, MFILE, __LINE__);
   
-  for (int32_t i = 0; i < string_length; i++) {
-    putchar(bytes[i]);
-  }
+  stack[0].oval = obj_io_stdout;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__Stdout__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-#ifdef _WIN32
-  int32_t binmode = stack[0].ival;
-  if (binmode) {
-    _setmode(_fileno(stdout), _O_BINARY);
-  }
-  else {
-    _setmode(_fileno(stdout), _O_TEXT);
-  }
-#endif
-  
-  return SPVM_SUCCESS;
-}

@@ -32,8 +32,10 @@ int32_t SPNATIVE__SPVM__IO__File__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) 
   SPVM_GET_FIELD_OBJECT(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", MFILE, __LINE__);
   FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
 
+  int32_t binmode = stack[1].ival;
+  (void)binmode;
+
 #ifdef _WIN32
-  int32_t binmode = stack[0].ival;
   if (binmode) {
     _setmode(_fileno(fh), _O_BINARY);
   }
@@ -271,6 +273,30 @@ int32_t SPNATIVE__SPVM__IO__File__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+int32_t SPNATIVE__SPVM__IO__File__print(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  void* obj_fh;
+  SPVM_GET_FIELD_OBJECT(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", MFILE, __LINE__);
+  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
+  
+  void* string = stack[0].oval;
+  
+  const char* bytes = (const char*)env->get_elems_byte(env, string);
+  int32_t string_length = env->length(env, string);
+  
+  for (int32_t i = 0; i < string_length; i++) {
+    fputc(bytes[i], fh);
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // File name
@@ -371,31 +397,19 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 int32_t SPNATIVE__SPVM__IO__File__STDIN(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef stdin
   stack[0].ival = fileno(stdin);
-#else
-  SPVM_DIE("Errno STDIN is not defined", MFILE, __LINE__);
-#endif
 
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__IO__File__STDOUT(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef stdout
   stack[0].ival = fileno(stdout);
-#else
-  SPVM_DIE("Errno STDOUT is not defined", MFILE, __LINE__);
-#endif
 
   return SPVM_SUCCESS;
 }
 
 int32_t SPNATIVE__SPVM__IO__File__STDERR(SPVM_ENV* env, SPVM_VALUE* stack) {
-#ifdef stderr
   stack[0].ival = fileno(stderr);
-#else
-  SPVM_DIE("Errno STDERR is not defined", MFILE, __LINE__);
-#endif
 
   return SPVM_SUCCESS;
 }

@@ -1,3 +1,4 @@
 package SPVM::IO::Stdin {
-
+  native sub readline : string ($self : self);
+  native sub set_binmode : void ($binmode : int);
 }

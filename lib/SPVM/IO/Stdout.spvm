@@ -1,4 +1,13 @@
 package SPVM::IO::Stdout {
-  native sub print : void ($string : string);
-  native sub set_binmode : void ($binmode : int);
+  use SPVM::IO::File;
+  
+  has fh : SPVM::IO::File;
+  
+  native sub new : SPVM::IO::Stdout ();
+  
+  sub print : void ($self : self, $string : string) { $self->{fh}->print($string); }
+  sub set_binmode : void ($self : self, $binmode : int) { $self->{fh}->set_binmode($binmode); }
+  sub putc : int ($self : self, $c : byte) { return $self->{fh}->putc($c); }
+  sub write : int ($self : self, $buffer : string, $length : int) { return $self->{fh}->write($buffer, $length); }
+  sub fileno : int ($self : self) { return $self->{fh}->fileno; }
 }

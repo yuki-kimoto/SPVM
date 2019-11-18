@@ -2,15 +2,16 @@ package TestCase::Lib::SPVM::IO::Stdout {
   use SPVM::IO::Stdout;
 
   sub test_print : int () {
-    SPVM::IO::Stdout->print("Hello\n");
+    my $stdout = SPVM::IO::Stdout->new;
+    $stdout->print("Hello\n");
     
     return 1;
   }
 
   sub test_set_binmode : int () {
-    SPVM::IO::Stdout->set_binmode(1);
+    my $stdout = SPVM::IO::Stdout->new;
     
-    SPVM::IO::Stdout->set_binmode(0);
+    $stdout->set_binmode(0);
     
     return 1;
   }
