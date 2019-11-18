@@ -60,27 +60,27 @@ int32_t SPVM_TYPE_get_runtime_type_category(SPVM_COMPILER* compiler, int32_t bas
 
     switch (field_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE;
+        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT;
+        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT;
+        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_INT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG;
+        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_LONG;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT;
+        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE;
+        runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE;
         break;
       }
       default: {
@@ -102,7 +102,7 @@ int32_t SPVM_TYPE_get_runtime_type_category(SPVM_COMPILER* compiler, int32_t bas
       runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
     }
     else if (SPVM_TYPE_is_value_array_type(compiler, basic_type_id, dimension, flag)) {
-      runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY;
+      runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY;
     }
     else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
       runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
@@ -147,27 +147,27 @@ int32_t SPVM_TYPE_get_runtime_type_category(SPVM_COMPILER* compiler, int32_t bas
 
         switch (field_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE;
+            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT;
+            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_INT: {
-            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT;
+            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_LONG: {
-            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG;
+            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT;
+            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE;
+            runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE;
             break;
           }
           default: {

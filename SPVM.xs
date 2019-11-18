@@ -1560,7 +1560,7 @@ call_sub(...)
           arg_var_id++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE: {
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -1605,7 +1605,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT: {
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -1650,7 +1650,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_INT: {
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -1695,7 +1695,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_LONG: {
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -1740,7 +1740,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT: {
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -1785,7 +1785,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE: {
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -1834,7 +1834,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
-        case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
         {
           // undef
@@ -2220,7 +2220,7 @@ call_sub(...)
           arg_var_id++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE: {
           args_contain_ref = 1;
           int32_t is_hash_ref_ref;
           HV* hv_value;
@@ -2287,7 +2287,7 @@ call_sub(...)
           
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT: {
           args_contain_ref = 1;
           int32_t is_hash_ref_ref;
           HV* hv_value;
@@ -2353,7 +2353,7 @@ call_sub(...)
           arg_var_id++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT: {
           args_contain_ref = 1;
           int32_t is_hash_ref_ref;
           HV* hv_value;
@@ -2419,7 +2419,7 @@ call_sub(...)
           arg_var_id++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG: {
           args_contain_ref = 1;
           int32_t is_hash_ref_ref;
           HV* hv_value;
@@ -2485,7 +2485,7 @@ call_sub(...)
           arg_var_id++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT: {
           args_contain_ref = 1;
           int32_t is_hash_ref_ref;
           HV* hv_value;
@@ -2551,7 +2551,7 @@ call_sub(...)
           arg_var_id++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE: {
           args_contain_ref = 1;
           int32_t is_hash_ref_ref;
           HV* hv_value;
@@ -2627,12 +2627,12 @@ call_sub(...)
   SV* sv_return_value = NULL;
   int32_t excetpion_flag;
   switch (sub->return_runtime_type_category) {
-    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_BYTE:
-    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_SHORT:
-    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_INT:
-    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_LONG:
-    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_FLOAT:
-    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_DOUBLE:
+    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE:
+    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_INT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_LONG:
+    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT:
+    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE:
     {
       int32_t sub_return_basic_type_id = sub->return_basic_type_id;
       int32_t sub_return_type_dimension = sub->return_type_dimension;
@@ -2690,7 +2690,7 @@ call_sub(...)
     case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
     case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
     case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
-    case SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY:
+    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
     case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
     {
       excetpion_flag = env->call_sub(env, sub_id, stack);
@@ -2809,7 +2809,7 @@ call_sub(...)
           sv_setnv(sv_value_deref, ref_stack[ref_stack_id].dval);
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_BYTE: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE: {
           SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -2824,7 +2824,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_SHORT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT: {
           SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -2839,7 +2839,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_INT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT: {
           SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -2854,7 +2854,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_LONG: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG: {
           SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -2869,7 +2869,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_FLOAT: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT: {
           SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -2884,7 +2884,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_VALUE_DOUBLE: {
+        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE: {
           SPVM_RUNTIME_BASIC_TYPE* arg_basic_type = &runtime->basic_types[arg->basic_type_id];
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_RUNTIME_PACKAGE* arg_package = &runtime->packages[arg_basic_type->package_id];
@@ -2960,7 +2960,7 @@ to_elems(...)
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
 
-    if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
+    if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY) {
       
       for (int32_t index = 0; index < length; index++) {
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[array->basic_type_id];
@@ -3164,7 +3164,7 @@ to_bin(...)
     SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
     int32_t element_type_dimension = dimension - 1;
 
-    if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_VALUE_ARRAY) {
+    if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY) {
       SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
       assert(package);
       
