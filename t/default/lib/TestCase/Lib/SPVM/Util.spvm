@@ -278,6 +278,7 @@ package TestCase::Lib::SPVM::Util {
         [ sprintf("%012.6f", 3.14),                  "00003.140000" ],
         [ sprintf("%+12.6f", 3.14),                  "   +3.140000" ],
         [ sprintf("%-12.6f", 3.14),                  "3.140000    " ],
+        [ sprintf("%+-12.6f", 3.14),                 "+3.140000   " ],
         [ sprintf("%g", 3.14),                       "3.14"         ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
@@ -419,6 +420,17 @@ package TestCase::Lib::SPVM::Util {
         sprintf("%d%k", 1, 2);
       };
       unless ($@ && contains($@, "Invalid conversion in sprintf: \"%k\"")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Invalid conversion (no type)
+      eval {
+        sprintf("%012.3", 3.14);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%012.3\"")) {
         warn("got error: $@");
         return 0;
       }
