@@ -125,24 +125,24 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_method_sub_id,
     SPVM_RUNTIME_API_new_object_raw,
     SPVM_RUNTIME_API_new_object,
-    SPVM_RUNTIME_API_new_barray_raw,
-    SPVM_RUNTIME_API_new_barray,
-    SPVM_RUNTIME_API_new_sarray_raw,
-    SPVM_RUNTIME_API_new_sarray,
-    SPVM_RUNTIME_API_new_iarray_raw,
-    SPVM_RUNTIME_API_new_iarray,
-    SPVM_RUNTIME_API_new_larray_raw,
-    SPVM_RUNTIME_API_new_larray,
-    SPVM_RUNTIME_API_new_farray_raw,
-    SPVM_RUNTIME_API_new_farray,
-    SPVM_RUNTIME_API_new_darray_raw,
-    SPVM_RUNTIME_API_new_darray,
-    SPVM_RUNTIME_API_new_oarray_raw,
-    SPVM_RUNTIME_API_new_oarray,
-    SPVM_RUNTIME_API_new_marray_raw,
-    SPVM_RUNTIME_API_new_marray,
-    SPVM_RUNTIME_API_new_varray_raw,
-    SPVM_RUNTIME_API_new_varray,
+    SPVM_RUNTIME_API_new_byte_array_raw,
+    SPVM_RUNTIME_API_new_byte_array,
+    SPVM_RUNTIME_API_new_short_array_raw,
+    SPVM_RUNTIME_API_new_short_array,
+    SPVM_RUNTIME_API_new_int_array_raw,
+    SPVM_RUNTIME_API_new_int_array,
+    SPVM_RUNTIME_API_new_long_array_raw,
+    SPVM_RUNTIME_API_new_long_array,
+    SPVM_RUNTIME_API_new_float_array_raw,
+    SPVM_RUNTIME_API_new_float_array,
+    SPVM_RUNTIME_API_new_double_array_raw,
+    SPVM_RUNTIME_API_new_double_array,
+    SPVM_RUNTIME_API_new_object_array_raw,
+    SPVM_RUNTIME_API_new_object_array,
+    SPVM_RUNTIME_API_new_muldim_array_raw,
+    SPVM_RUNTIME_API_new_muldim_array,
+    SPVM_RUNTIME_API_new_mulnum_array_raw,
+    SPVM_RUNTIME_API_new_mulnum_array,
     SPVM_RUNTIME_API_new_string_raw,
     SPVM_RUNTIME_API_new_string,
     SPVM_RUNTIME_API_new_string_len_raw,
@@ -2589,7 +2589,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY: {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
-          void* object = env->new_barray_raw(env, length);
+          void* object = env->new_byte_array_raw(env, length);
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
         }
         else {
@@ -2605,7 +2605,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t length = int_vars[opcode->operand1];
         
         if (length >= 0) {
-          void* object = env->new_sarray_raw(env, length);
+          void* object = env->new_short_array_raw(env, length);
           
           // Set array
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
@@ -2623,7 +2623,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t length = int_vars[opcode->operand1];
         
         if (length >= 0) {
-          void* object = env->new_iarray_raw(env, length);
+          void* object = env->new_int_array_raw(env, length);
           
           // Set array
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
@@ -2640,7 +2640,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
-          void* object = env->new_larray_raw(env, length);
+          void* object = env->new_long_array_raw(env, length);
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
         }
         else {
@@ -2654,7 +2654,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
-          void* object = env->new_farray_raw(env, length);
+          void* object = env->new_float_array_raw(env, length);
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
         }
         else {
@@ -2668,7 +2668,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
-          void* object = env->new_darray_raw(env, length);
+          void* object = env->new_double_array_raw(env, length);
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
         }
         else {
@@ -2684,7 +2684,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         int32_t length = int_vars[opcode->operand2];
         if (length >= 0) {
-          void* object = env->new_oarray_raw(env, basic_type_id, length);
+          void* object = env->new_object_array_raw(env, basic_type_id, length);
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
         }
         else {
@@ -2701,7 +2701,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         int32_t length = int_vars[opcode->operand2];
         if (length >= 0) {
-          void* object = env->new_marray_raw(env, basic_type_id, element_dimension, length);
+          void* object = env->new_muldim_array_raw(env, basic_type_id, element_dimension, length);
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
         }
         else {
@@ -2719,7 +2719,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t length = int_vars[opcode->operand2];
         
         if (length >= 0) {
-          void* object = env->new_varray_raw(env, basic_type_id, length);
+          void* object = env->new_mulnum_array_raw(env, basic_type_id, length);
           
           // Set object
           SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
@@ -4384,7 +4384,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   
   // new byte[][args_length] object
   int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
-  void* cmd_args_obj = env->new_marray(env, arg_type_basic_id, 1, argc);
+  void* cmd_args_obj = env->new_muldim_array(env, arg_type_basic_id, 1, argc);
   
   // Set command line arguments
   for (int32_t arg_index = 0; arg_index < argc; arg_index++) {
@@ -4529,7 +4529,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) 
   // []
   length += type_dimension * 2;
   
-  void* type_name_barray = env->new_barray_raw(env, length);
+  void* type_name_barray = env->new_byte_array_raw(env, length);
   
   char* cur = (char*)env->get_elems_byte(env, type_name_barray);
   
@@ -4664,7 +4664,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SP
   int32_t string2_length = SPVM_RUNTIME_API_length(env, string2);
   
   int32_t string3_length = string1_length + string2_length;
-  SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_barray_raw(env, string3_length);
+  SPVM_OBJECT* string3 = SPVM_RUNTIME_API_new_byte_array_raw(env, string3_length);
   
   int8_t* string1_bytes = SPVM_RUNTIME_API_get_elems_byte(env, string1);
   int8_t* string2_bytes = SPVM_RUNTIME_API_get_elems_byte(env, string2);
@@ -4826,90 +4826,90 @@ SPVM_OBJECT* SPVM_RUNTIME_API_exception(SPVM_ENV* env) {
   return env->exception_object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_barray(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_barray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_sarray(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array(SPVM_ENV* env, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_sarray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_short_array_raw(env, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_iarray(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array(SPVM_ENV* env, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_iarray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_int_array_raw(env, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_larray(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array(SPVM_ENV* env, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_larray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_long_array_raw(env, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_farray(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array(SPVM_ENV* env, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_farray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_float_array_raw(env, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_darray(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array(SPVM_ENV* env, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_darray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_double_array_raw(env, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_oarray(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_oarray_raw(env, basic_type_id, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_object_array_raw(env, basic_type_id, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_marray(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_muldim_array(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_marray_raw(env, basic_type_id, element_dimension, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_muldim_array_raw(env, basic_type_id, element_dimension, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_varray(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_mulnum_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_varray_raw(env, basic_type_id, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_mulnum_array_raw(env, basic_type_id, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   
@@ -4941,7 +4941,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_raw(SPVM_ENV* env, const char* bytes) {
   
   int32_t length = strlen((char*)bytes);
   
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_barray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   object->type_dimension = 1;
@@ -4967,7 +4967,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string(SPVM_ENV* env, const char* bytes) {
 SPVM_OBJECT* SPVM_RUNTIME_API_new_string_len_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
   (void)env;
 
-  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_barray_raw(env, length);
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   object->type_dimension = 1;
@@ -4990,7 +4990,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_len(SPVM_ENV* env, const char* bytes, i
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_barray_raw(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   
   // If lenght is less than 0, return NULL.
@@ -5014,7 +5014,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_barray_raw(SPVM_ENV* env, int32_t length) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_sarray_raw(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_short_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_RUNTIME* runtime = env->runtime;
 
@@ -5034,7 +5034,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_sarray_raw(SPVM_ENV* env, int32_t length) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_iarray_raw(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -5054,7 +5054,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_iarray_raw(SPVM_ENV* env, int32_t length) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_larray_raw(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_long_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -5078,7 +5078,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_larray_raw(SPVM_ENV* env, int32_t length) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_farray_raw(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_float_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_RUNTIME* runtime = env->runtime;
 
@@ -5098,7 +5098,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_farray_raw(SPVM_ENV* env, int32_t length) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_darray_raw(SPVM_ENV* env, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_double_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_RUNTIME* runtime = env->runtime;
   
@@ -5118,7 +5118,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_darray_raw(SPVM_ENV* env, int32_t length) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_oarray_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
   (void)env;
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5145,7 +5145,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_oarray_raw(SPVM_ENV* env, int32_t basic_type_i
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_marray_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length) {
   (void)env;
   
   SPVM_RUNTIME* runtime = env->runtime;
@@ -5166,7 +5166,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_marray_raw(SPVM_ENV* env, int32_t basic_type_i
   return object;
 }
 
-SPVM_OBJECT* SPVM_RUNTIME_API_new_varray_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
+SPVM_OBJECT* SPVM_RUNTIME_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length) {
   (void)env;
 
   SPVM_RUNTIME* runtime = env->runtime;

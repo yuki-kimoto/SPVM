@@ -13,7 +13,7 @@ int32_t SPNATIVE__SPVM__IO__Stdin__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t scope_id = env->enter_scope(env);
   
   int32_t capacity = 80;
-  void* obj_buffer = env->new_barray(env, capacity);
+  void* obj_buffer = env->new_byte_array(env, capacity);
   int8_t* buffer = env->get_elems_byte(env, obj_buffer);
   
   int32_t pos = 0;
@@ -28,7 +28,7 @@ int32_t SPNATIVE__SPVM__IO__Stdin__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
       if (pos >= capacity) {
         // Extend buffer capacity
         int32_t new_capacity = capacity * 2;
-        void* new_object_buffer = env->new_barray(env, new_capacity);
+        void* new_object_buffer = env->new_byte_array(env, new_capacity);
         int8_t* new_buffer = env->get_elems_byte(env, new_object_buffer);
         memcpy(new_buffer, buffer, capacity);
         
@@ -55,10 +55,10 @@ int32_t SPNATIVE__SPVM__IO__Stdin__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (pos > 0 || !end_is_eof) {
     void* oline;
     if (pos == 0) {
-      oline = env->new_barray(env, 0);
+      oline = env->new_byte_array(env, 0);
     }
     else {
-      oline = env->new_barray(env, pos);
+      oline = env->new_byte_array(env, pos);
       int8_t* line = env->get_elems_byte(env, oline);
       memcpy(line, buffer, pos);
     }

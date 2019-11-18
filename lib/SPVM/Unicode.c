@@ -16387,7 +16387,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack)
     return SPVM_SUCCESS;
   }
   
-  void* obj_utf8_bytes = env->new_barray(env, utf8_len);
+  void* obj_utf8_bytes = env->new_byte_array(env, utf8_len);
   
   char* utf8_bytes = (char*)env->get_elems_byte(env, obj_utf8_bytes);
   memcpy(utf8_bytes, tmp_utf8_bytes, utf8_len);

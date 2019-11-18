@@ -17,7 +17,7 @@ int32_t SPNATIVE__MyOpenMP__sum_vec_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t length = env->length(env, obj_nums1);
   
-  void* obj_nums3 = env->new_iarray(env, length);
+  void* obj_nums3 = env->new_int_array(env, length);
   int32_t* nums3 = env->get_elems_int(env, obj_nums3);
   
   int32_t i;

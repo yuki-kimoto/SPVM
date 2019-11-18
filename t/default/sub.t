@@ -106,37 +106,37 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # call_sub barray
   {
-    my $sp_values = SPVM::new_barray([1, 2, 3]);
+    my $sp_values = SPVM::new_byte_array([1, 2, 3]);
     is(TestCase::Sub->call_sub_barray($sp_values), 6);
   }
 
   # call_sub sarray
   {
-    my $sp_values = SPVM::new_sarray([1, 2, 3]);
+    my $sp_values = SPVM::new_short_array([1, 2, 3]);
     is(TestCase::Sub->call_sub_sarray($sp_values), 6);
   }
 
   # call_sub iarray
   {
-    my $sp_values = SPVM::new_iarray([1, 2, 3]);
+    my $sp_values = SPVM::new_int_array([1, 2, 3]);
     is(TestCase::Sub->call_sub_iarray($sp_values), 6);
   }
 
   # call_sub larray
   {
-    my $sp_values = SPVM::new_larray([1, 2, 3]);
+    my $sp_values = SPVM::new_long_array([1, 2, 3]);
     is(TestCase::Sub->call_sub_larray($sp_values), 6);
   }
 
   # call_sub farray
   {
-    my $sp_values = SPVM::new_farray([0.5, 0.5, 1.0]);
+    my $sp_values = SPVM::new_float_array([0.5, 0.5, 1.0]);
     is(TestCase::Sub->call_sub_farray($sp_values), 2.0);
   }
 
   # call_sub darray
   {
-    my $sp_values = SPVM::new_darray([0.5, 0.5, 1.0]);
+    my $sp_values = SPVM::new_double_array([0.5, 0.5, 1.0]);
     is(TestCase::Sub->call_sub_darray($sp_values), 2.0);
   }
 }

@@ -681,7 +681,7 @@ int32_t SPNATIVE__SPVM__CORE__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__CORE__new_object_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* oarray = stack[0].oval;
   int32_t length = stack[1].ival;
@@ -693,9 +693,9 @@ int32_t SPNATIVE__SPVM__CORE__new_oarray_proto(SPVM_ENV* env, SPVM_VALUE* stack)
   int32_t basic_type_id = env->get_object_basic_type_id(env, oarray);
   int32_t element_dimension = env->get_object_type_dimension(env, oarray) - 1;
   
-  void* new_oarray = env->new_marray(env, basic_type_id, element_dimension, length);
+  void* new_object_array = env->new_muldim_array(env, basic_type_id, element_dimension, length);
   
-  stack[0].oval = new_oarray;
+  stack[0].oval = new_object_array;
   
   return SPVM_SUCCESS;
 }

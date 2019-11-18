@@ -668,7 +668,7 @@ int32_t SPNATIVE__TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t* nums1 = env->get_elems_int(env, obj_nums1);
   int32_t* nums2 = env->get_elems_int(env, obj_nums2);
   
-  void* onums3 = env->new_iarray(env, length);
+  void* onums3 = env->new_int_array(env, length);
   int32_t* nums3 = env->get_elems_int(env, onums3);
   
   for (int32_t i = 0; i < length; i++) {
@@ -746,32 +746,32 @@ int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* sta
   int32_t length = 10;
   // 1
   {
-    void* sp_values = env->new_barray(env, length);
+    void* sp_values = env->new_byte_array(env, length);
     ref_count += env->get_ref_count(env, sp_values);
   }
   // 2
   {
-    void* sp_values = env->new_sarray(env, length);
+    void* sp_values = env->new_short_array(env, length);
     ref_count += env->get_ref_count(env, sp_values);
   }
   // 3
   {
-    void* sp_values = env->new_iarray(env, length);
+    void* sp_values = env->new_int_array(env, length);
     ref_count += env->get_ref_count(env, sp_values);
   }
   // 4
   {
-    void* sp_values = env->new_larray(env, length);
+    void* sp_values = env->new_long_array(env, length);
     ref_count += env->get_ref_count(env, sp_values);
   }
   // 5
   {
-    void* sp_values = env->new_farray(env, length);
+    void* sp_values = env->new_float_array(env, length);
     ref_count += env->get_ref_count(env, sp_values);
   }
   // 6
   {
-    void* sp_values = env->new_larray(env, length);
+    void* sp_values = env->new_long_array(env, length);
     ref_count += env->get_ref_count(env, sp_values);
   }
   // 7
@@ -794,7 +794,7 @@ int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* sta
     if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
-    void* sp_objects = env->new_oarray(env, basic_type_id, 3);
+    void* sp_objects = env->new_object_array(env, basic_type_id, 3);
     ref_count += env->get_ref_count(env, sp_objects);
   }
   // 10
@@ -803,7 +803,7 @@ int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* sta
     if (basic_type_id < 0) {
       return SPVM_EXCEPTION;
     }
-    void* sp_objects = env->new_oarray(env, basic_type_id, 3);
+    void* sp_objects = env->new_object_array(env, basic_type_id, 3);
     ref_count += env->get_ref_count(env, sp_objects);
   }
   // 11
@@ -832,16 +832,16 @@ int32_t SPNATIVE__TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, SP
   
   int32_t length = 10;
   int32_t start_memory_blocks_count = env->get_memory_blocks_count(env);
-  env->new_iarray(env, length);
-  env->new_iarray(env, length);
+  env->new_int_array(env, length);
+  env->new_int_array(env, length);
   int32_t before_enter_memory_blocks_count = env->get_memory_blocks_count(env);
   int32_t before_leave_memory_blocks_count;
   {
     int32_t scope_id = env->enter_scope(env);
 
-    env->new_iarray(env, length);
-    env->new_iarray(env, length);
-    env->new_iarray(env, length);
+    env->new_int_array(env, length);
+    env->new_int_array(env, length);
+    env->new_int_array(env, length);
     
     before_leave_memory_blocks_count = env->get_memory_blocks_count(env);
     env->leave_scope(env, scope_id);
@@ -892,7 +892,7 @@ int32_t SPNATIVE__TestCase__Extension__push_mortal_multi(SPVM_ENV* env, SPVM_VAL
   (void)env;
   (void)stack;
   
-  void* iarray = env->new_iarray_raw(env, 10);
+  void* iarray = env->new_int_array_raw(env, 10);
   
   env->push_mortal(env, iarray);
   env->push_mortal(env, iarray);

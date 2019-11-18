@@ -52,7 +52,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
   const size_t length = env->length(env, stack[1].oval);
   const size_t encoded_capacity = calc_encoded_length(length);
   
-  void* obuffer = env->new_barray_raw(env, encoded_capacity + 1);
+  void* obuffer = env->new_byte_array_raw(env, encoded_capacity + 1);
   env->inc_ref_count(env, obuffer);
   char* result = (char *)(env->get_elems_byte(env, obuffer));
   size_t result_index = 0;
@@ -116,7 +116,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
   const size_t encoded_length = result_index;
   result[encoded_length] = 0;
 
-  void* oline = env->new_barray_raw(env, encoded_length);
+  void* oline = env->new_byte_array_raw(env, encoded_length);
   int8_t* line = env->get_elems_byte(env, oline);
   memcpy(line, result, encoded_length);
 
@@ -141,7 +141,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
   size_t buf_iter = 0;
 
   const size_t decoded_capacity = calc_decoded_length(length);
-  void* obuffer = env->new_barray_raw(env, decoded_capacity + 1);
+  void* obuffer = env->new_byte_array_raw(env, decoded_capacity + 1);
   env->inc_ref_count(env, obuffer);
   char* result = (char *)(env->get_elems_byte(env, obuffer));
   size_t result_index = 0;
@@ -186,7 +186,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
   const size_t decoded_length = result_index;
   result[decoded_length] = 0;
 
-  void* oline = env->new_barray_raw(env, decoded_length);
+  void* oline = env->new_byte_array_raw(env, decoded_length);
   int8_t* line = env->get_elems_byte(env, oline);
   memcpy(line, result, decoded_length);
 

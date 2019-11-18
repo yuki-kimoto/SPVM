@@ -250,7 +250,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # String - UTF-8 string, new_string, new_string_from_bin, to_string, to_bin
   {
-    my $bytes = SPVM::new_oarray("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
+    my $bytes = SPVM::new_object_array("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
     my $ret = TestCase::ExchangeAPI->any_object_array($bytes);
     
     isa_ok($ret, 'SPVM::BlessedObject::Array');
@@ -679,8 +679,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # Create object
   {
     my $object = TestCase->new();
-    $object->set_x_iarray(SPVM::new_iarray([$INT_MAX, $INT_MAX]));
-    my $spvm_values = SPVM::new_barray_from_bin("abc");
+    $object->set_x_iarray(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    my $spvm_values = SPVM::new_byte_array_from_bin("abc");
     $object->set_x_barray($spvm_values);
     ok(TestCase::ExchangeAPI->spvm_object_set_object($object));
   }
@@ -693,7 +693,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     $object->set_x_long($LONG_MAX);
     $object->set_x_float($FLOAT_PRECICE);
     $object->set_x_double($DOUBLE_PRECICE);
-    $object->set_x_iarray(SPVM::new_iarray([1, 2, 3, 4]));
+    $object->set_x_iarray(SPVM::new_int_array([1, 2, 3, 4]));
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(3);
     $object->set_minimal($minimal);
@@ -730,7 +730,7 @@ is_deeply(
 );
 =cut
 
-# SPVM new_oarray
+# SPVM new_object_array
 {
 
   # element object array
@@ -739,9 +739,9 @@ is_deeply(
     $object1->set_x_int(1);
     my $object2 = TestCase->new();
     $object2->set_x_int(2);
-    my $spvm_oarray = SPVM::new_oarray("TestCase[]", [$object1, $object2]);
+    my $spvm_oarray = SPVM::new_object_array("TestCase[]", [$object1, $object2]);
     
-    ok(TestCase::ExchangeAPI->spvm_new_oarray_len_element_oarray($spvm_oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_oarray($spvm_oarray));
     
     my $oarray_out = $spvm_oarray->to_elems;
     is($oarray_out->[0]->get_x_int, 1);
@@ -750,11 +750,11 @@ is_deeply(
 
   # element byte array
   {
-    my $object1 = SPVM::new_barray([1, 2, 3]);
-    my $object2 = SPVM::new_barray([4, 5, 6]);
-    my $oarray = SPVM::new_oarray("byte[][]", [$object1, $object2]);
+    my $object1 = SPVM::new_byte_array([1, 2, 3]);
+    my $object2 = SPVM::new_byte_array([4, 5, 6]);
+    my $oarray = SPVM::new_object_array("byte[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_oarray_len_element_barray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_barray($oarray));
     
     my $oarray_out = $oarray->to_elems;
     is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);
@@ -763,11 +763,11 @@ is_deeply(
 
   # element short array
   {
-    my $object1 = SPVM::new_sarray([1, 2, 3]);
-    my $object2 = SPVM::new_sarray([4, 5, 6]);
-    my $oarray = SPVM::new_oarray("short[][]", [$object1, $object2]);
+    my $object1 = SPVM::new_short_array([1, 2, 3]);
+    my $object2 = SPVM::new_short_array([4, 5, 6]);
+    my $oarray = SPVM::new_object_array("short[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_oarray_len_element_sarray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_sarray($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -777,11 +777,11 @@ is_deeply(
 
   # element int array
   {
-    my $object1 = SPVM::new_iarray([1, 2, 3]);
-    my $object2 = SPVM::new_iarray([4, 5, 6]);
-    my $oarray = SPVM::new_oarray("int[][]", [$object1, $object2]);
+    my $object1 = SPVM::new_int_array([1, 2, 3]);
+    my $object2 = SPVM::new_int_array([4, 5, 6]);
+    my $oarray = SPVM::new_object_array("int[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_oarray_len_element_iarray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_iarray($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -791,10 +791,10 @@ is_deeply(
 
   # element long array
   {
-    my $object1 = SPVM::new_larray([1, 2, 3]);
-    my $object2 = SPVM::new_larray([4, 5, 6]);
-    my $oarray = SPVM::new_oarray("long[][]", [$object1, $object2]);
-    ok(TestCase::ExchangeAPI->spvm_new_oarray_len_element_larray($oarray));
+    my $object1 = SPVM::new_long_array([1, 2, 3]);
+    my $object2 = SPVM::new_long_array([4, 5, 6]);
+    my $oarray = SPVM::new_object_array("long[][]", [$object1, $object2]);
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_larray($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -804,11 +804,11 @@ is_deeply(
 
   # element float array
   {
-    my $object1 = SPVM::new_farray([1, 2, 3]);
-    my $object2 = SPVM::new_farray([4, 5, 6]);
-    my $oarray = SPVM::new_oarray("float[][]", [$object1, $object2]);
+    my $object1 = SPVM::new_float_array([1, 2, 3]);
+    my $object2 = SPVM::new_float_array([4, 5, 6]);
+    my $oarray = SPVM::new_object_array("float[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_oarray_len_element_farray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_farray($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -818,11 +818,11 @@ is_deeply(
 
   # element double array
   {
-    my $object1 = SPVM::new_darray([1, 2, 3]);
-    my $object2 = SPVM::new_darray([4, 5, 6]);
-    my $oarray = SPVM::new_oarray("double[][]", [$object1, $object2]);
+    my $object1 = SPVM::new_double_array([1, 2, 3]);
+    my $object2 = SPVM::new_double_array([4, 5, 6]);
+    my $oarray = SPVM::new_object_array("double[][]", [$object1, $object2]);
     
-    ok(TestCase::ExchangeAPI->spvm_new_oarray_len_element_darray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_darray($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -831,146 +831,146 @@ is_deeply(
   }
 }
 
-# new_varray
+# new_mulnum_array
 {
   
-  # new_varray - byte
+  # new_mulnum_array - byte
   {
     my $values = [
       {x => $BYTE_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_values = SPVM::new_varray("TestCase::Point_3b[]", $values);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_byte($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3b[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_byte($spvm_values));
     my $out_values = $spvm_values->to_elems;
     is_deeply($out_values, $values);
   }
 
-  # new_varray - short
+  # new_mulnum_array - short
   {
     my $values = [
       {x => $SHORT_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_values = SPVM::new_varray("TestCase::Point_3s[]", $values);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_short($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3s[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_short($spvm_values));
     my $out_values = $spvm_values->to_elems;
     is_deeply($out_values, $values);
   }
 
-  # new_varray - int
+  # new_mulnum_array - int
   {
     my $values = [
       {x => $INT_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_values = SPVM::new_varray("TestCase::Point_3i[]", $values);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_int($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3i[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_int($spvm_values));
     my $out_values = $spvm_values->to_elems;
     is_deeply($out_values, $values);
   }
 
-  # new_varray - long
+  # new_mulnum_array - long
   {
     my $values = [
       {x => $LONG_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_values = SPVM::new_varray("TestCase::Point_3l[]", $values);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_long($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3l[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_long($spvm_values));
     my $out_values = $spvm_values->to_elems;
     is_deeply($out_values, $values);
   }
 
-  # new_varray - float
+  # new_mulnum_array - float
   {
     my $values = [
       {x => $FLT_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_values = SPVM::new_varray("TestCase::Point_3f[]", $values);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_float($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3f[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_float($spvm_values));
     my $out_values = $spvm_values->to_elems;
     is_deeply($out_values, $values);
   }
 
-  # new_varray - double
+  # new_mulnum_array - double
   {
     my $values = [
       {x => $DBL_MIN, y => 1, z => 2},
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_values = SPVM::new_varray("TestCase::Point_3d[]", $values);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_double($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3d[]", $values);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_double($spvm_values));
     my $out_values = $spvm_values->to_elems;
     is_deeply($out_values, $values);
   }
 }
 
-# new_varray_from_bin
+# new_mulnum_array_from_bin
 {
-  # new_varray_from_bin - byte
+  # new_mulnum_array_from_bin - byte
   {
     my $binary = pack('c9', ($BYTE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_varray_from_bin("TestCase::Point_3b[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_binary_byte($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_byte($spvm_values));
     my $out_bin = $spvm_values->to_bin;
     is_deeply($out_bin, $binary);
   }
 
-  # new_varray_from_bin - short
+  # new_mulnum_array_from_bin - short
   {
     my $binary = pack('s9', ($SHORT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_varray_from_bin("TestCase::Point_3s[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_binary_short($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_short($spvm_values));
     my $out_bin = $spvm_values->to_bin;
     is_deeply($out_bin, $binary);
   }
   
-  # new_varray_from_bin - int
+  # new_mulnum_array_from_bin - int
   {
     my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_varray_from_bin("TestCase::Point_3i[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_binary_int($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_int($spvm_values));
     my $out_bin = $spvm_values->to_bin;
     is_deeply($out_bin, $binary);
   }
-  # new_varray_from_bin - long
+  # new_mulnum_array_from_bin - long
   {
     my $binary = pack('q9', ($LONG_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_varray_from_bin("TestCase::Point_3l[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_binary_long($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_long($spvm_values));
     my $out_bin = $spvm_values->to_bin;
     is_deeply($out_bin, $binary);
   }
-  # new_varray_from_bin - float
+  # new_mulnum_array_from_bin - float
   {
     my $binary = pack('f9', ($FLT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_varray_from_bin("TestCase::Point_3f[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_binary_float($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_float($spvm_values));
     my $out_bin = $spvm_values->to_bin;
     is_deeply($out_bin, $binary);
   }
-  # new_varray_from_bin - double
+  # new_mulnum_array_from_bin - double
   {
     my $binary = pack('d9', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_varray_from_bin("TestCase::Point_3d[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_varray_binary_double($spvm_values));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_double($spvm_values));
     my $out_bin = $spvm_values->to_bin;
     is_deeply($out_bin, $binary);
   }
 
-  # new_varray_from_bin - double
+  # new_mulnum_array_from_bin - double
   {
     my $binary = pack('d8', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7));
     eval {
-      SPVM::new_varray_from_bin("TestCase::Point_3d[]", $binary);
+      SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
     };
     ok($@);
   }
@@ -978,37 +978,37 @@ is_deeply(
 
 # call_sub can receive array reference
 {
-  # call_sub can receive array reference - new_barray
+  # call_sub can receive array reference - new_byte_array
   {
     my $spvm_values = [1, $BYTE_MAX, $BYTE_MIN];
     my $values = TestCase::ExchangeAPI->return_byte_array_only($spvm_values)->to_elems;
     is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
   }
-  # call_sub can receive array reference - new_sarray
+  # call_sub can receive array reference - new_short_array
   {
     my $spvm_values = [1, $SHORT_MAX, $SHORT_MIN];
     my $values = TestCase::ExchangeAPI->return_short_array_only($spvm_values)->to_elems;
     is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
   }
-  # call_sub can receive array reference - new_iarray
+  # call_sub can receive array reference - new_int_array
   {
     my $spvm_values = [1, $INT_MAX, $INT_MIN];
     my $values = TestCase::ExchangeAPI->return_int_array_only($spvm_values)->to_elems;
     is_deeply($values, [1, $INT_MAX, $INT_MIN]);
   }
-  # call_sub can receive array reference - new_larray
+  # call_sub can receive array reference - new_long_array
   {
     my $spvm_values = [1, $LONG_MAX, $LONG_MIN];
     my $values = TestCase::ExchangeAPI->return_long_array_only($spvm_values)->to_elems;
     is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
   }
-  # call_sub can receive array reference - new_farray
+  # call_sub can receive array reference - new_float_array
   {
     my $spvm_values = [0.5, $FLT_MAX, $FLT_MIN];
     my $values = TestCase::ExchangeAPI->return_float_array_only($spvm_values)->to_elems;
     is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
   }
-  # call_sub can receive array reference - new_darray
+  # call_sub can receive array reference - new_double_array
   {
     my $spvm_values = [0.5, $DBL_MAX, $DBL_MIN];
     my $values = TestCase::ExchangeAPI->return_double_array_only($spvm_values)->to_elems;
@@ -1025,39 +1025,39 @@ is_deeply(
 
 # new array
 {
-  # new_barray
+  # new_byte_array
   {
-    my $spvm_values = SPVM::new_barray([1, $BYTE_MAX, $BYTE_MIN]);
+    my $spvm_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
     my $values = $spvm_values->to_elems;
     is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
   }
-  # new_sarray
+  # new_short_array
   {
-    my $spvm_values = SPVM::new_sarray([1, $SHORT_MAX, $SHORT_MIN]);
+    my $spvm_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
     my $values = $spvm_values->to_elems;
     is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
   }
-  # new_iarray
+  # new_int_array
   {
-    my $spvm_values = SPVM::new_iarray([1, $INT_MAX, $INT_MIN]);
+    my $spvm_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
     my $values = $spvm_values->to_elems;
     is_deeply($values, [1, $INT_MAX, $INT_MIN]);
   }
-  # new_larray
+  # new_long_array
   {
-    my $spvm_values = SPVM::new_larray([1, $LONG_MAX, $LONG_MIN]);
+    my $spvm_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
     my $values = $spvm_values->to_elems;
     is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
   }
-  # new_farray
+  # new_float_array
   {
-    my $spvm_values = SPVM::new_farray([0.5, $FLT_MAX, $FLT_MIN]);
+    my $spvm_values = SPVM::new_float_array([0.5, $FLT_MAX, $FLT_MIN]);
     my $values = $spvm_values->to_elems;
     is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
   }
-  # new_darray
+  # new_double_array
   {
-    my $spvm_values = SPVM::new_darray([0.5, $DBL_MAX, $DBL_MIN]);
+    my $spvm_values = SPVM::new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
     my $values = $spvm_values->to_elems;
     is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
   }
@@ -1068,22 +1068,22 @@ is_deeply(
   # to_elems(
   {
     {
-      my $spvm_values = SPVM::new_barray([1, $BYTE_MAX, $BYTE_MIN]);
+      my $spvm_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
       my $values = $spvm_values->to_elems;
       is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
     }
     {
-      my $spvm_values = SPVM::new_sarray([1, $SHORT_MAX, $SHORT_MIN]);
+      my $spvm_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
       my $values = $spvm_values->to_elems;
       is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
     }
     {
-      my $spvm_values = SPVM::new_iarray([1, $INT_MAX, $INT_MIN]);
+      my $spvm_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
       my $values = $spvm_values->to_elems;
       is_deeply($values, [1, $INT_MAX, $INT_MIN]);
     }
     {
-      my $spvm_values = SPVM::new_larray([1, $LONG_MAX, $LONG_MIN]);
+      my $spvm_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
       my $values = $spvm_values->to_elems;
       is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
     }
@@ -1092,32 +1092,32 @@ is_deeply(
   # to_bin 0 length
   {
     {
-      my $spvm_values = SPVM::new_barray([]);
+      my $spvm_values = SPVM::new_byte_array([]);
       my $binary = $spvm_values->to_bin;
       is($binary, "");
     }
     {
-      my $spvm_values = SPVM::new_sarray([]);
+      my $spvm_values = SPVM::new_short_array([]);
       my $binary = $spvm_values->to_bin;
       is($binary, "");
     }
     {
-      my $spvm_values = SPVM::new_iarray([]);
+      my $spvm_values = SPVM::new_int_array([]);
       my $binary = $spvm_values->to_bin;
       is($binary, "");
     }
     {
-      my $spvm_values = SPVM::new_larray([]);
+      my $spvm_values = SPVM::new_long_array([]);
       my $binary = $spvm_values->to_bin;
       is($binary, "");
     }
     {
-      my $spvm_values = SPVM::new_farray([]);
+      my $spvm_values = SPVM::new_float_array([]);
       my $binary = $spvm_values->to_bin;
       is($binary, "");
     }
     {
-      my $spvm_values = SPVM::new_darray([]);
+      my $spvm_values = SPVM::new_double_array([]);
       my $binary = $spvm_values->to_bin;
       is($binary, "");
     }
@@ -1126,42 +1126,42 @@ is_deeply(
   # to_bin(
   {
     {
-      my $spvm_values = SPVM::new_barray([1, 2, $BYTE_MAX]);
+      my $spvm_values = SPVM::new_byte_array([1, 2, $BYTE_MAX]);
       my $binary = $spvm_values->to_bin;
       
       my @values = unpack('c3', $binary);
       is_deeply(\@values, [1, 2, $BYTE_MAX]);
     }
     {
-      my $spvm_values = SPVM::new_sarray([1, 2, $SHORT_MAX]);
+      my $spvm_values = SPVM::new_short_array([1, 2, $SHORT_MAX]);
       my $binary = $spvm_values->to_bin;
       
       my @values = unpack('s3', $binary);
       is_deeply(\@values, [1, 2, $SHORT_MAX]);
     }
     {
-      my $spvm_values = SPVM::new_iarray([1, 2, $INT_MAX]);
+      my $spvm_values = SPVM::new_int_array([1, 2, $INT_MAX]);
       my $binary = $spvm_values->to_bin;
       
       my @values = unpack('l3', $binary);
       is_deeply(\@values, [1, 2, $INT_MAX]);
     }
     {
-      my $spvm_values = SPVM::new_larray([1, 2, $LONG_MAX]);
+      my $spvm_values = SPVM::new_long_array([1, 2, $LONG_MAX]);
       my $binary = $spvm_values->to_bin;
       
       my @values = unpack('q3', $binary);
       is_deeply(\@values, [1, 2, $LONG_MAX]);
     }
     {
-      my $spvm_values = SPVM::new_farray([1, 2, $FLOAT_PRECICE]);
+      my $spvm_values = SPVM::new_float_array([1, 2, $FLOAT_PRECICE]);
       my $binary = $spvm_values->to_bin;
       
       my @values = unpack('f3', $binary);
       is_deeply(\@values, [1, 2, $FLOAT_PRECICE]);
     }
     {
-      my $spvm_values = SPVM::new_darray([1, 2, $DOUBLE_PRECICE]);
+      my $spvm_values = SPVM::new_double_array([1, 2, $DOUBLE_PRECICE]);
       my $binary = $spvm_values->to_bin;
       
       my @values = unpack('d3', $binary);
@@ -1172,51 +1172,51 @@ is_deeply(
   # new_xxx_array_string
   {
     {
-      my $spvm_values = SPVM::new_barray_from_bin(encode('UTF-8', "あ"));
-      ok(TestCase::ExchangeAPI->spvm_new_barray_from_bin($spvm_values));
+      my $spvm_values = SPVM::new_byte_array_from_bin(encode('UTF-8', "あ"));
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($spvm_values));
     }
   }
   
   # new_xxx_array_bin
   {
     {
-      my $spvm_values = SPVM::new_barray_from_bin("abc");
-      ok(TestCase::ExchangeAPI->spvm_new_barray_bin($spvm_values));
+      my $spvm_values = SPVM::new_byte_array_from_bin("abc");
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_bin($spvm_values));
     }
     {
       my $binary = pack('c3', 97, 98, $BYTE_MAX);
-      my $spvm_values = SPVM::new_barray_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_barray_binary_pack($spvm_values));
+      my $spvm_values = SPVM::new_byte_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
     }
     {
       my $binary = pack('c3', 97, 98, $BYTE_MAX);
-      my $spvm_values = SPVM::new_barray_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_barray_binary_pack($spvm_values));
+      my $spvm_values = SPVM::new_byte_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
     }
     {
       my $binary = pack('s3', 97, 98, $SHORT_MAX);
-      my $spvm_values = SPVM::new_sarray_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_sarray_binary_pack($spvm_values));
+      my $spvm_values = SPVM::new_short_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_short_array_binary_pack($spvm_values));
     }
     {
       my $binary = pack('l3', 97, 98, $INT_MAX);
-      my $spvm_values = SPVM::new_iarray_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_iarray_binary_pack($spvm_values));
+      my $spvm_values = SPVM::new_int_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_int_array_binary_pack($spvm_values));
     }
     {
       my $binary = pack('q3', 97, 98, $LONG_MAX);
-      my $spvm_values = SPVM::new_larray_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_larray_binary_pack($spvm_values));
+      my $spvm_values = SPVM::new_long_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_long_array_binary_pack($spvm_values));
     }
     {
       my $binary = pack('f3', 97, 98, $FLOAT_PRECICE);
-      my $spvm_values = SPVM::new_farray_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_farray_binary_pack($spvm_values));
+      my $spvm_values = SPVM::new_float_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_float_array_binary_pack($spvm_values));
     }
     {
       my $binary = pack('d3', 97, 98, $DOUBLE_PRECICE);
-      my $spvm_values = SPVM::new_darray_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_darray_binary_pack($spvm_values));
+      my $spvm_values = SPVM::new_double_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_double_array_binary_pack($spvm_values));
     }
   }
 }

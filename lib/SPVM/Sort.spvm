@@ -62,7 +62,7 @@ package SPVM::Sort {
       die "Array must be defined";
     }
     my $length = @$objs;
-    my $b = new_oarray_proto($objs, $length);
+    my $b = new_object_array_proto($objs, $length);
     _merge_sort($objs, $b, 0, $length - 1, $length, $comparator);
   }
 

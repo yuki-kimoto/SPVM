@@ -684,7 +684,7 @@ package SPVM::CORE {
   native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
   native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
-  native sub new_oarray_proto : oarray ($proto_array : oarray, $length : int);
+  native sub new_object_array_proto : oarray ($proto_array : oarray, $length : int);
 
   native sub print : void ($value : string);
 
@@ -1099,7 +1099,7 @@ package SPVM::CORE {
       die "Offset + length must not be over array length";
     }
     
-    my $slice = new_oarray_proto($elems, $length);
+    my $slice = new_object_array_proto($elems, $length);
     
     my $pos = 0;
     for (my $i = $offset; $i < $offset + $length; $i++) {

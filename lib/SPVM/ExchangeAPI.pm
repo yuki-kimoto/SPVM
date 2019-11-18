@@ -32,19 +32,19 @@ sub to_strings {
   return $strs;
 }
 
-sub new_barray_from_string {
+sub new_byte_array_from_string {
   my ($env, $string) = @_;
   
   my $bin = encode('UTF-8', $string);
   
-  return SPVM::ExchangeAPI::new_barray_from_bin($env, $bin);
+  return SPVM::ExchangeAPI::new_byte_array_from_bin($env, $bin);
 }
 
-sub new_string { SPVM::ExchangeAPI::new_barray_from_string(@_) }
+sub new_string { SPVM::ExchangeAPI::new_byte_array_from_string(@_) }
 
-sub new_string_from_bin { SPVM::ExchangeAPI::new_barray_from_bin(@_) }
+sub new_string_from_bin { SPVM::ExchangeAPI::new_byte_array_from_bin(@_) }
 
-sub new_oarray {
+sub new_object_array {
   my ($env, $type_name, $elems) = @_;
   
   my $basic_type_name;
@@ -59,10 +59,10 @@ sub new_oarray {
   }
   
   unless ($type_dimension >= 1 && $type_dimension <= 255) {
-    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_oarray)";
+    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_object_array)";
   }
   unless (defined $basic_type_name) {
-    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_oarray)";
+    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_object_array)";
   }
   
   unless (defined $elems) {
@@ -71,18 +71,18 @@ sub new_oarray {
   
   # Check second argument
   unless (ref $elems eq 'ARRAY') {
-    confess "Second argument of SPVM::new_oarray must be array reference";
+    confess "Second argument of SPVM::new_object_array must be array reference";
   }
   
   if ($type_dimension == 1) {
-    SPVM::ExchangeAPI::_new_oarray($env, $basic_type_name, $elems);
+    SPVM::ExchangeAPI::_new_object_array($env, $basic_type_name, $elems);
   }
   else {
-    SPVM::ExchangeAPI::_new_marray($env, $basic_type_name, $type_dimension - 1, $elems);
+    SPVM::ExchangeAPI::_new_muldim_array($env, $basic_type_name, $type_dimension - 1, $elems);
   }
 }
 
-sub new_varray {
+sub new_mulnum_array {
   my ($env, $type_name, $elems) = @_;
   
   my $basic_type_name;
@@ -97,10 +97,10 @@ sub new_varray {
   }
   
   unless ($type_dimension == 1) {
-    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_varray)";
+    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_mulnum_array)";
   }
   unless (defined $basic_type_name) {
-    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_varray)";
+    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_mulnum_array)";
   }
 
   unless (defined $elems) {
@@ -109,13 +109,13 @@ sub new_varray {
   
   # Check second argument
   unless (ref $elems eq 'ARRAY') {
-    confess "Second argument of SPVM::new_varray must be array reference";
+    confess "Second argument of SPVM::new_mulnum_array must be array reference";
   }
   
-  SPVM::ExchangeAPI::_new_varray($env, $basic_type_name, $elems);
+  SPVM::ExchangeAPI::_new_mulnum_array($env, $basic_type_name, $elems);
 }
 
-sub new_varray_from_bin {
+sub new_mulnum_array_from_bin {
   my ($env, $type_name, $elems) = @_;
   
   my $basic_type_name;
@@ -130,17 +130,17 @@ sub new_varray_from_bin {
   }
   
   unless ($type_dimension == 1) {
-    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_varray_from_bin)";
+    confess "Invalid type dimension(first argument of SPVM::ExchangeAPI::new_mulnum_array_from_bin)";
   }
   unless (defined $basic_type_name) {
-    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_varray_from_bin)";
+    confess "Invalid basic_type name(first argument of SPVM::ExchangeAPI::new_mulnum_array_from_bin)";
   }
 
   unless (defined $elems) {
     return undef;
   }
   
-  SPVM::ExchangeAPI::_new_varray_from_bin($env, $basic_type_name, $elems);
+  SPVM::ExchangeAPI::_new_mulnum_array_from_bin($env, $basic_type_name, $elems);
 }
 
 sub set_exception {
@@ -175,41 +175,41 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head2 memory_blocks_count
 
-=head2 new_barray
+=head2 new_byte_array
 
-=head2 new_barray_from_bin
+=head2 new_byte_array_from_bin
 
-=head2 new_barray_from_string
+=head2 new_byte_array_from_string
 
-=head2 new_darray
+=head2 new_double_array
 
-=head2 new_darray_from_bin
+=head2 new_double_array_from_bin
 
-=head2 new_farray
+=head2 new_float_array
 
-=head2 new_farray_from_bin
+=head2 new_float_array_from_bin
 
-=head2 new_iarray
+=head2 new_int_array
 
-=head2 new_iarray_from_bin
+=head2 new_int_array_from_bin
 
-=head2 new_larray
+=head2 new_long_array
 
-=head2 new_larray_from_bin
+=head2 new_long_array_from_bin
 
-=head2 new_oarray
+=head2 new_object_array
 
-=head2 new_sarray
+=head2 new_short_array
 
-=head2 new_sarray_from_bin
+=head2 new_short_array_from_bin
 
 =head2 new_string
 
 =head2 new_string_from_bin
 
-=head2 new_varray
+=head2 new_mulnum_array
 
-=head2 new_varray_from_bin
+=head2 new_mulnum_array_from_bin
 
 =head2 set_exception
 

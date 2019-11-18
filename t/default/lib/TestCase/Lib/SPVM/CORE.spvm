@@ -1404,14 +1404,14 @@ package TestCase::Lib::SPVM::CORE {
     return 0;
   }
 
-  sub test_new_oarray_proto : int () {
+  sub test_new_object_array_proto : int () {
     my $minimals = new TestCase::Minimal[1];
     
-    my $new_oarray = new_oarray_proto($minimals, 2);
-    unless ($new_oarray isa TestCase::Minimal[]) {
+    my $new_object_array = new_object_array_proto($minimals, 2);
+    unless ($new_object_array isa TestCase::Minimal[]) {
       return 0;
     }
-    my $new_minimals = (TestCase::Minimal[])$new_oarray;
+    my $new_minimals = (TestCase::Minimal[])$new_object_array;
     unless (@$new_minimals == 2) {
       return 0;
     }

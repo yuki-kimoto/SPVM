@@ -167,7 +167,7 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'MyMath';
 
-my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
+my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
 
 my $total = MyMath->sum($sp_nums);
 
@@ -196,10 +196,10 @@ use SPVM 'MyMath';
       </p>
 <pre>
 # int型配列の作成
-my $sp_nums = SPVM::new_iarray([3, 6, 8, 9]);
+my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
 </pre>
       <p>
-        <b>SPVM::new_iarray関数</b>を使うと、配列のリファレンスを渡して、SPVMのint型の配列を作成することができます。
+        <b>SPVM::new_int_array関数</b>を使うと、配列のリファレンスを渡して、SPVMのint型の配列を作成することができます。
       </p>
       <p>
         <b>MyMathパッケージのsumサブルーチンを呼び出し</b>てみましょう。

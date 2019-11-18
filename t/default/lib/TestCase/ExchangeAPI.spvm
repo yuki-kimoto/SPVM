@@ -374,7 +374,7 @@ package TestCase::ExchangeAPI {
   }
 
   # SPVM Functions
-  sub spvm_new_barray_from_bin : int ($values : byte[]) {
+  sub spvm_new_byte_array_from_bin : int ($values : byte[]) {
     
     unless ($values eq "あ") {
       return 0;
@@ -383,7 +383,7 @@ package TestCase::ExchangeAPI {
     return 1;
   }
 
-  sub spvm_new_barray_bin : int ($values : byte[]) {
+  sub spvm_new_byte_array_bin : int ($values : byte[]) {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
@@ -398,7 +398,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_barray_binary_pack : int ($values : byte[]) {
+  sub spvm_new_byte_array_binary_pack : int ($values : byte[]) {
     
     if ($values->[0] == 97) {
       if ($values->[1] == 98) {
@@ -413,7 +413,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_sarray_binary_pack : int ($values : short[]) {
+  sub spvm_new_short_array_binary_pack : int ($values : short[]) {
     
     if ((int)$values->[0] == (int)(short)97) {
       if ((int)$values->[1] == (int)(short)98) {
@@ -428,7 +428,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
   
-  sub spvm_new_iarray_binary_pack : int ($values : int[]) {
+  sub spvm_new_int_array_binary_pack : int ($values : int[]) {
     
     if ($values->[0] == (int)97) {
       if ($values->[1] == (int)98) {
@@ -443,7 +443,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_larray_binary_pack : int ($values : long[]) {
+  sub spvm_new_long_array_binary_pack : int ($values : long[]) {
     
     if ($values->[0] == (long)97) {
       if ($values->[1] == (long)98) {
@@ -458,7 +458,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_farray_binary_pack : int ($values : float[]) {
+  sub spvm_new_float_array_binary_pack : int ($values : float[]) {
     
     if ($values->[0] == (float)97) {
       if ($values->[1] == (float)98) {
@@ -473,7 +473,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
   
-  sub spvm_new_darray_binary_pack : int ($values : double[]) {
+  sub spvm_new_double_array_binary_pack : int ($values : double[]) {
     
     if ($values->[0] == (double)97) {
       if ($values->[1] == (double)98) {
@@ -489,7 +489,7 @@ package TestCase::ExchangeAPI {
   }
   
 
-  sub spvm_new_oarray_len_element_oarray : int ($nums : TestCase[]) {
+  sub spvm_new_object_array_len_element_oarray : int ($nums : TestCase[]) {
     if ($nums->[0]{x_int} == 1) {
       if ($nums->[1]{x_int} == 2) {
         return 1;
@@ -499,7 +499,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_oarray_len_element_barray : int ($nums : byte[][]) {
+  sub spvm_new_object_array_len_element_barray : int ($nums : byte[][]) {
     
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
@@ -518,7 +518,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_oarray_len_element_sarray : int ($nums : short[][]) {
+  sub spvm_new_object_array_len_element_sarray : int ($nums : short[][]) {
     if ((int)$nums->[0][0] == (int)(short)1) {
       if ((int)$nums->[0][1] == (int)(short)2) {
         if ((int)$nums->[0][2] == (int)(short)3) {
@@ -536,7 +536,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_oarray_len_element_iarray : int ($nums : int[][]) {
+  sub spvm_new_object_array_len_element_iarray : int ($nums : int[][]) {
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
         if ($nums->[0][2] == 3) {
@@ -554,7 +554,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_oarray_len_element_larray : int ($nums : long[][]) {
+  sub spvm_new_object_array_len_element_larray : int ($nums : long[][]) {
     if ($nums->[0][0] == (long)1) {
       if ($nums->[0][1] == (long)2) {
         if ($nums->[0][2] == (long)3) {
@@ -572,7 +572,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_oarray_len_element_farray : int ($nums : float[][]) {
+  sub spvm_new_object_array_len_element_farray : int ($nums : float[][]) {
     if ($nums->[0][0] == (float)1) {
       if ($nums->[0][1] == (float)2) {
         if ($nums->[0][2] == (float)3) {
@@ -590,7 +590,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_oarray_len_element_darray : int ($nums : double[][]) {
+  sub spvm_new_object_array_len_element_darray : int ($nums : double[][]) {
     if ($nums->[0][0] == (double)1) {
       if ($nums->[0][1] == (double)2) {
         if ($nums->[0][2] == (double)3) {
@@ -683,7 +683,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_byte : int ($points : TestCase::Point_3b[]) {
+  sub spvm_new_mulnum_array_byte : int ($points : TestCase::Point_3b[]) {
     
     if ($points->[0]{x} == INT8_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -710,7 +710,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_short : int ($points : TestCase::Point_3s[]) {
+  sub spvm_new_mulnum_array_short : int ($points : TestCase::Point_3s[]) {
     
     if ($points->[0]{x} == INT16_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -737,7 +737,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_int : int ($points : TestCase::Point_3i[]) {
+  sub spvm_new_mulnum_array_int : int ($points : TestCase::Point_3i[]) {
     
     if ($points->[0]{x} == INT32_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -764,7 +764,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_long : int ($points : TestCase::Point_3l[]) {
+  sub spvm_new_mulnum_array_long : int ($points : TestCase::Point_3l[]) {
     
     if ($points->[0]{x} == INT64_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -791,7 +791,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_float : int ($points : TestCase::Point_3f[]) {
+  sub spvm_new_mulnum_array_float : int ($points : TestCase::Point_3f[]) {
     
     if ($points->[0]{x} == FLT_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -818,7 +818,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_double : int ($points : TestCase::Point_3d[]) {
+  sub spvm_new_mulnum_array_double : int ($points : TestCase::Point_3d[]) {
     
     if ($points->[0]{x} == DBL_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -845,7 +845,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_binary_byte : int ($points : TestCase::Point_3b[]) {
+  sub spvm_new_mulnum_array_binary_byte : int ($points : TestCase::Point_3b[]) {
     if ($points->[0]{x} == INT8_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -871,7 +871,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_binary_short : int ($points : TestCase::Point_3s[]) {
+  sub spvm_new_mulnum_array_binary_short : int ($points : TestCase::Point_3s[]) {
     if ($points->[0]{x} == INT16_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -897,7 +897,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_binary_int : int ($points : TestCase::Point_3i[]) {
+  sub spvm_new_mulnum_array_binary_int : int ($points : TestCase::Point_3i[]) {
     if ($points->[0]{x} == INT32_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -923,7 +923,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_binary_long : int ($points : TestCase::Point_3l[]) {
+  sub spvm_new_mulnum_array_binary_long : int ($points : TestCase::Point_3l[]) {
     if ($points->[0]{x} == INT64_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -949,7 +949,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_binary_float : int ($points : TestCase::Point_3f[]) {
+  sub spvm_new_mulnum_array_binary_float : int ($points : TestCase::Point_3f[]) {
     if ($points->[0]{x} == FLT_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -975,7 +975,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_varray_binary_double : int ($points : TestCase::Point_3d[]) {
+  sub spvm_new_mulnum_array_binary_double : int ($points : TestCase::Point_3d[]) {
     if ($points->[0]{x} == DBL_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {

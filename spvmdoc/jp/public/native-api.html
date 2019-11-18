@@ -732,24 +732,24 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 25    get_method_sub_id
 26    new_object_raw
 27    new_object
-28    new_barray_raw
-29    new_barray
-30    new_sarray_raw
-31    new_sarray
-32    new_iarray_raw
-33    new_iarray
-34    new_larray_raw
-35    new_larray
-36    new_farray_raw
-37    new_farray
-38    new_darray_raw
-39    new_darray
-40    new_oarray_raw
-41    new_oarray
-42    new_marray_raw
-43    new_marray
-44    new_varray_raw
-45    new_varray
+28    new_byte_array_raw
+29    new_byte_array
+30    new_short_array_raw
+31    new_short_array
+32    new_int_array_raw
+33    new_int_array
+34    new_long_array_raw
+35    new_long_array
+36    new_float_array_raw
+37    new_float_array
+38    new_double_array_raw
+39    new_double_array
+40    new_object_array_raw
+41    new_object_array
+42    new_muldim_array_raw
+43    new_muldim_array
+44    new_mulnum_array_raw
+45    new_mulnum_array
 46    new_string_raw
 47    new_string
 48    new_string_len_raw
@@ -863,24 +863,24 @@ int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-get_method_sub_id">get_method_sub_id</a></li>
         <li><a href="#native-api-native-sub-api-new_object_raw">new_object_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_object">new_object</a></li>
-        <li><a href="#native-api-native-sub-api-new_barray_raw">new_barray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_barray">new_barray</a></li>
-        <li><a href="#native-api-native-sub-api-new_sarray_raw">new_sarray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_sarray">new_sarray</a></li>
-        <li><a href="#native-api-native-sub-api-new_iarray_raw">new_iarray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_iarray">new_iarray</a></li>
-        <li><a href="#native-api-native-sub-api-new_larray_raw">new_larray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_larray">new_larray</a></li>
-        <li><a href="#native-api-native-sub-api-new_farray_raw">new_farray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_farray">new_farray</a></li>
-        <li><a href="#native-api-native-sub-api-new_darray_raw">new_darray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_darray">new_darray</a></li>
-        <li><a href="#native-api-native-sub-api-new_oarray_raw">new_oarray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_oarray">new_oarray</a></li>
-        <li><a href="#native-api-native-sub-api-new_marray_raw">new_marray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_marray">new_marray</a></li>
-        <li><a href="#native-api-native-sub-api-new_varray_raw">new_varray_raw</a></li>
-        <li><a href="#native-api-native-sub-api-new_varray">new_varray</a></li>
+        <li><a href="#native-api-native-sub-api-new_byte_array_raw">new_byte_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_byte_array">new_byte_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_short_array_raw">new_short_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_short_array">new_short_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_int_array_raw">new_int_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_int_array">new_int_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_long_array_raw">new_long_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_long_array">new_long_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_float_array_raw">new_float_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_float_array">new_float_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_double_array_raw">new_double_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_double_array">new_double_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_object_array_raw">new_object_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_object_array">new_object_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_muldim_array_raw">new_muldim_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_muldim_array">new_muldim_array</a></li>
+        <li><a href="#native-api-native-sub-api-new_mulnum_array_raw">new_mulnum_array_raw</a></li>
+        <li><a href="#native-api-native-sub-api-new_mulnum_array">new_mulnum_array</a></li>
         <li><a href="#native-api-native-sub-api-new_string_raw">new_string_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_string">new_string</a></li>
         <li><a href="#native-api-native-sub-api-new_string_len_raw">new_string_len_raw</a></li>
@@ -1175,174 +1175,174 @@ int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 void* object = env->new_object(env, basic_type_id);
 </pre>
 
-      <h3 id="native-api-native-sub-api-new_barray_raw">new_barray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_byte_array_raw">new_byte_array_raw</h3>
       <p>
         配列の長さを指定して新しい「byte[]型」のオブジェクトを生成します。すべての要素の初期値は0です。
       </p>
 <pre>
-void* (*new_barray_raw)(SPVM_ENV* env, int32_t length);
+void* (*new_byte_array_raw)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_barrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_byte_arrayを使用してください。
       </p>
 
-      <h3 id="native-api-native-sub-api-new_barray">new_barray</h3>
+      <h3 id="native-api-native-sub-api-new_byte_array">new_byte_array</h3>
       <p>
         配列の長さを指定して新しい「byte[]型」のオブジェクトを生成し、返却します。すべての要素の初期値は0です。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_barray)(SPVM_ENV* env, int32_t length);
+void* (*new_byte_array)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* byte_array_obj = env->new_barray(env, 100);
+void* byte_array_obj = env->new_byte_array(env, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_sarray_raw">new_sarray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_short_array_raw">new_short_array_raw</h3>
       <p>
         配列の長さを指定して新しい「short[]型」のオブジェクトを生成します。すべての要素の初期値は0です。
       </p>
 <pre>
-void* (*new_sarray_raw)(SPVM_ENV* env, int32_t length);
+void* (*new_short_array_raw)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_sarrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_short_arrayを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_sarray">new_sarray</h3>
+      <h3 id="native-api-native-sub-api-new_short_array">new_short_array</h3>
       <p>
         配列の長さを指定して新しい「short[]型」のオブジェクトを生成し、返却します。すべての要素の初期値は0です。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_sarray)(SPVM_ENV* env, int32_t length);
+void* (*new_short_array)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* short_array_obj = env->new_sarray(env, 100);
+void* short_array_obj = env->new_short_array(env, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_iarray_raw">new_iarray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_int_array_raw">new_int_array_raw</h3>
       <p>
         配列の長さを指定して新しい「int[]型」のオブジェクトを生成します。すべての要素の初期値は0です。
       </p>
 <pre>
-void* (*new_iarray_raw)(SPVM_ENV* env, int32_t length);
+void* (*new_int_array_raw)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_iarrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_int_arrayを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_iarray">new_iarray</h3>
+      <h3 id="native-api-native-sub-api-new_int_array">new_int_array</h3>
       <p>
         配列の長さを指定して新しい「int[]型」のオブジェクトを生成し、返却します。すべての要素の初期値は0です。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_iarray)(SPVM_ENV* env, int32_t length);
+void* (*new_int_array)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* int_array_obj = env->new_iarray(env, 100);
+void* int_array_obj = env->new_int_array(env, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_larray_raw">new_larray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_long_array_raw">new_long_array_raw</h3>
       <p>
         配列の長さを指定して新しい「long[]型」のオブジェクトを生成します。すべての要素の初期値は0です。
       </p>
 <pre>
-void* (*new_larray_raw)(SPVM_ENV* env, int32_t length);
+void* (*new_long_array_raw)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_larrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_long_arrayを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_larray">new_larray</h3>
+      <h3 id="native-api-native-sub-api-new_long_array">new_long_array</h3>
       <p>
         配列の長さを指定して新しい「long[]型」のオブジェクトを生成し、返却します。すべての要素の初期値は0です。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_larray)(SPVM_ENV* env, int32_t length);
+void* (*new_long_array)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* long_array_obj = env->new_larray(env, 100);
+void* long_array_obj = env->new_long_array(env, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_farray_raw">new_farray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_float_array_raw">new_float_array_raw</h3>
       <p>
         配列の長さを指定して新しい「float[]型」のオブジェクトを生成します。すべての要素の初期値は0です。
       </p>
 <pre>
-void* (*new_farray_raw)(SPVM_ENV* env, int32_t length);
+void* (*new_float_array_raw)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_farrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_float_arrayを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_farray">new_farray</h3>
+      <h3 id="native-api-native-sub-api-new_float_array">new_float_array</h3>
       <p>
         配列の長さを指定して新しい「float[]型」のオブジェクトを生成し、返却します。すべての要素の初期値は0です。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_farray)(SPVM_ENV* env, int32_t length);
+void* (*new_float_array)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* float_array_obj = env->new_farray(env, 100);
+void* float_array_obj = env->new_float_array(env, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_darray_raw">new_darray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_double_array_raw">new_double_array_raw</h3>
       <p>
         配列の長さを指定して新しい「double[]型」のオブジェクトを生成します。すべての要素の初期値は0です。
       </p>
 <pre>
-void* (*new_darray_raw)(SPVM_ENV* env, int32_t length);
+void* (*new_double_array_raw)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_darrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_double_arrayを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_darray">new_darray</h3>
+      <h3 id="native-api-native-sub-api-new_double_array">new_double_array</h3>
       <p>
         配列の長さを指定して新しい「double[]型」のオブジェクトを生成し、返却します。すべての要素の初期値は0です。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_darray)(SPVM_ENV* env, int32_t length);
+void* (*new_double_array)(SPVM_ENV* env, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
-void* double_array_obj = env->new_darray(env, 100);
+void* double_array_obj = env->new_double_array(env, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_oarray_raw">new_oarray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_object_array_raw">new_object_array_raw</h3>
       <p>
         基本型IDと配列の長さを指定して新しいオブジェクト型の配列を生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでなければなりません。すべての要素の初期値はNULLです。
       </p>
 <pre>
-void* (*new_oarray_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+void* (*new_object_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 </pre>
 
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_oarrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_object_arrayを使用してください。
       </p>
 
-      <h3 id="native-api-native-sub-api-new_oarray">new_oarray</h3>
+      <h3 id="native-api-native-sub-api-new_object_array">new_object_array</h3>
       <p>
         基本型IDと配列の長さを指定して新しいオブジェクト型の配列を生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでなければなりません。すべての要素の初期値はNULLです。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_oarray)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+void* (*new_object_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 </pre>
 
       <p>
@@ -1350,26 +1350,26 @@ void* (*new_oarray)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
       </p>
 <pre>
 int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
-void* object_array_obj = env->new_oarray(env, basic_type_id, 100);
+void* object_array_obj = env->new_object_array(env, basic_type_id, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_marray_raw">new_marray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_muldim_array_raw">new_muldim_array_raw</h3>
       <p>
         基本型IDと要素の型の次元と配列の長さを指定して新しい多次元のオブジェクト型の配列を生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでなければなりません。すべての要素の初期値はNULLです。
       </p>
 <pre>
-void* (*new_marray_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+void* (*new_muldim_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_marrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_muldim_arrayを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_marray">new_marray</h3>
+      <h3 id="native-api-native-sub-api-new_muldim_array">new_muldim_array</h3>
       <p>
         基本型IDと要素の型の次元と配列の長さを指定して新しい多次元のオブジェクト型の配列を生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでなければなりません。すべての要素の初期値はNULLです。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_marray_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
+void* (*new_muldim_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 </pre>
       <p>
         要素の型の次元は、255より小さくなければなりません。
@@ -1380,33 +1380,33 @@ void* (*new_marray_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_di
 <pre>
 // new SPVM::Int[][][100]
 int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
-void* multi_array_obj = env->new_marray(env, basic_type_id, 2, 100);
+void* multi_array_obj = env->new_muldim_array(env, basic_type_id, 2, 100);
 </pre>
       
-      <h3 id="native-api-native-sub-api-new_varray_raw">new_varray_raw</h3>
+      <h3 id="native-api-native-sub-api-new_mulnum_array_raw">new_mulnum_array_raw</h3>
       <p>
         基本型IDと配列の長さを指定して新しい複数数値型の配列を生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでかつ、複合数値型として有効でなければなりません。すべての要素のすべてのフィールどの初期値は0です。
       </p>
 <pre>
-void* (*new_varray_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+void* (*new_mulnum_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 </pre>
       <p>
-        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_varrayを使用してください。
+        この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_mulnum_arrayを使用してください。
       </p>
       
-      <h3 id="native-api-native-sub-api-new_varray">new_varray</h3>
+      <h3 id="native-api-native-sub-api-new_mulnum_array">new_mulnum_array</h3>
       <p>
         基本型IDと配列の長さを指定して新しい複数数値型の配列を生成し、返却します。基本型IDは「basic_type_id関数」で取得した、正しい基本型IDでかつ、複合数値型として有効でなければなりません。すべての要素のすべてのフィールどの初期値は0です。
       </p>
 <pre>
-void* (*new_varray)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
+void* (*new_mulnum_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 </pre>
       <p>
         サンプル:
       </p>
 <pre>
 int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Complex_2d");
-void* value_array_obj = env->new_varray(env, basic_type_id, 100);
+void* value_array_obj = env->new_mulnum_array(env, basic_type_id, 100);
 </pre>
       
       <h3 id="native-api-native-sub-api-new_string_raw">new_string_raw</h3>

@@ -205,10 +205,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::CORE->test_contains);
 }
 
-# new_oarray_proto
+# new_object_array_proto
 {
   # sliceb
-  ok(TestCase::Lib::SPVM::CORE->test_new_oarray_proto);
+  ok(TestCase::Lib::SPVM::CORE->test_new_object_array_proto);
 }
 
 # slice
