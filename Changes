@@ -14,6 +14,7 @@
   - rename native and exchange api new_oarray to new_object_array
   - rename native and exchange api new_marray to new_muldim_array
   - rename native and exchange api new_varray to new_mulnum_array
+  - allow Foo contains use Foo.
   
 0.0443 2019-11-08
   - warn become keyword and add file and line number to the last of the message.

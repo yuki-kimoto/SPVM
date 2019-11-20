@@ -1,6 +1,8 @@
 package SPVM::IO::File {
   use SPVM::IO::FileHandle;
   
+  allow SPVM::IO::Stdout;
+  
   our $SEEK_SET : ro int;
   our $SEEK_CUR : ro int;
   our $SEEK_END : ro int;

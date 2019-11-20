@@ -2215,6 +2215,12 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   allow->op_type = op_type;
   op_allow->uv.allow = allow;
   
+  // add use stack
+  SPVM_TYPE* type_use = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
+  SPVM_OP* op_type_use = SPVM_OP_new_op_type(compiler, type_use, op_type->file, op_type->line);
+  SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_type->file, op_type->line);
+  SPVM_OP_build_use(compiler, op_use, op_type_use, NULL, 0);
+  
   return op_allow;
 }
 
