@@ -299,8 +299,8 @@ SPVM::Test - SPVM test module
       $values_point_short->[0]{x} = (short)INT16_MIN();
       $values_point_int->[0]{x} = INT32_MIN();
       $values_point_long->[0]{x} = INT64_MIN();
-      $values_point_float->[0]{x} = FLT_MIN();
-      $values_point_double->[0]{x} = DBL_MIN();
+      $values_point_float->[0]{x} = 1.5f;
+      $values_point_double->[0]{x} = 1.25;
 
       my $value_byte2 = ++$values_point_byte->[0]{x};
       my $value_short2 = ++$values_point_short->[0]{x};
@@ -360,7 +360,7 @@ SPVM::Test - SPVM test module
     {
       my $point1 : TestCase::Point_3d;
       
-      $point1->{x} = DBL_MIN();
+      $point1->{x} = 1.25;
       $point1->{y} = 0.5;
       $point1->{z} = 0.125;
       
@@ -368,7 +368,7 @@ SPVM::Test - SPVM test module
       
       my $point2 = $$point1_ref;
       
-      if ($point2->{x} == DBL_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+      if ($point2->{x} == 1.25 && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
         1;
       }
     }
@@ -1855,6 +1855,20 @@ SPVM::Test - SPVM test module
     print($nums->[0] . "\n");
     print($nums->[1] . "\n");
   }
+
+  sub INT8_MIN : byte () { return -128; }
+  sub INT8_MAX : byte () { return 127; }
+
+  sub INT16_MIN : short () { return -32768; }
+  sub INT16_MAX : short () { return 32767; }
+
+  sub INT32_MIN : int () { return -2147483648; }
+  sub INT32_MAX : int () { return 2147483647; }
+
+  sub UINT32_MAX : long () { return 4294967295L; }
+
+  sub INT64_MIN : long () { return -9223372036854775808L; }
+  sub INT64_MAX : long () { return 9223372036854775807L; }
 }
 
 =head1 NAME

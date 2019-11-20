@@ -21,20 +21,6 @@
 #include <spvm_native.h>
 
 int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__warn(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT8_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT8_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT16_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT16_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT32_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT32_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT64_MIN(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__INT64_MAX(SPVM_ENV* env, SPVM_VALUE* stack);
-int32_t SPNATIVE__SPVM__CORE__init_native_constants(SPVM_ENV* env, SPVM_VALUE* stack);
 
 int32_t main(int32_t argc, const char *argv[]) {
   
@@ -79,109 +65,10 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Bind native subroutine
   {
     const char* package_name = "SPVM::CORE";
-    const char* sub_name = "init_native_constants";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__init_native_constants;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
     const char* sub_name = "print";
     SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
     SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
     runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__print;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "warn";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__warn;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT8_MIN";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT8_MIN;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT8_MAX";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT8_MAX;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT16_MIN";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT16_MIN;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT16_MAX";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT16_MAX;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT32_MIN";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT32_MIN;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT32_MAX";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT32_MAX;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT64_MIN";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT64_MIN;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "INT64_MAX";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__INT64_MAX;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "FLT_MAX";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__FLT_MAX;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "FLT_MIN";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__FLT_MIN;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "DBL_MAX";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__DBL_MAX;
-  }
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "DBL_MIN";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__DBL_MIN;
   }
 #endif
   

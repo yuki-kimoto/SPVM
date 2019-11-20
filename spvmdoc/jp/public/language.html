@@ -459,6 +459,8 @@ packages
 package
   : PACKAGE basic_type package_block
   | PACKAGE basic_type ':' opt_descriptors package_block
+  | PACKAGE basic_type ';'
+  | PACKAGE basic_type ':' opt_descriptors ';'
 
 package_block
   : '{' opt_declarations '}'

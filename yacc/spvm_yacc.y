@@ -110,6 +110,14 @@ package
     {
       $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
     }
+  | PACKAGE basic_type ';'
+    {
+      $$ = SPVM_OP_build_package(compiler, $1, $2, NULL, NULL);
+    }
+  | PACKAGE basic_type ':' opt_descriptors ';'
+    {
+      $$ = SPVM_OP_build_package(compiler, $1, $2, NULL, $4);
+    }
 
 package_block
   : '{' opt_declarations '}'
