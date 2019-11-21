@@ -427,6 +427,7 @@ const char* const SPVM_OPCODE_C_ID_NAMES[] = {
   "SET_CROAK_FLAG_TRUE",
   "DIE",
   "WARN",
+  "PRINT",
   "REF",
   "REF_BYTE",
   "REF_SHORT",

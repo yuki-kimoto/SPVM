@@ -4271,6 +4271,20 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
+      case SPVM_OPCODE_C_ID_PRINT: {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* bytes = (const char*)env->get_elems_byte(env, object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = env->length(env, object);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    for (int32_t i = 0; i < string_length; i++) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      putc(bytes[i], stderr);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_RETURN_VOID:
       {
         SPVM_STRING_BUFFER_add(string_buffer, "  goto L");

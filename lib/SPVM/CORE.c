@@ -880,21 +880,6 @@ int32_t SPNATIVE__SPVM__CORE__get_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  void* string = stack[0].oval;
-  
-  const char* bytes = (const char*)env->get_elems_byte(env, string);
-  int32_t string_length = env->length(env, string);
-  
-  for (int32_t i = 0; i < string_length; i++) {
-    putchar(bytes[i]);
-  }
-  
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__CORE__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

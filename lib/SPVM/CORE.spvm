@@ -3,7 +3,7 @@ package SPVM::CORE {
   # NOTE
   # SPVM::CORE is core function of SPVM
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
-  # Don't use any system calls except for standard I/O and standard error.
+  # Don't use any system calls except for print or warn statement.
   
   precompile sub chomp_lf : string ($string : string) {
     unless ($string) {
@@ -685,8 +685,6 @@ package SPVM::CORE {
   native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
   native sub new_object_array_proto : oarray ($proto_array : oarray, $length : int);
-
-  native sub print : void ($value : string);
 
   sub PI : double () { return 3.14159265358979323846; }
 

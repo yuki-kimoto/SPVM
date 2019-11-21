@@ -115,7 +115,6 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "CONDITION",
   "CONDITION_NOT",
   "DIE",
-  "WARN",
   "SWITCH",
   "CASE",
   "DEFAULT",
@@ -178,6 +177,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "ALLOW",
   "BREAK",
   "WARN",
+  "PRINT",
 };
 
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current, SPVM_OP* op_package_dist) {
@@ -1221,6 +1221,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_BREAK:
     case SPVM_OP_C_ID_DIE:
     case SPVM_OP_C_ID_WARN:
+    case SPVM_OP_C_ID_PRINT:
     {
       // Dummy int variable
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
@@ -3029,6 +3030,13 @@ SPVM_OP* SPVM_OP_build_warn(SPVM_COMPILER* compiler, SPVM_OP* op_warn, SPVM_OP* 
   SPVM_OP_insert_child(compiler, op_warn, op_warn->last, op_term);
   
   return op_warn;
+}
+
+SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP* op_term) {
+  
+  SPVM_OP_insert_child(compiler, op_print, op_print->last, op_term);
+  
+  return op_print;
 }
 
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {

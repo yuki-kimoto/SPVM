@@ -144,20 +144,6 @@ SPVM::CORE is SPVM core functions.
     my $found_offset = index("pppabcde", "bcd", 2);
   }
 
-  # print a string to STDOUT
-  {
-    print("Hello\n");
-  }
-
-  # print a string to STDERR
-  {
-    # print a string to STDERR
-    warn("Hello\n");
-    
-    # print a string to STDERR with line number
-    warn("Hello");
-  }
-
 =head1 CLASS METHODS
 
 =head2 chomp_lf
@@ -787,12 +773,6 @@ If copy is not in the valid rainge, a exception occurs.
   sub new_object_array_proto : oarray ($proto_array : oarray, $length : int)
 
 Create a new generic object array as the same type as the given array.
-
-=head2 print
-
-  sub print : void ($string : string);
-
-Print a string to stdout.
 
 =head2 rand
 

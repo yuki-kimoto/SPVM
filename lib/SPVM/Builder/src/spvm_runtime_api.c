@@ -3408,6 +3408,18 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         break;
       }
+      case SPVM_OPCODE_C_ID_PRINT: {
+        void* object = object_vars[opcode->operand0];
+        
+        const char* bytes = (const char*)env->get_elems_byte(env, object);
+        int32_t string_length = env->length(env, object);
+        
+        for (int32_t i = 0; i < string_length; i++) {
+          putc(bytes[i], stdout);
+        }
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_RETURN_VOID:
       {
         opcode_rel_index = opcode->operand1;

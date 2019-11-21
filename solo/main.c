@@ -20,8 +20,6 @@
 
 #include <spvm_native.h>
 
-int32_t SPNATIVE__SPVM__CORE__print(SPVM_ENV* env, SPVM_VALUE* stack);
-
 int32_t main(int32_t argc, const char *argv[]) {
   
   // Package name
@@ -59,18 +57,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
-
-#ifndef SPVM_DONT_USE_CORE_LIB
-
-  // Bind native subroutine
-  {
-    const char* package_name = "SPVM::CORE";
-    const char* sub_name = "print";
-    SPVM_RUNTIME_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name); SPVM_RUNTIME_PACKAGE* package = &runtime->packages[basic_type->package_id];
-    SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
-    runtime->sub_cfunc_addresses[sub->id] = SPNATIVE__SPVM__CORE__print;
-  }
-#endif
   
   // Call begin blocks
   SPVM_RUNTIME_API_call_begin_blocks(env);

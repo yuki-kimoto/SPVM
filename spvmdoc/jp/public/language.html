@@ -365,7 +365,7 @@ $
         SPVMにおけるキーワードは以下です。
       </p>
 <pre>
-allow byte BEGIN case die warn default double elsif else enum eq
+allow byte BEGIN case die warn print default double elsif else enum eq
 eval for float gt ge has if callback_t isa int last break length
 lt le long my native ne next new our object package private
 public precompile pointer_t return require rw ro self switch
@@ -583,6 +583,7 @@ statement
   | DIE expression ';'
   | WARN ';'
   | WARN expression ';'
+  | PRINT expression ';'
   | weaken_field ';'
   | unweaken_field ';'
   | ';'
@@ -993,6 +994,9 @@ sub_names
           <td>WARN</td><td>warn</td>
         </tr>
         <tr>
+          <td>PRINT</td><td>print</td>
+        </tr>
+        <tr>
           <td>CURRENT_PACKAGE</td><td>__PACKAGE__</td>
         </tr>
         <tr>
@@ -1336,7 +1340,7 @@ package Foo {
   }
   
   sub DESTROY : void ($self : self) {
-    print("DESTROY");
+    print "DESTROY";
   }
 }
 </pre>
@@ -1439,7 +1443,7 @@ if (require Foo) {
   $foo = new Foo;
 }
 else {
-  warn("Warning: Can't load Foo");
+  warn "Warning: Can't load Foo";
 }
 </pre>
 
@@ -2583,6 +2587,17 @@ warn 式;
       </p>
       <p>
         末尾が改行文字でない場合は、末尾にファイル名と行番号が追加され、標準エラー出力されます。
+      </p>
+
+      <h2 id="language-print">print文</h2>
+      <p>
+        標準出力に文字列を出力するにはprint文を使用します。
+      </p>
+<pre>
+print 式;
+</pre>
+      <p>
+        式は、<a href="#language-type-string-compatible">文字列互換型</a>でなければなりません。
       </p>
 
       <h2 id="language-exception">例外処理</h2>
@@ -6167,13 +6182,13 @@ else {
 my $flag = 1;
 
 if ($flag == 1) {
-  print("One\n");
+  print "One\n";
 }
 elsif ($flag == 2) {
-  print("Tow\n");
+  print "Tow\n";
 }
 else {
-  print("Other");
+  print "Other";
 }
 </pre>
       <p>
@@ -6341,25 +6356,25 @@ switch (条件式) {
 my $code = 2;
 switch ($code) {
   case 1: {
-    print("1\n");
+    print "1\n";
     break;
   }
   case 2: {
-    print("2\n");
+    print "2\n";
     break;
   }
   case 3: {
-    print("3\n");
+    print "3\n";
     break;
   }
   case 4:
   case 5:
   {
-    print("4 or 5\n"); {
+    print "4 or 5\n"; {
     break;
   }
   default: {
-    print("Other\n");
+    print "Other\n";
   }
 }
 </pre>
@@ -6396,7 +6411,7 @@ while (条件式) {
 my $i = 0;
 while ($i < 5) {
   
-  print("$i\n");
+  print "$i\n";
   
   $i++;
 }
@@ -6422,7 +6437,7 @@ while ($i < 5) {
     next;
   }
   
-  print("$i\n");
+  print "$i\n";
   $i++;
 }
 </pre>
@@ -6499,7 +6514,7 @@ for (初期化式; 条件式; インクリメント式) {
 <pre>
 for (my $i = 0; $i < 5; $i++) {
   
-  print("$i\n");
+  print "$i\n";
 }
 </pre>
       <p>

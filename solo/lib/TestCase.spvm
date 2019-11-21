@@ -180,10 +180,10 @@ SPVM::Test - SPVM test module
       print("$concat_constant\n");
     }
     
-    print(TestCase::Simple->file . "\n");
-    print(__FILE__ . "\n");
-    print(__LINE__ . "\n");
-    print(__PACKAGE__ . "\n");
+    print TestCase::Simple->file . "\n";
+    print __FILE__ . "\n";
+    print __LINE__ . "\n";
+    print __PACKAGE__ . "\n";
     
     {
       my $minimal = TestCase::Minimal->new;
