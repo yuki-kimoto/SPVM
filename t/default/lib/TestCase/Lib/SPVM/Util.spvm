@@ -536,17 +536,6 @@ package TestCase::Lib::SPVM::Util {
       $@ = undef;
     }
     {
-      # Redundant argument
-      eval {
-        sprintf("%d", 1, 2);
-      };
-      unless ($@ && contains($@, "Redundant argument in sprintf")) {
-        warn("got error: $@");
-        return 0;
-      }
-      $@ = undef;
-    }
-    {
       # Missing argument
       eval {
         sprintf("%d%d", 1);

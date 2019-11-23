@@ -303,10 +303,6 @@ package SPVM::Util {
       ++$arg_count;
     }
 
-    if ($arg_count < @$args) {
-      die "Redundant argument in sprintf";
-    }
-
     my $result = $buffer->to_string;
     return $result;
   }
