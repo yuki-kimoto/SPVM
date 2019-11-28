@@ -13,10 +13,7 @@ package TestCase {
   use TestCase::Comparator;
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
-  use SPVM::Complex_2d;
-  use SPVM::Comparator;
   use TestCase::Minimal::XGetter;
-
   use TestCase::Point_3b;
   use TestCase::Point_3s;
   use TestCase::Point_3i;
@@ -271,7 +268,7 @@ SPVM::Test - SPVM test module
       
       print($ret . "\n");
       
-      my $comparator : SPVM::Comparator = $cb_obj;
+      my $comparator : TestCase::Comparator = $cb_obj;
       
       my $ret2 = $comparator->(undef, undef);
       
