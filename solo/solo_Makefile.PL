@@ -39,20 +39,11 @@ my $object_dir = 'solo';
 my $cccmd = "cc -c @defines $ccflags $optimize";
 my $ldcmd = "cc ";
 
-my @shared_libs;
-unless (grep { $_ eq '-DSPVM_DONT_USE_CORE_LIB' } @defines) {
-  @shared_libs = (
-    'blib/lib/SPVM/CORE.so',
-    'blib/lib/SPVM/CORE.precompile.so',
-    'blib/lib/SPVM/IO/FileHandle.so',
-  )
-}
-
 my $makefile = <<"EOS";
 
 all:
 	$cccmd -o solo/main.o solo/main.c
-	$ldcmd -o solo/main -lm -o solo/main solo/main.o @object_files @shared_libs
+	$ldcmd -o solo/main -lm -o solo/main solo/main.o @object_files
 
 test:
 	$cccmd -o solo/t/spvm_t_list solo/t/spvm_t_list.c spvm_list.o spvm_util_allocator.o

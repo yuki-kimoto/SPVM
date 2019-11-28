@@ -70,6 +70,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
     SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
     SPVM_LIST_push(compiler->op_use_stack, op_use);
   }
+#endif
 
   // use SPVM::Byte module
   {
@@ -142,8 +143,6 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
     SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
     SPVM_LIST_push(compiler->op_use_stack, op_use);
   }
-
-#endif
 
   return compiler;
 }
