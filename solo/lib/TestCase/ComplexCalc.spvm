@@ -1,6 +1,4 @@
 package TestCase::ComplexCalc {
-  use SPVM::Complex_2d;
-  
   sub add : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
     my $z3 : SPVM::Complex_2d;
     
