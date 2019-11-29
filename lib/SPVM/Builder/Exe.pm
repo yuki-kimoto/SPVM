@@ -292,19 +292,12 @@ sub link_executable {
   
   my $native_object_files = [];
   my $native_package_names = $builder->get_native_package_names;
-  my $core_native_object_file;
   for my $native_package_name (@$native_package_names) {
     my $category = 'native';
     my $native_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($native_package_name, $category, 'o');
     my $native_object_file = "$build_dir/work/exe/object/$native_object_rel_file";
-    if ($native_package_name eq 'SPVM::CORE') {
-      $core_native_object_file = $native_object_file;
-    }
-    else {
-      push @$native_object_files, $native_object_file;
-    }
+    push @$native_object_files, $native_object_file;
   }
-  push @$object_files, $core_native_object_file;
   push @$object_files, @$native_object_files;
   
   my $precompile_object_files = [];
