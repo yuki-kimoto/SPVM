@@ -536,6 +536,7 @@ opt_args
 
 args
   : args ',' arg
+  | args ','
   | arg
 
 arg
@@ -836,6 +837,7 @@ opt_sub_names
 
 sub_names
   : sub_names ',' sub_name
+  | sub_names ','
   | sub_name
 %%
 </pre>

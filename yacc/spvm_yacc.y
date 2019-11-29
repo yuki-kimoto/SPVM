@@ -249,9 +249,6 @@ enumeration_values
       $$ = op_list;
     }
   | enumeration_values ','
-    {
-      $$ = $1;
-    }
   | enumeration_value
   
 enumeration_value
@@ -370,6 +367,7 @@ args
       
       $$ = op_list;
     }
+  | args ','
   | arg
 
 arg
@@ -1227,6 +1225,7 @@ sub_names
       
       $$ = op_list;
     }
+  | sub_names ','
   | sub_name
 
 %%

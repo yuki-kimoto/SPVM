@@ -17,7 +17,7 @@ package TestCase::Lib::SPVM::CORE {
     copy_iarray,
     copy_larray,
     copy_farray,
-    copy_darray
+    copy_darray,
   );
   
   sub test_chomp_lf : int () {
