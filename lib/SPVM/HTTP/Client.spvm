@@ -5,7 +5,7 @@ package SPVM::HTTP::Client {
   use SPVM::ByteList;
   use SPVM::ObjectList;
   use SPVM::Sort (sortstr);
-  use SPVM::Util (lc, joinb, join);
+  use SPVM::Util (lc, joinb, join, strtoi);
   
   has default_headers : public SPVM::Hash;
   has timeout : public double;
@@ -216,7 +216,7 @@ package SPVM::HTTP::Client::Handle {
   use SPVM::HTTP::Client::Response;
   use SPVM::IO::ClientSocketTCP;
   use SPVM::StringBuffer;
-  use SPVM::Util (lc);
+  use SPVM::Util (lc, strtoi);
 
   has timeout : public double;
   has socket : public SPVM::IO::ClientSocketTCP;

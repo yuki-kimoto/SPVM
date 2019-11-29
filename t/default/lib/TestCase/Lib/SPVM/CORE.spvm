@@ -58,6 +58,15 @@ package TestCase::Lib::SPVM::CORE {
     PI,
     rand,
     random,
+    contains,
+    replace,
+    replace_all,
+    rindex,
+    strtod,
+    strtof,
+    strtoi,
+    strtol,
+    
   );
   
   sub test_chomp_lf : int () {

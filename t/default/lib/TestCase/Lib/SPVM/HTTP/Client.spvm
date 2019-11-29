@@ -3,6 +3,7 @@ package TestCase::Lib::SPVM::HTTP::Client {
   use SPVM::Hash;
   use SPVM::IO::File;
   use SPVM::StringBuffer;
+  use SPVM::Util (strtoi);
 
   sub test_get : int () {
     my $client = SPVM::HTTP::Client->new_opt([(object)

@@ -2,7 +2,7 @@ package TestCase::Lib::SPVM::Util {
   use SPVM::Util(joino, split, copy_oarray, equals_oarray, sprintf);
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
-  use SPVM::Util (equals_strarray);
+  use SPVM::Util (equals_strarray, contains);
 
   sub test_equals_oarray : int () {
     my $minimal1 = TestCase::Minimal->new;

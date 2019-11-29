@@ -6,6 +6,7 @@ package TestCase::JSON {
   use SPVM::JSON::Bool;
   use SPVM::Hash;
   use SPVM::Sort (sortstr);
+  use SPVM::Util (contains);
 
   our $DEFAULT_JSON : SPVM::JSON;
 
