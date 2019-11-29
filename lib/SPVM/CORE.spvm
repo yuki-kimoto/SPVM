@@ -5,83 +5,6 @@ package SPVM::CORE {
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for print or warn statement.
   
-  precompile sub sliceo : oarray ($elems : oarray, $offset : int, $length : int) {
-    
-    if ($elems == undef) {
-      die "Array must be defined";
-    }
-    
-    my $array_length = @$elems;
-    
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
-    }
-    
-    if ($length < 0) {
-      die "Length must be non-zero value";
-    }
-    
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
-    }
-    
-    my $slice = new_object_array_proto($elems, $length);
-    
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $elems->[$i];
-      $pos++;
-    }
-    
-    return $slice;
-  }
-  precompile sub copy_str : string ($string : string) {
-    my $bytes = (byte[])$string;
-    
-    return (string)$bytes;
-  }
-  precompile sub index : int ($str : string, $substr : string, $posision : int) {
-    my $strCount = length $str;
-    my $substrCount = length $substr;
-    
-    if ($posision >= $strCount) {
-      my $ret : int;
-      if ($substrCount == 0) {
-        $ret = $strCount;
-      }
-      else {
-        $ret = -1;
-      }
-      return $ret;
-    }
-    if ($posision < 0) {
-      $posision = 0;
-    }
-    if ($substrCount == 0) {
-      return $posision;
-    }
-
-    my $first : byte  = $substr->[0];
-    my $max : int = ($strCount - $substrCount);
-
-    for (my $i = $posision; $i <= $max; $i++) {
-      if ($str->[$i] != $first) {
-        while (++$i <= $max && $str->[$i] != $first) {}
-      }
-
-      if ($i <= $max) {
-        my $j = $i + 1;
-        my $end = $j + $substrCount - 1;
-        for (my $k = 01; $j < $end && $str->[$j] == $substr->[$k]; ($j++, $k++)) {}
-
-        if ($j == $end) {
-          return $i;
-        }
-      }
-    }
-    return -1;
-  }
-
   sub INT8_MIN : byte () { return -128; }
   sub INT8_MAX : byte () { return 127; }
 
@@ -101,21 +24,4 @@ package SPVM::CORE {
 
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
-
-  native sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
-  native sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
-  native sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
-  native sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
-  native sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
-  native sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
-
-  native sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
-  native sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
-  native sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
-  native sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
-  native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
-  native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
-
-  native sub new_object_array_proto : oarray ($proto_array : oarray, $length : int);
-
 }

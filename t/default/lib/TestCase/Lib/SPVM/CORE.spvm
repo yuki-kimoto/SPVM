@@ -79,6 +79,22 @@ package TestCase::Lib::SPVM::CORE {
     slicel,
     slicef,
     sliced,
+    copy_str,
+    index,
+    memcpyb,
+    memcpys,
+    memcpyi,
+    memcpyl,
+    memcpyf,
+    memcpyd,
+    memmoveb,
+    memmoves,
+    memmovei,
+    memmovel,
+    memmovef,
+    memmoved,
+    new_object_array_proto,
+    sliceo,
   );
   
   sub test_chomp_lf : int () {

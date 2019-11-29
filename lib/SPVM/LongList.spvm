@@ -1,4 +1,6 @@
 package SPVM::LongList {
+  use SPVM::Util (memcpyl, memmovel);
+  
   has values   : long[];
   has capacity : ro int;
   has length   : ro int;

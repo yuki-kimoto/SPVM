@@ -1,4 +1,6 @@
 package SPVM::FloatList {
+  use SPVM::Util (memcpyf, memmovef);
+  
   has values   : float[];
   has capacity : ro int;
   has length   : ro int;

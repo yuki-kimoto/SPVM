@@ -1,4 +1,6 @@
 package SPVM::ShortList {
+  use SPVM::Util (memcpys, memmoves);
+  
   has values   : short[];
   has capacity : ro int;
   has length   : ro int;

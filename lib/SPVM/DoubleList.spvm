@@ -1,4 +1,6 @@
 package SPVM::DoubleList {
+  use SPVM::Util (memcpyd, memmoved);
+  
   has values   : double[];
   has capacity : ro int;
   has length   : ro int;
