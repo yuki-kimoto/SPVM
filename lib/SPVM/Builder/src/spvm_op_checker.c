@@ -4908,22 +4908,6 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
           }
         }
       }
-      
-      // Search core functions
-      if (!found_sub) {
-        SPVM_PACKAGE* core_package = SPVM_HASH_fetch(compiler->package_symtable, "SPVM::CORE", strlen("SPVM::CORE"));
-        found_package = core_package;
-        if (core_package) {
-          found_sub = SPVM_HASH_fetch(
-            core_package->sub_symtable,
-            sub_name,
-            strlen(sub_name)
-          );
-        }
-        else {
-          found_sub = NULL;
-        }
-      }
     }
   }
   
