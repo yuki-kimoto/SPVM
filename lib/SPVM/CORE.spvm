@@ -5,37 +5,6 @@ package SPVM::CORE {
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for print or warn statement.
   
-  native sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
-  native sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
-  native sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
-  native sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
-  native sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
-  native sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
-
-  native sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
-  native sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
-  native sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
-  native sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
-  native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
-  native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
-
-  native sub new_object_array_proto : oarray ($proto_array : oarray, $length : int);
-
-  sub PI : double () { return 3.14159265358979323846; }
-
-  precompile sub rand : int ($seed_ref : int&) {
-    my $y = $$seed_ref;
-    $y = $y ^ ($y << 13);
-    $y = $y ^ ($y >>> 17);
-    $y = $y ^ ($y << 5);
-    return $y;
-  }
-
-  precompile sub random : double ($rand : int) {
-    my $random = (double)((long)$rand & 0xFFFFFFFFL) / (UINT32_MAX() + 1);
-    return $random;
-  }
-  
   precompile sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
     unless ($substr && length $substr > 0) {
       die "Sub string must have length";
@@ -508,4 +477,21 @@ package SPVM::CORE {
 
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
+
+  native sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
+
+  native sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
+
+  native sub new_object_array_proto : oarray ($proto_array : oarray, $length : int);
+
 }

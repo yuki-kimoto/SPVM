@@ -55,6 +55,9 @@ package TestCase::Lib::SPVM::CORE {
     lcfirst,
     uc,
     ucfirst,
+    PI,
+    rand,
+    random,
   );
   
   sub test_chomp_lf : int () {

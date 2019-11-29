@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::Math {
   use SPVM::Math;
+  use SPVM::Util(PI);
   
   sub test_pi : int () {
     my $pi = SPVM::Math->pi;
