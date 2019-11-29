@@ -133,7 +133,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::MIME::Base64');
     
     # Precompile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::CORE');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
