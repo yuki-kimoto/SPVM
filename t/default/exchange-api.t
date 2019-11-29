@@ -720,16 +720,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase->new_near_small_base_object_max_byte_size_use_memory_pool());
 }
 
-=pod
-is_deeply(
-  \@SPVM::PACKAGE_INFOS,
-  [
-    {name => 'TestCase', file => $file, line => $use_test_line},
-    {name => 'SPVM::CORE', file => $file, line => $use_core_line}
-  ]
-);
-=cut
-
 # SPVM new_object_array
 {
 
