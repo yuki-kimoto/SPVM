@@ -1,6 +1,7 @@
 package TestCase::Assign {
   use TestCase::Minimal;
   use TestCase::Simple;
+  use SPVM::Util (DBL_MIN, FLT_MIN);
   
   sub assign_ref : int () {
     my $num = 1;

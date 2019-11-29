@@ -32,6 +32,7 @@ my $NaN = 9**9**9 / 9**9**9;
 my $nan_re = qr/(nan|ind)/i;
 
 use SPVM 'TestCase::Lib::SPVM::CORE';
+use SPVM 'SPVM::Util';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
@@ -350,10 +351,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Constant floating point number functions
 {
-  is(SPVM::CORE->FLT_MAX, POSIX::FLT_MAX);
-  is(SPVM::CORE->FLT_MIN, POSIX::FLT_MIN);
-  is(SPVM::CORE->DBL_MAX, POSIX::DBL_MAX);
-  is(SPVM::CORE->DBL_MIN, POSIX::DBL_MIN);
+  is(SPVM::Util->FLT_MAX, POSIX::FLT_MAX);
+  is(SPVM::Util->FLT_MIN, POSIX::FLT_MIN);
+  is(SPVM::Util->DBL_MAX, POSIX::DBL_MAX);
+  is(SPVM::Util->DBL_MIN, POSIX::DBL_MIN);
 }
 
 {
@@ -374,8 +375,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 }
 {
   # Check not Inf or NaN in Perl value
-  like(SPVM::CORE->FLT_MAX(), qr/[0-9]/);
-  like(SPVM::CORE->FLT_MIN(), qr/[0-9]/);
+  like(SPVM::Util->FLT_MAX(), qr/[0-9]/);
+  like(SPVM::Util->FLT_MIN(), qr/[0-9]/);
 }
 
 # getenv

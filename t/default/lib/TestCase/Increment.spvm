@@ -6,6 +6,7 @@ package TestCase::Increment {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use SPVM::Util (FLT_MAX, DBL_MAX, FLT_MIN, DBL_MIN);
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;

@@ -116,6 +116,7 @@ sub MY::postamble {
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Util');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::FileHandle');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::File');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::ClientSocketTCP');
@@ -130,12 +131,11 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unistd');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::MIME::Base64');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Util');
     
     # Precompile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::CORE');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::JSON');
