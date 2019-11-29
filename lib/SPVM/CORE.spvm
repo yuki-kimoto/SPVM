@@ -5,198 +5,6 @@ package SPVM::CORE {
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for print or warn statement.
   
-  precompile sub copy_strarray : string[] ($strings : string[]) {
-    my $length = @$strings;
-    
-    my $new_strings = new string[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_strings->[$i] = copy_str($strings->[$i]);
-    }
-    
-    return $new_strings;
-  }
-
-  precompile sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-
-  precompile sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-  precompile sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
-    my $is_equals = 1;
-    if (@$nums1 == @$nums2) {
-      for (my $i = 0; $i < @$nums1; $i++) {
-        if ($nums1->[$i] != $nums2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-
-  precompile sub equals_strarray : int ($strings1 : string[], $strings2 : string[]) {
-    my $is_equals = 1;
-    if (@$strings1 == @$strings2) {
-      for (my $i = 0; $i < @$strings1; $i++) {
-        if ($strings1->[$i] ne $strings2->[$i]) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-    
-    return $is_equals;
-  }
-
-  sub E : double () { return 2.7182818284590452354; }
-
-  native sub get_type_name : string ($obj : object);
-  
-  precompile sub index : int ($str : string, $substr : string, $posision : int) {
-    my $strCount = length $str;
-    my $substrCount = length $substr;
-    
-    if ($posision >= $strCount) {
-      my $ret : int;
-      if ($substrCount == 0) {
-        $ret = $strCount;
-      }
-      else {
-        $ret = -1;
-      }
-      return $ret;
-    }
-    if ($posision < 0) {
-      $posision = 0;
-    }
-    if ($substrCount == 0) {
-      return $posision;
-    }
-
-    my $first : byte  = $substr->[0];
-    my $max : int = ($strCount - $substrCount);
-
-    for (my $i = $posision; $i <= $max; $i++) {
-      if ($str->[$i] != $first) {
-        while (++$i <= $max && $str->[$i] != $first) {}
-      }
-
-      if ($i <= $max) {
-        my $j = $i + 1;
-        my $end = $j + $substrCount - 1;
-        for (my $k = 01; $j < $end && $str->[$j] == $substr->[$k]; ($j++, $k++)) {}
-
-        if ($j == $end) {
-          return $i;
-        }
-      }
-    }
-    return -1;
-  }
-
-  sub INT8_MIN : byte () { return -128; }
-  sub INT8_MAX : byte () { return 127; }
-
-  sub INT16_MIN : short () { return -32768; }
-  sub INT16_MAX : short () { return 32767; }
-
-  sub INT32_MIN : int () { return -2147483648; }
-  sub INT32_MAX : int () { return 2147483647; }
-
-  sub UINT32_MAX : long () { return 4294967295L; }
-
-  sub INT64_MIN : long () { return -9223372036854775808L; }
-  sub INT64_MAX : long () { return 9223372036854775807L; }
-
-  native sub DBL_MAX : double ();
-  native sub DBL_MIN : double ();
-
-  native sub FLT_MAX : float ();
-  native sub FLT_MIN : float();
 
   precompile sub isalnum : int ($char : int) {
     
@@ -948,5 +756,65 @@ package SPVM::CORE {
     
     return (string)$bytes;
   }
-  
+  precompile sub index : int ($str : string, $substr : string, $posision : int) {
+    my $strCount = length $str;
+    my $substrCount = length $substr;
+    
+    if ($posision >= $strCount) {
+      my $ret : int;
+      if ($substrCount == 0) {
+        $ret = $strCount;
+      }
+      else {
+        $ret = -1;
+      }
+      return $ret;
+    }
+    if ($posision < 0) {
+      $posision = 0;
+    }
+    if ($substrCount == 0) {
+      return $posision;
+    }
+
+    my $first : byte  = $substr->[0];
+    my $max : int = ($strCount - $substrCount);
+
+    for (my $i = $posision; $i <= $max; $i++) {
+      if ($str->[$i] != $first) {
+        while (++$i <= $max && $str->[$i] != $first) {}
+      }
+
+      if ($i <= $max) {
+        my $j = $i + 1;
+        my $end = $j + $substrCount - 1;
+        for (my $k = 01; $j < $end && $str->[$j] == $substr->[$k]; ($j++, $k++)) {}
+
+        if ($j == $end) {
+          return $i;
+        }
+      }
+    }
+    return -1;
+  }
+
+  sub INT8_MIN : byte () { return -128; }
+  sub INT8_MAX : byte () { return 127; }
+
+  sub INT16_MIN : short () { return -32768; }
+  sub INT16_MAX : short () { return 32767; }
+
+  sub INT32_MIN : int () { return -2147483648; }
+  sub INT32_MAX : int () { return 2147483647; }
+
+  sub UINT32_MAX : long () { return 4294967295L; }
+
+  sub INT64_MIN : long () { return -9223372036854775808L; }
+  sub INT64_MAX : long () { return 9223372036854775807L; }
+
+  native sub DBL_MAX : double ();
+  native sub DBL_MIN : double ();
+
+  native sub FLT_MAX : float ();
+  native sub FLT_MIN : float();
 }
