@@ -1,5 +1,6 @@
 package SPVM::IO::File {
   use SPVM::IO::FileHandle;
+  use SPVM::Util (sliceb);
   
   allow SPVM::IO::Stdout;
   

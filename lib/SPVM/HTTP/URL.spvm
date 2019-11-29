@@ -1,6 +1,7 @@
 package SPVM::HTTP::URL {
   use SPVM::HTTP::URL::Escape;
   use SPVM::HTTP::URL::Parameters;
+  use SPVM::Util (sliceb);
 
   # [scheme:][//[host][/path][?query][#fragment]
   has scheme    : public string;

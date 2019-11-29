@@ -8,7 +8,7 @@ package SPVM::JSON {
   use SPVM::Math;
   use SPVM::Sort (sortstr);
   use SPVM::StringBuffer;
-  use SPVM::Util(isdigit, strtod);
+  use SPVM::Util(isdigit, strtod, substr);
   
   has canonical : rw byte;
 

@@ -73,7 +73,12 @@ package TestCase::Lib::SPVM::CORE {
     reversef,
     reversed,
     reverseo,
-    
+    sliceb,
+    slices,
+    slicei,
+    slicel,
+    slicef,
+    sliced,
   );
   
   sub test_chomp_lf : int () {

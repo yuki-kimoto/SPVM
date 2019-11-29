@@ -1,5 +1,6 @@
 package SPVM::HTTP::URL::Parameters {
   use SPVM::HTTP::URL::Escape;
+  use SPVM::Util (sliceb);
 
   has params : string[][];
   has size : int;

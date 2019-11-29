@@ -1,7 +1,7 @@
 package SPVM::HTTP::Client::CookieJar::CookieParser {
   use SPVM::Hash;
   use SPVM::Time;
-  use SPVM::Util(split, lc, strtol);
+  use SPVM::Util(split, lc, strtol, substr);
 
   has name : public string;
   has value : public string;
