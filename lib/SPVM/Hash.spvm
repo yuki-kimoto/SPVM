@@ -1,5 +1,6 @@
 package SPVM::Hash {
   use SPVM::Hash::Entry;
+  use SPVM::Util (INT32_MAX, copy_str);
 
   has bucket_count : int;
   has count : int;

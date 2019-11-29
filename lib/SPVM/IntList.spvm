@@ -1,4 +1,6 @@
 package SPVM::IntList {
+  use SPVM::Util (memcpyi, memmovei);
+  
   has values   : int[];
   has capacity : ro int;
   has length   : ro int;

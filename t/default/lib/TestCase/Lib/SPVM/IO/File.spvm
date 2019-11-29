@@ -1,6 +1,7 @@
 package TestCase::Lib::SPVM::IO::File {
   use SPVM::IO::File;
   use SPVM::StringList;
+  use SPVM::Util (chomp_lf);
 
   sub test_fileno : int ($file : string) {
     {

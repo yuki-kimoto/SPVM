@@ -1,5 +1,6 @@
 package SPVM::StringBuffer {
   use SPVM::Hash;
+  use SPVM::Util (sliceb);
 
   has value : byte[];
   has length : ro int;

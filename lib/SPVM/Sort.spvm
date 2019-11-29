@@ -1,5 +1,6 @@
 package SPVM::Sort {
   use SPVM::Comparator;
+  use SPVM::Util(new_object_array_proto);
 
   native sub sortb : void ($nums : byte[]);
   native sub sorts : void ($nums : short[]);

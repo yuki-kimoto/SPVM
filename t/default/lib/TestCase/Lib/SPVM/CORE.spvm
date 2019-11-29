@@ -5,6 +5,7 @@ package TestCase::Lib::SPVM::CORE {
   use SPVM::EqualityChecker;
   use SPVM::Util;
   use SPVM::EqualityChecker::Address;
+  use SPVM::Util (chomp_lf, chomp_crlf);
   
   sub test_chomp_lf : int () {
     {
