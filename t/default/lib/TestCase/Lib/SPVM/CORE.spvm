@@ -28,6 +28,23 @@ package TestCase::Lib::SPVM::CORE {
     equals_darray,
     equals_strarray,
     get_type_name,
+    is_perl_space,
+    is_perl_word,
+    isalnum,
+    isalpha,
+    isblank,
+    iscntrl,
+    isdigit,
+    isgraph,
+    islower,
+    isprint,
+    ispunct,
+    isspace,
+    isupper,
+    isxdigit,
+    tolower,
+    toupper,
+    
   );
   
   sub test_chomp_lf : int () {

@@ -6,6 +6,7 @@ package SPVM::Regex {
   use SPVM::StringBuffer;
   use SPVM::Regex::Replacer;
   use SPVM::Regex::Pattern;
+  use SPVM::Util (is_perl_word, isdigit);
 
   has patterns : SPVM::ObjectList;
   has string_start : int;
