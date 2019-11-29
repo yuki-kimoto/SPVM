@@ -44,7 +44,17 @@ package TestCase::Lib::SPVM::CORE {
     isxdigit,
     tolower,
     toupper,
-    
+    join,
+    joinb,
+    joins,
+    joini,
+    joinl,
+    joinf,
+    joind,
+    lc,
+    lcfirst,
+    uc,
+    ucfirst,
   );
   
   sub test_chomp_lf : int () {
