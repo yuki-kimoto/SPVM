@@ -66,6 +66,13 @@ package TestCase::Lib::SPVM::CORE {
     strtof,
     strtoi,
     strtol,
+    reverseb,
+    reverses,
+    reversei,
+    reversel,
+    reversef,
+    reversed,
+    reverseo,
     
   );
   
