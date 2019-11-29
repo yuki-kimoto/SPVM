@@ -192,6 +192,18 @@ lib/SPVM/IO/FileHandle.spvm
 lib/SPVM/IO/Select.c
 lib/SPVM/IO/Select.config
 lib/SPVM/IO/Select.spvm
+lib/SPVM/IO/Stderr.c
+lib/SPVM/IO/Stderr.config
+lib/SPVM/IO/Stderr.pm
+lib/SPVM/IO/Stderr.spvm
+lib/SPVM/IO/Stdin.c
+lib/SPVM/IO/Stdin.config
+lib/SPVM/IO/Stdin.pm
+lib/SPVM/IO/Stdin.spvm
+lib/SPVM/IO/Stdout.c
+lib/SPVM/IO/Stdout.config
+lib/SPVM/IO/Stdout.pm
+lib/SPVM/IO/Stdout.spvm
 lib/SPVM/JSON.pm
 lib/SPVM/JSON.spvm
 lib/SPVM/JSON/Bool.pm
@@ -261,6 +273,7 @@ solo/lib/TestCase/Callback1.spvm
 solo/lib/TestCase/Callback2.spvm
 solo/lib/TestCase/Comparator.spvm
 solo/lib/TestCase/ComparatorAnon.spvm
+solo/lib/TestCase/Complex_2d.spvm
 solo/lib/TestCase/ComplexCalc.spvm
 solo/lib/TestCase/Data/Weaken.spvm
 solo/lib/TestCase/Destructor.spvm
@@ -466,9 +479,6 @@ t/default/lib/TestCase/JSON/Bool.spvm
 t/default/lib/TestCase/LexicalVar.spvm
 t/default/lib/TestCase/Lib/SPVM/Byte.spvm
 t/default/lib/TestCase/Lib/SPVM/ByteList.spvm
-t/default/lib/TestCase/Lib/SPVM/CORE.c
-t/default/lib/TestCase/Lib/SPVM/CORE.config
-t/default/lib/TestCase/Lib/SPVM/CORE.spvm
 t/default/lib/TestCase/Lib/SPVM/Double.spvm
 t/default/lib/TestCase/Lib/SPVM/DoubleList.spvm
 t/default/lib/TestCase/Lib/SPVM/Errno.spvm
@@ -486,6 +496,8 @@ t/default/lib/TestCase/Lib/SPVM/IO/ClientSocketTCP.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/File.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/FileHandle.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/Select.spvm
+t/default/lib/TestCase/Lib/SPVM/IO/Stderr.spvm
+t/default/lib/TestCase/Lib/SPVM/IO/Stdout.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm

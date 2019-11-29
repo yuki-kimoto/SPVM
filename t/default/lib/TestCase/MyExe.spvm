@@ -35,7 +35,7 @@ package TestCase::MyExe {
     
     # join
     {
-      ok(TestCase::Lib::SPVM::CORE->test_join);
+      ok(TestCase::Lib::SPVM::Util->test_join);
     }
     
     # Import sub

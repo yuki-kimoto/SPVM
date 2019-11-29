@@ -1683,7 +1683,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             
             const char* found_sub_name = SPVM_HASH_fetch(package->sub_name_symtable, sub_name, strlen(sub_name));
             if (found_sub_name) {
-              SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_name, op_decl->file, op_decl->line);
+              SPVM_COMPILER_error(compiler, "Redeclaration of sub in use statement \"%s\" at %s line %d\n", sub_name, op_decl->file, op_decl->line);
             }
             // Unknown sub
             else {
