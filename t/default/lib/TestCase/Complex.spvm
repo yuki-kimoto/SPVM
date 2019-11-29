@@ -1,6 +1,7 @@
 package TestCase::Complex {
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
+  use SPVM::Util (complexf, complexd);
 
   sub test_cadd : int () {
     my $z_in1 = complexd(0.25, 0.5);
