@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::StringList {
   use SPVM::StringList;
+  use SPVM::Util (equals_strarray);
 
   sub newa : int () {
     {

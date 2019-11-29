@@ -18,6 +18,16 @@ package TestCase::Lib::SPVM::CORE {
     copy_larray,
     copy_farray,
     copy_darray,
+    E,
+    copy_strarray,
+    equals_barray,
+    equals_sarray,
+    equals_iarray,
+    equals_larray,
+    equals_farray,
+    equals_darray,
+    equals_strarray,
+    get_type_name,
   );
   
   sub test_chomp_lf : int () {

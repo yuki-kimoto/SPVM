@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::LongList {
   use SPVM::LongList;
+  use SPVM::Util (equals_larray);
 
   sub newa : int () {
     {

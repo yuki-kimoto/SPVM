@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::ShortList {
   use SPVM::ShortList;
+  use SPVM::Util (equals_sarray);
 
   sub newa : int () {
     {

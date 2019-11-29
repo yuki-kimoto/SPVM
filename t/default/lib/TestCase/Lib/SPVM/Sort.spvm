@@ -1,7 +1,16 @@
 package TestCase::Lib::SPVM::Sort {
   use TestCase::Minimal;
   use SPVM::Sort(sortb, sorts, sorti, sortl, sortf, sortd, sorto, sortstr);
-  use SPVM::Util (equals_oarray);
+  use SPVM::Util (
+    equals_oarray,
+    equals_barray,
+    equals_sarray,
+    equals_iarray,
+    equals_larray,
+    equals_farray,
+    equals_darray,
+    equals_strarray,
+  );
   use SPVM::EqualityChecker::Address;
   
   sub test_sortb : int () {

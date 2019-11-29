@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::IntList {
   use SPVM::IntList;
+  use SPVM::Util (equals_iarray);
 
   sub newa : int () {
     {

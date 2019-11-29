@@ -1,6 +1,7 @@
 package TestCase::Lib::SPVM::IO::Select {
   use SPVM::IO::Select;
   use SPVM::IO::File (STDIN, STDOUT, STDERR);
+  use SPVM::Util (equals_iarray);
 
   sub add : int () {
     my $select = SPVM::IO::Select->new;

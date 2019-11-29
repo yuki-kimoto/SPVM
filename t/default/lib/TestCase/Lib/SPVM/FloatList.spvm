@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::FloatList {
   use SPVM::FloatList;
+  use SPVM::Util (equals_farray);
 
   sub newa : int () {
     {

@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::DoubleList {
   use SPVM::DoubleList;
+  use SPVM::Util (equals_darray);
 
   sub newa : int () {
     {

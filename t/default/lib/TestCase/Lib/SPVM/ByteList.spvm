@@ -1,5 +1,6 @@
 package TestCase::Lib::SPVM::ByteList {
   use SPVM::ByteList;
+  use SPVM::Util (equals_barray);
   
   sub newa : int () {
     {
