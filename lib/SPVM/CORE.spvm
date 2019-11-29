@@ -5,20 +5,6 @@ package SPVM::CORE {
   # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
   # Don't use any system calls except for print or warn statement.
   
-  sub INT8_MIN : byte () { return -128; }
-  sub INT8_MAX : byte () { return 127; }
-
-  sub INT16_MIN : short () { return -32768; }
-  sub INT16_MAX : short () { return 32767; }
-
-  sub INT32_MIN : int () { return -2147483648; }
-  sub INT32_MAX : int () { return 2147483647; }
-
-  sub UINT32_MAX : long () { return 4294967295L; }
-
-  sub INT64_MIN : long () { return -9223372036854775808L; }
-  sub INT64_MAX : long () { return 9223372036854775807L; }
-
   native sub DBL_MAX : double ();
   native sub DBL_MIN : double ();
 
