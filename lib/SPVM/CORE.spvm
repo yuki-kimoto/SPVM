@@ -6,8 +6,4 @@ package SPVM::CORE {
   # Don't use any system calls except for print or warn statement.
   
   native sub DBL_MAX : double ();
-  native sub DBL_MIN : double ();
-
-  native sub FLT_MAX : float ();
-  native sub FLT_MIN : float();
 }
