@@ -1,7 +1,0 @@
-package SPVM::CORE {
-  
-  # NOTE
-  # SPVM::CORE is core function of SPVM
-  # Don't use any ohter modules in SPVM::CORE except for default loaded modules.
-  # Don't use any system calls except for print or warn statement.
-}

@@ -137,10 +137,6 @@ lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
-lib/SPVM/CORE.c
-lib/SPVM/CORE.config
-lib/SPVM/CORE.pm
-lib/SPVM/CORE.spvm
 lib/SPVM/Document/Extension.pod
 lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm

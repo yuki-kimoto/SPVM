@@ -115,7 +115,6 @@ sub MY::postamble {
   
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::CORE');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Util');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::FileHandle');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::File');
