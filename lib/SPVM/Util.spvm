@@ -134,173 +134,178 @@ package SPVM::Util {
 
     my $buffer = SPVM::StringBuffer->new;
     my $arg_count = 0;
+    my $constant_string_length = 0;
 
-    while ($index < $format_length) {
+    while ($index + $constant_string_length < $format_length) {
 
-      my $normal_str_end = $index;
-
-      # Search the next specifier '%' until the end of $format.
-      while ($normal_str_end < $format_length) {
-        if ($format->[$normal_str_end] == '%') {
-          last;
-        }
-        else {
-          ++$normal_str_end;
-        }
+      if ($format->[$index + $constant_string_length] != '%') {
+        # Read constant string
+        ++$constant_string_length;
       }
+      elsif ($index + $constant_string_length + 1 < $format_length &&
+          $format->[$index + $constant_string_length + 1] == '%') {
+        # Read %%
+        ++$constant_string_length;
 
-      if ($normal_str_end < $format_length &&
-          $format->[$normal_str_end] == '%' &&
-          $normal_str_end + 1 == $format_length) {
+        # Add constant string
+        if ($constant_string_length > 0) {
+          $buffer->push_range($format, $index, $constant_string_length);
+          $index += $constant_string_length;
+          $constant_string_length = 0;
+        }
+
+        # Skip second %
+        ++$index;
+      }
+      elsif ($index + $constant_string_length + 1 >= $format_length) {
         die "Invalid conversion in sprintf: end of string";
       }
+      else {
+        # Add constant string
+        if ($constant_string_length > 0) {
+          $buffer->push_range($format, $index, $constant_string_length);
+          $index += $constant_string_length;
+          $constant_string_length = 0;
+        }
 
-      if ($normal_str_end + 1 < $format_length &&
-          $format->[$normal_str_end + 1] == '%') {
-        my $normal_str_length = $normal_str_end + 1 - $index;
-        $buffer->push_range($format, $index, $normal_str_length);
-        $index = $normal_str_end + 2;
-        next;
-      }
+        # Read format string
 
-      # Output the normal sub-string of $format.
-      if (my $normal_str_length = $normal_str_end - $index) {
-        $buffer->push_range($format, $index, $normal_str_length);
-        $index = $normal_str_end;
-      }
+        # Check the next element of @$args corresponding to the specifier
+        unless ($arg_count < @$args) {
+          die "Missing argument in sprintf";
+        }
 
-      unless ($index < $format_length) {
-        last;
-      }
+        # Read specifier %[flags][width][.precision][length]type
 
-      # Output the next element of $args corresponding to the specifier.
-      unless ($arg_count < @$args) {
-        die "Missing argument in sprintf";
-      }
+        my $specifier_base_index = $index;
+        ++$index; # '%'
 
-      # Read specifier %[flags][width][.precision][length]type
+        # Read `flags`
+        my $pad_char = ' ';
+        my $plus_sign = 0;
+        my $left_justified = 0;
 
-      my $specifier_base_index = $index;
-      ++$index; # '%'
-
-      # Read `flags`
-      my $pad_char = ' ';
-      my $plus_sign = 0;
-      my $left_justified = 0;
-
-      while ($index < $format_length) {
-        my $flag = (int)($format->[$index]);
-        switch($flag) {
-          case '0': {
-            ++$index;
-            $pad_char = '0';
-            break;
-          }
-          case '+': {
-            ++$index;
-            $plus_sign = 1;
-            break;
-          }
-          case '-': {
-            ++$index;
-            $left_justified = 1;
-            break;
-          }
-          default: {
-            last;
-            break;
+        while ($index < $format_length) {
+          my $flag = (int)($format->[$index]);
+          switch($flag) {
+            case '0': {
+              ++$index;
+              $pad_char = '0';
+              break;
+            }
+            case '+': {
+              ++$index;
+              $plus_sign = 1;
+              break;
+            }
+            case '-': {
+              ++$index;
+              $left_justified = 1;
+              break;
+            }
+            default: {
+              last;
+              break;
+            }
           }
         }
-      }
 
-      # Read `width`
-      my $width = 0;
-      while ($index < $format_length) {
-        my $c = $format->[$index];
-        if ($c < '0' || '9' < $c) {
-          last;
-        }
-        $width = $width * 10 + $c - '0';
-        ++$index;
-      }
-
-      # Read `precision` (just skip because type 'f' is printed by native sprintf)
-      if ($index < $format_length && $format->[$index] == '.') {
-        ++$index;
+        # Read `width`
+        my $width = 0;
         while ($index < $format_length) {
           my $c = $format->[$index];
           if ($c < '0' || '9' < $c) {
             last;
           }
+          $width = $width * 10 + $c - '0';
           ++$index;
         }
-      }
 
-      unless ($index < $format_length) {
-        die "Invalid conversion in sprintf: \""
-            . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
-      }
-
-      my $specifier_char = $format->[$index];
-      if ($specifier_char == 'c') {
-        ++$index;
-        my $arg = ((SPVM::Byte)$args->[$arg_count])->val;
-        my $str = _modify_specifier([$arg], $left_justified, $pad_char, $width);
-        $buffer->push($str);
-      }
-      elsif ($specifier_char == 's') {
-        ++$index;
-        my $arg = (string)$args->[$arg_count];
-        my $str = _modify_specifier($arg, $left_justified, $pad_char, $width);
-        $buffer->push($str);
-      }
-      elsif ($specifier_char == 'd') {
-        ++$index;
-        my $arg = ((SPVM::Int)$args->[$arg_count])->val;
-        my $s = "";
-        if ($plus_sign && $arg >= 0) {
-          $s = "+$arg";
-        } else {
-          $s = "$arg";
+        # Read `precision` (just skip because type 'f' is printed by native sprintf)
+        if ($index < $format_length && $format->[$index] == '.') {
+          ++$index;
+          while ($index < $format_length) {
+            my $c = $format->[$index];
+            if ($c < '0' || '9' < $c) {
+              last;
+            }
+            ++$index;
+          }
         }
-        my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
-        $buffer->push($str);
-      }
-      elsif ($specifier_char == 'l') {
-        unless ($index + 1 < $format_length && $format->[$index + 1] == 'd') {
+
+        unless ($index < $format_length) {
+          die "Invalid conversion in sprintf: \""
+              . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
+        }
+
+        my $specifier_char = $format->[$index];
+        if ($specifier_char == 'c') {
+          ++$index;
+          my $arg = ((SPVM::Byte)$args->[$arg_count])->val;
+          my $str = _modify_specifier([$arg], $left_justified, $pad_char, $width);
+          $buffer->push($str);
+        }
+        elsif ($specifier_char == 's') {
+          ++$index;
+          my $arg = (string)$args->[$arg_count];
+          my $str = _modify_specifier($arg, $left_justified, $pad_char, $width);
+          $buffer->push($str);
+        }
+        elsif ($specifier_char == 'd') {
+          ++$index;
+          my $arg = ((SPVM::Int)$args->[$arg_count])->val;
+          my $s = "";
+          if ($plus_sign && $arg >= 0) {
+            $s = "+$arg";
+          } else {
+            $s = "$arg";
+          }
+          my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
+          $buffer->push($str);
+        }
+        elsif ($specifier_char == 'l') {
+          unless ($index + 1 < $format_length && $format->[$index + 1] == 'd') {
+            die "Invalid conversion in sprintf: \""
+                . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+          }
+          $index += 2;
+          my $arg = ((SPVM::Long)$args->[$arg_count])->val;
+          my $s = "";
+          if ($plus_sign && $arg >= 0) {
+            $s = "+$arg";
+          } else {
+            $s = "$arg";
+          }
+          my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
+          $buffer->push($str);
+        }
+        elsif ($specifier_char == 'f' || $specifier_char == 'g') {
+          ++$index;
+          my $arg = (SPVM::Double)$args->[$arg_count];
+          my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
+          my $str = _snsprintf_double($specifier_str, $arg->val);
+          $buffer->push($str);
+        }
+        elsif ($specifier_char == 'U') {
+          ++$index;
+          my $arg = (SPVM::Int)$args->[$arg_count];
+          my $utf8 = uchar_to_utf8($arg->val);
+          $buffer->push($utf8);
+        }
+        else {
           die "Invalid conversion in sprintf: \""
               . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
         }
-        $index += 2;
-        my $arg = ((SPVM::Long)$args->[$arg_count])->val;
-        my $s = "";
-        if ($plus_sign && $arg >= 0) {
-          $s = "+$arg";
-        } else {
-          $s = "$arg";
-        }
-        my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
-        $buffer->push($str);
-      }
-      elsif ($specifier_char == 'f' || $specifier_char == 'g') {
-        ++$index;
-        my $arg = (SPVM::Double)$args->[$arg_count];
-        my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
-        my $str = _snsprintf_double($specifier_str, $arg->val);
-        $buffer->push($str);
-      }
-      elsif ($specifier_char == 'U') {
-        ++$index;
-        my $arg = (SPVM::Int)$args->[$arg_count];
-        my $utf8 = uchar_to_utf8($arg->val);
-        $buffer->push($utf8);
-      }
-      else {
-        die "Invalid conversion in sprintf: \""
-            . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
-      }
 
-      ++$arg_count;
+        ++$arg_count;
+      }
+    }
+
+    # Add constant string
+    if ($constant_string_length > 0) {
+      $buffer->push_range($format, $index, $constant_string_length);
+      $index += $constant_string_length;
+      $constant_string_length = 0;
     }
 
     my $result = $buffer->to_string;
