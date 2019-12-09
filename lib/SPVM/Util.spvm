@@ -102,30 +102,6 @@ package SPVM::Util {
     return $separated_strings;
   }
 
-  precompile sub _modify_specifier : string ($value_str : string, $left_justified : int, $pad_char : byte, $width : int) {
-    my $value_length = length $value_str;
-
-    unless ($value_length < $width) {
-      return $value_str;
-    }
-
-    my $buffer = SPVM::StringBuffer->new;
-    my $space_count = $width - $value_length;
-
-    if ($left_justified) {
-      $buffer->push($value_str);
-    }
-    for (my $i = 0; $i < $space_count; ++$i) {
-      $buffer->push_char($pad_char);
-    }
-    unless ($left_justified) {
-      $buffer->push($value_str);
-    }
-
-    my $result = $buffer->to_string;
-    return $result;
-  }
-
   native sub _snsprintf_double : string ($format : string, $value : double);
 
   precompile sub sprintf : string ($format : string, $args : object[]...) {
@@ -242,26 +218,103 @@ package SPVM::Util {
         if ($specifier_char == 'c') {
           ++$index;
           my $arg = ((SPVM::Byte)$args->[$arg_count])->val;
-          my $str = _modify_specifier([$arg], $left_justified, $pad_char, $width);
-          $buffer->push($str);
+
+          if ($left_justified) {
+            $buffer->push_char($arg);
+            my $space_count = $width - 1;
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+          }
+          else {
+            my $space_count = $width - 1;
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+            $buffer->push_char($arg);
+          }
         }
         elsif ($specifier_char == 's') {
           ++$index;
           my $arg = (string)$args->[$arg_count];
-          my $str = _modify_specifier($arg, $left_justified, $pad_char, $width);
-          $buffer->push($str);
+
+          my $space_count = $width - length $arg;;
+          if ($left_justified) {
+            $buffer->push($arg);
+            for (my $i = 0; $i < $space_count; ++$i) {
+              $buffer->push_char($pad_char);
+            }
+          }
+          else {
+            for (my $i = 0; $i < $space_count; ++$i) {
+              $buffer->push_char($pad_char);
+            }
+            $buffer->push($arg);
+          }
         }
         elsif ($specifier_char == 'd') {
           ++$index;
           my $arg = ((SPVM::Int)$args->[$arg_count])->val;
-          my $s = "";
-          if ($plus_sign && $arg >= 0) {
-            $s = "+$arg";
-          } else {
-            $s = "$arg";
+          my $digits = new byte[11]; # -2147483648 has 11 digits
+          my $digit_count = 0;
+          while ($arg > 0) {
+            $digits->[$digit_count++] = (byte)('0' + $arg % 10);
+            $arg /= 10;
           }
-          my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
-          $buffer->push($str);
+
+          if ($left_justified) {
+            my $space_count = $width - $digit_count;
+
+            if ($arg < 0) {
+              $buffer->push_char('-');
+              --$space_count;
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              $buffer->push_char('+');
+              --$space_count;
+            }
+
+            for (my $i = 0; $i < $digit_count; ++$i) {
+              $buffer->push_char($digits->[$digit_count - $i - 1]);
+            }
+
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+          }
+          else {
+            my $space_count = $width - $digit_count;
+
+            if ($arg < 0) {
+              --$space_count;
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              --$space_count;
+            }
+
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+
+            if ($arg < 0) {
+              $buffer->push_char('-');
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              $buffer->push_char('+');
+            }
+
+            for (my $i = 0; $i < $digit_count; ++$i) {
+              $buffer->push_char($digits->[$digit_count - $i - 1]);
+            }
+          }
         }
         elsif ($specifier_char == 'l') {
           unless ($index + 1 < $format_length && $format->[$index + 1] == 'd') {
@@ -270,14 +323,62 @@ package SPVM::Util {
           }
           $index += 2;
           my $arg = ((SPVM::Long)$args->[$arg_count])->val;
-          my $s = "";
-          if ($plus_sign && $arg >= 0) {
-            $s = "+$arg";
-          } else {
-            $s = "$arg";
+          my $digits = new byte[20]; # -9223372036854775808 has 20 digits
+          my $digit_count = 0;
+          while ($arg > 0) {
+            $digits->[$digit_count++] = (byte)('0' + $arg % 10);
+            $arg /= 10;
           }
-          my $str = _modify_specifier($s, $left_justified, $pad_char, $width);
-          $buffer->push($str);
+
+          if ($left_justified) {
+            my $space_count = $width - $digit_count;
+
+            if ($arg < 0) {
+              $buffer->push_char('-');
+              --$space_count;
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              $buffer->push_char('+');
+              --$space_count;
+            }
+
+            for (my $i = 0; $i < $digit_count; ++$i) {
+              $buffer->push_char($digits->[$digit_count - $i - 1]);
+            }
+
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+          }
+          else {
+            my $space_count = $width - $digit_count;
+
+            if ($arg < 0) {
+              --$space_count;
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              --$space_count;
+            }
+
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+
+            if ($arg < 0) {
+              $buffer->push_char('-');
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              $buffer->push_char('+');
+            }
+
+            for (my $i = 0; $i < $digit_count; ++$i) {
+              $buffer->push_char($digits->[$digit_count - $i - 1]);
+            }
+          }
         }
         elsif ($specifier_char == 'f' || $specifier_char == 'g') {
           ++$index;
