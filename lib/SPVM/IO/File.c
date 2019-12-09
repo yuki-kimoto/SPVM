@@ -248,9 +248,9 @@ int32_t SPNATIVE__SPVM__IO__File__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   char* buffer = (char*)env->get_elems_byte(env, obj_buffer);
   
-  int32_t read_length = fwrite(buffer, 1, length, fh);
+  int32_t write_length = fwrite(buffer, 1, length, fh);
   
-  stack[0].ival = read_length;
+  stack[0].ival = write_length;
 
   return SPVM_SUCCESS;
 }
@@ -267,7 +267,7 @@ int32_t SPNATIVE__SPVM__IO__File__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
   FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
   
   // Char
-  char ch = (char)stack[0].bval;
+  char ch = (char)stack[1].bval;
   
   
   int32_t ret = fputc(ch, obj_fh);

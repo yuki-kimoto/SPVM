@@ -1,11 +1,11 @@
 package SPVM::IO::Stdout {
   
   # Same as SPVM::IO::File. SPVM::IO::Stderr
-  #native sub putc : int ($c : byte);
-  #native sub write : int ($buffer : string, $legnth : int);
+  native sub putc : int ($c : byte);
+  native sub write : int ($buffer : string, $legnth : int);
   native sub print : int ($string : string);
   
   # Same as SPVM::IO::File
   native sub set_binmode : void ($binmode : int);
-  #native sub fileno : int ();
+  native sub fileno : int ();
 }
