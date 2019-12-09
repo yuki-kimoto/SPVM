@@ -289,7 +289,7 @@ int32_t SPNATIVE__SPVM__IO__File__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_GET_FIELD_OBJECT(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", MFILE, __LINE__);
   FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
   
-  void* string = stack[0].oval;
+  void* string = stack[1].oval;
   
   const char* bytes = (const char*)env->get_elems_byte(env, string);
   int32_t string_length = env->length(env, string);
