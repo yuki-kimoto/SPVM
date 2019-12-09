@@ -197,7 +197,7 @@ package SPVM::Util {
           ++$index;
         }
 
-        # Read `precision` (just skip because type 'f' is printed by native sprintf)
+        # Skip `precision` because of using native sprintf.
         if ($index < $format_length && $format->[$index] == '.') {
           ++$index;
           while ($index < $format_length) {
