@@ -1,3 +1,8 @@
+// Enable strerror_r, fileno
+#ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE 600
+#endif
+
 #include "spvm_native.h"
 #include <stdio.h>
 
