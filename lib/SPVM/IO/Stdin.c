@@ -72,6 +72,29 @@ int32_t SPNATIVE__SPVM__IO__Stdin__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+
+int32_t SPNATIVE__SPVM__IO__Stdin__read(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  // Buffer
+  void* obj_buffer = stack[0].oval;
+  if (obj_buffer == NULL) {
+    stack[0].ival = 0;
+    return SPVM_SUCCESS;
+  }
+  char* buffer = (char*)env->get_elems_byte(env, obj_buffer);
+  int32_t buffer_length = env->length(env, obj_buffer);
+  if (buffer_length == 0) {
+    stack[0].ival = 0;
+    return SPVM_SUCCESS;
+  }
+  
+  int32_t read_length = fread(buffer, 1, buffer_length, fh);
+  
+  stack[0].ival = read_length;
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__SPVM__IO__Stdin__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 #ifdef _WIN32
@@ -84,5 +107,14 @@ int32_t SPNATIVE__SPVM__IO__Stdin__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack)
   }
 #endif
   
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__IO__Stdin__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  int32_t fno = fileno(stdin);
+  
+  stack[0].ival = fno;
+
   return SPVM_SUCCESS;
 }

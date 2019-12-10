@@ -210,7 +210,7 @@ int32_t SPNATIVE__SPVM__IO__File__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Buffer
   void* obj_buffer = stack[1].oval;
   if (obj_buffer == NULL) {
-    stack[0].oval = NULL;
+    stack[0].ival = 0;
     return SPVM_SUCCESS;
   }
   char* buffer = (char*)env->get_elems_byte(env, obj_buffer);
