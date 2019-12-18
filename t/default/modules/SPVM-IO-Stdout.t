@@ -59,11 +59,28 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # print
   {
-    my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print';
-    write_script_file($script_file, $func_call);
-    system("perl -Mblib $script_file > $output_file");
-    my $output = slurp_binmode($output_file);
-    is($output, 'Hello');
+    # print a string
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, 'Hello');
+    }
+    
+    # print new line
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_newline';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      if ($^O eq 'Win32') {
+        is($output, "\x0D\x0A");
+      }
+      else {
+        is($output, "\x0A");
+      }
+    }
   }
 
   # set_binmode
