@@ -6,9 +6,11 @@
 #include "spvm_native.h"
 #include <stdio.h>
 
-// import _setmode and _O_BINARY
+// io.h - _setmode
+// fcntl.h - _O_BINARY, _O_TEXT
 #ifdef _WIN32
 #include <io.h>
+#include <fcntl.h>
 #endif
 
 static const char* MFILE = "SPVM/IO/Stderr.c";

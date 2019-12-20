@@ -11,6 +11,13 @@
 #include <stdio.h>
 #include <errno.h>
 
+// io.h - _setmode
+// fcntl.h - _O_BINARY, _O_TEXT
+#ifdef _WIN32
+#include <io.h>
+#include <fcntl.h>
+#endif
+
 static const char* MFILE = "SPVM/IO/File.c";
 
 int32_t SPNATIVE__SPVM__IO__File__init_package_vars(SPVM_ENV* env, SPVM_VALUE* stack) {

@@ -29,6 +29,9 @@ use FindBin;
 use SPVM 'TestCase::Lib::SPVM::IO::Stdout';
 
 use TestFile;
+
+binmode STDOUT, ':crlf';
+
 EOS
 
   open my $script_fh, '>', $script_file
@@ -39,6 +42,15 @@ EOS
   print $script_fh $output_source;
 }
 
+sub is_windows {
+  if ($^O eq 'MSWin32') {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 sub slurp_binmode {
   my ($output_file) = @_;
   
@@ -46,7 +58,6 @@ sub slurp_binmode {
     or die "Can't open file $output_file:$!";
   
   binmode $fh;
-  
   
   my $output = do { local $/; <$fh> };
   
@@ -74,12 +85,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
-      if ($^O eq 'Win32') {
-        is($output, "\x0D\x0A");
-      }
-      else {
-        is($output, "\x0A");
-      }
+      # (In MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
+      is($output, "\x0A");
     }
   }
 
