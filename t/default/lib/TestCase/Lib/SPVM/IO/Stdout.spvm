@@ -13,6 +13,12 @@ package TestCase::Lib::SPVM::IO::Stdout {
     return 1;
   }
 
+  sub test_print_long_lines : int () {
+    SPVM::IO::Stdout->print("AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n");
+    
+    return 1;
+  }
+
   sub test_set_binmode : int () {
     SPVM::IO::Stdout->set_binmode(0);
     
