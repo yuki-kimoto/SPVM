@@ -19,8 +19,15 @@ package TestCase::Lib::SPVM::IO::Stdout {
     return 1;
   }
 
-  sub test_set_binmode : int () {
-    SPVM::IO::Stdout->set_binmode(0);
+  sub test_to_textmode_to_binmode : int () {
+    
+    SPVM::IO::Stdout->to_textmode;
+    
+    SPVM::IO::Stdout->print("\np");
+
+    SPVM::IO::Stdout->to_binmode;
+    
+    SPVM::IO::Stdout->print("\nq");
     
     return 1;
   }

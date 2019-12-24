@@ -73,7 +73,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # print
   {
-    # print a string
+    # test_print
     {
       my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print';
       write_script_file($script_file, $func_call);
@@ -82,7 +82,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is($output, 'Hello');
     }
     
-    # print new line
+    # test_print_newline
     {
       my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_newline';
       write_script_file($script_file, $func_call);
@@ -92,20 +92,28 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is($output, "\x0A");
     }
     
-    # print new line
+    # test_print_long_lines
     {
       my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_long_lines';
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
-      # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
-  }
 
-  # set_binmode
-  {
-    ok(TestCase::Lib::SPVM::IO::Stdout->test_set_binmode);
+    # test_to_textmode_to_binmode
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_to_textmode_to_binmode';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      if (is_windows) {
+        is($output, "\x0A\x0Dp\x0Aq");
+      }
+      else {
+        is($output, "\x0Ap\x0Aq");
+      }
+    }
   }
 }
 

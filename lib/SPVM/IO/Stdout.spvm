@@ -6,6 +6,7 @@ package SPVM::IO::Stdout {
   native sub print : int ($string : string);
   
   # Same as SPVM::IO::File
-  native sub set_binmode : void ($binmode : int);
+  native sub to_binmode : void ();
+  native sub to_textmode : void ();
   native sub fileno : int ();
 }

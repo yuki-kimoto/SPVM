@@ -30,18 +30,19 @@ int32_t SPNATIVE__SPVM__IO__Stdout__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__Stdout__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  int32_t binmode = stack[0].ival;
-  (void)binmode;
+int32_t SPNATIVE__SPVM__IO__Stdout__to_binmode(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 #ifdef _WIN32
-  if (binmode) {
-    _setmode(_fileno(stdout), _O_BINARY);
-  }
-  else {
-    _setmode(_fileno(stdout), _O_TEXT);
-  }
+  _setmode(_fileno(stdout), _O_BINARY);
+#endif
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__IO__Stdout__to_textmode(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+#ifdef _WIN32
+  _setmode(_fileno(stdout), _O_TEXT);
 #endif
   
   return SPVM_SUCCESS;
