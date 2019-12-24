@@ -100,20 +100,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       my $output = slurp_binmode($output_file);
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
-
-    # test_to_textmode_to_binmode
-    {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_to_textmode_to_binmode';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      if (is_windows) {
-        is($output, "\x0A\x0Dp\x0Aq");
-      }
-      else {
-        is($output, "\x0Ap\x0Aq");
-      }
-    }
   }
 }
 

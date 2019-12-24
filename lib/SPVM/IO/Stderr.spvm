@@ -5,6 +5,5 @@ package SPVM::IO::Stderr {
   native sub print : int ($string : string);
   
   # Same as SPVM::IO::File
-  native sub set_binmode : void ($binmode : int);
   native sub fileno : int ();
 }

@@ -1,12 +1,10 @@
+// Enable strerror_r, fileno
+#ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE 600
+#endif
+
 #include "spvm_native.h"
 #include <stdio.h>
-
-// io.h - _setmode
-// fcntl.h - _O_BINARY, _O_TEXT
-#ifdef _WIN32
-#include <io.h>
-#include <fcntl.h>
-#endif
 
 static const char* MFILE = "SPVM/IO/Stdin.c";
 
@@ -93,21 +91,6 @@ int32_t SPNATIVE__SPVM__IO__Stdin__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t read_length = fread(buffer, 1, buffer_length, fh);
   
   stack[0].ival = read_length;
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__Stdin__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-#ifdef _WIN32
-  int32_t binmode = stack[0].ival;
-  if (binmode) {
-    _setmode(_fileno(stdin), _O_BINARY);
-  }
-  else {
-    _setmode(_fileno(stdin), _O_TEXT);
-  }
-#endif
   
   return SPVM_SUCCESS;
 }

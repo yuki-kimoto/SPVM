@@ -6,13 +6,6 @@
 #include "spvm_native.h"
 #include <stdio.h>
 
-// io.h - _setmode
-// fcntl.h - _O_BINARY, _O_TEXT
-#ifdef _WIN32
-#include <io.h>
-#include <fcntl.h>
-#endif
-
 static const char* MFILE = "SPVM/IO/Stderr.c";
 
 int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -26,23 +19,6 @@ int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   for (int32_t i = 0; i < string_length; i++) {
     fputc(bytes[i], stderr);
   }
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__Stderr__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  int32_t binmode = stack[0].ival;
-  (void)binmode;
-
-#ifdef _WIN32
-  if (binmode) {
-    _setmode(_fileno(stderr), _O_BINARY);
-  }
-  else {
-    _setmode(_fileno(stderr), _O_TEXT);
-  }
-#endif
   
   return SPVM_SUCCESS;
 }

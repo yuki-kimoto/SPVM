@@ -3,6 +3,5 @@ package SPVM::IO::Stdin {
   native sub readline : string ($self : self);
 
   # Same as SPVM::IO::Stdio, SPVM::IO::Stderr, SPVM::IO::Stdin
-  native sub set_binmode : void ($binmode : int);
   native sub fileno : int ($self : self);
 }

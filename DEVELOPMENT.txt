@@ -116,7 +116,7 @@ DEVELOPERS NOTE
     - don't use inline keyword
     - use -std=c99
     - use fgetc instead of getc for FreeBSD compile error
-  
+    - In Windows/MinGW/Strawbery Perl, newline is always \x0A if mode is text mode
   CODING GUIDE LINE
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
     - char is used for only character.
