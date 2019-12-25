@@ -147,10 +147,6 @@ lib/SPVM/EqualityChecker.pm
 lib/SPVM/EqualityChecker.spvm
 lib/SPVM/EqualityChecker/Address.pm
 lib/SPVM/EqualityChecker/Address.spvm
-lib/SPVM/Errno.c
-lib/SPVM/Errno.config
-lib/SPVM/Errno.pm
-lib/SPVM/Errno.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
@@ -477,7 +473,6 @@ t/default/lib/TestCase/Lib/SPVM/Byte.spvm
 t/default/lib/TestCase/Lib/SPVM/ByteList.spvm
 t/default/lib/TestCase/Lib/SPVM/Double.spvm
 t/default/lib/TestCase/Lib/SPVM/DoubleList.spvm
-t/default/lib/TestCase/Lib/SPVM/Errno.spvm
 t/default/lib/TestCase/Lib/SPVM/Float.spvm
 t/default/lib/TestCase/Lib/SPVM/FloatList.spvm
 t/default/lib/TestCase/Lib/SPVM/Hash.spvm

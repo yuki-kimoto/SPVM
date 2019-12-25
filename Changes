@@ -1,6 +1,8 @@
-0.0445 2019-11-29
+(Current SPVM is on beta release)
+
+0.0444 2019-12-25
+  - remove SPVM::Errno for portability
   - allow last camma in sub names, sub routine arguments definition
-0.0444 2019-11-12
   - remove no needed SPVM::IO::File::EOF
   - rename SPVM::FileHandle to SPVM::IO::FileHandle
   - rename chompr to chomp_lf
