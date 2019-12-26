@@ -118,8 +118,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Util');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::FileHandle');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::File');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::ClientSocketTCP');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Select');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Stdout');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Stderr');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Math');
@@ -129,6 +127,8 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unistd');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::MIME::Base64');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::HTTP::ClientSocketTCP');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::HTTP::Select');
     
     # Precompile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');

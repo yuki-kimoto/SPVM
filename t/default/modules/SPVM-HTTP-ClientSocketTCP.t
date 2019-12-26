@@ -6,16 +6,16 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::IO::ClientSocketTCP';
+use SPVM 'TestCase::Lib::SPVM::HTTP::ClientSocketTCP';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Socket
 {
-  ok(TestCase::Lib::SPVM::IO::ClientSocketTCP->basic);
-  ok(TestCase::Lib::SPVM::IO::ClientSocketTCP->basic_auto_close);
-  ok(TestCase::Lib::SPVM::IO::ClientSocketTCP->fileno);
+  ok(TestCase::Lib::SPVM::HTTP::ClientSocketTCP->basic);
+  ok(TestCase::Lib::SPVM::HTTP::ClientSocketTCP->basic_auto_close);
+  ok(TestCase::Lib::SPVM::HTTP::ClientSocketTCP->fileno);
 }
 
 

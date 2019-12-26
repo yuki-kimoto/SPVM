@@ -1,10 +1,10 @@
-package SPVM::IO::Select {
+package SPVM::HTTP::Select {
   use SPVM::IntList;
   
   has handles : SPVM::IntList;
   
-  sub new : SPVM::IO::Select () {
-    my $self = new SPVM::IO::Select;
+  sub new : SPVM::HTTP::Select () {
+    my $self = new SPVM::HTTP::Select;
     
     $self->{handles} = SPVM::IntList->new;
     

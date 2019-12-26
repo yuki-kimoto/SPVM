@@ -214,12 +214,12 @@ package SPVM::HTTP::Client {
 
 package SPVM::HTTP::Client::Handle {
   use SPVM::HTTP::Client::Response;
-  use SPVM::IO::ClientSocketTCP;
+  use SPVM::HTTP::ClientSocketTCP;
   use SPVM::StringBuffer;
   use SPVM::Util (lc, strtoi, substr, sliceb, index);
 
   has timeout : public double;
-  has socket : public SPVM::IO::ClientSocketTCP;
+  has socket : public SPVM::HTTP::ClientSocketTCP;
   has rbuf : SPVM::StringBuffer;
   has max_header_lines : int;
 
@@ -254,7 +254,7 @@ package SPVM::HTTP::Client::Handle {
       die "Missing argument 'port'.";
     }
     my $port = ((SPVM::Int)($args->get("port")))->val;
-    $self->{socket} = SPVM::IO::ClientSocketTCP->new($host, $port);
+    $self->{socket} = SPVM::HTTP::ClientSocketTCP->new($host, $port);
     $self->{rbuf} = SPVM::StringBuffer->new;
     return $self;
   }

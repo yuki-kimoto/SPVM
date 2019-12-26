@@ -1,12 +1,12 @@
-package TestCase::Lib::SPVM::IO::ClientSocketTCP {
-  use SPVM::IO::ClientSocketTCP;
+package TestCase::Lib::SPVM::HTTP::ClientSocketTCP {
+  use SPVM::HTTP::ClientSocketTCP;
 
   sub basic : int () {
 
     # Socket
     my $host = "google.com";
     my $port = 80;
-    my $socket = SPVM::IO::ClientSocketTCP->new($host, $port);
+    my $socket = SPVM::HTTP::ClientSocketTCP->new($host, $port);
     
     my $write_buffer = "GET / HTTP/1.0\r\n\r\n";
     $socket->write((byte[])$write_buffer, length $write_buffer);
@@ -37,7 +37,7 @@ package TestCase::Lib::SPVM::IO::ClientSocketTCP {
     # Socket
     my $host = "google.com";
     my $port = 80;
-    my $socket = SPVM::IO::ClientSocketTCP->new($host, $port);
+    my $socket = SPVM::HTTP::ClientSocketTCP->new($host, $port);
     
     my $write_buffer = "GET / HTTP/1.0\r\n\r\n";
     $socket->write((byte[])$write_buffer, length $write_buffer);
@@ -65,7 +65,7 @@ package TestCase::Lib::SPVM::IO::ClientSocketTCP {
     # Socket
     my $host = "google.com";
     my $port = 80;
-    my $socket = SPVM::IO::ClientSocketTCP->new($host, $port);
+    my $socket = SPVM::HTTP::ClientSocketTCP->new($host, $port);
     
     my $fileno = $socket->fileno;
     

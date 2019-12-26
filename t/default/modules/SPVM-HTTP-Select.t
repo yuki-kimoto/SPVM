@@ -6,20 +6,20 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::IO::Select';
+use SPVM 'TestCase::Lib::SPVM::HTTP::Select';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Select
 {
-  ok(TestCase::Lib::SPVM::IO::Select->add);
-  ok(TestCase::Lib::SPVM::IO::Select->remove);
-  ok(TestCase::Lib::SPVM::IO::Select->exists);
+  ok(TestCase::Lib::SPVM::HTTP::Select->add);
+  ok(TestCase::Lib::SPVM::HTTP::Select->remove);
+  ok(TestCase::Lib::SPVM::HTTP::Select->exists);
   if ($^O ne 'MSWin32') {
-    ok(TestCase::Lib::SPVM::IO::Select->can_read);
-    ok(TestCase::Lib::SPVM::IO::Select->can_write);
-    ok(TestCase::Lib::SPVM::IO::Select->has_exception);
+    ok(TestCase::Lib::SPVM::HTTP::Select->can_read);
+    ok(TestCase::Lib::SPVM::HTTP::Select->can_write);
+    ok(TestCase::Lib::SPVM::HTTP::Select->has_exception);
   }
 }
 
