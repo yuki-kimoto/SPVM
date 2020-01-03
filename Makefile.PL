@@ -125,7 +125,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Time');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Sort');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unistd');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::MIME::Base64');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::HTTP::ClientSocketTCP');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::HTTP::Select');

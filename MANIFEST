@@ -246,10 +246,6 @@ lib/SPVM/Unicode.c
 lib/SPVM/Unicode.config
 lib/SPVM/Unicode.pm
 lib/SPVM/Unicode.spvm
-lib/SPVM/Unistd.c
-lib/SPVM/Unistd.config
-lib/SPVM/Unistd.pm
-lib/SPVM/Unistd.spvm
 lib/SPVM/Util.c
 lib/SPVM/Util.config
 lib/SPVM/Util.pm
@@ -502,7 +498,6 @@ t/default/lib/TestCase/Lib/SPVM/StringBuffer.spvm
 t/default/lib/TestCase/Lib/SPVM/StringList.spvm
 t/default/lib/TestCase/Lib/SPVM/Time.spvm
 t/default/lib/TestCase/Lib/SPVM/Unicode.spvm
-t/default/lib/TestCase/Lib/SPVM/Unistd.spvm
 t/default/lib/TestCase/Lib/SPVM/Util.spvm
 t/default/lib/TestCase/LINEN.spvm
 t/default/lib/TestCase/LINER.spvm

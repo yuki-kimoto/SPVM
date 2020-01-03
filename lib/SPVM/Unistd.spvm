@@ -1,3 +1,0 @@
-package SPVM::Unistd {
-  native sub sleep : void ($seconds : long);
-}
