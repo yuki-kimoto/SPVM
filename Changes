@@ -1,6 +1,6 @@
 (Current SPVM is on beta release)
 
-0.0444 2020-01-04
+0.0445 2020-01-04
   - rename SPVM::HTTP::xxx to SPVM::HTTP::Client::xxx
 0.0444 2019-12-25
   - remove SPVM::Errno for portability
