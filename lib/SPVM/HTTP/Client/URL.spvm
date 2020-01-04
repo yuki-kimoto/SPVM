@@ -1,6 +1,6 @@
-package SPVM::HTTP::URL {
-  use SPVM::HTTP::URL::Escape;
-  use SPVM::HTTP::URL::Parameters;
+package SPVM::HTTP::Client::URL {
+  use SPVM::HTTP::Client::URL::Escape;
+  use SPVM::HTTP::Client::URL::Parameters;
   use SPVM::Util (sliceb, copy_str);
 
   # [scheme:][//[host][/path][?query][#fragment]
@@ -8,7 +8,7 @@ package SPVM::HTTP::URL {
   has host      : public string;
   has port      : public int;
   has path      : public string;
-  has params    : public SPVM::HTTP::URL::Parameters;
+  has params    : public SPVM::HTTP::Client::URL::Parameters;
   has fragment  : public string;
 
   private sub parse_scheme : int ($self : self, $url : string) {
@@ -72,19 +72,19 @@ package SPVM::HTTP::URL {
     ++$start;
     for (my $i = $start; $i < $length; ++$i) {
       if ($url->[$i] == '/') {
-        $self->{path} .= SPVM::HTTP::URL::Escape->unescape(
+        $self->{path} .= SPVM::HTTP::Client::URL::Escape->unescape(
           sliceb((byte [])$url, $start, $i - $start)) . "/";
         $start = $i + 1;
       }
       elsif ($url->[$i] == '?' ||
           $url->[$i] == '#') {
-        $self->{path} .= SPVM::HTTP::URL::Escape->unescape(
+        $self->{path} .= SPVM::HTTP::Client::URL::Escape->unescape(
           sliceb((byte [])$url, $start, $i - $start));
         return $i;
       }
     }
     if ($start < $length) {
-      $self->{path} .= SPVM::HTTP::URL::Escape->unescape(
+      $self->{path} .= SPVM::HTTP::Client::URL::Escape->unescape(
         sliceb((byte [])$url, $start, $length - $start));
     }
     return $length;
@@ -97,13 +97,13 @@ package SPVM::HTTP::URL {
     }
     for (my $i = $start + 1; $i < $length; ++$i) {
       if ($url->[$i] == '#') {
-        $self->{params} = SPVM::HTTP::URL::Parameters->parse(
+        $self->{params} = SPVM::HTTP::Client::URL::Parameters->parse(
           sliceb((byte [])$url, $start + 1, $i - $start - 1)
         );
         return $i;
       }
     }
-    $self->{params} = SPVM::HTTP::URL::Parameters->parse(
+    $self->{params} = SPVM::HTTP::Client::URL::Parameters->parse(
       sliceb((byte [])$url, $start + 1, $length - $start - 1)
     );
     return $length;
@@ -115,7 +115,7 @@ package SPVM::HTTP::URL {
       return;
     }
     # https://stackoverflow.com/questions/2849756/list-of-valid-characters-for-the-fragment-identifier-in-an-url
-    $self->{fragment} = SPVM::HTTP::URL::Escape->unescape(
+    $self->{fragment} = SPVM::HTTP::Client::URL::Escape->unescape(
         sliceb((byte [])$url, $start + 1, $length - $start - 1));
   }
 
@@ -137,15 +137,15 @@ package SPVM::HTTP::URL {
     $self->parse_fragment($url, $next);
   }
 
-  sub parse : SPVM::HTTP::URL ($url : string) {
-    my $self = new SPVM::HTTP::URL;
+  sub parse : SPVM::HTTP::Client::URL ($url : string) {
+    my $self = new SPVM::HTTP::Client::URL;
 
     # set default values
     $self->{scheme} = "";
     $self->{host} = "";
     $self->{port} = 80;
     $self->{path} = "";
-    $self->{params} = SPVM::HTTP::URL::Parameters->new();
+    $self->{params} = SPVM::HTTP::Client::URL::Parameters->new();
     $self->{fragment} = "";
 
     $self->parse_url($url);
@@ -197,7 +197,7 @@ package SPVM::HTTP::URL {
       $url .= "?" . $self->{params}->to_string;
     }
     if (length($self->{fragment})) {
-      $url .= "#" . SPVM::HTTP::URL::Escape->escape($self->{fragment});
+      $url .= "#" . SPVM::HTTP::Client::URL::Escape->escape($self->{fragment});
     }
     return $url;
   }
@@ -207,11 +207,11 @@ package SPVM::HTTP::URL {
 
 =head1 NAME
 
-SPVM::HTTP::URL - Uniform Resource Locators
+SPVM::HTTP::Client::URL - Uniform Resource Locators
 
 =head1 SYNOPSIS
 
-my $url = SPVM::HTTP::URL->parse($url_escaped);
+my $url = SPVM::HTTP::Client::URL->parse($url_escaped);
 my $scheme = $url->{scheme};
 my $host = $url->{host};
 my $port : int = $url->{port};

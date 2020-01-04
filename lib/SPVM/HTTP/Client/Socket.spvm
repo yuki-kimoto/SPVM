@@ -1,8 +1,8 @@
-package SPVM::HTTP::ClientSocketTCP {
+package SPVM::HTTP::Client::Socket {
   
   has handle : int;
   
-  native sub new : SPVM::HTTP::ClientSocketTCP ($host : string, $port : int);
+  native sub new : SPVM::HTTP::Client::Socket ($host : string, $port : int);
   native sub read : int ($self : self, $buffer : byte[]);
   native sub write : int ($self : self, $buffer : string, $length : int);
   native sub close : void ($self : self);

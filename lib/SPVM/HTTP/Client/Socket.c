@@ -21,9 +21,9 @@
 #endif
 
 // Module file name
-static const char* MFILE = "SPVM/HTTP/ClientSocketTCP.c";
+static const char* MFILE = "SPVM/HTTP/Client/Socket.c";
 
-int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__HTTP__Client__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 #ifdef _WIN32
   // Load WinSock DLL
@@ -76,26 +76,26 @@ int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__new(SPVM_ENV* env, SPVM_VALUE* st
     SPVM_DIE("Can't connect to HTTP server : %s:%d", deststr, port, MFILE, __LINE__);
   }
   
-  // Create SPVM::HTTP::ClientSocketTCP object
+  // Create SPVM::HTTP::Client::Socket object
   void* obj_socket;
-  SPVM_NEW_OBJECT(env, obj_socket, "SPVM::HTTP::ClientSocketTCP", MFILE, __LINE__);
+  SPVM_NEW_OBJECT(env, obj_socket, "SPVM::HTTP::Client::Socket", MFILE, __LINE__);
   
   // Set handle
-  SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::HTTP::ClientSocketTCP", "handle", handle, MFILE, __LINE__);
+  SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::HTTP::Client::Socket", "handle", handle, MFILE, __LINE__);
   
   stack[0].oval = obj_socket;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__read(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__HTTP__Client__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_socket = stack[0].oval;
   void* obj_buffer = stack[1].oval;
   const char* buffer = (const char*)env->get_elems_byte(env, obj_buffer);
   int32_t length = env->length(env, obj_buffer);
   
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::HTTP::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::HTTP::Client::Socket", "handle", MFILE, __LINE__);
 
   if (handle < 0) {
     SPVM_DIE("Handle is closed", MFILE, __LINE__);
@@ -112,14 +112,14 @@ int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__read(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__write(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__HTTP__Client__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_socket = stack[0].oval;
   void* obj_buffer = stack[1].oval;
   const char* buffer = (const char*)env->get_elems_byte(env, obj_buffer);
   int32_t length = stack[2].ival;
   
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::HTTP::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::HTTP::Client::Socket", "handle", MFILE, __LINE__);
   
   if (handle < 0) {
     SPVM_DIE("Handle is closed", MFILE, __LINE__);
@@ -137,17 +137,17 @@ int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__write(SPVM_ENV* env, SPVM_VALUE* 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__close(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__HTTP__Client__Socket__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_socket = stack[0].oval;
   
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::HTTP::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::HTTP::Client::Socket", "handle", MFILE, __LINE__);
   
   if (handle >= 0) {
     int32_t ret = closesocket(handle);
     if (ret == 0) {
-      SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::HTTP::ClientSocketTCP", "handle", -1, MFILE, __LINE__);
+      SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::HTTP::Client::Socket", "handle", -1, MFILE, __LINE__);
     }
     else {
       SPVM_DIE("Fail close", MFILE, __LINE__);
@@ -157,21 +157,21 @@ int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__close(SPVM_ENV* env, SPVM_VALUE* 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__HTTP__Client__Socket__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;
   if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
   
   // File fh
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_self, "SPVM::HTTP::ClientSocketTCP", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_self, "SPVM::HTTP::Client::Socket", "handle", MFILE, __LINE__);
   
   stack[0].ival = handle;
 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__HTTP__ClientSocketTCP___cleanup_wsa(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__HTTP__Client__Socket___cleanup_wsa(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Unload WinSock DLL
 #ifdef _WIN32

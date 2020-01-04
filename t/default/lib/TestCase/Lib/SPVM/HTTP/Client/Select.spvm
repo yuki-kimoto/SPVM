@@ -1,10 +1,10 @@
-package TestCase::Lib::SPVM::HTTP::Select {
-  use SPVM::HTTP::Select;
+package TestCase::Lib::SPVM::HTTP::Client::Select {
+  use SPVM::HTTP::Client::Select;
   use SPVM::IO::File (STDIN, STDOUT, STDERR);
   use SPVM::Util (equals_iarray);
 
   sub add : int () {
-    my $select = SPVM::HTTP::Select->new;
+    my $select = SPVM::HTTP::Client::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -47,7 +47,7 @@ package TestCase::Lib::SPVM::HTTP::Select {
   }
 
   sub remove : int () {
-    my $select = SPVM::HTTP::Select->new;
+    my $select = SPVM::HTTP::Client::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -99,7 +99,7 @@ package TestCase::Lib::SPVM::HTTP::Select {
   }
 
   sub exists : int () {
-    my $select = SPVM::HTTP::Select->new;
+    my $select = SPVM::HTTP::Client::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -143,7 +143,7 @@ package TestCase::Lib::SPVM::HTTP::Select {
   }
 
   sub can_read : int () {
-    my $select = SPVM::HTTP::Select->new;
+    my $select = SPVM::HTTP::Client::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -168,7 +168,7 @@ package TestCase::Lib::SPVM::HTTP::Select {
   }
 
   sub can_write : int () {
-    my $select = SPVM::HTTP::Select->new;
+    my $select = SPVM::HTTP::Client::Select->new;
     
     {
       my $ret = $select->add(STDOUT());
@@ -197,7 +197,7 @@ package TestCase::Lib::SPVM::HTTP::Select {
   }
 
   sub has_exception : int () {
-    my $select = SPVM::HTTP::Select->new;
+    my $select = SPVM::HTTP::Client::Select->new;
     
     {
       my $ret = $select->add(STDIN());

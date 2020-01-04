@@ -1,12 +1,12 @@
-package SPVM::HTTP::URL::Parameters {
-  use SPVM::HTTP::URL::Escape;
+package SPVM::HTTP::Client::URL::Parameters {
+  use SPVM::HTTP::Client::URL::Escape;
   use SPVM::Util (sliceb, sliceo);
 
   has params : string[][];
   has size : int;
 
-  sub new : SPVM::HTTP::URL::Parameters () {
-    my $self = new SPVM::HTTP::URL::Parameters;
+  sub new : SPVM::HTTP::Client::URL::Parameters () {
+    my $self = new SPVM::HTTP::Client::URL::Parameters;
     $self->{params} = new string[][16];
     return $self;
   }
@@ -64,8 +64,8 @@ package SPVM::HTTP::URL::Parameters {
     return $keys;
   }
 
-  sub parse : SPVM::HTTP::URL::Parameters ($str : string) {
-    my $self = SPVM::HTTP::URL::Parameters->new;
+  sub parse : SPVM::HTTP::Client::URL::Parameters ($str : string) {
+    my $self = SPVM::HTTP::Client::URL::Parameters->new;
     my $length = length($str);
     my $start_token = 0;
     for (my $i = 0; $i < $length; ++$i) {
@@ -83,7 +83,7 @@ package SPVM::HTTP::URL::Parameters {
         }
         my $key = sliceb((byte [])$str, $start_token, $i - $start_token);
         my $val = sliceb((byte [])$str, $start_val, $end_val - $start_val);
-        $self->add($key, SPVM::HTTP::URL::Escape->unescape($val));
+        $self->add($key, SPVM::HTTP::Client::URL::Escape->unescape($val));
         $start_token = $end_val + 1; # if $end_val < $length
         $i = $end_val;
       }
@@ -104,7 +104,7 @@ package SPVM::HTTP::URL::Parameters {
           $result .= "&";
         }
         $result .= $keys->[$key_index] . "=" .
-          SPVM::HTTP::URL::Escape->escape($multi_vals->[$val_index]);
+          SPVM::HTTP::Client::URL::Escape->escape($multi_vals->[$val_index]);
       }
     }
     return $result;

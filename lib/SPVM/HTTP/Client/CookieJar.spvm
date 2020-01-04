@@ -1,7 +1,7 @@
 package SPVM::HTTP::Client::CookieJar {
   use SPVM::HTTP::Client::CookieJar::Cookie;
   use SPVM::HTTP::Client::CookieJar::CookieParser;
-  use SPVM::HTTP::URL;
+  use SPVM::HTTP::Client::URL;
   use SPVM::Sort(sorto);
   use SPVM::ObjectList;
   use SPVM::Util (lc, strtoi, rindex, substr);
@@ -136,7 +136,7 @@ package SPVM::HTTP::Client::CookieJar {
       $@ = undef;
       return 0;
     }
-    my $request_url = SPVM::HTTP::URL->parse($url);
+    my $request_url = SPVM::HTTP::Client::URL->parse($url);
     $request_url->force_root_path_slashed;
 
     my $cookie = SPVM::HTTP::Client::CookieJar::Cookie->new;
@@ -208,7 +208,7 @@ package SPVM::HTTP::Client::CookieJar {
 
   sub cookies_for : SPVM::HTTP::Client::CookieJar::Cookie[] ($self : self,
       $url : string) {
-    my $request = SPVM::HTTP::URL->parse($url);
+    my $request = SPVM::HTTP::Client::URL->parse($url);
     $request->force_root_path_slashed;
     my $matched = SPVM::ObjectList->new;
     my $all_cookies = $self->{jar}->values;

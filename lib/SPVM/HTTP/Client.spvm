@@ -1,6 +1,6 @@
 package SPVM::HTTP::Client {
   use SPVM::HTTP::Client::Handle;
-  use SPVM::HTTP::URL;
+  use SPVM::HTTP::Client::URL;
   use SPVM::StringList;
   use SPVM::ByteList;
   use SPVM::ObjectList;
@@ -173,7 +173,7 @@ package SPVM::HTTP::Client {
 
   sub request : SPVM::HTTP::Client::Response ($self : self, $method : string,
       $url : string, $args : object[]) {
-    my $u = SPVM::HTTP::URL->parse($url);
+    my $u = SPVM::HTTP::Client::URL->parse($url);
     $u->force_root_path_slashed;
     my $host = $u->{host};
     my $port = $u->{port};
@@ -214,12 +214,12 @@ package SPVM::HTTP::Client {
 
 package SPVM::HTTP::Client::Handle {
   use SPVM::HTTP::Client::Response;
-  use SPVM::HTTP::ClientSocketTCP;
+  use SPVM::HTTP::Client::Socket;
   use SPVM::StringBuffer;
   use SPVM::Util (lc, strtoi, substr, sliceb, index);
 
   has timeout : public double;
-  has socket : public SPVM::HTTP::ClientSocketTCP;
+  has socket : public SPVM::HTTP::Client::Socket;
   has rbuf : SPVM::StringBuffer;
   has max_header_lines : int;
 
@@ -254,7 +254,7 @@ package SPVM::HTTP::Client::Handle {
       die "Missing argument 'port'.";
     }
     my $port = ((SPVM::Int)($args->get("port")))->val;
-    $self->{socket} = SPVM::HTTP::ClientSocketTCP->new($host, $port);
+    $self->{socket} = SPVM::HTTP::Client::Socket->new($host, $port);
     $self->{rbuf} = SPVM::StringBuffer->new;
     return $self;
   }
