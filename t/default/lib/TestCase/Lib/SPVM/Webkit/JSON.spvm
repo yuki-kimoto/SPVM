@@ -91,7 +91,7 @@ package TestCase::Lib::SPVM::Webkit::JSON {
       my $l_int = (SPVM::Int)$lhs;
       my $r_int = (SPVM::Int)$rhs;
 
-      unless ($l_int->val == $r_int->val) {
+      unless ((int)$l_int == (int)$r_int) {
         return 0;
       }
     }
@@ -115,7 +115,7 @@ package TestCase::Lib::SPVM::Webkit::JSON {
       my $l_dbl = (SPVM::Double)$lhs;
       my $r_dbl = (SPVM::Double)$rhs;
 
-      unless ($l_dbl->val == $r_dbl->val) {
+      unless ((double)$l_dbl == (double)$r_dbl) {
         return 0;
       }
     }
@@ -377,7 +377,7 @@ package TestCase::Lib::SPVM::Webkit::JSON {
     ];
     for (my $i = 0; $i < @$test_case; ++$i) {
       my $input    = "" . $test_case->[$i];
-      my $got      = "" . ((SPVM::Double)$DEFAULT_JSON->decode($input))->val;
+      my $got      = "" . (double)(SPVM::Double)$DEFAULT_JSON->decode($input);
       my $expected = "" . $test_case->[$i];
       unless ($got eq $expected) {
         return 0;

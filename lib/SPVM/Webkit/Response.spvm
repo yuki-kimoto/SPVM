@@ -16,7 +16,7 @@ package SPVM::Webkit::Response {
       $self->{protocol} = (string)$o;
     }
     if (my $o = $h->get("status")) {
-      $self->{status} = ((SPVM::Int)$o)->val;
+      $self->{status} = (int)(SPVM::Int)$o;
     }
     if (my $o = $h->get("reason")) {
       $self->{reason} = (string)$o;

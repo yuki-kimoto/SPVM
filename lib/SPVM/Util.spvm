@@ -217,7 +217,7 @@ package SPVM::Util {
         my $specifier_char = $format->[$index];
         if ($specifier_char == 'c') {
           ++$index;
-          my $arg = ((SPVM::Byte)$args->[$arg_count])->val;
+          my $arg = (byte)(SPVM::Byte)$args->[$arg_count];
 
           if ($left_justified) {
             $buffer->push_char($arg);
@@ -258,7 +258,7 @@ package SPVM::Util {
         }
         elsif ($specifier_char == 'd') {
           ++$index;
-          my $arg = ((SPVM::Int)$args->[$arg_count])->val;
+          my $arg = (int)(SPVM::Int)$args->[$arg_count];
           my $digits = new byte[11]; # -2147483648 has 11 digits
           my $digit_count = 0;
           while ($arg > 0) {
@@ -322,7 +322,7 @@ package SPVM::Util {
                 . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
           }
           $index += 2;
-          my $arg = ((SPVM::Long)$args->[$arg_count])->val;
+          my $arg = (long)(SPVM::Long)$args->[$arg_count];
           my $digits = new byte[20]; # -9223372036854775808 has 20 digits
           my $digit_count = 0;
           while ($arg > 0) {
@@ -384,13 +384,13 @@ package SPVM::Util {
           ++$index;
           my $arg = (SPVM::Double)$args->[$arg_count];
           my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
-          my $str = _snsprintf_double($specifier_str, $arg->val);
+          my $str = _snsprintf_double($specifier_str, (double)$arg);
           $buffer->push($str);
         }
         elsif ($specifier_char == 'U') {
           ++$index;
           my $arg = (SPVM::Int)$args->[$arg_count];
-          my $utf8 = uchar_to_utf8($arg->val);
+          my $utf8 = uchar_to_utf8((int)$arg);
           $buffer->push($utf8);
         }
         else {

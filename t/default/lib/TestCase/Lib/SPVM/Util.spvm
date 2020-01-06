@@ -156,7 +156,7 @@ package TestCase::Lib::SPVM::Util {
     my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(INT32_MIN())];
     my $objects_out = copy_oarray($objects, sub : object ($self : self, $obj : object) {
       my $int_obj = (SPVM::Int)$obj;
-      my $new_int_obj = SPVM::Int->new($int_obj->val);
+      my $new_int_obj = (SPVM::Int)(int)$int_obj;
       return $new_int_obj;
     });
 

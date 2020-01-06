@@ -71,7 +71,7 @@ package SPVM::Webkit::Client {
           $string_val = (string)$val;
         }
         elsif ($val isa SPVM::Int) {
-          $string_val = "" . ((SPVM::Int)$val)->val;
+          $string_val = "" . (int)(SPVM::Int)$val;
         }
         else {
           die "Unexpected parameter value type. key: $key";
@@ -233,11 +233,11 @@ package SPVM::Webkit::Handle {
     my $h = SPVM::Hash->newa($args);
     my $self = new SPVM::Webkit::Handle;
     if (my $o = $h->get("timeout")) {
-      $self->{timeout} = ((SPVM::Double)$o)->val;
+      $self->{timeout} = (double)(SPVM::Double)$o;
     }
     $self->{rbuf} = SPVM::StringBuffer->new;
     if (my $o = $h->get("max_header_lines")) {
-      $self->{max_header_lines} = ((SPVM::Int)$o)->val;
+      $self->{max_header_lines} = (int)(SPVM::Int)$o;
     }
     else {
       $self->{max_header_lines} = 64;
@@ -253,7 +253,7 @@ package SPVM::Webkit::Handle {
     unless ($args->exists("port")) {
       die "Missing argument 'port'.";
     }
-    my $port = ((SPVM::Int)($args->get("port")))->val;
+    my $port = (int)(SPVM::Int)$args->get("port");
     $self->{socket} = SPVM::Webkit::Socket->new($host, $port);
     $self->{rbuf} = SPVM::StringBuffer->new;
     return $self;
@@ -298,7 +298,7 @@ package SPVM::Webkit::Handle {
           $val = (string)$val_;
         }
         elsif ($val_ isa SPVM::Int) {
-          $val = "" . ((SPVM::Int)$val_)->val;
+          $val = "" . (int)(SPVM::Int)$val_;
         }
         else {
           die "Unexpected header value type. key: " . $ks->[$i];
@@ -343,7 +343,7 @@ package SPVM::Webkit::Handle {
 
   sub write_body : void ($self : self, $headers : SPVM::Hash, $content : string) {
     if (my $content_length_ = $headers->get("content-length")) {
-      my $content_length = ((SPVM::Int)$content_length_)->val;
+      my $content_length = (int)(SPVM::Int)$content_length_;
       $self->write_content_body($content_length, $content);
     }
     else {
@@ -613,7 +613,7 @@ package SPVM::Webkit::Handle {
       }
     }
     if ($content_length) {
-      my $len = $content_length->val;
+      my $len = (int)$content_length;
       my $buf = SPVM::StringBuffer->new;
       while ($len > 0) {
         my $read = $len;

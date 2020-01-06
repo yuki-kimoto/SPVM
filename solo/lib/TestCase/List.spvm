@@ -6,11 +6,11 @@ package TestCase::List {
   
   sub test_list : int () {
     my $list = TestCase::List->new(5);
-    $list->add(SPVM::Int->new(1));
-    $list->add(SPVM::Int->new(2));
+    $list->add((SPVM::Int)1);
+    $list->add((SPVM::Int)2);
     
     my $onum1 = (SPVM::Int)$list->get(1);
-    my $objects = new object[] {SPVM::Int->new(4), SPVM::Int->new(5)};
+    my $objects = new object[] {(SPVM::Int)4, (SPVM::Int)5};
     $list->add_all($objects);
     
     my $onum2 = (SPVM::Int)$list->get(2);
@@ -19,9 +19,9 @@ package TestCase::List {
     my $onum3 = (SPVM::Int)$onums->[1];
     
     my $ok = 0;
-    if ($onum1->val == 2) {
-      if ($onum2->val == 4) {
-        if ($onum3->val == 5) {
+    if ((int)$onum1 == 2) {
+      if ((int)$onum2 == 4) {
+        if ((int)$onum3 == 5) {
           $ok = 1;
         }
       }

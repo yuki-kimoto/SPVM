@@ -10,7 +10,7 @@ package TestCase::Return {
   }
   
   sub return_implicite_convertion_stub : string () {
-    my $int = SPVM::Int->new(1);
-    return $int->val;
+    my $int = (SPVM::Int)1;
+    return (int)$int;
   }
 }

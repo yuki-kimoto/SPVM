@@ -19,7 +19,7 @@ package TestCase::Lib::SPVM::Webkit::CookieJar {
     my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; Expires=$expires");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
-    unless ($time == $cookie->{expiry_time}->val) {
+    unless ($time == (long)$cookie->{expiry_time}) {
       return 0;
     }
     return 1;
@@ -31,7 +31,7 @@ package TestCase::Lib::SPVM::Webkit::CookieJar {
     my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; Max-Age=$max_age");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
-    unless ($cookie->{expiry_time}->val == $now + $max_age) {
+    unless ((long)$cookie->{expiry_time} == $now + $max_age) {
       return 0;
     }
     return 1;
@@ -44,8 +44,8 @@ package TestCase::Lib::SPVM::Webkit::CookieJar {
     my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; Max-Age=$max_age; Expires=$expires");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
-    unless ($now + $max_age - 1 <= $cookie->{expiry_time}->val &&
-        $cookie->{expiry_time}->val <= $now + $max_age + 1) {
+    unless ($now + $max_age - 1 <= (long)$cookie->{expiry_time} &&
+        (long)$cookie->{expiry_time} <= $now + $max_age + 1) {
       return 0;
     }
     return 1;

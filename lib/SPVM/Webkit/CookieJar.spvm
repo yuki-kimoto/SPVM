@@ -221,7 +221,7 @@ package SPVM::Webkit::CookieJar {
       if ($cookie->{secure} && $request->{scheme} ne "https") {
         next;
       }
-      if ($cookie->{expiry_time} && $cookie->{expiry_time}->val < $now) {
+      if ($cookie->{expiry_time} && (long)$cookie->{expiry_time} < $now) {
         next;
       }
       unless ($self->domain_match($request->{host}, $cookie->{domain})) {

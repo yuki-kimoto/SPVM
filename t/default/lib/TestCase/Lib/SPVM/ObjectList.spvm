@@ -311,13 +311,13 @@ package TestCase::Lib::SPVM::ObjectList {
 
   sub test_pop : int () {
     my $list = SPVM::ObjectList->newa([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
-    unless (((SPVM::Int)$list->pop)->val == 2) {
+    unless ((int)(SPVM::Int)$list->pop == 2) {
       return 0;
     }
     unless ($list->pop == undef) {
       return 0;
     }
-    unless (((SPVM::Int)$list->pop)->val == 1) {
+    unless ((int)(SPVM::Int)$list->pop == 1) {
       return 0;
     }
     unless (check_fields($list, 3, -3, 0)) {
@@ -379,13 +379,13 @@ package TestCase::Lib::SPVM::ObjectList {
 
   sub test_shift : int () {
     my $list = SPVM::ObjectList->newa([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
-    unless (((SPVM::Int)$list->shift)->val == 1) {
+    unless ((int)(SPVM::Int)$list->shift == 1) {
       return 0;
     }
     unless ($list->shift == undef) {
       return 0;
     }
-    unless (((SPVM::Int)$list->shift)->val == 2) {
+    unless ((int)(SPVM::Int)$list->shift == 2) {
       return 0;
     }
     unless (check_fields($list, 3, -3, 0)) {
@@ -449,7 +449,7 @@ package TestCase::Lib::SPVM::ObjectList {
 
   sub test_get : int () {
     my $list = SPVM::ObjectList->newa([(object) SPVM::Int->new(1), undef]);
-    unless (((SPVM::Int)$list->get(0))->val == 1) {
+    unless ((int)(SPVM::Int)$list->get(0) == 1) {
       return 0;
     }
     unless ($list->get(1) == undef) {
@@ -685,8 +685,8 @@ package TestCase::Lib::SPVM::ObjectList {
     }
 
     unless ((string)($objects->[0]) eq "abc" &&
-        ((SPVM::Int)$objects->[1])->val == 1 &&
-        ((SPVM::Double)$objects->[2])->val == 3.14) {
+        (int)(SPVM::Int)$objects->[1] == 1 &&
+        (double)(SPVM::Double)$objects->[2] == 3.14) {
       return 0;
     }
 
