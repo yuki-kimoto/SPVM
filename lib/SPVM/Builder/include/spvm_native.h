@@ -26,12 +26,6 @@ union SPVM_value {
   double* dref;
 };
 
-typedef int8_t SPVM_VALUE_byte;
-typedef int16_t SPVM_VALUE_short;
-typedef int32_t SPVM_VALUE_int;
-typedef int64_t SPVM_VALUE_long;
-typedef float SPVM_VALUE_float;
-typedef double SPVM_VALUE_double;
 typedef void* SPVM_VALUE_object;
 
 #define SPVM_SUCCESS 0
