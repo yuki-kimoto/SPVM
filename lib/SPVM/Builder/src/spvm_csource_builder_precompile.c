@@ -2519,7 +2519,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else { \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object = ((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* object = ((void**)((intptr_t)array + object_header_byte_size))[index];\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object); \n");
@@ -2600,7 +2600,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void** element_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_API_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          element_address, ");
         SPVM_STRING_BUFFER_add(string_buffer, "        ");
@@ -2632,7 +2632,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void** element_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void** element_address = &((void**)((intptr_t)array + object_header_byte_size))[index];\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        void* object = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
@@ -2693,7 +2693,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "        exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      } \n");
         SPVM_STRING_BUFFER_add(string_buffer, "      else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        void* object_address = &((SPVM_VALUE_object*)((intptr_t)array + object_header_byte_size))[index];\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        void* object_address = &((void**)((intptr_t)array + object_header_byte_size))[index];\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        SPVM_RUNTIME_API_OBJECT_ASSIGN(\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          object_address,\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          NULL");
@@ -3389,7 +3389,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void** get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
         SPVM_STRING_BUFFER_add_field_offset_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      env->weaken(env, get_field_object_address);\n");
@@ -3445,7 +3445,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void** get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
         SPVM_STRING_BUFFER_add_field_offset_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      env->unweaken(env, get_field_object_address);\n");
@@ -3501,7 +3501,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void** get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
         SPVM_STRING_BUFFER_add_field_offset_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
@@ -4803,7 +4803,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* get_field_object = *(SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* get_field_object = *(void**)((intptr_t)object + object_header_byte_size + ");
         SPVM_STRING_BUFFER_add_field_offset_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_API_OBJECT_ASSIGN(&");
@@ -4911,7 +4911,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
         SPVM_STRING_BUFFER_add_field_offset_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_API_OBJECT_ASSIGN(");
@@ -4973,7 +4973,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      void* get_field_object_address = (SPVM_VALUE_object*)((intptr_t)object + object_header_byte_size + ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + ");
         SPVM_STRING_BUFFER_add_field_offset_name(string_buffer, field_package_name, field_name);
         SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      SPVM_RUNTIME_API_OBJECT_ASSIGN(get_field_object_address, NULL);");
