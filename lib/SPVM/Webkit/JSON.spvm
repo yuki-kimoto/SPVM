@@ -488,27 +488,27 @@ package SPVM::Webkit::JSON {
     }
     # byte
     elsif ($spvm_data isa SPVM::Byte) {
-      $json = (string)(double)(((SPVM::Byte)$spvm_data)->val);
+      $json = (string)(double)(byte)(SPVM::Byte)$spvm_data;
     }
     # short
     elsif ($spvm_data isa SPVM::Short) {
-      $json = (string)(double)(((SPVM::Short)$spvm_data)->val);
+      $json = (string)(double)(short)(SPVM::Short)$spvm_data;
     }
     # int
     elsif ($spvm_data isa SPVM::Int) {
-      $json = (string)(double)(((SPVM::Int)$spvm_data)->val);
+      $json = (string)(double)(int)(SPVM::Int)$spvm_data;
     }
     # long
     elsif ($spvm_data isa SPVM::Long) {
-      $json = (string)(double)(((SPVM::Long)$spvm_data)->val);
+      $json = (string)(double)(long)(SPVM::Long)$spvm_data;
     }
     # float
     elsif ($spvm_data isa SPVM::Float) {
-      $json = (string)(double)(((SPVM::Float)$spvm_data)->val);
+      $json = (string)(double)(float)(SPVM::Float)$spvm_data;
     }
     # double
     elsif ($spvm_data isa SPVM::Double) {
-      $json = (string)(((SPVM::Double)$spvm_data)->val);
+      $json = (string)(double)(SPVM::Double)$spvm_data;
     }
     # bool
     elsif ($spvm_data isa SPVM::Webkit::JSON::Bool) {

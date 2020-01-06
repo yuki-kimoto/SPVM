@@ -13,9 +13,6 @@ SPVM::Byte - Byte object
 =head1 SYNOPSYS
   
   use SPVM::Byte;
-  
-  my $byte_object = SPVM::Byte->new(5);
-  my $byte_value = $byte_object->val;
 
 =head1 DESCRIPTION
 
@@ -38,3 +35,5 @@ Create a new L<SPVM::Byte> object with specific C<byte> value.
   sub val : byte ($self : self)
 
 Get a C<byte> value.
+
+(SPVM::Byte)1;
