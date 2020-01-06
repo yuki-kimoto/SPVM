@@ -1,9 +1,9 @@
-package TestCase::Lib::SPVM::Webkit::Client::URL::Parameters {
-  use SPVM::Webkit::Client::URL::Parameters;
+package TestCase::Lib::SPVM::Webkit::URL::Parameters {
+  use SPVM::Webkit::URL::Parameters;
   use SPVM::Util (equals_strarray);
 
   sub test_escape : int () {
-    my $params = SPVM::Webkit::Client::URL::Parameters->new;
+    my $params = SPVM::Webkit::URL::Parameters->new;
     $params->add("foo" => "尾骶骨𠮷 🤔");
     $params->add("hoge" => "fuga");
     $params->add("foo" => "piyo");
@@ -17,7 +17,7 @@ package TestCase::Lib::SPVM::Webkit::Client::URL::Parameters {
   }
 
   sub test_parse : int () {
-    my $params = SPVM::Webkit::Client::URL::Parameters->parse(
+    my $params = SPVM::Webkit::URL::Parameters->parse(
         "foo=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%F0%9F%A4%94&hoge=fuga&foo=piyo");
     unless ($params->get("foo") eq "尾骶骨𠮷🤔") {
       return 0;
@@ -29,7 +29,7 @@ package TestCase::Lib::SPVM::Webkit::Client::URL::Parameters {
   }
 
   sub test_add_get : int () {
-    my $params = SPVM::Webkit::Client::URL::Parameters->new;
+    my $params = SPVM::Webkit::URL::Parameters->new;
     $params->add("array", "first_value");
     $params->add("array", "second_value");
     unless ($params->get("array") eq "first_value") {
@@ -55,7 +55,7 @@ package TestCase::Lib::SPVM::Webkit::Client::URL::Parameters {
   }
 
   sub test_keys : int () {
-    my $params = SPVM::Webkit::Client::URL::Parameters->new;
+    my $params = SPVM::Webkit::URL::Parameters->new;
     unless (@{$params->keys} == 0) {
       return 0;
     }

@@ -1,4 +1,4 @@
-package SPVM::Webkit::Client::CookieJar::CookieParser {
+package SPVM::Webkit::CookieJar::CookieParser {
   use SPVM::Hash;
   use SPVM::Time;
   use SPVM::Util(split, lc, strtol, substr, index);
@@ -85,8 +85,8 @@ package SPVM::Webkit::Client::CookieJar::CookieParser {
     }
   }
 
-  sub parse : SPVM::Webkit::Client::CookieJar::CookieParser ($string : string) {
-    my $self = new SPVM::Webkit::Client::CookieJar::CookieParser;
+  sub parse : SPVM::Webkit::CookieJar::CookieParser ($string : string) {
+    my $self = new SPVM::Webkit::CookieJar::CookieParser;
     $self->{extensions} = SPVM::Hash->new;
     my $items = split(";", $string);
     my $kv = split("=", $items->[0]);

@@ -1,12 +1,12 @@
-package SPVM::Webkit::Client::URL::Parameters {
-  use SPVM::Webkit::Client::URL::Escape;
+package SPVM::Webkit::URL::Parameters {
+  use SPVM::Webkit::URL::Escape;
   use SPVM::Util (sliceb, sliceo);
 
   has params : string[][];
   has size : int;
 
-  sub new : SPVM::Webkit::Client::URL::Parameters () {
-    my $self = new SPVM::Webkit::Client::URL::Parameters;
+  sub new : SPVM::Webkit::URL::Parameters () {
+    my $self = new SPVM::Webkit::URL::Parameters;
     $self->{params} = new string[][16];
     return $self;
   }
@@ -64,8 +64,8 @@ package SPVM::Webkit::Client::URL::Parameters {
     return $keys;
   }
 
-  sub parse : SPVM::Webkit::Client::URL::Parameters ($str : string) {
-    my $self = SPVM::Webkit::Client::URL::Parameters->new;
+  sub parse : SPVM::Webkit::URL::Parameters ($str : string) {
+    my $self = SPVM::Webkit::URL::Parameters->new;
     my $length = length($str);
     my $start_token = 0;
     for (my $i = 0; $i < $length; ++$i) {
@@ -83,7 +83,7 @@ package SPVM::Webkit::Client::URL::Parameters {
         }
         my $key = sliceb((byte [])$str, $start_token, $i - $start_token);
         my $val = sliceb((byte [])$str, $start_val, $end_val - $start_val);
-        $self->add($key, SPVM::Webkit::Client::URL::Escape->unescape($val));
+        $self->add($key, SPVM::Webkit::URL::Escape->unescape($val));
         $start_token = $end_val + 1; # if $end_val < $length
         $i = $end_val;
       }
@@ -104,7 +104,7 @@ package SPVM::Webkit::Client::URL::Parameters {
           $result .= "&";
         }
         $result .= $keys->[$key_index] . "=" .
-          SPVM::Webkit::Client::URL::Escape->escape($multi_vals->[$val_index]);
+          SPVM::Webkit::URL::Escape->escape($multi_vals->[$val_index]);
       }
     }
     return $result;

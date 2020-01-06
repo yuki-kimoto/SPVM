@@ -1,4 +1,4 @@
-package TestCase::JSON::Bool {
+package TestCase::Lib::SPVM::Webkit::JSON::Bool {
   use SPVM::Webkit::JSON::Bool;
   sub basic : int () {
     my $true = SPVM::Webkit::JSON::Bool->TRUE;

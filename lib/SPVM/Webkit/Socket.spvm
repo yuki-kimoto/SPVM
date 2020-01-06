@@ -1,8 +1,8 @@
-package SPVM::Webkit::Client::Socket {
+package SPVM::Webkit::Socket {
   
   has handle : int;
   
-  native sub new : SPVM::Webkit::Client::Socket ($host : string, $port : int);
+  native sub new : SPVM::Webkit::Socket ($host : string, $port : int);
   native sub read : int ($self : self, $buffer : byte[]);
   native sub write : int ($self : self, $buffer : string, $length : int);
   native sub close : void ($self : self);

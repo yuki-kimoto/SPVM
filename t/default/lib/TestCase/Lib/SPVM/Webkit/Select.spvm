@@ -1,10 +1,10 @@
-package TestCase::Lib::SPVM::Webkit::Client::Select {
-  use SPVM::Webkit::Client::Select;
+package TestCase::Lib::SPVM::Webkit::Select {
+  use SPVM::Webkit::Select;
   use SPVM::IO::File (STDIN, STDOUT, STDERR);
   use SPVM::Util (equals_iarray);
 
   sub add : int () {
-    my $select = SPVM::Webkit::Client::Select->new;
+    my $select = SPVM::Webkit::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -47,7 +47,7 @@ package TestCase::Lib::SPVM::Webkit::Client::Select {
   }
 
   sub remove : int () {
-    my $select = SPVM::Webkit::Client::Select->new;
+    my $select = SPVM::Webkit::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -99,7 +99,7 @@ package TestCase::Lib::SPVM::Webkit::Client::Select {
   }
 
   sub exists : int () {
-    my $select = SPVM::Webkit::Client::Select->new;
+    my $select = SPVM::Webkit::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -143,7 +143,7 @@ package TestCase::Lib::SPVM::Webkit::Client::Select {
   }
 
   sub can_read : int () {
-    my $select = SPVM::Webkit::Client::Select->new;
+    my $select = SPVM::Webkit::Select->new;
     
     {
       my $ret = $select->add(STDIN());
@@ -168,7 +168,7 @@ package TestCase::Lib::SPVM::Webkit::Client::Select {
   }
 
   sub can_write : int () {
-    my $select = SPVM::Webkit::Client::Select->new;
+    my $select = SPVM::Webkit::Select->new;
     
     {
       my $ret = $select->add(STDOUT());
@@ -197,7 +197,7 @@ package TestCase::Lib::SPVM::Webkit::Client::Select {
   }
 
   sub has_exception : int () {
-    my $select = SPVM::Webkit::Client::Select->new;
+    my $select = SPVM::Webkit::Select->new;
     
     {
       my $ret = $select->add(STDIN());

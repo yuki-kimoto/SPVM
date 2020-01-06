@@ -1,6 +1,6 @@
 package SPVM::Webkit::Client {
-  use SPVM::Webkit::Client::Handle;
-  use SPVM::Webkit::Client::URL;
+  use SPVM::Webkit::Handle;
+  use SPVM::Webkit::URL;
   use SPVM::StringList;
   use SPVM::ByteList;
   use SPVM::ObjectList;
@@ -38,7 +38,7 @@ package SPVM::Webkit::Client {
     return $self;
   }
 
-  sub post_form : SPVM::Webkit::Client::Response ($self : self, $url : string, $data : object[]) {
+  sub post_form : SPVM::Webkit::Response ($self : self, $url : string, $data : object[]) {
     my $form = $self->www_form_urlencode($data);
     return $self->request("POST", $url, [(object)
       content => $form,
@@ -130,9 +130,9 @@ package SPVM::Webkit::Client {
     return undef;
   }
 
-  private sub _open_handle : SPVM::Webkit::Client::Handle ($self : self,
+  private sub _open_handle : SPVM::Webkit::Handle ($self : self,
       $host : string, $port : int) {
-    my $handle = SPVM::Webkit::Client::Handle->new_opt([(object)
+    my $handle = SPVM::Webkit::Handle->new_opt([(object)
       timeout => $self->{timeout},
     ]);
     return $handle->connect(SPVM::Hash->newa([(object)
@@ -141,12 +141,12 @@ package SPVM::Webkit::Client {
     ]));
   }
 
-  private sub _prepare_data_cb : SPVM::Webkit::Client::DataHandler (
-      $self : self, $response : SPVM::Webkit::Client::Response, $args : SPVM::Hash) {
-    my $data_cb : SPVM::Webkit::Client::DataHandler;
+  private sub _prepare_data_cb : SPVM::Webkit::DataHandler (
+      $self : self, $response : SPVM::Webkit::Response, $args : SPVM::Hash) {
+    my $data_cb : SPVM::Webkit::DataHandler;
     if ($args) {
       if (my $o = $args->get("data_callback")) {
-        $data_cb = (SPVM::Webkit::Client::DataHandler)$o;
+        $data_cb = (SPVM::Webkit::DataHandler)$o;
       }
     }
     $response->{content} = "";
@@ -155,7 +155,7 @@ package SPVM::Webkit::Client {
       if (my $max_size = $self->{max_size}) {
         $data_cb = [$max_size : int] sub : void ($self : self, $append : string,
             $target : object) {
-          my $response = (SPVM::Webkit::Client::Response)$target;
+          my $response = (SPVM::Webkit::Response)$target;
           $response->{content} .= $append;
           if (length $response->{content} > $max_size) {
             die "Size of response body exceeds the maximum allowed of $max_size";
@@ -164,16 +164,16 @@ package SPVM::Webkit::Client {
       }
       else {
         $data_cb = sub : void ($self : self, $append : string, $target : object) {
-          ((SPVM::Webkit::Client::Response)$target)->{content} .= $append;
+          ((SPVM::Webkit::Response)$target)->{content} .= $append;
         };
       }
     }
     return $data_cb;
   }
 
-  sub request : SPVM::Webkit::Client::Response ($self : self, $method : string,
+  sub request : SPVM::Webkit::Response ($self : self, $method : string,
       $url : string, $args : object[]) {
-    my $u = SPVM::Webkit::Client::URL->parse($url);
+    my $u = SPVM::Webkit::URL->parse($url);
     $u->force_root_path_slashed;
     my $host = $u->{host};
     my $port = $u->{port};
@@ -212,14 +212,14 @@ package SPVM::Webkit::Client {
   }
 }
 
-package SPVM::Webkit::Client::Handle {
-  use SPVM::Webkit::Client::Response;
-  use SPVM::Webkit::Client::Socket;
+package SPVM::Webkit::Handle {
+  use SPVM::Webkit::Response;
+  use SPVM::Webkit::Socket;
   use SPVM::StringBuffer;
   use SPVM::Util (lc, strtoi, substr, sliceb, index);
 
   has timeout : public double;
-  has socket : public SPVM::Webkit::Client::Socket;
+  has socket : public SPVM::Webkit::Socket;
   has rbuf : SPVM::StringBuffer;
   has max_header_lines : int;
 
@@ -229,9 +229,9 @@ package SPVM::Webkit::Client::Handle {
     $_BUFSIZE = 32768;
   }
 
-  sub new_opt : SPVM::Webkit::Client::Handle ($args : object[]) {
+  sub new_opt : SPVM::Webkit::Handle ($args : object[]) {
     my $h = SPVM::Hash->newa($args);
-    my $self = new SPVM::Webkit::Client::Handle;
+    my $self = new SPVM::Webkit::Handle;
     if (my $o = $h->get("timeout")) {
       $self->{timeout} = ((SPVM::Double)$o)->val;
     }
@@ -245,7 +245,7 @@ package SPVM::Webkit::Client::Handle {
     return $self;
   }
 
-  sub connect : SPVM::Webkit::Client::Handle ($self : self, $args : SPVM::Hash) {
+  sub connect : SPVM::Webkit::Handle ($self : self, $args : SPVM::Hash) {
     unless ($args->exists("host")) {
       die "Missing argument 'host'.";
     }
@@ -254,7 +254,7 @@ package SPVM::Webkit::Client::Handle {
       die "Missing argument 'port'.";
     }
     my $port = ((SPVM::Int)($args->get("port")))->val;
-    $self->{socket} = SPVM::Webkit::Client::Socket->new($host, $port);
+    $self->{socket} = SPVM::Webkit::Socket->new($host, $port);
     $self->{rbuf} = SPVM::StringBuffer->new;
     return $self;
   }
@@ -498,7 +498,7 @@ package SPVM::Webkit::Client::Handle {
     return $headers;
   }
 
-  sub read_response_header : SPVM::Webkit::Client::Response ($self : self) {
+  sub read_response_header : SPVM::Webkit::Response ($self : self) {
     my $line = $self->readline;
     my $pos = 0;
     _read_as($line, "HTTP/", \$pos);
@@ -510,7 +510,7 @@ package SPVM::Webkit::Client::Handle {
     my $status = _capture($line, 3, \$pos);
     _read_as_ws($line, \$pos);
     my $reason = substr($line, $pos, length($line) - $pos - 2);
-    return SPVM::Webkit::Client::Response->new_opt([(object)
+    return SPVM::Webkit::Response->new_opt([(object)
       protocol => "HTTP/$version",
       status   => _as_digits($status),
       reason   => $reason,
@@ -586,8 +586,8 @@ package SPVM::Webkit::Client::Handle {
   }
 
   private sub _read_chunked_body : int ($self : self,
-      $data_cb : SPVM::Webkit::Client::DataHandler,
-      $response : SPVM::Webkit::Client::Response) {
+      $data_cb : SPVM::Webkit::DataHandler,
+      $response : SPVM::Webkit::Response) {
     while (1) {
       my $len = $self->_read_hex_length;
       if ($len > 0) {
@@ -605,8 +605,8 @@ package SPVM::Webkit::Client::Handle {
   }
 
   private sub _read_content_body : int ($self : self,
-      $data_cb : SPVM::Webkit::Client::DataHandler,
-      $response : SPVM::Webkit::Client::Response, $content_length : SPVM::Int) {
+      $data_cb : SPVM::Webkit::DataHandler,
+      $response : SPVM::Webkit::Response, $content_length : SPVM::Int) {
     if (!$content_length) {
       if (my $o = $response->{headers}->get("content-length")) {
         $content_length = strtoi((string)$o, 10);
@@ -650,8 +650,8 @@ package SPVM::Webkit::Client::Handle {
     return 0;
   }
 
-  sub read_body : int ($self : self, $data_cb : SPVM::Webkit::Client::DataHandler,
-      $response : SPVM::Webkit::Client::Response) {
+  sub read_body : int ($self : self, $data_cb : SPVM::Webkit::DataHandler,
+      $response : SPVM::Webkit::Response) {
     my $te = $response->{headers}->get("transfer-encoding");
     if ($te && _has_chunked($te)) {
       return $self->_read_chunked_body($data_cb, $response);
@@ -662,6 +662,6 @@ package SPVM::Webkit::Client::Handle {
   }
 }
 
-package SPVM::Webkit::Client::DataHandler : callback_t {
+package SPVM::Webkit::DataHandler : callback_t {
   sub : void ($self : self, $append : string, $target : object);
 }

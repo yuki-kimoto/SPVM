@@ -1,4 +1,4 @@
-package SPVM::Webkit::Client::Response {
+package SPVM::Webkit::Response {
   use SPVM::Hash;
 
   has protocol : public string;
@@ -9,9 +9,9 @@ package SPVM::Webkit::Client::Response {
   has success : public int;
   has url : public string;
 
-  sub new_opt : SPVM::Webkit::Client::Response ($args : object[]) {
+  sub new_opt : SPVM::Webkit::Response ($args : object[]) {
     my $h = SPVM::Hash->newa($args);
-    my $self = new SPVM::Webkit::Client::Response;
+    my $self = new SPVM::Webkit::Response;
     if (my $o = $h->get("protocol")) {
       $self->{protocol} = (string)$o;
     }

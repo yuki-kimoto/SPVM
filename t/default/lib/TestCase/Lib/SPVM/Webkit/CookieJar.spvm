@@ -1,10 +1,10 @@
-package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
-  use SPVM::Webkit::Client::CookieJar;
+package TestCase::Lib::SPVM::Webkit::CookieJar {
+  use SPVM::Webkit::CookieJar;
   use SPVM::Time;
   use SPVM::Unistd(sleep);
 
   sub test_add_key_value : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($cookie->{value} eq "bar") {
@@ -16,7 +16,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   sub test_add_expires : int () {
     my $time = 1557622506;
     my $expires = SPVM::Time->strftime("%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($time));
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; Expires=$expires");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($time == $cookie->{expiry_time}->val) {
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   sub test_add_max_age : int () {
     my $now = SPVM::Time->time;
     my $max_age = 100;
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; Max-Age=$max_age");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($cookie->{expiry_time}->val == $now + $max_age) {
@@ -41,7 +41,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
     my $now = SPVM::Time->time;
     my $max_age = 100;
     my $expires = SPVM::Time->strftime("%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($now + 10000));
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; Max-Age=$max_age; Expires=$expires");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($now + $max_age - 1 <= $cookie->{expiry_time}->val &&
@@ -52,7 +52,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_expires_infinity : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($cookie->{name} eq "foo" && $cookie->{expiry_time} == undef) {
@@ -62,7 +62,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_domain : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://sub.example.com", "foo=bar; Domain=example.com");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "example.com", "/");
     unless ($cookie->{domain} eq "example.com" && $cookie->{host_only} == 0) {
@@ -72,7 +72,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_domain_use_host_only_when_no_domain : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($cookie->{domain} eq "www.example.com" && $cookie->{host_only}) {
@@ -82,7 +82,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_domain_use_host_only_when_no_domain_request_root_path : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com/", "foo=bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($cookie->{domain} eq "www.example.com" && $cookie->{host_only}) {
@@ -92,7 +92,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_domain_not_host_only_even_if_same_as_request_domain : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://sub.example.com/", "foo=bar; Domain=sub.example.com");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "sub.example.com", "/");
     unless ($cookie->{domain} eq "sub.example.com" && !$cookie->{host_only}) {
@@ -103,7 +103,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
 
   sub test_add_domain_ignore_cookie_when_different_domain : int () {
     {
-      my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+      my $cookiejar = SPVM::Webkit::CookieJar->new;
       if ($cookiejar->add("http://sub.example.com", "foo=bar; Domain=spvm.com")) {
         return 0;
       }
@@ -115,7 +115,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
       }
     }
     {
-      my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+      my $cookiejar = SPVM::Webkit::CookieJar->new;
       if ($cookiejar->add("http://sub.example.com", "foo=bar; Domain=foo.sub.example.com")) {
         return 0;
       }
@@ -130,7 +130,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_path_last_is_dir_when_no_path_attr : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com/path/to/", "foo=bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/path/to");
     unless ($cookie->{value} eq "bar") {
@@ -140,7 +140,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_path_last_is_file_when_no_path_attr : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com/path/to/file", "foo=bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/path/to");
     unless ($cookie->{value} eq "bar") {
@@ -150,7 +150,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_path_use_default_path_when_broken_root : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com/path/to/item", "foo=bar; Path=hoge");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/path/to");
     unless ($cookie->{value} eq "bar") {
@@ -160,7 +160,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_path_prioritize_path_attr_over_request_path: int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com/path/to/item", "foo=bar; Path=/foo/bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/foo/bar");
     unless ($cookie->{value} eq "bar") {
@@ -170,7 +170,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_secure: int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; Secure");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($cookie->{secure}) {
@@ -180,7 +180,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_http_only: int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar; HttpOnly");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     unless ($cookie->{http_only}) {
@@ -190,7 +190,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_add_update_cookie : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "foo=bar");
     my $cookie = $cookiejar->_cookie_from_jar("foo", "www.example.com", "/");
     my $old_ct = $cookie->{creation_time};
@@ -205,7 +205,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_cookies_for : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     {
       $cookiejar->add("http://www.example.com", "a=A");
       $cookiejar->add("http://www.example.com/path/to/", "b=B");
@@ -259,7 +259,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_cookies_for_returning_value_order : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com/path/", "first=x");
     $cookiejar->add("http://www.example.com/", "second=y");
     sleep(2);
@@ -277,7 +277,7 @@ package TestCase::Lib::SPVM::Webkit::Client::CookieJar {
   }
 
   sub test_cookie_header : int () {
-    my $cookiejar = SPVM::Webkit::Client::CookieJar->new;
+    my $cookiejar = SPVM::Webkit::CookieJar->new;
     $cookiejar->add("http://www.example.com", "a=A;");
     $cookiejar->add("http://www.example.com/path/to/", "b=B;");
     my $header = $cookiejar->cookie_header("http://www.example.com/path/to/file");

@@ -16,7 +16,7 @@
 // Module file name
 static const char* MFILE = "SPVM/HTTP/Client/Select.c";
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Select___can_read(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Select___can_read(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Self
   void* obj_self = stack[0].oval;
@@ -72,7 +72,7 @@ int32_t SPNATIVE__SPVM__Webkit__Client__Select___can_read(SPVM_ENV* env, SPVM_VA
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Select___can_write(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Select___can_write(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Self
   void* obj_self = stack[0].oval;
@@ -128,7 +128,7 @@ int32_t SPNATIVE__SPVM__Webkit__Client__Select___can_write(SPVM_ENV* env, SPVM_V
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Select___has_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Select___has_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Self
   void* obj_self = stack[0].oval;

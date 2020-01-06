@@ -229,19 +229,9 @@ lib/SPVM/Util.config
 lib/SPVM/Util.pm
 lib/SPVM/Util.spvm
 lib/SPVM/Webkit/Client.spvm
-lib/SPVM/Webkit/Client/CookieJar.spvm
-lib/SPVM/Webkit/Client/CookieJar/Cookie.spvm
-lib/SPVM/Webkit/Client/CookieJar/CookieParser.spvm
-lib/SPVM/Webkit/Client/Response.spvm
-lib/SPVM/Webkit/Client/Select.c
-lib/SPVM/Webkit/Client/Select.config
-lib/SPVM/Webkit/Client/Select.spvm
-lib/SPVM/Webkit/Client/Socket.c
-lib/SPVM/Webkit/Client/Socket.config
-lib/SPVM/Webkit/Client/Socket.spvm
-lib/SPVM/Webkit/Client/URL.spvm
-lib/SPVM/Webkit/Client/URL/Escape.spvm
-lib/SPVM/Webkit/Client/URL/Parameters.spvm
+lib/SPVM/Webkit/CookieJar.spvm
+lib/SPVM/Webkit/CookieJar/Cookie.spvm
+lib/SPVM/Webkit/CookieJar/CookieParser.spvm
 lib/SPVM/Webkit/JSON.pm
 lib/SPVM/Webkit/JSON.spvm
 lib/SPVM/Webkit/JSON/Bool.pm
@@ -250,6 +240,16 @@ lib/SPVM/Webkit/MIME/Base64.c
 lib/SPVM/Webkit/MIME/Base64.config
 lib/SPVM/Webkit/MIME/Base64.pm
 lib/SPVM/Webkit/MIME/Base64.spvm
+lib/SPVM/Webkit/Response.spvm
+lib/SPVM/Webkit/Select.c
+lib/SPVM/Webkit/Select.config
+lib/SPVM/Webkit/Select.spvm
+lib/SPVM/Webkit/Socket.c
+lib/SPVM/Webkit/Socket.config
+lib/SPVM/Webkit/Socket.spvm
+lib/SPVM/Webkit/URL.spvm
+lib/SPVM/Webkit/URL/Escape.spvm
+lib/SPVM/Webkit/URL/Parameters.spvm
 Makefile.PL
 MANIFEST			This list of files
 ppport.h
@@ -462,8 +462,6 @@ t/default/lib/TestCase/IfRequire.spvm
 t/default/lib/TestCase/Increment.spvm
 t/default/lib/TestCase/Inline.spvm
 t/default/lib/TestCase/Isa.spvm
-t/default/lib/TestCase/JSON.spvm
-t/default/lib/TestCase/JSON/Bool.spvm
 t/default/lib/TestCase/LexicalVar.spvm
 t/default/lib/TestCase/Lib/SPVM/Byte.spvm
 t/default/lib/TestCase/Lib/SPVM/ByteList.spvm
@@ -499,6 +497,8 @@ t/default/lib/TestCase/Lib/SPVM/Webkit/Client/Socket.spvm
 t/default/lib/TestCase/Lib/SPVM/Webkit/Client/Socketspvm
 t/default/lib/TestCase/Lib/SPVM/Webkit/Client/URL.spvm
 t/default/lib/TestCase/Lib/SPVM/Webkit/Client/URL/Parameters.spvm
+t/default/lib/TestCase/Lib/SPVM/Webkit/JSON.spvm
+t/default/lib/TestCase/Lib/SPVM/Webkit/JSON/Bool.spvm
 t/default/lib/TestCase/Lib/SPVM/Webkit/MIME/Base64.spvm
 t/default/lib/TestCase/LINEN.spvm
 t/default/lib/TestCase/LINER.spvm

@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::JSON::Bool';
+use SPVM 'TestCase::Lib::SPVM::Webkit::JSON::Bool';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::Bool
 {
-  ok(TestCase::JSON::Bool->basic());
+  ok(TestCase::Lib::SPVM::Webkit::JSON::Bool->basic());
 }
 
 # All object is freed

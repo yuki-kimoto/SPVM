@@ -1,4 +1,4 @@
-package SPVM::Webkit::Client::URL::Escape {
+package SPVM::Webkit::URL::Escape {
 
   private sub HEX_CHARS : string () {
     return "0123456789ABCDEF";

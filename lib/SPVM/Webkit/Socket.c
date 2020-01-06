@@ -23,7 +23,7 @@
 // Module file name
 static const char* MFILE = "SPVM/HTTP/Client/Socket.c";
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Socket__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 #ifdef _WIN32
   // Load WinSock DLL
@@ -76,26 +76,26 @@ int32_t SPNATIVE__SPVM__Webkit__Client__Socket__new(SPVM_ENV* env, SPVM_VALUE* s
     SPVM_DIE("Can't connect to HTTP server : %s:%d", deststr, port, MFILE, __LINE__);
   }
   
-  // Create SPVM::Webkit::Client::Socket object
+  // Create SPVM::Webkit::Socket object
   void* obj_socket;
-  SPVM_NEW_OBJECT(env, obj_socket, "SPVM::Webkit::Client::Socket", MFILE, __LINE__);
+  SPVM_NEW_OBJECT(env, obj_socket, "SPVM::Webkit::Socket", MFILE, __LINE__);
   
   // Set handle
-  SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::Webkit::Client::Socket", "handle", handle, MFILE, __LINE__);
+  SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::Webkit::Socket", "handle", handle, MFILE, __LINE__);
   
   stack[0].oval = obj_socket;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Socket__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_socket = stack[0].oval;
   void* obj_buffer = stack[1].oval;
   const char* buffer = (const char*)env->get_elems_byte(env, obj_buffer);
   int32_t length = env->length(env, obj_buffer);
   
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::Webkit::Client::Socket", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::Webkit::Socket", "handle", MFILE, __LINE__);
 
   if (handle < 0) {
     SPVM_DIE("Handle is closed", MFILE, __LINE__);
@@ -112,14 +112,14 @@ int32_t SPNATIVE__SPVM__Webkit__Client__Socket__read(SPVM_ENV* env, SPVM_VALUE* 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Socket__write(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_socket = stack[0].oval;
   void* obj_buffer = stack[1].oval;
   const char* buffer = (const char*)env->get_elems_byte(env, obj_buffer);
   int32_t length = stack[2].ival;
   
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::Webkit::Client::Socket", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::Webkit::Socket", "handle", MFILE, __LINE__);
   
   if (handle < 0) {
     SPVM_DIE("Handle is closed", MFILE, __LINE__);
@@ -137,17 +137,17 @@ int32_t SPNATIVE__SPVM__Webkit__Client__Socket__write(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Socket__close(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Socket__close(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_socket = stack[0].oval;
   
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::Webkit::Client::Socket", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_socket, "SPVM::Webkit::Socket", "handle", MFILE, __LINE__);
   
   if (handle >= 0) {
     int32_t ret = closesocket(handle);
     if (ret == 0) {
-      SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::Webkit::Client::Socket", "handle", -1, MFILE, __LINE__);
+      SPVM_SET_FIELD_INT(env, obj_socket, "SPVM::Webkit::Socket", "handle", -1, MFILE, __LINE__);
     }
     else {
       SPVM_DIE("Fail close", MFILE, __LINE__);
@@ -157,21 +157,21 @@ int32_t SPNATIVE__SPVM__Webkit__Client__Socket__close(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Socket__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Socket__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Self
   void* obj_self = stack[0].oval;
   if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
   
   // File fh
   int32_t handle;
-  SPVM_GET_FIELD_INT(env, handle, obj_self, "SPVM::Webkit::Client::Socket", "handle", MFILE, __LINE__);
+  SPVM_GET_FIELD_INT(env, handle, obj_self, "SPVM::Webkit::Socket", "handle", MFILE, __LINE__);
   
   stack[0].ival = handle;
 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Webkit__Client__Socket___cleanup_wsa(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Webkit__Socket___cleanup_wsa(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Unload WinSock DLL
 #ifdef _WIN32

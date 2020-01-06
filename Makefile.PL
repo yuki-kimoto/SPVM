@@ -126,8 +126,8 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::MIME::Base64');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::Client::Socket');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::Client::Select');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::Socket');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::Select');
     
     # Precompile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');

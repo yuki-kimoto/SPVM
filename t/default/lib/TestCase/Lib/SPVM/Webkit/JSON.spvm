@@ -1,4 +1,4 @@
-package TestCase::JSON {
+package TestCase::Lib::SPVM::Webkit::JSON {
   use SPVM::Webkit::JSON;
   use SPVM::ObjectList;
   use SPVM::Int;

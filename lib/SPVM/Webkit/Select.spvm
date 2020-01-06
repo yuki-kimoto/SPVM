@@ -1,10 +1,10 @@
-package SPVM::Webkit::Client::Select {
+package SPVM::Webkit::Select {
   use SPVM::IntList;
   
   has handles : SPVM::IntList;
   
-  sub new : SPVM::Webkit::Client::Select () {
-    my $self = new SPVM::Webkit::Client::Select;
+  sub new : SPVM::Webkit::Select () {
+    my $self = new SPVM::Webkit::Select;
     
     $self->{handles} = SPVM::IntList->new;
     
