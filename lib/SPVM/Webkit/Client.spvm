@@ -1,0 +1,667 @@
+package SPVM::Webkit::Client {
+  use SPVM::Webkit::Client::Handle;
+  use SPVM::Webkit::Client::URL;
+  use SPVM::StringList;
+  use SPVM::ByteList;
+  use SPVM::ObjectList;
+  use SPVM::Sort (sortstr);
+  use SPVM::Util (lc, joinb, join, strtoi, substr, sliceb, index);
+  
+  has default_headers : public SPVM::Hash;
+  has timeout : public double;
+  has max_size : public int;
+
+  our $_Hex : public ro string;
+
+  BEGIN {
+    $_Hex = "0123456789ABCDEF";
+  }
+
+  sub new : SPVM::Webkit::Client () {
+    my $self = new SPVM::Webkit::Client;
+    $self->{default_headers} = SPVM::Hash->new;
+    $self->{timeout} = 60;
+    return $self;
+  }
+
+  sub new_opt : SPVM::Webkit::Client ($args : object[]) {
+
+    my $h = SPVM::Hash->newa($args);
+    my $self = new SPVM::Webkit::Client;
+    my $headers = (SPVM::Hash)$h->get("default_headers");
+    $self->{default_headers} = SPVM::Hash->new;
+    my $keys = $headers->keys;
+    for (my $i = 0; $i < @$keys; ++$i) {
+      $self->{default_headers}->set(lc($keys->[$i]), $headers->get($keys->[$i]));
+    }
+    $self->{timeout} = 60;
+    return $self;
+  }
+
+  sub post_form : SPVM::Webkit::Client::Response ($self : self, $url : string, $data : object[]) {
+    my $form = $self->www_form_urlencode($data);
+    return $self->request("POST", $url, [(object)
+      content => $form,
+      headers => SPVM::Hash->newa([(object)
+        "content-type"   => "application/x-www-form-urlencoded",
+        "content-length" => length $form,
+      ]),
+    ]);
+  }
+
+  sub www_form_urlencode : string ($self : self, $data : object[]) {
+    unless (@$data % 2 == 0) {
+      die "form data reference must have an even number of terms";
+    }
+    my $params = SPVM::ObjectList->newa($data);
+    my $terms = SPVM::StringList->new;
+    for (my $i = 0; $i < $params->length; $i += 2) {
+      my $key = (string)$params->get($i);
+      my $val = $params->get($i + 1);
+      if ($val isa SPVM::StringList) {
+        my $multivals = ((SPVM::StringList)$val)->to_array;
+        for (my $k = 0; $k < @$multivals; ++$k) {
+          $params->push($key);
+          $params->push($multivals->[$k]);
+        }
+      }
+      else {
+        my $string_val : string;
+        if ($val isa string) {
+          $string_val = (string)$val;
+        }
+        elsif ($val isa SPVM::Int) {
+          $string_val = "" . ((SPVM::Int)$val)->val;
+        }
+        else {
+          die "Unexpected parameter value type. key: $key";
+        }
+        $terms->push(join("=", [$self->_url_escape($key), $self->_url_escape($string_val)]));
+      }
+    }
+    my $terms_array = $terms->to_array;
+    SPVM::Sort->sortstr($terms_array);
+    return join("&", $terms_array);
+  }
+
+  private sub _url_escape : string ($self : self, $s : string) {
+    my $res = SPVM::ByteList->new;
+    my $length = length $s;
+    for (my $i = 0; $i < $length; ++$i) {
+      if (('A' <= $s->[$i] && $s->[$i] <= 'Z') ||
+          ('a' <= $s->[$i] && $s->[$i] <= 'z') ||
+          ('0' <= $s->[$i] && $s->[$i] <= '9') ||
+          $s->[$i] == '-' || $s->[$i] == '.' ||
+          $s->[$i] == '_' || $s->[$i] == '~') {
+        $res->push($s->[$i]);
+      }
+      else {
+        $res->push('%');
+        $res->push($_Hex->[($s->[$i] & 0xFF) >>> 4]);
+        $res->push($_Hex->[$s->[$i] & 0x0F]);
+      }
+    }
+    return (string)$res->to_array;
+  }
+
+  private sub _prepare_headers : SPVM::Hash ($self : self,
+      $host : string, $port : int, $args_headers : SPVM::Hash) {
+    my $headers = $self->{default_headers}->copy;
+    if ($args_headers) {
+      my $args_each = $args_headers->each;
+      for (my $i = 0; $i < @$args_each; ++$i) {
+        $headers->set(lc((string)$args_each->[$i]->[0]), $args_each->[$i]->[1]);
+      }
+    }
+    my $host_port = $host;
+    if ($port != 80) {
+      $host_port .= ":$port";
+    }
+    $headers->set("host", $host_port);
+    return $headers;
+  }
+
+  private sub _prepare_content : string ($self : self, $args : SPVM::Hash) {
+    if ($args) {
+      if (my $content = $args->get("content")) {
+        return (string)$content;
+      }
+    }
+    return undef;
+  }
+
+  private sub _open_handle : SPVM::Webkit::Client::Handle ($self : self,
+      $host : string, $port : int) {
+    my $handle = SPVM::Webkit::Client::Handle->new_opt([(object)
+      timeout => $self->{timeout},
+    ]);
+    return $handle->connect(SPVM::Hash->newa([(object)
+      host => $host,
+      port => $port,
+    ]));
+  }
+
+  private sub _prepare_data_cb : SPVM::Webkit::Client::DataHandler (
+      $self : self, $response : SPVM::Webkit::Client::Response, $args : SPVM::Hash) {
+    my $data_cb : SPVM::Webkit::Client::DataHandler;
+    if ($args) {
+      if (my $o = $args->get("data_callback")) {
+        $data_cb = (SPVM::Webkit::Client::DataHandler)$o;
+      }
+    }
+    $response->{content} = "";
+
+    if (!$data_cb || $response->{status} / 100 != 2) {
+      if (my $max_size = $self->{max_size}) {
+        $data_cb = [$max_size : int] sub : void ($self : self, $append : string,
+            $target : object) {
+          my $response = (SPVM::Webkit::Client::Response)$target;
+          $response->{content} .= $append;
+          if (length $response->{content} > $max_size) {
+            die "Size of response body exceeds the maximum allowed of $max_size";
+          }
+        };
+      }
+      else {
+        $data_cb = sub : void ($self : self, $append : string, $target : object) {
+          ((SPVM::Webkit::Client::Response)$target)->{content} .= $append;
+        };
+      }
+    }
+    return $data_cb;
+  }
+
+  sub request : SPVM::Webkit::Client::Response ($self : self, $method : string,
+      $url : string, $args : object[]) {
+    my $u = SPVM::Webkit::Client::URL->parse($url);
+    $u->force_root_path_slashed;
+    my $host = $u->{host};
+    my $port = $u->{port};
+    my $path_query = $u->{path};
+    if ($u->{params} && $u->{params}->to_string ne "") {
+      $path_query .= "?" . $u->{params}->to_string;
+    }
+    my $hash_args : SPVM::Hash;
+    my $args_headers : SPVM::Hash;
+    if ($args) {
+      $hash_args = SPVM::Hash->newa($args);
+      if (my $o = $hash_args->get("headers")) {
+        $args_headers = (SPVM::Hash)$o;
+      }
+    }
+    my $headers = $self->_prepare_headers($host, $port, $args_headers);
+    my $content = $self->_prepare_content($hash_args);
+    my $handle = $self->_open_handle($host, $port);
+    $handle->write_request($method, $path_query, $headers, $content);
+
+    my $response = $handle->read_response_header;
+
+    my $known_message_length : int;
+    if ($method eq "HEAD" || ($response->{status} == 204 || $response->{status} == 304)) {
+      $known_message_length = 1;
+    }
+    else {
+      my $data_cb = $self->_prepare_data_cb($response, $hash_args);
+      $known_message_length = $handle->read_body($data_cb, $response);
+    }
+
+    $response->{success} = $response->{status} / 100 == 2;
+    $response->{url} = $url;
+
+    return $response;
+  }
+}
+
+package SPVM::Webkit::Client::Handle {
+  use SPVM::Webkit::Client::Response;
+  use SPVM::Webkit::Client::Socket;
+  use SPVM::StringBuffer;
+  use SPVM::Util (lc, strtoi, substr, sliceb, index);
+
+  has timeout : public double;
+  has socket : public SPVM::Webkit::Client::Socket;
+  has rbuf : SPVM::StringBuffer;
+  has max_header_lines : int;
+
+  our $_BUFSIZE : rw int;
+
+  BEGIN {
+    $_BUFSIZE = 32768;
+  }
+
+  sub new_opt : SPVM::Webkit::Client::Handle ($args : object[]) {
+    my $h = SPVM::Hash->newa($args);
+    my $self = new SPVM::Webkit::Client::Handle;
+    if (my $o = $h->get("timeout")) {
+      $self->{timeout} = ((SPVM::Double)$o)->val;
+    }
+    $self->{rbuf} = SPVM::StringBuffer->new;
+    if (my $o = $h->get("max_header_lines")) {
+      $self->{max_header_lines} = ((SPVM::Int)$o)->val;
+    }
+    else {
+      $self->{max_header_lines} = 64;
+    }
+    return $self;
+  }
+
+  sub connect : SPVM::Webkit::Client::Handle ($self : self, $args : SPVM::Hash) {
+    unless ($args->exists("host")) {
+      die "Missing argument 'host'.";
+    }
+    my $host = (string)($args->get("host"));
+    unless ($args->exists("port")) {
+      die "Missing argument 'port'.";
+    }
+    my $port = ((SPVM::Int)($args->get("port")))->val;
+    $self->{socket} = SPVM::Webkit::Client::Socket->new($host, $port);
+    $self->{rbuf} = SPVM::StringBuffer->new;
+    return $self;
+  }
+
+  sub write : int ($self : self, $buf : SPVM::StringBuffer) {
+    my $len = $buf->length;
+    my $off = 0;
+    while (1) {
+      my $data = $buf->substr($off, $len);
+      my $write_length = $self->{socket}->write($data, $len);
+      $len -= $write_length;
+      $off += $write_length;
+      unless ($len > 0) {
+        last;
+      }
+    }
+    
+    return $off;
+  }
+
+  sub write_header_lines : void ($self : self,
+      $headers : SPVM::Hash, $prefix_data : string) {
+    my $buf = SPVM::StringBuffer->new;
+    if ($prefix_data) {
+      $buf->push($prefix_data);
+    }
+    my $control_fields = ["host", "cache-control", "expect", "max-forwards", "pragma", "range", "te"];
+    my $seen = SPVM::Hash->new;
+    for (my $i = 0; $i < @$control_fields; ++$i) {
+      if (my $v = $headers->get($control_fields->[$i])) {
+        $buf->push($control_fields->[$i] . ": " . (string)$v . "\r\n");
+        $seen->set($control_fields->[$i], 1);
+      }
+    }
+    my $ks = $headers->keys;
+    for (my $i = 0; $i < @$ks; ++$i) {
+      unless ($seen->get($ks->[$i])) {
+        my $val_ = $headers->get($ks->[$i]);
+        my $val : string;
+        if ($val_ isa string) {
+          $val = (string)$val_;
+        }
+        elsif ($val_ isa SPVM::Int) {
+          $val = "" . ((SPVM::Int)$val_)->val;
+        }
+        else {
+          die "Unexpected header value type. key: " . $ks->[$i];
+        }
+        $buf->push($ks->[$i] . ": $val\r\n");
+      }
+    }
+    $buf->push("\r\n");
+    $self->write($buf);
+  }
+
+  sub write_request_header : void ($self : self, $method : string,
+      $path_query : string, $headers : SPVM::Hash) {
+    $self->write_header_lines($headers, "$method $path_query HTTP/1.1\r\n");
+  }
+
+  sub write_content_body : void ($self : self, $content_length : int, $content : string) {
+    my $buffer = SPVM::StringBuffer->new;
+    $buffer->push($content);
+    my $len = $self->write($buffer);
+    unless ($len == $content_length) {
+      die "Content-Length mismatch (got: $len expected: $content_length)";
+    }
+  }
+
+  private sub _to_hex : string ($val : int) {
+    my $res = SPVM::ByteList->new;
+    while (1) {
+      $res->push($SPVM::Webkit::Client::_Hex->[$val % 16]);
+      $val /= 16;
+    }
+    return (string)$res->to_array;
+  }
+
+  sub write_chunked_body : void ($self : self, $content : string) {
+    my $len = length $content;
+    my $buffer = SPVM::StringBuffer->new;
+    $buffer->push(_to_hex($len) . "\r\n$content\r\n");
+    $buffer->push("0\r\n");
+    $self->write($buffer);
+  }
+
+  sub write_body : void ($self : self, $headers : SPVM::Hash, $content : string) {
+    if (my $content_length_ = $headers->get("content-length")) {
+      my $content_length = ((SPVM::Int)$content_length_)->val;
+      $self->write_content_body($content_length, $content);
+    }
+    else {
+      $self->write_chunked_body($content);
+    }
+  }
+
+  sub write_request : void ($self : self, $method : string, $path_query : string,
+      $headers : SPVM::Hash, $content : string) {
+    $self->write_request_header($method, $path_query, $headers);
+    if ($content) {
+      $self->write_body($headers, $content);
+    }
+  }
+
+  private sub _extract_line : string ($self : self) {
+    my $index = $self->{rbuf}->index("\n", 0);
+    if ($index < 0) {
+      return undef;
+    }
+    my $ret = $self->{rbuf}->substr(0, $index + 1);
+    if ($self->{rbuf}->length == $index + 1) {
+      $self->{rbuf} = SPVM::StringBuffer->new;
+    }
+    else {
+      my $new_buffer = SPVM::StringBuffer->new;
+      $new_buffer->push($self->{rbuf}->substr($index + 1, $self->{rbuf}->length - $index - 1));
+      $self->{rbuf} = $new_buffer;
+    }
+    return $ret;
+  }
+
+  sub readline : string ($self : self) {
+    while (1) {
+      if (my $line = $self->_extract_line) {
+        return $line;
+      }
+      my $buf = new byte [$_BUFSIZE];
+      my $r = $self->{socket}->read($buf);
+      if ($r > 0) {
+        $self->{rbuf}->push((string)sliceb($buf, 0, $r));
+      }
+      elsif ($r == 0) {
+        die "Unexpected end of stream while looking for line";
+      }
+    }
+    return $self->{rbuf}->to_string;
+  }
+
+  private sub _read_as : void ($target : string, $token : string, $pos : int&) {
+    unless (index($target, $token, $$pos) == 0) {
+      die "Malformed string. '$token' is expected: '$target'";
+    }
+    $$pos += length $token;
+  }
+
+  private sub _read_as_ws : void ($target : string, $pos : int&) {
+    unless ($target->[$$pos] == ' ' || $target->[$$pos] == '\t') {
+      die "Malformed string. No white spaces: '$target'";
+    }
+    my $len = length $target;
+    for (; $$pos < $len &&
+        $target->[$$pos] == ' ' ||
+        $target->[$$pos] == '\t';
+        ++$$pos) {}
+  }
+
+  private sub _capture : string ($target : string, $length : int, $pos : int&) {
+    my $ret = "";
+    eval {
+      $ret = substr($target, $$pos, $length);
+    };
+    if ($@) {
+      die "Malformed string, parse failed at $$pos. string: '$target'";
+    }
+    $$pos += $length;
+    return $ret;
+  }
+
+  private sub _as_digits : int ($string : string) {
+    my $length = length $string;
+    my $ret = 0;
+    for (my $i = 0; $i < $length; ++$i) {
+      $ret *= 10;
+      $ret += $string->[$i] - '0';
+    }
+    return $ret;
+  }
+
+  private sub _trim_left : string ($string : string) {
+    my $length = length $string;
+    for (my $i = 0; $i < $length; ++$i) {
+      if ($string->[$i] != ' ') {
+        return substr($string, $i, $length - $i);
+      }
+    }
+    return "";
+  }
+
+  private sub _header_field : string[] ($line : string) {
+    my $length = length $line;
+    my $name = "";
+    for (my $i = 0; $i < $length; ++$i) {
+      my $c = $line->[$i];
+      if ($c == ':') {
+        my $value = substr($line, $i + 1, index($line, "\r\n", $i + 1) - $i - 1);
+        $value = _trim_left($value);
+        return [$name, $value];
+      }
+      unless (('\x00' <= $c && $c <= '\x1F') || $c == '\x7F') { # control codes
+        $name .= [$c];
+      }
+    }
+    return undef;
+  }
+
+  private sub _read_header_lines : SPVM::Hash ($self : self,
+      $headers : SPVM::Hash) {
+    my $lines = 0;
+    unless ($headers) {
+      $headers = SPVM::Hash->newa([]);
+    }
+    while (1) {
+      if (++$lines >= $self->{max_header_lines}) {
+        die "Header lines exceeds maximum number allowed of $self->{max_header_lines}";
+      }
+      my $line = $self->readline;
+      if (my $header_field = _header_field($line)) {
+        my $field_name = lc($header_field->[0]);
+        my $field_value = $header_field->[1];
+        if (my $o = $headers->get($field_name)) {
+          my $p : SPVM::StringList;
+          if ($o isa string) {
+            $p = SPVM::StringList->newa([(string)$o]);
+          }
+          else {
+            $p = (SPVM::StringList)$o;
+          }
+          $p->push($field_value);
+        }
+        else {
+          $headers->set($field_name, $field_value);
+        }
+      }
+      elsif ($line eq "\r\n" || $line eq "\n") {
+        last;
+      }
+      else {
+        die "Malformed header line: '$line'";
+      }
+    }
+    return $headers;
+  }
+
+  sub read_response_header : SPVM::Webkit::Client::Response ($self : self) {
+    my $line = $self->readline;
+    my $pos = 0;
+    _read_as($line, "HTTP/", \$pos);
+    my $version = _capture($line, 3, \$pos);
+    unless ($version eq "1.0" || $version eq "1.1") {
+      die "Unsupported HTTP protocol HTTP/$version";
+    }
+    _read_as_ws($line, \$pos);
+    my $status = _capture($line, 3, \$pos);
+    _read_as_ws($line, \$pos);
+    my $reason = substr($line, $pos, length($line) - $pos - 2);
+    return SPVM::Webkit::Client::Response->new_opt([(object)
+      protocol => "HTTP/$version",
+      status   => _as_digits($status),
+      reason   => $reason,
+      headers  => $self->_read_header_lines(undef),
+    ]);
+  }
+
+  private sub _read_hex_length : int ($self : self) {
+    my $line = $self->readline;
+    if (length($line) <= 2) {
+      die "Malformed chunk-size: '$line'";
+    }
+    my $length : int;
+    eval {
+      $length = strtoi(substr($line, 0, length($line) - 2), 16);
+    };
+    if ($@) {
+      die "Malformed chunk-size. $@";
+    }
+    else {
+      return $length;
+    }
+  }
+
+  private sub _read : int ($self : self, $len : int,
+      $buf : SPVM::StringBuffer, $allow_partial : int) {
+
+    my $updated = 0;
+
+    if (my $got = $self->{rbuf}->length) {
+      $updated = 1;
+      my $take = $len;
+      if ($take > $got) {
+        $take = $got;
+      }
+      $buf->push($self->{rbuf}->substr(0, $take));
+      if ($got > $take) {
+        my $new_buffer = SPVM::StringBuffer->new;
+        $new_buffer->push($self->{rbuf}->substr($take, $got - $take));
+        $self->{rbuf} = $new_buffer;
+      }
+      else {
+        $self->{rbuf} = SPVM::StringBuffer->new;
+      }
+      $len -= $take;
+    }
+
+    while ($len > 0) {
+      my $chunk = new byte [$len];
+      my $read_len : int;
+      eval {
+        $read_len = $self->{socket}->read($chunk);
+      };
+      if ($@) {
+        die "Could not read from socket: '$@'";
+      }
+
+      if ($read_len) {
+        $updated = 1;
+        $buf->push((string)sliceb($chunk, 0, $read_len));
+        $len -= $read_len;
+      }
+      else {
+        last;
+      }
+    }
+
+    if ($len && !$allow_partial) {
+      die "Unexpected end of stream";
+    }
+
+    return $updated;
+  }
+
+  private sub _read_chunked_body : int ($self : self,
+      $data_cb : SPVM::Webkit::Client::DataHandler,
+      $response : SPVM::Webkit::Client::Response) {
+    while (1) {
+      my $len = $self->_read_hex_length;
+      if ($len > 0) {
+        $self->_read_content_body($data_cb, $response, $len);
+        unless ($self->readline eq "\r\n") {
+          die "Malformed chunk: missing CRLF after chunk data";
+        }
+      }
+      else {
+        last;
+      }
+    }
+    $self->_read_header_lines($response->{headers});
+    return 1;
+  }
+
+  private sub _read_content_body : int ($self : self,
+      $data_cb : SPVM::Webkit::Client::DataHandler,
+      $response : SPVM::Webkit::Client::Response, $content_length : SPVM::Int) {
+    if (!$content_length) {
+      if (my $o = $response->{headers}->get("content-length")) {
+        $content_length = strtoi((string)$o, 10);
+      }
+    }
+    if ($content_length) {
+      my $len = $content_length->val;
+      my $buf = SPVM::StringBuffer->new;
+      while ($len > 0) {
+        my $read = $len;
+        if ($len > $_BUFSIZE) {
+          $read = $_BUFSIZE;
+        }
+        $self->_read($read, $buf, 0);
+        $len -= $read;
+      }
+      $data_cb->($buf->to_string, $response);
+      return $self->{rbuf}->length == 0;
+    }
+    else {
+      my $buf = SPVM::StringBuffer->new;
+      while (1) {
+        unless ($self->_read($_BUFSIZE, $buf, 1)) {
+          last;
+        }
+      }
+      $data_cb->($buf->to_string, $response);
+      return 0;
+    }
+  }
+
+  private sub _has_chunked : int ($te : object) {
+    if ($te isa string) {
+      if ((string)$te eq "chunked") {
+        return 1;
+      }
+    }
+    elsif ($te isa SPVM::StringList && ((SPVM::StringList)$te)->grep("chunked")) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub read_body : int ($self : self, $data_cb : SPVM::Webkit::Client::DataHandler,
+      $response : SPVM::Webkit::Client::Response) {
+    my $te = $response->{headers}->get("transfer-encoding");
+    if ($te && _has_chunked($te)) {
+      return $self->_read_chunked_body($data_cb, $response);
+    }
+    else {
+      return $self->_read_content_body($data_cb, $response, undef);
+    }
+  }
+}
+
+package SPVM::Webkit::Client::DataHandler : callback_t {
+  sub : void ($self : self, $append : string, $target : object);
+}

@@ -1,0 +1,17 @@
+package SPVM::Webkit::Client::Socket {
+  
+  has handle : int;
+  
+  native sub new : SPVM::Webkit::Client::Socket ($host : string, $port : int);
+  native sub read : int ($self : self, $buffer : byte[]);
+  native sub write : int ($self : self, $buffer : string, $length : int);
+  native sub close : void ($self : self);
+  native sub fileno : int ($self : self);
+  
+  sub DESTROY : void ($self : self) {
+    $self->_cleanup_wsa;
+    $self->close;
+  }
+
+  private native sub _cleanup_wsa : void ($self : self);
+}

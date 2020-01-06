@@ -1,0 +1,80 @@
+package TestCase::Lib::SPVM::Webkit::Client::URL::Parameters {
+  use SPVM::Webkit::Client::URL::Parameters;
+  use SPVM::Util (equals_strarray);
+
+  sub test_escape : int () {
+    my $params = SPVM::Webkit::Client::URL::Parameters->new;
+    $params->add("foo" => "尾骶骨𠮷 🤔");
+    $params->add("hoge" => "fuga");
+    $params->add("foo" => "piyo");
+    my $got = $params->to_string();
+    my $expected = "foo=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%20%F0%9F%A4%94&foo=piyo&hoge=fuga";
+    unless ($got eq $expected) {
+      warn("failed to escape parameters.\n     got: '$got'\nexpected: '$expected'");
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse : int () {
+    my $params = SPVM::Webkit::Client::URL::Parameters->parse(
+        "foo=%E5%B0%BE%E9%AA%B6%E9%AA%A8%F0%A0%AE%B7%F0%9F%A4%94&hoge=fuga&foo=piyo");
+    unless ($params->get("foo") eq "尾骶骨𠮷🤔") {
+      return 0;
+    }
+    unless ($params->get("hoge") eq "fuga") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_add_get : int () {
+    my $params = SPVM::Webkit::Client::URL::Parameters->new;
+    $params->add("array", "first_value");
+    $params->add("array", "second_value");
+    unless ($params->get("array") eq "first_value") {
+      return 0;
+    }
+    my $multi_val = $params->get_multi("array");
+    unless (@$multi_val == 2 &&
+      $multi_val->[0] eq "first_value" && $multi_val->[1] eq "second_value") {
+      return 0;
+    }
+    $params->add("fuga", "xyz");
+    unless ($params->get("fuga") eq "xyz") {
+      return 0;
+    }
+    $multi_val = $params->get_multi("fuga");
+    unless (@$multi_val == 1 && $multi_val->[0] eq "xyz") {
+      return 0;
+    }
+    unless ($params->get("unknown") == undef) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_keys : int () {
+    my $params = SPVM::Webkit::Client::URL::Parameters->new;
+    unless (@{$params->keys} == 0) {
+      return 0;
+    }
+    $params->add("k", "v1");
+    unless (equals_strarray($params->keys, ["k"])) {
+      return 0;
+    }
+    $params->add("k", "v2");
+    unless (equals_strarray($params->keys, ["k"])) {
+      return 0;
+    }
+    $params->add("k2", "v3");
+    {
+      my $keys = $params->keys;
+      unless (equals_strarray($keys, ["k", "k2"]) ||
+          equals_strarray($keys, ["k2", "k"])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+}

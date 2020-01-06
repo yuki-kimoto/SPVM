@@ -1,0 +1,223 @@
+package TestCase::Lib::SPVM::Webkit::Client::Select {
+  use SPVM::Webkit::Client::Select;
+  use SPVM::IO::File (STDIN, STDOUT, STDERR);
+  use SPVM::Util (equals_iarray);
+
+  sub add : int () {
+    my $select = SPVM::Webkit::Client::Select->new;
+    
+    {
+      my $ret = $select->add(STDIN());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(4);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(5);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(5);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    {
+      my $handles = $select->handles;
+      unless (equals_iarray($handles, [STDIN(), STDOUT(), 4, 5])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub remove : int () {
+    my $select = SPVM::Webkit::Client::Select->new;
+    
+    {
+      my $ret = $select->add(STDIN());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(4);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(5);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $ret = $select->remove(4);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = $select->remove(6);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    {
+      my $handles = $select->handles;
+      unless (equals_iarray($handles, [STDIN(), STDOUT(), 5])) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub exists : int () {
+    my $select = SPVM::Webkit::Client::Select->new;
+    
+    {
+      my $ret = $select->add(STDIN());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(4);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(5);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $ret = $select->exists(4);
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->exists(6);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub can_read : int () {
+    my $select = SPVM::Webkit::Client::Select->new;
+    
+    {
+      my $ret = $select->add(STDIN());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    my $can_read = $select->can_read(1.1);
+    
+    unless (@$can_read == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub can_write : int () {
+    my $select = SPVM::Webkit::Client::Select->new;
+    
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDERR());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    my $can_write = $select->can_write(1.1);
+    
+    unless (@$can_write == 2) {
+      return 0;
+    }
+
+    unless ($can_write->[0] == STDOUT() && $can_write->[1] == STDERR()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub has_exception : int () {
+    my $select = SPVM::Webkit::Client::Select->new;
+    
+    {
+      my $ret = $select->add(STDIN());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    {
+      my $ret = $select->add(STDOUT());
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    my $has_exception = $select->has_exception(1.1);
+    
+    unless (@$has_exception == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

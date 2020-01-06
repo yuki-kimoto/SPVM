@@ -1,0 +1,23 @@
+package SPVM::Webkit::Client::CookieJar::Cookie {
+  use SPVM::Time::Info;
+
+  has name : public string;
+  has value : public string;
+  has expiry_time : public SPVM::Long;
+  has domain : public string;
+  has path : public string;
+  has creation_time : public long;
+  has last_access_time : public long;
+  has persistent : public int;
+  has host_only : public int;
+  has secure : public int;
+  has http_only : public int;
+
+  sub new : SPVM::Webkit::Client::CookieJar::Cookie () {
+    return new SPVM::Webkit::Client::CookieJar::Cookie;
+  }
+
+  sub to_string : string ($self : self) {
+    return $self->{name} . "=" . $self->{value};
+  }
+}

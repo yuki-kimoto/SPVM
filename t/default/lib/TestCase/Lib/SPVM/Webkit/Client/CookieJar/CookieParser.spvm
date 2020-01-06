@@ -1,0 +1,85 @@
+package TestCase::Lib::SPVM::Webkit::Client::CookieJar::CookieParser {
+  use SPVM::Webkit::Client::CookieJar::CookieParser;
+  use SPVM::Time;
+
+  sub test_parse_only_key_value : int () {
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("key=value;");
+    unless ($p->{name} eq "key" && $p->{value} eq "value") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_expires : int () {
+    my $now = SPVM::Time->time;
+    my $expires_val = SPVM::Time->strftime(
+        "%a, %d %b %Y %H:%M:%S GMT", SPVM::Time->gmtime($now));
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("foo=fuga; Expires=$expires_val;");
+    unless ($p->{name} eq "foo" && $p->{value} eq "fuga") {
+      return 0;
+    }
+    unless ($p->{expires} == $now) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_max_age : int () {
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("foo=fuga; Max-Age=12345;");
+    unless ($p->{max_age} == 12345) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_domain : int () {
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("foo=fuga; Domain=www.example.com;");
+    unless ($p->{domain} eq "www.example.com") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_path : int () {
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("foo=fuga; Path=/data/item/;");
+    unless ($p->{path} eq "/data/item/") {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_secure : int () {
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("foo=fuga; Secure;");
+    unless ($p->{secure}) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_http_only : int () {
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("foo=fuga; HttpOnly;");
+    unless ($p->{http_only} == 1) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_parse_extensions : int () {
+    my $p = SPVM::Webkit::Client::CookieJar::CookieParser
+        ->parse("foo=fuga; bar=hoge; bar = baz ; ");
+    unless ($p->{name} eq "foo" && $p->{value} eq "fuga") {
+      return 0;
+    }
+    unless ((string)($p->{extensions}->get("bar")) eq "baz") {
+      return 0;
+    }
+    return 1;
+  }
+}
