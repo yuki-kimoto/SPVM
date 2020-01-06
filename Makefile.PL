@@ -134,7 +134,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::JSON');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Webkit::JSON');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
   }
   

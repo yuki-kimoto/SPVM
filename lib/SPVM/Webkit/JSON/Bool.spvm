@@ -1,0 +1,15 @@
+package SPVM::Webkit::JSON::Bool {
+  our $TRUE : ro SPVM::Webkit::JSON::Bool;
+  our $FALSE : ro SPVM::Webkit::JSON::Bool;
+  has val : ro int;
+  
+  BEGIN {
+    # Singleton true
+    $TRUE = new SPVM::Webkit::JSON::Bool;
+    $TRUE->{val} = 1;
+    
+    # Singleton false
+    $FALSE = new SPVM::Webkit::JSON::Bool;
+    $FALSE->{val} = 0;
+  }
+}

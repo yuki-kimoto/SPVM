@@ -1,19 +1,19 @@
-package SPVM::JSON;
+package SPVM::Webkit::JSON;
 
-use SPVM 'SPVM::JSON';
+use SPVM 'SPVM::Webkit::JSON';
 
 1;
 
 =head1 NAME
 
-SPVM::JSON - JSON serializing/deserializing
+SPVM::Webkit::JSON - JSON serializing/deserializing
 
 =head1 SYNOPSYS
   
-  use SPVM::JSON;
+  use SPVM::Webkit::JSON;
 
   # new
-  my $json = SPVM::JSON->new;
+  my $json = SPVM::Webkit::JSON->new;
 
   # decode
   $json->decode($json_text);
@@ -26,15 +26,15 @@ SPVM::JSON - JSON serializing/deserializing
 
 =head1 DESCRIPTION
 
-L<SPVM::JSON> converts SPVM data structures to JSON and vice versa.
+L<SPVM::Webkit::JSON> converts SPVM data structures to JSON and vice versa.
 
 =head1 CLASS METHODS
 
 =head2 new
 
-  sub new : SPVM::JSON ()
+  sub new : SPVM::Webkit::JSON ()
 
-Create new L<SPVM::JSON> object that can be used to de/encode JSON strings.
+Create new L<SPVM::Webkit::JSON> object that can be used to de/encode JSON strings.
 
 =head1 INSTANCE METHODS
 
@@ -43,7 +43,7 @@ Create new L<SPVM::JSON> object that can be used to de/encode JSON strings.
   sub encode : string ($self : self, $object : object)
 
 Converts the given SPVM data structure (undef or a object of numeric,
-L<string>, L<SPVM::JSON::Bool>, L<SPVM::Hash> or L<SPVM::ObjectList>)
+L<string>, L<SPVM::Webkit::JSON::Bool>, L<SPVM::Hash> or L<SPVM::ObjectList>)
 to its JSON representation.
 
 =head2 decode

@@ -1,17 +1,17 @@
 package TestCase::JSON {
-  use SPVM::JSON;
+  use SPVM::Webkit::JSON;
   use SPVM::ObjectList;
   use SPVM::Int;
   use SPVM::Double;
-  use SPVM::JSON::Bool;
+  use SPVM::Webkit::JSON::Bool;
   use SPVM::Hash;
   use SPVM::Sort (sortstr);
   use SPVM::Util (contains);
 
-  our $DEFAULT_JSON : SPVM::JSON;
+  our $DEFAULT_JSON : SPVM::Webkit::JSON;
 
   BEGIN {
-    $DEFAULT_JSON = SPVM::JSON->new;
+    $DEFAULT_JSON = SPVM::Webkit::JSON->new;
     $DEFAULT_JSON->set_canonical(1);
   }
 
@@ -95,13 +95,13 @@ package TestCase::JSON {
         return 0;
       }
     }
-    elsif ($lhs isa SPVM::JSON::Bool) {
-      unless ($rhs isa SPVM::JSON::Bool) {
+    elsif ($lhs isa SPVM::Webkit::JSON::Bool) {
+      unless ($rhs isa SPVM::Webkit::JSON::Bool) {
         return 0;
       }
 
-      my $l_bool = (SPVM::JSON::Bool)$lhs;
-      my $r_bool = (SPVM::JSON::Bool)$rhs;
+      my $l_bool = (SPVM::Webkit::JSON::Bool)$lhs;
+      my $r_bool = (SPVM::Webkit::JSON::Bool)$rhs;
 
       unless ($l_bool->val == $r_bool->val) {
         return 0;
@@ -160,7 +160,7 @@ package TestCase::JSON {
       }
     }
     {
-      my $input    = SPVM::Hash->newa([(object) "bool_true" => SPVM::JSON::Bool->TRUE]);
+      my $input    = SPVM::Hash->newa([(object) "bool_true" => SPVM::Webkit::JSON::Bool->TRUE]);
       my $got      = $DEFAULT_JSON->encode($input);
       my $expected = "{\"bool_true\":true}";
       unless ($got eq $expected) {
@@ -168,7 +168,7 @@ package TestCase::JSON {
       }
     }
     {
-      my $input    = SPVM::Hash->newa([(object) "bool_false" => SPVM::JSON::Bool->FALSE]);
+      my $input    = SPVM::Hash->newa([(object) "bool_false" => SPVM::Webkit::JSON::Bool->FALSE]);
       my $got      = $DEFAULT_JSON->encode($input);
       my $expected = "{\"bool_false\":false}";
       unless ($got eq $expected) {
@@ -177,7 +177,7 @@ package TestCase::JSON {
     }
     {
       my $input    = SPVM::Hash->newa([(object)
-        "bool"   => SPVM::JSON::Bool->FALSE,
+        "bool"   => SPVM::Webkit::JSON::Bool->FALSE,
         "double" => 0.1,
         "int"    => 1,
         "str"    => "hoge",
@@ -219,7 +219,7 @@ package TestCase::JSON {
     {
       my $input    = "{\"bool_true\":true}";
       my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::Hash->newa([(object) "bool_true" => SPVM::JSON::Bool->TRUE]);
+      my $expected = SPVM::Hash->newa([(object) "bool_true" => SPVM::Webkit::JSON::Bool->TRUE]);
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -227,7 +227,7 @@ package TestCase::JSON {
     {
       my $input    = "{\"bool_false\":false}";
       my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::Hash->newa([(object) "bool_false" => SPVM::JSON::Bool->FALSE]);
+      my $expected = SPVM::Hash->newa([(object) "bool_false" => SPVM::Webkit::JSON::Bool->FALSE]);
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -236,7 +236,7 @@ package TestCase::JSON {
       my $input    = "{\"double\":0.1,\"bool\":false,\"int\":1,\"str\":\"hoge\"}";
       my $got      = $DEFAULT_JSON->decode($input);
       my $expected = SPVM::Hash->newa([(object)
-        "bool"   => SPVM::JSON::Bool->FALSE,
+        "bool"   => SPVM::Webkit::JSON::Bool->FALSE,
         "double" => 0.1,
         "str"    => "hoge",
       ]);
@@ -284,7 +284,7 @@ package TestCase::JSON {
       }
     }
     {
-      my $input    = SPVM::ObjectList->newa([(object) 0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      my $input    = SPVM::ObjectList->newa([(object) 0, 3.14, "abc", SPVM::Webkit::JSON::Bool->TRUE]);
       my $got      = $DEFAULT_JSON->encode($input);
       my $expected = "[0,3.14,\"abc\",true]";
       unless ($got eq $expected) {
@@ -322,7 +322,7 @@ package TestCase::JSON {
     {
       my $input    = "[0,3.14,\"abc\",true]";
       my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::ObjectList->newa([(object) 0.0, 3.14, "abc", SPVM::JSON::Bool->TRUE]);
+      my $expected = SPVM::ObjectList->newa([(object) 0.0, 3.14, "abc", SPVM::Webkit::JSON::Bool->TRUE]);
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -330,7 +330,7 @@ package TestCase::JSON {
     {
       my $input    = " [ 3.14\n, true \t , \"a\" ] ";
       my $got      = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::ObjectList->newa([(object) 3.14, SPVM::JSON::Bool->TRUE, "a"]);
+      my $expected = SPVM::ObjectList->newa([(object) 3.14, SPVM::Webkit::JSON::Bool->TRUE, "a"]);
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -468,7 +468,7 @@ package TestCase::JSON {
 
   sub encode_bool : int () {
     {
-      my $input = SPVM::JSON::Bool->TRUE;
+      my $input = SPVM::Webkit::JSON::Bool->TRUE;
       my $got = $DEFAULT_JSON->encode($input);
       my $expected = "true";
       unless ($got eq $expected) {
@@ -476,7 +476,7 @@ package TestCase::JSON {
       }
     }
     {
-      my $input = SPVM::JSON::Bool->FALSE;
+      my $input = SPVM::Webkit::JSON::Bool->FALSE;
       my $got = $DEFAULT_JSON->encode($input);
       my $expected = "false";
       unless ($got eq $expected) {
@@ -490,7 +490,7 @@ package TestCase::JSON {
     {
       my $input = "true";
       my $got = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::JSON::Bool->TRUE;
+      my $expected = SPVM::Webkit::JSON::Bool->TRUE;
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -498,7 +498,7 @@ package TestCase::JSON {
     {
       my $input = "false";
       my $got = $DEFAULT_JSON->decode($input);
-      my $expected = SPVM::JSON::Bool->FALSE;
+      my $expected = SPVM::Webkit::JSON::Bool->FALSE;
       unless (_equals($got, $expected)) {
         return 0;
       }
@@ -676,7 +676,7 @@ package TestCase::JSON {
         "B" => 1,
         "C" => SPVM::Hash->newa([(object)
           "D" => 0.1,
-          "E" => SPVM::JSON::Bool->TRUE,
+          "E" => SPVM::Webkit::JSON::Bool->TRUE,
           "F" => "str",
           "G" => SPVM::ObjectList->newa([(object)
             "abc",
@@ -705,7 +705,7 @@ package TestCase::JSON {
         "B" => 1.0,
         "C" => SPVM::Hash->newa([(object)
           "D" => 0.1,
-          "E" => SPVM::JSON::Bool->TRUE,
+          "E" => SPVM::Webkit::JSON::Bool->TRUE,
           "F" => "str",
           "G" => SPVM::ObjectList->newa([(object)
             "abc",

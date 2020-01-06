@@ -1,5 +1,5 @@
-package SPVM::JSON {
-  use SPVM::JSON::Bool;
+package SPVM::Webkit::JSON {
+  use SPVM::Webkit::JSON::Bool;
   use SPVM::Hash;
   use SPVM::ObjectList;
   use SPVM::Int;
@@ -251,14 +251,14 @@ package SPVM::JSON {
     return SPVM::Double->new($result_number);
   }
 
-  precompile private sub _decode_true : SPVM::JSON::Bool ($self : self, $json : string, $iter : int&) {
+  precompile private sub _decode_true : SPVM::Webkit::JSON::Bool ($self : self, $json : string, $iter : int&) {
     _expect_token($json, $iter, "true");
-    return SPVM::JSON::Bool->TRUE;
+    return SPVM::Webkit::JSON::Bool->TRUE;
   }
 
-  precompile private sub _decode_false : SPVM::JSON::Bool ($self : self, $json : string, $iter : int&) {
+  precompile private sub _decode_false : SPVM::Webkit::JSON::Bool ($self : self, $json : string, $iter : int&) {
     _expect_token($json, $iter, "false");
-    return SPVM::JSON::Bool->FALSE;
+    return SPVM::Webkit::JSON::Bool->FALSE;
   }
 
   precompile private sub _decode_hash : SPVM::Hash ($self : self, $json : string, $iter : int&) {
@@ -511,8 +511,8 @@ package SPVM::JSON {
       $json = (string)(((SPVM::Double)$spvm_data)->val);
     }
     # bool
-    elsif ($spvm_data isa SPVM::JSON::Bool) {
-      if (((SPVM::JSON::Bool)$spvm_data)->val) {
+    elsif ($spvm_data isa SPVM::Webkit::JSON::Bool) {
+      if (((SPVM::Webkit::JSON::Bool)$spvm_data)->val) {
         $json = "true";
       }
       else {
@@ -526,8 +526,8 @@ package SPVM::JSON {
     return $json;
   }
 
-  precompile sub new : SPVM::JSON () {
-    my $json = new SPVM::JSON;
+  precompile sub new : SPVM::Webkit::JSON () {
+    my $json = new SPVM::Webkit::JSON;
     return $json;
   }
 
