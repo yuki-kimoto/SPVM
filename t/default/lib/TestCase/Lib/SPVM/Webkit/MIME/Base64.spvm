@@ -1,8 +1,8 @@
-package TestCase::Lib::SPVM::MIME::Base64 {
-  use SPVM::MIME::Base64;
+package TestCase::Lib::SPVM::Webkit::MIME::Base64 {
+  use SPVM::Webkit::MIME::Base64;
 
   private sub round_trip : string ($string : string) {
-    my $b64 = SPVM::MIME::Base64->new;
+    my $b64 = SPVM::Webkit::MIME::Base64->new;
     return $b64->decode($b64->encode($string));
   }
 
@@ -14,7 +14,7 @@ package TestCase::Lib::SPVM::MIME::Base64 {
   }
 
   sub test_all : int () {
-    my $b64 = SPVM::MIME::Base64->new;
+    my $b64 = SPVM::Webkit::MIME::Base64->new;
     for (my $case_index = 0; $case_index < 300; $case_index++) {
       my $bytes = new byte[$case_index];
       for (my $c = 0; $c < $case_index; $c++) {

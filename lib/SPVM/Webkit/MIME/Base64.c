@@ -40,7 +40,7 @@ size_t calc_decoded_length(size_t n) {
   return (n * 3 + 3) / 4 + 10;
 }
 
-int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
+int32_t SPNATIVE__SPVM__Webkit__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
   
   void* self_obj = stack[0].oval;
   
@@ -126,7 +126,7 @@ int32_t SPNATIVE__SPVM__MIME__Base64__encode(SPVM_ENV *env, SPVM_VALUE *stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
+int32_t SPNATIVE__SPVM__Webkit__MIME__Base64__decode(SPVM_ENV *env, SPVM_VALUE *stack) {
 
   void* self_obj = stack[0].oval;
 

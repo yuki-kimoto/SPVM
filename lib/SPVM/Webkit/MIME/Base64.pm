@@ -1,18 +1,18 @@
-package SPVM::MIME::Base64;
+package SPVM::Webkit::MIME::Base64;
 
-use SPVM 'SPVM::MIME::Base64';
+use SPVM 'SPVM::Webkit::MIME::Base64';
 
 1;
 
 =head1 NAME
 
-SPVM::MIME::Base64 - Base64 encode/decode
+SPVM::Webkit::MIME::Base64 - Base64 encode/decode
 
 =head1 SYNOPSYS
   
-  use SPVM::MIME::Base64;
+  use SPVM::Webkit::MIME::Base64;
   
-  my $b64 = SPVM::MIME::Base64->new;
+  my $b64 = SPVM::Webkit::MIME::Base64->new;
   my $text = $b64->encode($binary);
   my $binary = $b64->decode($text);
 
@@ -24,9 +24,9 @@ Base64 encode/decode
 
 =head2 new
 
-  sub new : SPVM::MIME::Base64 ()
+  sub new : SPVM::Webkit::MIME::Base64 ()
 
-Create new L<SPVM::MIME::Base64> object.
+Create new L<SPVM::Webkit::MIME::Base64> object.
 
 =head2 encode
 
