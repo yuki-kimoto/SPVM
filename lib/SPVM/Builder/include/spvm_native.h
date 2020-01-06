@@ -26,8 +26,6 @@ union SPVM_value {
   double* dref;
 };
 
-typedef void* SPVM_VALUE_object;
-
 #define SPVM_SUCCESS 0
 #define SPVM_EXCEPTION 1
 

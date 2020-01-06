@@ -1,7 +1,35 @@
 (Current SPVM is on beta release)
 
-0.0445 2020-01-04
+0.0445 2020-01-06
   - rename SPVM::HTTP::xxx to SPVM::HTTP::Client::xxx
+  - add the following native api
+    new_byte_object_raw,
+    new_byte_object,
+    new_short_object_raw,
+    new_short_object,
+    new_int_object_raw,
+    new_int_object,
+    new_long_object_raw,
+    new_long_object,
+    new_float_object_raw,
+    new_float_object,
+    new_double_object_raw,
+    new_double_object,
+    get_byte_value,
+    get_short_value,
+    get_int_value,
+    get_long_value,
+    get_float_value,
+    get_double_value,
+  - remove the following typedef in native.h
+    typedef int8_t SPVM_VALUE_byte
+    typedef int16_t SPVM_VALUE_short
+    typedef int32_t SPVM_VALUE_int
+    typedef int64_t SPVM_VALUE_long
+    typedef float SPVM_VALUE_float
+    typedef double SPVM_VALUE_double
+    typedef void* SPVM_VALUE_object
+
 0.0444 2019-12-25
   - remove SPVM::Errno for portability
   - allow last camma in sub names, sub routine arguments definition
