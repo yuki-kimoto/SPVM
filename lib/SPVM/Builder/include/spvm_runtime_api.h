@@ -215,4 +215,23 @@ SPVM_OBJECT* SPVM_RUNTIME_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 
+int8_t SPVM_RUNTIME_API_get_byte_value(SPVM_ENV* env, SPVM_OBJECT* object);
+int16_t SPVM_RUNTIME_API_get_short_value(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_RUNTIME_API_get_int_value(SPVM_ENV* env, SPVM_OBJECT* object);
+int64_t SPVM_RUNTIME_API_get_long_value(SPVM_ENV* env, SPVM_OBJECT* object);
+float SPVM_RUNTIME_API_get_float_value(SPVM_ENV* env, SPVM_OBJECT* object);
+double SPVM_RUNTIME_API_get_double_value(SPVM_ENV* env, SPVM_OBJECT* object);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_object_raw(SPVM_ENV* env, int8_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_object(SPVM_ENV* env, int8_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_short_object_raw(SPVM_ENV* env, int16_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_short_object(SPVM_ENV* env, int16_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_int_object_raw(SPVM_ENV* env, int32_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_int_object(SPVM_ENV* env, int32_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_long_object_raw(SPVM_ENV* env, int64_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_long_object(SPVM_ENV* env, int64_t value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_float_object_raw(SPVM_ENV* env, float value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_float_object(SPVM_ENV* env, int32_t length);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_double_object_raw(SPVM_ENV* env, double value);
+SPVM_OBJECT* SPVM_RUNTIME_API_new_double_object(SPVM_ENV* env, double value);
+
 #endif

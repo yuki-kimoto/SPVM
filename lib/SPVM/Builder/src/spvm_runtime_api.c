@@ -216,6 +216,24 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_type_name,
     SPVM_RUNTIME_API_new_env,
     SPVM_RUNTIME_API_free_env,
+    SPVM_RUNTIME_API_new_byte_object_raw,
+    SPVM_RUNTIME_API_new_byte_object,
+    SPVM_RUNTIME_API_new_short_object_raw,
+    SPVM_RUNTIME_API_new_short_object,
+    SPVM_RUNTIME_API_new_int_object_raw,
+    SPVM_RUNTIME_API_new_int_object,
+    SPVM_RUNTIME_API_new_long_object_raw,
+    SPVM_RUNTIME_API_new_long_object,
+    SPVM_RUNTIME_API_new_float_object_raw,
+    SPVM_RUNTIME_API_new_float_object,
+    SPVM_RUNTIME_API_new_double_object_raw,
+    SPVM_RUNTIME_API_new_double_object,
+    SPVM_RUNTIME_API_get_byte_value,
+    SPVM_RUNTIME_API_get_short_value,
+    SPVM_RUNTIME_API_get_int_value,
+    SPVM_RUNTIME_API_get_long_value,
+    SPVM_RUNTIME_API_get_float_value,
+    SPVM_RUNTIME_API_get_double_value,
   };
   
   int32_t env_length = 255;
@@ -4844,7 +4862,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_array(SPVM_ENV* env, int32_t length) {
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_array_raw(env, length);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
-  
+
   return object;
 }
 
@@ -4996,6 +5014,210 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_string_len(SPVM_ENV* env, const char* bytes, i
   (void)env;
   
   SPVM_OBJECT* object = SPVM_RUNTIME_API_new_string_len_raw(env, bytes, length);
+  
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+int8_t SPVM_RUNTIME_API_get_byte_value(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  return *(int8_t*)((intptr_t)object + env->object_header_byte_size);
+}
+
+int16_t SPVM_RUNTIME_API_get_short_value(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  return *(int16_t*)((intptr_t)object + env->object_header_byte_size);
+}
+
+int32_t SPVM_RUNTIME_API_get_int_value(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  return *(int32_t*)((intptr_t)object + env->object_header_byte_size);
+}
+
+int64_t SPVM_RUNTIME_API_get_long_value(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  return *(int64_t*)((intptr_t)object + env->object_header_byte_size);
+}
+
+float SPVM_RUNTIME_API_get_float_value(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  return *(float*)((intptr_t)object + env->object_header_byte_size);
+}
+
+double SPVM_RUNTIME_API_get_double_value(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+
+  return *(double*)((intptr_t)object + env->object_header_byte_size);
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_object_raw(SPVM_ENV* env, int8_t value) {
+  (void)env;
+  
+  // Create object
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int8_t);
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_byte_size);
+  
+  object->type_dimension = 0;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_byte_object(SPVM_ENV* env, int8_t value) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_byte_object_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_short_object_raw(SPVM_ENV* env, int16_t value) {
+  (void)env;
+  
+  // Create object
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int64_t alloc_short_size = (intptr_t)env->object_header_byte_size + sizeof(int16_t);
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_short_size);
+  
+  object->type_dimension = 0;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_short_object(SPVM_ENV* env, int16_t value) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_short_object_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_int_object_raw(SPVM_ENV* env, int32_t value) {
+  (void)env;
+  
+  // Create object
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int64_t alloc_int_size = (intptr_t)env->object_header_byte_size + sizeof(int32_t);
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_int_size);
+  
+  object->type_dimension = 0;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_INT_OBJECT;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_int_object(SPVM_ENV* env, int32_t value) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_int_object_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_long_object_raw(SPVM_ENV* env, int64_t value) {
+  (void)env;
+  
+  // Create object
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int64_t alloc_long_size = (intptr_t)env->object_header_byte_size + sizeof(int64_t);
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_long_size);
+  
+  object->type_dimension = 0;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG_OBJECT;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_long_object(SPVM_ENV* env, int64_t value) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_long_object_raw(env, value);
+  
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_float_object_raw(SPVM_ENV* env, float value) {
+  (void)env;
+  
+  // Create object
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int64_t alloc_float_size = (intptr_t)env->object_header_byte_size + sizeof(float);
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_float_size);
+  
+  object->type_dimension = 0;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_float_object(SPVM_ENV* env, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_float_object_raw(env, length);
+  
+  SPVM_RUNTIME_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_double_object_raw(SPVM_ENV* env, double value) {
+  (void)env;
+  
+  // Create object
+  SPVM_RUNTIME* runtime = env->runtime;
+  
+  int64_t alloc_double_size = (intptr_t)env->object_header_byte_size + sizeof(double);
+  
+  // Create object
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_alloc_memory_block_zero(env, alloc_double_size);
+  
+  object->type_dimension = 0;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_RUNTIME_API_new_double_object(SPVM_ENV* env, double value) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_RUNTIME_API_new_double_object_raw(env, value);
   
   SPVM_RUNTIME_API_push_mortal(env, object);
   

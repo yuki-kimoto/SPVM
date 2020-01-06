@@ -416,5 +416,23 @@ struct SPVM_env {
   void* (*get_type_name)(SPVM_ENV* env, void* object);
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
   void (*free_env)(SPVM_ENV* env);
+  void* (*new_byte_object_raw)(SPVM_ENV* env, int8_t value);
+  void* (*new_byte_object)(SPVM_ENV* env, int8_t value);
+  void* (*new_short_object_raw)(SPVM_ENV* env, int16_t value);
+  void* (*new_short_object)(SPVM_ENV* env, int16_t value);
+  void* (*new_int_object_raw)(SPVM_ENV* env, int32_t value);
+  void* (*new_int_object)(SPVM_ENV* env, int32_t value);
+  void* (*new_long_object_raw)(SPVM_ENV* env, int64_t value);
+  void* (*new_long_object)(SPVM_ENV* env, int64_t value);
+  void* (*new_float_object_raw)(SPVM_ENV* env, float value);
+  void* (*new_float_object)(SPVM_ENV* env, int32_t length);
+  void* (*new_double_object_raw)(SPVM_ENV* env, double value);
+  void* (*new_double_object)(SPVM_ENV* env, double value);
+  int8_t (*get_byte_value)(SPVM_ENV* env, void* object);
+  int16_t (*get_short_value)(SPVM_ENV* env, void* object);
+  int32_t (*get_int_value)(SPVM_ENV* env, void* object);
+  int64_t (*get_long_value)(SPVM_ENV* env, void* object);
+  float (*get_float_value)(SPVM_ENV* env, void* object);
+  double (*get_double_value)(SPVM_ENV* env, void* object);
 };
 #endif
