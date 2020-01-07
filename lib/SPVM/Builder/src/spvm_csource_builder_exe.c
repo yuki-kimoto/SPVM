@@ -2,33 +2,16 @@
 #include <string.h>
 #include <assert.h>
 
+#include "spvm_native.h"
+
 #include "spvm_csource_builder_exe.h"
 
-#include "spvm_compiler.h"
-#include "spvm_type.h"
-#include "spvm_package.h"
-#include "spvm_type.h"
-#include "spvm_op.h"
-#include "spvm_hash.h"
-#include "spvm_list.h"
-#include "spvm_util_allocator.h"
-#include "spvm_compiler_allocator.h"
-#include "spvm_yacc_util.h"
-#include "spvm_list.h"
-#include "spvm_opcode_array.h"
 #include "spvm_sub.h"
-#include "spvm_runtime.h"
-#include "spvm_runtime_api.h"
-#include "spvm_sub.h"
-#include "spvm_field.h"
-#include "spvm_package_var.h"
-#include "spvm_native.h"
 #include "spvm_opcode.h"
 #include "spvm_basic_type.h"
-#include "spvm_use.h"
-#include "spvm_op_checker.h"
-#include "spvm_opcode_builder.h"
-#include "spvm_object.h"
+
+#include "spvm_runtime.h"
+#include "spvm_runtime_api.h"
 #include "spvm_runtime_basic_type.h"
 #include "spvm_runtime_package.h"
 #include "spvm_runtime_field.h"
