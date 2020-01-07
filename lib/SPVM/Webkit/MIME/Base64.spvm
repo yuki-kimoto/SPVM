@@ -1,8 +1,0 @@
-package SPVM::Webkit::MIME::Base64 {
-  sub new : SPVM::Webkit::MIME::Base64 () {
-    return new SPVM::Webkit::MIME::Base64;
-  }
-  
-  native sub encode : string ($self : self, $binary : string);
-  native sub decode : string ($self : self, $base64_text : string);
-}

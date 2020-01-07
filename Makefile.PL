@@ -116,25 +116,21 @@ sub MY::postamble {
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Util');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::FileHandle');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::File');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Stdout');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Stderr');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Math');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Hash');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Time');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Sort');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::MIME::Base64');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::Socket');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Webkit::Select');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::FileHandle');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::File');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Stdout');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Stderr');
     
     # Precompile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Webkit::JSON');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
   }
   
