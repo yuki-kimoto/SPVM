@@ -1439,6 +1439,227 @@ _set_exception(...)
 }
 
 SV*
+val(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_numobj = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+
+  // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
+  if (!(SvROK(sv_numobj) && sv_derived_from(sv_numobj, "SPVM::BlessedObject::Package"))) {
+    croak("Object must be SPVM::BlessedObject::Package object at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // Get object
+  SPVM_OBJECT* numobj = SPVM_XS_UTIL_get_object(sv_numobj);
+  
+  int32_t basic_type_id = numobj->basic_type_id;
+  
+  SV* sv_value;
+  switch (basic_type_id) {
+    case SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT: {
+      int8_t value = env->get_byte_value(env, numobj);
+      sv_value = sv_2mortal(newSViv(value));
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT: {
+      int16_t value = env->get_short_value(env, numobj);
+      sv_value = sv_2mortal(newSViv(value));
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_INT_OBJECT: {
+      int32_t value = env->get_int_value(env, numobj);
+      sv_value = sv_2mortal(newSViv(value));
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_LONG_OBJECT: {
+      int64_t value = env->get_long_value(env, numobj);
+      sv_value = sv_2mortal(newSViv(value));
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT: {
+      float value = env->get_float_value(env, numobj);
+      sv_value = sv_2mortal(newSVnv(value));
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT: {
+      double value = env->get_double_value(env, numobj);
+      sv_value = sv_2mortal(newSVnv(value));
+      break;
+    }
+    default:
+      croak("Argument must be numeric object type at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  XPUSHs(sv_value);
+  XSRETURN(1);
+}
+
+SV*
+new_byte_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New object
+  int8_t value = (int8_t)SvIV(sv_value);
+  void* object = env->new_byte_object_raw(env, value);
+  
+  // Increment reference count
+  env->inc_ref_count(env, object);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(env, object, "SPVM::BlessedObject::Package");
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
+}
+
+SV*
+new_short_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New object
+  int16_t value = (int16_t)SvIV(sv_value);
+  void* object = env->new_short_object_raw(env, value);
+  
+  // Increment reference count
+  env->inc_ref_count(env, object);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(env, object, "SPVM::BlessedObject::Package");
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
+}
+
+SV*
+new_long_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New object
+  int64_t value = (int64_t)SvIV(sv_value);
+  void* object = env->new_long_object_raw(env, value);
+  
+  // Increment reference count
+  env->inc_ref_count(env, object);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(env, object, "SPVM::BlessedObject::Package");
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
+}
+
+SV*
+new_int_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New object
+  int32_t value = (int32_t)SvIV(sv_value);
+  void* object = env->new_int_object_raw(env, value);
+  
+  // Increment reference count
+  env->inc_ref_count(env, object);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(env, object, "SPVM::BlessedObject::Package");
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
+}
+
+SV*
+new_float_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New object
+  int8_t value = (int8_t)SvNV(sv_value);
+  void* object = env->new_float_object_raw(env, value);
+  
+  // Increment reference count
+  env->inc_ref_count(env, object);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(env, object, "SPVM::BlessedObject::Package");
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
+}
+
+SV*
+new_double_object(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // New object
+  int8_t value = (int8_t)SvNV(sv_value);
+  void* object = env->new_double_object_raw(env, value);
+  
+  // Increment reference count
+  env->inc_ref_count(env, object);
+  
+  // New sv object
+  SV* sv_object = SPVM_XS_UTIL_new_sv_object(env, object, "SPVM::BlessedObject::Package");
+  
+  XPUSHs(sv_object);
+  XSRETURN(1);
+}
+
+SV*
 get_memory_blocks_count(...)
   PPCODE:
 {
