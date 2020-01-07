@@ -1439,7 +1439,7 @@ _set_exception(...)
 }
 
 SV*
-val(...)
+get_value(...)
   PPCODE:
 {
   (void)RETVAL;

@@ -29,6 +29,14 @@
     typedef float SPVM_VALUE_float
     typedef double SPVM_VALUE_double
     typedef void* SPVM_VALUE_object
+  - add the following SPVM functions
+    get_value
+    new_byte_object
+    new_short_object
+    new_long_object
+    new_int_object
+    new_float_object
+    new_double_object
 
 0.0444 2019-12-25
   - remove SPVM::Errno for portability

@@ -220,3 +220,17 @@ SPVM::ExchangeAPI - SPVM Exchange API
 =head2 to_string
 
 =head2 to_strings
+
+=head2 get_value
+
+=head2 new_byte_object
+
+=head2 new_short_object
+
+=head2 new_long_object
+
+=head2 new_int_object
+
+=head2 new_float_object
+
+=head2 new_double_object

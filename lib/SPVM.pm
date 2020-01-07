@@ -101,6 +101,20 @@ sub new_object_array { SPVM::ExchangeAPI::new_object_array($SPVM_ENV, @_) }
 sub new_mulnum_array { SPVM::ExchangeAPI::new_mulnum_array($SPVM_ENV, @_) }
 sub new_mulnum_array_from_bin { SPVM::ExchangeAPI::new_mulnum_array_from_bin($SPVM_ENV, @_) }
 
+sub get_value { SPVM::ExchangeAPI::get_value($SPVM_ENV, @_) }
+
+sub new_byte_object { SPVM::ExchangeAPI::new_byte_object($SPVM_ENV, @_) }
+
+sub new_short_object { SPVM::ExchangeAPI::new_short_object($SPVM_ENV, @_) }
+
+sub new_long_object { SPVM::ExchangeAPI::new_long_object($SPVM_ENV, @_) }
+
+sub new_int_object { SPVM::ExchangeAPI::new_int_object($SPVM_ENV, @_) }
+
+sub new_float_object { SPVM::ExchangeAPI::new_float_object($SPVM_ENV, @_) }
+
+sub new_double_object { SPVM::ExchangeAPI::new_double_object($SPVM_ENV, @_) }
+
 1;
 
 =encoding UTF-8
