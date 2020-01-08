@@ -57,7 +57,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   }
   
   // Add include path
-  SPVM_LIST_push(compiler->module_include_pathes, "lib");
   SPVM_LIST_push(compiler->module_include_pathes, cur_script_dir);
   
   SPVM_COMPILER_compile(compiler);
