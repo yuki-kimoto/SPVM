@@ -237,9 +237,6 @@ sub compile {
   # CBuilder configs
   my $ccflags = $bconf->get_ccflags;
   
-  # Default include path
-  $bconf->add_ccflags("-I$build_dir/include");
-
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
   my $config = $bconf->to_hash;
@@ -357,9 +354,6 @@ sub link {
   
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
-
-  # Default library path
-  $bconf->add_lddlflags("-L$build_dir/lib");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
