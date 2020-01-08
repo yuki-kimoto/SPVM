@@ -10,4 +10,4 @@ use SPVM 'MyZlib';
 
 my $out_file = "$ENV{HOME}/tmp/output.gz";
 
-MyZlib->test(SPVM::new_str($out_file));
+MyZlib->test($out_file);
