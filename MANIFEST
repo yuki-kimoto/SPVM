@@ -31,7 +31,6 @@ lib/SPVM/BlessedObject/Package.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
-lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
 lib/SPVM/Builder/include/spvm_base.h
@@ -239,7 +238,6 @@ Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README.md
-script/spvmcc
 solo/Main.spvm
 solo/solo_Makefile.PL
 solo/spvm_boot.c
@@ -561,8 +559,6 @@ t/default/value_array.t
 t/default/warn.t
 t/default/weaken.t
 t/default/while.t
-t/exe/exe.t
-t/exe/spvm_build/.gitkeep
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
 t/spvm_build/work/exe/myexe

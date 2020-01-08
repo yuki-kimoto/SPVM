@@ -2,6 +2,7 @@
 
 0.0445 2020-01-07
   - Web and Network module is separated to separate SPVM::Webkit to https://github.com/yuki-kimoto/SPVM-Webkit
+  - remove SPVM::Builder::Exe and spvmcc because this logic is planed to separate to outer module after version 1.0.
 0.0444 2019-12-25
   - remove SPVM::Errno for portability
   - allow last camma in sub names, sub routine arguments definition
