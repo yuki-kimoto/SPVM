@@ -23,7 +23,7 @@
 int32_t main(int32_t argc, const char *argv[]) {
   
   // Package name
-  const char* package_name = "TestCase";
+  const char* package_name = "Main";
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
@@ -69,4 +69,3 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   return status_code;
 }
-
