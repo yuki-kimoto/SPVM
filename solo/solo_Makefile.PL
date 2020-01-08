@@ -45,12 +45,6 @@ all:
 	$cccmd -o solo/main.o solo/spvm_boot.c
 	$ldcmd -o solo/main -lm -o solo/main solo/main.o @object_files
 
-test:
-	$cccmd -o solo/t/spvm_t_list solo/t/spvm_t_list.c spvm_list.o spvm_util_allocator.o
-	solo/t/spvm_t_list
-	$cccmd -o solo/t/spvm_t_hash solo/t/spvm_t_hash.c spvm_hash.o spvm_util_allocator.o spvm_hash_func.o
-	solo/t/spvm_t_hash
-
 clean:
 	rm -rf solo/main
 EOS
