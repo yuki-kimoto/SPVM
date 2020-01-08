@@ -37,8 +37,28 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_start);
   
+  // Get script directory
+  const char* cur_script_name = argv[0];
+  int32_t cur_script_name_length = (int32_t)strlen(argv[0]);
+  char* cur_script_dir = malloc(cur_script_name_length + 1);
+  memcpy(cur_script_dir, cur_script_name, cur_script_name_length);
+  cur_script_dir[cur_script_name_length] = '\0';
+  int32_t found_sep = 0;
+  for (int32_t i = cur_script_name_length - 1; i >= 0; i--) {
+    if (cur_script_dir[i] == '/' || cur_script_dir[i] == '\\') {
+      cur_script_dir[i] = '\0';
+      found_sep = 1;
+      break;
+    }
+  }
+  if (!found_sep) {
+    cur_script_dir[0] = '.';
+    cur_script_dir[1] = '\0';
+  }
+  
+  // Add include path
   SPVM_LIST_push(compiler->module_include_pathes, "lib");
-  SPVM_LIST_push(compiler->module_include_pathes, "solo");
+  SPVM_LIST_push(compiler->module_include_pathes, cur_script_dir);
   
   SPVM_COMPILER_compile(compiler);
   
