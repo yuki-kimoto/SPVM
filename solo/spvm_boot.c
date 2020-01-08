@@ -38,7 +38,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_LIST_push(compiler->op_use_stack, op_use_start);
   
   SPVM_LIST_push(compiler->module_include_pathes, "lib");
-  SPVM_LIST_push(compiler->module_include_pathes, "solo/lib");
+  SPVM_LIST_push(compiler->module_include_pathes, "solo");
   
   SPVM_COMPILER_compile(compiler);
   
