@@ -85,7 +85,6 @@ WriteMakefile(
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
     clean => {FILES => "spvm_build/work t/default/spvm_build/work t/default/lib/UseAllTestCase.spvm t/precompile t/exe/spvm_build/work t/test_files_tmp @object_files"},
     DEFINE => "@defines -o \$@",
-    EXE_FILES => ['script/spvmcc'],
     META_MERGE => {
         'meta-spec' => { version => 2 },
         resources => {

@@ -346,7 +346,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
       portable_package->package_vars_base = -1;
     }
     portable_package->package_vars_length = package->package_vars->length;
-    
   }
 
   // String pool(8bit)
