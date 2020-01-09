@@ -25,7 +25,7 @@
 #include "spvm_runtime_arg.h"
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_weaken_backref.h"
-#include "spvm_portable.h"
+#include "spvm_runtime_info.h"
 
 // Only use constant
 #include "spvm_package.h"
@@ -281,20 +281,20 @@ void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
   free(env);
 }
 
-SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable) {
+SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_RUNTIME_INFO* runtime_info) {
   
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
 
-  runtime->portable = portable;
+  runtime->runtime_info = runtime_info;
   
-  runtime->string_pool = portable->string_pool;
-  runtime->string_pool_length = portable->string_pool_length;
+  runtime->string_pool = runtime_info->string_pool;
+  runtime->string_pool_length = runtime_info->string_pool_length;
   
-  runtime->constant_pool = portable->constant_pool;
-  runtime->constant_pool_length = portable->constant_pool_length;
+  runtime->constant_pool = runtime_info->constant_pool;
+  runtime->constant_pool_length = runtime_info->constant_pool_length;
   
-  runtime->basic_types = portable->basic_types;
-  runtime->basic_types_length = portable->basic_types_length;
+  runtime->basic_types = runtime_info->basic_types;
+  runtime->basic_types_length = runtime_info->basic_types_length;
   
   // Create basic type rank(string_pool_id and rank)
   runtime->sorted_basic_types = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_BASIC_TYPE) * runtime->basic_types_length);
@@ -317,16 +317,16 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable) {
     }
   }
 
-  runtime->fields = (SPVM_RUNTIME_FIELD*)portable->fields;
-  runtime->fields_length = portable->fields_length;
-  runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)portable->package_vars;
-  runtime->package_vars_length = portable->package_vars_length;
-  runtime->args = (SPVM_RUNTIME_ARG*)portable->args;
-  runtime->opcodes = (SPVM_OPCODE*)portable->opcodes;
-  runtime->subs = (SPVM_RUNTIME_SUB*)portable->subs;
-  runtime->subs_length = portable->subs_length;
-  runtime->packages_length = portable->packages_length;
-  runtime->packages = (SPVM_RUNTIME_PACKAGE*)portable->packages;
+  runtime->fields = (SPVM_RUNTIME_FIELD*)runtime_info->fields;
+  runtime->fields_length = runtime_info->fields_length;
+  runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)runtime_info->package_vars;
+  runtime->package_vars_length = runtime_info->package_vars_length;
+  runtime->args = (SPVM_RUNTIME_ARG*)runtime_info->args;
+  runtime->opcodes = (SPVM_OPCODE*)runtime_info->opcodes;
+  runtime->subs = (SPVM_RUNTIME_SUB*)runtime_info->subs;
+  runtime->subs_length = runtime_info->subs_length;
+  runtime->packages_length = runtime_info->packages_length;
+  runtime->packages = (SPVM_RUNTIME_PACKAGE*)runtime_info->packages;
 
   // C function addresses(native or precompile)
   runtime->sub_cfunc_addresses = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(void*) * (runtime->subs_length + 1));
@@ -339,8 +339,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable) {
 
 void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime) {
   
-  // Free portable
-  SPVM_PORTABLE_free(runtime->portable);
+  // Free runtime_info
+  SPVM_RUNTIME_INFO_free(runtime->runtime_info);
   
   // Free C function addresses
   free(runtime->sub_cfunc_addresses);

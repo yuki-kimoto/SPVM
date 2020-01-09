@@ -48,7 +48,7 @@ int32_t SPVM_RUNTIME_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object);
 
 SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env);
 SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime);
-SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_PORTABLE* portable);
+SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_RUNTIME_INFO* runtime_info);
 void SPVM_RUNTIME_API_free_env(SPVM_ENV* env);
 void SPVM_RUNTIME_API_free_runtime(SPVM_RUNTIME* runtime);
 

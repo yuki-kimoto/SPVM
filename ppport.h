@@ -163,7 +163,7 @@ expression.
 
 =head1 DESCRIPTION
 
-In order for a Perl extension (XS) module to be as portable as possible
+In order for a Perl extension (XS) module to be as runtime_info as possible
 across differing versions of Perl itself, certain steps need to be taken.
 
 =over 4
@@ -2381,7 +2381,7 @@ sv_iv||5.005000|
 sv_kill_backrefs|||
 sv_len_utf8||5.006000|
 sv_len|||
-sv_magic_portable|5.014000|5.004000|p
+sv_magic_runtime_info|5.014000|5.004000|p
 sv_magicext||5.007003|
 sv_magic|||
 sv_mortalcopy|||
@@ -2927,7 +2927,7 @@ for $filename (@files) {
 
   unless ($opt{quiet}) {
     for $func (sort keys %{$file{uses_todo}}) {
-      print "*** WARNING: Uses $func, which may not be portable below perl ",
+      print "*** WARNING: Uses $func, which may not be runtime_info below perl ",
             format_version($API{$func}{todo}), ", even with '$ppport'\n";
       $warnings++;
     }
@@ -3026,7 +3026,7 @@ for $filename (@files) {
 
   if ($cppc) {
     my $s = $cppc != 1 ? 's' : '';
-    warning("Uses $cppc C++ style comment$s, which is not portable");
+    warning("Uses $cppc C++ style comment$s, which is not runtime_info");
   }
 
   my $s = $warnings != 1 ? 's' : '';
@@ -6112,7 +6112,7 @@ DPPP_(my_warner)(U32 err, const char *pat, ...)
 #  define SvVSTRING_mg(sv)               (SvMAGICAL(sv) ? mg_find(sv, PERL_MAGIC_vstring) : NULL)
 #endif
 
-/* Hint: sv_magic_portable
+/* Hint: sv_magic_runtime_info
  * This is a compatibility function that is only available with
  * Devel::PPPort. It is NOT in the perl core.
  * Its purpose is to mimic the 5.8.0 behaviour of sv_magic() when
@@ -6124,11 +6124,11 @@ DPPP_(my_warner)(U32 err, const char *pat, ...)
 
 #if (PERL_BCDVERSION < 0x5004000)
 
-  /* code that uses sv_magic_portable will not compile */
+  /* code that uses sv_magic_runtime_info will not compile */
 
 #elif (PERL_BCDVERSION < 0x5008000)
 
-#  define sv_magic_portable(sv, obj, how, name, namlen)     \
+#  define sv_magic_runtime_info(sv, obj, how, name, namlen)     \
    STMT_START {                                             \
      SV *SvMp_sv = (sv);                                    \
      char *SvMp_name = (char *) (name);                     \
@@ -6149,7 +6149,7 @@ DPPP_(my_warner)(U32 err, const char *pat, ...)
 
 #else
 
-#  define sv_magic_portable(a, b, c, d, e)  sv_magic(a, b, c, d, e)
+#  define sv_magic_runtime_info(a, b, c, d, e)  sv_magic(a, b, c, d, e)
 
 #endif
 
@@ -6656,7 +6656,7 @@ DPPP_(my_grok_bin)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *resul
 	|| (!overflowed && value > 0xffffffff  )
 #endif
 	) {
-	warn("Binary number > 0b11111111111111111111111111111111 non-portable");
+	warn("Binary number > 0b11111111111111111111111111111111 non-runtime_info");
     }
     *len_p = s - start;
     if (!overflowed) {
@@ -6758,7 +6758,7 @@ DPPP_(my_grok_hex)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *resul
 	|| (!overflowed && value > 0xffffffff  )
 #endif
 	) {
-	warn("Hexadecimal number > 0xffffffff non-portable");
+	warn("Hexadecimal number > 0xffffffff non-runtime_info");
     }
     *len_p = s - start;
     if (!overflowed) {
@@ -6851,7 +6851,7 @@ DPPP_(my_grok_oct)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *resul
 	|| (!overflowed && value > 0xffffffff  )
 #endif
 	) {
-	warn("Octal number > 037777777777 non-portable");
+	warn("Octal number > 037777777777 non-runtime_info");
     }
     *len_p = s - start;
     if (!overflowed) {

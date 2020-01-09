@@ -5,7 +5,7 @@
 #include "spvm_native.h"
 
 struct SPVM_runtime {
-  SPVM_PORTABLE* portable;
+  SPVM_RUNTIME_INFO* runtime_info;
   
   int32_t* constant_pool;
   int32_t constant_pool_length;

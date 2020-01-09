@@ -24,9 +24,9 @@ typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
 struct SPVM_check_ast_info;
 typedef struct SPVM_check_ast_info SPVM_CHECK_AST_INFO;
 
-// spvm_portable.h
-struct SPVM_portable;
-typedef struct SPVM_portable SPVM_PORTABLE;
+// spvm_runtime_info.h
+struct SPVM_runtime_info;
+typedef struct SPVM_runtime_info SPVM_RUNTIME_INFO;
 
 // spvm_runtime_arg.h
 struct SPVM_runtime_arg;

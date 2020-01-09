@@ -34,7 +34,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_limit.h"
-#include "spvm_portable.h"
+#include "spvm_runtime_info.h"
 
 #include "spvm_runtime_sub.h"
 
@@ -47,7 +47,7 @@
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_arg.h"
 
-#include "spvm_portable.h"
+#include "spvm_runtime_info.h"
 #include "spvm_csource_builder_exe.h"
 
 static const char* MFILE = "SPVM.xs";
@@ -271,11 +271,11 @@ compile_spvm(...)
       }
     }
     
-    // Build portable info
-    SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
+    // Build runtime_info info
+    SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
     
     // Build runtime
-    SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(portable);
+    SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
     
     // Create env
     SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
@@ -3291,12 +3291,12 @@ build_main_csource(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   SPVM_RUNTIME* runtime = env->runtime;
-  SPVM_PORTABLE* portable = runtime->portable;
+  SPVM_RUNTIME_INFO* runtime_info = runtime->runtime_info;
 
   // String buffer for csource
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
 
-  SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(env, string_buffer, portable, package_name);
+  SPVM_CSOURCE_BUILDER_EXE_build_exe_csource(env, string_buffer, runtime_info, package_name);
 
   SV* sv_main_csource = sv_2mortal(newSVpv(string_buffer->buffer + 1, string_buffer->length - 1));
 

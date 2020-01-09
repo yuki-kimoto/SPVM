@@ -15951,7 +15951,7 @@ static spvm_utf8proc_int32_t spvm_utf8proc_totitle(spvm_utf8proc_int32_t c)
   return cu != UINT16_MAX ? seqindex_decode_index(cu) : c;
 }
 
-/* return a character width analogous to wcwidth (except portable and
+/* return a character width analogous to wcwidth (except runtime_info and
    hopefully less buggy than most system wcwidth functions). */
 static int spvm_utf8proc_charwidth(spvm_utf8proc_int32_t c) {
   return spvm_utf8proc_get_property(c)->charwidth;

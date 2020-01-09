@@ -12,7 +12,7 @@
 #include "spvm_list.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-#include "spvm_portable.h"
+#include "spvm_runtime_info.h"
 
 #include <spvm_native.h>
 
@@ -61,11 +61,11 @@ int32_t main(int32_t argc, const char *argv[]) {
     exit(1);
   }
 
-  // Build portable info
-  SPVM_PORTABLE* portable = SPVM_PORTABLE_build_portable(compiler);
+  // Build runtime_info info
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
   
   // Build runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(portable);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
   
   // Create env
   SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
