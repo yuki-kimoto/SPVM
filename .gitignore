@@ -36,6 +36,7 @@ solo/t/spvm_t_list
 solo/main
 solo/myexe
 solo/Makefile
+solo/SPVM
 t/precompile/*
 spvmcc_build/*
 !spvmcc_build/.gitkeep
