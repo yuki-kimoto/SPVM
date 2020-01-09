@@ -4,17 +4,13 @@
 #include <inttypes.h>
 #include <assert.h>
 
+#include "spvm_native.h"
+
+#include "spvm_op.h"
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
 #include "spvm_runtime.h"
-#include "spvm_op.h"
-#include "spvm_sub.h"
-#include "spvm_util_allocator.h"
-#include "spvm_runtime_sub.h"
-#include "spvm_runtime_basic_type.h"
-#include "spvm_runtime_package.h"
-#include "spvm_runtime_sub.h"
 #include "spvm_runtime_api.h"
 #include "spvm_portable.h"
 
