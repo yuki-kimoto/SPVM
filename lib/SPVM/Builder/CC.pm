@@ -63,30 +63,14 @@ sub build {
   }
 }
 
-sub copy_dll_to_build_dir {
-  my ($self, $package_name, $category) = @_;
-  
-  my $dll_file = $self->get_dll_file_dist($package_name);
-  
-  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $category);
-  
-  my $build_dir = $self->builder->{build_dir};
-  
-  my $dll_build_dir = "$build_dir/work/lib/$dll_rel_file";
-  
-  my $dll_build_dir_dir = dirname $dll_build_dir;
-  
-  mkpath $dll_build_dir_dir;
-  
-  copy $dll_file, $dll_build_dir
-    or confess "Can't copy $dll_file to $dll_build_dir";
-}
-
 sub get_dll_file_runtime {
   my ($self, $package_name) = @_;
   
   my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
+  
+  return unless defined $build_dir;
+  
   my $lib_dir = "$build_dir/work/lib";
   my $dll_file = "$lib_dir/$dll_rel_file";
   
@@ -144,8 +128,11 @@ sub bind_subs {
   
   my $libpth = $Config{libpth};
   my @dll_load_paths = split(/ +/, $libpth);
-  my $build_lib_dir = $self->{build_dir} . '/lib';
-  push @dll_load_paths, $build_lib_dir;
+  my $build_dir = $self->{build_dir};
+  if (defined $build_dir) {
+    my $build_lib_dir = $self->{build_dir} . '/lib';
+    push @dll_load_paths, $build_lib_dir;
+  }
   
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
@@ -182,8 +169,11 @@ sub compile {
 
   # Build directory
   my $build_dir = $self->{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "SPVM_BUILD_DIR environment variable must be set for compile";
   }
   
   # Input directory
@@ -304,8 +294,11 @@ sub link {
 
   # Build directory
   my $build_dir = $self->{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "SPVM_BUILD_DIR environment variable must be set for linking" . $self->category . " build";
   }
   
   # Input directory
@@ -416,8 +409,11 @@ sub build_dll_precompile_runtime {
 
   # Build directory
   my $build_dir = $self->{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "SPVM_BUILD_DIR environment variable must be set for build precompile subroutine in runtime";
   }
   
   # Object directory
@@ -459,8 +455,11 @@ sub build_dll_native_runtime {
 
   # Build directory
   my $build_dir = $self->{build_dir};
-  unless (defined $build_dir && -d $build_dir) {
-    confess "SPVM build directory must be specified for runtime " . $self->category . " build";
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "SPVM_BUILD_DIR environment variable must be set for build native subroutine in runtime";
   }
   
   my $object_dir = "$build_dir/work/object";

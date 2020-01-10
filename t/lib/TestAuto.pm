@@ -10,6 +10,9 @@ use File::Basename 'basename', 'dirname';
 
 sub import {
   if ($FindBin::Bin =~ /\/precompile$/) {
+    # Set build directory
+    $ENV{SPVM_BUILD_DIR} = '.spvm_build';
+    
     my $test_precompile_dir = 't/precompile/lib';
     my $test_precompile_dir_re = quotemeta($test_precompile_dir);
     

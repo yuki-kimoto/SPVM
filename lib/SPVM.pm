@@ -31,13 +31,7 @@ sub import {
   my ($class, $package_name) = @_;
   
   unless ($BUILDER) {
-    my $build_dir;
-    if (defined $ENV{SPVM_BUILD_DIR}) {
-      $build_dir = $ENV{SPVM_BUILD_DIR};
-    }
-    else {
-      $build_dir = "$FindBin::Bin/spvm_build";
-    }
+    my $build_dir = $ENV{SPVM_BUILD_DIR};
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
 
@@ -417,9 +411,15 @@ See also L<SPVM::Document::Extension>, L<SPVM::Document::NativeAPI>.
 
 SPVM build directory for precompile and native subroutine.
 
-If SPVM_BUILD_DIR environment variable is not specified, spvm_build directory of script directory is set to build directory.
+If SPVM_BUILD_DIR environment variable is not set, SPVM can't compile precompile subroutine and native subroutine, and a exception occur. You see error message "SPVM_BUILD_DIR environment variable must be set ...".
 
-For exmple, If your script is placed at "/path/app.pl", build directory is "/path/spvm_build".
+In bash, you can set SPVM_BUILD_DIR to the following.
+
+  export SPVM_BUILD_DIR=~/.spvm_build
+
+In bash, you can set SPVM_BUILD_DIR to the following.
+
+  export SPVM_BUILD_DIR=~/.spvm_build
 
 =head1 NOTE
 
