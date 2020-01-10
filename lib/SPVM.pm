@@ -14,7 +14,6 @@ use FindBin;
 
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
-use File::Temp();
 
 use Encode 'encode', 'decode';
 
@@ -37,7 +36,7 @@ sub import {
       $build_dir = $ENV{SPVM_BUILD_DIR};
     }
     else {
-      $build_dir = File::Temp->newdir;
+      $build_dir = "$FindBin::Bin/spvm_build";
     }
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }

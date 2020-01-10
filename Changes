@@ -1,7 +1,5 @@
 (Current SPVM is on beta release)
 
-0.0445 2020-01-10
-  - default build directory become temporary directory by File::Temp->newdir
 0.0445 2020-01-07
   - Web and Network module is separated to separate SPVM::Webkit to https://github.com/yuki-kimoto/SPVM-Webkit
   - remove SPVM::Builder::Exe and spvmcc because this logic is planed to separate to outer module after version 1.0.
