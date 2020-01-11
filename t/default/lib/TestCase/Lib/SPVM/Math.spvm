@@ -1,14 +1,14 @@
 package TestCase::Lib::SPVM::Math {
   use SPVM::Math;
   use SPVM::Util(PI, INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
-  
+
   sub test_pi : int () {
     my $pi = SPVM::Math->pi;
-    
+
     unless ($pi >= 3.141592653589793 && $pi <= 3.141592653589794) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -17,29 +17,29 @@ package TestCase::Lib::SPVM::Math {
   #
   sub unary_minus_int_overflow : int () {
     my $value = -INT32_MIN();
-    
+
     unless ($value isa int) {
       return 0;
     }
-    
+
     unless ($value == INT32_MIN()) {
       return 0;
     }
-    
+
     return 1;
   }
-  
+
   sub unary_minus_long_overflow : int () {
     my $value = -INT64_MIN();
-    
+
     unless ($value isa long) {
       return 0;
     }
-    
+
     unless ($value == INT64_MIN()) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -49,11 +49,11 @@ package TestCase::Lib::SPVM::Math {
   sub unary_minus_float_inf : int () {
     {
       my $value = -SPVM::Math->INFINITYF();
-      
+
       unless ($value isa float) {
         return 0;
       }
-      
+
       unless ($value == -SPVM::Math->INFINITYF()) {
         return 0;
       }
@@ -71,14 +71,14 @@ package TestCase::Lib::SPVM::Math {
     if (SPVM::Math->signbitf($zero_plus)) {
       return 0;
     }
-    
+
     my $zero_minus = -$zero_plus;
-    
+
     unless ($zero_minus isa float) {
       return 0;
     }
-    
-    
+
+
     unless ($zero_minus == 0.0f) {
       return 0;
     }
@@ -86,43 +86,43 @@ package TestCase::Lib::SPVM::Math {
     unless ($zero_minus == -0.0f) {
       return 0;
     }
-    
+
     unless(SPVM::Math->signbitf($zero_minus)) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub unary_minus_float_nan : int () {
     my $value = -SPVM::Math->NANF();
-     
+
     unless ($value isa float) {
       return 0;
     }
-    
+
     unless (SPVM::Math->isnanf($value)) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub unary_minus_double_inf : int () {
     my $value = -SPVM::Math->INFINITY();
-    
+
     unless ($value isa double) {
       return 0;
     }
-    
+
     unless ($value == -SPVM::Math->INFINITY()) {
       return 0;
     }
-    
+
     unless (-$value == SPVM::Math->INFINITY()) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -132,13 +132,13 @@ package TestCase::Lib::SPVM::Math {
     if (SPVM::Math->signbit($zero_plus)) {
       return 0;
     }
-    
+
     my $zero_minus = -$zero_plus;
-    
+
     unless ($zero_minus isa double) {
       return 0;
     }
-    
+
     unless ($zero_minus == 0.0) {
       return 0;
     }
@@ -146,25 +146,25 @@ package TestCase::Lib::SPVM::Math {
     unless ($zero_minus == -0.0) {
       return 0;
     }
-    
+
     unless(SPVM::Math->signbit($zero_minus)) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub unary_minus_double_nan : int () {
     my $value = -SPVM::Math->NAN();
-     
+
     unless ($value isa double) {
       return 0;
     }
-    
+
     unless (SPVM::Math->isnan($value)) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -189,20 +189,20 @@ package TestCase::Lib::SPVM::Math {
     unless ($total < 0) {
       return 0;
     }
-    
+
     return 1;
   }
   sub subtract_overflow : int () {
     my $total = -2147483648 - 1;
-    
+
     unless ($total == 2147483647) {
       return 0;
     }
-    
+
     unless ($total isa int) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -211,91 +211,91 @@ package TestCase::Lib::SPVM::Math {
   #
   sub subtract_float_nan_left : int () {
     my $total = SPVM::Math->NANF() - 3.0f;
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_float_nan_right : int () {
     my $total = 3.0f - SPVM::Math->NANF();
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
-  
+
   sub subtract_double_nan_left : int () {
     my $total = SPVM::Math->NAN() - 3.0;
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_double_nan_right : int () {
     my $total = 3.0 - SPVM::Math->NAN();
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_float_plus_inf_minus_inf : int () {
     my $total = SPVM::Math->INFINITYF() - SPVM::Math->INFINITYF();
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_double_plus_inf_minus_inf : int () {
     my $total = SPVM::Math->INFINITY() - SPVM::Math->INFINITY();
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_float_inf_plus_value : int () {
     my $total = SPVM::Math->INFINITYF() - 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -303,17 +303,17 @@ package TestCase::Lib::SPVM::Math {
     unless($total > 0) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_double_inf_plus_value : int () {
     my $total = SPVM::Math->INFINITY() - 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -321,17 +321,17 @@ package TestCase::Lib::SPVM::Math {
     unless($total > 0) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_float_minus_inf_minus_value : int () {
     my $total = -SPVM::Math->INFINITYF() - 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -339,17 +339,17 @@ package TestCase::Lib::SPVM::Math {
     unless($total < 0) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_double_minus_inf_minus_value : int () {
     my $total = -SPVM::Math->INFINITY() - 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -357,11 +357,11 @@ package TestCase::Lib::SPVM::Math {
     unless($total < 0) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -375,7 +375,7 @@ package TestCase::Lib::SPVM::Math {
     if (SPVM::Math->signbit($total)) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -389,13 +389,13 @@ package TestCase::Lib::SPVM::Math {
     if (SPVM::Math->signbit($total)) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_float_over_max : int () {
     my $total = FLT_MAX() - (-FLT_MAX());
-    
+
     unless($total isa float) {
       return 0;
     }
@@ -407,7 +407,7 @@ package TestCase::Lib::SPVM::Math {
     unless ($total > 0) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -425,13 +425,13 @@ package TestCase::Lib::SPVM::Math {
     unless ($total > 0) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub subtract_float_over_min : int () {
     my $total = -FLT_MAX() - +FLT_MAX();
-    
+
     unless($total isa float) {
       return 0;
     }
@@ -443,7 +443,7 @@ package TestCase::Lib::SPVM::Math {
     unless ($total < 0) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -455,15 +455,15 @@ package TestCase::Lib::SPVM::Math {
   }
   sub add_overflow : int () {
     my $total = 2147483647 + 1;
-    
+
     unless ($total == -2147483648) {
       return 0;
     }
-    
+
     unless ($total isa int) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -493,7 +493,7 @@ package TestCase::Lib::SPVM::Math {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -507,7 +507,7 @@ package TestCase::Lib::SPVM::Math {
     if (SPVM::Math->signbit($total)) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -521,7 +521,7 @@ package TestCase::Lib::SPVM::Math {
     if (SPVM::Math->signbit($total)) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -548,14 +548,14 @@ package TestCase::Lib::SPVM::Math {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
 
   sub add_float_over_max : int () {
     my $total = FLT_MAX() + FLT_MAX();
-    
+
     unless($total isa float) {
       return 0;
     }
@@ -567,7 +567,7 @@ package TestCase::Lib::SPVM::Math {
     unless ($total > 0) {
       return 0;
     }
-    
+
     return 1;
   }
   sub add_double_over_max : int () {
@@ -584,12 +584,12 @@ package TestCase::Lib::SPVM::Math {
     unless ($total > 0) {
       return 0;
     }
-    
+
     return 1;
   }
   sub add_float_over_min : int () {
     my $total = -FLT_MAX() + -FLT_MAX();
-    
+
     unless($total isa float) {
       return 0;
     }
@@ -601,7 +601,7 @@ package TestCase::Lib::SPVM::Math {
     unless ($total < 0) {
       return 0;
     }
-    
+
     return 1;
   }
   sub add_double_over_min : int () {
@@ -618,97 +618,97 @@ package TestCase::Lib::SPVM::Math {
     unless ($total < 0) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_float_nan_left : int () {
     my $total = SPVM::Math->NANF() + 3.0f;
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_float_nan_right : int () {
     my $total = 3.0f + SPVM::Math->NANF();
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
-  
+
   sub add_double_nan_left : int () {
     my $total = SPVM::Math->NAN() + 3.0;
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_double_nan_right : int () {
     my $total = 3.0 + SPVM::Math->NAN();
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_float_plus_inf_minus_inf : int () {
     my $total = SPVM::Math->INFINITYF() + (-SPVM::Math->INFINITYF());
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_double_plus_inf_minus_inf : int () {
     my $total = SPVM::Math->INFINITY() + (-SPVM::Math->INFINITY());
-    
+
     unless(SPVM::Math->isnan($total)) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_float_inf_plus_value : int () {
     my $total = SPVM::Math->INFINITYF() + 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -716,17 +716,17 @@ package TestCase::Lib::SPVM::Math {
     unless($total > 0) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_double_inf_plus_value : int () {
     my $total = SPVM::Math->INFINITY() + 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -734,17 +734,17 @@ package TestCase::Lib::SPVM::Math {
     unless($total > 0) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_float_minus_inf_minus_value : int () {
     my $total = -SPVM::Math->INFINITYF() + 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -752,17 +752,17 @@ package TestCase::Lib::SPVM::Math {
     unless($total < 0) {
       return 0;
     }
-    
+
     unless($total isa float) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub add_double_minus_inf_minus_value : int () {
     my $total = -SPVM::Math->INFINITY() + 1;
-    
+
     unless(SPVM::Math->isinf($total)) {
       return 0;
     }
@@ -770,17 +770,17 @@ package TestCase::Lib::SPVM::Math {
     unless($total < 0) {
       return 0;
     }
-    
+
     unless($total isa double) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_sin : int () {
     my $value = SPVM::Math->sin(PI());
-    
+
     if ($value < 0.000001 && $value > -0.000001) {
       return 1;
     }
@@ -789,16 +789,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_cos : int () {
     my $value = SPVM::Math->cos(PI() / 2.0);
-    
+
     if ($value < 0.000001 && $value > -0.000001) {
       return 1;
     }
     return 0;
   }
-  
+
   sub test_tan : int () {
     my $value = SPVM::Math->tan(PI() / 4.0);
-    
+
     if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
       return 1;
     }
@@ -813,7 +813,7 @@ package TestCase::Lib::SPVM::Math {
         }
       }
     }
-    
+
     return 0;
   }
 
@@ -825,7 +825,7 @@ package TestCase::Lib::SPVM::Math {
         }
       }
     }
-    
+
     return 0;
   }
 
@@ -837,23 +837,23 @@ package TestCase::Lib::SPVM::Math {
         }
       }
     }
-    
+
     return 0;
   }
-  
+
   sub test_float_pass_positive_infinity : int ($value : float) {
     if ($value == SPVM::Math->INFINITYF()) {
       return 1;
     }
-    
+
     return 0;
   }
-  
+
   sub test_float_pass_nan : int ($value : float) {
     if (SPVM::Math->isnanf($value)) {
       return 1;
     }
-    
+
     return 0;
   }
 
@@ -865,7 +865,7 @@ package TestCase::Lib::SPVM::Math {
         }
       }
     }
-    
+
     return 0;
   }
 
@@ -877,7 +877,7 @@ package TestCase::Lib::SPVM::Math {
         }
       }
     }
-    
+
     return 0;
   }
 
@@ -889,23 +889,34 @@ package TestCase::Lib::SPVM::Math {
         }
       }
     }
-    
+
     return 0;
   }
-  
+
   sub test_double_pass_nan : int ($value : double) {
     if (SPVM::Math->isnan($value)) {
       return 1;
     }
-    
+
     return 0;
   }
-  
+
   sub test_double_pass_positive_infinity : int ($value : double) {
     if ($value == SPVM::Math->INFINITY()) {
       return 1;
     }
-    
+
     return 0;
+  }
+
+  # Trigonometric functions
+  sub test_acos : int () {
+    my $eps      = 0.000001;
+    my $got      = SPVM::Math->acos(0.707106);
+    my $expected = SPVM::Math->pi / 4;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
   }
 }

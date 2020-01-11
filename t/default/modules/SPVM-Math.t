@@ -51,13 +51,13 @@ __END__
 {
   ok(TestCase::Lib::SPVM::Math->test_float_pass_positive_infinity($POSITIVE_INFINITY));
   ok(TestCase::Lib::SPVM::Math->test_float_pass_nan($NaN));
-  
+
   ok(TestCase::Lib::SPVM::Math->test_isinff);
   ok(TestCase::Lib::SPVM::Math->test_isfinitef);
   ok(TestCase::Lib::SPVM::Math->test_isnanf);
-  
+
   is(SPVM::Math->INFINITYF(), $POSITIVE_INFINITY);
-  
+
   like(SPVM::Math->NANF(), $nan_re);
 }
 
@@ -65,13 +65,13 @@ __END__
 {
   ok(TestCase::Lib::SPVM::Math->test_double_pass_positive_infinity($POSITIVE_INFINITY));
   ok(TestCase::Lib::SPVM::Math->test_double_pass_nan($NaN));
-  
+
   ok(TestCase::Lib::SPVM::Math->test_isinf);
   ok(TestCase::Lib::SPVM::Math->test_isfinite);
   ok(TestCase::Lib::SPVM::Math->test_isnan);
-  
+
   is(SPVM::Math->INFINITY(), $POSITIVE_INFINITY);
-  
+
   like(SPVM::Math->NAN(), $nan_re);
 }
 
