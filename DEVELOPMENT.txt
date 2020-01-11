@@ -124,7 +124,8 @@ DEVELOPERS NOTE
     - NOTE: In Windows/MinGW/Strawbery Perl, newline is always \x0A if mode is text mode
     - Automatically loaded module must not be native or precompile
       Currently, SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double, SPVM::Complex_2f, SPVM::Complex_2d
-
+    - Don't use temporary directory in SPVM module, for example, using File::Temp.
+      Security risk is increased and, Windows dll file can't be removed by cleanuping temporary directory
   CODING GUIDE LINE
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
     - char is used for only character.
