@@ -910,9 +910,19 @@ package TestCase::Lib::SPVM::Math {
   }
 
   # Trigonometric functions
+  sub test_acosf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->acosf(0.707106781186547524400844362104849039284835937688474036588f);
+    my $expected = (float)(SPVM::Math->pi / 4);
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
   sub test_acos : int () {
-    my $eps      = 0.000001;
-    my $got      = SPVM::Math->acos(0.707106);
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->acos(0.707106781186547524400844362104849039284835937688474036588);
     my $expected = SPVM::Math->pi / 4;
     unless ($expected - $eps <= $got && $got <= $expected + $eps) {
       return 0;

@@ -205,13 +205,23 @@ int32_t SPNATIVE__SPVM__Math__asinh(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;;
 }
 
+int32_t SPNATIVE__SPVM__Math__acosf(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  double value = acos(stack[0].fval);
+  
+  stack[0].fval = value;
+
+  return SPVM_SUCCESS;;
+}
+
 int32_t SPNATIVE__SPVM__Math__acos(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
-  
+
   double value = acos(stack[0].dval);
-  
+
   stack[0].dval = value;
-  
+
   return SPVM_SUCCESS;;
 }
 

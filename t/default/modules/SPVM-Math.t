@@ -36,6 +36,8 @@ use SPVM 'TestCase::Lib::SPVM::Math';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
   ok(TestCase::Lib::SPVM::Math->test_pi);
+  ok(TestCase::Lib::SPVM::Math->test_acosf);
+  ok(TestCase::Lib::SPVM::Math->test_acos);
 
 __END__
 

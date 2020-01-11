@@ -16,6 +16,7 @@ package SPVM::Math {
   native sub pi : double ();
 
   # Trigonometric functions
+  native sub acosf : float ($x : float);
   native sub acos : double ($x : double);
   native sub asin : double($x : double);
   native sub atan : double ($x : double);
