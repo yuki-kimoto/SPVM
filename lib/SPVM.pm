@@ -101,7 +101,7 @@ sub new_mulnum_array_from_bin { SPVM::ExchangeAPI::new_mulnum_array_from_bin($SP
 
 =head1 NAME
 
-SPVM - Static Perl Virtual Machine. Fast calculation & Easy C/C++ Binding
+SPVM - Static Perl Virtual Machine. Fast calculation, fast array operation, and easy C/C++ Binding.
 
 =head1 SYNOPSIS
 
