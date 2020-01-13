@@ -1,0 +1,20 @@
+package TestCase::Print {
+
+  sub test_print : int () {
+    print "Hello";
+    
+    return 1;
+  }
+
+  sub test_print_newline : int () {
+    print "\n";
+    
+    return 1;
+  }
+
+  sub test_print_long_lines : int () {
+    print "AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n";
+    
+    return 1;
+  }
+}

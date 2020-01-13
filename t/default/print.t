@@ -8,15 +8,13 @@ use File::Path 'mkpath';
 
 use Test::More 'no_plan';
 
-
-use SPVM 'TestCase::Lib::SPVM::IO::Stdout';
-
 use TestFile;
+use SPVM 'TestCase::Print';
 
-my $test_tmp_dir = "$FindBin::Bin/../../test_files_tmp";
+my $test_tmp_dir = "$FindBin::Bin/../test_files_tmp";
 
-my $script_file = "$test_tmp_dir/SPVM-IO-Stdout-script.pl";
-my $output_file = "$test_tmp_dir/SPVM-IO-Stdout-output.txt";
+my $script_file = "$test_tmp_dir/print-script.pl";
+my $output_file = "$test_tmp_dir/print-output.txt";
 
 mkpath $test_tmp_dir;
 
@@ -31,7 +29,7 @@ use strict;
 use warnings;
 use FindBin;
 
-use SPVM 'TestCase::Lib::SPVM::IO::Stdout';
+use SPVM 'TestCase::Print';
 
 use TestFile;
 
@@ -66,7 +64,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     # test_print
     {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print';
+      my $func_call = 'TestCase::Print->test_print';
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -75,7 +73,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     
     # test_print_newline
     {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_newline';
+      my $func_call = 'TestCase::Print->test_print_newline';
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -85,7 +83,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     
     # test_print_long_lines
     {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_long_lines';
+      my $func_call = 'TestCase::Print->test_print_long_lines';
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
