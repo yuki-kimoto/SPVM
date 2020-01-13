@@ -42,7 +42,7 @@ my $ldcmd = "cc ";
 my $makefile = <<"EOS";
 
 all:
-	$cccmd -o solo/main.o solo/main.c
+	$cccmd -o solo/main.o solo/spvm_boot.c
 	$ldcmd -o solo/main -lm -o solo/main solo/main.o @object_files
 	mkdir -p solo/SPVM
 	cp lib/SPVM/Byte.spvm solo/SPVM/Byte.spvm
