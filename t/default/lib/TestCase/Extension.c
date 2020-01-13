@@ -15,7 +15,7 @@ int32_t SPNATIVE__TestCase__Extension__get_package_var_byte_test(SPVM_ENV* env, 
   SPVM_GET_PACKAGE_VAR_BYTE(env, value, "TestCase::Extension", "$BYTE_VALUE", MFILE, __LINE__);
   
   stack[0].bval = value;
-  
+
   return SPVM_SUCCESS;
 }
 

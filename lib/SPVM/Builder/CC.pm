@@ -153,7 +153,39 @@ sub bind_subs {
     my $sub_abs_name = "${package_name}::$sub_name";
 
     my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name);
-    my $cfunc_address = SPVM::Builder::Util::get_dll_func_address($dll_file, $cfunc_name);
+    my $cfunc_address;
+    if ($dll_file) {
+      my $dll_libref = DynaLoader::dl_load_file($dll_file);
+      if ($dll_libref) {
+        $cfunc_address = DynaLoader::dl_find_symbol($dll_libref, $cfunc_name);
+        unless ($cfunc_address) {
+          my $dl_error = DynaLoader::dl_error();
+          my $error = <<"EOS";
+Can't find native function \"$cfunc_name\" corresponding to $sub_abs_name in \"$dll_file\"
+
+You must write the following definition.
+--------------------------------------------------
+#include <spvm_native.h>
+
+int32_t $cfunc_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return SPVM_SUCCESS;
+}
+--------------------------------------------------
+
+$dl_error
+EOS
+          confess $error;
+        }
+      }
+      else {
+        my $dl_error = DynaLoader::dl_error();
+        confess "Can't load dll file \"$dll_file\": $dl_error";
+      }
+    }
+    else {
+      confess "DLL file is not specified";
+    }
     
     if ($category eq 'native') {
       $self->bind_sub_native($package_name, $sub_name, $cfunc_address);

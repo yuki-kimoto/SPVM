@@ -55,32 +55,6 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub get_dll_func_address {
-  my ($dll_file, $dll_func_name) = @_;
-  
-  my $native_address;
-  
-  if ($dll_file) {
-    my $dll_libref = DynaLoader::dl_load_file($dll_file);
-    if ($dll_libref) {
-      $native_address = DynaLoader::dl_find_symbol($dll_libref, $dll_func_name);
-      unless ($native_address) {
-        my $dl_error = DynaLoader::dl_error();
-        confess "Can't find function \"$dll_func_name\" in \"$dll_file\": $dl_error";
-      }
-    }
-    else {
-      my $dl_error = DynaLoader::dl_error();
-      confess "Can't load dll file \"$dll_file\": $dl_error";
-    }
-  }
-  else {
-    confess "DLL file is not specified";
-  }
-  
-  return $native_address;
-}
-
 sub convert_module_file_to_dll_category_file {
   my ($module_file, $category) = @_;
   
