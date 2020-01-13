@@ -108,7 +108,22 @@ sub get_config_runtime {
   }
   else {
     if ($category eq 'native') {
-      confess "Can't find $config_file: $@";
+      my $error = <<"EOS";
+Can't find $config_file.
+
+Config file must contains at least the following code
+----------------------------------------------
+use strict;
+use warnings;
+
+use SPVM::Builder::Config;
+my \$bconf = SPVM::Builder::Config->new_c99;
+
+\$bconf;
+----------------------------------------------
+$@
+EOS
+      confess $error;
     }
     else {
       $bconf = SPVM::Builder::Config->new_c99;
@@ -339,7 +354,27 @@ sub link {
     $bconf = SPVM::Builder::Util::load_config($config_file);
   }
   else {
-    $bconf = SPVM::Builder::Config->new_c99;;
+    if ($category eq 'native') {
+      my $error = <<"EOS";
+Can't find $config_file.
+
+Config file must contains at least the following code
+----------------------------------------------
+use strict;
+use warnings;
+
+use SPVM::Builder::Config;
+my \$bconf = SPVM::Builder::Config->new_c99;
+
+\$bconf;
+----------------------------------------------
+
+EOS
+      confess $error;
+    }
+    else {
+      $bconf = SPVM::Builder::Config->new_c99;
+    }
   }
 
   # Quiet output
