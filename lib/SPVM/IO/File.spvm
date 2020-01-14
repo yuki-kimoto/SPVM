@@ -44,6 +44,7 @@ package SPVM::IO::File {
   native sub putc : int ($self : self, $c : byte);
   native sub write : int ($self : self, $buffer : string, $legnth : int);
   native sub print : int ($self : self, $string : string);
+  native sub flush : void ();
   
   # need also SPVM::IO::Stdin
   native sub read : int ($self : self, $buf : byte[]);

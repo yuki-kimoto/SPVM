@@ -406,3 +406,24 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;
 }
+
+int32_t SPNATIVE__SPVM__IO__File__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  // Self
+  void* obj_self = stack[0].oval;
+  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
+  
+  // File fh
+  void* obj_fh;
+  SPVM_GET_FIELD_OBJECT(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", MFILE, __LINE__);
+  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
+  
+  int32_t ret = fflush(fh);
+  
+  if (ret != 0) {
+    SPVM_DIE("Can't flash to file", MFILE, __LINE__);
+  }
+  
+  return SPVM_SUCCESS;
+}

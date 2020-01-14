@@ -62,3 +62,15 @@ int32_t SPNATIVE__SPVM__IO__Stdout__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   return SPVM_SUCCESS;
 }
+
+int32_t SPNATIVE__SPVM__IO__Stdout__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  int32_t ret = fflush(stdout);
+  
+  if (ret != 0) {
+    SPVM_DIE("Can't flash to stdout", MFILE, __LINE__);
+  }
+  
+  return SPVM_SUCCESS;
+}
