@@ -2,7 +2,19 @@ package TestCase::Lib::SPVM::IO::Stderr {
   use SPVM::IO::Stderr;
 
   sub test_print : int () {
-    SPVM::IO::Stderr->print("Hello\n");
+    SPVM::IO::Stderr->print("Hello");
+    
+    return 1;
+  }
+
+  sub test_print_newline : int () {
+    SPVM::IO::Stderr->print("\n");
+    
+    return 1;
+  }
+
+  sub test_print_long_lines : int () {
+    SPVM::IO::Stderr->print("AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n");
     
     return 1;
   }
