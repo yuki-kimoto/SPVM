@@ -1,11 +1,19 @@
 package TestCase::Warn {
-  
+
   sub test_warn : int () {
+    warn "Hello";
     
-    warn "WARNLINEFILE";
-    warn;
-    warn "WARN\n";
-    warn 3;
+    return 1;
+  }
+
+  sub test_warn_newline : int () {
+    warn "\n";
+    
+    return 1;
+  }
+
+  sub test_warn_long_lines : int () {
+    warn "AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n";
     
     return 1;
   }
