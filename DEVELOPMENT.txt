@@ -109,10 +109,10 @@ DEVELOPERS NOTE
     
   PORTABILITY NOTE
   
-    Compiler type, version and working is various in different environments. 
+    SPVM is run on various environments.
     Main compiler targets is gcc and clang.
-    Main OS targets is Linux/Unix, Windows, macOS.
-    To keep maxmam portability, I have the following rule.
+    Main OS targets is Linux/Unix, Windows/MinGW, macOS.
+    To keep maxmam portability in SPVM core, I have the following rule.
   
     - don't use realloc.
     - don't use global variables
@@ -126,6 +126,11 @@ DEVELOPERS NOTE
       Currently, SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double, SPVM::Complex_2f, SPVM::Complex_2d
     - Don't use temporary directory in SPVM module, for example, using File::Temp.
       Security risk is increased and, Windows dll file can't be removed by cleanuping temporary directory
+    - Don't use feature_test_macros, for example,
+      #define _XOPEN_SOURCE
+      #define _POSIX_SOURCE
+      #define _POSIX_C_SOURCE
+
   CODING GUIDE LINE
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
     - char is used for only character.
