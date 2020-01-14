@@ -1,8 +1,3 @@
-// Enable strerror_r, fileno
-#ifndef _XOPEN_SOURCE
-#  define _XOPEN_SOURCE 600
-#endif
-
 #include "spvm_native.h"
 
 #include <string.h>
@@ -26,10 +21,6 @@ int32_t SPNATIVE__SPVM__IO__File__init_package_vars(SPVM_ENV* env, SPVM_VALUE* s
   SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_CUR", SEEK_CUR, MFILE, __LINE__);
   SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$SEEK_END", SEEK_END, MFILE, __LINE__);
   
-  SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$STDIN", fileno(stdin), MFILE, __LINE__);
-  SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$STDOUT", fileno(stdout), MFILE, __LINE__);
-  SPVM_SET_PACKAGE_VAR_INT(env, "SPVM::IO::File", "$STDERR", fileno(stderr), MFILE, __LINE__);
-  
   return SPVM_SUCCESS;
 }
 
@@ -45,34 +36,6 @@ int32_t SPNATIVE__SPVM__IO__File__set_binmode(SPVM_ENV* env, SPVM_VALUE* stack) 
 
   int32_t binmode = stack[1].ival;
   (void)binmode;
-
-#ifdef _WIN32
-  if (binmode) {
-    _setmode(_fileno(fh), _O_BINARY);
-  }
-  else {
-    _setmode(_fileno(fh), _O_TEXT);
-  }
-#endif
-  
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__File__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
-  // Self
-  void* obj_self = stack[0].oval;
-  if (!obj_self) { SPVM_DIE("Self must be defined", MFILE, __LINE__); }
-  
-  // File fh
-  void* obj_fh;
-  SPVM_GET_FIELD_OBJECT(env, obj_fh, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", MFILE, __LINE__);
-  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
-
-  if (fh == NULL) { SPVM_DIE("File handle must be defined", MFILE, __LINE__); }
-  
-  int32_t fno = fileno(fh);
-  
-  stack[0].ival = fno;
 
   return SPVM_SUCCESS;
 }
@@ -394,12 +357,7 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     stack[0].oval = obj_io_file;
   }
   else {
-    char errstr[32];
-#ifdef _WIN32
-    strerror_s(errstr, 32, errno);
-#else
-    strerror_r(errno, errstr, 32);
-#endif
+    const char* errstr = strerror(errno);
     
     SPVM_DIE("Can't open file \"%s\": %s", file_name, errstr, MFILE, __LINE__);
   }

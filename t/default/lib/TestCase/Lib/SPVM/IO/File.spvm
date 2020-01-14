@@ -3,20 +3,6 @@ package TestCase::Lib::SPVM::IO::File {
   use SPVM::StringList;
   use SPVM::Util (chomp_lf, equals_strarray, sliceb);
 
-  sub test_fileno : int ($file : string) {
-    {
-      my $fh = SPVM::IO::File->open($file, "r");
-      
-      my $fileno = $fh->fileno;
-      
-      unless ($fileno == 3) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-  
   sub test_open : int ($file : string) {
     {
       my $fh = SPVM::IO::File->open($file, "r");

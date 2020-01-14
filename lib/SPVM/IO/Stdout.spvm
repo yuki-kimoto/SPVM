@@ -5,7 +5,4 @@ package SPVM::IO::Stdout {
   native sub write : int ($buffer : string, $legnth : int);
   native sub print : int ($string : string);
   native sub flush : void ();
-  
-  # Same as SPVM::IO::File
-  native sub fileno : int ();
 }

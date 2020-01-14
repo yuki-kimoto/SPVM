@@ -87,12 +87,6 @@ my $test_dir = "$FindBin::Bin/../..";
     my $sp_file = SPVM::new_string("$test_dir/test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_slurp($sp_file));
   }
-
-  # fileno
-  {
-    my $sp_file = SPVM::new_string("$test_dir/test_files_tmp/fread.txt");
-    ok(TestCase::Lib::SPVM::IO::File->test_fileno($sp_file));
-  }
 }
 
 
