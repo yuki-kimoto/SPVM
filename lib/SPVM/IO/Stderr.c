@@ -11,8 +11,20 @@ int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* bytes = (const char*)env->get_elems_byte(env, string);
   int32_t string_length = env->length(env, string);
   
+  int32_t error = 0;
   for (int32_t i = 0; i < string_length; i++) {
-    fputc(bytes[i], stderr);
+    int32_t ret = fputc(bytes[i], stderr);
+    if (ret == EOF) {
+      error = 1;
+      break;
+    }
+  }
+  
+  if (error) {
+    stack[0].ival = -1;
+  }
+  else {
+    stack[0].ival = string_length;
   }
   
   return SPVM_SUCCESS;
@@ -20,31 +32,29 @@ int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__IO__Stderr__write(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  int32_t length = stack[1].ival;
-
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
+  
   // Buffer
-  void* obj_buffer = stack[0].oval;
-  if (obj_buffer == NULL) {
+  void* obj_bytes = stack[0].oval;
+  if (obj_bytes == NULL) {
     stack[0].oval = NULL;
     return SPVM_SUCCESS;
   }
-  char* buffer = (char*)env->get_elems_byte(env, obj_buffer);
+  char* bytes = (char*)env->get_elems_byte(env, obj_bytes);
+  int32_t bytes_length = (char*)env->length(env, obj_bytes);
+  if (offset < 0) {
+    stack[0].ival = 0;
+    return SPVM_SUCCESS;
+  }
+  if (offset + length > bytes_length) {
+    stack[0].ival = 0;
+    return SPVM_SUCCESS;
+  }
   
-  int32_t write_length = fwrite(buffer, 1, length, stderr);
+  int32_t write_length = fwrite(bytes + offset, 1, length, stderr);
   
   stack[0].ival = write_length;
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__Stderr__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  // Char
-  char ch = (char)stack[0].bval;
-  
-  int32_t ret = fputc(ch, stderr);
-  
-  stack[0].ival = ret;
 
   return SPVM_SUCCESS;
 }
@@ -52,11 +62,7 @@ int32_t SPNATIVE__SPVM__IO__Stderr__putc(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__IO__Stderr__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  int32_t ret = fflush(stdout);
-  
-  if (ret != 0) {
-    SPVM_DIE("Can't flash to stderr", MFILE, __LINE__);
-  }
+  stack[0].ival = fflush(stderr);
   
   return SPVM_SUCCESS;
 }
