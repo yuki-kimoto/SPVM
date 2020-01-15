@@ -5,4 +5,6 @@ package SPVM::IO::Stdout {
   native sub write : int ($buffer : string, $legnth : int);
   native sub print : int ($string : string);
   native sub flush : void ();
+  native sub error : int ();
+  native sub clear_error : int ();
 }
