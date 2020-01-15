@@ -1,8 +1,3 @@
-// Enable strerror_r, fileno
-#ifndef _XOPEN_SOURCE
-#  define _XOPEN_SOURCE 600
-#endif
-
 #include "spvm_native.h"
 #include <stdio.h>
 
@@ -92,14 +87,5 @@ int32_t SPNATIVE__SPVM__IO__Stdin__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = read_length;
   
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__IO__Stdin__fileno(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  int32_t fno = fileno(stdin);
-  
-  stack[0].ival = fno;
-
   return SPVM_SUCCESS;
 }
