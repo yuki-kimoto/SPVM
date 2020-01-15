@@ -1,6 +1,10 @@
 package SPVM::IO::Stderr {
   our $AUTO_FLUSH : rw byte;
   
+  BEGIN {
+    $AUTO_FLUSH = 1;
+  }
+  
   # Same as SPVM::IO::File. SPVM::IO::Stderr
   native sub print : int ($string : string);
   native sub write : int ($bytes : string, $offset : int, $legnth : int);

@@ -42,7 +42,7 @@ int32_t SPNATIVE__SPVM__IO__Stdout__write(SPVM_ENV* env, SPVM_VALUE* stack) {
     return SPVM_SUCCESS;
   }
   char* bytes = (char*)env->get_elems_byte(env, obj_bytes);
-  int32_t bytes_length = (char*)env->length(env, obj_bytes);
+  int32_t bytes_length = env->length(env, obj_bytes);
   if (offset < 0) {
     stack[0].ival = 0;
     return SPVM_SUCCESS;
