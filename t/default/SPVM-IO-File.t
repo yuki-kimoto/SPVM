@@ -16,7 +16,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Copy test_files to test_files_tmp with replacing os newline
 TestFile::copy_test_files_tmp_replace_newline();
 
-my $test_dir = "$FindBin::Bin/../..";
+my $test_dir = "$FindBin::Bin/..";
 {
   # open
   {
