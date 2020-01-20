@@ -3405,6 +3405,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         if (bytes[string_length - 1] != '\n') {
           fprintf(stderr, " at %s line %d\n", file, line);
         }
+        fflush(stderr);
         
         break;
       }

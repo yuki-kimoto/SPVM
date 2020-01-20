@@ -18,7 +18,7 @@ int32_t SPNATIVE__SPVM__IO__Stdout__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   // Print
   if (string_length > 0) {
     int32_t write_length = fwrite(bytes, 1, string_length, stdout);
-    if (write_length =! string_length) {
+    if (write_length != string_length) {
       SPVM_DIE("Can't print string to stdout", MFILE, __LINE__);
     }
   }

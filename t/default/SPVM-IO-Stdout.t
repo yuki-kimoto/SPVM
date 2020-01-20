@@ -66,14 +66,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # print - basic tests
   {
-    # test_print
-    {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, 'Hello');
-    }
     
     # test_print_newline
     {
@@ -149,8 +141,19 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     
     SPVM::IO::Stdout->SET_AUTO_FLUSH(0);
   }
-}
 
+  # print - exception
+  {
+    # print - exception
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_exeption_undef';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, 1);
+    }
+  }
+}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

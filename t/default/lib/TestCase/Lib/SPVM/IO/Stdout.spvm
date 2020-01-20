@@ -25,4 +25,17 @@ package TestCase::Lib::SPVM::IO::Stdout {
     
     return 1;
   }
+
+  sub test_print_exeption_undef : int () {
+    
+    eval { SPVM::IO::Stdout->print(undef); };
+    if ($@) {
+      print 1;
+    }
+    else {
+      print 0;
+    }
+    
+    return 1;
+  }
 }

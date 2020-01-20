@@ -6,6 +6,6 @@ package SPVM::IO::Stderr {
   }
   
   # Same as SPVM::IO::File. SPVM::IO::Stderr
-  native sub print : int ($string : string);
+  native sub print : void ($string : string);
   native sub flush : void ();
 }
