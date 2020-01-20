@@ -143,6 +143,21 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# write
+{
+  # write - basic tests
+  {
+    # test_write
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_write';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, 'HelloWrite');
+    }
+  }
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

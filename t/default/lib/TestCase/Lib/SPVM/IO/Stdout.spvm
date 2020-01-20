@@ -19,4 +19,13 @@ package TestCase::Lib::SPVM::IO::Stdout {
     
     return 1;
   }
+
+  sub test_write : int () {
+    
+    my $bytes = "HelloWrite";
+    SPVM::IO::Stdout->write($bytes, 0, length $bytes);
+    
+    return 1;
+  }
+
 }
