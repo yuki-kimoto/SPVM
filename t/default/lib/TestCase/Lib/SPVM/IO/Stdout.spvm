@@ -42,4 +42,12 @@ package TestCase::Lib::SPVM::IO::Stdout {
     
     return 1;
   }
+
+  sub test_write_offset : int () {
+    
+    my $bytes = "HelloWrite";
+    SPVM::IO::Stdout->write($bytes, 2, length $bytes - 2);
+    
+    return 1;
+  }
 }
