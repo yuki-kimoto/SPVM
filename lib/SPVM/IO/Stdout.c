@@ -16,10 +16,11 @@ int32_t SPNATIVE__SPVM__IO__Stdout__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t string_length = env->length(env, string);
   
   // Print
-  int32_t error = 0;
-  int32_t write_length = fwrite(bytes, 1, string_length, stdout);
-  if (write_length =! string_length) {
-    SPVM_DIE("Can't print string to stdout", MFILE, __LINE__);
+  if (string_length > 0) {
+    int32_t write_length = fwrite(bytes, 1, string_length, stdout);
+    if (write_length =! string_length) {
+      SPVM_DIE("Can't print string to stdout", MFILE, __LINE__);
+    }
   }
   
   // Flush buffer to stdout if auto flush is true

@@ -93,6 +93,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       my $output = slurp_binmode($output_file);
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
+
+    # test_print_empty
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_empty';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, '');
+    }
   }
   
   # print - auto flash

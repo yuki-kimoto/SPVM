@@ -19,4 +19,10 @@ package TestCase::Lib::SPVM::IO::Stdout {
     
     return 1;
   }
+  sub test_print_empty : int () {
+    
+    SPVM::IO::Stdout->print("");
+    
+    return 1;
+  }
 }
