@@ -19,8 +19,34 @@ L<SPVM::IO::Stdout> manipulate standard output stream.
 
 =head1 CLASS METHODS
 
+=head2 AUTO_FLUSH
+
+  sub AUTO_FLUSH : byte ()
+
+Get auto flash flag. Default auto flush flag is 0.
+
+=head2 SET_AUTO_FLUSH
+
+  sub SET_AUTO_FLUSH : void ($bool : byte)
+
+Set auto flush flag.
+
 =head2 print
 
   sub print($string : string)
 
 Print string to stdout.
+
+If auto flush flag(AUTO_FLUSH) is true, flush buffered data to stdout after C<print> method call.
+
+=head2 print
+
+  sub print($string : string)
+
+Print string to stdout.
+
+=head2 flush
+
+  sub flush : void ()
+
+Flush buffered data to stdout. If error, a exception occur.

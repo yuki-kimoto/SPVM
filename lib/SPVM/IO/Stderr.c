@@ -62,7 +62,11 @@ int32_t SPNATIVE__SPVM__IO__Stderr__write(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__IO__Stderr__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  stack[0].ival = fflush(stderr);
+  int32_t ret  = (int32_t)fflush(stderr);
+  
+  if (ret != 0) {
+    SPVM_DIE("Can't flush to stderr", MFILE, __LINE__);
+  }
   
   return SPVM_SUCCESS;
 }

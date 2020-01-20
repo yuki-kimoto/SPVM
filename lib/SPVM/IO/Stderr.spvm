@@ -8,5 +8,5 @@ package SPVM::IO::Stderr {
   # Same as SPVM::IO::File. SPVM::IO::Stderr
   native sub print : int ($string : string);
   native sub write : int ($bytes : string, $offset : int, $legnth : int);
-  native sub flush : int ();
+  native sub flush : void ();
 }
