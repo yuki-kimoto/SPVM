@@ -1,4 +1,0 @@
-package SPVM::IO::Stdin {
-  native sub read : int ($self : self, $buf : byte[]);
-  native sub readline : string ($self : self);
-}
