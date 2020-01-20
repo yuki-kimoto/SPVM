@@ -18,4 +18,23 @@ package TestCase::Lib::SPVM::IO::Stderr {
     
     return 1;
   }
+  sub test_print_empty : int () {
+    
+    SPVM::IO::Stderr->print("");
+    
+    return 1;
+  }
+
+  sub test_print_exeption_undef : int () {
+    
+    eval { SPVM::IO::Stderr->print(undef); };
+    if ($@) {
+      print 1;
+    }
+    else {
+      print 0;
+    }
+    
+    return 1;
+  }
 }

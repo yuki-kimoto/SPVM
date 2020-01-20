@@ -9,6 +9,7 @@ use File::Path 'mkpath';
 use Test::More 'no_plan';
 
 
+use SPVM 'SPVM::IO::Stderr';
 use SPVM 'TestCase::Lib::SPVM::IO::Stderr';
 
 use TestFile;
@@ -61,17 +62,10 @@ sub slurp_binmode {
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# print
 {
-  # print
+  # print - basic tests
   {
-    # test_print
-    {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stderr->test_print';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, 'Hello');
-    }
     
     # test_print_newline
     {
@@ -90,6 +84,73 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       system("perl -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
+    }
+
+    # test_print_empty
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stderr->test_print_empty';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, '');
+    }
+  }
+  
+  # print - auto flash
+  {
+    # SPVM::IO::Stderr auto flash default is false
+    {
+      my $auto_flush_default = SPVM::IO::Stderr->AUTO_FLUSH;
+      ok($auto_flush_default);
+    }
+    
+    # This is not real tests, but I can't know the way to test buffer
+    my $stderr_source = slurp_binmode('blib/lib/SPVM/IO/Stderr.c');
+    like($stderr_source, qr|\Qfflush(stderr);//SPVM::IO::Stderr::print|);
+    
+    # print with set auto flush
+    {
+      # test_print
+      {
+        my $func_call = 'SPVM::IO::Stderr->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stderr->test_print';
+        write_script_file($script_file, $func_call);
+        system("perl -Mblib $script_file 2> $output_file");
+        my $output = slurp_binmode($output_file);
+        is($output, 'Hello');
+      }
+      
+      # test_print_newline
+      {
+        my $func_call = 'SPVM::IO::Stderr->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stderr->test_print_newline';
+        write_script_file($script_file, $func_call);
+        system("perl -Mblib $script_file 2> $output_file");
+        my $output = slurp_binmode($output_file);
+        # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
+        is($output, "\x0A");
+      }
+      
+      # test_print_long_lines
+      {
+        my $func_call = 'SPVM::IO::Stderr->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stderr->test_print_long_lines';
+        write_script_file($script_file, $func_call);
+        system("perl -Mblib $script_file 2> $output_file");
+        my $output = slurp_binmode($output_file);
+        is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
+      }
+    }
+    
+    SPVM::IO::Stderr->SET_AUTO_FLUSH(0);
+  }
+
+  # print - exception
+  {
+    # print - exception
+    {
+      my $func_call = 'TestCase::Lib::SPVM::IO::Stderr->test_print_exeption_undef';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, 1);
     }
   }
 }
