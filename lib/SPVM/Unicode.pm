@@ -1,7 +1,5 @@
 package SPVM::Unicode;
 
-use SPVM 'SPVM::Unicode';
-
 1;
 
 =head1 NAME

@@ -1,7 +1,5 @@
 package SPVM::Int;
 
-use SPVM 'SPVM::Int';
-
 1;
 
 # Check document 2019/07/23 almost ok.

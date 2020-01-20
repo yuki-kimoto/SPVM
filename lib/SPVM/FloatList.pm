@@ -1,7 +1,5 @@
 package SPVM::FloatList;
 
-use SPVM 'SPVM::FloatList';
-
 1;
 
 =head1 NAME

@@ -1,7 +1,5 @@
 package SPVM::ByteList;
 
-use SPVM 'SPVM::ByteList';
-
 1;
 
 =head1 NAME

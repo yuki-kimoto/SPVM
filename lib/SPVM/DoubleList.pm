@@ -1,7 +1,5 @@
 package SPVM::DoubleList;
 
-use SPVM 'SPVM::DoubleList';
-
 1;
 
 =head1 NAME

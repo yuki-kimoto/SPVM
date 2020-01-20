@@ -1,7 +1,5 @@
 package SPVM::StringList;
 
-use SPVM 'SPVM::StringList';
-
 1;
 
 =head1 NAME

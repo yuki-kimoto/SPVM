@@ -1,7 +1,5 @@
 package SPVM::Long;
 
-use SPVM 'SPVM::Long';
-
 1;
 
 # Check document 2019/07/23 almost ok.

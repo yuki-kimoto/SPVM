@@ -1,7 +1,5 @@
 package SPVM::Complex_2d;
 
-use SPVM 'SPVM::Complex_2d';
-
 1;
 
 =head1 NAME

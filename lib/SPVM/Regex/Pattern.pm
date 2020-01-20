@@ -1,7 +1,5 @@
 package SPVM::Regex::Pattern;
 
-use SPVM 'SPVM::Regex::Pattern';
-
 1;
 
 =head1 NAME

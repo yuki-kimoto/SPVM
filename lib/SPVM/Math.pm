@@ -1,7 +1,5 @@
 package SPVM::Math;
 
-use SPVM 'SPVM::Math';
-
 1;
 
 =head1 NAME

@@ -1,7 +1,5 @@
 package SPVM::Stringer;
 
-use SPVM 'SPVM::Stringer';
-
 1;
 
 =head1 NAME

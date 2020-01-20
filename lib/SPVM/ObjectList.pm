@@ -1,7 +1,5 @@
 package SPVM::ObjectList;
 
-use SPVM 'SPVM::ObjectList';
-
 1;
 
 =head1 NAME

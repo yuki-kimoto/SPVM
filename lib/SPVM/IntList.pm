@@ -1,7 +1,5 @@
 package SPVM::IntList;
 
-use SPVM 'SPVM::IntList';
-
 1;
 
 =head1 NAME

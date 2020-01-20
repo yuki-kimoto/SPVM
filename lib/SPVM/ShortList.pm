@@ -1,7 +1,5 @@
 package SPVM::ShortList;
 
-use SPVM 'SPVM::ShortList';
-
 1;
 
 =head1 NAME

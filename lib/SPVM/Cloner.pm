@@ -1,7 +1,5 @@
 package SPVM::Cloner;
 
-use SPVM 'SPVM::Cloner';
-
 1;
 
 =head1 NAME

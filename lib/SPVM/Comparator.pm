@@ -1,7 +1,5 @@
 package SPVM::Comparator;
 
-use SPVM 'SPVM::Comparator';
-
 1;
 
 =head1 NAME

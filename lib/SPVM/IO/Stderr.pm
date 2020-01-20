@@ -1,7 +1,5 @@
 package SPVM::IO::File;
 
-use SPVM 'SPVM::IO::Stderr';
-
 1;
 
 =head1 NAME

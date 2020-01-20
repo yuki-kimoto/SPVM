@@ -1,7 +1,5 @@
 package SPVM::Float;
 
-use SPVM 'SPVM::Float';
-
 1;
 
 # Check document 2019/07/23 almost ok.

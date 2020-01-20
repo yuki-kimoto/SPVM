@@ -1,7 +1,5 @@
 package SPVM::Short;
 
-use SPVM 'SPVM::Short';
-
 1;
 
 # Check document 2019/07/23 almost ok.

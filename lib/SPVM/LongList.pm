@@ -1,7 +1,5 @@
 package SPVM::LongList;
 
-use SPVM 'SPVM::LongList';
-
 1;
 
 =head1 NAME

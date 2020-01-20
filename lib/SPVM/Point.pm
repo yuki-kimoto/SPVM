@@ -1,7 +1,5 @@
 package SPVM::Point;
 
-use SPVM 'SPVM::Point';
-
 1;
 
 =head1 NAME

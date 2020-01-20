@@ -1,7 +1,5 @@
 package SPVM::IO::FileHandle;
 
-use SPVM 'SPVM::IO::FileHandle';
-
 1;
 
 =head1 NAME

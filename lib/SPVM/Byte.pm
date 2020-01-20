@@ -1,7 +1,5 @@
 package SPVM::Byte;
 
-use SPVM 'SPVM::Byte';
-
 1;
 
 # Check document 2019/07/23 almost ok.

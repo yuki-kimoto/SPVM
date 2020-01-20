@@ -1,7 +1,5 @@
 package SPVM::Hash::Entry;
 
-use SPVM 'SPVM::Hash::Entry';
-
 1;
 
 =head1 NAME

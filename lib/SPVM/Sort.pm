@@ -1,7 +1,5 @@
 package SPVM::Sort;
 
-use SPVM 'SPVM::Sort';
-
 1;
 
 =head1 NAME

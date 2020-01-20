@@ -1,7 +1,5 @@
 package SPVM::Time::Info;
 
-use SPVM 'SPVM::Time::Info';
-
 1;
 
 =head1 NAME

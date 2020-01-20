@@ -1,7 +1,5 @@
 package SPVM::EqualityChecker;
 
-use SPVM 'SPVM::EqualityChecker';
-
 1;
 
 =head1 NAME

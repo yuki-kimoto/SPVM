@@ -1,7 +1,5 @@
 package SPVM::EqualityChecker::Address;
 
-use SPVM 'SPVM::EqualityChecker::Address';
-
 1;
 
 =head1 NAME
