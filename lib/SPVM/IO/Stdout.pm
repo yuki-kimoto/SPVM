@@ -39,12 +39,6 @@ Print string to stdout.
 
 If auto flush flag(AUTO_FLUSH) is true, flush buffered data to stdout after C<print> method call.
 
-=head2 print
-
-  sub print($string : string)
-
-Print string to stdout.
-
 =head2 flush
 
   sub flush : void ()

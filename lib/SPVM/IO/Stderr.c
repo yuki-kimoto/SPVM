@@ -30,35 +30,6 @@ int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__IO__Stderr__write(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  int32_t offset = stack[1].ival;
-  int32_t length = stack[2].ival;
-  
-  // Buffer
-  void* obj_bytes = stack[0].oval;
-  if (obj_bytes == NULL) {
-    stack[0].oval = NULL;
-    return SPVM_SUCCESS;
-  }
-  char* bytes = (char*)env->get_elems_byte(env, obj_bytes);
-  int32_t bytes_length = env->length(env, obj_bytes);
-  if (offset < 0) {
-    stack[0].ival = 0;
-    return SPVM_SUCCESS;
-  }
-  if (offset + length > bytes_length) {
-    stack[0].ival = 0;
-    return SPVM_SUCCESS;
-  }
-  
-  int32_t write_length = fwrite(bytes + offset, 1, length, stderr);
-  
-  stack[0].ival = write_length;
-
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__IO__Stderr__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
