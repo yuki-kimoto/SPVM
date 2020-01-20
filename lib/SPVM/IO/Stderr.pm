@@ -33,7 +33,7 @@ Set auto flush flag.
 
 =head2 print
 
-  sub print($string : string)
+  sub print : void ($string : string)
 
 Print string to stderr.
 
