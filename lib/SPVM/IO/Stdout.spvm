@@ -2,8 +2,6 @@ package SPVM::IO::Stdout {
   
   our $AUTO_FLUSH : rw byte;
   
-  # Same as SPVM::IO::File. SPVM::IO::Stderr
   native sub print : int ($string : string);
-  native sub write : int ($bytes : string, $offset : int, $legnth : int);
   native sub flush : int ();
 }

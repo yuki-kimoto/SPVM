@@ -106,7 +106,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     # This is not real tests, but I can't know the way to test buffer
     my $stdout_source = slurp_binmode('blib/lib/SPVM/IO/Stdout.c');
     like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::print|);
-    like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::write|);
     
     # print with set auto flush
     {
@@ -143,47 +142,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
-# write
-{
-  # write - basic tests
-  {
-    # test_write
-    {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_write';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, 'HelloWrite');
-    }
-    
-    # test_write_newline
-    {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_write_newline';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
-      is($output, "\x0A");
-    }
-    
-    # test_write_long_lines
-    {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_write_long_lines';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
-    }
-    # test_write_offset
-    {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_write_offset';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, 'lloWrite');
-    }
-  }
-}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
