@@ -28,4 +28,18 @@ package TestCase::Lib::SPVM::IO::Stdout {
     return 1;
   }
 
+  sub test_write_newline : int () {
+    my $bytes = "\n";
+    
+    SPVM::IO::Stdout->write($bytes, 0, length $bytes);
+    
+    return 1;
+  }
+
+  sub test_write_long_lines : int () {
+    my $bytes = "AAAAAAAAAAAAA\nBBBBBBBBBBBBBBBBBBB\nCCCCCCCCCCCCCCCCCCCCCCCCCCC\nDDDDDDDDDDDDDDDDDDDDDDDDD\nEEEEEEEEEEEEEEEEEEEEEE\nFFFFFFFFFFFFFF\n";
+    SPVM::IO::Stdout->write($bytes, 0, length $bytes);
+    
+    return 1;
+  }
 }
