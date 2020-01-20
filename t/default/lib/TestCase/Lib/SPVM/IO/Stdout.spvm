@@ -2,6 +2,7 @@ package TestCase::Lib::SPVM::IO::Stdout {
   use SPVM::IO::Stdout;
 
   sub test_print : int () {
+    
     SPVM::IO::Stdout->print("Hello");
     
     return 1;

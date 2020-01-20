@@ -108,14 +108,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::print|);
   like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::write|);
   
-  # set auto flash true
-  SPVM::IO::Stdout->SET_AUTO_FLUSH(1);
-  
-  # print
+  # print with set auto flush
   {
     # test_print
     {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print';
+      my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print';
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -124,7 +121,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     
     # test_print_newline
     {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_newline';
+      my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print_newline';
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
@@ -134,7 +131,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     
     # test_print_long_lines
     {
-      my $func_call = 'TestCase::Lib::SPVM::IO::Stdout->test_print_long_lines';
+      my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print_long_lines';
       write_script_file($script_file, $func_call);
       system("perl -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
