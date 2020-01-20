@@ -62,8 +62,9 @@ sub slurp_binmode {
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# print
 {
-  # print
+  # print - basic tests
   {
     # test_print
     {
@@ -93,53 +94,53 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
   }
-}
-
-# auto flash
-{
-  # SPVM::IO::Stdout auto flash default is false
-  {
-    my $auto_flush_default = SPVM::IO::Stdout->AUTO_FLUSH;
-    ok(!$auto_flush_default);
-  }
   
-  # This is not real tests, but I can't know the way to test buffer
-  my $stdout_source = slurp_binmode('blib/lib/SPVM/IO/Stdout.c');
-  like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::print|);
-  like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::write|);
-  
-  # print with set auto flush
+  # print - auto flash
   {
-    # test_print
+    # SPVM::IO::Stdout auto flash default is false
     {
-      my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, 'Hello');
+      my $auto_flush_default = SPVM::IO::Stdout->AUTO_FLUSH;
+      ok(!$auto_flush_default);
     }
     
-    # test_print_newline
+    # This is not real tests, but I can't know the way to test buffer
+    my $stdout_source = slurp_binmode('blib/lib/SPVM/IO/Stdout.c');
+    like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::print|);
+    like($stdout_source, qr|\Qfflush(stdout);//SPVM::IO::Stdout::write|);
+    
+    # print with set auto flush
     {
-      my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print_newline';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
-      is($output, "\x0A");
+      # test_print
+      {
+        my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print';
+        write_script_file($script_file, $func_call);
+        system("perl -Mblib $script_file > $output_file");
+        my $output = slurp_binmode($output_file);
+        is($output, 'Hello');
+      }
+      
+      # test_print_newline
+      {
+        my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print_newline';
+        write_script_file($script_file, $func_call);
+        system("perl -Mblib $script_file > $output_file");
+        my $output = slurp_binmode($output_file);
+        # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
+        is($output, "\x0A");
+      }
+      
+      # test_print_long_lines
+      {
+        my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print_long_lines';
+        write_script_file($script_file, $func_call);
+        system("perl -Mblib $script_file > $output_file");
+        my $output = slurp_binmode($output_file);
+        is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
+      }
     }
     
-    # test_print_long_lines
-    {
-      my $func_call = 'SPVM::IO::Stdout->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stdout->test_print_long_lines';
-      write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
-      my $output = slurp_binmode($output_file);
-      is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
-    }
+    SPVM::IO::Stdout->SET_AUTO_FLUSH(0);
   }
-  
-  SPVM::IO::Stdout->SET_AUTO_FLUSH(0);
 }
 
 # All object is freed
