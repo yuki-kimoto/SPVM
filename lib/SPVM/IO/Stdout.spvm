@@ -3,5 +3,5 @@ package SPVM::IO::Stdout {
   our $AUTO_FLUSH : rw byte;
   
   native sub print : int ($string : string);
-  native sub flush : int ();
+  native sub flush : void ();
 }
