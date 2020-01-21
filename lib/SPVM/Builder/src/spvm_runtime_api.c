@@ -3381,6 +3381,19 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         exception_flag = 1;
         break;
       }
+      case SPVM_OPCODE_C_ID_PRINT: {
+        void* object = object_vars[opcode->operand0];
+        if (object) {
+          const char* bytes = (const char*)env->get_elems_byte(env, object);
+          int32_t string_length = env->length(env, object);
+          
+          if (string_length > 0) {
+            fwrite(bytes, 1, string_length, stdout);
+          }
+        }
+        
+        break;
+      }
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t sub_id = sub->id;
         int32_t rel_line = opcode->operand1;
@@ -3393,31 +3406,32 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         void* object = object_vars[opcode->operand0];
         
-        const char* bytes = (const char*)env->get_elems_byte(env, object);
-        int32_t string_length = env->length(env, object);
-        
-        for (int32_t i = 0; i < string_length; i++) {
-          putc(bytes[i], stderr);
+        int32_t empty_or_undef = 0;
+        if (object) {
+          const char* bytes = (const char*)env->get_elems_byte(env, object);
+          int32_t string_length = env->length(env, object);
+
+          if (string_length > 0) {
+            fwrite(bytes, 1, string_length, stderr);
+            // Add line and file information if last character is not '\n'
+            int32_t add_line_file;
+            if (bytes[string_length - 1] != '\n') {
+              fprintf(stderr, " at %s line %d\n", file, line);
+            }
+          }
+          else {
+            empty_or_undef = 1;
+          }
+        }
+        else {
+          empty_or_undef = 1;
         }
         
-        // Add line and file information if last character is not '\n'
-        int32_t add_line_file;
-        if (bytes[string_length - 1] != '\n') {
-          fprintf(stderr, " at %s line %d\n", file, line);
+        if (empty_or_undef) {
+          fprintf(stderr, "Warning: something's wrong at %s line %d\n", file, line);
         }
+        
         fflush(stderr);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_PRINT: {
-        void* object = object_vars[opcode->operand0];
-        
-        const char* bytes = (const char*)env->get_elems_byte(env, object);
-        int32_t string_length = env->length(env, object);
-        
-        for (int32_t i = 0; i < string_length; i++) {
-          putc(bytes[i], stdout);
-        }
         
         break;
       }

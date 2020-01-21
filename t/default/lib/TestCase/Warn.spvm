@@ -17,4 +17,15 @@ package TestCase::Warn {
     
     return 1;
   }
+  sub test_warn_empty : int () {
+    warn "";
+    
+    return 1;
+  }
+  sub test_warn_undef : int () {
+    my $str : string = undef;
+    warn $str;
+    
+    return 1;
+  }
 }

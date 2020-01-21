@@ -89,6 +89,24 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       my $output = slurp_binmode($output_file);
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
+
+    # test_warn_empty
+    {
+      my $func_call = 'TestCase::Warn->test_warn_empty';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, "Warning: something's wrong at TestCase/Warn.spvm line 21\x0A");
+    }
+
+    # test_warn_long_lines
+    {
+      my $func_call = 'TestCase::Warn->test_warn_undef';
+      write_script_file($script_file, $func_call);
+      system("perl -Mblib $script_file 2> $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, "Warning: something's wrong at TestCase/Warn.spvm line 27\x0A");
+    }
   }
 }
 

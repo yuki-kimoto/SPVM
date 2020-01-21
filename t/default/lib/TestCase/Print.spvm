@@ -17,4 +17,16 @@ package TestCase::Print {
     
     return 1;
   }
+
+  sub test_print_empty : int () {
+    print "";
+    
+    return 1;
+  }
+  sub test_print_undef : int () {
+    my $str : string = undef;
+    print $str;
+    
+    return 1;
+  }
 }
