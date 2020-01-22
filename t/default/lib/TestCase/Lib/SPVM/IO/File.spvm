@@ -81,39 +81,6 @@ package TestCase::Lib::SPVM::IO::File {
     return 1;
   }
 
-  sub test_write : int ($file : string) {
-    {
-      my $fh = SPVM::IO::File->open($file, ">");
-      unless ($fh) {
-        die "Can't open file $file";
-      }
-      {
-        my $str = "abcd\n";
-        my $write_length = $fh->write($str, length $str);
-        unless ($write_length == 5) {
-          return 0;
-        }
-      }
-      {
-        my $str = "fg";
-        my $write_length = $fh->write($str, length $str);
-        unless ($write_length == 2) {
-          return 0;
-        }
-      }
-    }
-    
-    {
-      my $fh = SPVM::IO::File->open($file, "<");
-      my $content = $fh->slurp($file);
-      unless ($content eq "abcd\nfg") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
   sub test_readline : int ($file : string) {
     my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {

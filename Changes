@@ -7,6 +7,8 @@
   - SPVM::IO::File open mode is changed to <, >, >>, +<, +>, +>>
   - add SPVM::IO::File unlink function
   - add SPVM::IO::File rename function
+  - remove SPVM::IO::File putc
+  - remove SPVM::IO::File write
 0.0445 2020-01-07
   - Web and Network module is separated to separate SPVM::Webkit to https://github.com/yuki-kimoto/SPVM-Webkit
   - remove SPVM::Builder::Exe and spvmcc because this logic is planed to separate to outer module after version 1.0.

@@ -35,13 +35,7 @@ my $test_dir = "$FindBin::Bin/..";
     my $sp_file = SPVM::new_string("$test_dir/test_files_tmp/fread.txt");
     ok(TestCase::Lib::SPVM::IO::File->test_read($sp_file));
   }
-  
-  # write
-  {
-    my $sp_file = SPVM::new_string("$test_dir/test_files_tmp/fwrite.txt");
-    ok(TestCase::Lib::SPVM::IO::File->test_write($sp_file));
-  }
-  
+
   # readline
   {
     {
