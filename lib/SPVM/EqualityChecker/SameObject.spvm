@@ -1,6 +1,6 @@
-package SPVM::EqualityChecker::Address {
-  sub new : SPVM::EqualityChecker::Address () {
-    return new SPVM::EqualityChecker::Address;
+package SPVM::EqualityChecker::SameObject {
+  sub new : SPVM::EqualityChecker::SameObject () {
+    return new SPVM::EqualityChecker::SameObject;
   }
   
   sub : int ($self : self, $obj1 : object, $obj2 : object) {

@@ -1,8 +1,9 @@
 (Current SPVM is on beta release)
 
-0.0446 2020-01-21
+0.0446 2020-01-22
   - remove fileno, set_binmode methods because file nomber is not portable.
   - add warn and print empty string and undef spec
+  - rename SPVM::EqualityChecker::Address to SPVM::EqualityChecker::SameObject
 0.0445 2020-01-07
   - Web and Network module is separated to separate SPVM::Webkit to https://github.com/yuki-kimoto/SPVM-Webkit
   - remove SPVM::Builder::Exe and spvmcc because this logic is planed to separate to outer module after version 1.0.

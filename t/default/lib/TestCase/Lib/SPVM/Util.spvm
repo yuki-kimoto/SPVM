@@ -9,7 +9,7 @@ package TestCase::Lib::SPVM::Util {
   use SPVM::Time (time);
   use SPVM::EqualityChecker;
   use SPVM::Util;
-  use SPVM::EqualityChecker::Address;
+  use SPVM::EqualityChecker::SameObject;
 
   use SPVM::Util (
     chomp_lf,
@@ -2099,7 +2099,7 @@ package TestCase::Lib::SPVM::Util {
       
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 0, 4);
-      unless (SPVM::Util->equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::Address->new)) {
+      unless (SPVM::Util->equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -2111,7 +2111,7 @@ package TestCase::Lib::SPVM::Util {
       
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 1, 2);
-      unless (SPVM::Util->equals_oarray($slice, [$minimal2, $minimal3], SPVM::EqualityChecker::Address->new)) {
+      unless (SPVM::Util->equals_oarray($slice, [$minimal2, $minimal3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -2234,7 +2234,7 @@ package TestCase::Lib::SPVM::Util {
       
       my $nums = [$minimal1, $minimal2, $minimal3];
       reverseo($nums);
-      unless (SPVM::Util->equals_oarray($nums, [$minimal3, $minimal2, $minimal1], SPVM::EqualityChecker::Address->new)) {
+      unless (SPVM::Util->equals_oarray($nums, [$minimal3, $minimal2, $minimal1], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
