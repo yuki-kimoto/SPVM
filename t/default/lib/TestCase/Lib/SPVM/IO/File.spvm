@@ -31,10 +31,7 @@ package TestCase::Lib::SPVM::IO::File {
       unless ($fh) {
         return 0;
       }
-      my $ret = $fh->close;
-      unless ($ret == 0) {
-        return 0;
-      }
+      $fh->close;
     }
     
     return 1;
