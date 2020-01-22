@@ -2,8 +2,6 @@ package SPVM::IO::File {
   use SPVM::IO::FileHandle;
   use SPVM::Util (sliceb);
   
-  allow SPVM::IO::Stdout;
-  
   our $SEEK_SET : ro int;
   our $SEEK_CUR : ro int;
   our $SEEK_END : ro int;
@@ -17,6 +15,16 @@ package SPVM::IO::File {
   has fh : ro SPVM::IO::FileHandle;
   native sub open : SPVM::IO::File ($file_name : string, $mode : string);
   native sub close : int ($self : self);
+  native sub seek : int ($self : self, $offset : long, $whence : int);
+  
+  native sub putc : int ($self : self, $c : byte);
+  native sub write : int ($self : self, $buffer : string, $legnth : int);
+  native sub print : int ($self : self, $string : string);
+  native sub flush : void ();
+  
+  native sub read : int ($self : self, $buf : byte[]);
+  native sub readline : string ($self : self);
+
   sub slurp : string ($self : self, $file : string) {
     
     my $buffer_length = 4096;
@@ -35,15 +43,7 @@ package SPVM::IO::File {
     }
     return $string;
   }
-  native sub seek : int ($self : self, $offset : long, $whence : int);
-  
-  # need also SPVM::IO::Stdout, SPVM::IO::Stderr
-  native sub putc : int ($self : self, $c : byte);
-  native sub write : int ($self : self, $buffer : string, $legnth : int);
-  native sub print : int ($self : self, $string : string);
-  native sub flush : void ();
-  
-  # need also SPVM::IO::Stdin
-  native sub read : int ($self : self, $buf : byte[]);
-  native sub readline : string ($self : self);
+
+  native sub unlink : void ($file : string);
+  native sub rename : void ($src_file : string, $dist_file : string);
 }

@@ -291,60 +291,40 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Check mode
   int32_t valid_mode;
-  if (strcmp(mode, "r") == 0) {
+  const char* real_mode = NULL;
+  if (strcmp(mode, "<") == 0) {
     valid_mode = 1;
+    real_mode = "rb";
   }
-  else if (strcmp(mode, "w") == 0) {
+  else if (strcmp(mode, ">") == 0) {
     valid_mode = 1;
+    real_mode = "wb";
   }
-  else if (strcmp(mode, "a") == 0) {
+  else if (strcmp(mode, ">>") == 0) {
     valid_mode = 1;
+    real_mode = "wa";
   }
-  else if (strcmp(mode, "rb") == 0) {
+  else if (strcmp(mode, "+<") == 0) {
     valid_mode = 1;
+    real_mode = "r+b";
   }
-  else if (strcmp(mode, "wb") == 0) {
+  else if (strcmp(mode, "+>") == 0) {
     valid_mode = 1;
+    real_mode = "w+b";
   }
-  else if (strcmp(mode, "ab") == 0) {
+  else if (strcmp(mode, "+>>") == 0) {
     valid_mode = 1;
-  }
-  else if (strcmp(mode, "r+") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "w+") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "a+") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "r+b") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "rb+") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "w+b") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "wb+") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "a+b") == 0) {
-    valid_mode = 1;
-  }
-  else if (strcmp(mode, "ab+") == 0) {
-    valid_mode = 1;
+    real_mode = "a+b";
   }
   else {
     valid_mode = 0;
   }
   if (!valid_mode) {
-    SPVM_DIE("Invalid open mode", MFILE, __LINE__);
+    SPVM_DIE("Invalid open mode %s", mode, MFILE, __LINE__);
   }
   
   errno = 0;
-  FILE* fh = fopen(file_name, mode);
+  FILE* fh = fopen(file_name, real_mode);
   
   if (fh) {
     void* obj_io_file;
@@ -381,6 +361,45 @@ int32_t SPNATIVE__SPVM__IO__File__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (ret != 0) {
     SPVM_DIE("Can't flash to file", MFILE, __LINE__);
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__IO__File__unlink(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  // File
+  void* obj_file = stack[0].oval;
+  if (!obj_file) { SPVM_DIE("File name must be defined", MFILE, __LINE__); }
+  const char* file = (const char*)env->get_elems_byte(env, obj_file);
+  
+  int32_t ret = remove(file);
+  
+  if (ret != 0) {
+    SPVM_DIE("Can't remove file %s", file, MFILE, __LINE__);
+  }
+  
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__IO__File__rename(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  // Srouce src_file
+  void* obj_src_file = stack[0].oval;
+  if (!obj_src_file) { SPVM_DIE("Source file name must be defined", MFILE, __LINE__); }
+  const char* src_file = (const char*)env->get_elems_byte(env, obj_src_file);
+
+  // Dist dist_file
+  void* obj_dist_file = stack[1].oval;
+  if (!obj_dist_file) { SPVM_DIE("Dist file name must be defined", MFILE, __LINE__); }
+  const char* dist_file = (const char*)env->get_elems_byte(env, obj_dist_file);
+  
+  int32_t ret = rename(src_file, dist_file);
+  
+  if (ret != 0) {
+    SPVM_DIE("Can't rename %s to %s", src_file, dist_file, MFILE, __LINE__);
   }
   
   return SPVM_SUCCESS;

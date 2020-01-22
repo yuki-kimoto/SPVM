@@ -5,7 +5,7 @@ package TestCase::Lib::SPVM::IO::File {
 
   sub test_open : int ($file : string) {
     {
-      my $fh = SPVM::IO::File->open($file, "r");
+      my $fh = SPVM::IO::File->open($file, "<");
       unless ($fh) {
         return 0;
       }
@@ -27,7 +27,7 @@ package TestCase::Lib::SPVM::IO::File {
 
   sub test_close : int ($file : string) {
     {
-      my $fh = SPVM::IO::File->open($file, "r");
+      my $fh = SPVM::IO::File->open($file, "<");
       unless ($fh) {
         return 0;
       }
@@ -42,7 +42,7 @@ package TestCase::Lib::SPVM::IO::File {
 
   sub test_read : int ($file : string) {
     {
-      my $fh = SPVM::IO::File->open($file, "r");
+      my $fh = SPVM::IO::File->open($file, "<");
       unless ($fh) {
         die "Can't open file $file";
       }
@@ -83,7 +83,7 @@ package TestCase::Lib::SPVM::IO::File {
 
   sub test_write : int ($file : string) {
     {
-      my $fh = SPVM::IO::File->open($file, "w");
+      my $fh = SPVM::IO::File->open($file, ">");
       unless ($fh) {
         die "Can't open file $file";
       }
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::IO::File {
     }
     
     {
-      my $fh = SPVM::IO::File->open($file, "r");
+      my $fh = SPVM::IO::File->open($file, "<");
       my $content = $fh->slurp($file);
       unless ($content eq "abcd\nfg") {
         return 0;
@@ -115,7 +115,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -151,7 +151,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline_while : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -170,7 +170,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline_eof : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -213,7 +213,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline_long_line : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -249,7 +249,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline_chomp_lf : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -289,7 +289,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline_chomp_lf_while : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -309,7 +309,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline_chomp_lf_eof : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -357,7 +357,7 @@ package TestCase::Lib::SPVM::IO::File {
   }
 
   sub test_readline_chomp_lf_long_line : int ($file : string) {
-    my $fh = SPVM::IO::File->open($file, "r");
+    my $fh = SPVM::IO::File->open($file, "<");
     unless ($fh) {
       die "Can't open file $file";
     }
@@ -398,7 +398,7 @@ package TestCase::Lib::SPVM::IO::File {
 
   sub test_slurp : int ($file : string) {
     {
-      my $fh = SPVM::IO::File->open($file, "r");
+      my $fh = SPVM::IO::File->open($file, "<");
       
       my $string = $fh->slurp($file);
       
