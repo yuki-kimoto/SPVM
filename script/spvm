@@ -6,9 +6,9 @@ use warnings;
 use SPVM();
 use SPVM::Builder::Util;
 
-my $run_spvm;
 my $package_name;
 BEGIN {
+
   SPVM::Builder::Util::getopt(
     'h|help'          => \my $help,
     'v|version'       => \my $show_version,
@@ -25,13 +25,12 @@ BEGIN {
       exit;
     }
     unshift @INC, @include_dirs;
-    $run_spvm = 1;
   }
 }
 
 use SPVM $package_name;
 
-$package_name->main(@ARGV);
+$package_name->main([@ARGV]);
 
 =encoding utf8
 
