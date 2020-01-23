@@ -3,11 +3,9 @@ package SPVM::IO::File {
   use SPVM::Util (sliceb);
   
   has fh : private ro SPVM::IO::FileHandle;
-  has closed : ro byte;
   has auto_flush : rw byte;
   
   native sub open : SPVM::IO::File ($file_name : string, $mode : string);
-  native sub close : void ($self : self);
   
   native sub print : int ($self : self, $string : string);
   native sub flush : void ();

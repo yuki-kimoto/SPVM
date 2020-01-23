@@ -24,12 +24,6 @@ my $test_dir = "$FindBin::Bin/..";
     ok(TestCase::Lib::SPVM::IO::File->test_open($sp_file));
   }
   
-  # close
-  {
-    my $sp_file = SPVM::new_string("$test_dir/test_files_tmp/fread.txt");
-    ok(TestCase::Lib::SPVM::IO::File->test_close($sp_file));
-  }
-  
   # read
   {
     my $sp_file = SPVM::new_string("$test_dir/test_files_tmp/fread.txt");

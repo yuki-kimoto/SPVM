@@ -25,18 +25,6 @@ package TestCase::Lib::SPVM::IO::File {
     return 1;
   }
 
-  sub test_close : int ($file : string) {
-    {
-      my $fh = SPVM::IO::File->open($file, "<");
-      unless ($fh) {
-        return 0;
-      }
-      $fh->close;
-    }
-    
-    return 1;
-  }
-
   sub test_read : int ($file : string) {
     {
       my $fh = SPVM::IO::File->open($file, "<");

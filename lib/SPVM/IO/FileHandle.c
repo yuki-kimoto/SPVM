@@ -1,7 +1,6 @@
 #include "spvm_native.h"
 #include <stdio.h>
 
-
 int32_t SPNATIVE__SPVM__IO__FileHandle__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   // File handle
