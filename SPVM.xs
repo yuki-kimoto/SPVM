@@ -1312,7 +1312,7 @@ _new_mulnum_array_from_bin(...)
       break;
     }
     default:
-      assert(0);
+      croak("Unexpected error:set field width");
   }
   
   if (binary_length % (field_length * field_width) != 0) {
@@ -2113,7 +2113,7 @@ call_sub(...)
               
               if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
                 if (object->type_dimension == 0) {
-                  croak("%dth argument of %s::%s() is invalid object type at %s line %d\n", package_name, sub_name, arg_index + 1, MFILE, __LINE__);
+                  croak("%dth argument of %s::%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                 }
               }
               else if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && arg_type_dimension == 0) {
@@ -2624,7 +2624,7 @@ call_sub(...)
   
   // Return
   SV* sv_return_value = NULL;
-  int32_t excetpion_flag;
+  int32_t excetpion_flag = 0;
   switch (sub->return_runtime_type_category) {
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE:
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT:
@@ -3011,7 +3011,7 @@ to_elems(...)
               break;
             }
             default:
-              assert(0);
+              croak("Unexpected error: set field value");
           }
           SvREFCNT_inc(sv_field_value);
           (void)hv_store(hv_value, field_name, strlen(field_name), sv_field_value, 0);
