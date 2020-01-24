@@ -6,7 +6,7 @@ use warnings;
 use SPVM();
 use SPVM::Builder::Util;
 
-my $package_name;
+my $script_file;
 BEGIN {
 
   SPVM::Builder::Util::getopt(
@@ -20,7 +20,7 @@ BEGIN {
     exit;
   }
   else {
-    if ($help || !($package_name = shift)) {
+    if ($help || !($script_file = shift)) {
       print SPVM::Builder::Util::extract_usage ;
       exit;
     }
@@ -28,9 +28,9 @@ BEGIN {
   }
 }
 
-use SPVM $package_name;
+use SPVM 'Main';
 
-$package_name->main([@ARGV]);
+Main->main([@ARGV]);
 
 =encoding utf8
 
