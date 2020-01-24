@@ -95,7 +95,6 @@ WriteMakefile(
             },
         },
     },
-    EXE_FILES => ['script/spvm'],
 );
 
 # Create use all test modules script

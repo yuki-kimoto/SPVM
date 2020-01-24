@@ -130,6 +130,7 @@ DEVELOPERS NOTE
       #define _XOPEN_SOURCE
       #define _POSIX_SOURCE
       #define _POSIX_C_SOURCE
+    - Don't provide spvm command because resolving module path is too complex.
 
   CODING GUIDE LINE
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
