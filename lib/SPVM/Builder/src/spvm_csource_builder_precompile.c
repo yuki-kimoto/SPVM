@@ -4249,7 +4249,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      const char* bytes = (const char*)env->get_elems_byte(env, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t string_length = env->length(env, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (string_length > 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        fwrite(bytes, 1, string_length, stdout);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        size_t ret = fwrite(bytes, 1, string_length, stdout);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
@@ -4275,7 +4275,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, "      const char* bytes = (const char*)env->get_elems_byte(env, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t string_length = env->length(env, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      if (string_length > 0) {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "        fwrite(bytes, 1, string_length, stderr);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "        size_t ret = fwrite(bytes, 1, string_length, stderr);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        int32_t add_line_file;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        if (bytes[string_length - 1] != '\\n') {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          fprintf(stderr, \" at %s line %d\\n\", \"");

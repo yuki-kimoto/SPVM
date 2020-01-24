@@ -3388,7 +3388,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int32_t string_length = env->length(env, object);
           
           if (string_length > 0) {
-            fwrite(bytes, 1, string_length, stdout);
+            size_t ret = fwrite(bytes, 1, string_length, stdout);
           }
         }
         
@@ -3412,7 +3412,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           int32_t string_length = env->length(env, object);
 
           if (string_length > 0) {
-            fwrite(bytes, 1, string_length, stderr);
+            size_t ret = fwrite(bytes, 1, string_length, stderr);
             // Add line and file information if last character is not '\n'
             int32_t add_line_file;
             if (bytes[string_length - 1] != '\n') {
