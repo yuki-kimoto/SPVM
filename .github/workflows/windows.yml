@@ -23,7 +23,7 @@ jobs:
         run: perl -V
       - name: perl Makefile.PL
         run: perl Makefile.PL
-      - name: gmake
-        run: gmake
-      - name: gmake disttest
-        run: gmake disttest
+      - name: make
+        run: make
+      - name: make disttest
+        run: make disttest
