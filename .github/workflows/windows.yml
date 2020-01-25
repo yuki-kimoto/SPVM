@@ -21,7 +21,7 @@ jobs:
           echo "##[add-path]C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin"
       - name: perl -V
         run: perl -V
-      - name: Install Dependencies
-        run: curl -sL https://git.io/cpm | perl - install -g --show-build-log-on-failure
-      - name: Run Tests
-        run: prove -l t
+      - name: make
+        run: make
+      - name: make test
+        run: make test
