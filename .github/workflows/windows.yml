@@ -22,8 +22,8 @@ jobs:
       - name: perl -V
         run: perl -V
       - name: perl Makefile.PL
-        run: make
+        run: perl Makefile.PL
       - name: make
         run: make
-      - name: make test
-        run: make test
+      - name: make disttest
+        run: make disttest
