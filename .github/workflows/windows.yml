@@ -21,6 +21,8 @@ jobs:
           echo "##[add-path]C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin"
       - name: perl -V
         run: perl -V
+      - name: perl Makefile.PL
+        run: make
       - name: make
         run: make
       - name: make test
