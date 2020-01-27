@@ -128,8 +128,22 @@ int32_t SPNATIVE__SPVM__IO__File__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* bytes = (const char*)env->get_elems_byte(env, string);
   int32_t string_length = env->length(env, string);
   
-  for (int32_t i = 0; i < string_length; i++) {
-    fputc(bytes[i], fh);
+  // Print
+  if (string_length > 0) {
+    int32_t write_length = fwrite(bytes, 1, string_length, fh);
+    if (write_length != string_length) {
+      SPVM_DIE("Can't print string to file handle", MFILE, __LINE__);
+    }
+  }
+
+  // Flush buffer to file handle if auto flush is true
+  int8_t auto_flush;
+  SPVM_GET_FIELD_BYTE(env, auto_flush, obj_self, "SPVM::IO::File", "auto_flush", MFILE, __LINE__);
+  if (auto_flush) {
+    int32_t ret = fflush(fh);//SPVM::IO::File::print (Don't remove this comment for tests)
+    if (ret != 0) {
+      SPVM_DIE("Can't flush buffer to file handle", MFILE, __LINE__);
+    }
   }
   
   return SPVM_SUCCESS;
