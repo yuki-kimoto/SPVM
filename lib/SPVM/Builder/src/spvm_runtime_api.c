@@ -117,12 +117,12 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     NULL, // native_mortal_stack
     NULL, // native_mortal_stack_top
     NULL, // native_mortal_stack_capacity
-    SPVM_RUNTIME_API_basic_type_id,
-    SPVM_RUNTIME_API_field_id,
-    SPVM_RUNTIME_API_field_offset,
-    SPVM_RUNTIME_API_pkgvar_id,
-    SPVM_RUNTIME_API_sub_id,
-    SPVM_RUNTIME_API_method_sub_id,
+    SPVM_RUNTIME_API_get_basic_type_id,
+    SPVM_RUNTIME_API_get_field_id,
+    SPVM_RUNTIME_API_get_field_offset,
+    SPVM_RUNTIME_API_get_pkgvar_id,
+    SPVM_RUNTIME_API_get_sub_id,
+    SPVM_RUNTIME_API_get_method_sub_id,
     SPVM_RUNTIME_API_new_object_raw,
     SPVM_RUNTIME_API_new_object,
     SPVM_RUNTIME_API_new_byte_array_raw,
@@ -4399,7 +4399,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Package
-  int32_t sub_id = SPVM_RUNTIME_API_sub_id(env, package_name, "main", "int(string[])");
+  int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, package_name, "main", "int(string[])");
   
   if (sub_id < 0) {
     fprintf(stderr, "Can't find entry point package %s\n", package_name);
@@ -4491,7 +4491,7 @@ int32_t SPVM_RUNTIME_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_
     else {
       const char* object_package_name = &runtime->string_pool[object_package->name_id];
       const char* sub_callback_name = &runtime->string_pool[sub_callback->name_id];
-      int32_t sub_id = SPVM_RUNTIME_API_sub_id(env, object_package_name, sub_callback_name, sub_callback_signature);
+      int32_t sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_package_name, sub_callback_name, sub_callback_signature);
       if (sub_id >= 0) {
         has_callback = 1;
       }
@@ -5519,7 +5519,7 @@ int32_t SPVM_RUNTIME_API_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   return object->ref_count;
 }
 
-int32_t SPVM_RUNTIME_API_field_offset(SPVM_ENV* env, int32_t field_id) {
+int32_t SPVM_RUNTIME_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
   (void)env;
   
   // Runtime
@@ -5568,7 +5568,7 @@ SPVM_RUNTIME_FIELD* SPVM_RUNTIME_API_field(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* 
   return field;
 }
 
-int32_t SPVM_RUNTIME_API_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -5643,7 +5643,7 @@ SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_API_package_var(SPVM_ENV* env, SPVM_RUNTI
   return package_var;
 }
 
-int32_t SPVM_RUNTIME_API_pkgvar_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_pkgvar_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -5715,7 +5715,7 @@ SPVM_RUNTIME_SUB* SPVM_RUNTIME_API_sub(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* pack
   return sub;
 }
 
-int32_t SPVM_RUNTIME_API_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -5767,7 +5767,7 @@ int32_t SPVM_RUNTIME_API_sub_id(SPVM_ENV* env, const char* package_name, const c
   return sub_id;
 }
 
-int32_t SPVM_RUNTIME_API_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -5804,7 +5804,7 @@ int32_t SPVM_RUNTIME_API_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const
   // Normal sub
   else {
     const char* object_package_name = &runtime->string_pool[object_package->name_id];
-    sub_id = SPVM_RUNTIME_API_sub_id(env, object_package_name, sub_name, signature);
+    sub_id = SPVM_RUNTIME_API_get_sub_id(env, object_package_name, sub_name, signature);
   }
   
   return sub_id;
@@ -5847,7 +5847,7 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char*
   return basic_type;
 }
 
-int32_t SPVM_RUNTIME_API_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
+int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
   (void)env;
   
   if (basic_type_name == NULL) {

@@ -114,13 +114,13 @@ SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SP
 SPVM_OBJECT* SPVM_RUNTIME_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2);
 
 // ID
-int32_t SPVM_RUNTIME_API_basic_type_id(SPVM_ENV* env, const char* name);
-int32_t SPVM_RUNTIME_API_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
-int32_t SPVM_RUNTIME_API_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature);
-int32_t SPVM_RUNTIME_API_pkgvar_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
-int32_t SPVM_RUNTIME_API_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
-int32_t SPVM_RUNTIME_API_field_index(SPVM_ENV* env, int32_t field_id);
-int32_t SPVM_RUNTIME_API_field_offset(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_RUNTIME_API_get_basic_type_id(SPVM_ENV* env, const char* name);
+int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
+int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature);
+int32_t SPVM_RUNTIME_API_get_pkgvar_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
+int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
+int32_t SPVM_RUNTIME_API_get_field_index(SPVM_ENV* env, int32_t field_id);
+int32_t SPVM_RUNTIME_API_get_field_offset(SPVM_ENV* env, int32_t field_id);
 
 // New raw
 SPVM_OBJECT* SPVM_RUNTIME_API_new_object(SPVM_ENV* env, int32_t package_id);
