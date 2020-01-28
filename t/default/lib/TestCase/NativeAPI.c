@@ -5,159 +5,159 @@
 
 #include <spvm_native.h>
 
-static const char* MFILE = "TestCase/Extension.c";
+static const char* MFILE = "TestCase/NativeAPI.c";
 
-int32_t SPNATIVE__TestCase__Extension__get_package_var_byte_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_byte_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int8_t value;
-  SPVM_GET_PACKAGE_VAR_BYTE(env, "TestCase::Extension", "$BYTE_VALUE", &value, MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_BYTE(env, "TestCase::NativeAPI", "$BYTE_VALUE", &value, MFILE, __LINE__);
   
   stack[0].bval = value;
 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   int16_t value;
-  SPVM_GET_PACKAGE_VAR_SHORT(env,  "TestCase::Extension", "$SHORT_VALUE", &value, MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_SHORT(env,  "TestCase::NativeAPI", "$SHORT_VALUE", &value, MFILE, __LINE__);
   
   stack[0].sval = value;
 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_package_var_int_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   int32_t value;
-  SPVM_GET_PACKAGE_VAR_INT(env, "TestCase::Extension", "$INT_VALUE", &value, MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_INT(env, "TestCase::NativeAPI", "$INT_VALUE", &value, MFILE, __LINE__);
   
   stack[0].ival = value;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_package_var_long_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int64_t value;
-  SPVM_GET_PACKAGE_VAR_LONG(env, "TestCase::Extension", "$LONG_VALUE", &value, MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_LONG(env, "TestCase::NativeAPI", "$LONG_VALUE", &value, MFILE, __LINE__);
   
   stack[0].lval = value;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_package_var_float_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   float value;
-  SPVM_GET_PACKAGE_VAR_FLOAT(env, "TestCase::Extension", "$FLOAT_VALUE", &value, MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_FLOAT(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &value, MFILE, __LINE__);
   
   stack[0].fval = value;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_package_var_double_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   double value;
-  SPVM_GET_PACKAGE_VAR_DOUBLE(env, "TestCase::Extension", "$DOUBLE_VALUE", &value, MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_DOUBLE(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &value, MFILE, __LINE__);
   
   stack[0].dval = value;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__get_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   void* value;
-  SPVM_GET_PACKAGE_VAR_OBJECT(env, "TestCase::Extension", "$MINIMAL_VALUE", "TestCase::Minimal", &value, MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_OBJECT(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &value, MFILE, __LINE__);
   
   stack[0].oval = value;
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_package_var_byte_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_byte_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_SET_PACKAGE_VAR_BYTE(env, "TestCase::Extension", "$BYTE_VALUE", INT8_MIN, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_BYTE(env, "TestCase::NativeAPI", "$BYTE_VALUE", INT8_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_SET_PACKAGE_VAR_SHORT(env, "TestCase::Extension", "$SHORT_VALUE", INT16_MIN, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_SHORT(env, "TestCase::NativeAPI", "$SHORT_VALUE", INT16_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_package_var_int_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_int_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_SET_PACKAGE_VAR_INT(env, "TestCase::Extension", "$INT_VALUE", INT32_MIN, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_INT(env, "TestCase::NativeAPI", "$INT_VALUE", INT32_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_package_var_long_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_long_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_SET_PACKAGE_VAR_LONG(env, "TestCase::Extension", "$LONG_VALUE", INT64_MIN, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_LONG(env, "TestCase::NativeAPI", "$LONG_VALUE", INT64_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_package_var_float_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_float_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_SET_PACKAGE_VAR_FLOAT(env, "TestCase::Extension", "$FLOAT_VALUE", FLT_MIN, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_FLOAT(env, "TestCase::NativeAPI", "$FLOAT_VALUE", FLT_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_package_var_double_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_double_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_SET_PACKAGE_VAR_DOUBLE(env, "TestCase::Extension", "$DOUBLE_VALUE", DBL_MIN, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_DOUBLE(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", DBL_MIN, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__set_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   void* minimal;
   SPVM_NEW_OBJECT(env, minimal, "TestCase::Minimal", MFILE, __LINE__);
-  SPVM_SET_PACKAGE_VAR_OBJECT(env, "TestCase::Extension", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, MFILE, __LINE__);
+  SPVM_SET_PACKAGE_VAR_OBJECT(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
 }
 
 
-int32_t SPNATIVE__TestCase__Extension__has_callback_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__has_callback_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -175,7 +175,7 @@ int32_t SPNATIVE__TestCase__Extension__has_callback_test(SPVM_ENV* env, SPVM_VAL
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__is_type_test_minimals(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__is_type_test_minimals(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -193,7 +193,7 @@ int32_t SPNATIVE__TestCase__Extension__is_type_test_minimals(SPVM_ENV* env, SPVM
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -205,7 +205,7 @@ int32_t SPNATIVE__TestCase__Extension__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__ref_short_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__ref_short_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -217,7 +217,7 @@ int32_t SPNATIVE__TestCase__Extension__ref_short_sum(SPVM_ENV* env, SPVM_VALUE* 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -229,7 +229,7 @@ int32_t SPNATIVE__TestCase__Extension__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* st
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__ref_long_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__ref_long_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -241,7 +241,7 @@ int32_t SPNATIVE__TestCase__Extension__ref_long_sum(SPVM_ENV* env, SPVM_VALUE* s
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__ref_float_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__ref_float_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -253,7 +253,7 @@ int32_t SPNATIVE__TestCase__Extension__ref_float_sum(SPVM_ENV* env, SPVM_VALUE* 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__ref_double_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__ref_double_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -265,7 +265,7 @@ int32_t SPNATIVE__TestCase__Extension__ref_double_sum(SPVM_ENV* env, SPVM_VALUE*
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_set_field_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_set_field_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -276,7 +276,7 @@ int32_t SPNATIVE__TestCase__Extension__native_set_field_byte(SPVM_ENV* env, SPVM
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_set_field_short(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_set_field_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -287,7 +287,7 @@ int32_t SPNATIVE__TestCase__Extension__native_set_field_short(SPVM_ENV* env, SPV
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_set_field_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_set_field_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -298,7 +298,7 @@ int32_t SPNATIVE__TestCase__Extension__native_set_field_int(SPVM_ENV* env, SPVM_
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_set_field_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_set_field_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -309,7 +309,7 @@ int32_t SPNATIVE__TestCase__Extension__native_set_field_long(SPVM_ENV* env, SPVM
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_set_field_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_set_field_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -320,7 +320,7 @@ int32_t SPNATIVE__TestCase__Extension__native_set_field_float(SPVM_ENV* env, SPV
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_set_field_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -331,7 +331,7 @@ int32_t SPNATIVE__TestCase__Extension__native_set_field_double(SPVM_ENV* env, SP
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_set_field_object(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -359,7 +359,7 @@ int32_t SPNATIVE__TestCase__Extension__native_set_field_object(SPVM_ENV* env, SP
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_get_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -378,7 +378,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_byte(SPVM_ENV* env, 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_get_get_field_short(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -397,7 +397,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_short(SPVM_ENV* env,
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_get_get_field_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -416,7 +416,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_int(SPVM_ENV* env, S
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_get_get_field_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -435,7 +435,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_long(SPVM_ENV* env, 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_get_get_field_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -454,7 +454,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_float(SPVM_ENV* env,
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_get_get_field_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -473,7 +473,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_double(SPVM_ENV* env
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_get_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -503,7 +503,7 @@ int32_t SPNATIVE__TestCase__Extension__native_get_get_field_object(SPVM_ENV* env
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_use_strlen(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -518,7 +518,7 @@ int32_t SPNATIVE__TestCase__Extension__native_use_strlen(SPVM_ENV* env, SPVM_VAL
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_env_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_env_get_field_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -536,7 +536,7 @@ int32_t SPNATIVE__TestCase__Extension__native_env_get_field_byte(SPVM_ENV* env, 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_env_get_field_short(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_env_get_field_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -554,7 +554,7 @@ int32_t SPNATIVE__TestCase__Extension__native_env_get_field_short(SPVM_ENV* env,
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_env_get_field_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_env_get_field_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -572,7 +572,7 @@ int32_t SPNATIVE__TestCase__Extension__native_env_get_field_int(SPVM_ENV* env, S
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_env_get_field_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_env_get_field_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -590,7 +590,7 @@ int32_t SPNATIVE__TestCase__Extension__native_env_get_field_long(SPVM_ENV* env, 
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_env_get_field_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_env_get_field_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -608,7 +608,7 @@ int32_t SPNATIVE__TestCase__Extension__native_env_get_field_float(SPVM_ENV* env,
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_env_get_field_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_env_get_field_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -626,7 +626,7 @@ int32_t SPNATIVE__TestCase__Extension__native_env_get_field_double(SPVM_ENV* env
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_env_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_env_get_field_object(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -644,7 +644,7 @@ int32_t SPNATIVE__TestCase__Extension__native_env_get_field_object(SPVM_ENV* env
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -656,7 +656,7 @@ int32_t SPNATIVE__TestCase__Extension__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-int32_t SPNATIVE__TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__add_iarray(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -680,63 +680,63 @@ int32_t SPNATIVE__TestCase__Extension__add_iarray(SPVM_ENV* env, SPVM_VALUE* sta
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__call_void_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__call_void_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception %s", "ppp", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE("Exception %s", "ppp", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
-int32_t SPNATIVE__TestCase__Extension__call_byte_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__call_byte_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
-int32_t SPNATIVE__TestCase__Extension__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
-int32_t SPNATIVE__TestCase__Extension__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
-}
-
-int32_t SPNATIVE__TestCase__Extension__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
-float SPNATIVE__TestCase__Extension__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
-int32_t SPNATIVE__TestCase__Extension__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+float SPNATIVE__TestCase__NativeAPI__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
-int32_t SPNATIVE__TestCase__Extension__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/Extension.native/Extension.c", __LINE__);
+  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
-int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -826,7 +826,7 @@ int32_t SPNATIVE__TestCase__Extension__mortal_api(SPVM_ENV* env, SPVM_VALUE* sta
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__enter_scope_leave_scope(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -861,11 +861,11 @@ int32_t SPNATIVE__TestCase__Extension__enter_scope_leave_scope(SPVM_ENV* env, SP
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__native_call_sub(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_call_sub(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  int32_t sub_id = env->get_sub_id(env, "TestCase::Extension", "my_value", "int(int)");
+  int32_t sub_id = env->get_sub_id(env, "TestCase::NativeAPI", "my_value", "int(int)");
   if (sub_id < 0) {
     return SPVM_EXCEPTION;
   }
@@ -888,7 +888,7 @@ int32_t SPNATIVE__TestCase__Extension__native_call_sub(SPVM_ENV* env, SPVM_VALUE
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__TestCase__Extension__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   

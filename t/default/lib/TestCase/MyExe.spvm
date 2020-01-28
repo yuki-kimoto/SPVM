@@ -147,82 +147,82 @@ package TestCase::MyExe {
 
     # package variable access
     {
-      ok(TestCase::Extension->set_package_var_byte);
-      ok(TestCase::Extension->set_package_var_short);
-      ok(TestCase::Extension->set_package_var_int);
-      ok(TestCase::Extension->set_package_var_long);
-      ok(TestCase::Extension->set_package_var_float);
-      ok(TestCase::Extension->set_package_var_double);
-      ok(TestCase::Extension->set_package_var_object);
-      ok(TestCase::Extension->get_package_var_byte);
-      ok(TestCase::Extension->get_package_var_short);
-      ok(TestCase::Extension->get_package_var_int);
-      ok(TestCase::Extension->get_package_var_long);
-      ok(TestCase::Extension->get_package_var_float);
-      ok(TestCase::Extension->get_package_var_double);
-      ok(TestCase::Extension->get_package_var_object);
+      ok(TestCase::NativeAPI->set_package_var_byte);
+      ok(TestCase::NativeAPI->set_package_var_short);
+      ok(TestCase::NativeAPI->set_package_var_int);
+      ok(TestCase::NativeAPI->set_package_var_long);
+      ok(TestCase::NativeAPI->set_package_var_float);
+      ok(TestCase::NativeAPI->set_package_var_double);
+      ok(TestCase::NativeAPI->set_package_var_object);
+      ok(TestCase::NativeAPI->get_package_var_byte);
+      ok(TestCase::NativeAPI->get_package_var_short);
+      ok(TestCase::NativeAPI->get_package_var_int);
+      ok(TestCase::NativeAPI->get_package_var_long);
+      ok(TestCase::NativeAPI->get_package_var_float);
+      ok(TestCase::NativeAPI->get_package_var_double);
+      ok(TestCase::NativeAPI->get_package_var_object);
     }
 
     # has_callback
     {
-      ok(TestCase::Extension->has_callback);
+      ok(TestCase::NativeAPI->has_callback);
     }
 
     # is_type
     {
-      ok(TestCase::Extension->is_type);
+      ok(TestCase::NativeAPI->is_type);
     }
 
     # Native Exception
     {
-      ok(TestCase::Extension->native_use_strlen_test);
-      ok(TestCase::Extension->call_void_sub_exception);
+      ok(TestCase::NativeAPI->native_use_strlen_test);
+      ok(TestCase::NativeAPI->call_void_sub_exception);
     }
 
     # Check mortal API
     {
-      ok(TestCase::Extension->mortal_api);
-      ok(TestCase::Extension->enter_scope_leave_scope);
+      ok(TestCase::NativeAPI->mortal_api);
+      ok(TestCase::NativeAPI->enter_scope_leave_scope);
     }
 
     # env->call_sub
     {
-      ok(TestCase::Extension->native_call_sub);
+      ok(TestCase::NativeAPI->native_call_sub);
     }
 
     # Field
     {
-      ok(TestCase::Extension->get_field_byte());
-      ok(TestCase::Extension->get_field_short());
-      ok(TestCase::Extension->get_field_int());
-      ok(TestCase::Extension->get_field_long());
-      ok(TestCase::Extension->get_field_float());
-      ok(TestCase::Extension->get_field_double());
-      ok(TestCase::Extension->get_field_object());
+      ok(TestCase::NativeAPI->get_field_byte());
+      ok(TestCase::NativeAPI->get_field_short());
+      ok(TestCase::NativeAPI->get_field_int());
+      ok(TestCase::NativeAPI->get_field_long());
+      ok(TestCase::NativeAPI->get_field_float());
+      ok(TestCase::NativeAPI->get_field_double());
+      ok(TestCase::NativeAPI->get_field_object());
 
-      ok(TestCase::Extension->set_field_byte());
-      ok(TestCase::Extension->set_field_short());
-      ok(TestCase::Extension->set_field_int());
-      ok(TestCase::Extension->set_field_long());
-      ok(TestCase::Extension->set_field_float());
-      ok(TestCase::Extension->set_field_double());
-      ok(TestCase::Extension->set_field_object());
+      ok(TestCase::NativeAPI->set_field_byte());
+      ok(TestCase::NativeAPI->set_field_short());
+      ok(TestCase::NativeAPI->set_field_int());
+      ok(TestCase::NativeAPI->set_field_long());
+      ok(TestCase::NativeAPI->set_field_float());
+      ok(TestCase::NativeAPI->set_field_double());
+      ok(TestCase::NativeAPI->set_field_object());
 
     }
 
     # Ref
     {
-      ok(TestCase::Extension->ref_byte());
-      ok(TestCase::Extension->ref_short());
-      ok(TestCase::Extension->ref_int());
-      ok(TestCase::Extension->ref_long());
-      ok(TestCase::Extension->ref_float());
-      ok(TestCase::Extension->ref_double());
+      ok(TestCase::NativeAPI->ref_byte());
+      ok(TestCase::NativeAPI->ref_short());
+      ok(TestCase::NativeAPI->ref_int());
+      ok(TestCase::NativeAPI->ref_long());
+      ok(TestCase::NativeAPI->ref_float());
+      ok(TestCase::NativeAPI->ref_double());
     }
 
     # Native Exception
     {
-      ok(TestCase::Extension2->spvm_extension2());
+      ok(TestCase::NativeAPI2->spvm_extension2());
     }
 
     # Pointer

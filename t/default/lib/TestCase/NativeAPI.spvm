@@ -1,4 +1,4 @@
-package TestCase::Extension {
+package TestCase::NativeAPI {
   use TestCase;
   use TestCase::Simple;
   use TestCase::Minimal;
@@ -15,12 +15,12 @@ package TestCase::Extension {
   our $DOUBLE_VALUE : double;
   our $MINIMAL_VALUE : TestCase::Minimal;
   
-  sub new : TestCase::Extension () {
-    return new TestCase::Extension;
+  sub new : TestCase::NativeAPI () {
+    return new TestCase::NativeAPI;
   }
 
   sub get_package_var_byte : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     $BYTE_VALUE = INT8_MIN();
     
@@ -32,10 +32,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub get_package_var_byte_test : byte ($extension : TestCase::Extension);
+  native sub get_package_var_byte_test : byte ($extension : TestCase::NativeAPI);
 
   sub get_package_var_short : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     $SHORT_VALUE = INT16_MIN();
     
@@ -47,10 +47,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub get_package_var_short_test : short ($extension : TestCase::Extension);
+  native sub get_package_var_short_test : short ($extension : TestCase::NativeAPI);
 
   sub get_package_var_int : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
 
     $INT_VALUE = INT32_MIN();
     
@@ -62,10 +62,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub get_package_var_int_test : int ($extension : TestCase::Extension);
+  native sub get_package_var_int_test : int ($extension : TestCase::NativeAPI);
 
   sub get_package_var_long : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     $LONG_VALUE = INT64_MIN();
     
@@ -77,10 +77,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub get_package_var_long_test : long ($extension : TestCase::Extension);
+  native sub get_package_var_long_test : long ($extension : TestCase::NativeAPI);
 
   sub get_package_var_float : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     $FLOAT_VALUE = FLT_MIN();
     
@@ -92,10 +92,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub get_package_var_float_test : float ($extension : TestCase::Extension);
+  native sub get_package_var_float_test : float ($extension : TestCase::NativeAPI);
 
   sub get_package_var_double : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     $DOUBLE_VALUE = DBL_MIN();
     
@@ -107,10 +107,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub get_package_var_double_test : double ($extension : TestCase::Extension);
+  native sub get_package_var_double_test : double ($extension : TestCase::NativeAPI);
 
   sub get_package_var_object : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     $MINIMAL_VALUE = TestCase::Minimal->new;
     
@@ -123,10 +123,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub get_package_var_object_test : TestCase::Minimal ($extension : TestCase::Extension);
+  native sub get_package_var_object_test : TestCase::Minimal ($extension : TestCase::NativeAPI);
   
   sub set_package_var_byte : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     set_package_var_byte_test($extension);
     
@@ -136,10 +136,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub set_package_var_byte_test : void ($extension : TestCase::Extension);
+  native sub set_package_var_byte_test : void ($extension : TestCase::NativeAPI);
 
   sub set_package_var_short : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     set_package_var_short_test($extension);
     
@@ -149,10 +149,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub set_package_var_short_test : void ($extension : TestCase::Extension);
+  native sub set_package_var_short_test : void ($extension : TestCase::NativeAPI);
 
   sub set_package_var_int : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     set_package_var_int_test($extension);
     
@@ -162,10 +162,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub set_package_var_int_test : void ($extension : TestCase::Extension);
+  native sub set_package_var_int_test : void ($extension : TestCase::NativeAPI);
 
   sub set_package_var_long : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     set_package_var_long_test($extension);
     
@@ -175,10 +175,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub set_package_var_long_test : void ($extension : TestCase::Extension);
+  native sub set_package_var_long_test : void ($extension : TestCase::NativeAPI);
 
   sub set_package_var_float : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     set_package_var_float_test($extension);
     
@@ -188,10 +188,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub set_package_var_float_test : void ($extension : TestCase::Extension);
+  native sub set_package_var_float_test : void ($extension : TestCase::NativeAPI);
 
   sub set_package_var_double : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     set_package_var_double_test($extension);
     
@@ -201,10 +201,10 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub set_package_var_double_test : void ($extension : TestCase::Extension);
+  native sub set_package_var_double_test : void ($extension : TestCase::NativeAPI);
 
   sub set_package_var_object : int () {
-    my $extension = TestCase::Extension->new;
+    my $extension = TestCase::NativeAPI->new;
     
     set_package_var_object_test($extension);
     
@@ -215,7 +215,7 @@ package TestCase::Extension {
     
     return 0;
   }
-  native sub set_package_var_object_test : void ($extension : TestCase::Extension);
+  native sub set_package_var_object_test : void ($extension : TestCase::NativeAPI);
 
   native sub has_callback_test : int ($object : object);
   sub has_callback : int () {

@@ -199,9 +199,9 @@ L<http://jp.spvm.info/exchange-api.html>
 
 L<SPVM::Document::NativeAPI> - Native API is C level functions to manipulate SPVM data.
 
-=head2 Extension
+=head2 NativeAPI
 
-L<SPVM::Document::Extension> - Extension is the way to C/C++ Binding to SPVM
+L<SPVM::Document::NativeAPI> - NativeAPI is the way to C/C++ Binding to SPVM
 
 =head2 Language Specification
 
@@ -357,7 +357,7 @@ Above is same as the following.
   my $obj : Foo = new Foo;
   my $values : int[3] = new int[3];
 
-=head2 C Extension using SPVM
+=head2 C NativeAPI using SPVM
 
 SPVM Module:
 
@@ -400,7 +400,7 @@ C Source File;
     return SPVM_SUCCESS;
   }
 
-Use Extension Module from Perl:
+Use NativeAPI Module from Perl:
 
   use FindBin;
   use lib "$FindBin::Bin/lib";
@@ -416,7 +416,7 @@ Use Extension Module from Perl:
   
   print $total . "\n";
 
-See also L<SPVM::Document::Extension>, L<SPVM::Document::NativeAPI>.
+See also L<SPVM::Document::NativeAPI>, L<SPVM::Document::NativeAPI>.
 
 =head1 ENVIRONMENT VARIABLE
 

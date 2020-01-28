@@ -78,7 +78,7 @@ sub new_c99 {
   # Optimize
   $bconf->set_optimize('-O3');
   
-  # Extension
+  # NativeAPI
   $bconf->set_ext('c');
   
   # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
@@ -114,7 +114,7 @@ sub new_cpp {
   # LD
   $bconf->set_ld('g++');
   
-  # Extension
+  # NativeAPI
   $bconf->set_ext('cpp');
   
   # Delete std
