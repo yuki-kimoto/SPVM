@@ -25,7 +25,7 @@ int32_t SPNATIVE__SPVM__IO__Stdout__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   // Flush buffer to stdout if auto flush is true
   int8_t auto_flush;
-  SPVM_GET_PACKAGE_VAR_BYTE(env, auto_flush, "SPVM::IO::Stdout", "$AUTO_FLUSH", MFILE, __LINE__);
+  SPVM_GET_PACKAGE_VAR_BYTE(env, "SPVM::IO::Stdout", "$AUTO_FLUSH", &auto_flush, MFILE, __LINE__);
   if (auto_flush) {
     int32_t ret = fflush(stdout);//SPVM::IO::Stdout::print (Don't remove this comment for tests)
     if (ret != 0) {

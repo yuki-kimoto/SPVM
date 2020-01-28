@@ -1,6 +1,6 @@
 (Current SPVM is on beta release)
 
-0.0446 2020-01-22
+0.0446 2020-01-28
   - remove fileno, set_binmode methods because file nomber is not portable.
   - add warn and print empty string and undef spec
   - rename SPVM::EqualityChecker::Address to SPVM::EqualityChecker::SameObject]
@@ -9,6 +9,22 @@
   - add SPVM::IO::File rename function
   - remove SPVM::IO::File putc
   - remove SPVM::IO::File write
+  - change native api macro functions SPVM_GET_xxx to
+    #define SPVM_GET_FIELD_BYTE(env, obj, package_name, sub_name, value_address, file, line)
+    #define SPVM_GET_FIELD_SHORT(env, obj, package_name, sub_name, value_address, file, line)
+    #define SPVM_GET_FIELD_INT(env, obj, package_name, sub_name, value_address, file, line)
+    #define SPVM_GET_FIELD_LONG(env, obj, package_name, sub_name, value_address, file, line)
+    #define SPVM_GET_FIELD_FLOAT(env, obj, package_name, sub_name, value_address, file, line)
+    #define SPVM_GET_FIELD_DOUBLE(env, obj, package_name, sub_name, value_address, file, line)
+    #define SPVM_GET_FIELD_OBJECT(env, obj, package_name, sub_name, signature, value_address, file, line)
+    #define SPVM_GET_PACKAGE_VAR_BYTE(env, package_name, package_var_name, value_address, file, line)
+    #define SPVM_GET_PACKAGE_VAR_SHORT(env, package_name, package_var_name, value_address, file, line)
+    #define SPVM_GET_PACKAGE_VAR_INT(env, package_name, package_var_name, value_address, file, line)
+    #define SPVM_GET_PACKAGE_VAR_LONG(env, package_name, package_var_name, value_address, file, line)
+    #define SPVM_GET_PACKAGE_VAR_FLOAT(env, package_name, package_var_name, value_address, file, line)
+    #define SPVM_GET_PACKAGE_VAR_DOUBLE(env, package_name, package_var_name, value_address, file, line)
+    #define SPVM_GET_PACKAGE_VAR_OBJECT(env, package_name, package_var_name, signature, value_address, file, line)
+  
 0.0445 2020-01-07
   - Web and Network module is separated to separate SPVM::Webkit to https://github.com/yuki-kimoto/SPVM-Webkit
   - remove SPVM::Builder::Exe and spvmcc because this logic is planed to separate to outer module after version 1.0.
