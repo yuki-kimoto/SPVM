@@ -77,6 +77,8 @@
 .spvm_build/work/src/TestCase/LogicalOperator.precompile.c
 .spvm_build/work/src/TestCase/Minimal.precompile.c
 .spvm_build/work/src/TestCase/Multiply.precompile.c
+.spvm_build/work/src/TestCase/NativeAPI.precompile.c
+.spvm_build/work/src/TestCase/NativeAPI2.precompile.c
 .spvm_build/work/src/TestCase/NumericOperator.precompile.c
 .spvm_build/work/src/TestCase/Object.precompile.c
 .spvm_build/work/src/TestCase/PACKAGE.precompile.c
@@ -103,7 +105,6 @@
 .spvm_build/work/src/TestCase/Warn.precompile.c
 .spvm_build/work/src/TestCase/Weaken.precompile.c
 .spvm_build/work/src/TestCase/While.precompile.c
-appveyor.yml
 Changes
 ctest/ctest_Makefile.PL
 ctest/Makefile
@@ -113,6 +114,7 @@ ctest/t/spvm_t_hash.c
 ctest/t/spvm_t_list
 ctest/t/spvm_t_list.c
 DEVELOPMENT.txt
+doc_save.txt
 examples/native/eigen/eigen.pl
 examples/native/eigen/lib/Eigen.config
 examples/native/eigen/lib/Eigen.cpp
@@ -246,8 +248,6 @@ lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
-lib/SPVM/Document/Extension.pod
-lib/SPVM/Document/NativeAPI.pod
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
 lib/SPVM/DoubleList.pm
@@ -261,7 +261,6 @@ lib/SPVM/Float.pm
 lib/SPVM/Float.spvm
 lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
-lib/SPVM/Guides/LanguageSpecification.pod
 lib/SPVM/Hash.c
 lib/SPVM/Hash.config
 lib/SPVM/Hash.spvm
@@ -539,12 +538,6 @@ t/default/lib/TestCase/Enum.spvm
 t/default/lib/TestCase/Enum/Data1.spvm
 t/default/lib/TestCase/Exception.spvm
 t/default/lib/TestCase/ExchangeAPI.spvm
-t/default/lib/TestCase/Extension.c
-t/default/lib/TestCase/Extension.config
-t/default/lib/TestCase/Extension.spvm
-t/default/lib/TestCase/Extension2.c
-t/default/lib/TestCase/Extension2.config
-t/default/lib/TestCase/Extension2.spvm
 t/default/lib/TestCase/FatCamma.spvm
 t/default/lib/TestCase/FILE.spvm
 t/default/lib/TestCase/For.spvm
@@ -598,6 +591,12 @@ t/default/lib/TestCase/Matrix4_16s.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/Multiply.spvm
 t/default/lib/TestCase/MyExe.spvm
+t/default/lib/TestCase/NativeAPI.c
+t/default/lib/TestCase/NativeAPI.config
+t/default/lib/TestCase/NativeAPI.spvm
+t/default/lib/TestCase/NativeAPI2.c
+t/default/lib/TestCase/NativeAPI2.config
+t/default/lib/TestCase/NativeAPI2.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/PACKAGE.spvm
