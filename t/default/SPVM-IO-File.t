@@ -33,10 +33,29 @@ my $test_dir = "$FindBin::Bin/..";
 {
   # print
   {
-    my $file = "$test_dir/test_files_tmp/io_file_test_print.txt";
-    ok(TestCase::Lib::SPVM::IO::File->test_print($file));
-    my $output = slurp_binmode($file);
-    is($output, 'Hello');
+    # test_print
+    {
+      my $file = "$test_dir/test_files_tmp/io_file_test_print.txt";
+      ok(TestCase::Lib::SPVM::IO::File->test_print($file));
+      my $output = slurp_binmode($file);
+      is($output, 'Hello');
+    }
+
+    # test_print_newline
+    {
+      my $file = "$test_dir/test_files_tmp/io_file_test_print.txt";
+      ok(TestCase::Lib::SPVM::IO::File->test_print_newline($file));
+      my $output = slurp_binmode($file);
+      is($output, "\x0A");
+    }
+
+    # test_print_long_lines
+    {
+      my $file = "$test_dir/test_files_tmp/io_file_test_print.txt";
+      ok(TestCase::Lib::SPVM::IO::File->test_print_long_lines($file));
+      my $output = slurp_binmode($file);
+      is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
+    }
   }
   
   # open
