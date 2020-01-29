@@ -7,7 +7,7 @@ package SPVM::IO::File {
   
   native sub open : SPVM::IO::File ($file_name : string, $mode : string);
   
-  native sub print : int ($self : self, $string : string);
+  native sub print : void ($self : self, $string : string);
   native sub flush : void ();
   
   native sub read : int ($self : self, $buf : byte[]);

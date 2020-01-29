@@ -10,6 +10,19 @@ use SPVM 'TestCase::Lib::SPVM::IO::File';
 
 use TestFile;
 
+sub slurp_binmode {
+  my ($output_file) = @_;
+  
+  open my $fh, '<', $output_file
+    or die "Can't open file $output_file:$!";
+  
+  binmode $fh;
+  
+  my $output = do { local $/; <$fh> };
+  
+  return $output;
+}
+
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
@@ -18,6 +31,14 @@ TestFile::copy_test_files_tmp_replace_newline();
 
 my $test_dir = "$FindBin::Bin/..";
 {
+  # print
+  {
+    my $file = "$test_dir/test_files_tmp/io_file_test_print.txt";
+    ok(TestCase::Lib::SPVM::IO::File->test_print($file));
+    my $output = slurp_binmode($file);
+    is($output, 'Hello');
+  }
+  
   # open
   {
     my $sp_file = SPVM::new_string("$test_dir/test_files_tmp/fread.txt");
