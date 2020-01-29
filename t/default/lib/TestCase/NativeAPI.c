@@ -197,8 +197,8 @@ int32_t SPNATIVE__TestCase__NativeAPI__ref_byte_sum(SPVM_ENV* env, SPVM_VALUE* s
   (void)env;
   (void)stack;
   
-  SPVM_VALUE_byte x_in1 = stack[0].bval;
-  SPVM_VALUE_byte x_in2 = stack[1].bval;
+  int8_t x_in1 = stack[0].bval;
+  int8_t x_in2 = stack[1].bval;
   
   *(stack[2].bref) = x_in1 + x_in2;
   
@@ -209,8 +209,8 @@ int32_t SPNATIVE__TestCase__NativeAPI__ref_short_sum(SPVM_ENV* env, SPVM_VALUE* 
   (void)env;
   (void)stack;
   
-  SPVM_VALUE_short x_in1 = stack[0].sval;
-  SPVM_VALUE_short x_in2 = stack[1].sval;
+  int16_t x_in1 = stack[0].sval;
+  int16_t x_in2 = stack[1].sval;
   
   *(stack[2].sref) = x_in1 + x_in2;
   
@@ -221,8 +221,8 @@ int32_t SPNATIVE__TestCase__NativeAPI__ref_int_sum(SPVM_ENV* env, SPVM_VALUE* st
   (void)env;
   (void)stack;
   
-  SPVM_VALUE_int x_in1 = stack[0].ival;
-  SPVM_VALUE_int x_in2 = stack[1].ival;
+  int32_t x_in1 = stack[0].ival;
+  int32_t x_in2 = stack[1].ival;
   
   *(stack[2].iref) = x_in1 + x_in2;
   
@@ -233,8 +233,8 @@ int32_t SPNATIVE__TestCase__NativeAPI__ref_long_sum(SPVM_ENV* env, SPVM_VALUE* s
   (void)env;
   (void)stack;
   
-  SPVM_VALUE_long x_in1 = stack[0].lval;
-  SPVM_VALUE_long x_in2 = stack[1].lval;
+  int64_t x_in1 = stack[0].lval;
+  int64_t x_in2 = stack[1].lval;
   
   *(stack[2].lref) = x_in1 + x_in2;
   
@@ -245,8 +245,8 @@ int32_t SPNATIVE__TestCase__NativeAPI__ref_float_sum(SPVM_ENV* env, SPVM_VALUE* 
   (void)env;
   (void)stack;
   
-  SPVM_VALUE_float x_in1 = stack[0].fval;
-  SPVM_VALUE_float x_in2 = stack[1].fval;
+  float x_in1 = stack[0].fval;
+  float x_in2 = stack[1].fval;
   
   *(stack[2].fref) = x_in1 + x_in2;
   
@@ -365,7 +365,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_byte(SPVM_ENV* env, 
 
   void* object = stack[0].oval;
   
-  SPVM_VALUE_byte byte_value;
+  int8_t byte_value;
   SPVM_GET_FIELD_BYTE(env, object, "TestCase::Simple", "byte_value", &byte_value, MFILE, __LINE__);
   
   if (byte_value == INT8_MIN) {
@@ -384,7 +384,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_short(SPVM_ENV* env,
 
   void* object = stack[0].oval;
   
-  SPVM_VALUE_short short_value;
+  int16_t short_value;
   SPVM_GET_FIELD_SHORT(env, object, "TestCase::Simple", "short_value", &short_value, MFILE, __LINE__);
   
   if (short_value == INT16_MIN) {
@@ -403,7 +403,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_int(SPVM_ENV* env, S
 
   void* object = stack[0].oval;
   
-  SPVM_VALUE_int int_value;
+  int32_t int_value;
   SPVM_GET_FIELD_INT(env, object, "TestCase::Simple", "int_value", &int_value, MFILE, __LINE__);
   
   if (int_value == INT32_MIN) {
@@ -422,7 +422,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_long(SPVM_ENV* env, 
 
   void* object = stack[0].oval;
   
-  SPVM_VALUE_long long_value;
+  int64_t long_value;
   SPVM_GET_FIELD_LONG(env, object, "TestCase::Simple", "long_value", &long_value, MFILE, __LINE__);
   
   if (long_value == INT64_MIN) {
@@ -441,7 +441,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_float(SPVM_ENV* env,
 
   void* object = stack[0].oval;
   
-  SPVM_VALUE_float float_value;
+  float float_value;
   SPVM_GET_FIELD_FLOAT(env, object, "TestCase::Simple", "float_value", &float_value, MFILE, __LINE__);
   
   if (float_value == FLT_MIN) {
@@ -460,7 +460,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_get_get_field_double(SPVM_ENV* env
 
   void* object = stack[0].oval;
   
-  SPVM_VALUE_double double_value;
+  double double_value;
   SPVM_GET_FIELD_DOUBLE(env, object, "TestCase::Simple", "double_value", &double_value, MFILE, __LINE__);
   
   if (double_value == DBL_MIN) {

@@ -1,6 +1,6 @@
 (Current SPVM is on beta release)
 
-0.0446 2020-01-28
+0.0446 2020-01-29
   - remove fileno, set_binmode methods because file nomber is not portable.
   - add warn and print empty string and undef spec
   - rename SPVM::EqualityChecker::Address to SPVM::EqualityChecker::SameObject]
@@ -24,7 +24,15 @@
     #define SPVM_GET_PACKAGE_VAR_FLOAT(env, package_name, package_var_name, value_address, file, line)
     #define SPVM_GET_PACKAGE_VAR_DOUBLE(env, package_name, package_var_name, value_address, file, line)
     #define SPVM_GET_PACKAGE_VAR_OBJECT(env, package_name, package_var_name, signature, value_address, file, line)
-  
+  - remove typedef in spvm_native.h
+    typedef int8_t SPVM_VALUE_byte;
+    typedef int16_t SPVM_VALUE_short;
+    typedef int32_t SPVM_VALUE_int;
+    typedef int64_t SPVM_VALUE_long;
+    typedef float SPVM_VALUE_float;
+    typedef double SPVM_VALUE_double;
+    typedef void* SPVM_VALUE_object;
+
 0.0445 2020-01-07
   - Web and Network module is separated to separate SPVM::Webkit to https://github.com/yuki-kimoto/SPVM-Webkit
   - remove SPVM::Builder::Exe and spvmcc because this logic is planed to separate to outer module after version 1.0.

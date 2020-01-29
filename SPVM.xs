@@ -1201,27 +1201,27 @@ _new_mulnum_array(...)
 
         switch (first_field->basic_type_id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            ((SPVM_VALUE_byte*)elems)[(fields_length * index) + field_index] = (SPVM_VALUE_byte)SvIV(sv_field_value);
+            ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            ((SPVM_VALUE_short*)elems)[(fields_length * index) + field_index] = (SPVM_VALUE_short)SvIV(sv_field_value);
+            ((int16_t*)elems)[(fields_length * index) + field_index] = (int16_t)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_INT: {
-            ((SPVM_VALUE_int*)elems)[(fields_length * index) + field_index] = (SPVM_VALUE_int)SvIV(sv_field_value);
+            ((int32_t*)elems)[(fields_length * index) + field_index] = (int32_t)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_LONG: {
-            ((SPVM_VALUE_long*)elems)[(fields_length * index) + field_index] = (SPVM_VALUE_long)SvIV(sv_field_value);
+            ((int64_t*)elems)[(fields_length * index) + field_index] = (int64_t)SvIV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            ((SPVM_VALUE_float*)elems)[(fields_length * index) + field_index] = (SPVM_VALUE_float)SvNV(sv_field_value);
+            ((float*)elems)[(fields_length * index) + field_index] = (float)SvNV(sv_field_value);
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            ((SPVM_VALUE_double*)elems)[(fields_length * index) + field_index] = (SPVM_VALUE_double)SvNV(sv_field_value);
+            ((double*)elems)[(fields_length * index) + field_index] = (double)SvNV(sv_field_value);
             break;
           }
           default:
@@ -2277,7 +2277,7 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int8_t value = (int8_t)SvIV(sv_field_value);
-            ((SPVM_VALUE_byte*)&ref_stack[ref_stack_top])[field_index] = value;
+            ((int8_t*)&ref_stack[ref_stack_top])[field_index] = value;
           }
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
           ref_stack_ids[arg_index] = ref_stack_top;
@@ -2344,7 +2344,7 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int16_t value = (int16_t)SvIV(sv_field_value);
-            ((SPVM_VALUE_short*)&ref_stack[ref_stack_top])[field_index] = value;
+            ((int16_t*)&ref_stack[ref_stack_top])[field_index] = value;
           }
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
           ref_stack_ids[arg_index] = ref_stack_top;
@@ -2410,7 +2410,7 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int32_t value = (int32_t)SvIV(sv_field_value);
-            ((SPVM_VALUE_int*)&ref_stack[ref_stack_top])[field_index] = value;
+            ((int32_t*)&ref_stack[ref_stack_top])[field_index] = value;
           }
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
           ref_stack_ids[arg_index] = ref_stack_top;
@@ -2476,7 +2476,7 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int64_t value = (int64_t)SvIV(sv_field_value);
-            ((SPVM_VALUE_long*)&ref_stack[ref_stack_top])[field_index] = value;
+            ((int64_t*)&ref_stack[ref_stack_top])[field_index] = value;
           }
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
           ref_stack_ids[arg_index] = ref_stack_top;
@@ -2542,7 +2542,7 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             float value = (float)SvNV(sv_field_value);
-            ((SPVM_VALUE_float*)&ref_stack[ref_stack_top])[field_index] = value;
+            ((float*)&ref_stack[ref_stack_top])[field_index] = value;
           }
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
           ref_stack_ids[arg_index] = ref_stack_top;
@@ -2608,7 +2608,7 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             double value = (double)SvNV(sv_field_value);
-            ((SPVM_VALUE_double*)&ref_stack[ref_stack_top])[field_index] = value;
+            ((double*)&ref_stack[ref_stack_top])[field_index] = value;
           }
           stack[arg_var_id].oval = &ref_stack[ref_stack_top];
           ref_stack_ids[arg_index] = ref_stack_top;
@@ -2818,7 +2818,7 @@ call_sub(...)
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
             const char* field_name = &runtime->string_pool[field->name_id];
-            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_byte*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_id])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -2833,7 +2833,7 @@ call_sub(...)
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
             const char* field_name = &runtime->string_pool[field->name_id];
-            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_short*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_id])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -2848,7 +2848,7 @@ call_sub(...)
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
             const char* field_name = &runtime->string_pool[field->name_id];
-            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_int*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_id])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -2863,7 +2863,7 @@ call_sub(...)
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
             const char* field_name = &runtime->string_pool[field->name_id];
-            SV* sv_field_value = sv_2mortal(newSViv(((SPVM_VALUE_long*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_id])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -2878,7 +2878,7 @@ call_sub(...)
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
             const char* field_name = &runtime->string_pool[field->name_id];
-            SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_float*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_id])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -2893,7 +2893,7 @@ call_sub(...)
           for (int32_t field_index = 0; field_index < arg_package->fields_length; field_index++) {
             SPVM_RUNTIME_FIELD* field = &runtime->fields[arg_package->fields_base + field_index];
             const char* field_name = &runtime->string_pool[field->name_id];
-            SV* sv_field_value = sv_2mortal(newSVnv(((SPVM_VALUE_double*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_id])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -2981,32 +2981,32 @@ to_elems(...)
           SV* sv_field_value;
           switch (first_field->basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
-              SPVM_VALUE_byte field_value = ((SPVM_VALUE_byte*)elems)[(field_length * index) + field_index];
+              int8_t field_value = ((int8_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_SHORT: {
-              SPVM_VALUE_short field_value = ((SPVM_VALUE_short*)elems)[(field_length * index) + field_index];
+              int16_t field_value = ((int16_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_INT: {
-              SPVM_VALUE_int field_value = ((SPVM_VALUE_int*)elems)[(field_length * index) + field_index];
+              int32_t field_value = ((int32_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_LONG: {
-              SPVM_VALUE_long field_value = ((SPVM_VALUE_long*)elems)[(field_length * index) + field_index];
+              int64_t field_value = ((int64_t*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSViv(field_value));
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-              SPVM_VALUE_float field_value = ((SPVM_VALUE_float*)elems)[(field_length * index) + field_index];
+              float field_value = ((float*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSVnv(field_value));
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-              SPVM_VALUE_double field_value = ((SPVM_VALUE_double*)elems)[(field_length * index) + field_index];
+              double field_value = ((double*)elems)[(field_length * index) + field_index];
               sv_field_value = sv_2mortal(newSVnv(field_value));
               break;
             }
