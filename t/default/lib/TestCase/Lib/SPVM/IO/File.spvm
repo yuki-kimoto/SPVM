@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::IO::File {
   use SPVM::StringList;
   use SPVM::Util (chomp_lf, equals_strarray, sliceb);
 
-  sub test_auto_flash : int ($file : string) {
+  sub test_auto_flush : int ($file : string) {
     
     my $io_file = SPVM::IO::File->open($file, ">");
     unless ($io_file) {

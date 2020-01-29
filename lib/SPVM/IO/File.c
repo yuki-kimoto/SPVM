@@ -12,9 +12,9 @@ int32_t SPNATIVE__SPVM__IO__File__readline(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   // File fh
-  void* obj_fh;
-  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_fh, MFILE, __LINE__);
-  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
+  void* obj_io_file;
+  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_io_file, MFILE, __LINE__);
+  FILE* fh = (FILE*)env->get_pointer(env, obj_io_file);
 
   if (fh == NULL) {
     stack[0].oval = NULL;
@@ -88,9 +88,9 @@ int32_t SPNATIVE__SPVM__IO__File__read(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   // File fh
-  void* obj_fh;
-  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_fh, MFILE, __LINE__);
-  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
+  void* obj_io_file;
+  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_io_file, MFILE, __LINE__);
+  FILE* fh = (FILE*)env->get_pointer(env, obj_io_file);
 
   // Buffer
   void* obj_buffer = stack[1].oval;
@@ -119,9 +119,9 @@ int32_t SPNATIVE__SPVM__IO__File__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   // File fh
-  void* obj_fh;
-  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_fh, MFILE, __LINE__);
-  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
+  void* obj_io_file;
+  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_io_file, MFILE, __LINE__);
+  FILE* fh = (FILE*)env->get_pointer(env, obj_io_file);
   
   void* string = stack[1].oval;
   
@@ -230,9 +230,9 @@ int32_t SPNATIVE__SPVM__IO__File__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_self = stack[0].oval;
   
   // File fh
-  void* obj_fh;
-  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_fh, MFILE, __LINE__);
-  FILE* fh = (FILE*)env->get_pointer(env, obj_fh);
+  void* obj_io_file;
+  SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_io_file, MFILE, __LINE__);
+  FILE* fh = (FILE*)env->get_pointer(env, obj_io_file);
   
   int32_t ret = fflush(fh);
   
