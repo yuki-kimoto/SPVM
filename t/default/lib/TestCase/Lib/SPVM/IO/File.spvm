@@ -3,6 +3,18 @@ package TestCase::Lib::SPVM::IO::File {
   use SPVM::StringList;
   use SPVM::Util (chomp_lf, equals_strarray, sliceb);
 
+  sub test_flush : int ($file : string) {
+    
+    my $io_file = SPVM::IO::File->open($file, ">");
+    
+    $io_file->print("He");
+    $io_file->flush;
+    $io_file->print("llo");
+    $io_file->flush;
+    
+    return 1;
+  }
+
   sub test_auto_flush : int ($file : string) {
     
     my $io_file = SPVM::IO::File->open($file, ">");

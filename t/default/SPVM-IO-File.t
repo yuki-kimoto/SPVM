@@ -31,11 +31,26 @@ TestFile::copy_test_files_tmp_replace_newline();
 
 my $test_dir = "$FindBin::Bin/..";
 
+# flush
+{
+  # test_flush
+  {
+    my $file = "$test_dir/test_files_tmp/io_file_test_flush.txt";
+    ok(TestCase::Lib::SPVM::IO::File->test_flush($file));
+    my $output = slurp_binmode($file);
+    is($output, 'Hello');
+
+    # This is not real tests, but I can't know the way to test buffer
+    my $stdout_source = slurp_binmode('blib/lib/SPVM/IO/File.c');
+    like($stdout_source, qr|\Qfflush(fh);//SPVM::IO::File::flush|);
+  }
+}
+
 # auto_flush
 {
   # test_auto_flush
   {
-    my $file = "$test_dir/test_files_tmp/io_file_test_print.txt";
+    my $file = "$test_dir/test_files_tmp/io_file_test_auto_flush.txt";
     ok(TestCase::Lib::SPVM::IO::File->test_auto_flush($file));
     my $output = slurp_binmode($file);
     is($output, 'Hello');

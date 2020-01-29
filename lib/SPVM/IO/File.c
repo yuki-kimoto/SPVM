@@ -234,7 +234,7 @@ int32_t SPNATIVE__SPVM__IO__File__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
   SPVM_GET_FIELD_OBJECT(env, obj_self, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", &obj_io_file, MFILE, __LINE__);
   FILE* fh = (FILE*)env->get_pointer(env, obj_io_file);
   
-  int32_t ret = fflush(fh);
+  int32_t ret = fflush(fh);//SPVM::IO::File::flush (Don't remove this comment for tests)
   
   if (ret != 0) {
     SPVM_DIE("Can't flash to file", MFILE, __LINE__);
