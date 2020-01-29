@@ -206,7 +206,7 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (fh) {
     void* obj_io_file;
-    SPVM_NEW_OBJECT(env, obj_io_file, "SPVM::IO::File", MFILE, __LINE__);
+    SPVM_NEW_OBJECT(env, "SPVM::IO::File", &obj_io_file, MFILE, __LINE__);
 
     void* obj_fh;
     SPVM_NEW_POINTER(env, "SPVM::IO::FileHandle", fh, &obj_fh, MFILE, __LINE__);

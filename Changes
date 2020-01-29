@@ -24,6 +24,10 @@
     #define SPVM_GET_PACKAGE_VAR_FLOAT(env, package_name, package_var_name, value_address, file, line)
     #define SPVM_GET_PACKAGE_VAR_DOUBLE(env, package_name, package_var_name, value_address, file, line)
     #define SPVM_GET_PACKAGE_VAR_OBJECT(env, package_name, package_var_name, signature, value_address, file, line)
+  - change native api macro functions SPVM_NEW_POINTER to
+    SPVM_NEW_POINTER(env, package_name, pointer, object_address, file, line)
+  - change native api macro functions SPVM_NEW_OBJECT to
+    SPVM_NEW_OBJECT(env, package_name, object_address, file, line)
   - remove typedef in spvm_native.h
     typedef int8_t SPVM_VALUE_byte;
     typedef int16_t SPVM_VALUE_short;

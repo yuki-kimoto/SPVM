@@ -150,7 +150,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_object_test(SPVM_ENV* env
   (void)stack;
 
   void* minimal;
-  SPVM_NEW_OBJECT(env, minimal, "TestCase::Minimal", MFILE, __LINE__);
+  SPVM_NEW_OBJECT(env, "TestCase::Minimal", &minimal, MFILE, __LINE__);
   SPVM_SET_PACKAGE_VAR_OBJECT(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, MFILE, __LINE__);
   
   return SPVM_SUCCESS;
