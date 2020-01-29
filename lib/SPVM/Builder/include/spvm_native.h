@@ -44,10 +44,10 @@ union SPVM_value {
   obj = env->new_object(env, id);\
 } while (0)\
 
-#define SPVM_NEW_POINTER(env, obj, package_name, ptr, file, line) do {\
+#define SPVM_NEW_POINTER(env, package_name, pointer, object_address, file, line) do {\
   int32_t id = env->get_basic_type_id(env, package_name);\
   if (id < 0) { SPVM_DIE("Package \"%s\" not found", package_name, file, line); };\
-  obj = env->new_pointer(env, id, ptr);\
+  *object_address = env->new_pointer(env, id, pointer);\
 } while (0)\
 
 #define SPVM_SET_FIELD_BYTE(env, obj, package_name, sub_name, value, file, line) do {\

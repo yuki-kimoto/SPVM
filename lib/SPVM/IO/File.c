@@ -209,7 +209,7 @@ int32_t SPNATIVE__SPVM__IO__File__open(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_NEW_OBJECT(env, obj_io_file, "SPVM::IO::File", MFILE, __LINE__);
 
     void* obj_fh;
-    SPVM_NEW_POINTER(env, obj_fh, "SPVM::IO::FileHandle", fh, MFILE, __LINE__);
+    SPVM_NEW_POINTER(env, "SPVM::IO::FileHandle", fh, &obj_fh, MFILE, __LINE__);
     SPVM_SET_FIELD_OBJECT(env, obj_io_file, "SPVM::IO::File", "fh", "SPVM::IO::FileHandle", obj_fh, MFILE, __LINE__);
     
     stack[0].oval = obj_io_file;
