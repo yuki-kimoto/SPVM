@@ -1,0 +1,8 @@
+package SPVM::NDArray::ComplexDouble : public {
+  has array : public SPVM::Complex_2d[];
+  has length : public int;
+  has offset : public int;
+  has flag : public int;
+  has dims : public int[];
+  has elem_flags : public byte[];
+}

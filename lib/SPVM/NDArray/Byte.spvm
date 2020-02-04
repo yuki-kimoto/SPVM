@@ -1,0 +1,8 @@
+package SPVM::NDArray::Byte : public {
+  has array : public byte[];
+  has length : public int;
+  has offset : public int;
+  has flag : public int;
+  has dims : public int[];
+  has elem_flags : public byte[];
+}
