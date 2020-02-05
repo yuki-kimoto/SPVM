@@ -1,8 +1,8 @@
 package SPVM::NDArray::Long : public {
-  has array : public long[];
-  has length : public int;
+  has base : public long[];
   has offset : public int;
-  has flag : public int;
-  has dims : public int[];
-  has elem_flags : public byte[];
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
 }
