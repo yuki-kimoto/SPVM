@@ -1,67 +1,181 @@
 package SPVM::Math {
+  native sub HUGE_VALF : float ();
   native sub INFINITYF : float ();
   native sub NANF : float ();
 
   native sub isinff : int($x : float);
   native sub isfinitef : int($x : float);
   native sub isnanf : int ($x : float);
+  native sub isnormalf : int ($x : float);
+  native sub fpclassifyf : int ($x : float);
+  native sub signbitf : int ($x : float);
 
+  native sub HUGE_VAL : double ();
   native sub INFINITY : double ();
   native sub NAN : double ();
 
   native sub isinf : int ($x : double);
   native sub isfinite : int ($x : double);
   native sub isnan : int ($x : double);
+  native sub isnormal : int ($x : double);
+  native sub fpclassify : int ($x : double);
+  native sub signbit : int ($x : double);
 
   native sub pi : double ();
 
+  native sub FE_DOWNWARD : int ();
+  native sub FE_TONEAREST : int ();
+  native sub FE_TOWARDZERO : int ();
+  native sub FE_UPWARD : int ();
+
+  native sub fesetround : int ($round : int);
+
+  native sub FP_INFINITE : int ();
+  native sub FP_NAN : int ();
+  native sub FP_ZERO : int ();
+  native sub FP_SUBNORMAL : int ();
+  native sub FP_NORMAL : int ();
+
+  native sub FP_ILOGB0 : int ();
+  native sub FP_ILOGBNAN : int ();
+
   # Trigonometric functions
-  native sub acos : double ($x : double);
-  native sub asin : double($x : double);
-  native sub atan : double ($x : double);
-  native sub atan2 : double ($y : double, $x : double);
   native sub cos : double ($x : double);
+  native sub cosf : float ($x : float);
   native sub sin : double ($x : double);
+  native sub sinf : float ($x : float);
   native sub tan : double ($x : double);
+  native sub tanf : float ($x : float);
+  native sub acos : double ($x : double);
+  native sub acosf : float ($x : float);
+  native sub asin : double ($x : double);
+  native sub asinf : float ($x : float);
+  native sub atan : double ($x : double);
+  native sub atanf : float ($x : float);
+  native sub atan2 : double ($y : double, $x : double);
 
   # Hyperbolic functions
-  native sub acosh : double ($x : double);
-  native sub asinh : double ($x : double);
-  native sub atanh : double ($x : double);
   native sub cosh : double ($x : double);
+  native sub coshf : float ($x : float);
   native sub sinh : double ($x : double);
+  native sub sinhf : float ($x : float);
   native sub tanh : double ($x : double);
+  native sub tanhf : float ($x : float);
+  native sub acosh : double ($x : double);
+  native sub acoshf : float ($x : float);
+  native sub asinh : double ($x : double);
+  native sub asinhf : float ($x : float);
+  native sub atanh : double ($x : double);
+  native sub atanhf : float ($x : float);
 
   # Exponential functions and logarithmic functions
   native sub exp : double ($x : double);
+  native sub expf : float ($x : float);
   native sub exp2 : double ($x : double);
+  native sub exp2f : float ($x : float);
   native sub expm1 : double ($x : double);
+  native sub expm1f : float ($x : float);
+  native sub frexp : double ($x : double, $exp : int&);
+  native sub frexpf : float ($x : float, $exp : int&);
+  native sub ilogb : int ($x : double);
+  native sub ilogbf : int ($x : float);
+  native sub ldexp : double ($x : double, $exp : int);
+  native sub ldexpf : float ($x : float, $exp : int);
   native sub log : double ($x : double);
+  native sub logf : float ($x : float);
   native sub log10 : double ($x : double);
+  native sub log10f : float ($x : float);
   native sub log1p : double ($x : double);
+  native sub log1pf : float ($x : float);
+  native sub log2 : double ($x : double);
+  native sub log2f : float ($x : float);
+  native sub logb : double ($x : double);
+  native sub logbf : float ($x : float);
+  native sub modf : double ($x : double, $intpart : double&);
+  native sub modff : float ($x : float, $intpart : float&);
+  native sub scalbn : double ($x : double, $exp : int);
+  native sub scalbnf : float ($x : float, $exp : int);
+  native sub scalbln : double ($x : double, $exp : long);
+  native sub scalblnf : float ($x : float, $exp : long);
 
   # Exponentiation functions and Absolute value functions
   native sub cbrt : double ($x : double);
+  native sub cbrtf : float ($x : float);
   native sub fabs : double ($x : double);
+  native sub fabsf : float ($x : float);
   native sub hypot : double ($x : double, $y : double);
+  native sub hypotf : float ($x : float, $y : float);
   native sub pow : double ($x : double, $y : double);
+  native sub powf : float ($x : float, $y : float);
   native sub sqrt : double ($x : double);
+  native sub sqrtf : float ($x : float);
 
   # Error function and Gamma function
   native sub erf : double ($x : double);
+  native sub erff : float ($x : float);
   native sub erfc : double ($x : double);
+  native sub erfcf : float ($x : float);
   native sub lgamma : double ($x : double);
+  native sub lgammaf : float ($x : float);
   native sub tgamma : double ($x : double);
+  native sub tgammaf : float ($x : float);
 
   # Nearest integer function
   native sub ceil : double ($x : double);
+  native sub ceilf : float ($x : float);
   native sub floor : double ($x : double);
+  native sub floorf : float ($x : float);
   native sub nearbyint : double ($x : double);
+  native sub nearbyintf : float ($x : float);
   native sub round : double ($x : double);
+  native sub roundf : float ($x : float);
+  native sub lround : long ($x : double);
+  native sub lroundf : long ($x : float);
+  native sub trunc : double ($x : double);
+  native sub truncf : float ($x : float);
 
   # Surplus functions
+  native sub fmod : double ($x1 : double, $x2 : double);
+  native sub fmodf : float ($x1 : float, $x2 : float);
   native sub remainder : double ($x1 : double, $x2 : double);
+  native sub remainderf : float ($x1 : float, $x2 : float);
+  native sub remquo : double ($x1 : double, $x2 : double, $quo : int&);
+  native sub remquof : float ($x1 : float, $x2 : float, $quo : int&);
 
-  native sub signbitf : int ($num : float);
-  native sub signbit : int ($num : double);
+  # Real number operation functions
+  native sub copysign : double ($x1 : double, $x2 : double);
+  native sub copysignf : float ($x1 : float, $x2 : float);
+  native sub nan : double ($str : string);
+  native sub nanf : float ($str : string);
+  native sub nextafter : double ($x1 : double, $x2 : double);
+  native sub nextafterf : float ($x1 : float, $x2 : float);
+  native sub nexttoward : double ($x1 : double, $x2 : double);
+  native sub nexttowardf : float ($x1 : float, $x2 : double);
+
+  # Maximum, minimum and positive difference functions
+  native sub fdim : double ($x1 : double, $x2 : double);
+  native sub fdimf : float ($x1 : float, $x2 : float);
+  native sub fmax : double ($x1 : double, $x2 : double);
+  native sub fmaxf : float ($x1 : float, $x2 : float);
+  native sub fmin : double ($x1 : double, $x2 : double);
+  native sub fminf : float ($x1 : float, $x2 : float);
+
+
+  # Floating point multiplication and additions
+  native sub fma : double ($x1 : double, $x2 : double, $x3 : double);
+  native sub fmaf : float ($x1 : float, $x2 : float, $x3 : float);
+
+  # Comparison
+  native sub isgreater : int ($x1 : double, $x2 : double);
+  native sub isgreaterf : int ($x1 : float, $x2 : float);
+  native sub isgreaterequal : int ($x1 : double, $x2 : double);
+  native sub isgreaterequalf : int ($x1 : float, $x2 : float);
+  native sub isless : int ($x1 : double, $x2 : double);
+  native sub islessf : int ($x1 : float, $x2 : float);
+  native sub islessequal : int ($x1 : double, $x2 : double);
+  native sub islessequalf : int ($x1 : float, $x2 : float);
+  native sub islessgreater : int ($x1 : double, $x2 : double);
+  native sub islessgreaterf : int ($x1 : float, $x2 : float);
+  native sub isunordered : int ($x1 : double, $x2 : double);
+  native sub isunorderedf : int ($x1 : float, $x2 : float);
 }
