@@ -705,7 +705,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
   while (1) {
     SPVM_OPCODE* opcode = &(opcodes[sub_opcodes_base + opcode_rel_index]);
     
-    int32_t opcode_id = __builtin_expect(opcode->id == SPVM_OPCODE_C_ID_WIDE, 0) ? 255 + opcode->operand3 : opcode->id;
+    int32_t opcode_id = opcode->id;
     
     switch (opcode_id) {
       case SPVM_OPCODE_C_ID_BOOL_INT:

@@ -38,15 +38,7 @@
 #include "spvm_constant_pool.h"
 
 void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opcode, int32_t opcode_id) {
-  // Wide operation
-  if (opcode_id > 255) {
-    opcode->id = SPVM_OPCODE_C_ID_WIDE;
-    opcode->operand3 = opcode_id - 255;
-  }
-  // Normal operation
-  else {
-    opcode->id = opcode_id;
-  }
+  opcode->id = opcode_id;
 }
 
 void SPVM_OPCODE_BUILDER_push_if_die(
