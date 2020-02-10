@@ -3814,9 +3814,16 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           else {
                             SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IS_TYPE);
                           }
-                          
+
                           opcode.operand1 = mem_id_in;
-                          opcode.operand2 = op_type->uv.type->constant_pool_id;
+                          if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+                            opcode.operand2 = SPVM_BASIC_TYPE_C_ID_BYTE;
+                            opcode.operand3 = op_type->uv.type->dimension + 1;
+                          }
+                          else {
+                            opcode.operand2 = op_type->uv.type->basic_type->id;
+                            opcode.operand3 = op_type->uv.type->dimension;
+                          }
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           
