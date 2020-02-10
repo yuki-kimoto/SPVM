@@ -1785,7 +1785,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1811,7 +1811,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1837,7 +1837,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1863,7 +1863,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1889,7 +1889,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1912,7 +1912,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1935,7 +1935,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1958,7 +1958,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1981,7 +1981,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2004,7 +2004,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2171,7 +2171,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2193,7 +2193,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2215,7 +2215,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2237,7 +2237,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2259,7 +2259,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2281,7 +2281,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = (opcode->operand3 & 0xF) + 1;
-        int32_t field_index = opcode->operand3 >> 4;
+        int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
