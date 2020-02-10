@@ -3927,8 +3927,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         }
         
         int32_t var_id = opcode->operand0;
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t decl_sub_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t decl_sub_id = opcode->operand1;
 
         SPVM_RUNTIME_SUB* decl_sub = &runtime->subs[decl_sub_id];
 

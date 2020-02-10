@@ -2650,15 +2650,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Call sub constant pool id
               char sub_id_string[sizeof(int32_t)];
               memcpy(sub_id_string, &op_cur->uv.call_sub->sub->id, sizeof(int32_t));
-              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t));
-              if (found_constant_pool_id > 0) {
-                op_cur->uv.call_sub->constant_pool_id = found_constant_pool_id;
-              }
-              else {
-                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.call_sub->sub->id);
-                op_cur->uv.call_sub->constant_pool_id = constant_pool_id;
-                SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, sub_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
-              }
 
               // No duplicate sub access sub id
               SPVM_SUB* found_sub = SPVM_HASH_fetch(package->info_sub_id_symtable, sub_id_string, sizeof(int32_t));

@@ -1066,7 +1066,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             }
 
                             opcode.operand0 = mem_id_out;
-                            opcode.operand1 = call_sub->constant_pool_id;
+                            opcode.operand1 = call_sub->sub->id;
                             opcode.operand2 = first_arg_mem_id;
                           }
                           else {
@@ -1168,7 +1168,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               assert(0);
                             }
                             opcode.operand0 = mem_id_out;
-                            opcode.operand1 = call_sub->constant_pool_id;
+                            opcode.operand1 = call_sub->sub->id;
                           }
                           
                           int32_t call_sub_return_type_width = SPVM_TYPE_get_width(compiler, call_sub_return_type->basic_type->id, call_sub_return_type->dimension, call_sub_return_type->flag);
