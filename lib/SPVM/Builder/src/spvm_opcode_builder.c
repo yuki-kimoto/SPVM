@@ -59,8 +59,7 @@ void SPVM_OPCODE_BUILDER_push_if_die(
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH);
     opcode.operand1 = sub->rel_id;
-    int32_t rel_line = line - op_sub->line;
-    opcode.operand2 = rel_line;
+    opcode.operand2 = line;
     
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
     
@@ -73,8 +72,7 @@ void SPVM_OPCODE_BUILDER_push_if_die(
     memset(&opcode, 0, sizeof(SPVM_OPCODE));
     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN);
     opcode.operand1 = sub->rel_id;
-    int32_t rel_line = line - op_sub->line;
-    opcode.operand2 = rel_line;
+    opcode.operand2 = line;
     SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
     int32_t if_die_return_opcode_rel_index = opcode_array->length - 1 - sub_opcodes_base;
@@ -3944,9 +3942,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                           opcode.operand0 = mem_id_in;
-                          int32_t rel_line = op_cur->line - sub->op_sub->line;
-                          
-                          opcode.operand1 = rel_line;
+                          opcode.operand1 = op_cur->line;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           

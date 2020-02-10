@@ -3343,8 +3343,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
           
           SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + opcode->operand1];
           int32_t sub_id = sub->id;
-          int32_t rel_line = opcode->operand2;
-          int32_t line = sub->line + rel_line;
+          int32_t line = opcode->operand2;
           
           const char* sub_name = &runtime->string_pool[sub->name_id];
           SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
@@ -3362,8 +3361,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         if (exception_flag) {
           SPVM_RUNTIME_SUB* sub = &runtime->subs[package->subs_base + opcode->operand1];
           int32_t sub_id = sub->id;
-          int32_t rel_line = opcode->operand2;
-          int32_t line = sub->line + rel_line;
+          int32_t line = opcode->operand2;
           
           const char* sub_name = &runtime->string_pool[sub->name_id];
           SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
@@ -3396,8 +3394,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t sub_id = sub->id;
-        int32_t rel_line = opcode->operand1;
-        int32_t line = sub->line + rel_line;
+        int32_t line = opcode->operand1;
         
         const char* sub_name = &runtime->string_pool[sub->name_id];
         SPVM_RUNTIME_PACKAGE* sub_package = &runtime->packages[sub->package_id];
