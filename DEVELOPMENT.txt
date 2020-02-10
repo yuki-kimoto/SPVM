@@ -34,10 +34,6 @@ DEVELOPERS NOTE
 
   SOLE TESTS
 
-    Create exe file by spvmcc command
-      
-      yacc/bison.sh && perl Makefile.PL && make && perl -Mblib blib/script/spvmcc -B solo/spvm_build -I solo/lib -o solo/myexe TestCase && solo/myexe foo bar
-      
     SPVM solo test command
 
        # Normal run
