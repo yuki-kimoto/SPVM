@@ -1306,42 +1306,42 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
         break;
       case SPVM_OPCODE_C_ID_INIT_MULNUM_BYTE: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           byte_vars[opcode->operand0 + field_index] = 0;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_MULNUM_SHORT: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           short_vars[opcode->operand0 + field_index] = 0;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_MULNUM_INT: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           int_vars[opcode->operand0 + field_index] = 0;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_MULNUM_LONG: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           long_vars[opcode->operand0 + field_index] = 0;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_MULNUM_FLOAT: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           float_vars[opcode->operand0 + field_index] = 0;
         }
         break;
       }
       case SPVM_OPCODE_C_ID_INIT_MULNUM_DOUBLE: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           double_vars[opcode->operand0 + field_index] = 0;
         }
@@ -1734,7 +1734,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1759,7 +1759,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_SHORT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -1784,7 +1784,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_INT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1810,7 +1810,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_LONG: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1836,7 +1836,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_FLOAT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1862,7 +1862,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FETCH_DOUBLE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1888,7 +1888,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_FETCH_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1911,7 +1911,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_FETCH_SHORT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1934,7 +1934,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_FETCH_INT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1957,7 +1957,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_FETCH_LONG: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -1980,7 +1980,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_FETCH_FLOAT: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -2003,7 +2003,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_FETCH_DOUBLE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
@@ -2026,7 +2026,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_STORE_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2050,7 +2050,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_STORE_SHORT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2074,7 +2074,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_STORE_INT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2098,7 +2098,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_STORE_LONG: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2122,7 +2122,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_STORE_FLOAT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2146,7 +2146,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_STORE_DOUBLE: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
@@ -2170,7 +2170,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2192,7 +2192,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_SHORT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2214,7 +2214,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_INT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2236,7 +2236,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_LONG: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2258,7 +2258,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_FLOAT: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2280,7 +2280,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       case SPVM_OPCODE_C_ID_MULNUM_ARRAY_FIELD_STORE_DOUBLE: {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
-        int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
+        int32_t fields_length = (opcode->operand3 & 0xFF);
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
           void* exception = env->new_string_raw(env, "Array must not be undef");
@@ -2301,7 +2301,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_BYTE: {
         int8_t* value_ref = *(int8_t**)&ref_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           byte_vars[opcode->operand0 + field_index] = value_ref[field_index];
@@ -2310,7 +2310,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SHORT: {
         int16_t* value_ref = *(int16_t**)&ref_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           short_vars[opcode->operand0 + field_index] = value_ref[field_index];
@@ -2319,7 +2319,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_INT: {
         int32_t* value_ref = *(int32_t**)&ref_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           int_vars[opcode->operand0 + field_index] = value_ref[field_index];
@@ -2328,7 +2328,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_LONG: {
         int64_t* value_ref = *(int64_t**)&ref_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           long_vars[opcode->operand0 + field_index] = value_ref[field_index];
@@ -2337,7 +2337,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_FLOAT: {
         float* value_ref = *(float**)&ref_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           float_vars[opcode->operand0 + field_index] = value_ref[field_index];
@@ -2346,7 +2346,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_DOUBLE: {
         double* value_ref = *(double**)&ref_vars[opcode->operand1];
-        int32_t fields_length = opcode->operand3 + 1;
+        int32_t fields_length = opcode->operand3;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           double_vars[opcode->operand0 + field_index] = value_ref[field_index];
         }
@@ -2449,42 +2449,42 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         *(void**)&ref_vars[opcode->operand0] = *(void**)&ref_vars[opcode->operand1];
         break;
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_BYTE: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           byte_vars[opcode->operand0 + field_index] = byte_vars[opcode->operand1 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_SHORT: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           short_vars[opcode->operand0 + field_index] = short_vars[opcode->operand1 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_INT: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           int_vars[opcode->operand0 + field_index] = int_vars[opcode->operand1 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_LONG: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           long_vars[opcode->operand0 + field_index] = long_vars[opcode->operand1 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_FLOAT: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           float_vars[opcode->operand0 + field_index] = float_vars[opcode->operand1 + field_index];
         }
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_DOUBLE: {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           double_vars[opcode->operand0 + field_index] = double_vars[opcode->operand1 + field_index];
         }
@@ -2839,7 +2839,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         
         break;
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_BYTE: {
-        int32_t fields_length = opcode->operand1 + 1;
+        int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int8_t*)&stack[call_sub_arg_stack_top + field_index] = byte_vars[opcode->operand0 + field_index];
         }
@@ -2847,7 +2847,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_SHORT: {
-        int32_t fields_length = opcode->operand1 + 1;
+        int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int16_t*)&stack[call_sub_arg_stack_top + field_index] = short_vars[opcode->operand0 + field_index];
         }
@@ -2855,7 +2855,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_INT: {
-        int32_t fields_length = opcode->operand1 + 1;
+        int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int32_t*)&stack[call_sub_arg_stack_top + field_index] = int_vars[opcode->operand0 + field_index];
         }
@@ -2863,7 +2863,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_LONG: {
-        int32_t fields_length = opcode->operand1 + 1;
+        int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int64_t*)&stack[call_sub_arg_stack_top + field_index] = long_vars[opcode->operand0 + field_index];
         }
@@ -2871,7 +2871,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_FLOAT: {
-        int32_t fields_length = opcode->operand1 + 1;
+        int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(float*)&stack[call_sub_arg_stack_top + field_index] = float_vars[opcode->operand0 + field_index];
         }
@@ -2879,7 +2879,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_PUSH_ARG_MULNUM_DOUBLE: {
-        int32_t fields_length = opcode->operand1 + 1;
+        int32_t fields_length = opcode->operand1;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(double*)&stack[call_sub_arg_stack_top + field_index] = double_vars[opcode->operand0 + field_index];
         }
@@ -3035,7 +3035,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
           }
@@ -3050,7 +3050,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
           }
@@ -3065,7 +3065,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
           }
@@ -3080,7 +3080,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[field_index];
           }
@@ -3095,7 +3095,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
           }
@@ -3110,7 +3110,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
           }
@@ -3254,7 +3254,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
           }
@@ -3273,7 +3273,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
           }
@@ -3292,7 +3292,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
           }
@@ -3311,7 +3311,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
           }
@@ -3330,7 +3330,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         call_sub_arg_stack_top -= decl_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
-          int32_t fields_length = opcode->operand3 + 1;
+          int32_t fields_length = opcode->operand3;
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
           }
@@ -3506,7 +3506,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_BYTE:
       {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int8_t*)&stack[field_index] = byte_vars[opcode->operand0 + field_index];
         }
@@ -3516,7 +3516,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_SHORT:
       {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int16_t*)&stack[field_index] = short_vars[opcode->operand0 + field_index];
         }
@@ -3525,7 +3525,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_INT:
       {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int32_t*)&stack[field_index] = int_vars[opcode->operand0 + field_index];
         }
@@ -3534,7 +3534,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_LONG:
       {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(int64_t*)&stack[field_index] = long_vars[opcode->operand0 + field_index];
         }
@@ -3543,7 +3543,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_FLOAT:
       {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(float*)&stack[field_index] = float_vars[opcode->operand0 + field_index];
         }
@@ -3552,7 +3552,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_RETURN_MULNUM_DOUBLE:
       {
-        int32_t fields_length = opcode->operand2 + 1;
+        int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           *(double*)&stack[field_index] = double_vars[opcode->operand0 + field_index];
         }
