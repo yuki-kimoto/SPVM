@@ -112,7 +112,7 @@ SPVM_RUNTIME_INFO* SPVM_RUNTIME_INFO_build_runtime_info(SPVM_COMPILER* compiler)
   int32_t memory_pool_base = 0;
   
   runtime_info->opcodes = (SPVM_OPCODE*)&memory_pool[memory_pool_base];
-  memory_pool_base += sizeof(int64_t) * runtime_info_opcode_length;
+  memory_pool_base += sizeof(SPVM_OPCODE) * runtime_info_opcode_length;
   
   runtime_info->constant_pool = (int32_t*)&memory_pool[memory_pool_base];
   memory_pool_base += sizeof(int32_t) * runtime_info_constant_pool_length;
@@ -139,7 +139,7 @@ SPVM_RUNTIME_INFO* SPVM_RUNTIME_INFO_build_runtime_info(SPVM_COMPILER* compiler)
   memory_pool_base += runtime_info_string_pool_length;
   
   // OPCode(64bit)
-  memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(int64_t) * runtime_info_opcode_length);
+  memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * runtime_info_opcode_length);
   
   // Global constant pool(32bit)
   int32_t constant_pool_index = 0;
