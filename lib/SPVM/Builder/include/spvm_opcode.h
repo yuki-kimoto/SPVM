@@ -484,11 +484,11 @@ extern const char* const SPVM_OPCODE_C_ID_NAMES[];
 
 // Operation code is 64bit
 struct SPVM_opcode {
-  uint8_t id;
-  uint8_t operand3;
-  uint16_t operand0;
-  uint16_t operand1;
-  uint16_t operand2;
+  uint16_t id;
+  uint16_t operand3;
+  uint32_t operand0;
+  uint32_t operand1;
+  uint32_t operand2;
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new();
