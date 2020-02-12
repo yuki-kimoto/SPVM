@@ -3332,8 +3332,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand1;
         
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
@@ -3388,8 +3387,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand1;
         
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
@@ -3444,8 +3442,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
