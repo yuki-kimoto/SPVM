@@ -3597,8 +3597,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         continue;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
 
@@ -3615,8 +3614,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
 
@@ -3633,8 +3631,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
 
@@ -3651,8 +3648,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
 
@@ -3670,8 +3666,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
 
@@ -3688,8 +3683,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
 
@@ -3706,8 +3700,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         int32_t field_offset = field->offset;
 

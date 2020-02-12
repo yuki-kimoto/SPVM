@@ -4704,56 +4704,49 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, field);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, field);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, field);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, field);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, field);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, field);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
-        int32_t constant_pool_id = opcode->operand2;
-        int32_t field_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t field_id = opcode->operand2;
         SPVM_RUNTIME_FIELD* field = &runtime->fields[field_id];
         SPVM_RUNTIME_PACKAGE* field_package = &runtime->packages[field->package_id];
         const char* field_package_name = &runtime->string_pool[field_package->name_id];

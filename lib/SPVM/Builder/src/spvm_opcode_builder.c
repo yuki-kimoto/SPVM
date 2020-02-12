@@ -1490,7 +1490,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               
                               opcode.operand0 = mem_id_out;
                               opcode.operand1 = mem_id_invocant;
-                              opcode.operand2 = field_access->constant_pool_id;
+                              opcode.operand2 = field_access->field->id;
 
                               SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
