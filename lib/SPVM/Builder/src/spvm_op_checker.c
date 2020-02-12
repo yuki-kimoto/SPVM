@@ -2808,15 +2808,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Field accesss constant pool id
               char package_var_id_string[sizeof(int32_t)];
               memcpy(package_var_id_string, &op_cur->uv.package_var_access->package_var->id, sizeof(int32_t));
-              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, package_var_id_string, sizeof(int32_t));
-              if (found_constant_pool_id > 0) {
-                op_cur->uv.package_var_access->constant_pool_id = found_constant_pool_id;
-              }
-              else {
-                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.package_var_access->package_var->id);
-                op_cur->uv.package_var_access->constant_pool_id = constant_pool_id;
-                SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, package_var_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
-              }
 
               // No duplicate package_var access package_var id
               SPVM_FIELD* found_package_var = SPVM_HASH_fetch(package->info_package_var_id_symtable, package_var_id_string, sizeof(int32_t));
@@ -3013,15 +3004,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Field accesss constant pool id
               char field_id_string[sizeof(int32_t)];
               memcpy(field_id_string, &op_cur->uv.field_access->field->id, sizeof(int32_t));
-              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_32bit_value_symtable, field_id_string, sizeof(int32_t));
-              if (found_constant_pool_id > 0) {
-                op_cur->uv.field_access->constant_pool_id = found_constant_pool_id;
-              }
-              else {
-                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, op_cur->uv.field_access->field->id);
-                op_cur->uv.field_access->constant_pool_id = constant_pool_id;
-                SPVM_HASH_insert(package->constant_pool_32bit_value_symtable, field_id_string, sizeof(int32_t), (void*)(intptr_t)constant_pool_id);
-              }
 
               // No duplicate field access field id
               SPVM_FIELD* found_field = SPVM_HASH_fetch(package->info_field_id_symtable, field_id_string, sizeof(int32_t));
