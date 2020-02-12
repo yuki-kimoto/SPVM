@@ -3826,14 +3826,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
 
                           opcode.operand1 = mem_id_in;
-                          if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
-                            opcode.operand2 = SPVM_BASIC_TYPE_C_ID_BYTE;
-                            opcode.operand3 = op_type->uv.type->dimension + 1;
-                          }
-                          else {
-                            opcode.operand2 = op_type->uv.type->basic_type->id;
-                            opcode.operand3 = op_type->uv.type->dimension;
-                          }
+
+                          int32_t runtime_basic_type_id;
+                          int32_t runtime_type_dimension;
+                          SPVM_OPCODE_BUILDER_get_runtime_type(compiler, type->basic_type->id, type->dimension, &runtime_basic_type_id, &runtime_type_dimension);
+                          opcode.operand2 = runtime_basic_type_id;
+                          opcode.operand3 = runtime_type_dimension;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           
