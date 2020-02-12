@@ -2396,8 +2396,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 break;
                               case SPVM_BASIC_TYPE_C_ID_INT:
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT);
-                                opcode.operand1 = (uint16_t)((constant->value.ival >> 16) & 0xFFFF);
-                                opcode.operand2 = (uint16_t)(constant->value.ival & 0xFFFF);
+                                opcode.operand1 = (uint32_t)constant->value.ival;
                                 mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                                 break;
                               case SPVM_BASIC_TYPE_C_ID_LONG:
@@ -2407,8 +2406,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 break;
                               case SPVM_BASIC_TYPE_C_ID_FLOAT:
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT);
-                                opcode.operand1 = (uint16_t)((constant->value.ival >> 16) & 0xFFFF);
-                                opcode.operand2 = (uint16_t)(constant->value.ival & 0xFFFF);
+                                opcode.operand1 = (uint32_t)constant->value.ival;
                                 mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                                 break;
                               case SPVM_BASIC_TYPE_C_ID_DOUBLE:

@@ -1345,7 +1345,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         byte_vars[opcode->operand0] = (int8_t)(uint8_t)opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_INT:
-        int_vars[opcode->operand0] = (int32_t)((opcode->operand1 << 16) + opcode->operand2);
+        int_vars[opcode->operand0] = (int32_t)opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
@@ -1357,7 +1357,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT: {
         SPVM_VALUE value;
-        value.ival = (int32_t)((opcode->operand1 << 16) + opcode->operand2);
+        value.ival = (int32_t)opcode->operand1;
         float_vars[opcode->operand0] = value.fval;
         break;
       }
