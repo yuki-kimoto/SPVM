@@ -3731,11 +3731,10 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE: {
-        int32_t constant_pool_id = opcode->operand2;
+        int32_t check_basic_type_id = opcode->operand2;
+        int32_t check_type_dimension = opcode->operand3;
 
-        int32_t cast_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t cast_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
-        SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = &runtime->basic_types[cast_basic_type_id];
+        SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = &runtime->basic_types[check_basic_type_id];
         const char* cast_basic_type_name = &runtime->string_pool[cast_basic_type->name_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -3764,7 +3763,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t check_type_dimension = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, cast_type_dimension);
+        SPVM_STRING_BUFFER_add_int(string_buffer, check_type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
@@ -3791,11 +3790,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_CHECK_CALLBACK: {
-        int32_t constant_pool_id = opcode->operand2;
+        int32_t check_basic_type_id = opcode->operand2;
 
-        int32_t cast_basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t cast_type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
-        SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = &runtime->basic_types[cast_basic_type_id];
+        SPVM_RUNTIME_BASIC_TYPE* cast_basic_type = &runtime->basic_types[check_basic_type_id];
         const char* cast_basic_type_name = &runtime->string_pool[cast_basic_type->name_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -3821,10 +3818,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
 
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t callback_basic_type_id = ");
         SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, cast_basic_type_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t callback_type_dimension = ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, cast_type_dimension);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
