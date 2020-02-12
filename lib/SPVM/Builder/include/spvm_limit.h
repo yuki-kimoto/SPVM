@@ -25,10 +25,10 @@ enum {
   // Sub arguments max count
   SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT = UINT8_MAX,
 
-  // valut fields count max
-  SPVM_LIMIT_C_VALUE_FIELDS_MAX_COUNT = 16,
+  // mulnum fields count max
+  SPVM_LIMIT_C_VALUE_FIELDS_MAX_COUNT = 256,
 
-  // valut fields count min
+  // mulnum fields count min
   SPVM_LIMIT_C_VALUE_FIELDS_MIN_COUNT = 1,
 };
 

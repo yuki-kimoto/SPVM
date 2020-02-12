@@ -1287,7 +1287,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode.operand0 = mem_id_out;
                           opcode.operand1 = mem_id_invocant;
                           opcode.operand2 = mem_id_index;
-                          opcode.operand3 = (field_offset << 8) + (fields_length);
+                          opcode.operand3 = (field_offset << 8) + (fields_length - 1);
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -4714,7 +4714,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       opcode.operand0 = mem_id_invocant;
                       opcode.operand1 = mem_id_index;
                       opcode.operand2 = mem_id_in;
-                      opcode.operand3 = (field_offset << 8) + (fields_length);
+                      opcode.operand3 = (field_offset << 8) + (fields_length - 1);
                       
                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
