@@ -122,7 +122,7 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_SUB* sub, 
   return op_var;
 }
 
-void SPVM_OP_CHECKER_add_type_info_to_constant_pool(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type) {
+void SPVM_OP_CHECKER_add_no_dup_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type) {
 
   if (SPVM_TYPE_is_object_type(compiler, op_type->uv.type->basic_type->id, op_type->uv.type->dimension, op_type->uv.type->flag)) {
     SPVM_PACKAGE* package = op_package->uv.package;
@@ -289,14 +289,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
                       {
                         SPVM_OP* op_type_tmp = op_type_element;
-                        
-                        // No duplicate basic type id
-                        SPVM_TYPE* type_tmp = op_type_tmp->uv.type;
-                        SPVM_BASIC_TYPE* found_basic_type = SPVM_HASH_fetch(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name));
-                        if (found_basic_type == NULL) {
-                          SPVM_LIST_push(package->info_basic_type_ids, (void*)(intptr_t)type_tmp->basic_type->id);
-                          SPVM_HASH_insert(package->info_basic_type_id_symtable, type_tmp->basic_type->name, strlen(type_tmp->basic_type->name), type_tmp->basic_type);
-                        }
+
+                        SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type_tmp);
                       }
                     }
                                             
@@ -968,7 +962,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
 
                     // Add type info to constant pool
-                    SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
+                    SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type);
                   }
                 }
                 // Array type
@@ -1043,7 +1037,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
                 
                 // Add type info to constant pool
-                SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
+                SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type);
               }
               else {
                 assert(0);
@@ -1129,7 +1123,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
 
                 // Add type info to constant pool
-                SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_type);
+                SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type);
               }
               
               break;
@@ -3305,7 +3299,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               // Add type info to constant pool
-              SPVM_OP_CHECKER_add_type_info_to_constant_pool(compiler, package->op_package, op_dist);
+              SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_dist);
             }
             break;
           }
