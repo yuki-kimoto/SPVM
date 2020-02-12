@@ -1658,7 +1658,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           
                           opcode.operand0 = mem_id_out;
-                          opcode.operand1 = package_var_access->constant_pool_id;
+                          opcode.operand1 = package_var_access->package_var->id;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           break;

@@ -3990,56 +3990,49 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand1;
         
         byte_vars[opcode->operand0] = *(int8_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand1;
         
         short_vars[opcode->operand0] = *(int16_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand1;
         
         int_vars[opcode->operand0] = *(int32_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand1;
         
         long_vars[opcode->operand0] = *(int64_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand1;
         
         float_vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand1;
         
         double_vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand1;
         
         SPVM_RUNTIME_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id]);
         
