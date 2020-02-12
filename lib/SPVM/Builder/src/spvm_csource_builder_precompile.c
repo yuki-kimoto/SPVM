@@ -5159,9 +5159,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT:
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE:
       {
-        int32_t constant_pool_id = opcode->operand0;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
+        int32_t package_var_id = opcode->operand0;
+         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
@@ -5232,9 +5231,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
-        int32_t constant_pool_id = opcode->operand0;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
+        int32_t package_var_id = opcode->operand0;
+         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
         const char* package_var_name = &runtime->string_pool[package_var->name_id];
@@ -5277,8 +5275,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
-        int32_t constant_pool_id = opcode->operand0;
-        int32_t package_var_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t package_var_id = opcode->operand0;
         SPVM_RUNTIME_PACKAGE_VAR* package_var = &runtime->package_vars[package_var_id];
         SPVM_RUNTIME_PACKAGE* package_var_package = &runtime->packages[package_var->package_id];
         const char* package_var_package_name = &runtime->string_pool[package_var_package->name_id];
