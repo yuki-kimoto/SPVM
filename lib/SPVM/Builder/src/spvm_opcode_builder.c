@@ -4596,7 +4596,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t mem_id_invocant = SPVM_OP_get_mem_id(compiler, op_term_invocant);
 
                           opcode.operand0 = mem_id_invocant;
-                          opcode.operand1 = field_access->constant_pool_id;
+                          opcode.operand1 = field_access->field->id;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
                           SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
@@ -4646,7 +4646,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t mem_id_invocant = SPVM_OP_get_mem_id(compiler, op_term_invocant);
                           
                           opcode.operand0 = mem_id_invocant;
-                          opcode.operand1 = field_access->constant_pool_id;
+                          opcode.operand1 = field_access->field->id;
                           opcode.operand2 = mem_id_in;
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
