@@ -3194,7 +3194,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                       int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_assign_src->first->last);
 
                                       opcode.operand0 = mem_id_out;
-                                      opcode.operand1 = op_type->uv.type->constant_pool_id;
+                                      opcode.operand1 = op_type->uv.type->basic_type->id;
                                       opcode.operand2 = mem_id_index;
 
                                       SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);

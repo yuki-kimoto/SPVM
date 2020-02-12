@@ -2672,8 +2672,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t basic_type_id = opcode->operand1;
         
         int32_t length = int_vars[opcode->operand2];
         if (length >= 0) {
