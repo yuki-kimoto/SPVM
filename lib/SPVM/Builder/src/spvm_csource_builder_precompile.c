@@ -3002,9 +3002,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t basic_type_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t type_dimension = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t basic_type_id = opcode->operand1;
         SPVM_RUNTIME_BASIC_TYPE* basic_type = &runtime->basic_types[basic_type_id];
         const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
 
