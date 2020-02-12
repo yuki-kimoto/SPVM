@@ -170,11 +170,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
   while (op_cur) {
     int32_t lines_count = op_cur->line - sub->op_sub->line + 1;
 
-    if (lines_count > SPVM_LIMIT_C_LINES_MAX_COUNT) {
-      SPVM_COMPILER_error(compiler, "Too many lines at %s line %d\n", op_cur->file, op_cur->line);
-      return;
-    }
-    
     // [START]Preorder traversal position
     if (!op_cur->no_need_check) {
       if (op_cur->id == SPVM_OP_C_ID_IF_REQUIRE) {
@@ -486,10 +481,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_LIST_pop(check_ast_info->op_switch_stack);
 
-              if (package->info_switch_infos->length > SPVM_LIMIT_C_SWITCHES_MAX_COUNT) {
-                SPVM_COMPILER_error(compiler, "Too many switch at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
               SPVM_LIST_push(package->info_switch_infos, op_cur->uv.switch_info);
               
               // Min

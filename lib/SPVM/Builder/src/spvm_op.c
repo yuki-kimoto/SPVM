@@ -1967,9 +1967,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       if (found_field) {
         SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s::%s\" at %s line %d\n", package_name, field_name, field->op_field->file, field->op_field->line);
       }
-      else if (package->fields->length > SPVM_LIMIT_C_FIELDS_MAX_COUNT) {
-        SPVM_COMPILER_error(compiler, "Too many field declarations at %s line %d\n", field->op_field->file, field->op_field->line);
-      }
       else {
         field->id = compiler->fields->length;
         SPVM_LIST_push(compiler->fields, field);
@@ -2014,9 +2011,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         if (found_package_var) {
           SPVM_COMPILER_error(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_name, package_var->op_package_var->file, package_var->op_package_var->line);
-        }
-        else if (package->package_vars->length > SPVM_LIMIT_C_PACKAGE_VARS_MAX_COUNT) {
-          SPVM_COMPILER_error(compiler, "Too many package variable declarations at %s line %d\n", package_var->op_package_var->file, package_var->op_package_var->line);
         }
         else {
           package_var->id = compiler->package_vars->length;
@@ -2142,9 +2136,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         if (found_sub) {
           SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
-        }
-        else if (package->subs->length > SPVM_LIMIT_C_SUBS_MAX_COUNT) {
-          SPVM_COMPILER_error(compiler, "Too many sub declarations at %s line %d\n", sub_name, sub->op_sub->file, sub->op_sub->line);
         }
         // Unknown sub
         else {
