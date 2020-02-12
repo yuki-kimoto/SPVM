@@ -37,6 +37,19 @@
 #include "spvm_array_field_access.h"
 #include "spvm_constant_pool.h"
 
+void SPVM_OPCODE_BUILDER_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t* runtime_basic_type_id, int32_t* runtime_type_dimension) {
+  // Runtime type
+  const char* runtime_basic_type_name;
+  if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
+    *runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
+    *runtime_type_dimension = dimension + 1;
+  }
+  else {
+    *runtime_basic_type_id = basic_type_id;
+    *runtime_type_dimension = dimension;
+  }
+}
+
 void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opcode, int32_t opcode_id) {
   opcode->id = opcode_id;
 }
@@ -3211,7 +3224,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY);
 
                                 int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                SPVM_TYPE* type = op_assign_src->first->first->uv.type;
                                 int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_assign_src->first->last);
                                 
                                 opcode.operand0 = mem_id_out;
