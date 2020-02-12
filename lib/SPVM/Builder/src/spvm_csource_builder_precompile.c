@@ -862,7 +862,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_array_field_store(SPVM_ENV* env, 
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_var_id, int32_t ref_var_id, int32_t fields_length) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_var_id, int32_t ref_var_id, int32_t fields_length) {
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   switch (element_ctype_id) {
@@ -938,7 +938,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(SPVM_ENV* env, SPVM_STRING_
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_var_id, int32_t ref_var_id, int32_t field_index) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t out_var_id, int32_t ref_var_id, int32_t field_index) {
 
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   switch (element_ctype_id) {
@@ -1010,7 +1010,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(SPVM_ENV* env, SP
   SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_set_field(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t ref_var_id, int32_t in_var_id, int32_t field_index) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(SPVM_ENV* env, SPVM_STRING_BUFFER* string_buffer, int32_t element_ctype_id, int32_t ref_var_id, int32_t in_var_id, int32_t field_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
   switch (element_ctype_id) {
     case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE: {
@@ -4612,92 +4612,92 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_BYTE: {
         int32_t fields_length = opcode->operand3;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, fields_length);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SHORT: {
         int32_t fields_length = opcode->operand3;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, fields_length);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_INT: {
         int32_t fields_length = opcode->operand3;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, fields_length);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_LONG: {
         int32_t fields_length = opcode->operand3;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, fields_length);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_FLOAT: {
         int32_t fields_length = opcode->operand3;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, fields_length);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_DOUBLE: {
         int32_t fields_length = opcode->operand3;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, fields_length);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, fields_length);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_GET_FIELD_BYTE: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_GET_FIELD_SHORT: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_GET_FIELD_INT: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_GET_FIELD_LONG: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_GET_FIELD_FLOAT: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_GET_FIELD_DOUBLE: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_get_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SET_FIELD_BYTE: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SET_FIELD_SHORT: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SET_FIELD_INT: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SET_FIELD_LONG: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SET_FIELD_FLOAT: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_MULNUM_DEREF_SET_FIELD_DOUBLE: {
         int32_t field_index = opcode->operand2;
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, field_index);
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_mulnum_deref_set_field(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, field_index);
         break;
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
