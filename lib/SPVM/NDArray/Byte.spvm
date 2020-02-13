@@ -1,5 +1,6 @@
+# SPVM::NDArray::Byte is created by regen/regen_ndarray.pl
 package SPVM::NDArray::Byte : public {
-  has base : public byte[];
+  has base : public Complex_2b[];
   has offset : public int;
   has length : public int;
   has trans : public byte;

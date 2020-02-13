@@ -1,5 +1,6 @@
+# SPVM::NDArray::Long is created by regen/regen_ndarray.pl
 package SPVM::NDArray::Long : public {
-  has base : public long[];
+  has base : public Complex_2l[];
   has offset : public int;
   has length : public int;
   has trans : public byte;

@@ -1,5 +1,6 @@
+# SPVM::NDArray::Int is created by regen/regen_ndarray.pl
 package SPVM::NDArray::Int : public {
-  has base : public int[];
+  has base : public Complex_2i[];
   has offset : public int;
   has length : public int;
   has trans : public byte;
