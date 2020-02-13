@@ -1,0 +1,7 @@
+# SPVM::Vector2Complex_4f is created by regen/regen_vector_complex.pl
+package SPVM::Vector2Complex_4f : public mulnum_t {
+  has re0 : public float;
+  has im0 : public float;
+  has re1 : public float;
+  has im1 : public float;
+}

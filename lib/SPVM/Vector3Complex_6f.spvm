@@ -1,0 +1,9 @@
+# SPVM::Vector3Complex_6f is created by regen/regen_vector_complex.pl
+package SPVM::Vector3Complex_6f : public mulnum_t {
+  has re0 : public float;
+  has im0 : public float;
+  has re1 : public float;
+  has im1 : public float;
+  has re2 : public float;
+  has im2 : public float;
+}
