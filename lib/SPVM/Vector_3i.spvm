@@ -1,0 +1,6 @@
+# SPVM::Vector_3i is created by regen/regen_vector.pl
+package SPVM::Vector_3i : public mulnum_t {
+  has x0 : public int;
+  has x1 : public int;
+  has x2 : public int;
+}

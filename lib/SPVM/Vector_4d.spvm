@@ -1,0 +1,7 @@
+# SPVM::Vector_4d is created by regen/regen_vector.pl
+package SPVM::Vector_4d : public mulnum_t {
+  has x0 : public double;
+  has x1 : public double;
+  has x2 : public double;
+  has x3 : public double;
+}

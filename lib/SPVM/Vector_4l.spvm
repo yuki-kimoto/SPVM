@@ -1,0 +1,7 @@
+# SPVM::Vector_4l is created by regen/regen_vector.pl
+package SPVM::Vector_4l : public mulnum_t {
+  has x0 : public long;
+  has x1 : public long;
+  has x2 : public long;
+  has x3 : public long;
+}

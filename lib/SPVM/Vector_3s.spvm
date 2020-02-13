@@ -1,0 +1,6 @@
+# SPVM::Vector_3s is created by regen/regen_vector.pl
+package SPVM::Vector_3s : public mulnum_t {
+  has x0 : public short;
+  has x1 : public short;
+  has x2 : public short;
+}

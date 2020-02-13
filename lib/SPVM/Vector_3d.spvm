@@ -1,0 +1,6 @@
+# SPVM::Vector_3d is created by regen/regen_vector.pl
+package SPVM::Vector_3d : public mulnum_t {
+  has x0 : public double;
+  has x1 : public double;
+  has x2 : public double;
+}

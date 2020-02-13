@@ -1,0 +1,5 @@
+# SPVM::Vector_2s is created by regen/regen_vector.pl
+package SPVM::Vector_2s : public mulnum_t {
+  has x0 : public short;
+  has x1 : public short;
+}
