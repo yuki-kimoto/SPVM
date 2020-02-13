@@ -1,0 +1,12 @@
+# SPVM::Matrix3_9i is created by regen/regen_matrix.pl
+package SPVM::Matrix3_9i : public mulnum_t {
+  has x00 : public int;
+  has x01 : public int;
+  has x02 : public int;
+  has x10 : public int;
+  has x11 : public int;
+  has x12 : public int;
+  has x20 : public int;
+  has x21 : public int;
+  has x22 : public int;
+}

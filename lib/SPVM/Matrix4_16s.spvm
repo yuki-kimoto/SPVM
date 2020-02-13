@@ -1,0 +1,19 @@
+# SPVM::Matrix4_16s is created by regen/regen_matrix.pl
+package SPVM::Matrix4_16s : public mulnum_t {
+  has x00 : public short;
+  has x01 : public short;
+  has x02 : public short;
+  has x03 : public short;
+  has x10 : public short;
+  has x11 : public short;
+  has x12 : public short;
+  has x13 : public short;
+  has x20 : public short;
+  has x21 : public short;
+  has x22 : public short;
+  has x23 : public short;
+  has x30 : public short;
+  has x31 : public short;
+  has x32 : public short;
+  has x33 : public short;
+}

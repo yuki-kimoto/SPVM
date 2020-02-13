@@ -1,0 +1,7 @@
+# SPVM::Matrix2_4d is created by regen/regen_matrix.pl
+package SPVM::Matrix2_4d : public mulnum_t {
+  has x00 : public double;
+  has x01 : public double;
+  has x10 : public double;
+  has x11 : public double;
+}

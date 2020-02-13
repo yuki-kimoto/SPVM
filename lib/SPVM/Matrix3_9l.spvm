@@ -1,0 +1,12 @@
+# SPVM::Matrix3_9l is created by regen/regen_matrix.pl
+package SPVM::Matrix3_9l : public mulnum_t {
+  has x00 : public long;
+  has x01 : public long;
+  has x02 : public long;
+  has x10 : public long;
+  has x11 : public long;
+  has x12 : public long;
+  has x20 : public long;
+  has x21 : public long;
+  has x22 : public long;
+}

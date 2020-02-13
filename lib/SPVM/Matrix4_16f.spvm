@@ -1,0 +1,19 @@
+# SPVM::Matrix4_16f is created by regen/regen_matrix.pl
+package SPVM::Matrix4_16f : public mulnum_t {
+  has x00 : public float;
+  has x01 : public float;
+  has x02 : public float;
+  has x03 : public float;
+  has x10 : public float;
+  has x11 : public float;
+  has x12 : public float;
+  has x13 : public float;
+  has x20 : public float;
+  has x21 : public float;
+  has x22 : public float;
+  has x23 : public float;
+  has x30 : public float;
+  has x31 : public float;
+  has x32 : public float;
+  has x33 : public float;
+}

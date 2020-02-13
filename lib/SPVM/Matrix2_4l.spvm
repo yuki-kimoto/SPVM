@@ -1,0 +1,7 @@
+# SPVM::Matrix2_4l is created by regen/regen_matrix.pl
+package SPVM::Matrix2_4l : public mulnum_t {
+  has x00 : public long;
+  has x01 : public long;
+  has x10 : public long;
+  has x11 : public long;
+}

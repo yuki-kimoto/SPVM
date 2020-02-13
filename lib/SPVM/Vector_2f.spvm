@@ -1,5 +1,0 @@
-# SPVM::Vector_2f is created by regen/regen_vector.pl
-package SPVM::Vector_2f : public mulnum_t {
-  has x0 : public float;
-  has x1 : public float;
-}
