@@ -1,0 +1,5 @@
+# SPVM::Complex_2b is created by regen/regen_complex.pl
+package SPVM::Complex_2b : mulnum_t {
+  has re : byte;
+  has im : byte;
+}

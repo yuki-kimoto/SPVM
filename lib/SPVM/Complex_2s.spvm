@@ -1,0 +1,5 @@
+# SPVM::Complex_2s is created by regen/regen_complex.pl
+package SPVM::Complex_2s : mulnum_t {
+  has re : short;
+  has im : short;
+}
