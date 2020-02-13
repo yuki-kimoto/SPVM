@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 my @dims = (2, 3, 4);
-my @types = qw(float double);
+my @types = qw(byte short int long float double);
 sub prefix {
   my ($type) = @_;
   my $prefix = substr($type, 0, 1);

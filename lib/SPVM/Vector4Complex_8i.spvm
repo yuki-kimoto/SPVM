@@ -1,0 +1,11 @@
+# SPVM::Vector4Complex_8i is created by regen/regen_vector_complex.pl
+package SPVM::Vector4Complex_8i : public mulnum_t {
+  has re0 : public int;
+  has im0 : public int;
+  has re1 : public int;
+  has im1 : public int;
+  has re2 : public int;
+  has im2 : public int;
+  has re3 : public int;
+  has im3 : public int;
+}

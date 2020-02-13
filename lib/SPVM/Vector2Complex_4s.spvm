@@ -1,0 +1,7 @@
+# SPVM::Vector2Complex_4s is created by regen/regen_vector_complex.pl
+package SPVM::Vector2Complex_4s : public mulnum_t {
+  has re0 : public short;
+  has im0 : public short;
+  has re1 : public short;
+  has im1 : public short;
+}
