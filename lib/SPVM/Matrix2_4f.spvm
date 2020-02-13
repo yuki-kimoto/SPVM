@@ -1,7 +1,0 @@
-# SPVM::Matrix2_4f is created by regen/regen_matrix.pl
-package SPVM::Matrix2_4f : public mulnum_t {
-  has x00 : public float;
-  has x01 : public float;
-  has x10 : public float;
-  has x11 : public float;
-}

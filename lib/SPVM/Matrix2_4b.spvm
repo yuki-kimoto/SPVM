@@ -1,7 +1,0 @@
-# SPVM::Matrix2_4b is created by regen/regen_matrix.pl
-package SPVM::Matrix2_4b : public mulnum_t {
-  has x00 : public byte;
-  has x01 : public byte;
-  has x10 : public byte;
-  has x11 : public byte;
-}
