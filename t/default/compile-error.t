@@ -14,6 +14,28 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Field
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Field::Private');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::Field::HasFieldNameStartDigit');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Literal
 {
   {
@@ -264,13 +286,6 @@ use lib "$FindBin::Bin/lib";
 {
   my $build = SPVM::Builder->new;
   $build->use('TestCase::CompileError::PackageVar::Private');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
-}
-
-{
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::Field::Private');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }

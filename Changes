@@ -1,6 +1,6 @@
 (Current SPVM is on beta release)
 
-0.0701 2020-02-05
+0.0701 2020-02-17
   - add SPVM::NDArray::Byte
   - add SPVM::NDArray::Short
   - add SPVM::NDArray::Int
@@ -10,6 +10,7 @@
   - add SPVM::NDArray::String
   - add SPVM::NDArray::DoubleComplex
   - add SPVM::NDArray::FloatComplex
+  - fix module load bug
   
 0.07 2020-01-30
   - remove fileno, set_binmode methods because file nomber is not portable.
