@@ -1,0 +1,3 @@
+package TestCase::CompileError::Sub::SubNameContainsUnderScoreTwice {
+  sub Foo__Bar : int () {}
+}

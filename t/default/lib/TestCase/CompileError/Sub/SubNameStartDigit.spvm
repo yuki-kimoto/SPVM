@@ -1,0 +1,3 @@
+package TestCase::CompileError::Sub::SubNameStartDigit {
+  sub 3foo : int () { }
+}
