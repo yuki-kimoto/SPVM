@@ -176,26 +176,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               char* cur_file = NULL;
               FILE* fh = NULL;
               int32_t module_include_pathes_length = compiler->module_include_pathes->length;
-              {
-                int32_t i;
-                for (i = 0; i < module_include_pathes_length; i++) {
-                  const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
-                  
-                  // File name
-                  int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(cur_rel_file));
-                  cur_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_name_length + 1);
-                  sprintf(cur_file, "%s/%s", include_path, cur_rel_file);
-                  cur_file[file_name_length] = '\0';
-                  
-                  // Open source file
-                  fh = fopen(cur_file, "rb");
-                  if (fh) {
-                    compiler->cur_file = cur_file;
-                    break;
-                  }
-                  errno = 0;
+              for (int32_t i = 0; i < module_include_pathes_length; i++) {
+                const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
+                
+                // File name
+                int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(cur_rel_file));
+                cur_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_name_length + 1);
+                sprintf(cur_file, "%s/%s", include_path, cur_rel_file);
+                cur_file[file_name_length] = '\0';
+                
+                // Open source file
+                fh = fopen(cur_file, "rb");
+                if (fh) {
+                  compiler->cur_file = cur_file;
+                  break;
                 }
+                errno = 0;
               }
+              
               if (!fh) {
                 if (op_use->uv.use->is_require) {
                   op_use->uv.use->load_fail = 1;
@@ -211,17 +209,24 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else {
                   fprintf(stderr, "Can't locate %s in @INC (@INC contains:", cur_rel_file);
-                  {
-                    int32_t i;
-                    for (i = 0; i < module_include_pathes_length; i++) {
-                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
-                      fprintf(stderr, " %s", include_path);
-                    }
+                  for (int32_t i = 0; i < module_include_pathes_length; i++) {
+                    const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
+                    fprintf(stderr, " %s", include_path);
                   }
                   fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
                   compiler->error_count++;
                   return 0;
                 }
+              }
+              
+              // Skip if already loaded
+              const char* found_module_file = SPVM_HASH_fetch(compiler->module_file_symtable, compiler->cur_file, strlen(compiler->cur_file));
+              if (found_module_file) {
+                continue;
+              }
+              else {
+                // Add module file symtable
+                SPVM_HASH_insert(compiler->module_file_symtable, cur_file, strlen(compiler->cur_file), (char*)compiler->cur_file);
               }
               
               compiler->cur_file = cur_file;
@@ -1939,7 +1944,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Symbol name can't conatain __
           if (strstr(keyword, "__")) {
-            SPVM_COMPILER_error(compiler, "Symbol name can't contain __ at %s line %d\n", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d\n", keyword, compiler->cur_file, compiler->cur_line);
           }
           
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);

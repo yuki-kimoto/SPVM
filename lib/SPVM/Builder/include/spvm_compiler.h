@@ -84,6 +84,9 @@ struct SPVM_compiler {
 
   // Packages
   SPVM_LIST* packages;
+
+  // module file symtable
+  SPVM_HASH* module_file_symtable;
   
   // OP package symtable
   SPVM_HASH* package_symtable;

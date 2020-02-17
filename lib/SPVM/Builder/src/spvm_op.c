@@ -1516,6 +1516,9 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_term, S
   
   field_access->op_term = op_term;
   field_access->op_name = op_name_field;
+  
+  const char* field_name = op_name_field->uv.name;
+
   op_field_access->uv.field_access = field_access;
   
   return op_field_access;
@@ -2287,12 +2290,11 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
 
   // Create field information
   SPVM_FIELD* field = SPVM_FIELD_new(compiler);
-  
-  // Name
+
+  // Field Name
   field->op_name = op_name_field;
-  
   field->name = op_name_field->uv.name;
-  
+
   // Type
   field->type = op_type->uv.type;
   
