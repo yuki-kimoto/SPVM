@@ -1607,7 +1607,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   const char* package_name = op_type->uv.type->basic_type->name;
 
   if (!is_anon && islower(package_name[0])) {
-    SPVM_COMPILER_error(compiler, "Package name must start with upper case \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
+    SPVM_COMPILER_error(compiler, "Package name \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
   }
   
   SPVM_HASH* package_symtable = compiler->package_symtable;
