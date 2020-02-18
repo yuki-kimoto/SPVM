@@ -1,9 +1,0 @@
-# SPVM::Vector3Complex_6l is created by regen/regen_vector_complex.pl
-package SPVM::Vector3Complex_6l : public mulnum_t {
-  has re0 : public long;
-  has im0 : public long;
-  has re1 : public long;
-  has im1 : public long;
-  has re2 : public long;
-  has im2 : public long;
-}

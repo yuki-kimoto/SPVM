@@ -1,6 +1,6 @@
 (Current SPVM is on beta release)
 
-0.0701 2020-02-17
+0.0701 2020-02-18
   - add SPVM::NDArray::Byte
   - add SPVM::NDArray::Short
   - add SPVM::NDArray::Int
@@ -8,48 +8,6 @@
   - add SPVM::NDArray::Float
   - add SPVM::NDArray::Double
   - add SPVM::NDArray::String
-  - add SPVM::Vector2_2b.spvm
-  - add SPVM::Vector2_2d.spvm
-  - add SPVM::Vector2_2f.spvm
-  - add SPVM::Vector2_2i.spvm
-  - add SPVM::Vector2_2l.spvm
-  - add SPVM::Vector2_2s.spvm
-  - add SPVM::Vector2_4d.spvm
-  - add SPVM::Vector2_4f.spvm
-  - add SPVM::Vector2Complex_4b.spvm
-  - add SPVM::Vector2Complex_4d.spvm
-  - add SPVM::Vector2Complex_4f.spvm
-  - add SPVM::Vector2Complex_4i.spvm
-  - add SPVM::Vector2Complex_4l.spvm
-  - add SPVM::Vector2Complex_4s.spvm
-  - add SPVM::Vector3_3b.spvm
-  - add SPVM::Vector3_3d.spvm
-  - add SPVM::Vector3_3f.spvm
-  - add SPVM::Vector3_3i.spvm
-  - add SPVM::Vector3_3l.spvm
-  - add SPVM::Vector3_3s.spvm
-  - add SPVM::Vector3_6d.spvm
-  - add SPVM::Vector3_6f.spvm
-  - add SPVM::Vector3Complex_6b.spvm
-  - add SPVM::Vector3Complex_6d.spvm
-  - add SPVM::Vector3Complex_6f.spvm
-  - add SPVM::Vector3Complex_6i.spvm
-  - add SPVM::Vector3Complex_6l.spvm
-  - add SPVM::Vector3Complex_6s.spvm
-  - add SPVM::Vector4_4b.spvm
-  - add SPVM::Vector4_4d.spvm
-  - add SPVM::Vector4_4f.spvm
-  - add SPVM::Vector4_4i.spvm
-  - add SPVM::Vector4_4l.spvm
-  - add SPVM::Vector4_4s.spvm
-  - add SPVM::Vector4_8d.spvm
-  - add SPVM::Vector4_8f.spvm
-  - add SPVM::Vector4Complex_8b.spvm
-  - add SPVM::Vector4Complex_8d.spvm
-  - add SPVM::Vector4Complex_8f.spvm
-  - add SPVM::Vector4Complex_8i.spvm
-  - add SPVM::Vector4Complex_8l.spvm
-  - add SPVM::Vector4Complex_8s.spvm
   - fix module load bug
   
 0.07 2020-01-30

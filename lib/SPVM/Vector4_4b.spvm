@@ -1,7 +1,0 @@
-# SPVM::Vector4_4b is created by regen/regen_vector.pl
-package SPVM::Vector4_4b : public mulnum_t {
-  has x0 : public byte;
-  has x1 : public byte;
-  has x2 : public byte;
-  has x3 : public byte;
-}

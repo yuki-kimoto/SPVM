@@ -1,7 +1,0 @@
-# SPVM::Vector4_4s is created by regen/regen_vector.pl
-package SPVM::Vector4_4s : public mulnum_t {
-  has x0 : public short;
-  has x1 : public short;
-  has x2 : public short;
-  has x3 : public short;
-}

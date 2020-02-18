@@ -1,7 +1,0 @@
-# SPVM::Vector4_4f is created by regen/regen_vector.pl
-package SPVM::Vector4_4f : public mulnum_t {
-  has x0 : public float;
-  has x1 : public float;
-  has x2 : public float;
-  has x3 : public float;
-}
