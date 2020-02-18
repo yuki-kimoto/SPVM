@@ -1,7 +1,7 @@
 # SPVM::NDArray::Float is created by regen/regen_ndarray.pl
 package SPVM::NDArray::Float : public {
-  has base : public Complex_2f[];
-  has base_im : public Complex_2f[];
+  has base : public float[];
+  has base_im : public float[];
   has offset : public int;
   has length : public int;
   has T : public byte;

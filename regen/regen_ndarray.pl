@@ -16,7 +16,7 @@ sub base_type {
     $base_type = 'String';
   }
   else {
-    $base_type = "Complex_2" . substr($type, 0, 1);
+    $base_type = $type;
   }
   return $base_type;
 }
