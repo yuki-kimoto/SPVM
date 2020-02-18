@@ -1,7 +1,6 @@
 # SPVM::NDArray::String is created by regen/regen_ndarray.pl
 package SPVM::NDArray::String : public {
-  has base : public String[];
-  has base_im : public String[];
+  has base : public string[];
   has offset : public int;
   has length : public int;
   has T : public byte;

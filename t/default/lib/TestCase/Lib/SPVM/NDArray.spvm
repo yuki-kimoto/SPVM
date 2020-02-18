@@ -1,5 +1,11 @@
 package TestCase::Lib::SPVM::NDArray {
   use SPVM::NDArray::Byte;
+  use SPVM::NDArray::Short;
+  use SPVM::NDArray::Int;
+  use SPVM::NDArray::Long;
+  use SPVM::NDArray::Float;
+  use SPVM::NDArray::Double;
+  use SPVM::NDArray::String;
   
   sub ndarray_byte : int () {
     my $ndarray_byte = new SPVM::NDArray::Byte;
@@ -14,4 +20,87 @@ package TestCase::Lib::SPVM::NDArray {
     
     return 1;
   }
+
+  sub ndarray_short : int () {
+    my $ndarray_short = new SPVM::NDArray::Short;
+    $ndarray_short->{base} = new short[6];
+    $ndarray_short->{base_im} = new short[6];
+    $ndarray_short->{offset} = 0;
+    $ndarray_short->{length} = 3;
+    $ndarray_short->{T} = 1;
+    $ndarray_short->{is_complex} = 1;
+    $ndarray_short->{shape} = [2, 3];
+    $ndarray_short->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_int : int () {
+    my $ndarray_int = new SPVM::NDArray::Int;
+    $ndarray_int->{base} = new int[6];
+    $ndarray_int->{base_im} = new int[6];
+    $ndarray_int->{offset} = 0;
+    $ndarray_int->{length} = 3;
+    $ndarray_int->{T} = 1;
+    $ndarray_int->{is_complex} = 1;
+    $ndarray_int->{shape} = [2, 3];
+    $ndarray_int->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+  sub ndarray_long : int () {
+    my $ndarray_long = new SPVM::NDArray::Long;
+    $ndarray_long->{base} = new long[6];
+    $ndarray_long->{base_im} = new long[6];
+    $ndarray_long->{offset} = 0;
+    $ndarray_long->{length} = 3;
+    $ndarray_long->{T} = 1;
+    $ndarray_long->{is_complex} = 1;
+    $ndarray_long->{shape} = [2, 3];
+    $ndarray_long->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_float : int () {
+    my $ndarray_float = new SPVM::NDArray::Float;
+    $ndarray_float->{base} = new float[6];
+    $ndarray_float->{base_im} = new float[6];
+    $ndarray_float->{offset} = 0;
+    $ndarray_float->{length} = 3;
+    $ndarray_float->{T} = 1;
+    $ndarray_float->{is_complex} = 1;
+    $ndarray_float->{shape} = [2, 3];
+    $ndarray_float->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_double : int () {
+    my $ndarray_double = new SPVM::NDArray::Double;
+    $ndarray_double->{base} = new double[6];
+    $ndarray_double->{base_im} = new double[6];
+    $ndarray_double->{offset} = 0;
+    $ndarray_double->{length} = 3;
+    $ndarray_double->{T} = 1;
+    $ndarray_double->{is_complex} = 1;
+    $ndarray_double->{shape} = [2, 3];
+    $ndarray_double->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_string : int () {
+    my $ndarray_string = new SPVM::NDArray::String;
+    $ndarray_string->{base} = new string[6];
+    $ndarray_string->{offset} = 0;
+    $ndarray_string->{length} = 3;
+    $ndarray_string->{T} = 1;
+    $ndarray_string->{is_complex} = 1;
+    $ndarray_string->{shape} = [2, 3];
+    $ndarray_string->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
 }
