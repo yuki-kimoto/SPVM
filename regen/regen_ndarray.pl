@@ -31,9 +31,11 @@ for my $type (@types) {
   $package_content .= "package $package_name : public {\n";
   $package_content .= <<"EOS";
   has base : public ${base_type}[];
+  has base_im : public ${base_type}[];
   has offset : public int;
   has length : public int;
-  has trans : public byte;
+  has T : public byte;
+  has is_complex : public byte;
   has shape : public int[];
   has na_flags : public byte[];
 EOS

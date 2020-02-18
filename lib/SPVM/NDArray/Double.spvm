@@ -1,9 +1,11 @@
 # SPVM::NDArray::Double is created by regen/regen_ndarray.pl
 package SPVM::NDArray::Double : public {
   has base : public Complex_2d[];
+  has base_im : public Complex_2d[];
   has offset : public int;
   has length : public int;
-  has trans : public byte;
+  has T : public byte;
+  has is_complex : public byte;
   has shape : public int[];
   has na_flags : public byte[];
 }
