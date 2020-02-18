@@ -1,0 +1,17 @@
+package TestCase::Lib::SPVM::NDArray {
+  use SPVM::NDArray::Byte;
+  
+  sub ndarray_byte : int () {
+    my $ndarray_byte = new SPVM::NDArray::Byte;
+    $ndarray_byte->{base} = new byte[6];
+    $ndarray_byte->{base_im} = new byte[6];
+    $ndarray_byte->{offset} = 0;
+    $ndarray_byte->{length} = 3;
+    $ndarray_byte->{T} = 1;
+    $ndarray_byte->{is_complex} = 1;
+    $ndarray_byte->{shape} = [2, 3];
+    $ndarray_byte->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+}
