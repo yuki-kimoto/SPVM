@@ -1,11 +1,9 @@
 # SPVM::NDArray::Short is created by regen/regen_ndarray.pl
 package SPVM::NDArray::Short : public {
   has base : public short[];
-  has base_im : public short[];
   has offset : public int;
   has length : public int;
   has T : public byte;
-  has is_complex : public byte;
   has shape : public int[];
   has na_flags : public byte[];
 }
