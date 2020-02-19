@@ -56,6 +56,7 @@
 .spvm_build/work/src/TestCase/Lib/SPVM/Long.precompile.c
 .spvm_build/work/src/TestCase/Lib/SPVM/LongList.precompile.c
 .spvm_build/work/src/TestCase/Lib/SPVM/Math.precompile.c
+.spvm_build/work/src/TestCase/Lib/SPVM/NDArray.precompile.c
 .spvm_build/work/src/TestCase/Lib/SPVM/ObjectList.precompile.c
 .spvm_build/work/src/TestCase/Lib/SPVM/Regex.precompile.c
 .spvm_build/work/src/TestCase/Lib/SPVM/Short.precompile.c
@@ -96,6 +97,7 @@
 .spvm_build/work/src/TestCase/Sub.precompile.c
 .spvm_build/work/src/TestCase/Subtract.precompile.c
 .spvm_build/work/src/TestCase/Switch.precompile.c
+.spvm_build/work/src/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.precompile.c
 .spvm_build/work/src/TestCase/Term.precompile.c
 .spvm_build/work/src/TestCase/UnaryMinus.precompile.c
 .spvm_build/work/src/TestCase/UnaryPlus.precompile.c
@@ -244,10 +246,14 @@ lib/SPVM/Cloner.pm
 lib/SPVM/Cloner.spvm
 lib/SPVM/Comparator.pm
 lib/SPVM/Comparator.spvm
+lib/SPVM/Complex_2b.spvm
 lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
+lib/SPVM/Complex_2i.spvm
+lib/SPVM/Complex_2l.spvm
+lib/SPVM/Complex_2s.spvm
 lib/SPVM/Double.pm
 lib/SPVM/Double.spvm
 lib/SPVM/DoubleList.pm
@@ -294,10 +300,35 @@ lib/SPVM/Math.c
 lib/SPVM/Math.config
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
+lib/SPVM/NDArray/Byte.spvm
+lib/SPVM/NDArray/ComplexByte.spvm
+lib/SPVM/NDArray/ComplexDouble.spvm
+lib/SPVM/NDArray/ComplexFloat.spvm
+lib/SPVM/NDArray/ComplexInt.spvm
+lib/SPVM/NDArray/ComplexLong.spvm
+lib/SPVM/NDArray/ComplexShort.spvm
+lib/SPVM/NDArray/Double.spvm
+lib/SPVM/NDArray/Float.spvm
+lib/SPVM/NDArray/Int.spvm
+lib/SPVM/NDArray/Long.spvm
+lib/SPVM/NDArray/QuatByte.spvm
+lib/SPVM/NDArray/QuatDouble.spvm
+lib/SPVM/NDArray/QuatFloat.spvm
+lib/SPVM/NDArray/QuatInt.spvm
+lib/SPVM/NDArray/QuatLong.spvm
+lib/SPVM/NDArray/QuatShort.spvm
+lib/SPVM/NDArray/Short.spvm
+lib/SPVM/NDArray/String.spvm
 lib/SPVM/ObjectList.pm
 lib/SPVM/ObjectList.spvm
 lib/SPVM/Point.pm
 lib/SPVM/Point.spvm
+lib/SPVM/Quat_4b.spvm
+lib/SPVM/Quat_4d.spvm
+lib/SPVM/Quat_4f.spvm
+lib/SPVM/Quat_4i.spvm
+lib/SPVM/Quat_4l.spvm
+lib/SPVM/Quat_4s.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
@@ -336,6 +367,11 @@ Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README.md
+regen/regen_complex.pl
+regen/regen_ndarray.pl
+regen/regen_ndarray_complex.pl
+regen/regen_ndarray_quat.pl
+regen/regen_quat.pl
 solo/Main.spvm
 solo/solo_Makefile.PL
 solo/SPVM/Byte.spvm
@@ -439,7 +475,6 @@ t/default/commaop.t
 t/default/comment.t
 t/default/comparison-operator.t
 t/default/compile-error.t
-t/default/complex.t
 t/default/concat.t
 t/default/constant.t
 t/default/convert.t
@@ -456,6 +491,8 @@ t/default/increment.t
 t/default/inline.t
 t/default/isa.t
 t/default/lexical-var.t
+t/default/lib/4foo.spvm
+t/default/lib/foo.spvm
 t/default/lib/TestCase.spvm
 t/default/lib/TestCase/Add.spvm
 t/default/lib/TestCase/Allow.spvm
@@ -502,6 +539,8 @@ t/default/lib/TestCase/CompileError/Convert/ConvertToRef.spvm
 t/default/lib/TestCase/CompileError/Divide/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Divide/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Enum/PrivateAccess.spvm
+t/default/lib/TestCase/CompileError/Field/HasFieldNameContainsUnderScoreTwice.spvm
+t/default/lib/TestCase/CompileError/Field/HasFieldNameStartDigit.spvm
 t/default/lib/TestCase/CompileError/Field/Private.spvm
 t/default/lib/TestCase/CompileError/InvalidType.spvm
 t/default/lib/TestCase/CompileError/Isa/LeftIsNotObject.spvm
@@ -515,6 +554,8 @@ t/default/lib/TestCase/CompileError/Remainder/LeftIsNotIntegral.spvm
 t/default/lib/TestCase/CompileError/Remainder/RightIsNotIntegral.spvm
 t/default/lib/TestCase/CompileError/String/CharacterAssign.spvm
 t/default/lib/TestCase/CompileError/Sub/Begin.spvm
+t/default/lib/TestCase/CompileError/Sub/SubNameContainsUnderScoreTwice.spvm
+t/default/lib/TestCase/CompileError/Sub/SubNameStartDigit.spvm
 t/default/lib/TestCase/CompileError/Subtract/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Subtract/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Switch/NoLastBreak.spvm
@@ -526,7 +567,6 @@ t/default/lib/TestCase/CompileError/Value/Fields17.spvm
 t/default/lib/TestCase/CompileError/Value/FieldsZero.spvm
 t/default/lib/TestCase/CompileError/Weaken/ArrayNotObject.spvm
 t/default/lib/TestCase/CompileError/Weaken/HashNotObject.spvm
-t/default/lib/TestCase/Complex.spvm
 t/default/lib/TestCase/Concat.spvm
 t/default/lib/TestCase/Constant.spvm
 t/default/lib/TestCase/Convert.spvm
@@ -563,6 +603,7 @@ t/default/lib/TestCase/Lib/SPVM/IO/Stdout.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
+t/default/lib/TestCase/Lib/SPVM/NDArray.spvm
 t/default/lib/TestCase/Lib/SPVM/ObjectList.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
@@ -624,6 +665,7 @@ t/default/lib/TestCase/String.spvm
 t/default/lib/TestCase/Sub.spvm
 t/default/lib/TestCase/Subtract.spvm
 t/default/lib/TestCase/Switch.spvm
+t/default/lib/TestCase/SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.spvm
 t/default/lib/TestCase/Term.spvm
 t/default/lib/TestCase/UnaryMinus.spvm
 t/default/lib/TestCase/UnaryPlus.spvm
@@ -657,6 +699,7 @@ t/default/string.t
 t/default/sub.t
 t/default/subtract.t
 t/default/switch.t
+t/default/symbol-name.t
 t/default/term.t
 t/default/unary-minus.t
 t/default/unary-plus.t

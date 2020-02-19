@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <inttypes.h>
-#include <complex.h>
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
@@ -960,94 +959,6 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         double_vars[opcode->operand0]
           = double_vars[opcode->operand1] / double_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_COMPLEX_ADD_FLOAT: {
-        float _Complex x_in1 = float_vars[opcode->operand1] + float_vars[opcode->operand1 + 1] * _Complex_I ;
-        float _Complex x_in2 = float_vars[opcode->operand2] + float_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        float _Complex x_out = x_in1 + x_in2;
-        
-        float_vars[opcode->operand0] = creal(x_out);
-        float_vars[opcode->operand0 + 1] = cimag(x_out);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_COMPLEX_ADD_DOUBLE: {
-        double _Complex x_in1 = double_vars[opcode->operand1] + double_vars[opcode->operand1 + 1] * _Complex_I ;
-        double _Complex x_in2 = double_vars[opcode->operand2] + double_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        double _Complex x_out = x_in1 + x_in2;
-        
-        double_vars[opcode->operand0] = creal(x_out);
-        double_vars[opcode->operand0 + 1] = cimag(x_out);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_COMPLEX_SUBTRACT_FLOAT: {
-        float _Complex x_in1 = float_vars[opcode->operand1] + float_vars[opcode->operand1 + 1] * _Complex_I ;
-        float _Complex x_in2 = float_vars[opcode->operand2] + float_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        float _Complex x_out = x_in1 - x_in2;
-        
-        float_vars[opcode->operand0] = creal(x_out);
-        float_vars[opcode->operand0 + 1] = cimag(x_out);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_COMPLEX_SUBTRACT_DOUBLE: {
-        double _Complex x_in1 = double_vars[opcode->operand1] + double_vars[opcode->operand1 + 1] * _Complex_I ;
-        double _Complex x_in2 = double_vars[opcode->operand2] + double_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        double _Complex x_out = x_in1 - x_in2;
-        
-        double_vars[opcode->operand0] = creal(x_out);
-        double_vars[opcode->operand0 + 1] = cimag(x_out);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_COMPLEX_MULTIPLY_FLOAT: {
-        float _Complex x_in1 = float_vars[opcode->operand1] + float_vars[opcode->operand1 + 1] * _Complex_I ;
-        float _Complex x_in2 = float_vars[opcode->operand2] + float_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        float _Complex x_out = x_in1 * x_in2;
-        
-        float_vars[opcode->operand0] = creal(x_out);
-        float_vars[opcode->operand0 + 1] = cimag(x_out);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_COMPLEX_MULTIPLY_DOUBLE: {
-        double _Complex x_in1 = double_vars[opcode->operand1] + double_vars[opcode->operand1 + 1] * _Complex_I ;
-        double _Complex x_in2 = double_vars[opcode->operand2] + double_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        double _Complex x_out = x_in1 * x_in2;
-        
-        double_vars[opcode->operand0] = creal(x_out);
-        double_vars[opcode->operand0 + 1] = cimag(x_out);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_COMPLEX_DIVIDE_FLOAT: {
-        float _Complex x_in1 = float_vars[opcode->operand1] + float_vars[opcode->operand1 + 1] * _Complex_I ;
-        float _Complex x_in2 = float_vars[opcode->operand2] + float_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        float _Complex x_out = x_in1 / x_in2;
-        
-        float_vars[opcode->operand0] = creal(x_out);
-        float_vars[opcode->operand0 + 1] = cimag(x_out);
-
-        break;
-      }
-      case SPVM_OPCODE_C_ID_COMPLEX_DIVIDE_DOUBLE: {
-        double _Complex x_in1 = double_vars[opcode->operand1] + double_vars[opcode->operand1 + 1] * _Complex_I ;
-        double _Complex x_in2 = double_vars[opcode->operand2] + double_vars[opcode->operand2 + 1] * _Complex_I ;
-        
-        double _Complex x_out = x_in1 / x_in2;
-        
-        double_vars[opcode->operand0] = creal(x_out);
-        double_vars[opcode->operand0 + 1] = cimag(x_out);
-        
-        break;
-      }
       case SPVM_OPCODE_C_ID_REMAINDER_INT:
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
           void* exception = env->new_string_raw(env, "0 division");

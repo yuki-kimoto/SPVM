@@ -14,10 +14,6 @@ package TestCase::Lib::SPVM::Util {
   use SPVM::Util (
     chomp_lf,
     chomp_crlf,
-    complex_darray,
-    complex_farray,
-    complexd,
-    complexf,
     copy_barray,
     copy_sarray,
     copy_iarray,
@@ -1058,56 +1054,6 @@ package TestCase::Lib::SPVM::Util {
     }
     
     return 1;
-  }
-
-  sub test_complex_farray : int () {
-    my $z_array = complex_farray(
-      [FLT_MIN(), 2, 4],
-      [(float)1,  3, 5]
-    );
-
-    if ($z_array->[0]{x} == FLT_MIN() && $z_array->[0]{y} == 1
-      && $z_array->[1]{x} == 2 && $z_array->[1]{y} == 3
-      && $z_array->[2]{x} == 4 && $z_array->[2]{y} == 5)
-    {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  sub test_complex_darray : int () {
-    my $z_array = complex_darray(
-      [DBL_MIN(), 2, 4],
-      [(double)1, 3, 5]
-    );
-
-    if ($z_array->[0]{x} == DBL_MIN() && $z_array->[0]{y} == 1
-      && $z_array->[1]{x} == 2 && $z_array->[1]{y} == 3
-      && $z_array->[2]{x} == 4 && $z_array->[2]{y} == 5)
-    {
-      return 1;
-    }
-    
-    return 0;
-  }
-  
-  sub test_complexf : int () {
-    my $z = complexf(FLT_MIN(), FLT_MIN() + 1);
-    if ($z->{x} == FLT_MIN() && $z->{y} == FLT_MIN() + 1) {
-      return 1;
-    }
-    
-    return 0;
-  }
-
-  sub test_complexd : int () {
-    my $z = complexd(DBL_MIN(), DBL_MIN() + 1);
-    if ($z->{x} == DBL_MIN() && $z->{y} == DBL_MIN() + 1) {
-      return 1;
-    }
-    
-    return 0;
   }
 
   sub test_strtoi : int () {

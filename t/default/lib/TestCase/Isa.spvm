@@ -3,6 +3,7 @@ package TestCase::Isa {
   use TestCase::Simple;
   use SPVM::Comparator;
   use SPVM::Complex_2d;
+  use SPVM::Complex_2f;
 
   sub isa_any_object_type : int () {
     my $num : object;

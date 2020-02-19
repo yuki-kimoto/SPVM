@@ -1259,13 +1259,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
-# Complex
-{
-  my $z3 = TestCase::ExchangeAPI->add_complex({x => 0.25, y => 0.5}, {x => 0.5, y => 0.125});
-  is_deeply($z3, {x => 0.75, y => 0.625});
-}
-
-
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

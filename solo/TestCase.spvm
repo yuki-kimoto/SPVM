@@ -20,6 +20,8 @@ package TestCase {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use SPVM::Complex_2f;
+  use SPVM::Complex_2d;
 
 =pod
 

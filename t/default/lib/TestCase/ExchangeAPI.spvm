@@ -1001,9 +1001,4 @@ package TestCase::ExchangeAPI {
     
     return 0;
   }
-  
-  sub add_complex : SPVM::Complex_2d ($x : SPVM::Complex_2d, $y : SPVM::Complex_2d) {
-    return $x + $y;
-  }
-
 }

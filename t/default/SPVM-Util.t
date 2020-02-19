@@ -70,14 +70,6 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_equals_oarray);
 }
 
-# Complex
-{
-  ok(TestCase::Lib::SPVM::Util->test_complexf());
-  ok(TestCase::Lib::SPVM::Util->test_complexd());
-  ok(TestCase::Lib::SPVM::Util->test_complex_farray());
-  ok(TestCase::Lib::SPVM::Util->test_complex_darray());
-}
-
 # strtoi
 {
   ok(TestCase::Lib::SPVM::Util->test_strtoi);
