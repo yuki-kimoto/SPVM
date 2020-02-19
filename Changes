@@ -1,6 +1,6 @@
 (Current SPVM is on beta release)
 
-0.0701 2020-02-18
+0.0701 2020-02-19
   - add SPVM::NDArray::Byte
   - add SPVM::NDArray::Short
   - add SPVM::NDArray::Int
@@ -11,6 +11,9 @@
   - fix module load bug
   - change SPVM::Complex_2x(x is b, s, i, l, f, and d) field name re to x, im to y, 
   - add SPVM::Quaternion_4x((x is b, s, i, l, f, and d).
+  - add SPVM::NDArray::ComplexX(X is Byte, Short, Int, Long, Float, Double)
+  - add SPVM::NDArray::QuaternionX(X is Byte, Short, Int, Long, Float, Double)
+
 0.07 2020-01-30
   - remove fileno, set_binmode methods because file nomber is not portable.
   - add warn and print empty string and undef spec

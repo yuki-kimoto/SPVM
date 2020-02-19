@@ -1,0 +1,9 @@
+# SPVM::NDArray::QuaternionLong is created by regen/regen_ndarray_quaternion.pl
+package SPVM::NDArray::QuaternionLong : public {
+  has base : public Quaternion_4l[];
+  has offset : public int;
+  has length : public int;
+  has T : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
