@@ -1,0 +1,7 @@
+# SPVM::Quat_4i is created by regen/regen_quat.pl
+package SPVM::Quat_4i : mulnum_t {
+  has t : int;
+  has x : int;
+  has y : int;
+  has z : int;
+}

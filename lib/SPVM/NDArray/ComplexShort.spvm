@@ -1,6 +1,7 @@
 # SPVM::NDArray::ComplexShort is created by regen/regen_ndarray_complex.pl
 package SPVM::NDArray::ComplexShort : public {
-  has base : public Complex_2s[];
+  use SPVM::Complex_2s;
+  has base : public SPVM::Complex_2s[];
   has offset : public int;
   has length : public int;
   has T : public byte;

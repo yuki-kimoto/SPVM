@@ -17,7 +17,8 @@ for my $type (@types) {
   my $package_content = <<"EOS";
 # $package_name is created by regen/regen_ndarray_complex.pl
 package $package_name : public {
-  has base : public Complex_2${prefix}[];
+  use SPVM::Complex_2${prefix};
+  has base : public SPVM::Complex_2${prefix}[];
   has offset : public int;
   has length : public int;
   has T : public byte;

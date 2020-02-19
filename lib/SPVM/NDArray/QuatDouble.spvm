@@ -1,0 +1,10 @@
+# SPVM::NDArray::QuatDouble is created by regen/regen_ndarray_quat.pl
+package SPVM::NDArray::QuatDouble : public {
+  use SPVM::Quat_4d;
+  has base : public SPVM::Quat_4d[];
+  has offset : public int;
+  has length : public int;
+  has T : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}

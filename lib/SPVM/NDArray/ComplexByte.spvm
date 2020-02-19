@@ -1,6 +1,7 @@
 # SPVM::NDArray::ComplexByte is created by regen/regen_ndarray_complex.pl
 package SPVM::NDArray::ComplexByte : public {
-  has base : public Complex_2b[];
+  use SPVM::Complex_2b;
+  has base : public SPVM::Complex_2b[];
   has offset : public int;
   has length : public int;
   has T : public byte;

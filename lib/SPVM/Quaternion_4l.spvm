@@ -1,7 +1,0 @@
-# SPVM::Quaternion_4l is created by regen/regen_quaternion.pl
-package SPVM::Quaternion_4l : mulnum_t {
-  has t : long;
-  has x : long;
-  has y : long;
-  has z : long;
-}

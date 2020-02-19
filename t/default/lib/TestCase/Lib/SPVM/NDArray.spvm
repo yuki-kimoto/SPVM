@@ -6,15 +6,27 @@ package TestCase::Lib::SPVM::NDArray {
   use SPVM::NDArray::Float;
   use SPVM::NDArray::Double;
   use SPVM::NDArray::String;
+
+  use SPVM::NDArray::ComplexByte;
+  use SPVM::NDArray::ComplexShort;
+  use SPVM::NDArray::ComplexInt;
+  use SPVM::NDArray::ComplexLong;
+  use SPVM::NDArray::ComplexFloat;
+  use SPVM::NDArray::ComplexDouble;
+
+  use SPVM::NDArray::QuatByte;
+  use SPVM::NDArray::QuatShort;
+  use SPVM::NDArray::QuatInt;
+  use SPVM::NDArray::QuatLong;
+  use SPVM::NDArray::QuatFloat;
+  use SPVM::NDArray::QuatDouble;
   
   sub ndarray_byte : int () {
     my $ndarray_byte = new SPVM::NDArray::Byte;
     $ndarray_byte->{base} = new byte[6];
-    $ndarray_byte->{base_im} = new byte[6];
     $ndarray_byte->{offset} = 0;
     $ndarray_byte->{length} = 3;
     $ndarray_byte->{T} = 1;
-    $ndarray_byte->{is_complex} = 1;
     $ndarray_byte->{shape} = [2, 3];
     $ndarray_byte->{na_flags} = [(byte)1, 0];
     
@@ -24,11 +36,9 @@ package TestCase::Lib::SPVM::NDArray {
   sub ndarray_short : int () {
     my $ndarray_short = new SPVM::NDArray::Short;
     $ndarray_short->{base} = new short[6];
-    $ndarray_short->{base_im} = new short[6];
     $ndarray_short->{offset} = 0;
     $ndarray_short->{length} = 3;
     $ndarray_short->{T} = 1;
-    $ndarray_short->{is_complex} = 1;
     $ndarray_short->{shape} = [2, 3];
     $ndarray_short->{na_flags} = [(byte)1, 0];
     
@@ -38,11 +48,9 @@ package TestCase::Lib::SPVM::NDArray {
   sub ndarray_int : int () {
     my $ndarray_int = new SPVM::NDArray::Int;
     $ndarray_int->{base} = new int[6];
-    $ndarray_int->{base_im} = new int[6];
     $ndarray_int->{offset} = 0;
     $ndarray_int->{length} = 3;
     $ndarray_int->{T} = 1;
-    $ndarray_int->{is_complex} = 1;
     $ndarray_int->{shape} = [2, 3];
     $ndarray_int->{na_flags} = [(byte)1, 0];
     
@@ -51,11 +59,9 @@ package TestCase::Lib::SPVM::NDArray {
   sub ndarray_long : int () {
     my $ndarray_long = new SPVM::NDArray::Long;
     $ndarray_long->{base} = new long[6];
-    $ndarray_long->{base_im} = new long[6];
     $ndarray_long->{offset} = 0;
     $ndarray_long->{length} = 3;
     $ndarray_long->{T} = 1;
-    $ndarray_long->{is_complex} = 1;
     $ndarray_long->{shape} = [2, 3];
     $ndarray_long->{na_flags} = [(byte)1, 0];
     
@@ -65,11 +71,9 @@ package TestCase::Lib::SPVM::NDArray {
   sub ndarray_float : int () {
     my $ndarray_float = new SPVM::NDArray::Float;
     $ndarray_float->{base} = new float[6];
-    $ndarray_float->{base_im} = new float[6];
     $ndarray_float->{offset} = 0;
     $ndarray_float->{length} = 3;
     $ndarray_float->{T} = 1;
-    $ndarray_float->{is_complex} = 1;
     $ndarray_float->{shape} = [2, 3];
     $ndarray_float->{na_flags} = [(byte)1, 0];
     
@@ -79,11 +83,9 @@ package TestCase::Lib::SPVM::NDArray {
   sub ndarray_double : int () {
     my $ndarray_double = new SPVM::NDArray::Double;
     $ndarray_double->{base} = new double[6];
-    $ndarray_double->{base_im} = new double[6];
     $ndarray_double->{offset} = 0;
     $ndarray_double->{length} = 3;
     $ndarray_double->{T} = 1;
-    $ndarray_double->{is_complex} = 1;
     $ndarray_double->{shape} = [2, 3];
     $ndarray_double->{na_flags} = [(byte)1, 0];
     
@@ -96,11 +98,153 @@ package TestCase::Lib::SPVM::NDArray {
     $ndarray_string->{offset} = 0;
     $ndarray_string->{length} = 3;
     $ndarray_string->{T} = 1;
-    $ndarray_string->{is_complex} = 1;
     $ndarray_string->{shape} = [2, 3];
     $ndarray_string->{na_flags} = [(byte)1, 0];
     
     return 1;
   }
 
+  sub ndarray_byte_complex : int () {
+    my $ndarray_byte = new SPVM::NDArray::ComplexByte;
+    $ndarray_byte->{base} = new SPVM::Complex_2b[6];
+    $ndarray_byte->{offset} = 0;
+    $ndarray_byte->{length} = 3;
+    $ndarray_byte->{T} = 1;
+    $ndarray_byte->{shape} = [2, 3];
+    $ndarray_byte->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_short_complex : int () {
+    my $ndarray_short = new SPVM::NDArray::ComplexShort;
+    $ndarray_short->{base} = new SPVM::Complex_2s[6];
+    $ndarray_short->{offset} = 0;
+    $ndarray_short->{length} = 3;
+    $ndarray_short->{T} = 1;
+    $ndarray_short->{shape} = [2, 3];
+    $ndarray_short->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_int_complex : int () {
+    my $ndarray_int = new SPVM::NDArray::ComplexInt;
+    $ndarray_int->{base} = new SPVM::Complex_2i[6];
+    $ndarray_int->{offset} = 0;
+    $ndarray_int->{length} = 3;
+    $ndarray_int->{T} = 1;
+    $ndarray_int->{shape} = [2, 3];
+    $ndarray_int->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+  
+  sub ndarray_long_complex : int () {
+    my $ndarray_long = new SPVM::NDArray::ComplexLong;
+    $ndarray_long->{base} = new SPVM::Complex_2l[6];
+    $ndarray_long->{offset} = 0;
+    $ndarray_long->{length} = 3;
+    $ndarray_long->{T} = 1;
+    $ndarray_long->{shape} = [2, 3];
+    $ndarray_long->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_float_complex : int () {
+    my $ndarray_float = new SPVM::NDArray::ComplexFloat;
+    $ndarray_float->{base} = new SPVM::Complex_2f[6];
+    $ndarray_float->{offset} = 0;
+    $ndarray_float->{length} = 3;
+    $ndarray_float->{T} = 1;
+    $ndarray_float->{shape} = [2, 3];
+    $ndarray_float->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_double_complex : int () {
+    my $ndarray_double = new SPVM::NDArray::ComplexDouble;
+    $ndarray_double->{base} = new SPVM::Complex_2d[6];
+    $ndarray_double->{offset} = 0;
+    $ndarray_double->{length} = 3;
+    $ndarray_double->{T} = 1;
+    $ndarray_double->{shape} = [2, 3];
+    $ndarray_double->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_byte_quat : int () {
+    my $ndarray_byte = new SPVM::NDArray::QuatByte;
+    $ndarray_byte->{base} = new SPVM::Quat_4b[6];
+    $ndarray_byte->{offset} = 0;
+    $ndarray_byte->{length} = 3;
+    $ndarray_byte->{T} = 1;
+    $ndarray_byte->{shape} = [2, 3];
+    $ndarray_byte->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_short_quat : int () {
+    my $ndarray_short = new SPVM::NDArray::QuatShort;
+    $ndarray_short->{base} = new SPVM::Quat_4s[6];
+    $ndarray_short->{offset} = 0;
+    $ndarray_short->{length} = 3;
+    $ndarray_short->{T} = 1;
+    $ndarray_short->{shape} = [2, 3];
+    $ndarray_short->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_int_quat : int () {
+    my $ndarray_int = new SPVM::NDArray::QuatInt;
+    $ndarray_int->{base} = new SPVM::Quat_4i[6];
+    $ndarray_int->{offset} = 0;
+    $ndarray_int->{length} = 3;
+    $ndarray_int->{T} = 1;
+    $ndarray_int->{shape} = [2, 3];
+    $ndarray_int->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+  
+  sub ndarray_long_quat : int () {
+    my $ndarray_long = new SPVM::NDArray::QuatLong;
+    $ndarray_long->{base} = new SPVM::Quat_4l[6];
+    $ndarray_long->{offset} = 0;
+    $ndarray_long->{length} = 3;
+    $ndarray_long->{T} = 1;
+    $ndarray_long->{shape} = [2, 3];
+    $ndarray_long->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_float_quat : int () {
+    my $ndarray_float = new SPVM::NDArray::QuatFloat;
+    $ndarray_float->{base} = new SPVM::Quat_4f[6];
+    $ndarray_float->{offset} = 0;
+    $ndarray_float->{length} = 3;
+    $ndarray_float->{T} = 1;
+    $ndarray_float->{shape} = [2, 3];
+    $ndarray_float->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
+
+  sub ndarray_double_quat : int () {
+    my $ndarray_double = new SPVM::NDArray::QuatDouble;
+    $ndarray_double->{base} = new SPVM::Quat_4d[6];
+    $ndarray_double->{offset} = 0;
+    $ndarray_double->{length} = 3;
+    $ndarray_double->{T} = 1;
+    $ndarray_double->{shape} = [2, 3];
+    $ndarray_double->{na_flags} = [(byte)1, 0];
+    
+    return 1;
+  }
 }

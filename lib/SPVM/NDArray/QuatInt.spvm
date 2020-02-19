@@ -1,0 +1,10 @@
+# SPVM::NDArray::QuatInt is created by regen/regen_ndarray_quat.pl
+package SPVM::NDArray::QuatInt : public {
+  use SPVM::Quat_4i;
+  has base : public SPVM::Quat_4i[];
+  has offset : public int;
+  has length : public int;
+  has T : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}

@@ -1,6 +1,7 @@
 # SPVM::NDArray::ComplexDouble is created by regen/regen_ndarray_complex.pl
 package SPVM::NDArray::ComplexDouble : public {
-  has base : public Complex_2d[];
+  use SPVM::Complex_2d;
+  has base : public SPVM::Complex_2d[];
   has offset : public int;
   has length : public int;
   has T : public byte;

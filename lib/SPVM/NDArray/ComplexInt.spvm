@@ -1,6 +1,7 @@
 # SPVM::NDArray::ComplexInt is created by regen/regen_ndarray_complex.pl
 package SPVM::NDArray::ComplexInt : public {
-  has base : public Complex_2i[];
+  use SPVM::Complex_2i;
+  has base : public SPVM::Complex_2i[];
   has offset : public int;
   has length : public int;
   has T : public byte;

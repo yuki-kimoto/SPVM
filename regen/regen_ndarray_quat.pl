@@ -12,12 +12,13 @@ sub prefix {
 for my $type (@types) {
   my $prefix = prefix($type);
   
-  my $package_name = "SPVM::NDArray::Quaternion" . ucfirst($type);
+  my $package_name = "SPVM::NDArray::Quat" . ucfirst($type);
   
   my $package_content = <<"EOS";
-# $package_name is created by regen/regen_ndarray_quaternion.pl
+# $package_name is created by regen/regen_ndarray_quat.pl
 package $package_name : public {
-  has base : public Quaternion_4${prefix}[];
+  use SPVM::Quat_4${prefix};
+  has base : public SPVM::Quat_4${prefix}[];
   has offset : public int;
   has length : public int;
   has T : public byte;
@@ -26,7 +27,7 @@ package $package_name : public {
 }
 EOS
   
-  my $module_file = "lib/SPVM/NDArray/Quaternion"  . ucfirst($type) . ".spvm";
+  my $module_file = "lib/SPVM/NDArray/Quat"  . ucfirst($type) . ".spvm";
   open my $module_fh, '>', $module_file
     or die "Can't open $module_file: $!";
   print $module_fh $package_content;
