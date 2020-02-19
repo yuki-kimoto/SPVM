@@ -1,0 +1,9 @@
+# SPVM::NDArray::ComplexFloat is created by regen/regen_ndarray_complex.pl
+package SPVM::NDArray::ComplexFloat : public {
+  has base : public Complex_2f[];
+  has offset : public int;
+  has length : public int;
+  has T : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
