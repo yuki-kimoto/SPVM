@@ -1261,8 +1261,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Complex
 {
-  my $z3 = TestCase::ExchangeAPI->add_complex({re => 0.25, im => 0.5}, {re => 0.5, im => 0.125});
-  is_deeply($z3, {re => 0.75, im => 0.625});
+  my $z3 = TestCase::ExchangeAPI->add_complex({x => 0.25, y => 0.5}, {x => 0.5, y => 0.125});
+  is_deeply($z3, {x => 0.75, y => 0.625});
 }
 
 

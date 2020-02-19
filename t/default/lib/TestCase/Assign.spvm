@@ -17,15 +17,15 @@ package TestCase::Assign {
   
   sub assign_return_value_multi_numeric_type : int () {
     my $z1 : SPVM::Complex_2d;
-    $z1->{re} = 1;
-    $z1->{im} = 2;
+    $z1->{x} = 1;
+    $z1->{y} = 2;
     
     my $z2 : SPVM::Complex_2d;
     my $z3 : SPVM::Complex_2d;
     
     $z3 = $z2 = $z1;
     
-    if ($z3->{re} == 1 && $z3->{im} == 2 && $z2->{re} == 1 && $z2->{im} == 2) {
+    if ($z3->{x} == 1 && $z3->{y} == 2 && $z2->{x} == 1 && $z2->{y} == 2) {
       return 1;
     }
     
@@ -34,11 +34,11 @@ package TestCase::Assign {
   
   sub assign_return_value_value_field : int () {
     my $z : SPVM::Complex_2d;
-    $z->{im} = 1;
+    $z->{y} = 1;
     my $im1 : double;
     my $im2 : double;
     
-    $im1 = $im2 = $z->{im};
+    $im1 = $im2 = $z->{y};
     
     if ($im1 == 1 && $im2 == 1) {
       return 1;

@@ -464,8 +464,8 @@ package SPVM::Util {
     
     my $z_array = new SPVM::Complex_2f[@$re_values];
     for (my $i = 0; $i < @$re_values; $i++) {
-      $z_array->[$i]{re} = $re_values->[$i];
-      $z_array->[$i]{im} = $im_values->[$i];
+      $z_array->[$i]{x} = $re_values->[$i];
+      $z_array->[$i]{y} = $im_values->[$i];
     }
     
     return $z_array;
@@ -478,8 +478,8 @@ package SPVM::Util {
     
     my $z_array = new SPVM::Complex_2d[@$re_values];
     for (my $i = 0; $i < @$re_values; $i++) {
-      $z_array->[$i]{re} = $re_values->[$i];
-      $z_array->[$i]{im} = $im_values->[$i];
+      $z_array->[$i]{x} = $re_values->[$i];
+      $z_array->[$i]{y} = $im_values->[$i];
     }
     
     return $z_array;
@@ -487,15 +487,15 @@ package SPVM::Util {
 
   precompile sub complexf : SPVM::Complex_2f ($re : float, $im : float) {
     my $z : SPVM::Complex_2f;
-    $z->{re} = $re;
-    $z->{im} = $im;
+    $z->{x} = $re;
+    $z->{y} = $im;
     return $z;
   }
   
   precompile sub complexd : SPVM::Complex_2d ($re : double, $im : double) {
     my $z : SPVM::Complex_2d;
-    $z->{re} = $re;
-    $z->{im} = $im;
+    $z->{x} = $re;
+    $z->{y} = $im;
     return $z;
   }
 
