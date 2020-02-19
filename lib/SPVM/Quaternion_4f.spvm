@@ -1,0 +1,7 @@
+# SPVM::Quaternion_4f is created by regen/regen_quaternion.pl
+package SPVM::Quaternion_4f : mulnum_t {
+  has t : float;
+  has x : float;
+  has y : float;
+  has z : float;
+}

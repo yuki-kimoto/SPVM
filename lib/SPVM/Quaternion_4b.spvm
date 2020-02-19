@@ -1,0 +1,7 @@
+# SPVM::Quaternion_4b is created by regen/regen_quaternion.pl
+package SPVM::Quaternion_4b : mulnum_t {
+  has t : byte;
+  has x : byte;
+  has y : byte;
+  has z : byte;
+}
