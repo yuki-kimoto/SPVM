@@ -1267,6 +1267,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, var_name, compiler->cur_file, compiler->cur_line);
 
             yylvalp->opval = op_name;
+
+            // Variable name can't conatain __
+            if (strstr(var_name, "__")) {
+              SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not contains __ at %s line %d\n", var_name, compiler->cur_file, compiler->cur_line);
+            }
+
+            // Variable name can't start with number
+            if (isdigit(var_name[1])) {
+              SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not contains __ at %s line %d\n", var_name, compiler->cur_file, compiler->cur_line);
+            }
             
             // Package variable
             return VAR_NAME;

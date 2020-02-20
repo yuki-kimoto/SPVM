@@ -1,0 +1,3 @@
+package TestCase::CompileError::PackageVar::OurPackageVarNameContainsUnderScoreTwice {
+  our $Foo__Bar : int;
+}

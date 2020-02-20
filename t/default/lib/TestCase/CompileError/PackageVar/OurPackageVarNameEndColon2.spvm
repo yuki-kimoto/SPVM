@@ -1,0 +1,3 @@
+package TestCase::CompileError::PackageVar::OurPackageVarNameEndColon2 {
+  our $FOO:: : int;
+}

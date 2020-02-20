@@ -14,6 +14,46 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Package Variable
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::PackageVar::Private');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameStartDigit');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameInvalidColon');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameEndColon2');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameContainsUnderScoreTwice');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameColon2Twice');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Package
 {
   {
@@ -307,13 +347,6 @@ use lib "$FindBin::Bin/lib";
 {
   my $build = SPVM::Builder->new;
   $build->use('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
-  my $success = $build->compile_spvm();
-  ok($success == 0);
-}
-
-{
-  my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::PackageVar::Private');
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
