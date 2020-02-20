@@ -14,6 +14,46 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Lexcarl Variable
+{
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::LexVar::Private');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::LexVar::LexVarNameStartDigit');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::LexVar::LexVarNameInvalidColon');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::LexVar::LexVarNameEndColon2');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    $build->use('TestCase::CompileError::LexVar::LexVarNameColon2Twice');
+    my $success = $build->compile_spvm();
+    ok($success == 0);
+  }
+}
+
 # Package Variable
 {
   {
