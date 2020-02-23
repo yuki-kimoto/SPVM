@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::Math {
   use SPVM::Math;
-  use SPVM::Util(PI, INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use SPVM::Util(contains, PI, INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
   sub test_pi : int () {
     my $pi = PI();
@@ -2019,22 +2019,30 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_nan : int () {
-    unless (SPVM::Math->isnan(SPVM::Math->nan(undef))) {
-      return 0;
-    }
     unless (SPVM::Math->isnan(SPVM::Math->nan("test"))) {
       return 0;
     }
+    eval {
+      SPVM::Math->nan(undef);
+    };
+    unless ($@ && contains($@, "String must be defined")) {
+      return 0;
+    }
+    $@ = undef;
     return 1;
   }
 
   sub test_nanf : int () {
-    unless (SPVM::Math->isnan(SPVM::Math->nanf(undef))) {
-      return 0;
-    }
     unless (SPVM::Math->isnan(SPVM::Math->nanf("test"))) {
       return 0;
     }
+    eval {
+      SPVM::Math->nanf(undef);
+    };
+    unless ($@ && contains($@, "String must be defined")) {
+      return 0;
+    }
+    $@ = undef;
     return 1;
   }
   sub test_nextafter : int () {
