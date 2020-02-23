@@ -189,6 +189,10 @@ ok(TestCase::Lib::SPVM::Math->test_islessgreaterf);
 ok(TestCase::Lib::SPVM::Math->test_isunordered);
 ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
 
+# All object is freed
+my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
+is($end_memory_blocks_count, $start_memory_blocks_count);
+
 __END__
 
 # Call subroutine

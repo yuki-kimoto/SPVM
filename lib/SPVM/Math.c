@@ -3,6 +3,8 @@
 #include <math.h>
 #include <fenv.h>
 
+static const char* MFILE = "SPVM/Math.c";
+
 int32_t SPNATIVE__SPVM__Math__pi(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
@@ -1223,7 +1225,13 @@ int32_t SPNATIVE__SPVM__Math__copysignf(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__nan(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  double value = nan(NULL);
+  void* string = stack[0].oval;
+  if (string == NULL) {
+    SPVM_DIE("String must be defined", MFILE, __LINE__);
+  }
+
+  const char* tagp = (const char*)env->get_elems_byte(env, string);
+  double value = nan(tagp);
 
   stack[0].dval = value;
 
@@ -1233,7 +1241,13 @@ int32_t SPNATIVE__SPVM__Math__nan(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__nanf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  float value = nanf(NULL);
+  void* string = stack[0].oval;
+  if (string == NULL) {
+    SPVM_DIE("String must be defined", MFILE, __LINE__);
+  }
+
+  const char* tagp = (const char*)env->get_elems_byte(env, string);
+  float value = nanf(tagp);
 
   stack[0].fval = value;
 
