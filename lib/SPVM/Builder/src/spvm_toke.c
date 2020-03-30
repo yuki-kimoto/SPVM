@@ -1156,15 +1156,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 else {
-                  if (isalnum(*char_ptr)) {
-                    SPVM_COMPILER_error(compiler, "Invalid escape character in string literal \"\\%c\" at %s line %d\n", *char_ptr, compiler->cur_file, compiler->cur_line);
-                  }
-                  else {
+                  if (ispunct(*char_ptr)) {
                     str[str_length] = '\\';
                     str_length++;
                     str[str_length] = *char_ptr;
                     str_length++;
                     char_ptr++;
+                  }
+                  else {
+                    SPVM_COMPILER_error(compiler, "Invalid escape character in string literal \"\\%c\" at %s line %d\n", *char_ptr, compiler->cur_file, compiler->cur_line);
                   }
                 }
               }
