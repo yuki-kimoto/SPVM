@@ -5032,14 +5032,14 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         SPVM_COMPILER_error(compiler, "mulnum_t package have at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }
-      // Minilal value fields length is 1
-      else if (package->fields->length < SPVM_LIMIT_C_VALUE_FIELDS_MIN_COUNT) {
+      // Minilal mulnum_t fields length is 1
+      else if (package->fields->length < SPVM_LIMIT_C_MULNUM_T_FIELDS_MIN_COUNT) {
         SPVM_COMPILER_error(compiler, "Neet at least one field at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }
-      // Max fields length is 16
-      else if (package->fields->length > SPVM_LIMIT_C_VALUE_FIELDS_MAX_COUNT) {
-        SPVM_COMPILER_error(compiler, "Too many value fields at %s line %d\n", package->op_package->file, package->op_package->line);
+      // Max fields length is 255
+      else if (package->fields->length > SPVM_LIMIT_C_MULNUM_T_FIELDS_MAX_COUNT) {
+        SPVM_COMPILER_error(compiler, "Too many mulnum_t fields. Max count of mulnum_t fields is 255 at %s line %d\n", package->op_package->file, package->op_package->line);
         return;
       }
       else {
@@ -5201,7 +5201,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         }
       }
       if (arg_allow_count > SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT) {
-        SPVM_COMPILER_error(compiler, "Too many argument definitions at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
+        SPVM_COMPILER_error(compiler, "Too many subroutine arguments count. Max count of subroutine arguments is 255 at %s line %d\n", sub->op_sub->file, sub->op_sub->line);
         return;
       }
       

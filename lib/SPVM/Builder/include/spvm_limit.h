@@ -4,14 +4,17 @@
 #include "spvm_base.h"
 
 enum {
-  // Sub arguments max count
-  SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT = 256,
-
-  // mulnum fields count max
-  SPVM_LIMIT_C_VALUE_FIELDS_MAX_COUNT = 256,
-
+  // Max count of sub arguments
+  SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT = 255,
+  
   // mulnum fields count min
-  SPVM_LIMIT_C_VALUE_FIELDS_MIN_COUNT = 1,
+  SPVM_LIMIT_C_MULNUM_T_FIELDS_MIN_COUNT = 1,
+  
+  // Max count of mulnum fields
+  SPVM_LIMIT_C_MULNUM_T_FIELDS_MAX_COUNT = 255,
+  
+  // mulnum fields count max
+  SPVM_LIMIT_C_ARRAY_DIMENSION_MAX_COUNT = 255,
 };
 
 #endif
