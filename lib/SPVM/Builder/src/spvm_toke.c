@@ -715,89 +715,94 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '\'': {
         compiler->bufptr++;
         char ch = 0;
-
-        if (*compiler->bufptr == '\\') {
-          compiler->bufptr++;
-          if (*compiler->bufptr == '0') {
-            ch = '\0';
+        
+        if (*compiler->bufptr == '\'') {
+          SPVM_COMPILER_error(compiler, "Character Literal must have one character at %s line %d\n", compiler->cur_file, compiler->cur_line);
+        }
+        else {
+          if (*compiler->bufptr == '\\') {
             compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 'a') {
-            ch = '\a';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 'b') {
-            ch = '\b';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 'f') {
-            ch = '\f';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 't') {
-            ch = '\t';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 'r') {
-            ch = '\r';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == 'n') {
-            ch = '\n';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == '\'') {
-            ch = '\'';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == '"') {
-            ch = '\"';
-            compiler->bufptr++;
-          }
-          else if (*compiler->bufptr == '\\') {
-            ch = '\\';
-            compiler->bufptr++;
-          }
-          // Hex ascii code
-          else if (*compiler->bufptr == 'x') {
-            compiler->bufptr++;
-            if (*compiler->bufptr == '0' || *compiler->bufptr == '1' || *compiler->bufptr == '2' || *compiler->bufptr == '3' || *compiler->bufptr == '4' || *compiler->bufptr == '5' || *compiler->bufptr == '6' || *compiler->bufptr == '7') {
-              char* num_str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 3);
-              num_str[0] = *compiler->bufptr;
+            if (*compiler->bufptr == '0') {
+              ch = '\0';
               compiler->bufptr++;
-              if (
-                isdigit(*compiler->bufptr)
-                || *compiler->bufptr == 'a'  || *compiler->bufptr == 'b'  || *compiler->bufptr == 'c'  || *compiler->bufptr == 'd'  || *compiler->bufptr == 'e'  || *compiler->bufptr == 'f'
-                || *compiler->bufptr == 'A'  || *compiler->bufptr == 'B'  || *compiler->bufptr == 'C'  || *compiler->bufptr == 'D'  || *compiler->bufptr == 'E'  || *compiler->bufptr == 'F'
-              )
-              {
-                num_str[1] = *compiler->bufptr;
+            }
+            else if (*compiler->bufptr == 'a') {
+              ch = '\a';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'b') {
+              ch = '\b';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'f') {
+              ch = '\f';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 't') {
+              ch = '\t';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'r') {
+              ch = '\r';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == 'n') {
+              ch = '\n';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == '\'') {
+              ch = '\'';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == '"') {
+              ch = '\"';
+              compiler->bufptr++;
+            }
+            else if (*compiler->bufptr == '\\') {
+              ch = '\\';
+              compiler->bufptr++;
+            }
+            // Hex ascii code
+            else if (*compiler->bufptr == 'x') {
+              compiler->bufptr++;
+              if (*compiler->bufptr == '0' || *compiler->bufptr == '1' || *compiler->bufptr == '2' || *compiler->bufptr == '3' || *compiler->bufptr == '4' || *compiler->bufptr == '5' || *compiler->bufptr == '6' || *compiler->bufptr == '7') {
+                char* num_str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 3);
+                num_str[0] = *compiler->bufptr;
                 compiler->bufptr++;
-                char *end;
-                ch = (char)strtol(num_str, &end, 16);
+                if (
+                  isdigit(*compiler->bufptr)
+                  || *compiler->bufptr == 'a'  || *compiler->bufptr == 'b'  || *compiler->bufptr == 'c'  || *compiler->bufptr == 'd'  || *compiler->bufptr == 'e'  || *compiler->bufptr == 'f'
+                  || *compiler->bufptr == 'A'  || *compiler->bufptr == 'B'  || *compiler->bufptr == 'C'  || *compiler->bufptr == 'D'  || *compiler->bufptr == 'E'  || *compiler->bufptr == 'F'
+                )
+                {
+                  num_str[1] = *compiler->bufptr;
+                  compiler->bufptr++;
+                  char *end;
+                  ch = (char)strtol(num_str, &end, 16);
+                }
+                else {
+                  SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                }
               }
               else {
                 SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
               }
             }
             else {
-              SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Invalid escape character in charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
             }
           }
           else {
-            SPVM_COMPILER_error(compiler, "Invalid escape character in charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+            ch = *compiler->bufptr;
+            compiler->bufptr++;
           }
-        }
-        else {
-          ch = *compiler->bufptr;
-          compiler->bufptr++;
-        }
-          
-        if (*compiler->bufptr == '\'') {
-          compiler->bufptr++;
-        }
-        else {
-          SPVM_COMPILER_error(compiler, "Can't find character literal terminiator at %s line %d\n", compiler->cur_file, compiler->cur_line);
+            
+          if (*compiler->bufptr == '\'') {
+            compiler->bufptr++;
+          }
+          else {
+            SPVM_COMPILER_error(compiler, "Can't find character literal terminiator at %s line %d\n", compiler->cur_file, compiler->cur_line);
+          }
         }
         
         // Constant 
