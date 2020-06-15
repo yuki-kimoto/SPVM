@@ -247,6 +247,16 @@ sub compile {
   my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
+  # Optional Directory
+  my $optional_dir = $config_file;
+  $optional_dir =~ s/\.config$//;
+  
+  # Include directory
+  my $include_dir = "$optional_dir/include";
+  
+  # Source directory
+  my $src2_dir = "$optional_dir/src";
+
   # Config
   my $bconf;
   if (-f $config_file) {
