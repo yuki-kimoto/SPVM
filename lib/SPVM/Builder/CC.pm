@@ -247,15 +247,16 @@ sub compile {
   my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
-  # Optional Directory
-  my $optional_dir = $config_file;
-  $optional_dir =~ s/\.config$//;
+  # Native Directory
+  my $native_dir = $config_file;
+  $native_dir =~ s/\.config$//;
+  $native_dir .= '.native';
   
   # Include directory
-  my $include_dir = "$optional_dir/include";
+  my $native_include_dir = "$native_dir/include";
   
   # Source directory
-  my $other_src_dir = "$optional_dir/src";
+  my $native_src_dir = "$native_dir/src";
 
   # Config
   my $bconf;
