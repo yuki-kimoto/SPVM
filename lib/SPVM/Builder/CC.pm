@@ -255,7 +255,7 @@ sub compile {
   my $include_dir = "$optional_dir/include";
   
   # Source directory
-  my $src2_dir = "$optional_dir/src";
+  my $other_src_dir = "$optional_dir/src";
 
   # Config
   my $bconf;
