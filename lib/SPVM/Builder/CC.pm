@@ -206,7 +206,7 @@ sub build_dll {
   $self->link(
     $package_name,
     $sub_names,
-    $object_file,
+    [$object_file],
     $opt
   );
 }
@@ -337,7 +337,7 @@ sub compile {
 }
 
 sub link {
-  my ($self, $package_name, $sub_names, $object_file, $opt) = @_;
+  my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
 
   # Build directory
   my $build_dir = $self->{build_dir};
@@ -438,7 +438,7 @@ EOS
   my $tmp_dll_file;
   eval {
     $tmp_dll_file = $cbuilder->link(
-      objects => [$object_file],
+      objects => $object_files,
       module_name => $package_name,
       dl_func_list => $cfunc_names,
       extra_linker_flags => $bconf->get_extra_linker_flags,
