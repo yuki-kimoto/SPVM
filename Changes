@@ -11,6 +11,8 @@
   - add SPVM::Build::Config::prepend_lddlflags
   - add SPVM::Build::Config::prepend_extra_compiler_flags
   - add SPVM::Build::Config::prepend_extra_linker_flags
+  - add SPVM::Build::Config::set_is_cplusplus
+  - add SPVM::Build::Config::get_is_cplusplus
 
 0.0701 2020-02-19
   - add SPVM::NDArray::Byte

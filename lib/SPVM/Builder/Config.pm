@@ -203,6 +203,44 @@ sub prepend_ccflags {
   return $self;
 }
 
+sub set_cxxflags {
+  my ($self, $cxxflags) = @_;
+  
+  $self->set_config(cxxflags => $cxxflags);
+  
+  return $self;
+}
+
+sub get_cxxflags {
+  my $self = shift;
+  
+  return $self->get_config('cxxflags');
+}
+
+sub add_cxxflags {
+  my ($self, $new_cxxflags) = @_;
+  
+  my $cxxflags = $self->get_config('cxxflags');
+  
+  $cxxflags .= " $new_cxxflags";
+  
+  $self->set_config('cxxflags' => $cxxflags);
+  
+  return $self;
+}
+
+sub prepend_cxxflags {
+  my ($self, $new_cxxflags) = @_;
+  
+  my $cxxflags = $self->get_config('cxxflags');
+  
+  $cxxflags = "$new_cxxflags $cxxflags";
+  
+  $self->set_config('cxxflags' => $cxxflags);
+  
+  return $self;
+}
+
 sub set_std {
   my ($self, $spec) = @_;
   
@@ -398,6 +436,18 @@ sub prepend_extra_linker_flags {
   return $self;
 }
 
+sub set_is_cplusplus {
+  my ($self, $is_cplusplus) = @_;
+  
+  $self->set_config('is_cplusplus' => $is_cplusplus);
+}
+
+sub get_is_cplusplus {
+  my ($self) = @_;
+  
+  $self->get_config('is_cplusplus');
+}
+
 1;
 
 =head1 NAME
@@ -443,29 +493,29 @@ Get a config value.
 
 Set a config value.
 
-=head2 set_ccflags
+=head2 set_cxxflags
 
-  $bconf->set_ccflags($ccflags);
+  $bconf->set_cxxflags($cxxflags);
 
-Set C<ccflags>.
+Set C<cxxflags>.
 
-=head2 get_ccflags
+=head2 get_cxxflags
 
-  my $ccflags = $bconf->get_ccflags;
+  my $cxxflags = $bconf->get_cxxflags;
 
-Get C<ccflags>.
+Get C<cxxflags>.
 
-=head2 add_ccflags
+=head2 add_cxxflags
 
-  $bconf->add_ccflags($ccflags);
+  $bconf->add_cxxflags($cxxflags);
 
-Add C<ccflags> after current C<ccflags>.
+Add C<cxxflags> after current C<cxxflags>.
 
-=head2 prepend_ccflags
+=head2 prepend_cxxflags
 
-  $bconf->add_ccflags($ccflags);
+  $bconf->add_cxxflags($cxxflags);
 
-prepend C<ccflags> before current C<ccflags>.
+prepend C<cxxflags> before current C<cxxflags>.
 
 =head2 set_std
 
@@ -473,7 +523,15 @@ prepend C<ccflags> before current C<ccflags>.
 
 Set C<std>.
 
-Internally, remove C<-std=old> and add C<-std=new> after C<ccflags>.
+Internally, remove C<-std=old> if exists and add C<-std=new> after C<extra_compiler_flags>.
+
+=head2 delete_std
+
+  $bconf->delete_std;
+
+Delete C<std>.
+
+Internally, remove C<-std=old> if exists from C<extra_compiler_flags>.
 
 =head2 set_cc
 
@@ -588,3 +646,15 @@ Add new C<extra_linker_flags> after current C<extra_linker_flags>.
   $bconf->prepend_extra_linker_flags($extra_linker_flags);
 
 Prepend new C<extra_linker_flags> before current C<extra_linker_flags>.
+
+=head2 get_is_cpluspluss
+
+  my $is_cpluspluss = $bconf->get_is_cpluspluss;
+
+Get C<is_cpluspluss>.
+
+=head2 set_is_cpluspluss
+
+  $bconf->set_is_cpluspluss($is_cpluspluss);
+
+Set C<is_cpluspluss>.
