@@ -285,8 +285,6 @@ sub compile {
   # CBuilder configs
   my $ccflags = $bconf->get_ccflags;
   
-  my $is_cplusplus = $bconf->get_is_cplusplus;
-  
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
   my $config = $bconf->to_hash;
@@ -339,7 +337,6 @@ sub compile {
         source => $src_file,
         object_file => $object_file,
         extra_compiler_flags => $bconf->get_extra_compiler_flags,
-        'c++' => $is_cplusplus ? 1 : 0
       );
     };
     if (my $error = $@) {

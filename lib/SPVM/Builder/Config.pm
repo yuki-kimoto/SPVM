@@ -108,17 +108,14 @@ sub new_cpp {
   # Optimize
   $bconf->set_optimize('-O3');
   
-  # CXX
-  $bconf->set_cxx('g++');
+  # CC
+  $bconf->set_cc('g++');
   
   # LD
   $bconf->set_ld('g++');
   
   # NativeAPI
   $bconf->set_ext('cpp');
-  
-  # c++ flag of ExtUtils::CBuilder
-  $bconf->set_is_cplusplus(1);
   
   return $bconf;
 }
@@ -203,44 +200,6 @@ sub prepend_ccflags {
   return $self;
 }
 
-sub set_cxxflags {
-  my ($self, $cxxflags) = @_;
-  
-  $self->set_config(cxxflags => $cxxflags);
-  
-  return $self;
-}
-
-sub get_cxxflags {
-  my $self = shift;
-  
-  return $self->get_config('cxxflags');
-}
-
-sub add_cxxflags {
-  my ($self, $new_cxxflags) = @_;
-  
-  my $cxxflags = $self->get_config('cxxflags');
-  
-  $cxxflags .= " $new_cxxflags";
-  
-  $self->set_config('cxxflags' => $cxxflags);
-  
-  return $self;
-}
-
-sub prepend_cxxflags {
-  my ($self, $new_cxxflags) = @_;
-  
-  my $cxxflags = $self->get_config('cxxflags');
-  
-  $cxxflags = "$new_cxxflags $cxxflags";
-  
-  $self->set_config('cxxflags' => $cxxflags);
-  
-  return $self;
-}
-
 sub set_std {
   my ($self, $spec) = @_;
   
@@ -281,18 +240,6 @@ sub get_cc {
   my ($self, $cc) = @_;
   
   return $self->get_config('cc');
-}
-
-sub set_cxx {
-  my ($self, $cxx) = @_;
-  
-  return $self->set_config(cxx => $cxx);
-}
-
-sub get_cxx {
-  my ($self, $cxx) = @_;
-  
-  return $self->get_config('cxx');
 }
 
 sub set_optimize {
@@ -448,18 +395,6 @@ sub prepend_extra_linker_flags {
   return $self;
 }
 
-sub set_is_cplusplus {
-  my ($self, $is_cplusplus) = @_;
-  
-  $self->set_config('is_cplusplus' => $is_cplusplus);
-}
-
-sub get_is_cplusplus {
-  my ($self) = @_;
-  
-  $self->get_config('is_cplusplus');
-}
-
 1;
 
 =head1 NAME
@@ -505,30 +440,6 @@ Get a config value.
 
 Set a config value.
 
-=head2 set_cxxflags
-
-  $bconf->set_cxxflags($cxxflags);
-
-Set C<cxxflags>.
-
-=head2 get_cxxflags
-
-  my $cxxflags = $bconf->get_cxxflags;
-
-Get C<cxxflags>.
-
-=head2 add_cxxflags
-
-  $bconf->add_cxxflags($cxxflags);
-
-Add C<cxxflags> after current C<cxxflags>.
-
-=head2 prepend_cxxflags
-
-  $bconf->add_cxxflags($cxxflags);
-
-prepend C<cxxflags> before current C<cxxflags>.
-
 =head2 set_std
 
   $bconf->set_std('gnu99');
@@ -556,18 +467,6 @@ Set C<cc>.
   my $cc = $bconf->get_cc;
 
 Get C<cc>.
-
-=head2 set_cxx
-
-  $bconf->set_cxx($cxx);
-
-Set C<cxx>.
-
-=head2 get_cxx
-
-  my $cxx = $bconf->get_cxx;
-
-Get C<cxx>.
 
 =head2 set_optimize
 
@@ -671,14 +570,3 @@ Add new C<extra_linker_flags> after current C<extra_linker_flags>.
 
 Prepend new C<extra_linker_flags> before current C<extra_linker_flags>.
 
-=head2 get_is_cpluspluss
-
-  my $is_cpluspluss = $bconf->get_is_cpluspluss;
-
-Get C<is_cpluspluss>.
-
-=head2 set_is_cpluspluss
-
-  $bconf->set_is_cpluspluss($is_cpluspluss);
-
-Set C<is_cpluspluss>.
