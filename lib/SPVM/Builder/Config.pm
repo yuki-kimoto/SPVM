@@ -206,15 +206,15 @@ sub prepend_ccflags {
 sub set_std {
   my ($self, $spec) = @_;
   
-  my $ccflags = $self->get_ccflags;
+  my $extra_compiler_flags = $self->get_extra_compiler_flags;
   
   # Remove -std=foo section
-  $ccflags =~ s/-std=[^ ]+//g;
+  $extra_compiler_flags =~ s/-std=[^ ]+//g;
   
-  $ccflags .= " -std=$spec";
+  $extra_compiler_flags .= " -std=$spec";
   
   # Add -std=foo section
-  $self->set_ccflags($ccflags);
+  $self->set_extra_compiler_flags($extra_compiler_flags);
   
   return $self;
 }
@@ -222,13 +222,13 @@ sub set_std {
 sub delete_std {
   my ($self) = @_;
   
-  my $ccflags = $self->get_ccflags;
+  my $extra_compiler_flags = $self->get_extra_compiler_flags;
   
   # Remove -std=foo section
-  $ccflags =~ s/-std=[^ ]+//g;
+  $extra_compiler_flags =~ s/-std=[^ ]+//g;
   
   # Add -std=foo section
-  $self->set_ccflags($ccflags);
+  $self->set_extra_compiler_flags($extra_compiler_flags);
   
   return $self;
 }
