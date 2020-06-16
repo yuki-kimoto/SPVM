@@ -541,18 +541,50 @@ Prepend C<lddlflags> before current C<lddlflags>.
 
 Create defaulgt build config. This is L<SPVM::Builder::Config> object.
 
-=head2 add_extra_linker_flags
+=head2 get_extra_compiler_flags
 
-=head2 prepend_extra_linker_flags
+  my $extra_compiler_flags = $bconf->get_extra_compiler_flags;
 
-=head2 add_extra_compiler_flags
-
-=head2 prepend_extra_compiler_flags
-
-=head2 set_extra_linker_flags
-
-=head2 get_extra_linker_flags
+Get C<extra_compiler_flags>.
 
 =head2 set_extra_compiler_flags
 
-=head2 get_extra_compiler_flags
+  $bconf->set_extra_compiler_flags($extra_compiler_flags);
+
+Set C<extra_compiler_flags>.
+
+=head2 add_extra_compiler_flags
+
+  $bconf->add_extra_compiler_flags($extra_compiler_flags);
+
+Add new C<extra_compiler_flags> after current C<extra_compiler_flags>.
+
+=head2 prepend_extra_compiler_flags
+
+  $bconf->prepend_extra_compiler_flags($extra_compiler_flags);
+
+Prepend new C<extra_compiler_flags> before current C<extra_compiler_flags>.
+
+=head2 get_extra_linker_flags
+
+  my $extra_linker_flags = $bconf->get_extra_linker_flags;
+
+Get C<extra_linker_flags>.
+
+=head2 set_extra_linker_flags
+
+  $bconf->set_extra_linker_flags($extra_linker_flags);
+
+Set C<extra_linker_flags>.
+
+=head2 add_extra_linker_flags
+
+  $bconf->add_extra_linker_flags($extra_linker_flags);
+
+Add new C<extra_linker_flags> after current C<extra_linker_flags>.
+
+=head2 prepend_extra_linker_flags
+
+  $bconf->prepend_extra_linker_flags($extra_linker_flags);
+
+Prepend new C<extra_linker_flags> before current C<extra_linker_flags>.
