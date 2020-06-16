@@ -108,8 +108,8 @@ sub new_cpp {
   # Optimize
   $bconf->set_optimize('-O3');
   
-  # CC
-  $bconf->set_cc('g++');
+  # CXX
+  $bconf->set_cxx('g++');
   
   # LD
   $bconf->set_ld('g++');
@@ -117,8 +117,8 @@ sub new_cpp {
   # NativeAPI
   $bconf->set_ext('cpp');
   
-  # Delete std
-  $bconf->delete_std;
+  # c++ flag of ExtUtils::CBuilder
+  $bconf->set_is_cplusplus(1);
   
   return $bconf;
 }
@@ -281,6 +281,18 @@ sub get_cc {
   my ($self, $cc) = @_;
   
   return $self->get_config('cc');
+}
+
+sub set_cxx {
+  my ($self, $cxx) = @_;
+  
+  return $self->set_config(cxx => $cxx);
+}
+
+sub get_cxx {
+  my ($self, $cxx) = @_;
+  
+  return $self->get_config('cxx');
 }
 
 sub set_optimize {
@@ -544,6 +556,18 @@ Set C<cc>.
   my $cc = $bconf->get_cc;
 
 Get C<cc>.
+
+=head2 set_cxx
+
+  $bconf->set_cxx($cxx);
+
+Set C<cxx>.
+
+=head2 get_cxx
+
+  my $cxx = $bconf->get_cxx;
+
+Get C<cxx>.
 
 =head2 set_optimize
 
