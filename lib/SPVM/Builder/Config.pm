@@ -4,6 +4,32 @@ use strict;
 use warnings;
 use Config;
 
+sub _remove_include_dirs_from_ccflags {
+  my ($self) = @_;
+  
+  my $ccflags = $self->get_ccflags;
+  
+  my @parts = split(/ +/, $ccflags);
+  
+  my @rest_parts;
+  my @include_dirs;
+  for my $part (@parts) {
+    if ($part =~ /^-I(.*)/) {
+      my $include_dir = $1;
+      push @include_dirs, $include_dir;
+    }
+    else {
+      push @rest_parts, $part;
+    }
+  }
+  
+  my $rest_ccflags = join(' ', @rest_parts);
+  
+  $self->set_ccflags($rest_ccflags);
+  
+  return @include_dirs;
+}
+
 sub get_ext {
   my ($self, $ext) = @_;
   
@@ -66,11 +92,19 @@ sub new_c99 {
   my $default_config = {%Config};
   $bconf->replace_all_config($default_config);
   
+  # Remove and get include dir from ccflags
+  my @ccflags_include_dirs = $bconf->_remove_include_dirs_from_ccflags;
+  
   # Add include directory to ccflags
   my $include_dir = $INC{"SPVM/Builder/Config.pm"};
   $include_dir =~ s/\/Config\.pm$//;
   $include_dir .= '/include';
   $bconf->add_extra_compiler_flags("-I$include_dir");
+  
+  # Add ccflags include dir
+  for my $ccflags_include_dir (@ccflags_include_dirs) {
+    $bconf->add_extra_compiler_flags("-I$ccflags_include_dir");
+  }
   
   # C99
   $bconf->set_std('c99');
@@ -98,12 +132,20 @@ sub new_cpp {
   # Use default config
   my $default_config = {%Config};
   $bconf->replace_all_config($default_config);
+
+  # Remove and get include dir from ccflags
+  my @ccflags_include_dirs = $bconf->_remove_include_dirs_from_ccflags;
   
   # Add include directory to ccflags
   my $include_dir = $INC{"SPVM/Builder/Config.pm"};
   $include_dir =~ s/\/Config\.pm$//;
   $include_dir .= '/include';
   $bconf->add_extra_compiler_flags("-I$include_dir");
+
+  # Add ccflags include dir
+  for my $ccflags_include_dir (@ccflags_include_dirs) {
+    $bconf->add_extra_compiler_flags("-I$ccflags_include_dir");
+  }
   
   # Optimize
   $bconf->set_optimize('-O3');
