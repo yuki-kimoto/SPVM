@@ -230,18 +230,6 @@ sub add_ccflags {
   return $self;
 }
 
-sub prepend_ccflags {
-  my ($self, $new_ccflags) = @_;
-  
-  my $ccflags = $self->get_config('ccflags');
-  
-  $ccflags = "$new_ccflags $ccflags";
-  
-  $self->set_config('ccflags' => $ccflags);
-  
-  return $self;
-}
-
 sub set_std {
   my ($self, $spec) = @_;
   
@@ -334,19 +322,6 @@ sub add_lddlflags {
   return $self;
 }
 
-sub prepend_lddlflags {
-  my ($self, $new_lddlflags) = @_;
-  
-  my $lddlflags = $self->get_config('lddlflags');
-  
-  $lddlflags = "$new_lddlflags $lddlflags";
-  
-  $self->set_config('lddlflags' => $lddlflags);
-  
-  return $self;
-}
-
-
 sub get_quiet {
   my ($self, $quiet) = @_;
   
@@ -387,18 +362,6 @@ sub add_extra_compiler_flags {
   return $self;
 }
 
-sub prepend_extra_compiler_flags {
-  my ($self, $new_extra_compiler_flags) = @_;
-  
-  my $extra_compiler_flags = $self->get_config('extra_compiler_flags');
-  
-  $extra_compiler_flags = "$new_extra_compiler_flags $extra_compiler_flags";
-  
-  $self->set_config('extra_compiler_flags' => $extra_compiler_flags);
-  
-  return $self;
-}
-
 sub set_extra_linker_flags {
   my ($self, $extra_linker_flags) = @_;
   
@@ -419,18 +382,6 @@ sub add_extra_linker_flags {
   my $extra_linker_flags = $self->get_config('extra_linker_flags');
   
   $extra_linker_flags .= " $new_extra_linker_flags";
-  
-  $self->set_config('extra_linker_flags' => $extra_linker_flags);
-  
-  return $self;
-}
-
-sub prepend_extra_linker_flags {
-  my ($self, $new_extra_linker_flags) = @_;
-  
-  my $extra_linker_flags = $self->get_config('extra_linker_flags');
-  
-  $extra_linker_flags = "$new_extra_linker_flags $extra_linker_flags";
   
   $self->set_config('extra_linker_flags' => $extra_linker_flags);
   
@@ -552,12 +503,6 @@ Get C<lddlflags>.
 
 Add C<lddlflags> after current C<lddlflags>.
 
-=head2 prepend_lddlflags
-
-  $bconf->add_lddlflags($lddlflags);
-
-Prepend C<lddlflags> before current C<lddlflags>.
-
 =head2 new_c99
   
   my $bconf = SPVM::Builder::Config->new_c99;
@@ -582,12 +527,6 @@ Set C<extra_compiler_flags>.
 
 Add new C<extra_compiler_flags> after current C<extra_compiler_flags>.
 
-=head2 prepend_extra_compiler_flags
-
-  $bconf->prepend_extra_compiler_flags($extra_compiler_flags);
-
-Prepend new C<extra_compiler_flags> before current C<extra_compiler_flags>.
-
 =head2 get_extra_linker_flags
 
   my $extra_linker_flags = $bconf->get_extra_linker_flags;
@@ -605,10 +544,3 @@ Set C<extra_linker_flags>.
   $bconf->add_extra_linker_flags($extra_linker_flags);
 
 Add new C<extra_linker_flags> after current C<extra_linker_flags>.
-
-=head2 prepend_extra_linker_flags
-
-  $bconf->prepend_extra_linker_flags($extra_linker_flags);
-
-Prepend new C<extra_linker_flags> before current C<extra_linker_flags>.
-
