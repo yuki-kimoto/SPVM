@@ -1,12 +1,15 @@
 (Current SPVM is on beta release)
 
-0.0702 2020-06-15
+0.0702 2020-06-18
   - add document of SPVM::Build::Config::add_extra_compiler_flags
   - add document of SPVM::Build::Config::add_extra_linker_flags
   - add document of SPVM::Build::Config::set_extra_compiler_flags
   - add document of SPVM::Build::Config::get_extra_compiler_flags
   - add document of SPVM::Build::Config::set_extra_linker_flags
   - add document of SPVM::Build::Config::get_extra_linker_flags
+  - add SPVM::Build::Config::set_include_dirs
+  - add SPVM::Build::Config::get_include_dirs
+  - add SPVM::Build::Config::add_include_dirs
 
 0.0701 2020-02-19
   - add SPVM::NDArray::Byte

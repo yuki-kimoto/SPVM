@@ -4,30 +4,24 @@ use strict;
 use warnings;
 use Config;
 
-sub _remove_include_dirs_from_ccflags {
-  my ($self) = @_;
+sub get_include_dirs {
+  my ($self, $include_dirs) = @_;
   
-  my $ccflags = $self->get_ccflags;
+  return $self->{include_dirs};
+}
+
+sub set_include_dirs {
+  my ($self, $include_dirs) = @_;
   
-  my @parts = split(/ +/, $ccflags);
+  $self->{include_dirs} = $include_dirs;
   
-  my @rest_parts;
-  my @include_dirs;
-  for my $part (@parts) {
-    if ($part =~ /^-I(.*)/) {
-      my $include_dir = $1;
-      push @include_dirs, $include_dir;
-    }
-    else {
-      push @rest_parts, $part;
-    }
-  }
+  return $self;
+}
+
+sub add_include_dirs {
+  my ($self, $include_dir) = @_;
   
-  my $rest_ccflags = join(' ', @rest_parts);
-  
-  $self->set_ccflags($rest_ccflags);
-  
-  return @include_dirs;
+  push @{$self->{include_dirs}}, $include_dir;
 }
 
 sub get_ext {
@@ -44,43 +38,82 @@ sub set_ext {
   return $self;
 }
 
+sub get_quiet {
+  my ($self, $quiet) = @_;
+  
+  return $self->{quiet};
+}
+
+sub set_quiet {
+  my ($self, $quiet) = @_;
+  
+  $self->{quiet} = $quiet;
+  
+  return $self;
+}
+
+sub set_extra_compiler_flags {
+  my ($self, $extra_compiler_flags) = @_;
+  
+  $self->set_config(extra_compiler_flags => $extra_compiler_flags);
+  
+  return $self;
+}
+
+sub get_extra_compiler_flags {
+  my $self = shift;
+  
+  return $self->get_config('extra_compiler_flags');
+}
+
+sub add_extra_compiler_flags {
+  my ($self, $new_extra_compiler_flags) = @_;
+  
+  my $extra_compiler_flags = $self->get_config('extra_compiler_flags');
+  
+  $extra_compiler_flags .= " $new_extra_compiler_flags";
+  
+  $self->set_config('extra_compiler_flags' => $extra_compiler_flags);
+  
+  return $self;
+}
+
+sub set_extra_linker_flags {
+  my ($self, $extra_linker_flags) = @_;
+  
+  $self->set_config(extra_linker_flags => $extra_linker_flags);
+  
+  return $self;
+}
+
+sub get_extra_linker_flags {
+  my $self = shift;
+  
+  return $self->get_config('extra_linker_flags');
+}
+
+sub add_extra_linker_flags {
+  my ($self, $new_extra_linker_flags) = @_;
+  
+  my $extra_linker_flags = $self->get_config('extra_linker_flags');
+  
+  $extra_linker_flags .= " $new_extra_linker_flags";
+  
+  $self->set_config('extra_linker_flags' => $extra_linker_flags);
+  
+  return $self;
+}
+
 sub new {
   my $class = shift;
   
   my $self = {};
   
   $self->{config} = {};
+  
+  $self->{include_dirs} = [];
 
   return bless $self, $class;
-}
-
-sub parse_dll_infos {
-  my $self = shift;
-  
-  my $get_lddlflags;
-  if (defined $self->get_lddlflags) {
-    $get_lddlflags = $self->get_lddlflags;
-  }
-  else {
-    $get_lddlflags = '';
-  }
-  my $get_extra_linker_flags;
-  if (defined $self->get_extra_linker_flags) {
-    $get_extra_linker_flags = $self->get_extra_linker_flags;
-  }
-  else {
-    $get_extra_linker_flags = '';
-  }
-  
-  my $linker_flags = $get_lddlflags . " " . $get_extra_linker_flags;
-  my $dll_infos = [];
-  while ($linker_flags =~ /-(L|l)([\S]+)/g) {
-    my $type = $1;
-    my $name = $2;
-    push @$dll_infos, {type => $type, name => $name};
-  }
-  
-  return $dll_infos;
 }
 
 sub new_c99 {
@@ -160,6 +193,35 @@ sub new_cpp {
   $bconf->set_ext('cpp');
   
   return $bconf;
+}
+
+sub parse_dll_infos {
+  my $self = shift;
+  
+  my $get_lddlflags;
+  if (defined $self->get_lddlflags) {
+    $get_lddlflags = $self->get_lddlflags;
+  }
+  else {
+    $get_lddlflags = '';
+  }
+  my $get_extra_linker_flags;
+  if (defined $self->get_extra_linker_flags) {
+    $get_extra_linker_flags = $self->get_extra_linker_flags;
+  }
+  else {
+    $get_extra_linker_flags = '';
+  }
+  
+  my $linker_flags = $get_lddlflags . " " . $get_extra_linker_flags;
+  my $dll_infos = [];
+  while ($linker_flags =~ /-(L|l)([\S]+)/g) {
+    my $type = $1;
+    my $name = $2;
+    push @$dll_infos, {type => $type, name => $name};
+  }
+  
+  return $dll_infos;
 }
 
 sub get_cache {
@@ -322,71 +384,32 @@ sub add_lddlflags {
   return $self;
 }
 
-sub get_quiet {
-  my ($self, $quiet) = @_;
+sub _remove_include_dirs_from_ccflags {
+  my ($self) = @_;
   
-  return $self->{quiet};
+  my $ccflags = $self->get_ccflags;
+  
+  my @parts = split(/ +/, $ccflags);
+  
+  my @rest_parts;
+  my @include_dirs;
+  for my $part (@parts) {
+    if ($part =~ /^-I(.*)/) {
+      my $include_dir = $1;
+      push @include_dirs, $include_dir;
+    }
+    else {
+      push @rest_parts, $part;
+    }
+  }
+  
+  my $rest_ccflags = join(' ', @rest_parts);
+  
+  $self->set_ccflags($rest_ccflags);
+  
+  return @include_dirs;
 }
 
-sub set_quiet {
-  my ($self, $quiet) = @_;
-  
-  $self->{quiet} = $quiet;
-  
-  return $self;
-}
-
-sub set_extra_compiler_flags {
-  my ($self, $extra_compiler_flags) = @_;
-  
-  $self->set_config(extra_compiler_flags => $extra_compiler_flags);
-  
-  return $self;
-}
-
-sub get_extra_compiler_flags {
-  my $self = shift;
-  
-  return $self->get_config('extra_compiler_flags');
-}
-
-sub add_extra_compiler_flags {
-  my ($self, $new_extra_compiler_flags) = @_;
-  
-  my $extra_compiler_flags = $self->get_config('extra_compiler_flags');
-  
-  $extra_compiler_flags .= " $new_extra_compiler_flags";
-  
-  $self->set_config('extra_compiler_flags' => $extra_compiler_flags);
-  
-  return $self;
-}
-
-sub set_extra_linker_flags {
-  my ($self, $extra_linker_flags) = @_;
-  
-  $self->set_config(extra_linker_flags => $extra_linker_flags);
-  
-  return $self;
-}
-
-sub get_extra_linker_flags {
-  my $self = shift;
-  
-  return $self->get_config('extra_linker_flags');
-}
-
-sub add_extra_linker_flags {
-  my ($self, $new_extra_linker_flags) = @_;
-  
-  my $extra_linker_flags = $self->get_config('extra_linker_flags');
-  
-  $extra_linker_flags .= " $new_extra_linker_flags";
-  
-  $self->set_config('extra_linker_flags' => $extra_linker_flags);
-  
-  return $self;
-}
 
 1;
 
