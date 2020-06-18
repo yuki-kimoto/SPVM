@@ -55,7 +55,7 @@ sub set_quiet {
 sub set_extra_compiler_flags {
   my ($self, $extra_compiler_flags) = @_;
   
-  $self->set_config(extra_compiler_flags => $extra_compiler_flags);
+  $self->{extra_compiler_flags} = $extra_compiler_flags;
   
   return $self;
 }
@@ -63,25 +63,24 @@ sub set_extra_compiler_flags {
 sub get_extra_compiler_flags {
   my $self = shift;
   
-  return $self->get_config('extra_compiler_flags');
+  return $self->{extra_compiler_flags};
 }
 
 sub add_extra_compiler_flags {
   my ($self, $new_extra_compiler_flags) = @_;
   
-  my $extra_compiler_flags = $self->get_config('extra_compiler_flags');
+  my $extra_compiler_flags = $self->{extra_compiler_flags};
+  $extra_compiler_flags = '' unless defined $extra_compiler_flags;
   
   $extra_compiler_flags .= " $new_extra_compiler_flags";
   
-  $self->set_config('extra_compiler_flags' => $extra_compiler_flags);
-  
-  return $self;
+  $self->{extra_compiler_flags} = $extra_compiler_flags;
 }
 
 sub set_extra_linker_flags {
   my ($self, $extra_linker_flags) = @_;
   
-  $self->set_config(extra_linker_flags => $extra_linker_flags);
+  $self->{extra_linker_flags} = $extra_linker_flags;
   
   return $self;
 }
@@ -89,19 +88,18 @@ sub set_extra_linker_flags {
 sub get_extra_linker_flags {
   my $self = shift;
   
-  return $self->get_config('extra_linker_flags');
+  return $self->{extra_linker_flags};
 }
 
 sub add_extra_linker_flags {
   my ($self, $new_extra_linker_flags) = @_;
   
-  my $extra_linker_flags = $self->get_config('extra_linker_flags');
+  my $extra_linker_flags = $self->{extra_linker_flags};
+  $extra_linker_flags = '' unless defined $extra_linker_flags;
   
   $extra_linker_flags .= " $new_extra_linker_flags";
   
-  $self->set_config('extra_linker_flags' => $extra_linker_flags);
-  
-  return $self;
+  $self->{extra_linker_flags} = $extra_linker_flags;
 }
 
 sub new {
@@ -114,6 +112,35 @@ sub new {
   $self->{include_dirs} = [];
 
   return bless $self, $class;
+}
+
+sub parse_dll_infos {
+  my $self = shift;
+  
+  my $get_lddlflags;
+  if (defined $self->get_lddlflags) {
+    $get_lddlflags = $self->get_lddlflags;
+  }
+  else {
+    $get_lddlflags = '';
+  }
+  my $get_extra_linker_flags;
+  if (defined $self->get_extra_linker_flags) {
+    $get_extra_linker_flags = $self->get_extra_linker_flags;
+  }
+  else {
+    $get_extra_linker_flags = '';
+  }
+  
+  my $linker_flags = $get_lddlflags . " " . $get_extra_linker_flags;
+  my $dll_infos = [];
+  while ($linker_flags =~ /-(L|l)([\S]+)/g) {
+    my $type = $1;
+    my $name = $2;
+    push @$dll_infos, {type => $type, name => $name};
+  }
+  
+  return $dll_infos;
 }
 
 sub new_c99 {
@@ -193,35 +220,6 @@ sub new_cpp {
   $bconf->set_ext('cpp');
   
   return $bconf;
-}
-
-sub parse_dll_infos {
-  my $self = shift;
-  
-  my $get_lddlflags;
-  if (defined $self->get_lddlflags) {
-    $get_lddlflags = $self->get_lddlflags;
-  }
-  else {
-    $get_lddlflags = '';
-  }
-  my $get_extra_linker_flags;
-  if (defined $self->get_extra_linker_flags) {
-    $get_extra_linker_flags = $self->get_extra_linker_flags;
-  }
-  else {
-    $get_extra_linker_flags = '';
-  }
-  
-  my $linker_flags = $get_lddlflags . " " . $get_extra_linker_flags;
-  my $dll_infos = [];
-  while ($linker_flags =~ /-(L|l)([\S]+)/g) {
-    my $type = $1;
-    my $name = $2;
-    push @$dll_infos, {type => $type, name => $name};
-  }
-  
-  return $dll_infos;
 }
 
 sub get_cache {
