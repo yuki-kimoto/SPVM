@@ -10,4 +10,8 @@ package TestCase::NativeAPI2 {
   }
 
   native sub mul : int ($num1 : int, $num2 : int);
+
+  native sub src_foo : int ();
+
+  native sub src_bar : int ();
 }

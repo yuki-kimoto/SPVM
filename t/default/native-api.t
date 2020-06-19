@@ -104,6 +104,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Pointer->struct_test());
 }
 
+# src and include directory
+{
+  ok(TestCase::NativeAPI2->src_foo);
+  ok(TestCase::NativeAPI2->src_bar);
+}
+
 # Check not creating no needed object file
 ok(!-f "$FindBin::Bin/spvm_build/work/object/SPVM/CORE.o");
 
