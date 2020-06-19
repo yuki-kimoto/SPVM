@@ -12,6 +12,7 @@ use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use DynaLoader;
 use Config;
+use File::Find;
 
 use File::Basename 'dirname', 'basename';
 
@@ -200,13 +201,13 @@ sub build_dll {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_file = $self->compile($package_name, $opt);
+  my $object_files = $self->compile($package_name, $opt);
   
   # Link object files and create shared objectrary
   $self->link(
     $package_name,
     $sub_names,
-    [$object_file],
+    $object_files,
     $opt
   );
 }
@@ -273,18 +274,21 @@ sub compile {
   # Quiet output
   my $quiet = defined $bconf->get_quiet ? $bconf->get_quiet : $self->quiet;
   
-  # Source file
+  # SPVM Subroutine source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
-  my $src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
+  my $spvm_sub_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
   my $src_ext = $bconf->get_ext;
   unless (defined $src_ext) {
     confess "Source extension is not specified";
   }
-  my $src_file = "$src_file_no_ext.$src_ext";
-  unless (-f $src_file) {
-    confess "Can't find source file $src_file";
+  my $spvm_sub_src_file = "$spvm_sub_src_file_no_ext.$src_ext";
+  unless (-f $spvm_sub_src_file) {
+    confess "Can't find source file $spvm_sub_src_file";
   }
-
+  
+  # Native source files
+  my @native_src_files = grep { -f $_ }glob "$native_src_dir/*.$src_ext";
+  
   # CBuilder configs
   my $ccflags = $bconf->get_ccflags;
   
@@ -295,60 +299,77 @@ sub compile {
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
-  # Object file
-  my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'o');
-  my $object_file = "$object_dir/$object_rel_file";
-  
-  # Do compile. This is same as make command
-  my $do_compile;
-  if ($package_name =~ /^anon/) {
-    $do_compile = 1;
-  }
-  else {
-    if (!-f $object_file) {
+  my $object_files = [];
+  my $is_native_src;
+  for my $src_file ($spvm_sub_src_file, @native_src_files) {
+    my $object_file;
+    # Native object file name
+    if ($is_native_src) {
+      my $object_file_base = basename $src_file;
+      $object_file_base =~ s/\.[^\.]+$/.o/;
+      $object_file = "$object_dir/native/$object_file_base";
+      mkpath "$object_dir/native";
+    }
+    # SPVM subroutine object file name
+    else {
+      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'o');
+      $object_file = "$object_dir/$object_rel_file";
+    }
+    
+    # Do compile. This is same as make command
+    my $do_compile;
+    if ($package_name =~ /^anon/) {
       $do_compile = 1;
     }
     else {
-      if (defined $bconf->get_cache && !$bconf->get_cache) {
+      if (!-f $object_file) {
         $do_compile = 1;
       }
       else {
-        # Source file modified time is newer than object file
-        my $mod_time_src = (stat($src_file))[9];
-        my $mod_time_object = (stat($object_file))[9];
-        if ($mod_time_src > $mod_time_object) {
+        if ($bconf->get_no_cache) {
           $do_compile = 1;
         }
         else {
-          # Config file modified time is newer than object file
-          if (-f $config_file) {
-            my $mod_time_config = (stat($config_file))[9];
-            my $mod_time_object = (stat($object_file))[9];
-            if ($mod_time_config > $mod_time_object) {
-              $do_compile = 1;
+          # Source file modified time is newer than object file
+          my $mod_time_src = (stat($src_file))[9];
+          my $mod_time_object = (stat($object_file))[9];
+          if ($mod_time_src > $mod_time_object) {
+            $do_compile = 1;
+          }
+          else {
+            # Config file modified time is newer than object file
+            if (-f $config_file) {
+              my $mod_time_config = (stat($config_file))[9];
+              my $mod_time_object = (stat($object_file))[9];
+              if ($mod_time_config > $mod_time_object) {
+                $do_compile = 1;
+              }
             }
           }
         }
       }
     }
-  }
-  
-  if ($do_compile) {
-    eval {
-      # Compile source file
-      $cbuilder->compile(
-        source => $src_file,
-        object_file => $object_file,
-        include_dirs => $bconf->get_include_dirs,
-        extra_compiler_flags => $bconf->get_extra_compiler_flags,
-      );
-    };
-    if (my $error = $@) {
-      confess $error;
+    
+    if ($do_compile) {
+      eval {
+        # Compile source file
+        $cbuilder->compile(
+          source => $src_file,
+          object_file => $object_file,
+          include_dirs => $bconf->get_include_dirs,
+          extra_compiler_flags => $bconf->get_extra_compiler_flags,
+        );
+      };
+      if (my $error = $@) {
+        confess $error;
+      }
     }
+    push @$object_files, $object_file;
+    
+    $is_native_src = 1;
   }
   
-  return $object_file;
+  return $object_files;
 }
 
 sub link {

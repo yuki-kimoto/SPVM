@@ -10,7 +10,13 @@
   - add SPVM::Build::Config::set_include_dirs
   - add SPVM::Build::Config::get_include_dirs
   - add SPVM::Build::Config::add_include_dirs
-
+  - add set_no_cache and get_no_cache
+  - remove set_cache and get_cache
+  - Support native source code and include files
+    
+    Foo.native/include
+    Foo.native/src
+    
 0.0701 2020-02-19
   - add SPVM::NDArray::Byte
   - add SPVM::NDArray::Short

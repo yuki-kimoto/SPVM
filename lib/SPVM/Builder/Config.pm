@@ -222,16 +222,16 @@ sub new_cpp {
   return $bconf;
 }
 
-sub get_cache {
-  my ($self, $cache) = @_;
+sub get_no_cache {
+  my ($self, $use_cache) = @_;
   
-  return $self->{cache};
+  return $self->{use_cache};
 }
 
-sub set_cache {
-  my ($self, $cache) = @_;
+sub set_no_cache {
+  my ($self, $use_cache) = @_;
   
-  $self->{cache} = $cache;
+  $self->{use_cache} = $use_cache;
   
   return $self;
 }
