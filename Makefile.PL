@@ -62,6 +62,8 @@ if ($optimize) {
 my $bconf = SPVM::Builder::Config->new_c99;
 $optimize ||= $bconf->get_config('optimize');
 my $ccflags = $bconf->get_ccflags;
+my $include_dirs = $bconf->get_include_dirs;
+my $inc = join(' ', map { "-I$_" } @$include_dirs);
 my $extra_compiler_flags = $bconf->get_extra_compiler_flags;
 
 my @csource_files;
@@ -81,6 +83,7 @@ WriteMakefile(
     CCFLAGS => "$ccflags $extra_compiler_flags",
     OPTIMIZE => $optimize,
     C => [@csource_files],
+    INC => $inc,
     OBJECT            => '$(O_FILES)', # link all the C files too
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
     clean => {FILES => "spvm_build/work t/default/spvm_build/work t/default/lib/UseAllTestCase.spvm t/precompile t/exe/spvm_build/work t/test_files_tmp @object_files"},

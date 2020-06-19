@@ -18,7 +18,7 @@ sub set_include_dirs {
   return $self;
 }
 
-sub add_include_dirs {
+sub add_include_dir {
   my ($self, $include_dir) = @_;
   
   push @{$self->{include_dirs}}, $include_dir;
@@ -159,11 +159,11 @@ sub new_c99 {
   my $include_dir = $INC{"SPVM/Builder/Config.pm"};
   $include_dir =~ s/\/Config\.pm$//;
   $include_dir .= '/include';
-  $bconf->add_extra_compiler_flags("-I$include_dir");
+  $bconf->add_include_dir($include_dir);
   
   # Add ccflags include dir
   for my $ccflags_include_dir (@ccflags_include_dirs) {
-    $bconf->add_extra_compiler_flags("-I$ccflags_include_dir");
+    $bconf->add_include_dir($ccflags_include_dir);
   }
   
   # C99
@@ -200,11 +200,11 @@ sub new_cpp {
   my $include_dir = $INC{"SPVM/Builder/Config.pm"};
   $include_dir =~ s/\/Config\.pm$//;
   $include_dir .= '/include';
-  $bconf->add_extra_compiler_flags("-I$include_dir");
-
+  $bconf->add_include_dir($include_dir);
+  
   # Add ccflags include dir
   for my $ccflags_include_dir (@ccflags_include_dirs) {
-    $bconf->add_extra_compiler_flags("-I$ccflags_include_dir");
+    $bconf->add_include_dir($ccflags_include_dir);
   }
   
   # Optimize
@@ -294,6 +294,7 @@ sub set_std {
   my ($self, $spec) = @_;
   
   my $extra_compiler_flags = $self->get_extra_compiler_flags;
+  $extra_compiler_flags = '' unless defined $extra_compiler_flags;
   
   # Remove -std=foo section
   $extra_compiler_flags =~ s/-std=[^ ]+//g;
@@ -565,3 +566,17 @@ Set C<extra_linker_flags>.
   $bconf->add_extra_linker_flags($extra_linker_flags);
 
 Add new C<extra_linker_flags> after current C<extra_linker_flags>.
+
+=head2 get_include_dirs
+
+  my $include_dirs = $bconf->get_include_dirs;
+
+Get include directories. This value is array refernce.
+
+=head2 set_include_dirs
+
+  $bconf->set_include_dirs($include_dirs);
+
+=head2 add_include_dir
+
+  $bconf->add_include_dir($include_dir);
