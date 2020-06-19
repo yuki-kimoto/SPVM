@@ -266,6 +266,9 @@ sub compile {
   else {
     $bconf = SPVM::Builder::Config->new_c99;;
   }
+  
+  # Add native include dir
+  unshift @{$bconf->get_include_dirs}, $native_include_dir;
 
   # Quiet output
   my $quiet = defined $bconf->get_quiet ? $bconf->get_quiet : $self->quiet;
