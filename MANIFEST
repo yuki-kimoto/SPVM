@@ -368,6 +368,9 @@ MANIFEST			This list of files
 ppport.h
 README.md
 regen/regen_complex.pl
+regen/regen_ndarray.pl
+regen/regen_ndarray_complex.pl
+regen/regen_ndarray_quat.pl
 regen/regen_quat.pl
 solo/Main.spvm
 solo/solo_Makefile.PL
@@ -645,6 +648,10 @@ t/default/lib/TestCase/NativeAPI.config
 t/default/lib/TestCase/NativeAPI.spvm
 t/default/lib/TestCase/NativeAPI2.c
 t/default/lib/TestCase/NativeAPI2.config
+t/default/lib/TestCase/NativeAPI2.native/include/bar.h
+t/default/lib/TestCase/NativeAPI2.native/include/foo.h
+t/default/lib/TestCase/NativeAPI2.native/src/bar.c
+t/default/lib/TestCase/NativeAPI2.native/src/foo.c
 t/default/lib/TestCase/NativeAPI2.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
