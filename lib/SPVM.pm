@@ -114,7 +114,7 @@ sub new_mulnum_array_from_bin { SPVM::ExchangeAPI::new_mulnum_array_from_bin($SP
 
 =head1 NAME
 
-SPVM - Static Perl Virtual Machine. Fast calculation, fast array operation, and easy C/C++ Binding.
+SPVM - Static Perl Virtual Machine. Fast calculation, Fast Array Operation, and Easy C/C++ Binding.
 
 =head1 SYNOPSIS
 
@@ -434,9 +434,13 @@ In bash, you can set SPVM_BUILD_DIR to the following.
 
   export SPVM_BUILD_DIR=~/.spvm_build
 
-=head1 NOTE
+=head1 CAUTION
 
-B<SPVM is before 1.0 under development! I will change implementation and specification without warnings.>
+SPVM 1.0 is First Major Release. 
+
+But Full backward compatibility is not guaranteed because SPVM is not used much in corporate work yet.
+
+If SPVM has fatal bugs in the specification or implementation, the backward compatibility is broken and the bug will be fixed after discussion.
 
 =head1 SUPPORT
 
