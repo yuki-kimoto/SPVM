@@ -330,19 +330,36 @@ sub compile {
           $do_compile = 1;
         }
         else {
-          # Source file modified time is newer than object file
-          my $mod_time_src = (stat($src_file))[9];
-          my $mod_time_object = (stat($object_file))[9];
-          if ($mod_time_src > $mod_time_object) {
-            $do_compile = 1;
+          # Do compile if one of include files is newer than object file
+          my @include_files = grep { -f $_ } glob "$native_include_dir/*";
+          if (@include_files) {
+            my $mod_time_newer_include_file = 0;
+            for my $include_file (@include_files) {
+              my $mod_time = (stat($include_file))[9];
+              if ($mod_time > $mod_time_newer_include_file) {
+                $mod_time = $mod_time_newer_include_file;
+              }
+            }
+            my $mod_time_object = (stat($object_file))[9];
+            if ($mod_time_newer_include_file > $mod_time_object) {
+              $do_compile = 1;
+            }
           }
           else {
-            # Config file modified time is newer than object file
-            if (-f $config_file) {
-              my $mod_time_config = (stat($config_file))[9];
-              my $mod_time_object = (stat($object_file))[9];
-              if ($mod_time_config > $mod_time_object) {
-                $do_compile = 1;
+            # Source file modified time is newer than object file
+            my $mod_time_src = (stat($src_file))[9];
+            my $mod_time_object = (stat($object_file))[9];
+            if ($mod_time_src > $mod_time_object) {
+              $do_compile = 1;
+            }
+            else {
+              # Config file modified time is newer than object file
+              if (-f $config_file) {
+                my $mod_time_config = (stat($config_file))[9];
+                my $mod_time_object = (stat($object_file))[9];
+                if ($mod_time_config > $mod_time_object) {
+                  $do_compile = 1;
+                }
               }
             }
           }
