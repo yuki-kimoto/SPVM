@@ -434,31 +434,15 @@ In bash, you can set SPVM_BUILD_DIR to the following.
 
   export SPVM_BUILD_DIR=~/.spvm_build
 
-=head1 CAUTION
-
-SPVM 1.0 is First Major Release. 
-
-But Full backward compatibility is not guaranteed because SPVM is not used much in corporate work yet.
-
-If SPVM has fatal bugs in the specification or implementation, the backward compatibility is broken and the bug will be fixed after discussion.
-
-=head1 SUPPORT
-
-If you have problems or find bugs, comment to GitHub Issue.
-
-L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
-
-=head1 AUTHOR
-
-Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
-
 =head1 CORE MODULES
+
+SPVM Core Modules.
 
 =over 2
 
-=item * L<SPVM::ByteList>
-
 =item * L<SPVM::Byte>
+
+=item * L<SPVM::ByteList>
 
 =item * L<SPVM::Cloner>
 
@@ -476,37 +460,37 @@ Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =item * L<SPVM::Complex_2s>
 
-=item * L<SPVM::DoubleList>
-
 =item * L<SPVM::Double>
 
-=item * L<SPVM::EqualityChecker::SameObject>
+=item * L<SPVM::DoubleList>
 
 =item * L<SPVM::EqualityChecker>
 
-=item * L<SPVM::FloatList>
+=item * L<SPVM::EqualityChecker::SameObject>
 
 =item * L<SPVM::Float>
 
-=item * L<SPVM::Hash::Entry>
+=item * L<SPVM::FloatList>
 
 =item * L<SPVM::Hash>
 
-=item * L<SPVM::IntList>
+=item * L<SPVM::Hash::Entry>
 
 =item * L<SPVM::Int>
 
-=item * L<SPVM::IO::FileHandle>
+=item * L<SPVM::IntList>
 
 =item * L<SPVM::IO::File>
+
+=item * L<SPVM::IO::FileHandle>
 
 =item * L<SPVM::IO::Stderr>
 
 =item * L<SPVM::IO::Stdout>
 
-=item * L<SPVM::LongList>
-
 =item * L<SPVM::Long>
+
+=item * L<SPVM::LongList>
 
 =item * L<SPVM::Math>
 
@@ -550,8 +534,6 @@ Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =item * L<SPVM::ObjectList>
 
-=item * L<SPVM::Point>
-
 =item * L<SPVM::Quat_4b>
 
 =item * L<SPVM::Quat_4d>
@@ -564,15 +546,15 @@ Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =item * L<SPVM::Quat_4s>
 
+=item * L<SPVM::Regex>
+
 =item * L<SPVM::Regex::Pattern>
 
 =item * L<SPVM::Regex::Replacer>
 
-=item * L<SPVM::Regex>
+=item * L<SPVM::Short>
 
 =item * L<SPVM::ShortList>
-
-=item * L<SPVM::Short>
 
 =item * L<SPVM::Sort>
 
@@ -582,15 +564,33 @@ Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =item * L<SPVM::StringList>
 
-=item * L<SPVM::Time::Info>
-
 =item * L<SPVM::Time>
+
+=item * L<SPVM::Time::Info>
 
 =item * L<SPVM::Unicode>
 
 =item * L<SPVM::Util>
 
 =back
+
+=head1 CAUTION
+
+SPVM 1.0 is First Major Release. 
+
+But Full backward compatibility is not guaranteed because SPVM is not used much in corporate work yet.
+
+If SPVM has fatal bugs in the specification or implementation, the backward compatibility is broken and the bug will be fixed after discussion.
+
+=head1 SUPPORT
+
+If you have problems or find bugs, comment to GitHub Issue.
+
+L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
+
+=head1 AUTHOR
+
+Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
 =head1 CORE DEVELOPERS
 
