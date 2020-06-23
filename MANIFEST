@@ -321,8 +321,6 @@ lib/SPVM/NDArray/Short.spvm
 lib/SPVM/NDArray/String.spvm
 lib/SPVM/ObjectList.pm
 lib/SPVM/ObjectList.spvm
-lib/SPVM/Point.pm
-lib/SPVM/Point.spvm
 lib/SPVM/Quat_4b.spvm
 lib/SPVM/Quat_4d.spvm
 lib/SPVM/Quat_4f.spvm

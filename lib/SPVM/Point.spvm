@@ -1,7 +1,0 @@
-package SPVM::Point {
-  has x : ro int;
-  has y : ro int;
-  sub new : SPVM::Point ($x : int, $y : int) {
-    return new Point;
-  }
-}

@@ -452,6 +452,146 @@ L<SPVM(GitHub)|https://github.com/yuki-kimoto/SPVM>.
 
 Yuki Kimoto E<lt>kimoto.yuki@gmail.com<gt>
 
+=head1 CORE MODULES
+
+=over 2
+
+=item * L<SPVM::ByteList>
+
+=item * L<SPVM::Byte>
+
+=item * L<SPVM::Cloner>
+
+=item * L<SPVM::Comparator>
+
+=item * L<SPVM::Complex_2b>
+
+=item * L<SPVM::Complex_2d>
+
+=item * L<SPVM::Complex_2f>
+
+=item * L<SPVM::Complex_2i>
+
+=item * L<SPVM::Complex_2l>
+
+=item * L<SPVM::Complex_2s>
+
+=item * L<SPVM::DoubleList>
+
+=item * L<SPVM::Double>
+
+=item * L<SPVM::EqualityChecker::SameObject>
+
+=item * L<SPVM::EqualityChecker>
+
+=item * L<SPVM::FloatList>
+
+=item * L<SPVM::Float>
+
+=item * L<SPVM::Hash::Entry>
+
+=item * L<SPVM::Hash>
+
+=item * L<SPVM::IntList>
+
+=item * L<SPVM::Int>
+
+=item * L<SPVM::IO::FileHandle>
+
+=item * L<SPVM::IO::File>
+
+=item * L<SPVM::IO::Stderr>
+
+=item * L<SPVM::IO::Stdout>
+
+=item * L<SPVM::LongList>
+
+=item * L<SPVM::Long>
+
+=item * L<SPVM::Math>
+
+=item * L<SPVM::NDArray::Byte>
+
+=item * L<SPVM::NDArray::ComplexByte>
+
+=item * L<SPVM::NDArray::ComplexDouble>
+
+=item * L<SPVM::NDArray::ComplexFloat>
+
+=item * L<SPVM::NDArray::ComplexInt>
+
+=item * L<SPVM::NDArray::ComplexLong>
+
+=item * L<SPVM::NDArray::ComplexShort>
+
+=item * L<SPVM::NDArray::Double>
+
+=item * L<SPVM::NDArray::Float>
+
+=item * L<SPVM::NDArray::Int>
+
+=item * L<SPVM::NDArray::Long>
+
+=item * L<SPVM::NDArray::QuatByte>
+
+=item * L<SPVM::NDArray::QuatDouble>
+
+=item * L<SPVM::NDArray::QuatFloat>
+
+=item * L<SPVM::NDArray::QuatInt>
+
+=item * L<SPVM::NDArray::QuatLong>
+
+=item * L<SPVM::NDArray::QuatShort>
+
+=item * L<SPVM::NDArray::Short>
+
+=item * L<SPVM::NDArray::String>
+
+=item * L<SPVM::ObjectList>
+
+=item * L<SPVM::Point>
+
+=item * L<SPVM::Quat_4b>
+
+=item * L<SPVM::Quat_4d>
+
+=item * L<SPVM::Quat_4f>
+
+=item * L<SPVM::Quat_4i>
+
+=item * L<SPVM::Quat_4l>
+
+=item * L<SPVM::Quat_4s>
+
+=item * L<SPVM::Regex::Pattern>
+
+=item * L<SPVM::Regex::Replacer>
+
+=item * L<SPVM::Regex>
+
+=item * L<SPVM::ShortList>
+
+=item * L<SPVM::Short>
+
+=item * L<SPVM::Sort>
+
+=item * L<SPVM::StringBuffer>
+
+=item * L<SPVM::Stringer>
+
+=item * L<SPVM::StringList>
+
+=item * L<SPVM::Time::Info>
+
+=item * L<SPVM::Time>
+
+=item * L<SPVM::Unicode>
+
+=item * L<SPVM::Util>
+
+=back
+
 =head1 CORE DEVELOPERS
 
 moti<lt>motohiko.ave@gmail.com<gt>
