@@ -169,7 +169,7 @@ B<Features:>
 
 =item * B<Easy way to C/C++ binding>, B<Automatically Perl binding>, B<C99 math functions>
 
-=item * B<Dynamic linking>, B<Subroutine precompile>, B<AOT compile(create exe file)>
+=item * B<Shared Library>, B<Precompile Subroutine into Machine code>
 
 =item * B<Native API(C level api)>, B<C99 standard>
 
@@ -177,39 +177,159 @@ B<Features:>
 
 =head1 DOCUMENT
 
-=head2 Core Functions
+Currently some ports of document are use Automatic translation, so not accurate and maybe difficult to read.
 
-  print, warn, time
+=over 2
 
-L<SPVM::CORE> - Standard Functions
+=item * L<SPVM Document|https://yuki-kimoto.github.io/spvmdoc-public>
 
-=head2 Standard Modules
+=item * L<SPVM Tutorial|https://yuki-kimoto.github.io/spvmdoc-public/tutorial.html>
 
-L<SPVM::Byte>, L<SPVM::Short>, L<SPVM::Int>, L<SPVM::Long>, L<SPVM::Float>, L<SPVM::Double>
+=item * L<SPVM Language Specification|https://yuki-kimoto.github.io/spvmdoc-public/language.html>
 
-=head2 Exchange API
+=item * L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.html>
 
-SPVM Exchange API Specification
+=item * L<SPVM Native API|https://yuki-kimoto.github.io/spvmdoc-public/native-api.html>
 
-L<http://jp.spvm.info/exchange-api.html>
+=head1 CORE MODULES
 
-(Currently only Japanese)
+SPVM Core Modules.
 
-=head2 Native API
+=over 2
 
-L<SPVM::Document::NativeAPI> - Native API is C level functions to manipulate SPVM data.
+=item * L<SPVM::Byte>
 
-=head2 NativeAPI
+=item * L<SPVM::ByteList>
 
-L<SPVM::Document::NativeAPI> - NativeAPI is the way to C/C++ Binding to SPVM
+=item * L<SPVM::Cloner>
 
-=head2 Language Specification
+=item * L<SPVM::Comparator>
 
-SPVM Language Specification
+=item * L<SPVM::Complex_2b>
 
-L<http://jp.spvm.info/language.html>
+=item * L<SPVM::Complex_2d>
 
-(Currently only Japanese)
+=item * L<SPVM::Complex_2f>
+
+=item * L<SPVM::Complex_2i>
+
+=item * L<SPVM::Complex_2l>
+
+=item * L<SPVM::Complex_2s>
+
+=item * L<SPVM::Double>
+
+=item * L<SPVM::DoubleList>
+
+=item * L<SPVM::EqualityChecker>
+
+=item * L<SPVM::EqualityChecker::SameObject>
+
+=item * L<SPVM::Float>
+
+=item * L<SPVM::FloatList>
+
+=item * L<SPVM::Hash>
+
+=item * L<SPVM::Hash::Entry>
+
+=item * L<SPVM::Int>
+
+=item * L<SPVM::IntList>
+
+=item * L<SPVM::IO::File>
+
+=item * L<SPVM::IO::FileHandle>
+
+=item * L<SPVM::IO::Stderr>
+
+=item * L<SPVM::IO::Stdout>
+
+=item * L<SPVM::Long>
+
+=item * L<SPVM::LongList>
+
+=item * L<SPVM::Math>
+
+=item * L<SPVM::NDArray::Byte>
+
+=item * L<SPVM::NDArray::ComplexByte>
+
+=item * L<SPVM::NDArray::ComplexDouble>
+
+=item * L<SPVM::NDArray::ComplexFloat>
+
+=item * L<SPVM::NDArray::ComplexInt>
+
+=item * L<SPVM::NDArray::ComplexLong>
+
+=item * L<SPVM::NDArray::ComplexShort>
+
+=item * L<SPVM::NDArray::Double>
+
+=item * L<SPVM::NDArray::Float>
+
+=item * L<SPVM::NDArray::Int>
+
+=item * L<SPVM::NDArray::Long>
+
+=item * L<SPVM::NDArray::QuatByte>
+
+=item * L<SPVM::NDArray::QuatDouble>
+
+=item * L<SPVM::NDArray::QuatFloat>
+
+=item * L<SPVM::NDArray::QuatInt>
+
+=item * L<SPVM::NDArray::QuatLong>
+
+=item * L<SPVM::NDArray::QuatShort>
+
+=item * L<SPVM::NDArray::Short>
+
+=item * L<SPVM::NDArray::String>
+
+=item * L<SPVM::ObjectList>
+
+=item * L<SPVM::Quat_4b>
+
+=item * L<SPVM::Quat_4d>
+
+=item * L<SPVM::Quat_4f>
+
+=item * L<SPVM::Quat_4i>
+
+=item * L<SPVM::Quat_4l>
+
+=item * L<SPVM::Quat_4s>
+
+=item * L<SPVM::Regex>
+
+=item * L<SPVM::Regex::Pattern>
+
+=item * L<SPVM::Regex::Replacer>
+
+=item * L<SPVM::Short>
+
+=item * L<SPVM::ShortList>
+
+=item * L<SPVM::Sort>
+
+=item * L<SPVM::StringBuffer>
+
+=item * L<SPVM::Stringer>
+
+=item * L<SPVM::StringList>
+
+=item * L<SPVM::Time>
+
+=item * L<SPVM::Time::Info>
+
+=item * L<SPVM::Unicode>
+
+=item * L<SPVM::Util>
+
+=back
 
 =head1 EXAMPLES
 
@@ -241,8 +361,6 @@ Use SPVM Module from Perl
   my $total = MyMath->sum([3, 6, 8, 9]);
   
   print $total . "\n";
-
-See also L<SPVM::Document::ExchangeAPI>.
 
 =head2 Package Declaration
 
@@ -416,8 +534,6 @@ Use NativeAPI Module from Perl:
   
   print $total . "\n";
 
-See also L<SPVM::Document::NativeAPI>, L<SPVM::Document::NativeAPI>.
-
 =head1 ENVIRONMENT VARIABLE
 
 =head2 SPVM_BUILD_DIR
@@ -433,146 +549,6 @@ In bash, you can set SPVM_BUILD_DIR to the following.
 In bash, you can set SPVM_BUILD_DIR to the following.
 
   export SPVM_BUILD_DIR=~/.spvm_build
-
-=head1 CORE MODULES
-
-SPVM Core Modules.
-
-=over 2
-
-=item * L<SPVM::Byte>
-
-=item * L<SPVM::ByteList>
-
-=item * L<SPVM::Cloner>
-
-=item * L<SPVM::Comparator>
-
-=item * L<SPVM::Complex_2b>
-
-=item * L<SPVM::Complex_2d>
-
-=item * L<SPVM::Complex_2f>
-
-=item * L<SPVM::Complex_2i>
-
-=item * L<SPVM::Complex_2l>
-
-=item * L<SPVM::Complex_2s>
-
-=item * L<SPVM::Double>
-
-=item * L<SPVM::DoubleList>
-
-=item * L<SPVM::EqualityChecker>
-
-=item * L<SPVM::EqualityChecker::SameObject>
-
-=item * L<SPVM::Float>
-
-=item * L<SPVM::FloatList>
-
-=item * L<SPVM::Hash>
-
-=item * L<SPVM::Hash::Entry>
-
-=item * L<SPVM::Int>
-
-=item * L<SPVM::IntList>
-
-=item * L<SPVM::IO::File>
-
-=item * L<SPVM::IO::FileHandle>
-
-=item * L<SPVM::IO::Stderr>
-
-=item * L<SPVM::IO::Stdout>
-
-=item * L<SPVM::Long>
-
-=item * L<SPVM::LongList>
-
-=item * L<SPVM::Math>
-
-=item * L<SPVM::NDArray::Byte>
-
-=item * L<SPVM::NDArray::ComplexByte>
-
-=item * L<SPVM::NDArray::ComplexDouble>
-
-=item * L<SPVM::NDArray::ComplexFloat>
-
-=item * L<SPVM::NDArray::ComplexInt>
-
-=item * L<SPVM::NDArray::ComplexLong>
-
-=item * L<SPVM::NDArray::ComplexShort>
-
-=item * L<SPVM::NDArray::Double>
-
-=item * L<SPVM::NDArray::Float>
-
-=item * L<SPVM::NDArray::Int>
-
-=item * L<SPVM::NDArray::Long>
-
-=item * L<SPVM::NDArray::QuatByte>
-
-=item * L<SPVM::NDArray::QuatDouble>
-
-=item * L<SPVM::NDArray::QuatFloat>
-
-=item * L<SPVM::NDArray::QuatInt>
-
-=item * L<SPVM::NDArray::QuatLong>
-
-=item * L<SPVM::NDArray::QuatShort>
-
-=item * L<SPVM::NDArray::Short>
-
-=item * L<SPVM::NDArray::String>
-
-=item * L<SPVM::ObjectList>
-
-=item * L<SPVM::Quat_4b>
-
-=item * L<SPVM::Quat_4d>
-
-=item * L<SPVM::Quat_4f>
-
-=item * L<SPVM::Quat_4i>
-
-=item * L<SPVM::Quat_4l>
-
-=item * L<SPVM::Quat_4s>
-
-=item * L<SPVM::Regex>
-
-=item * L<SPVM::Regex::Pattern>
-
-=item * L<SPVM::Regex::Replacer>
-
-=item * L<SPVM::Short>
-
-=item * L<SPVM::ShortList>
-
-=item * L<SPVM::Sort>
-
-=item * L<SPVM::StringBuffer>
-
-=item * L<SPVM::Stringer>
-
-=item * L<SPVM::StringList>
-
-=item * L<SPVM::Time>
-
-=item * L<SPVM::Time::Info>
-
-=item * L<SPVM::Unicode>
-
-=item * L<SPVM::Util>
-
-=back
 
 =head1 CAUTION
 
