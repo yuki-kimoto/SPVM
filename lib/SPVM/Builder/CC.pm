@@ -322,11 +322,11 @@ sub compile {
       $do_compile = 1;
     }
     else {
-      if (!-f $object_file) {
+      if ($bconf->get_force_compile) {
         $do_compile = 1;
       }
       else {
-        if ($bconf->get_no_cache) {
+        if (!-f $object_file) {
           $do_compile = 1;
         }
         else {
