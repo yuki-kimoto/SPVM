@@ -142,8 +142,57 @@ Use SPVM Module from Perl
   
   # Call subroutine
   my $total = MyMath->sum([3, 6, 8, 9]);
+
+  print "Total: $total\n";
   
-  print $total . "\n";
+  # Call subroutine with packed data
+  my $nums_packed = pack('l', 3, 6, 8, 9);
+  my $total_packed = MyMath->sum($nums_pack);
+  
+  print "Total Packed: $total_packed\n";
+
+Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
+
+  # lib/MyMath.spvm
+  package MyMath {
+    precompile sub sum_precompile : int ($nums : int[]) {
+      
+      my $total = 0;
+      for (my $i = 0; $i < @$nums; $i++) {
+        $total += $nums->[$i];
+      }
+      
+      return $total;
+    }
+  }
+
+SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
+
+  # lib/MyMath.spvm
+  package MyMath {
+    native sub sum_native : int ($nums : int[]); {
+  }
+  
+  // lib/MyMath.c
+  #include "spvm_native.h"
+  
+  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
+    void* sv_nums = stack[0].oval;
+    
+    int32_t length = env->length(sv_nums);
+    
+    int32_t nums* env->get_elems_int(env, sv_nums);
+    
+    int32_t total = 0;
+    for (int32_t i = 0; i < length; i++) {
+      total += nums[i];
+    }
+    
+    stack[0].ival = total;
+    
+    return SPVM_SUCCESS;
+  }
 
 =head1 DESCRIPTION
 
