@@ -19,7 +19,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0702';
+our $VERSION = '0.0703';
 
 my $SPVM_ENV;
 my $BUILDER;
@@ -135,6 +135,9 @@ SPVM Module:
 
 Use SPVM Module from Perl
   
+  # spvm.pl
+  use strict;
+  use warnings;
   use FindBin;
   use lib "$FindBin::Bin/lib";
   
@@ -146,8 +149,9 @@ Use SPVM Module from Perl
   print "Total: $total\n";
   
   # Call subroutine with packed data
-  my $nums_packed = pack('l', 3, 6, 8, 9);
-  my $total_packed = MyMath->sum($nums_pack);
+  my $nums_packed = pack('l*', 3, 6, 8, 9);
+  my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
+  my $total_packed = MyMath->sum($sv_nums);
   
   print "Total Packed: $total_packed\n";
 
@@ -166,11 +170,26 @@ Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
     }
   }
 
+Call SPVM Precompile Subroutine from Perl
+
+  # spvm.pl
+  use strict;
+  use warnings;
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+  
+  use SPVM 'MyMath';
+  
+  # Call precompile subroutine
+  my $total_precompile = MyMath->sum_precompile([3, 6, 8, 9]);
+  
+  print "Total Precompile: $total_precompile\n";
+
 SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
 
   # lib/MyMath.spvm
   package MyMath {
-    native sub sum_native : int ($nums : int[]); {
+    native sub sum_native : int ($nums : int[]);
   }
   
   // lib/MyMath.c
@@ -180,9 +199,9 @@ SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
     
     void* sv_nums = stack[0].oval;
     
-    int32_t length = env->length(sv_nums);
+    int32_t length = env->length(env, sv_nums);
     
-    int32_t nums* env->get_elems_int(env, sv_nums);
+    int32_t* nums = env->get_elems_int(env, sv_nums);
     
     int32_t total = 0;
     for (int32_t i = 0; i < length; i++) {
@@ -193,6 +212,36 @@ SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
     
     return SPVM_SUCCESS;
   }
+  
+  # lib/MyMath.config
+
+  use strict;
+  use warnings;
+
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_c99;
+
+  $bconf;
+
+Use SPVM Native Subroutine from Perl
+  
+  # spvm.pl
+  use strict;
+  use warnings;
+  use FindBin;
+  use lib "$FindBin::Bin/lib";
+  
+  use SPVM 'MyMath';
+  
+  # Call native subroutine
+  my $total_native = MyMath->sum_native([3, 6, 8, 9]);
+  
+  print "Total Native: $total_native\n";
+
+Environment Variable "SPVM_BUILD_DIR" must be set for precompile and native subroutine
+  
+  # bash example
+  export SPVM_BUILD_DIR=~/.spvm_build
 
 =head1 DESCRIPTION
 
@@ -382,7 +431,7 @@ SPVM Core Modules.
 
 =head1 EXAMPLES
 
-=head2 How to use SPVM from Perl
+=head2 How to write SPVM and Call it from Perl
 
 SPVM Module:
 
@@ -411,177 +460,28 @@ Use SPVM Module from Perl
   
   print $total . "\n";
 
-=head2 Package Declaration
 
-Package can contain field declaration, subroutine declaration.
+=head2 How to improve performacne using precompile subroutine
 
-  package Point {
-    has x : int;
-    has y : int;
-    
-    sub new : Point ($x : int, $y : int) {
-      my $self = new Point;
+  # lib/MyMath.spvm
+  package MyMath {
+    precompile sub sum_precompile : int ($nums : int[]) {
       
-      $self->{x} = $x;
-      $self->{y} = $y;
-      
-      return $self;
-    }
-    sub clear ($self : self) {
-      $self->{x} = 0;
-      $self->{y} = 0;
-    }
-  }
-
-Package can also contain package variable declaration and enumeration declaration and use declaration.
-
-  package Foo {
-    use Point;
-    
-    our $FOO : int;
-    our $BAR : int;
-    
-    enum {
-      FLAG1
-      FLAG2;
-    }
-  }
-
-=head2 Use Module
-
-  use Point;
-
-=head2 Field Declaration
-
-  has x : int;
-  has y : long;
-
-Field is public by default.
-
-You can make field private by private keyword.
-
-  has x : private int;
-
-=head2 Subroutine Declaration
-
-  sub sub : int ($num1 : int, $num2 : int) {
-    return $num1 + $num2;
-  }
-
-=head2 Variable Declaration
-  
-  my $num : int;
-  my $nums : int[];
-
-Exmpales:
-  
-  # Numeric Type
-  my $value : byte;
-  my $value : short;
-  my $value : int;
-  my $value : long;
-  my $value : float;
-  my $value : double;
-  my $obj : Point;
-  
-  # Array Type
-  my $values : byte[];
-  my $values : short[];
-  my $values : int[];
-  my $values : long[];
-  my $values : float[];
-  my $values : double[];
-  my $values : Point[];
-
-  # Multiple Dimension Array Type
-  my $values : byte[][];
-  my $values : short[][];
-  my $values : int[][];
-  my $values : long[][];
-  my $values : float[][];
-  my $values : double[][];
-  my $values : Point[][];
-  
-You can initialize variable.
-
-  my $value : int = 1;
-
-You can omit type name if initial value is exists. This is type inference.
-
-  my $value = 1;
-
-=head2 Type Inference
-
-If the Type of right value is known, the type of left value is automatically decided.
-
-  my $num = 2;
-  my $obj = new Foo;
-  my $values = new int[3];
-
-Above is same as the following.
-
-  my $num : int = 2;
-  my $obj : Foo = new Foo;
-  my $values : int[3] = new int[3];
-
-=head2 C NativeAPI using SPVM
-
-SPVM Module:
-
-  # lib/MyMathNative.spvm
-  package MyMathNative {
-    
-    # Sub Declaration
-    native sub sum int ($nums : int[]);
-  }
-
-C Source File;
-
-  // lib/MyMathNative.native.c
-  #include <spvm_native.h>
-
-  int32_t SPNATIVE__MyMathNative__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
-    
-    // First argument
-    void* sp_nums = stack[0].oval;
-    
-    // Array length
-    int32_t length = env->len(env, sp_nums);
-    
-    // Elements pointer
-    int32_t* nums = env->ielems(env, sp_nums);
-    
-    // Culcurate total
-    int32_t total = 0;
-    {
-      int32_t i;
-      for (i = 0; i < length; i++) {
-        total += nums[i];
+      my $total = 0;
+      for (my $i = 0; $i < @$nums; $i++) {
+        $total += $nums->[$i];
       }
+      
+      return $total;
     }
-    
-    // Return value is set to stack[0]
-    stack[0].ival = total;
-    
-    // If function success, return SPVM_SUCCESS
-    return SPVM_SUCCESS;
   }
 
-Use NativeAPI Module from Perl:
+Precompile
 
-  use FindBin;
-  use lib "$FindBin::Bin/lib";
-  
-  # Use SPVM module
-  use SPVM 'MyMathNative';
-  
-  # New SPVM int array
-  my $sp_nums = SPVM::new_int_array([3, 6, 8, 9]);
-  
-  # Call SPVM subroutine
-  my $total = MyMathNative->sum($sp_nums);
-  
-  print $total . "\n";
+  export SPVM_BUILD_DIR=~/.spvm_build
+
+=head2 How to improve performacne using native subroutine
+
 
 =head1 ENVIRONMENT VARIABLE
 
@@ -590,10 +490,6 @@ Use NativeAPI Module from Perl:
 SPVM build directory for precompile and native subroutine.
 
 If SPVM_BUILD_DIR environment variable is not set, SPVM can't compile precompile subroutine and native subroutine, and a exception occur. You see error message "SPVM_BUILD_DIR environment variable must be set ...".
-
-In bash, you can set SPVM_BUILD_DIR to the following.
-
-  export SPVM_BUILD_DIR=~/.spvm_build
 
 In bash, you can set SPVM_BUILD_DIR to the following.
 
