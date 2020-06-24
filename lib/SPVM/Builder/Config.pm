@@ -580,3 +580,19 @@ Get include directories. This value is array refernce.
 =head2 add_include_dir
 
   $bconf->add_include_dir($include_dir);
+
+=head2 get_force_compile
+
+  my $force_compile = $bconf->get_force_compile;
+
+Get C<force_compile> field.
+
+C<force_compile> field is used by C<compile> method of L<SPVM::Builder::CC> to determine whether the method should force compilation of source codes without cache.
+
+=head2 set_force_compile
+
+  $bconf->set_force_compile($force_compile);
+
+Set C<force_compile> field.
+
+See C<get_force_compile> method about C<force_compile> field.
