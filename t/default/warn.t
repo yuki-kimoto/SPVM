@@ -66,7 +66,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Warn->test_warn';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       is($output, "Hello at TestCase/Warn.spvm line 4\n");
     }
@@ -75,7 +75,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Warn->test_warn_newline';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
       is($output, "\x0A");
@@ -85,7 +85,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Warn->test_warn_long_lines';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
@@ -94,7 +94,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Warn->test_warn_empty';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       is($output, "Warning: something's wrong at TestCase/Warn.spvm line 21\x0A");
     }
@@ -103,7 +103,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Warn->test_warn_undef';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       is($output, "Warning: something's wrong at TestCase/Warn.spvm line 27\x0A");
     }

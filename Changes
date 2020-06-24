@@ -1,6 +1,5 @@
-1.00 2020-06-24
-  - First Major Release of SPVM!
-
+0.0703 2020-06-24
+  - fixed broken test by using different perl version
 0.0702 2020-06-24
   - add document of SPVM::Build::Config::add_extra_compiler_flags
   - add document of SPVM::Build::Config::add_extra_linker_flags

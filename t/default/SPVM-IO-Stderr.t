@@ -71,7 +71,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Lib::SPVM::IO::Stderr->test_print_newline';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
       is($output, "\x0A");
@@ -81,7 +81,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Lib::SPVM::IO::Stderr->test_print_long_lines';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
     }
@@ -90,7 +90,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Lib::SPVM::IO::Stderr->test_print_empty';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file 2> $output_file");
+      system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
       is($output, '');
     }
@@ -114,7 +114,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       {
         my $func_call = 'SPVM::IO::Stderr->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stderr->test_print';
         write_script_file($script_file, $func_call);
-        system("perl -Mblib $script_file 2> $output_file");
+        system("$^X -Mblib $script_file 2> $output_file");
         my $output = slurp_binmode($output_file);
         is($output, 'Hello');
       }
@@ -123,7 +123,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       {
         my $func_call = 'SPVM::IO::Stderr->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stderr->test_print_newline';
         write_script_file($script_file, $func_call);
-        system("perl -Mblib $script_file 2> $output_file");
+        system("$^X -Mblib $script_file 2> $output_file");
         my $output = slurp_binmode($output_file);
         # (In Windows/MinGW, __USE_MINGW_ANSI_STDIO is defined, output maybe lf, not crlf)
         is($output, "\x0A");
@@ -133,7 +133,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       {
         my $func_call = 'SPVM::IO::Stderr->SET_AUTO_FLUSH(1);TestCase::Lib::SPVM::IO::Stderr->test_print_long_lines';
         write_script_file($script_file, $func_call);
-        system("perl -Mblib $script_file 2> $output_file");
+        system("$^X -Mblib $script_file 2> $output_file");
         my $output = slurp_binmode($output_file);
         is($output, "AAAAAAAAAAAAA\x0ABBBBBBBBBBBBBBBBBBB\x0ACCCCCCCCCCCCCCCCCCCCCCCCCCC\x0ADDDDDDDDDDDDDDDDDDDDDDDDD\x0AEEEEEEEEEEEEEEEEEEEEEE\x0AFFFFFFFFFFFFFF\x0A");
       }
@@ -148,7 +148,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $func_call = 'TestCase::Lib::SPVM::IO::Stderr->test_print_exeption_undef';
       write_script_file($script_file, $func_call);
-      system("perl -Mblib $script_file > $output_file");
+      system("$^X -Mblib $script_file > $output_file");
       my $output = slurp_binmode($output_file);
       is($output, 1);
     }
