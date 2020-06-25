@@ -1,6 +1,7 @@
 0.0704 2020-06-25
   - rename SPVM::Build::Config::set_no_cache to set_force_compile
   - rename SPVM::Build::Config::get_no_cache to get_force_compile
+  - add native source dependency cache system
 0.0703 2020-06-24
   - fixed broken test by using different perl version
 0.0702 2020-06-24
