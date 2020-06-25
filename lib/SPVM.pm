@@ -429,11 +429,23 @@ SPVM Core Modules.
 
 =back
 
-=head1 EXAMPLES
+=head1 GETTING STARTED
 
-=head2 How to write SPVM and Call it from Perl
+Get started with SPVM.
 
-SPVM Module:
+At first I will explain how to write for statement in SPVM.
+
+Next, I will explain how to precompile SPVM subroutines so that they run at the same speed as in machine language.
+
+Finally, I will explain how to write SPVM subroutines biding C language.
+
+If you are interested in the SPVM tutorial, see SPVM Tutorial.
+
+L<SPVM Tutorial|https://yuki-kimoto.github.io/spvmdoc-public/tutorial.html>
+
+=head2 How to write SPVM language
+
+This is a simple example using the SPVM for statement.
 
   # lib/MyMath.spvm
   package MyMath {
@@ -448,7 +460,77 @@ SPVM Module:
     }
   }
 
-Use SPVM Module from Perl
+You create "lib" direcotry and create "MyMath.spvm" file.
+
+The extension of SPVM is ".spvm".
+
+SPVM need package definition.
+
+  package MyMath {
+
+  }
+
+See SPVM subroutine definition.
+
+  package MyMath {
+    sub sum : int ($nums : int[]) {
+    
+    }
+  }
+
+"int" after subroutine name "sum" is return value type.
+
+"int" is signed 32bit numeric type.
+
+"int[]" is argument type.
+
+"int[]" is array type that element type is "int".
+
+SPVM is static type language. You must specify subroutine return type and argument type.
+
+See subroutine implementation.
+
+    sub sum : int ($nums : int[]) {
+      
+      my $total = 0;
+      for (my $i = 0; $i < @$nums; $i++) {
+        $total += $nums->[$i];
+      }
+      
+      return $total;
+    }
+
+"my" is lexical variable declaration. 
+
+  my $total = 0;
+
+There is no type declaration. Type inference is performed using the value on the right side. Same as the description below.
+
+  my $total :int = 0;
+
+See for loop.
+
+      for (my $i = 0; $i < @$nums; $i++) {
+        $total += $nums->[$i];
+      }
+
+for loop is same as Perl syntax. You can get array length by @. @ is array length operator in all context instead of Perl.
+
+Array access use arrow operator.
+
+  $nums->[$i]
+
+At last, return value.
+
+      return $total;
+
+If you want to know the syntax of SPVM, the SPVM Language Specification has a complete description.
+
+L<SPVM Language Specification|https://yuki-kimoto.github.io/spvmdoc-public/language.html>
+
+=head2 How to call SPVM subroutine from Perl
+
+You may be surprised to know that SPVM subroutines can be called directly from Perl.
   
   use FindBin;
   use lib "$FindBin::Bin/lib";
@@ -460,6 +542,20 @@ Use SPVM Module from Perl
   
   print $total . "\n";
 
+To load an SPVM module from Perl, use the following syntax.
+
+  use SPVM 'MyMath';
+
+Call SPVM subroutine from Perl.
+
+  # Call subroutine
+  my $total = MyMath->sum([3, 6, 8, 9]);
+
+Perl array reference is converted to SPVM int array, and call sum method of MyMath, and SPVM int value of return value is converted to Perl Scalar.
+
+If you want to know the rules for calling SPVM subroutines from Perl, and the rules for converting Perl and SPVM values, see the SPVM Exchagne API.
+
+L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.html>
 
 =head2 How to improve performacne using precompile subroutine
 
