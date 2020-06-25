@@ -355,6 +355,9 @@ lib/SPVM/Time/Info.pm
 lib/SPVM/Time/Info.spvm
 lib/SPVM/Unicode.c
 lib/SPVM/Unicode.config
+lib/SPVM/Unicode.native/include/utf8proc.h
+lib/SPVM/Unicode.native/include/utf8proc_data.c
+lib/SPVM/Unicode.native/src/utf8proc.c
 lib/SPVM/Unicode.pm
 lib/SPVM/Unicode.spvm
 lib/SPVM/Util.c
@@ -647,8 +650,11 @@ t/default/lib/TestCase/NativeAPI.spvm
 t/default/lib/TestCase/NativeAPI2.c
 t/default/lib/TestCase/NativeAPI2.config
 t/default/lib/TestCase/NativeAPI2.native/include/bar.h
+t/default/lib/TestCase/NativeAPI2.native/include/base.h
+t/default/lib/TestCase/NativeAPI2.native/include/baz/baz.h
 t/default/lib/TestCase/NativeAPI2.native/include/foo.h
 t/default/lib/TestCase/NativeAPI2.native/src/bar.c
+t/default/lib/TestCase/NativeAPI2.native/src/baz/baz.c
 t/default/lib/TestCase/NativeAPI2.native/src/foo.c
 t/default/lib/TestCase/NativeAPI2.spvm
 t/default/lib/TestCase/NumericOperator.spvm
