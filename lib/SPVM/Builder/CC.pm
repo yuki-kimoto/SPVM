@@ -397,14 +397,14 @@ sub _parse_native_src_dependency {
   my ($self, $include_dir, $src_dir) = @_;
   
   # Get header files
-  my @include_file_abs_names;
+  my @include_file_names;
   if (-d $include_dir) {
     find(
       {
         wanted => sub {
-          my $include_file_abs_name = $File::Find::name;
-          if (-f $include_file_abs_name) {
-            push @include_file_abs_names, $include_file_abs_name;
+          my $include_file_name = $File::Find::name;
+          if (-f $include_file_name) {
+            push @include_file_names, $include_file_name;
           }
         },
         no_chdir => 1,
@@ -414,14 +414,14 @@ sub _parse_native_src_dependency {
   }
   
   # Get source files
-  my @src_file_abs_names;
+  my @src_file_names;
   if (-d $src_dir) {
     find(
       {
         wanted => sub {
-          my $src_file_abs_name = $File::Find::name;
-          if (-f $src_file_abs_name) {
-            push @src_file_abs_names, $src_file_abs_name;
+          my $src_file_name = $File::Find::name;
+          if (-f $src_file_name) {
+            push @src_file_names, $src_file_name;
           }
         },
         no_chdir => 1,
@@ -429,6 +429,37 @@ sub _parse_native_src_dependency {
       $src_dir,
     );
   }
+  
+  my $dependencies = {};
+  for my $include_file_name (@include_file_names) {
+    my $include_file_name_no_ext_rel = $include_file_name;
+    $include_file_name_no_ext_rel =~ s/^\Q$include_dir//;
+    $include_file_name_no_ext_rel =~ s/^[\\\/]//;
+    $include_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
+    
+    my $match_at_least_one;
+    for my $src_file_name (@src_file_names) {
+      my $src_file_name_no_ext_rel = $src_file_name;
+      $src_file_name_no_ext_rel =~ s/^\Q$src_dir//;
+      $src_file_name_no_ext_rel =~ s/^[\\\/]//;
+      $src_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
+      
+      if ($src_file_name_no_ext_rel eq $include_file_name_no_ext_rel) {
+        $dependencies->{$src_file_name} ||= [];
+        push @{$dependencies->{$src_file_name}}, $include_file_name;
+        $match_at_least_one++;
+      }
+    }
+    
+    # If not match at least one, we assume the header files is common file
+    unless ($match_at_least_one) {
+      for my $src_file_name (@src_file_names) {
+        push @{$dependencies->{$src_file_name}}, $include_file_name;
+      }
+    }
+  }
+  
+  return $dependencies;
 }
 
 sub link {
