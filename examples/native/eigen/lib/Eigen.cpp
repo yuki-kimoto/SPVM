@@ -25,7 +25,7 @@ int32_t SPNATIVE__Eigen__add3d(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   MatrixXd X3 = X1 + X2;
   
-  void* obj_nums3 = env->new_darray(env, 9);
+  void* obj_nums3 = env->new_double_array(env, 9);
   double* nums3 = env->get_elems_double(env, obj_nums3);
   memcpy(nums3, X3.data(), sizeof(double) * 9);
   
