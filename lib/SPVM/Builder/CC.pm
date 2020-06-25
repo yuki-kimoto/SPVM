@@ -286,9 +286,6 @@ sub compile {
     confess "Can't find source file $spvm_sub_src_file";
   }
   
-  # Native source files
-  my @native_src_files = grep { -f $_ }glob "$native_src_dir/*.$src_ext";
-  
   # CBuilder configs
   my $ccflags = $bconf->get_ccflags;
   
@@ -300,7 +297,10 @@ sub compile {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
   # Parse source code dependency
-  $self->_parse_native_src_dependency($native_include_dir, $native_src_dir);
+  my $dependency = $self->_parse_native_src_dependency($native_include_dir, $native_src_dir);
+
+  # Native source files
+  my @native_src_files = sort keys %$dependency;
   
   # Compile source files
   my $object_files = [];

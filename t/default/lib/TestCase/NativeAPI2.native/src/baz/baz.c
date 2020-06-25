@@ -1,6 +1,6 @@
 #include "baz/baz.h"
 
 int32_t baz() {
-  return BAR;
+  return BAZ;
 }
 
