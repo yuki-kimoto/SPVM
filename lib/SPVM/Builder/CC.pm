@@ -12,7 +12,7 @@ use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use DynaLoader;
 use Config;
-use File::Find;
+use File::Find 'find';
 
 use File::Basename 'dirname', 'basename';
 
@@ -299,6 +299,10 @@ sub compile {
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
+  # Parse source code dependency
+  $self->_parse_native_src_dependency($native_include_dir, $native_src_dir);
+  
+  # Compile source files
   my $object_files = [];
   my $is_native_src;
   for my $src_file ($spvm_sub_src_file, @native_src_files) {
@@ -387,6 +391,44 @@ sub compile {
   }
   
   return $object_files;
+}
+
+sub _parse_native_src_dependency {
+  my ($self, $include_dir, $src_dir) = @_;
+  
+  # Get header files
+  my @include_file_abs_names;
+  if (-d $include_dir) {
+    find(
+      {
+        wanted => sub {
+          my $include_file_abs_name = $File::Find::name;
+          if (-f $include_file_abs_name) {
+            push @include_file_abs_names, $include_file_abs_name;
+          }
+        },
+        no_chdir => 1,
+      },
+      $include_dir,
+    );
+  }
+  
+  # Get source files
+  my @src_file_abs_names;
+  if (-d $src_dir) {
+    find(
+      {
+        wanted => sub {
+          my $src_file_abs_name = $File::Find::name;
+          if (-f $src_file_abs_name) {
+            push @src_file_abs_names, $src_file_abs_name;
+          }
+        },
+        no_chdir => 1,
+      },
+      $src_dir,
+    );
+  }
 }
 
 sub link {
