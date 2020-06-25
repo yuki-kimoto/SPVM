@@ -289,6 +289,8 @@ Currently some ports of document are use Automatic translation, so not accurate 
 
 =item * L<SPVM Native API|https://yuki-kimoto.github.io/spvmdoc-public/native-api.html>
 
+=item * L<SPVM Performance Benchmark|https://yuki-kimoto.github.io/spvmdoc-public/benchmark.html>
+
 =head1 CORE MODULES
 
 SPVM Core Modules.
@@ -557,7 +559,9 @@ If you want to know the rules for calling SPVM subroutines from Perl, and the ru
 
 L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.html>
 
-=head2 How to improve performacne using precompile subroutine
+=head2 How to improve performacne using subroutine precompile
+
+See how to speed up SPVM subroutines. SPVM subroutines can be converted into machine code by precompile descriptor.
 
   # lib/MyMath.spvm
   package MyMath {
@@ -572,12 +576,163 @@ L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.ht
     }
   }
 
-Precompile
+Subroutine code is same as non precompile subroutine.
 
+A build directory is required to precompile subroutines.
+
+You set SPVM_BUILD_DIR. The following is bash example.
+
+  # ~/.bashrc
   export SPVM_BUILD_DIR=~/.spvm_build
+
+How fast will it be? See SPVM Peformance Benchmark.
+
+L<SPVM Performance Benchmark|https://yuki-kimoto.github.io/spvmdoc-public/benchmark.html>
 
 =head2 How to improve performacne using native subroutine
 
+If you want, you can native subroutine for performance with native descriptor.
+
+  # lib/MyMath.spvm
+  package MyMath {
+    native sub sum_native : int ($nums : int[]);
+  }
+
+Native subrosutine is binding a function of C langage.
+  
+  // lib/MyMath.c
+  #include "spvm_native.h"
+  
+  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
+    void* sv_nums = stack[0].oval;
+    
+    int32_t length = env->length(env, sv_nums);
+    
+    int32_t* nums = env->get_elems_int(env, sv_nums);
+    
+    int32_t total = 0;
+    for (int32_t i = 0; i < length; i++) {
+      total += nums[i];
+    }
+    
+    stack[0].ival = total;
+    
+    return SPVM_SUCCESS;
+  }
+
+File name is "MyMath.c". 
+
+At first, include "spvm_native.h". This header provide SPVM Native API.
+
+  #include "spvm_native.h"
+
+See the declaration of C function.
+
+  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+    return SPVM_SUCCESS;
+  }
+
+Return value type is int32_t. The return value indicates that the subroutine did not throw an exception.
+
+SPVM_SUCCESS is macro that value is 0 defined in "spvm_native.h".
+
+C function name start SPNATIVE__. Package name "MyMath" and subroutine name "sum_native" is joined by "__".
+
+If package name contains double colon(Foo::Bar), double colon is replaced by "__".
+
+First argument is a pointer to SPVM_ENV object. This variable has SPVM runtime information.
+
+Second argument is SPVM_VALUE array. stack contains arguments of SPVM subroutine.
+
+And stack is also used to set return value of SPVM subroutine.
+
+See implementation of C function.
+
+  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+    
+    void* sv_nums = stack[0].oval;
+    
+    int32_t length = env->length(env, sv_nums);
+    
+    int32_t* nums = env->get_elems_int(env, sv_nums);
+    
+    int32_t total = 0;
+    for (int32_t i = 0; i < length; i++) {
+      total += nums[i];
+    }
+    
+    stack[0].ival = total;
+    
+    return SPVM_SUCCESS;
+  }
+
+At first, get first argument of SPVM subroutine.
+
+    void* sv_nums = stack[0].oval;
+
+"int[]" is array type. array type is also object type. You can get a object by C<oval> field.
+
+Get array length.
+
+    int32_t length = env->length(env, sv_nums);
+
+Get numeric int32_t array of C langage. SPVM int type is same as int32_t type of C language.
+
+    int32_t* nums = env->get_elems_int(env, sv_nums);
+
+Calcuration.
+
+    int32_t total = 0;
+    for (int32_t i = 0; i < length; i++) {
+      total += nums[i];
+    }
+
+At last, set return value to the first element of stack as int type. C<ival> filed is used to get or set int32_t value.
+
+    stack[0].ival = total;
+
+Note that you do not return the SPVM return value with the return keyword of C langauge.
+
+return value of C function indicates whether the subroutine throw an exception.
+
+If you write a native subroutine, you must write a configuration file.
+
+The configuration file for native subroutines is a Perl script.
+
+  # lib/MyMath.config
+
+  use strict;
+  use warnings;
+
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_c99;
+
+  $bconf;
+
+If you write SPVM subroutine using C language, you can use C<new_c99> method of L<SPVM::Builder::Config>.
+
+If you want to see SPVM Native API like length and get_elems_int
+
+    int32_t length = env->length(env, sv_nums);
+    
+    int32_t* nums = env->get_elems_int(env, sv_nums);
+
+See SPVM Native API.
+
+L<SPVM Native API|https://yuki-kimoto.github.io/spvmdoc-public/native-api.html>
+
+A build directory is required to native subroutines.
+
+You set SPVM_BUILD_DIR. The following is bash example.
+
+  # ~/.bashrc
+  export SPVM_BUILD_DIR=~/.spvm_build
+
+How fast will it be? See SPVM Peformance Benchmark.
+
+L<SPVM Performance Benchmark|https://yuki-kimoto.github.io/spvmdoc-public/benchmark.html>
 
 =head1 ENVIRONMENT VARIABLE
 
