@@ -521,6 +521,15 @@ EOS
     }
   }
 
+  # Native Directory
+  my $native_dir = $config_file;
+  $native_dir =~ s/\.config$//;
+  $native_dir .= '.native';
+  
+  # Library directory
+  my $native_lib_dir = "$native_dir/lib";
+  $bconf->add_lib_dirs($native_lib_dir);
+
   # Quiet output
   my $quiet = $bconf->get_quiet;
   
