@@ -23,12 +23,20 @@ if ($optimize) {
   $optimize = "$optimize";
 }
 
-my $build_config = SPVM::Builder::Config->new_c99;
-$optimize ||= $build_config->get_config('optimize');
+# OPTIMIZE
+my $optimize = '-O3';
 
-my $ccflags = $build_config->get_ccflags . " " . $build_config->get_extra_compiler_flags;
+# CCFLAGS
+my $ccflags = $Config{ccflags};
+$ccflags .= ' -std=c99';
+# I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
+# so I dicide not to print warning in release version
+if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
+  $ccflags .= ' -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers';
+}
 
-my $lddlflags = $build_config->get_lddlflags . " " . $build_config->get_extra_linker_flags;
+# INC
+my $inc = '-Ilib/SPVM/Builder/include';
 
 my $src_dir = "lib/SPVM/Builder/src";
 my @csource_files = glob "$src_dir/*.c";
@@ -36,7 +44,7 @@ my @object_files = map { my $object_file = $_; $object_file =~ s/\.c$/.o/; $obje
 
 my $object_dir = 'solo';
 
-my $cccmd = "cc -c @defines $ccflags $optimize";
+my $cccmd = "cc -c @defines $ccflags $optimize $inc";
 my $ldcmd = "cc ";
 
 my $makefile = <<"EOS";
