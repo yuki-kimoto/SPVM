@@ -237,36 +237,6 @@ sub add_extra_linker_flags {
   $self->{extra_linker_flags} = $extra_linker_flags;
 }
 
-sub parse_dll_infos {
-  my $self = shift;
-  
-  my $get_lddlflags;
-  if (defined $self->get_lddlflags) {
-    $get_lddlflags = $self->get_lddlflags;
-  }
-  else {
-    $get_lddlflags = '';
-  }
-  my $get_extra_linker_flags;
-  if (defined $self->get_extra_linker_flags) {
-    $get_extra_linker_flags = $self->get_extra_linker_flags;
-  }
-  else {
-    $get_extra_linker_flags = '';
-  }
-  
-  my $linker_flags = $get_lddlflags . " " . $get_extra_linker_flags;
-  my $dll_infos = [];
-  while ($linker_flags =~ /-(L|l)([\S]+)/g) {
-    my $type = $1;
-    my $name = $2;
-    push @$dll_infos, {type => $type, name => $name};
-  }
-  
-  return $dll_infos;
-}
-
-
 sub get_force_compile {
   my ($self, $force_compile) = @_;
   

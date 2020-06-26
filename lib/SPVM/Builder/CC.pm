@@ -135,17 +135,26 @@ EOS
 sub bind_subs {
   my ($self, $dll_file, $package_name, $sub_names) = @_;
   
-  # Load pre-required dlls
+  # perllibs - This seems to be already loaded librarys
+  my %already_loaded_libs = map { $_ => 1 } split(/ +/, $Config{perllibs});
+  
+  # Load pre-required dynamic library
   my $category = $self->category;
   my $bconf = $self->get_config_runtime($package_name, $category);
-  my $dll_infos = $bconf->parse_dll_infos;
-  
-  my $libpth = $Config{libpth};
-  my @dll_load_paths = split(/ +/, $libpth);
-  my $build_dir = $self->{build_dir};
-  if (defined $build_dir) {
-    my $build_lib_dir = $self->{build_dir} . '/lib';
-    push @dll_load_paths, $build_lib_dir;
+  my $lib_dirs = $bconf->get_lib_dirs;
+  {
+    local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
+    my $libs = $bconf->get_libs;
+    for my $lib (@$libs) {
+      unless ($already_loaded_libs{"-l$lib"}) {
+        my ($lib_file) = DynaLoader::dl_findfile("-l$lib");
+        my $dll_libref = DynaLoader::dl_load_file($lib_file);
+        unless ($dll_libref) {
+          my $dl_error = DynaLoader::dl_error();
+          confess "Can't load dll file \"$dll_file\": $dl_error";
+        }
+      }
+    }
   }
   
   for my $sub_name (@$sub_names) {
