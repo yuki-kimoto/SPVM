@@ -24,6 +24,26 @@ sub add_include_dir {
   push @{$self->{include_dirs}}, $include_dir;
 }
 
+sub get_lib_dirs {
+  my ($self, $lib_dirs) = @_;
+  
+  return $self->{lib_dirs};
+}
+
+sub set_lib_dirs {
+  my ($self, $lib_dirs) = @_;
+  
+  $self->{lib_dirs} = $lib_dirs;
+  
+  return $self;
+}
+
+sub add_lib_dir {
+  my ($self, $lib_dir) = @_;
+  
+  push @{$self->{lib_dirs}}, $lib_dir;
+}
+
 sub get_ext {
   my ($self, $ext) = @_;
   
@@ -112,8 +132,71 @@ sub new {
   $self->{include_dirs} = [];
   
   $self->{quiet} = 1;
+  
+  bless $self, $class;
 
-  return bless $self, $class;
+  # Use default config
+  my $default_config = {%Config};
+  $self->replace_all_config($default_config);
+
+  # Remove and get include dir from ccflags
+  my @ccflags_include_dirs = $self->_remove_include_dirs_from_ccflags;
+  
+  # Add include directory to ccflags
+  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
+  $include_dir =~ s/\/Config\.pm$//;
+  $include_dir .= '/include';
+  $self->add_include_dir($include_dir);
+  
+  # Add ccflags include dir
+  for my $ccflags_include_dir (@ccflags_include_dirs) {
+    $self->add_include_dir($ccflags_include_dir);
+  }
+
+  return $self;
+}
+
+sub new_c99 {
+  my $class = shift;
+  
+  my $self = SPVM::Builder::Config->new;
+  
+  # C99
+  $self->set_std('c99');
+  
+  # Optimize
+  $self->set_optimize('-O3');
+  
+  # NativeAPI
+  $self->set_ext('c');
+  
+  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
+  # so I dicide not to print warning in release version
+  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
+    $self->add_extra_compiler_flags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
+  }
+  
+  return $self;
+}
+
+sub new_cpp {
+  my $class = shift;
+  
+  my $self = SPVM::Builder::Config->new;
+  
+  # Optimize
+  $self->set_optimize('-O3');
+  
+  # CC
+  $self->set_cc('g++');
+  
+  # LD
+  $self->set_ld('g++');
+  
+  # NativeAPI
+  $self->set_ext('cpp');
+  
+  return $self;
 }
 
 sub parse_dll_infos {
@@ -145,84 +228,6 @@ sub parse_dll_infos {
   return $dll_infos;
 }
 
-sub new_c99 {
-  my $class = shift;
-  
-  my $bconf = SPVM::Builder::Config->new;
-  
-  # Use default config
-  my $default_config = {%Config};
-  $bconf->replace_all_config($default_config);
-  
-  # Remove and get include dir from ccflags
-  my @ccflags_include_dirs = $bconf->_remove_include_dirs_from_ccflags;
-  
-  # Add include directory to ccflags
-  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
-  $include_dir =~ s/\/Config\.pm$//;
-  $include_dir .= '/include';
-  $bconf->add_include_dir($include_dir);
-  
-  # Add ccflags include dir
-  for my $ccflags_include_dir (@ccflags_include_dirs) {
-    $bconf->add_include_dir($ccflags_include_dir);
-  }
-  
-  # C99
-  $bconf->set_std('c99');
-  
-  # Optimize
-  $bconf->set_optimize('-O3');
-  
-  # NativeAPI
-  $bconf->set_ext('c');
-  
-  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
-  # so I dicide not to print warning in release version
-  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $bconf->add_extra_compiler_flags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
-  }
-  
-  return $bconf;
-}
-
-sub new_cpp {
-  my $class = shift;
-  
-  my $bconf = SPVM::Builder::Config->new;
-  
-  # Use default config
-  my $default_config = {%Config};
-  $bconf->replace_all_config($default_config);
-
-  # Remove and get include dir from ccflags
-  my @ccflags_include_dirs = $bconf->_remove_include_dirs_from_ccflags;
-  
-  # Add include directory to ccflags
-  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
-  $include_dir =~ s/\/Config\.pm$//;
-  $include_dir .= '/include';
-  $bconf->add_include_dir($include_dir);
-  
-  # Add ccflags include dir
-  for my $ccflags_include_dir (@ccflags_include_dirs) {
-    $bconf->add_include_dir($ccflags_include_dir);
-  }
-  
-  # Optimize
-  $bconf->set_optimize('-O3');
-  
-  # CC
-  $bconf->set_cc('g++');
-  
-  # LD
-  $bconf->set_ld('g++');
-  
-  # NativeAPI
-  $bconf->set_ext('cpp');
-  
-  return $bconf;
-}
 
 sub get_force_compile {
   my ($self, $force_compile) = @_;
@@ -573,15 +578,27 @@ Add new C<extra_linker_flags> after current C<extra_linker_flags>.
 
   my $include_dirs = $bconf->get_include_dirs;
 
-Get include directories. This value is array refernce.
+Get C<include_dirs> field. This field is array refernce.
+
+C<include_dirs> field is used by C<compile> method of L<SPVM::Builder::CC> to set -I<inculde_dir>.
+
+Default is "SPVM/Builder/include" of directory SPVM.pm loaded and the values of -I<include_dir> in $Config{ccflags}.
 
 =head2 set_include_dirs
 
   $bconf->set_include_dirs($include_dirs);
 
+Set C<include_dirs> field. This field is array refernce.
+
+See C<get_include_dirs> method about C<include_dirs> field.
+
 =head2 add_include_dir
 
   $bconf->add_include_dir($include_dir);
+
+Add a element after the last element of C<include_dirs> field.
+
+See C<get_include_dirs> method about C<include_dirs> field.
 
 =head2 get_force_compile
 
