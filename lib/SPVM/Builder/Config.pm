@@ -70,12 +70,6 @@ sub new_c99 {
   # NativeAPI
   $self->set_ext('c');
   
-  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
-  # so I dicide not to print warning in release version
-  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $self->add_extra_compiler_flags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
-  }
-  
   return $self;
 }
 

@@ -417,7 +417,6 @@ solo/TestCase/Weaken.spvm
 solo/TestCase/Weaken2.spvm
 SPVM.xs
 t/copy_default_to_precompile.pl
-t/create_use_all_testcase.pl
 t/default/__FILE__.t
 t/default/__LINE__.t
 t/default/__PACKAGE__.t
