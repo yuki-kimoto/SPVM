@@ -14,7 +14,7 @@
   - add_include_dirs become add arguments to first of elements.
   - add_lib_dirs become add arguments to first of elements.
   - add_libs become add arguments to first of elements.
-  
+  - rename add_libs to use_lib, and library is added after last element
 0.0703 2020-06-24
   - fixed broken test by using different perl version
 0.0702 2020-06-24

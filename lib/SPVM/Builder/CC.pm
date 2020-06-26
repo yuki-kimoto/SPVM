@@ -146,6 +146,7 @@ sub bind_subs {
     local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
     my $libs = $bconf->get_libs;
     for my $lib (@$libs) {
+      
       unless ($already_loaded_libs{"-l$lib"}) {
         my ($lib_file) = DynaLoader::dl_findfile("-l$lib");
         my $dll_libref = DynaLoader::dl_load_file($lib_file);

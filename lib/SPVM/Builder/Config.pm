@@ -153,7 +153,7 @@ sub set_libs {
   return $self;
 }
 
-sub add_libs {
+sub use_lib {
   my ($self, @libs) = @_;
   
   unshift @{$self->{libs}}, @libs;
@@ -683,11 +683,13 @@ Set C<libs> field. This field is array refernce.
 
 See C<get_libs> method about C<libs> field.
 
-=head2 add_libs
+=head2 use_lib
 
-  $bconf->add_libs($lib1, $lib2, ...);
+  $bconf->use_lib($lib1, $lib2, ...);
 
-Add a element before the first element of C<libs> field.
+Add a library after the last element of C<libs> field.
+
+Don't use prefix '-l' or 'lib' for library name.
 
 See C<get_libs> method about C<libs> field.
 
