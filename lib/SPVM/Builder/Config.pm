@@ -4,6 +4,97 @@ use strict;
 use warnings;
 use Config;
 
+sub new {
+  my $class = shift;
+  
+  my $self = {};
+  
+  $self->{config} = {};
+  
+  $self->{include_dirs} = [];
+
+  $self->{lib_dirs} = [];
+
+  $self->{libs} = [];
+  
+  $self->{quiet} = 1;
+
+  $self->{extra_compiler_flags} = '';
+  
+  $self->{extra_linker_flags} = '';
+  
+  $self->{quiet} = 1;
+  
+  bless $self, $class;
+
+  # Use default config
+  my $default_config = {%Config};
+  $self->replace_all_config($default_config);
+
+  # Remove and get include dir from ccflags
+  my @ccflags_include_dirs = $self->_remove_include_dirs_from_ccflags;
+  
+  # Add include directory to ccflags
+  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
+  $include_dir =~ s/\/Config\.pm$//;
+  $include_dir .= '/include';
+  $self->add_include_dirs($include_dir);
+  
+  # Add ccflags include dir
+  for my $ccflags_include_dir (@ccflags_include_dirs) {
+    $self->add_include_dirs($ccflags_include_dir);
+  }
+
+  # Remove and get lib dir from lddlflags
+  my @lib_dirs_in_lddlflags = $self->_remove_lib_dirs_from_lddlflags;
+  $self->add_lib_dirs(@lib_dirs_in_lddlflags);
+
+  return $self;
+}
+
+sub new_c99 {
+  my $class = shift;
+  
+  my $self = SPVM::Builder::Config->new;
+  
+  # C99
+  $self->set_std('c99');
+  
+  # Optimize
+  $self->set_optimize('-O3');
+  
+  # NativeAPI
+  $self->set_ext('c');
+  
+  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
+  # so I dicide not to print warning in release version
+  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
+    $self->add_extra_compiler_flags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
+  }
+  
+  return $self;
+}
+
+sub new_cpp {
+  my $class = shift;
+  
+  my $self = SPVM::Builder::Config->new;
+  
+  # Optimize
+  $self->set_optimize('-O3');
+  
+  # CC
+  $self->set_cc('g++');
+  
+  # LD
+  $self->set_ld('g++');
+  
+  # NativeAPI
+  $self->set_ext('cpp');
+  
+  return $self;
+}
+
 sub get_include_dirs {
   my ($self, $include_dirs) = @_;
   
@@ -18,10 +109,10 @@ sub set_include_dirs {
   return $self;
 }
 
-sub add_include_dir {
-  my ($self, $include_dir) = @_;
+sub add_include_dirs {
+  my ($self, @include_dirs) = @_;
   
-  push @{$self->{include_dirs}}, $include_dir;
+  push @{$self->{include_dirs}}, @include_dirs;
 }
 
 sub get_lib_dirs {
@@ -38,10 +129,30 @@ sub set_lib_dirs {
   return $self;
 }
 
-sub add_lib_dir {
-  my ($self, $lib_dir) = @_;
+sub add_lib_dirs {
+  my ($self, @lib_dirs) = @_;
   
-  push @{$self->{lib_dirs}}, $lib_dir;
+  push @{$self->{lib_dirs}}, @lib_dirs;
+}
+
+sub get_libs {
+  my ($self, $libs) = @_;
+  
+  return $self->{libs};
+}
+
+sub set_libs {
+  my ($self, $libs) = @_;
+  
+  $self->{libs} = $libs;
+  
+  return $self;
+}
+
+sub add_libs {
+  my ($self, @libs) = @_;
+  
+  push @{$self->{libs}}, @libs;
 }
 
 sub get_ext {
@@ -120,97 +231,6 @@ sub add_extra_linker_flags {
   $extra_linker_flags .= " $new_extra_linker_flags";
   
   $self->{extra_linker_flags} = $extra_linker_flags;
-}
-
-sub new {
-  my $class = shift;
-  
-  my $self = {};
-  
-  $self->{config} = {};
-  
-  $self->{include_dirs} = [];
-  
-  $self->{quiet} = 1;
-
-  $self->{extra_compiler_flags} = '';
-  
-  $self->{extra_linker_flags} = '';
-  
-  $self->{quiet} = 1;
-  
-  bless $self, $class;
-
-  # Use default config
-  my $default_config = {%Config};
-  $self->replace_all_config($default_config);
-
-  # Remove and get include dir from ccflags
-  my @ccflags_include_dirs = $self->_remove_include_dirs_from_ccflags;
-  
-  # Add include directory to ccflags
-  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
-  $include_dir =~ s/\/Config\.pm$//;
-  $include_dir .= '/include';
-  $self->add_include_dir($include_dir);
-  
-  # Add ccflags include dir
-  for my $ccflags_include_dir (@ccflags_include_dirs) {
-    $self->add_include_dir($ccflags_include_dir);
-  }
-
-  # Remove and get lib dir from lddlflags
-  my @lddlflags_lib_dirs = $self->_remove_lib_dirs_from_lddlflags;
-  
-  # Add lddlflags lib dir
-  for my $lddlflags_lib_dir (@lddlflags_lib_dirs) {
-    $self->add_lib_dir($lddlflags_lib_dir);
-  }
-
-  return $self;
-}
-
-sub new_c99 {
-  my $class = shift;
-  
-  my $self = SPVM::Builder::Config->new;
-  
-  # C99
-  $self->set_std('c99');
-  
-  # Optimize
-  $self->set_optimize('-O3');
-  
-  # NativeAPI
-  $self->set_ext('c');
-  
-  # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
-  # so I dicide not to print warning in release version
-  if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
-    $self->add_extra_compiler_flags("-Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers");
-  }
-  
-  return $self;
-}
-
-sub new_cpp {
-  my $class = shift;
-  
-  my $self = SPVM::Builder::Config->new;
-  
-  # Optimize
-  $self->set_optimize('-O3');
-  
-  # CC
-  $self->set_cc('g++');
-  
-  # LD
-  $self->set_ld('g++');
-  
-  # NativeAPI
-  $self->set_ext('cpp');
-  
-  return $self;
 }
 
 sub parse_dll_infos {
@@ -631,13 +651,71 @@ Set C<include_dirs> field. This field is array refernce.
 
 See C<get_include_dirs> method about C<include_dirs> field.
 
-=head2 add_include_dir
+=head2 add_lib_dirs
 
-  $bconf->add_include_dir($include_dir);
+  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
 
-Add a element after the last element of C<include_dirs> field.
+Add a element after the last element of C<lib_dirs> field.
 
-See C<get_include_dirs> method about C<include_dirs> field.
+See C<get_lib_dirs> method about C<lib_dirs> field.
+
+=head2 get_lib_dirs
+
+  my $lib_dirs = $bconf->get_lib_dirs;
+
+Get C<lib_dirs> field. This field is array refernce.
+
+C<lib_dirs> field is used by C<compile> method of L<SPVM::Builder::CC> to set -L<lib_dir>.
+
+Default is the values of $Config{libpth}.
+
+=head2 set_lib_dirs
+
+  $bconf->set_lib_dirs($lib_dirs);
+
+Set C<lib_dirs> field. This field is array refernce.
+
+See C<get_lib_dirs> method about C<lib_dirs> field.
+
+=head2 add_lib_dirs
+
+  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
+
+Add a element after the last element of C<lib_dirs> field.
+
+See C<get_lib_dirs> method about C<lib_dirs> field.
+
+=head2 add_lib_dirs
+
+  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
+
+Add a element after the last element of C<lib_dirs> field.
+
+See C<get_lib_dirs> method about C<lib_dirs> field.
+
+=head2 get_libs
+
+  my $libs = $bconf->get_libs;
+
+Get C<libs> field. This field is array refernce.
+
+C<libs> field is used by C<link> method of L<SPVM::Builder::CC> to set -l<lib>.
+
+=head2 set_libs
+
+  $bconf->set_libs($libs);
+
+Set C<libs> field. This field is array refernce.
+
+See C<get_libs> method about C<libs> field.
+
+=head2 add_libs
+
+  $bconf->add_libs($lib1, $lib2, ...);
+
+Add a element after the last element of C<libs> field.
+
+See C<get_libs> method about C<libs> field.
 
 =head2 get_force_compile
 

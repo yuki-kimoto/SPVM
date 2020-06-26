@@ -292,7 +292,7 @@ sub compile {
   my $config = $bconf->to_hash;
 
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
   
   # Parse source code dependency
   my $dependency = $self->_parse_native_src_dependency($native_include_dir, $native_src_dir);
@@ -546,12 +546,13 @@ EOS
     push @$cfunc_names, '';
   }
   
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
   my $tmp_dll_file;
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
+  my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
   my $extra_linker_flag = $bconf->get_extra_linker_flags;
   
-  $extra_linker_flag = "$lib_dirs_str $extra_linker_flag";
+  $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
   eval {
     $tmp_dll_file = $cbuilder->link(
       objects => $object_files,
