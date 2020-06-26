@@ -65,6 +65,8 @@ my $ccflags = $bconf->get_ccflags;
 my $include_dirs = $bconf->get_include_dirs;
 my $inc = join(' ', map { "-I$_" } @$include_dirs);
 my $extra_compiler_flags = $bconf->get_extra_compiler_flags;
+my $lib_dirs = $bconf->get_lib_dirs;
+my $libs = join(' ', map { "-L$_" } @$lib_dirs);
 
 my @csource_files;
 push @csource_files, 'SPVM.c';
@@ -98,6 +100,7 @@ WriteMakefile(
             },
         },
     },
+    LIBS => $libs,
 );
 
 # Create use all test modules script

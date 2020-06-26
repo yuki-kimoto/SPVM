@@ -4,6 +4,11 @@
   - add native source dependency cache system
   - remove SPVM::Builder::quiet method
   - SPVM::Builder::Config quiet field default become 1
+  - add get_lib_dirs to SPVM::Builder::Config
+  - add set_lib_dirs to SPVM::Builder::Config
+  - add add_lib_dir to SPVM::Builder::Config
+  - remove -L<lib_dir> from lddlflags and add to lib_dir field
+  - lib_dir values is added before extra_linker_flags
 0.0703 2020-06-24
   - fixed broken test by using different perl version
 0.0702 2020-06-24

@@ -548,12 +548,16 @@ EOS
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_dll_file;
+  my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
+  my $extra_linker_flag = $bconf->get_extra_linker_flags;
+  
+  $extra_linker_flag = "$lib_dirs_str $extra_linker_flag";
   eval {
     $tmp_dll_file = $cbuilder->link(
       objects => $object_files,
       module_name => $package_name,
       dl_func_list => $cfunc_names,
-      extra_linker_flags => $bconf->get_extra_linker_flags,
+      extra_linker_flags => $extra_linker_flag
     );
   };
   if (my $error = $@) {

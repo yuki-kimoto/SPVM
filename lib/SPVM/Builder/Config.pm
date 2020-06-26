@@ -132,6 +132,12 @@ sub new {
   $self->{include_dirs} = [];
   
   $self->{quiet} = 1;
+
+  $self->{extra_compiler_flags} = '';
+  
+  $self->{extra_linker_flags} = '';
+  
+  $self->{quiet} = 1;
   
   bless $self, $class;
 
@@ -151,6 +157,14 @@ sub new {
   # Add ccflags include dir
   for my $ccflags_include_dir (@ccflags_include_dirs) {
     $self->add_include_dir($ccflags_include_dir);
+  }
+
+  # Remove and get lib dir from lddlflags
+  my @lddlflags_lib_dirs = $self->_remove_lib_dirs_from_lddlflags;
+  
+  # Add lddlflags lib dir
+  for my $lddlflags_lib_dir (@lddlflags_lib_dirs) {
+    $self->add_lib_dir($lddlflags_lib_dir);
   }
 
   return $self;
@@ -416,6 +430,31 @@ sub _remove_include_dirs_from_ccflags {
   return @include_dirs;
 }
 
+sub _remove_lib_dirs_from_lddlflags {
+  my ($self) = @_;
+  
+  my $lddlflags = $self->get_lddlflags;
+  
+  my @parts = split(/ +/, $lddlflags);
+  
+  my @rest_parts;
+  my @lib_dirs;
+  for my $part (@parts) {
+    if ($part =~ /^-L(.*)/) {
+      my $lib_dir = $1;
+      push @lib_dirs, $lib_dir;
+    }
+    else {
+      push @rest_parts, $part;
+    }
+  }
+  
+  my $rest_lddlflags = join(' ', @rest_parts);
+  
+  $self->set_lddlflags($rest_lddlflags);
+  
+  return @lib_dirs;
+}
 
 1;
 
@@ -582,7 +621,7 @@ Get C<include_dirs> field. This field is array refernce.
 
 C<include_dirs> field is used by C<compile> method of L<SPVM::Builder::CC> to set -I<inculde_dir>.
 
-Default is "SPVM/Builder/include" of directory SPVM.pm loaded and the values of -I<include_dir> in $Config{ccflags}.
+Default is "SPVM/Builder/include" of one up of directory SPVM::Buidler::Config.pm loaded and the values of -I<include_dir> in $Config{ccflags}.
 
 =head2 set_include_dirs
 
