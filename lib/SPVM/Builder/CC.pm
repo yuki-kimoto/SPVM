@@ -684,10 +684,10 @@ sub build_dll_native_runtime {
 sub build_dll_precompile_dist {
   my ($self, $package_name, $sub_names) = @_;
   
-  my $object_dir = "spvm_build/work/object";
+  my $object_dir = ".spvm_build/work/object";
   mkpath $object_dir;
   
-  my $src_dir = "spvm_build/work/src";
+  my $src_dir = ".spvm_build/work/src";
   mkpath $src_dir;
 
   my $lib_dir = 'blib/lib';
@@ -716,7 +716,7 @@ sub build_dll_native_dist {
   
   my $src_dir = 'lib';
 
-  my $object_dir = "spvm_build/work/object";
+  my $object_dir = ".spvm_build/work/object";
   mkpath $object_dir;
 
   my $lib_dir = 'blib/lib';

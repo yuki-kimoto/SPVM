@@ -1,0 +1,11 @@
+package SPVM::Short {
+  has val : ro short;
+  
+  sub new : SPVM::Short ($value : short) {
+    my $self = new SPVM::Short;
+    
+    $self->{val} = $value;
+    
+    return $self;
+  }
+}

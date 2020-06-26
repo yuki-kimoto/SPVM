@@ -1,0 +1,11 @@
+package SPVM::Long {
+  has val : ro long;
+  
+  sub new : SPVM::Long ($value : long) {
+    my $self = new SPVM::Long;
+    
+    $self->{val} = $value;
+    
+    return $self;
+  }
+}

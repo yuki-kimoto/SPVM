@@ -1,0 +1,11 @@
+package SPVM::Byte {
+  has val : ro byte;
+  
+  sub new : SPVM::Byte ($value : byte) {
+    my $self = new SPVM::Byte;
+    
+    $self->{val} = $value;
+    
+    return $self;
+  }
+}
