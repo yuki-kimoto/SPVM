@@ -1,19 +1,21 @@
 0.0704 2020-06-25
-  - rename SPVM::Build::Config::set_no_cache to set_force_compile
-  - rename SPVM::Build::Config::get_no_cache to get_force_compile
+  - rename SPVM::Builder::Config::set_no_cache to set_force_compile
+  - rename SPVM::Builder::Config::get_no_cache to get_force_compile
   - add native source dependency cache system
+  - remove SPVM::Builder::quiet method
+  - SPVM::Builder::Config quiet field default become 1
 0.0703 2020-06-24
   - fixed broken test by using different perl version
 0.0702 2020-06-24
-  - add document of SPVM::Build::Config::add_extra_compiler_flags
-  - add document of SPVM::Build::Config::add_extra_linker_flags
-  - add document of SPVM::Build::Config::set_extra_compiler_flags
-  - add document of SPVM::Build::Config::get_extra_compiler_flags
-  - add document of SPVM::Build::Config::set_extra_linker_flags
-  - add document of SPVM::Build::Config::get_extra_linker_flags
-  - add SPVM::Build::Config::set_include_dirs
-  - add SPVM::Build::Config::get_include_dirs
-  - add SPVM::Build::Config::add_include_dirs
+  - add document of SPVM::Builder::Config::add_extra_compiler_flags
+  - add document of SPVM::Builder::Config::add_extra_linker_flags
+  - add document of SPVM::Builder::Config::set_extra_compiler_flags
+  - add document of SPVM::Builder::Config::get_extra_compiler_flags
+  - add document of SPVM::Builder::Config::set_extra_linker_flags
+  - add document of SPVM::Builder::Config::get_extra_linker_flags
+  - add SPVM::Builder::Config::set_include_dirs
+  - add SPVM::Builder::Config::get_include_dirs
+  - add SPVM::Builder::Config::add_include_dirs
   - add set_no_cache and get_no_cache
   - remove set_cache and get_cache
   - Support native source code and include files

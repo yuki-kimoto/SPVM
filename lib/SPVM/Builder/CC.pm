@@ -26,8 +26,6 @@ sub new {
 
 sub category { shift->{category} }
 
-sub quiet { shift->{quiet} }
-
 sub builder { shift->{builder} }
 
 sub build {
@@ -272,7 +270,7 @@ sub compile {
   unshift @{$bconf->get_include_dirs}, $native_include_dir;
 
   # Quiet output
-  my $quiet = defined $bconf->get_quiet ? $bconf->get_quiet : $self->quiet;
+  my $quiet = $bconf->get_quiet;
   
   # SPVM Subroutine source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
@@ -524,7 +522,7 @@ EOS
   }
 
   # Quiet output
-  my $quiet = defined $bconf->get_quiet ? $bconf->get_quiet : $self->quiet;
+  my $quiet = $bconf->get_quiet;
   
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;

@@ -110,6 +110,8 @@ sub new {
   $self->{config} = {};
   
   $self->{include_dirs} = [];
+  
+  $self->{quiet} = 1;
 
   return bless $self, $class;
 }
@@ -596,3 +598,19 @@ C<force_compile> field is used by C<compile> method of L<SPVM::Builder::CC> to d
 Set C<force_compile> field.
 
 See C<get_force_compile> method about C<force_compile> field.
+
+=head2 quiet
+
+  my $quiet = $bconf->get_quiet;
+
+Get C<quiet> field.
+
+C<quiet> field is used by C<compile> method of L<SPVM::Builder::CC> to determine whether the method output compiler messages , default to C<1>.
+
+=head2 set_quiet
+
+  $bconf->set_quiet($quiet);
+
+Set C<quiet> field.
+
+See C<get_quiet> method about C<quiet> field.
