@@ -667,7 +667,7 @@ Get C<lib_dirs> field. This field is array refernce.
 
 C<lib_dirs> field is used by C<compile> method of L<SPVM::Builder::CC> to set -L<lib_dir>.
 
-Default is the values of $Config{libpth}.
+Default is the values of -L<lib_dir> in $Config{lddlflags}.
 
 =head2 set_lib_dirs
 
