@@ -34,16 +34,14 @@ sub new {
   # Remove and get include dir from ccflags
   my @ccflags_include_dirs = $self->_remove_include_dirs_from_ccflags;
   
-  # Add include directory to ccflags
-  my $include_dir = $INC{"SPVM/Builder/Config.pm"};
-  $include_dir =~ s/\/Config\.pm$//;
-  $include_dir .= '/include';
-  $self->add_include_dirs($include_dir);
-  
   # Add ccflags include dir
-  for my $ccflags_include_dir (@ccflags_include_dirs) {
-    $self->add_include_dirs($ccflags_include_dir);
-  }
+  $self->add_include_dirs(@ccflags_include_dirs);
+
+  # Add SPVM include directory to ccflags
+  my $spvm_include_dir = $INC{"SPVM/Builder/Config.pm"};
+  $spvm_include_dir =~ s/\/Config\.pm$//;
+  $spvm_include_dir .= '/include';
+  $self->add_include_dirs($spvm_include_dir);
 
   # Remove and get lib dir from lddlflags
   my @lib_dirs_in_lddlflags = $self->_remove_lib_dirs_from_lddlflags;
