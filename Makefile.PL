@@ -58,11 +58,7 @@ if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
 
-my @csource_files;
-push @csource_files, 'SPVM.c';
-push @csource_files, glob('lib/SPVM/Builder/src/*.c');
-
-my @object_files = map { my $object_file = $_; $object_file =~ s/\.c$/.o/; $object_file } @csource_files;
+my @csource_files = ('SPVM.c', glob 'lib/SPVM/Builder/src/*.c');
 
 WriteMakefile(
     NAME              => 'SPVM',
@@ -78,7 +74,7 @@ WriteMakefile(
     OBJECT            => '$(O_FILES)', # link all the C files too
     INC => $inc,
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
-    clean => {FILES => ".spvm_build t/default/.spvm_build t/precompile t/test_files_tmp @object_files"},
+    clean => {FILES => "SPVM.o lib/SPVM/Builder/src/*.o .spvm_build t/default/.spvm_build t/precompile t/test_files_tmp "},
     DEFINE => "@defines -o \$@",
     META_MERGE => {
         'meta-spec' => { version => 2 },
