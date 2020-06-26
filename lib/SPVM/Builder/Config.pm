@@ -36,10 +36,16 @@ sub new {
   
   # Add ccflags include dir
   $self->add_include_dirs(@ccflags_include_dirs);
+  
+  # SPVM::Builder::Config directory
+  my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
+
+  # SPVM::Builder directory
+  my $spvm_builder_dir = $spvm_builder_config_dir;
+  $spvm_builder_dir =~ s/\/Config\.pm$//;
 
   # Add SPVM include directory to ccflags
-  my $spvm_include_dir = $INC{"SPVM/Builder/Config.pm"};
-  $spvm_include_dir =~ s/\/Config\.pm$//;
+  my $spvm_include_dir = $spvm_builder_dir;
   $spvm_include_dir .= '/include';
   $self->add_include_dirs($spvm_include_dir);
 
