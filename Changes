@@ -11,6 +11,10 @@
   - lib_dir values is added before extra_linker_flags
   - rename SPVM::Builder::Config::add_include_dir to add_include_dirs
   - renmae SPVM::Builder::Config::add_lib_dir to add_lib_dirs
+  - add_include_dirs become add arguments to first of elements.
+  - add_lib_dirs become add arguments to first of elements.
+  - add_libs become add arguments to first of elements.
+  
 0.0703 2020-06-24
   - fixed broken test by using different perl version
 0.0702 2020-06-24

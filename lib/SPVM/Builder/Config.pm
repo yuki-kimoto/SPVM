@@ -112,7 +112,7 @@ sub set_include_dirs {
 sub add_include_dirs {
   my ($self, @include_dirs) = @_;
   
-  push @{$self->{include_dirs}}, @include_dirs;
+  unshift @{$self->{include_dirs}}, @include_dirs;
 }
 
 sub get_lib_dirs {
@@ -132,7 +132,7 @@ sub set_lib_dirs {
 sub add_lib_dirs {
   my ($self, @lib_dirs) = @_;
   
-  push @{$self->{lib_dirs}}, @lib_dirs;
+  unshift @{$self->{lib_dirs}}, @lib_dirs;
 }
 
 sub get_libs {
@@ -152,7 +152,7 @@ sub set_libs {
 sub add_libs {
   my ($self, @libs) = @_;
   
-  push @{$self->{libs}}, @libs;
+  unshift @{$self->{libs}}, @libs;
 }
 
 sub get_ext {
@@ -655,7 +655,7 @@ See C<get_include_dirs> method about C<include_dirs> field.
 
   $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
 
-Add a element after the last element of C<lib_dirs> field.
+Add a element before the first element of C<lib_dirs> field.
 
 See C<get_lib_dirs> method about C<lib_dirs> field.
 
@@ -681,7 +681,7 @@ See C<get_lib_dirs> method about C<lib_dirs> field.
 
   $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
 
-Add a element after the last element of C<lib_dirs> field.
+Add a element before the first element of C<lib_dirs> field.
 
 See C<get_lib_dirs> method about C<lib_dirs> field.
 
@@ -689,7 +689,7 @@ See C<get_lib_dirs> method about C<lib_dirs> field.
 
   $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
 
-Add a element after the last element of C<lib_dirs> field.
+Add a element before the first element of C<lib_dirs> field.
 
 See C<get_lib_dirs> method about C<lib_dirs> field.
 
@@ -713,7 +713,7 @@ See C<get_libs> method about C<libs> field.
 
   $bconf->add_libs($lib1, $lib2, ...);
 
-Add a element after the last element of C<libs> field.
+Add a element before the first element of C<libs> field.
 
 See C<get_libs> method about C<libs> field.
 
