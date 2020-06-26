@@ -89,11 +89,6 @@ WriteMakefile(
     },
 );
 
-# Create use all test modules script
-my $create_use_all_testcase_cmd = 'perl t/create_use_all_testcase.pl';
-system($create_use_all_testcase_cmd) == 0
-  or die "Can't execute $create_use_all_testcase_cmd: $!";
-
 # Create precompile test
 my $create_precompile_test_cmd = 'perl t/copy_default_to_precompile.pl';
 system($create_precompile_test_cmd) == 0
