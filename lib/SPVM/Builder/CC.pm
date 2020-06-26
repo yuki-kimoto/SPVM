@@ -135,8 +135,8 @@ EOS
 sub bind_subs {
   my ($self, $dll_file, $package_name, $sub_names) = @_;
   
-  # perllibs - This seems to be already loaded librarys
-  my %already_loaded_libs = map { $_ => 1 } split(/ +/, $Config{perllibs});
+  # m library is maybe not dynamic link library
+  my %must_not_load_libs = map { $_ => 1 } ('m');
   
   # Load pre-required dynamic library
   my $category = $self->category;
@@ -146,8 +146,7 @@ sub bind_subs {
     local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
     my $libs = $bconf->get_libs;
     for my $lib (@$libs) {
-      
-      unless ($already_loaded_libs{"-l$lib"}) {
+      unless ($must_not_load_libs{$lib}) {
         my ($lib_file) = DynaLoader::dl_findfile("-l$lib");
         my $dll_libref = DynaLoader::dl_load_file($lib_file);
         unless ($dll_libref) {
