@@ -1,7 +1,4 @@
-0.0704 2020-06-26
-  - rename SPVM::Builder::Config::set_no_cache to set_force_compile
-  - rename SPVM::Builder::Config::get_no_cache to get_force_compile
-  - add native source dependency cache system
+0.0705 2020-06-26
   - remove SPVM::Builder::quiet method
   - SPVM::Builder::Config quiet field default become 1
   - add get_lib_dirs to SPVM::Builder::Config
@@ -12,9 +9,14 @@
   - rename SPVM::Builder::Config::add_include_dir to add_include_dirs
   - renmae SPVM::Builder::Config::add_lib_dir to add_lib_dirs
   - add_include_dirs become add arguments to first of elements.
-  - add_lib_dirs become add arguments to first of elements.
-  - add_libs become add arguments to first of elements.
-  - rename add_libs to use_lib, and library is added after last element
+  - SPVM::Builder::Config::add_lib_dirs become add arguments to first of elements.
+  - SPVM::Builder::Config::add_libs become add arguments to first of elements.
+  - rename  SPVM::Builder::Config::add_libs to use_lib, and library is added after last element
+
+0.0704 2020-06-26
+  - rename SPVM::Builder::Config::set_no_cache to set_force_compile
+  - rename SPVM::Builder::Config::get_no_cache to get_force_compile
+  - add native source dependency cache system
 0.0703 2020-06-24
   - fixed broken test by using different perl version
 0.0702 2020-06-24
