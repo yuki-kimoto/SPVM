@@ -316,10 +316,17 @@ sub compile {
     my $object_file;
     # Native object file name
     if ($is_native_src) {
-      my $object_file_base = basename $src_file;
+      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'native');
+      
+      my $object_file_base = $src_file;
+      $object_file_base =~ s/^\Q$native_src_dir//;
+      $object_file_base =~ s/^[\\\/]//;
+      
       $object_file_base =~ s/\.[^\.]+$/.o/;
-      $object_file = "$object_dir/native/$object_file_base";
-      mkpath "$object_dir/native";
+      $object_file = "$object_dir/$object_rel_file/$object_file_base";
+      
+      my $object_dir = dirname $object_file;
+      mkpath $object_dir;
     }
     # SPVM subroutine object file name
     else {
