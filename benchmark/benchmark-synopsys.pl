@@ -1,4 +1,3 @@
-# spvm.pl
 use strict;
 use warnings;
 use FindBin;

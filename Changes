@@ -1,4 +1,4 @@
-0.0705 2020-06-26
+0.0705 2020-06-28
   - remove SPVM::Builder::quiet method
   - SPVM::Builder::Config quiet field default become 1
   - add get_lib_dirs to SPVM::Builder::Config
