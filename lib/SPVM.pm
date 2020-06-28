@@ -60,14 +60,63 @@ sub import {
 }
 
 sub init {
-  if ($BUILDER) {
-    $BUILDER->build_spvm;
-    unless ($BUILDER->compile_success) {
+  if (my $builder = $BUILDER) {
+    $builder->build_spvm;
+    unless ($builder->compile_success) {
       exit(255);
     }
     
     # Call begin blocks
-    $BUILDER->call_begin_blocks;
+    $builder->call_begin_blocks;
+    
+    # Bind SPVM subroutine to Perl
+    bind_to_perl($builder);
+  }
+}
+
+my $package_name_h = {};
+sub bind_to_perl {
+  my $builder = shift;
+  
+  my $package_names = $builder->get_package_names;
+  for my $package_name (@$package_names) {
+    
+    my $sub_names = $builder->get_sub_names($package_name);
+    
+    for my $sub_name (@$sub_names) {
+      if ($sub_name eq 'DESTROY') {
+        next;
+      }
+      
+      my $sub_abs_name = "${package_name}::$sub_name";
+      
+      # Define SPVM subroutine
+      no strict 'refs';
+      
+      my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
+      unless ($package_name_h->{$package_name}) {
+        
+        my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
+        eval $code;
+        
+        if (my $error = $@) {
+          confess $error;
+        }
+        $package_name_h->{$package_name} = 1;
+      }
+      
+      # Declare subroutine
+      *{"$sub_abs_name"} = sub {
+        
+        my $return_value;
+        eval { $return_value = SPVM::call_sub($package_name, $sub_name, @_) };
+        my $error = $@;
+        if ($error) {
+          confess $error;
+        }
+        $return_value;
+      };
+    }
   }
 }
 

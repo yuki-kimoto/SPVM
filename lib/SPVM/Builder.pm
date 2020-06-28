@@ -162,9 +162,6 @@ sub build_spvm {
     # Build native packages - Compile C source codes and link them to SPVM native subroutine
     $self->build_native;
     
-    # Bind SPVM to Perl
-    $self->bind_to_perl;
-    
     $self->{compile_success} = 1;
   }
 }
@@ -256,51 +253,5 @@ sub build_native {
   $cc_native->build;
 }
 
-my $package_name_h = {};
-
-sub bind_to_perl {
-  my $self = shift;
-  
-  my $package_names = $self->get_package_names;
-  for my $package_name (@$package_names) {
-    
-    my $sub_names = $self->get_sub_names($package_name);
-    
-    for my $sub_name (@$sub_names) {
-      if ($sub_name eq 'DESTROY') {
-        next;
-      }
-      
-      my $sub_abs_name = "${package_name}::$sub_name";
-      
-      # Define SPVM subroutine
-      no strict 'refs';
-      
-      my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
-      unless ($package_name_h->{$package_name}) {
-        
-        my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
-        eval $code;
-        
-        if (my $error = $@) {
-          confess $error;
-        }
-        $package_name_h->{$package_name} = 1;
-      }
-      
-      # Declare subroutine
-      *{"$sub_abs_name"} = sub {
-        
-        my $return_value;
-        eval { $return_value = SPVM::call_sub($package_name, $sub_name, @_) };
-        my $error = $@;
-        if ($error) {
-          confess $error;
-        }
-        $return_value;
-      };
-    }
-  }
-}
 
 1;
