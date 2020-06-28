@@ -21,6 +21,7 @@ use Carp 'confess';
 
 our $VERSION = '0.0705';
 
+my $SPVM_INITED;
 my $BUILDER;
 
 require XSLoader;
@@ -60,17 +61,19 @@ sub import {
 }
 
 sub init {
-  if (my $builder = $BUILDER) {
-    $builder->build_spvm;
-    unless ($builder->compile_success) {
-      exit(255);
+  unless ($SPVM_INITED) {
+    if (my $builder = $BUILDER) {
+      $builder->build_spvm;
+      unless ($builder->compile_success) {
+        exit(255);
+      }
+      
+      # Call begin blocks
+      $builder->call_begin_blocks;
+      
+      # Bind SPVM subroutine to Perl
+      bind_to_perl($builder);
     }
-    
-    # Call begin blocks
-    $builder->call_begin_blocks;
-    
-    # Bind SPVM subroutine to Perl
-    bind_to_perl($builder);
   }
 }
 
