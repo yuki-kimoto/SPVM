@@ -164,9 +164,15 @@ sub build_spvm {
     
     # Bind SPVM to Perl
     $self->bind_to_perl;
+    
+    $self->{compile_success} = 1;
   }
+}
+
+sub compile_success {
+  my ($self) = @_;
   
-  return $compile_success;
+  return $self->{compile_success};
 }
 
 sub use {

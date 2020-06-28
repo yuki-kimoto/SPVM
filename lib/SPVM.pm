@@ -63,8 +63,8 @@ sub import {
 # Compile SPVM source code just after compile-time of Perl
 sub init {
   if ($BUILDER) {
-    my $compile_success = $BUILDER->build_spvm;
-    unless ($compile_success) {
+    $BUILDER->build_spvm;
+    unless ($BUILDER->compile_success) {
       exit(255);
     }
     
