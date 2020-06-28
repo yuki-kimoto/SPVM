@@ -21,7 +21,6 @@ use Carp 'confess';
 
 our $VERSION = '0.0705';
 
-my $SPVM_ENV;
 my $BUILDER;
 
 require XSLoader;
@@ -60,16 +59,12 @@ sub import {
   }
 }
 
-# Compile SPVM source code just after compile-time of Perl
 sub init {
   if ($BUILDER) {
     $BUILDER->build_spvm;
     unless ($BUILDER->compile_success) {
       exit(255);
     }
-    
-    # Set env
-    $SPVM_ENV = $BUILDER->{env};
     
     # Call begin blocks
     $BUILDER->call_begin_blocks;
@@ -79,36 +74,36 @@ sub init {
 CHECK { SPVM::init() }
 
 
-sub get_exception { SPVM::ExchangeAPI::get_exception($SPVM_ENV, @_) }
-sub set_exception { SPVM::ExchangeAPI::set_exception($SPVM_ENV, @_) }
-sub get_memory_blocks_count { SPVM::ExchangeAPI::get_memory_blocks_count($SPVM_ENV, @_) }
-sub call_sub { SPVM::ExchangeAPI::call_sub($SPVM_ENV, @_) }
+sub get_exception { SPVM::ExchangeAPI::get_exception($BUILDER->{env}, @_) }
+sub set_exception { SPVM::ExchangeAPI::set_exception($BUILDER->{env}, @_) }
+sub get_memory_blocks_count { SPVM::ExchangeAPI::get_memory_blocks_count($BUILDER->{env}, @_) }
+sub call_sub { SPVM::ExchangeAPI::call_sub($BUILDER->{env}, @_) }
 
-sub new_byte_array { SPVM::ExchangeAPI::new_byte_array($SPVM_ENV, @_) }
-sub new_byte_array_from_bin { SPVM::ExchangeAPI::new_byte_array_from_bin($SPVM_ENV, @_) }
-sub new_byte_array_from_string { SPVM::ExchangeAPI::new_byte_array_from_string($SPVM_ENV, @_) }
+sub new_byte_array { SPVM::ExchangeAPI::new_byte_array($BUILDER->{env}, @_) }
+sub new_byte_array_from_bin { SPVM::ExchangeAPI::new_byte_array_from_bin($BUILDER->{env}, @_) }
+sub new_byte_array_from_string { SPVM::ExchangeAPI::new_byte_array_from_string($BUILDER->{env}, @_) }
 
-sub new_short_array { SPVM::ExchangeAPI::new_short_array($SPVM_ENV, @_) }
-sub new_short_array_from_bin { SPVM::ExchangeAPI::new_short_array_from_bin($SPVM_ENV, @_) }
+sub new_short_array { SPVM::ExchangeAPI::new_short_array($BUILDER->{env}, @_) }
+sub new_short_array_from_bin { SPVM::ExchangeAPI::new_short_array_from_bin($BUILDER->{env}, @_) }
 
-sub new_int_array { SPVM::ExchangeAPI::new_int_array($SPVM_ENV, @_) }
-sub new_int_array_from_bin { SPVM::ExchangeAPI::new_int_array_from_bin($SPVM_ENV, @_) }
+sub new_int_array { SPVM::ExchangeAPI::new_int_array($BUILDER->{env}, @_) }
+sub new_int_array_from_bin { SPVM::ExchangeAPI::new_int_array_from_bin($BUILDER->{env}, @_) }
 
-sub new_long_array { SPVM::ExchangeAPI::new_long_array($SPVM_ENV, @_) }
-sub new_long_array_from_bin { SPVM::ExchangeAPI::new_long_array_from_bin($SPVM_ENV, @_) }
+sub new_long_array { SPVM::ExchangeAPI::new_long_array($BUILDER->{env}, @_) }
+sub new_long_array_from_bin { SPVM::ExchangeAPI::new_long_array_from_bin($BUILDER->{env}, @_) }
 
-sub new_float_array { SPVM::ExchangeAPI::new_float_array($SPVM_ENV, @_) }
-sub new_float_array_from_bin { SPVM::ExchangeAPI::new_float_array_from_bin($SPVM_ENV, @_) }
+sub new_float_array { SPVM::ExchangeAPI::new_float_array($BUILDER->{env}, @_) }
+sub new_float_array_from_bin { SPVM::ExchangeAPI::new_float_array_from_bin($BUILDER->{env}, @_) }
 
-sub new_double_array { SPVM::ExchangeAPI::new_double_array($SPVM_ENV, @_) }
-sub new_double_array_from_bin { SPVM::ExchangeAPI::new_double_array_from_bin($SPVM_ENV, @_) }
+sub new_double_array { SPVM::ExchangeAPI::new_double_array($BUILDER->{env}, @_) }
+sub new_double_array_from_bin { SPVM::ExchangeAPI::new_double_array_from_bin($BUILDER->{env}, @_) }
 
-sub new_string { SPVM::ExchangeAPI::new_string($SPVM_ENV, @_) }
-sub new_string_from_bin { SPVM::ExchangeAPI::new_string_from_bin($SPVM_ENV, @_) }
+sub new_string { SPVM::ExchangeAPI::new_string($BUILDER->{env}, @_) }
+sub new_string_from_bin { SPVM::ExchangeAPI::new_string_from_bin($BUILDER->{env}, @_) }
 
-sub new_object_array { SPVM::ExchangeAPI::new_object_array($SPVM_ENV, @_) }
-sub new_mulnum_array { SPVM::ExchangeAPI::new_mulnum_array($SPVM_ENV, @_) }
-sub new_mulnum_array_from_bin { SPVM::ExchangeAPI::new_mulnum_array_from_bin($SPVM_ENV, @_) }
+sub new_object_array { SPVM::ExchangeAPI::new_object_array($BUILDER->{env}, @_) }
+sub new_mulnum_array { SPVM::ExchangeAPI::new_mulnum_array($BUILDER->{env}, @_) }
+sub new_mulnum_array_from_bin { SPVM::ExchangeAPI::new_mulnum_array_from_bin($BUILDER->{env}, @_) }
 
 1;
 
