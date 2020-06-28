@@ -61,7 +61,7 @@ sub import {
 }
 
 # Compile SPVM source code just after compile-time of Perl
-CHECK {
+sub init {
   if ($BUILDER) {
     my $compile_success = $BUILDER->build_spvm;
     unless ($compile_success) {
@@ -75,6 +75,8 @@ CHECK {
     $BUILDER->call_begin_blocks;
   }
 }
+
+CHECK { SPVM::init() }
 
 
 sub get_exception { SPVM::ExchangeAPI::get_exception($SPVM_ENV, @_) }
