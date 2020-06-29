@@ -6,6 +6,9 @@ use Benchmark qw/timethese cmpthese/;
 
 use SPVM 'MyMath';
 
+# Initialize SPVM
+UNITCHECK { SPVM::init() }
+
 my $bench_count = 10000;
 my $loop_count = 100000;
 my $result = timethese($bench_count, {

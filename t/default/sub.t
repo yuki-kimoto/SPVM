@@ -8,6 +8,8 @@ use Test::More 'no_plan';
 
 use SPVM 'TestCase::Sub';
 
+UNITCHECK { SPVM::init() }
+
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;

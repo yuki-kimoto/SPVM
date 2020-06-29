@@ -11,6 +11,8 @@ use Test::More 'no_plan';
 use TestFile;
 use SPVM 'TestCase::Warn';
 
+UNITCHECK { SPVM::init() }
+
 my $test_tmp_dir = "$FindBin::Bin/../test_files_tmp";
 
 my $script_file = "$test_tmp_dir/warn-script.pl";
@@ -30,6 +32,8 @@ use warnings;
 use FindBin;
 
 use SPVM 'TestCase::Warn';
+
+UNITCHECK { SPVM::init() }
 
 use TestFile;
 

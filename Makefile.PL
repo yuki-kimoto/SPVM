@@ -1,4 +1,4 @@
-use 5.008007;
+use 5.010.000;
 use ExtUtils::MakeMaker;
 
 use strict;

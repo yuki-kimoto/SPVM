@@ -6,6 +6,9 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'Eigen';
 
+# Initialize SPVM
+UNITCHECK { SPVM::init() }
+
 Eigen->test;
 
 =head1 Eigen installation

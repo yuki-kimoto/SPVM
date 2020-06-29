@@ -9,6 +9,9 @@ die unless -d "../../../lib";
 
 use SPVM 'MyGSL';
 
+# Initialize SPVM
+UNITCHECK { SPVM::init() }
+
 MyGSL->stat;
 
 =head2 GSL Installation from source

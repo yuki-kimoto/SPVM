@@ -1,3 +1,7 @@
+0.0706 2020-06-29
+  - SPVM need manually initialization in Perl script because SPVM is not compiled some environment require, do, Mojo morbo, Mojo hypnotoad, mod_perl, etc
+      UNITCHECK { SPVM::init() }
+  - Increased Perl version requirement to 5.10.0 because UNITCHECK is needed for SPVM.
 0.0705 2020-06-28
   - remove SPVM::Builder::quiet method
   - SPVM::Builder::Config quiet field default become 1
