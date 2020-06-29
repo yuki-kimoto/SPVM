@@ -1,3 +1,7 @@
+benchmark/benchmark-synopsys.pl
+benchmark/lib/MyMath.c
+benchmark/lib/MyMath.config
+benchmark/lib/MyMath.spvm
 Changes
 ctest/ctest_Makefile.PL
 ctest/Makefile
