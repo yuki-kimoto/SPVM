@@ -185,6 +185,19 @@ sub append_ccflags {
   return $self;
 }
 
+sub prepend_ccflags {
+  my ($self, $new_ccflags) = @_;
+  
+  my $ccflags = $self->get_config('ccflags');
+  
+  $ccflags = "$new_ccflags $ccflags";
+  
+  $self->set_config('ccflags' => $ccflags);
+  
+  return $self;
+}
+
+
 sub get_extra_compiler_flags {
   my $self = shift;
   
@@ -206,6 +219,17 @@ sub append_extra_compiler_flags {
   $extra_compiler_flags = '' unless defined $extra_compiler_flags;
   
   $extra_compiler_flags .= " $new_extra_compiler_flags";
+  
+  $self->{extra_compiler_flags} = $extra_compiler_flags;
+}
+
+sub prepend_extra_compiler_flags {
+  my ($self, $new_extra_compiler_flags) = @_;
+  
+  my $extra_compiler_flags = $self->{extra_compiler_flags};
+  $extra_compiler_flags = '' unless defined $extra_compiler_flags;
+  
+  $extra_compiler_flags = "$new_extra_compiler_flags $extra_compiler_flags";
   
   $self->{extra_compiler_flags} = $extra_compiler_flags;
 }
@@ -305,6 +329,18 @@ sub append_lddlflags {
   return $self;
 }
 
+sub prepend_lddlflags {
+  my ($self, $new_lddlflags) = @_;
+  
+  my $lddlflags = $self->get_config('lddlflags');
+  
+  $lddlflags = "$new_lddlflags $lddlflags";
+  
+  $self->set_config('lddlflags' => $lddlflags);
+  
+  return $self;
+}
+
 sub get_lib_dirs {
   my ($self, $lib_dirs) = @_;
   
@@ -372,6 +408,17 @@ sub append_extra_linker_flags {
   $extra_linker_flags = '' unless defined $extra_linker_flags;
   
   $extra_linker_flags .= " $new_extra_linker_flags";
+  
+  $self->{extra_linker_flags} = $extra_linker_flags;
+}
+
+sub prepend_extra_linker_flags {
+  my ($self, $new_extra_linker_flags) = @_;
+  
+  my $extra_linker_flags = $self->{extra_linker_flags};
+  $extra_linker_flags = '' unless defined $extra_linker_flags;
+  
+  $extra_linker_flags = "$new_extra_linker_flags $extra_linker_flags";
   
   $self->{extra_linker_flags} = $extra_linker_flags;
 }
@@ -545,9 +592,9 @@ Get C<cc>.
 
   my $ccflags = $bconf->get_ccflags;
 
-Get C<ccflags> using C<get_config> method.
+Get C<ccflags> option using C<get_config> method.
 
-C<ccflags> option is passed to C<ccflags> option of L<ExtUtils::CBuilder> C<compile> method.
+C<ccflags> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
 
 Default is copied from $Config{ccflags}.
 
@@ -564,6 +611,14 @@ See C<get_ccflags> method about C<ccflags> option.
   $bconf->append_ccflags($ccflags);
 
 Add new C<ccflags> after current C<ccflags> using C<get_config> and C<set_config> method.
+
+See C<get_ccflags> method about C<ccflags> option.
+
+=head2 prepend_ccflags
+
+  $bconf->prepend_ccflags($ccflags);
+
+Add new C<ccflags> before current C<ccflags> using C<get_config> and C<set_config> method.
 
 See C<get_ccflags> method about C<ccflags> option.
 
@@ -611,6 +666,14 @@ Add new C<extra_compiler_flags> after current C<extra_compiler_flags>.
 
 See C<get_extra_compiler_flags> method about C<extra_compiler_flags> option.
 
+=head2 prepend_extra_compiler_flags
+
+  $bconf->prepend_extra_compiler_flags($extra_compiler_flags);
+
+Add new C<extra_compiler_flags> before current C<extra_compiler_flags>.
+
+See C<get_extra_compiler_flags> method about C<extra_compiler_flags> option.
+
 =head2 set_ld
 
   $bconf->set_ld($ld);
@@ -623,23 +686,40 @@ Set C<ld>.
 
 Get C<ld>.
 
-=head2 set_lddlflags
-
-  $bconf->set_lddlflags($lddlflags);
-
-Set C<lddlflags>.
-
 =head2 get_lddlflags
 
   my $lddlflags = $bconf->get_lddlflags;
 
-Get C<lddlflags>.
+Get C<lddlflags> option using C<get_config> method.
+
+C<lddlflags> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
+
+Default is copied from $Config{lddlflags}.
+
+=head2 set_lddlflags
+
+  $bconf->set_lddlflags($lddlflags);
+
+Set C<lddlflags> using C<set_config> method.
+
+See C<get_lddlflags> method about C<lddlflags> option.
 
 =head2 append_lddlflags
 
   $bconf->append_lddlflags($lddlflags);
 
-Add C<lddlflags> after current C<lddlflags>.
+Add new C<lddlflags> after current C<lddlflags> using C<get_config> and C<set_config> method.
+
+See C<get_lddlflags> method about C<lddlflags> option.
+
+=head2 prepend_lddlflags
+
+  $bconf->prepend_lddlflags($lddlflags);
+
+Add new C<lddlflags> before current C<lddlflags> using C<get_config> and C<set_config> method.
+
+See C<get_lddlflags> method about C<lddlflags> option.
+
 
 =head2 new_c99
   
@@ -651,9 +731,9 @@ Create defaulgt build config. This is L<SPVM::Builder::Config> object.
 
   my $extra_linker_flags = $bconf->get_extra_linker_flags;
 
-Get C<extra_linker_flags>.
+Get C<extra_linker_flags> option.
 
-C<extra_linker_flags> is passed to C<extra_compiler_flags> option of L<ExtUtils::CBuilder> C<link> method.
+C<extra_linker_flags> option is passed to C<extra_compiler_flags> option of L<ExtUtils::CBuilder> C<link> method.
 
 Default is emtpy string.
 
@@ -661,7 +741,7 @@ Default is emtpy string.
 
   $bconf->set_extra_linker_flags($extra_linker_flags);
 
-Set C<extra_linker_flags>.
+Set C<extra_linker_flags> option.
 
 See C<get_extra_linker_flags> method about C<extra_linker_flags> option.
 
@@ -669,7 +749,15 @@ See C<get_extra_linker_flags> method about C<extra_linker_flags> option.
 
   $bconf->append_extra_linker_flags($extra_linker_flags);
 
-Add new C<extra_linker_flags> after current C<extra_linker_flags>.
+Add new C<extra_linker_flags> option after current C<extra_linker_flags> option.
+
+See C<get_extra_linker_flags> method about C<extra_linker_flags> option.
+
+=head2 prepend_extra_linker_flags
+
+  $bconf->prepend_extra_linker_flags($extra_linker_flags);
+
+Add new C<extra_linker_flags> option before current C<extra_linker_flags> option.
 
 See C<get_extra_linker_flags> method about C<extra_linker_flags> option.
 
