@@ -5,6 +5,11 @@
   - add SPVM::Builder::Config::push_lib_dirs
   - rename SPVM::Builder::Config::use_lib to unshift_libs
   - add SPVM::Builder::Config::push_libs
+  - rename SPVM::Builder::Config::add_extra_compiler_flags to append_extra_compiler_flags
+  - add SPVM::Builder::Config::prepend_extra_compiler_flags
+  - rename SPVM::Builder::Config::add_extra_linker_flags to append_extra_linker_flags
+  - rename SPVM::Builder::Config::add_ccflags to append_ccflags
+  - rename SPVM::Builder::Config::add_lddlflags to append_lddlflags
   
 0.0706 2020-06-29
   - SPVM need manually initialization in Perl script because SPVM is not compiled some environment require, do, Mojo morbo, Mojo hypnotoad, mod_perl, etc
