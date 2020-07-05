@@ -35,7 +35,7 @@ sub new {
   my @ccflags_include_dirs = $self->_remove_include_dirs_from_ccflags;
   
   # Add ccflags include dir
-  $self->add_include_dirs(@ccflags_include_dirs);
+  $self->unshift_include_dirs(@ccflags_include_dirs);
   
   # SPVM::Builder::Config directory
   my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
@@ -47,11 +47,11 @@ sub new {
   # Add SPVM include directory to ccflags
   my $spvm_include_dir = $spvm_builder_dir;
   $spvm_include_dir .= '/include';
-  $self->add_include_dirs($spvm_include_dir);
+  $self->unshift_include_dirs($spvm_include_dir);
 
   # Remove and get lib dir from lddlflags
   my @lib_dirs_in_lddlflags = $self->_remove_lib_dirs_from_lddlflags;
-  $self->add_lib_dirs(@lib_dirs_in_lddlflags);
+  $self->unshift_lib_dirs(@lib_dirs_in_lddlflags);
 
   return $self;
 }
@@ -107,10 +107,16 @@ sub set_include_dirs {
   return $self;
 }
 
-sub add_include_dirs {
+sub unshift_include_dirs {
   my ($self, @include_dirs) = @_;
   
   unshift @{$self->{include_dirs}}, @include_dirs;
+}
+
+sub push_include_dirs {
+  my ($self, @include_dirs) = @_;
+  
+  push @{$self->{include_dirs}}, @include_dirs;
 }
 
 sub get_lib_dirs {
@@ -127,7 +133,7 @@ sub set_lib_dirs {
   return $self;
 }
 
-sub add_lib_dirs {
+sub unshift_lib_dirs {
   my ($self, @lib_dirs) = @_;
   
   unshift @{$self->{lib_dirs}}, @lib_dirs;
@@ -147,10 +153,16 @@ sub set_libs {
   return $self;
 }
 
-sub use_lib {
+sub unshift_libs {
   my ($self, @libs) = @_;
   
   unshift @{$self->{libs}}, @libs;
+}
+
+sub push_libs {
+  my ($self, @libs) = @_;
+  
+  push @{$self->{libs}}, @libs;
 }
 
 sub get_ext {
@@ -619,11 +631,19 @@ Set C<include_dirs> field. This field is array refernce.
 
 See C<get_include_dirs> method about C<include_dirs> field.
 
-=head2 add_lib_dirs
+=head2 unshift_include_dirs
 
-  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
+  $bconf->unshift_include_dirs($include_dir1, $include_dir2, ...);
 
-Add a element before the first element of C<lib_dirs> field.
+Add a element before the first element of C<include_dirs> field.
+
+See C<get_lib_dirs> method about C<lib_dirs> field.
+
+=head2 push_include_dirs
+
+  $bconf->push_include_dirs($include_dir1, $include_dir2, ...);
+
+Add a element after the last element of C<include_dirs> field.
 
 See C<get_lib_dirs> method about C<lib_dirs> field.
 
@@ -645,19 +665,19 @@ Set C<lib_dirs> field. This field is array refernce.
 
 See C<get_lib_dirs> method about C<lib_dirs> field.
 
-=head2 add_lib_dirs
+=head2 unshift_lib_dirs
 
-  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
+  $bconf->unshift_lib_dirs($lib_dir1, $lib_dir2, ...);
 
 Add a element before the first element of C<lib_dirs> field.
 
 See C<get_lib_dirs> method about C<lib_dirs> field.
 
-=head2 add_lib_dirs
+=head2 push_lib_dirs
 
-  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
+  $bconf->push_lib_dirs($lib_dir1, $lib_dir2, ...);
 
-Add a element before the first element of C<lib_dirs> field.
+Add a element after the last element of C<lib_dirs> field.
 
 See C<get_lib_dirs> method about C<lib_dirs> field.
 
@@ -669,6 +689,8 @@ Get C<libs> field. This field is array refernce.
 
 C<libs> field is used by C<link> method of L<SPVM::Builder::CC> to set -l<lib>.
 
+Don't prefix '-l' or 'lib' for library name. 'gsl' is ok. 'libgsl', '-lgsl' is not ok.
+
 =head2 set_libs
 
   $bconf->set_libs($libs);
@@ -677,13 +699,19 @@ Set C<libs> field. This field is array refernce.
 
 See C<get_libs> method about C<libs> field.
 
-=head2 use_lib
+=head2 unshift_libs
 
-  $bconf->use_lib($lib1, $lib2, ...);
+  $bconf->unshift_libs($lib1, $lib2, ...);
+
+Add a library before the first element of C<libs> field.
+
+See C<get_libs> method about C<libs> field.
+
+=head2 push_libs
+
+  $bconf->push_libs($lib1, $lib2, ...);
 
 Add a library after the last element of C<libs> field.
-
-Don't use prefix '-l' or 'lib' for library name.
 
 See C<get_libs> method about C<libs> field.
 

@@ -1,3 +1,11 @@
+0.0707 2020-07-06
+  - rename SPVM::Builder::Config::add_include_dirs to unshift_include_dirs
+  - add SPVM::Builder::Config::push_include_dirs
+  - rename SPVM::Builder::Config::add_lib_dirs to unshift_lib_dirs
+  - add SPVM::Builder::Config::push_lib_dirs
+  - rename SPVM::Builder::Config::use_lib to unshift_libs
+  - add SPVM::Builder::Config::push_libs
+  
 0.0706 2020-06-29
   - SPVM need manually initialization in Perl script because SPVM is not compiled some environment require, do, Mojo morbo, Mojo hypnotoad, mod_perl, etc
       UNITCHECK { SPVM::init() }
