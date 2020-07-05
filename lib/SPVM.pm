@@ -871,7 +871,9 @@ In bash, you can set SPVM_BUILD_DIR to the following.
 
 =head1 CAUTION
 
-SPVM 1.0 is First Major Release. 
+This release is beta release before SPVM 1.0. Features is changed without warnings. 
+
+SPVM 1.0 is First Major Release
 
 But Full backward compatibility is not guaranteed because SPVM is not used much in corporate work yet.
 
