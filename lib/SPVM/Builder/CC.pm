@@ -544,7 +544,7 @@ EOS
   
   # Library directory
   my $native_lib_dir = "$native_dir/lib";
-  $bconf->add_lib_dirs($native_lib_dir);
+  $bconf->unshift_lib_dirs($native_lib_dir);
 
   # Quiet output
   my $quiet = $bconf->get_quiet;
