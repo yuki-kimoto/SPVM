@@ -13,7 +13,15 @@
   - add SPVM::Builder::Config::prepend_extra_linker_flags
   - add SPVM::Builder::Config::prepend_ccflags
   - add SPVM::Builder::Config::prepend_lddlflags
-  
+  - add SPVM::Builder::Config::get_cccdlflags
+  - add SPVM::Builder::Config::set_cccdlflags
+  - add SPVM::Builder::Config::append_cccdlflags
+  - add SPVM::Builder::Config::prepend_cccdlflags
+  - add SPVM::Builder::Config::get_archlibexp
+  - add SPVM::Builder::Config::set_archlibexp
+  - add SPVM::Builder::Config::get_shrpenv
+  - add SPVM::Builder::Config::set_shrpenv
+
 0.0706 2020-06-29
   - SPVM need manually initialization in Perl script because SPVM is not compiled some environment require, do, Mojo morbo, Mojo hypnotoad, mod_perl, etc
       UNITCHECK { SPVM::init() }

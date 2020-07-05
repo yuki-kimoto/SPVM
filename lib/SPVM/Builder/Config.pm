@@ -53,6 +53,9 @@ sub new {
   my @lib_dirs_in_lddlflags = $self->_remove_lib_dirs_from_lddlflags;
   $self->unshift_lib_dirs(@lib_dirs_in_lddlflags);
 
+  # Optimize
+  $self->set_optimize('-O3');
+
   return $self;
 }
 
@@ -64,9 +67,6 @@ sub new_c99 {
   # C99
   $self->set_std('c99');
   
-  # Optimize
-  $self->set_optimize('-O3');
-  
   # NativeAPI
   $self->set_ext('c');
   
@@ -77,9 +77,6 @@ sub new_cpp {
   my $class = shift;
   
   my $self = SPVM::Builder::Config->new;
-  
-  # Optimize
-  $self->set_optimize('-O3');
   
   # CC
   $self->set_cc('g++');
@@ -147,16 +144,10 @@ sub set_cc {
   return $self->set_config(cc => $cc);
 }
 
-sub get_optimize {
-  my ($self, $optimize) = @_;
+sub get_ccflags {
+  my $self = shift;
   
-  return $self->get_config('optimize');
-}
-
-sub set_optimize {
-  my ($self, $optimize) = @_;
-  
-  return $self->set_config(optimize => $optimize);
+  return $self->get_config('ccflags');
 }
 
 sub set_ccflags {
@@ -165,12 +156,6 @@ sub set_ccflags {
   $self->set_config(ccflags => $ccflags);
   
   return $self;
-}
-
-sub get_ccflags {
-  my $self = shift;
-  
-  return $self->get_config('ccflags');
 }
 
 sub append_ccflags {
@@ -197,6 +182,69 @@ sub prepend_ccflags {
   return $self;
 }
 
+sub get_cccdlflags {
+  my $self = shift;
+  
+  return $self->get_config('cccdlflags');
+}
+
+sub set_cccdlflags {
+  my ($self, $cccdlflags) = @_;
+  
+  $self->set_config(cccdlflags => $cccdlflags);
+  
+  return $self;
+}
+
+sub append_cccdlflags {
+  my ($self, $new_cccdlflags) = @_;
+  
+  my $cccdlflags = $self->get_config('cccdlflags');
+  
+  $cccdlflags .= " $new_cccdlflags";
+  
+  $self->set_config('cccdlflags' => $cccdlflags);
+  
+  return $self;
+}
+
+sub prepend_cccdlflags {
+  my ($self, $new_cccdlflags) = @_;
+  
+  my $cccdlflags = $self->get_config('cccdlflags');
+  
+  $cccdlflags = "$new_cccdlflags $cccdlflags";
+  
+  $self->set_config('cccdlflags' => $cccdlflags);
+  
+  return $self;
+}
+
+sub get_archlibexp {
+  my $self = shift;
+  
+  return $self->get_config('archlibexp');
+}
+
+sub set_archlibexp {
+  my ($self, $archlibexp) = @_;
+  
+  $self->set_config(archlibexp => $archlibexp);
+  
+  return $self;
+}
+
+sub get_optimize {
+  my ($self, $optimize) = @_;
+  
+  return $self->get_config('optimize');
+}
+
+sub set_optimize {
+  my ($self, $optimize) = @_;
+  
+  return $self->set_config(optimize => $optimize);
+}
 
 sub get_extra_compiler_flags {
   my $self = shift;
@@ -291,16 +339,22 @@ sub delete_std {
   return $self;
 }
 
+sub get_ld {
+  my ($self, $ld) = @_;
+  
+  return $self->get_config('ld');
+}
+
 sub set_ld {
   my ($self, $ld) = @_;
   
   return $self->set_config(ld => $ld);
 }
 
-sub get_ld {
-  my ($self, $ld) = @_;
+sub get_lddlflags {
+  my $self = shift;
   
-  return $self->get_config('ld');
+  return $self->get_config('lddlflags');
 }
 
 sub set_lddlflags {
@@ -309,12 +363,6 @@ sub set_lddlflags {
   $self->set_config(lddlflags => $lddlflags);
   
   return $self;
-}
-
-sub get_lddlflags {
-  my $self = shift;
-  
-  return $self->get_config('lddlflags');
 }
 
 sub append_lddlflags {
@@ -337,6 +385,20 @@ sub prepend_lddlflags {
   $lddlflags = "$new_lddlflags $lddlflags";
   
   $self->set_config('lddlflags' => $lddlflags);
+  
+  return $self;
+}
+
+sub get_shrpenv {
+  my $self = shift;
+  
+  return $self->get_config('shrpenv');
+}
+
+sub set_shrpenv {
+  my ($self, $shrpenv) = @_;
+  
+  $self->set_config(shrpenv => $shrpenv);
   
   return $self;
 }
@@ -521,6 +583,12 @@ L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
   
 Create L<SPVM::Builder::Config> object.
 
+=head2 new_c99
+  
+  my $bconf = SPVM::Builder::Config->new_c99;
+
+Create defaulgt build config. This is L<SPVM::Builder::Config> object.
+
 =head2 replace_all_config
 
   my $config = {cc => 'g++', ld => 'g++'};
@@ -622,6 +690,58 @@ Add new C<ccflags> before current C<ccflags> using C<get_config> and C<set_confi
 
 See C<get_ccflags> method about C<ccflags> option.
 
+=head2 get_cccdlflags
+
+  my $cccdlflags = $bconf->get_cccdlflags;
+
+Get C<cccdlflags> option using C<get_config> method.
+
+C<cccdlflags> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
+
+Default is copied from $Config{cccdlflags}.
+
+=head2 set_cccdlflags
+
+  $bconf->set_cccdlflags($cccdlflags);
+
+Set C<cccdlflags> using C<set_config> method.
+
+See C<get_cccdlflags> method about C<cccdlflags> option.
+
+=head2 append_cccdlflags
+
+  $bconf->append_cccdlflags($cccdlflags);
+
+Add new C<cccdlflags> after current C<cccdlflags> using C<get_config> and C<set_config> method.
+
+See C<get_cccdlflags> method about C<cccdlflags> option.
+
+=head2 prepend_cccdlflags
+
+  $bconf->prepend_cccdlflags($cccdlflags);
+
+Add new C<cccdlflags> before current C<cccdlflags> using C<get_config> and C<set_config> method.
+
+See C<get_cccdlflags> method about C<cccdlflags> option.
+
+=head2 get_archlibexp
+
+  my $archlibexp = $bconf->get_archlibexp;
+
+Get C<archlibexp> option using C<get_config> method.
+
+C<archlibexp> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
+
+Default is copied from $Config{archlibexp}.
+
+=head2 set_archlibexp
+
+  $bconf->set_archlibexp($archlibexp);
+
+Set C<archlibexp> using C<set_config> method.
+
+See C<get_archlibexp> method about C<archlibexp> option.
+
 =head2 get_optimize
 
   my $optimize = $bconf->get_optimize;
@@ -720,12 +840,23 @@ Add new C<lddlflags> before current C<lddlflags> using C<get_config> and C<set_c
 
 See C<get_lddlflags> method about C<lddlflags> option.
 
+=head2 get_shrpenv
 
-=head2 new_c99
-  
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $shrpenv = $bconf->get_shrpenv;
 
-Create defaulgt build config. This is L<SPVM::Builder::Config> object.
+Get C<shrpenv> option using C<get_config> method.
+
+C<shrpenv> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
+
+Default is copied from $Config{shrpenv}.
+
+=head2 set_shrpenv
+
+  $bconf->set_shrpenv($shrpenv);
+
+Set C<shrpenv> using C<set_config> method.
+
+See C<get_shrpenv> method about C<shrpenv> option.
 
 =head2 get_extra_linker_flags
 
