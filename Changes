@@ -1,3 +1,8 @@
+0.0708 2020-07-06
+  - SPVM don't need the following manually initialization in Perl script because SPVM is compiled at each time to call import method.
+      # Don't needed the following statement
+      UNITCHECK { SPVM::init() }
+
 0.0707 2020-07-06
   - rename SPVM::Builder::Config::add_include_dirs to unshift_include_dirs
   - add SPVM::Builder::Config::push_include_dirs
@@ -21,9 +26,6 @@
   - add SPVM::Builder::Config::set_archlibexp
   - add SPVM::Builder::Config::get_shrpenv
   - add SPVM::Builder::Config::set_shrpenv
-  - SPVM don't need the following manually initialization in Perl script because SPVM is compiled at each time to call import method.
-      # Don't needed the following statement
-      UNITCHECK { SPVM::init() }
 
 0.0706 2020-06-29
   - SPVM need manually initialization in Perl script because SPVM is not compiled some environment require, do, Mojo morbo, Mojo hypnotoad, mod_perl, etc
