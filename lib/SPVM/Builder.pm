@@ -174,13 +174,11 @@ sub compile_success {
 }
 
 sub use {
-  my ($self, $package_name) = @_;
-  
-  my (undef, $file_name, $line) = caller;
+  my ($self, $package_name, $file, $line) = @_;
   
   my $package_info = {
     name => $package_name,
-    file => $file_name,
+    file => $file,
     line => $line,
   };
   
@@ -190,7 +188,7 @@ sub use {
 sub build_dll_native_dist {
   my ($self, $package_name) = @_;
   
-  $self->use($package_name);
+  $self->use($package_name, '(build_dll_native_dist)', 0);
   
   $self->compile_spvm;
 
@@ -209,7 +207,7 @@ sub build_dll_native_dist {
 sub build_dll_precompile_dist {
   my ($self, $package_name) = @_;
   
-  $self->use($package_name);
+  $self->use($package_name, '(build_dll_precompile_dist)', 0);
   
   my $compile_success = $self->compile_spvm;
   unless ($compile_success) {
