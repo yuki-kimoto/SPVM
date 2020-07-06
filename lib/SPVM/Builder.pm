@@ -153,6 +153,7 @@ sub build_spvm {
   my $self = shift;
   
   # Compile SPVM source code and create runtime env
+  $self->{compile_success} = 0;
   my $compile_success = $self->compile_spvm();
   
   if ($compile_success) {

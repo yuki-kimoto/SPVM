@@ -54,12 +54,12 @@ sub init {
       unless ($builder->compile_success) {
         exit(255);
       }
+
+      # Bind SPVM subroutine to Perl
+      bind_to_perl($builder);
       
       # Call begin blocks
       $builder->call_begin_blocks;
-      
-      # Bind SPVM subroutine to Perl
-      bind_to_perl($builder);
     }
     $SPVM_INITED = 1;
   }
