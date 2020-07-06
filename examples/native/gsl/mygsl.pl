@@ -10,7 +10,7 @@ die unless -d "../../../lib";
 use SPVM 'MyGSL';
 
 # Initialize SPVM
-UNITCHECK { SPVM::init() }
+
 
 MyGSL->stat;
 

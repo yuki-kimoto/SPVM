@@ -11,7 +11,7 @@ use Test::More 'no_plan';
 
 use SPVM 'SPVM::IO::Stderr';
 use SPVM 'TestCase::Lib::SPVM::IO::Stderr';
-UNITCHECK { SPVM::init() }
+
 
 use TestFile;
 
@@ -34,7 +34,7 @@ use warnings;
 use FindBin;
 
 use SPVM 'TestCase::Lib::SPVM::IO::Stderr';
-UNITCHECK { SPVM::init() }
+
 
 use TestFile;
 

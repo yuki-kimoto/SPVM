@@ -8,7 +8,7 @@ use Test::More 'no_plan';
 
 use SPVM 'TestCase::Lib::SPVM::IO::File';
 
-UNITCHECK { SPVM::init() }
+
 
 use TestFile;
 

@@ -25,7 +25,7 @@ use SPVM 'TestCase::Point_3i';
 use SPVM 'SPVM::Hash';
 use SPVM 'SPVM::ObjectList';
 
-UNITCHECK { SPVM::init() }
+
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;

@@ -12,7 +12,7 @@ use Test::More 'no_plan';
 use SPVM 'SPVM::IO::Stdout';
 use SPVM 'TestCase::Lib::SPVM::IO::Stdout';
 
-UNITCHECK { SPVM::init() }
+
 
 use TestFile;
 
@@ -35,7 +35,7 @@ use warnings;
 use FindBin;
 
 use SPVM 'TestCase::Lib::SPVM::IO::Stdout';
-UNITCHECK { SPVM::init() }
+
 
 use TestFile;
 

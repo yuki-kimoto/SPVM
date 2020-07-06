@@ -10,7 +10,7 @@ use SPVM 'TestCase::Comment::LF';
 use SPVM 'TestCase::Comment::CR';
 use SPVM 'TestCase::Comment::CRLF';
 
-UNITCHECK { SPVM::init() }
+
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();

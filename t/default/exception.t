@@ -8,7 +8,7 @@ use Test::More 'no_plan';
 
 use SPVM 'TestCase::Exception';
 
-UNITCHECK { SPVM::init() }
+
 
 use File::Basename 'basename';
 
