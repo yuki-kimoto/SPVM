@@ -40,12 +40,7 @@ sub import {
   # Add package informations
   if (defined $package_name) {
     my ($file, $line) = (caller)[1, 2];
-    my $package_info = {
-      name => $package_name,
-      file => $file,
-      line => $line
-    };
-    push @{$BUILDER->{package_infos}}, $package_info;
+    $BUILDER->use($package_name, $file, $line);
     
     $BUILDER->build_spvm;
     unless ($BUILDER->compile_success) {
