@@ -27,6 +27,8 @@ my $BUILDER;
 require XSLoader;
 XSLoader::load('SPVM', $VERSION);
 
+my $loaded_spvm_modules = {};
+
 sub import {
   my ($class, $package_name) = @_;
   
@@ -44,20 +46,22 @@ sub import {
       line => $line
     };
     push @{$BUILDER->{package_infos}}, $package_info;
+    
+    $BUILDER->build_spvm;
+    unless ($BUILDER->compile_success) {
+      exit(255);
+    }
+
+    # Bind SPVM subroutine to Perl
+    bind_to_perl($BUILDER);
+
+    my $package_names = $BUILDER->get_package_names;
   }
 }
 
 sub init {
   unless ($SPVM_INITED) {
     if (my $builder = $BUILDER) {
-      $builder->build_spvm;
-      unless ($builder->compile_success) {
-        exit(255);
-      }
-
-      # Bind SPVM subroutine to Perl
-      bind_to_perl($builder);
-      
       # Call begin blocks
       $builder->call_begin_blocks;
     }
@@ -66,49 +70,52 @@ sub init {
 }
 
 my $package_name_h = {};
+my $binded_package_name_h = {};
 sub bind_to_perl {
   my $builder = shift;
   
   my $package_names = $builder->get_package_names;
   for my $package_name (@$package_names) {
-    
-    my $sub_names = $builder->get_sub_names($package_name);
-    
-    for my $sub_name (@$sub_names) {
-      if ($sub_name eq 'DESTROY') {
-        next;
-      }
+    unless ($binded_package_name_h->{$package_name}) {
+      my $sub_names = $builder->get_sub_names($package_name);
       
-      my $sub_abs_name = "${package_name}::$sub_name";
-      
-      # Define SPVM subroutine
-      no strict 'refs';
-      
-      my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
-      unless ($package_name_h->{$package_name}) {
-        
-        my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
-        eval $code;
-        
-        if (my $error = $@) {
-          confess $error;
+      for my $sub_name (@$sub_names) {
+        if ($sub_name eq 'DESTROY') {
+          next;
         }
-        $package_name_h->{$package_name} = 1;
-      }
-      
-      # Declare subroutine
-      *{"$sub_abs_name"} = sub {
-        confess "SPVM is not initialized. SPVM::init() must be call. Recommended: UNITCHECK { SPVM::init() }" unless $SPVM_INITED;
         
-        my $return_value;
-        eval { $return_value = SPVM::call_sub($package_name, $sub_name, @_) };
-        my $error = $@;
-        if ($error) {
-          confess $error;
+        my $sub_abs_name = "${package_name}::$sub_name";
+        
+        # Define SPVM subroutine
+        no strict 'refs';
+        
+        my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
+        unless ($package_name_h->{$package_name}) {
+          
+          my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
+          eval $code;
+          
+          if (my $error = $@) {
+            confess $error;
+          }
+          $package_name_h->{$package_name} = 1;
         }
-        $return_value;
-      };
+        
+        # Declare subroutine
+        *{"$sub_abs_name"} = sub {
+          confess "SPVM is not initialized. SPVM::init() must be call. Recommended: UNITCHECK { SPVM::init() }" unless $SPVM_INITED;
+          
+          my $return_value;
+          eval { $return_value = SPVM::call_sub($package_name, $sub_name, @_) };
+          my $error = $@;
+          if ($error) {
+            confess $error;
+          }
+          $return_value;
+        };
+      }
     }
+    $binded_package_name_h->{$package_name} = 1;
   }
 }
 
