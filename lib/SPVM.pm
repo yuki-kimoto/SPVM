@@ -37,26 +37,13 @@ sub import {
 
   # Add package informations
   if (defined $package_name) {
-    if ($package_name =~ /\.spvm$/) {
-      my $file = $package_name;
-      my $line = (caller)[2];
-      
-      my $package_info = {
-        name => 'Main',
-        file => $file,
-        line => $line
-      };
-      push @{$BUILDER->{package_infos}}, $package_info;
-    }
-    else {
-      my ($file, $line) = (caller)[1, 2];
-      my $package_info = {
-        name => $package_name,
-        file => $file,
-        line => $line
-      };
-      push @{$BUILDER->{package_infos}}, $package_info;
-    }
+    my ($file, $line) = (caller)[1, 2];
+    my $package_info = {
+      name => $package_name,
+      file => $file,
+      line => $line
+    };
+    push @{$BUILDER->{package_infos}}, $package_info;
   }
 }
 
