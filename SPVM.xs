@@ -34,7 +34,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_limit.h"
-#include "spvm_runtime_info.h"
 #include "spvm_compiler_allocator.h"
 
 #include "spvm_runtime_sub.h"
@@ -47,8 +46,6 @@
 #include "spvm_runtime_field.h"
 #include "spvm_runtime_package_var.h"
 #include "spvm_runtime_arg.h"
-
-#include "spvm_runtime_info.h"
 
 static const char* MFILE = "SPVM.xs";
 
