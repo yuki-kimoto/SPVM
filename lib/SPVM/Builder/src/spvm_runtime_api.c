@@ -624,27 +624,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime->basic_types = runtime_info->basic_types;
   runtime->basic_types_length = runtime_info->basic_types_length;
   
-  // Create basic type rank(string_pool_id and rank)
-  runtime->sorted_basic_types = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_BASIC_TYPE) * runtime->basic_types_length);
-  memcpy(runtime->sorted_basic_types, runtime->basic_types, sizeof(SPVM_BASIC_TYPE) * runtime->basic_types_length);
-  
-  // Sort basic type id
-  for (int32_t i = 0; i < runtime->basic_types_length - 1; i++) {
-    for (int32_t j = (runtime->basic_types_length - 1); j > i; j--) {
-      SPVM_RUNTIME_BASIC_TYPE* basic_type1 = &runtime->sorted_basic_types[j - 1];
-      SPVM_RUNTIME_BASIC_TYPE* basic_type2 = &runtime->sorted_basic_types[j];
-      
-      const char* basic_type1_name = &runtime->string_pool[basic_type1->name_id];
-      const char* basic_type2_name = &runtime->string_pool[basic_type2->name_id];
-      
-      if (strcmp(basic_type1_name, basic_type2_name) > 0) {
-        SPVM_RUNTIME_BASIC_TYPE temp = *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j - 1];
-        *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j - 1] = *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j];
-        *(SPVM_RUNTIME_BASIC_TYPE*)&runtime->sorted_basic_types[j] = temp;
-      }
-    }
-  }
-
   runtime->fields = (SPVM_RUNTIME_FIELD*)runtime_info->fields;
   runtime->fields_length = runtime_info->fields_length;
   runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)runtime_info->package_vars;
