@@ -1571,7 +1571,11 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
 
 SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
   
-  SPVM_OP* op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_packages->file, op_packages->line);
+  if (!compiler->op_grammar) {
+    compiler->op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_packages->file, op_packages->line);
+  }
+  
+  SPVM_OP* op_grammar = compiler->op_grammar;
   SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_packages);
 
   return op_grammar;
