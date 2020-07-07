@@ -317,10 +317,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
 
   SPVM_RUNTIME_INFO* runtime_info = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_RUNTIME_INFO));
 
-  // Opcode Length
-  int32_t runtime_info_opcode_length = compiler->opcode_array->length;
-  runtime_info->opcodes_length = runtime_info_opcode_length;
-  
   // Constant pool length
   int32_t runtime_info_constant_pool_length = 0;
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
@@ -359,7 +355,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   
   // Total byte size(at least 1 byte)
   int32_t total_byte_size =
-    sizeof(SPVM_OPCODE) * runtime_info_opcode_length +
     sizeof(int32_t) * runtime_info_constant_pool_length +
     sizeof(SPVM_RUNTIME_BASIC_TYPE) * runtime_info_basic_types_length +
     sizeof(SPVM_RUNTIME_PACKAGE) * runtime_info_package_vars_length +
@@ -374,9 +369,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime_info->memory_pool = memory_pool;
   
   int32_t memory_pool_base = 0;
-  
-  runtime_info->opcodes = (SPVM_OPCODE*)&memory_pool[memory_pool_base];
-  memory_pool_base += sizeof(SPVM_OPCODE) * runtime_info_opcode_length;
   
   runtime_info->constant_pool = (int32_t*)&memory_pool[memory_pool_base];
   memory_pool_base += sizeof(int32_t) * runtime_info_constant_pool_length;
@@ -399,9 +391,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime_info->packages = (SPVM_RUNTIME_PACKAGE*)&memory_pool[memory_pool_base];
   memory_pool_base += sizeof(SPVM_RUNTIME_PACKAGE) * runtime_info_packages_length;
 
-  // OPCode(64bit)
-  memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * runtime_info_opcode_length);
-  
   // Global constant pool(32bit)
   int32_t constant_pool_index = 0;
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
@@ -614,6 +603,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
 
   runtime->string_pool = compiler->string_pool->buffer;
   runtime->string_pool_length = compiler->string_pool->length;
+  runtime->opcodes = compiler->opcode_array->values;
 
   runtime->runtime_info = runtime_info;
   runtime->compiler = compiler;
@@ -629,7 +619,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime->package_vars = (SPVM_RUNTIME_PACKAGE_VAR*)runtime_info->package_vars;
   runtime->package_vars_length = runtime_info->package_vars_length;
   runtime->args = (SPVM_RUNTIME_ARG*)runtime_info->args;
-  runtime->opcodes = (SPVM_OPCODE*)runtime_info->opcodes;
   runtime->subs = (SPVM_RUNTIME_SUB*)runtime_info->subs;
   runtime->subs_length = runtime_info->subs_length;
   runtime->packages_length = runtime_info->packages_length;
