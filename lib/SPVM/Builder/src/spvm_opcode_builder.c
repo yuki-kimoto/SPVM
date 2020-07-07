@@ -101,7 +101,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   
   {
     int32_t package_index;
-    for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+    for (package_index = compiler->cur_package_base; package_index < compiler->packages->length; package_index++) {
       SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
       SPVM_LIST* subs = package->subs;
       {
