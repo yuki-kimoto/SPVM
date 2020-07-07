@@ -1939,24 +1939,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       }
     }
     
-    // Sort fields(except value package)
-    if (package->category != SPVM_PACKAGE_C_CATEGORY_VALUE) {
-      for (int32_t i = 0; i < (package->fields->length - 1); i++) {
-        for (int32_t j = (package->fields->length - 1); j > i; j--) {
-          SPVM_FIELD* field1 = SPVM_LIST_fetch(package->fields, j-1);
-          SPVM_FIELD* field2 = SPVM_LIST_fetch(package->fields, j);
-          
-          void** values = package->fields->values;
-
-          if (strcmp(field1->name, field2->name) > 0) {
-            SPVM_FIELD* temp = values[j-1];
-            values[j-1] = values[j];
-            values[j] = temp;
-          }
-        }
-      }
-    }
-    
     // Field declarations
     for (int32_t i = 0; i < package->fields->length; i++) {
       SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
@@ -1981,22 +1963,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         // Add op package
         field->package = package;
-      }
-    }
-
-    // Sort package variables
-    for (int32_t i = 0; i < (package->package_vars->length - 1); i++) {
-      for (int32_t j = (package->package_vars->length - 1); j > i; j--) {
-        SPVM_PACKAGE_VAR* package_var1 = SPVM_LIST_fetch(package->package_vars, j-1);
-        SPVM_PACKAGE_VAR* package_var2 = SPVM_LIST_fetch(package->package_vars, j);
-        
-        void** values = package->package_vars->values;
-
-        if (strcmp(package_var1->name, package_var2->name) > 0) {
-          SPVM_PACKAGE_VAR* temp = values[j-1];
-          values[j-1] = values[j];
-          values[j] = temp;
-        }
       }
     }
 
@@ -2026,22 +1992,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           
           // Add op package
           package_var->package = package;
-        }
-      }
-    }
-    
-    // Sort subs
-    for (int32_t i = 0; i < (package->subs->length - 1); i++) {
-      for (int32_t j = (package->subs->length - 1); j > i; j--) {
-        SPVM_SUB* sub1 = SPVM_LIST_fetch(package->subs, j-1);
-        SPVM_SUB* sub2 = SPVM_LIST_fetch(package->subs, j);
-        
-        void** values = package->subs->values;
-
-        if (strcmp(sub1->name, sub2->name) > 0) {
-          SPVM_SUB* temp = values[j-1];
-          values[j-1] = values[j];
-          values[j] = temp;
         }
       }
     }

@@ -4980,22 +4980,6 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_PACKAGE*
 
 void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
   
-  // Sort package by package name
-  for (int32_t i = 0; i < (compiler->packages->length - 1); i++) {
-    for (int32_t j = (compiler->packages->length - 1); j > i; j--) {
-      SPVM_PACKAGE* package1 = SPVM_LIST_fetch(compiler->packages, j-1);
-      SPVM_PACKAGE* package2 = SPVM_LIST_fetch(compiler->packages, j);
-      
-      void** values = compiler->packages->values;
-
-      if (strcmp(package1->name, package2->name) > 0) {
-        SPVM_PACKAGE* temp = values[j-1];
-        values[j-1] = values[j];
-        values[j] = temp;
-      }
-    }
-  }
-  
   // Set package id
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
