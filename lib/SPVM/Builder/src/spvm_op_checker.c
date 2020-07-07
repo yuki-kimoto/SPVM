@@ -3436,7 +3436,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   // Check trees
   {
     int32_t package_index;
-    for (package_index = 0; package_index < compiler->packages->length; package_index++) {
+    for (package_index = compiler->cur_package_base; package_index < compiler->packages->length; package_index++) {
       SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
       SPVM_LIST* subs = package->subs;
       {

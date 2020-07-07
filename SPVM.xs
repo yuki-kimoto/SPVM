@@ -132,18 +132,17 @@ compile_spvm(...)
   HV* hv_self = (HV*)SvRV(sv_self);
   
   SPVM_COMPILER* compiler;
-  
-  if (compiler) {
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  if (SvOK(sv_compiler)) {
+    compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  }
+  else {
     compiler = SPVM_COMPILER_new();
     size_t iv_compiler = PTR2IV(compiler);
     SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
     SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
     (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
-  }
-  else {
-    SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-    SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-    compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
   }
   
   SV** sv_package_infos_ptr = hv_fetch(hv_self, "package_infos", strlen("package_infos"), 0);
