@@ -18,19 +18,19 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty');
+    $build->use('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral');
+    $build->use('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Literal::Interger::IntOutOfRange');
+    $build->use('TestCase::CompileError::Literal::Interger::IntOutOfRange', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -40,37 +40,37 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::LexVar::Private');
+    $build->use('TestCase::CompileError::LexVar::Private', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::LexVar::LexVarNameStartDigit');
+    $build->use('TestCase::CompileError::LexVar::LexVarNameStartDigit', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::LexVar::LexVarNameInvalidColon');
+    $build->use('TestCase::CompileError::LexVar::LexVarNameInvalidColon', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::LexVar::LexVarNameEndColon2');
+    $build->use('TestCase::CompileError::LexVar::LexVarNameEndColon2', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice');
+    $build->use('TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::LexVar::LexVarNameColon2Twice');
+    $build->use('TestCase::CompileError::LexVar::LexVarNameColon2Twice', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -80,37 +80,37 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::PackageVar::Private');
+    $build->use('TestCase::CompileError::PackageVar::Private', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameStartDigit');
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameStartDigit', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameInvalidColon');
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameInvalidColon', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameEndColon2');
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameEndColon2', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameContainsUnderScoreTwice');
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameContainsUnderScoreTwice', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameColon2Twice');
+    $build->use('TestCase::CompileError::PackageVar::OurPackageVarNameColon2Twice', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -120,13 +120,13 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('foo');
+    $build->use('foo', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('4foo');
+    $build->use('4foo', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -136,19 +136,19 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Sub::Begin');
+    $build->use('TestCase::CompileError::Sub::Begin', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Sub::SubNameStartDigit');
+    $build->use('TestCase::CompileError::Sub::SubNameStartDigit', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Sub::SubNameContainsUnderScoreTwice');
+    $build->use('TestCase::CompileError::Sub::SubNameContainsUnderScoreTwice', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -158,19 +158,19 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Field::Private');
+    $build->use('TestCase::CompileError::Field::Private', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice');
+    $build->use('TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Field::HasFieldNameStartDigit');
+    $build->use('TestCase::CompileError::Field::HasFieldNameStartDigit', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -180,7 +180,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Enum::PrivateAccess');
+    $build->use('TestCase::CompileError::Enum::PrivateAccess', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -190,7 +190,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Switch::NoLastBreak');
+    $build->use('TestCase::CompileError::Switch::NoLastBreak', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -200,14 +200,14 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Value::FieldsZero');
+    $build->use('TestCase::CompileError::Value::FieldsZero', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
 
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Value::Fields17');
+    $build->use('TestCase::CompileError::Value::Fields17', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -217,7 +217,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::CallSub::NotFound');
+    $build->use('TestCase::CompileError::CallSub::NotFound', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -227,68 +227,68 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::StringToBytArray');
+    $build->use('TestCase::CompileError::Assign::StringToBytArray', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
 
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::DifferentObject');
+    $build->use('TestCase::CompileError::Assign::DifferentObject', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::ConstToNoConst');
+    $build->use('TestCase::CompileError::Assign::ConstToNoConst', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NotNumericToNumeric');
+    $build->use('TestCase::CompileError::Assign::NotNumericToNumeric', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToByte');
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToByte', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToShort');
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionIntToShort', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToByte');
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToByte', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToInt');
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToInt', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToShort');
+    $build->use('TestCase::CompileError::Assign::NarrwoingConvertionLongToShort', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::UnboxingDifferentType');
+    $build->use('TestCase::CompileError::Assign::UnboxingDifferentType', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Assign::BoxingDifferentType');
+    $build->use('TestCase::CompileError::Assign::BoxingDifferentType', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -298,7 +298,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Remainder::LeftIsNotNumeric');
+    $build->use('TestCase::CompileError::Remainder::LeftIsNotNumeric', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -308,7 +308,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::String::CharacterAssign');
+    $build->use('TestCase::CompileError::String::CharacterAssign', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -317,13 +317,13 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Weaken::HashNotObject');
+    $build->use('TestCase::CompileError::Weaken::HashNotObject', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Weaken::ArrayNotObject');
+    $build->use('TestCase::CompileError::Weaken::ArrayNotObject', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -332,25 +332,25 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::ComparisonOperator::GtNotNumeric');
+    $build->use('TestCase::CompileError::ComparisonOperator::GtNotNumeric', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::ComparisonOperator::GeNotNumeric');
+    $build->use('TestCase::CompileError::ComparisonOperator::GeNotNumeric', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::ComparisonOperator::LtNotNumeric');
+    $build->use('TestCase::CompileError::ComparisonOperator::LtNotNumeric', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::ComparisonOperator::LeNotNumeric');
+    $build->use('TestCase::CompileError::ComparisonOperator::LeNotNumeric', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -360,7 +360,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Bool::NotNumericObject');
+    $build->use('TestCase::CompileError::Bool::NotNumericObject', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -370,7 +370,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Isa::LeftIsNotObject');
+    $build->use('TestCase::CompileError::Isa::LeftIsNotObject', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -378,28 +378,28 @@ use lib "$FindBin::Bin/lib";
 
 {
   my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::InvalidType');
+  $build->use('TestCase::CompileError::InvalidType', __FILE__, __LINE__);
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
   my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::TypeCantBeDetectedUndef');
+  $build->use('TestCase::CompileError::TypeCantBeDetectedUndef', __FILE__, __LINE__);
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
   my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::TypeCantBeDetectedUndefDefault');
+  $build->use('TestCase::CompileError::TypeCantBeDetectedUndefDefault', __FILE__, __LINE__);
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
 
 {
   my $build = SPVM::Builder->new;
-  $build->use('TestCase::CompileError::New::Private');
+  $build->use('TestCase::CompileError::New::Private', __FILE__, __LINE__);
   my $success = $build->compile_spvm();
   ok($success == 0);
 }
@@ -408,21 +408,21 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Convert::ConvertToRef');
+    $build->use('TestCase::CompileError::Convert::ConvertToRef', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
 
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Convert::ConvertFromRef');
+    $build->use('TestCase::CompileError::Convert::ConvertFromRef', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
 
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Convert::ConvertFromValueType');
+    $build->use('TestCase::CompileError::Convert::ConvertFromValueType', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
@@ -432,13 +432,13 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Concat::RightIsNotString');
+    $build->use('TestCase::CompileError::Concat::RightIsNotString', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    $build->use('TestCase::CompileError::Concat::LeftIsNotString');
+    $build->use('TestCase::CompileError::Concat::LeftIsNotString', __FILE__, __LINE__);
     my $success = $build->compile_spvm();
     ok($success == 0);
   }
