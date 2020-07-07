@@ -5368,33 +5368,17 @@ SPVM_RUNTIME_FIELD* SPVM_RUNTIME_API_field(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Find fieldroutine by binary search
+  // Find field
   int32_t fields_length = package->fields_length;
   int32_t fields_base = package->fields_base;
   SPVM_RUNTIME_FIELD* field = NULL;
-  int low = fields_base;
-  int high = fields_base + fields_length - 1;
-  while (low < high) {
-    int32_t middle = (low + high) / 2;
-    SPVM_RUNTIME_FIELD* middle_field = &runtime->fields[middle];
-    const char* middle_field_name = &runtime->string_pool[middle_field->name_id];
+  for (int32_t i = 0; i < fields_length; i++) {
+    SPVM_RUNTIME_FIELD* exists_field = &runtime->fields[fields_base + i];
+    const char* exists_field_name = &runtime->string_pool[exists_field->name_id];
     
-    if (strcmp(field_name, middle_field_name) > 0) {
-      low = middle + 1;
-    }
-    else if (strcmp(field_name, middle_field_name) < 0) {
-      high = middle - 1;
-    }
-    else {
-      field = middle_field;
+    if (strcmp(field_name, exists_field_name) == 0) {
+      field = exists_field;
       break;
-    }
-  }
-  if (field == NULL) {
-    SPVM_RUNTIME_FIELD* low_field = &runtime->fields[low];
-    const char* low_field_name = &runtime->string_pool[low_field->name_id];
-    if (strcmp(field_name, low_field_name) == 0) {
-      field = low_field;
     }
   }
   
@@ -5441,35 +5425,17 @@ SPVM_RUNTIME_PACKAGE_VAR* SPVM_RUNTIME_API_package_var(SPVM_ENV* env, SPVM_RUNTI
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Find package_varroutine by binary search
+  // Find package_var
   int32_t package_vars_length = package->package_vars_length;
   int32_t package_vars_base = package->package_vars_base;
-  
   SPVM_RUNTIME_PACKAGE_VAR* package_var = NULL;
-  int low = package_vars_base;
-  int high = package_vars_base + package_vars_length - 1;
-  while (low < high) {
-    int32_t middle = (low + high) / 2;
+  for (int32_t i = 0; i < package_vars_length; i++) {
+    SPVM_RUNTIME_PACKAGE_VAR* exists_package_var = &runtime->package_vars[package_vars_base + i];
+    const char* exists_package_var_name = &runtime->string_pool[exists_package_var->name_id];
     
-    SPVM_RUNTIME_PACKAGE_VAR* middle_package_var = &runtime->package_vars[middle];
-    const char* middle_package_var_name = &runtime->string_pool[middle_package_var->name_id];
-    
-    if (strcmp(package_var_name, middle_package_var_name) > 0) {
-      low = middle + 1;
-    }
-    else if (strcmp(package_var_name, middle_package_var_name) < 0) {
-      high = middle - 1;
-    }
-    else {
-      package_var = middle_package_var;
+    if (strcmp(package_var_name, exists_package_var_name) == 0) {
+      package_var = exists_package_var;
       break;
-    }
-  }
-  if (package_var == NULL) {
-    SPVM_RUNTIME_PACKAGE_VAR* low_package_var = &runtime->package_vars[low];
-    const char* low_package_var_name = &runtime->string_pool[low_package_var->name_id];
-    if (strcmp(package_var_name, low_package_var_name) == 0) {
-      package_var = low_package_var;
     }
   }
   
@@ -5515,33 +5481,17 @@ SPVM_RUNTIME_SUB* SPVM_RUNTIME_API_sub(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* pack
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Find subroutine by binary search
+  // Find sub
   int32_t subs_length = package->subs_length;
   int32_t subs_base = package->subs_base;
   SPVM_RUNTIME_SUB* sub = NULL;
-  int low = subs_base;
-  int high = subs_base + subs_length - 1;
-  while (low < high) {
-    int32_t middle = (low + high) / 2;
-    SPVM_RUNTIME_SUB* middle_sub = &runtime->subs[middle];
-    const char* middle_sub_name = &runtime->string_pool[middle_sub->name_id];
+  for (int32_t i = 0; i < subs_length; i++) {
+    SPVM_RUNTIME_SUB* exists_sub = &runtime->subs[subs_base + i];
+    const char* exists_sub_name = &runtime->string_pool[exists_sub->name_id];
     
-    if (strcmp(sub_name, middle_sub_name) > 0) {
-      low = middle + 1;
-    }
-    else if (strcmp(sub_name, middle_sub_name) < 0) {
-      high = middle - 1;
-    }
-    else {
-      sub = middle_sub;
+    if (strcmp(sub_name, exists_sub_name) == 0) {
+      sub = exists_sub;
       break;
-    }
-  }
-  if (sub == NULL) {
-    SPVM_RUNTIME_SUB* low_sub = &runtime->subs[low];
-    const char* low_sub_name = &runtime->string_pool[low_sub->name_id];
-    if (strcmp(sub_name, low_sub_name) == 0) {
-      sub = low_sub;
     }
   }
   
@@ -5647,33 +5597,17 @@ SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char*
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
 
-  // Find basic_typeroutine by binary search
+  // Find basic_type
   int32_t basic_types_length = runtime->basic_types_length;
   int32_t basic_types_base = 0;
   SPVM_RUNTIME_BASIC_TYPE* basic_type = NULL;
-  int low = basic_types_base;
-  int high = basic_types_base + basic_types_length - 1;
-  while (low < high) {
-    int32_t middle = (low + high) / 2;
-    SPVM_RUNTIME_BASIC_TYPE* middle_basic_type = &runtime->sorted_basic_types[middle];
-    const char* middle_basic_type_name = &runtime->string_pool[middle_basic_type->name_id];
+  for (int32_t i = 0; i < basic_types_length; i++) {
+    SPVM_RUNTIME_BASIC_TYPE* exists_basic_type = &runtime->basic_types[basic_types_base + i];
+    const char* exists_basic_type_name = &runtime->string_pool[exists_basic_type->name_id];
     
-    if (strcmp(basic_type_name, middle_basic_type_name) > 0) {
-      low = middle + 1;
-    }
-    else if (strcmp(basic_type_name, middle_basic_type_name) < 0) {
-      high = middle - 1;
-    }
-    else {
-      basic_type = middle_basic_type;
+    if (strcmp(basic_type_name, exists_basic_type_name) == 0) {
+      basic_type = exists_basic_type;
       break;
-    }
-  }
-  if (basic_type == NULL) {
-    SPVM_RUNTIME_BASIC_TYPE* low_basic_type = &runtime->sorted_basic_types[low];
-    const char* low_basic_type_name = &runtime->string_pool[low_basic_type->name_id];
-    if (strcmp(basic_type_name, low_basic_type_name) == 0) {
-      basic_type = low_basic_type;
     }
   }
   
