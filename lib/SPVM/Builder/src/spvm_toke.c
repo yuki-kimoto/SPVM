@@ -79,7 +79,7 @@ int32_t SPVM_TOKE_convert_unicode_codepoint_to_utf8(int32_t uc, uint8_t* dst) {
 
 // Get token
 int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
-
+  
   // Save buf pointer
   compiler->befbufptr = compiler->bufptr;
 
@@ -103,6 +103,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   compiler->state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
 
   while(1) {
+    if (compiler->bufptr == NULL) {
+      compiler->bufptr = "";
+    }
     // Get current character
     char ch = *compiler->bufptr;
     
