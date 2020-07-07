@@ -40,13 +40,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $build = SPVM::Builder->new;
-      $build->use('TestCase::CompileError::Divide::LeftIsNotNumeric');
+      $build->use('TestCase::CompileError::Divide::LeftIsNotNumeric', __LINE__, __FILE__);
       my $success = $build->compile_spvm();
       ok($success == 0);
     }
     {
       my $build = SPVM::Builder->new;
-      $build->use('TestCase::CompileError::Divide::RightIsNotNumeric');
+      $build->use('TestCase::CompileError::Divide::RightIsNotNumeric', __LINE__, __FILE__);
       my $success = $build->compile_spvm();
       ok($success == 0);
     }

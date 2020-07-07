@@ -33,7 +33,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $build = SPVM::Builder->new;
-      $build->use('TestCase::CompileError::UnaryMinus::NotNumeric');
+      $build->use('TestCase::CompileError::UnaryMinus::NotNumeric', __LINE__, __FILE__);
       my $success = $build->compile_spvm();
       ok($success == 0);
     }

@@ -42,13 +42,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $build = SPVM::Builder->new;
-      $build->use('TestCase::CompileError::Add::LeftIsNotNumeric');
+      $build->use('TestCase::CompileError::Add::LeftIsNotNumeric', __LINE__, __FILE__);
       my $success = $build->compile_spvm();
       ok($success == 0);
     }
     {
       my $build = SPVM::Builder->new;
-      $build->use('TestCase::CompileError::Add::RightIsNotNumeric');
+      $build->use('TestCase::CompileError::Add::RightIsNotNumeric', __LINE__, __FILE__);
       my $success = $build->compile_spvm();
       ok($success == 0);
     }
