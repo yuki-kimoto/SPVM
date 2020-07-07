@@ -41,6 +41,8 @@ struct SPVM_runtime {
   
   // Memory blocks count
   int32_t memory_blocks_count;
+  
+  SPVM_COMPILER* compiler;
 };
 
 #endif

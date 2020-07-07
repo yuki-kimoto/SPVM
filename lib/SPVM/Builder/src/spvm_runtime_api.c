@@ -626,6 +626,7 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
 
   runtime->runtime_info = runtime_info;
+  runtime->compiler = compiler;
   
   runtime->string_pool = runtime_info->string_pool;
   runtime->string_pool_length = runtime_info->string_pool_length;
