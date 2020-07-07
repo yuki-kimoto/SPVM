@@ -356,8 +356,6 @@ SPVM_RUNTIME_INFO* SPVM_RUNTIME_INFO_build_runtime_info(SPVM_COMPILER* compiler)
 
 void SPVM_RUNTIME_INFO_free(SPVM_RUNTIME_INFO* runtime_info) {
   
-  if (!runtime_info->is_static) {
-    free(runtime_info->memory_pool);
-    free(runtime_info);
-  }
+  free(runtime_info->memory_pool);
+  free(runtime_info);
 }

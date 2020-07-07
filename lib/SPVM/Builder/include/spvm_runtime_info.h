@@ -32,8 +32,6 @@ struct SPVM_runtime_info {
 
   char* string_pool;
   int32_t string_pool_length;
-
-  int8_t is_static;
 };
 
 SPVM_RUNTIME_INFO* SPVM_RUNTIME_INFO_new();
