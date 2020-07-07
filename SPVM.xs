@@ -288,11 +288,8 @@ compile_spvm(...)
       }
     }
     
-    // Build runtime_info info
-    SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
-    
     // Build runtime
-    SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
+    SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(compiler);
     
     // Create env
     SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);

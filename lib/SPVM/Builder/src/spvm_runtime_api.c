@@ -32,6 +32,7 @@
 #include "spvm_type.h"
 #include "spvm_sub.h"
 #include "spvm_limit.h"
+#include "spvm_compiler.h"
 
 
 
@@ -280,8 +281,11 @@ void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
   free(env);
 }
 
-SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_RUNTIME_INFO* runtime_info) {
-  
+SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
+
+  // Build runtime_info info
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
+
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
 
   runtime->runtime_info = runtime_info;
