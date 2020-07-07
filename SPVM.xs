@@ -196,6 +196,7 @@ compile_spvm(...)
   }
 
   // Compile SPVM
+  compiler->cur_package_base = compiler->packages->length;
   SPVM_COMPILER_compile(compiler);
 
   SV* sv_compile_success;
