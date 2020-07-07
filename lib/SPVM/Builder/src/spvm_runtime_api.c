@@ -357,10 +357,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   int32_t runtime_info_packages_length = compiler->packages->length;
   runtime_info->packages_length = runtime_info_packages_length;
   
-  // String pool length
-  int32_t runtime_info_string_pool_length = compiler->string_pool->length;
-  runtime_info->string_pool_length = runtime_info_string_pool_length;
-  
   // Total byte size(at least 1 byte)
   int32_t total_byte_size =
     sizeof(SPVM_OPCODE) * runtime_info_opcode_length +
@@ -371,7 +367,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
     sizeof(SPVM_RUNTIME_ARG) * runtime_info_args_length +
     sizeof(SPVM_RUNTIME_SUB) * runtime_info_subs_length +
     sizeof(SPVM_RUNTIME_PACKAGE) * runtime_info_packages_length +
-    runtime_info_string_pool_length
     + 1
   ;
   
@@ -404,9 +399,6 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime_info->packages = (SPVM_RUNTIME_PACKAGE*)&memory_pool[memory_pool_base];
   memory_pool_base += sizeof(SPVM_RUNTIME_PACKAGE) * runtime_info_packages_length;
 
-  runtime_info->string_pool = &memory_pool[memory_pool_base];
-  memory_pool_base += runtime_info_string_pool_length;
-  
   // OPCode(64bit)
   memcpy(runtime_info->opcodes, compiler->opcode_array->values, sizeof(SPVM_OPCODE) * runtime_info_opcode_length);
   
@@ -617,19 +609,14 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
     runtime_info_package->package_vars_length = package->package_vars->length;
   }
 
-  // String pool(8bit)
-  memcpy(runtime_info->string_pool, compiler->string_pool->buffer, runtime_info_string_pool_length);
-
-
-
 
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_safe_malloc_zero(sizeof(SPVM_RUNTIME));
 
+  runtime->string_pool = compiler->string_pool->buffer;
+  runtime->string_pool_length = compiler->string_pool->length;
+
   runtime->runtime_info = runtime_info;
   runtime->compiler = compiler;
-  
-  runtime->string_pool = runtime_info->string_pool;
-  runtime->string_pool_length = runtime_info->string_pool_length;
   
   runtime->constant_pool = runtime_info->constant_pool;
   runtime->constant_pool_length = runtime_info->constant_pool_length;
