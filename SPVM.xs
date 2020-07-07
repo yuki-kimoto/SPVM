@@ -35,6 +35,7 @@
 #include "spvm_use.h"
 #include "spvm_limit.h"
 #include "spvm_runtime_info.h"
+#include "spvm_compiler_allocator.h"
 
 #include "spvm_runtime_sub.h"
 
@@ -162,11 +163,15 @@ compile_spvm(...)
       SV** sv_name_ptr = hv_fetch(hv_package_info, "name", strlen("name"), 0);
       SV* sv_name = sv_name_ptr ? *sv_name_ptr : &PL_sv_undef;
       const char* name = SvPV_nolen(sv_name);
+      char* name_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
+      memcpy(name_copy, name, sv_len(sv_name));
       
       // File
       SV** sv_file_ptr = hv_fetch(hv_package_info, "file", strlen("file"), 0);
       SV* sv_file = sv_file_ptr ? *sv_file_ptr : &PL_sv_undef;
       const char* file = SvPV_nolen(sv_file);
+      char* file_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
+      memcpy(file_copy, file, sv_len(sv_file));
       
       // Line
       SV** sv_line_ptr = hv_fetch(hv_package_info, "line", strlen("line"), 0);
@@ -174,9 +179,9 @@ compile_spvm(...)
       int32_t line = (int32_t)SvIV(sv_line);
       
       // push package to compiler use stack
-      SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name, file, line);
+      SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_copy, file_copy, line);
       SPVM_OP* op_type_package = SPVM_OP_build_basic_type(compiler, op_name_package);
-      SPVM_OP* op_use_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file, line);
+      SPVM_OP* op_use_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file_copy, line);
       SPVM_OP_build_use(compiler, op_use_package, op_type_package, NULL, 0);
       SPVM_LIST_push(compiler->op_use_stack, op_use_package);
     }
