@@ -7,8 +7,6 @@
 struct SPVM_runtime {
   SPVM_OPCODE* opcodes;
   
-  SPVM_LIST* basic_types;
-
   SPVM_LIST* packages;
 
   SPVM_LIST* fields;

@@ -304,7 +304,7 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime->string_pool = compiler->string_pool->buffer;
   runtime->string_pool_length = compiler->string_pool->length;
   runtime->opcodes = compiler->opcode_array->values;
-  runtime->basic_types = compiler->basic_types;
+  runtime->compiler->basic_types = compiler->basic_types;
   runtime->packages = compiler->packages;
   
   runtime->package_vars = compiler->package_vars;
@@ -4282,8 +4282,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
   else {
     SPVM_RUNTIME* runtime = env->runtime;
 
-    SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(runtime->basic_types, object_basic_type_id);
-    SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(runtime->basic_types, callback_basic_type_id);
+    SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, object_basic_type_id);
+    SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, callback_basic_type_id);
 
     SPVM_PACKAGE* object_package = SPVM_LIST_fetch(runtime->packages, object_basic_type->package->id);
     SPVM_PACKAGE* callback_package = SPVM_LIST_fetch(runtime->packages, callback_basic_type->package->id);
@@ -4358,7 +4358,7 @@ SPVM_OBJECT* SPVM_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   int32_t basic_type_id = object->basic_type_id;
   int32_t type_dimension = object->type_dimension;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, basic_type_id);
   const char* basic_type_name = basic_type->name;
   
   int32_t length = 0;
@@ -4972,7 +4972,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
     SPVM_OBJECT* get_field_object = ((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index];
   }
 
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, basic_type_id);
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 1;
@@ -5012,7 +5012,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   SPVM_RUNTIME* runtime = env->runtime;
 
   // valut_t array dimension must be 1
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, basic_type_id);
   const char* basic_type_name = basic_type->name;
   
   // Package
@@ -5065,7 +5065,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, basic_type_id);
   
   SPVM_PACKAGE* package;
   if (!basic_type->package) {
@@ -5107,7 +5107,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   
   SPVM_RUNTIME* runtime = env->runtime;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, basic_type_id);
 
   SPVM_PACKAGE* package;
   if (!basic_type->package) {
@@ -5247,7 +5247,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
 
       // Package
       SPVM_RUNTIME* runtime = env->runtime;
-      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, object->basic_type_id);
+      SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, object->basic_type_id);
       SPVM_PACKAGE* package;
       if (!basic_type->package) {
         package = NULL;
@@ -5513,7 +5513,7 @@ int32_t SPVM_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const cha
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Package name
-  SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(runtime->basic_types, object->basic_type_id);
+  SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, object->basic_type_id);
   SPVM_PACKAGE* object_package;
   if (object_basic_type->package) {
     object_package = object_basic_type->package;
@@ -5554,10 +5554,10 @@ SPVM_BASIC_TYPE* SPVM_API_basic_type(SPVM_ENV* env,  const char* basic_type_name
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Find basic_type
-  int32_t basic_types_length = runtime->basic_types->length;
+  int32_t basic_types_length = runtime->compiler->basic_types->length;
   SPVM_BASIC_TYPE* basic_type = NULL;
   for (int32_t i = 0; i < basic_types_length; i++) {
-    SPVM_BASIC_TYPE* exists_basic_type = SPVM_LIST_fetch(runtime->basic_types, i);
+    SPVM_BASIC_TYPE* exists_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, i);
     const char* exists_basic_type_name = exists_basic_type->name;
     
     if (strcmp(basic_type_name, exists_basic_type_name) == 0) {
