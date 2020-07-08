@@ -134,7 +134,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_get_basic_type_id,
     SPVM_RUNTIME_API_get_field_id,
     SPVM_RUNTIME_API_get_field_offset,
-    SPVM_RUNTIME_API_get_pkgvar_id,
+    SPVM_RUNTIME_API_get_package_var_id,
     SPVM_RUNTIME_API_get_sub_id,
     SPVM_RUNTIME_API_get_method_sub_id,
     SPVM_RUNTIME_API_new_object_raw,
@@ -5400,7 +5400,7 @@ int32_t SPVM_RUNTIME_API_get_field_id(SPVM_ENV* env, const char* package_name, c
   return field_id;
 }
 
-int32_t SPVM_RUNTIME_API_get_pkgvar_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
+int32_t SPVM_RUNTIME_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
   (void)env;
   
   // Runtime
@@ -5970,7 +5970,7 @@ SPVM_PACKAGE_VAR* SPVM_RUNTIME_API_package_var(SPVM_ENV* env, SPVM_PACKAGE* pack
   int32_t package_vars_length = package->package_vars->length;
   SPVM_PACKAGE_VAR* package_var = NULL;
   for (int32_t i = 0; i < package_vars_length; i++) {
-    SPVM_PACKAGE_VAR* exists_package_var = SPVM_LIST_fetch(runtime->package_vars, i);
+    SPVM_PACKAGE_VAR* exists_package_var = SPVM_LIST_fetch(package->package_vars, i);
     const char* exists_package_var_name = exists_package_var->name;
     
     if (strcmp(package_var_name, exists_package_var_name) == 0) {
