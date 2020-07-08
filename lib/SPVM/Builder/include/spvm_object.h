@@ -6,7 +6,7 @@
 
 // SPVM_OBJECT
 struct SPVM_object {
-  SPVM_RUNTIME_WEAKEN_BACKREF* weaken_backref_head;
+  SPVM_WEAKEN_BACKREF* weaken_backref_head;
   int32_t ref_count;
   int32_t basic_type_id;
   uint8_t type_dimension;

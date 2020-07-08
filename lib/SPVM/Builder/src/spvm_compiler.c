@@ -17,7 +17,6 @@
 #include "spvm_opcode_array.h"
 #include "spvm_sub.h"
 #include "spvm_runtime.h"
-#include "spvm_runtime_api.h"
 #include "spvm_sub.h"
 #include "spvm_field.h"
 #include "spvm_package_var.h"

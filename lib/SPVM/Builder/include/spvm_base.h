@@ -13,8 +13,8 @@ struct SPVM_mem;
 typedef struct SPVM_mem SPVM_MEM;
 
 // spvm_runtime_weaken_backref.h
-struct SPVM_runtime_weaken_backref;
-typedef struct SPVM_runtime_weaken_backref SPVM_RUNTIME_WEAKEN_BACKREF;
+struct SPVM_weaken_backref;
+typedef struct SPVM_weaken_backref SPVM_WEAKEN_BACKREF;
 
 // spvm_constant_pool.h
 struct SPVM_constant_pool;
@@ -23,34 +23,6 @@ typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
 // spvm_check_ast_info.h
 struct SPVM_check_ast_info;
 typedef struct SPVM_check_ast_info SPVM_CHECK_AST_INFO;
-
-// spvm_runtime_info.h
-struct SPVM_runtime_info;
-typedef struct SPVM_runtime_info SPVM_RUNTIME_INFO;
-
-// spvm_runtime_arg.h
-struct SPVM_runtime_arg;
-typedef struct SPVM_runtime_arg SPVM_RUNTIME_ARG;
-
-// spvm_runtime_package.h
-struct SPVM_runtime_package;
-typedef struct SPVM_runtime_package SPVM_RUNTIME_PACKAGE;
-
-// spvm_runtime_sub.h
-struct SPVM_runtime_sub;
-typedef struct SPVM_runtime_sub SPVM_RUNTIME_SUB;
-
-// spvm_runtime_package_var.h
-struct SPVM_runtime_package_var;
-typedef struct SPVM_runtime_package_var SPVM_RUNTIME_PACKAGE_VAR;
-
-// spvm_runtime_field.h
-struct SPVM_runtime_field;
-typedef struct SPVM_runtime_field SPVM_RUNTIME_FIELD;
-
-// spvm_runtime_basic_type.h
-struct SPVM_runtime_basic_type;
-typedef struct SPVM_runtime_basic_type SPVM_RUNTIME_BASIC_TYPE;
 
 // spvm_array_field_access.h
 struct SPVM_array_field_access;

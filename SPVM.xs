@@ -37,7 +37,7 @@
 #include "spvm_compiler_allocator.h"
 
 #include "spvm_runtime.h"
-#include "spvm_runtime_api.h"
+#include "spvm_api.h"
 #include "spvm_my.h"
 
 static const char* MFILE = "SPVM.xs";
@@ -279,10 +279,10 @@ compile_spvm(...)
     }
     
     // Build runtime
-    SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(compiler);
+    SPVM_RUNTIME* runtime = SPVM_API_build_runtime(compiler);
     
     // Create env
-    SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
+    SPVM_ENV* env = SPVM_API_create_env(runtime);
     
     // Set ENV
     size_t iv_env = PTR2IV(env);
@@ -310,7 +310,7 @@ call_begin_blocks(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  SPVM_RUNTIME_API_call_begin_blocks(env);
+  SPVM_API_call_begin_blocks(env);
 }
 
 SV*
@@ -328,8 +328,8 @@ DESTROY(...)
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
     SPVM_RUNTIME* runtime = env->runtime;
     
-    SPVM_RUNTIME_API_free_env(env);
-    SPVM_RUNTIME_API_free_runtime(runtime);
+    SPVM_API_free_env(env);
+    SPVM_API_free_runtime(runtime);
   }
 }
 
@@ -368,13 +368,13 @@ bind_sub_native(...)
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
   
   // Package name
   SPVM_PACKAGE* package = basic_type->package;
   
   // Set native address to subroutine
-  SPVM_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
+  SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
   runtime->sub_cfunc_addresses[sub->id] = native_address;
   
   XSRETURN(0);
@@ -401,7 +401,7 @@ build_package_csource_precompile(...)
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
   
   // Package name
   SPVM_PACKAGE* package = basic_type->package;
@@ -454,12 +454,12 @@ bind_sub_precompile(...)
   const char* sub_name = SvPV_nolen(sv_sub_name);
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
   
   // Package name
   SPVM_PACKAGE* package = basic_type->package;
 
-  SPVM_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
+  SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
   runtime->sub_cfunc_addresses[sub->id] = sub_precompile_address;
   
   XSRETURN(0);
@@ -1013,7 +1013,7 @@ _new_object_array(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -1085,7 +1085,7 @@ _new_muldim_array(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -1151,7 +1151,7 @@ _new_mulnum_array(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
     croak("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
@@ -1269,7 +1269,7 @@ _new_mulnum_array_from_bin(...)
   // Runtime
   SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
     const char* basic_type_name = basic_type->name;
@@ -1479,7 +1479,7 @@ call_sub(...)
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_RUNTIME_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
   
   // Package name
   SPVM_PACKAGE* package = basic_type->package;
@@ -1487,7 +1487,7 @@ call_sub(...)
   if (package == NULL) {
     croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
   }
-  SPVM_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
+  SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
   if (sub == NULL) {
     croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
   }
