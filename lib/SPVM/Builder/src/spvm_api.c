@@ -302,7 +302,7 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime->compiler = compiler;
 
   // C function addresses(native or precompile)
-  runtime->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (runtime->compiler->subs->length + 1));
+  runtime->compiler->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (runtime->compiler->subs->length + 1));
   
   // Initialize Package Variables
   runtime->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->compiler->package_vars->length + 1));
@@ -313,7 +313,7 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler) {
 void SPVM_API_free_runtime(SPVM_RUNTIME* runtime) {
   
   // Free C function addresses
-  free(runtime->sub_cfunc_addresses);
+  free(runtime->compiler->sub_cfunc_addresses);
   
   // Free package variables heap
   free(runtime->package_vars_heap);
@@ -362,7 +362,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
     int32_t original_mortal_stack_top = SPVM_API_enter_scope(env);
 
     // Call native subrotuine
-    int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
+    int32_t (*native_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->compiler->sub_cfunc_addresses[sub->id];
     assert(native_address != NULL);
     exception_flag = (*native_address)(env, stack);
     
@@ -409,7 +409,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   }
   // Call precompiled sub
   else if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
-    int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->sub_cfunc_addresses[sub->id];
+    int32_t (*precompile_address)(SPVM_ENV*, SPVM_VALUE*) = runtime->compiler->sub_cfunc_addresses[sub->id];
     exception_flag = (*precompile_address)(env, stack);
   }
   // Call sub virtual machine

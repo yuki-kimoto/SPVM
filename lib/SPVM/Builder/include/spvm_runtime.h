@@ -8,9 +8,6 @@ struct SPVM_runtime {
   // Package variables
   SPVM_VALUE* package_vars_heap;
   
-  // C function addresses(native or precompile)
-  void** sub_cfunc_addresses;
-  
   // Memory blocks count
   int32_t memory_blocks_count;
   

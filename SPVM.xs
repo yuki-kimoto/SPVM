@@ -375,7 +375,7 @@ bind_sub_native(...)
   
   // Set native address to subroutine
   SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
-  runtime->sub_cfunc_addresses[sub->id] = native_address;
+  runtime->compiler->sub_cfunc_addresses[sub->id] = native_address;
   
   XSRETURN(0);
 }
@@ -460,7 +460,7 @@ bind_sub_precompile(...)
   SPVM_PACKAGE* package = basic_type->package;
 
   SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
-  runtime->sub_cfunc_addresses[sub->id] = sub_precompile_address;
+  runtime->compiler->sub_cfunc_addresses[sub->id] = sub_precompile_address;
   
   XSRETURN(0);
 }
