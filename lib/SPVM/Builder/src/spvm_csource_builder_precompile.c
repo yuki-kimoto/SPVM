@@ -22,6 +22,7 @@
 #include "spvm_type.h"
 #include "spvm_my.h"
 #include "spvm_api.h"
+#include "spvm_opcode_array.h"
 
 #include "spvm_runtime.h"
 #include "spvm_compiler.h"
@@ -1513,7 +1514,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
   }
 
-  SPVM_OPCODE* opcodes = runtime->opcodes;
+  SPVM_OPCODE* opcodes = runtime->compiler->opcode_array->values;
   int32_t sub_opcodes_base = sub->opcodes_base;
   int32_t opcodes_length = sub->opcodes_length;
   int32_t opcode_index = 0;

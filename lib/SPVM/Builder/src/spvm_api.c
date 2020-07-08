@@ -303,7 +303,7 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler) {
 
   runtime->string_pool = compiler->string_pool->buffer;
   runtime->string_pool_length = compiler->string_pool->length;
-  runtime->opcodes = compiler->opcode_array->values;
+  runtime->compiler->opcode_array->values = compiler->opcode_array->values;
   runtime->compiler->basic_types = compiler->basic_types;
   
   runtime->compiler->package_vars = compiler->package_vars;
@@ -445,7 +445,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   SPVM_PACKAGE* package = sub->package;
 
   // Operation codes
-  SPVM_OPCODE* opcodes = runtime->opcodes;
+  SPVM_OPCODE* opcodes = runtime->compiler->opcode_array->values;
 
   // Exception flag
   int32_t exception_flag = 0;

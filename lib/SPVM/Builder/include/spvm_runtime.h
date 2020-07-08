@@ -5,8 +5,6 @@
 #include "spvm_native.h"
 
 struct SPVM_runtime {
-  SPVM_OPCODE* opcodes;
-  
   char* string_pool;
   int32_t string_pool_length;
 
