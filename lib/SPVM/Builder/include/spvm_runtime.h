@@ -5,30 +5,14 @@
 #include "spvm_native.h"
 
 struct SPVM_runtime {
-  SPVM_RUNTIME_INFO* runtime_info;
-  
   int32_t* constant_pool;
   int32_t constant_pool_length;
   
   SPVM_OPCODE* opcodes;
   
-  SPVM_RUNTIME_BASIC_TYPE* basic_types;
-  SPVM_RUNTIME_BASIC_TYPE* sorted_basic_types;
-  int32_t basic_types_length;
+  SPVM_LIST* basic_types;
 
-  SPVM_RUNTIME_FIELD* fields;
-  int32_t fields_length;
-
-  SPVM_RUNTIME_PACKAGE_VAR* package_vars;
-  int32_t package_vars_length;
-
-  SPVM_RUNTIME_ARG* args;
-  
-  SPVM_RUNTIME_SUB* subs;
-  int32_t subs_length;
-
-  SPVM_RUNTIME_PACKAGE* packages;
-  int32_t packages_length;
+  SPVM_LIST* packages;
 
   char* string_pool;
   int32_t string_pool_length;
