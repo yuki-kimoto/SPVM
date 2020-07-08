@@ -14,6 +14,12 @@ struct SPVM_runtime {
 
   SPVM_LIST* packages;
 
+  SPVM_LIST* fields;
+
+  SPVM_LIST* package_vars;
+
+  SPVM_LIST* subs;
+
   char* string_pool;
   int32_t string_pool_length;
 

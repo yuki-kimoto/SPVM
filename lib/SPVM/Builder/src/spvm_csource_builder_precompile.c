@@ -27,6 +27,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
 #include "spvm_type.h"
+#include "spvm_my.h"
 
 const char* SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(SPVM_ENV* env, int32_t ctype_id) {
   switch (ctype_id) {
@@ -1053,7 +1054,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   // Package variable id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Package variable id declarations\n");
   for (int32_t i = 0; i < package->info_package_var_ids->length; i++) {
-    int32_t package_var_id = SPVM_LIST_fetch(package->info_package_var_ids, i);
+    int32_t package_var_id = (int32_t)(intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, i);
     SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(runtime->package_vars, package_var_id);
     SPVM_PACKAGE* package_var_package = package_var->package;
     const char* package_var_package_name = package_var_package->name;
@@ -1067,7 +1068,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   // Field id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Field id declarations\n");
   for (int32_t i = 0; i < package->info_field_ids->length; i++) {
-    int32_t field_id = SPVM_LIST_fetch(package->info_field_ids, i);
+    int32_t field_id = (int32_t)(intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
     SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
     SPVM_PACKAGE* field_package = field->package;
     const char* field_package_name = field_package->name;
@@ -1081,7 +1082,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
   // Sub id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Sub id declarations\n");
   for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
-    int32_t sub_id = SPVM_LIST_fetch(package->info_sub_ids, i);
+    int32_t sub_id = (int32_t)(intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
     SPVM_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
     SPVM_PACKAGE* sub_package = sub->package;
     const char* sub_package_name = sub_package->name;
@@ -1094,12 +1095,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
 
   // Basic type id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Basic type id declarations\n");
-  for (int32_t i = 0; i < basic_type->info_sub_ids->length; i++) {
-    int32_t basic_type_id = SPVM_LIST_fetch(basic_type->info_basic_type_ids, i);
+  for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
+    int32_t basic_type_id = (int32_t)(intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
     
     SPVM_STRING_BUFFER_add(string_buffer, "static int32_t ");
-    SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type_name);
+    SPVM_STRING_BUFFER_add_basic_type_id_name(string_buffer, basic_type->name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
   }
   
@@ -1110,7 +1111,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     for (sub_index = 0; sub_index < package->subs->length; sub_index++) {
       SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
       const char* sub_name = sub->name;
-      const char* sub_signature = &runtime->string_pool[sub->signature_id];
+      const char* sub_signature = sub->signature;
       if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
         SPVM_STRING_BUFFER_add(string_buffer, "// [SIG]");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_signature);
@@ -1331,16 +1332,16 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
   SPVM_STRING_BUFFER_add(string_buffer, "  char convert_string_buffer[21];\n");
   
   // Copy arguments to variables with type information
-  if (sub->arg_ids_length > 0) {
+  if (sub->args->length > 0) {
     SPVM_STRING_BUFFER_add(string_buffer, "  // Copy arguments to variables\n");
   }
   {
     int32_t stack_index = 0;
     for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
-      SPVM_RUNTIME_ARG* arg = SPVM_LIST_fetch(sub->args, arg_index);
+      SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
 
       // Numeric type
-      int32_t type_width = arg->type_width;
+      int32_t type_width = SPVM_TYPE_get_width(runtime->compiler, arg->type->basic_type->id, arg->type->dimension, arg->type->flag);
       switch (arg->runtime_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
@@ -1646,7 +1647,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, check_basic_type_id);
-        const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+        const char* basic_type_name = basic_type->name;
         int32_t dimension = check_type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -1699,7 +1700,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, check_basic_type_id);
-        const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+        const char* basic_type_name = basic_type->name;
         int32_t dimension = check_type_dimension;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -2778,7 +2779,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_NEW_OBJECT: {
         int32_t basic_type_id = opcode->operand1;
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
-        const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+        const char* basic_type_name = basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    if (");
@@ -2923,7 +2924,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
-        const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+        const char* basic_type_name = basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
@@ -2970,7 +2971,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_NEW_MULTI_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
-        const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+        const char* basic_type_name = basic_type->name;
         int32_t element_dimension = opcode->operand3;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
@@ -3021,7 +3022,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       case SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
-        const char* basic_type_name = &runtime->string_pool[basic_type->name_id];
+        const char* basic_type_name = basic_type->name;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
 
@@ -3686,12 +3687,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
 
         SPVM_PACKAGE* decl_sub_package = decl_sub->package;
-        const char* decl_sub_name = &runtime->string_pool[decl_sub->name_id];
-        const char* decl_sub_signature = &runtime->string_pool[decl_sub->signature_id];
-        const char* decl_sub_package_name = &runtime->string_pool[decl_sub_package->name_id];
+        const char* decl_sub_name = decl_sub->name;
+        const char* decl_sub_signature = decl_sub->signature;
+        const char* decl_sub_package_name = decl_sub_package->name;
         
         // Declare subroutine argument length
-        int32_t decl_sub_args_length = decl_sub->arg_ids_length;
+        int32_t decl_sub_args_length = decl_sub->args->length;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  // ");
         SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
@@ -3752,7 +3753,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         }
         
         // Subroutine inline expantion in same package
-        if (decl_sub->package_id == sub->package_id && decl_sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
+        if (decl_sub->package->id == sub->package->id && decl_sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
           SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_sub_package_name);
           SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
