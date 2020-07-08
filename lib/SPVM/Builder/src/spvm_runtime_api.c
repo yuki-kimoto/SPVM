@@ -4288,12 +4288,13 @@ int32_t SPVM_RUNTIME_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_
     SPVM_PACKAGE* object_package = SPVM_LIST_fetch(runtime->packages, object_basic_type->package->id);
     SPVM_PACKAGE* callback_package = SPVM_LIST_fetch(runtime->packages, callback_basic_type->package->id);
     
-    SPVM_SUB* sub_callback = SPVM_LIST_fetch(runtime->subs, 0);
+    SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback_package->subs, 0);
     
     const char* sub_callback_signature = sub_callback->signature;
     if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
-      SPVM_SUB* sub = SPVM_LIST_fetch(object_package->subs, 0);
-      if (strcmp(sub_callback_signature, sub->signature) == 0) {
+      SPVM_SUB* object_package_sub = SPVM_LIST_fetch(object_package->subs, 0);
+      
+      if (strcmp(sub_callback_signature, object_package_sub->signature) == 0) {
         has_callback = 1;
       }
       else {
