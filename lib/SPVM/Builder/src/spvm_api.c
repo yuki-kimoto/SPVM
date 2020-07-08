@@ -4523,9 +4523,7 @@ SPVM_OBJECT* SPVM_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* s
 int32_t SPVM_API_memory_blocks_count(SPVM_ENV* env) {
   (void)env;
   
-  SPVM_RUNTIME* runtime = env->runtime;
-  
-  return runtime->memory_blocks_count;
+  return env->memory_blocks_count;
 }
 
 void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
@@ -5764,10 +5762,8 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
 
 void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
   
-  SPVM_RUNTIME* runtime = env->runtime;
-  
   void* block = SPVM_API_safe_malloc_zero(byte_size);
-  runtime->memory_blocks_count++;
+  env->memory_blocks_count++;
   
 #ifdef SPVM_DEBUG_OBJECT_COUNT
   fprintf(stderr, "[ALLOC_MEMORY] %d\n", runtime->memory_blocks_count);
@@ -5778,11 +5774,9 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
 
 void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
 
-  SPVM_RUNTIME* runtime = env->runtime;
-  
   if (block) {
     free(block);
-    runtime->memory_blocks_count--;
+    env->memory_blocks_count--;
     
 #ifdef SPVM_DEBUG_OBJECT_COUNT
     fprintf(stderr, "[FREE_MEMORY] %d\n", runtime->memory_blocks_count);
