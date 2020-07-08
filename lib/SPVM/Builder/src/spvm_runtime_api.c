@@ -306,6 +306,8 @@ SPVM_RUNTIME* SPVM_RUNTIME_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime->opcodes = compiler->opcode_array->values;
   runtime->basic_types = compiler->basic_types;
   runtime->packages = compiler->packages;
+  
+  runtime->package_vars = compiler->package_vars;
   runtime->subs = compiler->subs;
   runtime->fields = compiler->fields;
 
@@ -340,10 +342,11 @@ void SPVM_RUNTIME_API_call_begin_blocks(SPVM_ENV* env) {
   int32_t packages_length = runtime->packages->length;
   SPVM_VALUE stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
   for (int32_t package_id = 0; package_id < packages_length; package_id++) {
-    SPVM_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, package_id);
     
-    SPVM_SUB* begin_sub = package->op_begin_sub->uv.sub;
-    if (begin_sub) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(runtime->compiler->packages, package_id);
+    
+    if (package->op_begin_sub) {
+      SPVM_SUB* begin_sub = package->op_begin_sub->uv.sub;
       env->call_sub(env, begin_sub->id, stack);
     }
   }

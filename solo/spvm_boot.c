@@ -12,7 +12,6 @@
 #include "spvm_list.h"
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
-#include "spvm_runtime_info.h"
 
 #include <spvm_native.h>
 
@@ -61,17 +60,11 @@ int32_t main(int32_t argc, const char *argv[]) {
     exit(1);
   }
 
-  // Build runtime_info info
-  SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
-  
   // Build runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(compiler);
   
   // Create env
   SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
-  
-  // Free compiler
-  SPVM_COMPILER_free(compiler);
   
   // Call begin blocks
   SPVM_RUNTIME_API_call_begin_blocks(env);
@@ -81,6 +74,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   SPVM_RUNTIME_API_free_env(env);
   SPVM_RUNTIME_API_free_runtime(runtime);
+
+  // Free compiler
+  SPVM_COMPILER_free(compiler);
   
   return status_code;
 }
