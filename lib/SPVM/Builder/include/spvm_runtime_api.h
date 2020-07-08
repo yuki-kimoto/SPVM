@@ -59,9 +59,9 @@ int32_t SPVM_RUNTIME_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_
 
 int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]);
 
-SPVM_RUNTIME_SUB* SPVM_RUNTIME_API_sub(SPVM_ENV* env, SPVM_RUNTIME_PACKAGE* package, const char* sub_name);
+SPVM_SUB* SPVM_RUNTIME_API_sub(SPVM_ENV* env, SPVM_PACKAGE* package, const char* sub_name);
 
-SPVM_RUNTIME_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char* basic_type_name);
+SPVM_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char* basic_type_name);
 
 // Get
 int32_t SPVM_RUNTIME_API_object_header_byte_size(SPVM_ENV* env);
