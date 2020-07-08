@@ -5,9 +5,6 @@
 #include "spvm_native.h"
 
 struct SPVM_runtime {
-  char* string_pool;
-  int32_t string_pool_length;
-
   // Package variables
   SPVM_VALUE* package_vars_heap;
   

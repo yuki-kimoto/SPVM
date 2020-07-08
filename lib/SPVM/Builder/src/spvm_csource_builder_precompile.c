@@ -3073,7 +3073,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t constant_pool_id = opcode->operand1;
         int32_t string_length = package->constant_pool->values[constant_pool_id];
         int32_t string_pool_id = package->constant_pool->values[constant_pool_id + 1];
-        const char* string_value = &runtime->string_pool[string_pool_id];
+        const char* string_value = &runtime->compiler->string_pool->buffer[string_pool_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);

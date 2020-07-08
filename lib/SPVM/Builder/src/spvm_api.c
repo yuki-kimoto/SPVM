@@ -301,15 +301,6 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler) {
 
   runtime->compiler = compiler;
 
-  runtime->string_pool = compiler->string_pool->buffer;
-  runtime->string_pool_length = compiler->string_pool->length;
-  runtime->compiler->opcode_array->values = compiler->opcode_array->values;
-  runtime->compiler->basic_types = compiler->basic_types;
-  
-  runtime->compiler->package_vars = compiler->package_vars;
-  runtime->compiler->subs = compiler->subs;
-  runtime->compiler->fields = compiler->fields;
-
   // C function addresses(native or precompile)
   runtime->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (runtime->compiler->subs->length + 1));
   
@@ -2614,7 +2605,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t constant_pool_id = opcode->operand1;
         int32_t string_length = package->constant_pool->values[constant_pool_id];
         int32_t string_pool_id = package->constant_pool->values[constant_pool_id + 1];
-        const char* string_value = &runtime->string_pool[string_pool_id];
+        const char* string_value = &runtime->compiler->string_pool->buffer[string_pool_id];
         
         void* string = env->new_string_len_raw(env, string_value, string_length);
   
