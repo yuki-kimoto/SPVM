@@ -1241,8 +1241,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t high_value = package->constant_pool->values[constant_pool_id];
+        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
         
         long_vars[opcode->operand0] = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
         break;
@@ -1255,8 +1255,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
         int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t high_value = package->constant_pool->values[constant_pool_id];
+        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
 
         SPVM_VALUE value;
         value.lval = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
@@ -2613,8 +2613,8 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t constant_pool_id = opcode->operand1;
-        int32_t string_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t string_pool_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t string_length = package->constant_pool->values[constant_pool_id];
+        int32_t string_pool_id = package->constant_pool->values[constant_pool_id + 1];
         const char* string_value = &runtime->string_pool[string_pool_id];
         
         void* string = env->new_string_len_raw(env, string_value, string_length);
@@ -3408,13 +3408,13 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t constant_pool_id = opcode->operand1;
 
         // Default branch
-        int32_t default_opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
         
         // Min
-        int32_t min = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t min = package->constant_pool->values[constant_pool_id + 1];
 
         // Max
-        int32_t max = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2];
+        int32_t max = package->constant_pool->values[constant_pool_id + 2];
         
         // Range
         int32_t range = max - min + 1;
@@ -3422,7 +3422,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
           // Offset
           int32_t offset = int_vars[opcode->operand0] - min;
-          opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 3 + offset];
+          opcode_rel_index = package->constant_pool->values[constant_pool_id + 3 + offset];
         }
         else {
           opcode_rel_index = default_opcode_rel_index;
@@ -3435,17 +3435,17 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
         int32_t constant_pool_id = opcode->operand1;
 
         // Default branch
-        int32_t default_opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
         
         // Cases length
-        int32_t case_infos_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t case_infos_length = package->constant_pool->values[constant_pool_id + 1];
 
         if (case_infos_length > 0) {
           // min
-          int32_t min = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2];
+          int32_t min = package->constant_pool->values[constant_pool_id + 2];
           
           // max
-          int32_t max = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * (case_infos_length - 1))];
+          int32_t max = package->constant_pool->values[constant_pool_id + 2 + (2 * (case_infos_length - 1))];
 
 
           
@@ -3460,7 +3460,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              int32_t cur_half = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * cur_half_pos)];
+              int32_t cur_half = package->constant_pool->values[constant_pool_id + 2 + (2 * cur_half_pos)];
               
               if (int_vars[opcode->operand0] > cur_half) {
                 cur_min_pos = cur_half_pos + 1;
@@ -3469,7 +3469,7 @@ int32_t SPVM_RUNTIME_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* 
                 cur_max_pos = cur_half_pos - 1;
               }
               else {
-                opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * cur_half_pos) + 1];
+                opcode_rel_index = package->constant_pool->values[constant_pool_id + 2 + (2 * cur_half_pos) + 1];
                 break;
               }
             }

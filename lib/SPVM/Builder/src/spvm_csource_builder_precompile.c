@@ -18,6 +18,7 @@
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
+#include "spvm_constant_pool.h"
 
 
 // Only use constant value
@@ -1077,6 +1078,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     SPVM_STRING_BUFFER_add(string_buffer, "static int32_t ");
     SPVM_STRING_BUFFER_add_field_id_name(string_buffer, field_package_name, field_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "static int32_t ");
+    SPVM_STRING_BUFFER_add_field_offset_name(string_buffer, field_package_name, field_name);
+    SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
   }
 
   // Sub id declarations
@@ -1092,10 +1096,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_ENV* env, SPVM_S
     SPVM_STRING_BUFFER_add_sub_id_name(string_buffer, sub_package_name, sub_name);
     SPVM_STRING_BUFFER_add(string_buffer, " = -1;\n");
   }
+  
 
   // Basic type id declarations
   SPVM_STRING_BUFFER_add(string_buffer, "// Basic type id declarations\n");
-  for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
+  for (int32_t i = 0; i < package->info_basic_type_ids->length; i++) {
     int32_t basic_type_id = (int32_t)(intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, basic_type_id);
     
@@ -2188,8 +2193,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
         int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t high_value = package->constant_pool->values[constant_pool_id];
+        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
         
         int64_t long_value = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
         
@@ -2213,8 +2218,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
         int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t low_value = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t high_value = package->constant_pool->values[constant_pool_id];
+        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
 
         SPVM_VALUE value;
         value.lval = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
@@ -3069,8 +3074,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t constant_pool_id = opcode->operand1;
-        int32_t string_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
-        int32_t string_pool_id = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t string_length = package->constant_pool->values[constant_pool_id];
+        int32_t string_pool_id = package->constant_pool->values[constant_pool_id + 1];
         const char* string_value = &runtime->string_pool[string_pool_id];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_RUNTIME_API_OBJECT_ASSIGN(&");
@@ -4279,13 +4284,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t constant_pool_id = opcode->operand1;
         
         // Default branch
-        int32_t default_opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
         
         // Min
-        int32_t min = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t min = package->constant_pool->values[constant_pool_id + 1];
         
         // Max
-        int32_t max = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2];
+        int32_t max = package->constant_pool->values[constant_pool_id + 2];
         
         // Range
         int32_t range = max - min + 1;
@@ -4295,7 +4300,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
         for (int32_t i = min; i <= max; i++) {
           int32_t offset = i - min;
-          int32_t opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 3 + offset];
+          int32_t opcode_rel_index = package->constant_pool->values[constant_pool_id + 3 + offset];
           
           SPVM_STRING_BUFFER_add(string_buffer, "    case ");
           SPVM_STRING_BUFFER_add_int(string_buffer, i);
@@ -4313,17 +4318,17 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         int32_t constant_pool_id = opcode->operand1;
 
         // default branch
-        int32_t default_opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id];
+        int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
         
         // case count
-        int32_t case_infos_length = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 1];
+        int32_t case_infos_length = package->constant_pool->values[constant_pool_id + 1];
         
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
-          int32_t match = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * case_index)];
-          int32_t opcode_rel_index = runtime->constant_pool[package->constant_pool_base + constant_pool_id + 2 + (2 * case_index) + 1];
+          int32_t match = package->constant_pool->values[constant_pool_id + 2 + (2 * case_index)];
+          int32_t opcode_rel_index = package->constant_pool->values[constant_pool_id + 2 + (2 * case_index) + 1];
           
           SPVM_STRING_BUFFER_add(string_buffer, "    case ");
           SPVM_STRING_BUFFER_add_int(string_buffer, match);

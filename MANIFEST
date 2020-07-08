@@ -376,12 +376,6 @@ lib/SPVM/Builder/include/spvm_package_var_access.h
 lib/SPVM/Builder/include/spvm_runtime.h
 lib/SPVM/Builder/include/spvm_runtime_api.h
 lib/SPVM/Builder/include/spvm_runtime_arg.h
-lib/SPVM/Builder/include/spvm_runtime_basic_type.h
-lib/SPVM/Builder/include/spvm_runtime_field.h
-lib/SPVM/Builder/include/spvm_runtime_info.h
-lib/SPVM/Builder/include/spvm_runtime_package.h
-lib/SPVM/Builder/include/spvm_runtime_package_var.h
-lib/SPVM/Builder/include/spvm_runtime_sub.h
 lib/SPVM/Builder/include/spvm_runtime_weaken_backref.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_sub.h
