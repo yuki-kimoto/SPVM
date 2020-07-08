@@ -16,7 +16,6 @@
 #include "spvm_list.h"
 #include "spvm_opcode_array.h"
 #include "spvm_sub.h"
-#include "spvm_runtime.h"
 #include "spvm_sub.h"
 #include "spvm_field.h"
 #include "spvm_package_var.h"
@@ -551,6 +550,9 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
   // Free string pool
   SPVM_STRING_BUFFER_free(compiler->string_pool);
+
+  // Free C function addresses
+  free(compiler->sub_cfunc_addresses);
   
   free(compiler);
 }

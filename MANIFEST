@@ -374,7 +374,6 @@ lib/SPVM/Builder/include/spvm_opcode_builder.h
 lib/SPVM/Builder/include/spvm_package.h
 lib/SPVM/Builder/include/spvm_package_var.h
 lib/SPVM/Builder/include/spvm_package_var_access.h
-lib/SPVM/Builder/include/spvm_runtime.h
 lib/SPVM/Builder/include/spvm_string_buffer.h
 lib/SPVM/Builder/include/spvm_sub.h
 lib/SPVM/Builder/include/spvm_switch_info.h

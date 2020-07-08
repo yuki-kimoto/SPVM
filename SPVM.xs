@@ -13,11 +13,12 @@
 #include <inttypes.h>
 #include <stdint.h>
 
+#include "spvm_api.h"
+
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
 #include "spvm_util_allocator.h"
-#include "spvm_runtime.h"
 #include "spvm_op.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
@@ -35,9 +36,6 @@
 #include "spvm_use.h"
 #include "spvm_limit.h"
 #include "spvm_compiler_allocator.h"
-
-#include "spvm_runtime.h"
-#include "spvm_api.h"
 #include "spvm_my.h"
 
 static const char* MFILE = "SPVM.xs";
@@ -277,12 +275,12 @@ compile_spvm(...)
         (void)hv_store(hv_sub_info, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
       }
     }
-    
-    // Build runtime
-    SPVM_RUNTIME* runtime = SPVM_API_build_runtime(compiler);
-    
+
+    // C function addresses(native or precompile)
+    compiler->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (compiler->subs->length + 1));
+
     // Create env
-    SPVM_ENV* env = SPVM_API_create_env(runtime);
+    SPVM_ENV* env = SPVM_API_create_env(compiler);
     
     // Set ENV
     size_t iv_env = PTR2IV(env);
@@ -326,10 +324,9 @@ DESTROY(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   if (SvOK(sv_env)) {
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    SPVM_RUNTIME* runtime = env->runtime;
+    SPVM_COMPILER* compiler = env->compiler;
     
     SPVM_API_free_env(env);
-    SPVM_API_free_runtime(runtime);
   }
 }
 
@@ -356,7 +353,7 @@ bind_sub_native(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
 
   // Package name
   const char* package_name = SvPV_nolen(sv_package_name);
@@ -375,7 +372,7 @@ bind_sub_native(...)
   
   // Set native address to subroutine
   SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
-  runtime->compiler->sub_cfunc_addresses[sub->id] = native_address;
+  compiler->sub_cfunc_addresses[sub->id] = native_address;
   
   XSRETURN(0);
 }
@@ -398,7 +395,7 @@ build_package_csource_precompile(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
@@ -445,7 +442,7 @@ bind_sub_precompile(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
 
   // Package name
   const char* package_name = SvPV_nolen(sv_package_name);
@@ -460,7 +457,7 @@ bind_sub_precompile(...)
   SPVM_PACKAGE* package = basic_type->package;
 
   SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
-  runtime->compiler->sub_cfunc_addresses[sub->id] = sub_precompile_address;
+  compiler->sub_cfunc_addresses[sub->id] = sub_precompile_address;
   
   XSRETURN(0);
 }
@@ -1011,7 +1008,7 @@ _new_object_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
   assert(basic_type);
@@ -1078,7 +1075,7 @@ _new_muldim_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
 
   int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
 
@@ -1149,7 +1146,7 @@ _new_mulnum_array(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
   
@@ -1267,7 +1264,7 @@ _new_mulnum_array_from_bin(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
   
@@ -1473,7 +1470,7 @@ call_sub(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   const char* package_name = SvPV_nolen(sv_package_name);
   const char* sub_name = SvPV_nolen(sv_sub_name);
@@ -1578,7 +1575,7 @@ call_sub(...)
             HV* hv_value = (HV*)SvRV(sv_value);
 
             int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1623,7 +1620,7 @@ call_sub(...)
             HV* hv_value = (HV*)SvRV(sv_value);
 
             int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1669,7 +1666,7 @@ call_sub(...)
             HV* hv_value = (HV*)SvRV(sv_value);
 
             int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1714,7 +1711,7 @@ call_sub(...)
             HV* hv_value = (HV*)SvRV(sv_value);
 
             int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1759,7 +1756,7 @@ call_sub(...)
             HV* hv_value = (HV*)SvRV(sv_value);
 
             int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1804,7 +1801,7 @@ call_sub(...)
             HV* hv_value = (HV*)SvRV(sv_value);
 
             int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -2261,7 +2258,7 @@ call_sub(...)
           }
           
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2328,7 +2325,7 @@ call_sub(...)
           }
           
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2394,7 +2391,7 @@ call_sub(...)
           }
           
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2460,7 +2457,7 @@ call_sub(...)
           }
 
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2526,7 +2523,7 @@ call_sub(...)
           }
 
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2592,7 +2589,7 @@ call_sub(...)
           }
 
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2661,7 +2658,7 @@ call_sub(...)
     {
       excetpion_flag = env->call_sub(env, sub_id, stack);
       
-      SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, sub_return_runtime_basic_type_id);
+      SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, sub_return_runtime_basic_type_id);
 
       SPVM_PACKAGE* sub_return_package = sub_return_basic_type->package;
       assert(sub_return_package);
@@ -2727,7 +2724,7 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
           }
           else if (sub_return_runtime_type_dimension == 0) {
-            SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, env->get_object_basic_type_id(env, return_value));
+            SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, env->get_object_basic_type_id(env, return_value));
             const char* basic_type_name = sub_return_basic_type->name;
 
             SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
@@ -2846,7 +2843,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2861,7 +2858,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2876,7 +2873,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2891,7 +2888,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2906,7 +2903,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2921,7 +2918,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2975,7 +2972,7 @@ to_elems(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
 
   // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -2993,13 +2990,13 @@ to_elems(...)
   
   AV* av_values = (AV*)sv_2mortal((SV*)newAV());
   if (is_array_type) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, basic_type_id);
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
 
     if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY) {
       
       for (int32_t index = 0; index < length; index++) {
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, array->basic_type_id);
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
         
         SPVM_PACKAGE* package = basic_type->package;
         assert(package);
@@ -3060,7 +3057,7 @@ to_elems(...)
     else if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       for (int32_t index = 0; index < length; index++) {
         // Element type id
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, array->basic_type_id);
+        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
 
         // Index
         SPVM_OBJECT* value = env->get_elem_object(env, array, index);
@@ -3179,7 +3176,7 @@ to_bin(...)
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
-  SPVM_RUNTIME* runtime = (SPVM_RUNTIME*)env->runtime;
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
 
   // Array must be SPVM::BlessedObject::Array object or SPVM::BlessedObject::Sgtring
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
@@ -3197,7 +3194,7 @@ to_bin(...)
   
   SV* sv_bin;
   if (is_array_type) {
-    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, basic_type_id);
+    SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
 
     if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY) {

@@ -303,7 +303,7 @@ struct SPVM_env {
   void* long_object_basic_type_id;
   void* float_object_basic_type_id;
   void* double_object_basic_type_id;
-  void* runtime;
+  void* compiler;
   void* exception_object;
   void* native_mortal_stack;
   void* native_mortal_stack_top;
