@@ -305,17 +305,16 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler) {
   runtime->string_pool_length = compiler->string_pool->length;
   runtime->opcodes = compiler->opcode_array->values;
   runtime->compiler->basic_types = compiler->basic_types;
-  runtime->packages = compiler->packages;
   
-  runtime->package_vars = compiler->package_vars;
-  runtime->subs = compiler->subs;
-  runtime->fields = compiler->fields;
+  runtime->compiler->package_vars = compiler->package_vars;
+  runtime->compiler->subs = compiler->subs;
+  runtime->compiler->fields = compiler->fields;
 
   // C function addresses(native or precompile)
-  runtime->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (runtime->subs->length + 1));
+  runtime->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (runtime->compiler->subs->length + 1));
   
   // Initialize Package Variables
-  runtime->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->package_vars->length + 1));
+  runtime->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->compiler->package_vars->length + 1));
   
   return runtime;
 }
@@ -339,7 +338,7 @@ void SPVM_API_call_begin_blocks(SPVM_ENV* env) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Call BEGIN blocks
-  int32_t packages_length = runtime->packages->length;
+  int32_t packages_length = runtime->compiler->packages->length;
   SPVM_VALUE stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
   for (int32_t package_id = 0; package_id < packages_length; package_id++) {
     
@@ -359,7 +358,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Sub
-  SPVM_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  SPVM_SUB* sub = SPVM_LIST_fetch(runtime->compiler->subs, sub_id);
   
   // Runtime package
   SPVM_PACKAGE* package = sub->package;
@@ -440,7 +439,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   SPVM_RUNTIME* runtime = env->runtime;
 
   // Runtime subroutine
-  SPVM_SUB* sub = SPVM_LIST_fetch(runtime->subs, sub_id);
+  SPVM_SUB* sub = SPVM_LIST_fetch(runtime->compiler->subs, sub_id);
   
   // Runtime package
   SPVM_PACKAGE* package = sub->package;
@@ -2814,7 +2813,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_VOID:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         break;
@@ -2822,7 +2821,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_BYTE:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2833,7 +2832,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_SHORT:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2844,7 +2843,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_INT:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2855,7 +2854,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_LONG:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2866,7 +2865,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_FLOAT:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2877,7 +2876,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_DOUBLE:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2888,7 +2887,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_OBJECT:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2899,7 +2898,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_MULNUM_BYTE:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2913,7 +2912,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_MULNUM_SHORT:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2927,7 +2926,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_MULNUM_INT:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2941,7 +2940,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_MULNUM_LONG:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2955,7 +2954,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_MULNUM_FLOAT:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2969,7 +2968,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_SUB_MULNUM_DOUBLE:
       {
         int32_t call_sub_id = opcode->operand1;
-        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->subs, call_sub_id);
+        SPVM_SUB* call_sub = SPVM_LIST_fetch(runtime->compiler->subs, call_sub_id);
         call_sub_arg_stack_top -= call_sub->args_alloc_length;
         exception_flag = env->call_sub(env, call_sub_id, stack);
         if (!exception_flag) {
@@ -2983,7 +2982,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_VOID:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -2995,7 +2994,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_BYTE:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3010,7 +3009,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_SHORT:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3025,7 +3024,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_INT:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3040,7 +3039,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_LONG:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3055,7 +3054,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_FLOAT:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3070,7 +3069,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_DOUBLE:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3085,7 +3084,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_OBJECT:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3100,7 +3099,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_MULNUM_BYTE:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3118,7 +3117,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_MULNUM_SHORT:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3136,7 +3135,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_MULNUM_INT:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3154,7 +3153,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_MULNUM_FLOAT:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3172,7 +3171,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CALL_METHOD_MULNUM_DOUBLE:
       {
         int32_t decl_sub_id = opcode->operand1;
-        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->subs, decl_sub_id);
+        SPVM_SUB* decl_sub = SPVM_LIST_fetch(runtime->compiler->subs, decl_sub_id);
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_sub_name = decl_sub->name;
         const char* decl_sub_signature = decl_sub->signature;
@@ -3212,7 +3211,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           int32_t line = opcode->operand2;
           
           const char* sub_name = sub->name;
-          SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(runtime->packages, sub->package->id);
+          SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(runtime->compiler->packages, sub->package->id);
           const char* package_name = sub_package->name;
           const char* file = sub->file;
 
@@ -3245,7 +3244,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t line = opcode->operand1;
         
         const char* sub_name = sub->name;
-        SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(runtime->packages, sub->package->id);
+        SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(runtime->compiler->packages, sub->package->id);
         const char* package_name = sub_package->name;
         const char* file = sub->file;
         
@@ -3486,7 +3485,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_BYTE: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -3503,7 +3502,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_SHORT: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -3520,7 +3519,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_INT: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -3537,7 +3536,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_LONG: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -3555,7 +3554,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_FLOAT: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -3572,7 +3571,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_DOUBLE: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -3589,7 +3588,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_GET_FIELD_OBJECT: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         void* object = *(void**)&object_vars[opcode->operand1];
@@ -3608,7 +3607,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_BYTE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -3624,7 +3623,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_SHORT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -3640,7 +3639,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_INT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -3656,7 +3655,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_LONG: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -3672,7 +3671,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_FLOAT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -3688,7 +3687,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_DOUBLE: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
@@ -3704,7 +3703,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_OBJECT: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
@@ -3721,7 +3720,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_SET_FIELD_UNDEF: {
         void* object = *(void**)&object_vars[opcode->operand0];
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
@@ -3737,7 +3736,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_WEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
@@ -3753,7 +3752,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_UNWEAKEN_FIELD: {
         int32_t field_id = opcode->operand1;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
@@ -3769,7 +3768,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_ISWEAK_FIELD: {
         int32_t field_id = opcode->operand2;
-        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+        SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
@@ -4285,8 +4284,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, object_basic_type_id);
     SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(runtime->compiler->basic_types, callback_basic_type_id);
 
-    SPVM_PACKAGE* object_package = SPVM_LIST_fetch(runtime->packages, object_basic_type->package->id);
-    SPVM_PACKAGE* callback_package = SPVM_LIST_fetch(runtime->packages, callback_basic_type->package->id);
+    SPVM_PACKAGE* object_package = SPVM_LIST_fetch(runtime->compiler->packages, object_basic_type->package->id);
+    SPVM_PACKAGE* callback_package = SPVM_LIST_fetch(runtime->compiler->packages, callback_basic_type->package->id);
     
     SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback_package->subs, 0);
     
@@ -5339,7 +5338,7 @@ int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
   
   return field->offset;
 }
@@ -5594,7 +5593,7 @@ int8_t SPVM_API_get_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
   
   // Get field value
   int8_t value = *(int8_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -5608,7 +5607,7 @@ int16_t SPVM_API_get_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
   
   // Get field value
   int16_t value = *(int16_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -5622,7 +5621,7 @@ int32_t SPVM_API_get_field_int(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   int32_t value = *(int32_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -5636,7 +5635,7 @@ int64_t SPVM_API_get_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fiel
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   int64_t value = *(int64_t*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -5650,7 +5649,7 @@ float SPVM_API_get_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   float value = *(float*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -5664,7 +5663,7 @@ double SPVM_API_get_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t fie
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   double value = *(double*)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -5678,7 +5677,7 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
   
   // Get field value
   void* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(*(void**)((intptr_t)object + env->object_header_byte_size + field->offset));
@@ -5692,7 +5691,7 @@ void SPVM_API_set_field_byte(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_i
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   *(int8_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -5704,7 +5703,7 @@ void SPVM_API_set_field_short(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   *(int16_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -5716,7 +5715,7 @@ void SPVM_API_set_field_int(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_id
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   *(int32_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -5728,7 +5727,7 @@ void SPVM_API_set_field_long(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_i
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   *(int64_t*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -5740,7 +5739,7 @@ void SPVM_API_set_field_float(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field_
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   *(float*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -5752,7 +5751,7 @@ void SPVM_API_set_field_double(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
 
   // Get field value
   *(double*)((intptr_t)object + env->object_header_byte_size + field->offset) = value;
@@ -5764,7 +5763,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Field
-  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->fields, field_id);
+  SPVM_FIELD* field = SPVM_LIST_fetch(runtime->compiler->fields, field_id);
   
   // Get field value
   void* get_field_object_address = (void**)((intptr_t)object + env->object_header_byte_size + field->offset);
@@ -5819,144 +5818,144 @@ void* SPVM_API_safe_malloc_zero(int64_t byte_size) {
   return block;
 }
 
-int8_t SPVM_API_get_package_var_byte(SPVM_ENV* env, int32_t pkgvar_id) {
+int8_t SPVM_API_get_package_var_byte(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int8_t value = runtime->package_vars_heap[pkgvar_id].bval;
+  int8_t value = runtime->package_vars_heap[packagke_var_id].bval;
 
   return value;
 }
 
-int16_t SPVM_API_get_package_var_short(SPVM_ENV* env, int32_t pkgvar_id) {
+int16_t SPVM_API_get_package_var_short(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int16_t value = runtime->package_vars_heap[pkgvar_id].sval;
+  int16_t value = runtime->package_vars_heap[packagke_var_id].sval;
 
   return value;
 }
 
-int32_t SPVM_API_get_package_var_int(SPVM_ENV* env, int32_t pkgvar_id) {
+int32_t SPVM_API_get_package_var_int(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int32_t value = runtime->package_vars_heap[pkgvar_id].ival;
+  int32_t value = runtime->package_vars_heap[packagke_var_id].ival;
 
   return value;
 }
 
-int64_t SPVM_API_get_package_var_long(SPVM_ENV* env, int32_t pkgvar_id) {
+int64_t SPVM_API_get_package_var_long(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int64_t value = runtime->package_vars_heap[pkgvar_id].lval;
+  int64_t value = runtime->package_vars_heap[packagke_var_id].lval;
 
   return value;
 }
 
-float SPVM_API_get_package_var_float(SPVM_ENV* env, int32_t pkgvar_id) {
+float SPVM_API_get_package_var_float(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  float value = runtime->package_vars_heap[pkgvar_id].fval;
+  float value = runtime->package_vars_heap[packagke_var_id].fval;
 
   return value;
 }
 
-double SPVM_API_get_package_var_double(SPVM_ENV* env, int32_t pkgvar_id) {
+double SPVM_API_get_package_var_double(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  double value = runtime->package_vars_heap[pkgvar_id].dval;
+  double value = runtime->package_vars_heap[packagke_var_id].dval;
 
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_package_var_object(SPVM_ENV* env, int32_t pkgvar_id) {
+SPVM_OBJECT* SPVM_API_get_package_var_object(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  void* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(runtime->package_vars_heap[pkgvar_id].oval);
+  void* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(runtime->package_vars_heap[packagke_var_id].oval);
   
   return value;
 }
 
-void SPVM_API_set_package_var_byte(SPVM_ENV* env, int32_t pkgvar_id, int8_t value) {
+void SPVM_API_set_package_var_byte(SPVM_ENV* env, int32_t packagke_var_id, int8_t value) {
   
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[pkgvar_id].bval = value;
+  runtime->package_vars_heap[packagke_var_id].bval = value;
 }
 
-void SPVM_API_set_package_var_short(SPVM_ENV* env, int32_t pkgvar_id, int16_t value) {
+void SPVM_API_set_package_var_short(SPVM_ENV* env, int32_t packagke_var_id, int16_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[pkgvar_id].sval = value;
+  runtime->package_vars_heap[packagke_var_id].sval = value;
 }
 
-void SPVM_API_set_package_var_int(SPVM_ENV* env, int32_t pkgvar_id, int32_t value) {
+void SPVM_API_set_package_var_int(SPVM_ENV* env, int32_t packagke_var_id, int32_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[pkgvar_id].ival = value;
+  runtime->package_vars_heap[packagke_var_id].ival = value;
 }
 
-void SPVM_API_set_package_var_long(SPVM_ENV* env, int32_t pkgvar_id, int64_t value) {
+void SPVM_API_set_package_var_long(SPVM_ENV* env, int32_t packagke_var_id, int64_t value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[pkgvar_id].lval = value;
+  runtime->package_vars_heap[packagke_var_id].lval = value;
 }
 
-void SPVM_API_set_package_var_float(SPVM_ENV* env, int32_t pkgvar_id, float value) {
+void SPVM_API_set_package_var_float(SPVM_ENV* env, int32_t packagke_var_id, float value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[pkgvar_id].fval = value;
+  runtime->package_vars_heap[packagke_var_id].fval = value;
 }
 
-void SPVM_API_set_package_var_double(SPVM_ENV* env, int32_t pkgvar_id, double value) {
+void SPVM_API_set_package_var_double(SPVM_ENV* env, int32_t packagke_var_id, double value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[pkgvar_id].dval = value;
+  runtime->package_vars_heap[packagke_var_id].dval = value;
 }
 
-void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t pkgvar_id, SPVM_OBJECT* value) {
+void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_OBJECT* value) {
 
   // Runtime
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  void* get_field_object_address = &runtime->package_vars_heap[pkgvar_id].oval;
+  void* get_field_object_address = &runtime->package_vars_heap[packagke_var_id].oval;
   SPVM_API_OBJECT_ASSIGN(get_field_object_address, value);
 }
 
