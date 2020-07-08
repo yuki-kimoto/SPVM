@@ -2637,6 +2637,7 @@ call_sub(...)
   }
   
   // Return
+
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
   switch (sub->return_runtime_type_category) {
@@ -2706,6 +2707,17 @@ call_sub(...)
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
     case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
     {
+      int32_t sub_return_runtime_basic_type_id;
+      int32_t sub_return_runtime_type_dimension;
+      if (sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+        sub_return_runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
+        sub_return_runtime_type_dimension = sub->return_type->dimension + 1;
+      }
+      else {
+        sub_return_runtime_basic_type_id = sub->return_type->basic_type->id;
+        sub_return_runtime_type_dimension = sub->return_type->dimension;
+      }
+
       excetpion_flag = env->call_sub(env, sub_id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
@@ -2713,10 +2725,10 @@ call_sub(...)
         if (return_value != NULL) {
           env->inc_ref_count(env, return_value);
           
-          if (sub->return_type->dimension > 0 || sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
+          if (sub_return_runtime_type_dimension > 0 || sub_return_runtime_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
           }
-          else if (sub->return_type->dimension == 0) {
+          else if (sub_return_runtime_type_dimension == 0) {
             SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(runtime->basic_types, env->get_object_basic_type_id(env, return_value));
             const char* basic_type_name = sub_return_basic_type->name;
 

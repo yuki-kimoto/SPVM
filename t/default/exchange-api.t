@@ -739,7 +739,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($oarray_out->[0]->get_x_int, 1);
     is($oarray_out->[1]->get_x_int, 2);
   }
-
   # element byte array
   {
     my $object1 = SPVM::new_byte_array([1, 2, 3]);
