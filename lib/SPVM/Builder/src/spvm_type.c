@@ -15,6 +15,40 @@
 #include "spvm_basic_type.h"
 #include "spvm_sub.h"
 
+const char* const SPVM_TYPE_RUNTIME_TYPE_C_ID_NAMES[] = {
+  "UNKNOWN",
+  "BYTE",
+  "SHORT",
+  "INT",
+  "LONG",
+  "FLOAT",
+  "DOUBLE",
+  "MULNUM_BYTE",
+  "MULNUM_SHORT",
+  "MULNUM_INT",
+  "MULNUM_LONG",
+  "MULNUM_FLOAT",
+  "MULNUM_DOUBLE",
+  "ANY_OBJECT",
+  "PACKAGE",
+  "NUMERIC_ARRAY",
+  "MULNUM_ARRAY",
+  "OBJECT_ARRAY",
+  "REF_BYTE",
+  "REF_SHORT",
+  "REF_INT",
+  "REF_LONG",
+  "REF_FLOAT",
+  "REF_DOUBLE",
+  "REF_MULNUM_BYTE",
+  "REF_MULNUM_SHORT",
+  "REF_MULNUM_INT",
+  "REF_MULNUM_LONG",
+  "REF_MULNUM_FLOAT",
+  "REF_MULNUM_DOUBLE",
+  "VOID",
+};
+
 int32_t SPVM_TYPE_get_runtime_type_category(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t runtime_type_category;

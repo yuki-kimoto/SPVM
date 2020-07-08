@@ -43,6 +43,7 @@ enum {
   SPVM_TYPE_C_RUNTIME_TYPE_VOID,
 };
 
+extern const char* const SPVM_TYPE_RUNTIME_TYPE_C_ID_NAMES[];
 
 struct SPVM_type {
   SPVM_OP* op_type;

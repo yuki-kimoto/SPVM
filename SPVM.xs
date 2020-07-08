@@ -1524,6 +1524,18 @@ call_sub(...)
 
       SV* sv_value = ST(arg_index + arg_start);
       
+      // Convert to runtime type
+      int32_t arg_runtime_basic_type_id;
+      int32_t arg_runtime_type_dimension;
+      if (arg->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+        arg_runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
+        arg_runtime_type_dimension = arg->type->dimension + 1;
+      }
+      else {
+        arg_runtime_basic_type_id = arg->type->basic_type->id;
+        arg_runtime_type_dimension = arg->type->dimension;
+      }
+      
       switch (arg->runtime_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_BYTE : {
           int8_t value = (int8_t)SvIV(sv_value);
@@ -1565,8 +1577,8 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg->type->basic_type->id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1610,8 +1622,8 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg->type->basic_type->id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1655,8 +1667,8 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg->type->basic_type->id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1700,8 +1712,8 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg->type->basic_type->id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1745,8 +1757,8 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg->type->basic_type->id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1790,8 +1802,8 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg->type->basic_type->id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -1844,7 +1856,7 @@ call_sub(...)
           }
           else {
             // If arument type is byte[] and value is perl non-ref-scalar, the value is converted to byte[]
-            if (arg->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type->dimension == 1 && !SvROK(sv_value)) {
+            if (arg_runtime_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg_runtime_type_dimension == 1 && !SvROK(sv_value)) {
               // Copy
               sv_value = sv_2mortal(newSVsv(sv_value));
               
@@ -1885,7 +1897,7 @@ call_sub(...)
               }
               
               // If arument type is byte[][] and first value of array reference is no-ref-scalar, the value is convert to byte[][]
-              if (arg->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_BYTE && arg->type->dimension == 2 && is_convert_to_string_array) {
+              if (arg_runtime_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg_runtime_type_dimension == 2 && is_convert_to_string_array) {
                 // New array
                 SPVM_OBJECT* array = env->new_muldim_array_raw(env, SPVM_BASIC_TYPE_C_ID_BYTE, 1, length);
 
@@ -1918,8 +1930,8 @@ call_sub(...)
                 sv_value = sv_marray;
               }
               // 1-dimension array
-              else if (arg->type->dimension == 1) {
-                switch (arg->type->basic_type->id) {
+              else if (arg_runtime_type_dimension == 1) {
+                switch (arg_runtime_basic_type_id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     // New array
                     void* array = env->new_byte_array_raw(env, length);
@@ -2110,8 +2122,8 @@ call_sub(...)
             
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
               SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-              int32_t arg_basic_type_id = arg->type->basic_type->id;
-              int32_t arg_type_dimension = arg->type->dimension;
+              int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+              int32_t arg_type_dimension = arg_runtime_type_dimension;
               
               if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
                 if (object->type_dimension == 0) {
@@ -2247,8 +2259,8 @@ call_sub(...)
             croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
-          int32_t arg_basic_type_id = arg->type->basic_type->id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2314,8 +2326,8 @@ call_sub(...)
             croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
-          int32_t arg_basic_type_id = arg->type->basic_type->id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2380,8 +2392,8 @@ call_sub(...)
             croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
-          int32_t arg_basic_type_id = arg->type->basic_type->id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2446,8 +2458,8 @@ call_sub(...)
             croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
-          int32_t arg_basic_type_id = arg->type->basic_type->id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2512,8 +2524,8 @@ call_sub(...)
             croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
-          int32_t arg_basic_type_id = arg->type->basic_type->id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2578,8 +2590,8 @@ call_sub(...)
             croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
-          int32_t arg_basic_type_id = arg->type->basic_type->id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2778,6 +2790,19 @@ call_sub(...)
       SV* sv_value = ST(arg_index + arg_start);
       
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
+      
+      // Convert to runtime type
+      int32_t arg_runtime_basic_type_id;
+      int32_t arg_runtime_type_dimension;
+      if (arg->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
+        arg_runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
+        arg_runtime_type_dimension = arg->type->dimension + 1;
+      }
+      else {
+        arg_runtime_basic_type_id = arg->type->basic_type->id;
+        arg_runtime_type_dimension = arg->type->dimension;
+      }
+
       int32_t ref_stack_id = ref_stack_ids[arg_index];
       switch (arg->runtime_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE : {
@@ -2811,7 +2836,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2826,7 +2851,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2841,7 +2866,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2856,7 +2881,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2871,7 +2896,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2886,7 +2911,7 @@ call_sub(...)
           break;
         }
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE: {
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg->type->basic_type->id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(runtime->basic_types, arg_runtime_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
