@@ -288,7 +288,7 @@ union SPVM_value {
 
 
 struct SPVM_env {
-  void* runtime_package_vars_heap_offset;
+  void* package_vars_heap;
   void* object_header_byte_size;
   void* object_weaken_backref_head_offset;
   void* object_ref_count_offset;

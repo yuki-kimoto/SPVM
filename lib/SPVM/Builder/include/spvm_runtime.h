@@ -5,9 +5,6 @@
 #include "spvm_native.h"
 
 struct SPVM_runtime {
-  // Package variables
-  SPVM_VALUE* package_vars_heap;
-  
   SPVM_COMPILER* compiler;
 };
 

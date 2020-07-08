@@ -111,7 +111,7 @@
 SPVM_ENV* SPVM_API_create_env(SPVM_RUNTIME* runtime) {
 
   void* env_init[]  = {
-    (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_offset
+    NULL, // package_vars_heap
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
     (void*)(intptr_t)offsetof(SPVM_OBJECT, weaken_backref_head), // weaken_backref_head
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
@@ -230,6 +230,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_API_type_name,
     SPVM_API_new_env,
     SPVM_API_free_env,
+    NULL, // memory_blocks_count
   };
   
   int32_t env_length = 255;
@@ -249,6 +250,9 @@ SPVM_ENV* SPVM_API_create_env(SPVM_RUNTIME* runtime) {
   
   // Object header byte size
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
+
+  // Initialize Package Variables
+  env->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->compiler->package_vars->length + 1));
   
   return env;
 }
@@ -304,19 +308,16 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler) {
   // C function addresses(native or precompile)
   runtime->compiler->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (runtime->compiler->subs->length + 1));
   
-  // Initialize Package Variables
-  runtime->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (runtime->compiler->package_vars->length + 1));
-  
   return runtime;
 }
 
 void SPVM_API_free_runtime(SPVM_RUNTIME* runtime) {
   
   // Free C function addresses
-  free(runtime->compiler->sub_cfunc_addresses);
+  // free(runtime->compiler->sub_cfunc_addresses);
   
   // Free package variables heap
-  free(runtime->package_vars_heap);
+  // free(env->package_vars_heap);
   
   // Free runtime
   free(runtime);
@@ -3852,105 +3853,106 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE: {
         int32_t package_var_id = opcode->operand1;
         
-        byte_vars[opcode->operand0] = *(int8_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
+        byte_vars[opcode->operand0] = *(int8_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT: {
         int32_t package_var_id = opcode->operand1;
         
-        short_vars[opcode->operand0] = *(int16_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
+        short_vars[opcode->operand0] = *(int16_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT: {
+        
         int32_t package_var_id = opcode->operand1;
         
-        int_vars[opcode->operand0] = *(int32_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
+        int_vars[opcode->operand0] = *(int32_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG: {
         int32_t package_var_id = opcode->operand1;
         
-        long_vars[opcode->operand0] = *(int64_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
+        long_vars[opcode->operand0] = *(int64_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT: {
         int32_t package_var_id = opcode->operand1;
         
-        float_vars[opcode->operand0] = *(float*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
+        float_vars[opcode->operand0] = *(float*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE: {
         int32_t package_var_id = opcode->operand1;
         
-        double_vars[opcode->operand0] = *(double*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id];
+        double_vars[opcode->operand0] = *(double*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
         
         break;
       }
       case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
         int32_t package_var_id = opcode->operand1;
         
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id]);
+        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id]);
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE: {
         int32_t package_var_id = opcode->operand0;
         
-        *(int8_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id] = byte_vars[opcode->operand1];
+        *(int8_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = byte_vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT: {
         int32_t package_var_id = opcode->operand0;
         
-        *(int16_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id] = short_vars[opcode->operand1];
+        *(int16_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = short_vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT: {
         int32_t package_var_id = opcode->operand0;
         
-        *(int32_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id] = int_vars[opcode->operand1];
+        *(int32_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = int_vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG: {
         int32_t package_var_id = opcode->operand0;
         
-        *(int64_t*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id] = long_vars[opcode->operand1];
+        *(int64_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = long_vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT: {
         int32_t package_var_id = opcode->operand0;
         
-        *(float*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id] = float_vars[opcode->operand1];
+        *(float*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = float_vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE: {
         int32_t package_var_id = opcode->operand0;
         
-        *(double*)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id] = double_vars[opcode->operand1];
+        *(double*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = double_vars[opcode->operand1];
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
         int32_t package_var_id = opcode->operand0;
         
-        SPVM_API_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id], *(void**)&object_vars[opcode->operand1]);
+        SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id], *(void**)&object_vars[opcode->operand1]);
         
         break;
       }
       case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
         int32_t package_var_id = opcode->operand0;
         
-        SPVM_API_OBJECT_ASSIGN((void**)&(*(SPVM_VALUE**)(env->runtime + (intptr_t)env->runtime_package_vars_heap_offset))[package_var_id], NULL);
+        SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id], NULL);
         
         break;
       }
@@ -5809,7 +5811,7 @@ int8_t SPVM_API_get_package_var_byte(SPVM_ENV* env, int32_t packagke_var_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int8_t value = runtime->package_vars_heap[packagke_var_id].bval;
+  int8_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].bval;
 
   return value;
 }
@@ -5820,7 +5822,7 @@ int16_t SPVM_API_get_package_var_short(SPVM_ENV* env, int32_t packagke_var_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int16_t value = runtime->package_vars_heap[packagke_var_id].sval;
+  int16_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].sval;
 
   return value;
 }
@@ -5831,7 +5833,7 @@ int32_t SPVM_API_get_package_var_int(SPVM_ENV* env, int32_t packagke_var_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int32_t value = runtime->package_vars_heap[packagke_var_id].ival;
+  int32_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].ival;
 
   return value;
 }
@@ -5842,7 +5844,7 @@ int64_t SPVM_API_get_package_var_long(SPVM_ENV* env, int32_t packagke_var_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  int64_t value = runtime->package_vars_heap[packagke_var_id].lval;
+  int64_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].lval;
 
   return value;
 }
@@ -5853,7 +5855,7 @@ float SPVM_API_get_package_var_float(SPVM_ENV* env, int32_t packagke_var_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  float value = runtime->package_vars_heap[packagke_var_id].fval;
+  float value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].fval;
 
   return value;
 }
@@ -5864,7 +5866,7 @@ double SPVM_API_get_package_var_double(SPVM_ENV* env, int32_t packagke_var_id) {
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  double value = runtime->package_vars_heap[packagke_var_id].dval;
+  double value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].dval;
 
   return value;
 }
@@ -5875,7 +5877,7 @@ SPVM_OBJECT* SPVM_API_get_package_var_object(SPVM_ENV* env, int32_t packagke_var
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  void* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(runtime->package_vars_heap[packagke_var_id].oval);
+  void* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].oval);
   
   return value;
 }
@@ -5886,7 +5888,7 @@ void SPVM_API_set_package_var_byte(SPVM_ENV* env, int32_t packagke_var_id, int8_
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[packagke_var_id].bval = value;
+  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].bval = value;
 }
 
 void SPVM_API_set_package_var_short(SPVM_ENV* env, int32_t packagke_var_id, int16_t value) {
@@ -5895,7 +5897,7 @@ void SPVM_API_set_package_var_short(SPVM_ENV* env, int32_t packagke_var_id, int1
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[packagke_var_id].sval = value;
+  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].sval = value;
 }
 
 void SPVM_API_set_package_var_int(SPVM_ENV* env, int32_t packagke_var_id, int32_t value) {
@@ -5904,7 +5906,7 @@ void SPVM_API_set_package_var_int(SPVM_ENV* env, int32_t packagke_var_id, int32_
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[packagke_var_id].ival = value;
+  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].ival = value;
 }
 
 void SPVM_API_set_package_var_long(SPVM_ENV* env, int32_t packagke_var_id, int64_t value) {
@@ -5913,7 +5915,7 @@ void SPVM_API_set_package_var_long(SPVM_ENV* env, int32_t packagke_var_id, int64
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[packagke_var_id].lval = value;
+  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].lval = value;
 }
 
 void SPVM_API_set_package_var_float(SPVM_ENV* env, int32_t packagke_var_id, float value) {
@@ -5922,7 +5924,7 @@ void SPVM_API_set_package_var_float(SPVM_ENV* env, int32_t packagke_var_id, floa
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[packagke_var_id].fval = value;
+  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].fval = value;
 }
 
 void SPVM_API_set_package_var_double(SPVM_ENV* env, int32_t packagke_var_id, double value) {
@@ -5931,7 +5933,7 @@ void SPVM_API_set_package_var_double(SPVM_ENV* env, int32_t packagke_var_id, dou
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  runtime->package_vars_heap[packagke_var_id].dval = value;
+  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].dval = value;
 }
 
 void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_OBJECT* value) {
@@ -5940,7 +5942,7 @@ void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPV
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Get field value
-  void* get_field_object_address = &runtime->package_vars_heap[packagke_var_id].oval;
+  void* get_field_object_address = &((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].oval;
   SPVM_API_OBJECT_ASSIGN(get_field_object_address, value);
 }
 
