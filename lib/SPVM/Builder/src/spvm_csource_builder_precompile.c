@@ -3933,7 +3933,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
-        int32_t sub_id = sub->id;
         int32_t line = opcode->operand2;
         
         const char* sub_name = sub->name;
@@ -3964,12 +3963,11 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
-        SPVM_SUB* sub = SPVM_LIST_fetch(runtime->subs, opcode->operand1);
-        int32_t sub_id = sub->id;
+        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, opcode->operand1);
         int32_t line = opcode->operand2;
         
         const char* sub_name = sub->name;
-        SPVM_PACKAGE* sub_package = sub->package;
+        SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(runtime->packages, sub->package->id);
         const char* package_name = sub_package->name;
         const char* file = sub->file;
         
