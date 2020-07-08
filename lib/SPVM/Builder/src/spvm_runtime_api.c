@@ -46,6 +46,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_constant_pool.h"
 #include "spvm_my.h"
+#include "spvm_runtime_weaken_backref.h"
 
 
 
@@ -5011,10 +5012,10 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_
   const char* basic_type_name = basic_type->name;
   
   // Package
-  SPVM_PACKAGE* package = SPVM_LIST_fetch(runtime->packages, basic_type->package->id);
+  SPVM_PACKAGE* package = basic_type->package;
   int32_t fields_length = package->fields->length;
   SPVM_FIELD* field_first = SPVM_LIST_fetch(package->fields, 0);
-  int32_t field_basic_type_id = field_first->basic_type->id;
+  int32_t field_basic_type_id = field_first->type->basic_type->id;
 
   int32_t unit_size;
   if (field_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE) {
@@ -5067,7 +5068,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
     package = NULL;
   }
   else {
-    package = SPVM_LIST_fetch(runtime->packages, basic_type->package->id);
+    package = basic_type->package;
   }
   if (!package) {
     return NULL;
@@ -5090,7 +5091,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_i
   object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
-  if (package->destructor_sub_id >= 0) {
+  if (package->sub_destructor) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -5109,7 +5110,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
     package = NULL;
   }
   else {
-    package = SPVM_LIST_fetch(runtime->packages, basic_type->package->id);
+    package = basic_type->package;
   }
   if (!package) {
     return NULL;
@@ -5131,7 +5132,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_
   object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
-  if (package->destructor_sub_id >= 0) {
+  if (package->sub_destructor) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -5244,11 +5245,11 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       SPVM_RUNTIME* runtime = env->runtime;
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(runtime->basic_types, object->basic_type_id);
       SPVM_PACKAGE* package;
-      if (basic_type->package < 0) {
+      if (!basic_type->package) {
         package = NULL;
       }
       else {
-        package = SPVM_LIST_fetch(runtime->packages, basic_type->package->id);
+        package = basic_type->package;
       }
       
       int32_t is_pointer = 0;
@@ -5262,7 +5263,7 @@ void SPVM_RUNTIME_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
         SPVM_VALUE args[1];
         args[0].oval = object;
-        int32_t exception_flag = SPVM_RUNTIME_API_call_sub(env, package->destructor_sub_id, args);
+        int32_t exception_flag = SPVM_RUNTIME_API_call_sub(env, package->sub_destructor->id, args);
         
         // Exception in destructor is changed to warning
         if (exception_flag) {
@@ -5413,7 +5414,7 @@ int32_t SPVM_RUNTIME_API_get_pkgvar_id(SPVM_ENV* env, const char* package_name, 
     return -1;
   }
   else {
-    package = &runtime->packages[basic_type->package->id];
+    package = basic_type->package;
   }
 
   // Package variable name
@@ -5475,15 +5476,14 @@ int32_t SPVM_RUNTIME_API_get_sub_id(SPVM_ENV* env, const char* package_name, con
     sub_id = -1;
   }
   else {
-    int32_t subs_length = package->subs_length;
-    int32_t subs_base = package->subs_base;
+    int32_t subs_length = package->subs->length;
     
     if (subs_length == 0) {
       sub_id = -1;
     }
     else {
       // Sub
-      SPVM_RUNTIME_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
+      SPVM_SUB* sub = SPVM_RUNTIME_API_sub(env, package, sub_name);
       if (sub == NULL) {
         sub_id = -1;
       }
@@ -5512,7 +5512,7 @@ int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, c
   SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(runtime->basic_types, object->basic_type_id);
   SPVM_PACKAGE* object_package;
   if (object_basic_type->package) {
-    object_package = &runtime->packages[object_basic_type->package->id];
+    object_package = object_basic_type->package;
   }
   else {
     object_package = NULL;
@@ -5526,7 +5526,7 @@ int32_t SPVM_RUNTIME_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, c
   int32_t sub_id;
   if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
     // Subroutine name
-    SPVM_RUNTIME_SUB* sub = &runtime->subs[object_package->subs_base];
+    SPVM_SUB* sub = SPVM_LIST_fetch(object_package->subs, 0);
      
     // Signature
     if (strcmp(signature, sub->signature) == 0) {

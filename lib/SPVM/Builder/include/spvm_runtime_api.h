@@ -62,6 +62,7 @@ int32_t SPVM_RUNTIME_API_call_entry_point_sub(SPVM_ENV* env, const char* package
 SPVM_SUB* SPVM_RUNTIME_API_sub(SPVM_ENV* env, SPVM_PACKAGE* package, const char* sub_name);
 
 SPVM_BASIC_TYPE* SPVM_RUNTIME_API_basic_type(SPVM_ENV* env,  const char* basic_type_name);
+SPVM_PACKAGE_VAR* SPVM_RUNTIME_API_package_var(SPVM_ENV* env, SPVM_PACKAGE* package, const char* package_var_name);
 
 // Get
 int32_t SPVM_RUNTIME_API_object_header_byte_size(SPVM_ENV* env);
