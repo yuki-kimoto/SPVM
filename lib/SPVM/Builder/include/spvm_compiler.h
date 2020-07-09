@@ -112,9 +112,6 @@ struct SPVM_compiler {
   // Field ops
   SPVM_LIST* fields;
   
-  // String pool
-  SPVM_STRING_BUFFER* string_pool;
-  
   // String symbol table
   SPVM_HASH* string_symtable;
   
