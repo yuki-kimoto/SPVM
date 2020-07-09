@@ -3065,10 +3065,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t string_length = package->constant_pool->values[constant_pool_id];
-        int32_t string_pool_id = package->constant_pool->values[constant_pool_id + 1];
-        const char* string_value = &compiler->string_pool->buffer[string_pool_id];
+        int32_t constant_id = opcode->operand2;
+        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        const char* string_value = constant->value.oval;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
@@ -3077,13 +3076,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         {
           int32_t i;
-          for (i = 0; i < string_length; i++) {
+          for (i = 0; i < constant->string_length; i++) {
             SPVM_STRING_BUFFER_add_hex_char(string_buffer, string_value[i]);
           }
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "\", ");
-        SPVM_STRING_BUFFER_add_int(string_buffer, string_length);
+        SPVM_STRING_BUFFER_add_int(string_buffer, constant->string_length);
         SPVM_STRING_BUFFER_add(string_buffer, "));\n");
         break;
       }

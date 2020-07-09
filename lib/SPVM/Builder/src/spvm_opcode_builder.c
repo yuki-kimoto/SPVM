@@ -2396,6 +2396,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             opcode.operand0 = mem_id_out;
                             opcode.operand1 = constant->constant_pool_id;
+                            opcode.operand2 = constant->constant_id;
 
                             SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           }

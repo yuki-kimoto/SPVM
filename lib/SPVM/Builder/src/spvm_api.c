@@ -2573,13 +2573,11 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t string_length = package->constant_pool->values[constant_pool_id];
-        int32_t string_pool_id = package->constant_pool->values[constant_pool_id + 1];
-        const char* string_value = &compiler->string_pool->buffer[string_pool_id];
+        int32_t constant_id = opcode->operand2;
+        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        const char* string_value = constant->value.oval;
         
-        void* string = env->new_string_len_raw(env, string_value, string_length);
-  
+        void* string = env->new_string_len_raw(env, string_value, constant->string_length);
         
         // Set string
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0] , string);

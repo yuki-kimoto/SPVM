@@ -3551,24 +3551,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         
                         // String
                         if (SPVM_TYPE_is_string_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-                          // Add constant string to string pool
-                          char* string_value = op_cur->uv.constant->value.oval;
-                          int32_t string_length = op_cur->uv.constant->string_length;
-                          
-                          int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, string_value, string_length + 1);
-                          int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->string_symtable, string_value, string_length);
-                          if (found_constant_pool_id > 0) {
-                            op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
-                          }
-                          else {
-                            int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, string_value, string_length + 1);
-                            assert(string_pool_id > 0);
-                            SPVM_HASH_insert(compiler->string_symtable, string_value, string_length + 1, (void*)(intptr_t)string_pool_id);
-                            
-                            int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_length);
-                            SPVM_CONSTANT_POOL_push_int(package->constant_pool, string_pool_id);
-                            op_cur->uv.constant->constant_pool_id = constant_pool_id;
-                          }
+                          // Add string constant
+                          op_cur->uv.constant->constant_id = package->info_constants->length;
+                          SPVM_LIST_push(package->info_constants, op_cur->uv.constant);
                         }
                         // long or double
                         else if (SPVM_TYPE_is_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
