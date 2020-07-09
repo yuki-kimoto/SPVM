@@ -112,9 +112,6 @@ struct SPVM_compiler {
   // Field ops
   SPVM_LIST* fields;
   
-  // String symbol table
-  SPVM_HASH* string_symtable;
-  
   char* next_double_quote_start_bufptr;
 
   // C function addresses(native or precompile)
