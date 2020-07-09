@@ -748,7 +748,7 @@ static const char *const yytname[] =
   "BIT_NOT", "LOGICAL_NOT", "DEC", "INC", "ARROW", "':'", "';'", "'}'",
   "')'", "','", "']'", "$accept", "grammar", "opt_packages", "packages",
   "package", "package_block", "opt_declarations", "declarations",
-  "declaration", "begin_block", "use", "require", "allow", "enumeration",
+  "declaration", "init_block", "use", "require", "allow", "enumeration",
   "enumeration_block", "opt_enumeration_values", "enumeration_values",
   "enumeration_value", "our", "has", "sub", "new_callback_object",
   "opt_args", "args", "arg", "opt_vaarg", "invocant", "opt_descriptors",

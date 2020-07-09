@@ -22,7 +22,7 @@
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
-%token <opval> DOT3 FATCAMMA RW RO WO BEGIN NEW
+%token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
@@ -33,7 +33,7 @@
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
-%type <opval> block eval_block begin_block switch_block if_require_statement
+%type <opval> block eval_block init_block switch_block if_require_statement
 %type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
@@ -167,13 +167,13 @@ declaration
   | our ';'
   | use
   | allow
-  | begin_block
+  | init_block
 
-begin_block
-  : BEGIN block
+init_block
+  : INIT block
     { 
       SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "BEGIN", compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, $2, NULL, NULL, 1, 0);
     }
