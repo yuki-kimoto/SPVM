@@ -3815,6 +3815,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           opcode_switch_info.operand0 = mem_id_in;
 
                           opcode_switch_info.operand1 = switch_info->constant_pool_id;
+                          opcode_switch_info.operand2 = switch_info->switch_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
                           

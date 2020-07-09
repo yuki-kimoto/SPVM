@@ -3365,6 +3365,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
         int32_t constant_pool_id = opcode->operand1;
+        int32_t switch_id = opcode->operand2;
 
         // Default branch
         int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
@@ -3392,6 +3393,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         
         int32_t constant_pool_id = opcode->operand1;
+        int32_t switch_id = opcode->operand2;
 
         // Default branch
         int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
