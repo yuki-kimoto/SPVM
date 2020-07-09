@@ -3839,6 +3839,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
                           }
                           package->constant_pool->values[switch_info->constant_pool_id] = default_opcode_rel_index;
+                          SPVM_SWITCH_INFO* default_opcode_rel_index_switch_info = package->info_switch_infos->values[switch_info->switch_id];
+                          default_opcode_rel_index_switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
                           // Table switch constant pool
                           if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
