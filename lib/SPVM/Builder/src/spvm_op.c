@@ -1973,13 +1973,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
         const char* package_var_name = package_var->name;
 
-        // Add package var name to string pool
-        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, package_var_name, strlen(package_var_name) + 1);
-        if (found_string_pool_id == 0) {
-          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)package_var_name, strlen(package_var_name) + 1);
-          SPVM_HASH_insert(compiler->string_symtable, package_var_name, strlen(package_var_name) + 1, (void*)(intptr_t)string_pool_id);
-        }
-        
         SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
         
         if (found_package_var) {
@@ -2018,13 +2011,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         
         SPVM_OP* op_name_sub = sub->op_name;
         const char* sub_name = op_name_sub->uv.name;
-
-        // Add sub name to string pool
-        int32_t found_string_pool_id = (intptr_t)SPVM_HASH_fetch(compiler->string_symtable, sub_name, strlen(sub_name) + 1);
-        if (found_string_pool_id == 0) {
-          int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub_name, strlen(sub_name) + 1);
-          SPVM_HASH_insert(compiler->string_symtable, sub_name, strlen(sub_name) + 1, (void*)(intptr_t)string_pool_id);
-        }
 
         // Method check
         
