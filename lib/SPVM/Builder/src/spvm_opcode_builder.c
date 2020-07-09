@@ -3804,12 +3804,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE opcode_switch_info;
                           memset(&opcode_switch_info, 0, sizeof(SPVM_OPCODE));
                           
-                          if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
-                            opcode_switch_info.id = SPVM_OPCODE_C_ID_TABLE_SWITCH;
-                          }
-                          else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
-                            opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
-                          }
+                          opcode_switch_info.id = SPVM_OPCODE_C_ID_LOOKUP_SWITCH;
 
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                           opcode_switch_info.operand0 = mem_id_in;
