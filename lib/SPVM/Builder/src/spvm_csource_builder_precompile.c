@@ -13,7 +13,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_opcode.h"
 #include "spvm_object.h"
-#include "spvm_constant_pool.h"
 #include "spvm_package.h"
 #include "spvm_package_var.h"
 #include "spvm_sub.h"
@@ -26,6 +25,8 @@
 #include "spvm_constant.h"
 
 #include "spvm_compiler.h"
+#include "spvm_switch_info.h"
+#include "spvm_case_info.h"
 
 const char* SPVM_CSOURCE_BUILDER_PRECOMPILE_get_ctype_name(SPVM_ENV* env, int32_t ctype_id) {
   switch (ctype_id) {
@@ -4270,20 +4271,24 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
-        int32_t constant_pool_id = opcode->operand1;
+        int32_t switch_id = opcode->operand1;
+        
+        SPVM_SWITCH_INFO* switch_info = package->info_switch_infos->values[switch_id];
 
-        // default branch
-        int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
+        // Default branch
+        int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
         
-        // case count
-        int32_t case_infos_length = package->constant_pool->values[constant_pool_id + 1];
-        
+        // Cases length
+        int32_t case_infos_length = switch_info->case_infos->length;
+
         SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
         for (int32_t case_index = 0; case_index < case_infos_length; case_index++) {
-          int32_t match = package->constant_pool->values[constant_pool_id + 2 + (2 * case_index)];
-          int32_t opcode_rel_index = package->constant_pool->values[constant_pool_id + 2 + (2 * case_index) + 1];
+          SPVM_CASE_INFO* case_info = switch_info->case_infos->values[case_index];
+          
+          int32_t match = case_info->constant->value.ival;
+          int32_t opcode_rel_index = case_info->opcode_rel_index;
           
           SPVM_STRING_BUFFER_add(string_buffer, "    case ");
           SPVM_STRING_BUFFER_add_int(string_buffer, match);

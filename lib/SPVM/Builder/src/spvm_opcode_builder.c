@@ -3809,8 +3809,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                           opcode_switch_info.operand0 = mem_id_in;
 
-                          opcode_switch_info.operand1 = switch_info->constant_pool_id;
-                          opcode_switch_info.operand2 = switch_info->switch_id;
+                          opcode_switch_info.operand1 = switch_info->switch_id;
 
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode_switch_info);
                           
@@ -3845,6 +3844,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             
                             // Branch
                             package->constant_pool->values[(switch_info->constant_pool_id + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
+
+                            SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
+                            branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
                           }
                           
                           break;

@@ -43,7 +43,6 @@
 #include "spvm_constant.h"
 #include "spvm_my.h"
 #include "spvm_string_buffer.h"
-#include "spvm_constant_pool.h"
 #include "spvm_my.h"
 #include "spvm_weaken_backref.h"
 #include "spvm_constant.h"
@@ -3368,8 +3367,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t switch_id = opcode->operand2;
+        int32_t switch_id = opcode->operand1;
         
         SPVM_SWITCH_INFO* switch_info = package->info_switch_infos->values[switch_id];
 
@@ -3399,7 +3397,8 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
                 break;
               }
               int32_t cur_half_pos = cur_min_pos + (cur_max_pos - cur_min_pos) / 2;
-              int32_t cur_half = package->constant_pool->values[constant_pool_id + 2 + (2 * cur_half_pos)];
+              SPVM_CASE_INFO* cur_half_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[cur_half_pos];
+              int32_t cur_half = cur_half_case_info->constant->value.ival;
               
               if (int_vars[opcode->operand0] > cur_half) {
                 cur_min_pos = cur_half_pos + 1;
@@ -3408,7 +3407,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
                 cur_max_pos = cur_half_pos - 1;
               }
               else {
-                opcode_rel_index = package->constant_pool->values[constant_pool_id + 2 + (2 * cur_half_pos) + 1];
+                opcode_rel_index = cur_half_case_info->opcode_rel_index;
                 break;
               }
             }
