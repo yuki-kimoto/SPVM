@@ -49,8 +49,6 @@ sub import {
 
     # Bind SPVM subroutine to Perl
     bind_to_perl($BUILDER);
-
-    my $package_names = $BUILDER->get_package_names;
   }
 }
 
