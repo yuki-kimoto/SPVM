@@ -3586,6 +3586,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                                 op_cur->uv.constant->constant_pool_id = constant_pool_id;
                                 SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
                               }
+                              
+                              // Add long constant
+                              op_cur->uv.constant->constant_id = package->info_constants->length;
+                              SPVM_LIST_push(package->info_constants, op_cur->uv.constant);
                             }
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                               // Add double constant
@@ -3600,6 +3604,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                                 op_cur->uv.constant->constant_pool_id = constant_pool_id;
                                 SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
                               }
+                              // Add double constant
+                              op_cur->uv.constant->constant_id = package->info_constants->length;
+                              SPVM_LIST_push(package->info_constants, op_cur->uv.constant);
                             }
                           }
                         }
