@@ -3065,7 +3065,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_id = opcode->operand2;
+        int32_t constant_id = opcode->operand1;
         SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
         const char* string_value = constant->value.oval;
         

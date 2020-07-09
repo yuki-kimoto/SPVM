@@ -2573,7 +2573,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
-        int32_t constant_id = opcode->operand2;
+        int32_t constant_id = opcode->operand1;
         SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
         const char* string_value = constant->value.oval;
         
