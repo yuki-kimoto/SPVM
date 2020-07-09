@@ -35,7 +35,6 @@
 #include "spvm_basic_type.h"
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
-#include "spvm_constant_pool.h"
 
 void SPVM_OPCODE_BUILDER_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t* runtime_basic_type_id, int32_t* runtime_type_dimension) {
   // Runtime type
@@ -3832,7 +3831,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           if (default_opcode_rel_index == 0) {
                             default_opcode_rel_index = opcode_array->length - sub_opcodes_base;
                           }
-                          package->constant_pool->values[switch_info->constant_pool_id] = default_opcode_rel_index;
                           SPVM_SWITCH_INFO* default_opcode_rel_index_switch_info = package->info_switch_infos->values[switch_info->switch_id];
                           default_opcode_rel_index_switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
@@ -3843,8 +3841,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             // Match value
                             
                             // Branch
-                            package->constant_pool->values[(switch_info->constant_pool_id + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
-
                             SPVM_CASE_INFO* branch_opcode_rel_index_case_info = switch_info->case_infos->values[i];
                             branch_opcode_rel_index_case_info->opcode_rel_index = case_info->opcode_rel_index;
                           }

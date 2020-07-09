@@ -35,7 +35,6 @@
 #include "spvm_array_field_access.h"
 #include "spvm_check_ast_info.h"
 #include "spvm_string_buffer.h"
-#include "spvm_constant_pool.h"
 #include "spvm_use.h"
 
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_MY* my) {
@@ -496,25 +495,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               double range = (double)max - (double)min;
               switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
               
-              // Switch info constant pool id
-              op_cur->uv.switch_info->constant_pool_id = package->constant_pool->length;
-              
-              // Lookup switch constant pool
-              // Default branch
-              SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
-              
-              // Case length
-              SPVM_CONSTANT_POOL_push_int(package->constant_pool, switch_info->case_infos->length);
-              
               // Match values and branchs
               for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
                 SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
-                
-                // Match value
-                SPVM_CONSTANT_POOL_push_int(package->constant_pool, case_info->constant->value.ival);
-                
-                // Branch
-                SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
               }
               
               break;

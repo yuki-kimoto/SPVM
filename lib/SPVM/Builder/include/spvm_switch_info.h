@@ -14,8 +14,6 @@ struct SPVM_switch_info {
   SPVM_OP* op_default;
   int32_t id;
   int32_t default_opcode_rel_index;
-  int32_t constant_pool_id;
-  int32_t constant_pool_id_new;
   int32_t switch_id;
 };
 
