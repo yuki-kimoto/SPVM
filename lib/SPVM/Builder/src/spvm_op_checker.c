@@ -3825,34 +3825,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
               }
               SPVM_LIST_free(op_block_stack);
             }
-
-            // Add no duplicate package_var access package_var id to constant pool
-            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_package_var_ids->length);
-            for (int32_t i = 0; i < package->info_package_var_ids->length; i++) {
-              int32_t package_var_access_package_var_id = (intptr_t)SPVM_LIST_fetch(package->info_package_var_ids, i);
-              SPVM_CONSTANT_POOL_push_int(package->constant_pool, package_var_access_package_var_id);
-            }
-            
-            // Add no duplicate field access field id to constant pool
-            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_field_ids->length);
-            for (int32_t i = 0; i < package->info_field_ids->length; i++) {
-              int32_t field_access_field_id = (intptr_t)SPVM_LIST_fetch(package->info_field_ids, i);
-              SPVM_CONSTANT_POOL_push_int(package->constant_pool, field_access_field_id);
-            }
-
-            // Add no duplicate sub access sub id to constant pool
-            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_sub_ids->length);
-            for (int32_t i = 0; i < package->info_sub_ids->length; i++) {
-              int32_t call_sub_sub_id = (intptr_t)SPVM_LIST_fetch(package->info_sub_ids, i);
-              SPVM_CONSTANT_POOL_push_int(package->constant_pool, call_sub_sub_id);
-            }
-
-            // Add no duplicate basic type id to constant pool
-            SPVM_CONSTANT_POOL_push_int(package->constant_pool, package->info_basic_type_ids->length);
-            for (int32_t i = 0; i < package->info_basic_type_ids->length; i++) {
-              int32_t basic_type_id = (intptr_t)SPVM_LIST_fetch(package->info_basic_type_ids, i);
-              SPVM_CONSTANT_POOL_push_int(package->constant_pool, basic_type_id);
-            }
           }
 
           // Resolve my type width
