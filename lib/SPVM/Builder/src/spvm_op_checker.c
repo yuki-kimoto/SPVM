@@ -3575,35 +3575,10 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                           switch (type->basic_type->id) {
                             case SPVM_BASIC_TYPE_C_ID_LONG: {
                               // Add long constant
-                              char long_value_string[sizeof(int64_t)];
-                              memcpy(long_value_string, (int64_t*)&op_cur->uv.constant->value.lval, sizeof(int64_t));
-                              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t));
-                              if (found_constant_pool_id > 0) {
-                                op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
-                              }
-                              else {
-                                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_long(package->constant_pool, op_cur->uv.constant->value.lval);
-                                op_cur->uv.constant->constant_pool_id = constant_pool_id;
-                                SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, long_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
-                              }
-                              
-                              // Add long constant
                               op_cur->uv.constant->constant_id = package->info_constants->length;
                               SPVM_LIST_push(package->info_constants, op_cur->uv.constant);
                             }
                             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                              // Add double constant
-                              char double_value_string[sizeof(int64_t)];
-                              memcpy(double_value_string, &op_cur->uv.constant->value.dval, sizeof(int64_t));
-                              int32_t found_constant_pool_id = (intptr_t)SPVM_HASH_fetch(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t));
-                              if (found_constant_pool_id > 0) {
-                                op_cur->uv.constant->constant_pool_id = found_constant_pool_id;
-                              }
-                              else {
-                                int32_t constant_pool_id = SPVM_CONSTANT_POOL_push_double(package->constant_pool, op_cur->uv.constant->value.dval);
-                                op_cur->uv.constant->constant_pool_id = constant_pool_id;
-                                SPVM_HASH_insert(package->constant_pool_64bit_value_symtable, double_value_string, sizeof(int64_t), (void*)(intptr_t)constant_pool_id);
-                              }
                               // Add double constant
                               op_cur->uv.constant->constant_id = package->info_constants->length;
                               SPVM_LIST_push(package->info_constants, op_cur->uv.constant);

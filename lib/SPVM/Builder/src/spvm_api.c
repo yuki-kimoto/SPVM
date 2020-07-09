@@ -46,7 +46,7 @@
 #include "spvm_constant_pool.h"
 #include "spvm_my.h"
 #include "spvm_weaken_backref.h"
-
+#include "spvm_constant.h"
 
 
 
@@ -1209,11 +1209,9 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int_vars[opcode->operand0] = (int32_t)opcode->operand1;
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = package->constant_pool->values[constant_pool_id];
-        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
-        
-        long_vars[opcode->operand0] = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
+        int32_t constant_id = opcode->operand1;
+        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        long_vars[opcode->operand0] = constant->value.lval;
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_FLOAT: {
@@ -1223,15 +1221,9 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = package->constant_pool->values[constant_pool_id];
-        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
-
-        SPVM_VALUE value;
-        value.lval = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
-
-        double double_value;
-        double_vars[opcode->operand0] = value.dval;
+        int32_t constant_id = opcode->operand1;
+        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        double_vars[opcode->operand0] = constant->value.dval;
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE: {

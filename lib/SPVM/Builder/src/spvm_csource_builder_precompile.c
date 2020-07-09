@@ -23,6 +23,7 @@
 #include "spvm_my.h"
 #include "spvm_api.h"
 #include "spvm_opcode_array.h"
+#include "spvm_constant.h"
 
 #include "spvm_compiler.h"
 
@@ -2188,11 +2189,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = package->constant_pool->values[constant_pool_id];
-        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
-        
-        int64_t long_value = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
+        int32_t constant_id = opcode->operand1;
+        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        int64_t long_value = constant->value.lval;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0);
@@ -2213,17 +2212,14 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         break;
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t high_value = package->constant_pool->values[constant_pool_id];
-        int32_t low_value = package->constant_pool->values[constant_pool_id + 1];
-
-        SPVM_VALUE value;
-        value.lval = (int64_t)(((uint64_t)(uint32_t)high_value << 32) + (uint64_t)(uint32_t)low_value);
+        int32_t constant_id = opcode->operand1;
+        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        double double_value = constant->value.dval;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_double(string_buffer, value.dval);
+        SPVM_STRING_BUFFER_add_double(string_buffer, double_value);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         break;
       }
