@@ -8,7 +8,6 @@
 #include "spvm_type.h"
 #include "spvm_limit.h"
 #include "spvm_hash.h"
-#include "spvm_constant_pool.h"
 
 const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[] = {
   "class",
@@ -44,8 +43,6 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->op_uses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_allows = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  
-  package->constant_pool = SPVM_COMPILER_ALLOCATOR_alloc_constant_pool(compiler, 0);
-  
+
   return package;
 }

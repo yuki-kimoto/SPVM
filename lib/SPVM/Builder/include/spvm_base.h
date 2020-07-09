@@ -16,10 +16,6 @@ typedef struct SPVM_mem SPVM_MEM;
 struct SPVM_weaken_backref;
 typedef struct SPVM_weaken_backref SPVM_WEAKEN_BACKREF;
 
-// spvm_constant_pool.h
-struct SPVM_constant_pool;
-typedef struct SPVM_constant_pool SPVM_CONSTANT_POOL;
-
 // spvm_check_ast_info.h
 struct SPVM_check_ast_info;
 typedef struct SPVM_check_ast_info SPVM_CHECK_AST_INFO;

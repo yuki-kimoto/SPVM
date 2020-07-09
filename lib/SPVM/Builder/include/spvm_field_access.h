@@ -7,7 +7,6 @@ struct SPVM_field_access {
   SPVM_OP* op_term;
   SPVM_OP* op_name;
   SPVM_FIELD* field;
-  int32_t constant_pool_id;
   int32_t inline_expansion;
 };
 
