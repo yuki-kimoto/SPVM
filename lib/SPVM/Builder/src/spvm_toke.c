@@ -1640,12 +1640,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return BYTE;
                 }
                 break;
-              case 'B' :
-                if (strcmp(keyword, "BEGIN") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BEGIN);
-                  return BEGIN;
-                }
-                break;
               case 'c' :
                 if (strcmp(keyword, "callback_t") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_CALLBACK_T, compiler->cur_file, compiler->cur_line);
@@ -1737,6 +1731,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "int") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INT);
                   return INT;
+                }
+                break;
+              case 'I' :
+                if (strcmp(keyword, "INIT") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INIT);
+                  return INIT;
                 }
                 break;
               case 'l' :

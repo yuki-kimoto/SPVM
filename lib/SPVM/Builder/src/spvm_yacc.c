@@ -117,7 +117,7 @@
      RW = 298,
      RO = 299,
      WO = 300,
-     BEGIN = 301,
+     INIT = 301,
      NEW = 302,
      RETURN = 303,
      WEAKEN = 304,
@@ -209,7 +209,7 @@
 #define RW 298
 #define RO 299
 #define WO 300
-#define BEGIN 301
+#define INIT 301
 #define NEW 302
 #define RETURN 303
 #define WEAKEN 304
@@ -738,7 +738,7 @@ static const char *const yytname[] =
   "DEFAULT", "BREAK", "EVAL", "NAME", "VAR_NAME", "CONSTANT",
   "EXCEPTION_VAR", "UNDEF", "VOID", "BYTE", "SHORT", "INT", "LONG",
   "FLOAT", "DOUBLE", "STRING", "OBJECT", "DOT3", "FATCAMMA", "RW", "RO",
-  "WO", "BEGIN", "NEW", "RETURN", "WEAKEN", "DIE", "WARN", "PRINT",
+  "WO", "INIT", "NEW", "RETURN", "WEAKEN", "DIE", "WARN", "PRINT",
   "CURRENT_PACKAGE", "'['", "UNWEAKEN", "'{'", "'('", "SPECIAL_ASSIGN",
   "ASSIGN", "LOGICAL_OR", "LOGICAL_AND", "BIT_XOR", "BIT_OR", "'&'",
   "STRNE", "STREQ", "NUMNE", "NUMEQ", "ISA", "STRLE", "STRLT", "STRGE",
@@ -2542,7 +2542,7 @@ yyreduce:
 #line 174 "yacc/spvm_yacc.y"
     { 
       SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "BEGIN", compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
       (yyval.opval) = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, (yyvsp[(2) - (2)].opval), NULL, NULL, 1, 0);
     ;}

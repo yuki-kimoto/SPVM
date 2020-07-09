@@ -2,7 +2,7 @@ package TestCase::LexicalVar {
   
   our $VAR_PREC : int;
   
-  BEGIN {
+  INIT {
     $VAR_PREC = 11;
   }
   

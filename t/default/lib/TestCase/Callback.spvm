@@ -6,7 +6,7 @@ package TestCase::Callback {
   use SPVM::Comparator;
   
   our $var_prec : int;
-  BEGIN {
+  INIT {
     $var_prec = 5;
   }
 

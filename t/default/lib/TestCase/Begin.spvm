@@ -2,7 +2,7 @@ package TestCase::Begin {
   
   our $FOO : int;
   
-  BEGIN {
+  INIT {
     $FOO = 1;
   }
   

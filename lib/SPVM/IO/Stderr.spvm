@@ -1,7 +1,7 @@
 package SPVM::IO::Stderr {
   our $AUTO_FLUSH : rw byte;
   
-  BEGIN {
+  INIT {
     $AUTO_FLUSH = 1;
   }
   

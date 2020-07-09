@@ -307,7 +307,7 @@ void SPVM_API_call_begin_blocks(SPVM_ENV* env) {
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
   
-  // Call BEGIN blocks
+  // Call INIT blocks
   int32_t packages_length = compiler->packages->length;
   SPVM_VALUE stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
   for (int32_t package_id = 0; package_id < packages_length; package_id++) {

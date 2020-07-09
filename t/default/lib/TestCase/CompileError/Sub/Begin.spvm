@@ -1,5 +1,5 @@
 package TestCase::CompileError::Sub::Begin {
-  sub BEGIN : int () {
+  sub INIT : int () {
     
   }
 }

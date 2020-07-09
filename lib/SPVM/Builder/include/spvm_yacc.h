@@ -82,7 +82,7 @@
      RW = 298,
      RO = 299,
      WO = 300,
-     BEGIN = 301,
+     INIT = 301,
      NEW = 302,
      RETURN = 303,
      WEAKEN = 304,
@@ -174,7 +174,7 @@
 #define RW 298
 #define RO 299
 #define WO 300
-#define BEGIN 301
+#define INIT 301
 #define NEW 302
 #define RETURN 303
 #define WEAKEN 304
