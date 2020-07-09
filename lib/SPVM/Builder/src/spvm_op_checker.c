@@ -494,52 +494,27 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Decide switch type
               double range = (double)max - (double)min;
-              if (4.0 + range <= (3.0 + 2.0 * (double) cases_length) * 1.5) {
-                switch_info->id = SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH;
-              }
-              else {
-                switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
-              }
+              switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
               
               // Switch info constant pool id
               op_cur->uv.switch_info->constant_pool_id = package->constant_pool->length;
               
-              // Table switch constant pool
-              if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
-                // Default branch
-                SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
-                
-                // Min
-                SPVM_CONSTANT_POOL_push_int(package->constant_pool, min);
-                
-                // Max
-                SPVM_CONSTANT_POOL_push_int(package->constant_pool, max);
-                
-                // Match values and branchs
-                int32_t range = max - min + 1;
-                for (int32_t i = 0; i < range; i++) {
-                  // Branch
-                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
-                }
-              }
               // Lookup switch constant pool
-              else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
-                // Default branch
+              // Default branch
+              SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
+              
+              // Case length
+              SPVM_CONSTANT_POOL_push_int(package->constant_pool, switch_info->case_infos->length);
+              
+              // Match values and branchs
+              for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
+                
+                // Match value
+                SPVM_CONSTANT_POOL_push_int(package->constant_pool, case_info->constant->value.ival);
+                
+                // Branch
                 SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
-                
-                // Case length
-                SPVM_CONSTANT_POOL_push_int(package->constant_pool, switch_info->case_infos->length);
-                
-                // Match values and branchs
-                for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                  SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
-                  
-                  // Match value
-                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, case_info->constant->value.ival);
-                  
-                  // Branch
-                  SPVM_CONSTANT_POOL_push_int(package->constant_pool, 0);
-                }
               }
               
               break;
