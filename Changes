@@ -1,6 +1,7 @@
 0.0709 2020-07-09
   - BIGIN keyword is renamed to INIT because the process is just before runtime.
   - runtime internal is clenup and simplified.
+  - add memory_blocks_count field to SPVM_ENV
 0.0708 2020-07-06
   - SPVM don't need the following manually initialization in Perl script because SPVM is compiled at each time to call import method.
       # Don't needed the following statement
