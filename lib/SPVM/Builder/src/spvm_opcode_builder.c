@@ -3842,56 +3842,14 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_SWITCH_INFO* default_opcode_rel_index_switch_info = package->info_switch_infos->values[switch_info->switch_id];
                           default_opcode_rel_index_switch_info->default_opcode_rel_index = default_opcode_rel_index;
 
-                          // Table switch constant pool
-                          if (switch_info->id == SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH) {
+                          // Match values and branchs
+                          for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
+                            SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
                             
-                            // Min
-                            int32_t min = package->constant_pool->values[switch_info->constant_pool_id + 1];
+                            // Match value
                             
-                            // Max
-                            int32_t max = package->constant_pool->values[switch_info->constant_pool_id + 2];
-                            
-                            // Length
-                            int32_t range = max - min + 1;
-                            
-                            // Match values and branchs
-                            for (int32_t i = min; i <= max; i++) {
-                              // Match value
-
-                              SPVM_CASE_INFO* found_case_info = NULL;
-                              for (int32_t case_index = 0; case_index < switch_info->case_infos->length; case_index++) {
-                                SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, case_index);
-                                if (i == case_info->constant->value.ival) {
-                                  found_case_info = case_info;
-                                  break;
-                                }
-                              }
-                              
-                              // Branch
-                              int32_t offset = i - min;
-                              if (found_case_info) {
-                                package->constant_pool->values[switch_info->constant_pool_id + 3 + offset] = found_case_info->opcode_rel_index;
-                              }
-                              else {
-                                package->constant_pool->values[switch_info->constant_pool_id + 3 + offset] = default_opcode_rel_index;
-                              }
-                            }
-                          }
-                          // Lookup switch constant pool
-                          else if (switch_info->id == SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH) {
-                            
-                            // Match values and branchs
-                            for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                              SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
-                              
-                              // Match value
-                              
-                              // Branch
-                              package->constant_pool->values[(switch_info->constant_pool_id + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
-                            }
-                          }
-                          else {
-                            assert(0);
+                            // Branch
+                            package->constant_pool->values[(switch_info->constant_pool_id + 2 + 2 * i) + 1] = case_info->opcode_rel_index;
                           }
                           
                           break;

@@ -4269,40 +4269,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         
         break;
       }
-      case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
-        int32_t constant_pool_id = opcode->operand1;
-        
-        // Default branch
-        int32_t default_opcode_rel_index = package->constant_pool->values[constant_pool_id];
-        
-        // Min
-        int32_t min = package->constant_pool->values[constant_pool_id + 1];
-        
-        // Max
-        int32_t max = package->constant_pool->values[constant_pool_id + 2];
-        
-        // Range
-        int32_t range = max - min + 1;
-        
-        SPVM_STRING_BUFFER_add(string_buffer, "  switch(");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(env, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ") {\n");
-        for (int32_t i = min; i <= max; i++) {
-          int32_t offset = i - min;
-          int32_t opcode_rel_index = package->constant_pool->values[constant_pool_id + 3 + offset];
-          
-          SPVM_STRING_BUFFER_add(string_buffer, "    case ");
-          SPVM_STRING_BUFFER_add_int(string_buffer, i);
-          SPVM_STRING_BUFFER_add(string_buffer, ": goto L");
-          SPVM_STRING_BUFFER_add_int(string_buffer, opcode_rel_index);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        }
-        SPVM_STRING_BUFFER_add(string_buffer, "    default: goto L");
-        SPVM_STRING_BUFFER_add_int(string_buffer, default_opcode_rel_index);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-        break;
-      }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         int32_t constant_pool_id = opcode->operand1;
 

@@ -3366,40 +3366,6 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         opcode_rel_index = opcode->operand1;
         continue;
       }
-      case SPVM_OPCODE_C_ID_TABLE_SWITCH: {
-        int32_t constant_pool_id = opcode->operand1;
-        int32_t switch_id = opcode->operand2;
-        
-        SPVM_SWITCH_INFO* switch_info = package->info_switch_infos->values[switch_id];
-
-        // Default branch
-        int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
-
-        // Cases length
-        int32_t case_infos_length = switch_info->case_infos->length;
-
-        // min
-        SPVM_CASE_INFO* min_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[0];
-        int32_t min = min_case_info->constant->value.ival;
-        
-        // max
-        SPVM_CASE_INFO* max_case_info = (SPVM_CASE_INFO*)switch_info->case_infos->values[case_infos_length - 1];
-        int32_t max = max_case_info->constant->value.ival;
-        
-        // Range
-        int32_t range = max - min + 1;
-        
-        if (int_vars[opcode->operand0] >= min && int_vars[opcode->operand0] <= max) {
-          // Offset
-          int32_t offset = int_vars[opcode->operand0] - min;
-          opcode_rel_index = package->constant_pool->values[constant_pool_id + 3 + offset];
-        }
-        else {
-          opcode_rel_index = default_opcode_rel_index;
-        }
-        
-        continue;
-      }
       case SPVM_OPCODE_C_ID_LOOKUP_SWITCH: {
         
         int32_t constant_pool_id = opcode->operand1;
