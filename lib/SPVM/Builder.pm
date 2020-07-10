@@ -37,6 +37,9 @@ sub new {
   $self->{cbuilder_precompile} = $cc_precompile;
   
   $self->{packages} = {};
+
+  $self->{already_build_native_packages_h} = {};
+  $self->{already_build_precompile_packages_h} = {};
   
   return $self;
 }
