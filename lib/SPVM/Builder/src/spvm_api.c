@@ -3158,7 +3158,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           const char* sub_name = sub->name;
           SPVM_PACKAGE* sub_package = sub->package;
           const char* package_name = sub_package->name;
-          const char* file = sub->file;
+          const char* file = sub->package->module_file;
           
           // Exception stack trace
           env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), package_name, sub_name, file, line));
@@ -3175,7 +3175,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           const char* sub_name = sub->name;
           SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(compiler->packages, sub->package->id);
           const char* package_name = sub_package->name;
-          const char* file = sub->file;
+          const char* file = package->module_file;
 
           // Exception stack trace
           env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), package_name, sub_name, file, line));
@@ -3208,7 +3208,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         const char* sub_name = sub->name;
         SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(compiler->packages, sub->package->id);
         const char* package_name = sub_package->name;
-        const char* file = sub->file;
+        const char* file = package->module_file;
         
         void* object = object_vars[opcode->operand0];
         

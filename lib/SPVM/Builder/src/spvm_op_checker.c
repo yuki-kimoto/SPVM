@@ -3709,7 +3709,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             if (compiler->error_count > 0) {
               return;
             }
-            assert(sub->file);
+            assert(sub->package->module_file);
             
             // Add op my if need
             if (sub->package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {

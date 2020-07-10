@@ -3930,7 +3930,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* sub_name = sub->name;
         SPVM_PACKAGE* sub_package = sub->package;
         const char* package_name = sub_package->name;
-        const char* file = sub->file;
+        const char* file = sub->package->module_file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
@@ -3961,7 +3961,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* sub_name = sub->name;
         SPVM_PACKAGE* sub_package = SPVM_LIST_fetch(compiler->packages, sub->package->id);
         const char* package_name = sub_package->name;
-        const char* file = sub->file;
+        const char* file = sub->package->module_file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  if (exception_flag) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    const char* sub_package_name = \"");
@@ -4010,7 +4010,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_ENV* env, SPV
         const char* sub_name = sub->name;
         SPVM_PACKAGE* sub_package = sub->package;
         const char* package_name = sub_package->name;
-        const char* file = sub->file;
+        const char* file = sub->package->module_file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");

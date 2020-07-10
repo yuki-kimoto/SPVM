@@ -166,7 +166,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           assert(sub->id > -1);
           assert(sub->op_name);
           assert(sub->return_type);
-          assert(sub->file);
+          assert(sub->package->module_file);
           
           if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
             continue;
