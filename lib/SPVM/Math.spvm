@@ -6,7 +6,6 @@ package SPVM::Math {
   native sub isinff : int($x : float);
   native sub isfinitef : int($x : float);
   native sub isnanf : int ($x : float);
-  native sub isnormalf : int ($x : float);
   native sub fpclassifyf : int ($x : float);
   native sub signbitf : int ($x : float);
 
@@ -17,7 +16,6 @@ package SPVM::Math {
   native sub isinf : int ($x : double);
   native sub isfinite : int ($x : double);
   native sub isnan : int ($x : double);
-  native sub isnormal : int ($x : double);
   native sub fpclassify : int ($x : double);
   native sub signbit : int ($x : double);
 
@@ -33,8 +31,6 @@ package SPVM::Math {
   native sub FP_INFINITE : int ();
   native sub FP_NAN : int ();
   native sub FP_ZERO : int ();
-  native sub FP_SUBNORMAL : int ();
-  native sub FP_NORMAL : int ();
 
   native sub FP_ILOGB0 : int ();
   native sub FP_ILOGBNAN : int ();
