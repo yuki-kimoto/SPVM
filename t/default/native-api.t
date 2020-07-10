@@ -1,4 +1,4 @@
-INIT { $ENV{SPVM_BUILD_DIR} = '.spvm_build' }
+BEGIN { $ENV{SPVM_BUILD_DIR} = '.spvm_build' }
 
 use lib "t/lib";
 use TestAuto;
