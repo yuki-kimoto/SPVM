@@ -5,16 +5,8 @@ use warnings;
 use File::Basename 'basename';
 use File::Path 'mkpath';
 
-my $os_newline;
-if ($^O eq 'MSWin32') {
-  $os_newline = "\x0D\x0A";
-}
-else {
-  $os_newline = "\x0A";
-}
-
-# Copy test_files to test_files_tmp with replacing os newline
-sub copy_test_files_tmp_replace_newline {
+# Copy test_files to test_files_tmp
+sub copy_test_files_tmp {
 
   my $test_files_dir = 't/test_files';
   my $test_files_tmp_dir = 't/test_files_tmp';
@@ -32,15 +24,13 @@ sub copy_test_files_tmp_replace_newline {
     
     my $content = do { local $/; <$in_fh> };
     
-    # Replace with os newline
-    $content =~ s/\x0D\x0A|\x0D|\x0A/$os_newline/g;
-    
     open my $out_fh, '>', $file_tmp
       or die "Can't open file $file: $!";
     
     binmode $out_fh;
-    local $/ = $os_newline;
     
     print $out_fh $content;
   }
 }
+
+1;
