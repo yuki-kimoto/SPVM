@@ -2310,7 +2310,6 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
   // Create sub information
   sub->op_name = op_name_sub;
   
-  sub->line = op_sub->line;
   sub->name = sub->op_name->uv.name;
   
   if (op_dot3) {
@@ -2449,7 +2448,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     
     // 3. Add list of temporary variable declarations to first of block
     {
-      SPVM_OP* op_list_tmp_mys = SPVM_OP_new_op_list(compiler, op_sub->file, sub->line);
+      SPVM_OP* op_list_tmp_mys = SPVM_OP_new_op_list(compiler, op_sub->file, op_sub->line);
       SPVM_OP_insert_child(compiler, op_list_statement, op_list_statement->last, op_list_tmp_mys);
       sub->op_list_tmp_mys = op_list_tmp_mys;
     }

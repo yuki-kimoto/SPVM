@@ -40,7 +40,6 @@ struct SPVM_sub {
   void* native_address;
   SPVM_TYPE* return_type;
   SPVM_LIST* args;
-  int32_t line;
   const char* name;
   const char* signature;
   SPVM_PACKAGE* package;
