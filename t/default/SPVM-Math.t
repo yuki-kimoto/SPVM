@@ -172,8 +172,6 @@ ok(TestCase::Lib::SPVM::Math->test_isinf);
 ok(TestCase::Lib::SPVM::Math->test_isinff);
 ok(TestCase::Lib::SPVM::Math->test_isnan);
 ok(TestCase::Lib::SPVM::Math->test_isnanf);
-ok(TestCase::Lib::SPVM::Math->test_isnormal);
-ok(TestCase::Lib::SPVM::Math->test_isnormalf);
 ok(TestCase::Lib::SPVM::Math->test_signbit);
 ok(TestCase::Lib::SPVM::Math->test_signbitf);
 

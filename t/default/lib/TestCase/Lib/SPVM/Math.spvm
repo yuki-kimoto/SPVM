@@ -1825,6 +1825,7 @@ package TestCase::Lib::SPVM::Math {
   sub test_lround : int () {
     my $got      = SPVM::Math->lround(PI() * 1000000000);
     my $expected = 3141592654L;
+    
     unless ($got == $expected) {
       return 0;
     }
@@ -2199,20 +2200,6 @@ package TestCase::Lib::SPVM::Math {
       }
     }
     {
-      my $got = SPVM::Math->fpclassify(10.0);
-      my $expected = SPVM::Math->FP_NORMAL;
-      unless ($got == $expected) {
-        return 0;
-      }
-    }
-    {
-      my $got = SPVM::Math->fpclassify(DBL_MIN() / 2);
-      my $expected = SPVM::Math->FP_SUBNORMAL;
-      unless ($got == $expected) {
-        return 0;
-      }
-    }
-    {
       my $got = SPVM::Math->fpclassify(-0.0);
       my $expected = SPVM::Math->FP_ZERO;
       unless ($got == $expected) {
@@ -2238,63 +2225,11 @@ package TestCase::Lib::SPVM::Math {
       }
     }
     {
-      my $got = SPVM::Math->fpclassifyf(10.0f);
-      my $expected = SPVM::Math->FP_NORMAL;
-      unless ($got == $expected) {
-        return 0;
-      }
-    }
-    {
-      my $got = SPVM::Math->fpclassifyf(FLT_MIN() / 2);
-      my $expected = SPVM::Math->FP_SUBNORMAL;
-      unless ($got == $expected) {
-        return 0;
-      }
-    }
-    {
       my $got = SPVM::Math->fpclassifyf(-0.0f);
       my $expected = SPVM::Math->FP_ZERO;
       unless ($got == $expected) {
         return 0;
       }
-    }
-    return 1;
-  }
-
-  sub test_isnormal : int () {
-    unless (SPVM::Math->isnormal(1.0)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormal(0.0)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormal(SPVM::Math->INFINITY)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormal(SPVM::Math->NAN)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormal(DBL_MIN() / 2)) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_isnormalf : int () {
-    unless (SPVM::Math->isnormalf(1.0f)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormalf(0.0f)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormalf(SPVM::Math->INFINITYF)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormalf(SPVM::Math->NANF)) {
-      return 0;
-    }
-    if (SPVM::Math->isnormalf(FLT_MIN() / 2.0f)) {
-      return 0;
     }
     return 1;
   }
