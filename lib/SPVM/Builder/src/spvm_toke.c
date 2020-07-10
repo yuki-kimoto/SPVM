@@ -188,6 +188,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 sprintf(cur_file, "%s/%s", include_path, cur_rel_file);
                 cur_file[file_name_length] = '\0';
                 
+                // \ is replaced to /
+                for (int32_t i = 0; i < file_name_length; i++) {
+                  if (cur_file[i] == '\\') {
+                    cur_file[i] = '/';
+                  }
+                }
+                
                 // Open source file
                 fh = fopen(cur_file, "rb");
                 if (fh) {
