@@ -32,6 +32,7 @@ sub build {
   my ($self, $opt) = @_;
   
   my $package_names = $self->builder->get_package_names;
+  
   for my $package_name (@$package_names) {
     
     my $category = $self->{category};
@@ -50,10 +51,16 @@ sub build {
       # Try runtime compile if shared objectrary is not found
       unless (-f $dll_file) {
         if ($category eq 'native') {
-          $self->build_dll_native_runtime($package_name, $sub_names);
+          unless ($self->builder->{already_build_native_packages_h}->{$package_name}) {
+            $self->build_dll_native_runtime($package_name, $sub_names);
+            $self->builder->{already_build_native_packages_h}->{$package_name} = 1;
+          }
         }
         elsif ($category eq 'precompile') {
-          $self->build_dll_precompile_runtime($package_name, $sub_names);
+          unless ($self->builder->{already_build_precompile_packages_h}->{$package_name}) {
+            $self->build_dll_precompile_runtime($package_name, $sub_names);
+            $self->builder->{already_build_precompile_packages_h}->{$package_name} = 1;
+          }
         }
         $dll_file = $self->get_dll_file_runtime($package_name);
       }

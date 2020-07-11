@@ -29,7 +29,7 @@ sub slurp_binmode {
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Copy test_files to test_files_tmp with replacing os newline
-TestFile::copy_test_files_tmp_replace_newline();
+TestFile::copy_test_files_tmp();
 
 my $test_dir = "$FindBin::Bin/..";
 

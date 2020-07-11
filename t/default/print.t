@@ -74,6 +74,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       my $output = slurp_binmode($output_file);
       is($output, 'Hello');
     }
+
+    # test_print_bytes
+    {
+      my $func_call = 'TestCase::Print->test_print_bytes';
+      write_script_file($script_file, $func_call);
+      system("$^X -Mblib $script_file > $output_file");
+      my $output = slurp_binmode($output_file);
+      is($output, 'Hello');
+    }
     
     # test_print_newline
     {

@@ -58,17 +58,6 @@ int32_t SPNATIVE__SPVM__Math__isnanf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Math__isnormalf(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-
-  float fval = stack[0].fval;
-
-  stack[0].ival = isnormal(fval);
-
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__Math__HUGE_VALF(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
@@ -197,24 +186,6 @@ int32_t SPNATIVE__SPVM__Math__FP_ZERO(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
-int32_t SPNATIVE__SPVM__Math__FP_SUBNORMAL(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-
-  stack[0].ival = FP_SUBNORMAL;
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__Math__FP_NORMAL(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-
-  stack[0].ival = FP_NORMAL;
-
-  return SPVM_SUCCESS;
-}
-
 int32_t SPNATIVE__SPVM__Math__FP_ILOGB0(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
@@ -274,17 +245,6 @@ int32_t SPNATIVE__SPVM__Math__isnan(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = isnan(dval);
   
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__Math__isnormal(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-
-  double dval = stack[0].dval;
-
-  stack[0].ival = isnormal(dval);
-
   return SPVM_SUCCESS;
 }
 
@@ -785,7 +745,7 @@ int32_t SPNATIVE__SPVM__Math__roundf(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__lround(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  int64_t value = lround(stack[0].dval);
+  int64_t value = llround(stack[0].dval);
 
   stack[0].lval = value;
 
@@ -795,7 +755,7 @@ int32_t SPNATIVE__SPVM__Math__lround(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__lroundf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  int64_t value = lroundf(stack[0].fval);
+  int64_t value = llroundf(stack[0].fval);
 
   stack[0].lval = value;
 

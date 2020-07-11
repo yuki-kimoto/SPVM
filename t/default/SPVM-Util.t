@@ -27,9 +27,6 @@ my $LONG_MIN = -9223372036854775808;
 my $FLOAT_PRECICE = 16384.5;
 my $DOUBLE_PRECICE = 65536.5;
 
-# Copy test_files to test_files_tmp with replacing os newline
-TestFile::copy_test_files_tmp_replace_newline();
-
 # Positive infinity(unix like system : inf, Windows : 1.#INF)
 my $POSITIVE_INFINITY = 9**9**9;
 

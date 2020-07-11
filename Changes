@@ -3,6 +3,9 @@
   - runtime internal is clenup and simplified. runtime and constant_pool structure is removed.
   - add memory_blocks_count field to SPVM_ENV
   - file name \ is replaced to /
+  - remove SPVM::Math->FP_NORMAL, SPVM::Math->FP_SUBNORMAL, SPVM::Math->isnormal, SPVM::Math->isnormalf because it is not portable Windows and Linux.
+  - use C99 llround, llroundd in SPVM::Math->lround, SPVM::Math->lroundf
+  - fix bug that print and warn can't receive byte[] type
 0.0708 2020-07-06
   - SPVM don't need the following manually initialization in Perl script because SPVM is compiled at each time to call import method.
       # Don't needed the following statement
