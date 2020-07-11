@@ -42,24 +42,6 @@ sub get_native_sub_names {
   return \@native_sub_names;
 }
 
-sub get_precompile_sub_names {
-  my ($self, $package_name) = @_;
-
-  my $packages = $self->{packages};
-  my $package = $packages->{$package_name};
-  my $subs = $package->{subs};
-  
-  my @precompile_sub_names;
-  for my $sub_name (keys %$subs) {
-    my $sub = $subs->{$sub_name};
-    if ($sub->{have_precompile_desc}) {
-      push @precompile_sub_names, $sub_name;
-    }
-  }
-  
-  return \@precompile_sub_names;
-}
-
 sub get_sub_names {
   my ($self, $package_name) = @_;
   
