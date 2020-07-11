@@ -288,6 +288,12 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   SPVM_yydebug = 0;
 #endif
   
+  // Initialize added package names
+  if (compiler->tmp_added_package_names) {
+    SPVM_LIST_free(compiler->tmp_added_package_names);
+  }
+  compiler->tmp_added_package_names = SPVM_LIST_new(0);
+
   /* Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (parse_error_flag) {

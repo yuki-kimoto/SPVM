@@ -155,10 +155,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             else {
               // Add addede package names in this compile
-              if (compiler->tmp_added_package_names) {
-                SPVM_LIST_free(compiler->tmp_added_package_names);
-              }
-              compiler->tmp_added_package_names = SPVM_LIST_new(0);
               SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
               
               // change :: to / and add ".spvm"
