@@ -183,6 +183,10 @@ compile_spvm(...)
   }
   
   if (compiler->error_count == 0) {
+    SV** sv_packages_ptr = hv_fetch(hv_self, "packages", strlen("packages"), 0);
+    SV* sv_packages = sv_packages_ptr ? *sv_packages_ptr : &PL_sv_undef;
+    HV* hv_packages = (HV*)SvRV(sv_packages);
+      
     // Copy package load path to builder
     for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
       SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
@@ -191,10 +195,6 @@ compile_spvm(...)
       const char* module_file = package->module_file;
       SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
 
-      SV** sv_packages_ptr = hv_fetch(hv_self, "packages", strlen("packages"), 0);
-      SV* sv_packages = sv_packages_ptr ? *sv_packages_ptr : &PL_sv_undef;
-      HV* hv_packages = (HV*)SvRV(sv_packages);
-      
       // Create package info hash reference if not exists
       {
         SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
