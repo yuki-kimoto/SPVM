@@ -37,30 +37,6 @@ sub get_config_file {
   return $config_file;
 }
 
-sub build_spvm {
-  my ($self, $module_name, $file, $line) = @_;
-  
-  # Compile SPVM source code and create runtime env
-  $self->{compile_success} = 0;
-  my $compile_success = $self->compile_spvm($module_name, $file, $line);
-  
-  if ($compile_success) {
-    # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
-    $self->build_precompile;
-    
-    # Build native packages - Compile C source codes and link them to SPVM native subroutine
-    $self->build_native;
-    
-    $self->{compile_success} = 1;
-  }
-}
-
-sub compile_success {
-  my ($self) = @_;
-  
-  return $self->{compile_success};
-}
-
 sub build_dll_native_dist {
   my ($self, $package_name) = @_;
   

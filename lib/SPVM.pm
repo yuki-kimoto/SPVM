@@ -40,13 +40,22 @@ sub import {
   # Add package informations
   if (defined $package_name) {
     my ($file, $line) = (caller)[1, 2];
-    my $success = $BUILDER->build_spvm($package_name, $file, $line);
-    unless ($success) {
+    
+    # Compile SPVM source code and create runtime env
+    my $compile_success = $BUILDER->compile_spvm($package_name, $file, $line);
+    unless ($compile_success) {
       exit(255);
     }
+    if ($compile_success) {
+      # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
+      $BUILDER->build_precompile;
+      
+      # Build native packages - Compile C source codes and link them to SPVM native subroutine
+      $BUILDER->build_native;
 
-    # Bind SPVM subroutine to Perl
-    bind_to_perl($BUILDER);
+      # Bind SPVM subroutine to Perl
+      bind_to_perl($BUILDER);
+    }
   }
 }
 
