@@ -140,38 +140,36 @@ compile_spvm(...)
   int32_t av_package_infos_length = (int32_t)av_len(av_package_infos) + 1;
   
   {
-    int32_t i;
-    for (i = 0; i < av_package_infos_length; i++) {
-      SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
-      SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
-      HV* hv_package_info = (HV*)SvRV(sv_package_info);
-      
-      // Name
-      SV** sv_name_ptr = hv_fetch(hv_package_info, "name", strlen("name"), 0);
-      SV* sv_name = sv_name_ptr ? *sv_name_ptr : &PL_sv_undef;
-      const char* name = SvPV_nolen(sv_name);
-      char* name_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
-      memcpy(name_copy, name, sv_len(sv_name));
-      
-      // File
-      SV** sv_file_ptr = hv_fetch(hv_package_info, "file", strlen("file"), 0);
-      SV* sv_file = sv_file_ptr ? *sv_file_ptr : &PL_sv_undef;
-      const char* file = SvPV_nolen(sv_file);
-      char* file_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
-      memcpy(file_copy, file, sv_len(sv_file));
-      
-      // Line
-      SV** sv_line_ptr = hv_fetch(hv_package_info, "line", strlen("line"), 0);
-      SV* sv_line = sv_line_ptr ? *sv_line_ptr : &PL_sv_undef;
-      int32_t line = (int32_t)SvIV(sv_line);
-      
-      // push package to compiler use stack
-      SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_copy, file_copy, line);
-      SPVM_OP* op_type_package = SPVM_OP_build_basic_type(compiler, op_name_package);
-      SPVM_OP* op_use_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file_copy, line);
-      SPVM_OP_build_use(compiler, op_use_package, op_type_package, NULL, 0);
-      SPVM_LIST_push(compiler->op_use_stack, op_use_package);
-    }
+    int32_t i = 0;
+    SV** sv_package_info_ptr = av_fetch(av_package_infos, i, 0);
+    SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
+    HV* hv_package_info = (HV*)SvRV(sv_package_info);
+    
+    // Name
+    SV** sv_name_ptr = hv_fetch(hv_package_info, "name", strlen("name"), 0);
+    SV* sv_name = sv_name_ptr ? *sv_name_ptr : &PL_sv_undef;
+    const char* name = SvPV_nolen(sv_name);
+    char* name_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
+    memcpy(name_copy, name, sv_len(sv_name));
+    
+    // File
+    SV** sv_file_ptr = hv_fetch(hv_package_info, "file", strlen("file"), 0);
+    SV* sv_file = sv_file_ptr ? *sv_file_ptr : &PL_sv_undef;
+    const char* file = SvPV_nolen(sv_file);
+    char* file_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
+    memcpy(file_copy, file, sv_len(sv_file));
+    
+    // Line
+    SV** sv_line_ptr = hv_fetch(hv_package_info, "line", strlen("line"), 0);
+    SV* sv_line = sv_line_ptr ? *sv_line_ptr : &PL_sv_undef;
+    int32_t line = (int32_t)SvIV(sv_line);
+    
+    // push package to compiler use stack
+    SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_copy, file_copy, line);
+    SPVM_OP* op_type_package = SPVM_OP_build_basic_type(compiler, op_name_package);
+    SPVM_OP* op_use_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file_copy, line);
+    SPVM_OP_build_use(compiler, op_use_package, op_type_package, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use_package);
   }
   
   // Add include paths

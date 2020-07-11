@@ -3,18 +3,13 @@ package SPVM::Builder;
 use strict;
 use warnings;
 
-use Config;
 use Carp 'confess';
-
-use SPVM::Builder::Util;
-use SPVM::Builder::Config;
-use SPVM::Builder::CC;
-
 use Scalar::Util 'weaken';
 
-use File::Path 'rmtree';
-use File::Spec;
+use SPVM::Builder::CC;
 
+# This SPVM load is needed for SPVM::Builder XS method binding to Perl
+# because SPVM::Builder XS method is loaded when SPVM is loaded
 use SPVM();
 
 sub new {
