@@ -24,24 +24,6 @@ sub new {
   return bless $self, ref $class || $class;
 }
 
-sub get_native_sub_names {
-  my ($self, $package_name) = @_;
-
-  my $packages = $self->{packages};
-  my $package = $packages->{$package_name};
-  my $subs = $package->{subs};
-  
-  my @native_sub_names;
-  for my $sub_name (keys %$subs) {
-    my $sub = $subs->{$sub_name};
-    if ($sub->{have_native_desc}) {
-      push @native_sub_names, $sub_name;
-    }
-  }
-  
-  return \@native_sub_names;
-}
-
 sub get_sub_names {
   my ($self, $package_name) = @_;
   
