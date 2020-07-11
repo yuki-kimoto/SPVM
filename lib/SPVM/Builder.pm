@@ -17,26 +17,12 @@ sub new {
   
   my $self = {@_};
   
-  my $build_dir = $self->{build_dir};
-  
   $self->{package_infos} ||= [];
-  
-  bless $self, $class;
-  
-  my $cc_precompile = SPVM::Builder::CC->new(
-    build_dir => $self->{build_dir},
-    category => 'precompile',
-    builder => $self
-  );
-  weaken $cc_precompile->{builder};
-  $self->{cbuilder_precompile} = $cc_precompile;
-  
   $self->{packages} = {};
-
   $self->{already_build_native_packages_h} = {};
   $self->{already_build_precompile_packages_h} = {};
   
-  return $self;
+  return bless $self, ref $class || $class;
 }
 
 sub get_native_sub_names {
@@ -251,5 +237,11 @@ sub build_native {
   $cc_native->build;
 }
 
+=encoding UTF-8
+
+=head1 NAME
+
+SPVM::Builder - Compile SPVM program, bind native and precompile subroutines, generate Perl subrotuines correspoing to SPVM subroutines.
 
 1;
+
