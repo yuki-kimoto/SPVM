@@ -796,7 +796,9 @@ t/default/lib/TestCase/NativeAPI2.native/include/baz/baz.h
 t/default/lib/TestCase/NativeAPI2.native/include/foo.h
 t/default/lib/TestCase/NativeAPI2.native/src/bar.c
 t/default/lib/TestCase/NativeAPI2.native/src/baz/baz.c
+t/default/lib/TestCase/NativeAPI2.native/src/baz/noneed.txt
 t/default/lib/TestCase/NativeAPI2.native/src/foo.c
+t/default/lib/TestCase/NativeAPI2.native/src/noneed.txt
 t/default/lib/TestCase/NativeAPI2.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm

@@ -1,3 +1,6 @@
+0.0710 2020-07-10
+  - improve compile internal logic effective
+  - skip the file which not have specified extension in Foo.native/src directory
 0.0709 2020-07-10
   - BIGIN keyword is renamed to INIT because the process is just before runtime.
   - runtime internal is clenup and simplified. runtime and constant_pool structure is removed.

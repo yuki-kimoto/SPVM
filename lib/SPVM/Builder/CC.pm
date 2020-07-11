@@ -302,7 +302,7 @@ sub compile {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
   # Parse source code dependency
-  my $dependency = $self->_parse_native_src_dependency($native_include_dir, $native_src_dir);
+  my $dependency = $self->_parse_native_src_dependency($native_include_dir, $native_src_dir, $src_ext);
 
   # Native source files
   my @native_src_files = sort keys %$dependency;
@@ -394,7 +394,7 @@ sub compile {
 }
 
 sub _parse_native_src_dependency {
-  my ($self, $include_dir, $src_dir) = @_;
+  my ($self, $include_dir, $src_dir, $src_ext) = @_;
   
   # Get header files
   my @include_file_names;
@@ -439,6 +439,9 @@ sub _parse_native_src_dependency {
     
     my $match_at_least_one;
     for my $src_file_name (@src_file_names) {
+      # Skip if file have no source extension
+      next unless $src_file_name =~ /\Q.$src_ext\E$/;
+      
       my $src_file_name_no_ext_rel = $src_file_name;
       $src_file_name_no_ext_rel =~ s/^\Q$src_dir//;
       $src_file_name_no_ext_rel =~ s/^[\\\/]//;
@@ -454,6 +457,8 @@ sub _parse_native_src_dependency {
     # If not match at least one, we assume the header files is common file
     unless ($match_at_least_one) {
       for my $src_file_name (@src_file_names) {
+        # Skip if file have no source extension
+        next unless $src_file_name =~ /\Q.$src_ext\E$/;
         push @{$dependencies->{$src_file_name}}, $include_file_name;
       }
     }
