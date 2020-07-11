@@ -202,7 +202,7 @@ compile_spvm(...)
 }
 
 SV*
-get_package_infos(...)
+create_package_infos(...)
   PPCODE:
 {
   (void)RETVAL;
