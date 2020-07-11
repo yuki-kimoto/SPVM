@@ -66,6 +66,7 @@ sub bind_to_perl {
   my $builder = shift;
   
   my $package_names = $builder->get_package_names;
+  
   for my $package_name (@$package_names) {
     unless ($binded_package_name_h->{$package_name}) {
       my $sub_names = $builder->get_sub_names($package_name);
