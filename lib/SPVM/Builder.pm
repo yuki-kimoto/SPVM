@@ -24,12 +24,6 @@ sub new {
   return bless $self, ref $class || $class;
 }
 
-sub get_module_file {
-  my ($self, $package_name) = @_;
-  
-  return $self->{packages}{$package_name}{module_file};
-}
-
 sub get_config_file {
   my ($self, $package_name) = @_;
   

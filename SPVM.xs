@@ -434,6 +434,34 @@ get_package_names(...)
 }
 
 SV*
+get_module_file(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_package_name = ST(1);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Name
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Copy package load path to builder
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+  const char* module_file = package->module_file;
+  SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
+
+  XPUSHs(sv_module_file);
+  XSRETURN(1);
+}
+
+SV*
 call_begin_blocks(...)
   PPCODE:
 {
