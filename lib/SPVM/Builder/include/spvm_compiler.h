@@ -88,7 +88,10 @@ struct SPVM_compiler {
   // Packages
   SPVM_LIST* packages;
 
-  // Packages
+  // added_package_names tmp
+  SPVM_LIST* tmp_added_package_names;
+  
+  // added_packages
   SPVM_LIST* added_packages;
 
   // module file symtable

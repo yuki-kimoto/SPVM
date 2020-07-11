@@ -154,12 +154,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               continue;
             }
             else {
-              // Add addede package in this compile
-              if (compiler->added_packages) {
-                SPVM_LIST_free(compiler->added_packages);
+              // Add addede package names in this compile
+              if (compiler->tmp_added_package_names) {
+                SPVM_LIST_free(compiler->tmp_added_package_names);
               }
-              compiler->added_packages = SPVM_LIST_new(0);
-              SPVM_LIST_push(compiler->added_packages, (void*)package_name);
+              compiler->tmp_added_package_names = SPVM_LIST_new(0);
+              SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
               
               // change :: to / and add ".spvm"
               int32_t cur_rel_file_length = (int32_t)(strlen(package_name) + 6);

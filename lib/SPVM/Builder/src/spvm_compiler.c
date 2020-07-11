@@ -54,6 +54,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->module_include_pathes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->module_file_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->added_packages = SPVM_LIST_new(0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -306,6 +307,15 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
   if (compiler->error_count > 0) {
     return;
+  }
+  
+  // Add added package names if compile is success
+  SPVM_LIST_free(compiler->added_packages);
+  compiler->added_packages = SPVM_LIST_new(0);
+  for (int32_t i = 0; i < compiler->tmp_added_package_names->length; i++) {
+    const char* package_name = (const char*)SPVM_LIST_fetch(compiler->tmp_added_package_names, i);
+    SPVM_PACKAGE* pakcage = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+    SPVM_LIST_push(compiler->added_packages, pakcage);
   }
 }
 
