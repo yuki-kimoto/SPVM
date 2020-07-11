@@ -183,82 +183,6 @@ compile_spvm(...)
   }
   
   if (compiler->error_count == 0) {
-    SV** sv_packages_ptr = hv_fetch(hv_self, "packages", strlen("packages"), 0);
-    SV* sv_packages = sv_packages_ptr ? *sv_packages_ptr : &PL_sv_undef;
-    HV* hv_packages = (HV*)SvRV(sv_packages);
-      
-    // Copy package load path to builder
-    for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
-      SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
-      const char* package_name = package->name;
-      
-      const char* module_file = package->module_file;
-      SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
-
-      // Create package info hash reference if not exists
-      {
-        SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
-        if (!sv_package_info_ptr) {
-          HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
-          SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
-          (void)hv_store(hv_packages, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
-        }
-      }
-      
-      // Package
-      SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
-      SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
-      HV* hv_package_info = (HV*)SvRV(sv_package_info);
-      
-      // Package load path
-      (void)hv_store(hv_package_info, "module_file", strlen("module_file"), SvREFCNT_inc(sv_module_file), 0);
-
-      // Create subs hash reference if not exists
-      {
-        SV** sv_subs_ptr = hv_fetch(hv_package_info, "subs", strlen("subs"), 0);
-        if (!sv_subs_ptr) {
-          HV* hv_subs = (HV*)sv_2mortal((SV*)newHV());
-          SV* sv_subs = sv_2mortal(newRV_inc((SV*)hv_subs));
-          (void)hv_store(hv_package_info, "subs", strlen("subs"), SvREFCNT_inc(sv_subs), 0);
-        }
-      }
-
-      // Subroutines
-      SV** sv_subs_ptr = hv_fetch(hv_package_info, "subs", strlen("subs"), 0);
-      SV* sv_subs = sv_subs_ptr ? *sv_subs_ptr : &PL_sv_undef;
-      HV* hv_subs = (HV*)SvRV(sv_subs);
-      
-      for (int32_t sub_index = 0; sub_index < package->subs->length; sub_index++) {
-        SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
-        const char* sub_name = sub->name;
-        SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
-
-        // Create sub info hash reference if not exists
-        {
-          SV** sv_sub_info_ptr = hv_fetch(hv_subs, sub_name, strlen(sub_name), 0);
-          if (!sv_sub_info_ptr) {
-            HV* hv_sub_info = (HV*)sv_2mortal((SV*)newHV());
-            SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
-            (void)hv_store(hv_subs, sub_name, strlen(sub_name), SvREFCNT_inc(sv_sub_info), 0);
-          }
-        }
-        SV** sv_sub_info_ptr = hv_fetch(hv_subs, sub_name, strlen(sub_name), 0);
-        SV* sv_sub_info = sv_sub_info_ptr ? *sv_sub_info_ptr : &PL_sv_undef;
-        HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
-        
-        // Subroutine have_native_desc
-        int32_t sub_have_native_desc = sub->flag & SPVM_SUB_C_FLAG_NATIVE;
-        SV* sv_sub_have_native_desc = sv_2mortal(newSViv(sub_have_native_desc));
-
-        // Subroutine have_precompile_desc
-        int32_t sub_have_precompile_desc = sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE;
-        SV* sv_sub_have_precompile_desc = sv_2mortal(newSViv(sub_have_precompile_desc));
-
-        (void)hv_store(hv_sub_info, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
-        (void)hv_store(hv_sub_info, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
-      }
-    }
-
     // C function addresses(native or precompile)
     compiler->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (compiler->subs->length + 1));
 
@@ -275,6 +199,97 @@ compile_spvm(...)
   XPUSHs(sv_compile_success);
   
   XSRETURN(1);
+}
+
+SV*
+get_package_infos(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  
+  SV** sv_packages_ptr = hv_fetch(hv_self, "packages", strlen("packages"), 0);
+  SV* sv_packages = sv_packages_ptr ? *sv_packages_ptr : &PL_sv_undef;
+  HV* hv_packages = (HV*)SvRV(sv_packages);
+    
+  // Copy package load path to builder
+  for (int32_t package_id = 0; package_id < compiler->packages->length; package_id++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
+    const char* package_name = package->name;
+    
+    const char* module_file = package->module_file;
+    SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
+
+    // Create package info hash reference if not exists
+    {
+      SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+      if (!sv_package_info_ptr) {
+        HV* hv_package_info = (HV*)sv_2mortal((SV*)newHV());
+        SV* sv_package_info = sv_2mortal(newRV_inc((SV*)hv_package_info));
+        (void)hv_store(hv_packages, package_name, strlen(package_name), SvREFCNT_inc(sv_package_info), 0);
+      }
+    }
+    
+    // Package
+    SV** sv_package_info_ptr = hv_fetch(hv_packages, package_name, strlen(package_name), 0);
+    SV* sv_package_info = sv_package_info_ptr ? *sv_package_info_ptr : &PL_sv_undef;
+    HV* hv_package_info = (HV*)SvRV(sv_package_info);
+    
+    // Package load path
+    (void)hv_store(hv_package_info, "module_file", strlen("module_file"), SvREFCNT_inc(sv_module_file), 0);
+
+    // Create subs hash reference if not exists
+    {
+      SV** sv_subs_ptr = hv_fetch(hv_package_info, "subs", strlen("subs"), 0);
+      if (!sv_subs_ptr) {
+        HV* hv_subs = (HV*)sv_2mortal((SV*)newHV());
+        SV* sv_subs = sv_2mortal(newRV_inc((SV*)hv_subs));
+        (void)hv_store(hv_package_info, "subs", strlen("subs"), SvREFCNT_inc(sv_subs), 0);
+      }
+    }
+
+    // Subroutines
+    SV** sv_subs_ptr = hv_fetch(hv_package_info, "subs", strlen("subs"), 0);
+    SV* sv_subs = sv_subs_ptr ? *sv_subs_ptr : &PL_sv_undef;
+    HV* hv_subs = (HV*)SvRV(sv_subs);
+    
+    for (int32_t sub_index = 0; sub_index < package->subs->length; sub_index++) {
+      SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
+      const char* sub_name = sub->name;
+      SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
+
+      // Create sub info hash reference if not exists
+      {
+        SV** sv_sub_info_ptr = hv_fetch(hv_subs, sub_name, strlen(sub_name), 0);
+        if (!sv_sub_info_ptr) {
+          HV* hv_sub_info = (HV*)sv_2mortal((SV*)newHV());
+          SV* sv_sub_info = sv_2mortal(newRV_inc((SV*)hv_sub_info));
+          (void)hv_store(hv_subs, sub_name, strlen(sub_name), SvREFCNT_inc(sv_sub_info), 0);
+        }
+      }
+      SV** sv_sub_info_ptr = hv_fetch(hv_subs, sub_name, strlen(sub_name), 0);
+      SV* sv_sub_info = sv_sub_info_ptr ? *sv_sub_info_ptr : &PL_sv_undef;
+      HV* hv_sub_info = (HV*)SvRV(sv_sub_info);
+      
+      // Subroutine have_native_desc
+      int32_t sub_have_native_desc = sub->flag & SPVM_SUB_C_FLAG_NATIVE;
+      SV* sv_sub_have_native_desc = sv_2mortal(newSViv(sub_have_native_desc));
+
+      // Subroutine have_precompile_desc
+      int32_t sub_have_precompile_desc = sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE;
+      SV* sv_sub_have_precompile_desc = sv_2mortal(newSViv(sub_have_precompile_desc));
+
+      (void)hv_store(hv_sub_info, "have_native_desc", strlen("have_native_desc"), SvREFCNT_inc(sv_sub_have_native_desc), 0);
+      (void)hv_store(hv_sub_info, "have_precompile_desc", strlen("have_precompile_desc"), SvREFCNT_inc(sv_sub_have_precompile_desc), 0);
+    }
+  }
 }
 
 SV*
