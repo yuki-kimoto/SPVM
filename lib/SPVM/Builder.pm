@@ -185,6 +185,7 @@ sub use {
     line => $line,
   };
   
+  $self->{package_infos} = [];
   push @{$self->{package_infos}}, $package_info;
 }
 
