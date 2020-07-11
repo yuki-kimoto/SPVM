@@ -183,9 +183,6 @@ compile_spvm(...)
   }
   
   if (compiler->error_count == 0) {
-    // C function addresses(native or precompile)
-    compiler->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (compiler->subs->length + 1));
-
     // Create env
     SPVM_ENV* env = SPVM_API_create_env(compiler);
     
@@ -477,7 +474,7 @@ bind_sub_native(...)
   
   // Set native address to subroutine
   SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
-  compiler->sub_cfunc_addresses[sub->id] = native_address;
+  sub->native_address = native_address;
   
   XSRETURN(0);
 }
@@ -562,7 +559,7 @@ bind_sub_precompile(...)
   SPVM_PACKAGE* package = basic_type->package;
 
   SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
-  compiler->sub_cfunc_addresses[sub->id] = sub_precompile_address;
+  sub->precompile_address = sub_precompile_address;
   
   XSRETURN(0);
 }

@@ -50,10 +50,10 @@ sub import {
       my $added_package_names = $BUILDER->get_added_package_names;
       
       # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
-      $BUILDER->build_precompile;
-      
+      $BUILDER->build_precompile($added_package_names);
+
       # Build native packages - Compile C source codes and link them to SPVM native subroutine
-      $BUILDER->build_native;
+      $BUILDER->build_native($added_package_names);
 
       # Bind SPVM subroutine to Perl
       bind_to_perl($BUILDER, $added_package_names);

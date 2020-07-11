@@ -562,8 +562,5 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
   
-  // Free C function addresses
-  free(compiler->sub_cfunc_addresses);
-  
   free(compiler);
 }

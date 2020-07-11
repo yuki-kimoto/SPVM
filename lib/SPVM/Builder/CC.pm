@@ -29,43 +29,34 @@ sub category { shift->{category} }
 sub builder { shift->{builder} }
 
 sub build {
-  my ($self, $opt) = @_;
-  
-  my $package_names = $self->builder->get_package_names;
-  
-  for my $package_name (@$package_names) {
+  my ($self, $package_name, $opt) = @_;
     
-    my $category = $self->{category};
-    my $sub_names;
-    if ($category eq 'native') {
-      $sub_names = $self->builder->get_native_sub_names($package_name)
-    }
-    elsif ($category eq 'precompile') {
-      $sub_names = $self->builder->get_precompile_sub_names($package_name)
-    }
+  my $category = $self->{category};
+  my $sub_names;
+  if ($category eq 'native') {
+    $sub_names = $self->builder->get_native_sub_names($package_name)
+  }
+  elsif ($category eq 'precompile') {
+    $sub_names = $self->builder->get_precompile_sub_names($package_name)
+  }
+  
+  if (@$sub_names) {
+    # Shared library is already installed in distribution directory
+    my $dll_file = $self->get_dll_file_dist($package_name);
     
-    if (@$sub_names) {
-      # Shared library is already installed in distribution directory
-      my $dll_file = $self->get_dll_file_dist($package_name);
-      
-      # Try runtime compile if shared objectrary is not found
-      unless (-f $dll_file) {
-        if ($category eq 'native') {
-          unless ($self->builder->{already_build_native_packages_h}->{$package_name}) {
-            $self->build_dll_native_runtime($package_name, $sub_names);
-            $self->builder->{already_build_native_packages_h}->{$package_name} = 1;
-          }
-        }
-        elsif ($category eq 'precompile') {
-          unless ($self->builder->{already_build_precompile_packages_h}->{$package_name}) {
-            $self->build_dll_precompile_runtime($package_name, $sub_names);
-            $self->builder->{already_build_precompile_packages_h}->{$package_name} = 1;
-          }
-        }
-        $dll_file = $self->get_dll_file_runtime($package_name);
+    # Try runtime compile if shared objectrary is not found
+    unless (-f $dll_file) {
+      if ($category eq 'native') {
+        $self->build_dll_native_runtime($package_name, $sub_names);
+        $self->builder->{already_build_native_packages_h}->{$package_name} = 1;
       }
-      $self->bind_subs($dll_file, $package_name, $sub_names);
+      elsif ($category eq 'precompile') {
+        $self->build_dll_precompile_runtime($package_name, $sub_names);
+        $self->builder->{already_build_precompile_packages_h}->{$package_name} = 1;
+      }
+      $dll_file = $self->get_dll_file_runtime($package_name);
     }
+    $self->bind_subs($dll_file, $package_name, $sub_names);
   }
 }
 

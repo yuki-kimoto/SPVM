@@ -119,9 +119,6 @@ struct SPVM_compiler {
   SPVM_LIST* fields;
   
   char* next_double_quote_start_bufptr;
-
-  // C function addresses(native or precompile)
-  void** sub_cfunc_addresses;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();

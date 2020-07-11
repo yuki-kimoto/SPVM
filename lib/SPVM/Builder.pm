@@ -17,9 +17,6 @@ sub new {
   
   my $self = {@_};
   
-  $self->{already_build_native_packages_h} = {};
-  $self->{already_build_precompile_packages_h} = {};
-  
   return bless $self, ref $class || $class;
 }
 
@@ -75,8 +72,8 @@ sub build_dll_precompile_dist {
 }
 
 sub build_precompile {
-  my $self = shift;
-
+  my ($self, $package_names) = @_;
+  
   my $cc_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => 'precompile',
@@ -84,11 +81,13 @@ sub build_precompile {
     quiet => 1,
   );
   
-  $cc_precompile->build;
+  for my $package_name (@$package_names) {
+    $cc_precompile->build($package_name);
+  }
 }
 
 sub build_native {
-  my $self = shift;
+  my ($self, $package_names) = @_;
 
   my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
@@ -97,7 +96,9 @@ sub build_native {
     quiet => 1,
   );
   
-  $cc_native->build;
+  for my $package_name (@$package_names) {
+    $cc_native->build($package_name);
+  }
 }
 
 1;

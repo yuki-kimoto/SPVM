@@ -1604,6 +1604,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     compiler->anon_package_length++;
     SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
+    
+    // Add addede package names in this compile
+    SPVM_LIST_push(compiler->tmp_added_package_names, (void*)name_package);
   }
   
   package->op_type = op_type;
