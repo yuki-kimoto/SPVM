@@ -24,17 +24,6 @@ sub new {
   return bless $self, ref $class || $class;
 }
 
-sub get_sub_names {
-  my ($self, $package_name) = @_;
-  
-  my $packages = $self->{packages};
-  my $package = $packages->{$package_name};
-  my $subs = $package->{subs};
-  my @sub_names = keys %$subs;
-  
-  return \@sub_names;
-}
-
 sub get_package_names {
   my ($self) = @_;
   
