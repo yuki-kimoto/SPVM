@@ -44,38 +44,6 @@ sub get_package_names {
   return \@package_names;
 }
 
-sub get_precompile_package_names {
-  my ($self) = @_;
-  
-  my $precompile_package_names = [];
-  
-  my $package_names = $self->get_package_names;
-  for my $package_name (@$package_names) {
-    my $sub_names = $self->get_precompile_sub_names($package_name);
-    if (@$sub_names) {
-      push @$precompile_package_names, $package_name;
-    }
-  }
-  
-  return $precompile_package_names;
-}
-
-sub get_native_package_names {
-  my ($self) = @_;
-  
-  my $native_package_names = [];
-  
-  my $package_names = $self->get_package_names;
-  for my $package_name (@$package_names) {
-    my $sub_names = $self->get_native_sub_names($package_name);
-    if (@$sub_names) {
-      push @$native_package_names, $package_name;
-    }
-  }
-  
-  return $native_package_names;
-}
-
 sub get_module_file {
   my ($self, $package_name) = @_;
   
