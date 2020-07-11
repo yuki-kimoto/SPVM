@@ -17,7 +17,6 @@ sub new {
   
   my $self = {@_};
   
-  $self->{package_infos} ||= [];
   $self->{packages} = {};
   $self->{already_build_native_packages_h} = {};
   $self->{already_build_precompile_packages_h} = {};
@@ -134,11 +133,11 @@ sub get_config_file {
 }
 
 sub build_spvm {
-  my $self = shift;
+  my ($self, $module_name, $file, $line) = @_;
   
   # Compile SPVM source code and create runtime env
   $self->{compile_success} = 0;
-  my $compile_success = $self->compile_spvm();
+  my $compile_success = $self->compile_spvm($module_name, $file, $line);
   
   if ($compile_success) {
     # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
@@ -157,25 +156,10 @@ sub compile_success {
   return $self->{compile_success};
 }
 
-sub use {
-  my ($self, $package_name, $file, $line) = @_;
-  
-  my $package_info = {
-    name => $package_name,
-    file => $file,
-    line => $line,
-  };
-  
-  $self->{package_infos} = [];
-  push @{$self->{package_infos}}, $package_info;
-}
-
 sub build_dll_native_dist {
   my ($self, $package_name) = @_;
   
-  $self->use($package_name, '(build_dll_native_dist)', 0);
-  
-  $self->compile_spvm;
+  $self->compile_spvm($package_name, '(build_dll_native_dist)', 0);
 
   my $sub_names = $self->get_native_sub_names($package_name);
 
@@ -192,9 +176,7 @@ sub build_dll_native_dist {
 sub build_dll_precompile_dist {
   my ($self, $package_name) = @_;
   
-  $self->use($package_name, '(build_dll_precompile_dist)', 0);
-  
-  my $compile_success = $self->compile_spvm;
+  my $compile_success = $self->compile_spvm($package_name, '(build_dll_precompile_dist)', 0);
   unless ($compile_success) {
     die "Compile error";
   }
@@ -237,11 +219,10 @@ sub build_native {
   $cc_native->build;
 }
 
+1;
+
 =encoding UTF-8
 
 =head1 NAME
 
 SPVM::Builder - Compile SPVM program, bind native and precompile subroutines, generate Perl subrotuines correspoing to SPVM subroutines.
-
-1;
-

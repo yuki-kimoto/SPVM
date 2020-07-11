@@ -35,14 +35,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $build = SPVM::Builder->new;
-      $build->use('TestCase::CompileError::Remainder::LeftIsNotIntegral', __LINE__, __FILE__);
-      my $success = $build->compile_spvm();
+      my $success = $build->compile_spvm('TestCase::CompileError::Remainder::LeftIsNotIntegral', __LINE__, __FILE__);
       ok($success == 0);
     }
     {
       my $build = SPVM::Builder->new;
-      $build->use('TestCase::CompileError::Remainder::RightIsNotIntegral', __LINE__, __FILE__);
-      my $success = $build->compile_spvm();
+      my $success = $build->compile_spvm('TestCase::CompileError::Remainder::RightIsNotIntegral', __LINE__, __FILE__);
       ok($success == 0);
     }
   }

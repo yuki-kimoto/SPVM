@@ -802,3 +802,7 @@ sub create_source_precompile {
 }
 
 1;
+
+=head1 NAME
+
+SPVM::Builder::CC - Native code Compiler and linker. Wrapper of ExtUtils::CBuilder for SPVM
