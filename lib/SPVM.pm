@@ -36,7 +36,7 @@ sub import {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
-
+  
   # Add package informations
   if (defined $package_name) {
     my ($file, $line) = (caller)[1, 2];
@@ -51,7 +51,7 @@ sub import {
       
       # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
       $BUILDER->build_precompile($added_package_names);
-
+      
       # Build native packages - Compile C source codes and link them to SPVM native subroutine
       $BUILDER->build_native($added_package_names);
 
@@ -65,7 +65,7 @@ sub init {
   unless ($SPVM_INITED) {
     if (my $builder = $BUILDER) {
       # Call begin blocks
-      $builder->call_begin_blocks;
+      $builder->_init;
     }
     $SPVM_INITED = 1;
   }

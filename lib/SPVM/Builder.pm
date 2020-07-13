@@ -17,7 +17,11 @@ sub new {
   
   my $self = {@_};
   
-  return bless $self, ref $class || $class;
+  bless $self, ref $class || $class;
+  
+  $self->create_compiler;
+  
+  return $self;
 }
 
 sub get_config_file {

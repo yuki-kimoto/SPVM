@@ -30,7 +30,7 @@ sub builder { shift->{builder} }
 
 sub build {
   my ($self, $package_name, $opt) = @_;
-    
+  
   my $category = $self->{category};
   my $sub_names;
   if ($category eq 'native') {
@@ -48,11 +48,9 @@ sub build {
     unless (-f $dll_file) {
       if ($category eq 'native') {
         $self->build_dll_native_runtime($package_name, $sub_names);
-        $self->builder->{already_build_native_packages_h}->{$package_name} = 1;
       }
       elsif ($category eq 'precompile') {
         $self->build_dll_precompile_runtime($package_name, $sub_names);
-        $self->builder->{already_build_precompile_packages_h}->{$package_name} = 1;
       }
       $dll_file = $self->get_dll_file_runtime($package_name);
     }
@@ -132,6 +130,7 @@ EOS
 
 sub bind_subs {
   my ($self, $dll_file, $package_name, $sub_names) = @_;
+  
   
   # m library is maybe not dynamic link library
   my %must_not_load_libs = map { $_ => 1 } ('m');
