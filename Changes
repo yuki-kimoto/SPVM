@@ -1,3 +1,5 @@
+0.09 2020-07-13
+  - env is created once before runtime
 0.0710 2020-07-10
   - improve compile internal logic effective
   - skip the file which not have specified extension in Foo.native/src directory
