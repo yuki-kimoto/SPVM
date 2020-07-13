@@ -447,10 +447,10 @@ bind_sub_native(...)
   SV* sv_native_address = ST(3);
 
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = (HV*)SvRV(sv_build);
-  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV** sv_builder_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
+  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
+  HV* hv_builder = (HV*)SvRV(sv_builder);
+  SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
@@ -489,18 +489,17 @@ build_package_csource_precompile(...)
   const char* package_name = SvPV_nolen(sv_package_name);
   
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = (HV*)SvRV(sv_build);
-  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
-  
+  SV** sv_builder_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
+  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
+  HV* hv_builder = (HV*)SvRV(sv_builder);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = (SPVM_BASIC_TYPE*)SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
   
   // Package name
   SPVM_PACKAGE* package = basic_type->package;
@@ -509,9 +508,9 @@ build_package_csource_precompile(...)
   
   // String buffer for csource
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
-  
+
   // Build package csource
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(env, string_buffer, package_name);
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(compiler, string_buffer, package_name);
   
   SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer + 1, string_buffer->length - 1));
   
@@ -536,10 +535,10 @@ bind_sub_precompile(...)
   void* sub_precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
   
   // Env
-  SV** sv_build_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_build = sv_build_ptr ? *sv_build_ptr : &PL_sv_undef;
-  HV* hv_build = (HV*)SvRV(sv_build);
-  SV** sv_env_ptr = hv_fetch(hv_build, "env", strlen("env"), 0);
+  SV** sv_builder_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
+  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
+  HV* hv_builder = (HV*)SvRV(sv_builder);
+  SV** sv_env_ptr = hv_fetch(hv_builder, "env", strlen("env"), 0);
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
