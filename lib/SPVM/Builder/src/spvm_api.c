@@ -235,7 +235,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   };
   
   int32_t env_length = 255;
-  SPVM_ENV* env = SPVM_API_safe_malloc_zero(sizeof(void*) * env_length);
+  SPVM_ENV* env = calloc(sizeof(void*), env_length);
   memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
 
   // Mortal stack
@@ -253,7 +253,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
 
   // Initialize Package Variables
-  env->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * ((int64_t)compiler->package_vars->length + 1));
+  env->package_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->package_vars->length + 1));
   
   return env;
 }
@@ -5711,7 +5711,20 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
 
 void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
   
-  void* block = SPVM_API_safe_malloc_zero(byte_size);
+  assert(byte_size > 0);
+
+  if ((uint64_t)byte_size > (uint64_t)SIZE_MAX) {
+    fprintf(stderr, "Failed to allocate memory. Specified memroy size is too big\n");
+    exit(EXIT_FAILURE);
+  }
+  
+  void* block = calloc(1, (size_t)byte_size);
+  
+  if (block == NULL) {
+    fprintf(stderr, "Failed to allocate memory. calloc function return NULL\n");
+    exit(EXIT_FAILURE);
+  }
+
   env->memory_blocks_count++;
   
 #ifdef SPVM_DEBUG_OBJECT_COUNT
@@ -5731,25 +5744,6 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
     fprintf(stderr, "[FREE_MEMORY] %d\n", runtime->memory_blocks_count);
 #endif
   }
-}
-
-void* SPVM_API_safe_malloc_zero(int64_t byte_size) {
-  
-  assert(byte_size > 0);
-  
-  if ((uint64_t)byte_size > (uint64_t)SIZE_MAX) {
-    fprintf(stderr, "Failed to allocate memory. Specified memroy size is too big\n");
-    exit(EXIT_FAILURE);
-  }
-  
-  void* block = calloc(1, (size_t)byte_size);
-  
-  if (block == NULL) {
-    fprintf(stderr, "Failed to allocate memory. calloc function return NULL\n");
-    exit(EXIT_FAILURE);
-  }
-  
-  return block;
 }
 
 int8_t SPVM_API_get_package_var_byte(SPVM_ENV* env, int32_t packagke_var_id) {
