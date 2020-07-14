@@ -43,7 +43,7 @@ SPVM::Test - SPVM test module
   
   our $BEGIN_INIT : int;
   
-  BEGIN {
+  INIT {
     $BEGIN_INIT = 7;
   }
   

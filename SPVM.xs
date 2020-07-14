@@ -406,6 +406,9 @@ _init(...)
 
   // Create env
   SPVM_ENV* env = SPVM_API_create_env(compiler);
+  if (env == NULL) {
+    croak("Can't create SPVM env");
+  }
   
   // Set ENV
   size_t iv_env = PTR2IV(env);
@@ -761,13 +764,10 @@ new_int_array(...)
     env->inc_ref_count(env, array);
     
     int32_t* elems = env->get_elems_int(env, array);
-    {
-      int32_t i;
-      for (i = 0; i < length; i++) {
-        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-        elems[i] = (int32_t)SvIV(sv_value);
-      }
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (int32_t)SvIV(sv_value);
     }
     
     // New sv array

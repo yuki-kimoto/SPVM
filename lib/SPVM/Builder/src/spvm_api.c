@@ -241,7 +241,9 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   // Mortal stack
   env->native_mortal_stack_capacity = (void*)(intptr_t)1;
   env->native_mortal_stack = (void*)SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->native_mortal_stack_capacity);
-
+  if (env->native_mortal_stack == NULL) {
+    return NULL;
+  }
   // Adjust alignment SPVM_VALUE
   int32_t object_header_byte_size = sizeof(SPVM_OBJECT);
   if (object_header_byte_size % sizeof(SPVM_VALUE) != 0) {
@@ -254,6 +256,9 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 
   // Initialize Package Variables
   env->package_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->package_vars->length + 1));
+  if (env->package_vars_heap == NULL) {
+    return NULL;
+  }
   
   return env;
 }
@@ -4782,6 +4787,9 @@ SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) {
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
 
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
@@ -4799,6 +4807,9 @@ SPVM_OBJECT* SPVM_API_new_short_array_raw(SPVM_ENV* env, int32_t length) {
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_SHORT;
@@ -4819,6 +4830,9 @@ SPVM_OBJECT* SPVM_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_INT;
@@ -4843,6 +4857,9 @@ SPVM_OBJECT* SPVM_API_new_long_array_raw(SPVM_ENV* env, int32_t length) {
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_LONG;
@@ -4863,6 +4880,9 @@ SPVM_OBJECT* SPVM_API_new_float_array_raw(SPVM_ENV* env, int32_t length) {
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_FLOAT;
@@ -4883,6 +4903,9 @@ SPVM_OBJECT* SPVM_API_new_double_array_raw(SPVM_ENV* env, int32_t length) {
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_DOUBLE;
@@ -4904,6 +4927,9 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
 
   for (int32_t index = 0; index < length; index++) {
     SPVM_OBJECT* get_field_object = ((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index];
@@ -4931,6 +4957,9 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   object->basic_type_id = basic_type_id;
   object->type_dimension = element_dimension + 1;
@@ -4985,6 +5014,9 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
 
   object->basic_type_id = basic_type->id;
   object->type_dimension = 1;
@@ -5022,6 +5054,9 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   object->basic_type_id = basic_type->id;
   object->type_dimension = 0;
@@ -5061,6 +5096,9 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
+  if (!object) {
+    return NULL;
+  }
   
   *(void**)((intptr_t)object + (intptr_t)env->object_header_byte_size) = pointer;
 
@@ -5714,17 +5752,15 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
   assert(byte_size > 0);
 
   if ((uint64_t)byte_size > (uint64_t)SIZE_MAX) {
-    fprintf(stderr, "Failed to allocate memory. Specified memroy size is too big\n");
-    exit(EXIT_FAILURE);
+    return NULL;
   }
   
   void* block = calloc(1, (size_t)byte_size);
   
-  if (block == NULL) {
-    fprintf(stderr, "Failed to allocate memory. calloc function return NULL\n");
-    exit(EXIT_FAILURE);
+  if (!block) {
+    return NULL;
   }
-
+  
   env->memory_blocks_count++;
   
 #ifdef SPVM_DEBUG_OBJECT_COUNT

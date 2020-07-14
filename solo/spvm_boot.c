@@ -59,9 +59,6 @@ int32_t main(int32_t argc, const char *argv[]) {
     exit(1);
   }
 
-  // C function addresses(native or precompile)
-  compiler->sub_cfunc_addresses = SPVM_API_safe_malloc_zero(sizeof(void*) * (compiler->subs->length + 1));
-
   // Create env
   SPVM_ENV* env = SPVM_API_create_env(compiler);
   
