@@ -65,13 +65,49 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Call begin blocks
   SPVM_API_call_begin_blocks(env);
 
-  // Call entry point sub
-  int32_t status_code = SPVM_API_call_entry_point_sub(env, package_name, argc, argv);
+  // Package
+  int32_t sub_id = SPVM_API_get_sub_id(env, package_name, "main", "int(string[])");
+  
+  if (sub_id < 0) {
+    return -1;
+  }
+  
+  // Enter scope
+  int32_t scope_id = env->enter_scope(env);
+  
+  // new byte[][args_length] object
+  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
+  void* cmd_args_obj = env->new_muldim_array(env, arg_type_basic_id, 1, argc);
+  
+  // Set command line arguments
+  for (int32_t arg_index = 0; arg_index < argc; arg_index++) {
+    void* cmd_arg_obj = env->new_string_len(env, argv[arg_index], strlen(argv[arg_index]));
+    env->set_elem_object(env, cmd_args_obj, arg_index, cmd_arg_obj);
+  }
+  
+  SPVM_VALUE stack[255];
+  stack[0].oval = cmd_args_obj;
+  
+  // Run
+  int32_t exception_flag = env->call_sub(env, sub_id, stack);
+  
+  int32_t status;
+  if (exception_flag) {
+    SPVM_API_print(env, env->exception_object);
+    printf("\n");
+    status = 255;
+  }
+  else {
+    status = stack[0].ival;
+  }
+  
+  // Leave scope
+  env->leave_scope(env, scope_id);
   
   SPVM_API_free_env(env);
 
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
-  return status_code;
+  return status;
 }

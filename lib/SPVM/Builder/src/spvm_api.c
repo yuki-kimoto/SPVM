@@ -4150,53 +4150,6 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   return exception_flag;
 }
 
-int32_t SPVM_API_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]) {
-  
-  SPVM_COMPILER* compiler = env->compiler;
-  
-  // Package
-  int32_t sub_id = SPVM_API_get_sub_id(env, package_name, "main", "int(string[])");
-  
-  if (sub_id < 0) {
-    fprintf(stderr, "Can't find entry point package %s\n", package_name);
-    exit(EXIT_FAILURE);
-  }
-  
-  // Enter scope
-  int32_t scope_id = env->enter_scope(env);
-  
-  // new byte[][args_length] object
-  int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
-  void* cmd_args_obj = env->new_muldim_array(env, arg_type_basic_id, 1, argc);
-  
-  // Set command line arguments
-  for (int32_t arg_index = 0; arg_index < argc; arg_index++) {
-    void* cmd_arg_obj = env->new_string_len(env, argv[arg_index], strlen(argv[arg_index]));
-    env->set_elem_object(env, cmd_args_obj, arg_index, cmd_arg_obj);
-  }
-  
-  SPVM_VALUE stack[255];
-  stack[0].oval = cmd_args_obj;
-  
-  // Run
-  int32_t exception_flag = env->call_sub(env, sub_id, stack);
-  
-  int32_t status_code;
-  if (exception_flag) {
-    SPVM_API_print(env, env->exception_object);
-    printf("\n");
-    status_code = 255;
-  }
-  else {
-    status_code = stack[0].ival;
-  }
-  
-  // Leave scope
-  env->leave_scope(env, scope_id);
-  
-  return status_code;
-}
-
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension) {
   
   // Object must be not null
@@ -4310,7 +4263,7 @@ SPVM_OBJECT* SPVM_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   // Basic type
   length += strlen(basic_type_name);
   
-  // []
+  //[]
   length += type_dimension * 2;
   
   void* type_name_barray = env->new_byte_array_raw(env, length);
