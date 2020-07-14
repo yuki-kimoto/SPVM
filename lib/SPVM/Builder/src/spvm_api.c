@@ -5737,7 +5737,7 @@ void* SPVM_API_safe_malloc_zero(int64_t byte_size) {
   
   assert(byte_size > 0);
   
-  if ((uint64_t)byte_size > SIZE_MAX) {
+  if ((uint64_t)byte_size > (uint64_t)SIZE_MAX) {
     fprintf(stderr, "Failed to allocate memory. Specified memroy size is too big\n");
     exit(EXIT_FAILURE);
   }
