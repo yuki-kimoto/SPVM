@@ -3395,4 +3395,36 @@ to_bin(...)
   XSRETURN(1);
 }
 
+SV*
+get_length(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_array = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+
+  // Array must be SPVM::BlessedObject::Array or SPVM::BlessedObject::Array
+  if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
+    croak("Array must be SPVM::BlessedObject::Array object at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // Get object
+  SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
+  
+  int32_t length = env->length(env, array);
+
+
+  SV* sv_length = sv_2mortal(newSViv(length));
+  
+  XPUSHs(sv_length);
+  XSRETURN(1);
+}
+
 MODULE = SPVM		PACKAGE = SPVM

@@ -1054,9 +1054,33 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
-# SPVM Functions
+# get_length
 {
-  # to_elems(
+  {
+    my $spvm_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+    my $length = $spvm_values->get_length;
+    is($length, 3);
+  }
+  {
+    my $spvm_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+    my $length = $spvm_values->get_length;
+    is($length, 3);
+  }
+  {
+    my $spvm_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
+    my $length = $spvm_values->get_length;
+    is($length, 3);
+  }
+  {
+    my $spvm_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
+    my $length = $spvm_values->get_length;
+    is($length, 3);
+  }
+}
+
+# to_elems
+{
+  # to_elems
   {
     {
       my $spvm_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
@@ -1079,7 +1103,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
     }
   }
+}
 
+# to_bin
+{
   # to_bin 0 length
   {
     {

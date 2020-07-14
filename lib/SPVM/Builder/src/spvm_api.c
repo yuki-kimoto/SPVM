@@ -253,7 +253,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
 
   // Initialize Package Variables
-  env->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * (compiler->package_vars->length + 1));
+  env->package_vars_heap = SPVM_API_safe_malloc_zero(sizeof(SPVM_VALUE) * ((int64_t)compiler->package_vars->length + 1));
   
   return env;
 }
@@ -4778,7 +4778,7 @@ SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) {
   // Create object
   SPVM_COMPILER* compiler = env->compiler;
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int8_t) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int8_t) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4795,7 +4795,7 @@ SPVM_OBJECT* SPVM_API_new_short_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_COMPILER* compiler = env->compiler;
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int16_t) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int16_t) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4815,7 +4815,7 @@ SPVM_OBJECT* SPVM_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_COMPILER* compiler = env->compiler;
   
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int32_t) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int32_t) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4839,7 +4839,7 @@ SPVM_OBJECT* SPVM_API_new_long_array_raw(SPVM_ENV* env, int32_t length) {
     return NULL;
   }
   
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int64_t) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(int64_t) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4859,7 +4859,7 @@ SPVM_OBJECT* SPVM_API_new_float_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_COMPILER* compiler = env->compiler;
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(float) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(float) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4879,7 +4879,7 @@ SPVM_OBJECT* SPVM_API_new_double_array_raw(SPVM_ENV* env, int32_t length) {
   (void)env;
   SPVM_COMPILER* compiler = env->compiler;
   
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(double) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(double) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4900,7 +4900,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   
   SPVM_COMPILER* compiler = env->compiler;
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4927,7 +4927,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   
   SPVM_COMPILER* compiler = env->compiler;
   
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(void*) * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -4981,7 +4981,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
     assert(0);
   }
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + unit_size * fields_length * (length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + unit_size * fields_length * ((int64_t)length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);
@@ -5018,7 +5018,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   // Alloc body length + 1
   int32_t fields_length = package->fields->length;
 
-  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * (fields_length + 1);
+  int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ((int64_t)fields_length + 1);
   
   // Create object
   SPVM_OBJECT* object = SPVM_API_alloc_memory_block_zero(env, alloc_byte_size);

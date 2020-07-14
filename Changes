@@ -1,3 +1,6 @@
+0.0901 2020-07-14
+  - add SPVM::get_length function
+  - add SPVM::BlessedObject::get_length
 0.09 2020-07-13
   - env is created once before runtime
 0.0710 2020-07-10
