@@ -13,6 +13,11 @@ use SPVM 'TestCase::Array';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Array max index
+{
+  ok(TestCase::Array->array_max_index_byte);
+}
+
 # Fat camma
 {
   ok(TestCase::Array->array_init_fatcamma);

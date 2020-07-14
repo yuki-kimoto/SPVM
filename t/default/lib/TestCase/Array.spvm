@@ -330,4 +330,29 @@ package TestCase::Array {
     
     return 0;
   }
+
+
+  sub array_max_index_byte : int () {
+    my $nums = new byte[INT32_MAX()];
+    $nums->[0] = 1;
+    $nums->[INT32_MAX() - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[INT32_MAX() - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[INT32_MAX()];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }
