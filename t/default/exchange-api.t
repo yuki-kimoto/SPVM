@@ -1237,6 +1237,36 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       ok(TestCase::ExchangeAPI->spvm_new_double_array_binary_pack($spvm_values));
     }
   }
+  
+  # middle size array
+  {
+    my $length = 1_000_000;
+    {
+      my $binary = pack('l*', 1 .. $length);
+      my $spvm_values = SPVM::new_int_array_from_bin($binary);
+      is($spvm_values->get_length, $length);
+    }
+    {
+      my $binary = pack('q*', 1 .. $length);
+      my $spvm_values = SPVM::new_long_array_from_bin($binary);
+      is($spvm_values->get_length, $length);
+    }
+    {
+      my $binary = pack('f*', 1 .. $length);
+      my $spvm_values = SPVM::new_float_array_from_bin($binary);
+      is($spvm_values->get_length, $length);
+    }
+    {
+      my $binary = pack('d*', 1 .. $length);
+      my $spvm_values = SPVM::new_double_array_from_bin($binary);
+      is($spvm_values->get_length, $length);
+    }
+    {
+      my $binary = pack('f*', 1 .. $length);
+      my $spvm_values = SPVM::new_float_array_from_bin($binary);
+      is($spvm_values->get_length, $length);
+    }
+  }
 }
 
 # byte
