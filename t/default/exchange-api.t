@@ -1202,37 +1202,37 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       ok(TestCase::ExchangeAPI->spvm_new_byte_array_bin($spvm_values));
     }
     {
-      my $binary = pack('c3', 97, 98, $BYTE_MAX);
+      my $binary = pack('c*', 97, 98, $BYTE_MAX);
       my $spvm_values = SPVM::new_byte_array_from_bin($binary);
       ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
     }
     {
-      my $binary = pack('c3', 97, 98, $BYTE_MAX);
+      my $binary = pack('c*', 97, 98, $BYTE_MAX);
       my $spvm_values = SPVM::new_byte_array_from_bin($binary);
       ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
     }
     {
-      my $binary = pack('s3', 97, 98, $SHORT_MAX);
+      my $binary = pack('s*', 97, 98, $SHORT_MAX);
       my $spvm_values = SPVM::new_short_array_from_bin($binary);
       ok(TestCase::ExchangeAPI->spvm_new_short_array_binary_pack($spvm_values));
     }
     {
-      my $binary = pack('l3', 97, 98, $INT_MAX);
+      my $binary = pack('l*', 97, 98, $INT_MAX);
       my $spvm_values = SPVM::new_int_array_from_bin($binary);
       ok(TestCase::ExchangeAPI->spvm_new_int_array_binary_pack($spvm_values));
     }
     {
-      my $binary = pack('q3', 97, 98, $LONG_MAX);
+      my $binary = pack('q*', 97, 98, $LONG_MAX);
       my $spvm_values = SPVM::new_long_array_from_bin($binary);
       ok(TestCase::ExchangeAPI->spvm_new_long_array_binary_pack($spvm_values));
     }
     {
-      my $binary = pack('f3', 97, 98, $FLOAT_PRECICE);
+      my $binary = pack('f*', 97, 98, $FLOAT_PRECICE);
       my $spvm_values = SPVM::new_float_array_from_bin($binary);
       ok(TestCase::ExchangeAPI->spvm_new_float_array_binary_pack($spvm_values));
     }
     {
-      my $binary = pack('d3', 97, 98, $DOUBLE_PRECICE);
+      my $binary = pack('d*', 97, 98, $DOUBLE_PRECICE);
       my $spvm_values = SPVM::new_double_array_from_bin($binary);
       ok(TestCase::ExchangeAPI->spvm_new_double_array_binary_pack($spvm_values));
     }
