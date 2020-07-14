@@ -334,6 +334,7 @@ package TestCase::Array {
 
   sub array_max_index_byte : int () {
     my $nums = new byte[INT32_MAX()];
+    
     $nums->[0] = 1;
     $nums->[INT32_MAX() - 1] = 2;
     
@@ -351,6 +352,11 @@ package TestCase::Array {
     unless ($@) {
       return 0;
     }
+    
+    # Additional use memory
+    my $nums1 = new byte[INT32_MAX()];
+    my $nums2 = new byte[INT32_MAX()];
+    my $nums3 = new byte[INT32_MAX()];
     
     return 1;
   }
