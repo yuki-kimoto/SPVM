@@ -5215,7 +5215,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           fprintf(stderr, "(in cleanup) %s\n", exception_str);
         }
         
-        assert(object->ref_count < 1);
+        assert(object->ref_count > 0);
       }
       
       // Free object fields
