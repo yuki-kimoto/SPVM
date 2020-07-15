@@ -2426,9 +2426,15 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t basic_type_id = opcode->operand1;
         
         void* object = env->new_object_raw(env, basic_type_id);
-        
-        // Push object
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+        if (object == NULL) {
+          void* exception = env->new_string_raw(env, "Can't allocate memory for object");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          // Push object
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+        }
         
         break;
       }
@@ -2436,7 +2442,14 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
           void* object = env->new_byte_array_raw(env, length);
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for byte array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2452,9 +2465,15 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         if (length >= 0) {
           void* object = env->new_short_array_raw(env, length);
-          
-          // Set array
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for short array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            // Set array
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2470,9 +2489,15 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         if (length >= 0) {
           void* object = env->new_int_array_raw(env, length);
-          
-          // Set array
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for int array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            // Set array
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2487,7 +2512,14 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
           void* object = env->new_long_array_raw(env, length);
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for long array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2501,7 +2533,14 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
           void* object = env->new_float_array_raw(env, length);
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for float array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2515,7 +2554,14 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t length = int_vars[opcode->operand1];
         if (length >= 0) {
           void* object = env->new_double_array_raw(env, length);
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for double array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2530,7 +2576,14 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t length = int_vars[opcode->operand2];
         if (length >= 0) {
           void* object = env->new_object_array_raw(env, basic_type_id, length);
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for object array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2546,7 +2599,14 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         if (length >= 0) {
           void* object = env->new_muldim_array_raw(env, basic_type_id, element_dimension, length);
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for multi dimention array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2558,14 +2618,18 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY: {
         int32_t basic_type_id = opcode->operand1;
         
-        // length
         int32_t length = int_vars[opcode->operand2];
         
         if (length >= 0) {
           void* object = env->new_mulnum_array_raw(env, basic_type_id, length);
-          
-          // Set object
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          if (object == NULL) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for muti numeric array");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], object);
+          }
         }
         else {
           void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
@@ -2580,10 +2644,14 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         const char* string_value = constant->value.oval;
         
         void* string = env->new_string_len_raw(env, string_value, constant->string_length);
-        
-        // Set string
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0] , string);
-
+        if (string == NULL) {
+          void* exception = env->new_string_raw(env, "Can't allocate memory for string");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0] , string);
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH:
@@ -3685,7 +3753,12 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         }
         else {
           void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
-          env->weaken(env, get_field_object_address);
+          int32_t status = env->weaken(env, get_field_object_address);
+          if (status != 0) {
+            void* exception = env->new_string_raw(env, "Can't allocate memory for weaken back reference");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
         }
         break;
       }

@@ -2802,11 +2802,19 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object = env->new_object_raw(env, basic_type_id);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (object == NULL) {
+        SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_raw(env, "Can't allocate memory for object");
+        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);
+        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;
+        SPVM_STRING_BUFFER_add(string_buffer, "    }
+        SPVM_STRING_BUFFER_add(string_buffer, "    else {
+
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
-
+        SPVM_STRING_BUFFER_add(string_buffer, "    }
+        
         break;
       }
       case SPVM_OPCODE_C_ID_NEW_BYTE_ARRAY:
