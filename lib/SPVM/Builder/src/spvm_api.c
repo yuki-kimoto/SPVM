@@ -217,14 +217,28 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   
   int32_t env_length = 255;
   SPVM_ENV* env = calloc(sizeof(void*), env_length);
-  memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
-
-  // Mortal stack
-  env->native_mortal_stack_capacity = (void*)(intptr_t)1;
-  env->native_mortal_stack = (void*)SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->native_mortal_stack_capacity);
-  if (env->native_mortal_stack == NULL) {
+  if (env == NULL) {
     return NULL;
   }
+
+  // Mortal stack
+  int32_t native_mortal_stack_capacity = 1;
+  void* native_mortal_stack = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * native_mortal_stack_capacity);
+  if (native_mortal_stack == NULL) {
+    return NULL;
+  }
+
+  // Initialize Package Variables
+  void* package_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->package_vars->length + 1));
+  if (package_vars_heap == NULL) {
+    return NULL;
+  }
+  
+  memcpy(&env[0], &env_init[0], sizeof(void*) * env_length);
+  env->native_mortal_stack_capacity = (void*)(intptr_t)native_mortal_stack_capacity;
+  env->native_mortal_stack = native_mortal_stack;
+  env->package_vars_heap = package_vars_heap;
+
   // Adjust alignment SPVM_VALUE
   int32_t object_header_byte_size = sizeof(SPVM_OBJECT);
   if (object_header_byte_size % sizeof(SPVM_VALUE) != 0) {
@@ -234,12 +248,6 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   
   // Object header byte size
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
-
-  // Initialize Package Variables
-  env->package_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->package_vars->length + 1));
-  if (env->package_vars_heap == NULL) {
-    return NULL;
-  }
   
   return env;
 }
