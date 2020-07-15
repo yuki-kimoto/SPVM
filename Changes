@@ -1,6 +1,11 @@
-0.0901 2020-07-14
+0.0901 2020-07-15
   - add SPVM::get_length function
   - add SPVM::BlessedObject::get_length
+  - SPVM Native API env->new_env return NULL if this method don't alloc memory
+  - SPVM Native API env->call_sub set exception if this method alloc memory for call stack
+  - SPVM Native API env->push_mortal return 1 if this method alloc memory for mortal stack
+  - SPVM Native API env->alloc_memory_block_zero return NULL if this method alloc memory
+  - SPVM Native API env->dec_ref_count become not exit at invalid status
 0.09 2020-07-13
   - env is created once before runtime
 0.0710 2020-07-10

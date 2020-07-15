@@ -173,7 +173,7 @@ int32_t SPVM_API_memory_blocks_count(SPVM_ENV* env);
 
 // Scope
 int32_t SPVM_API_enter_scope(SPVM_ENV* env);
-void SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object);
+int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top);
 
 // Call subroutine

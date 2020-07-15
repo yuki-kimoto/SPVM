@@ -29,10 +29,6 @@ union SPVM_value {
 #define SPVM_SUCCESS 0
 #define SPVM_EXCEPTION 1
 
-#define SPVM_CALL_SUB_SUCCESS 0
-#define SPVM_CALL_SUB_EXCEPTION 1
-#define SPVM_CALL_SUB_FAIL_ALLOC_MEMORY 2
-
 #define SPVM_DIE(message, ...) do {\
   void* buffer = env->alloc_memory_block_zero(env, 255);\
   snprintf(buffer, 255, message " at %s line %d", __VA_ARGS__);\
@@ -394,7 +390,7 @@ struct SPVM_env {
   void (*inc_ref_count)(SPVM_ENV* env, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, void* object);
   int32_t (*enter_scope)(SPVM_ENV* env);
-  void (*push_mortal)(SPVM_ENV* env, void* object);
+  int32_t (*push_mortal)(SPVM_ENV* env, void* object);
   void (*leave_scope)(SPVM_ENV* env, int32_t scope_id);
   int32_t (*remove_mortal)(SPVM_ENV* env, int32_t scope_id, void* remove_object);
   int32_t (*is_type)(SPVM_ENV* env, void* object, int32_t basic_type_id, int32_t type_dimension);

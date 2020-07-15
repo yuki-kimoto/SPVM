@@ -489,6 +489,12 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
     int32_t total_vars_byte_size = numeric_vars_byte_size + address_vars_byte_size;
     
     call_stack = SPVM_API_alloc_memory_block_zero(env, total_vars_byte_size + 1);
+    if (call_stack == NULL) {
+      void* exception = env->new_string_raw(env, "Can't alloc call stack memory");
+      env->set_exception(env, exception);
+      exception_flag = 1;
+      return exception_flag;
+    }
 
     int32_t call_stack_offset = 0;
     
@@ -4222,7 +4228,7 @@ int32_t SPVM_API_enter_scope(SPVM_ENV* env) {
   return mortal_stack_top;
 }
 
-void SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
+int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
 
   SPVM_COMPILER* compiler = env->compiler;
@@ -4232,6 +4238,9 @@ void SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
     if (env->native_mortal_stack_top >= env->native_mortal_stack_capacity) {
       int32_t new_mortal_stack_capacity = (intptr_t)env->native_mortal_stack_capacity * 2;
       SPVM_OBJECT** new_mortal_stack = SPVM_API_alloc_memory_block_zero(env, sizeof(void*) * new_mortal_stack_capacity);
+      if (new_mortal_stack == NULL) {
+        return 1;
+      }
       memcpy(new_mortal_stack, env->native_mortal_stack, sizeof(void*) * (intptr_t)env->native_mortal_stack_capacity);
       env->native_mortal_stack_capacity = (void*)(intptr_t)new_mortal_stack_capacity;
       SPVM_API_free_memory_block(env, env->native_mortal_stack);
@@ -4243,6 +4252,8 @@ void SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
     
     object->ref_count++;
   }
+  
+  return 0;
 }
 
 SPVM_OBJECT* SPVM_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
@@ -5204,10 +5215,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
           fprintf(stderr, "(in cleanup) %s\n", exception_str);
         }
         
-        if (object->ref_count < 1) {
-          printf("Invalid reference count in DESTROY()\n");
-          exit(EXIT_FAILURE);
-        }
+        assert(object->ref_count < 1);
       }
       
       // Free object fields
