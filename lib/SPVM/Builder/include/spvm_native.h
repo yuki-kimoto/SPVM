@@ -397,7 +397,7 @@ struct SPVM_env {
   int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
   int32_t (*get_object_basic_type_id)(SPVM_ENV* env, void* object);
   int32_t (*get_object_type_dimension)(SPVM_ENV* env, void* object);
-  void (*weaken)(SPVM_ENV* env, void** object_address);
+  int32_t (*weaken)(SPVM_ENV* env, void** object_address);
   int32_t (*isweak)(SPVM_ENV* env, void** object);
   void (*unweaken)(SPVM_ENV* env, void** object_address);
   void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);

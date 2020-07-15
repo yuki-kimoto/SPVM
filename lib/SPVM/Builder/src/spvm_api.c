@@ -4455,7 +4455,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   return isweak;
 }
 
-void SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
+int32_t SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   (void)env;
   
   assert(object_address);
@@ -4463,11 +4463,11 @@ void SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   SPVM_COMPILER* compiler = env->compiler;
   
   if (*object_address == NULL) {
-    return;
+    return 0;
   }
   
   if (SPVM_API_isweak(env, object_address)) {
-    return;
+    return 0;
   }
   
   SPVM_OBJECT* object = *object_address;
@@ -4477,7 +4477,7 @@ void SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
     // If reference count is 1, the object is freeed without weaken
     SPVM_API_dec_ref_count(env, *object_address);
     *object_address = NULL;
-    return;
+    return 0;
   }
   else {
     object->ref_count--;
@@ -4486,6 +4486,9 @@ void SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   // Create weaken_backref_head
   if (object->weaken_backref_head == NULL) {
     SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_WEAKEN_BACKREF));
+    if (new_weaken_backref == NULL) {
+      return 1;
+    }
     new_weaken_backref->object_address = object_address;
     object->weaken_backref_head = new_weaken_backref;
   }
@@ -4494,6 +4497,9 @@ void SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
     SPVM_WEAKEN_BACKREF* weaken_backref_next = object->weaken_backref_head;
 
     SPVM_WEAKEN_BACKREF* new_weaken_backref = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_WEAKEN_BACKREF));
+    if (new_weaken_backref) {
+      return 1;
+    }
     new_weaken_backref->object_address = object_address;
     
     while (weaken_backref_next->next != NULL){
@@ -4505,6 +4511,8 @@ void SPVM_API_weaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   // Weaken is implemented by tag pointer.
   // If pointer most right bit is 1, object is weaken.
   *object_address = (SPVM_OBJECT*)((intptr_t)*object_address | 1);
+  
+  return 0;
 }
 
 void SPVM_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
