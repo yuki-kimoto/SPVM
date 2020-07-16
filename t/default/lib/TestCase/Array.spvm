@@ -361,4 +361,154 @@ package TestCase::Array {
     return 1;
   }
 
+  sub array_big_index_byte : int () {
+    my $index = 200_000_000;
+    my $nums = new byte[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_short : int () {
+    my $index = 200_000_000;
+    my $nums = new short[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_int : int () {
+    my $index = 200_000_000;
+    my $nums = new int[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_long : int () {
+    my $index = 200_000_000;
+    my $nums = new long[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_float : int () {
+    my $index = 200_000_000;
+    my $nums = new float[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_double : int () {
+    my $index = 200_000_000;
+    my $nums = new double[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }
