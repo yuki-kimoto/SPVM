@@ -14,51 +14,41 @@ use SPVM 'TestCase::Array';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # big size array
-{
-  my $free_commond_result = `free` || '';
-  my $swap;
-  my $mem;
-  my $max_used_app_mem;
-  if ($free_commond_result =~ /Swap:\s+?(\d+)/) {
-    $swap = $1;
-  }
-  else {
-    $swap = 0;
-  }
-  if ($free_commond_result =~ /Mem:\s+?(\d+)/) {
-    $mem = $1;
-  }
-  else {
-    $mem = 0;
-  }
-  if ($swap > $mem) {
-    $max_used_app_mem = $swap;
-  }
-  else {
-    $max_used_app_mem = $mem;
-  }
+my $array_big_index_long_cant_alloc_memory;
 
-  SKIP: {
-    my $at_least_used_app_mem = 2048276;
-    unless ($max_used_app_mem >= $at_least_used_app_mem) {
-      skip "free comannd must be used and appliation used memory must be more than or equal to $at_least_used_app_mem", 6;
-    }
-    ok(TestCase::Array->array_big_index_byte);
-    ok(TestCase::Array->array_big_index_short);
-    ok(TestCase::Array->array_big_index_int);
-    ok(TestCase::Array->array_big_index_long);
-    ok(TestCase::Array->array_big_index_float);
-    ok(TestCase::Array->array_big_index_double);
-  };
-
-  SKIP: {
-    my $at_least_used_app_mem = 2048276;
-    unless ($max_used_app_mem >= $at_least_used_app_mem) {
-      skip "free comannd must be used and appliation used memory must be more than or equal to $at_least_used_app_mem", 1;
-    }
-    ok(TestCase::Array->array_max_index_byte);
-  };
+eval {
+  TestCase::Array->array_big_index_long
+};
+if ($@) {
+  $array_big_index_long_cant_alloc_memory = 1;
 }
+SKIP: {
+  if ($array_big_index_long_cant_alloc_memory) {
+    skip "Can't alloc memory for big size array", 6;
+  }
+  ok(TestCase::Array->array_big_index_byte);
+  ok(TestCase::Array->array_big_index_short);
+  ok(TestCase::Array->array_big_index_int);
+  ok(TestCase::Array->array_big_index_long);
+  ok(TestCase::Array->array_big_index_float);
+  ok(TestCase::Array->array_big_index_double);
+};
+
+# Max Index array
+my $array_max_index_byte_cant_alloc_memory;
+eval {
+  TestCase::Array->array_max_index_byte
+};
+if ($@) {
+  $array_max_index_byte_cant_alloc_memory = 1;
+}
+SKIP: {
+  if ($array_max_index_byte_cant_alloc_memory) {
+    skip "Can't alloc memory for max size index test", 1;
+  }
+  ok(TestCase::Array->array_max_index_byte);
+};
+
 
 # Fat camma
 {
