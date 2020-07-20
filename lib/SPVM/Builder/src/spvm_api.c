@@ -285,14 +285,14 @@ SPVM_ENV* SPVM_API_new_env(SPVM_ENV* env) {
 }
 
 void SPVM_API_free_env(SPVM_ENV* env) {
-  // Free mortal stack
-  SPVM_API_free_memory_block(env, env->native_mortal_stack);
-  
   // Free exception
   SPVM_API_set_exception(env, NULL);
 
+  // Free mortal stack
+  SPVM_API_free_memory_block(env, env->native_mortal_stack);
+
   // Free package variables heap
-  free(env->package_vars_heap);
+  SPVM_API_free_memory_block(env, env->package_vars_heap);
   
   free(env);
 }
@@ -5788,16 +5788,17 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
   
   void* block = calloc(1, (size_t)byte_size);
   
-  if (!block) {
-    return NULL;
-  }
-  
-  env->memory_blocks_count++;
+  if (block) {
+    env->memory_blocks_count++;
   
 #ifdef SPVM_DEBUG_OBJECT_COUNT
-  fprintf(stderr, "[ALLOC_MEMORY] %d\n", runtime->memory_blocks_count);
+  fprintf(stderr, "[ALLOC_MEMORY] %d\n", (int32_t)env->memory_blocks_count);
 #endif
-  
+  }
+  else {
+    
+  }
+
   return block;
 }
 
@@ -5808,7 +5809,7 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
     env->memory_blocks_count--;
     
 #ifdef SPVM_DEBUG_OBJECT_COUNT
-    fprintf(stderr, "[FREE_MEMORY] %d\n", runtime->memory_blocks_count);
+    fprintf(stderr, "[FREE_MEMORY] %d\n", (int32_t)env->memory_blocks_count);
 #endif
   }
 }
