@@ -25,4 +25,25 @@ EOS
   open my $spvm_module_fh, '>', $spvm_module_file
     or die "Can't open $spvm_module_file: $!";
   print $spvm_module_fh $spvm_module_content;
+
+  my $perl_module_content = <<EOS;
+=head1 NAME
+
+$package_name - Complex $type multi numeric type
+
+=head1 SYNOPSYS
+
+  my \$z : $package_name;
+  \$z->{x} = 1;
+  \$z->{y} = 2;
+  
+=head1 DESCRIPTION
+
+$package_name is Complex $type multi numeric type.
+EOS
+
+  my $perl_module_file = "lib/SPVM/Complex_2$prefix.pm";
+  open my $perl_module_fh, '>', $perl_module_file
+    or die "Can't open $perl_module_file: $!";
+  print $perl_module_fh $perl_module_content;
 }

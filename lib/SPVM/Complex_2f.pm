@@ -1,15 +1,13 @@
-package SPVM::Complex_2f;
-
-1;
-
 =head1 NAME
 
-SPVM::Complex_2f - float complex multiple numeric type
+SPVM::Complex_2f - Complex float multi numeric type
 
 =head1 SYNOPSYS
-  
-  use SPVM::Complex_2f;
 
+  my $z : SPVM::Complex_2f;
+  $z->{x} = 1;
+  $z->{y} = 2;
+  
 =head1 DESCRIPTION
 
-L<SPVM::Complex_2f> represents float complex. it is a multiple numeric type.
+SPVM::Complex_2f is Complex float multi numeric type.

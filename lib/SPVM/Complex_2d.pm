@@ -1,15 +1,13 @@
-package SPVM::Complex_2d;
-
-1;
-
 =head1 NAME
 
-SPVM::Complex_2d - double complex multiple numeric type
+SPVM::Complex_2d - Complex double multi numeric type
 
 =head1 SYNOPSYS
-  
-  use SPVM::Complex_2d;
 
+  my $z : SPVM::Complex_2d;
+  $z->{x} = 1;
+  $z->{y} = 2;
+  
 =head1 DESCRIPTION
 
-L<SPVM::Complex_2d> represents double complex. it is a multiple numeric type.
+SPVM::Complex_2d is Complex double multi numeric type.
