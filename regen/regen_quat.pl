@@ -13,7 +13,7 @@ for my $type (@types) {
   
   my $package_name = "SPVM::Quat_4$prefix";
   
-  my $package_content = <<"EOS";
+  my $spvm_module_content = <<"EOS";
 # $package_name is created by regen/regen_quat.pl
 package $package_name : mulnum_t {
   has t : $type;
@@ -22,10 +22,10 @@ package $package_name : mulnum_t {
   has z : $type;
 EOS
 
-  $package_content .= "}\n";
+  $spvm_module_content .= "}\n";
   
   my $spvm_module_file = "lib/SPVM/Quat_4$prefix.spvm";
-  open my $module_fh, '>', $spvm_module_file
+  open my $spvm_module_fh, '>', $spvm_module_file
     or die "Can't open $spvm_module_file: $!";
-  print $module_fh $package_content;
+  print $spvm_module_fh $spvm_module_content;
 }

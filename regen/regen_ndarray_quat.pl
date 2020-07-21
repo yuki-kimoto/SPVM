@@ -14,7 +14,7 @@ for my $type (@types) {
   
   my $package_name = "SPVM::NDArray::Quat" . ucfirst($type);
   
-  my $package_content = <<"EOS";
+  my $spvm_module_content = <<"EOS";
 # $package_name is created by regen/regen_ndarray_quat.pl
 package $package_name : public {
   use SPVM::Quat_4${prefix};
@@ -28,7 +28,7 @@ package $package_name : public {
 EOS
   
   my $spvm_module_file = "lib/SPVM/NDArray/Quat"  . ucfirst($type) . ".spvm";
-  open my $module_fh, '>', $spvm_module_file
+  open my $spvm_module_fh, '>', $spvm_module_file
     or die "Can't open $spvm_module_file: $!";
-  print $module_fh $package_content;
+  print $spvm_module_fh $spvm_module_content;
 }
