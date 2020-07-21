@@ -24,8 +24,8 @@ EOS
 
   $package_content .= "}\n";
   
-  my $module_file = "lib/SPVM/Quat_4$prefix.spvm";
-  open my $module_fh, '>', $module_file
-    or die "Can't open $module_file: $!";
+  my $spvm_module_file = "lib/SPVM/Quat_4$prefix.spvm";
+  open my $module_fh, '>', $spvm_module_file
+    or die "Can't open $spvm_module_file: $!";
   print $module_fh $package_content;
 }

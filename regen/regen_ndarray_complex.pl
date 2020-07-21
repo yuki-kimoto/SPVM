@@ -27,8 +27,8 @@ package $package_name : public {
 }
 EOS
   
-  my $module_file = "lib/SPVM/NDArray/Complex"  . ucfirst($type) . ".spvm";
-  open my $module_fh, '>', $module_file
-    or die "Can't open $module_file: $!";
+  my $spvm_module_file = "lib/SPVM/NDArray/Complex"  . ucfirst($type) . ".spvm";
+  open my $module_fh, '>', $spvm_module_file
+    or die "Can't open $spvm_module_file: $!";
   print $module_fh $package_content;
 }
