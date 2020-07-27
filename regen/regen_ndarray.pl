@@ -50,7 +50,7 @@ $package_name - N-Dimension Array of $type
 
 $package_name is N-Dimension Array of $type.
 
-See L<SPVM::NDArrayDoc> about Details of N-Dimension Array.
+See L<SPVM::NDArray::Document> about Details of N-Dimension Array.
 EOS
 
   my $perl_module_file = "lib/SPVM/NDArray/"  . ucfirst($type) . ".pm";
