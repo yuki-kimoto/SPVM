@@ -1,9 +1,0 @@
-# SPVM::NDArray::Double is created by regen/regen_ndarray.pl
-package SPVM::NDArray::Double : public {
-  has base : public double[];
-  has offset : public int;
-  has length : public int;
-  has T : public byte;
-  has shape : public int[];
-  has na_flags : public byte[];
-}
