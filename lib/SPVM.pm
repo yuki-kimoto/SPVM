@@ -77,6 +77,17 @@ sub bind_to_perl {
   my ($builder, $added_package_names) = @_;
   
   for my $package_name (@$added_package_names) {
+    unless ($package_name_h->{$package_name}) {
+      
+      my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
+      eval $code;
+      
+      if (my $error = $@) {
+        confess $error;
+      }
+      $package_name_h->{$package_name} = 1;
+    }
+
     my $sub_names = $builder->get_sub_names($package_name);
     
     for my $sub_name (@$sub_names) {
@@ -90,17 +101,6 @@ sub bind_to_perl {
       no strict 'refs';
       
       my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
-      unless ($package_name_h->{$package_name}) {
-        
-        my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
-        eval $code;
-        
-        if (my $error = $@) {
-          confess $error;
-        }
-        $package_name_h->{$package_name} = 1;
-      }
-      
       # Declare subroutine
       *{"$sub_abs_name"} = sub {
         SPVM::init() unless $SPVM_INITED;

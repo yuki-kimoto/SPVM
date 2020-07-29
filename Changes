@@ -1,3 +1,5 @@
+0.0904 2020-07-30
+  - fix bug that segfault occur when new a package which don't have subroutines
 0.0903 2020-07-17
   - fix big size array tests
 0.0902 2020-07-17

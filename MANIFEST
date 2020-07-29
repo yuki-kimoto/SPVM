@@ -12,6 +12,18 @@ ctest/t/spvm_t_list
 ctest/t/spvm_t_list.c
 DEVELOPMENT.txt
 doc_save.txt
+examples/native/bind_clib/bind_clib.pl
+examples/native/bind_clib/lib/BindCLib.c
+examples/native/bind_clib/lib/BindCLib.config
+examples/native/bind_clib/lib/BindCLib.native/include/bind_clib.h
+examples/native/bind_clib/lib/BindCLib.native/src/bind_clib.c
+examples/native/bind_clib/lib/BindCLib.spvm
+examples/native/cuda_add/cuda_add.pl
+examples/native/cuda_add/lib/MyAdd.config
+examples/native/cuda_add/lib/MyAdd.cu
+examples/native/cuda_add/lib/MyAdd.native/include/cuda_array_culc.h
+examples/native/cuda_add/lib/MyAdd.native/src/cuda_array_culc.cu
+examples/native/cuda_add/lib/MyAdd.spvm
 examples/native/eigen/eigen.pl
 examples/native/eigen/lib/Eigen.config
 examples/native/eigen/lib/Eigen.cpp
@@ -620,6 +632,7 @@ solo/TestCase/Inline.spvm
 solo/TestCase/List.spvm
 solo/TestCase/Minimal.spvm
 solo/TestCase/Minimal/XGetter.spvm
+solo/TestCase/OnlyField.spvm
 solo/TestCase/Point_3b.spvm
 solo/TestCase/Point_3d.spvm
 solo/TestCase/Point_3f.spvm
@@ -653,6 +666,7 @@ t/default/convert.t
 t/default/default-loaded-modules.t
 t/default/divide.t
 t/default/enum.t
+t/default/examples.t
 t/default/exception.t
 t/default/exchange-api.t
 t/default/fat-camma.t
@@ -759,6 +773,7 @@ t/default/lib/TestCase/Divide.spvm
 t/default/lib/TestCase/Empty.spvm
 t/default/lib/TestCase/Enum.spvm
 t/default/lib/TestCase/Enum/Data1.spvm
+t/default/lib/TestCase/Examples.spvm
 t/default/lib/TestCase/Exception.spvm
 t/default/lib/TestCase/ExchangeAPI.spvm
 t/default/lib/TestCase/FatCamma.spvm
@@ -832,6 +847,7 @@ t/default/lib/TestCase/NativeAPI2.native/src/noneed.txt
 t/default/lib/TestCase/NativeAPI2.spvm
 t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
+t/default/lib/TestCase/OnlyField.spvm
 t/default/lib/TestCase/PACKAGE.spvm
 t/default/lib/TestCase/PackageVar.spvm
 t/default/lib/TestCase/Point_3b.spvm
