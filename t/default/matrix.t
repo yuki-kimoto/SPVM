@@ -15,7 +15,12 @@ use SPVM 'TestCase::Lib::SPVM::Matrix';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+ok(TestCase::Lib::SPVM::Matrix->matrix_byte);
+ok(TestCase::Lib::SPVM::Matrix->matrix_short);
 ok(TestCase::Lib::SPVM::Matrix->matrix_int);
+ok(TestCase::Lib::SPVM::Matrix->matrix_long);
+ok(TestCase::Lib::SPVM::Matrix->matrix_float);
+ok(TestCase::Lib::SPVM::Matrix->matrix_double);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
