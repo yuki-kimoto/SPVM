@@ -1,0 +1,21 @@
+# SPVM::Matrix::ComplexDouble is created by regen/regen_matrix.pl
+package SPVM::Matrix::ComplexDouble {
+  has values : ro SPVM::Complex_2d[];
+  has row : ro int;
+  has col : ro int;
+  
+  sub new : SPVM::Matrix::ComplexDouble ($values : SPVM::Complex_2d[], $row : int, $col : int) {
+    unless ($values) {
+      die "Values must defined";
+    }
+
+    unless ($row * $col == scalar @$values) {
+      die "Values length must be row * col";
+    }
+    my $matrix = new SPVM::Matrix::ComplexDouble;
+    $matrix->{values} = $values;
+    $matrix->{row} = $row;
+    $matrix->{col} = $col;
+    return $matrix;
+  }
+}

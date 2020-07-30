@@ -1,0 +1,21 @@
+# SPVM::Matrix::QuatLong is created by regen/regen_matrix.pl
+package SPVM::Matrix::QuatLong {
+  has values : ro SPVM::Quat_4l[];
+  has row : ro int;
+  has col : ro int;
+  
+  sub new : SPVM::Matrix::QuatLong ($values : SPVM::Quat_4l[], $row : int, $col : int) {
+    unless ($values) {
+      die "Values must defined";
+    }
+
+    unless ($row * $col == scalar @$values) {
+      die "Values length must be row * col";
+    }
+    my $matrix = new SPVM::Matrix::QuatLong;
+    $matrix->{values} = $values;
+    $matrix->{row} = $row;
+    $matrix->{col} = $col;
+    return $matrix;
+  }
+}

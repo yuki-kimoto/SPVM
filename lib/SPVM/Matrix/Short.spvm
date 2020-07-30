@@ -1,0 +1,21 @@
+# SPVM::Matrix::Short is created by regen/regen_matrix.pl
+package SPVM::Matrix::Short {
+  has values : ro short[];
+  has row : ro int;
+  has col : ro int;
+  
+  sub new : SPVM::Matrix::Short ($values : short[], $row : int, $col : int) {
+    unless ($values) {
+      die "Values must defined";
+    }
+
+    unless ($row * $col == scalar @$values) {
+      die "Values length must be row * col";
+    }
+    my $matrix = new SPVM::Matrix::Short;
+    $matrix->{values} = $values;
+    $matrix->{row} = $row;
+    $matrix->{col} = $col;
+    return $matrix;
+  }
+}

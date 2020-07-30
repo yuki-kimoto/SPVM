@@ -1,5 +1,6 @@
 0.0905
   - remove SPVM::NDArray and related modules because SPVM::NDArray is too big and complex for SPVM Core Modules.
+  - add SPVM::Matrix related modules.
 0.0904 2020-07-30
   - fix bug that segfault occur when new a package which don't have subroutines
 0.0903 2020-07-17
