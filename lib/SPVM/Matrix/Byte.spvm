@@ -18,4 +18,23 @@ package SPVM::Matrix::Byte {
     $matrix->{col} = $col;
     return $matrix;
   }
+  
+  sub p : void ($self : self) {
+    my $values = $self->{values};
+    my $row = $self->{row};
+    my $col = $self->{col};
+    
+    my $length = $row * $col;
+    for (my $row_index = 0; $row_index < $row; $row_index++) {
+      for (my $elem_index = $row_index; $elem_index < $length; $elem_index += $row) {
+        print $values->[$elem_index];
+        if ($elem_index < $lenght - $col) {
+          print " ";
+        }
+        else {
+          print "\n";
+        }
+      }
+    }
+  }
 }

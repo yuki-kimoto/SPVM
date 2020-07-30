@@ -21,7 +21,7 @@ SPVM::Matrix::ComplexFloat is complex float Matrix.
 
 =head1 METHODS
 
-=head2 new
+=head2 new : SPVM::Matrix::ComplexFloat ($values : ${element_type}[], $row : int, $col : int)
 
   my $values = new SPVM::Complex_2f[10];
   my $row = 3;
@@ -46,23 +46,32 @@ B<Exception:>
 
 2. If Values length is different from Row * Column, a exception occurs.
 
-=head2 values
+=head2 values : ${element_type}[] ()
 
   my $values = $matrix->values;
 
 Get C<values> field. Note that get the reference of C<values> field not creating new array which elements is copied from C<values> field.
 
-=head2 row
+=head2 row : int ()
 
   my $row = $matrix->row;
 
 Get C<row> field.
 
-=head2 col
+=head2 col : int ()
 
   my $col = $matrix->col;
 
 Get C<col> field.
+
+=head2 to_string : string ()
+  
+  my $string = $matrix->to_string;
+
+Convert Matrix Content to String. Each column is joined 1 space and Each row is end with \n
+
+  1 3 5
+  2 4 6
 
 =head1 Matrix Features
 
