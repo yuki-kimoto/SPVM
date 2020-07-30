@@ -62,6 +62,25 @@ package $package_name {
     return \$matrix;
   }
   
+  sub transpose : $package_name (\$self : self) {
+    my \$row = \$self->{row};
+    my \$col = \$self->{col};
+    my \$length = \$row * \$col;
+    
+    my \$mat_trans = $package_name->new(new ${element_type}[\$length], \$col, \$row);
+    
+    my \$values = \$self->{values};
+    my \$mat_trans_values = \$mat_trans->{values};
+    
+    for (my \$row_index = 0; \$row_index < \$row; \$row_index++) {
+      for (my \$col_index = 0; \$col_index < \$col; \$col_index++) {
+        \$mat_trans_values->[\$row_index * \$col + \$col_index] = \$values->[\$col_index * \$row + \$row_index];
+      }
+    }
+    
+    return \$mat_trans;
+  }
+  
   sub str : string (\$self : self) {
     my \$values = \$self->{values};
     my \$row = \$self->{row};
@@ -75,10 +94,8 @@ package $package_name {
         if (\$elem_index < \$length - \$col + 1) {
           \$buffer->push(" ");
         }
-        else {
-          \$buffer->push("\\n");
-        }
       }
+      \$buffer->push("\\n");
     }
     
     my \$str = \$buffer->to_string;
