@@ -41,6 +41,8 @@ for my $number_category (@number_categories) {
     my $spvm_module_content = "# $package_name is created by regen/regen_matrix.pl\n";
     $spvm_module_content .= <<"EOS";
 package $package_name {
+  use SPVM::StringBuffer;
+  
   has values : ro ${element_type}[];
   has row : ro int;
   has col : ro int;
@@ -60,27 +62,32 @@ package $package_name {
     return \$matrix;
   }
   
-  sub p : void (\$self : self) {
+  sub str : string (\$self : self) {
     my \$values = \$self->{values};
     my \$row = \$self->{row};
     my \$col = \$self->{col};
-    
     my \$length = \$row * \$col;
+    
+    my \$buffer = SPVM::StringBuffer->new;
     for (my \$row_index = 0; \$row_index < \$row; \$row_index++) {
       for (my \$elem_index = \$row_index; \$elem_index < \$length; \$elem_index += \$row) {
-        print \$values->[\$elem_index];
-        if (\$elem_index < \$lenght - \$col) {
-          print " ";
+        \$buffer->push(\$values->[\$elem_index]);
+        if (\$elem_index < \$length - \$col + 1) {
+          \$buffer->push(" ");
         }
         else {
-          print "\\n";
+          \$buffer->push("\\n");
         }
       }
     }
+    
+    my \$str = \$buffer->to_string;
+    
+    return \$str;
   }
 }
 EOS
-    
+   
     open my $spvm_module_fh, '>', $spvm_module_file
       or die "Can't open $spvm_module_file: $!";
     print $spvm_module_fh $spvm_module_content;
@@ -93,8 +100,8 @@ $package_name - $number_category $type Matrix
 =head1 SYNOPSYS
   
   my \$values = new ${element_type}[10];
-  my \$row = 3;
-  my \$col = 2;
+  my \$row = 2;
+  my \$col = 3;
   my \$matrix = $package_name->new(\$values, \$row, \$col);
 
 Accessors
@@ -112,8 +119,8 @@ $package_name is $number_category $type Matrix.
 =head2 new : $package_name (\$values : \${element_type}[], \$row : int, \$col : int)
 
   my \$values = new ${element_type}[10];
-  my \$row = 3;
-  my \$col = 2;
+  my \$row = 2;
+  my \$col = 3;
   my \$matrix = $package_name->new(\$values, \$row, \$col);
 
 B<Arguments:>
@@ -179,8 +186,8 @@ Matrix is Column-major.
   # \$x11 \$x12 \$x13
   # \$x21 \$x22 \$x23
   my \$values = [\$x11, \$x21, \$x12, \$x22, \$x13, \$x23];
-  my \$row = 3;
-  my \$col = 2;
+  my \$row = 2;
+  my \$col = 3;
   my \$matrix = $package_name->new(\$values, \$row, \$col);
 
 =head2 Imutable Things

@@ -1,0 +1,35 @@
+package TestCase::Lib::SPVM::Matrix {
+  use SPVM::Matrix::Int;
+  
+  sub matrix_int : int () {
+    my $mat = SPVM::Matrix::Int->new([(int)1, 2, 3, 4, 5, 6], 2, 3);
+    my $row = $mat->row;
+    unless ($row == 2) {
+      return 0;
+    }
+    my $col = $mat->col;
+    unless ($col == 3) {
+      return 0;
+    }
+    my $values = $mat->values;
+    unless ($values->[0] == 1) {
+      return 0;
+    }
+    unless ($values->[5] == 6) {
+      return 0;
+    }
+    unless (@$values == 6) {
+      return 0;
+    }
+    unless ($values isa int[]) {
+      return 0;
+    }
+    
+    my $mat_str = $mat->str;
+    unless ($mat_str eq "1 3 5\n2 4 6\n") {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

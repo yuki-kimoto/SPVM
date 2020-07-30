@@ -5,8 +5,8 @@ SPVM::Matrix::ComplexLong - complex long Matrix
 =head1 SYNOPSYS
   
   my $values = new SPVM::Complex_2l[10];
-  my $row = 3;
-  my $col = 2;
+  my $row = 2;
+  my $col = 3;
   my $matrix = SPVM::Matrix::ComplexLong->new($values, $row, $col);
 
 Accessors
@@ -24,8 +24,8 @@ SPVM::Matrix::ComplexLong is complex long Matrix.
 =head2 new : SPVM::Matrix::ComplexLong ($values : ${element_type}[], $row : int, $col : int)
 
   my $values = new SPVM::Complex_2l[10];
-  my $row = 3;
-  my $col = 2;
+  my $row = 2;
+  my $col = 3;
   my $matrix = SPVM::Matrix::ComplexLong->new($values, $row, $col);
 
 B<Arguments:>
@@ -91,8 +91,8 @@ Matrix is Column-major.
   # $x11 $x12 $x13
   # $x21 $x22 $x23
   my $values = [$x11, $x21, $x12, $x22, $x13, $x23];
-  my $row = 3;
-  my $col = 2;
+  my $row = 2;
+  my $col = 3;
   my $matrix = SPVM::Matrix::ComplexLong->new($values, $row, $col);
 
 =head2 Imutable Things

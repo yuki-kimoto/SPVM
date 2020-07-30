@@ -1,5 +1,7 @@
 # SPVM::Matrix::Float is created by regen/regen_matrix.pl
 package SPVM::Matrix::Float {
+  use SPVM::StringBuffer;
+  
   has values : ro float[];
   has row : ro int;
   has col : ro int;
@@ -19,22 +21,27 @@ package SPVM::Matrix::Float {
     return $matrix;
   }
   
-  sub p : void ($self : self) {
+  sub str : string ($self : self) {
     my $values = $self->{values};
     my $row = $self->{row};
     my $col = $self->{col};
-    
     my $length = $row * $col;
+    
+    my $buffer = SPVM::StringBuffer->new;
     for (my $row_index = 0; $row_index < $row; $row_index++) {
       for (my $elem_index = $row_index; $elem_index < $length; $elem_index += $row) {
-        print $values->[$elem_index];
-        if ($elem_index < $lenght - $col) {
-          print " ";
+        $buffer->push($values->[$elem_index]);
+        if ($elem_index < $length - $col + 1) {
+          $buffer->push(" ");
         }
         else {
-          print "\n";
+          $buffer->push("\n");
         }
       }
     }
+    
+    my $str = $buffer->to_string;
+    
+    return $str;
   }
 }

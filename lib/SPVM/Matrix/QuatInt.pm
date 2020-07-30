@@ -5,8 +5,8 @@ SPVM::Matrix::QuatInt - quat int Matrix
 =head1 SYNOPSYS
   
   my $values = new SPVM::Quat_4i[10];
-  my $row = 3;
-  my $col = 2;
+  my $row = 2;
+  my $col = 3;
   my $matrix = SPVM::Matrix::QuatInt->new($values, $row, $col);
 
 Accessors
@@ -24,8 +24,8 @@ SPVM::Matrix::QuatInt is quat int Matrix.
 =head2 new : SPVM::Matrix::QuatInt ($values : ${element_type}[], $row : int, $col : int)
 
   my $values = new SPVM::Quat_4i[10];
-  my $row = 3;
-  my $col = 2;
+  my $row = 2;
+  my $col = 3;
   my $matrix = SPVM::Matrix::QuatInt->new($values, $row, $col);
 
 B<Arguments:>
@@ -91,8 +91,8 @@ Matrix is Column-major.
   # $x11 $x12 $x13
   # $x21 $x22 $x23
   my $values = [$x11, $x21, $x12, $x22, $x13, $x23];
-  my $row = 3;
-  my $col = 2;
+  my $row = 2;
+  my $col = 3;
   my $matrix = SPVM::Matrix::QuatInt->new($values, $row, $col);
 
 =head2 Imutable Things
