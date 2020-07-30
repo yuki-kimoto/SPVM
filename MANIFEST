@@ -796,6 +796,7 @@ t/default/lib/TestCase/Lib/SPVM/IO/Stdout.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
+t/default/lib/TestCase/Lib/SPVM/Matrix.spvm
 t/default/lib/TestCase/Lib/SPVM/ObjectList.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
@@ -883,6 +884,7 @@ t/default/literal-integer.t
 t/default/literal-string.t
 t/default/literal-undef.t
 t/default/logical-operator.t
+t/default/matrix.t
 t/default/multiply.t
 t/default/native-api.t
 t/default/numeric-operator.t
