@@ -33,7 +33,11 @@ package SPVM::Matrix::QuatShort {
     
     for (my $row_index = 0; $row_index < $row; $row_index++) {
       for (my $col_index = 0; $col_index < $col; $col_index++) {
-        $mat_trans_values->[$row_index * $col + $col_index] = $values->[$col_index * $row + $row_index];
+        $mat_trans_values->[$row_index * $col + $col_index].t = $values->[$col_index * $row + $row_index].t;
+        $mat_trans_values->[$row_index * $col + $col_index].x = $values->[$col_index * $row + $row_index].x;
+        $mat_trans_values->[$row_index * $col + $col_index].y = $values->[$col_index * $row + $row_index].y;
+        $mat_trans_values->[$row_index * $col + $col_index].z = $values->[$col_index * $row + $row_index].z;
+
       }
     }
     

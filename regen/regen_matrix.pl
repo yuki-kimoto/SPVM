@@ -38,6 +38,28 @@ for my $number_category (@number_categories) {
     $perl_module_file = $spvm_module_file;
     $perl_module_file =~ s/\.spvm$/.pm/;
     
+    my $transpose_element;
+    if ($number_category eq 'real') {
+      $transpose_element = <<"EOS"
+        \$mat_trans_values->[\$row_index * \$col + \$col_index] = \$values->[\$col_index * \$row + \$row_index];
+EOS
+    }
+    elsif ($number_category eq 'complex') {
+      $transpose_element = <<"EOS";
+        \$mat_trans_values->[\$row_index * \$col + \$col_index].x = \$values->[\$col_index * \$row + \$row_index].x;
+        \$mat_trans_values->[\$row_index * \$col + \$col_index].y = \$values->[\$col_index * \$row + \$row_index].y;
+EOS
+
+    }
+    elsif ($number_category eq 'quat') {
+      $transpose_element = <<"EOS";
+        \$mat_trans_values->[\$row_index * \$col + \$col_index].t = \$values->[\$col_index * \$row + \$row_index].t;
+        \$mat_trans_values->[\$row_index * \$col + \$col_index].x = \$values->[\$col_index * \$row + \$row_index].x;
+        \$mat_trans_values->[\$row_index * \$col + \$col_index].y = \$values->[\$col_index * \$row + \$row_index].y;
+        \$mat_trans_values->[\$row_index * \$col + \$col_index].z = \$values->[\$col_index * \$row + \$row_index].z;
+EOS
+    }
+    
     my $spvm_module_content = "# $package_name is created by regen/regen_matrix.pl\n";
     $spvm_module_content .= <<"EOS";
 package $package_name {
@@ -74,7 +96,7 @@ package $package_name {
     
     for (my \$row_index = 0; \$row_index < \$row; \$row_index++) {
       for (my \$col_index = 0; \$col_index < \$col; \$col_index++) {
-        \$mat_trans_values->[\$row_index * \$col + \$col_index] = \$values->[\$col_index * \$row + \$row_index];
+$transpose_element
       }
     }
     

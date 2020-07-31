@@ -34,6 +34,7 @@ package SPVM::Matrix::Short {
     for (my $row_index = 0; $row_index < $row; $row_index++) {
       for (my $col_index = 0; $col_index < $col; $col_index++) {
         $mat_trans_values->[$row_index * $col + $col_index] = $values->[$col_index * $row + $row_index];
+
       }
     }
     
