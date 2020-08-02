@@ -639,6 +639,7 @@ solo/TestCase/Simple.spvm
 solo/TestCase/Weaken.spvm
 solo/TestCase/Weaken2.spvm
 SPVM.xs
+t/0-use-spvm.t
 t/copy_default_to_precompile.pl
 t/default/__FILE__.t
 t/default/__LINE__.t
