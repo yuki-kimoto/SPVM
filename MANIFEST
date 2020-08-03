@@ -646,6 +646,8 @@ t/default/__LINE__.t
 t/default/__PACKAGE__.t
 t/default/add.t
 t/default/allow.t
+t/default/array-big.t
+t/default/array-middle.t
 t/default/array.t
 t/default/assign.t
 t/default/begin.t
@@ -680,6 +682,8 @@ t/default/lib/TestCase/Add.spvm
 t/default/lib/TestCase/Allow.spvm
 t/default/lib/TestCase/Allow/PrivateData.spvm
 t/default/lib/TestCase/Array.spvm
+t/default/lib/TestCase/ArrayBigSize.spvm
+t/default/lib/TestCase/ArrayMiddleSize.spvm
 t/default/lib/TestCase/Assign.spvm
 t/default/lib/TestCase/Begin.spvm
 t/default/lib/TestCase/BitNot.spvm
