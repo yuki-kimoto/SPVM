@@ -47,6 +47,10 @@ find(
         
         unless ($content =~ /:\s+callback_t\s+{/) {
           $content =~ s/\bsub\b/precompile sub/g;
+          
+          # fix sub sub
+          $content =~ s/->precompile sub/->sub/g;
+          
           $content =~ s/\bnative\s+precompile\b/native/g;
         }
         
