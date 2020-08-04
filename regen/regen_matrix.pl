@@ -173,7 +173,7 @@ $transpose_element
     }
 
     my \$self_length = \$self_row * \$self_col;
-    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_col, \$self_row);
+    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_row, \$self_col);
     my \$mat_result_values = \$mat_result->{values};
     
     for (my \$i = 0; \$i < \$self_length; \$i++) {
@@ -201,7 +201,7 @@ $transpose_element
     }
 
     my \$self_length = \$self_row * \$self_col;
-    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_col, \$self_row);
+    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_row, \$self_col);
     my \$mat_result_values = \$mat_result->{values};
     
     for (my \$i = 0; \$i < \$self_length; \$i++) {
@@ -217,7 +217,7 @@ $transpose_element
     my \$self_col = \$self->{col};
 
     my \$self_length = \$self_row * \$self_col;
-    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_col, \$self_row);
+    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_row, \$self_col);
     my \$mat_result_values = \$mat_result->{values};
     
     for (my \$i = 0; \$i < \$self_length; \$i++) {
@@ -241,7 +241,7 @@ $transpose_element
     }
 
     my \$self_length = \$self_row * \$self_col;
-    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_row, \$mat_row);
+    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_row, \$mat_col);
     my \$mat_result_values = \$mat_result->{values};
     my \$mat_result_col = \$mat_result->{col};
     my \$mat_result_row = \$mat_result->{row};
