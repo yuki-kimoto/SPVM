@@ -23,6 +23,11 @@ ok(TestCase::Lib::SPVM::Matrix->matrix_float);
 ok(TestCase::Lib::SPVM::Matrix->matrix_double);
 
 ok(TestCase::Lib::SPVM::Matrix->matrix_add_byte);
+ok(TestCase::Lib::SPVM::Matrix->matrix_add_short);
+ok(TestCase::Lib::SPVM::Matrix->matrix_add_int);
+ok(TestCase::Lib::SPVM::Matrix->matrix_add_long);
+ok(TestCase::Lib::SPVM::Matrix->matrix_add_float);
+ok(TestCase::Lib::SPVM::Matrix->matrix_add_double);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
