@@ -181,6 +181,21 @@ $transpose_element
     return \$mat_result;
   }
 
+  sub scamul : $package_name (\$self : self, \$scalar : ${element_type}) {
+    my \$self_values = \$self->{values};
+    my \$self_row = \$self->{row};
+    my \$self_col = \$self->{col};
+
+    my \$self_length = \$self_row * \$self_col;
+    my \$mat_result = $package_name->new(new ${element_type}[\$self_length], \$self_col, \$self_row);
+    my \$mat_result_values = \$mat_result->{values};
+    
+    for (my \$i = 0; \$i < \$self_length; \$i++) {
+      \$mat_result_values->[\$i] = (${element_type})(\$scalar * \$self_values->[\$i]);
+    }
+    
+    return \$mat_result;
+  }
 
 }
 EOS

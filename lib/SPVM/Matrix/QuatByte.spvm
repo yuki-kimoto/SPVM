@@ -122,4 +122,20 @@ package SPVM::Matrix::QuatByte {
     return $mat_result;
   }
 
+  sub scamul : SPVM::Matrix::QuatByte ($self : self, $scalar : SPVM::Quat_4b) {
+    my $self_values = $self->{values};
+    my $self_row = $self->{row};
+    my $self_col = $self->{col};
+
+    my $self_length = $self_row * $self_col;
+    my $mat_result = SPVM::Matrix::QuatByte->new(new SPVM::Quat_4b[$self_length], $self_col, $self_row);
+    my $mat_result_values = $mat_result->{values};
+    
+    for (my $i = 0; $i < $self_length; $i++) {
+      $mat_result_values->[$i] = (SPVM::Quat_4b)($scalar * $self_values->[$i]);
+    }
+    
+    return $mat_result;
+  }
+
 }
