@@ -93,4 +93,33 @@ package SPVM::Matrix::QuatShort {
     
     return $mat_result;
   }
+
+  sub sub : SPVM::Matrix::QuatShort ($self : self, $mat : SPVM::Matrix::QuatShort) {
+    my $self_values = $self->{values};
+    my $self_row = $self->{row};
+    my $self_col = $self->{col};
+    
+    my $mat_row = $mat->{row};
+    my $mat_col = $mat->{col};
+    my $mat_values = $mat->{values};
+    
+    if ($self_row != $mat_row) {
+      die "Self row must be equals to mat row";
+    }
+
+    if ($self_col != $mat_col) {
+      die "Self col must be equals to mat col";
+    }
+
+    my $self_length = $self_row * $self_col;
+    my $mat_result = SPVM::Matrix::QuatShort->new(new SPVM::Quat_4s[$self_length], $self_col, $self_row);
+    my $mat_result_values = $mat_result->{values};
+    
+    for (my $i = 0; $i < $self_length; $i++) {
+      $mat_result_values->[$i] = (SPVM::Quat_4s)($self_values->[$i] - $mat_values->[$i]);
+    }
+    
+    return $mat_result;
+  }
+
 }
