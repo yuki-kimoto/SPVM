@@ -37,8 +37,8 @@ package SPVM::Matrix::ComplexLong {
     return $matrix;
   }
 
-  sub new_unit : SPVM::Matrix::ComplexLong ($dim : int) {
-    unless ($dim < 1) {
+  sub new_ident : SPVM::Matrix::ComplexLong ($dim : int) {
+    if ($dim < 1) {
       die "Dimension must be more than 0";
     }
     

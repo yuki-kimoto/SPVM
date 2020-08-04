@@ -100,8 +100,8 @@ package $package_name {
     return \$matrix;
   }
 
-  sub new_unit : $package_name (\$dim : int) {
-    unless (\$dim < 1) {
+  sub new_ident : $package_name (\$dim : int) {
+    if (\$dim < 1) {
       die "Dimension must be more than 0";
     }
     

@@ -50,6 +50,8 @@ ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_long);
 ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_float);
 ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_double);
 
+ok(TestCase::Lib::SPVM::Matrix->matrix_new_ident_byte);
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

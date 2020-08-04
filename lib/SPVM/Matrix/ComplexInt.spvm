@@ -37,8 +37,8 @@ package SPVM::Matrix::ComplexInt {
     return $matrix;
   }
 
-  sub new_unit : SPVM::Matrix::ComplexInt ($dim : int) {
-    unless ($dim < 1) {
+  sub new_ident : SPVM::Matrix::ComplexInt ($dim : int) {
+    if ($dim < 1) {
       die "Dimension must be more than 0";
     }
     
