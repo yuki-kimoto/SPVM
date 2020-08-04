@@ -1,3 +1,5 @@
+0.0906
+  - add add,sub,scamul,mul,new_ident,new_zero method to SPVM::Matrix::* class.
 0.0905
   - remove SPVM::NDArray and related modules because SPVM::NDArray is too big and complex for SPVM Core Modules.
   - add SPVM::Matrix related modules.
