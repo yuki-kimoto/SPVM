@@ -136,4 +136,34 @@ package SPVM::Matrix::ComplexByte {
     return $mat_result;
   }
 
+  sub mul : SPVM::Matrix::ComplexByte ($self : self, $mat : SPVM::Matrix::ComplexByte) {
+    my $self_values = $self->{values};
+    my $self_row = $self->{row};
+    my $self_col = $self->{col};
+    
+    my $mat_row = $mat->{row};
+    my $mat_col = $mat->{col};
+    my $mat_values = $mat->{values};
+    
+    if ($self_col != $mat_row) {
+      die "Self col must be equals to mat row";
+    }
+
+    my $self_length = $self_row * $self_col;
+    my $mat_result = SPVM::Matrix::ComplexByte->new(new SPVM::Complex_2b[$self_length], $self_row, $mat_row);
+    my $mat_result_values = $mat_result->{values};
+    my $mat_result_col = $mat_result->{col};
+    my $mat_result_row = $mat_result->{row};
+    
+    for(my $i = 0; $i < $self_row; $i++) {
+      for(my $j = 0; $j < $mat_col; $j++) {
+        for(my $k = 0; $k < $self_col; $k++) {
+          $mat_result_values->[$i * $mat_result_col + $j]  += + $self_values->[$i * $self_col + $k] * $mat_values->[$k * $mat_col + $j];
+        }
+      }
+    }
+    
+    return $mat_result;
+  }
+
 }
