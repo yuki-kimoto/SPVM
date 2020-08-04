@@ -43,6 +43,13 @@ ok(TestCase::Lib::SPVM::Matrix->matrix_scamul_long);
 ok(TestCase::Lib::SPVM::Matrix->matrix_scamul_float);
 ok(TestCase::Lib::SPVM::Matrix->matrix_scamul_double);
 
+ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_byte);
+ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_short);
+ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_int);
+ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_long);
+ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_float);
+ok(TestCase::Lib::SPVM::Matrix->matrix_new_zero_double);
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

@@ -763,4 +763,117 @@ package TestCase::Lib::SPVM::Matrix {
     return 1;
   }
 
+  sub matrix_new_zero_byte : byte () {
+    my $mat1 = SPVM::Matrix::Byte->new_zero(2, 3);
+    
+    unless ($mat1->values isa byte[]) {
+      return 0;
+    }
+    
+    unless ($mat1->row == 2 && $mat1->col == 3) {
+      return 0;
+    }
+    
+    
+    unless (equals_barray($mat1->values, [(byte)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub matrix_new_zero_short : short () {
+    my $mat1 = SPVM::Matrix::Short->new_zero(2, 3);
+    
+    unless ($mat1->values isa short[]) {
+      return 0;
+    }
+    
+    unless ($mat1->row == 2 && $mat1->col == 3) {
+      return 0;
+    }
+    
+    
+    unless (equals_sarray($mat1->values, [(short)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub matrix_new_zero_int : int () {
+    my $mat1 = SPVM::Matrix::Int->new_zero(2, 3);
+    
+    unless ($mat1->values isa int[]) {
+      return 0;
+    }
+    
+    unless ($mat1->row == 2 && $mat1->col == 3) {
+      return 0;
+    }
+    
+    
+    unless (equals_iarray($mat1->values, [(int)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub matrix_new_zero_long : long () {
+    my $mat1 = SPVM::Matrix::Long->new_zero(2, 3);
+    
+    unless ($mat1->values isa long[]) {
+      return 0;
+    }
+    
+    unless ($mat1->row == 2 && $mat1->col == 3) {
+      return 0;
+    }
+    
+    
+    unless (equals_larray($mat1->values, [(long)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub matrix_new_zero_float : float () {
+    my $mat1 = SPVM::Matrix::Float->new_zero(2, 3);
+    
+    unless ($mat1->values isa float[]) {
+      return 0;
+    }
+    
+    unless ($mat1->row == 2 && $mat1->col == 3) {
+      return 0;
+    }
+    
+    
+    unless (equals_farray($mat1->values, [(float)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub matrix_new_zero_double : double () {
+    my $mat1 = SPVM::Matrix::Double->new_zero(2, 3);
+    
+    unless ($mat1->values isa double[]) {
+      return 0;
+    }
+    
+    unless ($mat1->row == 2 && $mat1->col == 3) {
+      return 0;
+    }
+    
+    
+    unless (equals_darray($mat1->values, [(double)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+    
+    return 1;
+  }
 }
