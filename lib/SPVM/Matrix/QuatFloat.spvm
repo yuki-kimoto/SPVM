@@ -20,7 +20,37 @@ package SPVM::Matrix::QuatFloat {
     $matrix->{col} = $col;
     return $matrix;
   }
-  
+
+  sub new_zero : SPVM::Matrix::QuatFloat ($row : int, $col : int) {
+
+    unless ($row > 0) {
+      die "Row must be more than 0";
+    }
+    unless ($col > 0) {
+      die "Col must be more than 0";
+    }
+    my $matrix = new SPVM::Matrix::QuatFloat;
+    my $length = $row * $col;
+    $matrix->{values} = new  SPVM::Quat_4f[$length];
+    $matrix->{row} = $row;
+    $matrix->{col} = $col;
+    return $matrix;
+  }
+
+  sub new_unit : SPVM::Matrix::QuatFloat ($dim : int) {
+    unless ($dim < 1) {
+      die "Dimension must be more than 0";
+    }
+    
+    my $matrix = SPVM::Matrix::QuatFloat->new_zero($dim, $dim);
+    my $values = $matrix->{values};
+    for (my $i = 0; $i < $dim; $i++) {
+      $values->[$i * $dim + $i] = 1;
+    }
+
+    return $matrix;
+  }
+
   sub transpose : SPVM::Matrix::QuatFloat ($self : self) {
     my $row = $self->{row};
     my $col = $self->{col};

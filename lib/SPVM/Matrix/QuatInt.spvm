@@ -20,7 +20,37 @@ package SPVM::Matrix::QuatInt {
     $matrix->{col} = $col;
     return $matrix;
   }
-  
+
+  sub new_zero : SPVM::Matrix::QuatInt ($row : int, $col : int) {
+
+    unless ($row > 0) {
+      die "Row must be more than 0";
+    }
+    unless ($col > 0) {
+      die "Col must be more than 0";
+    }
+    my $matrix = new SPVM::Matrix::QuatInt;
+    my $length = $row * $col;
+    $matrix->{values} = new  SPVM::Quat_4i[$length];
+    $matrix->{row} = $row;
+    $matrix->{col} = $col;
+    return $matrix;
+  }
+
+  sub new_unit : SPVM::Matrix::QuatInt ($dim : int) {
+    unless ($dim < 1) {
+      die "Dimension must be more than 0";
+    }
+    
+    my $matrix = SPVM::Matrix::QuatInt->new_zero($dim, $dim);
+    my $values = $matrix->{values};
+    for (my $i = 0; $i < $dim; $i++) {
+      $values->[$i * $dim + $i] = 1;
+    }
+
+    return $matrix;
+  }
+
   sub transpose : SPVM::Matrix::QuatInt ($self : self) {
     my $row = $self->{row};
     my $col = $self->{col};

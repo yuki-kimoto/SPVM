@@ -83,7 +83,37 @@ package $package_name {
     \$matrix->{col} = \$col;
     return \$matrix;
   }
-  
+
+  sub new_zero : $package_name (\$row : int, \$col : int) {
+
+    unless (\$row > 0) {
+      die "Row must be more than 0";
+    }
+    unless (\$col > 0) {
+      die "Col must be more than 0";
+    }
+    my \$matrix = new $package_name;
+    my \$length = \$row * \$col;
+    \$matrix->{values} = new  ${element_type}[\$length];
+    \$matrix->{row} = \$row;
+    \$matrix->{col} = \$col;
+    return \$matrix;
+  }
+
+  sub new_unit : $package_name (\$dim : int) {
+    unless (\$dim < 1) {
+      die "Dimension must be more than 0";
+    }
+    
+    my \$matrix = $package_name->new_zero(\$dim, \$dim);
+    my \$values = \$matrix->{values};
+    for (my \$i = 0; \$i < \$dim; \$i++) {
+      \$values->[\$i * \$dim + \$i] = 1;
+    }
+
+    return \$matrix;
+  }
+
   sub transpose : $package_name (\$self : self) {
     my \$row = \$self->{row};
     my \$col = \$self->{col};

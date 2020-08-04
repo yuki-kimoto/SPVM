@@ -20,7 +20,37 @@ package SPVM::Matrix::QuatLong {
     $matrix->{col} = $col;
     return $matrix;
   }
-  
+
+  sub new_zero : SPVM::Matrix::QuatLong ($row : int, $col : int) {
+
+    unless ($row > 0) {
+      die "Row must be more than 0";
+    }
+    unless ($col > 0) {
+      die "Col must be more than 0";
+    }
+    my $matrix = new SPVM::Matrix::QuatLong;
+    my $length = $row * $col;
+    $matrix->{values} = new  SPVM::Quat_4l[$length];
+    $matrix->{row} = $row;
+    $matrix->{col} = $col;
+    return $matrix;
+  }
+
+  sub new_unit : SPVM::Matrix::QuatLong ($dim : int) {
+    unless ($dim < 1) {
+      die "Dimension must be more than 0";
+    }
+    
+    my $matrix = SPVM::Matrix::QuatLong->new_zero($dim, $dim);
+    my $values = $matrix->{values};
+    for (my $i = 0; $i < $dim; $i++) {
+      $values->[$i * $dim + $i] = 1;
+    }
+
+    return $matrix;
+  }
+
   sub transpose : SPVM::Matrix::QuatLong ($self : self) {
     my $row = $self->{row};
     my $col = $self->{col};
