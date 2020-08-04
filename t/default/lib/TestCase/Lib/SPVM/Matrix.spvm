@@ -620,4 +620,147 @@ package TestCase::Lib::SPVM::Matrix {
     return 1;
   }
 
+  sub matrix_scamul_byte : byte () {
+    my $mat1 = SPVM::Matrix::Byte->new([(byte)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = $mat1->scamul((byte)3);
+    
+    unless ($mat2->values isa byte[]) {
+      return 0;
+    }
+    
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->row == 2 && $mat2->col == 3) {
+      return 0;
+    }
+    
+    unless (equals_barray($mat2->values, [(byte)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+
+  sub matrix_scamul_short : short () {
+    my $mat1 = SPVM::Matrix::Short->new([(short)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = $mat1->scamul((short)3);
+    
+    unless ($mat2->values isa short[]) {
+      return 0;
+    }
+    
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->row == 2 && $mat2->col == 3) {
+      return 0;
+    }
+    
+    unless (equals_sarray($mat2->values, [(short)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+
+  sub matrix_scamul_int : int () {
+    my $mat1 = SPVM::Matrix::Int->new([(int)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = $mat1->scamul((int)3);
+    
+    unless ($mat2->values isa int[]) {
+      return 0;
+    }
+    
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->row == 2 && $mat2->col == 3) {
+      return 0;
+    }
+    
+    unless (equals_iarray($mat2->values, [(int)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+
+  sub matrix_scamul_long : long () {
+    my $mat1 = SPVM::Matrix::Long->new([(long)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = $mat1->scamul((long)3);
+    
+    unless ($mat2->values isa long[]) {
+      return 0;
+    }
+    
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->row == 2 && $mat2->col == 3) {
+      return 0;
+    }
+    
+    unless (equals_larray($mat2->values, [(long)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+
+  sub matrix_scamul_float : float () {
+    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = $mat1->scamul((float)3);
+    
+    unless ($mat2->values isa float[]) {
+      return 0;
+    }
+    
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->row == 2 && $mat2->col == 3) {
+      return 0;
+    }
+    
+    unless (equals_farray($mat2->values, [(float)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+
+  sub matrix_scamul_double : double () {
+    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = $mat1->scamul((double)3);
+    
+    unless ($mat2->values isa double[]) {
+      return 0;
+    }
+    
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->row == 2 && $mat2->col == 3) {
+      return 0;
+    }
+    
+    unless (equals_darray($mat2->values, [(double)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }
