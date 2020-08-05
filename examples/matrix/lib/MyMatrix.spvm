@@ -12,6 +12,45 @@ package MyMatrix {
     
     my $mat3 = $mat1->add($mat2);
     
-    print $mat3->str;
+    print $mat3->str . "\n";
+  }
+
+  sub sub_float_matrix : void () {
+    # 1 3 5
+    # 2 4 6
+    my $mat1 = SPVM::Matrix::Float->new([1f, 2f, 3f, 4f, 5f, 6f], 2, 3);
+    
+    # 2 4 6
+    # 3 5 7
+    my $mat2 = SPVM::Matrix::Float->new([2f, 3f, 4f, 5f, 6f, 7f], 2, 3);
+    
+    my $mat3 = $mat1->sub($mat2);
+    
+    print $mat3->str . "\n";
+  }
+
+  sub scamul_float_matrix : void () {
+    # 1 3 5
+    # 2 4 6
+    my $mat1 = SPVM::Matrix::Float->new([1f, 2f, 3f, 4f, 5f, 6f], 2, 3);
+    
+    my $mat3 = $mat1->scamul(3f);
+    
+    print $mat3->str . "\n";
+  }
+
+  sub mul_float_matrix : void () {
+    # 1 3 5
+    # 2 4 6
+    my $mat1 = SPVM::Matrix::Float->new([1f, 2f, 3f, 4f, 5f, 6f], 2, 3);
+    
+    # 2 5
+    # 3 6
+    # 4 7
+    my $mat2 = SPVM::Matrix::Float->new([2f, 3f, 4f, 5f, 6f, 7f], 3, 2);
+    
+    my $mat3 = $mat1->mul($mat2);
+    
+    print $mat3->str . "\n";
   }
 }

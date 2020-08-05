@@ -8,10 +8,8 @@ use SPVM 'MyMatrix';
 
 MyMatrix->add_float_matrix;
 
-=pod
 MyMatrix->sub_float_matrix;
 
-MyMatrix->scamal_float_matrix;
+MyMatrix->scamul_float_matrix;
 
-MyMatrix->mal_float_matrix;
-=cut
+MyMatrix->mul_float_matrix;
