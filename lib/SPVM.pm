@@ -449,43 +449,17 @@ SPVM Core Modules.
 
 =item * L<SPVM::Math>
 
-=item * L<SPVM::NDArray::Byte>
+=item * L<SPVM::Matrix::Byte>
 
-=item * L<SPVM::NDArray::ComplexByte>
+=item * L<SPVM::Matrix::Double>
 
-=item * L<SPVM::NDArray::ComplexDouble>
+=item * L<SPVM::Matrix::Float>
 
-=item * L<SPVM::NDArray::ComplexFloat>
+=item * L<SPVM::Matrix::Int>
 
-=item * L<SPVM::NDArray::ComplexInt>
+=item * L<SPVM::Matrix::Long>
 
-=item * L<SPVM::NDArray::ComplexLong>
-
-=item * L<SPVM::NDArray::ComplexShort>
-
-=item * L<SPVM::NDArray::Double>
-
-=item * L<SPVM::NDArray::Float>
-
-=item * L<SPVM::NDArray::Int>
-
-=item * L<SPVM::NDArray::Long>
-
-=item * L<SPVM::NDArray::QuatByte>
-
-=item * L<SPVM::NDArray::QuatDouble>
-
-=item * L<SPVM::NDArray::QuatFloat>
-
-=item * L<SPVM::NDArray::QuatInt>
-
-=item * L<SPVM::NDArray::QuatLong>
-
-=item * L<SPVM::NDArray::QuatShort>
-
-=item * L<SPVM::NDArray::Short>
-
-=item * L<SPVM::NDArray::String>
+=item * L<SPVM::Matrix::Short>
 
 =item * L<SPVM::ObjectList>
 
