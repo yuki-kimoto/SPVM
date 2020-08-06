@@ -250,7 +250,7 @@ $transpose_element
       for(my \$col = 0; \$col < \$mat_col; \$col++) {
         for(my \$incol = 0; \$incol < \$self_col; \$incol++) {
           \$mat_result_values->[\$row + \$col * \$mat_result_row]
-           = (${element_type})(\$mat_result_values->[\$row + \$col * \$mat_result_row] + \$self_values->[\$row + \$incol * \$self_row] * \$mat_values->[\$incol + \$col * \$mat_row]);
+           += \$self_values->[\$row + \$incol * \$self_row] * \$mat_values->[\$incol + \$col * \$mat_row];
         }
       }
     }
