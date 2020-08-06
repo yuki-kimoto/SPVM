@@ -260,4 +260,43 @@ package SPVM::Math {
     return $q_out;
   }
 
+  sub qscamuli : SPVM::Quat_4i ($c : int, $q2 : SPVM::Quat_4i) {
+    my $q_out : SPVM::Quat_4i;
+    $q_out->{t} = $c * $q2->{t};
+    $q_out->{x} = $c * $q2->{x};
+    $q_out->{y} = $c * $q2->{y};
+    $q_out->{z} = $c * $q2->{z};
+    
+    return $q_out;
+  }
+
+  sub qscamull : SPVM::Quat_4l ($c : long, $q2 : SPVM::Quat_4l) {
+    my $q_out : SPVM::Quat_4l;
+    $q_out->{t} = $c * $q2->{t};
+    $q_out->{x} = $c * $q2->{x};
+    $q_out->{y} = $c * $q2->{y};
+    $q_out->{z} = $c * $q2->{z};
+    
+    return $q_out;
+  }
+
+  sub qscamulf : SPVM::Quat_4f ($c : float, , $q2 : SPVM::Quat_4f) {
+    my $q_out : SPVM::Quat_4f;
+    $q_out->{t} = $c * $q2->{t};
+    $q_out->{x} = $c * $q2->{x};
+    $q_out->{y} = $c * $q2->{y};
+    $q_out->{z} = $c * $q2->{z};
+    
+    return $q_out;
+  }
+
+  sub qscamuld : SPVM::Quat_4d ($c : double, , $q2 : SPVM::Quat_4d) {
+    my $q_out : SPVM::Quat_4d;
+    $q_out->{t} = $c * $q2->{t};
+    $q_out->{x} = $c * $q2->{x};
+    $q_out->{y} = $c * $q2->{y};
+    $q_out->{z} = $c * $q2->{z};
+    
+    return $q_out;
+  }
 }
