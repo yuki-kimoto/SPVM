@@ -1,0 +1,13 @@
+use strict;
+use warnings;
+
+use Test::More tests => 1;
+
+use FindBin;
+use lib "$FindBin::Bin/lib";
+
+use SPVM 'MinimalSub';
+
+MinimalSub->foo;
+
+ok(1);
