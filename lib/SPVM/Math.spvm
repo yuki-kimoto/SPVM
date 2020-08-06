@@ -299,4 +299,28 @@ package SPVM::Math {
     
     return $q_out;
   }
+
+  sub qabsi : int ($q : SPVM::Quat_4i) {
+    my $q_out = $q->{t} * $q->{t} + $q->{x} * $q->{x} + $q->{y} * $q->{y} + $q->{z} * $q->{z};
+    
+    return $q_out;
+  }
+
+  sub qabsl : long ($q : SPVM::Quat_4l) {
+    my $q_out = $q->{t} * $q->{t} + $q->{x} * $q->{x} + $q->{y} * $q->{y} + $q->{z} * $q->{z};
+    
+    return $q_out;
+  }
+
+  sub qabsf : float ($q : SPVM::Quat_4f) {
+    my $q_out = $q->{t} * $q->{t} + $q->{x} * $q->{x} + $q->{y} * $q->{y} + $q->{z} * $q->{z};
+    
+    return $q_out;
+  }
+
+  sub qabsd : double ($q : SPVM::Quat_4d) {
+    my $q_out = $q->{t} * $q->{t} + $q->{x} * $q->{x} + $q->{y} * $q->{y} + $q->{z} * $q->{z};
+    
+    return $q_out;
+  }
 }
