@@ -47,7 +47,7 @@ $package_name - Quaternion $type multi numeric type
 $package_name is Quaternion $type multi numeric type.
 EOS
 
-  my $perl_module_file = "lib/SPVM/Quat_2$prefix.pm";
+  my $perl_module_file = "lib/SPVM/Quat_4$prefix.pm";
   open my $perl_module_fh, '>', $perl_module_file
     or die "Can't open $perl_module_file: $!";
   print $perl_module_fh $perl_module_content;

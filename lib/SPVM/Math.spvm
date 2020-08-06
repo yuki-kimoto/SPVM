@@ -1,4 +1,9 @@
 package SPVM::Math {
+  use SPVM::Quat_4i;
+  use SPVM::Quat_4l;
+  use SPVM::Quat_4f;
+  use SPVM::Quat_4d;
+  
   native sub HUGE_VALF : float ();
   native sub INFINITYF : float ();
   native sub NANF : float ();
@@ -174,4 +179,14 @@ package SPVM::Math {
   native sub islessgreaterf : int ($x1 : float, $x2 : float);
   native sub isunordered : int ($x1 : double, $x2 : double);
   native sub isunorderedf : int ($x1 : float, $x2 : float);
+  
+  sub qaddi : SPVM::Quat_4i ($q1 : SPVM::Quat_4i, $q2 : SPVM::Quat_4i) {
+    my $q_out : SPVM::Quat_4i;
+    $q_out->{t} = $q1->{t} + $q2->{t};
+    $q_out->{x} = $q1->{x} + $q2->{x};
+    $q_out->{y} = $q1->{y} + $q2->{y};
+    $q_out->{z} = $q1->{z} + $q2->{z};
+    
+    return $q_out;
+  }
 }
