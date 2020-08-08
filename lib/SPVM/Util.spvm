@@ -1621,4 +1621,32 @@ package SPVM::Util {
     my $ret = sqrt($val->{x} * $val->{x} + $val->{y} * $val->{y});
     return $ret;
   }
+
+  precompile sub cconi : SPVM::Complex_2i ($val : SPVM::Complex_2i) {
+    my $ret : SPVM::Complex_2i;
+    $ret->{x} = $val->{x};
+    $ret->{y} = -$val->{y};
+    return $ret;
+  }
+
+  precompile sub cconl : SPVM::Complex_2l ($val : SPVM::Complex_2l) {
+    my $ret : SPVM::Complex_2l;
+    $ret->{x} = $val->{x};
+    $ret->{y} = -$val->{y};
+    return $ret;
+  }
+
+  precompile sub cconf : SPVM::Complex_2f ($val : SPVM::Complex_2f) {
+    my $ret : SPVM::Complex_2f;
+    $ret->{x} = $val->{x};
+    $ret->{y} = -$val->{y};
+    return $ret;
+  }
+
+  precompile sub ccond : SPVM::Complex_2d ($val : SPVM::Complex_2d) {
+    my $ret : SPVM::Complex_2d;
+    $ret->{x} = $val->{x};
+    $ret->{y} = -$val->{y};
+    return $ret;
+  }
 }
