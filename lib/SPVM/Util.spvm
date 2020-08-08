@@ -1561,4 +1561,44 @@ package SPVM::Util {
     $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
     return $c;
   }
+
+  precompile sub cdivi : SPVM::Complex_2i ($a : SPVM::Complex_2i, $b : SPVM::Complex_2i) {
+    my $c : SPVM::Complex_2i;
+    if ($b->{x} == 0 || $b->{y} == 0) {
+      die "Division by 0";
+    }
+    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    return $c;
+  }
+
+  precompile sub cdivl : SPVM::Complex_2l ($a : SPVM::Complex_2l, $b : SPVM::Complex_2l) {
+    my $c : SPVM::Complex_2l;
+    if ($b->{x} == 0 || $b->{y} == 0) {
+      die "Division by 0";
+    }
+    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    return $c;
+  }
+
+  precompile sub cdivf : SPVM::Complex_2f ($a : SPVM::Complex_2f, $b : SPVM::Complex_2f) {
+    my $c : SPVM::Complex_2f;
+    if ($b->{x} == 0 || $b->{y} == 0) {
+      die "Division by 0";
+    }
+    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    return $c;
+  }
+
+  precompile sub cdivd : SPVM::Complex_2d ($a : SPVM::Complex_2d, $b : SPVM::Complex_2d) {
+    my $c : SPVM::Complex_2d;
+    if ($b->{x} == 0 || $b->{y} == 0) {
+      die "Division by 0";
+    }
+    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
+    return $c;
+  }
 }
