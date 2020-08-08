@@ -425,6 +425,11 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_cabsl);
   ok(TestCase::Lib::SPVM::Util->test_cabsf);
   ok(TestCase::Lib::SPVM::Util->test_cabsd);
+
+  ok(TestCase::Lib::SPVM::Util->test_cconi);
+  ok(TestCase::Lib::SPVM::Util->test_cconl);
+  ok(TestCase::Lib::SPVM::Util->test_cconf);
+  ok(TestCase::Lib::SPVM::Util->test_ccond);
 }
 
 # getenv
