@@ -2833,4 +2833,80 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
+
+  sub test_cdivi : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = 2;
+    $c1->{y} = 5;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = 3;
+    $c2->{y} = -2;
+
+    my $c3 = cdivi($c1, $c2);
+
+    unless ($c3->{x} == -4/13 && $c3->{y} == 19/13) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivl : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = 20000000000L;
+    $c1->{y} = 50000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = 3L;
+    $c2->{y} = -2L;
+
+    my $c3 = cdivl($c1, $c2);
+
+    unless ($c3->{x} == -40000000000L/13 && $c3->{y} == 190000000000L/13) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 0.2f;
+    $c1->{y} = 0.5f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 0.3f;
+    $c2->{y} = -0.2f;
+
+    my $c3 = cdivf($c1, $c2);
+
+    unless (fabsf($c3->{x} + 4.0f/13.0f) < $eps && fabsf($c3->{y} - 19.0f/13.0f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivd : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 0.2;
+    $c1->{y} = 0.5;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 0.3;
+    $c2->{y} = -0.2;
+
+    my $c3 = cdivd($c1, $c2);
+
+    unless (fabs($c3->{x} + 4.0/13.0) < $eps && fabs($c3->{y} - 19.0/13.0) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
 }

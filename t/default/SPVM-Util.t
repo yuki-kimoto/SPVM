@@ -416,6 +416,10 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_cmull);
   ok(TestCase::Lib::SPVM::Util->test_cmulf);
   ok(TestCase::Lib::SPVM::Util->test_cmuld);
+  ok(TestCase::Lib::SPVM::Util->test_cdivi);
+  ok(TestCase::Lib::SPVM::Util->test_cdivl);
+  ok(TestCase::Lib::SPVM::Util->test_cdivf);
+  ok(TestCase::Lib::SPVM::Util->test_cdivd);
 }
 
 # getenv
