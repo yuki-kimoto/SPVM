@@ -2909,4 +2909,52 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
+
+  sub test_cabsi : int () {
+    my $c : SPVM::Complex_2i;
+    $c->{x} = 300000;
+    $c->{y} = 400000;
+
+    unless (cabsi($c) == 500000) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsl : int () {
+    my $c : SPVM::Complex_2l;
+    $c->{x} = 300000L;
+    $c->{y} = 400000L;
+
+    unless (cabsl($c) == 500000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsf : int () {
+    my $c : SPVM::Complex_2f;
+    $c->{x} = 0.3f;
+    $c->{y} = 0.4f;
+
+    unless (cabsf($c) == 0.5f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsd : int () {
+    my $c : SPVM::Complex_2d;
+    $c->{x} = 0.3;
+    $c->{y} = 0.4;
+
+    unless (cabsd($c) == 0.5) {
+      return 0;
+    }
+
+    return 1;
+  }
 }
