@@ -1601,4 +1601,24 @@ package SPVM::Util {
     $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
     return $c;
   }
+
+  precompile sub cabsi : int ($val : SPVM::Complex_2i) {
+    my $ret = (int)sqrt((double)$val->{x} * $val->{x} + (double)$val->{y} * $val->{y});
+    return $ret;
+  }
+
+  precompile sub cabsl : long ($val : SPVM::Complex_2l) {
+    my $ret = (long)sqrt((double)$val->{x} * $val->{x} + (double)$val->{y} * $val->{y});
+    return $ret;
+  }
+
+  precompile sub cabsf : float ($val : SPVM::Complex_2f) {
+    my $ret = sqrtf($val->{x} * $val->{x} + $val->{y} * $val->{y});
+    return $ret;
+  }
+
+  precompile sub cabsd : double ($val : SPVM::Complex_2d) {
+    my $ret = sqrt($val->{x} * $val->{x} + $val->{y} * $val->{y});
+    return $ret;
+  }
 }
