@@ -2757,4 +2757,80 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
+
+  sub test_cmuli : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = -2;
+    $c1->{y} = 1;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = -1;
+    $c2->{y} = 3;
+
+    my $c3 = cmuli($c1, $c2);
+
+    unless ($c3->{x} == -1 && $c3->{y} == -7) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmull : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = -20000000000L;
+    $c1->{y} = 10000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = -1L;
+    $c2->{y} = 3L;
+
+    my $c3 = cmull($c1, $c2);
+
+    unless ($c3->{x} == -10000000000L && $c3->{y} == -70000000000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmulf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = -0.2f;
+    $c1->{y} = 0.1f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = -0.1f;
+    $c2->{y} = 0.3f;
+
+    my $c3 = cmulf($c1, $c2);
+
+    unless (fabsf($c3->{x} + 0.01f) < $eps && fabsf($c3->{y} + 0.07f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmuld : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = -2e15;
+    $c1->{y} = 1e15;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = -1.0;
+    $c2->{y} = 3.0;
+
+    my $c3 = cmuld($c1, $c2);
+
+    unless (fabs($c3->{x} + 1e15) < $eps && fabs($c3->{y} + 7e15) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
 }
