@@ -408,6 +408,10 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_caddl);
   ok(TestCase::Lib::SPVM::Util->test_caddf);
   ok(TestCase::Lib::SPVM::Util->test_caddd);
+  ok(TestCase::Lib::SPVM::Util->test_csubi);
+  ok(TestCase::Lib::SPVM::Util->test_csubl);
+  ok(TestCase::Lib::SPVM::Util->test_csubf);
+  ok(TestCase::Lib::SPVM::Util->test_csubd);
 }
 
 # getenv

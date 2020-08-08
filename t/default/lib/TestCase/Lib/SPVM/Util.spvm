@@ -2681,4 +2681,80 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
+
+  sub test_csubi : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = 1;
+    $c1->{y} = 2;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = 3;
+    $c2->{y} = 4;
+
+    my $c3 = csubi($c1, $c2);
+
+    unless ($c3->{x} == -2 && $c3->{y} == -2) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubl : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = 10000000000L;
+    $c1->{y} = 20000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = 30000000000L;
+    $c2->{y} = 40000000000L;
+
+    my $c3 = csubl($c1, $c2);
+
+    unless ($c3->{x} == -20000000000L && $c3->{y} == -20000000000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 1.1f;
+    $c1->{y} = 2.2f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 3.3f;
+    $c2->{y} = 4.4f;
+
+    my $c3 = csubf($c1, $c2);
+
+    unless (fabsf($c3->{x} + 2.2f) < $eps && fabsf($c3->{y} + 2.2f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubd : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 1e15;
+    $c1->{y} = 2e15;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 3e15;
+    $c2->{y} = 4e15;
+
+    my $c3 = csubd($c1, $c2);
+
+    unless (fabs($c3->{x} + 2e15) < $eps && fabs($c3->{y} + 2e15) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
 }
