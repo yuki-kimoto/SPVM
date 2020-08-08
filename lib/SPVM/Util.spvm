@@ -1533,4 +1533,32 @@ package SPVM::Util {
     $c->{y} = $a->{y} - $b->{y};
     return $c;
   }
+
+  precompile sub cmuli : SPVM::Complex_2i ($a : SPVM::Complex_2i, $b : SPVM::Complex_2i) {
+    my $c : SPVM::Complex_2i;
+    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
+    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
+    return $c;
+  }
+
+  precompile sub cmull : SPVM::Complex_2l ($a : SPVM::Complex_2l, $b : SPVM::Complex_2l) {
+    my $c : SPVM::Complex_2l;
+    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
+    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
+    return $c;
+  }
+
+  precompile sub cmulf : SPVM::Complex_2f ($a : SPVM::Complex_2f, $b : SPVM::Complex_2f) {
+    my $c : SPVM::Complex_2f;
+    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
+    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
+    return $c;
+  }
+
+  precompile sub cmuld : SPVM::Complex_2d ($a : SPVM::Complex_2d, $b : SPVM::Complex_2d) {
+    my $c : SPVM::Complex_2d;
+    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
+    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
+    return $c;
+  }
 }
