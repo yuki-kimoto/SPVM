@@ -1,8 +1,9 @@
 package TestCase::Lib::SPVM::Util {
   use SPVM::Util(joino, split, copy_oarray, equals_oarray, sprintf);
-  
+
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
+  use SPVM::Math (fabsf, fabs);
   use SPVM::Util (equals_strarray, contains);
   use SPVM::Util (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   use TestCase::Minimal;
@@ -95,6 +96,30 @@ package TestCase::Lib::SPVM::Util {
     memmoved,
     new_object_array_proto,
     sliceo,
+    caddi,
+    caddl,
+    caddf,
+    caddd,
+    csubi,
+    csubl,
+    csubf,
+    csubd,
+    cmuli,
+    cmull,
+    cmulf,
+    cmuld,
+    cdivi,
+    cdivl,
+    cdivf,
+    cdivd,
+    cabsi,
+    cabsl,
+    cabsf,
+    cabsd,
+    cconi,
+    cconl,
+    cconf,
+    ccond,
   );
 
   sub test_equals_oarray : int () {
@@ -111,7 +136,7 @@ package TestCase::Lib::SPVM::Util {
     my $equality_checker = sub : int ($self : self, $obj1 : object, $obj2 : object) {
       my $minimal1 = (TestCase::Minimal)$obj1;
       my $minimal2 = (TestCase::Minimal)$obj2;
-      
+
       if ($minimal1 == $minimal2) {
         return 1;
       }
@@ -119,7 +144,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     };
-    
+
     {
       my $is_equals = equals_oarray($nums1, $nums2, $equality_checker);
       unless ($is_equals) {
@@ -144,7 +169,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -159,46 +184,46 @@ package TestCase::Lib::SPVM::Util {
     if ($objects->[0] == $objects_out->[0]) {
       return 0;
     }
-    
+
     if ($objects->[1] == $objects_out->[1]) {
       return 0;
     }
-    
+
     if ($objects->[2] == $objects_out->[2]) {
       return 0;
     }
-    
+
     unless ((int)$objects_out->[0] == 1) {
       return 0;
     }
-    
+
     unless ((int)$objects_out->[1] == 2) {
       return 0;
     }
-    
+
     unless ((int)$objects_out->[2] == INT32_MIN()) {
       return 0;
     }
-    
+
     unless (@$objects_out == 3) {
       return 0;
     }
-    
+
     unless ($objects != $objects_out) {
       return 0;
     }
-    
+
     return 1;
   }
-  
+
   sub test_joino : int () {
-    
+
     my $minimals = [
       TestCase::Minimal->newp(1, 2),
       TestCase::Minimal->newp(3, 4),
       TestCase::Minimal->newp(5, 6)
     ];
-    
+
     my $join = joino(",", $minimals, sub : string ($self : self, $obj : object) {
       my $minimal = (TestCase::Minimal)$obj;
       my $x = $minimal->x;
@@ -206,11 +231,11 @@ package TestCase::Lib::SPVM::Util {
       my $str = "($x,$y)";
       return $str;
     });
-    
+
     if ($join eq "(1,2),(3,4),(5,6)") {
       return 1;
     }
-    
+
     return 0;
   }
 
@@ -222,7 +247,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     {
       my $str = "foo,bar,";
       my $split_strs = split(",", $str);
@@ -562,7 +587,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -620,16 +645,16 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
-  
+
   sub test_isalnum : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
         my $ret = isalnum($char);
         unless ($ret == 1) {
@@ -643,20 +668,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isalpha : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
         my $ret = isalpha($char);
         unless ($ret == 1) {
@@ -670,20 +695,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isblank : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char >= ' ' ||  $char <= '\t') {
         my $ret = isblank($char);
         unless ($ret == 1) {
@@ -697,20 +722,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_iscntrl : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
         my $ret = iscntrl($char);
         unless ($ret == 1) {
@@ -724,20 +749,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isdigit : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char >= '0' && $char <= '9') {
         my $ret = isdigit($char);
         unless ($ret == 1) {
@@ -751,20 +776,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isgraph : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char >= 0x21 && $char <= 0x7e) {
         my $ret = isgraph($char);
         unless ($ret == 1) {
@@ -778,20 +803,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_islower : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
     if ($char >= 'a' && $char <= 'z') {
         my $ret = islower($char);
         unless ($ret == 1) {
@@ -805,20 +830,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isprint : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char >= 0x20 && $char <= 0x7e) {
         my $ret = isprint($char);
         unless ($ret == 1) {
@@ -832,20 +857,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_ispunct : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
         my $ret = ispunct($char);
         unless ($ret == 1) {
@@ -859,20 +884,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isspace : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
         my $ret = isspace($char);
         unless ($ret == 1) {
@@ -886,20 +911,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isupper : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char >= 'A' && $char <= 'Z') {
         my $ret = isupper($char);
         unless ($ret == 1) {
@@ -913,20 +938,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_isxdigit : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
         my $ret = isxdigit($char);
         unless ($ret == 1) {
@@ -940,20 +965,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_tolower : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char >= 'A' && $char <= 'Z') {
         my $ret = tolower($char);
         unless ($ret == $char + 0x20) {
@@ -967,20 +992,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_toupper : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
     if ($char >= 'a' && $char <= 'z') {
         my $ret = toupper($char);
         unless ($ret == $char - 0x20) {
@@ -994,20 +1019,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_is_perl_space : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
         my $ret = is_perl_space($char);
         unless ($ret == 1) {
@@ -1021,20 +1046,20 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_is_perl_word : int () {
-    
+
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
-      
+
       if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
         my $ret = is_perl_word($char);
         unless ($ret == 1) {
@@ -1048,11 +1073,11 @@ package TestCase::Lib::SPVM::Util {
         }
       }
     }
-    
+
     unless ($ok) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -1064,7 +1089,7 @@ package TestCase::Lib::SPVM::Util {
       unless ($num isa int) {
         return 0;
       }
-      
+
       unless ($num == -2147483648) {
         return 0;
       }
@@ -1077,7 +1102,7 @@ package TestCase::Lib::SPVM::Util {
       unless ($num isa int) {
         return 0;
       }
-      
+
       unless ($num == 2147483647) {
         return 0;
       }
@@ -1087,32 +1112,32 @@ package TestCase::Lib::SPVM::Util {
     {
       my $string = "11";
       my $num = strtoi($string, 2);
-      
+
       unless ($num == 3) {
         return 0;
       }
     }
-    
+
     # 8 digit
     {
       my $string = "11";
       my $num = strtoi($string, 8);
-      
+
       unless ($num == 9) {
         return 0;
       }
     }
-    
+
     # 16 digit
     {
       my $string = "FF";
       my $num = strtoi($string, 16);
-      
+
       unless ($num == 255) {
         return 0;
       }
     }
-    
+
     # Invalid string format
     {
       my $string = "10oppp";
@@ -1124,7 +1149,7 @@ package TestCase::Lib::SPVM::Util {
       }
       $@ = undef;
     }
-    
+
     # Invalid digit
     {
       my $string = "10";
@@ -1160,7 +1185,7 @@ package TestCase::Lib::SPVM::Util {
       }
       $@ = undef;
     }
-    
+
     return 1;
   }
 
@@ -1172,17 +1197,17 @@ package TestCase::Lib::SPVM::Util {
       unless ($num isa long) {
         return 0;
       }
-      
+
       unless ($num == -9223372036854775808L) {
         return 0;
       }
     }
-    
+
     # 10 digit max
     {
       my $string = "9223372036854775807";
       my $num = strtol($string, 10);
-      
+
       unless ($num == 9223372036854775807L) {
         return 0;
       }
@@ -1192,32 +1217,32 @@ package TestCase::Lib::SPVM::Util {
     {
       my $string = "11";
       my $num = strtol($string, 2);
-      
+
       unless ($num == 3) {
         return 0;
       }
     }
-    
+
     # 8 digit
     {
       my $string = "11";
       my $num = strtol($string, 8);
-      
+
       unless ($num == 9) {
         return 0;
       }
     }
-    
+
     # 16 digit
     {
       my $string = "FF";
       my $num = strtol($string, 16);
-      
+
       unless ($num == 255) {
         return 0;
       }
     }
-    
+
     # Invalid string format
     {
       my $string = "10oppp";
@@ -1229,7 +1254,7 @@ package TestCase::Lib::SPVM::Util {
       }
       $@ = undef;
     }
-    
+
     # Invalid digit
     {
       my $string = "10";
@@ -1265,7 +1290,7 @@ package TestCase::Lib::SPVM::Util {
       }
       $@ = undef;
     }
-    
+
     return 1;
   }
 
@@ -1277,7 +1302,7 @@ package TestCase::Lib::SPVM::Util {
       unless ($num isa float) {
         return 0;
       }
-      
+
       unless ($num == 1.25) {
         return 0;
       }
@@ -1294,7 +1319,7 @@ package TestCase::Lib::SPVM::Util {
       }
       $@ = undef;
     }
-    
+
     return 1;
   }
 
@@ -1306,7 +1331,7 @@ package TestCase::Lib::SPVM::Util {
       unless ($num isa double) {
         return 0;
       }
-      
+
       unless ($num == 1.25) {
         return 0;
       }
@@ -1323,7 +1348,7 @@ package TestCase::Lib::SPVM::Util {
       }
       $@ = undef;
     }
-    
+
     return 1;
   }
 
@@ -1334,7 +1359,7 @@ package TestCase::Lib::SPVM::Util {
     my $rand = $seed;
     for (my $i = 0; $i < 100000; $i++) {
       $rand = rand(\$rand);
-      
+
       my $dig0 = $rand % 10;
       if ($dig0 < 0) {
         $founds_minus->[-$dig0] = 1;
@@ -1343,7 +1368,7 @@ package TestCase::Lib::SPVM::Util {
         $founds_plus->[$dig0] = 1;
       }
     }
-    
+
     unless (equals_iarray($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
       return 0;
     }
@@ -1351,7 +1376,7 @@ package TestCase::Lib::SPVM::Util {
     unless (equals_iarray($founds_minus, [0, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -1361,14 +1386,14 @@ package TestCase::Lib::SPVM::Util {
     my $rand = $seed;
     for (my $i = 0; $i < 100000; $i++) {
       $rand = rand(\$rand);
-      
+
       my $random = (int)(random($rand) * 20);
       $founds->[$random] = 1;
     }
-    
+
     unless (
         equals_iarray(
-          $founds, 
+          $founds,
           [
             1, 1, 1, 1, 1,
             1, 1, 1, 1, 1,
@@ -1380,7 +1405,7 @@ package TestCase::Lib::SPVM::Util {
     {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -1490,7 +1515,7 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
   sub test_replace_all : int () {
-    
+
     {
       my $str = "foo bar foo bar foo";
       my $substr = "bar";
@@ -1515,7 +1540,7 @@ package TestCase::Lib::SPVM::Util {
   }
 
   sub test_replace : int () {
-    
+
     {
       my $str = "abcde";
       my $substr = "bcd";
@@ -1592,7 +1617,7 @@ package TestCase::Lib::SPVM::Util {
       my $replace = "";
       my $found_offset = 0;
       my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
-      
+
       unless ($found_offset == 1) {
         return 0;
       }
@@ -1600,12 +1625,12 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
   sub test_memcpyb : int () {
-    
+
     {
       my $target = "abcde";
       my $search = "ABC";
@@ -1632,12 +1657,12 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
   sub test_memmoveb : int () {
-    
+
     {
       my $target = "abcde";
       my $search = "ABC";
@@ -1672,12 +1697,12 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
   sub test_index : int () {
-    
+
     {
       my $target = "abcde";
       my $search = "bcd";
@@ -1713,7 +1738,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -1777,7 +1802,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     {
       my $target = "abcde";
       my $search = "ppp";
@@ -1786,100 +1811,100 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];
-    
+
     my $join = join(",", $strings);
-    
+
     if ($join eq "abc,def,hij") {
       return 1;
     }
-    
+
     return 0;
   }
 
   sub test_joinb : int () {
     my $nums = [(byte)1, 2, INT8_MIN()];
-    
+
     my $join = joinb(",", $nums);
-    
+
     if ($join eq "1,2,-128") {
       return 1;
     }
-    
+
     return 0;
   }
 
   sub test_joins : int () {
     my $nums = [(short)1, 2, INT16_MIN()];
-    
+
     my $join = joins(",", $nums);
-    
+
     if ($join eq "1,2,-32768") {
       return 1;
     }
-    
+
     return 0;
   }
 
   sub test_joini : int () {
     my $nums = [(int)1, 2, INT32_MIN()];
-    
+
     my $join = joini(",", $nums);
-    
+
     if ($join eq "1,2,-2147483648") {
       return 1;
     }
-    
+
     return 0;
   }
 
   sub test_joinl : int () {
     my $nums = [(long)1, 2, INT64_MIN()];
-    
+
     my $join = joinl(",", $nums);
-    
+
     if ($join eq "1,2,-9223372036854775808") {
       return 1;
     }
-    
+
     return 0;
   }
 
   sub test_joinf : int () {
     my $nums = [(float)1, 2, 2.45f];
-    
+
     my $join = joinf(",", $nums);
-    
+
     if ($join eq "1,2,2.45") {
       return 1;
     }
-    
+
     return 0;
   }
   sub test_joind : int () {
     my $nums = [(double)1, 2, 2.45];
-    
+
     my $join = joind(",", $nums);
-    
+
     if ($join eq "1,2,2.45") {
       return 1;
     }
-    
+
     return 0;
   }
-  
+
   sub test_byte_constant : int () {
     if ((int)INT8_MIN() == (int)(byte)-128) {
       if ((int)INT8_MAX() == (int)(byte)127) {
         return 1;
       }
     }
-    
+
     return 0;
   }
 
@@ -1889,7 +1914,7 @@ package TestCase::Lib::SPVM::Util {
         return 1;
       }
     }
-    
+
     return 0;
   }
 
@@ -1899,7 +1924,7 @@ package TestCase::Lib::SPVM::Util {
         return 1;
       }
     }
-    
+
     return 0;
   }
 
@@ -1909,13 +1934,13 @@ package TestCase::Lib::SPVM::Util {
         return 1;
       }
     }
-    
+
     return 0;
   }
 
   sub test_new_object_array_proto : int () {
     my $minimals = new TestCase::Minimal[1];
-    
+
     my $new_object_array = new_object_array_proto($minimals, 2);
     unless ($new_object_array isa TestCase::Minimal[]) {
       return 0;
@@ -1924,7 +1949,7 @@ package TestCase::Lib::SPVM::Util {
     unless (@$new_minimals == 2) {
       return 0;
     }
-    
+
     return 1;
   }
   sub test_sliceb : int () {
@@ -1935,7 +1960,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     {
       my $nums = [(byte)5, -7, 9, INT8_MIN(), 127, 15, 19];
       my $slice = sliceb($nums, 1, 3);
@@ -1996,7 +2021,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
   sub test_slicef : int () {
@@ -2014,8 +2039,8 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
-    
+
+
     return 1;
   }
   sub test_sliced : int () {
@@ -2036,13 +2061,13 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
   sub test_sliceo : int () {
-    
+
     {
       my $minimal1 = TestCase::Minimal->new;
       my $minimal2 = TestCase::Minimal->new;
       my $minimal3 = TestCase::Minimal->new;
       my $minimal4 = TestCase::Minimal->new;
-      
+
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 0, 4);
       unless (SPVM::Util->equals_oarray($slice, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::SameObject->new)) {
@@ -2054,7 +2079,7 @@ package TestCase::Lib::SPVM::Util {
       my $minimal2 = TestCase::Minimal->new;
       my $minimal3 = TestCase::Minimal->new;
       my $minimal4 = TestCase::Minimal->new;
-      
+
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
       my $slice = (TestCase::Minimal[])sliceo($elems, 1, 2);
       unless (SPVM::Util->equals_oarray($slice, [$minimal2, $minimal3], SPVM::EqualityChecker::SameObject->new)) {
@@ -2132,8 +2157,8 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
-    
+
+
     return 1;
   }
   sub test_reversef : int () {
@@ -2151,7 +2176,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
   sub test_reversed : int () {
@@ -2177,7 +2202,7 @@ package TestCase::Lib::SPVM::Util {
       my $minimal1 = TestCase::Minimal->new;
       my $minimal2 = TestCase::Minimal->new;
       my $minimal3 = TestCase::Minimal->new;
-      
+
       my $nums = [$minimal1, $minimal2, $minimal3];
       reverseo($nums);
       unless (SPVM::Util->equals_oarray($nums, [$minimal3, $minimal2, $minimal1], SPVM::EqualityChecker::SameObject->new)) {
@@ -2210,7 +2235,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -2219,17 +2244,17 @@ package TestCase::Lib::SPVM::Util {
     my $nums2 = [(short)0, 1, INT16_MIN()];
     my $nums3 = [(short)0, 1];
     my $nums4 = [(short)0, 1, 2];
-    
+
     {
       my $is_equals = equals_sarray($nums1, $nums2);
-      
+
       unless ($is_equals) {
         return 0;
       }
     }
     {
       my $is_equals = equals_sarray($nums1, $nums3);
-      
+
       if ($is_equals) {
         return 0;
       }
@@ -2240,7 +2265,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -2249,7 +2274,7 @@ package TestCase::Lib::SPVM::Util {
     my $nums2 = [(int)0, 1, INT32_MIN()];
     my $nums3 = [(int)0, 1];
     my $nums4 = [(int)0, 1, 2];
-    
+
     {
       my $is_equals = equals_iarray($nums1, $nums2);
       unless ($is_equals) {
@@ -2268,7 +2293,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -2277,7 +2302,7 @@ package TestCase::Lib::SPVM::Util {
     my $nums2 = [(long)0, 1, INT64_MIN()];
     my $nums3 = [(long)0, 1];
     my $nums4 = [(long)0, 1, 2];
-    
+
     {
       my $is_equals = equals_larray($nums1, $nums2);
       unless ($is_equals) {
@@ -2296,7 +2321,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -2305,7 +2330,7 @@ package TestCase::Lib::SPVM::Util {
     my $nums2 = [0.0f, 1.5f, FLT_MIN()];
     my $nums3 = [0.0f, 1.5f];
     my $nums4 = [(float)0.0f, 1.5f, 0.5f];
-    
+
     {
       my $is_equals = equals_farray($nums1, $nums2);
       unless ($is_equals) {
@@ -2324,7 +2349,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -2333,7 +2358,7 @@ package TestCase::Lib::SPVM::Util {
     my $nums2 = [0.0, 1.5, DBL_MIN()];
     my $nums3 = [0.0, 1.5];
     my $nums4 = [(double)0.0, 1.5, 0.5];
-    
+
     {
       my $is_equals = equals_darray($nums1, $nums2);
       unless ($is_equals) {
@@ -2352,7 +2377,7 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -2361,7 +2386,7 @@ package TestCase::Lib::SPVM::Util {
     my $strings2 = ["abc", "def", "ghi"];
     my $strings3 = ["abc", "def"];
     my $strings4 = ["abc", "def", "xxx"];
-    
+
     {
       my $is_equals = equals_strarray($strings1, $strings2);
       unless ($is_equals) {
@@ -2380,10 +2405,10 @@ package TestCase::Lib::SPVM::Util {
         return 0;
       }
     }
-    
+
     return 1;
   }
-  
+
   sub test_E : int () {
     unless (E() == 2.7182818284590452354) {
       return 0;
@@ -2397,187 +2422,597 @@ package TestCase::Lib::SPVM::Util {
     }
     return 1;
   }
-  
+
   sub test_get_type_name : int () {
     my $minimal = TestCase::Minimal->new;
     my $type_name = get_type_name($minimal);
-    
+
     unless ($type_name eq "TestCase::Minimal") {
       return 0;
     }
-    
+
     return 1;
   }
-  
+
   sub test_copy_str : int () {
     my $string = "abc";
     my $string_out = copy_str($string);
-    
+
     unless ($string_out eq "abc") {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_copy_barray : int () {
     my $nums = [(byte)1, 2, INT8_MIN()];
     my $nums_out = copy_barray($nums);
-    
+
     unless ($nums->[0] == 1) {
       return 0;
     }
-    
+
     unless ($nums->[1] == 2) {
       return 0;
     }
-    
+
     unless ($nums->[2] == INT8_MIN()) {
       return 0;
     }
-    
+
     unless (@$nums_out == 3) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_copy_sarray : int () {
     my $nums = [(short)1, 2, INT16_MIN()];
     my $nums_out = copy_sarray($nums);
-    
+
     unless ($nums->[0] == 1) {
       return 0;
     }
-    
+
     unless ($nums->[1] == 2) {
       return 0;
     }
-    
+
     unless ($nums->[2] == INT16_MIN()) {
       return 0;
     }
-    
+
     unless (@$nums_out == 3) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_copy_iarray : int () {
     my $nums = [(int)1, 2, INT32_MIN()];
     my $nums_out = copy_iarray($nums);
-    
+
     unless ($nums->[0] == 1) {
       return 0;
     }
-    
+
     unless ($nums->[1] == 2) {
       return 0;
     }
-    
+
     unless ($nums->[2] == INT32_MIN()) {
       return 0;
     }
-    
+
     unless (@$nums_out == 3) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_copy_larray : int () {
     my $nums = [(long)1, 2, INT64_MIN()];
     my $nums_out = copy_larray($nums);
-    
+
     unless ($nums->[0] == 1) {
       return 0;
     }
-    
+
     unless ($nums->[1] == 2) {
       return 0;
     }
-    
+
     unless ($nums->[2] == INT64_MIN()) {
       return 0;
     }
-    
+
     unless (@$nums_out == 3) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_copy_farray : int () {
     my $nums = [(float)0.5f, 0.25f, FLT_MIN()];
     my $nums_out = copy_farray($nums);
-    
+
     unless ($nums->[0] == 0.5) {
       return 0;
     }
-    
+
     unless ($nums->[1] == 0.25) {
       return 0;
     }
-    
+
     unless ($nums->[2] == FLT_MIN()) {
       return 0;
     }
-    
+
     unless (@$nums_out == 3) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_copy_darray : int () {
     my $nums = [(double)0.5, 0.25, DBL_MIN()];
     my $nums_out = copy_darray($nums);
-    
+
     unless ($nums->[0] == 0.5) {
       return 0;
     }
-    
+
     unless ($nums->[1] == 0.25) {
       return 0;
     }
-    
+
     unless ($nums->[2] == DBL_MIN()) {
       return 0;
     }
-    
+
     unless (@$nums_out == 3) {
       return 0;
     }
-    
+
     return 1;
   }
 
   sub test_copy_strarray : int () {
     my $strings = ["abc", "def", "hij"];
     my $strings_out = copy_strarray($strings);
-    
+
     unless ($strings->[0] eq $strings_out->[0]) {
       return 0;
     }
-    
+
     unless ($strings->[1] == $strings_out->[1]) {
       return 0;
     }
-    
+
     unless ($strings->[2] == $strings_out->[2]) {
       return 0;
     }
-    
+
     unless (@$strings_out == 3) {
       return 0;
     }
-    
+
+    return 1;
+  }
+
+  sub test_caddi : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = 1;
+    $c1->{y} = 2;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = 3;
+    $c2->{y} = 4;
+
+    my $c3 = caddi($c1, $c2);
+
+    unless ($c3->{x} == 4 && $c3->{y} == 6) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_caddl : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = 10000000000L;
+    $c1->{y} = 20000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = 30000000000L;
+    $c2->{y} = 40000000000L;
+
+    my $c3 = caddl($c1, $c2);
+
+    unless ($c3->{x} == 40000000000L && $c3->{y} == 60000000000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_caddf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 1.1f;
+    $c1->{y} = 2.2f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 3.3f;
+    $c2->{y} = 4.4f;
+
+    my $c3 = caddf($c1, $c2);
+
+    unless (fabsf($c3->{x} - 4.4f) < $eps && fabsf($c3->{y} - 6.6f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_caddd : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 1e15;
+    $c1->{y} = 2e15;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 3e15;
+    $c2->{y} = 4e15;
+
+    my $c3 = caddd($c1, $c2);
+
+    unless (fabs($c3->{x} - 4e15) < $eps && fabs($c3->{y} - 6e15) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubi : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = 1;
+    $c1->{y} = 2;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = 3;
+    $c2->{y} = 4;
+
+    my $c3 = csubi($c1, $c2);
+
+    unless ($c3->{x} == -2 && $c3->{y} == -2) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubl : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = 10000000000L;
+    $c1->{y} = 20000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = 30000000000L;
+    $c2->{y} = 40000000000L;
+
+    my $c3 = csubl($c1, $c2);
+
+    unless ($c3->{x} == -20000000000L && $c3->{y} == -20000000000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 1.1f;
+    $c1->{y} = 2.2f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 3.3f;
+    $c2->{y} = 4.4f;
+
+    my $c3 = csubf($c1, $c2);
+
+    unless (fabsf($c3->{x} + 2.2f) < $eps && fabsf($c3->{y} + 2.2f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubd : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 1e15;
+    $c1->{y} = 2e15;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 3e15;
+    $c2->{y} = 4e15;
+
+    my $c3 = csubd($c1, $c2);
+
+    unless (fabs($c3->{x} + 2e15) < $eps && fabs($c3->{y} + 2e15) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmuli : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = -2;
+    $c1->{y} = 1;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = -1;
+    $c2->{y} = 3;
+
+    my $c3 = cmuli($c1, $c2);
+
+    unless ($c3->{x} == -1 && $c3->{y} == -7) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmull : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = -20000000000L;
+    $c1->{y} = 10000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = -1L;
+    $c2->{y} = 3L;
+
+    my $c3 = cmull($c1, $c2);
+
+    unless ($c3->{x} == -10000000000L && $c3->{y} == -70000000000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmulf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = -0.2f;
+    $c1->{y} = 0.1f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = -0.1f;
+    $c2->{y} = 0.3f;
+
+    my $c3 = cmulf($c1, $c2);
+
+    unless (fabsf($c3->{x} + 0.01f) < $eps && fabsf($c3->{y} + 0.07f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmuld : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = -2e15;
+    $c1->{y} = 1e15;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = -1.0;
+    $c2->{y} = 3.0;
+
+    my $c3 = cmuld($c1, $c2);
+
+    unless (fabs($c3->{x} + 1e15) < $eps && fabs($c3->{y} + 7e15) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivi : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = 2;
+    $c1->{y} = 5;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = 3;
+    $c2->{y} = -2;
+
+    my $c3 = cdivi($c1, $c2);
+
+    unless ($c3->{x} == -4/13 && $c3->{y} == 19/13) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivl : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = 20000000000L;
+    $c1->{y} = 50000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = 3L;
+    $c2->{y} = -2L;
+
+    my $c3 = cdivl($c1, $c2);
+
+    unless ($c3->{x} == -40000000000L/13 && $c3->{y} == 190000000000L/13) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 0.2f;
+    $c1->{y} = 0.5f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 0.3f;
+    $c2->{y} = -0.2f;
+
+    my $c3 = cdivf($c1, $c2);
+
+    unless (fabsf($c3->{x} + 4.0f/13.0f) < $eps && fabsf($c3->{y} - 19.0f/13.0f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivd : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 0.2;
+    $c1->{y} = 0.5;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 0.3;
+    $c2->{y} = -0.2;
+
+    my $c3 = cdivd($c1, $c2);
+
+    unless (fabs($c3->{x} + 4.0/13.0) < $eps && fabs($c3->{y} - 19.0/13.0) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsi : int () {
+    my $c : SPVM::Complex_2i;
+    $c->{x} = 300000;
+    $c->{y} = 400000;
+
+    unless (cabsi($c) == 500000) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsl : int () {
+    my $c : SPVM::Complex_2l;
+    $c->{x} = 300000L;
+    $c->{y} = 400000L;
+
+    unless (cabsl($c) == 500000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsf : int () {
+    my $c : SPVM::Complex_2f;
+    $c->{x} = 0.3f;
+    $c->{y} = 0.4f;
+
+    unless (cabsf($c) == 0.5f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsd : int () {
+    my $c : SPVM::Complex_2d;
+    $c->{x} = 0.3;
+    $c->{y} = 0.4;
+
+    unless (cabsd($c) == 0.5) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cconi : int () {
+    my $c1 : SPVM::Complex_2i;
+    $c1->{x} = 1;
+    $c1->{y} = 2;
+
+    my $c2 = cconi($c1);
+
+    unless ($c2->{x} == 1 && $c2->{y} == -2) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cconl : int () {
+    my $c1 : SPVM::Complex_2l;
+    $c1->{x} = 1;
+    $c1->{y} = 2;
+
+    my $c2 = cconl($c1);
+
+    unless ($c2->{x} == 1 && $c2->{y} == -2) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cconf : int () {
+    my $eps = 0.001f;
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 1.1f;
+    $c1->{y} = 2.2f;
+
+    my $c2 = cconf($c1);
+
+    unless (fabsf($c2->{x} - 1.1f) < $eps && fabs($c2->{y} + 2.2f) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccond : int () {
+    my $eps = 0.1;
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 1e15;
+    $c1->{y} = 2e15;
+
+    my $c2 = ccond($c1);
+
+    unless (fabs($c2->{x} - 1e15) < $eps && fabs($c2->{y} + 2e15) < $eps) {
+      return 0;
+    }
+
     return 1;
   }
 }

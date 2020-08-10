@@ -314,19 +314,19 @@ use SPVM 'SPVM::Util';
 {
   # equals_barray
   ok(TestCase::Lib::SPVM::Util->test_equals_barray);
-  
+
   # equals_sarray
   ok(TestCase::Lib::SPVM::Util->test_equals_sarray);
-  
+
   # equals_iarray
   ok(TestCase::Lib::SPVM::Util->test_equals_iarray);
-  
+
   # equeals_larray
   ok(TestCase::Lib::SPVM::Util->test_equals_larray);
-  
+
   # equals_farray
   ok(TestCase::Lib::SPVM::Util->test_equals_farray);
-  
+
   # equals_darray
   ok(TestCase::Lib::SPVM::Util->test_equals_darray);
 
@@ -338,25 +338,25 @@ use SPVM 'SPVM::Util';
 {
   # copy_str
   ok(TestCase::Lib::SPVM::Util->test_copy_str);
-  
+
   # copy_barray
   ok(TestCase::Lib::SPVM::Util->test_copy_barray);
-  
+
   # copy_sarray
   ok(TestCase::Lib::SPVM::Util->test_copy_sarray);
-  
+
   # copy_iarray
   ok(TestCase::Lib::SPVM::Util->test_copy_iarray);
-  
+
   # copy_larray
   ok(TestCase::Lib::SPVM::Util->test_copy_larray);
-  
+
   # copy_farray
   ok(TestCase::Lib::SPVM::Util->test_copy_farray);
-  
+
   # copy_darray
   ok(TestCase::Lib::SPVM::Util->test_copy_darray);
-  
+
   # copy_strarray
   ok(TestCase::Lib::SPVM::Util->test_copy_strarray);
 }
@@ -401,6 +401,35 @@ use SPVM 'SPVM::Util';
   # Check not Inf or NaN in Perl value
   like(SPVM::Util->FLT_MAX(), qr/[0-9]/);
   like(SPVM::Util->FLT_MIN(), qr/[0-9]/);
+}
+
+{
+  ok(TestCase::Lib::SPVM::Util->test_caddi);
+  ok(TestCase::Lib::SPVM::Util->test_caddl);
+  ok(TestCase::Lib::SPVM::Util->test_caddf);
+  ok(TestCase::Lib::SPVM::Util->test_caddd);
+  ok(TestCase::Lib::SPVM::Util->test_csubi);
+  ok(TestCase::Lib::SPVM::Util->test_csubl);
+  ok(TestCase::Lib::SPVM::Util->test_csubf);
+  ok(TestCase::Lib::SPVM::Util->test_csubd);
+  ok(TestCase::Lib::SPVM::Util->test_cmuli);
+  ok(TestCase::Lib::SPVM::Util->test_cmull);
+  ok(TestCase::Lib::SPVM::Util->test_cmulf);
+  ok(TestCase::Lib::SPVM::Util->test_cmuld);
+  ok(TestCase::Lib::SPVM::Util->test_cdivi);
+  ok(TestCase::Lib::SPVM::Util->test_cdivl);
+  ok(TestCase::Lib::SPVM::Util->test_cdivf);
+  ok(TestCase::Lib::SPVM::Util->test_cdivd);
+
+  ok(TestCase::Lib::SPVM::Util->test_cabsi);
+  ok(TestCase::Lib::SPVM::Util->test_cabsl);
+  ok(TestCase::Lib::SPVM::Util->test_cabsf);
+  ok(TestCase::Lib::SPVM::Util->test_cabsd);
+
+  ok(TestCase::Lib::SPVM::Util->test_cconi);
+  ok(TestCase::Lib::SPVM::Util->test_cconl);
+  ok(TestCase::Lib::SPVM::Util->test_cconf);
+  ok(TestCase::Lib::SPVM::Util->test_ccond);
 }
 
 # getenv
