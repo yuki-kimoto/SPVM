@@ -1478,175 +1478,203 @@ package SPVM::Util {
     return $slice;
   }
 
-  precompile sub caddi : SPVM::Complex_2i ($a : SPVM::Complex_2i, $b : SPVM::Complex_2i) {
-    my $c : SPVM::Complex_2i;
-    $c->{x} = $a->{x} + $b->{x};
-    $c->{y} = $a->{y} + $b->{y};
-    return $c;
+  precompile sub caddi : SPVM::Complex_2i ($z1 : SPVM::Complex_2i, $z2 : SPVM::Complex_2i) {
+    my $z_out : SPVM::Complex_2i;
+    $z_out->{x} = $z1->{x} + $z2->{x};
+    $z_out->{y} = $z1->{y} + $z2->{y};
+    return $z_out;
   }
 
-  precompile sub caddl : SPVM::Complex_2l ($a : SPVM::Complex_2l, $b : SPVM::Complex_2l) {
-    my $c : SPVM::Complex_2l;
-    $c->{x} = $a->{x} + $b->{x};
-    $c->{y} = $a->{y} + $b->{y};
-    return $c;
+  precompile sub caddl : SPVM::Complex_2l ($z1 : SPVM::Complex_2l, $z2 : SPVM::Complex_2l) {
+    my $z_out : SPVM::Complex_2l;
+    $z_out->{x} = $z1->{x} + $z2->{x};
+    $z_out->{y} = $z1->{y} + $z2->{y};
+    return $z_out;
   }
 
-  precompile sub caddf : SPVM::Complex_2f ($a : SPVM::Complex_2f, $b : SPVM::Complex_2f) {
-    my $c : SPVM::Complex_2f;
-    $c->{x} = $a->{x} + $b->{x};
-    $c->{y} = $a->{y} + $b->{y};
-    return $c;
+  precompile sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{x} = $z1->{x} + $z2->{x};
+    $z_out->{y} = $z1->{y} + $z2->{y};
+    return $z_out;
   }
 
-  precompile sub caddd : SPVM::Complex_2d ($a : SPVM::Complex_2d, $b : SPVM::Complex_2d) {
-    my $c : SPVM::Complex_2d;
-    $c->{x} = $a->{x} + $b->{x};
-    $c->{y} = $a->{y} + $b->{y};
-    return $c;
+  precompile sub caddd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{x} = $z1->{x} + $z2->{x};
+    $z_out->{y} = $z1->{y} + $z2->{y};
+    return $z_out;
   }
 
-  precompile sub csubi : SPVM::Complex_2i ($a : SPVM::Complex_2i, $b : SPVM::Complex_2i) {
-    my $c : SPVM::Complex_2i;
-    $c->{x} = $a->{x} - $b->{x};
-    $c->{y} = $a->{y} - $b->{y};
-    return $c;
+  precompile sub csubi : SPVM::Complex_2i ($z1 : SPVM::Complex_2i, $z2 : SPVM::Complex_2i) {
+    my $z_out : SPVM::Complex_2i;
+    $z_out->{x} = $z1->{x} - $z2->{x};
+    $z_out->{y} = $z1->{y} - $z2->{y};
+    return $z_out;
   }
 
-  precompile sub csubl : SPVM::Complex_2l ($a : SPVM::Complex_2l, $b : SPVM::Complex_2l) {
-    my $c : SPVM::Complex_2l;
-    $c->{x} = $a->{x} - $b->{x};
-    $c->{y} = $a->{y} - $b->{y};
-    return $c;
+  precompile sub csubl : SPVM::Complex_2l ($z1 : SPVM::Complex_2l, $z2 : SPVM::Complex_2l) {
+    my $z_out : SPVM::Complex_2l;
+    $z_out->{x} = $z1->{x} - $z2->{x};
+    $z_out->{y} = $z1->{y} - $z2->{y};
+    return $z_out;
   }
 
-  precompile sub csubf : SPVM::Complex_2f ($a : SPVM::Complex_2f, $b : SPVM::Complex_2f) {
-    my $c : SPVM::Complex_2f;
-    $c->{x} = $a->{x} - $b->{x};
-    $c->{y} = $a->{y} - $b->{y};
-    return $c;
+  precompile sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{x} = $z1->{x} - $z2->{x};
+    $z_out->{y} = $z1->{y} - $z2->{y};
+    return $z_out;
   }
 
-  precompile sub csubd : SPVM::Complex_2d ($a : SPVM::Complex_2d, $b : SPVM::Complex_2d) {
-    my $c : SPVM::Complex_2d;
-    $c->{x} = $a->{x} - $b->{x};
-    $c->{y} = $a->{y} - $b->{y};
-    return $c;
+  precompile sub csubd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{x} = $z1->{x} - $z2->{x};
+    $z_out->{y} = $z1->{y} - $z2->{y};
+    return $z_out;
   }
 
-  precompile sub cmuli : SPVM::Complex_2i ($a : SPVM::Complex_2i, $b : SPVM::Complex_2i) {
-    my $c : SPVM::Complex_2i;
-    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
-    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
-    return $c;
+  precompile sub cmuli : SPVM::Complex_2i ($z1 : SPVM::Complex_2i, $z2 : SPVM::Complex_2i) {
+    my $z_out : SPVM::Complex_2i;
+    $z_out->{x} = $z1->{x} * $z2->{x} - $z1->{y} * $z2->{y};
+    $z_out->{y} = $z1->{x} * $z2->{y} + $z1->{y} * $z2->{x};
+    return $z_out;
   }
 
-  precompile sub cmull : SPVM::Complex_2l ($a : SPVM::Complex_2l, $b : SPVM::Complex_2l) {
-    my $c : SPVM::Complex_2l;
-    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
-    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
-    return $c;
+  precompile sub cmull : SPVM::Complex_2l ($z1 : SPVM::Complex_2l, $z2 : SPVM::Complex_2l) {
+    my $z_out : SPVM::Complex_2l;
+    $z_out->{x} = $z1->{x} * $z2->{x} - $z1->{y} * $z2->{y};
+    $z_out->{y} = $z1->{x} * $z2->{y} + $z1->{y} * $z2->{x};
+    return $z_out;
   }
 
-  precompile sub cmulf : SPVM::Complex_2f ($a : SPVM::Complex_2f, $b : SPVM::Complex_2f) {
-    my $c : SPVM::Complex_2f;
-    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
-    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
-    return $c;
+  precompile sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{x} = $z1->{x} * $z2->{x} - $z1->{y} * $z2->{y};
+    $z_out->{y} = $z1->{x} * $z2->{y} + $z1->{y} * $z2->{x};
+    return $z_out;
   }
 
-  precompile sub cmuld : SPVM::Complex_2d ($a : SPVM::Complex_2d, $b : SPVM::Complex_2d) {
-    my $c : SPVM::Complex_2d;
-    $c->{x} = $a->{x} * $b->{x} - $a->{y} * $b->{y};
-    $c->{y} = $a->{x} * $b->{y} + $a->{y} * $b->{x};
-    return $c;
+  precompile sub cmuld : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{x} = $z1->{x} * $z2->{x} - $z1->{y} * $z2->{y};
+    $z_out->{y} = $z1->{x} * $z2->{y} + $z1->{y} * $z2->{x};
+    return $z_out;
   }
 
-  precompile sub cdivi : SPVM::Complex_2i ($a : SPVM::Complex_2i, $b : SPVM::Complex_2i) {
-    my $c : SPVM::Complex_2i;
-    if ($b->{x} == 0 || $b->{y} == 0) {
+  precompile sub cscamuli : SPVM::Complex_2i ($c : int, $z : SPVM::Complex_2i) {
+    my $z_out : SPVM::Complex_2i;
+    $z_out->{x} = $c * $z->{x};
+    $z_out->{y} = $c * $z->{y};
+    return $z_out;
+  }
+
+  precompile sub cscamull : SPVM::Complex_2l ($c : long, $z : SPVM::Complex_2l) {
+    my $z_out : SPVM::Complex_2l;
+    $z_out->{x} = $c * $z->{x};
+    $z_out->{y} = $c * $z->{y};
+    return $z_out;
+  }
+
+  precompile sub cscamulf : SPVM::Complex_2f ($c : float, $z : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{x} = $c * $z->{x};
+    $z_out->{y} = $c * $z->{y};
+    return $z_out;
+  }
+
+  precompile sub cscamuld : SPVM::Complex_2d ($c : double, $z : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{x} = $c * $z->{x};
+    $z_out->{y} = $c * $z->{y};
+    return $z_out;
+  }
+
+  precompile sub cdivi : SPVM::Complex_2i ($z1 : SPVM::Complex_2i, $z2 : SPVM::Complex_2i) {
+    my $z_out : SPVM::Complex_2i;
+    if ($z2->{x} == 0 || $z2->{y} == 0) {
       die "Division by 0";
     }
-    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    return $c;
+    $z_out->{x} = ($z1->{x} * $z2->{x} + $z1->{y} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    $z_out->{y} = ($z1->{y} * $z2->{x} - $z1->{x} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    return $z_out;
   }
 
-  precompile sub cdivl : SPVM::Complex_2l ($a : SPVM::Complex_2l, $b : SPVM::Complex_2l) {
-    my $c : SPVM::Complex_2l;
-    if ($b->{x} == 0 || $b->{y} == 0) {
+  precompile sub cdivl : SPVM::Complex_2l ($z1 : SPVM::Complex_2l, $z2 : SPVM::Complex_2l) {
+    my $z_out : SPVM::Complex_2l;
+    if ($z2->{x} == 0 || $z2->{y} == 0) {
       die "Division by 0";
     }
-    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    return $c;
+    $z_out->{x} = ($z1->{x} * $z2->{x} + $z1->{y} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    $z_out->{y} = ($z1->{y} * $z2->{x} - $z1->{x} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    return $z_out;
   }
 
-  precompile sub cdivf : SPVM::Complex_2f ($a : SPVM::Complex_2f, $b : SPVM::Complex_2f) {
-    my $c : SPVM::Complex_2f;
-    if ($b->{x} == 0 || $b->{y} == 0) {
+  precompile sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    if ($z2->{x} == 0 || $z2->{y} == 0) {
       die "Division by 0";
     }
-    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    return $c;
+    $z_out->{x} = ($z1->{x} * $z2->{x} + $z1->{y} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    $z_out->{y} = ($z1->{y} * $z2->{x} - $z1->{x} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    return $z_out;
   }
 
-  precompile sub cdivd : SPVM::Complex_2d ($a : SPVM::Complex_2d, $b : SPVM::Complex_2d) {
-    my $c : SPVM::Complex_2d;
-    if ($b->{x} == 0 || $b->{y} == 0) {
+  precompile sub cdivd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    if ($z2->{x} == 0 || $z2->{y} == 0) {
       die "Division by 0";
     }
-    $c->{x} = ($a->{x} * $b->{x} + $a->{y} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    $c->{y} = ($a->{y} * $b->{x} - $a->{x} * $b->{y}) / ($b->{x} * $b->{x} + $b->{y} * $b->{y});
-    return $c;
+    $z_out->{x} = ($z1->{x} * $z2->{x} + $z1->{y} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    $z_out->{y} = ($z1->{y} * $z2->{x} - $z1->{x} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    return $z_out;
   }
 
-  precompile sub cabsi : int ($val : SPVM::Complex_2i) {
-    my $ret = (int)sqrt((double)$val->{x} * $val->{x} + (double)$val->{y} * $val->{y});
-    return $ret;
+  precompile sub cabsi : int ($z : SPVM::Complex_2i) {
+    my $abs = (int)sqrt((double)$z->{x} * $z->{x} + (double)$z->{y} * $z->{y});
+    return $abs;
   }
 
-  precompile sub cabsl : long ($val : SPVM::Complex_2l) {
-    my $ret = (long)sqrt((double)$val->{x} * $val->{x} + (double)$val->{y} * $val->{y});
-    return $ret;
+  precompile sub cabsl : long ($z : SPVM::Complex_2l) {
+    my $abs = (long)sqrt((double)$z->{x} * $z->{x} + (double)$z->{y} * $z->{y});
+    return $abs;
   }
 
-  precompile sub cabsf : float ($val : SPVM::Complex_2f) {
-    my $ret = sqrtf($val->{x} * $val->{x} + $val->{y} * $val->{y});
-    return $ret;
+  precompile sub cabsf : float ($z : SPVM::Complex_2f) {
+    my $abs = sqrtf($z->{x} * $z->{x} + $z->{y} * $z->{y});
+    return $abs;
   }
 
-  precompile sub cabsd : double ($val : SPVM::Complex_2d) {
-    my $ret = sqrt($val->{x} * $val->{x} + $val->{y} * $val->{y});
-    return $ret;
+  precompile sub cabsd : double ($z : SPVM::Complex_2d) {
+    my $abs = sqrt($z->{x} * $z->{x} + $z->{y} * $z->{y});
+    return $abs;
   }
 
-  precompile sub cconi : SPVM::Complex_2i ($val : SPVM::Complex_2i) {
-    my $ret : SPVM::Complex_2i;
-    $ret->{x} = $val->{x};
-    $ret->{y} = -$val->{y};
-    return $ret;
+  precompile sub cconi : SPVM::Complex_2i ($z : SPVM::Complex_2i) {
+    my $z_out : SPVM::Complex_2i;
+    $z_out->{x} = $z->{x};
+    $z_out->{y} = -$z->{y};
+    return $z_out;
   }
 
-  precompile sub cconl : SPVM::Complex_2l ($val : SPVM::Complex_2l) {
-    my $ret : SPVM::Complex_2l;
-    $ret->{x} = $val->{x};
-    $ret->{y} = -$val->{y};
-    return $ret;
+  precompile sub cconl : SPVM::Complex_2l ($z : SPVM::Complex_2l) {
+    my $z_out : SPVM::Complex_2l;
+    $z_out->{x} = $z->{x};
+    $z_out->{y} = -$z->{y};
+    return $z_out;
   }
 
-  precompile sub cconf : SPVM::Complex_2f ($val : SPVM::Complex_2f) {
-    my $ret : SPVM::Complex_2f;
-    $ret->{x} = $val->{x};
-    $ret->{y} = -$val->{y};
-    return $ret;
+  precompile sub cconf : SPVM::Complex_2f ($z : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{x} = $z->{x};
+    $z_out->{y} = -$z->{y};
+    return $z_out;
   }
 
-  precompile sub ccond : SPVM::Complex_2d ($val : SPVM::Complex_2d) {
-    my $ret : SPVM::Complex_2d;
-    $ret->{x} = $val->{x};
-    $ret->{y} = -$val->{y};
-    return $ret;
+  precompile sub ccond : SPVM::Complex_2d ($z : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{x} = $z->{x};
+    $z_out->{y} = -$z->{y};
+    return $z_out;
   }
 }

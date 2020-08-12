@@ -108,6 +108,10 @@ package TestCase::Lib::SPVM::Util {
     cmull,
     cmulf,
     cmuld,
+    cscamuli,
+    cscamull,
+    cscamulf,
+    cscamuld,
     cdivi,
     cdivl,
     cdivf,
@@ -2828,6 +2832,78 @@ package TestCase::Lib::SPVM::Util {
     my $c3 = cmuld($c1, $c2);
 
     unless (fabs($c3->{x} + 1e15) < $eps && fabs($c3->{y} + 7e15) < $eps) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamuli : int () {
+    my $c1 = 3;
+
+    my $c2 : SPVM::Complex_2i;
+    $c2->{x} = -1;
+    $c2->{y} = 3;
+
+    my $c3 = cscamuli($c1, $c2);
+
+    unless ($c3->{x} == -3 && $c3->{y} == 9) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamull : int () {
+    my $c1 = 10000000000L;
+
+    my $c2 : SPVM::Complex_2l;
+    $c2->{x} = -1L;
+    $c2->{y} = 3L;
+
+    my $c3 = cscamull($c1, $c2);
+
+    unless ($c3->{x} == -10000000000L && $c3->{y} == 30000000000L) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamulf : int () {
+    my $c1 = -0.5f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = -0.1f;
+    $c2->{y} = 0.05f;
+
+    my $c3 = cscamulf($c1, $c2);
+    
+    unless ($c3->{x} == 0.05f) {
+      return 0;
+    }
+    
+    unless ($c3->{y} == -0.025f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamuld : int () {
+    my $c1 = 0.001;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = -1.0;
+    $c2->{y} = 3.0;
+
+    my $c3 = cscamuld($c1, $c2);
+
+    unless ($c3->{x} == -0.001) {
+      return 0;
+    }
+    
+    unless ($c3->{y} == 0.003) {
       return 0;
     }
 
