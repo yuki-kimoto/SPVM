@@ -1,3 +1,12 @@
+0.0907
+  - add caddi, caddl, caddf, caddd to SPVM::Util
+  - sub csubi, csubl, csubf, csubd to SPVM::Util
+  - mul cmuli, cmull, cmulf, cmuld to SPVM::Util
+  - div cdivi, cdivl, cdivf, cdivd to SPVM::Util
+  - scamul cscamuli, cscamull, cscamulf, cscamuld to SPVM::Util
+  - abs cabsi, cabsl, cabsf, cabsd to SPVM::Util
+  - con cconi, cconl, cconf, ccond to SPVM::Util
+
 0.0906
   - add add,sub,scamul,mul,new_ident,new_zero method to SPVM::Matrix::* class.
 0.0905
