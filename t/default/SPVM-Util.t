@@ -425,8 +425,6 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_cdivf);
   ok(TestCase::Lib::SPVM::Util->test_cdivd);
 
-  ok(TestCase::Lib::SPVM::Util->test_cabsi);
-  ok(TestCase::Lib::SPVM::Util->test_cabsl);
   ok(TestCase::Lib::SPVM::Util->test_cabsf);
   ok(TestCase::Lib::SPVM::Util->test_cabsd);
 

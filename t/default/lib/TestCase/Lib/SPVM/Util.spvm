@@ -2974,30 +2974,6 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
-  sub test_cabsi : int () {
-    my $c : SPVM::Complex_2i;
-    $c->{x} = 300000;
-    $c->{y} = 400000;
-
-    unless (cabsi($c) == 500000) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_cabsl : int () {
-    my $c : SPVM::Complex_2l;
-    $c->{x} = 300000L;
-    $c->{y} = 400000L;
-
-    unless (cabsl($c) == 500000L) {
-      return 0;
-    }
-
-    return 1;
-  }
-
   sub test_cabsf : int () {
     my $c : SPVM::Complex_2f;
     $c->{x} = 0.3f;
@@ -3051,14 +3027,13 @@ package TestCase::Lib::SPVM::Util {
   }
 
   sub test_cconf : int () {
-    my $eps = 0.001f;
     my $c1 : SPVM::Complex_2f;
     $c1->{x} = 1.1f;
     $c1->{y} = 2.2f;
 
     my $c2 = cconf($c1);
 
-    unless (fabsf($c2->{x} - 1.1f) < $eps && fabs($c2->{y} + 2.2f) < $eps) {
+    unless ($c2->{x} == 1.1f && $c2->{y} == -2.2f) {
       return 0;
     }
 
@@ -3073,7 +3048,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $c2 = ccond($c1);
 
-    unless (fabs($c2->{x} - 1e15) < $eps && fabs($c2->{y} + 2e15) < $eps) {
+    unless ($c2->{x} == 1e15 && $c2->{y} == -2e15) {
       return 0;
     }
 
