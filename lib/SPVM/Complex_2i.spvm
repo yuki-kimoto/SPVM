@@ -1,5 +1,0 @@
-# SPVM::Complex_2i is created by regen/regen_complex.pl
-package SPVM::Complex_2i : mulnum_t {
-  has x : int;
-  has y : int;
-}

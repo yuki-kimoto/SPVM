@@ -1,9 +1,9 @@
 use strict;
 use warnings;
 
-my @number_categories = ('real', 'complex');
+my @number_categories = ('real');
 
-my @types = qw(byte short int long float double);
+my @types = qw(float double);
 sub prefix {
   my ($type) = @_;
   my $prefix = substr($type, 0, 1);

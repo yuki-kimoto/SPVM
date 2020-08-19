@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-my @types = qw(byte short int long float double);
+my @types = qw(float double);
 sub prefix {
   my ($type) = @_;
   my $prefix = substr($type, 0, 1);
