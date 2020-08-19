@@ -1,5 +1,7 @@
 package TestCase::Constant {
-
+  use SPVM::Complex_2d;
+  use SPVM::Math (csub);
+  
   sub load_constant_long_middle : long () {
     return 4611686018427387904L;
   }
@@ -227,7 +229,6 @@ package TestCase::Constant {
     return 0.5;
   }
 
-=pod
   sub constant_vm_and_precompile_same : int () {
     my $c1 : SPVM::Complex_2d;
     $c1->{x} = 0.00000000005;
@@ -245,6 +246,4 @@ package TestCase::Constant {
 
     return 1;
   }
-=cut
-
 }

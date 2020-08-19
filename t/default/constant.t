@@ -82,8 +82,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 }
 
 # constant precompile
-
-
+{
+  ok(TestCase::Constant->constant_vm_and_precompile_same);
+}
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

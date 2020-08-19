@@ -1,4 +1,7 @@
 package SPVM::Math {
+  use SPVM::Complex_2f;
+  use SPVM::Complex_2d;
+  
   native sub HUGE_VALF : float ();
   native sub INFINITYF : float ();
   native sub NANF : float ();
