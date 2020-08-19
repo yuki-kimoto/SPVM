@@ -186,6 +186,22 @@ ok(TestCase::Lib::SPVM::Math->test_islessgreaterf);
 ok(TestCase::Lib::SPVM::Math->test_isunordered);
 ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
 
+# Complex Operations
+{
+  ok(TestCase::Lib::SPVM::Math->test_complexf);
+  ok(TestCase::Lib::SPVM::Math->test_complex);
+  ok(TestCase::Lib::SPVM::Math->test_caddf);
+  ok(TestCase::Lib::SPVM::Math->test_cadd);
+  ok(TestCase::Lib::SPVM::Math->test_csubf);
+  ok(TestCase::Lib::SPVM::Math->test_csub);
+  ok(TestCase::Lib::SPVM::Math->test_cmulf);
+  ok(TestCase::Lib::SPVM::Math->test_cmul);
+  ok(TestCase::Lib::SPVM::Math->test_cscamulf);
+  ok(TestCase::Lib::SPVM::Math->test_cscamul);
+  ok(TestCase::Lib::SPVM::Math->test_cdivf);
+  ok(TestCase::Lib::SPVM::Math->test_cdiv);
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

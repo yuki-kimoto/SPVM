@@ -403,37 +403,6 @@ use SPVM 'SPVM::Util';
   like(SPVM::Util->FLT_MIN(), qr/[0-9]/);
 }
 
-{
-  ok(TestCase::Lib::SPVM::Util->test_caddi);
-  ok(TestCase::Lib::SPVM::Util->test_caddl);
-  ok(TestCase::Lib::SPVM::Util->test_caddf);
-  ok(TestCase::Lib::SPVM::Util->test_caddd);
-  ok(TestCase::Lib::SPVM::Util->test_csubi);
-  ok(TestCase::Lib::SPVM::Util->test_csubl);
-  ok(TestCase::Lib::SPVM::Util->test_csubf);
-  ok(TestCase::Lib::SPVM::Util->test_csubd);
-  ok(TestCase::Lib::SPVM::Util->test_cmuli);
-  ok(TestCase::Lib::SPVM::Util->test_cmull);
-  ok(TestCase::Lib::SPVM::Util->test_cmulf);
-  ok(TestCase::Lib::SPVM::Util->test_cmuld);
-  ok(TestCase::Lib::SPVM::Util->test_cscamuli);
-  ok(TestCase::Lib::SPVM::Util->test_cscamull);
-  ok(TestCase::Lib::SPVM::Util->test_cscamulf);
-  ok(TestCase::Lib::SPVM::Util->test_cscamuld);
-  ok(TestCase::Lib::SPVM::Util->test_cdivi);
-  ok(TestCase::Lib::SPVM::Util->test_cdivl);
-  ok(TestCase::Lib::SPVM::Util->test_cdivf);
-  ok(TestCase::Lib::SPVM::Util->test_cdivd);
-
-  ok(TestCase::Lib::SPVM::Util->test_cabsf);
-  ok(TestCase::Lib::SPVM::Util->test_cabsd);
-
-  ok(TestCase::Lib::SPVM::Util->test_cconi);
-  ok(TestCase::Lib::SPVM::Util->test_cconl);
-  ok(TestCase::Lib::SPVM::Util->test_cconf);
-  ok(TestCase::Lib::SPVM::Util->test_ccond);
-}
-
 # getenv
 =pod
 {

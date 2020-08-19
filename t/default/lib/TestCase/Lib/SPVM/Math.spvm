@@ -1,6 +1,21 @@
 package TestCase::Lib::SPVM::Math {
-  use SPVM::Math;
-  use SPVM::Util(contains, PI, INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use SPVM::Math (
+    complexf,
+    complex,
+    caddf,
+    cadd,
+    csubf,
+    csub,
+    cmulf,
+    cmul,
+    cscamulf,
+    cscamul,
+    cdivf,
+    cdiv,
+  );
+  use SPVM::Util(
+    contains, PI, INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX
+  );
 
   sub test_pi : int () {
     my $pi = PI();
@@ -2641,6 +2656,215 @@ package TestCase::Lib::SPVM::Math {
     if (SPVM::Math->isunorderedf(1.0f, SPVM::Math->INFINITYF)) {
       return 0;
     }
+    return 1;
+  }
+
+  sub test_complexf : int () {
+    my $c1 = complex(0.5f, 0.25f);
+
+    unless ($c1->{x} == 0.5f && $c1->{y} == 0.25f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+
+  sub test_complex : int () {
+    my $c1 = complex(0.00000000005, 0.000000000025);
+
+    unless ($c1->{x} == 0.00000000005 && $c1->{y} == 0.000000000025) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_caddf : int () {
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 0.5f;
+    $c1->{y} = 0.25f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 0.125f;
+    $c2->{y} = 0.0625f;
+
+    my $c3 = caddf($c1, $c2);
+
+    unless ($c3->{x} == 0.625 && $c3->{y} == 0.3125) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cadd : int () {
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 0.00000000005;
+    $c1->{y} = 0.000000000025;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 0.0000000000125;
+    $c2->{y} = 0.00000000000625;
+
+    my $c3 = cadd($c1, $c2);
+
+    unless ($c3->{x} == 0.0000000000625 && $c3->{y} == 0.00000000003125) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubf : int () {
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 0.5f;
+    $c1->{y} = 0.25f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 0.125f;
+    $c2->{y} = 0.0625f;
+
+    my $c3 = csubf($c1, $c2);
+
+    unless ($c3->{x} == 0.5f - 0.125f && $c3->{y} == 0.25f - 0.0625f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csub : int () {
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 0.00000000005;
+    $c1->{y} = 0.000000000025;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 0.0000000000125;
+    $c2->{y} = 0.00000000000625;
+
+    my $c3 = csub($c1, $c2);
+
+    unless ($c3->{x} == 0.00000000005 - 0.0000000000125 && $c3->{y} == 0.000000000025 - 0.00000000000625) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmulf : int () {
+    my $eps = 0.001f;
+
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 0.5f;
+    $c1->{y} = 0.25f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 0.125f;
+    $c2->{y} = 0.0625f;
+
+    my $c3 = cmulf($c1, $c2);
+
+    unless ($c3->{x} == 0.046875 && $c3->{y} == 0.0625) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmul : int () {
+    my $eps = 0.1;
+
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 0.5;
+    $c1->{y} = 0.25;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 0.125;
+    $c2->{y} = 0.0625;
+
+    my $c3 = cmul($c1, $c2);
+
+    unless ($c3->{x} == 0.046875 && $c3->{y} == 0.0625) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamulf : int () {
+    my $c1 = -0.5f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = -0.1f;
+    $c2->{y} = 0.05f;
+
+    my $c3 = cscamulf($c1, $c2);
+    
+    unless ($c3->{x} == 0.05f) {
+      return 0;
+    }
+    
+    unless ($c3->{y} == -0.025f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamul : int () {
+    my $c1 = 0.001;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = -1.0;
+    $c2->{y} = 3.0;
+
+    my $c3 = cscamul($c1, $c2);
+
+    unless ($c3->{x} == -0.001) {
+      return 0;
+    }
+    
+    unless ($c3->{y} == 0.003) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivf : int () {
+    my $c1 : SPVM::Complex_2f;
+    $c1->{x} = 0.5f;
+    $c1->{y} = 0.25f;
+
+    my $c2 : SPVM::Complex_2f;
+    $c2->{x} = 2f;
+    $c2->{y} = -2f;
+
+    my $c3 = cdivf($c1, $c2);
+    
+    unless ($c3->{x} == 0.0625 && $c3->{y} == 0.1875) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdiv : int () {
+    my $c1 : SPVM::Complex_2d;
+    $c1->{x} = 0.5f;
+    $c1->{y} = 0.25f;
+
+    my $c2 : SPVM::Complex_2d;
+    $c2->{x} = 2f;
+    $c2->{y} = -2f;
+
+    my $c3 = cdiv($c1, $c2);
+
+    unless ($c3->{x} == 0.0625 && $c3->{y} == 0.1875) {
+      return 0;
+    }
+
     return 1;
   }
 }

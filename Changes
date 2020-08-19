@@ -1,4 +1,9 @@
-0.0907
+0.0908 2020-08-19
+  - add complex, complexf to SPVM::Math
+  - move complex function from SPVM::Util to SPVM::Math
+  - remove complex int, long complex functions
+  - remove complex absolute, conjunction functions
+0.0907 2020-08-16
   - add caddi, caddl, caddf, caddd to SPVM::Util
   - add csubi, csubl, csubf, csubd to SPVM::Util
   - add cmuli, cmull, cmulf, cmuld to SPVM::Util
@@ -7,9 +12,9 @@
   - add cabsi, cabsl, cabsf, cabsd to SPVM::Util
   - add cconi, cconl, cconf, ccond to SPVM::Util
 
-0.0906
+0.0906 2020-08-10
   - add add,sub,scamul,mul,new_ident,new_zero method to SPVM::Matrix::* class.
-0.0905
+0.0905 2020-08-08
   - remove SPVM::NDArray and related modules because SPVM::NDArray is too big and complex for SPVM Core Modules.
   - add SPVM::Matrix related modules.
 0.0904 2020-07-30
