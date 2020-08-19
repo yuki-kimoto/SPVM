@@ -1,7 +1,0 @@
-# SPVM::Quat_4s is created by regen/regen_quat.pl
-package SPVM::Quat_4s : mulnum_t {
-  has t : short;
-  has x : short;
-  has y : short;
-  has z : short;
-}

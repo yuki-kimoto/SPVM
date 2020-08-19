@@ -1,7 +1,0 @@
-# SPVM::Quat_4f is created by regen/regen_quat.pl
-package SPVM::Quat_4f : mulnum_t {
-  has t : float;
-  has x : float;
-  has y : float;
-  has z : float;
-}

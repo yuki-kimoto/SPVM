@@ -542,18 +542,6 @@ lib/SPVM/Matrix/Short.pm
 lib/SPVM/Matrix/Short.spvm
 lib/SPVM/ObjectList.pm
 lib/SPVM/ObjectList.spvm
-lib/SPVM/Quat_4b.pm
-lib/SPVM/Quat_4b.spvm
-lib/SPVM/Quat_4d.pm
-lib/SPVM/Quat_4d.spvm
-lib/SPVM/Quat_4f.pm
-lib/SPVM/Quat_4f.spvm
-lib/SPVM/Quat_4i.pm
-lib/SPVM/Quat_4i.spvm
-lib/SPVM/Quat_4l.pm
-lib/SPVM/Quat_4l.spvm
-lib/SPVM/Quat_4s.pm
-lib/SPVM/Quat_4s.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
@@ -597,7 +585,6 @@ ppport.h
 README.md
 regen/regen_complex.pl
 regen/regen_matrix.pl
-regen/regen_quat.pl
 solo/Main.spvm
 solo/solo_Makefile.PL
 solo/SPVM/Byte.spvm

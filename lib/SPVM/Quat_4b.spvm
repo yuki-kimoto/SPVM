@@ -1,7 +1,0 @@
-# SPVM::Quat_4b is created by regen/regen_quat.pl
-package SPVM::Quat_4b : mulnum_t {
-  has t : byte;
-  has x : byte;
-  has y : byte;
-  has z : byte;
-}

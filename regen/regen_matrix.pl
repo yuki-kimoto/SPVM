@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-my @number_categories = ('real', 'complex', 'quat');
+my @number_categories = ('real', 'complex');
 
 my @types = qw(byte short int long float double);
 sub prefix {
