@@ -6,10 +6,6 @@ package SPVM::Util {
   use SPVM::StringList;
   use SPVM::Unicode (uchar_to_utf8);
   use SPVM::Math (fabs, floor, log10, pow, sqrt, sqrtf);
-  use SPVM::Complex_2i;
-  use SPVM::Complex_2l;
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
 
   precompile sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
     my $length = @$objects;
