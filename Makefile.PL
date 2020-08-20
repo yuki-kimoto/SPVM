@@ -28,6 +28,12 @@ use SPVM::Builder::Util;
     warn "SPVM don't support NetBSD 6, 5, 4, 3, 2, 1";
     die "OS unsupported\n";
   }
+
+  # Not support Alpine Linux because Alpine Linux tests fail in current SPVM
+  if ($Config{uname} =~ /alpine/i) {
+    warn "Not support Alpine Linux because Alpine Linux tests fail in current SPVM";
+    die "OS unsupported\n";
+  }
 }
 
 my @defines;
