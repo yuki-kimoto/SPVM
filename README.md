@@ -50,7 +50,11 @@ Use SPVM Module from Perl
 
 # More imformation
 
-SPVM document
-  
+SPVM Document
+
+https://yuki-kimoto.github.io/spvmdoc-public/
+
+SPVM CPAN
+
 https://metacpan.org/pod/SPVM
 
