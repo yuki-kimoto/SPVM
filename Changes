@@ -1,3 +1,6 @@
+0.0909 2020-08-26
+  - add complex examples
+  - remove no needed module documents
 0.0908 2020-08-20
   - add complex, complexf to SPVM::Math
   - move complex function from SPVM::Util to SPVM::Math
