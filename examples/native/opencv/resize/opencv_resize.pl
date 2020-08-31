@@ -8,13 +8,13 @@ use SPVM 'MyOpenCVResize';
 
 # Initialize SPVM
 
-my $image_file = "$FindBin::Bin/linux-pengin.png";
+my $image_in_file = "$FindBin::Bin/linux-pengin.png";
 
-my $image_resize_file = "$FindBin::Bin/linux-pengin-resize.png";
+my $image_out_file = "$FindBin::Bin/linux-pengin-output.png";
 
-MyOpenCVResize->resize($image_file);
+MyOpenCVResize->resize($image_in_file, $image_out_file);
 
-=head1 Eigen installation
+=head1 OpenCV installation
 
 =head2 Ubuntu 18 OpenCV installation
 

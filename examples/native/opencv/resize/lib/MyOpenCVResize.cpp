@@ -6,26 +6,29 @@
 
 extern "C" {
 
-using namespace cv;
-
 int32_t SPNATIVE__MyOpenCVResize__resize(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  using namespace cv;
+
   (void)env;
   
-  void* sv_file = stack[0].oval;
-  const char* file = env->get_elems_byte(sv_file);
+  void* sv_in_file = stack[0].oval;
+  const char* in_file = (const char*)env->get_elems_byte(env, sv_in_file);
+
+  void* sv_out_file = stack[1].oval;
+  const char* out_file = (const char*)env->get_elems_byte(env, sv_out_file);
   
   Mat image;
-  image = imread( file, 1 );
+  image = imread( in_file, 1 );
 
-  if ( !image.data )
-  {
-      printf("No image data \n");
-      return -1;
+  if (!image.data) {
+    printf("No image data \n");
+    return SPVM_EXCEPTION;
   }
-  namedWindow("Display Image", WINDOW_AUTOSIZE );
-  imshow("Display Image", image);
-
-  waitKey(0);
+  
+  resize(image, image, cv::Size(), 0.5, 0.5);
+  
+  imwrite(out_file, image);
   
   return SPVM_SUCCESS;
 }
