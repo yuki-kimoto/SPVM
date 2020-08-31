@@ -30,7 +30,7 @@ union SPVM_value {
 #define SPVM_EXCEPTION 1
 
 #define SPVM_DIE(message, ...) do {\
-  void* buffer = env->alloc_memory_block_zero(env, 255);\
+  char* buffer = (char*)env->alloc_memory_block_zero(env, 255);\
   snprintf(buffer, 255, message " at %s line %d", __VA_ARGS__);\
   void* exception = env->new_string_len_raw(env, buffer, strlen(buffer));\
   env->free_memory_block(env, buffer);\

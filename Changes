@@ -1,6 +1,7 @@
 0.0910 2020-08-31
   - add new_c method to SPVM::Builder::Config
   - add new_cpp11 method to SPVM::Builder::Config
+  - fix C++ SPVM_DIE type conversion bug
 0.0909 2020-08-26
   - remove SPVM::IO::File, SPVM::IO::File::Handle because File I/O is a little complex for SPVM project and has many bugs.
   - add complex examples
