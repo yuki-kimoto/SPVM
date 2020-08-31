@@ -427,10 +427,6 @@ SPVM Core Modules.
 
 =item * L<SPVM::IntList>
 
-=item * L<SPVM::IO::File>
-
-=item * L<SPVM::IO::FileHandle>
-
 =item * L<SPVM::IO::Stderr>
 
 =item * L<SPVM::IO::Stdout>

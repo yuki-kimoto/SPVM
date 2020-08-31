@@ -12,6 +12,11 @@ ctest/t/spvm_t_list
 ctest/t/spvm_t_list.c
 DEVELOPMENT.txt
 doc_save.txt
+examples/complex/complex.pl
+examples/complex/lib/MyComplex.spvm
+examples/data_analysis/data/sales.csv
+examples/data_analysis/data_analysis.pl
+examples/data_analysis/lib/MyDataAnalysis.spvm
 examples/matrix/lib/MyMatrix.spvm
 examples/matrix/matrix.pl
 examples/native/bind_clib/bind_clib.pl
@@ -472,14 +477,6 @@ lib/SPVM/Int.pm
 lib/SPVM/Int.spvm
 lib/SPVM/IntList.pm
 lib/SPVM/IntList.spvm
-lib/SPVM/IO/File.c
-lib/SPVM/IO/File.config
-lib/SPVM/IO/File.pm
-lib/SPVM/IO/File.spvm
-lib/SPVM/IO/FileHandle.c
-lib/SPVM/IO/FileHandle.config
-lib/SPVM/IO/FileHandle.pm
-lib/SPVM/IO/FileHandle.spvm
 lib/SPVM/IO/Stderr.c
 lib/SPVM/IO/Stderr.config
 lib/SPVM/IO/Stderr.pm

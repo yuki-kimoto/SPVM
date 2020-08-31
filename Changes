@@ -1,3 +1,5 @@
+0.0910 2020-08-31
+  - remove SPVM::IO::File, SPVM::IO::File::Handle because File I/O is a little complex for SPVM project and has many bugs.
 0.0909 2020-08-26
   - add complex examples
   - remove no needed module documents
