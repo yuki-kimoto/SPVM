@@ -14,9 +14,6 @@ DEVELOPMENT.txt
 doc_save.txt
 examples/complex/complex.pl
 examples/complex/lib/MyComplex.spvm
-examples/data_analysis/data/sales.csv
-examples/data_analysis/data_analysis.pl
-examples/data_analysis/lib/MyDataAnalysis.spvm
 examples/matrix/lib/MyMatrix.spvm
 examples/matrix/matrix.pl
 examples/native/bind_clib/bind_clib.pl
