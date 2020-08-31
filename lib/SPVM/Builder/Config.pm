@@ -59,16 +59,24 @@ sub new {
   return $self;
 }
 
-sub new_c99 {
+sub new_c {
   my $class = shift;
   
   my $self = SPVM::Builder::Config->new;
   
-  # C99
-  $self->set_std('c99');
-  
   # NativeAPI
   $self->set_ext('c');
+  
+  return $self;
+}
+
+sub new_c99 {
+  my $class = shift;
+  
+  my $self = SPVM::Builder::Config->new_c;
+  
+  # C99
+  $self->set_std('c99');
   
   return $self;
 }
@@ -86,6 +94,17 @@ sub new_cpp {
   
   # NativeAPI
   $self->set_ext('cpp');
+  
+  return $self;
+}
+
+sub new_cpp11 {
+  my $class = shift;
+  
+  my $self = SPVM::Builder::Config->new_cpp;
+  
+  # C++11
+  $self->set_std('c++11');
   
   return $self;
 }
@@ -583,11 +602,29 @@ L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
   
 Create L<SPVM::Builder::Config> object.
 
+=head2 new_c
+  
+  my $bconf = SPVM::Builder::Config->new_c;
+
+Create default build config with C settings. This is L<SPVM::Builder::Config> object.
+
 =head2 new_c99
   
   my $bconf = SPVM::Builder::Config->new_c99;
 
-Create defaulgt build config. This is L<SPVM::Builder::Config> object.
+Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
+
+=head2 new_cpp
+  
+  my $bconf = SPVM::Builder::Config->new_c;
+
+Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
+
+=head2 new_cpp11
+  
+  my $bconf = SPVM::Builder::Config->new_c;
+
+Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
 
 =head2 replace_all_config
 
