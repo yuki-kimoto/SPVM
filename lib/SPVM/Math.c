@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <fenv.h>
+#include <complex.h>
 
 static const char* MFILE = "SPVM/Math.c";
 
@@ -1450,6 +1451,615 @@ int32_t SPNATIVE__SPVM__Math__isunorderedf(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t value = isunordered(stack[0].fval, stack[1].fval);
 
   stack[0].ival = value;
+
+  return SPVM_SUCCESS;
+}
+
+
+
+
+int32_t SPNATIVE__SPVM__Math__cacos(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = cacos(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cacosf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = cacosf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__casin(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = casin(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__casinf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = casinf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__catan(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = catan(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__catanf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = catanf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ccos(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = ccos(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ccosf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = ccosf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__csin(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = csin(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__csinf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = csinf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ctan(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = ctan(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ctanf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = ctanf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cacosh(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = cacosh(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cacoshf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = cacoshf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__casinh(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = casinh(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__casinhf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = casinhf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__catanh(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = catanh(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__catanhf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = catanhf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ccosh(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = ccosh(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ccoshf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = ccoshf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__csinh(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = csinh(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__csinhf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = csinhf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ctanh(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = ctanh(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__ctanhf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = ctanhf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cexp(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = cexp(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cexpf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = cexpf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__clog(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = clog(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__clogf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = clogf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cabs(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double z_out = cabs(z);
+
+  stack[0].dval = z_out;
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cabsf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float z_out = cabsf(z);
+
+  stack[0].fval = z_out;
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cpow(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double x_pow = stack[2].dval;
+  double y_pow = stack[3].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_pow = x_pow + y_pow * _Complex_I;
+
+  double complex z_out = cpow(z, z_pow);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cpowf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float x_pow = stack[2].fval;
+  float y_pow = stack[3].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_pow = x_pow + y_pow * _Complex_I;
+
+  float complex z_out = cpowf(z, z_pow);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__csqrt(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = csqrt(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__csqrtf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = csqrtf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__carg(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double z_out = carg(z);
+
+  stack[0].dval = creal(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cargf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float z_out = cargf(z);
+
+  stack[0].fval = z_out;
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__conj(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = conj(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__conjf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = conjf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cproj(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  double x = stack[0].dval;
+  double y = stack[1].dval;
+
+  double complex z = x + y * _Complex_I;
+
+  double complex z_out = cproj(z);
+
+  stack[0].dval = creal(z_out);
+  stack[1].dval = cimag(z_out);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Math__cprojf(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  float x = stack[0].fval;
+  float y = stack[1].fval;
+
+  float complex z = x + y * _Complex_I;
+
+  float complex z_out = cprojf(z);
+
+  stack[0].fval = crealf(z_out);
+  stack[1].fval = cimagf(z_out);
 
   return SPVM_SUCCESS;
 }
