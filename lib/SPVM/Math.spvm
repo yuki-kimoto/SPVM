@@ -261,4 +261,68 @@ package SPVM::Math {
     $z_out->{y} = ($z1->{y} * $z2->{x} - $z1->{x} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
     return $z_out;
   }
+
+=pod
+  native sub cacos : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub cacosf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub casin : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub casinf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub catan : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub catanf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub ccos : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub ccosf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub csin : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub csinf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub ctan : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub ctanf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub cacosh : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub cacoshf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub casinh : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub casinhf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub catanh : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub catanhf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub ccosh : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub ccoshf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub csinh : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub csinhf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub ctanh : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub ctanhf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub cexp : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub cexpf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub clog : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub clogf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub cabs : double ($z : $SPVM::Complex_2d);
+  native sub cabsf : float ($z : $SPVM::Complex_2f);
+
+  native sub cpow : SPVM::Complex_2d ($z1 : $SPVM::Complex_2d, $z2 : $SPVM::Complex_2d);
+  native sub cpowf : SPVM::Complex_2f ($z1 : $SPVM::Complex_2d, $z2 : $SPVM::Complex_2d);
+
+  native sub csqrt : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub csqrtf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub carg : double ($z : $SPVM::Complex_2d);
+  native sub cargf : float ($z : $SPVM::Complex_2f);
+
+  native sub conj : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub conjf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+  native sub cproj : SPVM::Complex_2d ($z : $SPVM::Complex_2d);
+  native sub cprojf : SPVM::Complex_2f ($z : $SPVM::Complex_2f);
+
+=cut
+
 }
