@@ -8,6 +8,7 @@ use Test::More 'no_plan';
 
 use POSIX();
 use TestFile;
+use Math::Complex;
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -200,6 +201,12 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
   ok(TestCase::Lib::SPVM::Math->test_cscamul);
   ok(TestCase::Lib::SPVM::Math->test_cdivf);
   ok(TestCase::Lib::SPVM::Math->test_cdiv);
+}
+
+# Complex Functions
+{
+  ok(TestCase::Lib::SPVM::Math->test_cacos);
+  ok(TestCase::Lib::SPVM::Math->test_cacosf);
 }
 
 # All object is freed

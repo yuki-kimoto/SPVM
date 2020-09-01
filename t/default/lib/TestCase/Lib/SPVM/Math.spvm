@@ -2660,9 +2660,9 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_complexf : int () {
-    my $c1 = complex(0.5f, 0.25f);
+    my $z1 = complex(0.5f, 0.25f);
 
-    unless ($c1->{x} == 0.5f && $c1->{y} == 0.25f) {
+    unless ($z1->{x} == 0.5f && $z1->{y} == 0.25f) {
       return 0;
     }
 
@@ -2671,9 +2671,9 @@ package TestCase::Lib::SPVM::Math {
 
 
   sub test_complex : int () {
-    my $c1 = complex(0.00000000005, 0.000000000025);
+    my $z1 = complex(0.00000000005, 0.000000000025);
 
-    unless ($c1->{x} == 0.00000000005 && $c1->{y} == 0.000000000025) {
+    unless ($z1->{x} == 0.00000000005 && $z1->{y} == 0.000000000025) {
       return 0;
     }
 
@@ -2681,17 +2681,17 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_caddf : int () {
-    my $c1 : SPVM::Complex_2f;
-    $c1->{x} = 0.5f;
-    $c1->{y} = 0.25f;
+    my $z1 : SPVM::Complex_2f;
+    $z1->{x} = 0.5f;
+    $z1->{y} = 0.25f;
 
-    my $c2 : SPVM::Complex_2f;
-    $c2->{x} = 0.125f;
-    $c2->{y} = 0.0625f;
+    my $z2 : SPVM::Complex_2f;
+    $z2->{x} = 0.125f;
+    $z2->{y} = 0.0625f;
 
-    my $c3 = caddf($c1, $c2);
+    my $z3 = caddf($z1, $z2);
 
-    unless ($c3->{x} == 0.625 && $c3->{y} == 0.3125) {
+    unless ($z3->{x} == 0.625 && $z3->{y} == 0.3125) {
       return 0;
     }
 
@@ -2699,17 +2699,17 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_cadd : int () {
-    my $c1 : SPVM::Complex_2d;
-    $c1->{x} = 0.00000000005;
-    $c1->{y} = 0.000000000025;
+    my $z1 : SPVM::Complex_2d;
+    $z1->{x} = 0.00000000005;
+    $z1->{y} = 0.000000000025;
 
-    my $c2 : SPVM::Complex_2d;
-    $c2->{x} = 0.0000000000125;
-    $c2->{y} = 0.00000000000625;
+    my $z2 : SPVM::Complex_2d;
+    $z2->{x} = 0.0000000000125;
+    $z2->{y} = 0.00000000000625;
 
-    my $c3 = cadd($c1, $c2);
+    my $z3 = cadd($z1, $z2);
 
-    unless ($c3->{x} == 0.0000000000625 && $c3->{y} == 0.00000000003125) {
+    unless ($z3->{x} == 0.0000000000625 && $z3->{y} == 0.00000000003125) {
       return 0;
     }
 
@@ -2717,17 +2717,17 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_csubf : int () {
-    my $c1 : SPVM::Complex_2f;
-    $c1->{x} = 0.5f;
-    $c1->{y} = 0.25f;
+    my $z1 : SPVM::Complex_2f;
+    $z1->{x} = 0.5f;
+    $z1->{y} = 0.25f;
 
-    my $c2 : SPVM::Complex_2f;
-    $c2->{x} = 0.125f;
-    $c2->{y} = 0.0625f;
+    my $z2 : SPVM::Complex_2f;
+    $z2->{x} = 0.125f;
+    $z2->{y} = 0.0625f;
 
-    my $c3 = csubf($c1, $c2);
+    my $z3 = csubf($z1, $z2);
 
-    unless ($c3->{x} == 0.5f - 0.125f && $c3->{y} == 0.25f - 0.0625f) {
+    unless ($z3->{x} == 0.5f - 0.125f && $z3->{y} == 0.25f - 0.0625f) {
       return 0;
     }
 
@@ -2735,17 +2735,17 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_csub : int () {
-    my $c1 : SPVM::Complex_2d;
-    $c1->{x} = 0.5;
-    $c1->{y} = 0.25;
+    my $z1 : SPVM::Complex_2d;
+    $z1->{x} = 0.5;
+    $z1->{y} = 0.25;
 
-    my $c2 : SPVM::Complex_2d;
-    $c2->{x} = 0.125;
-    $c2->{y} = 0.625;
+    my $z2 : SPVM::Complex_2d;
+    $z2->{x} = 0.125;
+    $z2->{y} = 0.625;
 
-    my $c3 = csub($c1, $c2);
+    my $z3 = csub($z1, $z2);
 
-    unless ($c3->{x} == 0.5 - 0.125 && $c3->{y} == 0.25 - 0.625) {
+    unless ($z3->{x} == 0.5 - 0.125 && $z3->{y} == 0.25 - 0.625) {
       return 0;
     }
 
@@ -2755,17 +2755,17 @@ package TestCase::Lib::SPVM::Math {
   sub test_cmulf : int () {
     my $eps = 0.001f;
 
-    my $c1 : SPVM::Complex_2f;
-    $c1->{x} = 0.5f;
-    $c1->{y} = 0.25f;
+    my $z1 : SPVM::Complex_2f;
+    $z1->{x} = 0.5f;
+    $z1->{y} = 0.25f;
 
-    my $c2 : SPVM::Complex_2f;
-    $c2->{x} = 0.125f;
-    $c2->{y} = 0.0625f;
+    my $z2 : SPVM::Complex_2f;
+    $z2->{x} = 0.125f;
+    $z2->{y} = 0.0625f;
 
-    my $c3 = cmulf($c1, $c2);
+    my $z3 = cmulf($z1, $z2);
 
-    unless ($c3->{x} == 0.046875 && $c3->{y} == 0.0625) {
+    unless ($z3->{x} == 0.046875 && $z3->{y} == 0.0625) {
       return 0;
     }
 
@@ -2775,17 +2775,17 @@ package TestCase::Lib::SPVM::Math {
   sub test_cmul : int () {
     my $eps = 0.1;
 
-    my $c1 : SPVM::Complex_2d;
-    $c1->{x} = 0.5;
-    $c1->{y} = 0.25;
+    my $z1 : SPVM::Complex_2d;
+    $z1->{x} = 0.5;
+    $z1->{y} = 0.25;
 
-    my $c2 : SPVM::Complex_2d;
-    $c2->{x} = 0.125;
-    $c2->{y} = 0.0625;
+    my $z2 : SPVM::Complex_2d;
+    $z2->{x} = 0.125;
+    $z2->{y} = 0.0625;
 
-    my $c3 = cmul($c1, $c2);
+    my $z3 = cmul($z1, $z2);
 
-    unless ($c3->{x} == 0.046875 && $c3->{y} == 0.0625) {
+    unless ($z3->{x} == 0.046875 && $z3->{y} == 0.0625) {
       return 0;
     }
 
@@ -2793,19 +2793,19 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_cscamulf : int () {
-    my $c1 = -0.5f;
+    my $z1 = -0.5f;
 
-    my $c2 : SPVM::Complex_2f;
-    $c2->{x} = -0.1f;
-    $c2->{y} = 0.05f;
+    my $z2 : SPVM::Complex_2f;
+    $z2->{x} = -0.1f;
+    $z2->{y} = 0.05f;
 
-    my $c3 = cscamulf($c1, $c2);
+    my $z3 = cscamulf($z1, $z2);
     
-    unless ($c3->{x} == 0.05f) {
+    unless ($z3->{x} == 0.05f) {
       return 0;
     }
     
-    unless ($c3->{y} == -0.025f) {
+    unless ($z3->{y} == -0.025f) {
       return 0;
     }
 
@@ -2813,19 +2813,19 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_cscamul : int () {
-    my $c1 = 0.001;
+    my $z1 = 0.001;
 
-    my $c2 : SPVM::Complex_2d;
-    $c2->{x} = -1.0;
-    $c2->{y} = 3.0;
+    my $z2 : SPVM::Complex_2d;
+    $z2->{x} = -1.0;
+    $z2->{y} = 3.0;
 
-    my $c3 = cscamul($c1, $c2);
+    my $z3 = cscamul($z1, $z2);
 
-    unless ($c3->{x} == -0.001) {
+    unless ($z3->{x} == -0.001) {
       return 0;
     }
     
-    unless ($c3->{y} == 0.003) {
+    unless ($z3->{y} == 0.003) {
       return 0;
     }
 
@@ -2833,17 +2833,17 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_cdivf : int () {
-    my $c1 : SPVM::Complex_2f;
-    $c1->{x} = 0.5f;
-    $c1->{y} = 0.25f;
+    my $z1 : SPVM::Complex_2f;
+    $z1->{x} = 0.5f;
+    $z1->{y} = 0.25f;
 
-    my $c2 : SPVM::Complex_2f;
-    $c2->{x} = 2f;
-    $c2->{y} = -2f;
+    my $z2 : SPVM::Complex_2f;
+    $z2->{x} = 2f;
+    $z2->{y} = -2f;
 
-    my $c3 = cdivf($c1, $c2);
+    my $z3 = cdivf($z1, $z2);
     
-    unless ($c3->{x} == 0.0625 && $c3->{y} == 0.1875) {
+    unless ($z3->{x} == 0.0625 && $z3->{y} == 0.1875) {
       return 0;
     }
 
@@ -2851,17 +2851,53 @@ package TestCase::Lib::SPVM::Math {
   }
 
   sub test_cdiv : int () {
-    my $c1 : SPVM::Complex_2d;
-    $c1->{x} = 0.5f;
-    $c1->{y} = 0.25f;
+    my $z1 : SPVM::Complex_2d;
+    $z1->{x} = 0.5f;
+    $z1->{y} = 0.25f;
 
-    my $c2 : SPVM::Complex_2d;
-    $c2->{x} = 2f;
-    $c2->{y} = -2f;
+    my $z2 : SPVM::Complex_2d;
+    $z2->{x} = 2f;
+    $z2->{y} = -2f;
 
-    my $c3 = cdiv($c1, $c2);
+    my $z3 = cdiv($z1, $z2);
 
-    unless ($c3->{x} == 0.0625 && $c3->{y} == 0.1875) {
+    unless ($z3->{x} == 0.0625 && $z3->{y} == 0.1875) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacos : int () {
+    my $z1 : SPVM::Complex_2d;
+    $z1->{x} = 0.5;
+    $z1->{y} = 0.25;
+
+    my $z_out = SPVM::Math->cacos($z1);
+    
+    unless ($z_out->{x} > 1.06918 && $z_out->{x} < 1.06919) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > -0.281397 && $z_out->{y} < -0.281396) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacosf : int () {
+    my $z1 : SPVM::Complex_2f;
+    $z1->{x} = 0.5f;
+    $z1->{y} = 0.25f;
+
+    my $z_out = SPVM::Math->cacosf($z1);
+    
+    unless ($z_out->{x} > 1.06918f && $z_out->{x} < 1.06919f) {
+      return 0;
+    }
+
+    unless ($z_out->{y} > -0.28140f && $z_out->{y} < -0.28139f) {
       return 0;
     }
 
