@@ -3288,6 +3288,87 @@ package TestCase::Lib::SPVM::Math {
     return 1;
   }
 
+  sub test_cabs : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cabs($z1);
+    
+    unless ($z_out > 0.5590169943749 && $z_out < 0.5590169943750) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cabsf($z1);
+    
+    unless ($z_out > 0.5590 && $z_out < 0.5591) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_carg : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->carg($z1);
+    
+    unless ($z_out > 0.463647609000 && $z_out < 0.463647609001) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cargf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cargf($z1);
+    
+    unless ($z_out > 0.4636 && $z_out < 0.4637) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_conj : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->conj($z1);
+    
+    unless ($z_out->{x} == 0.5) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} == -0.25) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_conjf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->conjf($z1);
+    
+    unless ($z_out->{x} == 0.5f) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} == -0.25f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+
   sub test_csqrt : int () {
     my $z1 = complex(0.5, 0.25);
 
@@ -3308,38 +3389,6 @@ package TestCase::Lib::SPVM::Math {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = SPVM::Math->csqrtf($z1);
-    
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
-      return 0;
-    }
-    
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_conj : int () {
-    my $z1 = complex(0.5, 0.25);
-
-    my $z_out = SPVM::Math->conj($z1);
-    
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
-      return 0;
-    }
-    
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_conjf : int () {
-    my $z1 = complexf(0.5f, 0.25f);
-
-    my $z_out = SPVM::Math->conjf($z1);
     
     unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
       return 0;
@@ -3378,54 +3427,6 @@ package TestCase::Lib::SPVM::Math {
     }
     
     unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_cabs : int () {
-    my $z1 = complex(0.5, 0.25);
-
-    my $z_out = SPVM::Math->cabs($z1);
-    
-    unless ($z_out > 0.4842544903299 && $z_out < 0.4842544903300) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_cabsf : int () {
-    my $z1 = complexf(0.5f, 0.25f);
-
-    my $z_out = SPVM::Math->cabsf($z1);
-    
-    unless ($z_out > 0.4842 && $z_out < 0.4843) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_carg : int () {
-    my $z1 = complex(0.5, 0.25);
-
-    my $z_out = SPVM::Math->carg($z1);
-    
-    unless ($z_out > 0.4842544903299 && $z_out < 0.4842544903300) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_cargf : int () {
-    my $z1 = complexf(0.5f, 0.25f);
-
-    my $z_out = SPVM::Math->cargf($z1);
-    
-    unless ($z_out > 0.4842 && $z_out < 0.4843) {
       return 0;
     }
 
