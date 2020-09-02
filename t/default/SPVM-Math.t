@@ -259,15 +259,16 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
   ok(TestCase::Lib::SPVM::Math->test_cexp);
   ok(TestCase::Lib::SPVM::Math->test_cexpf);
 
+  ok(TestCase::Lib::SPVM::Math->test_cpow);
+  ok(TestCase::Lib::SPVM::Math->test_cpowf);
+
   use Math::Complex;
   my $z1 = Math::Complex->make(0.5, 0.25);
   my $z2 = Math::Complex->make(1.5, 1.25);
-  my $z_out = Math::Complex::arg($z1);
+  my $z_out = $z1 ** $z2;
   warn "$z_out";
 
 =pod
-  ok(TestCase::Lib::SPVM::Math->test_cpow);
-  ok(TestCase::Lib::SPVM::Math->test_cpowf);
   ok(TestCase::Lib::SPVM::Math->test_csqrt);
   ok(TestCase::Lib::SPVM::Math->test_csqrtf);
 
