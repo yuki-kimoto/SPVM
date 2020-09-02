@@ -3197,11 +3197,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csinh($z1);
     
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+    unless ($z_out->{x} > 0.5048957143879 && $z_out->{x} < 0.5048957143880) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+    unless ($z_out->{y} > 0.2789791283502 && $z_out->{y} < 0.2789791283503) {
       return 0;
     }
 
@@ -3213,11 +3213,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csinhf($z1);
     
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+    unless ($z_out->{x} > 0.5048 && $z_out->{x} < 0.5049) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+    unless ($z_out->{y} > 0.2789 && $z_out->{y} < 0.2790) {
       return 0;
     }
 
@@ -3229,11 +3229,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ctanh($z1);
     
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+    unless ($z_out->{x} > 0.4854872810241 && $z_out->{x} < 0.4854872810242) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+    unless ($z_out->{y} > 0.198055449951 && $z_out->{y} < 0.198055449952) {
       return 0;
     }
 
@@ -3245,60 +3245,27 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ctanhf($z1);
     
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+    unless ($z_out->{x} > 0.4854 && $z_out->{x} < 0.4855) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+    unless ($z_out->{y} > 0.1980 && $z_out->{y} < 0.1981) {
       return 0;
     }
 
     return 1;
   }
-
-  sub test_cexp : int () {
-    my $z1 = complex(0.5, 0.25);
-
-    my $z_out = SPVM::Math->cexp($z1);
-    
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
-      return 0;
-    }
-    
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_cexpf : int () {
-    my $z1 = complexf(0.5f, 0.25f);
-
-    my $z_out = SPVM::Math->cexpf($z1);
-    
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
-      return 0;
-    }
-    
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
-      return 0;
-    }
-
-    return 1;
-  }
-
 
   sub test_clog : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = SPVM::Math->clog($z1);
     
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+    unless ($z_out->{x} > -0.581575404903 && $z_out->{x} < -0.581575404902) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+    unless ($z_out->{y} > 0.4636476090008 && $z_out->{y} < 0.4636476090009) {
       return 0;
     }
 
@@ -3310,11 +3277,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->clogf($z1);
     
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+    unless ($z_out->{x} > -0.5816 && $z_out->{x} < -0.5815) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+    unless ($z_out->{y} > 0.4636 && $z_out->{y} < 0.4637) {
       return 0;
     }
 
@@ -3498,4 +3465,37 @@ package TestCase::Lib::SPVM::Math {
 
     return 1;
   }
+
+  sub test_cexp : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cexp($z1);
+    warn $z_out->{x};
+    unless ($z_out->{x} > 1.648721270700 && $z_out->{x} < 1.648721270701) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cexpf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cexpf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
 }

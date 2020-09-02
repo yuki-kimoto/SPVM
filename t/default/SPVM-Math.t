@@ -235,24 +235,24 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
   ok(TestCase::Lib::SPVM::Math->test_ccosh);
   ok(TestCase::Lib::SPVM::Math->test_ccoshf);
 
+  ok(TestCase::Lib::SPVM::Math->test_csinh);
+  ok(TestCase::Lib::SPVM::Math->test_csinhf);
+
+  ok(TestCase::Lib::SPVM::Math->test_ctanh);
+  ok(TestCase::Lib::SPVM::Math->test_ctanhf);
+
+  ok(TestCase::Lib::SPVM::Math->test_clog);
+  ok(TestCase::Lib::SPVM::Math->test_clogf);
+
   use Math::Complex;
-  my $z = Math::Complex->make(0.5, 0.25);
-  my $z_out = Math::Complex::cosh($z);
+  my $z1 = Math::Complex->make(0.5, 0.25);
+  my $z2 = Math::Complex->make(1.5, 1.25);
+  my $z_out = Math::Complex::log($z1);
   warn "$z_out";
 
 =pod
-  ok(TestCase::Lib::SPVM::Math->test_csinh);
-  ok(TestCase::Lib::SPVM::Math->test_csinhf);
-  ok(TestCase::Lib::SPVM::Math->test_ctanh);
-  ok(TestCase::Lib::SPVM::Math->test_ctanhf);
-  ok(TestCase::Lib::SPVM::Math->test_cexp);
-  ok(TestCase::Lib::SPVM::Math->test_cexpf);
-  ok(TestCase::Lib::SPVM::Math->test_clog);
-  ok(TestCase::Lib::SPVM::Math->test_clogf);
   ok(TestCase::Lib::SPVM::Math->test_cabs);
   ok(TestCase::Lib::SPVM::Math->test_cabsf);
-  ok(TestCase::Lib::SPVM::Math->test_cpow);
-  ok(TestCase::Lib::SPVM::Math->test_cpowf);
   ok(TestCase::Lib::SPVM::Math->test_csqrt);
   ok(TestCase::Lib::SPVM::Math->test_csqrtf);
   ok(TestCase::Lib::SPVM::Math->test_carg);
@@ -261,6 +261,11 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
   ok(TestCase::Lib::SPVM::Math->test_conjf);
   ok(TestCase::Lib::SPVM::Math->test_cproj);
   ok(TestCase::Lib::SPVM::Math->test_cprojf);
+  ok(TestCase::Lib::SPVM::Math->test_cpow);
+  ok(TestCase::Lib::SPVM::Math->test_cpowf);
+  ok(TestCase::Lib::SPVM::Math->test_cexp);
+  ok(TestCase::Lib::SPVM::Math->test_cexpf);
+
 =cut
 
 }
