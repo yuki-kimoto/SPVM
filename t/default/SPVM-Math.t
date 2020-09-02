@@ -213,15 +213,16 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
   
   ok(TestCase::Lib::SPVM::Math->test_catan);
   ok(TestCase::Lib::SPVM::Math->test_catanf);
+
+  ok(TestCase::Lib::SPVM::Math->test_ccos);
+  ok(TestCase::Lib::SPVM::Math->test_ccosf);
   
   use Math::Complex;
   my $z = Math::Complex->make(0.5, 0.25);
-  my $z_out = Math::Complex::atan($z);
+  my $z_out = Math::Complex::cos($z);
   warn "$z_out";
 
 =pod
-  ok(TestCase::Lib::SPVM::Math->test_ccos);
-  ok(TestCase::Lib::SPVM::Math->test_ccosf);
   ok(TestCase::Lib::SPVM::Math->test_csin);
   ok(TestCase::Lib::SPVM::Math->test_csinf);
   ok(TestCase::Lib::SPVM::Math->test_ctan);
