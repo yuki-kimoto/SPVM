@@ -308,7 +308,7 @@ package SPVM::Math {
   native sub cabsf : float ($z : SPVM::Complex_2f);
 
   native sub cpow : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
-  native sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
+  native sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
 
   native sub csqrt : SPVM::Complex_2d ($z : SPVM::Complex_2d);
   native sub csqrtf : SPVM::Complex_2f ($z : SPVM::Complex_2f);

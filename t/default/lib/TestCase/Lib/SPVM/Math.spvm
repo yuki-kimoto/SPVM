@@ -2968,4 +2968,534 @@ package TestCase::Lib::SPVM::Math {
     return 1;
   }
 
+  sub test_ccos : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ccos($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccosf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ccosf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csin : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->csin($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csinf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->csinf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctan : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ctan($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctanf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ctanf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacosh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cacosh($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacoshf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cacoshf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_casinh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->casinh($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_casinhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->casinhf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_catanh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->catanh($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_catanhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->catanhf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccosh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ccosh($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccoshf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ccoshf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csinh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->csinh($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csinhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->csinhf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctanh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ctanh($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctanhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ctanhf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cexp : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cexp($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cexpf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cexpf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+
+  sub test_clog : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->clog($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_clogf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->clogf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csqrt : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->csqrt($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csqrtf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->csqrtf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_conj : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->conj($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_conjf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->conjf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cproj : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cproj($z1);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cprojf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cprojf($z1);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabs : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cabs($z1);
+    
+    unless ($z_out > 0.4842544903299 && $z_out < 0.4842544903300) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cabsf($z1);
+    
+    unless ($z_out > 0.4842 && $z_out < 0.4843) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_carg : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->carg($z1);
+    
+    unless ($z_out > 0.4842544903299 && $z_out < 0.4842544903300) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cargf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cargf($z1);
+    
+    unless ($z_out > 0.4842 && $z_out < 0.4843) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cpow : int () {
+    my $z1 = complex(0.5, 0.25);
+    my $z2 = complex(1.5, 1.25);
+
+    my $z_out = SPVM::Math->cpow($z1, $z2);
+    
+    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cpowf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+    my $z2 = complexf(1.5f, 1.25f);
+
+    my $z_out = SPVM::Math->cpowf($z1, $z2);
+    
+    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
 }

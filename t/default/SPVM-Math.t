@@ -218,6 +218,44 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
   my $z = Math::Complex->make(0.5, 0.25);
   my $z_out = Math::Complex::atan($z);
   warn "$z_out";
+
+=pod
+  ok(TestCase::Lib::SPVM::Math->test_ccos);
+  ok(TestCase::Lib::SPVM::Math->test_ccosf);
+  ok(TestCase::Lib::SPVM::Math->test_csin);
+  ok(TestCase::Lib::SPVM::Math->test_csinf);
+  ok(TestCase::Lib::SPVM::Math->test_ctan);
+  ok(TestCase::Lib::SPVM::Math->test_ctanf);
+  ok(TestCase::Lib::SPVM::Math->test_cacosh);
+  ok(TestCase::Lib::SPVM::Math->test_cacoshf);
+  ok(TestCase::Lib::SPVM::Math->test_casinh);
+  ok(TestCase::Lib::SPVM::Math->test_casinhf);
+  ok(TestCase::Lib::SPVM::Math->test_catanh);
+  ok(TestCase::Lib::SPVM::Math->test_catanhf);
+  ok(TestCase::Lib::SPVM::Math->test_ccosh);
+  ok(TestCase::Lib::SPVM::Math->test_ccoshf);
+  ok(TestCase::Lib::SPVM::Math->test_csinh);
+  ok(TestCase::Lib::SPVM::Math->test_csinhf);
+  ok(TestCase::Lib::SPVM::Math->test_ctanh);
+  ok(TestCase::Lib::SPVM::Math->test_ctanhf);
+  ok(TestCase::Lib::SPVM::Math->test_cexp);
+  ok(TestCase::Lib::SPVM::Math->test_cexpf);
+  ok(TestCase::Lib::SPVM::Math->test_clog);
+  ok(TestCase::Lib::SPVM::Math->test_clogf);
+  ok(TestCase::Lib::SPVM::Math->test_cabs);
+  ok(TestCase::Lib::SPVM::Math->test_cabsf);
+  ok(TestCase::Lib::SPVM::Math->test_cpow);
+  ok(TestCase::Lib::SPVM::Math->test_cpowf);
+  ok(TestCase::Lib::SPVM::Math->test_csqrt);
+  ok(TestCase::Lib::SPVM::Math->test_csqrtf);
+  ok(TestCase::Lib::SPVM::Math->test_carg);
+  ok(TestCase::Lib::SPVM::Math->test_cargf);
+  ok(TestCase::Lib::SPVM::Math->test_conj);
+  ok(TestCase::Lib::SPVM::Math->test_conjf);
+  ok(TestCase::Lib::SPVM::Math->test_cproj);
+  ok(TestCase::Lib::SPVM::Math->test_cprojf);
+=cut
+
 }
 
 # All object is freed
