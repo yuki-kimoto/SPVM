@@ -1826,7 +1826,7 @@ int32_t SPNATIVE__SPVM__Math__cexp(SPVM_ENV* env, SPVM_VALUE* stack) {
   double complex z = x + y * _Complex_I;
 
   double complex z_out = cexp(z);
-
+  
   stack[0].dval = creal(z_out);
   stack[1].dval = cimag(z_out);
 
