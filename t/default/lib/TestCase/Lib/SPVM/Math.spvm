@@ -3374,11 +3374,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csqrt($z1);
     
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+    unless ($z_out->{x} > 0.72767334511267 && $z_out->{x} < 0.72767334511268) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+    unless ($z_out->{y} > 0.17178037486 && $z_out->{y} < 0.17178037487) {
       return 0;
     }
 
@@ -3390,11 +3390,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csqrtf($z1);
     
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+    unless ($z_out->{x} > 0.7276 && $z_out->{x} < 0.7277) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+    unless ($z_out->{y} > 0.1717 && $z_out->{y} < 0.1718) {
       return 0;
     }
 
