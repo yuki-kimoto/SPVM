@@ -222,21 +222,25 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
 
   ok(TestCase::Lib::SPVM::Math->test_ctan);
   ok(TestCase::Lib::SPVM::Math->test_ctanf);
+
+  ok(TestCase::Lib::SPVM::Math->test_cacosh);
+  ok(TestCase::Lib::SPVM::Math->test_cacoshf);
+
+  ok(TestCase::Lib::SPVM::Math->test_casinh);
+  ok(TestCase::Lib::SPVM::Math->test_casinhf);
   
+  ok(TestCase::Lib::SPVM::Math->test_catanh);
+  ok(TestCase::Lib::SPVM::Math->test_catanhf);
+
+  ok(TestCase::Lib::SPVM::Math->test_ccosh);
+  ok(TestCase::Lib::SPVM::Math->test_ccoshf);
+
   use Math::Complex;
   my $z = Math::Complex->make(0.5, 0.25);
-  my $z_out = Math::Complex::tan($z);
+  my $z_out = Math::Complex::cosh($z);
   warn "$z_out";
 
 =pod
-  ok(TestCase::Lib::SPVM::Math->test_cacosh);
-  ok(TestCase::Lib::SPVM::Math->test_cacoshf);
-  ok(TestCase::Lib::SPVM::Math->test_casinh);
-  ok(TestCase::Lib::SPVM::Math->test_casinhf);
-  ok(TestCase::Lib::SPVM::Math->test_catanh);
-  ok(TestCase::Lib::SPVM::Math->test_catanhf);
-  ok(TestCase::Lib::SPVM::Math->test_ccosh);
-  ok(TestCase::Lib::SPVM::Math->test_ccoshf);
   ok(TestCase::Lib::SPVM::Math->test_csinh);
   ok(TestCase::Lib::SPVM::Math->test_csinhf);
   ok(TestCase::Lib::SPVM::Math->test_ctanh);
