@@ -3406,11 +3406,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cproj($z1);
     
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+    unless ($z_out->{x} > 0.761904 && $z_out->{x} < 0.761906) {
       return 0;
     }
-    
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+
+    unless ($z_out->{y} > 0.380951 && $z_out->{y} < 0.380953) {
       return 0;
     }
 
@@ -3422,11 +3422,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cprojf($z1);
     
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+    unless ($z_out->{x} > 0.7619 && $z_out->{x} < 0.7620) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+    unless ($z_out->{y} > 0.3809 && $z_out->{y} < 0.3810) {
       return 0;
     }
 
