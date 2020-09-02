@@ -219,15 +219,16 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
 
   ok(TestCase::Lib::SPVM::Math->test_csin);
   ok(TestCase::Lib::SPVM::Math->test_csinf);
+
+  ok(TestCase::Lib::SPVM::Math->test_ctan);
+  ok(TestCase::Lib::SPVM::Math->test_ctanf);
   
   use Math::Complex;
   my $z = Math::Complex->make(0.5, 0.25);
-  my $z_out = Math::Complex::sin($z);
+  my $z_out = Math::Complex::tan($z);
   warn "$z_out";
 
 =pod
-  ok(TestCase::Lib::SPVM::Math->test_ctan);
-  ok(TestCase::Lib::SPVM::Math->test_ctanf);
   ok(TestCase::Lib::SPVM::Math->test_cacosh);
   ok(TestCase::Lib::SPVM::Math->test_cacoshf);
   ok(TestCase::Lib::SPVM::Math->test_casinh);
