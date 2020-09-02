@@ -207,6 +207,17 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
 {
   ok(TestCase::Lib::SPVM::Math->test_cacos);
   ok(TestCase::Lib::SPVM::Math->test_cacosf);
+
+  ok(TestCase::Lib::SPVM::Math->test_casin);
+  ok(TestCase::Lib::SPVM::Math->test_casinf);
+  
+  ok(TestCase::Lib::SPVM::Math->test_catan);
+  ok(TestCase::Lib::SPVM::Math->test_catanf);
+  
+  use Math::Complex;
+  my $z = Math::Complex->make(0.5, 0.25);
+  my $z_out = Math::Complex::atan($z);
+  warn "$z_out";
 }
 
 # All object is freed
