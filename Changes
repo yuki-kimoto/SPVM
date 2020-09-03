@@ -1,4 +1,4 @@
-0.0911 2020-08-31
+0.0911 2020-09-02
   - add complex functions to SPVM::Math
   
     native sub cacos : SPVM::Complex_2d ($z : SPVM::Complex_2d);
