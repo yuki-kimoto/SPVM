@@ -23,369 +23,553 @@ L<SPVM::Math> defines mathmatical functions.
 
   sub FE_DOWNWARD : int ()
 
+FE_DOWNWARD constant value in C99 fenv.h.
+
 =head2 FE_TONEAREST
 
   sub FE_TONEAREST : int ()
+
+FE_TONEAREST constant value in C99 fenv.h.
 
 =head2 FE_TOWARDZERO
 
   sub FE_TOWARDZERO : int ()
 
+FE_TOWARDZERO constant value in C99 fenv.h.
+
 =head2 FE_UPWARD
 
   sub FE_UPWARD : int ()
 
+FE_UPWARD constant value in C99 fenv.h.
+ 
 =head2 FP_ILOGB0
 
   sub FP_ILOGB0 : int ()
 
+FP_ILOGB0 constant value in C99 fenv.h.
+ 
 =head2 FP_ILOGBNAN
 
   sub FP_ILOGBNAN : int ()
 
+FP_ILOGBNAN constant value in C99 fenv.h.
+ 
 =head2 FP_INFINITE
 
   sub FP_INFINITE : int ()
 
+FP_INFINITE constant value in C99 fenv.h.
+ 
 =head2 FP_NAN
 
   sub FP_NAN : int ()
 
+FP_NAN constant value in C99 fenv.h.
+ 
 =head2 FP_ZERO
 
   sub FP_ZERO : int ()
 
+FP_ZERO constant value in C99 fenv.h.
+ 
 =head2 HUGE_VAL
 
   sub HUGE_VAL : double ()
 
+HUGE_VAL constant value in C99 math.h.
+ 
 =head2 HUGE_VALF
 
   sub HUGE_VALF : float ()
 
+HUGE_VALF constant value in C99 math.h.
+ 
 =head2 INFINITY
 
   sub INFINITY : double ()
 
+INFINITY constant value in C99 math.h.
+ 
 =head2 INFINITYF
 
   sub INFINITYF : float ()
 
+INFINITY constant value for float type in C99 math.h.
+ 
 =head2 NAN
 
   sub NAN : double ()
+
+NAN constant value in C99 math.h.
 
 =head2 NANF
 
   sub NANF : float ()
 
+NAN constant value for float type in C99 math.h.
+
 =head2 acos
 
   sub acos : double ($x : double)
+
+acos function in C99 math.h.
 
 =head2 acosf
 
   sub acosf : float ($x : float)
 
+acosf function in C99 math.h.
+
 =head2 acosh
 
   sub acosh : double ($x : double)
+
+acosh function in C99 math.h.
 
 =head2 acoshf
 
   sub acoshf : float ($x : float)
 
+acoshf function in C99 math.h.
+
 =head2 asin
 
   sub asin : double ($x : double)
+
+asin function in C99 math.h.
 
 =head2 asinf
 
   sub asinf : float ($x : float)
 
+asinf function in C99 math.h.
+
 =head2 asinh
 
   sub asinh : double ($x : double)
+
+asinh function in C99 math.h.
 
 =head2 asinhf
 
   sub asinhf : float ($x : float)
 
+asinhf function in C99 math.h.
+
 =head2 atan
 
   sub atan : double ($x : double)
+
+atan function in C99 math.h.
 
 =head2 atan2
 
   sub atan2 : double ($y : double, $x : double)
 
+atan2 function in C99 math.h.
+
 =head2 atanf
 
   sub atanf : float ($x : float)
+
+atanf function in C99 math.h.
 
 =head2 atanh
 
   sub atanh : double ($x : double)
 
+atanh function in C99 math.h.
+
 =head2 atanhf
 
   sub atanhf : float ($x : float)
+
+atanhf function in C99 math.h.
 
 =head2 cabs
 
   sub cabs : double ($z : SPVM::Complex_2d)
 
+cabs function in C99 complex.h.
+
 =head2 cabsf
 
   sub cabsf : float ($z : SPVM::Complex_2f)
+
+cabsf function in C99 complex.h.
 
 =head2 cacos
 
   sub cacos : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+cacos function in C99 complex.h.
+
 =head2 cacosf
 
   sub cacosf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+cacosf function in C99 complex.h.
 
 =head2 cacosh
 
   sub cacosh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+cacosh function in C99 complex.h.
+
 =head2 cacoshf
 
   sub cacoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+cacoshf function in C99 complex.h.
 
 =head2 cadd
 
   sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
+cadd function in C99 complex.h.
+
 =head2 caddf
 
   sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+
+caddf function in C99 complex.h.
 
 =head2 carg
 
   sub carg : double ($z : SPVM::Complex_2d)
 
+carg function in C99 complex.h.
+
 =head2 cargf
 
   sub cargf : float ($z : SPVM::Complex_2f)
+
+cargf function in C99 complex.h.
 
 =head2 casin
 
   sub casin : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+casin function in C99 complex.h.
+
 =head2 casinf
 
   sub casinf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+casinf function in C99 complex.h.
 
 =head2 casinh
 
   sub casinh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+casinh function in C99 complex.h.
+
 =head2 casinhf
 
   sub casinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+casinhf function in C99 complex.h.
 
 =head2 catan
 
   sub catan : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+catan function in C99 complex.h.
+
 =head2 catanf
 
   sub catanf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+catanf function in C99 complex.h.
 
 =head2 catanh
 
   sub catanh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+catanh function in C99 complex.h.
+
 =head2 catanhf
 
   sub catanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+catanhf function in C99 complex.h.
 
 =head2 cbrt
 
   sub cbrt : double ($x : double)
 
+cbrt function in C99 math.h.
+
 =head2 cbrtf
 
   sub cbrtf : float ($x : float)
+
+cbrtf function in C99 math.h.
 
 =head2 ccos
 
   sub ccos : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+ccos function in C99 complex.h.
+
 =head2 ccosf
 
   sub ccosf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+ccosf function in C99 complex.h.
 
 =head2 ccosh
 
   sub ccosh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+ccosh function in C99 complex.h.
+
 =head2 ccoshf
 
   sub ccoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+ccoshf function in C99 complex.h.
 
 =head2 cdiv
 
   sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
+double complex division.
+
 =head2 cdivf
 
   sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+
+float complex division.
 
 =head2 ceil
 
   sub ceil : double ($x : double)
 
+ceil function in C99 math.h.
+
 =head2 ceilf
 
   sub ceilf : float ($x : float)
+
+ceilf function in C99 math.h.
 
 =head2 cexp
 
   sub cexp : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+cexp function in C99 complex.h.
+
 =head2 cexpf
 
   sub cexpf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+cexpf function in C99 complex.h.
 
 =head2 clog
 
   sub clog : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+clog function in C99 complex.h.
+
 =head2 clogf
 
   sub clogf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+clogf function in C99 complex.h.
 
 =head2 cmul
 
   sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
+double complex multiplication.
+
 =head2 cmulf
 
   sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+
+float complex multiplication.
 
 =head2 complex
 
   sub complex : SPVM::Complex_2d ($x : double, $y : double)
 
+Create double complex multi numeric(SPVM::Complex_2d) value.
+
 =head2 complexf
 
   sub complexf : SPVM::Complex_2f ($x : float, $y : float)
+
+Create float complex multi numeric(SPVM::Complex_2f) value.
 
 =head2 conj
 
   sub conj : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+conj function in C99 complex.h.
+
 =head2 conjf
 
   sub conjf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+conjf function in C99 complex.h.
 
 =head2 copysign
 
   sub copysign : double ($x1 : double, $x2 : double)
 
+copysign function in C99 math.h.
+
 =head2 copysignf
 
   sub copysignf : float ($x1 : float, $x2 : float)
+
+copysignf function in C99 math.h.
 
 =head2 cos
 
   sub cos : double ($x : double)
 
+cos function in C99 math.h.
+
 =head2 cosf
 
   sub cosf : float ($x : float)
+
+cosf function in C99 math.h.
 
 =head2 cosh
 
   sub cosh : double ($x : double)
 
+cosh function in C99 math.h.
+
 =head2 coshf
 
   sub coshf : float ($x : float)
+
+coshf function in C99 math.h.
 
 =head2 cpow
 
   sub cpow : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
+cpow function in C99 complex.h.
+
 =head2 cpowf
 
   sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+
+cpowf function in C99 complex.h.
 
 =head2 cproj
 
   sub cproj : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+cproj function in C99 complex.h.
+
 =head2 cprojf
 
   sub cprojf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+cprojf function in C99 complex.h.
 
 =head2 cscamul
 
   sub cscamul : SPVM::Complex_2d ($c : double, $z : SPVM::Complex_2d)
 
+double complex scalar multiplication.
+
 =head2 cscamulf
 
   sub cscamulf : SPVM::Complex_2f ($c : float, $z : SPVM::Complex_2f)
+
+float complex scalar multiplication.
 
 =head2 csin
 
   sub csin : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+csin function in C99 complex.h.
+
 =head2 csinf
 
   sub csinf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+csinf function in C99 complex.h.
 
 =head2 csinh
 
   sub csinh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+csinh function in C99 complex.h.
+
 =head2 csinhf
 
   sub csinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+csinhf function in C99 complex.h.
 
 =head2 csqrt
 
   sub csqrt : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+csqrt function in C99 complex.h.
+
 =head2 csqrtf
 
   sub csqrtf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+csqrtf function in C99 complex.h.
 
 =head2 csub
 
   sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
+csub function in C99 complex.h.
+
 =head2 csubf
 
   sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+
+csubf function in C99 complex.h.
 
 =head2 ctan
 
   sub ctan : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+ctan function in C99 complex.h.
+
 =head2 ctanf
 
   sub ctanf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+ctanf function in C99 complex.h.
 
 =head2 ctanh
 
   sub ctanh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
+ctanh function in C99 complex.h.
+
 =head2 ctanhf
 
   sub ctanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+
+ctanhf function in C99 complex.h.
 
 =head2 erf
 
   sub erf : double ($x : double)
 
+erf function in C99 math.h.
+
 =head2 erfc
 
   sub erfc : double ($x : double)
+
+erfc function in C99 math.h.
 
 =head2 erfcf
 
