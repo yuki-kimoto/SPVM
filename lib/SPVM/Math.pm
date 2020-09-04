@@ -1031,111 +1031,170 @@ pi constant value. 3.141592653589793115997963468544185161590576171875
 
   sub pow : double ($x : double, $y : double)
 
+pow function in C99 math.h.
+
 =head2 powf
 
   sub powf : float ($x : float, $y : float)
+
+powf function in C99 math.h.
 
 =head2 remainder
 
   sub remainder : double ($x1 : double, $x2 : double)
 
+remainder function in C99 math.h.
+
 =head2 remainderf
 
   sub remainderf : float ($x1 : float, $x2 : float)
+
+remainderf function in C99 math.h.
 
 =head2 remquo
 
   sub remquo : double ($x1 : double, $x2 : double, $quo : int&)
 
+remquo function in C99 math.h.
+
 =head2 remquof
 
   sub remquof : float ($x1 : float, $x2 : float, $quo : int&)
+
+remquof function in C99 math.h.
 
 =head2 round
 
   sub round : double ($x : double)
 
+round function in C99 math.h.
+
 =head2 roundf
 
   sub roundf : float ($x : float)
+
+roundf function in C99 math.h.
 
 =head2 scalbln
 
   sub scalbln : double ($x : double, $exp : long)
 
+scalbln function in C99 math.h.
+
 =head2 scalblnf
 
   sub scalblnf : float ($x : float, $exp : long)
+
+scalblnf function in C99 math.h.
 
 =head2 scalbn
 
   sub scalbn : double ($x : double, $exp : int)
 
+scalbn function in C99 math.h.
+
 =head2 scalbnf
 
   sub scalbnf : float ($x : float, $exp : int)
+
+scalbnf function in C99 math.h.
 
 =head2 signbit
 
   sub signbit : int ($x : double)
 
+signbit function in C99 math.h.
+
 =head2 signbitf
 
   sub signbitf : int ($x : float)
+
+signbitf function in C99 math.h.
 
 =head2 sin
 
   sub sin : double ($x : double)
 
+sin function in C99 math.h.
+
 =head2 sinf
 
   sub sinf : float ($x : float)
+
+sinf function in C99 math.h.
 
 =head2 sinh
 
   sub sinh : double ($x : double)
 
+sinh function in C99 math.h.
+
 =head2 sinhf
 
   sub sinhf : float ($x : float)
+
+sinhf function in C99 math.h.
 
 =head2 sqrt
 
   sub sqrt : double ($x : double)
 
+sqrt function in C99 math.h.
+
 =head2 sqrtf
 
   sub sqrtf : float ($x : float)
+
+sqrtf function in C99 math.h.
 
 =head2 tan
 
   sub tan : double ($x : double)
 
+tan function in C99 math.h.
+
+=head2 sqrtf
+
+sqrtf function in C99 math.h.
+
 =head2 tanf
 
   sub tanf : float ($x : float)
+
+tanf function in C99 math.h.
 
 =head2 tanh
 
   sub tanh : double ($x : double)
 
+tanh function in C99 math.h.
+
 =head2 tanhf
 
   sub tanhf : float ($x : float)
+
+tanhf function in C99 math.h.
 
 =head2 tgamma
 
   sub tgamma : double ($x : double)
 
+tgamma function in C99 math.h.
+
 =head2 tgammaf
 
   sub tgammaf : float ($x : float)
+
+tgammaf function in C99 math.h.
 
 =head2 trunc
 
   sub trunc : double ($x : double)
 
+trunc function in C99 math.h.
+
 =head2 truncf
 
   sub truncf : float ($x : float)
 
+truncf function in C99 math.h.
