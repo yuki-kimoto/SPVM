@@ -60,7 +60,10 @@
 
     native sub cproj : SPVM::Complex_2d ($z : SPVM::Complex_2d);
     native sub cprojf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+
+  - Fix bug that not support Alpine Linux
   
+  - SPVM::Math->pi become constant value.
 0.0910 2020-08-31
   - add new_c method to SPVM::Builder::Config
   - add new_cpp11 method to SPVM::Builder::Config

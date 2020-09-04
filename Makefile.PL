@@ -30,7 +30,7 @@ use SPVM::Builder::Util;
   }
 
   # Not support Alpine Linux because Alpine Linux tests fail in current SPVM
-  if ($Config{uname} =~ /alpine/i) {
+  if ($Config{myuname} =~ /alpine/i) {
     warn "Not support Alpine Linux because Alpine Linux tests fail in current SPVM";
     die "OS unsupported\n";
   }

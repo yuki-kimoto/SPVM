@@ -22,7 +22,7 @@ package SPVM::Math {
   native sub fpclassify : int ($x : double);
   native sub signbit : int ($x : double);
 
-  native sub pi : double ();
+  sub pi : double () { return 3.141592653589793115997963468544185161590576171875; }
 
   native sub FE_DOWNWARD : int ();
   native sub FE_TONEAREST : int ();

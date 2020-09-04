@@ -575,305 +575,457 @@ erfc function in C99 math.h.
 
   sub erfcf : float ($x : float)
 
+erfcf function in C99 math.h.
+
 =head2 erff
 
   sub erff : float ($x : float)
+
+erff function in C99 math.h.
 
 =head2 exp
 
   sub exp : double ($x : double)
 
+exp function in C99 math.h.
+
 =head2 exp2
 
   sub exp2 : double ($x : double)
+
+exp2 function in C99 math.h.
 
 =head2 exp2f
 
   sub exp2f : float ($x : float)
 
+exp2f function in C99 math.h.
+
 =head2 expf
 
   sub expf : float ($x : float)
+
+expf function in C99 math.h.
 
 =head2 expm1
 
   sub expm1 : double ($x : double)
 
+expm1 function in C99 math.h.
+
 =head2 expm1f
 
   sub expm1f : float ($x : float)
+
+expm1f function in C99 math.h.
 
 =head2 fabs
 
   sub fabs : double ($x : double)
 
+fabs function in C99 math.h.
+
 =head2 fabsf
 
   sub fabsf : float ($x : float)
+
+fabsf function in C99 math.h.
 
 =head2 fdim
 
   sub fdim : double ($x1 : double, $x2 : double)
 
+fdim function in C99 math.h.
+
 =head2 fdimf
 
   sub fdimf : float ($x1 : float, $x2 : float)
+
+fdimf function in C99 math.h.
 
 =head2 fesetround
 
   sub fesetround : int ($round : int)
 
+fesetround function in C99 math.h.
+
 =head2 floor
 
   sub floor : double ($x : double)
+
+floor function in C99 math.h.
 
 =head2 floorf
 
   sub floorf : float ($x : float)
 
+floorf function in C99 math.h.
+
 =head2 fma
 
   sub fma : double ($x1 : double, $x2 : double, $x3 : double)
+
+fma function in C99 math.h.
 
 =head2 fmaf
 
   sub fmaf : float ($x1 : float, $x2 : float, $x3 : float)
 
+fmaf function in C99 math.h.
+
 =head2 fmax
 
   sub fmax : double ($x1 : double, $x2 : double)
+
+fmax function in C99 math.h.
 
 =head2 fmaxf
 
   sub fmaxf : float ($x1 : float, $x2 : float)
 
+fmaxf function in C99 math.h.
+
 =head2 fmin
 
   sub fmin : double ($x1 : double, $x2 : double)
+
+fmin function in C99 math.h.
 
 =head2 fminf
 
   sub fminf : float ($x1 : float, $x2 : float)
 
+fminf function in C99 math.h.
+
 =head2 fmod
 
   sub fmod : double ($x1 : double, $x2 : double)
+
+fmod function in C99 math.h.
 
 =head2 fmodf
 
   sub fmodf : float ($x1 : float, $x2 : float)
 
+fmodf function in C99 math.h.
+
 =head2 fpclassify
 
   sub fpclassify : int ($x : double)
+
+fpclassify function in C99 math.h.
 
 =head2 fpclassifyf
 
   sub fpclassifyf : int ($x : float)
 
+fpclassify function in C99 math.h for float type.
+
 =head2 frexp
 
   sub frexp : double ($x : double, $exp : int&)
+
+frexp function in C99 math.h.
 
 =head2 frexpf
 
   sub frexpf : float ($x : float, $exp : int&)
 
+frexpf function in C99 math.h.
+
 =head2 hypot
 
   sub hypot : double ($x : double, $y : double)
+
+hypot function in C99 math.h.
 
 =head2 hypotf
 
   sub hypotf : float ($x : float, $y : float)
 
+hypotf function in C99 math.h.
+
 =head2 ilogb
 
   sub ilogb : int ($x : double)
+
+ilogb function in C99 math.h.
 
 =head2 ilogbf
 
   sub ilogbf : int ($x : float)
 
+ilogbf function in C99 math.h.
+
 =head2 isfinite
 
   sub isfinite : int ($x : double)
+
+isfinite function in C99 math.h.
 
 =head2 isfinitef
 
   sub isfinitef : int($x : float)
 
+isfinite function in C99 math.h for float type.
+
 =head2 isgreater
 
   sub isgreater : int ($x1 : double, $x2 : double)
+
+isgreater function in C99 math.h.
 
 =head2 isgreaterequal
 
   sub isgreaterequal : int ($x1 : double, $x2 : double)
 
+isgreaterequal function in C99 math.h for float type.
+
 =head2 isgreaterequalf
 
   sub isgreaterequalf : int ($x1 : float, $x2 : float)
+
+isgreaterequal function in C99 math.h for float type.
 
 =head2 isgreaterf
 
   sub isgreaterf : int ($x1 : float, $x2 : float)
 
+isgreater function in C99 math.h for float type.
+
 =head2 isinf
 
   sub isinf : int ($x : double)
+
+isinf function in C99 math.h.
 
 =head2 isinff
 
   sub isinff : int($x : float)
 
+isinf function in C99 math.h for float type.
+
 =head2 isless
 
   sub isless : int ($x1 : double, $x2 : double)
+
+isless function in C99 math.h.
 
 =head2 islessequal
 
   sub islessequal : int ($x1 : double, $x2 : double)
 
+islessequal function in C99 math.h.
+
 =head2 islessequalf
 
   sub islessequalf : int ($x1 : float, $x2 : float)
+
+islessequalf function in C99 math.h for float type.
 
 =head2 islessf
 
   sub islessf : int ($x1 : float, $x2 : float)
 
+islessf function in C99 math.h for float type.
+
 =head2 islessgreater
 
   sub islessgreater : int ($x1 : double, $x2 : double)
+
+islessgreater function in C99 math.h for float type.
 
 =head2 islessgreaterf
 
   sub islessgreaterf : int ($x1 : float, $x2 : float)
 
+islessgreater function in C99 math.h.
+
 =head2 isnan
 
   sub isnan : int ($x : double)
+
+isnan function in C99 math.h.
 
 =head2 isnanf
 
   sub isnanf : int ($x : float)
 
+isnanf function in C99 math.h.
+
 =head2 isunordered
 
   sub isunordered : int ($x1 : double, $x2 : double)
+
+isunordered function in C99 math.h.
 
 =head2 isunorderedf
 
   sub isunorderedf : int ($x1 : float, $x2 : float)
 
+isunorderedf function in C99 math.h.
+
 =head2 ldexp
 
   sub ldexp : double ($x : double, $exp : int)
+
+ldexp function in C99 math.h.
 
 =head2 ldexpf
 
   sub ldexpf : float ($x : float, $exp : int)
 
+ldexpf function in C99 math.h.
+
 =head2 lgamma
 
   sub lgamma : double ($x : double)
+
+lgamma function in C99 math.h.
 
 =head2 lgammaf
 
   sub lgammaf : float ($x : float)
 
+lgammaf function in C99 math.h.
+
 =head2 log
 
   sub log : double ($x : double)
+
+log function in C99 math.h.
 
 =head2 log10
 
   sub log10 : double ($x : double)
 
+log10 function in C99 math.h.
+
 =head2 log10f
 
   sub log10f : float ($x : float)
+
+log10f function in C99 math.h.
 
 =head2 log1p
 
   sub log1p : double ($x : double)
 
+log1p function in C99 math.h.
+
 =head2 log1pf
 
   sub log1pf : float ($x : float)
+
+log1pf function in C99 math.h.
 
 =head2 log2
 
   sub log2 : double ($x : double)
 
+log2 function in C99 math.h.
+
 =head2 log2f
 
   sub log2f : float ($x : float)
+
+log2f function in C99 math.h.
 
 =head2 logb
 
   sub logb : double ($x : double)
 
+logb function in C99 math.h.
+
 =head2 logbf
 
   sub logbf : float ($x : float)
+
+logbf function in C99 math.h.
 
 =head2 logf
 
   sub logf : float ($x : float)
 
+logf function in C99 math.h.
+
 =head2 lround
 
   sub lround : long ($x : double)
+
+lround function in C99 math.h.
 
 =head2 lroundf
 
   sub lroundf : long ($x : float)
 
+lroundf function in C99 math.h.
+
 =head2 modf
 
   sub modf : double ($x : double, $intpart : double&)
+
+modf function in C99 math.h.
 
 =head2 modff
 
   sub modff : float ($x : float, $intpart : float&)
 
+modff function in C99 math.h.
+
 =head2 nan
 
   sub nan : double ($str : string)
+
+nan function in C99 math.h.
 
 =head2 nanf
 
   sub nanf : float ($str : string)
 
+nanf function in C99 math.h.
+
 =head2 nearbyint
 
   sub nearbyint : double ($x : double)
+
+nearbyint function in C99 math.h.
 
 =head2 nearbyintf
 
   sub nearbyintf : float ($x : float)
 
+nearbyintf function in C99 math.h.
+
 =head2 nextafter
 
   sub nextafter : double ($x1 : double, $x2 : double)
+
+nextafter function in C99 math.h.
 
 =head2 nextafterf
 
   sub nextafterf : float ($x1 : float, $x2 : float)
 
+nextafterf function in C99 math.h.
+
 =head2 nexttoward
 
   sub nexttoward : double ($x1 : double, $x2 : double)
+
+nexttoward function in C99 math.h.
 
 =head2 nexttowardf
 
   sub nexttowardf : float ($x1 : float, $x2 : double)
 
+nexttowardf function in C99 math.h.
+
 =head2 pi
 
   sub pi : double ()
+
+pi constant value. 3.141592653589793115997963468544185161590576171875
 
 =head2 pow
 
