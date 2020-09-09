@@ -34,6 +34,12 @@ use SPVM::Builder::Util;
     warn "Not support Alpine Linux because Alpine Linux tests fail in current SPVM";
     die "OS unsupported\n";
   }
+  
+  # old FreeBSD don't support some C99 complex functions
+  if ($Config{osname} eq 'freebsd' && $Config{osvers} < 11.4) {
+    warn "SPVM don't support NetBSD before version 11.4";
+    die "OS unsupported\n";
+  }
 }
 
 my @defines;
