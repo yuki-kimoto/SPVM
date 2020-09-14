@@ -9,8 +9,8 @@ package MyComplex {
   sub new_float_complex : void () {
     
     my $z : SPVM::Complex_2f;
-    $z->{x} = 1.5f;
-    $z->{y} = 1.7f;
+    $z->{re} = 1.5f;
+    $z->{im} = 1.7f;
   }
 
   sub new_float_complex_func : void () {
@@ -19,8 +19,8 @@ package MyComplex {
   
   sub new_double_complex : void () {
     my $z : SPVM::Complex_2d;
-    $z->{x} = 1.5;
-    $z->{y} = 1.7;
+    $z->{re} = 1.5;
+    $z->{im} = 1.7;
   }
 
   sub new_double_complex_func : void () {
@@ -74,8 +74,8 @@ package MyComplex {
 
     for (my $i = 0; $i < @$zs; $i++) {
       my $z = $zs->[$i];
-      $z->{x} = 1.5f;
-      $z->{y} = 1.7f;
+      $z->{re} = 1.5f;
+      $z->{im} = 1.7f;
     }
   }
   
@@ -84,8 +84,8 @@ package MyComplex {
 
     for (my $i = 0; $i < @$zs; $i++) {
       my $z = $zs->[$i];
-      $z->{x} = 1.5;
-      $z->{y} = 1.7;
+      $z->{re} = 1.5;
+      $z->{im} = 1.7;
     }
   }
 

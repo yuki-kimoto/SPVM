@@ -180,85 +180,85 @@ package SPVM::Math {
 
   sub complexf : SPVM::Complex_2f ($x : float, $y : float) {
     my $z_out : SPVM::Complex_2f;
-    $z_out->{x} = $x;
-    $z_out->{y} = $y;
+    $z_out->{re} = $x;
+    $z_out->{im} = $y;
     return $z_out;
   }
 
   sub complex : SPVM::Complex_2d ($x : double, $y : double) {
     my $z_out : SPVM::Complex_2d;
-    $z_out->{x} = $x;
-    $z_out->{y} = $y;
+    $z_out->{re} = $x;
+    $z_out->{im} = $y;
     return $z_out;
   }
 
   sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
     my $z_out : SPVM::Complex_2f;
-    $z_out->{x} = $z1->{x} + $z2->{x};
-    $z_out->{y} = $z1->{y} + $z2->{y};
+    $z_out->{re} = $z1->{re} + $z2->{re};
+    $z_out->{im} = $z1->{im} + $z2->{im};
     return $z_out;
   }
 
   sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
     my $z_out : SPVM::Complex_2d;
-    $z_out->{x} = $z1->{x} + $z2->{x};
-    $z_out->{y} = $z1->{y} + $z2->{y};
+    $z_out->{re} = $z1->{re} + $z2->{re};
+    $z_out->{im} = $z1->{im} + $z2->{im};
     return $z_out;
   }
 
   sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
     my $z_out : SPVM::Complex_2f;
-    $z_out->{x} = $z1->{x} - $z2->{x};
-    $z_out->{y} = $z1->{y} - $z2->{y};
+    $z_out->{re} = $z1->{re} - $z2->{re};
+    $z_out->{im} = $z1->{im} - $z2->{im};
     return $z_out;
   }
 
   sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
     my $z_out : SPVM::Complex_2d;
-    $z_out->{x} = $z1->{x} - $z2->{x};
-    $z_out->{y} = $z1->{y} - $z2->{y};
+    $z_out->{re} = $z1->{re} - $z2->{re};
+    $z_out->{im} = $z1->{im} - $z2->{im};
     return $z_out;
   }
 
   sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
     my $z_out : SPVM::Complex_2f;
-    $z_out->{x} = $z1->{x} * $z2->{x} - $z1->{y} * $z2->{y};
-    $z_out->{y} = $z1->{x} * $z2->{y} + $z1->{y} * $z2->{x};
+    $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
+    $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
     return $z_out;
   }
 
   sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
     my $z_out : SPVM::Complex_2d;
-    $z_out->{x} = $z1->{x} * $z2->{x} - $z1->{y} * $z2->{y};
-    $z_out->{y} = $z1->{x} * $z2->{y} + $z1->{y} * $z2->{x};
+    $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
+    $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
     return $z_out;
   }
 
   sub cscamulf : SPVM::Complex_2f ($c : float, $z : SPVM::Complex_2f) {
     my $z_out : SPVM::Complex_2f;
-    $z_out->{x} = $c * $z->{x};
-    $z_out->{y} = $c * $z->{y};
+    $z_out->{re} = $c * $z->{re};
+    $z_out->{im} = $c * $z->{im};
     return $z_out;
   }
 
   sub cscamul : SPVM::Complex_2d ($c : double, $z : SPVM::Complex_2d) {
     my $z_out : SPVM::Complex_2d;
-    $z_out->{x} = $c * $z->{x};
-    $z_out->{y} = $c * $z->{y};
+    $z_out->{re} = $c * $z->{re};
+    $z_out->{im} = $c * $z->{im};
     return $z_out;
   }
 
   sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
     my $z_out : SPVM::Complex_2f;
-    $z_out->{x} = ($z1->{x} * $z2->{x} + $z1->{y} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
-    $z_out->{y} = ($z1->{y} * $z2->{x} - $z1->{x} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
+    $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
     return $z_out;
   }
 
   sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
     my $z_out : SPVM::Complex_2d;
-    $z_out->{x} = ($z1->{x} * $z2->{x} + $z1->{y} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
-    $z_out->{y} = ($z1->{y} * $z2->{x} - $z1->{x} * $z2->{y}) / ($z2->{x} * $z2->{x} + $z2->{y} * $z2->{y});
+    $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
+    $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
     return $z_out;
   }
 

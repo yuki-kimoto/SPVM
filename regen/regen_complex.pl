@@ -16,8 +16,8 @@ for my $type (@types) {
   my $spvm_module_content = "# $package_name is created by regen/regen_complex.pl\n";
   $spvm_module_content .= "package $package_name : mulnum_t {\n";
     $spvm_module_content .= <<"EOS";
-  has x : $type;
-  has y : $type;
+  has re : $type;
+  has im : $type;
 EOS
   $spvm_module_content .= "}\n";
   
@@ -34,8 +34,8 @@ $package_name - Complex $type multi numeric type
 =head1 SYNOPSYS
 
   my \$z : $package_name;
-  \$z->{x} = 1;
-  \$z->{y} = 2;
+  \$z->{re} = 1;
+  \$z->{im} = 2;
   
 =head1 DESCRIPTION
 

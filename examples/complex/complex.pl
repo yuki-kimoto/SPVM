@@ -23,10 +23,10 @@ MyComplex->complex_float_array;
 MyComplex->complex_double_array;
 
 {
-  my $z1 = {x => 1.7, y => 2.7};
-  my $z2 = {x => 7.5, y => 2.5};
+  my $z1 = {re => 1.7, im => 2.7};
+  my $z2 = {re => 7.5, im => 2.5};
 
   my $z_ret = MyComplex->complex_call_from_perl($z1, $z2);
 
-  print "($z_ret->{x}, $z_ret->{y})\n";
+  print "($z_ret->{re}, $z_ret->{im})\n";
 }

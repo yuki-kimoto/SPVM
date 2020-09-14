@@ -2662,7 +2662,7 @@ package TestCase::Lib::SPVM::Math {
   sub test_complexf : int () {
     my $z1 = complex(0.5f, 0.25f);
 
-    unless ($z1->{x} == 0.5f && $z1->{y} == 0.25f) {
+    unless ($z1->{re} == 0.5f && $z1->{im} == 0.25f) {
       return 0;
     }
 
@@ -2673,7 +2673,7 @@ package TestCase::Lib::SPVM::Math {
   sub test_complex : int () {
     my $z1 = complex(0.00000000005, 0.000000000025);
 
-    unless ($z1->{x} == 0.00000000005 && $z1->{y} == 0.000000000025) {
+    unless ($z1->{re} == 0.00000000005 && $z1->{im} == 0.000000000025) {
       return 0;
     }
 
@@ -2682,16 +2682,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_caddf : int () {
     my $z1 : SPVM::Complex_2f;
-    $z1->{x} = 0.5f;
-    $z1->{y} = 0.25f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
 
     my $z2 : SPVM::Complex_2f;
-    $z2->{x} = 0.125f;
-    $z2->{y} = 0.0625f;
+    $z2->{re} = 0.125f;
+    $z2->{im} = 0.0625f;
 
     my $z3 = caddf($z1, $z2);
 
-    unless ($z3->{x} == 0.625 && $z3->{y} == 0.3125) {
+    unless ($z3->{re} == 0.625 && $z3->{im} == 0.3125) {
       return 0;
     }
 
@@ -2700,16 +2700,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_cadd : int () {
     my $z1 : SPVM::Complex_2d;
-    $z1->{x} = 0.00000000005;
-    $z1->{y} = 0.000000000025;
+    $z1->{re} = 0.00000000005;
+    $z1->{im} = 0.000000000025;
 
     my $z2 : SPVM::Complex_2d;
-    $z2->{x} = 0.0000000000125;
-    $z2->{y} = 0.00000000000625;
+    $z2->{re} = 0.0000000000125;
+    $z2->{im} = 0.00000000000625;
 
     my $z3 = cadd($z1, $z2);
 
-    unless ($z3->{x} == 0.0000000000625 && $z3->{y} == 0.00000000003125) {
+    unless ($z3->{re} == 0.0000000000625 && $z3->{im} == 0.00000000003125) {
       return 0;
     }
 
@@ -2718,16 +2718,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_csubf : int () {
     my $z1 : SPVM::Complex_2f;
-    $z1->{x} = 0.5f;
-    $z1->{y} = 0.25f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
 
     my $z2 : SPVM::Complex_2f;
-    $z2->{x} = 0.125f;
-    $z2->{y} = 0.0625f;
+    $z2->{re} = 0.125f;
+    $z2->{im} = 0.0625f;
 
     my $z3 = csubf($z1, $z2);
 
-    unless ($z3->{x} == 0.5f - 0.125f && $z3->{y} == 0.25f - 0.0625f) {
+    unless ($z3->{re} == 0.5f - 0.125f && $z3->{im} == 0.25f - 0.0625f) {
       return 0;
     }
 
@@ -2736,16 +2736,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_csub : int () {
     my $z1 : SPVM::Complex_2d;
-    $z1->{x} = 0.5;
-    $z1->{y} = 0.25;
+    $z1->{re} = 0.5;
+    $z1->{im} = 0.25;
 
     my $z2 : SPVM::Complex_2d;
-    $z2->{x} = 0.125;
-    $z2->{y} = 0.625;
+    $z2->{re} = 0.125;
+    $z2->{im} = 0.625;
 
     my $z3 = csub($z1, $z2);
 
-    unless ($z3->{x} == 0.5 - 0.125 && $z3->{y} == 0.25 - 0.625) {
+    unless ($z3->{re} == 0.5 - 0.125 && $z3->{im} == 0.25 - 0.625) {
       return 0;
     }
 
@@ -2756,16 +2756,16 @@ package TestCase::Lib::SPVM::Math {
     my $eps = 0.001f;
 
     my $z1 : SPVM::Complex_2f;
-    $z1->{x} = 0.5f;
-    $z1->{y} = 0.25f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
 
     my $z2 : SPVM::Complex_2f;
-    $z2->{x} = 0.125f;
-    $z2->{y} = 0.0625f;
+    $z2->{re} = 0.125f;
+    $z2->{im} = 0.0625f;
 
     my $z3 = cmulf($z1, $z2);
 
-    unless ($z3->{x} == 0.046875 && $z3->{y} == 0.0625) {
+    unless ($z3->{re} == 0.046875 && $z3->{im} == 0.0625) {
       return 0;
     }
 
@@ -2776,16 +2776,16 @@ package TestCase::Lib::SPVM::Math {
     my $eps = 0.1;
 
     my $z1 : SPVM::Complex_2d;
-    $z1->{x} = 0.5;
-    $z1->{y} = 0.25;
+    $z1->{re} = 0.5;
+    $z1->{im} = 0.25;
 
     my $z2 : SPVM::Complex_2d;
-    $z2->{x} = 0.125;
-    $z2->{y} = 0.0625;
+    $z2->{re} = 0.125;
+    $z2->{im} = 0.0625;
 
     my $z3 = cmul($z1, $z2);
 
-    unless ($z3->{x} == 0.046875 && $z3->{y} == 0.0625) {
+    unless ($z3->{re} == 0.046875 && $z3->{im} == 0.0625) {
       return 0;
     }
 
@@ -2796,16 +2796,16 @@ package TestCase::Lib::SPVM::Math {
     my $z1 = -0.5f;
 
     my $z2 : SPVM::Complex_2f;
-    $z2->{x} = -0.1f;
-    $z2->{y} = 0.05f;
+    $z2->{re} = -0.1f;
+    $z2->{im} = 0.05f;
 
     my $z3 = cscamulf($z1, $z2);
     
-    unless ($z3->{x} == 0.05f) {
+    unless ($z3->{re} == 0.05f) {
       return 0;
     }
     
-    unless ($z3->{y} == -0.025f) {
+    unless ($z3->{im} == -0.025f) {
       return 0;
     }
 
@@ -2816,16 +2816,16 @@ package TestCase::Lib::SPVM::Math {
     my $z1 = 0.001;
 
     my $z2 : SPVM::Complex_2d;
-    $z2->{x} = -1.0;
-    $z2->{y} = 3.0;
+    $z2->{re} = -1.0;
+    $z2->{im} = 3.0;
 
     my $z3 = cscamul($z1, $z2);
 
-    unless ($z3->{x} == -0.001) {
+    unless ($z3->{re} == -0.001) {
       return 0;
     }
     
-    unless ($z3->{y} == 0.003) {
+    unless ($z3->{im} == 0.003) {
       return 0;
     }
 
@@ -2834,16 +2834,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_cdivf : int () {
     my $z1 : SPVM::Complex_2f;
-    $z1->{x} = 0.5f;
-    $z1->{y} = 0.25f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
 
     my $z2 : SPVM::Complex_2f;
-    $z2->{x} = 2f;
-    $z2->{y} = -2f;
+    $z2->{re} = 2f;
+    $z2->{im} = -2f;
 
     my $z3 = cdivf($z1, $z2);
     
-    unless ($z3->{x} == 0.0625 && $z3->{y} == 0.1875) {
+    unless ($z3->{re} == 0.0625 && $z3->{im} == 0.1875) {
       return 0;
     }
 
@@ -2852,16 +2852,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_cdiv : int () {
     my $z1 : SPVM::Complex_2d;
-    $z1->{x} = 0.5f;
-    $z1->{y} = 0.25f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
 
     my $z2 : SPVM::Complex_2d;
-    $z2->{x} = 2f;
-    $z2->{y} = -2f;
+    $z2->{re} = 2f;
+    $z2->{im} = -2f;
 
     my $z3 = cdiv($z1, $z2);
 
-    unless ($z3->{x} == 0.0625 && $z3->{y} == 0.1875) {
+    unless ($z3->{re} == 0.0625 && $z3->{im} == 0.1875) {
       return 0;
     }
 
@@ -2870,16 +2870,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_cacos : int () {
     my $z1 : SPVM::Complex_2d;
-    $z1->{x} = 0.5;
-    $z1->{y} = 0.25;
+    $z1->{re} = 0.5;
+    $z1->{im} = 0.25;
 
     my $z_out = SPVM::Math->cacos($z1);
     
-    unless ($z_out->{x} > 1.06918 && $z_out->{x} < 1.06919) {
+    unless ($z_out->{re} > 1.06918 && $z_out->{re} < 1.06919) {
       return 0;
     }
     
-    unless ($z_out->{y} > -0.281397 && $z_out->{y} < -0.281396) {
+    unless ($z_out->{im} > -0.281397 && $z_out->{im} < -0.281396) {
       return 0;
     }
 
@@ -2888,16 +2888,16 @@ package TestCase::Lib::SPVM::Math {
 
   sub test_cacosf : int () {
     my $z1 : SPVM::Complex_2f;
-    $z1->{x} = 0.5f;
-    $z1->{y} = 0.25f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
 
     my $z_out = SPVM::Math->cacosf($z1);
     
-    unless ($z_out->{x} > 1.06918f && $z_out->{x} < 1.06919f) {
+    unless ($z_out->{re} > 1.06918f && $z_out->{re} < 1.06919f) {
       return 0;
     }
 
-    unless ($z_out->{y} > -0.28140f && $z_out->{y} < -0.28139f) {
+    unless ($z_out->{im} > -0.28140f && $z_out->{im} < -0.28139f) {
       return 0;
     }
 
@@ -2909,11 +2909,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->casin($z1);
     
-    unless ($z_out->{x} > 0.5016088532755 && $z_out->{x} < 0.5016088532756) {
+    unless ($z_out->{re} > 0.5016088532755 && $z_out->{re} < 0.5016088532756) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2813960562452 && $z_out->{y} < 0.2813960562453) {
+    unless ($z_out->{im} > 0.2813960562452 && $z_out->{im} < 0.2813960562453) {
       return 0;
     }
 
@@ -2925,11 +2925,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->casinf($z1);
     
-    unless ($z_out->{x} > 0.5016 && $z_out->{x} < 0.5017) {
+    unless ($z_out->{re} > 0.5016 && $z_out->{re} < 0.5017) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2813 && $z_out->{y} < 0.2814) {
+    unless ($z_out->{im} > 0.2813 && $z_out->{im} < 0.2814) {
       return 0;
     }
 
@@ -2941,11 +2941,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->catan($z1);
     
-    unless ($z_out->{x} > 0.4842544903299 && $z_out->{x} < 0.4842544903300) {
+    unless ($z_out->{re} > 0.4842544903299 && $z_out->{re} < 0.4842544903300) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005866181312 && $z_out->{y} < 0.2005866181313) {
+    unless ($z_out->{im} > 0.2005866181312 && $z_out->{im} < 0.2005866181313) {
       return 0;
     }
 
@@ -2957,11 +2957,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->catanf($z1);
     
-    unless ($z_out->{x} > 0.4842 && $z_out->{x} < 0.4843) {
+    unless ($z_out->{re} > 0.4842 && $z_out->{re} < 0.4843) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2005 && $z_out->{y} < 0.2006) {
+    unless ($z_out->{im} > 0.2005 && $z_out->{im} < 0.2006) {
       return 0;
     }
 
@@ -2973,11 +2973,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ccos($z1);
     
-    unless ($z_out->{x} > 0.9051501505596 && $z_out->{x} < 0.9051501505597) {
+    unless ($z_out->{re} > 0.9051501505596 && $z_out->{re} < 0.9051501505597) {
       return 0;
     }
     
-    unless ($z_out->{y} > -0.1211087960439 && $z_out->{y} < -0.1211087960438) {
+    unless ($z_out->{im} > -0.1211087960439 && $z_out->{im} < -0.1211087960438) {
       return 0;
     }
 
@@ -2989,11 +2989,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ccosf($z1);
     
-    unless ($z_out->{x} > 0.905 && $z_out->{x} < 0.906) {
+    unless ($z_out->{re} > 0.905 && $z_out->{re} < 0.906) {
       return 0;
     }
     
-    unless ($z_out->{y} > -0.1212 && $z_out->{y} < -0.1211) {
+    unless ($z_out->{im} > -0.1212 && $z_out->{im} < -0.1211) {
       return 0;
     }
 
@@ -3005,11 +3005,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csin($z1);
     
-    unless ($z_out->{x} > 0.4944857809331 && $z_out->{x} < 0.4944857809332) {
+    unless ($z_out->{re} > 0.4944857809331 && $z_out->{re} < 0.4944857809332) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2216881641495 && $z_out->{y} < 0.2216881641496) {
+    unless ($z_out->{im} > 0.2216881641495 && $z_out->{im} < 0.2216881641496) {
       return 0;
     }
 
@@ -3021,11 +3021,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csinf($z1);
     
-    unless ($z_out->{x} > 0.4944 && $z_out->{x} < 0.4945) {
+    unless ($z_out->{re} > 0.4944 && $z_out->{re} < 0.4945) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2216 && $z_out->{y} < 0.2217) {
+    unless ($z_out->{im} > 0.2216 && $z_out->{im} < 0.2217) {
       return 0;
     }
 
@@ -3037,11 +3037,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ctan($z1);
     
-    unless ($z_out->{x} > 0.5045007026985 && $z_out->{x} < 0.5045007026986) {
+    unless ($z_out->{re} > 0.5045007026985 && $z_out->{re} < 0.5045007026986) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.3124206925025 && $z_out->{y} < 0.3124206925026) {
+    unless ($z_out->{im} > 0.3124206925025 && $z_out->{im} < 0.3124206925026) {
       return 0;
     }
 
@@ -3053,11 +3053,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ctanf($z1);
     
-    unless ($z_out->{x} > 0.5045 && $z_out->{x} < 0.5046) {
+    unless ($z_out->{re} > 0.5045 && $z_out->{re} < 0.5046) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.3124 && $z_out->{y} < 0.3125) {
+    unless ($z_out->{im} > 0.3124 && $z_out->{im} < 0.3125) {
       return 0;
     }
 
@@ -3069,11 +3069,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cacosh($z1);
     
-    unless ($z_out->{x} > 0.2813960562452 && $z_out->{x} < 0.2813960562453) {
+    unless ($z_out->{re} > 0.2813960562452 && $z_out->{re} < 0.2813960562453) {
       return 0;
     }
     
-    unless ($z_out->{y} > 1.06918747351 && $z_out->{y} < 1.06918747352) {
+    unless ($z_out->{im} > 1.06918747351 && $z_out->{im} < 1.06918747352) {
       return 0;
     }
 
@@ -3085,11 +3085,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cacoshf($z1);
     
-    unless ($z_out->{x} > 0.2813 && $z_out->{x} < 0.2814) {
+    unless ($z_out->{re} > 0.2813 && $z_out->{re} < 0.2814) {
       return 0;
     }
     
-    unless ($z_out->{y} > 1.0691 && $z_out->{y} < 1.0692) {
+    unless ($z_out->{im} > 1.0691 && $z_out->{im} < 1.0692) {
       return 0;
     }
 
@@ -3101,11 +3101,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->casinh($z1);
     
-    unless ($z_out->{x} > 0.4926756834207 && $z_out->{x} < 0.4926756834208) {
+    unless ($z_out->{re} > 0.4926756834207 && $z_out->{re} < 0.4926756834208) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2243284526346 && $z_out->{y} < 0.2243284526347) {
+    unless ($z_out->{im} > 0.2243284526346 && $z_out->{im} < 0.2243284526347) {
       return 0;
     }
 
@@ -3117,11 +3117,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->casinhf($z1);
     
-    unless ($z_out->{x} > 0.4926 && $z_out->{x} < 0.4927) {
+    unless ($z_out->{re} > 0.4926 && $z_out->{re} < 0.4927) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2243 && $z_out->{y} < 0.2244) {
+    unless ($z_out->{im} > 0.2243 && $z_out->{im} < 0.2244) {
       return 0;
     }
 
@@ -3133,11 +3133,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->catanh($z1);
     
-    unless ($z_out->{x} > 0.5003700000525 && $z_out->{x} < 0.5003700000526) {
+    unless ($z_out->{re} > 0.5003700000525 && $z_out->{re} < 0.5003700000526) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.3143981432077 && $z_out->{y} < 0.3143981432078) {
+    unless ($z_out->{im} > 0.3143981432077 && $z_out->{im} < 0.3143981432078) {
       return 0;
     }
 
@@ -3149,11 +3149,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->catanhf($z1);
     
-    unless ($z_out->{x} > 0.5003 && $z_out->{x} < 0.5004) {
+    unless ($z_out->{re} > 0.5003 && $z_out->{re} < 0.5004) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.3143 && $z_out->{y} < 0.3144) {
+    unless ($z_out->{im} > 0.3143 && $z_out->{im} < 0.3144) {
       return 0;
     }
 
@@ -3165,11 +3165,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ccosh($z1);
     
-    unless ($z_out->{x} > 1.092570804731 && $z_out->{x} < 1.092570804732) {
+    unless ($z_out->{re} > 1.092570804731 && $z_out->{re} < 1.092570804732) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.1289210417280 && $z_out->{y} < 0.1289210417281) {
+    unless ($z_out->{im} > 0.1289210417280 && $z_out->{im} < 0.1289210417281) {
       return 0;
     }
 
@@ -3181,11 +3181,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ccoshf($z1);
     
-    unless ($z_out->{x} > 1.092 && $z_out->{x} < 1.093) {
+    unless ($z_out->{re} > 1.092 && $z_out->{re} < 1.093) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.1289 && $z_out->{y} < 0.1290) {
+    unless ($z_out->{im} > 0.1289 && $z_out->{im} < 0.1290) {
       return 0;
     }
 
@@ -3197,11 +3197,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csinh($z1);
     
-    unless ($z_out->{x} > 0.5048957143879 && $z_out->{x} < 0.5048957143880) {
+    unless ($z_out->{re} > 0.5048957143879 && $z_out->{re} < 0.5048957143880) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2789791283502 && $z_out->{y} < 0.2789791283503) {
+    unless ($z_out->{im} > 0.2789791283502 && $z_out->{im} < 0.2789791283503) {
       return 0;
     }
 
@@ -3213,11 +3213,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csinhf($z1);
     
-    unless ($z_out->{x} > 0.5048 && $z_out->{x} < 0.5049) {
+    unless ($z_out->{re} > 0.5048 && $z_out->{re} < 0.5049) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.2789 && $z_out->{y} < 0.2790) {
+    unless ($z_out->{im} > 0.2789 && $z_out->{im} < 0.2790) {
       return 0;
     }
 
@@ -3229,11 +3229,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ctanh($z1);
     
-    unless ($z_out->{x} > 0.4854872810241 && $z_out->{x} < 0.4854872810242) {
+    unless ($z_out->{re} > 0.4854872810241 && $z_out->{re} < 0.4854872810242) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.198055449951 && $z_out->{y} < 0.198055449952) {
+    unless ($z_out->{im} > 0.198055449951 && $z_out->{im} < 0.198055449952) {
       return 0;
     }
 
@@ -3245,11 +3245,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->ctanhf($z1);
     
-    unless ($z_out->{x} > 0.4854 && $z_out->{x} < 0.4855) {
+    unless ($z_out->{re} > 0.4854 && $z_out->{re} < 0.4855) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.1980 && $z_out->{y} < 0.1981) {
+    unless ($z_out->{im} > 0.1980 && $z_out->{im} < 0.1981) {
       return 0;
     }
 
@@ -3261,11 +3261,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->clog($z1);
     
-    unless ($z_out->{x} > -0.581575404903 && $z_out->{x} < -0.581575404902) {
+    unless ($z_out->{re} > -0.581575404903 && $z_out->{re} < -0.581575404902) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.4636476090008 && $z_out->{y} < 0.4636476090009) {
+    unless ($z_out->{im} > 0.4636476090008 && $z_out->{im} < 0.4636476090009) {
       return 0;
     }
 
@@ -3277,11 +3277,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->clogf($z1);
     
-    unless ($z_out->{x} > -0.5816 && $z_out->{x} < -0.5815) {
+    unless ($z_out->{re} > -0.5816 && $z_out->{re} < -0.5815) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.4636 && $z_out->{y} < 0.4637) {
+    unless ($z_out->{im} > 0.4636 && $z_out->{im} < 0.4637) {
       return 0;
     }
 
@@ -3341,11 +3341,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->conj($z1);
     
-    unless ($z_out->{x} == 0.5) {
+    unless ($z_out->{re} == 0.5) {
       return 0;
     }
     
-    unless ($z_out->{y} == -0.25) {
+    unless ($z_out->{im} == -0.25) {
       return 0;
     }
 
@@ -3357,11 +3357,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->conjf($z1);
     
-    unless ($z_out->{x} == 0.5f) {
+    unless ($z_out->{re} == 0.5f) {
       return 0;
     }
     
-    unless ($z_out->{y} == -0.25f) {
+    unless ($z_out->{im} == -0.25f) {
       return 0;
     }
 
@@ -3374,11 +3374,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csqrt($z1);
     
-    unless ($z_out->{x} > 0.72767334511267 && $z_out->{x} < 0.72767334511268) {
+    unless ($z_out->{re} > 0.72767334511267 && $z_out->{re} < 0.72767334511268) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.17178037486 && $z_out->{y} < 0.17178037487) {
+    unless ($z_out->{im} > 0.17178037486 && $z_out->{im} < 0.17178037487) {
       return 0;
     }
 
@@ -3390,11 +3390,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->csqrtf($z1);
     
-    unless ($z_out->{x} > 0.7276 && $z_out->{x} < 0.7277) {
+    unless ($z_out->{re} > 0.7276 && $z_out->{re} < 0.7277) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.1717 && $z_out->{y} < 0.1718) {
+    unless ($z_out->{im} > 0.1717 && $z_out->{im} < 0.1718) {
       return 0;
     }
 
@@ -3406,11 +3406,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cproj($z1);
     
-    unless ($z_out->{x} > 0.761904 && $z_out->{x} < 0.761906) {
+    unless ($z_out->{re} > 0.761904 && $z_out->{re} < 0.761906) {
       return 0;
     }
 
-    unless ($z_out->{y} > 0.380951 && $z_out->{y} < 0.380953) {
+    unless ($z_out->{im} > 0.380951 && $z_out->{im} < 0.380953) {
       return 0;
     }
 
@@ -3422,11 +3422,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cprojf($z1);
     
-    unless ($z_out->{x} > 0.7619 && $z_out->{x} < 0.7620) {
+    unless ($z_out->{re} > 0.7619 && $z_out->{re} < 0.7620) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.3809 && $z_out->{y} < 0.3810) {
+    unless ($z_out->{im} > 0.3809 && $z_out->{im} < 0.3810) {
       return 0;
     }
 
@@ -3439,11 +3439,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cpow($z1, $z2);
     
-    unless ($z_out->{x} > 0.2340036050149 && $z_out->{x} < 0.2340036050150) {
+    unless ($z_out->{re} > 0.2340036050149 && $z_out->{re} < 0.2340036050150) {
       return 0;
     }
     
-    unless ($z_out->{y} > -0.007373047187613 && $z_out->{y} < -0.007373047187612) {
+    unless ($z_out->{im} > -0.007373047187613 && $z_out->{im} < -0.007373047187612) {
       return 0;
     }
 
@@ -3456,11 +3456,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cpowf($z1, $z2);
     
-    unless ($z_out->{x} > 0.2340 && $z_out->{x} < 0.2341) {
+    unless ($z_out->{re} > 0.2340 && $z_out->{re} < 0.2341) {
       return 0;
     }
     
-    unless ($z_out->{y} > -0.0074 && $z_out->{y} < -0.0073) {
+    unless ($z_out->{im} > -0.0074 && $z_out->{im} < -0.0073) {
       return 0;
     }
 
@@ -3471,11 +3471,11 @@ package TestCase::Lib::SPVM::Math {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = SPVM::Math->cexp($z1);
-    unless ($z_out->{x} > 1.5974665191199 && $z_out->{x} < 1.5974665191200) {
+    unless ($z_out->{re} > 1.5974665191199 && $z_out->{re} < 1.5974665191200) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.407900170078 && $z_out->{y} < 0.407900170079) {
+    unless ($z_out->{im} > 0.407900170078 && $z_out->{im} < 0.407900170079) {
       return 0;
     }
 
@@ -3487,11 +3487,11 @@ package TestCase::Lib::SPVM::Math {
 
     my $z_out = SPVM::Math->cexpf($z1);
     
-    unless ($z_out->{x} > 1.5974 && $z_out->{x} < 1.5975) {
+    unless ($z_out->{re} > 1.5974 && $z_out->{re} < 1.5975) {
       return 0;
     }
     
-    unless ($z_out->{y} > 0.4079 && $z_out->{y} < 0.4080) {
+    unless ($z_out->{im} > 0.4079 && $z_out->{im} < 0.4080) {
       return 0;
     }
 

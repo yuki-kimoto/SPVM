@@ -5,8 +5,8 @@ SPVM::Complex_2d - Complex double multi numeric type
 =head1 SYNOPSYS
 
   my $z : SPVM::Complex_2d;
-  $z->{x} = 1;
-  $z->{y} = 2;
+  $z->{re} = 1;
+  $z->{im} = 2;
   
 =head1 DESCRIPTION
 

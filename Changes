@@ -1,3 +1,9 @@
+0.0912
+  - rename SPVM::Complex_2d x to re
+  - rename SPVM::Complex_2d y to im
+  - rename SPVM::Complex_2f x to re
+  - rename SPVM::Complex_2f y to im
+  
 0.0911 2020-09-04
   - add complex functions to SPVM::Math
   
