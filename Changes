@@ -3,6 +3,10 @@
   - rename SPVM::Complex_2d y to im
   - rename SPVM::Complex_2f x to re
   - rename SPVM::Complex_2f y to im
+  - rename SPVM::Matrix::Double col to columns_length
+  - rename SPVM::Matrix::Double row to rows_length
+  - rename SPVM::Matrix::Float col to columns_length
+  - rename SPVM::Matrix::Float row to rows_length
   
 0.0911 2020-09-04
   - add complex functions to SPVM::Math

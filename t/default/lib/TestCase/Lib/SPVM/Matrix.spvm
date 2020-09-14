@@ -5,12 +5,12 @@ package TestCase::Lib::SPVM::Matrix {
 
   sub matrix_float : float () {
     my $mat = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
-    my $row = $mat->row;
-    unless ($row == 2) {
+    my $rows_length = $mat->rows_length;
+    unless ($rows_length == 2) {
       return 0;
     }
-    my $col = $mat->col;
-    unless ($col == 3) {
+    my $columns_length = $mat->columns_length;
+    unless ($columns_length == 3) {
       return 0;
     }
     my $values = $mat->values;
@@ -40,10 +40,10 @@ package TestCase::Lib::SPVM::Matrix {
     unless (equals_farray($mat_trans->values, [(float)1, 3, 5, 2, 4, 6])) {
       return 0;
     }
-    unless ($mat_trans->row == $col && $mat_trans->row == 3) {
+    unless ($mat_trans->rows_length == $columns_length && $mat_trans->rows_length == 3) {
       return 0;
     }
-    unless ($mat_trans->col == $row && $mat_trans->col == 2) {
+    unless ($mat_trans->columns_length == $rows_length && $mat_trans->columns_length == 2) {
       return 0;
     }
     return 1;
@@ -51,12 +51,12 @@ package TestCase::Lib::SPVM::Matrix {
 
   sub matrix_double : double () {
     my $mat = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
-    my $row = $mat->row;
-    unless ($row == 2) {
+    my $rows_length = $mat->rows_length;
+    unless ($rows_length == 2) {
       return 0;
     }
-    my $col = $mat->col;
-    unless ($col == 3) {
+    my $columns_length = $mat->columns_length;
+    unless ($columns_length == 3) {
       return 0;
     }
     my $values = $mat->values;
@@ -86,10 +86,10 @@ package TestCase::Lib::SPVM::Matrix {
     unless (equals_darray($mat_trans->values, [(double)1, 3, 5, 2, 4, 6])) {
       return 0;
     }
-    unless ($mat_trans->row == $col && $mat_trans->row == 3) {
+    unless ($mat_trans->rows_length == $columns_length && $mat_trans->rows_length == 3) {
       return 0;
     }
-    unless ($mat_trans->col == $row && $mat_trans->col == 2) {
+    unless ($mat_trans->columns_length == $rows_length && $mat_trans->columns_length == 2) {
       return 0;
     }
     return 1;
@@ -112,7 +112,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat3->row == 2 && $mat3->col == 3) {
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
       return 0;
     }
     
@@ -139,7 +139,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat3->row == 2 && $mat3->col == 3) {
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
       return 0;
     }
     
@@ -167,7 +167,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat3->row == 2 && $mat3->col == 3) {
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
       return 0;
     }
     
@@ -194,7 +194,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat3->row == 2 && $mat3->col == 3) {
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
       return 0;
     }
     
@@ -217,7 +217,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
 
-    unless ($mat2->row == 2 && $mat2->col == 3) {
+    unless ($mat2->rows_length == 2 && $mat2->columns_length == 3) {
       return 0;
     }
     
@@ -241,7 +241,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
 
-    unless ($mat2->row == 2 && $mat2->col == 3) {
+    unless ($mat2->rows_length == 2 && $mat2->columns_length == 3) {
       return 0;
     }
     
@@ -259,7 +259,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat1->row == 2 && $mat1->col == 3) {
+    unless ($mat1->rows_length == 2 && $mat1->columns_length == 3) {
       return 0;
     }
     
@@ -278,7 +278,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat1->row == 2 && $mat1->col == 3) {
+    unless ($mat1->rows_length == 2 && $mat1->columns_length == 3) {
       return 0;
     }
     
@@ -297,7 +297,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat1->row == 3 && $mat1->col == 3) {
+    unless ($mat1->rows_length == 3 && $mat1->columns_length == 3) {
       return 0;
     }
     
@@ -316,7 +316,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat1->row == 3 && $mat1->col == 3) {
+    unless ($mat1->rows_length == 3 && $mat1->columns_length == 3) {
       return 0;
     }
     
@@ -345,7 +345,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat3->row == 2 && $mat3->col == 2) {
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 2) {
       return 0;
     }
     
@@ -373,7 +373,7 @@ package TestCase::Lib::SPVM::Matrix {
       return 0;
     }
     
-    unless ($mat3->row == 2 && $mat3->col == 2) {
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 2) {
       return 0;
     }
     

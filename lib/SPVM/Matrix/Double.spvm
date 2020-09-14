@@ -1,198 +1,198 @@
 # SPVM::Matrix::Double is created by regen/regen_matrix.pl
 package SPVM::Matrix::Double {
-  use SPVM::StringBuffer;
-  
-  has values : ro double[];
-  has row : ro int;
-  has col : ro int;
-  
-  sub new : SPVM::Matrix::Double ($values : double[], $row : int, $col : int) {
-    unless ($values) {
-      die "Values must defined";
-    }
+use SPVM::StringBuffer;
 
-    unless ($row * $col == scalar @$values) {
-      die "Values length must be row * col";
-    }
-    my $matrix = new SPVM::Matrix::Double;
-    $matrix->{values} = $values;
-    $matrix->{row} = $row;
-    $matrix->{col} = $col;
-    return $matrix;
+has values : ro double[];
+has rows_length : ro int;
+has columns_length : ro int;
+
+sub new : SPVM::Matrix::Double ($values : double[], $rows_length: int, $columns_length : int) {
+  unless ($values) {
+    die "Values must defined";
   }
 
-  sub new_zero : SPVM::Matrix::Double ($row : int, $col : int) {
-
-    unless ($row > 0) {
-      die "Row must be more than 0";
-    }
-    unless ($col > 0) {
-      die "Col must be more than 0";
-    }
-    my $matrix = new SPVM::Matrix::Double;
-    my $length = $row * $col;
-    $matrix->{values} = new  double[$length];
-    $matrix->{row} = $row;
-    $matrix->{col} = $col;
-    return $matrix;
+  unless ($rows_length* $columns_length == scalar @$values) {
+    die "Values length must be row * col";
   }
+  my $matrix = new SPVM::Matrix::Double;
+  $matrix->{values} = $values;
+  $matrix->{rows_length} = $rows_length;
+  $matrix->{columns_length} = $columns_length;
+  return $matrix;
+}
 
-  sub new_ident : SPVM::Matrix::Double ($dim : int) {
-    if ($dim < 1) {
-      die "Dimension must be more than 0";
-    }
-    
-    my $matrix = SPVM::Matrix::Double->new_zero($dim, $dim);
-    my $values = $matrix->{values};
-    for (my $i = 0; $i < $dim; $i++) {
-      $values->[$i * $dim + $i] = 1;
-    }
+sub new_zero : SPVM::Matrix::Double ($rows_length: int, $columns_length : int) {
 
-    return $matrix;
+  unless ($rows_length> 0) {
+    die "Row must be more than 0";
   }
+  unless ($columns_length > 0) {
+    die "Col must be more than 0";
+  }
+  my $matrix = new SPVM::Matrix::Double;
+  my $length = $rows_length* $columns_length;
+  $matrix->{values} = new  double[$length];
+  $matrix->{rows_length} = $rows_length;
+  $matrix->{columns_length} = $columns_length;
+  return $matrix;
+}
 
-  sub transpose : SPVM::Matrix::Double ($self : self) {
-    my $row = $self->{row};
-    my $col = $self->{col};
-    my $length = $row * $col;
-    
-    my $mat_trans = SPVM::Matrix::Double->new(new double[$length], $col, $row);
-    
-    my $values = $self->{values};
-    my $mat_trans_values = $mat_trans->{values};
-    
-    for (my $row_index = 0; $row_index < $row; $row_index++) {
-      for (my $col_index = 0; $col_index < $col; $col_index++) {
-        $mat_trans_values->[$row_index * $col + $col_index] = $values->[$col_index * $row + $row_index];
-
-      }
-    }
-    
-    return $mat_trans;
+sub new_ident : SPVM::Matrix::Double ($dim : int) {
+  if ($dim < 1) {
+    die "Dimension must be more than 0";
   }
   
-  sub str : string ($self : self) {
-    my $values = $self->{values};
-    my $row = $self->{row};
-    my $col = $self->{col};
-    my $length = $row * $col;
-    
-    my $buffer = SPVM::StringBuffer->new;
-    for (my $row_index = 0; $row_index < $row; $row_index++) {
-      for (my $elem_index = $row_index; $elem_index < $length; $elem_index += $row) {
-        $buffer->push($values->[$elem_index]);
-        if ($elem_index < $length - $col + 1) {
-          $buffer->push(" ");
-        }
-      }
-      $buffer->push("\n");
-    }
-    
-    my $str = $buffer->to_string;
-    
-    return $str;
+  my $matrix = SPVM::Matrix::Double->new_zero($dim, $dim);
+  my $values = $matrix->{values};
+  for (my $i = 0; $i < $dim; $i++) {
+    $values->[$i * $dim + $i] = 1;
   }
 
-  sub add : SPVM::Matrix::Double ($self : self, $mat : SPVM::Matrix::Double) {
-    my $self_values = $self->{values};
-    my $self_row = $self->{row};
-    my $self_col = $self->{col};
-    
-    my $mat_row = $mat->{row};
-    my $mat_col = $mat->{col};
-    my $mat_values = $mat->{values};
-    
-    if ($self_row != $mat_row) {
-      die "Self row must be equals to mat row";
-    }
+  return $matrix;
+}
 
-    if ($self_col != $mat_col) {
-      die "Self col must be equals to mat col";
-    }
+sub transpose : SPVM::Matrix::Double ($self : self) {
+  my $rows_length = $self->{rows_length};
+  my $columns_length = $self->{columns_length};
+  my $length = $rows_length * $columns_length;
+  
+  my $mat_trans = SPVM::Matrix::Double->new(new double[$length], $columns_length, $rows_length);
+  
+  my $values = $self->{values};
+  my $mat_trans_values = $mat_trans->{values};
+  
+  for (my $row_index = 0; $row_index < $rows_length; $row_index++) {
+    for (my $column_index = 0; $column_index < $columns_length; $column_index++) {
+      $mat_trans_values->[$row_index * $columns_length + $column_index] = $values->[$column_index * $rows_length+ $row_index];
 
-    my $self_length = $self_row * $self_col;
-    my $mat_result = SPVM::Matrix::Double->new(new double[$self_length], $self_row, $self_col);
-    my $mat_result_values = $mat_result->{values};
-    
-    for (my $i = 0; $i < $self_length; $i++) {
-      $mat_result_values->[$i] = (double)($self_values->[$i] + $mat_values->[$i]);
     }
-    
-    return $mat_result;
   }
+  
+  return $mat_trans;
+}
 
-  sub sub : SPVM::Matrix::Double ($self : self, $mat : SPVM::Matrix::Double) {
-    my $self_values = $self->{values};
-    my $self_row = $self->{row};
-    my $self_col = $self->{col};
-    
-    my $mat_row = $mat->{row};
-    my $mat_col = $mat->{col};
-    my $mat_values = $mat->{values};
-    
-    if ($self_row != $mat_row) {
-      die "Self row must be equals to mat row";
-    }
-
-    if ($self_col != $mat_col) {
-      die "Self col must be equals to mat col";
-    }
-
-    my $self_length = $self_row * $self_col;
-    my $mat_result = SPVM::Matrix::Double->new(new double[$self_length], $self_row, $self_col);
-    my $mat_result_values = $mat_result->{values};
-    
-    for (my $i = 0; $i < $self_length; $i++) {
-      $mat_result_values->[$i] = (double)($self_values->[$i] - $mat_values->[$i]);
-    }
-    
-    return $mat_result;
-  }
-
-  sub scamul : SPVM::Matrix::Double ($self : self, $scalar : double) {
-    my $self_values = $self->{values};
-    my $self_row = $self->{row};
-    my $self_col = $self->{col};
-
-    my $self_length = $self_row * $self_col;
-    my $mat_result = SPVM::Matrix::Double->new(new double[$self_length], $self_row, $self_col);
-    my $mat_result_values = $mat_result->{values};
-    
-    for (my $i = 0; $i < $self_length; $i++) {
-      $mat_result_values->[$i] = (double)($scalar * $self_values->[$i]);
-    }
-    
-    return $mat_result;
-  }
-
-  sub mul : SPVM::Matrix::Double ($self : self, $mat : SPVM::Matrix::Double) {
-    my $self_values = $self->{values};
-    my $self_row = $self->{row};
-    my $self_col = $self->{col};
-    
-    my $mat_row = $mat->{row};
-    my $mat_col = $mat->{col};
-    my $mat_values = $mat->{values};
-    
-    if ($self_col != $mat_row) {
-      die "Self col must be equals to mat row";
-    }
-
-    my $mat_result_length = $self_row * $mat_col;
-    my $mat_result = SPVM::Matrix::Double->new(new double[$mat_result_length], $self_row, $mat_col);
-    my $mat_result_values = $mat_result->{values};
-    my $mat_result_col = $mat_result->{col};
-    my $mat_result_row = $mat_result->{row};
-    
-    for(my $row = 0; $row < $self_row; $row++) {
-      for(my $col = 0; $col < $mat_col; $col++) {
-        for(my $incol = 0; $incol < $self_col; $incol++) {
-          $mat_result_values->[$row + $col * $mat_result_row]
-           += $self_values->[$row + $incol * $self_row] * $mat_values->[$incol + $col * $mat_row];
-        }
+sub str : string ($self : self) {
+  my $values = $self->{values};
+  my $rows_length = $self->{rows_length};
+  my $columns_length = $self->{columns_length};
+  my $length = $rows_length * $columns_length;
+  
+  my $buffer = SPVM::StringBuffer->new;
+  for (my $row_index = 0; $row_index < $rows_length; $row_index++) {
+    for (my $elem_index = $row_index; $elem_index < $length; $elem_index += $rows_length) {
+      $buffer->push($values->[$elem_index]);
+      if ($elem_index < $length - $columns_length + 1) {
+        $buffer->push(" ");
       }
     }
-    
-    return $mat_result;
+    $buffer->push("\n");
   }
+  
+  my $str = $buffer->to_string;
+  
+  return $str;
+}
+
+sub add : SPVM::Matrix::Double ($self : self, $mat : SPVM::Matrix::Double) {
+  my $self_values = $self->{values};
+  my $self_rows_length = $self->{rows_length};
+  my $self_columns_length = $self->{columns_length};
+  
+  my $mat_rows_length = $mat->{rows_length};
+  my $mat_columns_length = $mat->{columns_length};
+  my $mat_values = $mat->{values};
+  
+  if ($self_rows_length != $mat_rows_length) {
+    die "Self row must be equals to mat row";
+  }
+
+  if ($self_columns_length != $mat_columns_length) {
+    die "Self col must be equals to mat col";
+  }
+
+  my $self_length = $self_rows_length * $self_columns_length;
+  my $mat_result = SPVM::Matrix::Double->new(new double[$self_length], $self_rows_length, $self_columns_length);
+  my $mat_result_values = $mat_result->{values};
+  
+  for (my $i = 0; $i < $self_length; $i++) {
+    $mat_result_values->[$i] = (double)($self_values->[$i] + $mat_values->[$i]);
+  }
+  
+  return $mat_result;
+}
+
+sub sub : SPVM::Matrix::Double ($self : self, $mat : SPVM::Matrix::Double) {
+  my $self_values = $self->{values};
+  my $self_rows_length = $self->{rows_length};
+  my $self_columns_length = $self->{columns_length};
+  
+  my $mat_rows_length = $mat->{rows_length};
+  my $mat_columns_length = $mat->{columns_length};
+  my $mat_values = $mat->{values};
+  
+  if ($self_rows_length != $mat_rows_length) {
+    die "Self row must be equals to mat row";
+  }
+
+  if ($self_columns_length != $mat_columns_length) {
+    die "Self col must be equals to mat col";
+  }
+
+  my $self_length = $self_rows_length * $self_columns_length;
+  my $mat_result = SPVM::Matrix::Double->new(new double[$self_length], $self_rows_length, $self_columns_length);
+  my $mat_result_values = $mat_result->{values};
+  
+  for (my $i = 0; $i < $self_length; $i++) {
+    $mat_result_values->[$i] = (double)($self_values->[$i] - $mat_values->[$i]);
+  }
+  
+  return $mat_result;
+}
+
+sub scamul : SPVM::Matrix::Double ($self : self, $scalar : double) {
+  my $self_values = $self->{values};
+  my $self_rows_length = $self->{rows_length};
+  my $self_columns_length = $self->{columns_length};
+
+  my $self_length = $self_rows_length * $self_columns_length;
+  my $mat_result = SPVM::Matrix::Double->new(new double[$self_length], $self_rows_length, $self_columns_length);
+  my $mat_result_values = $mat_result->{values};
+  
+  for (my $i = 0; $i < $self_length; $i++) {
+    $mat_result_values->[$i] = (double)($scalar * $self_values->[$i]);
+  }
+  
+  return $mat_result;
+}
+
+sub mul : SPVM::Matrix::Double ($self : self, $mat : SPVM::Matrix::Double) {
+  my $self_values = $self->{values};
+  my $self_rows_length = $self->{rows_length};
+  my $self_columns_length = $self->{columns_length};
+  
+  my $mat_rows_length = $mat->{rows_length};
+  my $mat_columns_length = $mat->{columns_length};
+  my $mat_values = $mat->{values};
+  
+  if ($self_columns_length != $mat_rows_length) {
+    die "Self col must be equals to mat row";
+  }
+
+  my $mat_result_length = $self_rows_length * $mat_columns_length;
+  my $mat_result = SPVM::Matrix::Double->new(new double[$mat_result_length], $self_rows_length, $mat_columns_length);
+  my $mat_result_values = $mat_result->{values};
+  my $mat_result_col = $mat_result->{columns_length};
+  my $mat_result_row = $mat_result->{rows_length};
+  
+  for(my $row_index = 0; $row_index < $self_rows_length; $row_index++) {
+    for(my $column_index = 0; $column_index < $mat_columns_length; $column_index++) {
+      for(my $incol = 0; $incol < $self_columns_length; $incol++) {
+        $mat_result_values->[$row_index + $column_index * $mat_result_row]
+         += $self_values->[$row_index + $incol * $self_rows_length] * $mat_values->[$incol + $column_index * $mat_rows_length];
+      }
+    }
+  }
+  
+  return $mat_result;
+}
 }
