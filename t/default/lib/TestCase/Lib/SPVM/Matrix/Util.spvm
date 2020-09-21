@@ -1,0 +1,398 @@
+package TestCase::Lib::SPVM::Matrix::Util {
+  use SPVM::Matrix::Float;
+  use SPVM::Matrix::Double;
+  use SPVM::Matrix::Util (
+      m_newf, m_new,
+      m_transposef, m_transpose,
+      m_strf, m_str,
+      m_addf, m_add,
+      m_subf, m_sub,
+      m_scamulf, m_scamul,
+      m_mulf, m_mul,
+      m_new_zerof, m_new_zero,
+      m_new_identf, m_new_ident
+  );
+  use SPVM::Util (equals_farray, equals_darray);
+
+  sub matrix_float : float () {
+    my $mat = m_newf([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $rows_length = $mat->rows_length;
+    unless ($rows_length == 2) {
+      return 0;
+    }
+    my $columns_length = $mat->columns_length;
+    unless ($columns_length == 3) {
+      return 0;
+    }
+    my $values = $mat->values;
+    unless ($values->[0] == 1) {
+      return 0;
+    }
+    unless ($values->[5] == 6) {
+      return 0;
+    }
+    unless (@$values == 6) {
+      return 0;
+    }
+    unless ($values isa float[]) {
+      return 0;
+    }
+
+    my $mat_str = m_strf($mat);
+    unless ($mat_str eq "1 3 5\n2 4 6\n") {
+      return 0;
+    }
+
+    # transpose
+    my $mat_trans = m_transposef($mat);
+    unless ($mat_trans != $mat) {
+      return 0;
+    }
+    unless (equals_farray($mat_trans->values, [(float)1, 3, 5, 2, 4, 6])) {
+      return 0;
+    }
+    unless ($mat_trans->rows_length == $columns_length && $mat_trans->rows_length == 3) {
+      return 0;
+    }
+    unless ($mat_trans->columns_length == $rows_length && $mat_trans->columns_length == 2) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub matrix_double : double () {
+    my $mat = m_new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $rows_length = $mat->rows_length;
+    unless ($rows_length == 2) {
+      return 0;
+    }
+    my $columns_length = $mat->columns_length;
+    unless ($columns_length == 3) {
+      return 0;
+    }
+    my $values = $mat->values;
+    unless ($values->[0] == 1) {
+      return 0;
+    }
+    unless ($values->[5] == 6) {
+      return 0;
+    }
+    unless (@$values == 6) {
+      return 0;
+    }
+    unless ($values isa double[]) {
+      return 0;
+    }
+
+    my $mat_str = m_str($mat);
+    unless ($mat_str eq "1 3 5\n2 4 6\n") {
+      return 0;
+    }
+
+    # transpose
+    my $mat_trans = m_transpose($mat);
+    unless ($mat_trans != $mat) {
+      return 0;
+    }
+    unless (equals_darray($mat_trans->values, [(double)1, 3, 5, 2, 4, 6])) {
+      return 0;
+    }
+    unless ($mat_trans->rows_length == $columns_length && $mat_trans->rows_length == 3) {
+      return 0;
+    }
+    unless ($mat_trans->columns_length == $rows_length && $mat_trans->columns_length == 2) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub matrix_add_float : int () {
+    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Float->new([(float)11, 12, 13, 14, 15, 16], 2, 3);
+    my $mat3 = m_addf($mat1, $mat2);
+
+    unless ($mat3->values isa float[]) {
+      return 0;
+    }
+
+    if ($mat3 == $mat1) {
+      return 0;
+    }
+
+    if ($mat3 == $mat2) {
+      return 0;
+    }
+
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
+      return 0;
+    }
+
+    unless (equals_farray($mat3->values, [(float)12, 14, 16, 18, 20, 22])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_add_double : int () {
+    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Double->new([(double)11, 12, 13, 14, 15, 16], 2, 3);
+    my $mat3 = m_add($mat1, $mat2);
+    
+    unless ($mat3->values isa double[]) {
+      return 0;
+    }
+    
+    if ($mat3 == $mat1) {
+      return 0;
+    }
+
+    if ($mat3 == $mat2) {
+      return 0;
+    }
+    
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
+      return 0;
+    }
+    
+    unless (equals_darray($mat3->values, [(double)12, 14, 16, 18, 20, 22])) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub matrix_sub_float : int () {
+    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Float->new([(float)16, 15, 14, 13, 12, 11], 2, 3);
+    my $mat3 = m_subf($mat1, $mat2);
+    
+    unless ($mat3->values isa float[]) {
+      return 0;
+    }
+
+    if ($mat3 == $mat1) {
+      return 0;
+    }
+
+    if ($mat3 == $mat2) {
+      return 0;
+    }
+
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
+      return 0;
+    }
+
+    unless (equals_farray($mat3->values, [(float)-15, -13, -11, -9, -7, -5])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_sub_double : int () {
+    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Double->new([(double)16, 15, 14, 13, 12, 11], 2, 3);
+    my $mat3 = m_sub($mat1, $mat2);
+
+    unless ($mat3->values isa double[]) {
+      return 0;
+    }
+
+    if ($mat3 == $mat1) {
+      return 0;
+    }
+
+    if ($mat3 == $mat2) {
+      return 0;
+    }
+
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 3) {
+      return 0;
+    }
+
+    unless (equals_darray($mat3->values, [(double)-15, -13, -11, -9, -7, -5])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_scamul_float : int () {
+    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = m_scamulf($mat1, (float)3);
+
+    unless ($mat2->values isa float[]) {
+      return 0;
+    }
+
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->rows_length == 2 && $mat2->columns_length == 3) {
+      return 0;
+    }
+
+    unless (equals_farray($mat2->values, [(float)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_scamul_double : int () {
+    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = m_scamul($mat1, (double)3);
+
+    unless ($mat2->values isa double[]) {
+      return 0;
+    }
+
+    if ($mat2 == $mat1) {
+      return 0;
+    }
+
+    unless ($mat2->rows_length == 2 && $mat2->columns_length == 3) {
+      return 0;
+    }
+
+    unless (equals_darray($mat2->values, [(double)3, 6, 9, 12, 15, 18])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_new_zero_float : int () {
+    my $mat1 = m_new_zerof(2, 3);
+
+    unless ($mat1->values isa float[]) {
+      return 0;
+    }
+
+    unless ($mat1->rows_length == 2 && $mat1->columns_length == 3) {
+      return 0;
+    }
+
+
+    unless (equals_farray($mat1->values, [(float)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_new_zero_double : int () {
+    my $mat1 = m_new_zero(2, 3);
+
+    unless ($mat1->values isa double[]) {
+      return 0;
+    }
+
+    unless ($mat1->rows_length == 2 && $mat1->columns_length == 3) {
+      return 0;
+    }
+
+
+    unless (equals_darray($mat1->values, [(double)0, 0, 0, 0, 0, 0])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_new_ident_float : int () {
+    my $mat1 = m_new_identf(3);
+
+    unless ($mat1->values isa float[]) {
+      return 0;
+    }
+
+    unless ($mat1->rows_length == 3 && $mat1->columns_length == 3) {
+      return 0;
+    }
+
+
+    unless (equals_farray($mat1->values, [(float)1, 0, 0, 0, 1, 0, 0, 0, 1])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_new_ident_double : int () {
+    my $mat1 = m_new_ident(3);
+
+    unless ($mat1->values isa double[]) {
+      return 0;
+    }
+
+    unless ($mat1->rows_length == 3 && $mat1->columns_length == 3) {
+      return 0;
+    }
+
+
+    unless (equals_darray($mat1->values, [(double)1, 0, 0, 0, 1, 0, 0, 0, 1])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_mul_float : int () {
+    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Float->new([(float)2, 3, 4, 5, 6, 7], 3, 2);
+    my $mat3 = m_mulf($mat1, $mat2);
+
+    unless ($mat3->values isa float[]) {
+      return 0;
+    }
+
+    if ($mat3 == $mat1) {
+      return 0;
+    }
+
+    if ($mat3 == $mat2) {
+      return 0;
+    }
+
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 2) {
+      return 0;
+    }
+
+    unless (equals_farray($mat3->values, [(float)31, 40, 58, 76])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub matrix_mul_double : int () {
+    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Double->new([(double)2, 3, 4, 5, 6, 7], 3, 2);
+    my $mat3 = m_mul($mat1, $mat2);
+
+    unless ($mat3->values isa double[]) {
+      return 0;
+    }
+
+    if ($mat3 == $mat1) {
+      return 0;
+    }
+
+    if ($mat3 == $mat2) {
+      return 0;
+    }
+
+    unless ($mat3->rows_length == 2 && $mat3->columns_length == 2) {
+      return 0;
+    }
+
+    unless (equals_darray($mat3->values, [(double)31, 40, 58, 76])) {
+      return 0;
+    }
+
+    return 1;
+  }
+}
