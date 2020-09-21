@@ -1,10 +1,10 @@
 # SPVM::Matrix::Double is created by regen/regen_matrix.pl
-package SPVM::Matrix::Double {
+package SPVM::Matrix::Double : public {
 use SPVM::StringBuffer;
 
-has values : ro double[];
-has rows_length : ro int;
-has columns_length : ro int;
+has values : public ro double[];
+has rows_length : public ro int;
+has columns_length : public ro int;
 
 sub new : SPVM::Matrix::Double ($values : double[], $rows_length: int, $columns_length : int) {
   unless ($values) {
