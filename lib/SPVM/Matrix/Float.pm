@@ -16,6 +16,8 @@ $matrix->{columns_length} = $columns_length;
 
 SPVM::Matrix::Float is float Matrix data strcuture.
 
+See L<SPVM::Matrix::Util> about matrix operations.
+
 =head1 CONSTRUCTOR
 
   my $matrix = new SPVM::Matrix::Float;
@@ -24,10 +26,18 @@ SPVM::Matrix::Float is float Matrix data strcuture.
 
 =head2 values
 
+  has values : public float[];
   
+Matrix elements. This elements is assumed as Column-Major order.
 
-$matrix->{rows_length} = $rows_length;
-$matrix->{columns_length} = $columns_length;
+=head2 rows_length
 
+  has rows_length : public int;
 
+Matrix rows length.
 
+=head2 columns_length
+
+  has columns_length : public int;
+
+Matrix columns length.
