@@ -7,17 +7,14 @@ SPVM::Matrix::Double - double Matrix
 my $values = new double[10];
 my $rows_length = 2;
 my $columns_length = 3;
-my $matrix = SPVM::Matrix::Double->new($values, $rows_length, $columns_length);
-
-Accessors
-
-my $values = $matrix->values;
-my $rows_length= $matrix->rows_length;
-my $columns_length = $matrix->columns_length;
+my $matrix = new SPVM::Matrix::Float;
+$matrix->{values} = $values;
+$matrix->{rows_length} = $rows_length;
+$matrix->{columns_length} = $columns_length;
 
 =head1 DESCRIPTION
 
-SPVM::Matrix::Double is double Matrix.
+SPVM::Matrix::Double is double Matrix data strcuture.
 
 =head1 METHODS
 

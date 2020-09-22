@@ -107,8 +107,8 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_add_float : int () {
-    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
-    my $mat2 = SPVM::Matrix::Float->new([(float)11, 12, 13, 14, 15, 16], 2, 3);
+    my $mat1 = SPVM::Matrix::Util->mat_newf([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Util->mat_newf([(float)11, 12, 13, 14, 15, 16], 2, 3);
     my $mat3 = mat_addf($mat1, $mat2);
 
     unless ($mat3->values isa float[]) {
@@ -135,8 +135,8 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_add_double : int () {
-    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
-    my $mat2 = SPVM::Matrix::Double->new([(double)11, 12, 13, 14, 15, 16], 2, 3);
+    my $mat1 = SPVM::Matrix::Util->mat_new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Util->mat_new([(double)11, 12, 13, 14, 15, 16], 2, 3);
     my $mat3 = mat_add($mat1, $mat2);
     
     unless ($mat3->values isa double[]) {
@@ -163,8 +163,8 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_sub_float : int () {
-    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
-    my $mat2 = SPVM::Matrix::Float->new([(float)16, 15, 14, 13, 12, 11], 2, 3);
+    my $mat1 = SPVM::Matrix::Util->mat_newf([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Util->mat_newf([(float)16, 15, 14, 13, 12, 11], 2, 3);
     my $mat3 = mat_subf($mat1, $mat2);
     
     unless ($mat3->values isa float[]) {
@@ -191,8 +191,8 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_sub_double : int () {
-    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
-    my $mat2 = SPVM::Matrix::Double->new([(double)16, 15, 14, 13, 12, 11], 2, 3);
+    my $mat1 = SPVM::Matrix::Util->mat_new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Util->mat_new([(double)16, 15, 14, 13, 12, 11], 2, 3);
     my $mat3 = mat_sub($mat1, $mat2);
 
     unless ($mat3->values isa double[]) {
@@ -219,7 +219,7 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_scamul_float : int () {
-    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat1 = SPVM::Matrix::Util->mat_newf([(float)1, 2, 3, 4, 5, 6], 2, 3);
     my $mat2 = mat_scamulf($mat1, (float)3);
 
     unless ($mat2->values isa float[]) {
@@ -242,7 +242,7 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_scamul_double : int () {
-    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat1 = SPVM::Matrix::Util->mat_new([(double)1, 2, 3, 4, 5, 6], 2, 3);
     my $mat2 = mat_scamul($mat1, (double)3);
 
     unless ($mat2->values isa double[]) {
@@ -341,8 +341,8 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_mul_float : int () {
-    my $mat1 = SPVM::Matrix::Float->new([(float)1, 2, 3, 4, 5, 6], 2, 3);
-    my $mat2 = SPVM::Matrix::Float->new([(float)2, 3, 4, 5, 6, 7], 3, 2);
+    my $mat1 = SPVM::Matrix::Util->mat_newf([(float)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Util->mat_newf([(float)2, 3, 4, 5, 6, 7], 3, 2);
     my $mat3 = mat_mulf($mat1, $mat2);
 
     unless ($mat3->values isa float[]) {
@@ -369,8 +369,8 @@ package TestCase::Lib::SPVM::Matrix::Util {
   }
 
   sub matrix_mul_double : int () {
-    my $mat1 = SPVM::Matrix::Double->new([(double)1, 2, 3, 4, 5, 6], 2, 3);
-    my $mat2 = SPVM::Matrix::Double->new([(double)2, 3, 4, 5, 6, 7], 3, 2);
+    my $mat1 = SPVM::Matrix::Util->mat_new([(double)1, 2, 3, 4, 5, 6], 2, 3);
+    my $mat2 = SPVM::Matrix::Util->mat_new([(double)2, 3, 4, 5, 6, 7], 3, 2);
     my $mat3 = mat_mul($mat1, $mat2);
 
     unless ($mat3->values isa double[]) {

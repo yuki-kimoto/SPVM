@@ -8,7 +8,7 @@ package SPVM::Matrix::Util {
         my $columns_length = $mat->columns_length;
         my $length = $rows_length * $columns_length;
 
-        my $mat_trans = SPVM::Matrix::Float->new(new float[$length], $columns_length, $rows_length);
+        my $mat_trans = mat_newf(new float[$length], $columns_length, $rows_length);
 
         my $values = $mat->values;
         my $mat_trans_values = $mat_trans->values;
@@ -28,7 +28,7 @@ package SPVM::Matrix::Util {
         my $columns_length = $mat->columns_length;
         my $length = $rows_length * $columns_length;
 
-        my $mat_trans = SPVM::Matrix::Double->new(new double[$length], $columns_length, $rows_length);
+        my $mat_trans = mat_new(new double[$length], $columns_length, $rows_length);
 
         my $values = $mat->values;
         my $mat_trans_values = $mat_trans->values;
@@ -105,7 +105,7 @@ package SPVM::Matrix::Util {
         }
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
-        my $mat_out = SPVM::Matrix::Float->new(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
+        my $mat_out = mat_newf(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
         my $mat_out_values = $mat_out->values;
 
         for (my $i = 0; $i < $mat1_length; $i++) {
@@ -133,7 +133,7 @@ package SPVM::Matrix::Util {
         }
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
-        my $mat_out = SPVM::Matrix::Double->new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
+        my $mat_out = mat_new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
         my $mat_out_values = $mat_out->values;
 
         for (my $i = 0; $i < $mat1_length; $i++) {
@@ -161,7 +161,7 @@ package SPVM::Matrix::Util {
         }
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
-        my $mat_out = SPVM::Matrix::Float->new(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
+        my $mat_out = mat_newf(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
         my $mat_out_values = $mat_out->values;
 
         for (my $i = 0; $i < $mat1_length; $i++) {
@@ -189,7 +189,7 @@ package SPVM::Matrix::Util {
         }
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
-        my $mat_out = SPVM::Matrix::Double->new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
+        my $mat_out = mat_new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
         my $mat_out_values = $mat_out->values;
 
         for (my $i = 0; $i < $mat1_length; $i++) {
@@ -205,7 +205,7 @@ package SPVM::Matrix::Util {
         my $mat1_columns_length = $mat1->columns_length;
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
-        my $mat_out = SPVM::Matrix::Float->new(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
+        my $mat_out = mat_newf(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
         my $mat_out_values = $mat_out->values;
 
         for (my $i = 0; $i < $mat1_length; $i++) {
@@ -221,7 +221,7 @@ package SPVM::Matrix::Util {
         my $mat1_columns_length = $mat1->columns_length;
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
-        my $mat_out = SPVM::Matrix::Double->new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
+        my $mat_out = mat_new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
         my $mat_out_values = $mat_out->values;
 
         for (my $i = 0; $i < $mat1_length; $i++) {
@@ -245,7 +245,7 @@ package SPVM::Matrix::Util {
         }
 
         my $mat_out_length = $mat1_rows_length * $mat2_columns_length;
-        my $mat_out = SPVM::Matrix::Float->new(new float[$mat_out_length], $mat1_rows_length, $mat2_columns_length);
+        my $mat_out = mat_newf(new float[$mat_out_length], $mat1_rows_length, $mat2_columns_length);
         my $mat_out_values = $mat_out->values;
         my $mat_out_row = $mat_out->rows_length;
 
@@ -275,7 +275,7 @@ package SPVM::Matrix::Util {
         }
 
         my $mat_out_length = $mat1_rows_length * $mat2_columns_length;
-        my $mat_out = SPVM::Matrix::Double->new(new double[$mat_out_length], $mat1_rows_length, $mat2_columns_length);
+        my $mat_out = mat_new(new double[$mat_out_length], $mat1_rows_length, $mat2_columns_length);
         my $mat_out_values = $mat_out->values;
         my $mat_out_row = $mat_out->rows_length;
 
