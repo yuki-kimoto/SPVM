@@ -1,3 +1,7 @@
+0.0913 2020-09-22
+  - add SPVM::Matrix::Util
+  - SPVM::Matrix::Float methods is moved to SPVM::Matrix::Util
+  - SPVM::Matrix::Double methods is moved to SPVM::Matrix::Util
 0.0912 2020-09-14
   - rename SPVM::Complex_2d x to re
   - rename SPVM::Complex_2d y to im
