@@ -20,8 +20,14 @@ SPVM::Matrix::Float is float Matrix data strcuture.
 
   my $matrix = new SPVM::Matrix::Float;
 
-=head2 FIELDS
+=head1 FIELDS
 
+=head2 values
+
+  
+
+$matrix->{rows_length} = $rows_length;
+$matrix->{columns_length} = $columns_length;
 
 
 

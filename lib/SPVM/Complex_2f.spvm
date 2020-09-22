@@ -1,4 +1,3 @@
-# SPVM::Complex_2f is created by regen/regen_complex.pl
 package SPVM::Complex_2f : mulnum_t {
   has re : float;
   has im : float;

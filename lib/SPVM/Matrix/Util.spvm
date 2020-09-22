@@ -4,14 +4,14 @@ package SPVM::Matrix::Util {
     use SPVM::StringBuffer;
 
     precompile sub mat_transposef : SPVM::Matrix::Float ($mat : SPVM::Matrix::Float) {
-        my $rows_length = $mat->rows_length;
-        my $columns_length = $mat->columns_length;
+        my $rows_length = $mat->{rows_length};
+        my $columns_length = $mat->{columns_length};
         my $length = $rows_length * $columns_length;
 
         my $mat_trans = mat_newf(new float[$length], $columns_length, $rows_length);
 
-        my $values = $mat->values;
-        my $mat_trans_values = $mat_trans->values;
+        my $values = $mat->{values};
+        my $mat_trans_values = $mat_trans->{values};
 
         for (my $row_index = 0; $row_index < $rows_length; $row_index++) {
             for (my $column_index = 0; $column_index < $columns_length; $column_index++) {
@@ -24,14 +24,14 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_transpose : SPVM::Matrix::Double ($mat : SPVM::Matrix::Double) {
-        my $rows_length = $mat->rows_length;
-        my $columns_length = $mat->columns_length;
+        my $rows_length = $mat->{rows_length};
+        my $columns_length = $mat->{columns_length};
         my $length = $rows_length * $columns_length;
 
         my $mat_trans = mat_new(new double[$length], $columns_length, $rows_length);
 
-        my $values = $mat->values;
-        my $mat_trans_values = $mat_trans->values;
+        my $values = $mat->{values};
+        my $mat_trans_values = $mat_trans->{values};
 
         for (my $row_index = 0; $row_index < $rows_length; $row_index++) {
             for (my $column_index = 0; $column_index < $columns_length; $column_index++) {
@@ -44,9 +44,9 @@ package SPVM::Matrix::Util {
     }
 
     sub mat_strf : string ($mat : SPVM::Matrix::Float) {
-        my $values = $mat->values;
-        my $rows_length = $mat->rows_length;
-        my $columns_length = $mat->columns_length;
+        my $values = $mat->{values};
+        my $rows_length = $mat->{rows_length};
+        my $columns_length = $mat->{columns_length};
         my $length = $rows_length * $columns_length;
 
         my $buffer = SPVM::StringBuffer->new;
@@ -66,9 +66,9 @@ package SPVM::Matrix::Util {
     }
 
     sub mat_str : string ($mat : SPVM::Matrix::Double) {
-        my $values = $mat->values;
-        my $rows_length = $mat->rows_length;
-        my $columns_length = $mat->columns_length;
+        my $values = $mat->{values};
+        my $rows_length = $mat->{rows_length};
+        my $columns_length = $mat->{columns_length};
         my $length = $rows_length * $columns_length;
 
         my $buffer = SPVM::StringBuffer->new;
@@ -88,13 +88,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_addf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $mat2 : SPVM::Matrix::Float) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
-        my $mat2_rows_length = $mat2->rows_length;
-        my $mat2_columns_length = $mat2->columns_length;
-        my $mat2_values = $mat2->values;
+        my $mat2_rows_length = $mat2->{rows_length};
+        my $mat2_columns_length = $mat2->{columns_length};
+        my $mat2_values = $mat2->{values};
 
         if ($mat1_rows_length != $mat2_rows_length) {
             die "mat1 row must be equals to mat2 row";
@@ -106,7 +106,7 @@ package SPVM::Matrix::Util {
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
         my $mat_out = mat_newf(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
-        my $mat_out_values = $mat_out->values;
+        my $mat_out_values = $mat_out->{values};
 
         for (my $i = 0; $i < $mat1_length; $i++) {
             $mat_out_values->[$i] = (float)($mat1_values->[$i] + $mat2_values->[$i]);
@@ -116,13 +116,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_add : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $mat2 : SPVM::Matrix::Double) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
-        my $mat2_rows_length = $mat2->rows_length;
-        my $mat2_columns_length = $mat2->columns_length;
-        my $mat2_values = $mat2->values;
+        my $mat2_rows_length = $mat2->{rows_length};
+        my $mat2_columns_length = $mat2->{columns_length};
+        my $mat2_values = $mat2->{values};
 
         if ($mat1_rows_length != $mat2_rows_length) {
             die "mat1 row must be equals to mat2 row";
@@ -134,7 +134,7 @@ package SPVM::Matrix::Util {
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
         my $mat_out = mat_new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
-        my $mat_out_values = $mat_out->values;
+        my $mat_out_values = $mat_out->{values};
 
         for (my $i = 0; $i < $mat1_length; $i++) {
             $mat_out_values->[$i] = (double)($mat1_values->[$i] + $mat2_values->[$i]);
@@ -144,13 +144,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_subf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $mat2 : SPVM::Matrix::Float) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
-        my $mat2_rows_length = $mat2->rows_length;
-        my $mat2_columns_length = $mat2->columns_length;
-        my $mat2_values = $mat2->values;
+        my $mat2_rows_length = $mat2->{rows_length};
+        my $mat2_columns_length = $mat2->{columns_length};
+        my $mat2_values = $mat2->{values};
 
         if ($mat1_rows_length != $mat2_rows_length) {
             die "mat1 row must be equals to mat2 row";
@@ -162,7 +162,7 @@ package SPVM::Matrix::Util {
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
         my $mat_out = mat_newf(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
-        my $mat_out_values = $mat_out->values;
+        my $mat_out_values = $mat_out->{values};
 
         for (my $i = 0; $i < $mat1_length; $i++) {
             $mat_out_values->[$i] = (float)($mat1_values->[$i] - $mat2_values->[$i]);
@@ -172,13 +172,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_sub : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $mat2 : SPVM::Matrix::Double) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
-        my $mat2_rows_length = $mat2->rows_length;
-        my $mat2_columns_length = $mat2->columns_length;
-        my $mat2_values = $mat2->values;
+        my $mat2_rows_length = $mat2->{rows_length};
+        my $mat2_columns_length = $mat2->{columns_length};
+        my $mat2_values = $mat2->{values};
 
         if ($mat1_rows_length != $mat2_rows_length) {
             die "mat1 row must be equals to mat2 row";
@@ -190,7 +190,7 @@ package SPVM::Matrix::Util {
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
         my $mat_out = mat_new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
-        my $mat_out_values = $mat_out->values;
+        my $mat_out_values = $mat_out->{values};
 
         for (my $i = 0; $i < $mat1_length; $i++) {
             $mat_out_values->[$i] = (double)($mat1_values->[$i] - $mat2_values->[$i]);
@@ -200,13 +200,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_scamulf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $scalar : float) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
         my $mat_out = mat_newf(new float[$mat1_length], $mat1_rows_length, $mat1_columns_length);
-        my $mat_out_values = $mat_out->values;
+        my $mat_out_values = $mat_out->{values};
 
         for (my $i = 0; $i < $mat1_length; $i++) {
             $mat_out_values->[$i] = (float)($scalar * $mat1_values->[$i]);
@@ -216,13 +216,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_scamul : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $scalar : double) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
         my $mat1_length = $mat1_rows_length * $mat1_columns_length;
         my $mat_out = mat_new(new double[$mat1_length], $mat1_rows_length, $mat1_columns_length);
-        my $mat_out_values = $mat_out->values;
+        my $mat_out_values = $mat_out->{values};
 
         for (my $i = 0; $i < $mat1_length; $i++) {
             $mat_out_values->[$i] = (double)($scalar * $mat1_values->[$i]);
@@ -232,13 +232,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_mulf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $mat2 : SPVM::Matrix::Float) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
-        my $mat2_rows_length = $mat2->rows_length;
-        my $mat2_columns_length = $mat2->columns_length;
-        my $mat2_values = $mat2->values;
+        my $mat2_rows_length = $mat2->{rows_length};
+        my $mat2_columns_length = $mat2->{columns_length};
+        my $mat2_values = $mat2->{values};
 
         if ($mat1_columns_length != $mat2_rows_length) {
             die "mat1 col must be equals to mat2 row";
@@ -246,8 +246,8 @@ package SPVM::Matrix::Util {
 
         my $mat_out_length = $mat1_rows_length * $mat2_columns_length;
         my $mat_out = mat_newf(new float[$mat_out_length], $mat1_rows_length, $mat2_columns_length);
-        my $mat_out_values = $mat_out->values;
-        my $mat_out_row = $mat_out->rows_length;
+        my $mat_out_values = $mat_out->{values};
+        my $mat_out_row = $mat_out->{rows_length};
 
         for(my $row_index = 0; $row_index < $mat1_rows_length; $row_index++) {
             for(my $column_index = 0; $column_index < $mat2_columns_length; $column_index++) {
@@ -262,13 +262,13 @@ package SPVM::Matrix::Util {
     }
 
     precompile sub mat_mul : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $mat2 : SPVM::Matrix::Double) {
-        my $mat1_values = $mat1->values;
-        my $mat1_rows_length = $mat1->rows_length;
-        my $mat1_columns_length = $mat1->columns_length;
+        my $mat1_values = $mat1->{values};
+        my $mat1_rows_length = $mat1->{rows_length};
+        my $mat1_columns_length = $mat1->{columns_length};
 
-        my $mat2_rows_length = $mat2->rows_length;
-        my $mat2_columns_length = $mat2->columns_length;
-        my $mat2_values = $mat2->values;
+        my $mat2_rows_length = $mat2->{rows_length};
+        my $mat2_columns_length = $mat2->{columns_length};
+        my $mat2_values = $mat2->{values};
 
         if ($mat1_columns_length != $mat2_rows_length) {
             die "mat1 col must be equals to mat2 row";
@@ -276,8 +276,8 @@ package SPVM::Matrix::Util {
 
         my $mat_out_length = $mat1_rows_length * $mat2_columns_length;
         my $mat_out = mat_new(new double[$mat_out_length], $mat1_rows_length, $mat2_columns_length);
-        my $mat_out_values = $mat_out->values;
-        my $mat_out_row = $mat_out->rows_length;
+        my $mat_out_values = $mat_out->{values};
+        my $mat_out_row = $mat_out->{rows_length};
 
         for(my $row_index = 0; $row_index < $mat1_rows_length; $row_index++) {
             for(my $column_index = 0; $column_index < $mat2_columns_length; $column_index++) {
