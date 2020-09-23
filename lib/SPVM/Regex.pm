@@ -122,7 +122,7 @@ If 0 width quantifir is between two same set of characters after quantifier, it 
   SPVM::Regex->new("\d+\D*\d+");
   SPVM::Regex->new("\d+\D?\d+");
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
   my $re = SPVM::Regex->new("^ab+c");
 

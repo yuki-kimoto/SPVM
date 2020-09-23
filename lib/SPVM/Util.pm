@@ -174,7 +174,7 @@ SPVM::Util - Variouse utilities
 
 Unix standard library.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 copy_oarray
 

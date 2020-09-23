@@ -17,7 +17,7 @@ SPVM::IO::Stdout - Standard out
 
 L<SPVM::IO::Stdout> manipulate standard output stream.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 AUTO_FLUSH
 

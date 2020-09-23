@@ -8,7 +8,7 @@ SPVM::Matrix::Util is matrix utilities. Matirx operation is defined.
 
 Matrix Data Structure is defined in L<SPVM::Matrix::Float> and L<SPVM::Matrix::Double>
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 mat_new
 

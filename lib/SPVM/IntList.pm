@@ -50,7 +50,7 @@ SPVM::IntList - Continuous dynamic int array
 
 L<SPVM::IntList> is continuous dynamic int array.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

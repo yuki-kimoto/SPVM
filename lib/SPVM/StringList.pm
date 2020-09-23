@@ -50,7 +50,7 @@ SPVM::StringList - Continuous dynamic string array
 
 L<SPVM::StringList> is continuous dynamic string array.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

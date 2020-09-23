@@ -50,7 +50,7 @@ SPVM::ByteList - Continuous dynamic byte array
 
 L<SPVM::ByteList> is continuous dynamic byte array.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

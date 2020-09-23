@@ -1599,7 +1599,7 @@ call_sub(...)
   int32_t args_contain_ref = 0;
   {
     // If class method, first argument is ignored
-    if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD) {
+    if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_STATIC_METHOD) {
       arg_start++;
     }
     

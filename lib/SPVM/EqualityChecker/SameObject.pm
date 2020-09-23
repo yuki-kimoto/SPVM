@@ -21,7 +21,7 @@ SPVM::EqualityChecker::SameObject - a equality checker to check the equality of 
 
 L<SPVM::EqualityChecker::SameObject> is a equality checker to check the equality of adresses of two object.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

@@ -35,7 +35,7 @@ SPVM::Time - Time manipulation
 
 Time manipulation.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 time
 

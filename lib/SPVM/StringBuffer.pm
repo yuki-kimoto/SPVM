@@ -37,7 +37,7 @@ SPVM::StringBuffer - String buffer
 
 String buffer. Performance is better than concat operator when many strings is joined.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

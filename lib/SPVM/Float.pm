@@ -21,7 +21,7 @@ L<SPVM::Float> object stores a C<float> value.
 
 This object is immutable.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

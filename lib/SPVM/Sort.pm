@@ -71,7 +71,7 @@ SPVM::Sort - Sort functions
 
 L<SPVM::Sort> defines sort functions
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 sortb
 

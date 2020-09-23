@@ -21,7 +21,7 @@ L<SPVM::Byte> object stores a C<byte> value.
 
 This object is immutable.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

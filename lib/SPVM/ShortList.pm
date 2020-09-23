@@ -50,7 +50,7 @@ SPVM::ShortList - Continuous dynamic short array
 
 L<SPVM::ShortList> is continuous dynamic short array.
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 new
 

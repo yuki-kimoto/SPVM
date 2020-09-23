@@ -17,7 +17,7 @@ SPVM::Math - Mathmatical functions
 
 L<SPVM::Math> defines mathmatical functions. 
 
-=head1 CLASS METHODS
+=head1 STATIC METHODS
 
 =head2 FE_DOWNWARD
 
