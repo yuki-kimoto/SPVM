@@ -2,129 +2,23 @@
 
 SPVM::Matrix::Util - Matrix Utilities
 
-=head2 new : SPVM::Matrix::Float ($values : ${element_type}[], $rows_length: int, $columns_length : int)
-
-my $values = new float[10];
-my $rows_length = 2;
-my $columns_length = 3;
-my $matrix = SPVM::Matrix::Float->new($values, $rows_length, $columns_length);
-
-B<Arguments:>
-
-1. Values. this value is set to C<values> field. Note that the reference is set to C<values> field not creating new array which elements is copied from argument array.
-
-2. Row. This value is set to C<rows_length> field.
-
-3. Column. This value is set to C<columns_length> field.
-
-B<Return Value:>
-
-Matrix object.
-
-B<Exception:>
-
-1. If Values is not defined, a exception occurs.
-
-2. If Values length is different from Row * Column, a exception occurs.
-
-=head2 values : ${element_type}[] ()
-
-my $values = $matrix->values;
-
-Get C<values> field. Note that get the reference of C<values> field not creating new array which elements is copied from C<values> field.
-
-=head2 rows_length : int ()
-
-my $rows_length= $matrix->rows_length;
-
-Get C<rows_length> field.
-
-=head2 columns_length : int ()
-
-my $columns_length = $matrix->columns_length;
-
-Get C<columns_length> field.
-
-=head2 to_string : string ()
-
-my $string = $matrix->to_string;
-
-Convert Matrix Content to String. Each column is joined 1 space and Each row is end with \n
-
-1 3 5
-2 4 6
-
-=head1 Matrix Features
-
-=head2 Values is always defined
-
-C<values> field is alway defined after new matrix object.
-
-=head2 Array length of Values is always Row length * Column length
-
-The array length of C<values> is always C<rows_length> field * C<columns_length> field.
-
-=head2 Column-major
-
-Matrix is Column-major.
-
-# Matrix
-# $x11 $x12 $x13
-# $x21 $x22 $x23
-my $values = [$x11, $x21, $x12, $x22, $x13, $x23];
-my $rows_length= 2;
-my $columns_length = 3;
-my $matrix = SPVM::Matrix::Float->new($values, $rows_length, $columns_length);
-
-=head2 Imutable Things
-
-The following fields is imutable.
-
-1. C<values> field
-
-2. C<rows_length> field
-
-3. C<columns_length> field
-
-=head2 Mutable Things
-
-The following thing is mutable.
-
-1. Each value of C<values> field.
-
-# Can set each value of C<values> field.
-$matrix->values->[0] = $x11;
-
-
-=head1 SYNOPSYS
-
-my $values = new double[10];
-my $rows_length = 2;
-my $columns_length = 3;
-my $matrix = SPVM::Matrix::Util->new($values, $rows_length, $columns_length);
-
-Accessors
-
-my $values = $matrix->values;
-my $rows_length= $matrix->rows_length;
-my $columns_length = $matrix->columns_length;
-
 =head1 DESCRIPTION
 
-SPVM::Matrix::Util is double Matrix.
+SPVM::Matrix::Util is matrix utilities. Matirx operation is defined.
 
-=head1 METHODS
+Matrix Data Structure is defined in L<SPVM::Matrix::Float> and L<SPVM::Matrix::Double>
 
-=head2 new : SPVM::Matrix::Util ($values : ${element_type}[], $rows_length: int, $columns_length : int)
+=head1 CLASS METHODS
 
-my $values = new double[10];
-my $rows_length = 2;
-my $columns_length = 3;
-my $matrix = SPVM::Matrix::Util->new($values, $rows_length, $columns_length);
+=head2 mat_new
+
+  sub mat_new : SPVM::Matrix::Double ($values : double[], $rows_length: int, $columns_length : int)
+
+Create new L<SPVM::Matrix::Double> object.
 
 B<Arguments:>
 
-1. Values. this value is set to C<values> field. Note that the reference is set to C<values> field not creating new array which elements is copied from argument array.
+1. Values. this value is set to C<values> field. Note that the reference is set to C<values> field not creating new array which elements is copied from argument array. Elements order is assumed as Column-Major order.
 
 2. Row. This value is set to C<rows_length> field.
 
@@ -132,7 +26,7 @@ B<Arguments:>
 
 B<Return Value:>
 
-Matrix object.
+L<SPVM::Matrix::Double> object.
 
 B<Exception:>
 
@@ -140,71 +34,128 @@ B<Exception:>
 
 2. If Values length is different from Row * Column, a exception occurs.
 
-=head2 values : ${element_type}[] ()
+=head2 mat_newf
 
-my $values = $matrix->values;
+  sub mat_newf : SPVM::Matrix::Float ($values : float[], $rows_length: int, $columns_length : int)
 
-Get C<values> field. Note that get the reference of C<values> field not creating new array which elements is copied from C<values> field.
+Create new L<SPVM::Matrix::Float> object.
 
-=head2 rows_length : int ()
+B<Arguments:>
 
-my $rows_length= $matrix->rows_length;
+1. Values. this value is set to C<values> field. Note that the reference is set to C<values> field not creating new array which elements is copied from argument array. Elements order is assumed as Column-Major order.
 
-Get C<rows_length> field.
+2. Row. This value is set to C<rows_length> field.
 
-=head2 columns_length : int ()
+3. Column. This value is set to C<columns_length> field.
 
-my $columns_length = $matrix->columns_length;
+B<Return Value:>
 
-Get C<columns_length> field.
+L<SPVM::Matrix::Float> object.
 
-=head2 to_string : string ()
+B<Exception:>
 
-my $string = $matrix->to_string;
+1. If Values is not defined, a exception occurs.
+
+2. If Values length is different from Row * Column, a exception occurs.
+
+=head2 mat_new_zero
+
+  sub mat_new_zero : SPVM::Matrix::Double ($rows_length: int, $columns_length : int)
+
+Create new L<SPVM::Matrix::Double> object with zero value.
+
+=head2 mat_new_zerof
+
+  sub mat_new_zerof : SPVM::Matrix::Float ($rows_length: int, $columns_length : int)
+
+Create new L<SPVM::Matrix::Float> object with zero value.
+
+=head2 mat_new_ident
+
+  sub mat_new_ident : SPVM::Matrix::Double ($dim : int)
+
+Create new ident <SPVM::Matrix::Double> by specifing the dimention.
+
+=head2 mat_new_identf
+
+  sub mat_new_identf : SPVM::Matrix::Float ($dim : int)
+
+Create new ident <SPVM::Matrix::Float> by specifing the dimention.
+
+=head2 mat_transpose
+
+  sub mat_transpose : SPVM::Matrix::Double ($mat : SPVM::Matrix::Double)
+
+Transpose double matrix and return new L<SPVM::Matrix::Double> object.
+
+=head2 mat_transposef
+
+  sub mat_transposef : SPVM::Matrix::Float ($mat : SPVM::Matrix::Float)
+
+Transpose float matrix and return new L<SPVM::Matrix::Float> object.
+
+=head2 mat_add
+
+  sub mat_add : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $mat2 : SPVM::Matrix::Double)
+
+Add two double Matrix and return new L<SPVM::Matrix::Double> object.
+
+=head2 mat_addf
+
+  sub mat_addf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $mat2 : SPVM::Matrix::Float)
+
+Add two float Matrix and return new L<SPVM::Matrix::Float> object.
+
+=head2 mat_sub
+
+  sub mat_sub : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $mat2 : SPVM::Matrix::Double)
+
+Subtract two double Matrix and return new L<SPVM::Matrix::Double> object.
+
+=head2 mat_subf
+
+  sub mat_subf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $mat2 : SPVM::Matrix::Float)
+
+Subtract two float Matrix and return new L<SPVM::Matrix::Float> object.
+
+=head2 mat_scamul
+
+  sub mat_scamul : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $scalar : double)
+
+Scalar multiply float matrix and return new L<SPVM::Matrix::Double> object.
+
+=head2 mat_scamulf
+
+  sub mat_scamulf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $scalar : float)
+
+Scalar multiply float matrix and return new L<SPVM::Matrix::Float> object.
+
+=head2 mat_mul
+
+  sub mat_mul : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $mat2 : SPVM::Matrix::Double)
+
+Multiply two double Matrix and return new L<SPVM::Matrix::Double> object.
+
+=head2 mat_mulf
+
+  sub mat_mulf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $mat2 : SPVM::Matrix::Float)
+
+Multiply two float Matrix and return new L<SPVM::Matrix::Float> object.
+
+=head2 mat_str
+
+  sub mat_str : string ($mat : SPVM::Matrix::Double)
 
 Convert Matrix Content to String. Each column is joined 1 space and Each row is end with \n
 
 1 3 5
 2 4 6
 
-=head1 Matrix Features
+=head2 mat_strf
 
-=head2 Values is always defined
+  sub mat_strf : string ($mat : SPVM::Matrix::Float)
 
-C<values> field is alway defined after new matrix object.
+Convert Matrix Content to String. Each column is joined 1 space and Each row is end with \n
 
-=head2 Array length of Values is always Row length * Column length
-
-The array length of C<values> is always C<rows_length> field * C<columns_length> field.
-
-=head2 Column-major
-
-Matrix is Column-major.
-
-# Matrix
-# $x11 $x12 $x13
-# $x21 $x22 $x23
-my $values = [$x11, $x21, $x12, $x22, $x13, $x23];
-my $rows_length= 2;
-my $columns_length = 3;
-my $matrix = SPVM::Matrix::Util->new($values, $rows_length, $columns_length);
-
-=head2 Imutable Things
-
-The following fields is imutable.
-
-1. C<values> field
-
-2. C<rows_length> field
-
-3. C<columns_length> field
-
-=head2 Mutable Things
-
-The following thing is mutable.
-
-1. Each value of C<values> field.
-
-# Can set each value of C<values> field.
-$matrix->values->[0] = $x11;
-
+1 3 5
+2 4 6

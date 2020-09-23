@@ -43,7 +43,7 @@ package SPVM::Matrix::Util {
         return $mat_trans;
     }
 
-    sub mat_strf : string ($mat : SPVM::Matrix::Float) {
+    precompile sub mat_strf : string ($mat : SPVM::Matrix::Float) {
         my $values = $mat->{values};
         my $rows_length = $mat->{rows_length};
         my $columns_length = $mat->{columns_length};
@@ -65,7 +65,7 @@ package SPVM::Matrix::Util {
         return $str;
     }
 
-    sub mat_str : string ($mat : SPVM::Matrix::Double) {
+    precompile sub mat_str : string ($mat : SPVM::Matrix::Double) {
         my $values = $mat->{values};
         my $rows_length = $mat->{rows_length};
         my $columns_length = $mat->{columns_length};
