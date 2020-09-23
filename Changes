@@ -1,4 +1,4 @@
-0.0913 2020-09-22
+0.0913 2020-09-23
   - add SPVM::Matrix::Util
   - SPVM::Matrix::Float methods is moved to SPVM::Matrix::Util
   - SPVM::Matrix::Double methods is moved to SPVM::Matrix::Util
