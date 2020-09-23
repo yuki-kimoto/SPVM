@@ -2377,7 +2377,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
             sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_METHOD;
           }
           else {
-            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
+            sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_STATIC_METHOD;
           }
         }
       }
@@ -2538,7 +2538,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Subroutine is constant
   op_sub->uv.sub->flag |= SPVM_SUB_C_FLAG_ENUM;
-  op_sub->uv.sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
+  op_sub->uv.sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_STATIC_METHOD;
   
   return op_sub;
 }
@@ -2643,9 +2643,9 @@ SPVM_OP* SPVM_OP_build_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, S
     
     SPVM_OP_insert_child(compiler, op_list_terms, op_list_terms->first, op_invocant);
   }
-  // Class method call
+  // Static method call
   else {
-    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_CLASS_METHOD;
+    call_sub->call_type_id = SPVM_SUB_C_CALL_TYPE_ID_STATIC_METHOD;
     call_sub->op_invocant = op_invocant;
     call_sub->op_name = op_name_sub;
   }
