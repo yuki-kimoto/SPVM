@@ -4651,7 +4651,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
       );
     }
   }
-  // Class method call
+  // Static method call
   else {
     if (call_sub->op_invocant) {
       const char* package_name = call_sub->op_invocant->uv.type->basic_type->name;
