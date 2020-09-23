@@ -120,13 +120,13 @@ Subtract two float Matrix and return new L<SPVM::Matrix::Float> object.
 
 =head2 mat_scamul
 
-  sub mat_scamul : SPVM::Matrix::Double ($mat1 : SPVM::Matrix::Double, $scalar : double)
+  sub mat_scamul : SPVM::Matrix::Double ($scalar : double, $mat1 : SPVM::Matrix::Double)
 
 Scalar multiply float matrix and return new L<SPVM::Matrix::Double> object.
 
 =head2 mat_scamulf
 
-  sub mat_scamulf : SPVM::Matrix::Float ($mat1 : SPVM::Matrix::Float, $scalar : float)
+  sub mat_scamulf : SPVM::Matrix::Float ($scalar : float, $mat1 : SPVM::Matrix::Float)
 
 Scalar multiply float matrix and return new L<SPVM::Matrix::Float> object.
 
