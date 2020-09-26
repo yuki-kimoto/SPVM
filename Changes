@@ -1,5 +1,6 @@
-0.0914 2020-09-23
+0.0914 2020-09-26
   - Class method is renamed to Static method. This is only SPVM document changing.
+  - Matrix modules is removed from SPVM core, and moved to SPVM::AI::Util of CPAN module.
 0.0913 2020-09-23
   - add SPVM::Matrix::Util
   - SPVM::Matrix::Float methods is moved to SPVM::Matrix::Util

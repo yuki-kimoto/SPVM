@@ -14,8 +14,6 @@ DEVELOPMENT.txt
 doc_save.txt
 examples/complex/complex.pl
 examples/complex/lib/MyComplex.spvm
-examples/matrix/lib/MyMatrix.spvm
-examples/matrix/matrix.pl
 examples/native/bind_clib/bind_clib.pl
 examples/native/bind_clib/lib/BindCLib.c
 examples/native/bind_clib/lib/BindCLib.config
@@ -496,12 +494,6 @@ lib/SPVM/Math.c
 lib/SPVM/Math.config
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
-lib/SPVM/Matrix/Double.pm
-lib/SPVM/Matrix/Double.spvm
-lib/SPVM/Matrix/Float.pm
-lib/SPVM/Matrix/Float.spvm
-lib/SPVM/Matrix/Util.pm
-lib/SPVM/Matrix/Util.spvm
 lib/SPVM/ObjectList.pm
 lib/SPVM/ObjectList.spvm
 lib/SPVM/Regex.pm
@@ -798,7 +790,6 @@ t/default/lib/TestCase/Lib/SPVM/IO/Stdout.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
-t/default/lib/TestCase/Lib/SPVM/Matrix/Util.spvm
 t/default/lib/TestCase/Lib/SPVM/ObjectList.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm

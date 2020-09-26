@@ -1,5 +1,0 @@
-package SPVM::Matrix::Float : public {
-  has values : public float[];
-  has rows_length : public int;
-  has columns_length : public int;
-}

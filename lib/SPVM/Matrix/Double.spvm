@@ -1,5 +1,0 @@
-package SPVM::Matrix::Double : public {
-  has values : public double[];
-  has rows_length : public int;
-  has columns_length : public int;
-}
