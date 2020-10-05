@@ -837,6 +837,7 @@ t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/OnlyField.spvm
 t/default/lib/TestCase/PACKAGE.spvm
+t/default/lib/TestCase/PackagePrecompile.spvm
 t/default/lib/TestCase/PackageVar.spvm
 t/default/lib/TestCase/Point_3b.spvm
 t/default/lib/TestCase/Point_3d.spvm
@@ -881,6 +882,7 @@ t/default/multiply.t
 t/default/native-api.t
 t/default/numeric-operator.t
 t/default/object.t
+t/default/package-precompile.t
 t/default/package_var.t
 t/default/precedence.t
 t/default/print.t
