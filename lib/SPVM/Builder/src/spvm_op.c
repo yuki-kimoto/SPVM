@@ -1638,6 +1638,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Package is callback
   int32_t category_descriptors_count = 0;
   int32_t access_control_descriptors_count = 0;
+  int32_t package_has_precompile_descriptor = 0;
   if (op_list_descriptors) {
     SPVM_OP* op_descriptor = op_list_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
@@ -1663,6 +1664,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
           package->flag |= SPVM_PACKAGE_C_FLAG_PUBLIC;
           access_control_descriptors_count++;
+          break;
+        case SPVM_DESCRIPTOR_C_ID_PRECOMPILE:
+          package_has_precompile_descriptor = 1;
           break;
         default:
           SPVM_COMPILER_error(compiler, "Invalid package descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
@@ -1741,7 +1745,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
+          int32_t can_precompile = 0;
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
 
           op_sub->uv.sub->is_package_var_getter = 1;
           op_sub->uv.sub->accessor_original_name = package_var->name;
@@ -1789,7 +1794,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
+          int32_t can_precompile = 0;
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
           
           op_sub->uv.sub->is_package_var_setter = 1;
           op_sub->uv.sub->accessor_original_name = package_var->name;
@@ -1841,7 +1847,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
+          int32_t can_precompile = 0;
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
           
           op_sub->uv.sub->is_field_getter = 1;
           op_sub->uv.sub->accessor_original_name = field->name;
@@ -1898,7 +1905,8 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
-          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0);
+          int32_t can_precompile = 0;
+          SPVM_OP_build_sub(compiler, op_sub, op_name_sub, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
           
           op_sub->uv.sub->is_field_setter = 1;
           op_sub->uv.sub->accessor_original_name = field->name;
@@ -1918,6 +1926,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       // Sub declarations
       else if (op_decl->id == SPVM_OP_C_ID_SUB) {
         SPVM_LIST_push(package->subs, op_decl->uv.sub);
+        
+        if (op_decl->uv.sub->can_precompile && package_has_precompile_descriptor) {
+          op_decl->uv.sub->flag |= SPVM_SUB_C_FLAG_PRECOMPILE;
+        }
         
         // Captures is added to field
         SPVM_LIST* captures = op_decl->uv.sub->captures;
@@ -2292,7 +2304,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_begin, int32_t is_new_callback_object) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_begin, int32_t is_new_callback_object, int32_t can_precompile) {
   SPVM_SUB* sub = SPVM_SUB_new(compiler);
   
   // New callback object
@@ -2479,6 +2491,10 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
     }
   }
   
+  if (can_precompile) {
+    sub->can_precompile = can_precompile;
+  }
+  
   // Save block
   sub->op_block = op_block;
   
@@ -2531,7 +2547,8 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, op_constant->uv.constant->type, op_name->file, op_name->line);
   
   // Build subroutine
-  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block, NULL, NULL, 0, 0);
+  int32_t can_precompile = 0;
+  op_sub = SPVM_OP_build_sub(compiler, op_sub, op_name, op_return_type, NULL, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
   
   // Set constant
   op_sub->uv.sub->op_inline = op_constant;

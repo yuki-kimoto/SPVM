@@ -67,6 +67,7 @@ struct SPVM_sub {
   SPVM_OP* op_list_tmp_mys;
   int32_t tmp_vars_length;
   SPVM_OP* op_my_condition_flag;
+  int32_t can_precompile;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);
