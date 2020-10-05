@@ -936,3 +936,26 @@ int32_t SPNATIVE__SPVM__Util__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   return SPVM_SUCCESS;
 }
+
+int32_t SPNATIVE__SPVM__Util__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  int64_t seed = stack[0].lval;
+  
+  srand((unsigned)seed);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Util__rand(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = rand();
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Util__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  stack[0].ival = RAND_MAX;
+
+  return SPVM_SUCCESS;
+}

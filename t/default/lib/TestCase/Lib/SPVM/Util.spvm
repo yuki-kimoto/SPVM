@@ -59,7 +59,7 @@ package TestCase::Lib::SPVM::Util {
     ucfirst,
     PI,
     rand,
-    random,
+    srand,
     replace,
     replace_all,
     rindex,
@@ -1329,59 +1329,55 @@ package TestCase::Lib::SPVM::Util {
   }
 
   sub test_rand : int () {
-    my $seed = (int)time();
+    
     my $founds_plus = new int[10];
     my $founds_minus = new int[10];
-    my $rand = $seed;
+    my $rand = 0;
     for (my $i = 0; $i < 100000; $i++) {
-      $rand = rand(\$rand);
+      $rand = rand();
 
       my $dig0 = $rand % 10;
-      if ($dig0 < 0) {
-        $founds_minus->[-$dig0] = 1;
-      }
-      else {
-        $founds_plus->[$dig0] = 1;
-      }
+      $founds_plus->[$dig0] = 1;
     }
-
+    
     unless (equals_iarray($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
-      return 0;
-    }
-
-    unless (equals_iarray($founds_minus, [0, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
       return 0;
     }
 
     return 1;
   }
 
-  sub test_random : int () {
-    my $seed = (int)time();
-    my $founds = new int[20];
-    my $rand = $seed;
-    for (my $i = 0; $i < 100000; $i++) {
-      $rand = rand(\$rand);
-
-      my $random = (int)(random($rand) * 20);
-      $founds->[$random] = 1;
+  sub test_RAND_MAX : int () {
+    
+    unless (SPVM::Util->RAND_MAX > 0) {
+      return 1;
     }
 
-    unless (
-        equals_iarray(
-          $founds,
-          [
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1
-          ]
-        )
-      )
-    {
+    return 1;
+  }
+
+  sub test_srand : int () {
+    
+    srand(10);
+    
+    my $rand1 = rand();
+    my $rand2 = rand();
+    my $rand3 = rand();
+    
+    srand(10);
+    
+    unless (rand() == $rand1) {
       return 0;
     }
-
+    
+    unless (rand() == $rand2) {
+      return 0;
+    }
+    
+    unless (rand() == $rand3) {
+      return 0;
+    }
+    
     return 1;
   }
 

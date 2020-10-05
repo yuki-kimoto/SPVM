@@ -6,7 +6,12 @@ package SPVM::Util {
   use SPVM::StringList;
   use SPVM::Unicode (uchar_to_utf8);
   use SPVM::Math (fabs, floor, log10, pow, sqrt, sqrtf);
-
+  use SPVM::Time (time);
+  
+  INIT {
+    srand(time());
+  }
+  
   precompile sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
     my $length = @$objects;
 
@@ -721,7 +726,9 @@ package SPVM::Util {
 
   sub INT64_MIN : long () { return -9223372036854775808L; }
   sub INT64_MAX : long () { return 9223372036854775807L; }
-
+  
+  native sub RAND_MAX : int ();
+    
   native sub DBL_MAX : double ();
   native sub DBL_MIN : double ();
 
@@ -1054,18 +1061,8 @@ package SPVM::Util {
 
   sub PI : double () { return 3.14159265358979323846; }
 
-  precompile sub rand : int ($seed_ref : int&) {
-    my $y = $$seed_ref;
-    $y = $y ^ ($y << 13);
-    $y = $y ^ ($y >>> 17);
-    $y = $y ^ ($y << 5);
-    return $y;
-  }
-
-  precompile sub random : double ($rand : int) {
-    my $random = (double)((long)$rand & 0xFFFFFFFFL) / (UINT32_MAX() + 1);
-    return $random;
-  }
+  native sub srand : void ($seed : long);
+  native sub rand : int ();
 
   precompile sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
     unless ($substr && length $substr > 0) {

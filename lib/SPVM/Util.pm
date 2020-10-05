@@ -839,9 +839,9 @@ Create a new generic object array as the same type as the given array.
 
 =head2 rand
 
-  sub rand : int ($seed_ref : int&);
+  sub rand : int ();
 
-Get random number(INT32_MIN to INT32_MAX) with a seed.
+Get random number(0 to RAND_MAX) with a seed.
 
 The first seed is epoch time usually. Second seed is the return value.
 
@@ -849,15 +849,6 @@ The first seed is epoch time usually. Second seed is the return value.
   my $rand1 = rand(SPVM::Time->time);
   my $rand2 = rand($rand1);
 
-=head2 random
-
-  sub random : double ($rand : int)
-
-Convert the value got by "rand" method to double value, range [0.0, 1.0)
-
-  my $rand = rand(SPVM::Time->time);
-  my $random = random($rand);
-  
 =head2 replace
 
   sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&)

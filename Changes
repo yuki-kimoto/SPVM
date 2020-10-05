@@ -1,3 +1,8 @@
+0.0916 2020-10-05
+  - SPVM::Util->rand function don't need argument
+  - add SPVM::Util->srand static method
+  - remove SPVM::Util->random static method
+  - add SPVM::Util->RAND_MAX static method
 0.0915 2020-10-05
   - add precompile package descriptor
 0.0914 2020-09-26

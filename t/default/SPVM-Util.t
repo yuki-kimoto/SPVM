@@ -175,9 +175,14 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_rand);
 }
 
-# random
+# srand
 {
-  ok(TestCase::Lib::SPVM::Util->test_random);
+  ok(TestCase::Lib::SPVM::Util->test_srand);
+}
+
+# RAND_MAX
+{
+  ok(TestCase::Lib::SPVM::Util->test_RAND_MAX);
 }
 
 # uc
