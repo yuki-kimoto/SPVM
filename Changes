@@ -1,3 +1,5 @@
+0.0915 2020-10-05
+  - add precompile package descriptor
 0.0914 2020-09-26
   - Class method is renamed to Static method. This is only SPVM document changing.
   - Matrix modules is removed from SPVM core, and moved to SPVM::AI::Util of CPAN module.
