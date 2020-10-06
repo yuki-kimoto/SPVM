@@ -46,6 +46,12 @@ my $DBL_MAX = POSIX::DBL_MAX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# ref SPVM array
+{
+  my $nums = SPVM::new_float_array([1, 2, 3]);
+  is(ref $nums, 'SPVM::BlessedObject::Array');
+}
+
 # ref SPVM object
 {
   my $minimal = TestCase::Minimal->new;
