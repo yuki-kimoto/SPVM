@@ -77,6 +77,7 @@ sub bind_to_perl {
   my ($builder, $added_package_names) = @_;
   
   for my $package_name (@$added_package_names) {
+    
     unless ($package_name_h->{$package_name}) {
       
       my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";

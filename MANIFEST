@@ -816,6 +816,7 @@ t/default/lib/TestCase/Matrix4_16i.spvm
 t/default/lib/TestCase/Matrix4_16l.spvm
 t/default/lib/TestCase/Matrix4_16s.spvm
 t/default/lib/TestCase/Minimal.spvm
+t/default/lib/TestCase/ModuleContainsMultiPackage.spvm
 t/default/lib/TestCase/Multiply.spvm
 t/default/lib/TestCase/MyExe.spvm
 t/default/lib/TestCase/NativeAPI.c

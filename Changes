@@ -1,3 +1,5 @@
+0.0917 2020-10-06
+  - fix bug that when a module contains multi packages, Perl Package is not created for after seconds packages
 0.0916 2020-10-05
   - SPVM::Util->rand function don't need argument
   - add SPVM::Util->srand static method

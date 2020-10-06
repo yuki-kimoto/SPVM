@@ -1612,6 +1612,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   package->op_type = op_type;
   
   const char* package_name = op_type->uv.type->basic_type->name;
+  
+  // Add addede package names in this compile
+  SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
 
   if (!is_anon && islower(package_name[0])) {
     SPVM_COMPILER_error(compiler, "Package name \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
