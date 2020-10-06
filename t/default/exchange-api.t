@@ -25,6 +25,7 @@ use SPVM 'TestCase::Point_3i';
 use SPVM 'SPVM::Hash';
 use SPVM 'SPVM::ObjectList';
 
+use SPVM 'TestCase::Minimal';
 
 
 my $BYTE_MAX = 127;
@@ -44,6 +45,20 @@ my $DBL_MAX = POSIX::DBL_MAX();
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+
+# ref SPVM object
+{
+  my $minimal = TestCase::Minimal->new;
+  
+  is(ref $minimal, 'TestCase::Minimal');
+}
+
+# stringify SPVM object
+{
+  my $minimal = TestCase::Minimal->new;
+  
+  like("$minimal", qr/TestCase::Minimal/);
+}
 
 # set_exception
 {
