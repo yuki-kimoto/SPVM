@@ -92,7 +92,12 @@ sub bind_to_perl {
     my $sub_names = $builder->get_sub_names($package_name);
     
     for my $sub_name (@$sub_names) {
+      # Destrutor is skip
       if ($sub_name eq 'DESTROY') {
+        next;
+      }
+      # Anon subroutine is skip
+      elsif (length $sub_name == 0) {
         next;
       }
       
@@ -102,6 +107,7 @@ sub bind_to_perl {
       no strict 'refs';
       
       my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
+      
       # Declare subroutine
       *{"$sub_abs_name"} = sub {
         SPVM::init() unless $SPVM_INITED;
