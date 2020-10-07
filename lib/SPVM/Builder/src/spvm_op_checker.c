@@ -2352,7 +2352,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               const char* sub_name = call_sub->sub->op_name->uv.name;
 
               if (call_sub->call_type_id != call_sub->sub->call_type_id) {
-                SPVM_COMPILER_error(compiler, "Invalid subroutine call \"%s::%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Invalid method call \"%s->%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
                 return;
               }
 
@@ -2368,7 +2368,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (is_private) {
                 if (!SPVM_OP_is_allowed(compiler, sub->package->op_package, call_sub->sub->package->op_package)) {
-                  SPVM_COMPILER_error(compiler, "Can't call private subroutine %s::%s at %s line %d\n", call_sub->sub->package->name, call_sub->sub->name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Can't call private method %s->%s at %s line %d\n", call_sub->sub->package->name, call_sub->sub->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2503,7 +2503,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                   call_sub_args_count++;
                   if (call_sub_args_count > sub_args_count) {
-                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s::%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -2523,7 +2523,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (call_sub_args_count < sub_args_count) {
-                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s::%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s->%s()\" at %s line %d\n", op_cur->uv.call_sub->sub->package->name, sub_name, op_cur->file, op_cur->line);
                 return;
               }
               
@@ -2897,7 +2897,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (!field) {
                 const char* invoker_type_name = SPVM_TYPE_new_type_name(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag);
-                SPVM_COMPILER_error(compiler, "Unknown field %s::%s at %s line %d\n", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Unknown field %s->%s at %s line %d\n", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
 
@@ -4630,7 +4630,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_sub->op_invocant);
     if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", type_name, sub_name, op_call_sub->file, op_call_sub->line);
+      SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", type_name, sub_name, op_call_sub->file, op_call_sub->line);
       return;
     }
     else {
@@ -4639,7 +4639,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
       SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
       
       if (!package) {
-        SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", basic_type_name, sub_name, op_call_sub->file, op_call_sub->line);
+        SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", basic_type_name, sub_name, op_call_sub->file, op_call_sub->line);
         return;
       }
       
@@ -4709,7 +4709,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
   }
   else {
     assert(found_package);
-    SPVM_COMPILER_error(compiler, "Unknown sub \"%s::%s\" at %s line %d\n", found_package->name, sub_name, op_call_sub->file, op_call_sub->line);
+    SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", found_package->name, sub_name, op_call_sub->file, op_call_sub->line);
     return;
   }
 }
