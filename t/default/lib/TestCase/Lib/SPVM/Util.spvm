@@ -58,7 +58,7 @@ package TestCase::Lib::SPVM::Util {
     uc,
     ucfirst,
     PI,
-    rand,
+    crand,
     srand,
     replace,
     replace_all,
@@ -1328,13 +1328,13 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
-  sub test_rand : int () {
+  sub test_crand : int () {
     
     my $founds_plus = new int[10];
     my $founds_minus = new int[10];
     my $rand = 0;
     for (my $i = 0; $i < 100000; $i++) {
-      $rand = rand();
+      $rand = crand();
 
       my $dig0 = $rand % 10;
       $founds_plus->[$dig0] = 1;
@@ -1360,21 +1360,21 @@ package TestCase::Lib::SPVM::Util {
     
     srand(10);
     
-    my $rand1 = rand();
-    my $rand2 = rand();
-    my $rand3 = rand();
+    my $rand1 = crand();
+    my $rand2 = crand();
+    my $rand3 = crand();
     
     srand(10);
     
-    unless (rand() == $rand1) {
+    unless (crand() == $rand1) {
       return 0;
     }
     
-    unless (rand() == $rand2) {
+    unless (crand() == $rand2) {
       return 0;
     }
     
-    unless (rand() == $rand3) {
+    unless (crand() == $rand3) {
       return 0;
     }
     

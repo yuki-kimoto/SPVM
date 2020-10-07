@@ -1062,7 +1062,7 @@ package SPVM::Util {
   sub PI : double () { return 3.14159265358979323846; }
 
   native sub srand : void ($seed : long);
-  native sub rand : int ();
+  native sub crand : int ();
 
   precompile sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
     unless ($substr && length $substr > 0) {

@@ -837,17 +837,23 @@ If copy is not in the valid rainge, a exception occurs.
 
 Create a new generic object array as the same type as the given array.
 
-=head2 rand
+=head2 crand
 
-  sub rand : int ();
+  sub crand : int ();
 
-Get random number(0 to RAND_MAX) with a seed.
+Get random number(0 to SPVM::Util->RAND_MAX). This is same as rand function of C language.
 
 The first seed is epoch time usually. Second seed is the return value.
 
   use SPVM::Time;
-  my $rand1 = rand(SPVM::Time->time);
-  my $rand2 = rand($rand1);
+  my $rand1 = crand(SPVM::Time->time);
+  my $rand2 = crand($rand1);
+
+=head2 srand
+
+  sub srand : void ($seed : long);
+
+Sets random number seed for the "crand" static method.
 
 =head2 replace
 

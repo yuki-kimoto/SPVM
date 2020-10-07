@@ -170,9 +170,9 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_is_perl_word);
 }
 
-# rand
+# crand
 {
-  ok(TestCase::Lib::SPVM::Util->test_rand);
+  ok(TestCase::Lib::SPVM::Util->test_crand);
 }
 
 # srand
