@@ -849,6 +849,18 @@ The first seed is epoch time usually. Second seed is the return value.
   my $rand1 = crand(SPVM::Time->time);
   my $rand2 = crand($rand1);
 
+=head2 rand
+
+  sub rand : double ();
+
+Get random number(0 <= random_number < 1). This is same as rand function of Perl language.
+
+The first seed is epoch time usually. Second seed is the return value.
+
+  use SPVM::Time;
+  my $rand1 = crand(SPVM::Time->time);
+  my $rand2 = crand($rand1);
+
 =head2 srand
 
   sub srand : void ($seed : long);

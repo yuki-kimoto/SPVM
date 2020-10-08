@@ -1347,6 +1347,47 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
+  sub test_rand : int () {
+    
+    # 0 <= random_number < 1
+    {
+      my $rand = 0.0;
+      my $invalid_range = 0;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = SPVM::Util->rand();
+        
+        unless ($rand >= 0 && $rand < 1) {
+          $invalid_range = 1;
+          last;
+        }
+      }
+      
+      if ($invalid_range) {
+        return 0;
+      }
+    }
+    
+    # Apper random numbers
+    {
+      my $founds_plus = new int[10];
+      my $founds_minus = new int[10];
+      my $rand = 0.0;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = SPVM::Util->rand();
+        
+        # 0-9
+        my $dig0 = (int)($rand * 10);
+        $founds_plus->[$dig0] = 1;
+      }
+      
+      unless (equals_iarray($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
   sub test_RAND_MAX : int () {
     
     unless (SPVM::Util->RAND_MAX > 0) {

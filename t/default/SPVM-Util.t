@@ -175,6 +175,11 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_crand);
 }
 
+# rand
+{
+  ok(TestCase::Lib::SPVM::Util->test_rand);
+}
+
 # srand
 {
   ok(TestCase::Lib::SPVM::Util->test_srand);

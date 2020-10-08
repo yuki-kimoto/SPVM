@@ -1063,6 +1063,14 @@ package SPVM::Util {
 
   native sub srand : void ($seed : long);
   native sub crand : int ();
+  
+  sub rand : double () {
+    
+    # 0 <= random_number < 1
+    my $random_number = (double)crand() / ((double)RAND_MAX() + 1);
+    
+    return $random_number;
+  }
 
   precompile sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
     unless ($substr && length $substr > 0) {

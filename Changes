@@ -1,5 +1,6 @@
 0.0918 2020-10-07
   - SPVM::Util->rand is renamed to crand because perl rand is different from C rand.
+  - add SPVM::Util->rand. This is same as Perl rand(0 <= random_number < 1)
   - fix anon subroutine redefine warnings.
 0.0917 2020-10-06
   - fix bug that when a module contains multi packages, Perl Package is not created for after seconds packages
