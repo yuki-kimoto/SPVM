@@ -46,6 +46,19 @@ my $DBL_MAX = POSIX::DBL_MAX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Get hash key - any object
+{
+  my $biases = SPVM::new_float_array([1, 2, 3]);
+  my $hash = SPVM::Hash->new;
+  $hash->set(biases => $biases);
+  $hash->set("int" => SPVM::Int->new(4));
+  my $get_biases = $hash->get("biases");
+  my $get_int = $hash->get("int");
+  
+  is(ref $get_biases, 'SPVM::BlessedObject::Array');
+  is(ref $get_int, 'SPVM::Int');
+}
+
 # ref SPVM array
 {
   my $nums = SPVM::new_float_array([1, 2, 3]);
