@@ -1,20 +1,20 @@
-package SPVM::ObjectList;
+package SPVM::List;
 
 1;
 
 =head1 NAME
 
-SPVM::ObjectList - Continuous dynamic object array
+SPVM::List - Continuous dynamic object array
 
 =head1 SYNOPSYS
   
-  use SPVM::ObjectList;
+  use SPVM::List;
   
   # Create a object list
-  my $object_list = SPVM::ObjectList->new;
+  my $object_list = SPVM::List->new;
 
   # Create a object list with array
-  my $object_list = SPVM::ObjectList->newa([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
+  my $object_list = SPVM::List->newa([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
   
   # Get list length
   my $length = $object_list->length;
@@ -43,26 +43,26 @@ SPVM::ObjectList - Continuous dynamic object array
   # Remove object value
   my $object_value = $object_list->remove(1);
 
-  # Convert SPVM::ObjectList to object array.
+  # Convert SPVM::List to object array.
   my $object_array = $object_list->to_array;
 
 =head1 DESCRIPTION
 
-L<SPVM::ObjectList> is continuous dynamic object array.
+L<SPVM::List> is continuous dynamic object array.
 
 =head1 STATIC METHODS
 
 =head2 new
 
-    sub new : SPVM::ObjectList ()
+    sub new : SPVM::List ()
 
-Create a new L<SPVM::ObjectList> object.
+Create a new L<SPVM::List> object.
 
 =head2 newa
 
-    sub newa : SPVM::ObjectList ($array : object[])
+    sub newa : SPVM::List ($array : object[])
 
-Create a new L<SPVM::ObjectList> object with specific C<object> array.
+Create a new L<SPVM::List> object with specific C<object> array.
 
 =head1 INSTANCE METHODS
 
@@ -127,4 +127,4 @@ Remove and return the element which is specified by the index.
 
   sub to_array : object[] ($self : self)
 
-Convert L<SPVM::ObjectList> to object array.
+Convert L<SPVM::List> to object array.

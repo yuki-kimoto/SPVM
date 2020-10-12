@@ -486,6 +486,8 @@ lib/SPVM/IO/Stdout.c
 lib/SPVM/IO/Stdout.config
 lib/SPVM/IO/Stdout.pm
 lib/SPVM/IO/Stdout.spvm
+lib/SPVM/List.pm
+lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/Long.spvm
 lib/SPVM/LongList.pm
@@ -494,8 +496,6 @@ lib/SPVM/Math.c
 lib/SPVM/Math.config
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
-lib/SPVM/ObjectList.pm
-lib/SPVM/ObjectList.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
@@ -787,10 +787,10 @@ t/default/lib/TestCase/Lib/SPVM/IO/File.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/FileHandle.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/Stderr.spvm
 t/default/lib/TestCase/Lib/SPVM/IO/Stdout.spvm
+t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
-t/default/lib/TestCase/Lib/SPVM/ObjectList.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
 t/default/lib/TestCase/Lib/SPVM/ShortList.spvm

@@ -2,7 +2,7 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Int;
   use SPVM::Hash;
   use SPVM::Comparator;
-  use SPVM::ObjectList;
+  use SPVM::List;
 
   sub test_murmur_hash : int () {
     my $seed = 123456789;
@@ -456,8 +456,8 @@ package TestCase::Lib::SPVM::Hash {
     unless (@$each == @$keys) {
       return 0;
     }
-    my $got_keys = SPVM::ObjectList->new;
-    my $got_vals = SPVM::ObjectList->new;
+    my $got_keys = SPVM::List->new;
+    my $got_vals = SPVM::List->new;
     for (my $i = 0; $i < @$each; ++$i) {
       $got_keys->push($each->[$i]->[0]);
       $got_vals->push($each->[$i]->[1]);

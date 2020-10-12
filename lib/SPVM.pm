@@ -448,7 +448,7 @@ SPVM Core Modules.
 
 =item * L<SPVM::Matrix::Float>
 
-=item * L<SPVM::ObjectList>
+=item * L<SPVM::List>
 
 =item * L<SPVM::Regex>
 
