@@ -3396,7 +3396,7 @@ to_bin(...)
 }
 
 SV*
-get_length(...)
+length(...)
   PPCODE:
 {
   (void)RETVAL;

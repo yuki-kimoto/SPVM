@@ -1,3 +1,6 @@
+0.0920 2020-10-12
+  - rename SPVM::get_length to SPVM::length
+  - rename SPVM ExchangeAPI get_length to length
 0.0919 2020-10-12
   - rename SPVM::ObjectList to SPVM::List because this is maybe Perl to SPVM offten used interface, short name is good.
 0.0918 2020-10-07

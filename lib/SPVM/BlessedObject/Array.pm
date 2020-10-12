@@ -6,12 +6,12 @@ use SPVM::ExchangeAPI;
 
 use overload bool => sub {1}, '""' => sub { shift->to_string }, fallback => 1;
 
-sub get_length {
+sub length {
   my $self = shift;
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::get_length($env, $self);
+  SPVM::ExchangeAPI::length($env, $self);
 }
 
 sub to_elems {
