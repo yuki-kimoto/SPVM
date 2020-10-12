@@ -213,6 +213,36 @@ sub new_mulnum_array_from_bin {
   SPVM::ExchangeAPI::new_mulnum_array_from_bin($BUILDER->{env}, @_);
 }
 
+sub new_byte_array_len {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_byte_array_len($BUILDER->{env}, @_);
+}
+
+sub new_short_array_len {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_short_array_len($BUILDER->{env}, @_);
+}
+
+sub new_int_array_len {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_int_array_len($BUILDER->{env}, @_);
+}
+
+sub new_long_array_len {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_long_array_len($BUILDER->{env}, @_);
+}
+
+sub new_float_array_len {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_float_array_len($BUILDER->{env}, @_);
+}
+
+sub new_double_array_len {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_double_array_len($BUILDER->{env}, @_);
+}
+
 1;
 
 =encoding UTF-8

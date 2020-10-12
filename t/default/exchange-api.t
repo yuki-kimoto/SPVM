@@ -1088,6 +1088,76 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# new array_len
+{
+  # new_byte_array_len
+  {
+    my $spvm_values = SPVM::new_byte_array_len(3);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, [0, 0, 0]);
+  }
+  {
+    my $spvm_values = SPVM::new_byte_array_len(0);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, []);
+  }
+  # new_short_array_len
+  {
+    my $spvm_values = SPVM::new_short_array_len(3);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, [0, 0, 0]);
+  }
+  {
+    my $spvm_values = SPVM::new_short_array_len(0);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, []);
+  }
+  # new_int_array_len
+  {
+    my $spvm_values = SPVM::new_int_array_len(3);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, [0, 0, 0]);
+  }
+  {
+    my $spvm_values = SPVM::new_int_array_len(0);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, []);
+  }
+  # new_long_array_len
+  {
+    my $spvm_values = SPVM::new_long_array_len(3);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, [0, 0, 0]);
+  }
+  {
+    my $spvm_values = SPVM::new_long_array_len(0);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, []);
+  }
+  # new_float_array_len
+  {
+    my $spvm_values = SPVM::new_float_array_len(3);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, [0, 0, 0]);
+  }
+  {
+    my $spvm_values = SPVM::new_float_array_len(0);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, []);
+  }
+  # new_double_array_len
+  {
+    my $spvm_values = SPVM::new_double_array_len(3);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, [0, 0, 0]);
+  }
+  {
+    my $spvm_values = SPVM::new_double_array_len(0);
+    my $values = $spvm_values->to_elems;
+    is_deeply($values, []);
+  }
+}
+
 # length
 {
   {
