@@ -6,16 +6,16 @@ use warnings;
 use Encode 'encode', 'decode';
 use Carp 'confess';
 
-sub to_string {
-  my $bin = SPVM::ExchangeAPI::to_bin(@_);
+sub array_to_string {
+  my $bin = SPVM::ExchangeAPI::array_to_bin(@_);
   
   my $string = decode('UTF-8', $bin);
   
   return $string;
 }
 
-sub to_strings {
-  my $elems = SPVM::ExchangeAPI::to_elems(@_);
+sub array_to_strings {
+  my $elems = SPVM::ExchangeAPI::array_to_elems(@_);
   
   my $strs = [];
   
@@ -213,10 +213,10 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head2 set_exception
 
-=head2 to_bin
+=head2 array_to_bin
 
-=head2 to_elems
+=head2 array_to_elems
 
-=head2 to_string
+=head2 array_to_string
 
-=head2 to_strings
+=head2 array_to_strings

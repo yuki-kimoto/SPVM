@@ -11,7 +11,7 @@ sub length {
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::length($env, $self);
+  SPVM::ExchangeAPI::array_length($env, $self);
 }
 
 sub to_elems {
@@ -19,7 +19,7 @@ sub to_elems {
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_elems($env, $self);
+  SPVM::ExchangeAPI::array_to_elems($env, $self);
 }
 
 sub to_bin {
@@ -27,7 +27,7 @@ sub to_bin {
 
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_bin($env, $self);
+  SPVM::ExchangeAPI::array_to_bin($env, $self);
 }
 
 sub to_string {
@@ -35,7 +35,7 @@ sub to_string {
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_string($env, $self);
+  SPVM::ExchangeAPI::array_to_string($env, $self);
 }
 
 sub to_strings {
@@ -43,7 +43,23 @@ sub to_strings {
   
   my $env = $self->{env};
   
-  SPVM::ExchangeAPI::to_strings($env, $self);
+  SPVM::ExchangeAPI::array_to_strings($env, $self);
+}
+
+sub set {
+  my $self = shift;
+  
+  my $env = $self->{env};
+  
+  SPVM::ExchangeAPI::array_set($env, $self, @_);
+}
+
+sub get {
+  my $self = shift;
+  
+  my $env = $self->{env};
+  
+  SPVM::ExchangeAPI::array_get($env, $self, @_);
 }
 
 1;
@@ -59,6 +75,12 @@ SPVM::BlessedObject::Array is array based blessed object.
 This object contains SPVM array object.
 
 =head1 SYNOPSYS
+
+  # Get the value of a array element
+  my $value = $spvm_nums->get(2);
+
+  # Set the value of a array element
+  $spvm_nums->set(2 => 5);
   
   # Convert SPVM array to Perl array reference
   my $nums = $spvm_nums->to_elems;
@@ -73,6 +95,18 @@ This object contains SPVM array object.
   my $strs = $spvm_strs->to_strings;
 
 =head1 METHODS
+
+=head2 get
+
+  my $value = $spvm_nums->get(2);
+
+Get the value of a array element.
+
+=head2 set
+
+  $spvm_nums->set(2 => 5);
+
+Set the value of a array element
 
 =head2 to_elems
 

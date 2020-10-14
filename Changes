@@ -1,3 +1,6 @@
+0.0923 2020-10-14
+  - add SPVM::BlessedObject::Array set method
+  - add SPVM::BlessedObject::Array get method
 0.0922 2020-10-12
   - add SPVM::new_byte_array_len
   - add SPVM::new_short_array_len
