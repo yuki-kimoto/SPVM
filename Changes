@@ -1,3 +1,11 @@
+0.0922 2020-10-12
+  - add SPVM::new_byte_array_len
+  - add SPVM::new_short_array_len
+  - add SPVM::new_int_array_len
+  - add SPVM::new_long_array_len
+  - add SPVM::new_float_array_len
+  - add SPVM::new_double_array_len
+  - add SPVM::new_object_array_len
 0.0921 2020-10-12
   - fix bug that in exchange api, any object return type is wrong.
 0.0920 2020-10-12
