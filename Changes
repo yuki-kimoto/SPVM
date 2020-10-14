@@ -17,7 +17,7 @@
   - SPVM::DoubleList->newa is rename to new, and original new is removed
   - SPVM::StringList->newa is rename to new, and original new is removed
   - SPVM::List->newa is rename to new, and original new is removed
-  
+  - SPVM::Hash->newa is rename to new, and original new is renamed to new_empty
 0.0922 2020-10-12
   - add SPVM::new_byte_array_len
   - add SPVM::new_short_array_len

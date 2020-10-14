@@ -47,6 +47,14 @@ my $DBL_MAX = POSIX::DBL_MAX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Empty Hash new
+{
+  {
+    my $hash = SPVM::Hash->new([]);
+    is_deeply($hash->count, 0);
+  }
+}
+
 # Empty List new
 {
   {
@@ -108,7 +116,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Get hash key - any object
 {
   my $biases = SPVM::new_float_array([1, 2, 3]);
-  my $hash = SPVM::Hash->new;
+  my $hash = SPVM::Hash->new_empty;
   $hash->set(biases => $biases);
   $hash->set("int" => SPVM::Int->new(4));
   my $get_biases = $hash->get("biases");
@@ -283,7 +291,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Pass hash
   {
-    my $hash = SPVM::Hash->newa([x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)]);
+    my $hash = SPVM::Hash->new([x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)]);
     is($hash->get("x")->val, 1);
     is($hash->get("y")->val, 2.5);
   }

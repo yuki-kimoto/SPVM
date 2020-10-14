@@ -74,7 +74,7 @@ package SPVM::Hash {
     $self->{entries} = $new_entries;
   }
 
-  precompile sub new : SPVM::Hash () {
+  precompile sub new_empty : SPVM::Hash () {
     my $self = new SPVM::Hash;
     my $default_capacity = 32;
     $self->{bucket_count} = $default_capacity;
@@ -84,7 +84,7 @@ package SPVM::Hash {
     return $self;
   }
 
-  precompile sub newa : SPVM::Hash ($objects : object[]) {
+  precompile sub new : SPVM::Hash ($objects : object[]) {
     unless (@$objects % 2 == 0) {
       die "Odd number of elements provided";
     }
@@ -264,7 +264,7 @@ package SPVM::Hash {
   }
 
   precompile sub copy : SPVM::Hash ($self : self) {
-    my $ret = SPVM::Hash->new;
+    my $ret = SPVM::Hash->new_empty;
     my $keys = $self->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
       $ret->set($keys->[$i], $self->get($keys->[$i]));

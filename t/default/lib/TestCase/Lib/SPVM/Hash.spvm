@@ -38,7 +38,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_newa : int () {
-    my $hash = SPVM::Hash->newa([(object)"a","1","b",SPVM::Int->new(2)]);
+    my $hash = SPVM::Hash->new([(object)"a","1","b",SPVM::Int->new(2)]);
     unless ($hash->_bucket_count == 2) {
       return 0;
     }
@@ -61,7 +61,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_newa_allocated_capacity_should_power_of_2 : int () {
-    my $hash = SPVM::Hash->newa([(object)"a","1","b","2","c","3"]);
+    my $hash = SPVM::Hash->new([(object)"a","1","b","2","c","3"]);
     unless ($hash->_bucket_count == 4) {
       return 0;
     }
@@ -76,7 +76,7 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_newa_die_when_odd_number_array : int () {
     eval {
-      SPVM::Hash->newa([(object)"a", "1", "b"]);
+      SPVM::Hash->new([(object)"a", "1", "b"]);
     };
     unless ($@) {
       return 0;
@@ -87,7 +87,7 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_newa_do_not_refer_caller_key : int () {
     my $data = [(object)"a","1"];
-    my $hash = SPVM::Hash->newa($data);
+    my $hash = SPVM::Hash->new($data);
     $data->[0] = "b";
     unless ($hash->exists("a")) {
       return 0;
@@ -101,7 +101,7 @@ package TestCase::Lib::SPVM::Hash {
   sub test_set : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), undef, SPVM::Int->new(3)];
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
@@ -117,7 +117,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_set_do_not_refer_caller_key : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     my $key = "a";
     $hash->set($key, SPVM::Int->new(1));
     $key = "b";
@@ -131,7 +131,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_get : int () {
-    my $hash = SPVM::Hash->newa([(object) "a", SPVM::Int->new(1), "b", undef, "c", "str"]);
+    my $hash = SPVM::Hash->new([(object) "a", SPVM::Int->new(1), "b", undef, "c", "str"]);
     unless (((SPVM::Int)($hash->get("a")))->val == 1) {
       return 0;
     }
@@ -150,7 +150,7 @@ package TestCase::Lib::SPVM::Hash {
   sub test_exists : int () {
     my $keys = ["alice", "bob"];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2)];
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
@@ -199,7 +199,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_delete_with_hash_collision : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
     unless (((SPVM::Int)$hash->delete("alice"))->val == 1) {
@@ -385,7 +385,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_keys : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     my $keys = ["a", "bb", "12345"];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
     for (my $i = 0; $i < @$keys; ++$i) {
@@ -412,7 +412,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_values : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     my $keys = ["a", "bb", "12345"];
     my $vals = [(object) SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
     for (my $i = 0; $i < @$keys; ++$i) {
@@ -430,7 +430,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_each : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     my $keys = [(object) "a", "bb", "12345"];
     my $vals = [(object) SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
     for (my $i = 0; $i < @$keys; ++$i) {
@@ -532,7 +532,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_copy : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new_empty;
     for (my $i = 0; $i < 3; ++$i) {
       $hash->set("key$i", $i);
     }

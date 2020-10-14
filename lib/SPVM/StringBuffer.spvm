@@ -31,7 +31,7 @@ package SPVM::StringBuffer {
   }
   
   sub new_opt : SPVM::StringBuffer ($options : object[]) {
-    my $options_h = SPVM::Hash->newa($options);
+    my $options_h = SPVM::Hash->new($options);
     
     my $self = new SPVM::StringBuffer;
 
