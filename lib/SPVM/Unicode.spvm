@@ -12,7 +12,7 @@ package SPVM::Unicode {
   
   precompile sub utf8_to_utf16 : short[] ($str : string) {
     my $pos = 0;
-    my $uchars_list = SPVM::IntList->new;
+    my $uchars_list = SPVM::IntList->new_len(0);
     while ((my $uchar = uchar($str, \$pos)) >= 0) {
       $uchars_list->push($uchar);
     }

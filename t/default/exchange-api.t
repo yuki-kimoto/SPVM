@@ -24,6 +24,7 @@ use SPVM 'TestCase::Point_3i';
 
 use SPVM 'SPVM::Hash';
 use SPVM 'SPVM::List';
+use SPVM 'SPVM::IntList';
 
 use SPVM 'TestCase::Minimal';
 
@@ -45,6 +46,18 @@ my $DBL_MAX = POSIX::DBL_MAX();
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
+
+# Empty List new
+{
+  {
+    my $list = SPVM::IntList->new([]);
+    is_deeply($list->length, 0);
+  }
+  {
+    my $list = SPVM::List->new([]);
+    is_deeply($list->length, 0);
+  }
+}
 
 # SPVM::BlessedObject::Array get and set
 {
@@ -280,7 +293,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Pass list
   {
-    my $list = SPVM::List->newa([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
+    my $list = SPVM::List->new([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
     my $x = $list->get(0);
     
     is($list->get(0)->val, 1);

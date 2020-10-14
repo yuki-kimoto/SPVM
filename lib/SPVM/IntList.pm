@@ -10,11 +10,11 @@ SPVM::IntList - Continuous dynamic int array
   
   use SPVM::IntList;
   
-  # Create a int list
-  my $int_list = SPVM::IntList->new;
+  # Create a int list with array length
+  my $int_list = SPVM::IntList->new_len(10);
 
   # Create a int list with array
-  my $int_list = SPVM::IntList->newa([1, 2, 3]);
+  my $int_list = SPVM::IntList->new([1, 2, 3]);
   
   # Get list length
   my $length = $int_list->length;
@@ -54,13 +54,7 @@ L<SPVM::IntList> is continuous dynamic int array.
 
 =head2 new
 
-    sub new : SPVM::IntList ()
-
-Create a new L<SPVM::IntList> object.
-
-=head2 newa
-
-    sub newa : SPVM::IntList ($array : int[])
+    sub new : SPVM::IntList ($array : int[])
 
 Create a new L<SPVM::IntList> object with specific C<int> array.
 

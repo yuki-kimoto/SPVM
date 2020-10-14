@@ -10,11 +10,11 @@ SPVM::ShortList - Continuous dynamic short array
   
   use SPVM::ShortList;
   
-  # Create a short list
-  my $short_list = SPVM::ShortList->new;
+  # Create a short list with array length
+  my $short_list = SPVM::ShortList->new_len(10);
 
   # Create a short list with array
-  my $short_list = SPVM::ShortList->newa([(short)1, 2, 3]);
+  my $short_list = SPVM::ShortList->new([(short)1, 2, 3]);
   
   # Get list length
   my $length = $short_list->length;
@@ -54,13 +54,7 @@ L<SPVM::ShortList> is continuous dynamic short array.
 
 =head2 new
 
-    sub new : SPVM::ShortList ()
-
-Create a new L<SPVM::ShortList> object.
-
-=head2 newa
-
-    sub newa : SPVM::ShortList ($array : short[])
+    sub new : SPVM::ShortList ($array : short[])
 
 Create a new L<SPVM::ShortList> object with specific C<short> array.
 

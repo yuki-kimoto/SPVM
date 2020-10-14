@@ -9,6 +9,14 @@
   - add SPVM::DoubleList->new_len
   - add SPVM::StringList->new_len
   - add SPVM::List->new_len
+  - SPVM::ByteList->newa is rename to new, and original new is removed
+  - SPVM::ShortList->newa is rename to new, and original new is removed
+  - SPVM::IntList->newa is rename to new, and original new is removed
+  - SPVM::LongList->newa is rename to new, and original new is removed
+  - SPVM::FloatList->newa is rename to new, and original new is removed
+  - SPVM::DoubleList->newa is rename to new, and original new is removed
+  - SPVM::StringList->newa is rename to new, and original new is removed
+  - SPVM::List->newa is rename to new, and original new is removed
   
 0.0922 2020-10-12
   - add SPVM::new_byte_array_len

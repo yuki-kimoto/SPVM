@@ -5,18 +5,6 @@ package SPVM::IntList {
   has capacity : ro int;
   has length   : ro int;
   
-  sub new : SPVM::IntList () {
-    my $capacity = 16;
-    my $values = new int[$capacity];
-    
-    my $self = new SPVM::IntList;
-    $self->{capacity} = $capacity;
-    $self->{length} = 0;
-    $self->{values} = $values;
-    
-    return $self;
-  }
-
   sub new_capacity : SPVM::IntList ($capacity : int) {
     my $self = new SPVM::IntList;
     unless ($capacity > 0) {
@@ -27,7 +15,7 @@ package SPVM::IntList {
     return $self;
   }
 
-  sub newa : SPVM::IntList ($array : int[]) {
+  sub new : SPVM::IntList ($array : int[]) {
     my $self = new SPVM::IntList;
     my $length = @$array;
     
@@ -45,10 +33,11 @@ package SPVM::IntList {
 
   sub new_len : SPVM::IntList ($length : int) {
     my $self = new SPVM::IntList;
-    unless ($length > 0) {
+    unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
-    $self->{capacity} = $length;
+    $self->{capacity} = $length + 1;
+    $self->{length} = $length;
     $self->{values} = new int[$length];
     return $self;
   }
@@ -76,7 +65,7 @@ package SPVM::IntList {
       die "Out of range";
     }
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     
@@ -116,7 +105,7 @@ package SPVM::IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     
@@ -143,7 +132,7 @@ package SPVM::IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     

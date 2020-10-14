@@ -456,8 +456,8 @@ package TestCase::Lib::SPVM::Hash {
     unless (@$each == @$keys) {
       return 0;
     }
-    my $got_keys = SPVM::List->new;
-    my $got_vals = SPVM::List->new;
+    my $got_keys = SPVM::List->new_len(0);
+    my $got_vals = SPVM::List->new_len(0);
     for (my $i = 0; $i < @$each; ++$i) {
       $got_keys->push($each->[$i]->[0]);
       $got_vals->push($each->[$i]->[1]);

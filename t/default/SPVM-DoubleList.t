@@ -17,7 +17,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::DoubleList->push);
   ok(TestCase::Lib::SPVM::DoubleList->pop);
-  ok(TestCase::Lib::SPVM::DoubleList->newa);
+  ok(TestCase::Lib::SPVM::DoubleList->new);
+  ok(TestCase::Lib::SPVM::DoubleList->new_len);
   ok(TestCase::Lib::SPVM::DoubleList->new_capacity);
   ok(TestCase::Lib::SPVM::DoubleList->unshift);
   ok(TestCase::Lib::SPVM::DoubleList->shift);

@@ -63,7 +63,7 @@ package SPVM::Util {
       die "Separator must not be empty string";
     }
 
-    my $separated_strings_list = SPVM::StringList->new;
+    my $separated_strings_list = SPVM::StringList->new_len(0);
 
     my $match_start = 0;
     my $string_base = 0;

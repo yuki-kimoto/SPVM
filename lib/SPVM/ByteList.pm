@@ -10,11 +10,11 @@ SPVM::ByteList - Continuous dynamic byte array
   
   use SPVM::ByteList;
   
-  # Create a byte list
-  my $byte_list = SPVM::ByteList->new;
+  # Create a byte list with array length
+  my $byte_list = SPVM::ByteList->new_len(10);
 
   # Create a byte list with array
-  my $byte_list = SPVM::ByteList->newa([(byte)1, 2, 3]);
+  my $byte_list = SPVM::ByteList->new([(byte)1, 2, 3]);
   
   # Get list length
   my $length = $byte_list->length;
@@ -54,13 +54,7 @@ L<SPVM::ByteList> is continuous dynamic byte array.
 
 =head2 new
 
-    sub new : SPVM::ByteList ()
-
-Create a new L<SPVM::ByteList> object.
-
-=head2 newa
-
-    sub newa : SPVM::ByteList ($array : byte[])
+    sub new : SPVM::ByteList ($array : byte[])
 
 Create a new L<SPVM::ByteList> object with specific C<byte> array.
 

@@ -30,7 +30,7 @@ package SPVM::Regex {
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
     
-    $self->{patterns} = SPVM::List->new;
+    $self->{patterns} = SPVM::List->new_len(0);
     
     $self->compile($re_str);
     
@@ -155,7 +155,7 @@ package SPVM::Regex {
                 }
               }
               
-              $char_class_uchar_min_maxs_list = SPVM::IntList->new;
+              $char_class_uchar_min_maxs_list = SPVM::IntList->new_len(0);
               $cur_is_char = 1;
               $cur_negate = $char_class_negate;
             }
@@ -237,7 +237,7 @@ package SPVM::Regex {
               }
               case '[': {
                 $status = STATUS_CHAR_CLASS();
-                $char_class_uchar_min_maxs_list = SPVM::IntList->new;
+                $char_class_uchar_min_maxs_list = SPVM::IntList->new_len(0);
                 $before_is_char_class_range = 0;
                 break;
               }

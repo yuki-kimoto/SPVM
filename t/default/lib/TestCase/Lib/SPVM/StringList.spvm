@@ -2,9 +2,9 @@ package TestCase::Lib::SPVM::StringList {
   use SPVM::StringList;
   use SPVM::Util (equals_strarray);
 
-  sub newa : int () {
+  sub new : int () {
     {
-      my $list = SPVM::StringList->newa([(string)"abc", "def", "ABC"]);
+      my $list = SPVM::StringList->new([(string)"abc", "def", "ABC"]);
       
       unless ($list->get(0) eq "abc") {
         return 0;
@@ -43,10 +43,26 @@ package TestCase::Lib::SPVM::StringList {
     return 1;
   }
 
+  sub new_len : int () {
+    {
+      my $list = SPVM::StringList->new_len(32);
+      
+      unless ($list->length == 32) {
+        return 0;
+      }
+      
+      unless ($list->capacity == 33) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub insert : int () {
     # Insert to first
     {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(0 => "4");
       unless (equals_strarray($list->to_array, [(string)"4", "1", "2", "3"])) {
         return 0;
@@ -55,7 +71,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Insert
     {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(2 => "4");
       unless (equals_strarray($list->to_array, [(string)"1", "2", "4", "3"])) {
         return 0;
@@ -64,7 +80,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Insert to last
     {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(3 => "4");
       unless (equals_strarray($list->to_array, [(string)"1", "2", "3", "4"])) {
         return 0;
@@ -73,7 +89,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Extend
     {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(0 => "4");
       unless ($list->capacity == 6) {
         return 0;
@@ -82,7 +98,7 @@ package TestCase::Lib::SPVM::StringList {
     
     # Exception - insert to -1
     eval {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(-1 => "2");
     };
     unless ($@) {
@@ -92,7 +108,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Exception - insert to length + 1
     eval {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(4 => "2");
     };
     unless ($@) {
@@ -106,7 +122,7 @@ package TestCase::Lib::SPVM::StringList {
   sub remove : int () {
     # Remove
     {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3", "4"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3", "4"]);
       my $value = $list->remove(1);
       unless (equals_strarray($list->to_array, [(string)"1", "3", "4"])) {
         return 0;
@@ -118,7 +134,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Remove last
     {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->remove(2);
       unless (equals_strarray($list->to_array, [(string)"1", "2"])) {
         return 0;
@@ -127,7 +143,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Remove first
     {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->remove(0);
       unless (equals_strarray($list->to_array, [(string)"2", "3"])) {
         return 0;
@@ -136,7 +152,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Exception - remove to -1
     eval {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->remove(-1);
     };
     unless ($@) {
@@ -146,7 +162,7 @@ package TestCase::Lib::SPVM::StringList {
 
     # Exception - remove to length
     eval {
-      my $list = SPVM::StringList->newa([(string)"1", "2", "3"]);
+      my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->remove(3);
     };
     unless ($@) {
@@ -159,7 +175,7 @@ package TestCase::Lib::SPVM::StringList {
 
   sub to_array : int () {
     {
-      my $list = SPVM::StringList->newa([(string)"abc", "def", "ABC"]);
+      my $list = SPVM::StringList->new([(string)"abc", "def", "ABC"]);
       
       my $array = $list->to_array;
       
@@ -190,7 +206,7 @@ package TestCase::Lib::SPVM::StringList {
 
   sub get : int () {
     {
-      my $list = SPVM::StringList->newa([(string)"abc", "def", "ABC"]);
+      my $list = SPVM::StringList->new([(string)"abc", "def", "ABC"]);
       
       unless ($list->get(0) eq "abc") {
         return 0;
@@ -235,7 +251,7 @@ package TestCase::Lib::SPVM::StringList {
 
   sub set : int () {
     {
-      my $list = SPVM::StringList->newa([(string)0, 0, 0]);
+      my $list = SPVM::StringList->new([(string)0, 0, 0]);
       
       $list->set(0 => "abc");
       $list->set(1 => "def");
@@ -281,7 +297,7 @@ package TestCase::Lib::SPVM::StringList {
   sub push : int () {
     # push
     {
-      my $list = SPVM::StringList->new;
+      my $list = SPVM::StringList->new_len(0);
       
       $list->push("abc");
       $list->push("def");
@@ -299,7 +315,7 @@ package TestCase::Lib::SPVM::StringList {
     
     # internal _extend tests
     {
-      my $list = SPVM::StringList->new;
+      my $list = SPVM::StringList->new_len(0);
       
       for (my $i = 0; $i < 100; $i++) {
         $list->push("p");
@@ -324,7 +340,7 @@ package TestCase::Lib::SPVM::StringList {
   sub pop : int () {
     # pop
     {
-      my $list = SPVM::StringList->new;
+      my $list = SPVM::StringList->new_len(0);
       
       $list->push("abc");
       $list->push("def");
@@ -366,7 +382,7 @@ package TestCase::Lib::SPVM::StringList {
   sub unshift : int () {
     # unshift
     {
-      my $list = SPVM::StringList->new;
+      my $list = SPVM::StringList->new_len(0);
       
       $list->unshift("abc");
       $list->unshift("def");
@@ -390,7 +406,7 @@ package TestCase::Lib::SPVM::StringList {
     
     # internal _extend tests
     {
-      my $list = SPVM::StringList->new;
+      my $list = SPVM::StringList->new_len(0);
       
       for (my $i = 0; $i < 100; $i++) {
         $list->unshift("p");
@@ -414,7 +430,7 @@ package TestCase::Lib::SPVM::StringList {
   sub shift : int () {
     # shift
     {
-      my $list = SPVM::StringList->new;
+      my $list = SPVM::StringList->new_len(0);
       
       $list->unshift("abc");
       $list->unshift("def");
@@ -452,7 +468,7 @@ package TestCase::Lib::SPVM::StringList {
   sub length : int () {
     # length
     {
-      my $list = SPVM::StringList->new;
+      my $list = SPVM::StringList->new_len(0);
       
       $list->unshift("abc");
       $list->unshift("def");

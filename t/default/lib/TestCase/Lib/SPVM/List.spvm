@@ -12,7 +12,7 @@ package TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->newa([(object)$x1, $x2, $x3]);
+      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
       unless (equals_oarray($list->to_array, [$x4, $x1, $x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
@@ -26,7 +26,7 @@ package TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->newa([(object)$x1, $x2, $x3]);
+      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(2 => $x4);
       unless (equals_oarray($list->to_array, [$x1, $x2, $x4, $x3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
@@ -40,7 +40,7 @@ package TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->newa([(object)$x1, $x2, $x3]);
+      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(3 => $x4);
       unless (equals_oarray($list->to_array, [$x1, $x2, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
@@ -54,7 +54,7 @@ package TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
 
-      my $list = SPVM::List->newa([(object)$x1, $x2, $x3]);
+      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
       unless ($list->capacity == 6) {
         return 0;
@@ -63,7 +63,7 @@ package TestCase::Lib::SPVM::List {
     
     # Exception - insert to -1
     eval {
-      my $list = SPVM::List->newa([(object)"1", "2", "3"]);
+      my $list = SPVM::List->new([(object)"1", "2", "3"]);
       $list->insert(-1 => "2");
     };
     unless ($@) {
@@ -73,7 +73,7 @@ package TestCase::Lib::SPVM::List {
 
     # Exception - insert to length + 1
     eval {
-      my $list = SPVM::List->newa([(object)"1", "2", "3"]);
+      my $list = SPVM::List->new([(object)"1", "2", "3"]);
       $list->insert(4 => "2");
     };
     unless ($@) {
@@ -92,7 +92,7 @@ package TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->newa([(object)$x1, $x2, $x3, $x4]);
+      my $list = SPVM::List->new([(object)$x1, $x2, $x3, $x4]);
       my $value = $list->remove(1);
       unless (equals_oarray($list->to_array, [$x1, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
@@ -109,7 +109,7 @@ package TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->newa([(object)$x1, $x2, $x3]);
+      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->remove(2);
       unless (equals_oarray($list->to_array, [$x1, $x2], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
@@ -123,7 +123,7 @@ package TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
 
-      my $list = SPVM::List->newa([(object)$x1, $x2, $x3]);
+      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->remove(0);
       unless (equals_oarray($list->to_array, [$x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
@@ -132,7 +132,7 @@ package TestCase::Lib::SPVM::List {
 
     # Exception - remove to -1
     eval {
-      my $list = SPVM::List->newa([(object)"1", "2", "3"]);
+      my $list = SPVM::List->new([(object)"1", "2", "3"]);
       $list->remove(-1);
     };
     unless ($@) {
@@ -142,7 +142,7 @@ package TestCase::Lib::SPVM::List {
 
     # Exception - remove to length
     eval {
-      my $list = SPVM::List->newa([(object)"1", "2", "3"]);
+      my $list = SPVM::List->new([(object)"1", "2", "3"]);
       $list->remove(3);
     };
     unless ($@) {
@@ -155,10 +155,10 @@ package TestCase::Lib::SPVM::List {
 
   sub check_fields : int ($list : SPVM::List, $capacity : int, $offset : int, $length : int) {
     # check_fields fields
-    unless ($list->capacity == $capacity && $list->length == $length) {
+    unless ($list->length == $length) {
       warn("List fields mismatch.\n\t" .
-          "got:      (capacity: " . $list->capacity . ", length: " . $list->length . ")\n\t" .
-          "expected: (capacity: " . $capacity . ", length: " . $length . ")");
+          "got:      (length: " . $list->length . ")\n\t" .
+          "expected: (length: " . $length . ")");
       return 0;
     }
     return 1;
@@ -199,7 +199,7 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_ctor_default : int () {
-    unless (check_fields(SPVM::List->new, 16, -16, 0)) {
+    unless (check_fields(SPVM::List->new_len(0), 16, -16, 0)) {
       return 0;
     }
     return 1;
@@ -227,19 +227,19 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_ctor_with_array : int () {
-    my $list = SPVM::List->newa(new object[0]);
+    my $list = SPVM::List->new(new object[0]);
     unless (check_fields($list, 0, 0, 0)) {
       return 0;
     }
 
-    $list = SPVM::List->newa(new object[1]);
+    $list = SPVM::List->new(new object[1]);
     unless (check_fields($list, 1, -1, 1)) {
       return 0;
     }
 
     my $v1 = SPVM::Int->new(1);
     my $vals = [(object) $v1];
-    $list = SPVM::List->newa($vals);
+    $list = SPVM::List->new($vals);
     unless (check_fields($list, 1, -1, 1)) {
       return 0;
     }
@@ -248,7 +248,7 @@ package TestCase::Lib::SPVM::List {
     $vals = new object[4];
     $vals->[1] = $v1;
     $vals->[3] = $v2;
-    $list = SPVM::List->newa($vals);
+    $list = SPVM::List->new($vals);
     unless (check_fields($list, 4, -4, 4)) {
       return 0;
     }
@@ -257,10 +257,10 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_length : int () {
-    if (SPVM::List->new->length != 0) {
+    if (SPVM::List->new_len(0)->length != 0) {
       return 0;
     }
-    if (SPVM::List->newa([(object) 1])->length != 1) {
+    if (SPVM::List->new([(object) 1])->length != 1) {
       return 0;
     }
     return 1;
@@ -274,7 +274,7 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 1, -1, 1)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $v1]))) {
       return 0;
     }
 
@@ -283,7 +283,7 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 2, -2, 2)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $v2]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $v2]))) {
       return 0;
     }
 
@@ -292,7 +292,7 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 4, -4, 3)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $v2, $v3]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $v2, $v3]))) {
       return 0;
     }
 
@@ -302,7 +302,7 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 4, -4, 4)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $v2, $v3, $v4]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $v2, $v3, $v4]))) {
       return 0;
     }
 
@@ -310,7 +310,7 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_pop : int () {
-    my $list = SPVM::List->newa([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
+    my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
     unless (((SPVM::Int)$list->pop)->val == 2) {
       return 0;
     }
@@ -323,7 +323,7 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 3, -3, 0)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->new)) {
+    unless (equals_list_deeply($list, SPVM::List->new_len(0))) {
       return 0;
     }
     eval {
@@ -370,7 +370,7 @@ package TestCase::Lib::SPVM::List {
       return 0;
     }
 
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $v5, $v4, $v3, $v2, $v1]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $v5, $v4, $v3, $v2, $v1]))) {
       return 0;
     }
 
@@ -378,7 +378,7 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_shift : int () {
-    my $list = SPVM::List->newa([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
+    my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
     unless (((SPVM::Int)$list->shift)->val == 1) {
       return 0;
     }
@@ -399,7 +399,7 @@ package TestCase::Lib::SPVM::List {
     }
     $@ = undef;
     
-    unless (equals_list_deeply($list, SPVM::List->newa(new object[0]))) {
+    unless (equals_list_deeply($list, SPVM::List->new(new object[0]))) {
       return 0;
     }
     return 1;
@@ -430,7 +430,7 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_set : int () {
-    my $list = SPVM::List->newa([(object) SPVM::Int->new(1), undef]);
+    my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef]);
 
     my $v1 = SPVM::Int->new(2);
     $list->set(0, undef);
@@ -440,7 +440,7 @@ package TestCase::Lib::SPVM::List {
     }
     my $expected = new object[2];
     $expected->[1] = $v1;
-    unless (equals_list_deeply($list, SPVM::List->newa($expected))) {
+    unless (equals_list_deeply($list, SPVM::List->new($expected))) {
       return 0;
     }
 
@@ -448,7 +448,7 @@ package TestCase::Lib::SPVM::List {
   }
 
   sub test_get : int () {
-    my $list = SPVM::List->newa([(object) SPVM::Int->new(1), undef]);
+    my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef]);
     unless (((SPVM::Int)$list->get(0))->val == 1) {
       return 0;
     }
@@ -469,7 +469,7 @@ package TestCase::Lib::SPVM::List {
     my $replace = [(object) $vi1, $vi2];
     # extract left-inside
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2, $v3, $v4, $v5]);
+      my $list = SPVM::List->new([(object) $v1, $v2, $v3, $v4, $v5]);
       my $extracted = $list->splice(1, 2, undef);
       unless (equals_array($extracted, [(object) $v2, $v3])) {
         return 0;
@@ -477,13 +477,13 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 5, -5, 3)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $v4, $v5]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $v4, $v5]))) {
         return 0;
       }
     }
     # extract right-inside
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2, $v3, $v4, $v5]);
+      my $list = SPVM::List->new([(object) $v1, $v2, $v3, $v4, $v5]);
       my $extracted = $list->splice(2, 2, undef);
       unless (equals_array($extracted, [(object) $v3, $v4])) {
         return 0;
@@ -491,13 +491,13 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 5, -5, 3)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $v2, $v5]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $v2, $v5]))) {
         return 0;
       }
     }
     # replace list at left corner
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(0, 1, $replace);
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
@@ -505,13 +505,13 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 3, -3, 3)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $vi1, $vi2, $v2]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $vi1, $vi2, $v2]))) {
         return 0;
       }
     }
     # replace list at right corner
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(1, 1, $replace);
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
@@ -519,13 +519,13 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 3, -3, 3)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $vi1, $vi2]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $vi1, $vi2]))) {
         return 0;
       }
     }
     # replace list at center
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2, $v3, $v4, $v5]);
+      my $list = SPVM::List->new([(object) $v1, $v2, $v3, $v4, $v5]);
       my $extracted = $list->splice(1, 3, $replace);
       unless (equals_array($extracted, [(object) $v2, $v3, $v4])) {
         return 0;
@@ -536,7 +536,7 @@ package TestCase::Lib::SPVM::List {
     }
     # insert list back with cut_length = 0
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(2, 0, $replace);
       unless (equals_array($extracted, new object[0])) {
         return 0;
@@ -544,13 +544,13 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 4, -4, 4)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $v2, $vi1, $vi2]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $v2, $vi1, $vi2]))) {
         return 0;
       }
     }
     # insert list back with cut_length > 0
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(2, 10, $replace);
       unless (equals_array($extracted, new object[0])) {
         return 0;
@@ -569,7 +569,7 @@ package TestCase::Lib::SPVM::List {
     my $replace = [(object) $vi1];
     # extract left corner
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(0, 1, undef);
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
@@ -577,12 +577,12 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 2, -2, 1)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $v2]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $v2]))) {
         return 0;
       }
     }
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(0, 1, $replace);
       unless (equals_array($extracted, [(object) $v1])) {
         return 0;
@@ -590,13 +590,13 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 2, -2, 2)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $vi1, $v2]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $vi1, $v2]))) {
         return 0;
       }
     }
     # extract right corner
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(1, 1, undef);
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
@@ -604,12 +604,12 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 2, -2, 1)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $v1]))) {
         return 0;
       }
     }
     {
-      my $list = SPVM::List->newa([(object) $v1, $v2]);
+      my $list = SPVM::List->new([(object) $v1, $v2]);
       my $extracted = $list->splice(1, 1, $replace);
       unless (equals_array($extracted, [(object) $v2])) {
         return 0;
@@ -617,12 +617,12 @@ package TestCase::Lib::SPVM::List {
       unless (check_fields($list, 2, -2, 2)) {
         return 0;
       }
-      unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $vi1]))) {
+      unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $vi1]))) {
         return 0;
       }
     }
     # cut_length = replace_length = 0
-    my $list = SPVM::List->newa([(object) $v1, $v2]);
+    my $list = SPVM::List->new([(object) $v1, $v2]);
     my $extracted = $list->splice(2, 0, undef);
     unless (equals_array($extracted, new object[0])) {
       return 0;
@@ -630,7 +630,7 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 2, -2, 2)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $v1, $v2]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $v1, $v2]))) {
       return 0;
     }
     return 1;
@@ -649,7 +649,7 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 2, -1, 1)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $v2]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $v2]))) {
       return 0;
     }
     return 1;
@@ -670,14 +670,14 @@ package TestCase::Lib::SPVM::List {
     unless (check_fields($list, 3, -1, 3)) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->newa([(object) $vi1, $vi2, $v2]))) {
+    unless (equals_list_deeply($list, SPVM::List->new([(object) $vi1, $vi2, $v2]))) {
       return 0;
     }
     return 1;
   }
 
   sub test_to_array : int () {
-    my $list = SPVM::List->newa([(object)"abc", 1, 3.14]);
+    my $list = SPVM::List->new([(object)"abc", 1, 3.14]);
     my $objects = $list->to_array;
 
     unless ($objects isa object[]) {

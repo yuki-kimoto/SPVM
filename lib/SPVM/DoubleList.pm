@@ -11,10 +11,10 @@ SPVM::DoubleList - Continuous dynamic double array
   use SPVM::DoubleList;
   
   # Create a double list
-  my $double_list = SPVM::DoubleList->new;
+  my $double_list = SPVM::DoubleList->new_len;
 
   # Create a double list with array
-  my $double_list = SPVM::DoubleList->newa([1.5, 2.5, 3.5]);
+  my $double_list = SPVM::DoubleList->new([1.5, 2.5, 3.5]);
   
   # Get list length
   my $length = $double_list->length;
@@ -54,13 +54,7 @@ L<SPVM::DoubleList> is continuous dynamic double array.
 
 =head2 new
 
-    sub new : SPVM::DoubleList ()
-
-Create a new L<SPVM::DoubleList> object.
-
-=head2 newa
-
-    sub newa : SPVM::DoubleList ($array : double[])
+    sub new : SPVM::DoubleList ($array : double[])
 
 Create a new L<SPVM::DoubleList> object with specific C<double> array.
 

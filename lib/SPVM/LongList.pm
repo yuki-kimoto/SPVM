@@ -11,10 +11,10 @@ SPVM::LongList - Continuous dynamic long array
   use SPVM::LongList;
   
   # Create a long list
-  my $long_list = SPVM::LongList->new;
+  my $long_list = SPVM::LongList->new_len(10);
 
   # Create a long list with array
-  my $long_list = SPVM::LongList->newa([(long)1, 2, 3]);
+  my $long_list = SPVM::LongList->new([(long)1, 2, 3]);
   
   # Get list length
   my $length = $long_list->length;
@@ -54,13 +54,7 @@ L<SPVM::LongList> is continuous dynamic long array.
 
 =head2 new
 
-    sub new : SPVM::LongList ()
-
-Create a new L<SPVM::LongList> object.
-
-=head2 newa
-
-    sub newa : SPVM::LongList ($array : long[])
+    sub new : SPVM::LongList ($array : long[])
 
 Create a new L<SPVM::LongList> object with specific C<long> array.
 

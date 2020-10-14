@@ -12,14 +12,6 @@ package SPVM::List {
     return $objects;
   }
 
-  sub new : SPVM::List () {
-    my $self = new SPVM::List;
-    my $default_capacity = 16;
-    $self->{capacity} = $default_capacity;
-    $self->{values} = new object [$default_capacity];
-    return $self;
-  }
-
   sub new_capacity : SPVM::List ($capacity : int) {
     my $self = new SPVM::List;
     unless ($capacity > 0) {
@@ -30,7 +22,7 @@ package SPVM::List {
     return $self;
   }
 
-  sub newa : SPVM::List ($objects : object[]) {
+  sub new : SPVM::List ($objects : object[]) {
     my $self = new SPVM::List;
     $self->{capacity} = @$objects;
     $self->{values} = new object [@$objects];
@@ -44,10 +36,11 @@ package SPVM::List {
 
   sub new_len : SPVM::List ($length : int) {
     my $self = new SPVM::List;
-    unless ($length > 0) {
+    unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
-    $self->{capacity} = $length;
+    $self->{capacity} = $length + 1;
+    $self->{length} = $length;
     $self->{values} = new object[$length];
     return $self;
   }
@@ -60,7 +53,7 @@ package SPVM::List {
       die "Out of range";
     }
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     
@@ -97,7 +90,10 @@ package SPVM::List {
   }
 
   sub push : void ($self : self, $value : object) {
-    if ($self->{length} + 1 > $self->{capacity}) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     my $index = $self->{length};
@@ -123,7 +119,7 @@ package SPVM::List {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     

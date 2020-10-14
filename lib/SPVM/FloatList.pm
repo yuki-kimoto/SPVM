@@ -11,10 +11,10 @@ SPVM::FloatList - Continuous dynamic float array
   use SPVM::FloatList;
   
   # Create a float list
-  my $float_list = SPVM::FloatList->new;
+  my $float_list = SPVM::FloatList->new_len(10);
 
   # Create a float list with array
-  my $float_list = SPVM::FloatList->newa([1.5f, 2.5f, 3.5f]);
+  my $float_list = SPVM::FloatList->new([1.5f, 2.5f, 3.5f]);
   
   # Get list length
   my $length = $float_list->length;
@@ -54,13 +54,7 @@ L<SPVM::FloatList> is continuous dynamic float array.
 
 =head2 new
 
-    sub new : SPVM::FloatList ()
-
-Create a new L<SPVM::FloatList> object.
-
-=head2 newa
-
-    sub newa : SPVM::FloatList ($array : float[])
+    sub new : SPVM::FloatList ($array : float[])
 
 Create a new L<SPVM::FloatList> object with specific C<float> array.
 

@@ -11,10 +11,10 @@ SPVM::List - Continuous dynamic object array
   use SPVM::List;
   
   # Create a object list
-  my $object_list = SPVM::List->new;
+  my $object_list = SPVM::List->new_len;
 
   # Create a object list with array
-  my $object_list = SPVM::List->newa([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
+  my $object_list = SPVM::List->new([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
   
   # Get list length
   my $length = $object_list->length;
@@ -54,13 +54,7 @@ L<SPVM::List> is continuous dynamic object array.
 
 =head2 new
 
-    sub new : SPVM::List ()
-
-Create a new L<SPVM::List> object.
-
-=head2 newa
-
-    sub newa : SPVM::List ($array : object[])
+    sub new : SPVM::List ($array : object[])
 
 Create a new L<SPVM::List> object with specific C<object> array.
 

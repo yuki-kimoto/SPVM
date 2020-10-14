@@ -5,18 +5,6 @@ package SPVM::DoubleList {
   has capacity : ro int;
   has length   : ro int;
   
-  sub new : SPVM::DoubleList () {
-    my $capacity = 16;
-    my $values = new double[$capacity];
-    
-    my $self = new SPVM::DoubleList;
-    $self->{capacity} = $capacity;
-    $self->{length} = 0;
-    $self->{values} = $values;
-    
-    return $self;
-  }
-
   sub new_capacity : SPVM::DoubleList ($capacity : int) {
     my $self = new SPVM::DoubleList;
     unless ($capacity > 0) {
@@ -27,7 +15,7 @@ package SPVM::DoubleList {
     return $self;
   }
 
-  sub newa : SPVM::DoubleList ($array : double[]) {
+  sub new : SPVM::DoubleList ($array : double[]) {
     my $self = new SPVM::DoubleList;
     my $length = @$array;
     
@@ -45,10 +33,11 @@ package SPVM::DoubleList {
 
   sub new_len : SPVM::DoubleList ($length : int) {
     my $self = new SPVM::DoubleList;
-    unless ($length > 0) {
+    unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
-    $self->{capacity} = $length;
+    $self->{capacity} = $length + 1;
+    $self->{length} = $length;
     $self->{values} = new double[$length];
     return $self;
   }
@@ -77,7 +66,7 @@ package SPVM::DoubleList {
       die "Out of range";
     }
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     
@@ -117,7 +106,7 @@ package SPVM::DoubleList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     
@@ -144,7 +133,7 @@ package SPVM::DoubleList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length > $capacity - 1) {
+    if ($length >= $capacity - 1) {
       $self->_extend;
     }
     
