@@ -27,6 +27,16 @@ package SPVM::ShortList {
     return $self;
   }
 
+  sub new_len : SPVM::ShortList ($length : int) {
+    my $self = new SPVM::ShortList;
+    unless ($length > 0) {
+      die "length must be more than or equals to zero";
+    }
+    $self->{capacity} = $length;
+    $self->{values} = new short[$length];
+    return $self;
+  }
+
   sub newa : SPVM::ShortList ($array : short[]) {
     my $self = new SPVM::ShortList;
     my $length = @$array;

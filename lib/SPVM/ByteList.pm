@@ -64,6 +64,12 @@ Create a new L<SPVM::ByteList> object.
 
 Create a new L<SPVM::ByteList> object with specific C<byte> array.
 
+=head2 new_len
+
+    sub new_len : SPVM::ByteList ($length : int)
+
+Create a new L<SPVM::ByteList> object with array length.
+
 =head1 INSTANCE METHODS
 
 =head2 length

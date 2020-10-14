@@ -64,6 +64,12 @@ Create a new L<SPVM::IntList> object.
 
 Create a new L<SPVM::IntList> object with specific C<int> array.
 
+=head2 new_len
+
+    sub new_len : SPVM::IntList ($length : int)
+
+Create a new L<SPVM::IntList> object with array length.
+
 =head1 INSTANCE METHODS
 
 =head2 length

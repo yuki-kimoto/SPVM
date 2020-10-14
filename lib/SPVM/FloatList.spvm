@@ -42,6 +42,16 @@ package SPVM::FloatList {
     
     return $self;
   }
+
+  sub new_len : SPVM::FloatList ($length : int) {
+    my $self = new SPVM::FloatList;
+    unless ($length > 0) {
+      die "length must be more than or equals to zero";
+    }
+    $self->{capacity} = $length;
+    $self->{values} = new float[$length];
+    return $self;
+  }
   
   private sub _extend : void ($self : self) {
     my $capacity = $self->{capacity};

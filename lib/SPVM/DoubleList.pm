@@ -64,6 +64,13 @@ Create a new L<SPVM::DoubleList> object.
 
 Create a new L<SPVM::DoubleList> object with specific C<double> array.
 
+=head2 new_len
+
+    sub new_len : SPVM::DoubleList ($length : int)
+
+Create a new L<SPVM::DoubleList> object with array length.
+
+
 =head1 INSTANCE METHODS
 
 =head2 length

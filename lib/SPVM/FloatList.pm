@@ -64,6 +64,13 @@ Create a new L<SPVM::FloatList> object.
 
 Create a new L<SPVM::FloatList> object with specific C<float> array.
 
+=head2 new_len
+
+    sub new_len : SPVM::FloatList ($length : int)
+
+Create a new L<SPVM::FloatList> object with array length.
+
+
 =head1 INSTANCE METHODS
 
 =head2 length

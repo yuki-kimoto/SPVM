@@ -3704,8 +3704,6 @@ array_set(...)
         
         elements[index] = value;
         
-        warn("AAAAA %d %d", index, value);
-        
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {

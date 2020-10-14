@@ -42,6 +42,17 @@ package SPVM::DoubleList {
     
     return $self;
   }
+
+  sub new_len : SPVM::DoubleList ($length : int) {
+    my $self = new SPVM::DoubleList;
+    unless ($length > 0) {
+      die "length must be more than or equals to zero";
+    }
+    $self->{capacity} = $length;
+    $self->{values} = new double[$length];
+    return $self;
+  }
+  
   
   private sub _extend : void ($self : self) {
     my $capacity = $self->{capacity};

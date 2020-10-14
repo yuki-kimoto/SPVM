@@ -26,6 +26,16 @@ package SPVM::ByteList {
     $self->{values} = new byte[$capacity];
     return $self;
   }
+
+  sub new_len : SPVM::ByteList ($length : int) {
+    my $self = new SPVM::ByteList;
+    unless ($length > 0) {
+      die "length must be more than or equals to zero";
+    }
+    $self->{capacity} = $length;
+    $self->{values} = new byte[$length];
+    return $self;
+  }
   
   sub newa : SPVM::ByteList ($array : byte[]) {
     my $self = new SPVM::ByteList;

@@ -64,6 +64,12 @@ Create a new L<SPVM::ShortList> object.
 
 Create a new L<SPVM::ShortList> object with specific C<short> array.
 
+=head2 new_len
+
+    sub new_len : SPVM::ShortList ($length : int)
+
+Create a new L<SPVM::ShortList> object with array length.
+
 =head1 INSTANCE METHODS
 
 =head2 length

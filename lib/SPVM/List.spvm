@@ -42,6 +42,16 @@ package SPVM::List {
     return $self;
   }
 
+  sub new_len : SPVM::List ($length : int) {
+    my $self = new SPVM::List;
+    unless ($length > 0) {
+      die "length must be more than or equals to zero";
+    }
+    $self->{capacity} = $length;
+    $self->{values} = new object[$length];
+    return $self;
+  }
+  
   sub insert : void ($self : self, $index : int, $value : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
