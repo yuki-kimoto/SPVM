@@ -24,7 +24,13 @@ use SPVM 'TestCase::Point_3i';
 
 use SPVM 'SPVM::Hash';
 use SPVM 'SPVM::List';
+use SPVM 'SPVM::ByteList';
+use SPVM 'SPVM::ShortList';
 use SPVM 'SPVM::IntList';
+use SPVM 'SPVM::LongList';
+use SPVM 'SPVM::FloatList';
+use SPVM 'SPVM::DoubleList';
+use SPVM 'SPVM::StringList';
 
 use SPVM 'TestCase::Minimal';
 
@@ -52,6 +58,50 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     my $hash = SPVM::Hash->new([]);
     is_deeply($hash->count, 0);
+  }
+}
+
+# Empty List push
+{
+  {
+    my $list = SPVM::ByteList->new([]);
+    $list->push(1);
+    is_deeply($list->length, 1);
+  }
+  {
+    my $list = SPVM::ShortList->new([]);
+    $list->push(1);
+    is_deeply($list->length, 1);
+  }
+  {
+    my $list = SPVM::IntList->new([]);
+    $list->push(1);
+    is_deeply($list->length, 1);
+  }
+  {
+    my $list = SPVM::LongList->new([]);
+    $list->push(1);
+    is_deeply($list->length, 1);
+  }
+  {
+    my $list = SPVM::FloatList->new([]);
+    $list->push(1);
+    is_deeply($list->length, 1);
+  }
+  {
+    my $list = SPVM::DoubleList->new([]);
+    $list->push(1);
+    is_deeply($list->length, 1);
+  }
+  {
+    my $list = SPVM::List->new([]);
+    $list->push(SPVM::Int->new(1));
+    is_deeply($list->length, 1);
+  }
+  {
+    my $list = SPVM::StringList->new([]);
+    $list->push("abc");
+    is_deeply($list->length, 1);
   }
 }
 

@@ -56,9 +56,6 @@ package TestCase::Lib::SPVM::List {
 
       my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
-      unless ($list->capacity == 6) {
-        return 0;
-      }
     }
     
     # Exception - insert to -1

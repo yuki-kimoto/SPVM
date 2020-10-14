@@ -5,6 +5,9 @@ package SPVM::IntList {
   has capacity : ro int;
   has length   : ro int;
   
+  private enum {
+    DEFAULT_CAPACITY = 16,
+  }
   sub new_capacity : SPVM::IntList ($capacity : int) {
     my $self = new SPVM::IntList;
     unless ($capacity > 0) {
@@ -19,9 +22,16 @@ package SPVM::IntList {
     my $self = new SPVM::IntList;
     my $length = @$array;
     
-    my $values = new int[$length];
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
+    my $values = new int[$capacity];
     
-    $self->{capacity} = $length;
     $self->{length} = $length;
     
     memcpyi($values, 0, $array, 0, $length);
@@ -36,9 +46,16 @@ package SPVM::IntList {
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
-    $self->{capacity} = $length + 1;
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = new int[$length];
+    $self->{values} = new int[$capacity];
     return $self;
   }
   
@@ -65,7 +82,7 @@ package SPVM::IntList {
       die "Out of range";
     }
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     
@@ -105,7 +122,7 @@ package SPVM::IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     
@@ -132,7 +149,7 @@ package SPVM::IntList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     

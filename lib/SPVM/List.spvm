@@ -3,6 +3,9 @@ package SPVM::List {
   has capacity : ro int;
   has length   : ro int;
 
+  private enum {
+    DEFAULT_CAPACITY = 16,
+  }
   sub to_array : object[] ($self : self) {
     my $length = $self->{length};
     my $objects = new object[$length];
@@ -24,8 +27,18 @@ package SPVM::List {
 
   sub new : SPVM::List ($objects : object[]) {
     my $self = new SPVM::List;
-    $self->{capacity} = @$objects;
-    $self->{values} = new object [@$objects];
+    my $length = @$objects;
+    
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
+    
+    $self->{values} = new object [$capacity];
     for (my $i = 0; $i < @$objects; ++$i) {
       $self->{values}[$i] = $objects->[$i];
     }
@@ -39,9 +52,16 @@ package SPVM::List {
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
-    $self->{capacity} = $length + 1;
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = new object[$length];
+    $self->{values} = new object[$capacity];
     return $self;
   }
   
@@ -53,7 +73,7 @@ package SPVM::List {
       die "Out of range";
     }
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     
@@ -93,7 +113,7 @@ package SPVM::List {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
 
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     my $index = $self->{length};
@@ -119,7 +139,7 @@ package SPVM::List {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     

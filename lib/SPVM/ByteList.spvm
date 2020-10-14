@@ -24,9 +24,16 @@ package SPVM::ByteList {
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
-    $self->{capacity} = $length + 1;
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = new byte[$length];
+    $self->{values} = new byte[$capacity];
     return $self;
   }
   
@@ -34,9 +41,16 @@ package SPVM::ByteList {
     my $self = new SPVM::ByteList;
     my $length = @$array;
     
-    my $values = new byte[$length];
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    my $values = new byte[$capacity];
     
-    $self->{capacity} = $length;
+    $self->{capacity} = $capacity;
     $self->{length} = $length;
     
     memcpyb($values, 0, $array, 0, $length);
@@ -69,7 +83,7 @@ package SPVM::ByteList {
       die "Out of range";
     }
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     
@@ -109,7 +123,7 @@ package SPVM::ByteList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     
@@ -136,7 +150,7 @@ package SPVM::ByteList {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity - 1) {
+    if ($length >= $capacity) {
       $self->_extend;
     }
     

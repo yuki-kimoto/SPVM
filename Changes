@@ -18,6 +18,14 @@
   - SPVM::StringList->newa is rename to new, and original new is removed
   - SPVM::List->newa is rename to new, and original new is removed
   - SPVM::Hash->newa is rename to new, and original new is renamed to new_empty
+  - fix SPVM::ByteList capacity bug
+  - fix SPVM::ShortList capacity bug
+  - fix SPVM::IntList capacity bug
+  - fix SPVM::LongList capacity bug
+  - fix SPVM::FloatList capacity bug
+  - fix SPVM::DobuleList capacity bug
+  - fix SPVM::List capacity bug
+  - fix SPVM::StringList capacity bug
 0.0922 2020-10-12
   - add SPVM::new_byte_array_len
   - add SPVM::new_short_array_len

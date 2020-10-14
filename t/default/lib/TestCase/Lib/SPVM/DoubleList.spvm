@@ -51,7 +51,7 @@ package TestCase::Lib::SPVM::DoubleList {
         return 0;
       }
       
-      unless ($list->capacity == 33) {
+      unless ($list->capacity == 32) {
         return 0;
       }
     }
@@ -91,9 +91,6 @@ package TestCase::Lib::SPVM::DoubleList {
     {
       my $list = SPVM::DoubleList->new([(double)1, 2, 3]);
       $list->insert(0 => 4);
-      unless ($list->capacity == 6) {
-        return 0;
-      }
     }
     
     # Exception - insert to -1

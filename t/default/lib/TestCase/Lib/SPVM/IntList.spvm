@@ -52,7 +52,7 @@ package TestCase::Lib::SPVM::IntList {
         return 0;
       }
       
-      unless ($list->capacity == 33) {
+      unless ($list->capacity == 32) {
         return 0;
       }
     }
@@ -92,9 +92,6 @@ package TestCase::Lib::SPVM::IntList {
     {
       my $list = SPVM::IntList->new([(int)1, 2, 3]);
       $list->insert(0 => 4);
-      unless ($list->capacity == 6) {
-        return 0;
-      }
     }
     
     # Exception - insert to -1

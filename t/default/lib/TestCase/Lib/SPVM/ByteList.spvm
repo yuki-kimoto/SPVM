@@ -37,7 +37,7 @@ package TestCase::Lib::SPVM::ByteList {
         return 0;
       }
     }
-
+    
     # Insert
     {
       my $list = SPVM::ByteList->new([(byte)1, 2, 3]);
@@ -60,11 +60,8 @@ package TestCase::Lib::SPVM::ByteList {
     {
       my $list = SPVM::ByteList->new([(byte)1, 2, 3]);
       $list->insert(0 => 4);
-      unless ($list->capacity == 6) {
-        return 0;
-      }
     }
-    
+
     # Exception - insert to -1
     eval {
       my $list = SPVM::ByteList->new([(byte)1, 2, 3]);
@@ -84,7 +81,7 @@ package TestCase::Lib::SPVM::ByteList {
       return 0;
     }
     $@ = undef;
-    
+
     return 1;
   }
 
@@ -166,7 +163,7 @@ package TestCase::Lib::SPVM::ByteList {
         return 0;
       }
       
-      unless ($list->capacity == 33) {
+      unless ($list->capacity == 32) {
         return 0;
       }
     }
