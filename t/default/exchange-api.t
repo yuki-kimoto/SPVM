@@ -464,9 +464,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $string1 = SPVM::new_string("あいう");
     my $string2 = SPVM::new_string_from_bin(encode('UTF-8', "えお"));
     my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
-    isa_ok($string3, 'SPVM::BlessedObject::Array');
-    is($string3->to_string, "あいうえお");
-    is($string3->to_bin, encode('UTF-8', "あいうえお"));
+    is($string3, "あいうえお");
   }
 
   # String - ascii string, new_string, new_string_from_bin, to_string, to_bin, to_element
@@ -474,10 +472,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $string1 = SPVM::new_string_from_bin("abc");
     my $string2 = SPVM::new_string("de");
     my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
-    isa_ok($string3, 'SPVM::BlessedObject::Array');
-    is($string3->to_string, "abcde");
-    is($string3->to_bin, "abcde");
-    is_deeply($string3->to_elems, [ord('a'), ord('b'), ord('c'), ord('d'), ord('e')]);
+    is($string3, "abcde");
   }
 }
 

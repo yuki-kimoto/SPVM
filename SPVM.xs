@@ -1822,16 +1822,30 @@ call_sub(...)
       // Convert to runtime type
       int32_t arg_runtime_basic_type_id;
       int32_t arg_runtime_type_dimension;
-      if (arg->type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
-        arg_runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
-        arg_runtime_type_dimension = arg->type->dimension + 1;
-      }
-      else {
-        arg_runtime_basic_type_id = arg->type->basic_type->id;
-        arg_runtime_type_dimension = arg->type->dimension;
-      }
+      arg_runtime_basic_type_id = arg->type->basic_type->id;
+      arg_runtime_type_dimension = arg->type->dimension;
       
       switch (arg->runtime_type_category) {
+        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
+        {
+          // If arument type is string, the value is converted to string
+          // Copy
+          sv_value = sv_2mortal(newSVsv(sv_value));
+          
+          // Encode to UTF-8
+          sv_utf8_encode(sv_value);
+          
+          int32_t length = sv_len(sv_value);
+          const char* chars = SvPV_nolen(sv_value);
+          
+          void* string = env->new_string_len_raw(env, chars, length);
+          env->inc_ref_count(env, string);
+
+          stack[arg_var_id].oval = string;
+          
+          arg_var_id++;
+          break;
+        }
         case SPVM_TYPE_C_RUNTIME_TYPE_BYTE : {
           int8_t value = (int8_t)SvIV(sv_value);
           stack[arg_var_id].bval = value;
@@ -2145,31 +2159,14 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
-        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         {
           // undef
           if (!SvOK(sv_value)) {
             stack[arg_var_id].oval = NULL;
           }
           else {
-            // If arument type is string and value is perl non-ref-scalar, the value is converted to string
-            if (arg->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_STRING && !SvROK(sv_value)) {
-              // Copy
-              sv_value = sv_2mortal(newSVsv(sv_value));
-              
-              // Encode to UTF-8
-              sv_utf8_encode(sv_value);
-              
-              int32_t length = sv_len(sv_value);
-              const char* chars = SvPV_nolen(sv_value);
-              
-              void* string = env->new_string_len_raw(env, chars, length);
-              env->inc_ref_count(env, string);
-              
-              sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::Array");
-            }
             // Value is array refence
-            else if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
+            if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
               
               SV* sv_elems = sv_value;
               
@@ -2355,6 +2352,31 @@ call_sub(...)
                         SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                         SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                         elems[i] = (double)SvNV(sv_value);
+                      }
+                    }
+                    
+                    // New sv array
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+                    sv_value = sv_array;
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_STRING: {
+                    // New array
+                    void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
+
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      if (SvOK(sv_value)) {
+                        // Encode to UTF-8
+                        sv_utf8_encode(sv_value);
+                        
+                        int32_t string_length = sv_len(sv_value);
+                        const char* chars = SvPV_nolen(sv_value);
+                        
+                        void* string = env->new_string_len(env, chars, string_length);
+                        
+                        env->set_elem_object(env, array, i, string);
                       }
                     }
                     
@@ -3030,7 +3052,6 @@ call_sub(...)
     case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
     case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
-    case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
     {
       excetpion_flag = env->call_sub(env, sub_id, stack);
       if (!excetpion_flag) {
@@ -3040,6 +3061,26 @@ call_sub(...)
           env->inc_ref_count(env, return_value);
           
           sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
+        }
+        else {
+          sv_return_value = &PL_sv_undef;
+        }
+      }
+      break;
+    }
+    case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
+    {
+      excetpion_flag = env->call_sub(env, sub_id, stack);
+      if (!excetpion_flag) {
+        void* return_value = stack[0].oval;
+        sv_return_value = NULL;
+        if (return_value != NULL) {
+          env->inc_ref_count(env, return_value);
+          
+          const char* bytes = (const char*)env->get_elems_byte(env, return_value);
+          int32_t length = env->length(env, return_value);
+          
+          sv_return_value = sv_2mortal(newSVpv(bytes, length));
         }
         else {
           sv_return_value = &PL_sv_undef;
@@ -3479,17 +3520,6 @@ array_to_elems(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_STRING: {
-          int8_t* elems = env->get_elems_byte(env, array);
-          {
-            int32_t i;
-            for (i = 0; i < length; i++) {
-              SV* sv_value = sv_2mortal(newSViv(elems[i]));
-              av_push(av_values, SvREFCNT_inc(sv_value));
-            }
-          }
-          break;
-        }
         default:
           assert(0);
       }
@@ -3628,12 +3658,6 @@ array_to_bin(...)
           double* elems = env->get_elems_double(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 8));
-          break;
-        }
-        case SPVM_TYPE_C_RUNTIME_TYPE_STRING: {
-          int8_t* elems = env->get_elems_byte(env, array);
-          
-          sv_bin = sv_2mortal(newSVpvn((char*)elems, length));
           break;
         }
         default:
