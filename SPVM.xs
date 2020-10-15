@@ -3194,10 +3194,23 @@ call_sub(...)
             sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
           }
           else {
-            SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, return_value->basic_type_id);
-            const char* basic_type_name = sub_return_basic_type->name;
-            SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-            sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_basic_type_name));
+            
+            if (return_value->basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
+              const char* bytes = (const char*)env->get_elems_byte(env, return_value);
+              int32_t length = env->length(env, return_value);
+              
+              sv_return_value = sv_2mortal(newSVpv(bytes, length));
+              
+              sv_utf8_decode(sv_return_value);
+              
+              env->dec_ref_count(env, return_value);
+            }
+            else {
+              SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, return_value->basic_type_id);
+              const char* basic_type_name = sub_return_basic_type->name;
+              SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_basic_type_name));
+            }
           }
         }
         else {

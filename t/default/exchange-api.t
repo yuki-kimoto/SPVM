@@ -53,6 +53,17 @@ my $DBL_MAX = POSIX::DBL_MAX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+{
+  # ハッシュに保存(文字列)
+  my $mnist_train_image_info_spvm = SPVM::Hash->new([
+    count => 5,
+  ]);
+  
+  my $count = $mnist_train_image_info_spvm->get("count");
+  
+  is($count, 5);
+}
+
 # Empty Hash new
 {
   {
