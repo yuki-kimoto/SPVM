@@ -706,7 +706,9 @@ t/default/lib/TestCase/CompileError/ComparisonOperator/LeNotNumeric.spvm
 t/default/lib/TestCase/CompileError/ComparisonOperator/LtNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Concat/LeftIsNotString.spvm
 t/default/lib/TestCase/CompileError/Concat/RightIsNotString.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertFromByteArrayToString.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromRef.spvm
+t/default/lib/TestCase/CompileError/Convert/ConvertFromStringToByteArray.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertFromValueType.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToInterface.spvm
 t/default/lib/TestCase/CompileError/Convert/ConvertToRef.spvm
