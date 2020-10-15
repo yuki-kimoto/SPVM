@@ -14,10 +14,6 @@ sub new_byte_array_from_string {
   return SPVM::ExchangeAPI::new_byte_array_from_bin($env, $bin);
 }
 
-sub new_string { SPVM::ExchangeAPI::new_byte_array_from_string(@_) }
-
-sub new_string_from_bin { SPVM::ExchangeAPI::new_byte_array_from_bin(@_) }
-
 sub new_object_array {
   my ($env, $type_name, $elems) = @_;
   
@@ -148,6 +144,8 @@ SPVM::ExchangeAPI - SPVM Exchange API
 =head2 call_sub
 
 =head2 memory_blocks_count
+
+=head2 new_string_array
 
 =head2 new_byte_array
 

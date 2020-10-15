@@ -140,6 +140,11 @@ sub call_sub {
   SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::call_sub($BUILDER->{env}, @_);
 }
+sub new_string_array {
+  SPVM::init() unless $SPVM_INITED;
+  SPVM::ExchangeAPI::new_string_array($BUILDER->{env}, @_);
+}
+
 sub new_byte_array {
   SPVM::init() unless $SPVM_INITED;
   SPVM::ExchangeAPI::new_byte_array($BUILDER->{env}, @_);

@@ -562,6 +562,63 @@ bind_sub_native(...)
 MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
 
 SV*
+new_string_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_string_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+
+    AV* av_elems = (AV*)SvRV(sv_elems);
+
+    int32_t length = av_len(av_elems) + 1;
+
+    // New array
+    SPVM_OBJECT* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
+
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
+      if (SvOK(sv_str_value)) {
+        // Copy
+        sv_str_value = sv_2mortal(newSVsv(sv_str_value));
+        
+        // Encode to UTF-8
+        sv_utf8_encode(sv_str_value);
+        
+        int32_t length = sv_len(sv_str_value);
+        const char* chars = SvPV_nolen(sv_str_value);
+        
+        void* string = env->new_string_len_raw(env, chars, length);
+        env->set_elem_object(env, array, i, string);
+      }
+      else {
+        env->set_elem_object(env, array, i, NULL);
+      }
+    }
+
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
 new_byte_array(...)
   PPCODE:
 {

@@ -401,7 +401,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Any object array
 {
-  # String - UTF-8 string, new_string, new_string_from_bin, to_string, to_bin
   {
     my $bytes = SPVM::new_object_array("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
     my $ret = TestCase::ExchangeAPI->any_object_array($bytes);
@@ -442,35 +441,28 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Stringfy - stringify overload
   {
-    my $string1 = SPVM::new_string("あいう");
-    my $string2 = SPVM::new_string("");
+    my $string1 = "あいう";
+    my $string2 = "";
     my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
     ok(!ref $string3);
     is("$string3", "あいう");
-  }
-  
-  # Stringify - 0 is true
-  {
-    my $string1 = SPVM::new_string("0");
-    ok($string1);
-    is("$string1", "0");
   }
 }
 
 # String arguments and return value
 {
-  # String - UTF-8 string, new_string, new_string_from_bin, to_string, to_bin
+  # String - UTF-8 string
   {
-    my $string1 = SPVM::new_string("あいう");
-    my $string2 = SPVM::new_string_from_bin(encode('UTF-8', "えお"));
+    my $string1 = "あいう";
+    my $string2 = "えお";
     my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
     is($string3, "あいうえお");
   }
 
-  # String - ascii string, new_string, new_string_from_bin, to_string, to_bin, to_element
+  # String - ascii string
   {
-    my $string1 = SPVM::new_string_from_bin("abc");
-    my $string2 = SPVM::new_string("de");
+    my $string1 = "abc");
+    my $string2 = "de";
     my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
     is($string3, "abcde");
   }
