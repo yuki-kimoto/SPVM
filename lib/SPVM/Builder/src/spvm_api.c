@@ -4472,7 +4472,11 @@ SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJEC
   
   int32_t string3_length = string1_length + string2_length;
   SPVM_OBJECT* string3 = SPVM_API_new_byte_array_raw(env, string3_length);
-  
+
+  string3->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
+  string3->type_dimension = 0;
+  string3->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+
   int8_t* string1_bytes = SPVM_API_get_elems_byte(env, string1);
   int8_t* string2_bytes = SPVM_API_get_elems_byte(env, string2);
   int8_t* string3_bytes = SPVM_API_get_elems_byte(env, string3);
