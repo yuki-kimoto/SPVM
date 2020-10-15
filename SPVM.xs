@@ -1736,6 +1736,39 @@ new_object_array_len(...)
   XSRETURN(1);
 }
 
+SV*
+new_string_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // Element type id
+  const char* basic_type_name = "string";
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  assert(basic_type);
+  
+  // New array
+  void* array = env->new_object_array(env, basic_type->id, length);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
 
 SV*
 _get_exception(...)
