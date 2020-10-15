@@ -3172,6 +3172,8 @@ call_sub(...)
           sv_return_value = sv_2mortal(newSVpv(bytes, length));
           
           sv_utf8_decode(sv_return_value);
+          
+          env->dec_ref_count(env, return_value);
         }
         else {
           sv_return_value = &PL_sv_undef;
