@@ -349,6 +349,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         {
           if (*(void**)&stack[0] != NULL) {
             SPVM_API_INC_REF_COUNT_ONLY(*(void**)&stack[0]);
@@ -368,6 +369,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         {
           if (*(void**)&stack[0] != NULL) {
             SPVM_API_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
@@ -4202,6 +4204,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
       case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
       case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+      case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
       {
         if (*(void**)&stack[0] != NULL) {
           SPVM_API_DEC_REF_COUNT_ONLY(*(void**)&stack[0]);
