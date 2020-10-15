@@ -1929,7 +1929,6 @@ call_sub(...)
           const char* chars = SvPV_nolen(sv_value);
           
           void* string = env->new_string_len_raw(env, chars, length);
-          env->inc_ref_count(env, string);
 
           stack[arg_var_id].oval = string;
           
@@ -2464,7 +2463,7 @@ call_sub(...)
                         int32_t string_length = sv_len(sv_value);
                         const char* chars = SvPV_nolen(sv_value);
                         
-                        void* string = env->new_string_len(env, chars, string_length);
+                        void* string = env->new_string_len_raw(env, chars, string_length);
                         
                         env->set_elem_object(env, array, i, string);
                       }
