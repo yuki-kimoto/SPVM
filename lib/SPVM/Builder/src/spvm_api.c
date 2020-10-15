@@ -763,8 +763,6 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t check_basic_type_id = opcode->operand2;
         int32_t check_type_dimension = opcode->operand3;
 
-        assert(check_basic_type_id != SPVM_BASIC_TYPE_C_ID_STRING);
-        
         if (object) {
           int_vars[0] = env->is_type(env, object, check_basic_type_id, check_type_dimension);
         }
@@ -2802,8 +2800,6 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           int32_t check_basic_type_id = opcode->operand2;
           int32_t check_type_dimension = opcode->operand3;
           
-          assert(check_basic_type_id != SPVM_BASIC_TYPE_C_ID_STRING);
-          
           int32_t object_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
           int32_t object_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
           
@@ -2811,7 +2807,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.");
+            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type in runtime.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4072,7 +4068,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             byte_vars[opcode->operand0] = *(int8_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.");
+            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Byte to byte.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4094,7 +4090,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             short_vars[opcode->operand0] = *(int16_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.");
+            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Short to short.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4116,7 +4112,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             int_vars[opcode->operand0] = *(int32_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.");
+            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Int to int.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4138,7 +4134,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             long_vars[opcode->operand0] = *(int64_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.");
+            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Long to long.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4160,7 +4156,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             float_vars[opcode->operand0] = *(float*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.");
+            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Float to float.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4183,7 +4179,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             double_vars[opcode->operand0] = *(double*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type.");
+            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Double to double.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4759,9 +4755,9 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes) {
   
   SPVM_OBJECT* object = SPVM_API_new_byte_array_raw(env, length);
   
-  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
-  object->type_dimension = 1;
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
+  object->type_dimension = 0;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
   
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
@@ -4785,10 +4781,10 @@ SPVM_OBJECT* SPVM_API_new_string_len_raw(SPVM_ENV* env, const char* bytes, int32
 
   SPVM_OBJECT* object = SPVM_API_new_byte_array_raw(env, length);
   
-  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
-  object->type_dimension = 1;
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
-  
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
+  object->type_dimension = 0;
+  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
   }

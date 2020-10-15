@@ -377,7 +377,7 @@ package TestCase::ExchangeAPI {
   # SPVM Functions
   sub spvm_new_byte_array_from_bin : int ($values : byte[]) {
     
-    unless ($values eq "あ") {
+    unless ((string)$values eq "あ") {
       return 0;
     }
     

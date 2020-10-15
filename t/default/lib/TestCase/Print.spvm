@@ -6,14 +6,6 @@ package TestCase::Print {
     return 1;
   }
 
-  sub test_print_bytes : int () {
-    my $bytes = (byte[])"Hello";
-    
-    print $bytes;
-    
-    return 1;
-  }
-
   sub test_print_newline : int () {
     print "\n";
     

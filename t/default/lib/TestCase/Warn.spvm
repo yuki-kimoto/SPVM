@@ -29,11 +29,4 @@ package TestCase::Warn {
     return 1;
   }
 
-  sub test_warn_bytes : int () {
-    my $bytes = (byte[])"Hello";
-    
-    warn $bytes;
-    
-    return 1;
-  }
 }

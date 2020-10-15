@@ -111,17 +111,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       my $output = slurp_binmode($output_file);
       like($output, qr|Warning: something's wrong at .*TestCase/Warn.spvm line 27|);
     }
-
-    # test_warn_bytes
-    {
-      my $func_call = 'TestCase::Warn->test_warn_bytes';
-      write_script_file($script_file, $func_call);
-      system("$^X -Mblib $script_file 2> $output_file");
-      my $output = slurp_binmode($output_file);
-      like($output, qr|Hello at .*TestCase/Warn.spvm line 35|);
-    }
-    
-
   }
 }
 

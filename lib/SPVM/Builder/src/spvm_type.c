@@ -216,6 +216,9 @@ int32_t SPVM_TYPE_get_runtime_type_category(SPVM_COMPILER* compiler, int32_t bas
   else if (SPVM_TYPE_is_void_type(compiler, basic_type_id, dimension, flag)) {
     runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_VOID;
   }
+  else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
+    runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+  }
   else {
     assert(0);
   }
@@ -945,23 +948,6 @@ int32_t SPVM_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_type_i
   else {
     return 0;
   }
-}
-
-int32_t SPVM_TYPE_is_string_compatible_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  (void)compiler;
-  
-  int32_t is_string_compatibe_type;
-  if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-    is_string_compatibe_type = 1;
-  }
-  else if (SPVM_TYPE_is_byte_array_type(compiler, basic_type_id, dimension, flag)) {
-    is_string_compatibe_type = 1;
-  }
-  else {
-    is_string_compatibe_type = 0;
-  }
-  
-  return is_string_compatibe_type;
 }
 
 int32_t SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {

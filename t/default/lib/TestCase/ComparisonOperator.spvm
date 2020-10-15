@@ -10,7 +10,6 @@ package TestCase::ComparisonOperator {
     my $string_different_long= "adcd";
     my $string_empty = "";
     my $string_undef : string;
-    my $bytes = (byte[])"abc";
     
     # eq
     my $ok = 0;
@@ -30,12 +29,6 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     unless (!($string eq $string_empty)) {
-      return 0;
-    }
-    unless ($string eq $bytes) {
-      return 0;
-    }
-    unless ($bytes eq $string) {
       return 0;
     }
     
@@ -88,7 +81,6 @@ package TestCase::ComparisonOperator {
     my $string_different_long= "adcd";
     my $string_empty = "";
     my $string_undef : string;
-    my $bytes = (byte[])"abc";
     
     # ne
     unless (!($string ne $string_same)) {
@@ -107,12 +99,6 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     unless (($string ne $string_empty)) {
-      return 0;
-    }
-    unless (!($string ne $bytes)) {
-      return 0;
-    }
-    unless (!($bytes ne $string)) {
       return 0;
     }
     
@@ -151,7 +137,6 @@ package TestCase::ComparisonOperator {
     my $string_different_long= "adcd";
     my $string_empty = "";
     my $string_undef : string;
-    my $bytes = (byte[])"abc";
     
     # gt
     unless (!($string gt $string_same)) {
@@ -170,12 +155,6 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     unless ($string gt $string_empty) {
-      return 0;
-    }
-    unless (!($string gt $bytes)) {
-      return 0;
-    }
-    unless (!($bytes gt $string)) {
       return 0;
     }
     
@@ -214,7 +193,6 @@ package TestCase::ComparisonOperator {
     my $string_different_long= "adcd";
     my $string_empty = "";
     my $string_undef : string;
-    my $bytes = (byte[])"abc";
     
     # ge
     unless ($string ge $string_same) {
@@ -233,12 +211,6 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     unless ($string ge $string_empty) {
-      return 0;
-    }
-    unless ($string ge $bytes) {
-      return 0;
-    }
-    unless ($bytes ge $string) {
       return 0;
     }
     
@@ -277,7 +249,6 @@ package TestCase::ComparisonOperator {
     my $string_different_long= "adcd";
     my $string_empty = "";
     my $string_undef : string;
-    my $bytes = (byte[])"abc";
     
     # lt
     unless ($string lt $string_same) {
@@ -296,12 +267,6 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     unless (!($string lt $string_empty)) {
-      return 0;
-    }
-    unless ($string lt $bytes) {
-      return 0;
-    }
-    unless ($bytes lt $string) {
       return 0;
     }
     
@@ -340,7 +305,6 @@ package TestCase::ComparisonOperator {
     my $string_different_long= "adcd";
     my $string_empty = "";
     my $string_undef : string;
-    my $bytes = (byte[])"abc";
     
     # le
     my $ok = 0;
@@ -360,12 +324,6 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     unless (!($string le $string_empty)) {
-      return 0;
-    }
-    unless ($string le $bytes) {
-      return 0;
-    }
-    unless ($bytes le $string) {
       return 0;
     }
     

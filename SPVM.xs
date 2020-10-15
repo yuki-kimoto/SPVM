@@ -2145,14 +2145,15 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
         case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
         {
           // undef
           if (!SvOK(sv_value)) {
             stack[arg_var_id].oval = NULL;
           }
           else {
-            // If arument type is byte[] and value is perl non-ref-scalar, the value is converted to byte[]
-            if (arg_runtime_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg_runtime_type_dimension == 1 && !SvROK(sv_value)) {
+            // If arument type is string and value is perl non-ref-scalar, the value is converted to string
+            if (arg->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_STRING && !SvROK(sv_value)) {
               // Copy
               sv_value = sv_2mortal(newSVsv(sv_value));
               
@@ -3029,6 +3030,7 @@ call_sub(...)
     case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
     case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+    case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
     {
       excetpion_flag = env->call_sub(env, sub_id, stack);
       if (!excetpion_flag) {
@@ -3477,6 +3479,17 @@ array_to_elems(...)
           }
           break;
         }
+        case SPVM_TYPE_C_RUNTIME_TYPE_STRING: {
+          int8_t* elems = env->get_elems_byte(env, array);
+          {
+            int32_t i;
+            for (i = 0; i < length; i++) {
+              SV* sv_value = sv_2mortal(newSViv(elems[i]));
+              av_push(av_values, SvREFCNT_inc(sv_value));
+            }
+          }
+          break;
+        }
         default:
           assert(0);
       }
@@ -3615,6 +3628,12 @@ array_to_bin(...)
           double* elems = env->get_elems_double(env, array);
           
           sv_bin = sv_2mortal(newSVpvn((char*)elems, length * 8));
+          break;
+        }
+        case SPVM_TYPE_C_RUNTIME_TYPE_STRING: {
+          int8_t* elems = env->get_elems_byte(env, array);
+          
+          sv_bin = sv_2mortal(newSVpvn((char*)elems, length));
           break;
         }
         default:

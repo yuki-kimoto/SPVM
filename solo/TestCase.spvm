@@ -108,16 +108,16 @@ SPVM::Test - SPVM test module
       my $z1 : SPVM::Complex_2d;
       my $z2 : SPVM::Complex_2d;
       
-      $z1->{x} = 1;
-      $z1->{y} = 2;
-      $z2->{x} = 3;
-      $z2->{y} = 4;
+      $z1->{re} = 1;
+      $z1->{im} = 2;
+      $z2->{re} = 3;
+      $z2->{im} = 4;
       
       my $z3 : SPVM::Complex_2d;
-      $z3->{x} = $z1->{x} + $z2->{x};
-      $z3->{y} = $z1->{y} + $z2->{y};
+      $z3->{re} = $z1->{re} + $z2->{re};
+      $z3->{im} = $z1->{im} + $z2->{im};
       
-      print($z3->{x} . " " . $z3->{y} . "\n");
+      print($z3->{re} . " " . $z3->{im} . "\n");
     }
     
     {
@@ -153,12 +153,12 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $object = (object)"aaaa";
-      my $str2 = (string)$object;
-      warn "AAAAAAAAA $str2";
+      my $object = (object)['a', 'b', 'c'];
+      my $bytes = (byte[])$object;
+      warn "AAAAAAAAA $bytes->[0]";
     }
     {
-      my $object = (object)['a', 'b', 'c'];
+      my $object = (object)"aaaa";
       my $str2 = (string)$object;
       warn "AAAAAAAAA $str2";
     }
@@ -377,13 +377,13 @@ SPVM::Test - SPVM test module
     {
       my $z : SPVM::Complex_2d;
       
-      $z->{x} = 0.25;
-      $z->{y} = 0.5;
+      $z->{re} = 0.25;
+      $z->{im} = 0.5;
       
       my $z_ref = \$z;
       
-      my $z_re = $z_ref->{x};
-      my $z_im = $z_ref->{y};
+      my $z_re = $z_ref->{re};
+      my $z_im = $z_ref->{im};
       
       print($z_re . " " . $z_im . "\n");
       
@@ -391,13 +391,13 @@ SPVM::Test - SPVM test module
       
       ref_sum_complex($z, $z, \$out);
       
-      print($out->{x} . " " . $out->{y} . "\n");
+      print($out->{re} . " " . $out->{im} . "\n");
     }
     
     {
       my $z1 : SPVM::Complex_2d;
-      $z1->{x} = 0.25;
-      $z1->{y} = 0.5;
+      $z1->{re} = 0.25;
+      $z1->{im} = 0.5;
       
       my $z1_ref = \$z1;
       
@@ -443,37 +443,37 @@ SPVM::Test - SPVM test module
     }
     {
       my $nums1 = new SPVM::Complex_2d[10];
-      $nums1->[9]{x} = 5;
-      $nums1->[9]{y} = 9;
+      $nums1->[9]{re} = 5;
+      $nums1->[9]{im} = 9;
       
-      my $nums1_9_re = $nums1->[9]{x};
-      my $nums1_9_im = $nums1->[9]{y};
+      my $nums1_9_re = $nums1->[9]{re};
+      my $nums1_9_im = $nums1->[9]{im};
       
-      print($nums1->[9]{x} . "\n");
+      print($nums1->[9]{re} . "\n");
       print($nums1_9_im . "\n");
       
       my $nums2 = $nums1->[9];
-      print($nums1->[9]{x} . "\n");
-      print($nums1->[9]{y} . "\n");
+      print($nums1->[9]{re} . "\n");
+      print($nums1->[9]{im} . "\n");
       
       $nums1->[5] = $nums2;
-      print($nums1->[5]{x} . "\n");
-      print($nums1->[5]{y} . "\n");
+      print($nums1->[5]{re} . "\n");
+      print($nums1->[5]{im} . "\n");
     }
     
     {
       my $z1 : SPVM::Complex_2d;
-      $z1->{x} = 0.5;
-      $z1->{y} = 0.25;
+      $z1->{re} = 0.5;
+      $z1->{im} = 0.25;
       
       my $z2 : SPVM::Complex_2d;
-      $z2->{x} = 1.0;
-      $z2->{y} = 0.5;
+      $z2->{re} = 1.0;
+      $z2->{im} = 0.5;
       
       my $z3 = TestCase::ComplexCalc->add($z1, $z2);
       
-      my $z3_re = $z3->{x};
-      my $z3_im = $z3->{y};
+      my $z3_re = $z3->{re};
+      my $z3_im = $z3->{im};
 
       print($z3_re . "\n");
       print($z3_im . "\n");
@@ -481,19 +481,19 @@ SPVM::Test - SPVM test module
 
     {
       my $z : SPVM::Complex_2d;
-      $z->{x} = 0.5;
-      $z->{y} = 0.25;
+      $z->{re} = 0.5;
+      $z->{im} = 0.25;
       
-      my $re = $z->{x};
-      my $im = $z->{y};
+      my $re = $z->{re};
+      my $im = $z->{im};
       
       print($re . "\n");
       print($im . "\n");
       
       my $z2 = $z;
       
-      my $z2_re = $z2->{x};
-      my $z2_im = $z2->{y};
+      my $z2_re = $z2->{re};
+      my $z2_im = $z2->{im};
 
       print($z2_re . "\n");
       print($z2_im . "\n");
@@ -1848,8 +1848,8 @@ SPVM::Test - SPVM test module
   }
   
   sub ref_sum_complex : double ($x_in1 : SPVM::Complex_2d, $x_in2 : SPVM::Complex_2d, $x_out : SPVM::Complex_2d&) {
-    $x_out->{x} = $x_in1->{x} + $x_in2->{x};
-    $x_out->{y} = $x_in1->{y} + $x_in2->{y};
+    $x_out->{re} = $x_in1->{re} + $x_in2->{re};
+    $x_out->{im} = $x_in1->{im} + $x_in2->{im};
   }
 
   sub vaarg : void ($flag : int, $nums : int[]...) {
