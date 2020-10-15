@@ -3081,6 +3081,8 @@ call_sub(...)
           int32_t length = env->length(env, return_value);
           
           sv_return_value = sv_2mortal(newSVpv(bytes, length));
+          
+          sv_utf8_decode(sv_return_value);
         }
         else {
           sv_return_value = &PL_sv_undef;
