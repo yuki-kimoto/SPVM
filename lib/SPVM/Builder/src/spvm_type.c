@@ -47,6 +47,7 @@ const char* const SPVM_TYPE_RUNTIME_TYPE_C_ID_NAMES[] = {
   "REF_MULNUM_FLOAT",
   "REF_MULNUM_DOUBLE",
   "VOID",
+  "STRING",
 };
 
 int32_t SPVM_TYPE_get_runtime_type_category(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
