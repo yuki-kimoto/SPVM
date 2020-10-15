@@ -641,7 +641,6 @@ t/default/begin.t
 t/default/bit-not.t
 t/default/bit-operator.t
 t/default/callback.t
-t/default/commaop.t
 t/default/comment.t
 t/default/comparison-operator.t
 t/default/compile-error.t

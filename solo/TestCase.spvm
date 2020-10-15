@@ -72,6 +72,26 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      # my $nums : byte[] = "abc";
+      # my $string : string = new byte[3];;
+    }
+    
+    {
+      my $nums : byte[] = (byte[])"abc";
+      
+      warn "$nums->[0] $nums->[1] $nums->[2]";
+      
+      my $byte_array = new byte[3];
+      $byte_array->[0] = 97;
+      $byte_array->[1] = 98;
+      $byte_array->[2] = 99;
+      
+      my $string : string = (string)$byte_array;
+      
+      warn $string;
+    }
+    
+    {
       warn "PPP";
       warn;
       warn "QQQ\n";

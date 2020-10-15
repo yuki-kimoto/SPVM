@@ -34,13 +34,13 @@ package TestCase::String {
     # Assign byte array to string
     {
       my $bytes = [(byte)'a', 'b', 'c'];
-      my $string : string = $bytes;
+      my $string : string = (string)$bytes;
       
       unless ($string eq "abc") {
         return 0;
       }
       
-      unless ($string == $bytes) {
+      unless ($string != $bytes) {
         return 0;
       }
     }
@@ -54,7 +54,7 @@ package TestCase::String {
         return 0;
       }
       
-      unless ($string == $bytes) {
+      unless ($string != $bytes) {
         return 0;
       }
     }

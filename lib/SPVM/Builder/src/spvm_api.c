@@ -1100,7 +1100,19 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* src_string = object_vars[opcode->operand1];
         int32_t src_string_length = env->length(env, src_string);
         int8_t* src_string_data = env->get_elems_byte(env, src_string);
-        void* string = env->new_string_len_raw(env, (const char*)src_string_data, src_string_length);
+        void* byte_array = env->new_byte_array_raw(env, src_string_length);
+        int8_t* byte_array_data = env->get_elems_byte(env, byte_array);
+        memcpy(byte_array_data, src_string_data, src_string_length);
+        
+        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], byte_array);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING:
+      {
+        void* src_byte_array = object_vars[opcode->operand1];
+        int32_t src_byte_array_length = env->length(env, src_byte_array);
+        int8_t* src_byte_array_data = env->get_elems_byte(env, src_byte_array);
+        void* string = env->new_string_len_raw(env, (const char*)src_byte_array_data, src_byte_array_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }

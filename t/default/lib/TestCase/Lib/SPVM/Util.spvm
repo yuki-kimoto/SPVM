@@ -1645,28 +1645,28 @@ package TestCase::Lib::SPVM::Util {
   sub test_memcpyb : int () {
 
     {
-      my $target = "abcde";
-      my $search = "ABC";
-      memcpyb((byte[])$target, 0, (byte[])$search, 0, 3);
-      unless ($target eq "ABCde") {
+      my $target = (byte[])"abcde";
+      my $search = (byte[])"ABC";
+      memcpyb($target, 0, $search, 0, 3);
+      unless ((string)$target eq (string)"ABCde") {
         return 0;
       }
     }
 
     {
-      my $target = "abcde";
-      my $search = "ABC";
-      memcpyb((byte[])$target, 2, (byte[])$search, 0, 3);
-      unless ($target eq "abABC") {
+      my $target = (byte[])"abcde";
+      my $search = (byte[])"ABC";
+      memcpyb($target, 2, $search, 0, 3);
+      unless ((string)$target eq (string)"abABC") {
         return 0;
       }
     }
 
     {
-      my $target = "abcde";
-      my $search = "ABC";
-      memcpyb((byte[])$target, 2, (byte[])$search, 0, 3);
-      unless ($target eq "abABC") {
+      my $target = (byte[])"abcde";
+      my $search = (byte[])"ABC";
+      memcpyb($target, 2, $search, 0, 3);
+      unless ((string)$target eq (string)"abABC") {
         return 0;
       }
     }
@@ -1677,36 +1677,36 @@ package TestCase::Lib::SPVM::Util {
   sub test_memmoveb : int () {
 
     {
-      my $target = "abcde";
-      my $search = "ABC";
-      memmoveb((byte[])$target, 0, (byte[])$search, 0, 3);
-      unless ($target eq "ABCde") {
+      my $target = (byte[])"abcde";
+      my $search = (byte[])"ABC";
+      memmoveb($target, 0, $search, 0, 3);
+      unless ((string)$target eq (string)"ABCde") {
         return 0;
       }
     }
 
     {
-      my $target = "abcde";
-      my $search = "ABC";
-      memmoveb((byte[])$target, 2, (byte[])$search, 0, 3);
-      unless ($target eq "abABC") {
+      my $target = (byte[])"abcde";
+      my $search = (byte[])"ABC";
+      memmoveb($target, 2, $search, 0, 3);
+      unless ((string)$target eq (string)"abABC") {
         return 0;
       }
     }
 
     {
-      my $target = "abcde";
-      my $search = "ABC";
-      memmoveb((byte[])$target, 2, (byte[])$search, 0, 3);
-      unless ($target eq "abABC") {
+      my $target = (byte[])"abcde";
+      my $search = (byte[])"ABC";
+      memmoveb($target, 2, $search, 0, 3);
+      unless ((string)$target eq (string)"abABC") {
         return 0;
       }
     }
 
     {
-      my $target = "abcde";
-      memmoveb((byte[])$target, 0, (byte[])$target, 2, 2);
-      unless ($target eq "cdcde") {
+      my $target = (byte[])"abcde";
+      memmoveb($target, 0, $target, 2, 2);
+      unless ((string)$target eq (string)"cdcde") {
         return 0;
       }
     }
@@ -2603,12 +2603,22 @@ package TestCase::Lib::SPVM::Util {
     unless ($strings->[0] eq $strings_out->[0]) {
       return 0;
     }
-
-    unless ($strings->[1] == $strings_out->[1]) {
+    unless ($strings->[1] eq $strings_out->[1]) {
+      return 0;
+    }
+    unless ($strings->[2] eq $strings_out->[2]) {
       return 0;
     }
 
-    unless ($strings->[2] == $strings_out->[2]) {
+    unless ($strings->[0] != $strings_out->[0]) {
+      return 0;
+    }
+
+    unless ($strings->[1] != $strings_out->[1]) {
+      return 0;
+    }
+
+    unless ($strings->[2] != $strings_out->[2]) {
       return 0;
     }
 

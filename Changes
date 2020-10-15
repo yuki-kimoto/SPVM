@@ -1,3 +1,8 @@
+0.0924 2020-10-16
+  - add real string type. before this relese runtime string type is same as byte[] type, but in this release string type is string type in also runtime
+  - implicite conversion from byte[] to string become occur compile error
+  - type conversion from byte[] to string become copy instead of reference copy
+  - type conversion from string[] to byte become copy instead of reference copy
 0.0923 2020-10-14
   - add SPVM::BlessedObject::Array set method
   - add SPVM::BlessedObject::Array get method

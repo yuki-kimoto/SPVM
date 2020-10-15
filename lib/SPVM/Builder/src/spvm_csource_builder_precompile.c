@@ -2017,9 +2017,26 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_STRING_BUFFER_add(string_buffer, "    void* src_string = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t src_string_length = env->length(env, src_string);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_string_data = env->get_elems_byte(env, src_string);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_len_raw(env, (const char*)src_string_data, src_string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t src_string_length = env->length(env, src_string);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_string_data = env->get_elems_byte(env, src_string);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* byte_array = env->new_byte_array_raw(env, src_string_length);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* byte_array_data = env->get_elems_byte(env, byte_array);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    memcpy(byte_array_data, src_string_data, src_string_length);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+        SPVM_STRING_BUFFER_add(string_buffer, ", byte_array);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING:
+      {
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* src_byte_array = ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int32_t src_byte_array_length = env->length(env, src_byte_array);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_byte_array_data = env->get_elems_byte(env, src_byte_array);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_len_raw(env, (const char*)src_byte_array_data, src_byte_array_length);");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");

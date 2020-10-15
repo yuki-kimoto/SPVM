@@ -1097,7 +1097,7 @@ package SPVM::Util {
       my $result_rest_length = $result_str_len - $result_rest_offset;
       memmoveb((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
 
-      return $result_str;
+      return (string)$result_str;
     }
     else {
       my $copy_str = copy_str($str);

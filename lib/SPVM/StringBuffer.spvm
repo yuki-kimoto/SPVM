@@ -113,7 +113,7 @@ package SPVM::StringBuffer {
       $new_text->[$i] = $self->{value}[$offset + $i];
     }
     
-    return $new_text;
+    return (string)$new_text;
   }
 
   sub index : int ($self : self, $search : string, $offset : int) {
