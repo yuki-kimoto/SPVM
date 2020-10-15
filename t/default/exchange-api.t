@@ -1155,10 +1155,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # call_sub can receive array reference - new string array and to_strings
   {
     my $spvm_values = ["あいう", "えお", "ab", undef];
-    my $values = TestCase::ExchangeAPI->return_string_array_only($spvm_values)->to_strings;
+    my $values = TestCase::ExchangeAPI->return_string_array_only($spvm_values)->to_elems;
     is_deeply($values, ["あいう", "えお", "ab", undef]);
   }
 }
+
 
 # new array
 {
@@ -1529,7 +1530,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   {
     my $values = TestCase->string_empty();
-    is($values->to_bin, "");
+    is($values, "");
   }
 }
 

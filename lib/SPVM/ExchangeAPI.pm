@@ -6,32 +6,6 @@ use warnings;
 use Encode 'encode', 'decode';
 use Carp 'confess';
 
-sub array_to_string {
-  my $bin = SPVM::ExchangeAPI::array_to_bin(@_);
-  
-  my $string = decode('UTF-8', $bin);
-  
-  return $string;
-}
-
-sub array_to_strings {
-  my $elems = SPVM::ExchangeAPI::array_to_elems(@_);
-  
-  my $strs = [];
-  
-  for (my $i = 0; $i < @$elems; $i++) {
-    my $elem = $elems->[$i];
-    if (defined $elem) {
-      $strs->[$i] = $elem->to_string;
-    }
-    else {
-      $strs->[$i] = undef;
-    }
-  }
-  
-  return $strs;
-}
-
 sub new_byte_array_from_string {
   my ($env, $string) = @_;
   
@@ -216,7 +190,3 @@ SPVM::ExchangeAPI - SPVM Exchange API
 =head2 array_to_bin
 
 =head2 array_to_elems
-
-=head2 array_to_string
-
-=head2 array_to_strings

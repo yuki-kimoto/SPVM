@@ -3429,28 +3429,50 @@ array_to_elems(...)
       }
     }
     else if (array->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
-      for (int32_t index = 0; index < length; index++) {
-        // Element type id
-        SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
-
-        // Index
-        SPVM_OBJECT* value = env->get_elem_object(env, array, index);
-        if (value == NULL) {
-          av_push(av_values, &PL_sv_undef);
-        }
-        else {
-          env->inc_ref_count(env, value);
-          int32_t element_type_is_array_type = element_type_dimension > 0;
+      if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
+        for (int32_t i = 0; i < length; i++) {
+          void* object = env->get_elem_object(env, array, i);
+          
           SV* sv_value;
-          if (element_type_is_array_type) {
-            sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::BlessedObject::Array");
+          if (object != NULL) {
+            const char* string_bytes = (const char*)env->get_elems_byte(env, object);
+            int32_t length = env->length(env, object);
+            
+            sv_value = sv_2mortal(newSVpv(string_bytes, length));
+            
+            sv_utf8_decode(sv_value);
           }
           else {
-            const char* basic_type_name = basic_type->name;
-            SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-            sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
+            sv_value = &PL_sv_undef;
           }
+          
           av_push(av_values, SvREFCNT_inc(sv_value));
+        }
+      }
+      else {
+        for (int32_t index = 0; index < length; index++) {
+          // Element type id
+          SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
+
+          // Index
+          SPVM_OBJECT* value = env->get_elem_object(env, array, index);
+          if (value == NULL) {
+            av_push(av_values, &PL_sv_undef);
+          }
+          else {
+            env->inc_ref_count(env, value);
+            int32_t element_type_is_array_type = element_type_dimension > 0;
+            SV* sv_value;
+            if (element_type_is_array_type) {
+              sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::BlessedObject::Array");
+            }
+            else {
+              const char* basic_type_name = basic_type->name;
+              SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+              sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
+            }
+            av_push(av_values, SvREFCNT_inc(sv_value));
+          }
         }
       }
     }
