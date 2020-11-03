@@ -55,7 +55,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
   # ハッシュに保存(文字列)
-  my $mnist_train_image_info_spvm = SPVM::Hash->new([
+  my $mnist_train_image_info_spvm = SPVM::Hash->newa([
     count => 5,
   ]);
   
@@ -67,7 +67,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Empty Hash new
 {
   {
-    my $hash = SPVM::Hash->new([]);
+    my $hash = SPVM::Hash->newa([]);
     is_deeply($hash->count, 0);
   }
 }
@@ -177,7 +177,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Get hash key - any object
 {
   my $biases = SPVM::new_float_array([1, 2, 3]);
-  my $hash = SPVM::Hash->new_empty;
+  my $hash = SPVM::Hash->new;
   $hash->set(biases => $biases);
   $hash->set("int" => SPVM::Int->new(4));
   my $get_biases = $hash->get("biases");
@@ -352,7 +352,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Pass hash
   {
-    my $hash = SPVM::Hash->new([x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)]);
+    my $hash = SPVM::Hash->newa([x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)]);
     is($hash->get("x")->val, 1);
     is($hash->get("y")->val, 2.5);
   }

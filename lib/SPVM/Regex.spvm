@@ -571,7 +571,7 @@ package SPVM::Regex {
     
     my $original_target_base_index = $target_base_index;
     
-    my $opt = SPVM::Hash->new($opta);
+    my $opt = SPVM::Hash->newa($opta);
     
     my $replace_all = 0;
     if (my $replace_all_obj = $opt->get("replace_all")) {
