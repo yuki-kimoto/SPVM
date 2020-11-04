@@ -8,13 +8,12 @@ use Test::More 'no_plan';
 
 use SPVM 'TestCase::Lib::SPVM::Hash';
 
-
-
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::Hash
 {
+  ok(TestCase::Lib::SPVM::Hash->test_set_get_numeric);
   ok(TestCase::Lib::SPVM::Hash->test_murmur_hash);
   ok(TestCase::Lib::SPVM::Hash->test_new_capacity);
   ok(TestCase::Lib::SPVM::Hash->test_newa);

@@ -273,4 +273,42 @@ package SPVM::Hash : precompile {
   }
 
   native sub murmur_hash : long ($string : string, $seed : int);
+  
+  sub set_byte : void ($self : self, $name : string, $value : byte) {
+    $self->set($name => SPVM::Byte->new($value));
+  }
+  sub set_short : void ($self : self, $name : string, $value : short) {
+    $self->set($name => SPVM::Short->new($value));
+  }
+  sub set_int : void ($self : self, $name : string, $value : int) {
+    $self->set($name => SPVM::Int->new($value));
+  }
+  sub set_long : void ($self : self, $name : string, $value : long) {
+    $self->set($name => SPVM::Long->new($value));
+  }
+  sub set_float : void ($self : self, $name : string, $value : float) {
+    $self->set($name => SPVM::Float->new($value));
+  }
+  sub set_double : void ($self : self, $name : string, $value : double) {
+    $self->set($name => SPVM::Double->new($value));
+  }
+  
+  sub get_byte : byte ($self : self, $name : string) {
+    return (byte)$self->get($name);
+  }
+  sub get_short : short ($self : self, $name : string) {
+    return (short)$self->get($name);
+  }
+  sub get_int : int ($self : self, $name : string) {
+    return (int)$self->get($name);
+  }
+  sub get_long : long ($self : self, $name : string) {
+    return (long)$self->get($name);
+  }
+  sub get_float : float ($self : self, $name : string) {
+    return (float)$self->get($name);
+  }
+  sub get_double : double ($self : self, $name : string) {
+    return (double)$self->get($name);
+  }
 }

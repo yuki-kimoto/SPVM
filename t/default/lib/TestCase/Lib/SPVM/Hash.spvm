@@ -3,6 +3,92 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Hash;
   use SPVM::Comparator;
   use SPVM::List;
+  use SPVM::Util;
+
+  sub test_set_get_numeric : int () {
+    
+    my $hash = SPVM::Hash->new;
+    
+    # set_byte, get_byte
+    {
+      $hash->set_byte(foo => SPVM::Util->INT8_MAX());
+      unless ($hash->get("foo") isa SPVM::Byte) {
+        return 0;
+      }
+      my $value = $hash->get_byte("foo");
+      
+      unless ($value == SPVM::Util->INT8_MAX()) {
+        return 0;
+      }
+    }
+
+    # set_short, get_short
+    {
+      $hash->set_short(foo => SPVM::Util->INT16_MAX());
+      unless ($hash->get("foo") isa SPVM::Short) {
+        return 0;
+      }
+      my $value = $hash->get_short("foo");
+      
+      unless ($value == SPVM::Util->INT16_MAX()) {
+        return 0;
+      }
+    }
+
+    # set_int, get_int
+    {
+      $hash->set_int(foo => SPVM::Util->INT32_MAX());
+      unless ($hash->get("foo") isa SPVM::Int) {
+        return 0;
+      }
+      my $value = $hash->get_int("foo");
+      
+      unless ($value == SPVM::Util->INT32_MAX()) {
+        return 0;
+      }
+    }
+
+    # set_long, get_long
+    {
+      $hash->set_long(foo => SPVM::Util->INT64_MAX());
+      unless ($hash->get("foo") isa SPVM::Long) {
+        return 0;
+      }
+      my $value = $hash->get_long("foo");
+      
+      unless ($value == SPVM::Util->INT64_MAX()) {
+        return 0;
+      }
+    }
+
+    # set_float, get_float
+    {
+      $hash->set_float(foo => SPVM::Util->FLT_MIN());
+      unless ($hash->get("foo") isa SPVM::Float) {
+        return 0;
+      }
+      my $value = $hash->get_float("foo");
+      
+      unless ($value == SPVM::Util->FLT_MIN()) {
+        return 0;
+      }
+    }
+
+    # set_double, get_double
+    {
+      $hash->set_double(foo => SPVM::Util->DBL_MIN());
+      unless ($hash->get("foo") isa SPVM::Double) {
+        return 0;
+      }
+      my $value = $hash->get_double("foo");
+      
+      unless ($value == SPVM::Util->DBL_MIN()) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
 
   sub test_murmur_hash : int () {
     my $seed = 123456789;
