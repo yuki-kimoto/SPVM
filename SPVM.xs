@@ -663,6 +663,50 @@ new_byte_array(...)
 }
 
 SV*
+new_byte_array_unsigned(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_byte_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array Length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New byte array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_byte_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int8_t* elems = env->get_elems_byte(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (uint8_t)SvUV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
 new_byte_array_from_bin(...)
   PPCODE:
 {
@@ -711,28 +755,70 @@ new_short_array(...)
     if (!sv_derived_from(sv_elems, "ARRAY")) {
       croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
-  
+    
+    // Elements
     AV* av_elems = (AV*)SvRV(sv_elems);
     
+    // Array length
     int32_t length = av_len(av_elems) + 1;
     
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
     // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
     void* array = env->new_short_array(env, length);
-
+    
+    // Copy Perl elements to SPVM elements
     int16_t* elems = env->get_elems_short(env, array);
-    {
-      int32_t i;
-      for (i = 0; i < length; i++) {
-        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-        elems[i] = (int16_t)SvIV(sv_value);
-      }
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (int16_t)SvIV(sv_value);
     }
     
-    // New sv array
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_short_array_unsigned(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_short_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int16_t* elems = env->get_elems_short(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (uint16_t)SvUV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
     sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
