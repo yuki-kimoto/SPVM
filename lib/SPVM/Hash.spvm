@@ -5,7 +5,7 @@ package SPVM::Hash : precompile {
   has bucket_count : int;
   has count : int;
   has entries : SPVM::Hash::Entry [];
-  has max_load_factor : public rw double;
+  has max_load_factor : double;
 
   sub _bucket_count : int ($self : self) {
     return $self->{bucket_count};
