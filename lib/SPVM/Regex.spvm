@@ -1,4 +1,4 @@
-package SPVM::Regex {
+package SPVM::Regex : precompile {
   use SPVM::Unicode (uchar);
   use SPVM::List;
   use SPVM::IntList;
