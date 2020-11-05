@@ -11,6 +11,8 @@
   - SPVM::Hash->load_factor method become private
   - SPVM::Hash->new_opt method become private
   - SPVM::Hash->murmur_hash become private
+  - remove SPVM::Hash newa method to avoid complexity bugs in object type conversion
+  - SPVM::StringBuffer->new_opt recieve SPVM::Hash object as options
 0.0924 2020-10-16
   - fix echange api string return value bug
   - add real string type. before this relese runtime string type is same as byte[] type, but in this release string type is string type in also runtime

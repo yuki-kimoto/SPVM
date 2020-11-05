@@ -53,22 +53,32 @@ my $DBL_MAX = POSIX::DBL_MAX();
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-{
-  # ハッシュに保存(文字列)
-  my $mnist_train_image_info_spvm = SPVM::Hash->newa([
-    count => 5,
-  ]);
-  
-  my $count = $mnist_train_image_info_spvm->get("count");
-  
-  is($count, 5);
-}
-
-# Empty Hash new
+# SPVM::Hash
 {
   {
-    my $hash = SPVM::Hash->newa([]);
-    is_deeply($hash->count, 0);
+    # SPVM::Hash
+    my $opt = SPVM::Hash->new;
+    $opt->set_int(count => 5);
+    my $count = $opt->get_int("count");
+    
+    is($count, 5);
+  }
+
+  # Empty Hash new
+  {
+    {
+      my $hash = SPVM::Hash->new;
+      is_deeply($hash->count, 0);
+    }
+  }
+
+  # Pass hash
+  {
+    my $hash = SPVM::Hash->new;
+    $hash->set_int(x => 1);
+    $hash->set_double(y => 2.5);
+    is($hash->get("x")->val, 1);
+    is($hash->get("y")->val, 2.5);
   }
 }
 
@@ -345,16 +355,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     is($vals->[0]->y, 2);
     is($vals->[1]->x, 3);
     is($vals->[1]->y, 4);
-  }
-}
-
-# Pass hash
-{
-  # Pass hash
-  {
-    my $hash = SPVM::Hash->newa([x => SPVM::Int->new(1), y => SPVM::Double->new(2.5)]);
-    is($hash->get("x")->val, 1);
-    is($hash->get("y")->val, 2.5);
   }
 }
 

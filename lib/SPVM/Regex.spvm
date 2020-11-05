@@ -552,26 +552,32 @@ package SPVM::Regex {
   }
   
   sub replace  : string ($self : self, $target : string, $target_offset : int, $replace : string) {
-    return $self->replace_opt($target, $target_offset, $replace, [(object)replace_all => 0]);
+    my $opt = SPVM::Hash->new;
+    $opt->set_int(replace_all => 0);
+    return $self->replace_opt($target, $target_offset, $replace, $opt);
   }
 
   sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
-    return $self->replace_opt($target, $target_offset, $replace_cb, [(object)replace_all => 0]);
+    my $opt = SPVM::Hash->new;
+    $opt->set_int(replace_all => 0);
+    return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
   }
 
   sub replace_all  : string ($self : self, $target : string, $target_offset : int, $replace : string) {
-    return $self->replace_opt($target, $target_offset, $replace, [(object)replace_all => 1]);
+    my $opt = SPVM::Hash->new;
+    $opt->set_int(replace_all => 1);
+    return $self->replace_opt($target, $target_offset, $replace, $opt);
   }
 
   sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
-    return $self->replace_opt($target, $target_offset, $replace_cb, [(object)replace_all => 1]);
+    my $opt = SPVM::Hash->new;
+    $opt->set_int(replace_all => 1);
+    return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
   }
   
-  private sub replace_opt  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object, $opta : object[]) {
+  private sub replace_opt  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object, $opt : SPVM::Hash) {
     
     my $original_target_base_index = $target_base_index;
-    
-    my $opt = SPVM::Hash->newa($opta);
     
     my $replace_all = 0;
     if (my $replace_all_obj = $opt->get("replace_all")) {

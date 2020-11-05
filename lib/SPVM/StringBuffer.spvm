@@ -30,31 +30,7 @@ package SPVM::StringBuffer {
     return $self;
   }
   
-  sub new_opt : SPVM::StringBuffer ($options : object[]) {
-    my $options_h = SPVM::Hash->newa($options);
-    
-    my $self = new SPVM::StringBuffer;
-
-    my $default_capacity : int;
-    if ($options_h->exists("capacity")) {
-      $default_capacity = (int)$options_h->delete("capacity");
-    }
-    else {
-      $default_capacity = DEFAULT_CAPACITY();
-    }
-    
-    # Minimal capacity is 1
-    if ($default_capacity < 1) {
-      die "Invalid capacity";
-    }
-    
-    $self->{value} = new byte [$default_capacity];
-    $self->{length} = 0;
-    
-    return $self;
-  }
-
-  sub push  : void ($self : self, $string : string) {
+  sub push : void ($self : self, $string : string) {
     my $length = length($string);
     my $capacity = @$self->{value};
     if ($self->{length} + $length > $capacity) {
@@ -72,7 +48,7 @@ package SPVM::StringBuffer {
     $self->{length} += $length;
   }
 
-  sub push_char  : void ($self : self, $char : byte) {
+  sub push_char : void ($self : self, $char : byte) {
     my $capacity = @$self->{value};
     if ($self->{length} + 1 > $capacity) {
       my $new_capacity = $capacity * 2;
@@ -81,7 +57,7 @@ package SPVM::StringBuffer {
     $self->{value}[$self->{length}++] = $char;
   }
 
-  sub push_range  : void ($self : self, $string : string, $offset : int, $length : int) {
+  sub push_range : void ($self : self, $string : string, $offset : int, $length : int) {
     my $capacity = @$self->{value};
     if ($self->{length} + $length > $capacity) {
       my $new_capacity : int;
@@ -135,5 +111,28 @@ package SPVM::StringBuffer {
 
   sub clear : void ($self : self) {
     $self->{length} = 0;
+  }
+
+  sub new_opt : SPVM::StringBuffer ($opt : SPVM::Hash) {
+    
+    my $self = new SPVM::StringBuffer;
+
+    my $default_capacity : int;
+    if ($opt->exists("capacity")) {
+      $default_capacity = (int)$opt->delete("capacity");
+    }
+    else {
+      $default_capacity = DEFAULT_CAPACITY();
+    }
+    
+    # Minimal capacity is 1
+    if ($default_capacity < 1) {
+      die "Invalid capacity";
+    }
+    
+    $self->{value} = new byte [$default_capacity];
+    $self->{length} = 0;
+    
+    return $self;
   }
 }
