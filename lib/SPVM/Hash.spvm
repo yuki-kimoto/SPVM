@@ -43,34 +43,6 @@ package SPVM::Hash : precompile {
     return $self;
   }
 
-  sub new_opt : SPVM::Hash ($options : object[]) {
-    my $self = new SPVM::Hash;
-    
-    if (@$options % 2 != 0) {
-      die "Element count of options must be even number";
-    }
-    
-    my $default_capacity = 0;
-    for (my $i = 0; $i < @$options; $i += 2) {
-      my $name = (string)$options->[$i];
-      my $value = $options->[$i + 1];
-      
-      if ($name eq "capacity") {
-        $default_capacity = (int)$value;
-      }
-    }
-    
-    $self->{bucket_count} = $default_capacity;
-    if ($default_capacity <= 0) {
-      die "Need capacity";
-    }
-    $self->{entries} = new SPVM::Hash::Entry[$default_capacity];
-    $self->{count} = 0;
-    $self->{max_load_factor} = 1.0;
-    
-    return $self;
-  }
-
   sub count : int ($self : self) {
     return $self->{count};
   }
@@ -310,5 +282,33 @@ package SPVM::Hash : precompile {
 
   sub _load_factor : double ($self : self) {
     return (double) $self->{count} / $self->{bucket_count};
+  }
+
+  sub _new_opt : SPVM::Hash ($options : object[]) {
+    my $self = new SPVM::Hash;
+    
+    if (@$options % 2 != 0) {
+      die "Element count of options must be even number";
+    }
+    
+    my $default_capacity = 0;
+    for (my $i = 0; $i < @$options; $i += 2) {
+      my $name = (string)$options->[$i];
+      my $value = $options->[$i + 1];
+      
+      if ($name eq "capacity") {
+        $default_capacity = (int)$value;
+      }
+    }
+    
+    $self->{bucket_count} = $default_capacity;
+    if ($default_capacity <= 0) {
+      die "Need capacity";
+    }
+    $self->{entries} = new SPVM::Hash::Entry[$default_capacity];
+    $self->{count} = 0;
+    $self->{max_load_factor} = 1.0;
+    
+    return $self;
   }
 }
