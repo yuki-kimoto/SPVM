@@ -10,6 +10,7 @@
   - SPVM::Hash->set_max_load_factor method is removed
   - SPVM::Hash->load_factor method become private
   - SPVM::Hash->new_opt method become private
+  - SPVM::Hash->murmur_hash become private
 0.0924 2020-10-16
   - fix echange api string return value bug
   - add real string type. before this relese runtime string type is same as byte[] type, but in this release string type is string type in also runtime

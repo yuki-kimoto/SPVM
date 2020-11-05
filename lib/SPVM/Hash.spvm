@@ -173,7 +173,7 @@ package SPVM::Hash : precompile {
     return $ret;
   }
 
-  native sub murmur_hash : long ($string : string, $seed : int);
+  native sub _murmur_hash : long ($string : string, $seed : int);
   
   sub set_byte : void ($self : self, $name : string, $value : byte) {
     $self->set($name => SPVM::Byte->new($value));
@@ -223,7 +223,7 @@ package SPVM::Hash : precompile {
 
   sub _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = 123456789;
-    return (int)(murmur_hash($key, $default_seed) % $bucket_count);
+    return (int)(_murmur_hash($key, $default_seed) % $bucket_count);
   }
 
   sub _set_to_container : void ($entries : SPVM::Hash::Entry[], $bucket_count : int, $count_ref : int&,
