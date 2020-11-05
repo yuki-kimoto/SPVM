@@ -1,4 +1,4 @@
-0.0925 2020-11-03
+0.0925 2020-11-05
   - [revert]SPVM::Hash->newa is rename to new, and original new is renamed to new_empty
     because SPVM::Hash->new(["foo" => SPVM::Int->new(4)]) is not good interface from Perl code.
     I feel the following is more good code because Perl code and SPVM code is exactly same.
