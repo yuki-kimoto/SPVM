@@ -313,21 +313,6 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_load_factor : int () {
-    my $capacity = 16;
-    my $hash = SPVM::Hash->new_opt([(object)capacity => $capacity]);
-    $hash->set("A", SPVM::Int->new(1));
-    
-    my $factor = $hash->load_factor - 1.0 / $capacity;
-    if ($factor < 0) {
-      $factor = -$factor;
-    }
-    unless ($factor < 0.01) {
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_rehash : int () {
     my $initial_capacity = 16;
     my $hash = SPVM::Hash->new_opt([(object)capacity => $initial_capacity]);

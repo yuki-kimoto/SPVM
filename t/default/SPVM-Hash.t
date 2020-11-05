@@ -26,7 +26,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::Hash->test_exists);
   ok(TestCase::Lib::SPVM::Hash->test_delete_with_no_hash_collision);
   ok(TestCase::Lib::SPVM::Hash->test_delete_with_hash_collision);
-  ok(TestCase::Lib::SPVM::Hash->test_load_factor);
   ok(TestCase::Lib::SPVM::Hash->test_rehash);
   ok(TestCase::Lib::SPVM::Hash->test_keys);
   ok(TestCase::Lib::SPVM::Hash->test_values);

@@ -6,6 +6,9 @@
       $hash->set_int(5);
   - add SPVM::Hash method
     set_byte, set_short, set_int, set_long, set_float, set_double, get_byte, get_short, get_int, get_long, get_float, get_double
+  -  SPVM::Hash->max_load_factor field become private
+  -  SPVM::Hash->set_max_load_factor method is removed
+  -  SPVM::Hash->load_factor method become private
 0.0924 2020-10-16
   - fix echange api string return value bug
   - add real string type. before this relese runtime string type is same as byte[] type, but in this release string type is string type in also runtime
