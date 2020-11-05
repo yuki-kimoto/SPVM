@@ -1,4 +1,4 @@
-package SPVM::IntList {
+package SPVM::IntList : precompile {
   use SPVM::Util (memcpyi, memmovei);
   
   has values   : int[];

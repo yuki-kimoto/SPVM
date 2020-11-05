@@ -1,4 +1,4 @@
-package SPVM::DoubleList {
+package SPVM::DoubleList : precompile {
   use SPVM::Util (memcpyd, memmoved);
   
   has values   : double[];

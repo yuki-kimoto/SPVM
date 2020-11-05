@@ -1,4 +1,4 @@
-package SPVM::LongList {
+package SPVM::LongList : precompile {
   use SPVM::Util (memcpyl, memmovel);
   
   has values   : long[];

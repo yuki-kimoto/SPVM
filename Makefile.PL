@@ -128,6 +128,14 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringBuffer');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::List');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ByteList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ShortList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::IntList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::LongList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::FloatList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::DoubleList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringList');
   }
   
   return $make_rule;

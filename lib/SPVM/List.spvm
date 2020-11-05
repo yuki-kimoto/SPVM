@@ -1,4 +1,4 @@
-package SPVM::List {
+package SPVM::List : precompile {
   has values   : object[];
   has capacity : ro int;
   has length   : ro int;

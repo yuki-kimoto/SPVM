@@ -1,4 +1,4 @@
-package SPVM::ShortList {
+package SPVM::ShortList : precompile {
   use SPVM::Util (memcpys, memmoves);
   
   has values   : short[];

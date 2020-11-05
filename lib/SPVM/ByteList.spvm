@@ -1,4 +1,4 @@
-package SPVM::ByteList {
+package SPVM::ByteList : precompile {
   use SPVM::Util (memcpyb, memmoveb);
   
   has values   : byte[];
