@@ -4,6 +4,7 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Comparator;
   use SPVM::List;
   use SPVM::Util;
+  use SPVM::Sort;
 
   sub test_set_get_numeric : int () {
     
@@ -106,20 +107,6 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_new_capacity : int () {
-    my $hash = SPVM::Hash->_new_opt([(object)capacity => 10]);
-    unless ($hash->_bucket_count == 10) {
-      return 0;
-    }
-    unless ($hash->count == 0) {
-      return 0;
-    }
-    unless (@{$hash->_entries} == 10) {
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_set : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), undef, SPVM::Int->new(3)];
@@ -164,7 +151,7 @@ package TestCase::Lib::SPVM::Hash {
     unless ($hash->get("b") == undef) {
       return 0;
     }
-    unless ((string)($hash->get("c")) eq "str") {
+    unless (((string)$hash->get("c")) eq "str") {
       return 0;
     }
     unless ($hash->get("no_key") == undef) {
@@ -192,14 +179,9 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub test_delete_with_no_hash_collision : int () {
-    my $capacity = 16;
-    my $hash = SPVM::Hash->_new_opt([(object)capacity => $capacity]);
+    my $hash = SPVM::Hash->new;
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
-    unless (SPVM::Hash->_index_by_key("alice", $hash->_bucket_count)
-        != (SPVM::Hash->_index_by_key("bob", 123456789) % $capacity)) {
-      return 0;
-    }
     unless (((SPVM::Int)($hash->delete("alice")))->val == 1) {
       return 0;
     }
@@ -261,144 +243,95 @@ package TestCase::Lib::SPVM::Hash {
 
   sub test_rehash : int () {
     my $initial_capacity = 16;
-    my $hash = SPVM::Hash->_new_opt([(object)capacity => $initial_capacity]);
-    my $hash_2 = SPVM::Hash->_new_opt([(object)capacity => $initial_capacity + 1]);
-    for (my $i = 0; $i < $initial_capacity + 1; ++$i) {
-      my $byte_key = (byte []) "A";
-      $byte_key->[0] += $i;
-      $hash->set((string)$byte_key, SPVM::Int->new($i));
-      $hash_2->set((string)$byte_key, SPVM::Int->new($i));
+    my $hash = SPVM::Hash->new;
+    for (my $i = 0; $i < 14; ++$i) {
+      my $key = "key" . $i;
+      $hash->set_int($key => $i);
     }
+    
     unless ($hash->_bucket_count == $initial_capacity * 2) {
-      return 0;
-    }
-    unless ($hash->count == $initial_capacity + 1) {
       return 0;
     }
     unless (@{$hash->_entries} == $initial_capacity * 2) {
       return 0;
     }
-    unless ($hash_2->_bucket_count == $initial_capacity + 1) {
+    
+    unless ($hash->get_int("key12") == 12) {
       return 0;
     }
-    for (my $i = 0; $i < $initial_capacity + 1; ++$i) {
-      my $byte_key = (byte []) "A";
-      $byte_key->[0] += $i;
-      my $lhs = (SPVM::Int)($hash->get((string)$byte_key));
-      my $rhs = (SPVM::Int)($hash_2->get((string)$byte_key));
-      unless ($lhs->val == $rhs->val && $lhs->val == $i) {
-        return 0;
-      }
-    }
-    return 1;
-  }
-
-  sub _same_unordered_objects : int ($lhs : object[], $rhs : object[], $comparator : SPVM::Comparator) {
-    unless (@$lhs == @$rhs) {
-      return 0;
-    }
-    my $rhs_used = new int [@$rhs];
-    for (my $i = 0; $i < @$lhs; ++$i) {
-      my $found = 0;
-      for (my $j = 0; $j < @$rhs; ++$j) {
-        if (!$rhs_used->[$j] && $comparator->($lhs->[$i], $rhs->[$j])) {
-          $found = 1;
-          $rhs_used->[$j] = 1;
-          last;
-        }
-      }
-      unless ($found) {
-        return 0;
-      }
-    }
-    for (my $i = 0; $i < @$rhs_used; $i++) {
-      unless ($rhs_used->[$i]) {
-        return 0;
-      }
-    }
+    
     return 1;
   }
 
   sub test_keys : int () {
     my $hash = SPVM::Hash->new;
-    my $keys = ["a", "bb", "12345"];
-    my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-    for (my $i = 0; $i < @$keys; ++$i) {
-      $hash->set($keys->[$i], $vals->[$i]);
+    my $key0 = "a";
+    my $key1 = "b";
+    my $key2 = "c";
+    
+    $hash->set_int($key0 => 1);
+    $hash->set_int($key1 => 2);
+    $hash->set_int($key2 => 3);
+    
+    my $keys = $hash->keys;
+
+    unless (@$keys == 3) {
+      return 0;
     }
-    my $got_keys = $hash->keys;
-    my $lhs = new object [@$got_keys];
-    for (my $i = 0; $i < @$got_keys; $i++) {
-      $lhs->[$i] = $got_keys->[$i];
+    
+    SPVM::Sort->sortstr($keys);
+    
+    unless ($keys->[0] == $key0) {
+      return 0;
     }
-    my $rhs = new object [@$keys];
-    for (my $i = 0; $i < @$keys; $i++) {
-      $rhs->[$i] = $keys->[$i];
+    
+    unless ($keys->[1] == $key1) {
+      return 0;
     }
-    my $comparator = sub : int ($self : self, $lhs : object, $rhs : object) {
-      my $s = (string)$lhs;
-      my $t = (string)$rhs;
-      unless ($s eq $t) {
-        return 0;
-      }
-      return 1;
-    };
-    return _same_unordered_objects($lhs, $rhs, $comparator);
+    
+    unless ($keys->[2] == $key2) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   sub test_values : int () {
     my $hash = SPVM::Hash->new;
-    my $keys = ["a", "bb", "12345"];
-    my $vals = [(object) SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-    for (my $i = 0; $i < @$keys; ++$i) {
-      $hash->set($keys->[$i], $vals->[$i]);
-    }
-    my $comparator = sub : int ($self : self, $lhs : object, $rhs : object) {
-      my $x = (SPVM::Int)$lhs;
-      my $y = (SPVM::Int)$rhs;
-      unless ($x->val == $y->val) {
-        return 0;
-      }
-      return 1;
-    };
-    return _same_unordered_objects($hash->values, $vals, $comparator);
-  }
+    my $key0 = "a";
+    my $key1 = "b";
+    my $key2 = "c";
+    
+    $hash->set_int($key0 => 1);
+    $hash->set_int($key1 => 2);
+    $hash->set_int($key2 => 3);
+    
+    my $values = $hash->values;
 
-  sub test_each : int () {
-    my $hash = SPVM::Hash->new;
-    my $keys = [(object) "a", "bb", "12345"];
-    my $vals = [(object) SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-    for (my $i = 0; $i < @$keys; ++$i) {
-      $hash->set((string)$keys->[$i], $vals->[$i]);
-    }
-    my $comparator_keys = sub : int ($self : self, $lhs : object, $rhs : object) {
-      my $s = (string)$lhs;
-      my $t = (string)$rhs;
-      unless ($s eq $t) {
-        return 0;
-      }
-      return 1;
-    };
-    my $comparator_vals = sub : int ($self : self, $lhs : object, $rhs : object) {
-      my $x = (SPVM::Int)$lhs;
-      my $y = (SPVM::Int)$rhs;
-      unless ($x->val == $y->val) {
-        return 0;
-      }
-      return 1;
-    };
-    my $each = $hash->each;
-    unless (@$each == @$keys) {
+    unless (@$values == 3) {
       return 0;
     }
-    my $got_keys = SPVM::List->new_len(0);
-    my $got_vals = SPVM::List->new_len(0);
-    for (my $i = 0; $i < @$each; ++$i) {
-      $got_keys->push($each->[$i]->[0]);
-      $got_vals->push($each->[$i]->[1]);
+    
+    my $int_values = new int[3];
+    $int_values->[0] = (int)$values->[0];
+    $int_values->[1] = (int)$values->[1];
+    $int_values->[2] = (int)$values->[2];
+    
+    SPVM::Sort->sorti($int_values);
+    
+    unless ($int_values->[0] == 1) {
+      return 0;
     }
-    return _same_unordered_objects($got_keys->to_array, $keys, $comparator_keys) && 
-        _same_unordered_objects($got_vals->to_array, $vals, $comparator_vals);
+    
+    unless ($int_values->[1] == 2) {
+      return 0;
+    }
+    
+    unless ($int_values->[2] == 3) {
+      return 0;
+    }
+    
+    return 1;
   }
 
   sub test_copy : int () {

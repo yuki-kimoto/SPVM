@@ -110,11 +110,22 @@ package TestCase::Lib::SPVM::Sort {
   }
 
   sub test_sortstr : int () {
-    my $strs = ["aba", "ab", "abc", "a"];
-    my $expected = ["a", "ab", "aba", "abc"];
-    sortstr($strs);
-    unless (equals_strarray($strs, $expected)) {
-      return 0;
+    {
+      my $strs = ["aba", "ab", "abc", "a"];
+      my $expected = ["a", "ab", "aba", "abc"];
+      sortstr($strs);
+      unless (equals_strarray($strs, $expected)) {
+        return 0;
+      }
+    }
+    
+    {
+      my $strs = ["c", "b", "a"];
+      my $expected = ["a", "b", "c"];
+      sortstr($strs);
+      unless (equals_strarray($strs, $expected)) {
+        return 0;
+      }
     }
     return 1;
   }

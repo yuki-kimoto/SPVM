@@ -5,18 +5,21 @@ package SPVM::Hash : precompile {
   has bucket_count : int;
   has count : int;
   has entries : SPVM::Hash::Entry [];
-  has max_load_factor : double;
+  
+  private enum {
+    _DEFALUT_HASH_TABLE_LENGTH = 16,
+  }
+  private sub _MAX_LOAD_FACTOR : double () { return 0.75; }
 
   sub new : SPVM::Hash () {
     my $self = new SPVM::Hash;
     my $default_capacity = 32;
-    $self->{bucket_count} = $default_capacity;
-    $self->{entries} = new SPVM::Hash::Entry[$default_capacity];
+    $self->{bucket_count} = _DEFALUT_HASH_TABLE_LENGTH();
+    $self->{entries} = new SPVM::Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
-    $self->{max_load_factor} = 1.0;
     return $self;
   }
-
+  
   sub count : int ($self : self) {
     return $self->{count};
   }
@@ -25,7 +28,8 @@ package SPVM::Hash : precompile {
     unless ($key) {
       die "key must not be undef";
     }
-    unless ($self->_load_factor < $self->{max_load_factor} || $self->{bucket_count} == INT32_MAX()) {
+    # Rehash
+    if (((double)$self->{count} / $self->{bucket_count}) > _MAX_LOAD_FACTOR()) {
       $self->_rehash;
     }
     my $count = $self->{count};
@@ -102,9 +106,8 @@ package SPVM::Hash : precompile {
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        $retval->[$count++] = copy_str($ref->{key});
+        $retval->[$count++] = $ref->{key};
         $ref = $ref->{next_entry};
-
       }
     }
     return $retval;
@@ -118,20 +121,6 @@ package SPVM::Hash : precompile {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
         $retval->[$count++] = $ref->{val};
-        $ref = $ref->{next_entry};
-      }
-    }
-    return $retval;
-  }
-
-  sub each : object[][] ($self : self) {
-    my $retval = new object[][$self->{count}];
-    # iterate entries
-    my $count = 0;
-    for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
-      my $ref = $self->{entries}->[$i];
-      while ($ref) {
-        $retval->[$count++] = [(object) copy_str($ref->{key}), $ref->{val}];
         $ref = $ref->{next_entry};
       }
     }
@@ -231,15 +220,7 @@ package SPVM::Hash : precompile {
 
   sub _rehash : void ($self : self) {
     my $new_bucket_count : int;
-    if ($self->{bucket_count} > INT32_MAX() / 2) {
-      if ($self->{bucket_count} == INT32_MAX()) {
-        return;
-      }
-      $new_bucket_count = INT32_MAX();
-    }
-    else {
-      $new_bucket_count = $self->{bucket_count} * 2;
-    }
+    $new_bucket_count = $self->{bucket_count} * 2;
     my $new_entries = new SPVM::Hash::Entry [$new_bucket_count];
     my $new_count = 0;
     # iterate entries
@@ -252,37 +233,5 @@ package SPVM::Hash : precompile {
     }
     $self->{bucket_count} = $new_bucket_count;
     $self->{entries} = $new_entries;
-  }
-
-  sub _load_factor : double ($self : self) {
-    return (double) $self->{count} / $self->{bucket_count};
-  }
-
-  sub _new_opt : SPVM::Hash ($options : object[]) {
-    my $self = new SPVM::Hash;
-    
-    if (@$options % 2 != 0) {
-      die "Element count of options must be even number";
-    }
-    
-    my $default_capacity = 0;
-    for (my $i = 0; $i < @$options; $i += 2) {
-      my $name = (string)$options->[$i];
-      my $value = $options->[$i + 1];
-      
-      if ($name eq "capacity") {
-        $default_capacity = (int)$value;
-      }
-    }
-    
-    $self->{bucket_count} = $default_capacity;
-    if ($default_capacity <= 0) {
-      die "Need capacity";
-    }
-    $self->{entries} = new SPVM::Hash::Entry[$default_capacity];
-    $self->{count} = 0;
-    $self->{max_load_factor} = 1.0;
-    
-    return $self;
   }
 }

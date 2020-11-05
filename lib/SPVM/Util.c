@@ -865,7 +865,7 @@ int32_t SPNATIVE__SPVM__Util__get_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
   
   if (object == NULL) {
-    return SPVM_EXCEPTION;
+    SPVM_DIE("Object must be not null", MFILE, __LINE__);
   }
   
   void* type_name = env->get_type_name(env, object);
