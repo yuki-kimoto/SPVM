@@ -879,16 +879,17 @@ new_int_array(...)
       croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", MFILE, __LINE__);
     }
     
+    // Elements
     AV* av_elems = (AV*)SvRV(sv_elems);
     
+    // Array length
     int32_t length = av_len(av_elems) + 1;
     
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
     // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
     void* array = env->new_int_array(env, length);
     
+    // Copy Perl elements to SPVM erlements
     int32_t* elems = env->get_elems_int(env, array);
     for (int32_t i = 0; i < length; i++) {
       SV** sv_value_ptr = av_fetch(av_elems, i, 0);
@@ -896,7 +897,50 @@ new_int_array(...)
       elems[i] = (int32_t)SvIV(sv_value);
     }
     
-    // New sv array
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_int_array_unsigned(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_int_array(env, length);
+    
+    // Copy Perl elements to SPVM erlements
+    int32_t* elems = env->get_elems_int(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (uint32_t)SvUV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
     sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   }
   else {
