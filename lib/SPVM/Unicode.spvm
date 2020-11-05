@@ -1,4 +1,4 @@
-package SPVM::Unicode {
+package SPVM::Unicode : precompile {
   use SPVM::IntList;
   use SPVM::StringBuffer;
 
@@ -10,7 +10,7 @@ package SPVM::Unicode {
   
   native sub uchar_to_utf8 : string ($uchar : int);
   
-  precompile sub utf8_to_utf16 : short[] ($str : string) {
+  sub utf8_to_utf16 : short[] ($str : string) {
     my $pos = 0;
     my $uchars_list = SPVM::IntList->new_len(0);
     while ((my $uchar = uchar($str, \$pos)) >= 0) {
@@ -28,7 +28,7 @@ package SPVM::Unicode {
     return $utf16_chars;
   }
   
-  precompile sub utf16_to_utf8 : string ($utf16_chars : short[]) {
+  sub utf16_to_utf8 : string ($utf16_chars : short[]) {
     my $uchars = utf16_to_utf32($utf16_chars);
     
     my $buffer = SPVM::StringBuffer->new;
@@ -45,7 +45,7 @@ package SPVM::Unicode {
     return $str;
   }
   
-  precompile sub utf32_to_utf16 : short[] ($code_point_string : int[]) {
+  sub utf32_to_utf16 : short[] ($code_point_string : int[]) {
     my $length = 0;
     
     # Culcurate length
@@ -85,7 +85,7 @@ package SPVM::Unicode {
     return $utf16_string;
   }
 
-  precompile sub utf16_to_utf32 : int[] ($utf16_string : short[]) {
+  sub utf16_to_utf32 : int[] ($utf16_string : short[]) {
 
     my $length = 0;
     
@@ -125,7 +125,7 @@ package SPVM::Unicode {
     return $code_point_string;
   }
 
-  private precompile sub _is_utf16_high_surrogate : int ($ch : int) {
+  private sub _is_utf16_high_surrogate : int ($ch : int) {
     if ($ch >= 0xD800 && $ch < 0xDC00) {
       return 1;
     }
@@ -134,7 +134,7 @@ package SPVM::Unicode {
     }
   }
 
-  private precompile sub _is_utf16_low_surrogate : int ($ch : int) {
+  private sub _is_utf16_low_surrogate : int ($ch : int) {
     if ($ch >= 0xDC00 && $ch < 0xE000) {
       return 1;
     }
