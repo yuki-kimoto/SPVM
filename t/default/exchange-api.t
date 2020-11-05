@@ -49,6 +49,10 @@ my $FLT_MIN = POSIX::FLT_MIN();
 my $DBL_MIN = POSIX::DBL_MIN();
 my $FLT_MAX = POSIX::FLT_MAX();
 my $DBL_MAX = POSIX::DBL_MAX();
+my $UBYTE_MAX = 255;
+my $USHORT_MAX = 65535;
+my $UINT_MAX = 4294967295;
+my $ULONG_MAX = 18446744073709551615;
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
@@ -1201,6 +1205,34 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $spvm_values = SPVM::new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
     my $values = $spvm_values->to_elems;
     is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
+  }
+}
+
+# new array unsigned
+{
+  # new_byte_array_unsigned
+  {
+    my $spvm_values = SPVM::new_byte_array_unsigned([0, $UBYTE_MAX]);
+    my $bin = $spvm_values->to_bin;
+    is_deeply([unpack 'C*', $bin], [0, $UBYTE_MAX]);
+  }
+  # new_short_array_unsigned
+  {
+    my $spvm_values = SPVM::new_short_array_unsigned([0, $USHORT_MAX]);
+    my $bin = $spvm_values->to_bin;
+    is_deeply([unpack 'S*', $bin], [0, $USHORT_MAX]);
+  }
+  # new_int_array_unsigned
+  {
+    my $spvm_values = SPVM::new_int_array_unsigned([0, $UINT_MAX]);
+    my $bin = $spvm_values->to_bin;
+    is_deeply([unpack 'L*', $bin], [0, $UINT_MAX]);
+  }
+  # new_long_array_unsigned
+  {
+    my $spvm_values = SPVM::new_long_array_unsigned([0, $ULONG_MAX]);
+    my $bin = $spvm_values->to_bin;
+    is_deeply([unpack 'Q*', $bin], [0, $ULONG_MAX]);
   }
 }
 
