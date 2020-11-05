@@ -471,6 +471,7 @@ lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
 lib/SPVM/Hash.c
 lib/SPVM/Hash.config
+lib/SPVM/Hash.pm
 lib/SPVM/Hash.spvm
 lib/SPVM/Hash/Entry.pm
 lib/SPVM/Hash/Entry.spvm
