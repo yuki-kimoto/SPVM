@@ -141,50 +141,66 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head1 Functions
 
-=head2 call_sub
-
-=head2 memory_blocks_count
-
-=head2 new_string_array
+Function names is only listed. See L<SPVM> document or L<SPVM::BlessedObject::Array> document about the details.
 
 =head2 new_byte_array
 
+=head2 new_byte_array_unsigned
+
+=head2 new_byte_array_len
+
 =head2 new_byte_array_from_bin
 
-=head2 new_byte_array_from_string
+=head2 new_short_array
 
-=head2 new_double_array
+=head2 new_short_array_unsigned
 
-=head2 new_double_array_from_bin
+=head2 new_short_array_len
 
-=head2 new_float_array
-
-=head2 new_float_array_from_bin
+=head2 new_short_array_from_bin
 
 =head2 new_int_array
+
+=head2 new_int_array_unsigned
+
+=head2 new_int_array_len
 
 =head2 new_int_array_from_bin
 
 =head2 new_long_array
 
+=head2 new_long_array_len
+
 =head2 new_long_array_from_bin
+
+=head2 new_double_array
+
+=head2 new_double_array_len
+
+=head2 new_double_array_from_bin
+
+=head2 new_float_array
+
+=head2 new_float_array_len
+
+=head2 new_float_array_from_bin
 
 =head2 new_object_array
 
-=head2 new_short_array
-
-=head2 new_short_array_from_bin
-
-=head2 new_string
-
-=head2 new_string_from_bin
+=head2 new_string_array
 
 =head2 new_mulnum_array
 
 =head2 new_mulnum_array_from_bin
+
+=head2 get_exception
 
 =head2 set_exception
 
 =head2 array_to_bin
 
 =head2 array_to_elems
+
+=head2 get_memory_blocks_count
+
+=head2 call_sub
