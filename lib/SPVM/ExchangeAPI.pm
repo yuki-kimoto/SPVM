@@ -151,6 +151,8 @@ Function names is only listed. See L<SPVM> document or L<SPVM::BlessedObject::Ar
 
 =head2 new_byte_array_from_bin
 
+=head2 new_byte_array_from_string
+
 =head2 new_short_array
 
 =head2 new_short_array_unsigned
