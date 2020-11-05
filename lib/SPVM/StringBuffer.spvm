@@ -1,4 +1,4 @@
-package SPVM::StringBuffer {
+package SPVM::StringBuffer : precompile {
   use SPVM::Hash;
   use SPVM::Util (sliceb);
 

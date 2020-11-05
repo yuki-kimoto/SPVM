@@ -127,6 +127,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringBuffer');
   }
   
   return $make_rule;
