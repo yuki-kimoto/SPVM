@@ -1,3 +1,5 @@
+0.0926 2020-11-06
+  - add SPVM::new_byte_array_unsigned, SPVM::new_short_array_unsigned, SPVM::new_int_array_unsigned, SPVM::new_long_array_unsigned
 0.0925 2020-11-05
   - [revert]SPVM::Hash->newa is rename to new, and original new is renamed to new_empty
     because SPVM::Hash->new(["foo" => SPVM::Int->new(4)]) is not good interface from Perl code.
