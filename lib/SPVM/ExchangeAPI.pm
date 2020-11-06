@@ -141,7 +141,11 @@ SPVM::ExchangeAPI - SPVM Exchange API
 
 =head1 Functions
 
-Function names is only listed. See L<SPVM> document or L<SPVM::BlessedObject::Array> document about the details.
+Function names is only listed.
+
+See SPVM Exchange API about the details.
+
+L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.html>
 
 =head2 new_byte_array
 

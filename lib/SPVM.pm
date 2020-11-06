@@ -547,308 +547,110 @@ SPVM Core Modules.
 
 =back
 
-=head1 GETTING STARTED
+=head1 FUNCTIONS
 
-Get started with SPVM.
+Function names and examples is only listed.
 
-At first I will explain how to write for statement in SPVM.
-
-Next, I will explain how to precompile SPVM subroutines so that they run at the same speed as in machine language.
-
-Finally, I will explain how to write SPVM subroutines biding C language.
-
-If you are interested in the SPVM tutorial, see SPVM Tutorial.
-
-L<SPVM Tutorial|https://yuki-kimoto.github.io/spvmdoc-public/tutorial.html>
-
-=head2 How to write SPVM language
-
-This is a simple example using the SPVM for statement.
-
-  # lib/MyMath.spvm
-  package MyMath {
-    sub sum : int ($nums : int[]) {
-      
-      my $total = 0;
-      for (my $i = 0; $i < @$nums; $i++) {
-        $total += $nums->[$i];
-      }
-      
-      return $total;
-    }
-  }
-
-You create "lib" direcotry and create "MyMath.spvm" file.
-
-The extension of SPVM is ".spvm".
-
-SPVM need package definition.
-
-  package MyMath {
-
-  }
-
-See SPVM subroutine definition.
-
-  package MyMath {
-    sub sum : int ($nums : int[]) {
-    
-    }
-  }
-
-"int" after subroutine name "sum" is return value type.
-
-"int" is signed 32bit numeric type.
-
-"int[]" is argument type.
-
-"int[]" is array type that element type is "int".
-
-SPVM is static type language. You must specify subroutine return type and argument type.
-
-See subroutine implementation.
-
-    sub sum : int ($nums : int[]) {
-      
-      my $total = 0;
-      for (my $i = 0; $i < @$nums; $i++) {
-        $total += $nums->[$i];
-      }
-      
-      return $total;
-    }
-
-"my" is lexical variable declaration. 
-
-  my $total = 0;
-
-There is no type declaration. Type inference is performed using the value on the right side. Same as the description below.
-
-  my $total :int = 0;
-
-See for loop.
-
-      for (my $i = 0; $i < @$nums; $i++) {
-        $total += $nums->[$i];
-      }
-
-for loop is same as Perl syntax. You can get array length by @. @ is array length operator in all context instead of Perl.
-
-Array access use arrow operator.
-
-  $nums->[$i]
-
-At last, return value.
-
-      return $total;
-
-If you want to know the syntax of SPVM, the SPVM Language Specification has a complete description.
-
-L<SPVM Language Specification|https://yuki-kimoto.github.io/spvmdoc-public/language.html>
-
-=head2 How to call SPVM subroutine from Perl
-
-You may be surprised to know that SPVM subroutines can be called directly from Perl.
-  
-  use FindBin;
-  use lib "$FindBin::Bin/lib";
-  
-  use SPVM 'MyMath';
-  
-  # Call subroutine
-  my $total = MyMath->sum([3, 6, 8, 9]);
-  
-  print $total . "\n";
-
-To load an SPVM module from Perl, use the following syntax.
-
-  use SPVM 'MyMath';
-
-Call SPVM subroutine from Perl.
-
-  # Call subroutine
-  my $total = MyMath->sum([3, 6, 8, 9]);
-
-Perl array reference is converted to SPVM int array, and call sum method of MyMath, and SPVM int value of return value is converted to Perl Scalar.
-
-If you want to know the rules for calling SPVM subroutines from Perl, and the rules for converting Perl and SPVM values, see the SPVM Exchagne API.
+See SPVM Exchange API about the details.
 
 L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.html>
 
-=head2 How to improve performacne using subroutine precompile
+=head2 new_byte_array
 
-See how to speed up SPVM subroutines. SPVM subroutines can be converted into machine code by precompile descriptor.
+  my $spvm_nums = SPVM::new_byte_array([1, 2, 3]);
 
-  # lib/MyMath.spvm
-  package MyMath {
-    precompile sub sum_precompile : int ($nums : int[]) {
-      
-      my $total = 0;
-      for (my $i = 0; $i < @$nums; $i++) {
-        $total += $nums->[$i];
-      }
-      
-      return $total;
-    }
-  }
+New SPVM byte array from Perl array reference.
 
-Subroutine code is same as non precompile subroutine.
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
-A build directory is required to precompile subroutines.
+=head2 new_byte_array_unsigned
 
-You set SPVM_BUILD_DIR. The following is bash example.
+  my $spvm_nums = SPVM::new_byte_array_unsigned([1, 2, 255]);
 
-  # ~/.bashrc
-  export SPVM_BUILD_DIR=~/.spvm_build
+New SPVM byte array from Perl array reference. Each element in Perl array reference is interpreted an unsigned 8-bit integer.
 
-How fast will it be? See SPVM Peformance Benchmark.
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
-L<SPVM Performance Benchmark|https://yuki-kimoto.github.io/spvmdoc-public/benchmark.html>
+=head2 new_byte_array_len
 
-=head2 How to improve performacne using native subroutine
+  my $spvm_nums = SPVM::new_byte_array_len(3)
 
-If you want, you can native subroutine for performance with native descriptor.
+New SPVM byte array with array length.
 
-  # lib/MyMath.spvm
-  package MyMath {
-    native sub sum_native : int ($nums : int[]);
-  }
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
-Native subrosutine is binding a function of C langage.
+=head2 new_byte_array_from_bin
   
-  // lib/MyMath.c
-  #include "spvm_native.h"
+  my $bin = pack('c*', 1, -5, 100);
+  my $spvm_nums = SPVM::new_byte_array_from_bin($bin);
+
+New SPVM byte array with packed binary data. The packed binary data is interpreted a sequence of signed 8-bit intergers.
+
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
+=head2 new_byte_array_from_string
   
-  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-    
-    void* sv_nums = stack[0].oval;
-    
-    int32_t length = env->length(env, sv_nums);
-    
-    int32_t* nums = env->get_elems_int(env, sv_nums);
-    
-    int32_t total = 0;
-    for (int32_t i = 0; i < length; i++) {
-      total += nums[i];
-    }
-    
-    stack[0].ival = total;
-    
-    return SPVM_SUCCESS;
-  }
+  use utf8;
+  my $string = "あいう";
+  my $spvm_nums = new_byte_array_from_string($string);
 
-File name is "MyMath.c". 
+New SPVM byte array from decoded Perl string. The decoded Perl string is encoded to UTF-8.
 
-At first, include "spvm_native.h". This header provide SPVM Native API.
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
-  #include "spvm_native.h"
+=head2 new_short_array
 
-See the declaration of C function.
+=head2 new_short_array_unsigned
 
-  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+=head2 new_short_array_len
 
-    return SPVM_SUCCESS;
-  }
+=head2 new_short_array_from_bin
 
-Return value type is int32_t. The return value indicates that the subroutine did not throw an exception.
+=head2 new_int_array
 
-SPVM_SUCCESS is macro that value is 0 defined in "spvm_native.h".
+=head2 new_int_array_unsigned
 
-C function name start SPNATIVE__. Package name "MyMath" and subroutine name "sum_native" is joined by "__".
+=head2 new_int_array_len
 
-If package name contains double colon(Foo::Bar), double colon is replaced by "__".
+=head2 new_int_array_from_bin
 
-First argument is a pointer to SPVM_ENV object. This variable has SPVM runtime information.
+=head2 new_long_array
 
-Second argument is SPVM_VALUE array. stack contains arguments of SPVM subroutine.
+=head2 new_long_array_len
 
-And stack is also used to set return value of SPVM subroutine.
+=head2 new_long_array_from_bin
 
-See implementation of C function.
+=head2 new_double_array
 
-  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-    
-    void* sv_nums = stack[0].oval;
-    
-    int32_t length = env->length(env, sv_nums);
-    
-    int32_t* nums = env->get_elems_int(env, sv_nums);
-    
-    int32_t total = 0;
-    for (int32_t i = 0; i < length; i++) {
-      total += nums[i];
-    }
-    
-    stack[0].ival = total;
-    
-    return SPVM_SUCCESS;
-  }
+=head2 new_double_array_len
 
-At first, get first argument of SPVM subroutine.
+=head2 new_double_array_from_bin
 
-    void* sv_nums = stack[0].oval;
+=head2 new_float_array
 
-"int[]" is array type. array type is also object type. You can get a object by C<oval> field.
+=head2 new_float_array_len
 
-Get array length.
+=head2 new_float_array_from_bin
 
-    int32_t length = env->length(env, sv_nums);
+=head2 new_object_array
 
-Get numeric int32_t array of C langage. SPVM int type is same as int32_t type of C language.
+=head2 new_string_array
 
-    int32_t* nums = env->get_elems_int(env, sv_nums);
+=head2 new_mulnum_array
 
-Calcuration.
+=head2 new_mulnum_array_from_bin
 
-    int32_t total = 0;
-    for (int32_t i = 0; i < length; i++) {
-      total += nums[i];
-    }
+=head2 get_exception
 
-At last, set return value to the first element of stack as int type. C<ival> filed is used to get or set int32_t value.
+=head2 set_exception
 
-    stack[0].ival = total;
+=head2 array_to_bin
 
-Note that you do not return the SPVM return value with the return keyword of C langauge.
+=head2 array_to_elems
 
-return value of C function indicates whether the subroutine throw an exception.
+=head2 get_memory_blocks_count
 
-If you write a native subroutine, you must write a configuration file.
-
-The configuration file for native subroutines is a Perl script.
-
-  # lib/MyMath.config
-
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_c99;
-
-  $bconf;
-
-If you write SPVM subroutine using C language, you can use C<new_c99> method of L<SPVM::Builder::Config>.
-
-If you want to see SPVM Native API like length and get_elems_int
-
-    int32_t length = env->length(env, sv_nums);
-    
-    int32_t* nums = env->get_elems_int(env, sv_nums);
-
-See SPVM Native API.
-
-L<SPVM Native API|https://yuki-kimoto.github.io/spvmdoc-public/native-api.html>
-
-A build directory is required to native subroutines.
-
-You set SPVM_BUILD_DIR. The following is bash example.
-
-  # ~/.bashrc
-  export SPVM_BUILD_DIR=~/.spvm_build
-
-How fast will it be? See SPVM Peformance Benchmark.
-
-L<SPVM Performance Benchmark|https://yuki-kimoto.github.io/spvmdoc-public/benchmark.html>
+=head2 call_sub
 
 =head1 ENVIRONMENT VARIABLE
 
