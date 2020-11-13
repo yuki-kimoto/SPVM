@@ -19,7 +19,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0925';
+our $VERSION = '0.0926';
 
 my $SPVM_INITED;
 my $BUILDER;
@@ -557,7 +557,7 @@ L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.ht
 
 =head2 new_byte_array
 
-  my $spvm_nums = SPVM::new_byte_array([1, 2, 3]);
+  my $spvm_nums = SPVM::new_byte_array([ 1, -5, 100]);
 
 New SPVM byte array from Perl array reference.
 
@@ -581,10 +581,15 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 =head2 new_byte_array_from_bin
   
+  # Pack singed 8-bit integers
   my $bin = pack('c*', 1, -5, 100);
   my $spvm_nums = SPVM::new_byte_array_from_bin($bin);
+  
+  # Pack unsigned 8-bit integers
+  my $bin = pack('C*', 1, 2, 255);
+  my $spvm_nums = SPVM::new_byte_array_from_bin($bin);
 
-New SPVM byte array with packed binary data. The packed binary data is interpreted a sequence of signed 8-bit intergers.
+New SPVM byte array with packed binary data. The packed binary data is interpreted a sequence of signed singed 8-bit integers or unsigned 8-bit intergers.
 
 Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
@@ -600,11 +605,41 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 =head2 new_short_array
 
+  my $spvm_nums = SPVM::new_short_array([1, 2, 3]);
+
+New SPVM short array from Perl array reference.
+
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_short_array_unsigned
+
+  my $spvm_nums = SPVM::new_short_array_unsigned([1, 2, 65535]);
+
+New SPVM short array from Perl array reference. Each element in Perl array reference is interpreted an unsigned 16-bit integer.
+
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_short_array_len
 
+  my $spvm_nums = SPVM::new_short_array_len(3)
+
+New SPVM short array with array length.
+
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_short_array_from_bin
+  
+  # Pack signed 16-bit intergers
+  my $bin = pack('s*', 1, -5, 100);
+  my $spvm_nums = SPVM::new_short_array_from_bin($bin);
+
+  # Pack unsigned 16-bit intergers
+  my $bin = pack('S*', 1, 2, 65535);
+  my $spvm_nums = SPVM::new_short_array_from_bin($bin);
+
+New SPVM short array with packed binary data. The packed binary data is interpreted a sequence of signed 16-bit interger or unsinged 16-bit integer.
+
+Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_int_array
 
