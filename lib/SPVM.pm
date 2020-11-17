@@ -561,7 +561,7 @@ L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.ht
 
 New SPVM byte array from Perl array reference.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_byte_array_unsigned
 
@@ -569,7 +569,7 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM byte array from Perl array reference. Each element in Perl array reference is interpreted an unsigned 8-bit integer.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_byte_array_len
 
@@ -577,7 +577,7 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM byte array with array length.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_byte_array_from_bin
   
@@ -591,7 +591,7 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM byte array with packed binary data. The packed binary data is interpreted a sequence of signed singed 8-bit integers or unsigned 8-bit intergers.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_byte_array_from_string
   
@@ -601,7 +601,7 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM byte array from decoded Perl string. The decoded Perl string is encoded to UTF-8.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_short_array
 
@@ -609,7 +609,7 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM short array from Perl array reference.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_short_array_unsigned
 
@@ -617,7 +617,7 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM short array from Perl array reference. Each element in Perl array reference is interpreted an unsigned 16-bit integer.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_short_array_len
 
@@ -625,7 +625,7 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM short array with array length.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_short_array_from_bin
   
@@ -639,33 +639,135 @@ Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPV
 
 New SPVM short array with packed binary data. The packed binary data is interpreted a sequence of signed 16-bit interger or unsinged 16-bit integer.
 
-Retrun value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_int_array
 
+  my $spvm_nums = SPVM::new_int_array([1, 2, 3]);
+
+New SPVM int array from Perl array reference.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_int_array_unsigned
+
+  my $spvm_nums = SPVM::new_int_array_unsigned([1, 2, 4294967295]);
+
+New SPVM int array from Perl array reference. Each element in Perl array reference is interpreted an unsigned 32-bit integer.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_int_array_len
 
+  my $spvm_nums = SPVM::new_int_array_len(3)
+
+New SPVM int array with array length.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_int_array_from_bin
+  
+  # Pack signed 32-bit intergers
+  my $bin = pack('l*', 1, -5, 100);
+  my $spvm_nums = SPVM::new_int_array_from_bin($bin);
+
+  # Pack unsigned 32-bit intergers
+  my $bin = pack('L*', 1, 2, 65535);
+  my $spvm_nums = SPVM::new_int_array_from_bin($bin);
+
+New SPVM int array with packed binary data. The packed binary data is interpreted a sequence of signed 32-bit interger or unsinged 32-bit integer.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_long_array
 
+  my $spvm_nums = SPVM::new_long_array([1, 2, 3]);
+
+New SPVM long array from Perl array reference.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
+=head2 new_long_array_unsigned
+
+  my $spvm_nums = SPVM::new_long_array_unsigned([1, 2, 18446744073709551615]);
+
+New SPVM long array from Perl array reference. Each element in Perl array reference is interpreted an unsigned 64-bit integer.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_long_array_len
 
+  my $spvm_nums = SPVM::new_long_array_len(3)
+
+New SPVM long array with array length.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_long_array_from_bin
+  
+  # Pack signed 64-bit intergers
+  my $bin = pack('l*', 1, -5, 100);
+  my $spvm_nums = SPVM::new_long_array_from_bin($bin);
 
-=head2 new_double_array
+  # Pack unsigned 64-bit intergers
+  my $bin = pack('L*', 1, 2, 65535);
+  my $spvm_nums = SPVM::new_long_array_from_bin($bin);
 
-=head2 new_double_array_len
+New SPVM long array with packed binary data. The packed binary data is interpreted a sequence of signed 64-bit interger or unsinged 64-bit integer.
 
-=head2 new_double_array_from_bin
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_float_array
 
+  my $spvm_nums = SPVM::new_float_array([1.5, 2.5, 3.0]);
+
+New SPVM float array from Perl array reference.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_float_array_len
 
+  my $spvm_nums = SPVM::new_float_array_len(3)
+
+New SPVM float array with array length.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
 =head2 new_float_array_from_bin
+  
+  # Pack float value
+  my $bin = pack('f*', 1, -5.5, 4.5);
+  my $spvm_nums = SPVM::new_float_array_from_bin($bin);
+
+New SPVM float array with packed binary data. The packed binary data is interpreted a sequence of 32-bit floating points.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
+=head2 new_double_array
+
+  my $spvm_nums = SPVM::new_double_array([1.5, 2.5, 3.0]);
+
+New SPVM double array from Perl array reference.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
+=head2 new_double_array_len
+
+  my $spvm_nums = SPVM::new_double_array_len(3)
+
+New SPVM double array with array length.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
+
+=head2 new_double_array_from_bin
+  
+  # Pack double value
+  my $bin = pack('d*', 1, -5.5, 4.5);
+  my $spvm_nums = SPVM::new_double_array_from_bin($bin);
+
+New SPVM double array with packed binary data. The packed binary data is interpreted a sequence of 64-bit floating points.
+
+Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_object_array
 
