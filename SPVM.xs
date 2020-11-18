@@ -2376,54 +2376,7 @@ call_sub(...)
               
               int32_t length = av_len(av_elems) + 1;
               
-              // Check first value of array reference is no-ref-scalar
-              int32_t is_convert_to_string_array;
-              if (length > 0) {
-                SV** sv_str_value_ptr = av_fetch(av_elems, 0, 0);
-                SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
-                if (SvROK(sv_str_value)) {
-                  is_convert_to_string_array = 0;
-                }
-                else {
-                  is_convert_to_string_array = 1;
-                }
-              }
-              else {
-                is_convert_to_string_array = 1;
-              }
-              
-              // If arument type is byte[][] and first value of array reference is no-ref-scalar, the value is convert to byte[][]
-              if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg_type_dimension == 2 && is_convert_to_string_array) {
-                // New array
-                SPVM_OBJECT* array = env->new_muldim_array(env, SPVM_BASIC_TYPE_C_ID_BYTE, 1, length);
-
-                for (int32_t i = 0; i < length; i++) {
-                  SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
-                  SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
-                  if (SvOK(sv_str_value)) {
-                    // Copy
-                    sv_str_value = sv_2mortal(newSVsv(sv_str_value));
-                    
-                    // Encode to UTF-8
-                    sv_utf8_encode(sv_str_value);
-                    
-                    int32_t length = sv_len(sv_str_value);
-                    const char* chars = SvPV_nolen(sv_str_value);
-                    
-                    void* string = env->new_string_len_raw(env, chars, length);
-                    env->set_elem_object(env, array, i, string);
-                  }
-                  else {
-                    env->set_elem_object(env, array, i, NULL);
-                  }
-                }
-
-                // New sv array
-                SV* sv_marray = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-                sv_value = sv_marray;
-              }
-              // 1-dimension array
-              else if (arg_type_dimension == 1) {
+              if (arg_type_dimension == 1) {
                 switch (arg_basic_type_id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     // New array
