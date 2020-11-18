@@ -2031,11 +2031,8 @@ call_sub(...)
 
       SV* sv_value = ST(arg_index + arg_start);
       
-      // Convert to runtime type
-      int32_t arg_runtime_basic_type_id;
-      int32_t arg_runtime_type_dimension;
-      arg_runtime_basic_type_id = arg->type->basic_type->id;
-      arg_runtime_type_dimension = arg->type->dimension;
+      int32_t arg_basic_type_id = arg->type->basic_type->id;
+      int32_t arg_type_dimension = arg->type->dimension;
       
       switch (arg->runtime_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
@@ -2097,8 +2094,7 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -2142,8 +2138,7 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -2188,8 +2183,7 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -2233,8 +2227,7 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -2278,8 +2271,7 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -2323,8 +2315,7 @@ call_sub(...)
           if (sv_derived_from(sv_value, "HASH")) {
             HV* hv_value = (HV*)SvRV(sv_value);
 
-            int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+            SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
             SPVM_PACKAGE* arg_package = arg_basic_type->package;
             assert(arg_package);
@@ -2402,7 +2393,7 @@ call_sub(...)
               }
               
               // If arument type is byte[][] and first value of array reference is no-ref-scalar, the value is convert to byte[][]
-              if (arg_runtime_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg_runtime_type_dimension == 2 && is_convert_to_string_array) {
+              if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_BYTE && arg_type_dimension == 2 && is_convert_to_string_array) {
                 // New array
                 SPVM_OBJECT* array = env->new_muldim_array(env, SPVM_BASIC_TYPE_C_ID_BYTE, 1, length);
 
@@ -2432,8 +2423,8 @@ call_sub(...)
                 sv_value = sv_marray;
               }
               // 1-dimension array
-              else if (arg_runtime_type_dimension == 1) {
-                switch (arg_runtime_basic_type_id) {
+              else if (arg_type_dimension == 1) {
+                switch (arg_basic_type_id) {
                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                     // New array
                     void* array = env->new_byte_array(env, length);
@@ -2628,8 +2619,6 @@ call_sub(...)
             
             if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
               SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-              int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-              int32_t arg_type_dimension = arg_runtime_type_dimension;
               
               if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
                 if (object->type_dimension == 0) {
@@ -2765,8 +2754,7 @@ call_sub(...)
             croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
-          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2832,8 +2820,7 @@ call_sub(...)
             croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
-          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2898,8 +2885,7 @@ call_sub(...)
             croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
-          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -2964,8 +2950,7 @@ call_sub(...)
             croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
-          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -3030,8 +3015,7 @@ call_sub(...)
             croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
-          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
@@ -3096,8 +3080,7 @@ call_sub(...)
             croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
-          int32_t arg_basic_type_id = arg_runtime_basic_type_id;
-          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_runtime_basic_type_id);
+          SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
 
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
           assert(arg_package);
