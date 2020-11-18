@@ -3144,16 +3144,9 @@ call_sub(...)
   
   // Return
 
-  int32_t sub_return_runtime_basic_type_id;
-  int32_t sub_return_runtime_type_dimension;
-  if (sub->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
-    sub_return_runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
-    sub_return_runtime_type_dimension = sub->return_type->dimension + 1;
-  }
-  else {
-    sub_return_runtime_basic_type_id = sub->return_type->basic_type->id;
-    sub_return_runtime_type_dimension = sub->return_type->dimension;
-  }
+  int32_t sub_return_basic_type_id = sub->return_type->basic_type->id;
+  int32_t sub_return_type_dimension = sub->return_type->dimension;
+
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
   switch (sub->return_runtime_type_category) {
@@ -3166,7 +3159,7 @@ call_sub(...)
     {
       excetpion_flag = env->call_sub(env, sub_id, stack);
       
-      SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, sub_return_runtime_basic_type_id);
+      SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, sub_return_basic_type_id);
 
       SPVM_PACKAGE* sub_return_package = sub_return_basic_type->package;
       assert(sub_return_package);
