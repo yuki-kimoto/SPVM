@@ -2134,7 +2134,7 @@ call_sub(...)
             arg_var_id += arg_package->fields->length;
           }
           else {
-            croak("%dth argument of %s::%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           break;
         }
@@ -2180,7 +2180,7 @@ call_sub(...)
             arg_var_id += arg_package->fields->length;
           }
           else {
-            croak("%dth argument of %s::%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           break;
         }
@@ -2225,7 +2225,7 @@ call_sub(...)
             arg_var_id += arg_package->fields->length;
           }
           else {
-            croak("%dth argument of %s::%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           break;
         }
@@ -2270,7 +2270,7 @@ call_sub(...)
             arg_var_id += arg_package->fields->length;
           }
           else {
-            croak("%dth argument of %s::%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           break;
         }
@@ -2315,7 +2315,7 @@ call_sub(...)
             arg_var_id += arg_package->fields->length;
           }
           else {
-            croak("%dth argument of %s::%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           break;
         }
@@ -2360,7 +2360,7 @@ call_sub(...)
             arg_var_id += arg_package->fields->length;
           }
           else {
-            croak("%dth argument of %s::%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           break;
         }
@@ -2604,7 +2604,7 @@ call_sub(...)
                           }
                           
                           if (!sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-                            croak("Element of %dth argument of %s::%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                            croak("Element of %dth argument of %s->%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                           }
                           
                           env->set_elem_object(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
@@ -2633,7 +2633,7 @@ call_sub(...)
               
               if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
                 if (object->type_dimension == 0) {
-                  croak("%dth argument of %s::%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                  croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                 }
               }
               else if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && arg_type_dimension == 0) {
@@ -2641,14 +2641,14 @@ call_sub(...)
               }
               else {
                 if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                  croak("%dth argument of %s::%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                  croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                 }
               }
               
               stack[arg_var_id].oval = object;
             }
             else {
-              croak("%dth argument of %s::%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+              croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
             }
           }
           
@@ -2658,7 +2658,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE: {
           args_contain_ref = 1;
           if (!SvROK(sv_value)) {
-            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           SV* sv_value_deref = SvRV(sv_value);
           int8_t value = (int8_t)SvIV(sv_value_deref);
@@ -2672,7 +2672,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT: {
           args_contain_ref = 1;
           if (!SvROK(sv_value)) {
-            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           SV* sv_value_deref = SvRV(sv_value);
           int16_t value = (int16_t)SvIV(sv_value_deref);
@@ -2686,7 +2686,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT: {
           args_contain_ref = 1;
           if (!SvROK(sv_value)) {
-            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           SV* sv_value_deref = SvRV(sv_value);
           int32_t value = (int32_t)SvIV(sv_value_deref);
@@ -2700,7 +2700,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG: {
           args_contain_ref = 1;
           if (!SvROK(sv_value)) {
-            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           SV* sv_value_deref = SvRV(sv_value);
           int64_t value = (int64_t)SvIV(sv_value_deref);
@@ -2714,7 +2714,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT: {
           args_contain_ref = 1;
           if (!SvROK(sv_value)) {
-            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           SV* sv_value_deref = SvRV(sv_value);
           float value = (float)SvNV(sv_value_deref);
@@ -2728,7 +2728,7 @@ call_sub(...)
         case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE: {
           args_contain_ref = 1;
           if (!SvROK(sv_value)) {
-            croak("%dth argument of %s::%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           SV* sv_value_deref = SvRV(sv_value);
           double value = (double)SvNV(sv_value_deref);
@@ -2762,7 +2762,7 @@ call_sub(...)
             is_hash_ref_ref = 0;
           }
           if (!is_hash_ref_ref) {
-            croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
@@ -2829,7 +2829,7 @@ call_sub(...)
             is_hash_ref_ref = 0;
           }
           if (!is_hash_ref_ref) {
-            croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
@@ -2895,7 +2895,7 @@ call_sub(...)
             is_hash_ref_ref = 0;
           }
           if (!is_hash_ref_ref) {
-            croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
           
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
@@ -2961,7 +2961,7 @@ call_sub(...)
             is_hash_ref_ref = 0;
           }
           if (!is_hash_ref_ref) {
-            croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
@@ -3027,7 +3027,7 @@ call_sub(...)
             is_hash_ref_ref = 0;
           }
           if (!is_hash_ref_ref) {
-            croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
@@ -3093,7 +3093,7 @@ call_sub(...)
             is_hash_ref_ref = 0;
           }
           if (!is_hash_ref_ref) {
-            croak("%dth argument of %s::%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
 
           int32_t arg_basic_type_id = arg_runtime_basic_type_id;
