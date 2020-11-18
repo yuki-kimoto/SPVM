@@ -99,7 +99,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, basic_type_id), // object_basic_type_id_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, type_dimension), // object_type_dimension_offset
-    (void*)(intptr_t)offsetof(SPVM_OBJECT, runtime_type_category), // object_runtime_type_category_offset
+    (void*)(intptr_t)offsetof(SPVM_OBJECT, type_category), // object_type_category_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, flag), // object_flag_offset
     (void*)(intptr_t)offsetof(SPVM_OBJECT, length), // object_length_offset
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT, // byte_object_basic_type_id
@@ -343,7 +343,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
     
     // Increment ref count of return value
     if (!exception_flag) {
-      switch (sub->return_runtime_type_category) {
+      switch (sub->return_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -363,7 +363,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
 
     // Decrement ref count of return value
     if (!exception_flag) {
-      switch (sub->return_runtime_type_category) {
+      switch (sub->return_type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
         case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
         case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -540,7 +540,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
       
       int32_t type_width = arg->type_width;
-      switch (arg->runtime_type_category) {
+      switch (arg->type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
           byte_vars[arg->mem_id] = *(int8_t*)&stack[stack_index];
           stack_index++;
@@ -4210,7 +4210,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
   
   // Decrement ref count of return value
   if (!exception_flag) {
-    switch (sub->return_runtime_type_category) {
+    switch (sub->return_type_category) {
       case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
       case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
       case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
@@ -4490,7 +4490,7 @@ SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJEC
 
   string3->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   string3->type_dimension = 0;
-  string3->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+  string3->type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
 
   int8_t* string1_bytes = SPVM_API_get_elems_byte(env, string1);
   int8_t* string2_bytes = SPVM_API_get_elems_byte(env, string2);
@@ -4777,7 +4777,7 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes) {
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   object->type_dimension = 0;
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
   
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
@@ -4803,7 +4803,7 @@ SPVM_OBJECT* SPVM_API_new_string_len_raw(SPVM_ENV* env, const char* bytes, int32
   
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING;
   object->type_dimension = 0;
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
 
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
@@ -4844,7 +4844,7 @@ SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) {
   object->type_dimension = 1;
   object->basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
   object->length = length;
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4867,7 +4867,7 @@ SPVM_OBJECT* SPVM_API_new_short_array_raw(SPVM_ENV* env, int32_t length) {
   // Set array length
   object->length = length;
 
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
 
   return object;
 }
@@ -4890,7 +4890,7 @@ SPVM_OBJECT* SPVM_API_new_int_array_raw(SPVM_ENV* env, int32_t length) {
   // Set array length
   object->length = length;
 
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4917,7 +4917,7 @@ SPVM_OBJECT* SPVM_API_new_long_array_raw(SPVM_ENV* env, int32_t length) {
   // Set array length
   object->length = length;
 
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4940,7 +4940,7 @@ SPVM_OBJECT* SPVM_API_new_float_array_raw(SPVM_ENV* env, int32_t length) {
   // Set array length
   object->length = length;
 
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4963,7 +4963,7 @@ SPVM_OBJECT* SPVM_API_new_double_array_raw(SPVM_ENV* env, int32_t length) {
   // Set array length
   object->length = length;
 
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
   
   return object;
 }
@@ -4993,7 +4993,7 @@ SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   // Set array length
   object->length = length;
   
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
   
   return object;
 }
@@ -5017,7 +5017,7 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   // Set array length
   object->length = length;
   
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
   
   return object;
 }
@@ -5074,7 +5074,7 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   // Set array length
   object->length = length;
 
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY;
 
   return object;
 }
@@ -5114,7 +5114,7 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   object->length = fields_length;
 
   // Object type id
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
   if (package->sub_destructor) {
@@ -5158,7 +5158,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   object->length = 0;
 
   // Object type id
-  object->runtime_type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+  object->type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
   
   // Has destructor
   if (package->sub_destructor) {
@@ -5257,7 +5257,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   // If reference count is zero, free address.
   if (object->ref_count == 1) {
     // Free elements of object array
-    if (object->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
+    if (object->type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
       int32_t length = object->length;
       for (int32_t index = 0; index < length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[index]);
@@ -5268,7 +5268,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     // Free package object
-    else if (object->runtime_type_category == SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE) {
+    else if (object->type_category == SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE) {
 
       // Package
       SPVM_COMPILER* compiler = env->compiler;

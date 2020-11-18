@@ -10,7 +10,7 @@ struct SPVM_object {
   int32_t ref_count;
   int32_t basic_type_id;
   uint8_t type_dimension;
-  uint8_t runtime_type_category;
+  uint8_t type_category;
   uint8_t flag;
   int32_t length;
 };

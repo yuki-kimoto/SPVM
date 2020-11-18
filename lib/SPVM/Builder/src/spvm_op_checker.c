@@ -3775,11 +3775,11 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           for (int32_t my_index = 0; my_index < sub->mys->length; my_index++) {
             SPVM_MY* my = SPVM_LIST_fetch(sub->mys, my_index);
             SPVM_TYPE* my_type = SPVM_OP_get_type(compiler, my->op_my);
-            my->runtime_type_category = SPVM_TYPE_get_runtime_type_category(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
+            my->type_category = SPVM_TYPE_get_type_category(compiler, my_type->basic_type->id, my_type->dimension, my_type->flag);
           }
 
           // Resolve return runtime type
-          sub->return_runtime_type_category = SPVM_TYPE_get_runtime_type_category(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
+          sub->return_type_category = SPVM_TYPE_get_type_category(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag);
           
           // Arg alloc length
           int32_t args_alloc_length = SPVM_SUB_get_arg_alloc_length(compiler, sub);
@@ -4946,7 +4946,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
       
       // Set runtime type
-      field->runtime_type_category = SPVM_TYPE_get_runtime_type_category(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
+      field->type_category = SPVM_TYPE_get_type_category(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag);
 
       // Create field signature
       const char* field_signature = SPVM_COMPILER_create_field_signature(compiler, field);

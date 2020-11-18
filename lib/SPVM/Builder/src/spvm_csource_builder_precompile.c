@@ -1343,7 +1343,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
 
       // Numeric type
       int32_t type_width = SPVM_TYPE_get_width(compiler, arg->type->basic_type->id, arg->type->dimension, arg->type->flag);
-      switch (arg->runtime_type_category) {
+      switch (arg->type_category) {
         case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, arg->mem_id);
@@ -5423,7 +5423,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
   
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
-  switch (sub->return_runtime_type_category) {
+  switch (sub->return_type_category) {
     case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
     case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
     case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
