@@ -166,14 +166,11 @@ compile_spvm(...)
   // Add include paths
   AV* av_include_paths = get_av("main::INC", 0);;
   int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
-  {
-    int32_t i;
-    for (i = 0; i < av_include_paths_length; i++) {
-      SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
-      SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
-      char* include_path = SvPV_nolen(sv_include_path);
-      SPVM_LIST_push(compiler->module_include_pathes, include_path);
-    }
+  for (int32_t i = 0; i < av_include_paths_length; i++) {
+    SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
+    SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
+    char* include_path = SvPV_nolen(sv_include_path);
+    SPVM_LIST_push(compiler->module_include_pathes, include_path);
   }
 
   // Compile SPVM
@@ -1246,13 +1243,10 @@ new_float_array(...)
     void* array = env->new_float_array(env, length);
 
     float* elems = env->get_elems_float(env, array);
-    {
-      int32_t i;
-      for (i = 0; i < length; i++) {
-        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-        elems[i] = (float)SvNV(sv_value);
-      }
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (float)SvNV(sv_value);
     }
     
     // New sv array
@@ -1355,13 +1349,10 @@ new_double_array(...)
     void* array = env->new_double_array(env, length);
 
     double* elems = env->get_elems_double(env, array);
-    {
-      int32_t i;
-      for (i = 0; i < length; i++) {
-        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-        elems[i] = (double)SvNV(sv_value);
-      }
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (double)SvNV(sv_value);
     }
     
     // sv array
@@ -2383,13 +2374,10 @@ call_sub(...)
                     void* array = env->new_byte_array(env, length);
 
                     int8_t* elems = env->get_elems_byte(env, array);
-                    {
-                      int32_t i;
-                      for (i = 0; i < length; i++) {
-                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                        elems[i] = (int8_t)SvIV(sv_value);
-                      }
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      elems[i] = (int8_t)SvIV(sv_value);
                     }
                     
                     // New sv array
@@ -2402,13 +2390,10 @@ call_sub(...)
                     void* array = env->new_short_array(env, length);
 
                     int16_t* elems = env->get_elems_short(env, array);
-                    {
-                      int32_t i;
-                      for (i = 0; i < length; i++) {
-                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                        elems[i] = (int16_t)SvIV(sv_value);
-                      }
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      elems[i] = (int16_t)SvIV(sv_value);
                     }
                     
                     // New sv array
@@ -2422,13 +2407,10 @@ call_sub(...)
                     void* array = env->new_int_array(env, length);
                     
                     int32_t* elems = env->get_elems_int(env, array);
-                    {
-                      int32_t i;
-                      for (i = 0; i < length; i++) {
-                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                        elems[i] = (int32_t)SvIV(sv_value);
-                      }
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      elems[i] = (int32_t)SvIV(sv_value);
                     }
                     
                     // New sv array
@@ -2442,13 +2424,10 @@ call_sub(...)
                     void* array = env->new_long_array(env, length);
 
                     int64_t* elems = env->get_elems_long(env, array);
-                    {
-                      int32_t i;
-                      for (i = 0; i < length; i++) {
-                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                        elems[i] = (int64_t)SvIV(sv_value);
-                      }
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      elems[i] = (int64_t)SvIV(sv_value);
                     }
                     
                     // New sv array
@@ -2461,13 +2440,10 @@ call_sub(...)
                     void* array = env->new_float_array(env, length);
 
                     float* elems = env->get_elems_float(env, array);
-                    {
-                      int32_t i;
-                      for (i = 0; i < length; i++) {
-                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                        elems[i] = (float)SvNV(sv_value);
-                      }
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      elems[i] = (float)SvNV(sv_value);
                     }
                     
                     // New sv array
@@ -2480,13 +2456,10 @@ call_sub(...)
                     void* array = env->new_double_array(env, length);
 
                     double* elems = env->get_elems_double(env, array);
-                    {
-                      int32_t i;
-                      for (i = 0; i < length; i++) {
-                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                        elems[i] = (double)SvNV(sv_value);
-                      }
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      elems[i] = (double)SvNV(sv_value);
                     }
                     
                     // New sv array
@@ -2523,39 +2496,36 @@ call_sub(...)
                     // New array
                     void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, length);
 
-                    {
-                      int32_t i;
-                      for (i = 0; i < length; i++) {
-                        SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                        SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                        if (SvOK(sv_value)) {
+                    for (int32_t i = 0; i < length; i++) {
+                      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+                      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                      if (SvOK(sv_value)) {
+                        
+                        // Convert non-ref scalar to byte[]
+                        if (!SvROK(sv_value)) {
+                          // Copy
+                          sv_value = sv_2mortal(newSVsv(sv_value));
                           
-                          // Convert non-ref scalar to byte[]
-                          if (!SvROK(sv_value)) {
-                            // Copy
-                            sv_value = sv_2mortal(newSVsv(sv_value));
-                            
-                            // Encode to UTF-8
-                            sv_utf8_encode(sv_value);
-                            
-                            int32_t length = sv_len(sv_value);
-                            const char* chars = SvPV_nolen(sv_value);
-                            
-                            void* string = env->new_string_len_raw(env, chars, length);
-                            env->inc_ref_count(env, string);
-                            
-                            sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::Array");
-                          }
+                          // Encode to UTF-8
+                          sv_utf8_encode(sv_value);
                           
-                          if (!sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-                            croak("Element of %dth argument of %s->%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
-                          }
+                          int32_t length = sv_len(sv_value);
+                          const char* chars = SvPV_nolen(sv_value);
                           
-                          env->set_elem_object(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
+                          void* string = env->new_string_len_raw(env, chars, length);
+                          env->inc_ref_count(env, string);
+                          
+                          sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::Array");
                         }
-                        else {
-                          env->set_elem_object(env, array, i, NULL);
+                        
+                        if (!sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+                          croak("Element of %dth argument of %s->%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
                         }
+                        
+                        env->set_elem_object(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
+                      }
+                      else {
+                        env->set_elem_object(env, array, i, NULL);
                       }
                     }
                     
@@ -3603,67 +3573,49 @@ array_to_elems(...)
       switch (basic_type_id) {
         case SPVM_BASIC_TYPE_C_ID_BYTE: {
           int8_t* elems = env->get_elems_byte(env, array);
-          {
-            int32_t i;
-            for (i = 0; i < length; i++) {
-              SV* sv_value = sv_2mortal(newSViv(elems[i]));
-              av_push(av_values, SvREFCNT_inc(sv_value));
-            }
+          for (int32_t i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elems[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
           }
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_SHORT: {
           int16_t* elems = env->get_elems_short(env, array);
-          {
-            int32_t i;
-            for (i = 0; i < length; i++) {
-              SV* sv_value = sv_2mortal(newSViv(elems[i]));
-              av_push(av_values, SvREFCNT_inc(sv_value));
-            }
+          for (int32_t i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elems[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
           }
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_INT: {
           int32_t* elems = env->get_elems_int(env, array);
-          {
-            int32_t i;
-            for (i = 0; i < length; i++) {
-              SV* sv_value = sv_2mortal(newSViv(elems[i]));
-              av_push(av_values, SvREFCNT_inc(sv_value));
-            }
+          for (int32_t i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elems[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
           }
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_LONG: {
           int64_t* elems = env->get_elems_long(env, array);
-          {
-            int32_t i;
-            for (i = 0; i < length; i++) {
-              SV* sv_value = sv_2mortal(newSViv(elems[i]));
-              av_push(av_values, SvREFCNT_inc(sv_value));
-            }
+          for (int32_t i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSViv(elems[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
           }
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_FLOAT: {
           float* elems = env->get_elems_float(env, array);
-          {
-            int32_t i;
-            for (i = 0; i < length; i++) {
-              SV* sv_value = sv_2mortal(newSVnv(elems[i]));
-              av_push(av_values, SvREFCNT_inc(sv_value));
-            }
+          for (int32_t i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSVnv(elems[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
           }
           break;
         }
         case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
           double* elems = env->get_elems_double(env, array);
-          {
-            int32_t i;
-            for (i = 0; i < length; i++) {
-              SV* sv_value = sv_2mortal(newSVnv(elems[i]));
-              av_push(av_values, SvREFCNT_inc(sv_value));
-            }
+          for (int32_t i = 0; i < length; i++) {
+            SV* sv_value = sv_2mortal(newSVnv(elems[i]));
+            av_push(av_values, SvREFCNT_inc(sv_value));
           }
           break;
         }
