@@ -354,6 +354,7 @@ lib/SPVM.pm
 lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
 lib/SPVM/BlessedObject/Package.pm
+lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm

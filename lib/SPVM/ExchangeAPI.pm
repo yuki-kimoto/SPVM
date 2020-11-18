@@ -207,6 +207,8 @@ L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.ht
 
 =head2 array_to_elems
 
+=head2 string_object_to_string
+
 =head2 get_memory_blocks_count
 
 =head2 call_sub
