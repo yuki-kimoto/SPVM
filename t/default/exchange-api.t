@@ -57,6 +57,25 @@ my $ULONG_MAX = 18446744073709551615;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# call_sub - Exception
+{
+  # call_sub Exception - too few arguments
+  {
+    eval {
+      SPVM::Int->new;
+    };
+    like($@, qr/too few arguments/i);
+  }
+  
+  # call_sub Exception - too many arguments
+  {
+    eval {
+      SPVM::Int->new(1, 2);
+    };
+    like($@, qr/too many arguments/i);
+  }
+}
+
 # SPVM::Hash
 {
   {

@@ -2020,8 +2020,11 @@ call_sub(...)
   }
   
   // Check argument count
-  if (items - spvm_args_base != sub->args->length) {
-    croak("Invalid invocant or arguments count in %s->%s() at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+  if (items - spvm_args_base < sub->args->length) {
+    croak("Too few arguments %s->%s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+  }
+  else if (items - spvm_args_base > sub->args->length) {
+    croak("Too many arguments %s->%s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
   }
 
   // Arguments
