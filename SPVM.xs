@@ -1961,58 +1961,70 @@ call_sub(...)
 {
   (void)RETVAL;
   
+  // Arguments
   SV* sv_env = ST(0);
   SV* sv_package_name = ST(1);
   SV* sv_sub_name = ST(2);
-
-  int32_t arg_start = 3;
-
+  
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
   // Runtime
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
+  // Package Name
   const char* package_name = SvPV_nolen(sv_package_name);
+  
+  // Sub name
   const char* sub_name = SvPV_nolen(sv_sub_name);
 
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
   
-  // Package name
+  // Package
   SPVM_PACKAGE* package = basic_type->package;
-
+  
+  // Subroutine not found
+  int32_t sub_not_found;
+  SPVM_SUB* sub = NULL;
   if (package == NULL) {
-    croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+    sub_not_found = 1;
   }
-  SPVM_SUB* sub = SPVM_API_sub(env, package, sub_name);
-  if (sub == NULL) {
-    croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+  else {
+    sub = SPVM_API_sub(env, package, sub_name);
+    if (sub == NULL) {
+      sub_not_found = 1;
+    }
+    else {
+      sub_not_found = 0;
+    }
   }
-  const char* sub_signature = sub->signature;
-  int32_t sub_id = env->get_sub_id(env, package_name, sub_name, sub_signature);
-  if (sub_id < 0) {
-    croak("Subroutine not found %s %s at %s line %d\n", package_name, sub_signature, MFILE, __LINE__);
+  if (sub_not_found) {
+    croak("%s->%s method not found at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
   }
-
+  
+  // Argument stack
   SPVM_VALUE stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
   
+  // Reference stack
   int32_t ref_stack_top = 0;
   SPVM_VALUE ref_stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
-
   int32_t ref_stack_ids[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
+
+  // Base index of SPVM arguments
+  int32_t spvm_args_base = 3;
   
   // Arguments
   int32_t args_contain_ref = 0;
   {
     // If class method, first argument is ignored
     if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_STATIC_METHOD) {
-      arg_start++;
+      spvm_args_base++;
     }
     
     int32_t arg_index;
     // Check argument count
-    if (items - arg_start != sub->args->length) {
+    if (items - spvm_args_base != sub->args->length) {
       croak("Invalid invocant or arguments count in %s->%s() at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
     }
     
@@ -2020,7 +2032,7 @@ call_sub(...)
     for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
 
-      SV* sv_value = ST(arg_index + arg_start);
+      SV* sv_value = ST(arg_index + spvm_args_base);
       
       int32_t arg_basic_type_id = arg->type->basic_type->id;
       int32_t arg_type_dimension = arg->type->dimension;
@@ -3063,7 +3075,7 @@ call_sub(...)
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT:
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE:
     {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       
       SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, sub_return_basic_type_id);
 
@@ -3115,7 +3127,7 @@ call_sub(...)
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
     {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
         sv_return_value = NULL;
@@ -3139,7 +3151,7 @@ call_sub(...)
     case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
     case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
     {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
         sv_return_value = NULL;
@@ -3156,7 +3168,7 @@ call_sub(...)
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
     {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
         sv_return_value = NULL;
@@ -3180,7 +3192,7 @@ call_sub(...)
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
     {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         SPVM_OBJECT* return_value = (SPVM_OBJECT*)stack[0].oval;
         sv_return_value = NULL;
@@ -3217,46 +3229,46 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_VOID: {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       break;
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].bval));
       }
       break;
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_SHORT: {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].sval));
       }
       break;
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_INT: {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].ival));
       }
       break;
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_LONG: {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].lval));
       }
       break;
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT: {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
       }
       break;
     }
     case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE: {
-      excetpion_flag = env->call_sub(env, sub_id, stack);
+      excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
       }
@@ -3269,7 +3281,7 @@ call_sub(...)
   // Restore reference value
   if (args_contain_ref) {
     for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
-      SV* sv_value = ST(arg_index + arg_start);
+      SV* sv_value = ST(arg_index + spvm_args_base);
       
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
       
