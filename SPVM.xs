@@ -2035,15 +2035,18 @@ call_sub(...)
 
   // Arguments
   for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
-    SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
-
+    
+    // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + arg_index);
     
+    // Argument information
+    SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
     int32_t arg_basic_type_id = arg->type->basic_type->id;
     int32_t arg_type_dimension = arg->type->dimension;
     
+    // Process argument corresponding to the type category
     switch (arg->type_category) {
-      case SPVM_TYPE_C_RUNTIME_TYPE_STRING: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
         // If arument type is string, the value is converted to string
         // Copy
         sv_value = sv_2mortal(newSVsv(sv_value));
@@ -2061,43 +2064,43 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_BYTE : {
+      case SPVM_TYPE_C_TYPE_CATEGORY_BYTE : {
         int8_t value = (int8_t)SvIV(sv_value);
         stack[arg_values_offset].bval = value;
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_SHORT : {
+      case SPVM_TYPE_C_TYPE_CATEGORY_SHORT : {
         int16_t value = (int16_t)SvIV(sv_value);
         stack[arg_values_offset].sval = value;
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_INT : {
+      case SPVM_TYPE_C_TYPE_CATEGORY_INT : {
         int32_t value = (int32_t)SvIV(sv_value);
         stack[arg_values_offset].ival = value;
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_LONG : {
+      case SPVM_TYPE_C_TYPE_CATEGORY_LONG : {
         int64_t value = (int64_t)SvIV(sv_value);
         stack[arg_values_offset].lval = value;
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT : {
+      case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT : {
         float value = (float)SvNV(sv_value);
         stack[arg_values_offset].fval = value;
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE : {
+      case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE : {
         double value = (double)SvNV(sv_value);
         stack[arg_values_offset].dval = value;
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -2141,7 +2144,7 @@ call_sub(...)
         }
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -2186,7 +2189,7 @@ call_sub(...)
         }
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_INT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -2230,7 +2233,7 @@ call_sub(...)
         }
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_LONG: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -2274,7 +2277,7 @@ call_sub(...)
         }
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -2318,7 +2321,7 @@ call_sub(...)
         }
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
 
@@ -2363,11 +2366,11 @@ call_sub(...)
         break;
       }
       // Object type
-      case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
-      case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
-      case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
-      case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
-      case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
+      case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+      case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
       {
         // undef
         if (!SvOK(sv_value)) {
@@ -2583,7 +2586,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
           croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2597,7 +2600,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
           croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2611,7 +2614,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
           croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2625,7 +2628,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
           croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2639,7 +2642,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
           croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2653,7 +2656,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
           croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2667,7 +2670,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
         args_contain_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
@@ -2733,7 +2736,7 @@ call_sub(...)
         
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
         args_contain_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
@@ -2798,7 +2801,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT: {
         args_contain_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
@@ -2863,7 +2866,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
         args_contain_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
@@ -2928,7 +2931,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
         args_contain_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
@@ -2993,7 +2996,7 @@ call_sub(...)
         arg_values_offset++;
         break;
       }
-      case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE: {
+      case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
         args_contain_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
@@ -3071,12 +3074,12 @@ call_sub(...)
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
   switch (sub->return_type_category) {
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE:
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT:
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_INT:
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_LONG:
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT:
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE:
     {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       
@@ -3128,7 +3131,7 @@ call_sub(...)
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
+    case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
     {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
@@ -3150,9 +3153,9 @@ call_sub(...)
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
-    case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
     {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
@@ -3169,7 +3172,7 @@ call_sub(...)
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
+    case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
     {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
@@ -3193,7 +3196,7 @@ call_sub(...)
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
+    case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
     {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
@@ -3231,46 +3234,46 @@ call_sub(...)
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_VOID: {
+    case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
+    case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].bval));
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_SHORT: {
+    case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].sval));
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_INT: {
+    case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].ival));
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_LONG: {
+    case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].lval));
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT: {
+    case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
       }
       break;
     }
-    case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE: {
+    case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
@@ -3294,37 +3297,37 @@ call_sub(...)
 
       int32_t ref_stack_id = ref_stack_ids[arg_index];
       switch (arg->type_category) {
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE : {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setiv(sv_value_deref, ref_stack[ref_stack_id].bval);
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT : {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setiv(sv_value_deref, ref_stack[ref_stack_id].sval);
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT : {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setiv(sv_value_deref, ref_stack[ref_stack_id].ival);
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG : {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setiv(sv_value_deref, ref_stack[ref_stack_id].lval);
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT : {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setnv(sv_value_deref, ref_stack[ref_stack_id].fval);
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE : {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE : {
           SV* sv_value_deref = SvRV(sv_value);
           sv_setnv(sv_value_deref, ref_stack[ref_stack_id].dval);
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
           SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
@@ -3339,7 +3342,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
           SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
@@ -3354,7 +3357,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT: {
           SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
@@ -3369,7 +3372,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
           SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
@@ -3384,7 +3387,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
           SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
@@ -3399,7 +3402,7 @@ call_sub(...)
           }
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
           SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
           HV* hv_value = (HV*)SvRV(SvRV(sv_value));
           SPVM_PACKAGE* arg_package = arg_basic_type->package;
@@ -3429,7 +3432,7 @@ call_sub(...)
   // Success
   else {
     int32_t return_count;
-    if (sub->return_type_category == SPVM_TYPE_C_RUNTIME_TYPE_VOID) {
+    if (sub->return_type_category == SPVM_TYPE_C_TYPE_CATEGORY_VOID) {
       return_count = 0;
     }
     else {
@@ -3475,7 +3478,7 @@ array_to_elems(...)
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
 
-    if (array->type_category == SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY) {
+    if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
       
       for (int32_t index = 0; index < length; index++) {
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, array->basic_type_id);
@@ -3536,7 +3539,7 @@ array_to_elems(...)
         av_push(av_values, SvREFCNT_inc(sv_value));
       }
     }
-    else if (array->type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
+    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY) {
       if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
         for (int32_t i = 0; i < length; i++) {
           void* object = env->get_elem_object(env, array, i);
@@ -3683,7 +3686,7 @@ array_to_bin(...)
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     int32_t element_type_dimension = dimension - 1;
 
-    if (array->type_category == SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY) {
+    if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
       SPVM_PACKAGE* package = basic_type->package;
       assert(package);
       
@@ -3733,7 +3736,7 @@ array_to_bin(...)
           croak("Invalid type at %s line %d\n", MFILE, __LINE__);
       }
     }
-    else if (array->type_category == SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY) {
+    else if (array->type_category == SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY) {
       croak("Objec type is not supported at %s line %d\n", MFILE, __LINE__);
     }
     else {

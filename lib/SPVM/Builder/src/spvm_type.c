@@ -15,7 +15,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_sub.h"
 
-const char* const SPVM_TYPE_RUNTIME_TYPE_C_ID_NAMES[] = {
+const char* const SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES[] = {
   "UNKNOWN",
   "BYTE",
   "SHORT",
@@ -54,32 +54,32 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   
   int32_t type_category;
   if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_RUNTIME_TYPE_STRING;
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
   }
   else if (SPVM_TYPE_is_numeric_type(compiler, basic_type_id, dimension, flag)) {
     switch (basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_BYTE;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_BYTE;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_SHORT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_SHORT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_INT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_INT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_LONG;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_LONG;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_FLOAT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_FLOAT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE;
         break;
       }
       default: {
@@ -98,27 +98,27 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
 
     switch (field_type->basic_type->id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_INT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_LONG;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE;
         break;
       }
       default: {
@@ -128,22 +128,22 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   }
   else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, dimension, flag)) {
     if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
     }
     else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT;
     }
     else if (SPVM_TYPE_is_package_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE;
     }
     else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
     }
     else if (SPVM_TYPE_is_value_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY;
     }
     else if (SPVM_TYPE_is_array_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY;
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY;
     }
     else {
       assert(0);
@@ -152,27 +152,27 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   else if (SPVM_TYPE_is_ref_type(compiler, basic_type_id, dimension, flag)) {
     switch (basic_type_id) {
       case SPVM_BASIC_TYPE_C_ID_BYTE: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_SHORT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_INT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_INT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_INT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_LONG: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT;
         break;
       }
       case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-        type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE;
+        type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE;
         break;
       }
       default: {
@@ -185,27 +185,27 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
 
         switch (field_type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE;
+            type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT;
+            type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_INT: {
-            type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT;
+            type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_LONG: {
-            type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG;
+            type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT;
+            type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT;
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            type_category = SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE;
+            type_category = SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE;
             break;
           }
           default: {
@@ -217,7 +217,7 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     }
   }
   else if (SPVM_TYPE_is_void_type(compiler, basic_type_id, dimension, flag)) {
-    type_category = SPVM_TYPE_C_RUNTIME_TYPE_VOID;
+    type_category = SPVM_TYPE_C_TYPE_CATEGORY_VOID;
   }
   else {
     assert(0);

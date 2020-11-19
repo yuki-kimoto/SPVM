@@ -1344,7 +1344,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
       // Numeric type
       int32_t type_width = SPVM_TYPE_get_width(compiler, arg->type->basic_type->id, arg->type->dimension, arg->type->flag);
       switch (arg->type_category) {
-        case SPVM_TYPE_C_RUNTIME_TYPE_BYTE: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, arg->mem_id);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1353,7 +1353,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_SHORT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, arg->mem_id);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1362,7 +1362,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_INT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, arg->mem_id);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1371,7 +1371,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_LONG: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, arg->mem_id);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1380,7 +1380,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, arg->mem_id);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1389,7 +1389,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, arg->mem_id);
           SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1398,7 +1398,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
           for (int32_t field_index = 0; field_index < type_width; field_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, arg->mem_id + field_index);
@@ -1409,7 +1409,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_SHORT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
           for (int32_t field_index = 0; field_index < type_width; field_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, arg->mem_id + field_index);
@@ -1420,7 +1420,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_INT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
           for (int32_t field_index = 0; field_index < type_width; field_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, arg->mem_id + field_index);
@@ -1431,7 +1431,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_LONG: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
           for (int32_t field_index = 0; field_index < type_width; field_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, arg->mem_id + field_index);
@@ -1442,7 +1442,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_FLOAT: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
           for (int32_t field_index = 0; field_index < type_width; field_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, arg->mem_id + field_index);
@@ -1453,7 +1453,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_DOUBLE: {
+        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
           for (int32_t field_index = 0; field_index < type_width; field_index++) {
             SPVM_STRING_BUFFER_add(string_buffer, "  ");
             SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, arg->mem_id + field_index);
@@ -1464,12 +1464,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index += type_width;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
-        case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
-        case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
-        case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
-        case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
-        case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
+        case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+        case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+        case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
+        case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
         {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, arg->mem_id);
@@ -1485,18 +1485,18 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
           stack_index++;
           break;
         }
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_SHORT:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT:
-        case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT:
+        case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE:
         {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_REF, arg->mem_id);
@@ -5424,12 +5424,12 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
   // No exception
   SPVM_STRING_BUFFER_add(string_buffer, "  if (!exception_flag) {\n");
   switch (sub->return_type_category) {
-    case SPVM_TYPE_C_RUNTIME_TYPE_ANY_OBJECT:
-    case SPVM_TYPE_C_RUNTIME_TYPE_PACKAGE:
-    case SPVM_TYPE_C_RUNTIME_TYPE_NUMERIC_ARRAY:
-    case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_ARRAY:
-    case SPVM_TYPE_C_RUNTIME_TYPE_OBJECT_ARRAY:
-    case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
+    case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
+    case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+    case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
     {
       SPVM_STRING_BUFFER_add(string_buffer, "    if (stack[0].oval != NULL) { SPVM_API_DEC_REF_COUNT_ONLY(stack[0].oval); }\n");
     }
