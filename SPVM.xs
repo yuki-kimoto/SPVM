@@ -2026,14 +2026,18 @@ call_sub(...)
   else if (items - spvm_args_base > sub->args->length) {
     croak("Too many arguments %s->%s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
   }
+  
+  // If Argument contains reference type, this value become 1
+  int32_t args_contain_ref = 0;
+  
+  // In SPVM, argument index is different from value offset because multi numeric type have width.
+  int32_t arg_values_offset = 0;
 
   // Arguments
-  int32_t args_contain_ref = 0;
-  int32_t arg_var_id = 0;
   for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
     SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
 
-    SV* sv_value = ST(arg_index + spvm_args_base);
+    SV* sv_value = ST(spvm_args_base + arg_index);
     
     int32_t arg_basic_type_id = arg->type->basic_type->id;
     int32_t arg_type_dimension = arg->type->dimension;
@@ -2052,45 +2056,45 @@ call_sub(...)
         
         void* string = env->new_string_len_raw(env, chars, length);
 
-        stack[arg_var_id].oval = string;
+        stack[arg_values_offset].oval = string;
         
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_BYTE : {
         int8_t value = (int8_t)SvIV(sv_value);
-        stack[arg_var_id].bval = value;
-        arg_var_id++;
+        stack[arg_values_offset].bval = value;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_SHORT : {
         int16_t value = (int16_t)SvIV(sv_value);
-        stack[arg_var_id].sval = value;
-        arg_var_id++;
+        stack[arg_values_offset].sval = value;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_INT : {
         int32_t value = (int32_t)SvIV(sv_value);
-        stack[arg_var_id].ival = value;
-        arg_var_id++;
+        stack[arg_values_offset].ival = value;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_LONG : {
         int64_t value = (int64_t)SvIV(sv_value);
-        stack[arg_var_id].lval = value;
-        arg_var_id++;
+        stack[arg_values_offset].lval = value;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_FLOAT : {
         float value = (float)SvNV(sv_value);
-        stack[arg_var_id].fval = value;
-        arg_var_id++;
+        stack[arg_values_offset].fval = value;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_DOUBLE : {
         double value = (double)SvNV(sv_value);
-        stack[arg_var_id].dval = value;
-        arg_var_id++;
+        stack[arg_values_offset].dval = value;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_MULNUM_BYTE: {
@@ -2128,9 +2132,9 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int8_t value = (int8_t)SvIV(sv_field_value);
-            stack[arg_var_id + field_index].bval = value;
+            stack[arg_values_offset + field_index].bval = value;
           }
-          arg_var_id += arg_package->fields->length;
+          arg_values_offset += arg_package->fields->length;
         }
         else {
           croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2173,9 +2177,9 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int16_t value = (int16_t)SvIV(sv_field_value);
-            stack[arg_var_id + field_index].sval = value;
+            stack[arg_values_offset + field_index].sval = value;
           }
-          arg_var_id += arg_package->fields->length;
+          arg_values_offset += arg_package->fields->length;
         }
         else {
           croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2217,9 +2221,9 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int32_t value = (int32_t)SvIV(sv_field_value);
-            stack[arg_var_id + field_index].ival = value;
+            stack[arg_values_offset + field_index].ival = value;
           }
-          arg_var_id += arg_package->fields->length;
+          arg_values_offset += arg_package->fields->length;
         }
         else {
           croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2261,9 +2265,9 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             int64_t value = (int64_t)SvIV(sv_field_value);
-            stack[arg_var_id + field_index].lval = value;
+            stack[arg_values_offset + field_index].lval = value;
           }
-          arg_var_id += arg_package->fields->length;
+          arg_values_offset += arg_package->fields->length;
         }
         else {
           croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2305,9 +2309,9 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             float value = (float)SvNV(sv_field_value);
-            stack[arg_var_id + field_index].fval = value;
+            stack[arg_values_offset + field_index].fval = value;
           }
-          arg_var_id += arg_package->fields->length;
+          arg_values_offset += arg_package->fields->length;
         }
         else {
           croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2349,9 +2353,9 @@ call_sub(...)
               sv_field_value = &PL_sv_undef;
             }
             double value = (double)SvNV(sv_field_value);
-            stack[arg_var_id + field_index].dval = value;
+            stack[arg_values_offset + field_index].dval = value;
           }
-          arg_var_id += arg_package->fields->length;
+          arg_values_offset += arg_package->fields->length;
         }
         else {
           croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
@@ -2367,7 +2371,7 @@ call_sub(...)
       {
         // undef
         if (!SvOK(sv_value)) {
-          stack[arg_var_id].oval = NULL;
+          stack[arg_values_offset].oval = NULL;
         }
         else {
           // Value is array refence
@@ -2569,14 +2573,14 @@ call_sub(...)
               }
             }
             
-            stack[arg_var_id].oval = object;
+            stack[arg_values_offset].oval = object;
           }
           else {
             croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
           }
         }
         
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_BYTE: {
@@ -2587,10 +2591,10 @@ call_sub(...)
         SV* sv_value_deref = SvRV(sv_value);
         int8_t value = (int8_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].bval = value;
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top++;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_SHORT: {
@@ -2601,10 +2605,10 @@ call_sub(...)
         SV* sv_value_deref = SvRV(sv_value);
         int16_t value = (int16_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].sval = value;
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top++;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_INT: {
@@ -2615,10 +2619,10 @@ call_sub(...)
         SV* sv_value_deref = SvRV(sv_value);
         int32_t value = (int32_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].ival = value;
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top++;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_LONG: {
@@ -2629,10 +2633,10 @@ call_sub(...)
         SV* sv_value_deref = SvRV(sv_value);
         int64_t value = (int64_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].lval = value;
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top++;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_FLOAT: {
@@ -2643,10 +2647,10 @@ call_sub(...)
         SV* sv_value_deref = SvRV(sv_value);
         float value = (float)SvNV(sv_value_deref);
         ref_stack[ref_stack_top].fval = value;
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top++;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_DOUBLE: {
@@ -2657,10 +2661,10 @@ call_sub(...)
         SV* sv_value_deref = SvRV(sv_value);
         double value = (double)SvNV(sv_value_deref);
         ref_stack[ref_stack_top].dval = value;
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top++;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_BYTE: {
@@ -2722,10 +2726,10 @@ call_sub(...)
           int8_t value = (int8_t)SvIV(sv_field_value);
           ((int8_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        arg_var_id++;
+        arg_values_offset++;
         
         break;
       }
@@ -2788,10 +2792,10 @@ call_sub(...)
           int16_t value = (int16_t)SvIV(sv_field_value);
           ((int16_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_INT: {
@@ -2853,10 +2857,10 @@ call_sub(...)
           int32_t value = (int32_t)SvIV(sv_field_value);
           ((int32_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_LONG: {
@@ -2918,10 +2922,10 @@ call_sub(...)
           int64_t value = (int64_t)SvIV(sv_field_value);
           ((int64_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_FLOAT: {
@@ -2983,10 +2987,10 @@ call_sub(...)
           float value = (float)SvNV(sv_field_value);
           ((float*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       case SPVM_TYPE_C_RUNTIME_TYPE_REF_MULNUM_DOUBLE: {
@@ -3048,10 +3052,10 @@ call_sub(...)
           double value = (double)SvNV(sv_field_value);
           ((double*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[arg_var_id].oval = &ref_stack[ref_stack_top];
+        stack[arg_values_offset].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[arg_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        arg_var_id++;
+        arg_values_offset++;
         break;
       }
       default:
@@ -3280,7 +3284,7 @@ call_sub(...)
   // Restore reference value
   if (args_contain_ref) {
     for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
-      SV* sv_value = ST(arg_index + spvm_args_base);
+      SV* sv_value = ST(spvm_args_base + arg_index);
       
       SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
       
