@@ -2036,8 +2036,7 @@ call_sub(...)
     int32_t arg_type_dimension = arg->type->dimension;
     
     switch (arg->type_category) {
-      case SPVM_TYPE_C_RUNTIME_TYPE_STRING:
-      {
+      case SPVM_TYPE_C_RUNTIME_TYPE_STRING: {
         // If arument type is string, the value is converted to string
         // Copy
         sv_value = sv_2mortal(newSVsv(sv_value));
