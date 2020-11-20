@@ -478,7 +478,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $string1 = "あいう";
     my $string2 = "";
     my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
-    ok(!ref $string3);
+    is(ref $string3, 'SPVM::BlessedObject::String');
     is("$string3", "あいう");
   }
 }

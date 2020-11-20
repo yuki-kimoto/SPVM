@@ -3249,8 +3249,7 @@ call_sub(...)
       }
       break;
     }
-    case SPVM_TYPE_C_TYPE_CATEGORY_STRING:
-    {
+    case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
       excetpion_flag = env->call_sub(env, sub->id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
@@ -3258,14 +3257,7 @@ call_sub(...)
         if (return_value != NULL) {
           env->inc_ref_count(env, return_value);
           
-          const char* bytes = (const char*)env->get_elems_byte(env, return_value);
-          int32_t length = env->length(env, return_value);
-          
-          sv_return_value = sv_2mortal(newSVpv(bytes, length));
-          
-          sv_utf8_decode(sv_return_value);
-          
-          env->dec_ref_count(env, return_value);
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::String");
         }
         else {
           sv_return_value = &PL_sv_undef;
@@ -3864,6 +3856,40 @@ array_to_bin(...)
   }
   
   XPUSHs(sv_bin);
+  XSRETURN(1);
+}
+
+SV*
+string_object_to_string(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_string = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+
+  // String must be SPVM::BlessedObject::String or SPVM::BlessedObject::String
+  if (!(SvROK(sv_string) && sv_derived_from(sv_string, "SPVM::BlessedObject::String"))) {
+    croak("String must be SPVM::BlessedObject::String object at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // Get object
+  SPVM_OBJECT* string = SPVM_XS_UTIL_get_object(sv_string);
+  
+  int32_t length = env->length(env, string);
+  const char* bytes = (const char*)env->get_elems_byte(env, string);
+
+  SV* sv_return_value = sv_2mortal(newSVpv(bytes, length));
+
+  sv_utf8_decode(sv_return_value);
+
+  XPUSHs(sv_return_value);
   XSRETURN(1);
 }
 
