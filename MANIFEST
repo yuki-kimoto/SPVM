@@ -654,6 +654,7 @@ t/default/divide.t
 t/default/enum.t
 t/default/examples.t
 t/default/exception.t
+t/default/exchange-api-call-sub.t
 t/default/exchange-api.t
 t/default/fat-camma.t
 t/default/for.t
