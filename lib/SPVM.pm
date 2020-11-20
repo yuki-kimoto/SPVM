@@ -556,6 +556,22 @@ See SPVM Exchange API about the details.
 
 L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.html>
 
+=head2 new_string
+
+  my $spvm_string = SPVM::new_string("あいう");
+
+New SPVM string from decoded string. 
+
+Return value is L<SPVM::BlessedObject::String> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::String>.
+
+=head2 new_string_from_bin
+
+  my $spvm_string = SPVM::new_string_from_bin("abc");
+
+New SPVM string from binary data.
+
+Return value is L<SPVM::BlessedObject::String> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::String>.
+
 =head2 new_byte_array
 
   my $spvm_nums = SPVM::new_byte_array([ 1, -5, 100]);
