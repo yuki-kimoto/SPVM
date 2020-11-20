@@ -305,7 +305,34 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     eval { SPVM::new_string([]) };
     like($@, qr/Argument must not be reference/);
   }
+}
 
+# new_string_from_bin
+{
+  # new_string_from_bin - Argument decoded string, to_string, "" overload
+  {
+    my $spvm_string = SPVM::new_string_from_bin("abc");
+    is($spvm_string->to_string, "abc");
+    is("$spvm_string", "abc");
+  }
+
+  # new_string_from_bin - Empty
+  {
+    my $spvm_string = SPVM::new_string_from_bin("");
+    is($spvm_string->to_string, "");
+  }
+
+  # new_string_from_bin - undef
+  {
+    eval { SPVM::new_string_from_bin(undef) };
+    like($@, qr/Argument must be defined/);
+  }
+
+  # new_string_from_bin - reference
+  {
+    eval { SPVM::new_string_from_bin([]) };
+    like($@, qr/Argument must not be reference/);
+  }
 }
 
 # new_mulnum_array_from_bin

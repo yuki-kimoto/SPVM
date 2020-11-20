@@ -819,24 +819,29 @@ new_string_from_bin(...)
   
   SV* sv_string;
   if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t string_length = binary_length;
-    int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New string
-    void* string = env->new_string_len(env, (const char*)binary, string_length);
+    if (SvROK(sv_binary)) {
+      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
+    }
+    else {
+      int32_t binary_length = sv_len(sv_binary);
+      int32_t string_length = binary_length;
+      int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+      
+      // Environment
+      SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+      
+      // New string
+      void* string = env->new_string_len(env, (const char*)binary, string_length);
 
-    int8_t* elems = env->get_elems_byte(env, string);
-    memcpy(elems, binary, string_length);
-    
-    // New sv string
-    sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+      int8_t* elems = env->get_elems_byte(env, string);
+      memcpy(elems, binary, string_length);
+      
+      // New sv string
+      sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+    }
   }
   else {
-    sv_string = &PL_sv_undef;
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   XPUSHs(sv_string);
