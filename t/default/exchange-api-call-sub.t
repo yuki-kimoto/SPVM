@@ -132,6 +132,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $string = TestCase::ExchangeAPI->string_argments_and_return_value(3, 4.12);
     is("$string", "34.12");
   }
+
+  # Argument string - SPVM::BlessedObject::String
+  {
+    my $string = TestCase::ExchangeAPI->string_argments_and_return_value(SPVM::new_string("あいう"), SPVM::new_string_from_bin("abc"));
+    is(ref $string, 'SPVM::BlessedObject::String');
+    is("$string", "あいうabc");
+  }
 }
 
 # Stringfy

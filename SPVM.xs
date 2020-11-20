@@ -767,6 +767,78 @@ new_byte_array_from_bin(...)
 }
 
 SV*
+new_string(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  SV* sv_string;
+  if (SvOK(sv_value)) {
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // Copy
+    SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
+    
+    // Encode to UTF-8
+    sv_utf8_encode(sv_value_tmp);
+    
+    int32_t length = sv_len(sv_value_tmp);
+    
+    const char* value = SvPV_nolen(sv_value_tmp);
+    
+    void* string = env->new_string_len(env, value, length);
+    
+    sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+  }
+  else {
+    sv_string = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
+SV*
+new_string_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_string;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t string_length = binary_length;
+    int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New string
+    void* string = env->new_string_len(env, (const char*)binary, string_length);
+
+    int8_t* elems = env->get_elems_byte(env, string);
+    memcpy(elems, binary, string_length);
+    
+    // New sv string
+    sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+  }
+  else {
+    sv_string = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
+SV*
 new_short_array(...)
   PPCODE:
 {
