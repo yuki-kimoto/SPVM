@@ -273,6 +273,41 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# new_string
+{
+  # new_string - Argument decoded string, to_string, "" overload
+  {
+    my $spvm_string = SPVM::new_string("あいう");
+    is($spvm_string->to_string, "あいう");
+    is("$spvm_string", "あいう");
+  }
+
+  # new_string - Number
+  {
+    my $spvm_string = SPVM::new_string(23);
+    is($spvm_string->to_string, 23);
+  }
+
+  # new_string - Empty
+  {
+    my $spvm_string = SPVM::new_string("");
+    is($spvm_string->to_string, "");
+  }
+
+  # new_string - undef
+  {
+    eval { SPVM::new_string(undef) };
+    like($@, qr/Argument must be defined/);
+  }
+
+  # new_string - reference
+  {
+    eval { SPVM::new_string([]) };
+    like($@, qr/Argument must not be reference/);
+  }
+
+}
+
 # new_mulnum_array_from_bin
 {
   # new_mulnum_array_from_bin - byte

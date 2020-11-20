@@ -778,25 +778,30 @@ new_string(...)
   SV* sv_string;
   if (SvOK(sv_value)) {
     
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // Copy
-    SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
-    
-    // Encode to UTF-8
-    sv_utf8_encode(sv_value_tmp);
-    
-    int32_t length = sv_len(sv_value_tmp);
-    
-    const char* value = SvPV_nolen(sv_value_tmp);
-    
-    void* string = env->new_string_len(env, value, length);
-    
-    sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+    if (SvROK(sv_value)) {
+      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
+    }
+    else {
+      // Environment
+      SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+      
+      // Copy
+      SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
+      
+      // Encode to UTF-8
+      sv_utf8_encode(sv_value_tmp);
+      
+      int32_t length = sv_len(sv_value_tmp);
+      
+      const char* value = SvPV_nolen(sv_value_tmp);
+      
+      void* string = env->new_string_len(env, value, length);
+      
+      sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+    }
   }
   else {
-    sv_string = &PL_sv_undef;
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
   }
   
   XPUSHs(sv_string);
