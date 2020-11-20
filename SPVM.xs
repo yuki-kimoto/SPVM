@@ -2246,26 +2246,55 @@ call_sub(...)
                 case SPVM_BASIC_TYPE_C_ID_STRING: {
                   // New array
                   void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
-
+                  
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-                    if (SvOK(sv_value)) {
-                      // Encode to UTF-8
-                      sv_utf8_encode(sv_value);
+
+                    // Perl value is undef
+                    if (!SvOK(sv_value)) {
+                      env->set_elem_object(env, array, i, NULL);
+                    }
+                    else {
+                      // If Perl value is non ref scalar, the value is converted to string object
+                      if (!SvROK(sv_value)) {
                       
-                      int32_t string_length = sv_len(sv_value);
-                      const char* chars = SvPV_nolen(sv_value);
+                        // Copy
+                        SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
+                        
+                        // Encode to UTF-8
+                        sv_utf8_encode(sv_value_tmp);
+                        
+                        int32_t length = sv_len(sv_value_tmp);
+                        const char* chars = SvPV_nolen(sv_value_tmp);
+                        
+                        void* string = env->new_string_len(env, chars, length);
+                        
+                        SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+                        
+                        sv_value = sv_string;
+                      }
                       
-                      void* string = env->new_string_len_raw(env, chars, string_length);
-                      
-                      env->set_elem_object(env, array, i, string);
+                      // Check type
+                      if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+                        SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+                        
+                        if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
+                          croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                        }
+                        
+                        env->set_elem_object(env, array, i, object);
+                      }
+                      else {
+                        croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                      }
                     }
                   }
                   
                   // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
+                  
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_ANY_OBJECT: {

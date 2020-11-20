@@ -1,6 +1,7 @@
 0.0927 2020-11-20
-  - add SPVM::BlessedObject::String
+  - add SPVM::BlessedObject::String corresponding to SPVM string type
   - If argument type is string, the value is non ref scalar, the value is coverted to string object
+  - If argument type is strgin array, the element value is non ref scalar, the value is converted to string object
 0.0926 2020-11-06
   - add SPVM::new_byte_array_unsigned, SPVM::new_short_array_unsigned, SPVM::new_int_array_unsigned, SPVM::new_long_array_unsigned
 0.0925 2020-11-05
