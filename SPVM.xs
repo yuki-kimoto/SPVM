@@ -2105,12 +2105,12 @@ call_sub(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
       {
-        // undef
+        // Perl value is undef
         if (!SvOK(sv_value)) {
           stack[arg_values_offset].oval = NULL;
         }
         else {
-          // Value is array refence
+          // Perl value is array refence
           if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
             
             SV* sv_elems = sv_value;
@@ -2299,9 +2299,6 @@ call_sub(...)
               if (object->type_dimension == 0) {
                 croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
               }
-            }
-            else if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && arg_type_dimension == 0) {
-              // OK
             }
             else {
               if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
