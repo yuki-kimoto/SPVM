@@ -10,6 +10,7 @@ use File::Basename 'basename', 'dirname';
 use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
 use SPVM::BlessedObject::Package;
+use SPVM::BlessedObject::String;
 use FindBin;
 
 use SPVM::Builder;

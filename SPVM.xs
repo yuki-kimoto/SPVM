@@ -2083,20 +2083,44 @@ call_sub(...)
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
-        // If arument type is string, the value is converted to string
-        // Copy
-        sv_value = sv_2mortal(newSVsv(sv_value));
-        
-        // Encode to UTF-8
-        sv_utf8_encode(sv_value);
-        
-        int32_t length = sv_len(sv_value);
-        const char* chars = SvPV_nolen(sv_value);
-        
-        void* string = env->new_string_len_raw(env, chars, length);
-
-        stack[arg_values_offset].oval = string;
-        
+        // Perl value is undef
+        if (!SvOK(sv_value)) {
+          stack[arg_values_offset].oval = NULL;
+        }
+        else {
+          // If Perl value is non ref scalar, the value is converted to string object
+          if (!SvROK(sv_value)) {
+          
+            // Copy
+            SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
+            
+            // Encode to UTF-8
+            sv_utf8_encode(sv_value_tmp);
+            
+            int32_t length = sv_len(sv_value_tmp);
+            const char* chars = SvPV_nolen(sv_value_tmp);
+            
+            void* string = env->new_string_len(env, chars, length);
+            
+            SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+            
+            sv_value = sv_string;
+          }
+          
+          // Check type
+          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+            SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+            
+            if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
+              croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            }
+            
+            stack[arg_values_offset].oval = object;
+          }
+          else {
+            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          }
+        }
         arg_values_offset++;
         break;
       }
