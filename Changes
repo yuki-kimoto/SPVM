@@ -1,3 +1,5 @@
+0.0928 2020-11-23
+  - add get_chars function to native api
 0.0927 2020-11-20
   - add SPVM::BlessedObject::String corresponding to SPVM string type
   - If argument type is string, the value is non ref scalar, the value is coverted to string object

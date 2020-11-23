@@ -214,4 +214,6 @@ SPVM_OBJECT* SPVM_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 
+const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_OBJECT* string);
+
 #endif

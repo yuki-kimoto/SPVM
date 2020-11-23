@@ -213,6 +213,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_new_env,
     SPVM_API_free_env,
     NULL, // memory_blocks_count
+    SPVM_API_get_chars,
   };
   
   int32_t env_length = 255;
@@ -5186,6 +5187,12 @@ int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
 
   return (int8_t*)((intptr_t)object + env->object_header_byte_size);
+}
+
+const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_OBJECT* string) {
+  (void)env;
+
+  return (const char*)((intptr_t)string + env->object_header_byte_size);
 }
 
 int16_t* SPVM_API_get_elems_short(SPVM_ENV* env, SPVM_OBJECT* object) {

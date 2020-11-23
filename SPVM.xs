@@ -833,8 +833,8 @@ new_string_from_bin(...)
       // New string
       void* string = env->new_string_len(env, (const char*)binary, string_length);
 
-      int8_t* elems = env->get_elems_byte(env, string);
-      memcpy(elems, binary, string_length);
+      const char* elems = env->get_chars(env, string);
+      memcpy((char*)elems, binary, string_length);
       
       // New sv string
       sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
@@ -1980,7 +1980,7 @@ _get_exception(...)
   
   SV* sv_exception;
   if (str_exception) {
-    const char* exception = (const char*)env->get_elems_byte(env, str_exception);
+    const char* exception = env->get_chars(env, str_exception);
     int32_t length = env->length(env, str_exception);
     
     sv_exception = sv_2mortal(newSVpv(exception, length));
@@ -3362,7 +3362,7 @@ call_sub(...)
           else {
             
             if (return_value->basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
-              const char* bytes = (const char*)env->get_elems_byte(env, return_value);
+              const char* bytes = env->get_chars(env, return_value);
               int32_t length = env->length(env, return_value);
               
               sv_return_value = sv_2mortal(newSVpv(bytes, length));
@@ -3697,7 +3697,7 @@ array_to_elems(...)
           
           SV* sv_value;
           if (object != NULL) {
-            const char* string_bytes = (const char*)env->get_elems_byte(env, object);
+            const char* string_bytes = env->get_chars(env, object);
             int32_t length = env->length(env, object);
             
             sv_value = sv_2mortal(newSVpv(string_bytes, length));
@@ -3965,7 +3965,7 @@ string_object_to_string(...)
   SPVM_OBJECT* string = SPVM_XS_UTIL_get_object(sv_string);
   
   int32_t length = env->length(env, string);
-  const char* bytes = (const char*)env->get_elems_byte(env, string);
+  const char* bytes = env->get_chars(env, string);
 
   SV* sv_return_value = sv_2mortal(newSVpv(bytes, length));
 
