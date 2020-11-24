@@ -648,7 +648,8 @@ int32_t SPNATIVE__SPVM__Util__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
     obj_value = NULL;
   }
   else {
-    obj_value = env->new_string(env, value);
+    int32_t length = (int32_t)strlen(value);
+    obj_value = env->new_string_len(env, value, length);
   }
   
   stack[0].oval = obj_value;

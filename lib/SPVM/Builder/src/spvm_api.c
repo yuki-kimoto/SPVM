@@ -4794,6 +4794,8 @@ SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes) {
   
   SPVM_API_push_mortal(env, object);
   
+  warn("AAAAAAAAAA");
+  
   return object;
 }
 
