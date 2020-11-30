@@ -334,8 +334,8 @@ struct SPVM_env {
   void* (*new_muldim_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
   void* (*new_mulnum_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
   void* (*new_mulnum_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
-  void* (*new_string_const_nolen_raw)(SPVM_ENV* env, const char* bytes);
-  void* (*new_string_const_nolen)(SPVM_ENV* env, const char* bytes);
+  void* (*new_string_nolen_raw)(SPVM_ENV* env, const char* bytes);
+  void* (*new_string_nolen)(SPVM_ENV* env, const char* bytes);
   void* (*new_string_len_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_string_len)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer_raw)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
