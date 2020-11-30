@@ -596,7 +596,7 @@ new_string_array(...)
         int32_t length = sv_len(sv_str_value);
         const char* chars = SvPV_nolen(sv_str_value);
         
-        void* string = env->new_string_len_raw(env, chars, length);
+        void* string = env->new_string_raw(env, chars, length);
         env->set_elem_object(env, array, i, string);
       }
       else {
@@ -795,7 +795,7 @@ new_string(...)
       
       const char* value = SvPV_nolen(sv_value_tmp);
       
-      void* string = env->new_string_len(env, value, length);
+      void* string = env->new_string(env, value, length);
       
       sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
     }
@@ -831,7 +831,7 @@ new_string_from_bin(...)
       SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
       
       // New string
-      void* string = env->new_string_len(env, (const char*)binary, string_length);
+      void* string = env->new_string(env, (const char*)binary, string_length);
 
       const char* elems = env->get_chars(env, string);
       memcpy((char*)elems, binary, string_length);
@@ -2009,7 +2009,7 @@ _set_exception(...)
     const char* exception = SvPV_nolen(sv_exception);
     int32_t length = (int32_t)sv_len(sv_exception);
     
-    void* str_exception = env->new_string_len_raw(env, exception, length);
+    void* str_exception = env->new_string_raw(env, exception, length);
     env->set_exception(env, str_exception);
   }
   else {
@@ -2182,7 +2182,7 @@ call_sub(...)
             int32_t length = sv_len(sv_value_tmp);
             const char* chars = SvPV_nolen(sv_value_tmp);
             
-            void* string = env->new_string_len(env, chars, length);
+            void* string = env->new_string(env, chars, length);
             
             SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
             
@@ -2350,7 +2350,7 @@ call_sub(...)
                         int32_t length = sv_len(sv_value_tmp);
                         const char* chars = SvPV_nolen(sv_value_tmp);
                         
-                        void* string = env->new_string_len(env, chars, length);
+                        void* string = env->new_string(env, chars, length);
                         
                         SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
                         
@@ -2399,7 +2399,7 @@ call_sub(...)
                         int32_t length = sv_len(sv_value);
                         const char* chars = SvPV_nolen(sv_value);
                         
-                        void* string = env->new_string_len_raw(env, chars, length);
+                        void* string = env->new_string_raw(env, chars, length);
                         env->inc_ref_count(env, string);
                         
                         sv_value = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::Array");

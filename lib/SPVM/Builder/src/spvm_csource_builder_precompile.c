@@ -2036,7 +2036,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t src_byte_array_length = env->length(env, src_byte_array);");
         SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_byte_array_data = env->get_elems_byte(env, src_byte_array);");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_len_raw(env, (const char*)src_byte_array_data, src_byte_array_length);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, (const char*)src_byte_array_data, src_byte_array_length);");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
@@ -2085,7 +2085,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         }
         
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t string_length = strlen(convert_string_buffer);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_len_raw(env, convert_string_buffer, string_length);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, convert_string_buffer, string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
         SPVM_STRING_BUFFER_add(string_buffer, ", string);\n");
@@ -3157,7 +3157,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         const char* string_value = constant->value.oval;
 
         SPVM_STRING_BUFFER_add(string_buffer, "  {");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_len_raw(env, \"");
+        SPVM_STRING_BUFFER_add(string_buffer, "    void* string = env->new_string_raw(env, \"");
         for (int32_t i = 0; i < constant->string_length; i++) {
           SPVM_STRING_BUFFER_add_hex_char(string_buffer, string_value[i]);
         }

@@ -141,8 +141,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_new_mulnum_array,
     SPVM_API_new_string_nolen_raw,
     SPVM_API_new_string_nolen,
-    SPVM_API_new_string_len_raw,
-    SPVM_API_new_string_len,
+    SPVM_API_new_string_raw,
+    SPVM_API_new_string,
     SPVM_API_new_pointer_raw,
     SPVM_API_new_pointer,
     SPVM_API_concat_raw,
@@ -1092,7 +1092,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_TO_STRING: {
         sprintf(string_convert_buffer, "%" PRId8, byte_vars[opcode->operand1]);
         int32_t string_length = strlen(string_convert_buffer);
-        void* string = env->new_string_len_raw(env, string_convert_buffer, string_length);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
@@ -1113,42 +1113,42 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* src_byte_array = object_vars[opcode->operand1];
         int32_t src_byte_array_length = env->length(env, src_byte_array);
         int8_t* src_byte_array_data = env->get_elems_byte(env, src_byte_array);
-        void* string = env->new_string_len_raw(env, (const char*)src_byte_array_data, src_byte_array_length);
+        void* string = env->new_string_raw(env, (const char*)src_byte_array_data, src_byte_array_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING: {
         sprintf(string_convert_buffer, "%" PRId16, short_vars[opcode->operand1]);
         int32_t string_length = strlen(string_convert_buffer);
-        void* string = env->new_string_len_raw(env, string_convert_buffer, string_length);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_INT_TO_STRING: {
         sprintf(string_convert_buffer, "%" PRId32, int_vars[opcode->operand1]);
         int32_t string_length = strlen(string_convert_buffer);
-        void* string = env->new_string_len_raw(env, string_convert_buffer, string_length);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_LONG_TO_STRING: {
         sprintf(string_convert_buffer, "%" PRId64, long_vars[opcode->operand1]);
         int32_t string_length = strlen(string_convert_buffer);
-        void* string = env->new_string_len_raw(env, string_convert_buffer, string_length);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_TO_STRING: {
         sprintf(string_convert_buffer, "%g", float_vars[opcode->operand1]);
         int32_t string_length = strlen(string_convert_buffer);
-        void* string = env->new_string_len_raw(env, string_convert_buffer, string_length);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_TO_STRING: {
         sprintf(string_convert_buffer, "%g", double_vars[opcode->operand1]);
         int32_t string_length = strlen(string_convert_buffer);
-        void* string = env->new_string_len_raw(env, string_convert_buffer, string_length);
+        void* string = env->new_string_raw(env, string_convert_buffer, string_length);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
@@ -2657,7 +2657,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
         const char* string_value = constant->value.oval;
         
-        void* string = env->new_string_len_raw(env, string_value, constant->string_length);
+        void* string = env->new_string_raw(env, string_value, constant->string_length);
         if (string == NULL) {
           void* exception = env->new_string_nolen_raw(env, "Can't allocate memory for string");
           env->set_exception(env, exception);
@@ -4431,7 +4431,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   total_length += strlen(line_str);
   
   // Create exception message
-  void* new_exception = env->new_string_len_raw(env, NULL, total_length);
+  void* new_exception = env->new_string_raw(env, NULL, total_length);
   int8_t* new_exception_bytes = env->get_elems_byte(env, new_exception);
   
   memcpy(
@@ -4797,7 +4797,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, const char* bytes) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_string_len_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
+SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
   (void)env;
 
   SPVM_OBJECT* object = SPVM_API_new_byte_array_raw(env, length);
@@ -4813,10 +4813,10 @@ SPVM_OBJECT* SPVM_API_new_string_len_raw(SPVM_ENV* env, const char* bytes, int32
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_string_len(SPVM_ENV* env, const char* bytes, int32_t length) {
+SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_API_new_string_len_raw(env, bytes, length);
+  SPVM_OBJECT* object = SPVM_API_new_string_raw(env, bytes, length);
   
   SPVM_API_push_mortal(env, object);
   

@@ -29,7 +29,7 @@ int32_t SPNATIVE__SPVM__Util___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack
   const int result_len = snprintf(tmp_result, SPRINTF_MAX_RESULT_LEN, format, value);
   if (result_len < 0) { SPVM_DIE("snprintf fail", MFILE, __LINE__); }
 
-  stack[0].oval = env->new_string_len(env, tmp_result, result_len);
+  stack[0].oval = env->new_string(env, tmp_result, result_len);
 
   return SPVM_SUCCESS;
 }
@@ -649,7 +649,7 @@ int32_t SPNATIVE__SPVM__Util__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   else {
     int32_t length = (int32_t)strlen(value);
-    obj_value = env->new_string_len(env, value, length);
+    obj_value = env->new_string(env, value, length);
   }
   
   stack[0].oval = obj_value;

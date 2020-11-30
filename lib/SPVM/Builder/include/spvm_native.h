@@ -32,7 +32,7 @@ union SPVM_value {
 #define SPVM_DIE(message, ...) do {\
   char* buffer = (char*)env->alloc_memory_block_zero(env, 255);\
   snprintf(buffer, 255, message " at %s line %d", __VA_ARGS__);\
-  void* exception = env->new_string_len_raw(env, buffer, strlen(buffer));\
+  void* exception = env->new_string_raw(env, buffer, strlen(buffer));\
   env->free_memory_block(env, buffer);\
   env->set_exception(env, exception);\
   return SPVM_EXCEPTION;\
@@ -336,8 +336,8 @@ struct SPVM_env {
   void* (*new_mulnum_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
   void* (*new_string_nolen_raw)(SPVM_ENV* env, const char* bytes);
   void* (*new_string_nolen)(SPVM_ENV* env, const char* bytes);
-  void* (*new_string_len_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
-  void* (*new_string_len)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_string_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
   void* (*new_pointer_raw)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);

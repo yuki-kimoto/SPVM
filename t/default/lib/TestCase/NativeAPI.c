@@ -776,7 +776,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* sta
   }
   // 7
   {
-    void* sp_values = env->new_string_len(env, "foo", (int32_t)strlen("foo"));
+    void* sp_values = env->new_string(env, "foo", (int32_t)strlen("foo"));
     ref_count += env->get_ref_count(env, sp_values);
   }
   // 8
