@@ -4352,20 +4352,23 @@ SPVM_OBJECT* SPVM_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   //[]
   length += type_dimension * 2;
   
-  void* type_name_barray = env->new_byte_array_raw(env, length);
+  void* type_name_barray = env->new_byte_array(env, length + 1);
   
-  char* cur = (char*)env->get_elems_byte(env, type_name_barray);
+  int8_t* cur = env->get_elems_byte(env, type_name_barray);
   
-  sprintf(cur, "%s", basic_type_name);
-  cur += strlen(basic_type_name);
+  int32_t cur_index = 0;
+  sprintf((char*)cur, "%s", basic_type_name);
+  cur_index += strlen(basic_type_name);
   
   int32_t dim_index;
   for (dim_index = 0; dim_index < type_dimension; dim_index++) {
-    sprintf(cur, "[]");
-    cur += 2;
+    sprintf((char*)(cur + cur_index), "[]");
+    cur_index += 2;
   }
   
-  return type_name_barray;
+  void* type_name = env->new_string_raw(env, (const char*)cur, length);
+  
+  return type_name;
 }
 
 SPVM_OBJECT* SPVM_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object_in) {
