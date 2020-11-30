@@ -1,5 +1,7 @@
 0.0928 2020-11-23
   - add get_chars function to native api
+  - rename native api new_string_raw to new_string_const_nolen_raw and the argument string must be const string.
+  - rename native api new_string to new_string_const_nolen and the argument string must be const string.
 0.0927 2020-11-20
   - add SPVM::BlessedObject::String corresponding to SPVM string type
   - If argument type is string, the value is non ref scalar, the value is coverted to string object

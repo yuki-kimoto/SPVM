@@ -139,8 +139,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_new_muldim_array,
     SPVM_API_new_mulnum_array_raw,
     SPVM_API_new_mulnum_array,
-    SPVM_API_new_string_raw,
-    SPVM_API_new_string,
+    SPVM_API_new_string_const_nolen_raw,
+    SPVM_API_new_string_const_nolen,
     SPVM_API_new_string_len_raw,
     SPVM_API_new_string_len,
     SPVM_API_new_pointer_raw,
@@ -381,7 +381,7 @@ int32_t SPVM_API_call_sub(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
     
     // Set default exception message
     if (exception_flag && env->exception_object == NULL) {
-      void* exception = env->new_string_raw(env, "Error");
+      void* exception = env->new_string_const_nolen_raw(env, "Error");
       env->set_exception(env, exception);
     }
   }
@@ -482,7 +482,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
     
     call_stack = SPVM_API_alloc_memory_block_zero(env, total_vars_byte_size + 1);
     if (call_stack == NULL) {
-      void* exception = env->new_string_raw(env, "Can't alloc call stack memory");
+      void* exception = env->new_string_const_nolen_raw(env, "Can't alloc call stack memory");
       env->set_exception(env, exception);
       exception_flag = 1;
       return exception_flag;
@@ -801,7 +801,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         if (__builtin_expect(object1 == NULL || object2 == NULL, 0)) {
           int_vars[0] = 0;
-          void* exception = env->new_string_raw(env, "Use of uninitialized value in string comparison operator");
+          void* exception = env->new_string_const_nolen_raw(env, "Use of uninitialized value in string comparison operator");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -885,7 +885,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         break;
       case SPVM_OPCODE_C_ID_DIVIDE_INT:
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_raw(env, "0 division");
+          void* exception = env->new_string_const_nolen_raw(env, "0 division");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -896,7 +896,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         break;
       case SPVM_OPCODE_C_ID_DIVIDE_LONG:
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_raw(env, "0 division");
+          void* exception = env->new_string_const_nolen_raw(env, "0 division");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -915,7 +915,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         break;
       case SPVM_OPCODE_C_ID_REMAINDER_INT:
         if (__builtin_expect(int_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_raw(env, "0 division");
+          void* exception = env->new_string_const_nolen_raw(env, "0 division");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -925,7 +925,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         break;
       case SPVM_OPCODE_C_ID_REMAINDER_LONG:
         if (__builtin_expect(long_vars[opcode->operand2] == 0, 0)) {
-          void* exception = env->new_string_raw(env, "0 division");
+          void* exception = env->new_string_const_nolen_raw(env, "0 division");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -1246,13 +1246,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1266,13 +1266,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1286,13 +1286,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1306,13 +1306,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1326,13 +1326,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1346,13 +1346,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1367,13 +1367,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t index = int_vars[opcode->operand2];
         
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1388,13 +1388,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1408,13 +1408,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1428,13 +1428,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1448,13 +1448,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1468,13 +1468,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1488,13 +1488,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1509,13 +1509,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1531,13 +1531,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1564,7 +1564,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
               SPVM_API_OBJECT_ASSIGN(element_address, object);
             }
             else {
-              void* exception = env->new_string_raw(env, "Element type is invalid");
+              void* exception = env->new_string_const_nolen_raw(env, "Element type is invalid");
               env->set_exception(env, exception);
               exception_flag = 1;
             }
@@ -1577,13 +1577,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* array = *(void**)&object_vars[opcode->operand0];
         int32_t index = int_vars[opcode->operand1];
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1600,13 +1600,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1625,13 +1625,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1652,13 +1652,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1677,13 +1677,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1702,13 +1702,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1727,13 +1727,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = opcode->operand3;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1753,13 +1753,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1776,13 +1776,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1799,13 +1799,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1822,13 +1822,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1845,13 +1845,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1868,13 +1868,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_index = opcode->operand3 >> 8;
         
         if (__builtin_expect(array == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1889,13 +1889,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1913,13 +1913,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1937,13 +1937,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1961,13 +1961,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -1985,13 +1985,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2009,13 +2009,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t index = int_vars[opcode->operand1];
         int32_t fields_length = opcode->operand3;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2034,13 +2034,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2056,13 +2056,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2078,13 +2078,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2100,13 +2100,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2122,13 +2122,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2144,13 +2144,13 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t fields_length = (opcode->operand3 & 0xFF) + 1;
         int32_t field_index = opcode->operand3 >> 8;
         if (__builtin_expect(!array, 0)) {
-          void* exception = env->new_string_raw(env, "Array must not be undef");
+          void* exception = env->new_string_const_nolen_raw(env, "Array must not be undef");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
           if (__builtin_expect(index < 0 || index >= *(int32_t*)((intptr_t)array + (intptr_t)env->object_length_offset), 0)) {
-            void* exception = env->new_string_raw(env, "Index is out of range");
+            void* exception = env->new_string_const_nolen_raw(env, "Index is out of range");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2441,7 +2441,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         void* object = env->new_object_raw(env, basic_type_id);
         if (object == NULL) {
-          void* exception = env->new_string_raw(env, "Can't allocate memory for object");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for object");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2457,7 +2457,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_byte_array_raw(env, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for byte array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for byte array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2466,7 +2466,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2480,7 +2480,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_short_array_raw(env, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for short array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for short array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2490,7 +2490,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2504,7 +2504,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_int_array_raw(env, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for int array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for int array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2514,7 +2514,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2527,7 +2527,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_long_array_raw(env, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for long array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for long array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2536,7 +2536,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2548,7 +2548,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_float_array_raw(env, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for float array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for float array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2557,7 +2557,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2569,7 +2569,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_double_array_raw(env, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for double array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for double array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2578,7 +2578,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2591,7 +2591,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_object_array_raw(env, basic_type_id, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for object array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for object array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2600,7 +2600,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2614,7 +2614,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_muldim_array_raw(env, basic_type_id, element_dimension, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for multi dimention array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for multi dimention array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2623,7 +2623,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2637,7 +2637,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         if (length >= 0) {
           void* object = env->new_mulnum_array_raw(env, basic_type_id, length);
           if (object == NULL) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for muti numeric array");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for muti numeric array");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2646,7 +2646,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
         }
         else {
-          void* exception = env->new_string_raw(env, "Array length must be more than or equal to 0");
+          void* exception = env->new_string_const_nolen_raw(env, "Array length must be more than or equal to 0");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2659,7 +2659,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         void* string = env->new_string_len_raw(env, string_value, constant->string_length);
         if (string == NULL) {
-          void* exception = env->new_string_raw(env, "Can't allocate memory for string");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for string");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2670,7 +2670,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH:
         if (*(void**)&object_vars[opcode->operand1] == NULL) {
-          void* exception = env->new_string_raw(env, "Can't get array length of undef value.");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't get array length of undef value.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2683,12 +2683,12 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* string1 = *(void**)&object_vars[opcode->operand1];
         void* string2 = *(void**)&object_vars[opcode->operand2];
         if (string1 == NULL) {
-          void* exception = env->new_string_raw(env, "\".\" operater left value must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "\".\" operater left value must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else if (string2 == NULL) {
-          void* exception = env->new_string_raw(env, "\".\" operater right value must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "\".\" operater right value must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -2823,7 +2823,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type in runtime.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible object type in runtime.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -2844,7 +2844,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible callback type.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible callback type.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -3510,7 +3510,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3527,7 +3527,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object = *(void**)&object_vars[opcode->operand1];
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3544,7 +3544,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3561,7 +3561,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3579,7 +3579,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3596,7 +3596,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3613,7 +3613,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object = *(void**)&object_vars[opcode->operand1];
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3630,7 +3630,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3646,7 +3646,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3662,7 +3662,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3678,7 +3678,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3694,7 +3694,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3710,7 +3710,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3726,7 +3726,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3743,7 +3743,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
 
         if (__builtin_expect(object == NULL, 0)) {
-          void* exception = env->new_string_raw(env, "Invocant must be defined");
+          void* exception = env->new_string_const_nolen_raw(env, "Invocant must be defined");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3759,7 +3759,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_raw(env, "Object to weaken an object field must not be undefined.");
+          SPVM_OBJECT* exception = env->new_string_const_nolen_raw(env, "Object to weaken an object field must not be undefined.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3767,7 +3767,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           void** get_field_object_address = (void**)((intptr_t)object + object_header_byte_size + field_offset);
           int32_t status = env->weaken(env, get_field_object_address);
           if (status != 0) {
-            void* exception = env->new_string_raw(env, "Can't allocate memory for weaken back reference");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't allocate memory for weaken back reference");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -3780,7 +3780,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand0];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_raw(env, "Object to unweaken an object field must not be undefined.");
+          SPVM_OBJECT* exception = env->new_string_const_nolen_raw(env, "Object to unweaken an object field must not be undefined.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -3796,7 +3796,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         int32_t field_offset = field->offset;
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          SPVM_OBJECT* exception = env->new_string_raw(env, "Object to isweak an object field must not be undefined.");
+          SPVM_OBJECT* exception = env->new_string_const_nolen_raw(env, "Object to isweak an object field must not be undefined.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4072,7 +4072,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_OBJECT_TO_BYTE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_raw(env, "Can't convert undef value.");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't convert undef value.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4084,7 +4084,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             byte_vars[opcode->operand0] = *(int8_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Byte to byte.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Byte to byte.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4094,7 +4094,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_OBJECT_TO_SHORT: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_raw(env, "Can't convert undef value.");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't convert undef value.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4106,7 +4106,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             short_vars[opcode->operand0] = *(int16_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Short to short.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Short to short.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4116,7 +4116,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CONVERT_INT_OBJECT_TO_INT: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_raw(env, "Can't convert undef value.");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't convert undef value.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4128,7 +4128,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             int_vars[opcode->operand0] = *(int32_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Int to int.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Int to int.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4138,7 +4138,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CONVERT_LONG_OBJECT_TO_LONG: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_raw(env, "Can't convert undef value.");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't convert undef value.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4150,7 +4150,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             long_vars[opcode->operand0] = *(int64_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Long to long.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Long to long.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4160,7 +4160,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CONVERT_FLOAT_OBJECT_TO_FLOAT: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_raw(env, "Can't convert undef value.");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't convert undef value.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4172,7 +4172,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             float_vars[opcode->operand0] = *(float*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Float to float.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Float to float.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4183,7 +4183,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_CONVERT_DOUBLE_OBJECT_TO_DOUBLE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         if (object == NULL) {
-          void* exception = env->new_string_raw(env, "Can't convert undef value.");
+          void* exception = env->new_string_const_nolen_raw(env, "Can't convert undef value.");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
@@ -4195,7 +4195,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
             double_vars[opcode->operand0] = *(double*)&fields[0];
           }
           else {
-            void* exception = env->new_string_raw(env, "Can't convert imcompatible object type from SPVM::Double to double.");
+            void* exception = env->new_string_const_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Double to double.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -4769,7 +4769,7 @@ SPVM_OBJECT* SPVM_API_new_pointer(SPVM_ENV* env, int32_t basic_type_id, void* po
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes) {
+SPVM_OBJECT* SPVM_API_new_string_const_nolen_raw(SPVM_ENV* env, const char* bytes) {
   (void)env;
   
   int32_t length = strlen((char*)bytes);
@@ -4787,14 +4787,12 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes) {
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes) {
+SPVM_OBJECT* SPVM_API_new_string_const_nolen(SPVM_ENV* env, const char* bytes) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_API_new_string_raw(env, bytes);
+  SPVM_OBJECT* object = SPVM_API_new_string_const_nolen_raw(env, bytes);
   
   SPVM_API_push_mortal(env, object);
-  
-  warn("AAAAAAAAAA");
   
   return object;
 }

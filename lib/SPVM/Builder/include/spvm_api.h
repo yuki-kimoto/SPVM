@@ -121,7 +121,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const cha
 int32_t SPVM_API_get_field_index(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id);
 
-// New raw
+// New
 SPVM_OBJECT* SPVM_API_new_object(SPVM_ENV* env, int32_t package_id);
 SPVM_OBJECT* SPVM_API_new_pointer(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
 SPVM_OBJECT* SPVM_API_new_byte_array(SPVM_ENV* env, int32_t length);
@@ -133,10 +133,10 @@ SPVM_OBJECT* SPVM_API_new_double_array(SPVM_ENV* env, int32_t length);
 SPVM_OBJECT* SPVM_API_new_object_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 SPVM_OBJECT* SPVM_API_new_muldim_array(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t length);
 SPVM_OBJECT* SPVM_API_new_mulnum_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
-SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes);
+SPVM_OBJECT* SPVM_API_new_string_const_nolen(SPVM_ENV* env, const char* bytes);
 SPVM_OBJECT* SPVM_API_new_string_len(SPVM_ENV* env, const char* bytes, int32_t length);
 
-// New
+// New raw
 SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t package_id);
 SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
 SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, int32_t length);
@@ -148,7 +148,7 @@ SPVM_OBJECT* SPVM_API_new_double_array_raw(SPVM_ENV* env, int32_t length);
 SPVM_OBJECT* SPVM_API_new_object_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t dimension, int32_t length);
 SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
-SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes);
+SPVM_OBJECT* SPVM_API_new_string_const_nolen_raw(SPVM_ENV* env, const char* bytes);
 SPVM_OBJECT* SPVM_API_new_string_len_raw(SPVM_ENV* env, const char* bytes, int32_t length);
 
 // Exception
