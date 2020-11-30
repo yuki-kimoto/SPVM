@@ -833,8 +833,8 @@ new_string_from_bin(...)
       // New string
       void* string = env->new_string(env, (const char*)binary, string_length);
 
-      const char* elems = env->get_chars(env, string);
-      memcpy((char*)elems, binary, string_length);
+      const char* chars = env->get_chars(env, string);
+      memcpy((char*)chars, binary, string_length);
       
       // New sv string
       sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
@@ -1980,10 +1980,10 @@ _get_exception(...)
   
   SV* sv_exception;
   if (str_exception) {
-    const char* exception = env->get_chars(env, str_exception);
+    const char* exception_chars = env->get_chars(env, str_exception);
     int32_t length = env->length(env, str_exception);
     
-    sv_exception = sv_2mortal(newSVpv(exception, length));
+    sv_exception = sv_2mortal(newSVpv(exception_chars, length));
   }
   else {
     sv_exception = &PL_sv_undef;
@@ -3362,10 +3362,10 @@ call_sub(...)
           else {
             
             if (return_value->basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
-              const char* bytes = env->get_chars(env, return_value);
+              const char* chars = env->get_chars(env, return_value);
               int32_t length = env->length(env, return_value);
               
-              sv_return_value = sv_2mortal(newSVpv(bytes, length));
+              sv_return_value = sv_2mortal(newSVpv(chars, length));
               
               sv_utf8_decode(sv_return_value);
               
@@ -3576,8 +3576,8 @@ call_sub(...)
   if (excetpion_flag) {
     void* exception = env->get_exception(env);
     int32_t length = env->length(env, exception);
-    const char* exception_bytes = (char*)env->get_elems_byte(env, exception);
-    SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_bytes, length));
+    const char* exception_chars = env->get_chars(env, exception);
+    SV* sv_exception = sv_2mortal(newSVpvn((char*)exception_chars, length));
     croak("%s\n at %s line %d\n", SvPV_nolen(sv_exception), MFILE, __LINE__);
   }
   // Success
@@ -3697,10 +3697,10 @@ array_to_elems(...)
           
           SV* sv_value;
           if (object != NULL) {
-            const char* string_bytes = env->get_chars(env, object);
+            const char* string_chars = env->get_chars(env, object);
             int32_t length = env->length(env, object);
             
-            sv_value = sv_2mortal(newSVpv(string_bytes, length));
+            sv_value = sv_2mortal(newSVpv(string_chars, length));
             
             sv_utf8_decode(sv_value);
           }
@@ -3965,9 +3965,9 @@ string_object_to_string(...)
   SPVM_OBJECT* string = SPVM_XS_UTIL_get_object(sv_string);
   
   int32_t length = env->length(env, string);
-  const char* bytes = env->get_chars(env, string);
+  const char* chars = env->get_chars(env, string);
 
-  SV* sv_return_value = sv_2mortal(newSVpv(bytes, length));
+  SV* sv_return_value = sv_2mortal(newSVpv(chars, length));
 
   sv_utf8_decode(sv_return_value);
 
