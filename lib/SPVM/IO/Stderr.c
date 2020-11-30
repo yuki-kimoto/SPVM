@@ -12,7 +12,7 @@ int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
   
-  const char* bytes = (const char*)env->get_elems_byte(env, string);
+  const char* bytes = env->get_chars(env, string);
   int32_t string_length = env->length(env, string);
   
   // Print

@@ -7,7 +7,7 @@ int32_t SPNATIVE__SPVM__Hash___murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* object = stack[0].oval;
   uint32_t seed = stack[1].ival;
 
-  const char* buf = (const char*)env->get_elems_byte(env, object);
+  const char* buf = env->get_chars(env, object);
   uint32_t len = env->length(env, object);
 
   uint32_t m = 0x5bd1e995;

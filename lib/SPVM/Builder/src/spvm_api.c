@@ -3271,7 +3271,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_PRINT: {
         void* object = object_vars[opcode->operand0];
         if (object) {
-          const char* bytes = (const char*)env->get_elems_byte(env, object);
+          const char* bytes = env->get_chars(env, object);
           int32_t string_length = env->length(env, object);
           
           if (string_length > 0) {
@@ -3294,7 +3294,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         int32_t empty_or_undef = 0;
         if (object) {
-          const char* bytes = (const char*)env->get_elems_byte(env, object);
+          const char* bytes = env->get_chars(env, object);
           int32_t string_length = env->length(env, object);
 
           if (string_length > 0) {

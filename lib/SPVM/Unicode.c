@@ -9,7 +9,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_str = stack[0].oval;
   
-  const char* str = (const char*)env->get_elems_byte(env, obj_str);
+  const char* str = env->get_chars(env, obj_str);
   int32_t str_len = env->length(env, obj_str);
   
   int32_t* offset_ref = stack[1].iref;

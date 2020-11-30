@@ -21,7 +21,7 @@ int32_t SPNATIVE__SPVM__Util___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack
   void* obj_format = stack[0].oval;
   if (!obj_format) { SPVM_DIE("Format must be defined", MFILE, __LINE__); }
 
-  const char* format = (const char*)env->get_elems_byte(env, obj_format);
+  const char* format = env->get_chars(env, obj_format);
   const double value = stack[1].dval;
 
   char tmp_result[SPRINTF_MAX_RESULT_LEN] = {};
@@ -40,7 +40,7 @@ int32_t SPNATIVE__SPVM__Util__strtoi(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->get_elems_byte(env, obj_string);
+  const char* string = env->get_chars(env, obj_string);
   
   int32_t digit = stack[1].ival;
   
@@ -69,7 +69,7 @@ int32_t SPNATIVE__SPVM__Util__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->get_elems_byte(env, obj_string);
+  const char* string = env->get_chars(env, obj_string);
   
   int32_t digit = stack[1].ival;
 
@@ -98,7 +98,7 @@ int32_t SPNATIVE__SPVM__Util__strtof(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->get_elems_byte(env, obj_string);
+  const char* string = env->get_chars(env, obj_string);
   
   char *end;
   errno = 0;
@@ -121,7 +121,7 @@ int32_t SPNATIVE__SPVM__Util__strtod(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (!obj_string) {
     SPVM_DIE("String must be defined", MFILE, __LINE__);
   }
-  const char* string = (const char*)env->get_elems_byte(env, obj_string);
+  const char* string = env->get_chars(env, obj_string);
   
   char *end;
   errno = 0;
@@ -639,7 +639,7 @@ int32_t SPNATIVE__SPVM__Util__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   if (obj_name == NULL) {
     SPVM_DIE("Name must be defined", MFILE, __LINE__);
   }
-  const char* name = (const char*)env->get_elems_byte(env, obj_name);
+  const char* name = env->get_chars(env, obj_name);
   
   const char* value = getenv(name);
   

@@ -374,11 +374,11 @@ int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_str = stack[0].oval;
   if (!obj_str) { SPVM_DIE("String must be defined", MFILE, __LINE__); }
-  const char* str = (const char*)env->get_elems_byte(env, obj_str);
+  const char* str = env->get_chars(env, obj_str);
   
   void* obj_format = stack[1].oval;
   if (!obj_format) { SPVM_DIE("Format must be defined", MFILE, __LINE__); }
-  const char* format = (const char*)env->get_elems_byte(env, obj_format);
+  const char* format = env->get_chars(env, obj_format);
 
   struct tm resultp = {0};
   
@@ -413,7 +413,7 @@ int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_format = stack[0].oval;
   if (!obj_format) { SPVM_DIE("Format must be defined", MFILE, __LINE__); }
-  const char* format = (const char*)env->get_elems_byte(env, obj_format);
+  const char* format = env->get_chars(env, obj_format);
   
   void* obj_time_info = stack[1].oval;
   if (!obj_time_info) { SPVM_DIE("SPVM::Time::Info object must be defined", MFILE, __LINE__); }
