@@ -223,7 +223,7 @@ union SPVM_value {
   if (id < 0) { SPVM_DIE("Method not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
   int32_t exception_flag = env->call_sub(env, id, stack);\
   if (exception_flag) {\
-    const char* message = env->get_elems_byte(env, env->exception(env));\
+    const char* message = env->get_chars(env, env->exception(env));\
     if (id < 0) { SPVM_DIE("%s", message, file, line); };\
     return SPVM_EXCEPTION;\
   }\
@@ -235,7 +235,7 @@ union SPVM_value {
   env->call_sub(env, id, stack);\
   int32_t exception_flag = env->call_sub(env, id, stack);\
   if (exception_flag) {\
-    const char* message = env->get_elems_byte(env, env->exception(env));\
+    const char* message = env->get_chars(env, env->exception(env));\
     if (id < 0) { SPVM_DIE("%s", message, file, line); };\
     return SPVM_EXCEPTION;\
   }\
