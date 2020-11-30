@@ -208,8 +208,8 @@ void SPVM_API_set_package_var_float(SPVM_ENV* env, int32_t package_var_id, float
 void SPVM_API_set_package_var_double(SPVM_ENV* env, int32_t package_var_id, double value);
 void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t package_var_id, SPVM_OBJECT* value);
 
-SPVM_OBJECT* SPVM_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object);
-SPVM_OBJECT* SPVM_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
+SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object);
+SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
 
 int32_t SPVM_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);

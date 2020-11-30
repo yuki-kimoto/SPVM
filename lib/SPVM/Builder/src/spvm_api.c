@@ -208,8 +208,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_alloc_memory_block_zero,
     SPVM_API_free_memory_block,
     SPVM_API_memory_blocks_count,
-    SPVM_API_type_name_raw,
-    SPVM_API_type_name,
+    SPVM_API_get_type_name_raw,
+    SPVM_API_get_type_name,
     SPVM_API_new_env,
     SPVM_API_free_env,
     NULL, // memory_blocks_count
@@ -4331,7 +4331,7 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
   return 0;
 }
 
-SPVM_OBJECT* SPVM_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
+SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
   assert(object);
@@ -4371,10 +4371,10 @@ SPVM_OBJECT* SPVM_API_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   return type_name;
 }
 
-SPVM_OBJECT* SPVM_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object_in) {
+SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_OBJECT* object_in) {
   (void)env;
   
-  SPVM_OBJECT* object = SPVM_API_type_name_raw(env, object_in);
+  SPVM_OBJECT* object = SPVM_API_get_type_name_raw(env, object_in);
   
   SPVM_API_push_mortal(env, object);
   
@@ -5307,8 +5307,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         // Exception in destructor is changed to warning
         if (exception_flag) {
           void* exception = env->get_exception(env);
-          char* exception_str = (char*)env->get_elems_byte(env, exception);
-          fprintf(stderr, "(in cleanup) %s\n", exception_str);
+          const char* exception_chars = env->get_chars(env, exception);
+          fprintf(stderr, "(in cleanup) %s\n", exception_chars);
         }
         
         assert(object->ref_count > 0);
