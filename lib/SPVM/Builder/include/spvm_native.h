@@ -287,6 +287,15 @@ union SPVM_value {
 
 
 
+
+
+
+
+
+
+
+
+
 struct SPVM_env {
   void* package_vars_heap;
   void* object_header_byte_size;
@@ -408,6 +417,6 @@ struct SPVM_env {
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
   void (*free_env)(SPVM_ENV* env);
   int32_t memory_blocks_count;
-  const char* (*get_chars)(SPVM_ENV* env, void* string);
+  const char* (*get_chars)(SPVM_ENV* env, void* string_object);
 };
 #endif
