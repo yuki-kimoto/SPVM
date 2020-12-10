@@ -608,6 +608,10 @@ Create L<SPVM::Builder::Config> object.
 
 Create default build config with C settings. This is L<SPVM::Builder::Config> object.
 
+If you want to use the specific C version, use C<set_std> method.
+
+  $bconf->set_std('c99');
+
 =head2 new_c99
   
   my $bconf = SPVM::Builder::Config->new_c99;
@@ -616,13 +620,17 @@ Create default build config with C99 settings. This is L<SPVM::Builder::Config> 
 
 =head2 new_cpp
   
-  my $bconf = SPVM::Builder::Config->new_c;
+  my $bconf = SPVM::Builder::Config->new_cpp;
 
 Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
 
+If you want to use the specific C++ version, use C<set_std> method.
+
+  $bconf->set_std('c++11');
+
 =head2 new_cpp11
   
-  my $bconf = SPVM::Builder::Config->new_c;
+  my $bconf = SPVM::Builder::Config->new_cpp11;
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
 
