@@ -164,7 +164,7 @@ sub set_cc {
 }
 
 sub get_ccflags {
-  my $self = shift;
+  my ($self) = @_;
   
   return $self->get_config('ccflags');
 }
@@ -202,7 +202,7 @@ sub prepend_ccflags {
 }
 
 sub get_cccdlflags {
-  my $self = shift;
+  my ($self) = @_;
   
   return $self->get_config('cccdlflags');
 }
@@ -240,7 +240,7 @@ sub prepend_cccdlflags {
 }
 
 sub get_archlibexp {
-  my $self = shift;
+  my ($self) = @_;
   
   return $self->get_config('archlibexp');
 }
@@ -266,7 +266,7 @@ sub set_optimize {
 }
 
 sub get_extra_compiler_flags {
-  my $self = shift;
+  my ($self) = @_;
   
   return $self->{extra_compiler_flags};
 }
@@ -371,7 +371,7 @@ sub set_ld {
 }
 
 sub get_lddlflags {
-  my $self = shift;
+  my ($self) = @_;
   
   return $self->get_config('lddlflags');
 }
@@ -409,7 +409,7 @@ sub prepend_lddlflags {
 }
 
 sub get_shrpenv {
-  my $self = shift;
+  my ($self) = @_;
   
   return $self->get_config('shrpenv');
 }
@@ -469,7 +469,7 @@ sub push_libs {
 }
 
 sub get_extra_linker_flags {
-  my $self = shift;
+  my ($self) = @_;
   
   return $self->{extra_linker_flags};
 }
@@ -525,7 +525,7 @@ sub replace_all_config {
 }
 
 sub to_hash {
-  my $self = shift;
+  my ($self) = @_;
   
   my $hash_config = {%{$self->{config}}};
   
