@@ -2024,33 +2024,3 @@ int32_t SPNATIVE__SPVM__Math__conjf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   return SPVM_SUCCESS;
 }
-
-int32_t SPNATIVE__SPVM__Math__cproj(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  double re = stack[0].dval;
-  double im = stack[1].dval;
-
-  double complex z = re + im * _Complex_I;
-
-  double complex z_out = cproj(z);
-  
-  stack[0].dval = creal(z_out);
-  stack[1].dval = cimag(z_out);
-
-  return SPVM_SUCCESS;
-}
-
-int32_t SPNATIVE__SPVM__Math__cprojf(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-  float re = stack[0].fval;
-  float im = stack[1].fval;
-
-  float complex z = re + im * _Complex_I;
-
-  float complex z_out = cprojf(z);
-
-  stack[0].fval = crealf(z_out);
-  stack[1].fval = cimagf(z_out);
-
-  return SPVM_SUCCESS;
-}

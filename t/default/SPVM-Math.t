@@ -253,9 +253,6 @@ ok(TestCase::Lib::SPVM::Math->test_isunorderedf);
   ok(TestCase::Lib::SPVM::Math->test_conj);
   ok(TestCase::Lib::SPVM::Math->test_conjf);
 
-  ok(TestCase::Lib::SPVM::Math->test_cproj);
-  ok(TestCase::Lib::SPVM::Math->test_cprojf);
-
   ok(TestCase::Lib::SPVM::Math->test_cexp);
   ok(TestCase::Lib::SPVM::Math->test_cexpf);
 

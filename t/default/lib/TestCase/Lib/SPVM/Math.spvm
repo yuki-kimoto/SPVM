@@ -3401,38 +3401,6 @@ package TestCase::Lib::SPVM::Math {
     return 1;
   }
 
-  sub test_cproj : int () {
-    my $z1 = complex(0.5, 0.25);
-
-    my $z_out = SPVM::Math->cproj($z1);
-    
-    unless ($z_out->{re} > 0.761904 && $z_out->{re} < 0.761906) {
-      return 0;
-    }
-
-    unless ($z_out->{im} > 0.380951 && $z_out->{im} < 0.380953) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_cprojf : int () {
-    my $z1 = complexf(0.5f, 0.25f);
-
-    my $z_out = SPVM::Math->cprojf($z1);
-    
-    unless ($z_out->{re} > 0.7619 && $z_out->{re} < 0.7620) {
-      return 0;
-    }
-    
-    unless ($z_out->{im} > 0.3809 && $z_out->{im} < 0.3810) {
-      return 0;
-    }
-
-    return 1;
-  }
-
   sub test_cpow : int () {
     my $z1 = complex(0.5, 0.25);
     my $z2 = complex(1.5, 1.25);

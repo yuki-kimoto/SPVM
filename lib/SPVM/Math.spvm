@@ -318,8 +318,4 @@ package SPVM::Math {
 
   native sub conj : SPVM::Complex_2d ($z : SPVM::Complex_2d);
   native sub conjf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub cproj : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub cprojf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
 }
