@@ -57,7 +57,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack)
   int8_t* utf8_bytes = env->get_elems_byte(env, obj_utf8_bytes);
   memcpy((char*)utf8_bytes, tmp_utf8_bytes, utf8_len);
   
-  const char* utf8_string = env->new_string(env, (char*)utf8_bytes, utf8_len);
+  void* utf8_string = env->new_string(env, (char*)utf8_bytes, utf8_len);
   
   stack[0].oval = utf8_string;
   
