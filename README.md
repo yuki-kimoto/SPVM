@@ -4,7 +4,7 @@ Static Perl Virtual Machine. Fast calculation, fast array operation, and easy C/
 
 # Features
 
-* Fast culcuration, Fast array operation, Small memory
+* Fast calculation, Fast array operation, Small memory
 * Perl syntax, Static typing, Switch syntax, Have language specification
 * Enum, Type inference, Anon subroutine, Variable captures
 * Array initialization, 
