@@ -605,7 +605,7 @@ int32_t SPNATIVE__SPVM__Math__fmodf(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__remainder(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  // x - Math.Round(x / y) * y
+  // re - Math.Round(re / im) * im
   double value = remainder(stack[0].dval, stack[1].dval);
 
   stack[0].dval = value;
@@ -616,7 +616,7 @@ int32_t SPNATIVE__SPVM__Math__remainder(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__remainderf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  // x - Math.Round(x / y) * y
+  // re - Math.Round(re / im) * im
   float value = remainderf(stack[0].fval, stack[1].fval);
 
   stack[0].fval = value;
@@ -1451,10 +1451,10 @@ int32_t SPNATIVE__SPVM__Math__isunorderedf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cacos(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = cacos(z);
 
@@ -1466,10 +1466,10 @@ int32_t SPNATIVE__SPVM__Math__cacos(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cacosf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = cacosf(z);
 
@@ -1481,10 +1481,10 @@ int32_t SPNATIVE__SPVM__Math__cacosf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__casin(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = casin(z);
 
@@ -1496,10 +1496,10 @@ int32_t SPNATIVE__SPVM__Math__casin(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__casinf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = casinf(z);
 
@@ -1511,10 +1511,10 @@ int32_t SPNATIVE__SPVM__Math__casinf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__catan(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = catan(z);
 
@@ -1526,10 +1526,10 @@ int32_t SPNATIVE__SPVM__Math__catan(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__catanf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = catanf(z);
 
@@ -1541,10 +1541,10 @@ int32_t SPNATIVE__SPVM__Math__catanf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ccos(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = ccos(z);
 
@@ -1556,10 +1556,10 @@ int32_t SPNATIVE__SPVM__Math__ccos(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ccosf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = ccosf(z);
 
@@ -1571,10 +1571,10 @@ int32_t SPNATIVE__SPVM__Math__ccosf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__csin(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = csin(z);
 
@@ -1586,10 +1586,10 @@ int32_t SPNATIVE__SPVM__Math__csin(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__csinf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = csinf(z);
 
@@ -1601,10 +1601,10 @@ int32_t SPNATIVE__SPVM__Math__csinf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ctan(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = ctan(z);
 
@@ -1616,10 +1616,10 @@ int32_t SPNATIVE__SPVM__Math__ctan(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ctanf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = ctanf(z);
 
@@ -1631,10 +1631,10 @@ int32_t SPNATIVE__SPVM__Math__ctanf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cacosh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = cacosh(z);
 
@@ -1646,10 +1646,10 @@ int32_t SPNATIVE__SPVM__Math__cacosh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cacoshf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = cacoshf(z);
 
@@ -1661,10 +1661,10 @@ int32_t SPNATIVE__SPVM__Math__cacoshf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__casinh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = casinh(z);
 
@@ -1676,10 +1676,10 @@ int32_t SPNATIVE__SPVM__Math__casinh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__casinhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = casinhf(z);
 
@@ -1691,10 +1691,10 @@ int32_t SPNATIVE__SPVM__Math__casinhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__catanh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = catanh(z);
 
@@ -1706,10 +1706,10 @@ int32_t SPNATIVE__SPVM__Math__catanh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__catanhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = catanhf(z);
 
@@ -1721,10 +1721,10 @@ int32_t SPNATIVE__SPVM__Math__catanhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ccosh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = ccosh(z);
 
@@ -1736,10 +1736,10 @@ int32_t SPNATIVE__SPVM__Math__ccosh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ccoshf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = ccoshf(z);
 
@@ -1751,10 +1751,10 @@ int32_t SPNATIVE__SPVM__Math__ccoshf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__csinh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = csinh(z);
 
@@ -1766,10 +1766,10 @@ int32_t SPNATIVE__SPVM__Math__csinh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__csinhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = csinhf(z);
 
@@ -1781,10 +1781,10 @@ int32_t SPNATIVE__SPVM__Math__csinhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ctanh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = ctanh(z);
 
@@ -1796,10 +1796,10 @@ int32_t SPNATIVE__SPVM__Math__ctanh(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__ctanhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = ctanhf(z);
 
@@ -1811,10 +1811,10 @@ int32_t SPNATIVE__SPVM__Math__ctanhf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cexp(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = cexp(z);
   
@@ -1826,10 +1826,10 @@ int32_t SPNATIVE__SPVM__Math__cexp(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cexpf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = cexpf(z);
 
@@ -1841,10 +1841,10 @@ int32_t SPNATIVE__SPVM__Math__cexpf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__clog(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = clog(z);
 
@@ -1856,10 +1856,10 @@ int32_t SPNATIVE__SPVM__Math__clog(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__clogf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = clogf(z);
 
@@ -1871,10 +1871,10 @@ int32_t SPNATIVE__SPVM__Math__clogf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cabs(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double z_out = cabs(z);
 
@@ -1885,10 +1885,10 @@ int32_t SPNATIVE__SPVM__Math__cabs(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cabsf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float z_out = cabsf(z);
 
@@ -1899,13 +1899,13 @@ int32_t SPNATIVE__SPVM__Math__cabsf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cpow(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
   double x_pow = stack[2].dval;
   double y_pow = stack[3].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_pow = x_pow + y_pow * _Complex_I;
 
@@ -1919,13 +1919,13 @@ int32_t SPNATIVE__SPVM__Math__cpow(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cpowf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
   float x_pow = stack[2].fval;
   float y_pow = stack[3].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_pow = x_pow + y_pow * _Complex_I;
 
@@ -1939,10 +1939,10 @@ int32_t SPNATIVE__SPVM__Math__cpowf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__csqrt(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = csqrt(z);
   
@@ -1954,10 +1954,10 @@ int32_t SPNATIVE__SPVM__Math__csqrt(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__csqrtf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = csqrtf(z);
 
@@ -1969,10 +1969,10 @@ int32_t SPNATIVE__SPVM__Math__csqrtf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__carg(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double z_out = carg(z);
 
@@ -1983,10 +1983,10 @@ int32_t SPNATIVE__SPVM__Math__carg(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cargf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float z_out = cargf(z);
 
@@ -1997,10 +1997,10 @@ int32_t SPNATIVE__SPVM__Math__cargf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__conj(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = conj(z);
 
@@ -2012,10 +2012,10 @@ int32_t SPNATIVE__SPVM__Math__conj(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__conjf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = conjf(z);
 
@@ -2027,10 +2027,10 @@ int32_t SPNATIVE__SPVM__Math__conjf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cproj(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  double x = stack[0].dval;
-  double y = stack[1].dval;
+  double re = stack[0].dval;
+  double im = stack[1].dval;
 
-  double complex z = x + y * _Complex_I;
+  double complex z = re + im * _Complex_I;
 
   double complex z_out = cproj(z);
   
@@ -2042,10 +2042,10 @@ int32_t SPNATIVE__SPVM__Math__cproj(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Math__cprojf(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  float x = stack[0].fval;
-  float y = stack[1].fval;
+  float re = stack[0].fval;
+  float im = stack[1].fval;
 
-  float complex z = x + y * _Complex_I;
+  float complex z = re + im * _Complex_I;
 
   float complex z_out = cprojf(z);
 
