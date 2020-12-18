@@ -264,6 +264,7 @@ struct SPVM_op {
   int32_t id;
   int32_t flag;
   int32_t line;
+  int32_t keyword_start_pos;
   int8_t moresib;
   int8_t is_lvalue;
   int8_t is_assigned_to_var;

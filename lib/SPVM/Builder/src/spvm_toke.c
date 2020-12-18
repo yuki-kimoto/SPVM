@@ -33,6 +33,16 @@ SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   return op;
 }
 
+SPVM_OP* SPVM_TOKE_newOP_with_keyword_start_pos(SPVM_COMPILER* compiler, int32_t type, int32_t keyword_start_pos) {
+  
+  SPVM_OP* op = SPVM_OP_new_op(compiler, type, compiler->cur_file, compiler->cur_line);
+  
+  // keyword_start_pos is only used to decide anon sub uniquness
+  op->keyword_start_pos = keyword_start_pos;
+  
+  return op;
+}
+
 int32_t SPVM_TOKE_is_white_space(SPVM_COMPILER* compiler, char ch) {
   (void)compiler;
   // SP, CR, LF, HT, FF
@@ -1571,6 +1581,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // Keyword or name
         else if (isalpha(ch) || ch == '_') {
+          // Keyword start position
+          int32_t keyword_start_pos = compiler->bufptr - compiler->line_start_ptr;
+          
           // Save current position
           const char* cur_token_ptr = compiler->bufptr;
           
@@ -1886,7 +1899,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return SWITCH;
                 }
                 else if (strcmp(keyword, "sub") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SUB);
+                  yylvalp->opval = SPVM_TOKE_newOP_with_keyword_start_pos(compiler, SPVM_OP_C_ID_SUB, keyword_start_pos);
                   compiler->expect_sub_name = 1;
                   
                   return SUB;
