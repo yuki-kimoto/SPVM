@@ -2019,7 +2019,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
         
-        if (sub->flag & SPVM_SUB_C_FLAG_NEW_CALLBACK_OBJECT) {
+        if (sub->flag & SPVM_SUB_C_FLAG_ANON) {
           package->flag |= SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE;
           assert(package->subs->length == 1);
           assert(is_anon);
@@ -2307,12 +2307,12 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_begin, int32_t is_new_callback_object, int32_t can_precompile) {
+SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op_name_sub, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_begin, int32_t is_anon, int32_t can_precompile) {
   SPVM_SUB* sub = SPVM_SUB_new(compiler);
   
-  // New callback object
-  if (is_new_callback_object) {
-    sub->flag |= SPVM_SUB_C_FLAG_NEW_CALLBACK_OBJECT;
+  // Is anon subroutine
+  if (is_anon) {
+    sub->flag |= SPVM_SUB_C_FLAG_ANON;
   }
   
   if (op_name_sub == NULL) {

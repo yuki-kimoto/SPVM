@@ -29,7 +29,7 @@
 %type <opval> opt_packages packages package package_block refcnt
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub new_callback_object opt_args args arg invocant has use require our string_length
+%type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -296,13 +296,13 @@ sub
        $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, NULL, NULL, $7, 0, 0, can_precompile);
      }
 
-new_callback_object
+anon_sub
   : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
        int32_t is_begin = 0;
-       int32_t is_callback_object = 1;
+       int32_t is_anon = 1;
        int32_t can_precompile = 1;
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_begin, is_callback_object, can_precompile);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_begin, is_anon, can_precompile);
      }
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
@@ -316,9 +316,9 @@ new_callback_object
        }
        
        int32_t is_begin = 0;
-       int32_t is_callback_object = 1;
+       int32_t is_anon = 1;
        int32_t can_precompile = 1;
-       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_begin, is_callback_object, can_precompile);
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_begin, is_anon, can_precompile);
      }
 
 opt_args
@@ -936,7 +936,7 @@ new
     {
       $$ = SPVM_OP_build_new(compiler, $1, $2, NULL);
     }
-  | new_callback_object
+  | anon_sub
     {
       // Package
       SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, $1->file, $1->line);

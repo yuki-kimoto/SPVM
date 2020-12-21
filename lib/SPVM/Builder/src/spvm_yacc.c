@@ -750,14 +750,14 @@ static const char *const yytname[] =
   "package", "package_block", "opt_declarations", "declarations",
   "declaration", "init_block", "use", "require", "allow", "enumeration",
   "enumeration_block", "opt_enumeration_values", "enumeration_values",
-  "enumeration_value", "our", "has", "sub", "new_callback_object",
-  "opt_args", "args", "arg", "opt_vaarg", "invocant", "opt_descriptors",
-  "descriptors", "opt_statements", "statements", "statement",
-  "for_statement", "while_statement", "switch_statement", "switch_block",
-  "case_statements", "case_statement", "default_statement",
-  "if_require_statement", "if_statement", "else_statement", "block",
-  "eval_block", "opt_expressions", "opt_expression", "expression",
-  "refcnt", "expressions", "unary_op", "inc", "dec", "binary_op",
+  "enumeration_value", "our", "has", "sub", "anon_sub", "opt_args", "args",
+  "arg", "opt_vaarg", "invocant", "opt_descriptors", "descriptors",
+  "opt_statements", "statements", "statement", "for_statement",
+  "while_statement", "switch_statement", "switch_block", "case_statements",
+  "case_statement", "default_statement", "if_require_statement",
+  "if_statement", "else_statement", "block", "eval_block",
+  "opt_expressions", "opt_expression", "expression", "refcnt",
+  "expressions", "unary_op", "inc", "dec", "binary_op",
   "num_comparison_op", "str_comparison_op", "isa", "logical_op", "assign",
   "new", "array_init", "convert", "array_access", "call_sub",
   "field_access", "weaken_field", "unweaken_field", "isweak_field",
@@ -2696,9 +2696,9 @@ yyreduce:
 #line 301 "yacc/spvm_yacc.y"
     {
        int32_t is_begin = 0;
-       int32_t is_callback_object = 1;
+       int32_t is_anon = 1;
        int32_t can_precompile = 1;
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), (yyvsp[(9) - (9)].opval), NULL, (yyvsp[(7) - (9)].opval), is_begin, is_callback_object, can_precompile);
+       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), (yyvsp[(9) - (9)].opval), NULL, (yyvsp[(7) - (9)].opval), is_begin, is_anon, can_precompile);
      ;}
     break;
 
@@ -2715,9 +2715,9 @@ yyreduce:
        }
        
        int32_t is_begin = 0;
-       int32_t is_callback_object = 1;
+       int32_t is_anon = 1;
        int32_t can_precompile = 1;
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(5) - (12)].opval), NULL, (yyvsp[(7) - (12)].opval), (yyvsp[(9) - (12)].opval), (yyvsp[(4) - (12)].opval), (yyvsp[(12) - (12)].opval), op_list_args, (yyvsp[(10) - (12)].opval), is_begin, is_callback_object, can_precompile);
+       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(5) - (12)].opval), NULL, (yyvsp[(7) - (12)].opval), (yyvsp[(9) - (12)].opval), (yyvsp[(4) - (12)].opval), (yyvsp[(12) - (12)].opval), op_list_args, (yyvsp[(10) - (12)].opval), is_begin, is_anon, can_precompile);
      ;}
     break;
 
