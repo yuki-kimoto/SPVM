@@ -299,8 +299,10 @@ sub
 new_callback_object
   : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
+       int32_t is_begin = 0;
+       int32_t is_callback_object = 1;
        int32_t can_precompile = 1;
-       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, 0, 1, can_precompile);
+       $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_begin, is_callback_object, can_precompile);
      }
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
      {
@@ -313,8 +315,10 @@ new_callback_object
          SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, $2);
        }
        
+       int32_t is_begin = 0;
+       int32_t is_callback_object = 1;
        int32_t can_precompile = 1;
-       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, 0, 1, can_precompile);
+       $$ = SPVM_OP_build_sub(compiler, $5, NULL, $7, $9, $4, $12, op_list_args, $10, is_begin, is_callback_object, can_precompile);
      }
 
 opt_args
