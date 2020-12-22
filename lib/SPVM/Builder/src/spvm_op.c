@@ -1598,6 +1598,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Package is anon
     is_anon = 1;
     
+    SPVM_OP* op_sub = op_block->first->last;
+    assert(op_sub);
+    assert(op_sub->id == SPVM_OP_C_ID_SUB);    
     // Anon package name
     char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("anon2147483647") + 1);
     sprintf(name_package, "anon%d", compiler->anon_package_length);

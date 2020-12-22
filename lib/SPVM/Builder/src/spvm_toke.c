@@ -251,6 +251,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               compiler->cur_file = cur_file;
               compiler->cur_rel_file = cur_rel_file;
+              compiler->cur_rel_file_package_name = package_name;
               
               // Read file content
               fseek(fh, 0, SEEK_END);

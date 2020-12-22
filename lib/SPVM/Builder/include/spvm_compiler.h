@@ -22,6 +22,9 @@ struct SPVM_compiler {
   // Current parsed file relative name
   const char* cur_rel_file;
 
+  // Current parsed package name
+  const char* cur_rel_file_package_name;
+
   // Current parsed source
   char* cur_src;
 

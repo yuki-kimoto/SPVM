@@ -302,6 +302,7 @@ anon_sub
        int32_t is_begin = 0;
        int32_t is_anon = 1;
        int32_t can_precompile = 1;
+       
        $$ = SPVM_OP_build_sub(compiler, $2, NULL, $4, $6, $1, $9, NULL, $7, is_begin, is_anon, can_precompile);
      }
   | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
