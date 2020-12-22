@@ -2020,7 +2020,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
         
         if (sub->flag & SPVM_SUB_C_FLAG_ANON) {
-          package->flag |= SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE;
+          package->flag |= SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE;
           assert(package->subs->length == 1);
           assert(is_anon);
         }

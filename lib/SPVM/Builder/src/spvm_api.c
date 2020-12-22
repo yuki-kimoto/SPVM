@@ -4269,7 +4269,7 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback_package->subs, 0);
     
     const char* sub_callback_signature = sub_callback->signature;
-    if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
+    if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
       SPVM_SUB* object_package_sub = SPVM_LIST_fetch(object_package->subs, 0);
       
       if (strcmp(sub_callback_signature, object_package_sub->signature) == 0) {
@@ -5560,7 +5560,7 @@ int32_t SPVM_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const cha
   
   // Package which have only anon sub
   int32_t sub_id;
-  if (object_package->flag & SPVM_PACKAGE_C_FLAG_CALLBACK_PACKAGE) {
+  if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
     // Subroutine name
     SPVM_SUB* sub = SPVM_LIST_fetch(object_package->subs, 0);
      
