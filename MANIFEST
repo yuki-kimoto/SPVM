@@ -734,6 +734,7 @@ t/default/lib/TestCase/CompileError/Literal/Integer/IntOutOfRange.spvm
 t/default/lib/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
+t/default/lib/TestCase/CompileError/Package/PackageNameDifferntFromModuleName.spvm
 t/default/lib/TestCase/CompileError/PackageVar/OurPackageVarNameColon2Twice.spvm
 t/default/lib/TestCase/CompileError/PackageVar/OurPackageVarNameContainsUnderScoreTwice.spvm
 t/default/lib/TestCase/CompileError/PackageVar/OurPackageVarNameEndColon2.spvm
@@ -749,6 +750,7 @@ t/default/lib/TestCase/CompileError/Sub/SubNameStartDigit.spvm
 t/default/lib/TestCase/CompileError/Subtract/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Subtract/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Switch/NoLastBreak.spvm
+t/default/lib/TestCase/CompileError/Symbol/AnonSub.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/TestCase/CompileError/UnaryMinus/NotNumeric.spvm
@@ -821,6 +823,7 @@ t/default/lib/TestCase/Matrix4_16l.spvm
 t/default/lib/TestCase/Matrix4_16s.spvm
 t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/ModuleContainsMultiPackage.spvm
+t/default/lib/TestCase/ModuleContainsMultiPackage/FloatMatrix.spvm
 t/default/lib/TestCase/Multiply.spvm
 t/default/lib/TestCase/MyExe.spvm
 t/default/lib/TestCase/NativeAPI.c
