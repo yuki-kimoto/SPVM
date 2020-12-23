@@ -2,6 +2,7 @@
   - remove cproj, cprojf from SPVM::Math because windows and macOS have a bug that right value don't return.
   - internal anon sub package name become unique
   - Package name must be same as the package name corresponding to module file.
+  - fix duplicated anon sub package name adding
 0.0928 2020-12-09
   - add get_chars function to native api
   - rename native api new_string_raw to new_string_nolen_raw and the argument string must be const string.
