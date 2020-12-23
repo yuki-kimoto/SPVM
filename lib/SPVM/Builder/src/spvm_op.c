@@ -1626,9 +1626,19 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   // Add addede package names in this compile
   SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
-
-  if (!is_anon && islower(package_name[0])) {
-    SPVM_COMPILER_error(compiler, "Package name \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
+  
+  if (!is_anon) {
+    // If package name start with lower case, compile error occur.
+    if (islower(package_name[0])) {
+      SPVM_COMPILER_error(compiler, "Package name \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
+    }
+    // If package name is different from the package name corresponding to the module file, compile error occur.
+    else if (strcmp(package_name, compiler->cur_rel_file_package_name) != 0) {
+      // If package fail load by if (require xxx) syntax, that is ok
+      if (!op_type->uv.type->basic_type->fail_load) {
+        SPVM_COMPILER_error(compiler, "Package name \"%s\" is different from the package name corresponding to the module file at %s line %d\n", package_name, op_package->file, op_package->line);
+      }
+    }
   }
   
   SPVM_HASH* package_symtable = compiler->package_symtable;

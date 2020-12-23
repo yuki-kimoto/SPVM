@@ -1,4 +1,5 @@
 package TestCase::ModuleContainsMultiPackage {
+  use TestCase::ModuleContainsMultiPackage::FloatMatrix;
   sub mat_new_zero : TestCase::ModuleContainsMultiPackage::FloatMatrix ($rows_length : int, $columns_length : int) {
     my $values_length = $rows_length * $columns_length;
     my $mat = new TestCase::ModuleContainsMultiPackage::FloatMatrix;
@@ -8,10 +9,4 @@ package TestCase::ModuleContainsMultiPackage {
     
     return $mat;
   }
-}
-
-package TestCase::ModuleContainsMultiPackage::FloatMatrix : public {
-  has rows_length : public int;
-  has columns_length : public int;
-  has values : public float[];
 }

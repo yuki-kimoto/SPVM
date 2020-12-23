@@ -14,6 +14,25 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Package
+{
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::Package::PackageNameDifferntFromModuleName', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('foo', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('4foo', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+}
+
 # Symbol
 {
   {
@@ -106,20 +125,6 @@ use lib "$FindBin::Bin/lib";
   {
     my $build = SPVM::Builder->new;
     my $success = $build->compile_spvm('TestCase::CompileError::PackageVar::OurPackageVarNameColon2Twice', __FILE__, __LINE__);
-    ok($success == 0);
-  }
-}
-
-# Package
-{
-  {
-    my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('foo', __FILE__, __LINE__);
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('4foo', __FILE__, __LINE__);
     ok($success == 0);
   }
 }
