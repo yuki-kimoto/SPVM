@@ -1600,7 +1600,15 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     SPVM_OP* op_sub = op_block->first->last;
     assert(op_sub);
-    assert(op_sub->id == SPVM_OP_C_ID_SUB);    
+    assert(op_sub->id == SPVM_OP_C_ID_SUB);
+    
+    // Create anon sub package name
+    const char* anon_sub_defined_rel_file_package_name = compiler->cur_rel_file_package_name;
+    int32_t anon_sub_defined_line = op_sub->line;
+    int32_t anon_sub_defined_keyword_start_pos = op_sub->keyword_start_pos;
+    
+    // warn("AAAAA %s %d %d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
+    
     // Anon package name
     char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("anon2147483647") + 1);
     sprintf(name_package, "anon%d", compiler->anon_package_length);
