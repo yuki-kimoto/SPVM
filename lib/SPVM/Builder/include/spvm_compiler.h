@@ -76,9 +76,6 @@ struct SPVM_compiler {
   // Class loading stack
   SPVM_LIST* op_use_stack;
 
-  // Anonimous package length
-  int32_t anon_package_length;
-
   // Operation codes
   SPVM_OPCODE_ARRAY* opcode_array;
   

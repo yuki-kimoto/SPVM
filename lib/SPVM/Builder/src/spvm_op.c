@@ -1601,22 +1601,32 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_OP* op_sub = op_block->first->last;
     assert(op_sub);
     assert(op_sub->id == SPVM_OP_C_ID_SUB);
+
+    // int32_t max length is 10(2147483647)
+    int32_t int32_max_length = 10;
     
     // Create anon sub package name
+    // If Foo::Bar anon sub is defined line 123, keyword start pos 32, the anon sub package name become anon_Foo__Bar_123_32. This is uniqe in whole program.
     const char* anon_sub_defined_rel_file_package_name = compiler->cur_rel_file_package_name;
     int32_t anon_sub_defined_line = op_sub->line;
     int32_t anon_sub_defined_keyword_start_pos = op_sub->keyword_start_pos;
+    int32_t anon_sub_package_name_length = 5 + strlen(anon_sub_defined_rel_file_package_name) + 1 + int32_max_length + 1 + int32_max_length;
     
     // warn("AAAAA %s %d %d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
     
     // Anon package name
-    char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, strlen("anon2147483647") + 1);
-    sprintf(name_package, "anon%d", compiler->anon_package_length);
-    compiler->anon_package_length++;
+    char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, anon_sub_package_name_length + 1);
+    sprintf(name_package, "anon_%s_%d_%d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
+    for (int32_t i = 0; i < anon_sub_package_name_length; i++) {
+      if (name_package[i] == ':') {
+        name_package[i] = '_';
+      }
+    }
+    
     SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
     
-    // Add addede package names in this compile
+    // Add added package names in this compile
     SPVM_LIST_push(compiler->tmp_added_package_names, (void*)name_package);
   }
   
