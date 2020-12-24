@@ -36,11 +36,6 @@
 #include "spvm_case_info.h"
 #include "spvm_array_field_access.h"
 
-void SPVM_OPCODE_BUILDER_get_runtime_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t* runtime_basic_type_id, int32_t* runtime_type_dimension) {
-  *runtime_basic_type_id = basic_type_id;
-  *runtime_type_dimension = dimension;
-}
-
 void SPVM_OPCODE_BUILDER_set_opcode_id(SPVM_COMPILER* compiler, SPVM_OPCODE* opcode, int32_t opcode_id) {
   opcode->id = opcode_id;
 }
@@ -176,7 +171,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           int32_t mortal_stack_top_max = 0;
           
           while (op_cur) {
-            int32_t opcodes_length = opcode_array->length - sub->opcodes_base;
             
             // [START]Preorder traversal position
             switch (op_cur->id) {
@@ -483,7 +477,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
                           
                           int32_t mem_id_out;
-                          int32_t mem_id_in;
                           switch (type->basic_type->id) {
                             case SPVM_BASIC_TYPE_C_ID_BYTE:
                               SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_INIT_BYTE);
@@ -770,8 +763,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           break;
                         }
                         case SPVM_OP_C_ID_REFCNT : {
-                          
-                          SPVM_OP* op_term = op_cur->first;
                           
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -1230,7 +1221,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           // Element type
                           SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_field_access);
-                          SPVM_BASIC_TYPE* element_basic_type = element_type->basic_type;
 
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -2960,8 +2950,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
                                 int32_t runtime_basic_type_id;
                                 int32_t runtime_type_dimension;
-                                SPVM_OPCODE_BUILDER_get_runtime_type(compiler, op_dist_type->uv.type->basic_type->id, op_dist_type->uv.type->dimension, &runtime_basic_type_id, &runtime_type_dimension);
-                                opcode.operand2 = runtime_basic_type_id;
+                                opcode.operand2 = op_dist_type->uv.type->basic_type->id;
                               }
                               // CHECK_OBJECT_TYPE
                               else {
@@ -2970,9 +2959,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
                                 int32_t runtime_basic_type_id;
                                 int32_t runtime_type_dimension;
-                                SPVM_OPCODE_BUILDER_get_runtime_type(compiler, op_dist_type->uv.type->basic_type->id, op_dist_type->uv.type->dimension, &runtime_basic_type_id, &runtime_type_dimension);
-                                opcode.operand2 = runtime_basic_type_id;
-                                opcode.operand3 = runtime_type_dimension;
+                                opcode.operand2 = op_dist_type->uv.type->basic_type->id;
+                                opcode.operand3 = op_dist_type->uv.type->dimension;
                               }
                               
                               opcode.operand0 = mem_id_out;
@@ -3132,7 +3120,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_MULNUM_ARRAY);
 
                                       int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                      int32_t basic_type_id = runtime_basic_type_id;
                                       int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_assign_src->first->last);
 
                                       opcode.operand0 = mem_id_out;
@@ -3150,7 +3137,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                       SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_OBJECT_ARRAY);
 
                                       int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                      int32_t basic_type_id = runtime_basic_type_id;
                                       int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_assign_src->first->last);
 
                                       opcode.operand0 = mem_id_out;
@@ -3175,12 +3161,11 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                                 int32_t runtime_basic_type_id;
                                 int32_t runtime_type_dimension;
-                                SPVM_OPCODE_BUILDER_get_runtime_type(compiler,  op_type->uv.type->basic_type->id,  op_type->uv.type->dimension, &runtime_basic_type_id, &runtime_type_dimension);
                                 
                                 opcode.operand0 = mem_id_out;
-                                opcode.operand1 = runtime_basic_type_id;
+                                opcode.operand1 = op_type->uv.type->basic_type->id;
                                 opcode.operand2 = mem_id_index;
-                                opcode.operand3 = runtime_type_dimension - 1;
+                                opcode.operand3 = op_type->uv.type->dimension - 1;
 
                                 SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
 
@@ -3451,8 +3436,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           }
                           else {
                             SPVM_TYPE* operand_type = SPVM_OP_get_type(compiler, op_assign_src->first);
-
-                            SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_src->first);
 
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -3781,9 +3764,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           int32_t runtime_basic_type_id;
                           int32_t runtime_type_dimension;
-                          SPVM_OPCODE_BUILDER_get_runtime_type(compiler, type->basic_type->id, type->dimension, &runtime_basic_type_id, &runtime_type_dimension);
-                          opcode.operand2 = runtime_basic_type_id;
-                          opcode.operand3 = runtime_type_dimension;
+                          opcode.operand2 = type->basic_type->id;
+                          opcode.operand3 = type->dimension;
                           
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           
@@ -3816,7 +3798,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           // Max
                           SPVM_CASE_INFO* case_info_max = SPVM_LIST_fetch(switch_info->case_infos, switch_info->case_infos->length - 1);
-                          int32_t max = case_info_max->constant->value.ival;
 
                           // Default branch
                           int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
@@ -3905,37 +3886,31 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                               if (SPVM_TYPE_is_numeric_type(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag)) {
                                 switch (sub->return_type->basic_type->id) {
                                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                                    SPVM_TYPE* sub_return_type = sub->return_type;
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_BYTE);
                                     mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                                     break;
                                   }
                                   case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                                    SPVM_TYPE* sub_return_type = sub->return_type;
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_SHORT);
                                     mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                                     break;
                                   }
                                   case SPVM_BASIC_TYPE_C_ID_INT: {
-                                    SPVM_TYPE* sub_return_type = sub->return_type;
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_INT);
                                     mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                                     break;
                                   }
                                   case SPVM_BASIC_TYPE_C_ID_LONG: {
-                                    SPVM_TYPE* sub_return_type= sub->return_type;
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_LONG);
                                     mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                                     break;
                                   }
                                   case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                                    SPVM_TYPE* sub_return_type = sub->return_type;
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_FLOAT);
                                     mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                                     break;
                                   }
                                   case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                                    SPVM_TYPE* sub_return_type = sub->return_type;
                                     SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_RETURN_DOUBLE);
                                     mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
                                     break;
@@ -3958,7 +3933,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
                                 assert(SPVM_TYPE_is_numeric_type(compiler, field_type->basic_type->id, field_type->dimension, field_type->flag));
 
-                                int32_t mem_id_arg;
                                 switch (field_type->basic_type->id) {
                                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                     mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);
@@ -4567,7 +4541,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                       // Element type
                       SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_assign_src);
-                      SPVM_BASIC_TYPE* element_basic_type = element_type->basic_type;
                       
                       SPVM_OPCODE opcode;
                       memset(&opcode, 0, sizeof(SPVM_OPCODE));

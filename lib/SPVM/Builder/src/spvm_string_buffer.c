@@ -264,8 +264,6 @@ int32_t SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float va
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  char* start_ptr = string_buffer->buffer + string_buffer->length;
-  
   int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%a", value);
   
   string_buffer->length += write_length;
@@ -284,8 +282,6 @@ int32_t SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double 
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
 
-  char* start_ptr = string_buffer->buffer + string_buffer->length;
-  
   int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%a", value);
   
   string_buffer->length += write_length;

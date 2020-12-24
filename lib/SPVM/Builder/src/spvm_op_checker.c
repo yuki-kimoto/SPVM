@@ -4703,7 +4703,6 @@ void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler) {
   
   for (int32_t basic_type_index = 0; basic_type_index < basic_types->length; basic_type_index++) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(basic_types, basic_type_index);
-    int32_t basic_type_id = basic_type->id;
     SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type->name, strlen(basic_type->name));
     if (package) {
       basic_type->package = package;

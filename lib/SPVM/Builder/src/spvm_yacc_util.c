@@ -17,6 +17,8 @@
 
 // Print error
 void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message) {
+  (void)compiler;
+  
   compiler->error_count++;
   
   // Current token
