@@ -181,6 +181,7 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
 };
 
 int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current, SPVM_OP* op_package_dist) {
+  (void)compiler;
   
   SPVM_LIST* op_allows = op_package_dist->uv.package->op_allows;
   
@@ -1517,8 +1518,6 @@ SPVM_OP* SPVM_OP_build_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_term, S
   field_access->op_term = op_term;
   field_access->op_name = op_name_field;
   
-  const char* field_name = op_name_field->uv.name;
-
   op_field_access->uv.field_access = field_access;
   
   return op_field_access;

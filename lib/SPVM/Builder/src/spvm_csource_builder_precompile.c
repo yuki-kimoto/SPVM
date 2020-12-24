@@ -4100,12 +4100,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         break;
       }
       case SPVM_OPCODE_C_ID_WARN: {
-        int32_t sub_id = sub->id;
         int32_t line = opcode->operand1;
         
-        const char* sub_name = sub->name;
         SPVM_PACKAGE* sub_package = sub->package;
-        const char* package_name = sub_package->name;
         const char* file = sub->package->module_file;
         
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");

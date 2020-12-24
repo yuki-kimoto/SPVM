@@ -38,7 +38,8 @@
 #include "spvm_use.h"
 
 void SPVM_OP_CHECKER_free_mem_id(SPVM_COMPILER* compiler, SPVM_LIST* mem_stack, SPVM_MY* my) {
-
+  (void)compiler;
+  
   int32_t width = my->type_width;
 
   for (int32_t mem_id = 0; mem_id < mem_stack->length; mem_id++) {
@@ -110,9 +111,6 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_SUB* sub, 
   assert(type);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
-  // Serach temporary var
-  SPVM_OP* op_list_tmp_mys = sub->op_list_tmp_mys;
-  
   SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
   op_my->uv.my->is_tmp = 1;
@@ -147,9 +145,6 @@ void SPVM_OP_CHECKER_add_no_dup_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_
 
 void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_CHECK_AST_INFO* check_ast_info) {
 
-  // Temporary buffer
-  char tmp_buffer[UINT16_MAX];
-  
   // Package
   SPVM_PACKAGE* package = check_ast_info->package;
   
@@ -160,8 +155,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
   SPVM_OP* op_cur = op_root;
   int32_t finish = 0;
   while (op_cur) {
-    int32_t lines_count = op_cur->line - sub->op_sub->line + 1;
-
     // [START]Preorder traversal position
     if (!op_cur->no_need_check) {
       if (op_cur->id == SPVM_OP_C_ID_IF_REQUIRE) {
@@ -485,13 +478,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               int32_t max = case_info_max->constant->value.ival;
               
               // Decide switch type
-              double range = (double)max - (double)min;
               switch_info->id = SPVM_SWITCH_INFO_C_ID_LOOKUP_SWITCH;
-              
-              // Match values and branchs
-              for (int32_t i = 0; i < switch_info->case_infos->length; i++) {
-                SPVM_CASE_INFO* case_info = SPVM_LIST_fetch(switch_info->case_infos, i);
-              }
               
               break;
             }
@@ -566,7 +553,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_NUMERIC_EQ: {
               SPVM_OP* op_first = op_cur->first;
-              SPVM_OP* op_last = op_cur->last;
 
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
@@ -633,7 +619,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_NUMERIC_NE: {
               SPVM_OP* op_first = op_cur->first;
-              SPVM_OP* op_last = op_cur->last;
 
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
@@ -1616,7 +1601,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_term_src = op_cur->first;
               
               SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_term_dist);
-              SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_term_src);
 
               // Type inference
               if (op_term_dist->id == SPVM_OP_C_ID_VAR) {
@@ -2216,7 +2200,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               else {
                 // Variable is capture var
-                int32_t is_capture_var;
                 SPVM_FIELD* found_capture_field = SPVM_HASH_fetch(package->field_symtable, var->op_name->uv.name + 1, strlen(var->op_name->uv.name) - 1);
                 if (found_capture_field && found_capture_field->is_captured) {
                   
@@ -2430,8 +2413,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_sequence);
 
-                SPVM_OP* op_stab_args_new = SPVM_OP_cut_op(compiler, op_call_sub->last);
-                
                 SPVM_OP_replace_op(compiler, op_call_sub->last, op_list_args_new);
 
                 SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, check_ast_info);
@@ -3064,7 +3045,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Dist type is numeric type
               int32_t is_valid = 0;
-              int32_t narrowing_convertion_error = 0;
               if (SPVM_TYPE_is_numeric_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                 // Soruce type is numeric type
                 if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
@@ -3713,8 +3693,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                       }
                       case SPVM_OP_C_ID_VAR: {
                         if (op_cur->uv.var->is_declaration) {
-                          SPVM_MY* my = op_cur->uv.var->my;
-                          
                           SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_cur);
                           int32_t type_is_mulnum_t = SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag);
                           
@@ -3849,8 +3827,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             
                             SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
                             
-                            int32_t width = value_package->fields->length;
-                            
                             switch (field_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                 SPVM_OP_CHECKER_free_mem_id(compiler, byte_mem_stack, my);
@@ -3946,8 +3922,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                               assert(first_field);
                               
                               SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-                              
-                              int32_t width = value_package->fields->length;
                               
                               switch (field_type->basic_type->id) {
                                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
@@ -4053,8 +4027,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                             assert(first_field);
                             
                             SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);
-                            
-                            int32_t width = value_package->fields->length;
                             
                             switch (field_type->basic_type->id) {
                               case SPVM_BASIC_TYPE_C_ID_BYTE: {
