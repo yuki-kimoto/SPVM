@@ -706,4 +706,6 @@ package TestCase::NativeAPI {
   sub my_value : int ($value : int) { return $value; }
   
   native sub native_call_sub : int ();
+
+  native sub native_macro_call_sub : int ();
 }

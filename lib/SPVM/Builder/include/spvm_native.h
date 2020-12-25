@@ -219,25 +219,23 @@ union SPVM_value {
 } while (0)\
 
 #define SPVM_CALL_SUB(env, package_name, sub_name, signature, stack, file, line) do {\
-  int32_t id = env->get_method_sub_id(env, obj, package_name, sub_name, signature);\
-  if (id < 0) { SPVM_DIE("Method not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
-  int32_t exception_flag = env->call_sub(env, id, stack);\
+  int32_t sub_id = env->get_sub_id(env, package_name, sub_name, signature);\
+  if (sub_id < 0) { SPVM_DIE("Method not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
+  int32_t exception_flag = env->call_sub(env, sub_id, stack);\
   if (exception_flag) {\
-    const char* message = env->get_chars(env, env->exception(env));\
-    if (id < 0) { SPVM_DIE("%s", message, file, line); };\
-    return SPVM_EXCEPTION;\
+    const char* message = env->get_chars(env, env->get_exception(env));\
+    SPVM_DIE("%s", message, file, line);\
   }\
 } while (0)\
 
 #define SPVM_CALL_METHOD(env, object, sub_name, signature, stack, file, line) do {\
-  int32_t id = env->get_method_sub_id(env, object, sub_name, signature);\
-  if (id < 0) { SPVM_DIE("Method not found, object:%p, sub name:%s, signature:%s", object, sub_name, signature, file, line); };\
+  int32_t sub_id = env->get_method_sub_id(env, object, sub_name, signature);\
+  if (sub_id < 0) { SPVM_DIE("Method not found, object:%p, sub name:%s, signature:%s", object, sub_name, signature, file, line); };\
   env->call_sub(env, id, stack);\
-  int32_t exception_flag = env->call_sub(env, id, stack);\
+  int32_t exception_flag = env->call_sub(env, sub_id, stack);\
   if (exception_flag) {\
-    const char* message = env->get_chars(env, env->exception(env));\
-    if (id < 0) { SPVM_DIE("%s", message, file, line); };\
-    return SPVM_EXCEPTION;\
+    const char* message = env->get_chars(env, env->get_exception(env));\
+    SPVM_DIE("%s", message, file, line);\
   }\
 } while (0)\
 

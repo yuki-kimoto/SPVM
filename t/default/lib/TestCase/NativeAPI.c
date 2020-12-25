@@ -888,6 +888,26 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_call_sub(SPVM_ENV* env, SPVM_VALUE
   return SPVM_SUCCESS;
 }
 
+int32_t SPNATIVE__TestCase__NativeAPI__native_macro_call_sub(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t output;
+  {
+    stack[0].ival = 5;
+    SPVM_CALL_SUB(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, MFILE, __LINE__);
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = 0;
+  
+  if (output == 5) {
+    stack[0].ival = 1;
+  }
+  
+  return SPVM_SUCCESS;
+}
+
 int32_t SPNATIVE__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

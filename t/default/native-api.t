@@ -63,6 +63,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->native_call_sub);
 }
 
+# SPVM_CALL_SUB
+{
+  ok(TestCase::NativeAPI->native_macro_call_sub);
+}
+
 # Field
 {
   ok(TestCase::NativeAPI->get_field_byte());
