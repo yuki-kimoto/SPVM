@@ -34,4 +34,12 @@ int32_t SPNATIVE__Eigen__add3d(SPVM_ENV* env, SPVM_VALUE* stack) {
   return SPVM_SUCCESS;
 }
 
+int32_t SPNATIVE__Eigen__compile_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  
+  SPVM_DIE("Error %d", 1);
+  
+  return SPVM_SUCCESS;
+}
+
 }
