@@ -218,7 +218,7 @@ union SPVM_value {
   *value_address = env->get_package_var_object(env, id);\
 } while (0)\
 
-#define SPVM_CALL_SUB(env, package_name, sub_name, signature, stack, file, line) do {\
+#define SPVM_CALL_STATIC_METHOD(env, package_name, sub_name, signature, stack, file, line) do {\
   int32_t sub_id = env->get_static_method_id(env, package_name, sub_name, signature);\
   if (sub_id < 0) { SPVM_DIE("Method not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
   int32_t exception_flag = env->call_sub(env, sub_id, stack);\

@@ -895,7 +895,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_macro_call_sub(SPVM_ENV* env, SPVM
   int32_t output;
   {
     stack[0].ival = 5;
-    SPVM_CALL_SUB(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, MFILE, __LINE__);
+    SPVM_CALL_STATIC_METHOD(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, MFILE, __LINE__);
     output = stack[0].ival;
   }
   
