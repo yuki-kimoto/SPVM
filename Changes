@@ -1,6 +1,7 @@
 0.0929 2020-12-23
   - fix native api SPVM_CALL_SUB bug
   - rename native api get_sub_id to get_static_method_id
+  - rename native api get_method_sub_id to get_method_id
 0.0929 2020-12-23
   - remove cproj, cprojf from SPVM::Math because windows and macOS have a bug that right value don't return.
   - internal anon sub package name become unique
