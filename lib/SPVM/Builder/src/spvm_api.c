@@ -117,7 +117,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_field_id,
     SPVM_API_get_field_offset,
     SPVM_API_get_package_var_id,
-    SPVM_API_get_sub_id,
+    SPVM_API_get_static_method_id,
     SPVM_API_get_method_sub_id,
     SPVM_API_new_object_raw,
     SPVM_API_new_object,
@@ -4269,7 +4269,7 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     else {
       const char* object_package_name = object_package->name;
       const char* sub_callback_name = sub_callback->name;
-      int32_t sub_id = SPVM_API_get_sub_id(env, object_package_name, sub_callback_name, sub_callback_signature);
+      int32_t sub_id = SPVM_API_get_static_method_id(env, object_package_name, sub_callback_name, sub_callback_signature);
       if (sub_id >= 0) {
         has_callback = 1;
       }
@@ -5445,7 +5445,7 @@ SPVM_SUB* SPVM_API_sub(SPVM_ENV* env, SPVM_PACKAGE* package, const char* sub_nam
   return sub;
 }
 
-int32_t SPVM_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature) {
+int32_t SPVM_API_get_static_method_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature) {
   (void)env;
   
   // Sub id
@@ -5530,7 +5530,7 @@ int32_t SPVM_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const cha
   // Normal sub
   else {
     const char* object_package_name = object_package->name;
-    sub_id = SPVM_API_get_sub_id(env, object_package_name, sub_name, signature);
+    sub_id = SPVM_API_get_static_method_id(env, object_package_name, sub_name, signature);
   }
   
   return sub_id;

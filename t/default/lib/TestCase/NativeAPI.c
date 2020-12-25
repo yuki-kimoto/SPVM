@@ -865,7 +865,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_call_sub(SPVM_ENV* env, SPVM_VALUE
   (void)env;
   (void)stack;
   
-  int32_t sub_id = env->get_sub_id(env, "TestCase::NativeAPI", "my_value", "int(int)");
+  int32_t sub_id = env->get_static_method_id(env, "TestCase::NativeAPI", "my_value", "int(int)");
   if (sub_id < 0) {
     return SPVM_EXCEPTION;
   }
