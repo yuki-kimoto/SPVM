@@ -228,22 +228,4 @@ package TestCase::Constant {
     # LOAD_CONSTANT2
     return 0.5;
   }
-
-  sub constant_vm_and_precompile_same : int () {
-    my $c1 : SPVM::Complex_2d;
-    $c1->{re} = 0.00000000005;
-    $c1->{im} = 0.000000000025;
-
-    my $c2 : SPVM::Complex_2d;
-    $c2->{re} = 0.0000000000125;
-    $c2->{im} = 0.00000000000625;
-
-    my $c3 = csub($c1, $c2);
-
-    unless ($c3->{re} == 0.00000000005 - 0.0000000000125 && $c3->{im} == 0.000000000025 - 0.00000000000625) {
-      return 0;
-    }
-
-    return 1;
-  }
 }

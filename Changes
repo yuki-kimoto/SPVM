@@ -1,3 +1,5 @@
+0.0930 2020-12-28
+  - remove subroutine precompile descriptor. SPVM become only support whole package precompile.
 0.0929 2020-12-23
   - remove cproj, cprojf from SPVM::Math because windows and macOS have a bug that right value don't return.
   - internal anon sub package name become unique

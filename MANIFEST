@@ -825,7 +825,6 @@ t/default/lib/TestCase/Minimal.spvm
 t/default/lib/TestCase/ModuleContainsMultiPackage.spvm
 t/default/lib/TestCase/ModuleContainsMultiPackage/FloatMatrix.spvm
 t/default/lib/TestCase/Multiply.spvm
-t/default/lib/TestCase/MyExe.spvm
 t/default/lib/TestCase/NativeAPI.c
 t/default/lib/TestCase/NativeAPI.config
 t/default/lib/TestCase/NativeAPI.spvm
@@ -845,7 +844,6 @@ t/default/lib/TestCase/NumericOperator.spvm
 t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/OnlyField.spvm
 t/default/lib/TestCase/PACKAGE.spvm
-t/default/lib/TestCase/PackagePrecompile.spvm
 t/default/lib/TestCase/PackageVar.spvm
 t/default/lib/TestCase/Point_3b.spvm
 t/default/lib/TestCase/Point_3d.spvm
@@ -890,7 +888,6 @@ t/default/multiply.t
 t/default/native-api.t
 t/default/numeric-operator.t
 t/default/object.t
-t/default/package-precompile.t
 t/default/package_var.t
 t/default/precedence.t
 t/default/print.t

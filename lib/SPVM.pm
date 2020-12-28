@@ -333,8 +333,8 @@ Use SPVM Module from Perl
 Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
 
   # lib/MyMath.spvm
-  package MyMath {
-    precompile sub sum_precompile : int ($nums : int[]) {
+  package MyMath : precompile {
+    sub sum_precompile : int ($nums : int[]) {
       
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {

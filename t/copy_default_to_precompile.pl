@@ -45,14 +45,7 @@ find(
         
         my $content = do { local $/; <$fh> };
         
-        unless ($content =~ /:\s+callback_t\s+{/) {
-          $content =~ s/\bsub\b/precompile sub/g;
-          
-          # fix sub sub
-          $content =~ s/->precompile sub/->sub/g;
-          
-          $content =~ s/\bnative\s+precompile\b/native/g;
-        }
+        $content =~ s/package\s+([\w:]+)\s*\{/package $1 : precompile {/g;
         
         mkpath $to_dir;
         

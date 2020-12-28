@@ -1,4 +1,4 @@
-package SPVM::Sort {
+package SPVM::Sort : precompile {
   use SPVM::Comparator;
   use SPVM::Util(new_object_array_proto);
 
@@ -9,7 +9,7 @@ package SPVM::Sort {
   native sub sortf : void ($nums : float[]);
   native sub sortd : void ($nums : double[]);
 
-  precompile sub _merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
+  sub _merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
       my $i = $left;
       my $j = $mid + 1;
       my $k = 0;
@@ -46,7 +46,7 @@ package SPVM::Sort {
       }
   }
 
-  precompile sub _merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
+  sub _merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
       if ($left >= $right) {
         return;
       }
@@ -58,7 +58,7 @@ package SPVM::Sort {
       _merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  precompile sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
+  sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
     if ($objs == undef) {
       die "Array must be defined";
     }

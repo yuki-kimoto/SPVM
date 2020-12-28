@@ -2385,9 +2385,6 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
         case SPVM_DESCRIPTOR_C_ID_NATIVE:
           sub->flag |= SPVM_SUB_C_FLAG_NATIVE;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PRECOMPILE:
-          sub->flag |= SPVM_SUB_C_FLAG_PRECOMPILE;
-          break;
         default:
           SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
