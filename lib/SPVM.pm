@@ -32,16 +32,16 @@ my $loaded_spvm_modules = {};
 
 sub import {
   my ($class, $package_name) = @_;
-  
+
   unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
   }
-  
+
   # Add package informations
   if (defined $package_name) {
     my ($file, $line) = (caller)[1, 2];
-    
+
     # Compile SPVM source code and create runtime env
     my $compile_success = $BUILDER->compile_spvm($package_name, $file, $line);
     unless ($compile_success) {
@@ -49,10 +49,10 @@ sub import {
     }
     if ($compile_success) {
       my $added_package_names = $BUILDER->get_added_package_names;
-      
+
       # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
       $BUILDER->build_precompile($added_package_names);
-      
+
       # Build native packages - Compile C source codes and link them to SPVM native subroutine
       $BUILDER->build_native($added_package_names);
 
@@ -76,14 +76,14 @@ my $package_name_h = {};
 my $binded_package_name_h = {};
 sub bind_to_perl {
   my ($builder, $added_package_names) = @_;
-  
+
   for my $package_name (@$added_package_names) {
-    
+
     unless ($package_name_h->{$package_name}) {
-      
+
       my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
       eval $code;
-      
+
       if (my $error = $@) {
         confess $error;
       }
@@ -91,7 +91,7 @@ sub bind_to_perl {
     }
 
     my $sub_names = $builder->get_sub_names($package_name);
-    
+
     for my $sub_name (@$sub_names) {
       # Destrutor is skip
       if ($sub_name eq 'DESTROY') {
@@ -101,18 +101,18 @@ sub bind_to_perl {
       elsif (length $sub_name == 0) {
         next;
       }
-      
+
       my $sub_abs_name = "${package_name}::$sub_name";
-      
+
       # Define SPVM subroutine
       no strict 'refs';
-      
+
       my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
-      
+
       # Declare subroutine
       *{"$sub_abs_name"} = sub {
         SPVM::init() unless $SPVM_INITED;
-        
+
         my $return_value;
         eval { $return_value = SPVM::call_sub($package_name, $sub_name, @_) };
         my $error = $@;
@@ -298,36 +298,36 @@ SPVM Module:
   # lib/MyMath.spvm
   package MyMath {
     sub sum : int ($nums : int[]) {
-      
+
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {
         $total += $nums->[$i];
       }
-      
+
       return $total;
     }
   }
 
 Use SPVM Module from Perl
-  
+
   # spvm.pl
   use strict;
   use warnings;
   use FindBin;
   use lib "$FindBin::Bin/lib";
-  
+
   use SPVM 'MyMath';
-  
+
   # Call subroutine
   my $total = MyMath->sum([3, 6, 8, 9]);
 
   print "Total: $total\n";
-  
+
   # Call subroutine with packed data
   my $nums_packed = pack('l*', 3, 6, 8, 9);
   my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
   my $total_packed = MyMath->sum($sv_nums);
-  
+
   print "Total Packed: $total_packed\n";
 
 Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
@@ -335,12 +335,12 @@ Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
   # lib/MyMath.spvm
   package MyMath : precompile {
     sub sum_precompile : int ($nums : int[]) {
-      
+
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {
         $total += $nums->[$i];
       }
-      
+
       return $total;
     }
   }
@@ -352,12 +352,12 @@ Call SPVM Precompile Subroutine from Perl
   use warnings;
   use FindBin;
   use lib "$FindBin::Bin/lib";
-  
+
   use SPVM 'MyMath';
-  
+
   # Call precompile subroutine
   my $total_precompile = MyMath->sum_precompile([3, 6, 8, 9]);
-  
+
   print "Total Precompile: $total_precompile\n";
 
 SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
@@ -366,28 +366,28 @@ SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
   package MyMath {
     native sub sum_native : int ($nums : int[]);
   }
-  
+
   // lib/MyMath.c
   #include "spvm_native.h"
-  
+
   int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-    
+
     void* sv_nums = stack[0].oval;
-    
+
     int32_t length = env->length(env, sv_nums);
-    
+
     int32_t* nums = env->get_elems_int(env, sv_nums);
-    
+
     int32_t total = 0;
     for (int32_t i = 0; i < length; i++) {
       total += nums[i];
     }
-    
+
     stack[0].ival = total;
-    
+
     return SPVM_SUCCESS;
   }
-  
+
   # lib/MyMath.config
 
   use strict;
@@ -399,22 +399,22 @@ SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
   $bconf;
 
 Use SPVM Native Subroutine from Perl
-  
+
   # spvm.pl
   use strict;
   use warnings;
   use FindBin;
   use lib "$FindBin::Bin/lib";
-  
+
   use SPVM 'MyMath';
-  
+
   # Call native subroutine
   my $total_native = MyMath->sum_native([3, 6, 8, 9]);
-  
+
   print "Total Native: $total_native\n";
 
 Environment Variable "SPVM_BUILD_DIR" must be set for precompile and native subroutine
-  
+
   # bash example
   export SPVM_BUILD_DIR=~/.spvm_build
 
@@ -432,7 +432,7 @@ B<Features:>
 
 =item * B<Enum>, B<Type inference>, B<Anon subroutine>, B<Variable captures>
 
-=item * B<Array initialization>, 
+=item * B<Array initialization>,
 
 =item * B<Reference count GC>, B<Weaken reference>, B<Module system>
 
@@ -560,7 +560,7 @@ L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.ht
 
   my $spvm_string = SPVM::new_string("あいう");
 
-New SPVM string from decoded string. 
+New SPVM string from decoded string.
 
 Return value is L<SPVM::BlessedObject::String> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::String>.
 
@@ -597,11 +597,11 @@ New SPVM byte array with array length.
 Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_byte_array_from_bin
-  
+
   # Pack singed 8-bit integers
   my $bin = pack('c*', 1, -5, 100);
   my $spvm_nums = SPVM::new_byte_array_from_bin($bin);
-  
+
   # Pack unsigned 8-bit integers
   my $bin = pack('C*', 1, 2, 255);
   my $spvm_nums = SPVM::new_byte_array_from_bin($bin);
@@ -611,7 +611,7 @@ New SPVM byte array with packed binary data. The packed binary data is interpret
 Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_byte_array_from_string
-  
+
   use utf8;
   my $string = "あいう";
   my $spvm_nums = new_byte_array_from_string($string);
@@ -645,7 +645,7 @@ New SPVM short array with array length.
 Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_short_array_from_bin
-  
+
   # Pack signed 16-bit intergers
   my $bin = pack('s*', 1, -5, 100);
   my $spvm_nums = SPVM::new_short_array_from_bin($bin);
@@ -683,7 +683,7 @@ New SPVM int array with array length.
 Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_int_array_from_bin
-  
+
   # Pack signed 32-bit intergers
   my $bin = pack('l*', 1, -5, 100);
   my $spvm_nums = SPVM::new_int_array_from_bin($bin);
@@ -721,7 +721,7 @@ New SPVM long array with array length.
 Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_long_array_from_bin
-  
+
   # Pack signed 64-bit intergers
   my $bin = pack('l*', 1, -5, 100);
   my $spvm_nums = SPVM::new_long_array_from_bin($bin);
@@ -751,7 +751,7 @@ New SPVM float array with array length.
 Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_float_array_from_bin
-  
+
   # Pack float value
   my $bin = pack('f*', 1, -5.5, 4.5);
   my $spvm_nums = SPVM::new_float_array_from_bin($bin);
@@ -777,7 +777,7 @@ New SPVM double array with array length.
 Return value is L<SPVM::BlessedObject::Array> object. If you want to convert SPVM array to Perl data structure, use the methods of L<SPVM::BlessedObject::Array>.
 
 =head2 new_double_array_from_bin
-  
+
   # Pack double value
   my $bin = pack('d*', 1, -5.5, 4.5);
   my $spvm_nums = SPVM::new_double_array_from_bin($bin);
@@ -820,7 +820,7 @@ In bash, you can set SPVM_BUILD_DIR to the following.
 
 =head1 CAUTION
 
-This release is beta release before SPVM 1.0. Features is changed without warnings. 
+This release is beta release before SPVM 1.0. Features is changed without warnings.
 
 SPVM 1.0 is First Major Release
 
@@ -857,6 +857,8 @@ moti<lt>motohiko.ave@gmail.com<gt>
 =item * chromatic
 
 =item * Kazutake Hiramatsu
+
+=item * Yasuaki Omokawa
 
 =back
 
