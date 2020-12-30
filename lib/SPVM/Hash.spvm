@@ -5,7 +5,7 @@ package SPVM::Hash : precompile {
   has bucket_count : int;
   has count : int;
   has entries : SPVM::Hash::Entry [];
-  
+
   private enum {
     _DEFALUT_HASH_TABLE_LENGTH = 16,
   }
@@ -19,7 +19,7 @@ package SPVM::Hash : precompile {
     $self->{count} = 0;
     return $self;
   }
-  
+
   sub count : int ($self : self) {
     return $self->{count};
   }
@@ -57,7 +57,7 @@ package SPVM::Hash : precompile {
   sub exists : int ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
-    
+
     unless ($ref) {
       return 0;
     }
@@ -137,7 +137,7 @@ package SPVM::Hash : precompile {
   }
 
   native sub _murmur_hash : long ($string : string, $seed : int);
-  
+
   sub set_byte : void ($self : self, $name : string, $value : byte) {
     $self->set($name => SPVM::Byte->new($value));
   }
@@ -146,6 +146,9 @@ package SPVM::Hash : precompile {
   }
   sub set_int : void ($self : self, $name : string, $value : int) {
     $self->set($name => SPVM::Int->new($value));
+  }
+  sub set_string : void ($self : self, $name : string, $value : string) {
+    $self->set($name => $value);
   }
   sub set_long : void ($self : self, $name : string, $value : long) {
     $self->set($name => SPVM::Long->new($value));
@@ -156,7 +159,7 @@ package SPVM::Hash : precompile {
   sub set_double : void ($self : self, $name : string, $value : double) {
     $self->set($name => SPVM::Double->new($value));
   }
-  
+
   sub get_byte : byte ($self : self, $name : string) {
     return (byte)$self->get($name);
   }
@@ -165,6 +168,9 @@ package SPVM::Hash : precompile {
   }
   sub get_int : int ($self : self, $name : string) {
     return (int)$self->get($name);
+  }
+  sub get_string : string ($self : self, $name : string) {
+    return (string)$self->get($name);
   }
   sub get_long : long ($self : self, $name : string) {
     return (long)$self->get($name);
