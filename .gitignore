@@ -51,3 +51,4 @@ solo/.spvm_build/*
 !solo/.spvm_build/.gitkeep
 SPVM.def
 .spvm_build
+.vscode
