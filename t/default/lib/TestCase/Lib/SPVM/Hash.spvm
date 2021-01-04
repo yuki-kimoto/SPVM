@@ -7,9 +7,9 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Sort;
 
   sub test_set_get_numeric : int () {
-    
+
     my $hash = SPVM::Hash->new;
-    
+
     # set_byte, get_byte
     {
       $hash->set_byte(foo => SPVM::Util->INT8_MAX());
@@ -17,7 +17,7 @@ package TestCase::Lib::SPVM::Hash {
         return 0;
       }
       my $value = $hash->get_byte("foo");
-      
+
       unless ($value == SPVM::Util->INT8_MAX()) {
         return 0;
       }
@@ -30,7 +30,7 @@ package TestCase::Lib::SPVM::Hash {
         return 0;
       }
       my $value = $hash->get_short("foo");
-      
+
       unless ($value == SPVM::Util->INT16_MAX()) {
         return 0;
       }
@@ -43,8 +43,22 @@ package TestCase::Lib::SPVM::Hash {
         return 0;
       }
       my $value = $hash->get_int("foo");
-      
+
       unless ($value == SPVM::Util->INT32_MAX()) {
+        return 0;
+      }
+    }
+
+    # set_string, get_string
+    {
+      my $str = "bar";
+      $hash->set_string(foo => $str);
+      unless ($hash->get_string("foo") isa string) {
+        return 0;
+      }
+      my $value = $hash->get_string("foo");
+
+      unless ($value == $str) {
         return 0;
       }
     }
@@ -56,7 +70,7 @@ package TestCase::Lib::SPVM::Hash {
         return 0;
       }
       my $value = $hash->get_long("foo");
-      
+
       unless ($value == SPVM::Util->INT64_MAX()) {
         return 0;
       }
@@ -69,7 +83,7 @@ package TestCase::Lib::SPVM::Hash {
         return 0;
       }
       my $value = $hash->get_float("foo");
-      
+
       unless ($value == SPVM::Util->FLT_MIN()) {
         return 0;
       }
@@ -82,12 +96,12 @@ package TestCase::Lib::SPVM::Hash {
         return 0;
       }
       my $value = $hash->get_double("foo");
-      
+
       unless ($value == SPVM::Util->DBL_MIN()) {
         return 0;
       }
     }
-    
+
     return 1;
   }
 
@@ -144,7 +158,7 @@ package TestCase::Lib::SPVM::Hash {
     $hash->set_int("a" => 1);
     $hash->set("b" => undef);
     $hash->set("c" => "str");
-    
+
     unless (((SPVM::Int)($hash->get("a")))->val == 1) {
       return 0;
     }
@@ -225,7 +239,7 @@ package TestCase::Lib::SPVM::Hash {
     unless ($hash->count == 1) {
       return 0;
     }
-    
+
     unless ($hash->exists("bob") == 1) {
       return 0;
     }
@@ -248,18 +262,18 @@ package TestCase::Lib::SPVM::Hash {
       my $key = "key" . $i;
       $hash->set_int($key => $i);
     }
-    
+
     unless ($hash->_bucket_count == $initial_capacity * 2) {
       return 0;
     }
     unless (@{$hash->_entries} == $initial_capacity * 2) {
       return 0;
     }
-    
+
     unless ($hash->get_int("key12") == 12) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -268,31 +282,31 @@ package TestCase::Lib::SPVM::Hash {
     my $key0 = "a";
     my $key1 = "b";
     my $key2 = "c";
-    
+
     $hash->set_int($key0 => 1);
     $hash->set_int($key1 => 2);
     $hash->set_int($key2 => 3);
-    
+
     my $keys = $hash->keys;
 
     unless (@$keys == 3) {
       return 0;
     }
-    
+
     SPVM::Sort->sortstr($keys);
-    
+
     unless ($keys->[0] == $key0) {
       return 0;
     }
-    
+
     unless ($keys->[1] == $key1) {
       return 0;
     }
-    
+
     unless ($keys->[2] == $key2) {
       return 0;
     }
-    
+
     return 1;
   }
 
@@ -301,36 +315,36 @@ package TestCase::Lib::SPVM::Hash {
     my $key0 = "a";
     my $key1 = "b";
     my $key2 = "c";
-    
+
     $hash->set_int($key0 => 1);
     $hash->set_int($key1 => 2);
     $hash->set_int($key2 => 3);
-    
+
     my $values = $hash->values;
 
     unless (@$values == 3) {
       return 0;
     }
-    
+
     my $int_values = new int[3];
     $int_values->[0] = (int)$values->[0];
     $int_values->[1] = (int)$values->[1];
     $int_values->[2] = (int)$values->[2];
-    
+
     SPVM::Sort->sorti($int_values);
-    
+
     unless ($int_values->[0] == 1) {
       return 0;
     }
-    
+
     unless ($int_values->[1] == 2) {
       return 0;
     }
-    
+
     unless ($int_values->[2] == 3) {
       return 0;
     }
-    
+
     return 1;
   }
 
