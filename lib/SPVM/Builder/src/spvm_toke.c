@@ -164,70 +164,77 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               continue;
             }
             else {
-              // change :: to / and add ".spvm"
-              int32_t cur_rel_file_length = (int32_t)(strlen(package_name) + 6);
-              char* cur_rel_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, cur_rel_file_length + 1);
-              const char* bufptr_orig = package_name;
-              char* bufptr_to = cur_rel_file;
-              while (*bufptr_orig) {
-                if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
-                  *bufptr_to = '/';
-                  bufptr_orig += 2;
-                  bufptr_to++;
-                }
-                else {
-                  *bufptr_to = *bufptr_orig;
-                  bufptr_orig++;
-                  bufptr_to++;
-                }
+              int32_t module_not_found = 0;
+              if (compiler->is_search_module_source_symtable) {
+                
               }
-              strncpy(bufptr_to, ".spvm", 5);
-              bufptr_to += 5;
-              *bufptr_to = '\0';
-              
-              // Search module file
-              char* cur_file = NULL;
-              FILE* fh = NULL;
-              int32_t module_include_pathes_length = compiler->module_include_pathes->length;
-              for (int32_t i = 0; i < module_include_pathes_length; i++) {
-                const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
-                
-                // File name
-                int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(cur_rel_file));
-                cur_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_name_length + 1);
-                sprintf(cur_file, "%s/%s", include_path, cur_rel_file);
-                cur_file[file_name_length] = '\0';
-                
-                // \ is replaced to /
-                for (int32_t i = 0; i < file_name_length; i++) {
-                  if (cur_file[i] == '\\') {
-                    cur_file[i] = '/';
+              else {
+                // Create moudle relative file name from package name by changing :: to / and add ".spvm"
+                int32_t cur_rel_file_length = (int32_t)(strlen(package_name) + 6);
+                char* cur_rel_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, cur_rel_file_length + 1);
+                const char* bufptr_orig = package_name;
+                char* bufptr_to = cur_rel_file;
+                while (*bufptr_orig) {
+                  if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
+                    *bufptr_to = '/';
+                    bufptr_orig += 2;
+                    bufptr_to++;
+                  }
+                  else {
+                    *bufptr_to = *bufptr_orig;
+                    bufptr_orig++;
+                    bufptr_to++;
                   }
                 }
+                strncpy(bufptr_to, ".spvm", 5);
+                bufptr_to += 5;
+                *bufptr_to = '\0';
+
+                // Search module file
+                char* cur_file = NULL;
+                FILE* fh = NULL;
+                int32_t module_include_pathes_length = compiler->module_include_pathes->length;
+                for (int32_t i = 0; i < module_include_pathes_length; i++) {
+                  const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
+                  
+                  // File name
+                  int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(cur_rel_file));
+                  cur_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_name_length + 1);
+                  sprintf(cur_file, "%s/%s", include_path, cur_rel_file);
+                  cur_file[file_name_length] = '\0';
+                  
+                  // \ is replaced to /
+                  for (int32_t i = 0; i < file_name_length; i++) {
+                    if (cur_file[i] == '\\') {
+                      cur_file[i] = '/';
+                    }
+                  }
+
+                  // Skip if already module file loaded
+                  const char* found_module_file = SPVM_HASH_fetch(compiler->module_file_symtable, cur_file, strlen(cur_file));
+                  if (found_module_file) {
+                    continue;
+                  }
+                  else {
+                    // Add module file symtable
+                    SPVM_HASH_insert(compiler->module_file_symtable, cur_file, strlen(cur_file), (char*)cur_file);
+                  }
+                  
+                  // Open source file
+                  fh = fopen(cur_file, "rb");
+                  if (fh) {
+                    compiler->cur_file = cur_file;
+                    break;
+                  }
+                  errno = 0;
+                }
                 
-                // Open source file
-                fh = fopen(cur_file, "rb");
-                if (fh) {
-                  compiler->cur_file = cur_file;
-                  break;
+                if (!fh) {
+                  module_not_found = 1;
                 }
-                errno = 0;
-              }
-              
-              if (!fh) {
-                if (op_use->uv.use->is_require) {
-                  op_use->uv.use->load_fail = 1;
-                  SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
-                  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-                  type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
-                  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
-                  type->basic_type->fail_load = 1;
-                  
-                  SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
-                  
-                  continue;
-                }
-                else {
+                
+                // Module not found
+                if (module_not_found && !op_use->uv.use->is_require) {
                   fprintf(stderr, "Can't locate %s in @INC (@INC contains:", cur_rel_file);
                   for (int32_t i = 0; i < module_include_pathes_length; i++) {
                     const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
@@ -237,71 +244,76 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   compiler->error_count++;
                   return 0;
                 }
-              }
-              
-              // Skip if already loaded
-              const char* found_module_file = SPVM_HASH_fetch(compiler->module_file_symtable, compiler->cur_file, strlen(compiler->cur_file));
-              if (found_module_file) {
-                continue;
-              }
-              else {
-                // Add module file symtable
-                SPVM_HASH_insert(compiler->module_file_symtable, cur_file, strlen(compiler->cur_file), (char*)compiler->cur_file);
-              }
-              
-              compiler->cur_file = cur_file;
-              compiler->cur_rel_file = cur_rel_file;
-              compiler->cur_rel_file_package_name = package_name;
-              
-              // Read file content
-              fseek(fh, 0, SEEK_END);
-              int32_t file_size = (int32_t)ftell(fh);
-              if (file_size < 0) {
-                SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                return 0;
-              }
-              fseek(fh, 0, SEEK_SET);
-              char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
-              if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
-                SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                return 0;
-              }
-              fclose(fh);
-              cur_src[file_size] = '\0';
 
-              // Convert \r\n to \n
-              char* cur_src_nl = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
-              int32_t nl_merge_count = 0;
-              int32_t cur_src_pos = 0;
-              int32_t cur_src_nl_pos = 0;
-              while (cur_src_pos < file_size) {
-                int32_t ch = cur_src[cur_src_pos];
-                int32_t ch_next = cur_src[cur_src_pos + 1];
+                if (module_not_found) {
+                  if (op_use->uv.use->is_require) {
+                    op_use->uv.use->load_fail = 1;
+                    SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
+                    SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+                    type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
+                    SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
+                    type->basic_type->fail_load = 1;
+                    
+                    SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
+                    
+                    continue;
+                  }
+                }
                 
-                if (ch == '\r' && ch_next == '\n') {
-                  cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
-                  nl_merge_count++;
-                  cur_src_pos += 2;
+                compiler->cur_file = cur_file;
+                compiler->cur_rel_file = cur_rel_file;
+                compiler->cur_rel_file_package_name = package_name;
+                
+                // Read file content
+                fseek(fh, 0, SEEK_END);
+                int32_t file_size = (int32_t)ftell(fh);
+                if (file_size < 0) {
+                  SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
+                  return 0;
                 }
-                else if (ch == '\r') {
-                  cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
-                  cur_src_pos++;
+                fseek(fh, 0, SEEK_SET);
+                char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+                if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
+                  SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
+                  return 0;
                 }
-                else {
-                  cur_src_nl[cur_src_pos - nl_merge_count] = ch;
-                  cur_src_pos++;
+                fclose(fh);
+                cur_src[file_size] = '\0';
+
+                // Convert \r\n to \n
+                char* cur_src_nl = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+                int32_t nl_merge_count = 0;
+                int32_t cur_src_pos = 0;
+                int32_t cur_src_nl_pos = 0;
+                while (cur_src_pos < file_size) {
+                  int32_t ch = cur_src[cur_src_pos];
+                  int32_t ch_next = cur_src[cur_src_pos + 1];
+                  
+                  if (ch == '\r' && ch_next == '\n') {
+                    cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
+                    nl_merge_count++;
+                    cur_src_pos += 2;
+                  }
+                  else if (ch == '\r') {
+                    cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
+                    cur_src_pos++;
+                  }
+                  else {
+                    cur_src_nl[cur_src_pos - nl_merge_count] = ch;
+                    cur_src_pos++;
+                  }
+                  cur_src_nl_pos++;
                 }
-                cur_src_nl_pos++;
+                cur_src_nl[cur_src_nl_pos] = '\0';
+                free(cur_src);
+                cur_src = cur_src_nl;
+                
+                compiler->cur_src = cur_src;
+                compiler->bufptr = cur_src;
+                compiler->befbufptr = cur_src;
+                compiler->line_start_ptr = cur_src;
+                compiler->cur_line = 1;
               }
-              cur_src_nl[cur_src_nl_pos] = '\0';
-              free(cur_src);
-              cur_src = cur_src_nl;
-              
-              compiler->cur_src = cur_src;
-              compiler->bufptr = cur_src;
-              compiler->befbufptr = cur_src;
-              compiler->line_start_ptr = cur_src;
-              compiler->cur_line = 1;
               break;
             }
           }
