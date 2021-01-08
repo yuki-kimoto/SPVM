@@ -234,50 +234,55 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 
                 // Module not found
-                if (module_not_found && !op_use->uv.use->is_require) {
-                  fprintf(stderr, "Can't locate %s in @INC (@INC contains:", cur_rel_file);
-                  for (int32_t i = 0; i < module_include_pathes_length; i++) {
-                    const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
-                    fprintf(stderr, " %s", include_path);
+                if (module_not_found) {
+                  if (!op_use->uv.use->is_require) {
+                    fprintf(stderr, "Can't locate %s in @INC (@INC contains:", cur_rel_file);
+                    for (int32_t i = 0; i < module_include_pathes_length; i++) {
+                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
+                      fprintf(stderr, " %s", include_path);
+                    }
+                    fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
+                    compiler->error_count++;
+                    return 0;
                   }
-                  fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
-                  compiler->error_count++;
-                  return 0;
                 }
+                // Module found
+                else {
+                  // Read file content
+                  fseek(fh, 0, SEEK_END);
+                  int32_t file_size = (int32_t)ftell(fh);
+                  if (file_size < 0) {
+                    SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
+                    return 0;
+                  }
+                  fseek(fh, 0, SEEK_SET);
+                  char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+                  if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
+                    SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
+                    return 0;
+                  }
+                  fclose(fh);
+                  cur_src[file_size] = '\0';
 
-                if (module_not_found && op_use->uv.use->is_require) {
-                  op_use->uv.use->load_fail = 1;
-                  SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
-                  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-                  type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
-                  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
-                  type->basic_type->fail_load = 1;
-                  
-                  SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
-                  
-                  continue;
+                  compiler->cur_src = cur_src;
+                  compiler->cur_file = cur_file;
+                  compiler->cur_rel_file = cur_rel_file;
+                  compiler->cur_rel_file_package_name = package_name;
                 }
+              }
+              
+              // If module not found and that is if (requre Foo) syntax, syntax is ok.
+              if (module_not_found && op_use->uv.use->is_require) {
+                op_use->uv.use->load_fail = 1;
+                SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
+                SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+                type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
+                SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
+                type->basic_type->fail_load = 1;
                 
-                // Read file content
-                fseek(fh, 0, SEEK_END);
-                int32_t file_size = (int32_t)ftell(fh);
-                if (file_size < 0) {
-                  SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                  return 0;
-                }
-                fseek(fh, 0, SEEK_SET);
-                char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
-                if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
-                  SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                  return 0;
-                }
-                fclose(fh);
-                cur_src[file_size] = '\0';
-
-                compiler->cur_src = cur_src;
-                compiler->cur_file = cur_file;
-                compiler->cur_rel_file = cur_rel_file;
-                compiler->cur_rel_file_package_name = package_name;
+                SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
+                
+                continue;
               }
 
               // Convert \r\n to \n
