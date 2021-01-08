@@ -279,32 +279,27 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 cur_src[file_size] = '\0';
 
                 // Convert \r\n to \n
-                char* cur_src_nl = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
-                int32_t nl_merge_count = 0;
                 int32_t cur_src_pos = 0;
-                int32_t cur_src_nl_pos = 0;
+                int32_t nl_merge_count = 0;
                 while (cur_src_pos < file_size) {
                   int32_t ch = cur_src[cur_src_pos];
                   int32_t ch_next = cur_src[cur_src_pos + 1];
                   
                   if (ch == '\r' && ch_next == '\n') {
-                    cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
+                    cur_src[cur_src_pos - nl_merge_count] = '\n';
                     nl_merge_count++;
                     cur_src_pos += 2;
                   }
                   else if (ch == '\r') {
-                    cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
+                    cur_src[cur_src_pos - nl_merge_count] = '\n';
                     cur_src_pos++;
                   }
                   else {
-                    cur_src_nl[cur_src_pos - nl_merge_count] = ch;
+                    cur_src[cur_src_pos - nl_merge_count] = ch;
                     cur_src_pos++;
                   }
-                  cur_src_nl_pos++;
                 }
-                cur_src_nl[cur_src_nl_pos] = '\0';
-                free(cur_src);
-                cur_src = cur_src_nl;
+                cur_src[cur_src_pos - nl_merge_count] = '\0';
                 
                 compiler->cur_src = cur_src;
                 compiler->bufptr = cur_src;
