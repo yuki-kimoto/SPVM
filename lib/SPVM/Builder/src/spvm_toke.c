@@ -245,19 +245,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return 0;
                 }
 
-                if (module_not_found) {
-                  if (op_use->uv.use->is_require) {
-                    op_use->uv.use->load_fail = 1;
-                    SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
-                    SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-                    type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
-                    SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
-                    type->basic_type->fail_load = 1;
-                    
-                    SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
-                    
-                    continue;
-                  }
+                if (module_not_found && op_use->uv.use->is_require) {
+                  op_use->uv.use->load_fail = 1;
+                  SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
+                  SPVM_TYPE* type = SPVM_TYPE_new(compiler);
+                  type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
+                  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
+                  type->basic_type->fail_load = 1;
+                  
+                  SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
+                  
+                  continue;
                 }
                 
                 compiler->cur_file = cur_file;
