@@ -187,6 +187,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
               int32_t module_not_found = 0;
               if (compiler->is_search_module_source_symtable) {
+                // Search module source
+                const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
+                if (found_module_source) {
+                  compiler->cur_src = found_module_source;
+                  compiler->cur_file = cur_rel_file;
+                  compiler->cur_rel_file = cur_rel_file;
+                  compiler->cur_rel_file_package_name = package_name;
+                }
+                else {
+                  module_not_found = 1;
+                }
               }
               else {
                 // Search module file
