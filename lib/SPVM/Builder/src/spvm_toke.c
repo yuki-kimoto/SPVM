@@ -258,10 +258,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   continue;
                 }
                 
-                compiler->cur_file = cur_file;
-                compiler->cur_rel_file = cur_rel_file;
-                compiler->cur_rel_file_package_name = package_name;
-                
                 // Read file content
                 fseek(fh, 0, SEEK_END);
                 int32_t file_size = (int32_t)ftell(fh);
@@ -278,35 +274,41 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 fclose(fh);
                 cur_src[file_size] = '\0';
 
-                // Convert \r\n to \n
-                int32_t cur_src_pos = 0;
-                int32_t nl_merge_count = 0;
-                while (cur_src_pos < file_size) {
-                  int32_t ch = cur_src[cur_src_pos];
-                  int32_t ch_next = cur_src[cur_src_pos + 1];
-                  
-                  if (ch == '\r' && ch_next == '\n') {
-                    cur_src[cur_src_pos - nl_merge_count] = '\n';
-                    nl_merge_count++;
-                    cur_src_pos += 2;
-                  }
-                  else if (ch == '\r') {
-                    cur_src[cur_src_pos - nl_merge_count] = '\n';
-                    cur_src_pos++;
-                  }
-                  else {
-                    cur_src[cur_src_pos - nl_merge_count] = ch;
-                    cur_src_pos++;
-                  }
-                }
-                cur_src[cur_src_pos - nl_merge_count] = '\0';
-                
                 compiler->cur_src = cur_src;
-                compiler->bufptr = cur_src;
-                compiler->befbufptr = cur_src;
-                compiler->line_start_ptr = cur_src;
-                compiler->cur_line = 1;
+                compiler->cur_file = cur_file;
+                compiler->cur_rel_file = cur_rel_file;
+                compiler->cur_rel_file_package_name = package_name;
               }
+
+              // Convert \r\n to \n
+              int32_t cur_src_pos = 0;
+              int32_t nl_merge_count = 0;
+              int32_t cur_src_len = strlen(compiler->cur_src);
+              while (cur_src_pos < cur_src_len) {
+                int32_t ch = compiler->cur_src[cur_src_pos];
+                int32_t ch_next = compiler->cur_src[cur_src_pos + 1];
+                
+                if (ch == '\r' && ch_next == '\n') {
+                  compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
+                  nl_merge_count++;
+                  cur_src_pos += 2;
+                }
+                else if (ch == '\r') {
+                  compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
+                  cur_src_pos++;
+                }
+                else {
+                  compiler->cur_src[cur_src_pos - nl_merge_count] = ch;
+                  cur_src_pos++;
+                }
+              }
+              compiler->cur_src[cur_src_pos - nl_merge_count] = '\0';
+              
+              // Set initial information for tokenization
+              compiler->bufptr = compiler->cur_src;
+              compiler->befbufptr = compiler->cur_src;
+              compiler->line_start_ptr = compiler->cur_src;
+              compiler->cur_line = 1;
               break;
             }
           }
