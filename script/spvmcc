@@ -1,0 +1,69 @@
+#!perl
+
+use strict;
+use warnings;
+
+use SPVM();
+use SPVM::Builder::Exe;
+use SPVM::Builder::Util;
+
+SPVM::Builder::Util::getopt
+  'h|help'          => \my $help,
+  'v|version'       => \my $show_version,
+  'o|output=s'        => \my $output,
+  'I|include-dir=s' => \my @include_dirs,
+  'B|build-dir=s'   => \my $build_dir,
+  'q|quiet'   => \my $quiet,
+  'L|library-path=s' => \my @library_paths,
+  'l|library=s' => \my @library,
+  'D|define=s' => \my @defines,
+  'O|optimize=s' => \my $optimize,
+;
+
+die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
+
+unshift @INC, @include_dirs;
+
+unless (defined $build_dir) {
+  $build_dir = 'spvm_build';
+}
+
+my $build_exe = SPVM::Builder::Exe->new(
+  build_dir => $build_dir,
+  exe_name => $output,
+  package_name => $package_name,
+  quiet => $quiet,
+  library_path => \@library_paths,
+  library => \@library,
+  define => \@defines,
+  optimize => $optimize,
+);
+$build_exe->build_exe_file;
+
+=encoding utf8
+
+=head1 NAME
+
+spvmcc - SPVM compiler to create exe file
+
+=head1 SYNOPSIS
+
+  Usage: spvmcc [OPTIONS] [PACKAGE]
+
+    spvmcc -Ilib -Bspvm_build -o my_app My::App
+
+  Options:
+    -h, --help                     Show this message
+    -v, --version                  Version
+    -o, --output                   Excutable file name
+    -I, --include-dir <directory>  Add package search path
+    -B, --build-dir <directory>    Building diretory
+    -q, --quiet                    Quiet output
+    -L, --library-path <directory> Library searching path
+    -l, --library=s <file>         Library name
+
+=head1 DESCRIPTION
+
+spvmcc is SPVM compiler to create exe file.
+
+Created exe file is executed by itself.
