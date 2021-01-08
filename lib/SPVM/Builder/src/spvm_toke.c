@@ -164,32 +164,31 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               continue;
             }
             else {
+              // Create moudle relative file name from package name by changing :: to / and add ".spvm"
+              int32_t cur_rel_file_length = (int32_t)(strlen(package_name) + 6);
+              char* cur_rel_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, cur_rel_file_length + 1);
+              const char* bufptr_orig = package_name;
+              char* bufptr_to = cur_rel_file;
+              while (*bufptr_orig) {
+                if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
+                  *bufptr_to = '/';
+                  bufptr_orig += 2;
+                  bufptr_to++;
+                }
+                else {
+                  *bufptr_to = *bufptr_orig;
+                  bufptr_orig++;
+                  bufptr_to++;
+                }
+              }
+              strncpy(bufptr_to, ".spvm", 5);
+              bufptr_to += 5;
+              *bufptr_to = '\0';
+
               int32_t module_not_found = 0;
               if (compiler->is_search_module_source_symtable) {
-                
               }
               else {
-                // Create moudle relative file name from package name by changing :: to / and add ".spvm"
-                int32_t cur_rel_file_length = (int32_t)(strlen(package_name) + 6);
-                char* cur_rel_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, cur_rel_file_length + 1);
-                const char* bufptr_orig = package_name;
-                char* bufptr_to = cur_rel_file;
-                while (*bufptr_orig) {
-                  if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
-                    *bufptr_to = '/';
-                    bufptr_orig += 2;
-                    bufptr_to++;
-                  }
-                  else {
-                    *bufptr_to = *bufptr_orig;
-                    bufptr_orig++;
-                    bufptr_to++;
-                  }
-                }
-                strncpy(bufptr_to, ".spvm", 5);
-                bufptr_to += 5;
-                *bufptr_to = '\0';
-
                 // Search module file
                 char* cur_file = NULL;
                 FILE* fh = NULL;
