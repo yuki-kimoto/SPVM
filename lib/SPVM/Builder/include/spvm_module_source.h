@@ -5,6 +5,7 @@
 
 struct SPVM_module_source {
   const char* content;
+  const char* content_size;
   const char* file;
   const char* rel_file;
   const char* rel_file_package_name;
