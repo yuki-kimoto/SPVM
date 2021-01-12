@@ -192,8 +192,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
                 if (found_module_source) {
                   compiler->cur_src = found_module_source;
-                  compiler->cur_rel_file = cur_rel_file;
-                  compiler->cur_rel_file_package_name = package_name;
                 }
                 else {
                   module_not_found = 1;
@@ -273,11 +271,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   cur_src[file_size] = '\0';
 
                   compiler->cur_src = cur_src;
-                  compiler->cur_rel_file = cur_rel_file;
-                  compiler->cur_rel_file_package_name = package_name;
                 }
               }
               
+              compiler->cur_rel_file = cur_rel_file;
+              compiler->cur_rel_file_package_name = package_name;
+                  
               // If we get current module file path, set it, otherwise set module relative file path
               if (cur_file) {
                 compiler->cur_file = cur_file;
