@@ -186,12 +186,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               *bufptr_to = '\0';
 
               char* cur_file = NULL;
+              char* cur_src = NULL;
               int32_t module_not_found = 0;
               if (compiler->is_search_module_source_symtable) {
                 // Search module source
                 const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
                 if (found_module_source) {
-                  compiler->cur_src = found_module_source;
+                  cur_src = found_module_source;
                 }
                 else {
                   module_not_found = 1;
@@ -262,27 +263,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     return 0;
                   }
                   fseek(fh, 0, SEEK_SET);
-                  char* cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+                  cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
                   if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
                     SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                     return 0;
                   }
                   fclose(fh);
                   cur_src[file_size] = '\0';
-
-                  compiler->cur_src = cur_src;
                 }
-              }
-              
-              compiler->cur_rel_file = cur_rel_file;
-              compiler->cur_rel_file_package_name = package_name;
-                  
-              // If we get current module file path, set it, otherwise set module relative file path
-              if (cur_file) {
-                compiler->cur_file = cur_file;
-              }
-              else {
-                compiler->cur_file = cur_rel_file;
               }
               
               // If module not found and that is if (requre Foo) syntax, syntax is ok.
@@ -298,36 +286,49 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 continue;
               }
-
-              // Convert \r\n to \n
-              int32_t cur_src_pos = 0;
-              int32_t nl_merge_count = 0;
-              int32_t cur_src_len = strlen(compiler->cur_src);
-              while (cur_src_pos < cur_src_len) {
-                int32_t ch = compiler->cur_src[cur_src_pos];
-                int32_t ch_next = compiler->cur_src[cur_src_pos + 1];
-                
-                if (ch == '\r' && ch_next == '\n') {
-                  compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
-                  nl_merge_count++;
-                  cur_src_pos += 2;
-                }
-                else if (ch == '\r') {
-                  compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
-                  cur_src_pos++;
+              else {
+                compiler->cur_src = cur_src;
+                compiler->cur_rel_file = cur_rel_file;
+                compiler->cur_rel_file_package_name = package_name;
+                    
+                // If we get current module file path, set it, otherwise set module relative file path
+                if (cur_file) {
+                  compiler->cur_file = cur_file;
                 }
                 else {
-                  compiler->cur_src[cur_src_pos - nl_merge_count] = ch;
-                  cur_src_pos++;
+                  compiler->cur_file = cur_rel_file;
                 }
+                
+                // Convert \r\n to \n
+                int32_t cur_src_pos = 0;
+                int32_t nl_merge_count = 0;
+                int32_t cur_src_len = strlen(compiler->cur_src);
+                while (cur_src_pos < cur_src_len) {
+                  int32_t ch = compiler->cur_src[cur_src_pos];
+                  int32_t ch_next = compiler->cur_src[cur_src_pos + 1];
+                  
+                  if (ch == '\r' && ch_next == '\n') {
+                    compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
+                    nl_merge_count++;
+                    cur_src_pos += 2;
+                  }
+                  else if (ch == '\r') {
+                    compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
+                    cur_src_pos++;
+                  }
+                  else {
+                    compiler->cur_src[cur_src_pos - nl_merge_count] = ch;
+                    cur_src_pos++;
+                  }
+                }
+                compiler->cur_src[cur_src_pos - nl_merge_count] = '\0';
+                
+                // Set initial information for tokenization
+                compiler->bufptr = compiler->cur_src;
+                compiler->befbufptr = compiler->cur_src;
+                compiler->line_start_ptr = compiler->cur_src;
+                compiler->cur_line = 1;
               }
-              compiler->cur_src[cur_src_pos - nl_merge_count] = '\0';
-              
-              // Set initial information for tokenization
-              compiler->bufptr = compiler->cur_src;
-              compiler->befbufptr = compiler->cur_src;
-              compiler->line_start_ptr = compiler->cur_src;
-              compiler->cur_line = 1;
               break;
             }
           }
