@@ -186,13 +186,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               *bufptr_to = '\0';
 
               char* cur_file = NULL;
-              char* cur_src = NULL;
+              char* original_src;
               int32_t module_not_found = 0;
+              int32_t file_size = 0;
               if (compiler->is_search_module_source_symtable) {
+                assert(0);
                 // Search module source
                 const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
                 if (found_module_source) {
-                  cur_src = found_module_source;
+                  original_src = found_module_source;
                 }
                 else {
                   module_not_found = 1;
@@ -257,19 +259,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else {
                   // Read file content
                   fseek(fh, 0, SEEK_END);
-                  int32_t file_size = (int32_t)ftell(fh);
+                  file_size = (int32_t)ftell(fh);
                   if (file_size < 0) {
                     SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                     return 0;
                   }
                   fseek(fh, 0, SEEK_SET);
-                  cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
-                  if ((int32_t)fread(cur_src, 1, file_size, fh) < file_size) {
+                  original_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+                  if ((int32_t)fread(original_src, 1, file_size, fh) < file_size) {
                     SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                     return 0;
                   }
                   fclose(fh);
-                  cur_src[file_size] = '\0';
+                  original_src[file_size] = '\0';
                 }
               }
               
@@ -287,7 +289,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 continue;
               }
               else {
-                compiler->cur_src = cur_src;
+                // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
+                compiler->cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+                memcpy(compiler->cur_src, original_src, file_size + 1);
                 compiler->cur_rel_file = cur_rel_file;
                 compiler->cur_rel_file_package_name = package_name;
                     
