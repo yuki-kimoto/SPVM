@@ -96,6 +96,12 @@ struct SPVM_compiler {
 
   // module file symtable
   SPVM_HASH* module_file_symtable;
+
+  // module relative file symtable
+  SPVM_HASH* module_rel_file_symtable;
+
+  // module source symtable
+  SPVM_HASH* module_source_symtable;
   
   // OP package symtable
   SPVM_HASH* package_symtable;
@@ -117,6 +123,9 @@ struct SPVM_compiler {
 
   // Field ops
   SPVM_LIST* fields;
+  
+  // Search source code in module source symbol table instead of module directories
+  int32_t is_search_module_source_symtable;
   
   char* next_double_quote_start_bufptr;
 };
