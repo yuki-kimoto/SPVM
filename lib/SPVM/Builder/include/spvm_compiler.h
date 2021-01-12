@@ -129,7 +129,7 @@ struct SPVM_compiler {
   
   char* next_double_quote_start_bufptr;
 
-  SPVM_MODULE_SOURCE* cur_module_source;
+  SPVM_SOURCE* cur_source;
 };
 
 SPVM_COMPILER* SPVM_COMPILER_new();
