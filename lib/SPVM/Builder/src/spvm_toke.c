@@ -185,13 +185,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               bufptr_to += 5;
               *bufptr_to = '\0';
 
+              char* cur_file = NULL;
               int32_t module_not_found = 0;
               if (compiler->is_search_module_source_symtable) {
                 // Search module source
                 const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
                 if (found_module_source) {
                   compiler->cur_src = found_module_source;
-                  compiler->cur_file = cur_rel_file;
                   compiler->cur_rel_file = cur_rel_file;
                   compiler->cur_rel_file_package_name = package_name;
                 }
@@ -201,7 +201,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               else {
                 // Search module file
-                char* cur_file = NULL;
                 FILE* fh = NULL;
                 int32_t module_include_pathes_length = compiler->module_include_pathes->length;
                 for (int32_t i = 0; i < module_include_pathes_length; i++) {
@@ -233,7 +232,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   // Open source file
                   fh = fopen(cur_file, "rb");
                   if (fh) {
-                    compiler->cur_file = cur_file;
                     break;
                   }
                   errno = 0;
@@ -275,10 +273,17 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   cur_src[file_size] = '\0';
 
                   compiler->cur_src = cur_src;
-                  compiler->cur_file = cur_file;
                   compiler->cur_rel_file = cur_rel_file;
                   compiler->cur_rel_file_package_name = package_name;
                 }
+              }
+              
+              // If we get current module file path, set it, otherwise set module relative file path
+              if (cur_file) {
+                compiler->cur_file = cur_file;
+              }
+              else {
+                compiler->cur_file = cur_rel_file;
               }
               
               // If module not found and that is if (requre Foo) syntax, syntax is ok.
