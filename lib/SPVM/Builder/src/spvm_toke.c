@@ -25,6 +25,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
+#include "spvm_module_source.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -192,9 +193,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (compiler->is_search_module_source_symtable) {
                 assert(0);
                 // Search module source
-                const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
+                SPVM_MODULE_SOURCE* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
                 if (found_module_source) {
-                  original_src = found_module_source;
+                  original_src = found_module_source->content;
+                  file_size = found_module_source->content_size;
                 }
                 else {
                   module_not_found = 1;
@@ -272,6 +274,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                   fclose(fh);
                   original_src[file_size] = '\0';
+                  
+                  // Save module source
+                  SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), original_src);
                 }
               }
               

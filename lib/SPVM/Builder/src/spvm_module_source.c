@@ -1,4 +1,4 @@
-#include "spvm_source.h"
+#include "spvm_module_source.h"
 
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"

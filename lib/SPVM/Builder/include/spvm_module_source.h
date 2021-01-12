@@ -4,11 +4,11 @@
 #include "spvm_base.h"
 
 struct SPVM_module_source {
-  const char* content;
-  const char* content_size;
-  const char* file;
-  const char* rel_file;
-  const char* rel_file_package_name;
+  char* content;
+  char* content_size;
+  char* file;
+  char* rel_file;
+  char* rel_file_package_name;
 };
 
 SPVM_MODULE_SOURCE* SPVM_MODULE_SOURCE_new(SPVM_COMPILER* compiler);
