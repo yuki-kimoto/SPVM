@@ -68,6 +68,30 @@ sub new {
 
 sub build_exe_file {
   my ($self) = @_;
+
+  # Package name
+  my $package_name = $self->{package_name};
+  
+  # Excutable file name
+  my $exe_name = $self->{exe_name};
+  
+  # Build directory
+  my $build_dir = $self->{build_dir};
+  mkpath $build_dir;
+  
+  # New SPVM::Builder object
+  my $builder = SPVM::Builder->new(build_dir => $build_dir);
+  $self->{builder} = $builder;
+  
+  # Compile SPVM
+  my $file = 'internal';
+  my $line = 0;
+  my $compile_success = $BUILDER->compile_spvm($package_name, $file, $line);
+  unless ($compile_success) {
+    exit(255);
+  }
+  
+  
   
 }
 
