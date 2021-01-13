@@ -86,11 +86,13 @@ sub build_exe_file {
   # Compile SPVM
   my $file = 'internal';
   my $line = 0;
-  my $compile_success = $BUILDER->compile_spvm($package_name, $file, $line);
+  my $compile_success = $builder->compile_spvm($package_name, $file, $line);
   unless ($compile_success) {
     exit(255);
   }
   
+  # Compiled package names
+  my $compiled_package_names = $builder->get_package_names;
   
   
 }
