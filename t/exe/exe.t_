@@ -8,22 +8,27 @@ use Config;
 use File::Path 'mkpath';
 use File::Spec;
 
-use SPVM::Builder;
+use SPVM::Builder::Exe;
 
 my $file = 't/' . basename $0;
 
 use FindBin;
-use lib "$FindBin::Bin/default/lib";
 
 {
   my $exe_dir = 't/spvm_build/work/exe';
   mkpath $exe_dir;
   
-  my $spvmcc_cmd = "$^X -Mblib blib/script/spvmcc -B t/exe/spvm_build -I t/default/lib -o t/spvm_build/work/exe/myexe TestCase::MyExe";
-  system($spvmcc_cmd) == 0
-    or die "Can't execute command $spvmcc_cmd:$!";
-
-  my $execute_cmd = File::Spec->catfile(qw/t spvm_build work exe myexe/);
-  system($execute_cmd) == 0
-    or die "Can't execute command $spvmcc_cmd:$!";
+  my $package_name = 'MyExe';
+  my $build_dir = 't/exe/spvm_build';
+  my $library_path = 't/exe/lib';
+  my $exe_name = 't/spvm_build/work/exe/myexe';
+  
+  my $builder_exe = SPVM::Builder::Exe->new(
+    package_name => $package_name,
+    exe_name => $exe_name,
+    build_dir => $build_dir,
+    library_path => $library_path,
+  );
+  
+  $builder_exe->build_exe_file;
 }

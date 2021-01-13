@@ -1,0 +1,5 @@
+package MyExe {
+  sub main : int ($args : string[]) {
+    
+  }
+}
