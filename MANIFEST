@@ -359,6 +359,7 @@ lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Exe.pm
+lib/SPVM/Builder/ExeOld.pm
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
