@@ -5,10 +5,10 @@
 
 struct SPVM_module_source {
   char* content;
-  char* content_size;
   char* file;
   char* rel_file;
   char* rel_file_package_name;
+  int32_t content_size;
 };
 
 SPVM_MODULE_SOURCE* SPVM_MODULE_SOURCE_new(SPVM_COMPILER* compiler);

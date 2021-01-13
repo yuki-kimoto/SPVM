@@ -92,9 +92,11 @@ sub build_exe_file {
   }
   
   # Compiled package names
-  my $compiled_package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names;
   
-  
+  for my $package_name (@$package_names) {
+    my $module_source = $builder->get_module_source($package_name);
+  }
 }
 
 sub compile_spvm_csources {

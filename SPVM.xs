@@ -37,6 +37,7 @@
 #include "spvm_limit.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_my.h"
+#include "spvm_module_source.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -385,6 +386,39 @@ get_module_file(...)
   SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
 
   XPUSHs(sv_module_file);
+  XSRETURN(1);
+}
+
+SV*
+get_module_source(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_package_name = ST(1);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Name
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Copy package load path to builder
+  SV* sv_module_source;
+  SPVM_MODULE_SOURCE* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
+  if (module_source) {
+    sv_module_source = sv_2mortal(newSVpv(module_source->content, module_source->content_size));
+  }
+  else {
+    sv_module_source = &PL_sv_undef;
+  }
+
+  XPUSHs(sv_module_source);
   XSRETURN(1);
 }
 
