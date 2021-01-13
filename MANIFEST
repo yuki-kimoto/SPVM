@@ -358,6 +358,7 @@ lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
+lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
@@ -382,6 +383,7 @@ lib/SPVM/Builder/include/spvm_hash_entry.h
 lib/SPVM/Builder/include/spvm_hash_func.h
 lib/SPVM/Builder/include/spvm_limit.h
 lib/SPVM/Builder/include/spvm_list.h
+lib/SPVM/Builder/include/spvm_module_source.h
 lib/SPVM/Builder/include/spvm_my.h
 lib/SPVM/Builder/include/spvm_name_info.h
 lib/SPVM/Builder/include/spvm_native.h
@@ -425,6 +427,7 @@ lib/SPVM/Builder/src/spvm_field_access.c
 lib/SPVM/Builder/src/spvm_hash.c
 lib/SPVM/Builder/src/spvm_hash_func.c
 lib/SPVM/Builder/src/spvm_list.c
+lib/SPVM/Builder/src/spvm_module_source.c
 lib/SPVM/Builder/src/spvm_my.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_op_checker.c
@@ -539,6 +542,7 @@ Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README.md
+script/spvmcc
 solo/Main.spvm
 solo/solo_Makefile.PL
 solo/SPVM/Byte.spvm
@@ -911,6 +915,8 @@ t/default/value_array.t
 t/default/warn.t
 t/default/weaken.t
 t/default/while.t
+t/exe/exe.t_
+t/exe/spvm_build/.gitkeep
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
 t/test_files/file_eof.txt
