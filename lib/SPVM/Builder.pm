@@ -15,7 +15,10 @@ use SPVM();
 sub new {
   my $class = shift;
   
-  my $self = {@_};
+  my $self = {
+    include_dirs => \@INC,
+    @_
+  };
   
   bless $self, ref $class || $class;
   
