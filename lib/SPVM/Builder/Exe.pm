@@ -102,6 +102,17 @@ sub build_exe_file {
     
     # Escape to Hex C launguage string literal
     $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
+    
+    # native package name
+    my $native_package_name = $package_name;
+    $native_package_name =~ s/::/__/g;
+    
+    my $module_source_get_func = <<"EOS";
+const char* SPMODULESOURCE__${native_package_name}__get() {
+  const char* module_source = "$module_source_c_hex";
+  return module_source;
+}
+EOS
   }
 }
 
