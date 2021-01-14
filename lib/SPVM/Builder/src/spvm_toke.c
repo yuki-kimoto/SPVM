@@ -205,14 +205,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else {
                 // Search module file
                 FILE* fh = NULL;
-                int32_t module_include_pathes_length = compiler->module_include_pathes->length;
-                for (int32_t i = 0; i < module_include_pathes_length; i++) {
-                  const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
+                int32_t module_include_dirs_length = compiler->module_include_dirs->length;
+                for (int32_t i = 0; i < module_include_dirs_length; i++) {
+                  const char* include_dir = (const char*) SPVM_LIST_fetch(compiler->module_include_dirs, i);
                   
                   // File name
-                  int32_t file_name_length = (int32_t)(strlen(include_path) + 1 + strlen(cur_rel_file));
+                  int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(cur_rel_file));
                   cur_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_name_length + 1);
-                  sprintf(cur_file, "%s/%s", include_path, cur_rel_file);
+                  sprintf(cur_file, "%s/%s", include_dir, cur_rel_file);
                   cur_file[file_name_length] = '\0';
                   
                   // \ is replaced to /
@@ -248,9 +248,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 if (module_not_found) {
                   if (!op_use->uv.use->is_require) {
                     fprintf(stderr, "Can't locate %s in @INC (@INC contains:", cur_rel_file);
-                    for (int32_t i = 0; i < module_include_pathes_length; i++) {
-                      const char* include_path = (const char*) SPVM_LIST_fetch(compiler->module_include_pathes, i);
-                      fprintf(stderr, " %s", include_path);
+                    for (int32_t i = 0; i < module_include_dirs_length; i++) {
+                      const char* include_dir = (const char*) SPVM_LIST_fetch(compiler->module_include_dirs, i);
+                      fprintf(stderr, " %s", include_dir);
                     }
                     fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
                     compiler->error_count++;

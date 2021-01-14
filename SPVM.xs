@@ -165,13 +165,13 @@ compile_spvm(...)
   SPVM_LIST_push(compiler->op_use_stack, op_use_package);
   
   // Add include paths
-  AV* av_include_paths = get_av("main::INC", 0);;
-  int32_t av_include_paths_length = (int32_t)av_len(av_include_paths) + 1;
-  for (int32_t i = 0; i < av_include_paths_length; i++) {
-    SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
-    SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
-    char* include_path = SvPV_nolen(sv_include_path);
-    SPVM_LIST_push(compiler->module_include_pathes, include_path);
+  AV* av_include_dirs = get_av("main::INC", 0);;
+  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
+  for (int32_t i = 0; i < av_include_dirs_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
+    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
+    char* include_dir = SvPV_nolen(sv_include_dir);
+    SPVM_LIST_push(compiler->module_include_dirs, include_dir);
   }
 
   // Compile SPVM

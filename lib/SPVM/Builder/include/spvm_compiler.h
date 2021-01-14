@@ -68,7 +68,7 @@ struct SPVM_compiler {
   int32_t error_count;
   
   // Include pathes
-  SPVM_LIST* module_include_pathes;
+  SPVM_LIST* module_include_dirs;
 
   // OP name symtable
   SPVM_HASH* name_symtable;
