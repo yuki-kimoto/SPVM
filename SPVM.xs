@@ -410,7 +410,7 @@ get_module_source(...)
   SV* sv_package_name = ST(1);
 
   HV* hv_self = (HV*)SvRV(sv_self);
-
+  
   // Name
   const char* package_name = SvPV_nolen(sv_package_name);
 

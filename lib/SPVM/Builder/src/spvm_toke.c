@@ -276,7 +276,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   original_src[file_size] = '\0';
                   
                   // Save module source
-                  SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), original_src);
+                  SPVM_MODULE_SOURCE* module_source = SPVM_MODULE_SOURCE_new(compiler);
+                  module_source->content = original_src;
+                  module_source->content_size = file_size;
+                  SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), module_source);
                 }
               }
               

@@ -90,12 +90,18 @@ sub build_exe_file {
   unless ($compile_success) {
     exit(255);
   }
-  
+
   # Compiled package names
   my $package_names = $builder->get_package_names;
   
   for my $package_name (@$package_names) {
+    # This source is UTF-8 binary
     my $module_source = $builder->get_module_source($package_name);
+    
+    my $module_source_c_hex = $module_source;
+    
+    # Escape to Hex C launguage string literal
+    $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
   }
 }
 
