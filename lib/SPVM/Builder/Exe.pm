@@ -23,6 +23,8 @@ use File::Basename 'dirname', 'basename';
 
 sub builder { shift->{builder} }
 
+sub build_dir { shift->{build_dir} }
+
 sub new {
   my $class = shift;
   
@@ -62,12 +64,18 @@ sub new {
   unless (exists $self->{library}) {
     $self->{library} = [];
   }
+
+  # New SPVM::Builder object
+  my $builder = SPVM::Builder->new(build_dir => $build_dir);
+  $self->{builder} = $builder;
   
   return bless $self, $class;
 }
 
 sub build_exe_file {
   my ($self) = @_;
+  
+  my $builder = $self->builder;
 
   # Package name
   my $package_name = $self->{package_name};
@@ -79,10 +87,6 @@ sub build_exe_file {
   my $build_dir = $self->{build_dir};
   mkpath $build_dir;
   
-  # New SPVM::Builder object
-  my $builder = SPVM::Builder->new(build_dir => $build_dir);
-  $self->{builder} = $builder;
-  
   # Compile SPVM
   my $file = 'internal';
   my $line = 0;
@@ -90,6 +94,16 @@ sub build_exe_file {
   unless ($compile_success) {
     exit(255);
   }
+  
+  # Create module sources
+  $self->create_module_sources;
+  
+}
+
+sub create_module_sources {
+  my ($self) = @_;
+  
+  my $builder = $self->builder;
 
   # Compiled package names
   my $package_names = $builder->get_package_names;
@@ -121,6 +135,8 @@ EOS
     my $module_source_base = $package_name;
     $module_source_base =~ s|::|/|g;
     
+    my $build_dir = $self->build_dir;
+    
     # Build header directory
     my $build_header_dir = "$build_dir/work/include";
     mkpath $build_header_dir;
@@ -147,7 +163,6 @@ EOS
 
     print $module_source_csource_fh $get_module_source_csource;
   }
-  
 }
 
 sub compile_spvm_csources {
