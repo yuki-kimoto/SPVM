@@ -19,7 +19,7 @@ use FindBin;
   mkpath $exe_dir;
   
   my $package_name = 'MyExe';
-  my $build_dir = 't/exe/spvm_build';
+  my $build_dir = 't/exe/.spvm_build';
   my $module_include_dir = 't/exe/lib';
   my $exe_name = 't/spvm_build/work/exe/myexe';
   

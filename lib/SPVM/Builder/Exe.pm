@@ -106,14 +106,48 @@ sub build_exe_file {
     # native package name
     my $native_package_name = $package_name;
     $native_package_name =~ s/::/__/g;
+
+    my $get_module_source_header = <<"EOS";
+const char* SPMODSRC__${native_package_name}__get_module_source();
+EOS
     
-    my $module_source_get_func = <<"EOS";
-const char* SPMODULESOURCE__${native_package_name}__get() {
-  const char* module_source = "$module_source_c_hex";
+    my $get_module_source_csource = <<"EOS";
+const char* module_source = "$module_source_c_hex";
+const char* SPMODSRC__${native_package_name}__get_module_source() {
   return module_source;
 }
 EOS
+
+    my $module_source_base = $package_name;
+    $module_source_base =~ s|::|/|g;
+    
+    # Build header directory
+    my $build_header_dir = "$build_dir/work/include";
+    mkpath $build_header_dir;
+
+    my $module_source_header_file = "$build_header_dir/$module_source_base.modsrc.h";
+    
+    mkpath dirname $module_source_header_file;
+
+    open my $module_source_header_fh, '>', $module_source_header_file
+      or die "Can't open file $module_source_header_file:$!";
+    
+    print $module_source_header_fh $get_module_source_header;
+    
+    # Build source directory
+    my $build_src_dir = "$build_dir/work/src";
+    mkpath $build_src_dir;
+    
+    my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
+
+    mkpath dirname $module_source_csource_file;
+    
+    open my $module_source_csource_fh, '>', $module_source_csource_file
+      or die "Can't open file $module_source_csource_file:$!";
+
+    print $module_source_csource_fh $get_module_source_csource;
   }
+  
 }
 
 sub compile_spvm_csources {
