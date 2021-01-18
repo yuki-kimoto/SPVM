@@ -1,5 +1,11 @@
+use lib "t/lib";
+use TestAuto;
+
 use strict;
 use warnings;
+
+use Test::More 'no_plan';
+
 use utf8;
 use Data::Dumper;
 use File::Basename 'basename';
@@ -33,3 +39,5 @@ use FindBin;
   
   $builder_exe->build_exe_file;
 }
+
+ok(1);

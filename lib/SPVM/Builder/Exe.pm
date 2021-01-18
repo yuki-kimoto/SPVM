@@ -96,10 +96,10 @@ sub build_exe_file {
   }
   
   # Create module source csources
-  $self->create_module_source_csources;
+  my $module_source_info_h = $self->create_module_source_csources;
 
   # Create boot csource
-  $self->create_boot_csource($package_name);
+  $self->create_boot_csource($package_name, $module_source_info_h);
   
 }
 
@@ -107,6 +107,8 @@ sub create_module_source_csources {
   my ($self) = @_;
   
   my $builder = $self->builder;
+  
+  my $module_source_info_h = {};
 
   # Compiled package names
   my $package_names = $builder->get_package_names;
@@ -153,6 +155,8 @@ EOS
     
     print $module_source_header_fh $get_module_source_header;
     
+    $module_source_info_h->{$package_name}{header_file} = $module_source_header_file;
+    
     # Build source directory
     my $build_src_dir = "$build_dir/work/src";
     mkpath $build_src_dir;
@@ -165,12 +169,21 @@ EOS
       or die "Can't open file $module_source_csource_file:$!";
 
     print $module_source_csource_fh $get_module_source_csource;
+
+    $module_source_info_h->{$package_name}{csource_file} = $module_source_csource_file;
   }
+  
+  return $module_source_info_h;
 }
 
 sub create_boot_csource {
-  my ($self, $package_name) = @_;
-  
+  my ($self, $package_name, $module_source_info_h) = @_;
+
+  my $builder = $self->builder;
+
+  # Compiled package names
+  my $package_names = $builder->get_package_names;
+
   my $boot_csource = '';
   
   $boot_csource .= <<'EOS';
@@ -188,6 +201,17 @@ sub create_boot_csource {
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
+#include "spvm_module_source.h"
+
+EOS
+  
+  $boot_csource .= "// include module source get functions\n";
+  for my $package_name (sort keys %$module_source_info_h) {
+    my $module_source_header_file = $module_source_info_h->{$package_name}{header_file};
+    $boot_csource .= qq(#include "$module_source_header_file"\n);
+  }
+  
+  $boot_csource .= <<'EOS';
 
 int32_t main(int32_t argc, const char *argv[]) {
   
@@ -196,37 +220,23 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  compiler->is_search_module_source_symtable = 1;
   
-  // compiler->debug = 1;
+  // Set module sources
+EOS
   
-  // Create use op for entry point package
-  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
-  SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);
-  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, package_name, 0);
-  SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_start);
-  
-  // Get script directory
-  const char* cur_script_name = argv[0];
-  int32_t cur_script_name_length = (int32_t)strlen(argv[0]);
-  char* cur_script_dir = malloc(cur_script_name_length + 1);
-  memcpy(cur_script_dir, cur_script_name, cur_script_name_length);
-  cur_script_dir[cur_script_name_length] = '\0';
-  int32_t found_sep = 0;
-  for (int32_t i = cur_script_name_length - 1; i >= 0; i--) {
-    if (cur_script_dir[i] == '/' || cur_script_dir[i] == '\\') {
-      cur_script_dir[i] = '\0';
-      found_sep = 1;
-      break;
-    }
+  for my $package_name (sort keys %$module_source_info_h) {
+    my $native_package_name = $package_name;
+    $native_package_name =~ s/::/__/g;
+    
+    $boot_csource .= "  {\n";
+    $boot_csource .= "    SPVM_MODULE_SORUE* module_source = SPMODSRC__${native_package_name}__get_module_source()\n";
+    $boot_csource .= qq(    SPVM_SPVM_HASH_insert(compiler->module_source_symtable, "$package_name", strlen("$package_name"), module_source);\n);
+    $boot_csource .= "  {\n";
   }
-  if (!found_sep) {
-    cur_script_dir[0] = '.';
-    cur_script_dir[1] = '\0';
-  }
+  $boot_csource .= "\n";
   
-  // Add include path
-  SPVM_LIST_push(compiler->module_include_dirs, cur_script_dir);
+  $boot_csource .= <<'EOS';
   
   SPVM_COMPILER_compile(compiler);
   
