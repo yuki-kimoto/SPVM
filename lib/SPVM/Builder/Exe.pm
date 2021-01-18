@@ -9,6 +9,7 @@ use Config;
 use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
+use SPVM::Builder::Config;
 use File::Find 'find';
 
 use Getopt::Long 'GetOptions';
@@ -100,7 +101,13 @@ sub build_exe_file {
 
   # Create boot csource
   $self->create_boot_csource($package_name, $module_source_info_h);
-  
+
+
+  # Create main csouce
+  $self->create_boot_csource($package_name);
+
+  # compile main
+  $self->compile_main($package_name);
 }
 
 sub create_module_source_csources {
@@ -266,7 +273,7 @@ EOS
   
   // Set command line arguments
   for (int32_t arg_index = 0; arg_index < argc; arg_index++) {
-    void* cmd_arg_obj = env->new_string_len(env, argv[arg_index], strlen(argv[arg_index]));
+    void* cmd_arg_obj = env->new_string(env, argv[arg_index], strlen(argv[arg_index]));
     env->set_elem_object(env, cmd_args_obj, arg_index, cmd_arg_obj);
   }
   
@@ -317,16 +324,34 @@ EOS
   print $boot_csource_fh $boot_csource;
 }
 
-sub compile_spvm_csources {
-  my ($self, $package_name, $sub_names, $opt) = @_;
-}
-
 sub compile_main {
-  my ($self) = @_;
+  my ($self, $package_name) = @_;
+  
+  my $build_dir = $self->{build_dir};
+
+  my $bconf = SPVM::Builder::Config->new_c99;
+  $bconf->set_optimize('-O0');
+  my $config = $bconf->to_hash;
+  
+  # Compile source files
+  my $quiet = $self->{quiet};
+  $quiet = 0;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $object_file = "$build_dir/work/object/$package_name.boot.o";
+  my $src_file = "$build_dir/work/src/$package_name.boot.c";
+  
+  mkdir dirname $object_file;
+  
+  # Compile source file
+  $cbuilder->compile(
+    source => $src_file,
+    object_file => $object_file,
+    include_dirs => $bconf->get_include_dirs,
+    extra_compiler_flags => $bconf->get_extra_compiler_flags,
+  );
+  
+  return $object_file;
 }
 
-sub link_executable {
-  my ($self, $package_name, $all_libs) = @_;
-}
 
 1;
