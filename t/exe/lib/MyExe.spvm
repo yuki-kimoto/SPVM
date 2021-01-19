@@ -1,5 +1,5 @@
 package MyExe {
   sub main : int ($args : string[]) {
-    
+    print "AAA\n";
   }
 }

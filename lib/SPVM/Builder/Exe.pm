@@ -22,6 +22,50 @@ use Scalar::Util 'weaken';
 
 use File::Basename 'dirname', 'basename';
 
+# SPVM runtime source files
+my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
+  spvm_allow.c
+  spvm_api.c
+  spvm_array_field_access.c
+  spvm_basic_type.c
+  spvm_block.c
+  spvm_call_sub.c
+  spvm_case_info.c
+  spvm_compiler_allocator.c
+  spvm_compiler.c
+  spvm_constant.c
+  spvm_csource_builder_precompile.c
+  spvm_descriptor.c
+  spvm_dumper.c
+  spvm_enumeration.c
+  spvm_enumeration_value.c
+  spvm_field_access.c
+  spvm_field.c
+  spvm_hash.c
+  spvm_hash_func.c
+  spvm_list.c
+  spvm_module_source.c
+  spvm_my.c
+  spvm_op.c
+  spvm_op_checker.c
+  spvm_opcode_array.c
+  spvm_opcode_builder.c
+  spvm_opcode.c
+  spvm_package.c
+  spvm_package_var_access.c
+  spvm_package_var.c
+  spvm_string_buffer.c
+  spvm_sub.c
+  spvm_switch_info.c
+  spvm_toke.c
+  spvm_type.c
+  spvm_use.c
+  spvm_util_allocator.c
+  spvm_var.c
+  spvm_yacc.c
+  spvm_yacc_util.c
+);
+
 sub builder { shift->{builder} }
 
 sub build_dir { shift->{build_dir} }
@@ -99,15 +143,20 @@ sub build_exe_file {
   # Create module source csources
   my $module_source_info_h = $self->create_module_source_csources;
 
+  # Compile SPVM runtime
+  $self->compile_spvm_runtime;
+
   # Create boot csource
   $self->create_boot_csource($package_name, $module_source_info_h);
-
 
   # Create main csouce
   $self->create_boot_csource($package_name);
 
   # compile main
   $self->compile_main($package_name);
+
+  # compile main
+  $self->link_executable($package_name);
 }
 
 sub create_module_source_csources {
@@ -353,5 +402,108 @@ sub compile_main {
   return $object_file;
 }
 
+sub compile_spvm_runtime {
+  my ($self) = @_;
+
+  # SPVM::Builder::Config directory
+  my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
+
+  # SPVM::Builder directory
+  my $spvm_builder_dir = $spvm_builder_config_dir;
+  $spvm_builder_dir =~ s/\/Config\.pm$//;
+
+  # Add SPVM include directory
+  my $spvm_runtime_include_dir = $spvm_builder_dir;
+  $spvm_runtime_include_dir .= '/include';
+
+  # Add SPVM src directory
+  my $spvm_runtime_src_dir = $spvm_builder_dir;
+  $spvm_runtime_src_dir .= '/src';
+  
+  my @spvm_runtime_src_files = map { "$spvm_runtime_src_dir/$_" } @SPVM_RUNTIME_SRC_BASE_NAMES;
+  
+  # Config
+  my $bconf = SPVM::Builder::Config->new_c99;;
+  
+  # Default include path
+  $bconf->append_extra_compiler_flags("-Iblib/lib/SPVM/Builder/include");
+  
+  $bconf->set_quiet(0);
+
+  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
+  # and overwrite user configs
+  my $config = $bconf->to_hash;
+  
+  # Build directory
+  my $build_dir = $self->{build_dir};
+  
+  # Object dir
+  my $object_dir = "$build_dir/work/object";
+  mkpath $object_dir;
+  
+  # Compile source files
+  my $quiet = $self->{quiet};
+  $quiet = 0;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $object_files = [];
+  for my $src_file (@spvm_runtime_src_files) {
+    # Object file
+    my $object_file = "$object_dir/" . basename($src_file);
+    $object_file =~ s/\.c$//;
+    $object_file .= '.o';
+    
+    # Compile source file
+    $cbuilder->compile(
+      source => $src_file,
+      object_file => $object_file,
+      include_dirs => $bconf->get_include_dirs,
+      extra_compiler_flags => $bconf->get_extra_compiler_flags,
+    );
+    push @$object_files, $object_file;
+  }
+}
+
+sub link_executable {
+  my ($self, $package_name, $all_libs) = @_;
+  
+  my $build_dir = $self->{build_dir};
+  
+  my $build_work_object_dir = "$build_dir/work/object";
+  
+  my $object_files = [];
+  push @$object_files, glob "$build_dir/work/object/$package_name.boot.o";
+  
+  my $builder = $self->builder;
+  
+  my $bconf = SPVM::Builder::Config->new_c99;
+  
+  # CBuilder configs
+  my $lddlflags = $bconf->get_lddlflags;
+  
+  my $exe_name = $self->{exe_name};
+
+  my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
+  my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
+  my $extra_linker_flag = $bconf->get_extra_linker_flags;
+  
+  $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
+
+  my @spvm_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
+  push @$object_files, @spvm_runtime_object_files;
+  
+  # ExeUtils::CBuilder config
+  my $config = $bconf->to_hash;
+  
+  my $quiet = $self->{quiet};
+  $quiet = 0;
+  my $exe_file = $exe_name;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $tmp_dll_file = $cbuilder->link_executable(
+    objects => $object_files,
+    module_name => $package_name,
+    exe_file => $exe_file,
+    extra_linker_flags => $extra_linker_flag,
+  );
+}
 
 1;

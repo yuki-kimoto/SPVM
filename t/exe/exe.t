@@ -27,7 +27,7 @@ use FindBin;
   my $package_name = 'MyExe';
   my $build_dir = 't/exe/.spvm_build';
   my $module_include_dir = 't/exe/lib';
-  my $exe_name = 't/spvm_build/work/exe/myexe';
+  my $exe_name = "$build_dir/work/myexe";
   
   unshift @INC, $module_include_dir;
   
