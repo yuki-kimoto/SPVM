@@ -187,22 +187,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               *bufptr_to = '\0';
 
               char* cur_file = NULL;
-              char* original_src;
-              int32_t module_not_found = 0;
-              int32_t file_size = 0;
-              if (compiler->no_directry_module_search) {
-                assert(0);
-                // Search module source
-                SPVM_MODULE_SOURCE* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
-                if (found_module_source) {
-                  original_src = found_module_source->content;
-                  file_size = found_module_source->content_size;
-                }
-                else {
-                  module_not_found = 1;
-                }
-              }
-              else {
+              if (!compiler->no_directry_module_search) {
                 // Search module file
                 FILE* fh = NULL;
                 int32_t module_include_dirs_length = compiler->module_include_dirs->length;
@@ -240,12 +225,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   errno = 0;
                 }
                 
-                if (!fh) {
-                  module_not_found = 1;
-                }
-                
                 // Module not found
-                if (module_not_found) {
+                if (!fh) {
                   if (!op_use->uv.use->is_require) {
                     fprintf(stderr, "Can't locate %s in @INC (@INC contains:", cur_rel_file);
                     for (int32_t i = 0; i < module_include_dirs_length; i++) {
@@ -261,13 +242,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else {
                   // Read file content
                   fseek(fh, 0, SEEK_END);
-                  file_size = (int32_t)ftell(fh);
+                  int32_t file_size = (int32_t)ftell(fh);
                   if (file_size < 0) {
                     SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                     return 0;
                   }
                   fseek(fh, 0, SEEK_SET);
-                  original_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
+                  char* original_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
                   if ((int32_t)fread(original_src, 1, file_size, fh) < file_size) {
                     SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                     return 0;
@@ -281,6 +262,19 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   module_source->content_size = file_size;
                   SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), module_source);
                 }
+              }
+              
+              // Search module source
+              SPVM_MODULE_SOURCE* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
+              char* original_src = NULL;
+              int32_t file_size = 0;
+              int32_t module_not_found = 0;
+              if (found_module_source) {
+                original_src = found_module_source->content;
+                file_size = found_module_source->content_size;
+              }
+              else {
+                module_not_found = 1;
               }
               
               // If module not found and that is if (requre Foo) syntax, syntax is ok.
