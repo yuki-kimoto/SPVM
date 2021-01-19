@@ -276,7 +276,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-  compiler->is_search_module_source_symtable = 1;
+  compiler->no_directry_module_search = 1;
   
   // Set module sources
 EOS

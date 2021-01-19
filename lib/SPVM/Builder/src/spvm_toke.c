@@ -190,7 +190,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               char* original_src;
               int32_t module_not_found = 0;
               int32_t file_size = 0;
-              if (compiler->is_search_module_source_symtable) {
+              if (compiler->no_directry_module_search) {
                 assert(0);
                 // Search module source
                 SPVM_MODULE_SOURCE* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));

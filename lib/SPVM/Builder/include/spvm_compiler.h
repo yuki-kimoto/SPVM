@@ -124,8 +124,8 @@ struct SPVM_compiler {
   // Field ops
   SPVM_LIST* fields;
   
-  // Search source code in module source symbol table instead of module directories
-  int32_t is_search_module_source_symtable;
+  // No directory module search
+  int32_t no_directry_module_search;
   
   char* next_double_quote_start_bufptr;
 };
