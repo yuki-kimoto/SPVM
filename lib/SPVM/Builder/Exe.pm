@@ -69,8 +69,6 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
 
 sub builder { shift->{builder} }
 
-sub build_dir { shift->{build_dir} }
-
 sub new {
   my $class = shift;
   
@@ -90,12 +88,6 @@ sub new {
     $self->{exe_name} = $exe_name;
   }
   
-  # Build directory
-  my $build_dir = $self->{build_dir};
-  unless (defined $build_dir) {
-    $self->{build_dir} = '.spvm_build';
-  }
-  
   # Quiet output
   unless (exists $self->{quiet}) {
     $self->{quiet} = 0;
@@ -111,8 +103,15 @@ sub new {
     $self->{library} = [];
   }
 
+  # Build directory
+  my $build_dir = delete $self->{build_dir};
+  unless (defined $build_dir) {
+    $build_dir = '.spvm_build';
+  }
+  
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(build_dir => $build_dir);
+  
   $self->{builder} = $builder;
   
   return bless $self, $class;
@@ -130,7 +129,7 @@ sub build_exe_file {
   my $exe_name = $self->{exe_name};
   
   # Build directory
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
   
   # Compile SPVM
@@ -154,7 +153,7 @@ sub build_exe_file {
   $self->compile_main($package_name);
 
   # compile main
-  $self->link_executable($package_name);
+  $self->link_executable($package_name, $module_source_info_h);
 }
 
 sub create_module_source_csources {
@@ -194,7 +193,7 @@ EOS
     my $module_source_base = $package_name;
     $module_source_base =~ s|::|/|g;
     
-    my $build_dir = $self->build_dir;
+    my $build_dir = $self->builder->build_dir;
     
     # Build header directory
     my $build_header_dir = "$build_dir/work/include";
@@ -280,8 +279,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Set module sources
 EOS
   
-  use D;du $module_source_info_h;
-  
   for my $package_name (sort keys %$module_source_info_h) {
     my $native_package_name = $package_name;
     $native_package_name =~ s/::/__/g;
@@ -355,7 +352,7 @@ EOS
 }
 EOS
 
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
 
   my $boot_base = $package_name;
   $boot_base =~ s|::|/|g;
@@ -377,7 +374,7 @@ EOS
 sub compile_main {
   my ($self, $package_name) = @_;
   
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
 
   my $bconf = SPVM::Builder::Config->new_c99;
   $bconf->set_optimize('-O0');
@@ -436,7 +433,7 @@ sub compile_spvm_runtime {
   my $config = $bconf->to_hash;
   
   # Build directory
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
   
   # Object dir
   my $object_dir = "$build_dir/work/object";
@@ -465,9 +462,9 @@ sub compile_spvm_runtime {
 }
 
 sub link_executable {
-  my ($self, $package_name, $all_libs) = @_;
+  my ($self, $package_name, $module_source_info_h) = @_;
   
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
   
   my $build_work_object_dir = "$build_dir/work/object";
   
@@ -488,9 +485,13 @@ sub link_executable {
   my $extra_linker_flag = $bconf->get_extra_linker_flags;
   
   $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
-
+  
+  # SPVM runtime object files
   my @spvm_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
   push @$object_files, @spvm_runtime_object_files;
+  
+  # SPVM module source object files
+  use D;du $module_source_info_h;
   
   # ExeUtils::CBuilder config
   my $config = $bconf->to_hash;

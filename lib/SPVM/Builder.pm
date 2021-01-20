@@ -12,6 +12,8 @@ use SPVM::Builder::CC;
 # because SPVM::Builder XS method is loaded when SPVM is loaded
 use SPVM();
 
+sub build_dir { shift->{build_dir} }
+
 sub new {
   my $class = shift;
   
