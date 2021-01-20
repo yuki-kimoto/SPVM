@@ -10,6 +10,7 @@ use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
+use File::Spec;
 use File::Find 'find';
 
 use Getopt::Long 'GetOptions';
@@ -149,9 +150,6 @@ sub build_exe_file {
   # Create boot csource
   $self->create_boot_csource($package_name, $module_source_info_h);
 
-  # Create main csouce
-  $self->create_boot_csource($package_name);
-
   # compile main
   $self->compile_main($package_name);
 
@@ -264,7 +262,8 @@ EOS
   $boot_csource .= "// include module source get functions\n";
   for my $package_name (sort keys %$module_source_info_h) {
     my $module_source_header_file = $module_source_info_h->{$package_name}{header_file};
-    $boot_csource .= qq(#include "$module_source_header_file"\n);
+    my $module_source_header_file_abs = File::Spec->rel2abs($module_source_header_file);
+    $boot_csource .= qq(#include "$module_source_header_file_abs"\n);
   }
   
   $boot_csource .= <<'EOS';
@@ -281,21 +280,23 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Set module sources
 EOS
   
+  use D;du $module_source_info_h;
+  
   for my $package_name (sort keys %$module_source_info_h) {
     my $native_package_name = $package_name;
     $native_package_name =~ s/::/__/g;
     
     $boot_csource .= "  {\n";
-    $boot_csource .= "    SPVM_MODULE_SORUE* module_source = SPMODSRC__${native_package_name}__get_module_source()\n";
+    $boot_csource .= "    SPVM_MODULE_SOURCE* module_source = SPMODSRC__${native_package_name}__get_module_source();\n";
     $boot_csource .= qq(    SPVM_SPVM_HASH_insert(compiler->module_source_symtable, "$package_name", strlen("$package_name"), module_source);\n);
-    $boot_csource .= "  {\n";
+    $boot_csource .= "  }\n";
   }
   $boot_csource .= "\n";
   
   $boot_csource .= <<'EOS';
-  
+
   SPVM_COMPILER_compile(compiler);
-  
+
   if (compiler->error_count > 0) {
     exit(1);
   }
