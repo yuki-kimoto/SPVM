@@ -239,7 +239,7 @@ sub compile {
   
   my $category = $self->category;
  
-  my $package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+  my $package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, 'spvm');
   my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
   my $work_object_dir = "$object_dir/$package_rel_dir";
   mkpath $work_object_dir;
@@ -498,7 +498,7 @@ sub link {
   my $dll_file = "$lib_dir/$dll_rel_file";
 
   # Create temporary package directory
-  my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+  my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, 'spvm');
   my $tmp_package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
   my $tmp_package_dir = "$object_dir/$tmp_package_rel_dir";
   mkpath $tmp_package_dir;
@@ -593,7 +593,7 @@ EOS
   }
 
   # Create shared object blib directory
-  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
+  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
   my $dll_dir = dirname "$lib_dir/$package_rel_file_without_ext";
   mkpath $dll_dir;
   
@@ -752,7 +752,7 @@ sub create_source_precompile {
   
   my $category = 'precompile';
   
-  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file_without_ext($package_name);
+  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
   my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
   my $source_file = "$src_dir/$package_rel_file_without_ext.$category.c";
   

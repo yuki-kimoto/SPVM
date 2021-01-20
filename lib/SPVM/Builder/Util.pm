@@ -70,7 +70,7 @@ sub convert_package_name_to_dll_category_rel_file {
   my ($package_name, $category) = @_;
   
   my $dlext = $Config{dlext};
-  my $dll_category_rel_file = convert_package_name_to_rel_file_without_ext($package_name);
+  my $dll_category_rel_file = convert_package_name_to_rel_file($package_name);
   $dll_category_rel_file .= $category eq 'native' ? ".$dlext" : ".$category.$dlext";
   
   return $dll_category_rel_file;
@@ -96,16 +96,6 @@ sub convert_package_name_to_category_rel_file_without_ext {
   return $rel_file_with_ext;
 }
 
-sub convert_package_name_to_rel_file {
-  my ($package_name) = @_;
-  
-  my $rel_file = $package_name;
-  $rel_file =~ s/::/\//g;
-  $rel_file .= '.spvm';
-  
-  return $rel_file;
-}
-
 sub convert_package_name_to_rel_dir {
   my ($package_name) = @_;
   
@@ -122,23 +112,17 @@ sub convert_package_name_to_rel_dir {
   return $rel_dir;
 }
 
-sub convert_package_name_to_rel_file_with_ext {
+sub convert_package_name_to_rel_file {
   my ($package_name, $ext) = @_;
   
   my $rel_file_with_ext = $package_name;
   $rel_file_with_ext =~ s/::/\//g;
-  $rel_file_with_ext .= ".$ext";
+  
+  if (defined $ext) {
+    $rel_file_with_ext .= ".$ext";
+  }
   
   return $rel_file_with_ext;
-}
-
-sub convert_package_name_to_rel_file_without_ext {
-  my ($package_name) = @_;
-  
-  my $rel_file_without_ext = $package_name;
-  $rel_file_without_ext =~ s/::/\//g;
-  
-  return $rel_file_without_ext;
 }
 
 sub remove_package_part_from_file {
@@ -187,7 +171,7 @@ sub create_package_make_rule {
   
   my $src_dir = 'lib';
 
-  my $package_rel_file = convert_package_name_to_rel_file($package_name);
+  my $package_rel_file = convert_package_name_to_rel_file($package_name, 'spvm');
   
   my $noext_file = $package_rel_file;
   $noext_file =~ s/\.[^\.]+$//;
