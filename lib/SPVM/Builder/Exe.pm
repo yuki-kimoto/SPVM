@@ -196,7 +196,7 @@ EOS
     my $build_dir = $self->builder->build_dir;
     
     # Build header directory
-    my $build_header_dir = "$build_dir/work/include";
+    my $build_header_dir = $self->builder->create_build_include_path;
     mkpath $build_header_dir;
 
     my $module_source_header_file = "$build_header_dir/$module_source_base.modsrc.h";
@@ -211,7 +211,7 @@ EOS
     $module_source_info_h->{$package_name}{header_file} = $module_source_header_file;
     
     # Build source directory
-    my $build_src_dir = "$build_dir/work/src";
+    my $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
     
     my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
@@ -358,7 +358,7 @@ EOS
   $boot_base =~ s|::|/|g;
 
   # Build source directory
-  my $build_src_dir = "$build_dir/work/src";
+  my $build_src_dir = $self->builder->create_build_src_path;
   mkpath $build_src_dir;
   
   my $boot_csource_file = "$build_src_dir/$boot_base.boot.c";
@@ -384,8 +384,9 @@ sub compile_main {
   my $quiet = $self->{quiet};
   $quiet = 0;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $object_file = "$build_dir/work/object/$package_name.boot.o";
-  my $src_file = "$build_dir/work/src/$package_name.boot.c";
+  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+  my $object_file = $self->builder->create_build_object_path("$package_name_rel_file.boot.o");
+  my $src_file = $self->builder->create_build_src_path("$package_name_rel_file.boot.c");
   
   mkdir dirname $object_file;
   
@@ -415,8 +416,7 @@ sub compile_spvm_runtime {
   $spvm_runtime_include_dir .= '/include';
 
   # Add SPVM src directory
-  my $spvm_runtime_src_dir = $spvm_builder_dir;
-  $spvm_runtime_src_dir .= '/src';
+  my $spvm_runtime_src_dir = "$spvm_builder_dir/src";
   
   my @spvm_runtime_src_files = map { "$spvm_runtime_src_dir/$_" } @SPVM_RUNTIME_SRC_BASE_NAMES;
   
@@ -436,7 +436,7 @@ sub compile_spvm_runtime {
   my $build_dir = $self->builder->build_dir;
   
   # Object dir
-  my $object_dir = "$build_dir/work/object";
+  my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
   
   # Compile source files
@@ -466,10 +466,11 @@ sub link_executable {
   
   my $build_dir = $self->builder->build_dir;
   
-  my $build_work_object_dir = "$build_dir/work/object";
+  my $build_work_object_dir = $self->builder->create_build_object_path;
   
   my $object_files = [];
-  push @$object_files, glob "$build_dir/work/object/$package_name.boot.o";
+  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+  push @$object_files, glob "$build_work_object_dir/$package_name.boot.o";
   
   my $builder = $self->builder;
   
