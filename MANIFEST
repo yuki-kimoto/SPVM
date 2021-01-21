@@ -923,7 +923,7 @@ t/exe/.spvm_build/work/include/SPVM/Float.modsrc.h
 t/exe/.spvm_build/work/include/SPVM/Int.modsrc.h
 t/exe/.spvm_build/work/include/SPVM/Long.modsrc.h
 t/exe/.spvm_build/work/include/SPVM/Short.modsrc.h
-t/exe/.spvm_build/work/src/.modsrc.c
+t/exe/.spvm_build/work/myexe
 t/exe/.spvm_build/work/src/MyExe.boot.c
 t/exe/.spvm_build/work/src/MyExe.modsrc.c
 t/exe/.spvm_build/work/src/SPVM/Byte.modsrc.c
