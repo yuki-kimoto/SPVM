@@ -259,7 +259,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   // Save module source
                   SPVM_MODULE_SOURCE* module_source = SPVM_MODULE_SOURCE_new(compiler);
                   module_source->content = original_src;
-                  module_source->content_size = file_size;
+                  module_source->content_length = file_size;
                   SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), module_source);
                 }
               }
@@ -271,11 +271,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               int32_t module_not_found = 0;
               if (found_module_source) {
                 original_src = found_module_source->content;
-                file_size = found_module_source->content_size;
+                file_size = found_module_source->content_length;
               }
               else {
                 module_not_found = 1;
               }
+
               
               // If module not found and that is if (requre Foo) syntax, syntax is ok.
               if (module_not_found && op_use->uv.use->is_require) {
@@ -291,6 +292,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 continue;
               }
               else {
+                
                 // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
                 compiler->cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
                 memcpy(compiler->cur_src, original_src, file_size + 1);

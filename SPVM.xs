@@ -423,7 +423,7 @@ get_module_source(...)
   SV* sv_module_source;
   SPVM_MODULE_SOURCE* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
   if (module_source) {
-    sv_module_source = sv_2mortal(newSVpv(module_source->content, module_source->content_size));
+    sv_module_source = sv_2mortal(newSVpv(module_source->content, module_source->content_length));
   }
   else {
     sv_module_source = &PL_sv_undef;

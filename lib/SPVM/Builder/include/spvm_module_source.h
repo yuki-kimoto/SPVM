@@ -8,7 +8,7 @@ struct SPVM_module_source {
   char* file;
   char* rel_file;
   char* rel_file_package_name;
-  int32_t content_size;
+  int32_t content_length;
 };
 
 SPVM_MODULE_SOURCE* SPVM_MODULE_SOURCE_new(SPVM_COMPILER* compiler);
