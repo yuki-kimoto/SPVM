@@ -141,19 +141,22 @@ sub build_exe_file {
   }
   
   # Create module source csources
-  my $module_source_info_h = $self->create_module_source_csources;
+  $self->create_module_source_csources;
+
+  # Compile SPVM runtime
+  $self->compile_module_source_csources;
 
   # Compile SPVM runtime
   $self->compile_spvm_runtime;
 
   # Create boot csource
-  $self->create_boot_csource($package_name, $module_source_info_h);
+  $self->create_boot_csource($package_name);
 
   # compile main
   $self->compile_main($package_name);
 
   # compile main
-  $self->link_executable($package_name, $module_source_info_h);
+  $self->link_executable($package_name);
 }
 
 sub create_module_source_csources {
@@ -161,8 +164,6 @@ sub create_module_source_csources {
   
   my $builder = $self->builder;
   
-  my $module_source_info_h = {};
-
   # Compiled package names
   my $package_names = $builder->get_package_names;
   
@@ -184,7 +185,7 @@ const char* SPMODSRC__${native_package_name}__get_module_source();
 EOS
     
     my $get_module_source_csource = <<"EOS";
-const char* module_source = "$module_source_c_hex";
+static const char* module_source = "$module_source_c_hex";
 const char* SPMODSRC__${native_package_name}__get_module_source() {
   return module_source;
 }
@@ -208,8 +209,6 @@ EOS
     
     print $module_source_header_fh $get_module_source_header;
     
-    $module_source_info_h->{$package_name}{header_file} = $module_source_header_file;
-    
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
@@ -222,15 +221,49 @@ EOS
       or die "Can't open file $module_source_csource_file:$!";
 
     print $module_source_csource_fh $get_module_source_csource;
-
-    $module_source_info_h->{$package_name}{csource_file} = $module_source_csource_file;
   }
+}
+
+sub compile_module_source_csources {
+  my ($self) = @_;
   
-  return $module_source_info_h;
+  my $builder = $self->builder;
+  
+  # Compiled package names
+  my $package_names = $builder->get_package_names;
+
+  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = $bconf->to_hash;
+  my $quiet = 0;
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  
+  for my $package_name (@$package_names) {
+    
+    # Build source directory
+    my $build_src_dir = $self->builder->create_build_src_path;
+    mkpath $build_src_dir;
+    
+    my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+    my $module_source_csource_file = "$build_src_dir/$package_name_rel_file.modsrc.c";
+    mkpath dirname $module_source_csource_file;
+
+    my $build_object_dir = $self->builder->create_build_object_path;
+    mkpath $build_object_dir;
+    my $module_source_object_file = "$build_object_dir/$package_name_rel_file.modsrc.o";
+    mkpath dirname $module_source_object_file;
+    
+    # Compile source file
+    $cbuilder->compile(
+      source => $module_source_csource_file,
+      object_file => $module_source_object_file,
+      include_dirs => $bconf->get_include_dirs,
+      extra_compiler_flags => $bconf->get_extra_compiler_flags,
+    );
+  }
 }
 
 sub create_boot_csource {
-  my ($self, $package_name, $module_source_info_h) = @_;
+  my ($self, $package_name) = @_;
 
   my $builder = $self->builder;
 
@@ -259,8 +292,9 @@ sub create_boot_csource {
 EOS
   
   $boot_csource .= "// include module source get functions\n";
-  for my $package_name (sort keys %$module_source_info_h) {
-    my $module_source_header_file = $module_source_info_h->{$package_name}{header_file};
+  for my $package_name (@$package_names) {
+    my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+    my $module_source_header_file = $self->builder->create_build_include_path("$package_name_rel_file.modsrc.h");
     my $module_source_header_file_abs = File::Spec->rel2abs($module_source_header_file);
     $boot_csource .= qq(#include "$module_source_header_file_abs"\n);
   }
@@ -279,13 +313,13 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Set module sources
 EOS
   
-  for my $package_name (sort keys %$module_source_info_h) {
+  for my $package_name (@$package_names) {
     my $native_package_name = $package_name;
     $native_package_name =~ s/::/__/g;
     
     $boot_csource .= "  {\n";
     $boot_csource .= "    SPVM_MODULE_SOURCE* module_source = SPMODSRC__${native_package_name}__get_module_source();\n";
-    $boot_csource .= qq(    SPVM_SPVM_HASH_insert(compiler->module_source_symtable, "$package_name", strlen("$package_name"), module_source);\n);
+    $boot_csource .= qq(    SPVM_HASH_insert(compiler->module_source_symtable, "$package_name", strlen("$package_name"), module_source);\n);
     $boot_csource .= "  }\n";
   }
   $boot_csource .= "\n";
@@ -377,7 +411,6 @@ sub compile_main {
   my $build_dir = $self->builder->build_dir;
 
   my $bconf = SPVM::Builder::Config->new_c99;
-  $bconf->set_optimize('-O0');
   my $config = $bconf->to_hash;
   
   # Compile source files
@@ -462,7 +495,12 @@ sub compile_spvm_runtime {
 }
 
 sub link_executable {
-  my ($self, $package_name, $module_source_info_h) = @_;
+  my ($self, $package_name) = @_;
+  
+  my $builder = $self->builder;
+  
+  # Compiled package names
+  my $package_names = $builder->get_package_names;
   
   my $build_dir = $self->builder->build_dir;
   
@@ -492,7 +530,11 @@ sub link_executable {
   push @$object_files, @spvm_runtime_object_files;
   
   # SPVM module source object files
-  use D;du $module_source_info_h;
+  for my $package_name (@$package_names) {
+    my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+    my $module_source_object_file = $self->builder->create_build_object_path("$package_name_rel_file.modsrc.o");
+    push @$object_files, $module_source_object_file;
+  }
   
   # ExeUtils::CBuilder config
   my $config = $bconf->to_hash;
