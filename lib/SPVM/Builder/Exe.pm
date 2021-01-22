@@ -45,7 +45,6 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
   spvm_hash.c
   spvm_hash_func.c
   spvm_list.c
-  spvm_module_source.c
   spvm_my.c
   spvm_op.c
   spvm_op_checker.c
@@ -287,7 +286,6 @@ sub create_boot_csource {
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
-#include "spvm_module_source.h"
 
 EOS
   
@@ -302,13 +300,25 @@ EOS
   $boot_csource .= <<'EOS';
 
 int32_t main(int32_t argc, const char *argv[]) {
-  
+EOS
+
+  $boot_csource .= <<"EOS";
   // Package name
-  const char* package_name = "Main";
+  const char* package_name = "$package_name";
+EOS
+
+  $boot_csource .= <<'EOS';
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   compiler->no_directry_module_search = 1;
+
+  // Create use op for entry point package
+  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
+  SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);
+  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, package_name, 0);
+  SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_start);
   
   // Set module sources
 EOS
@@ -318,8 +328,8 @@ EOS
     $native_package_name =~ s/::/__/g;
     
     $boot_csource .= "  {\n";
-    $boot_csource .= "    SPVM_MODULE_SOURCE* module_source = SPMODSRC__${native_package_name}__get_module_source();\n";
-    $boot_csource .= qq(    SPVM_HASH_insert(compiler->module_source_symtable, "$package_name", strlen("$package_name"), module_source);\n);
+    $boot_csource .= "    const char* module_source = SPMODSRC__${native_package_name}__get_module_source();\n";
+    $boot_csource .= qq(    SPVM_HASH_insert(compiler->module_source_symtable, "$package_name", strlen("$package_name"), (void*)module_source);\n);
     $boot_csource .= "  }\n";
   }
   $boot_csource .= "\n";
@@ -509,8 +519,6 @@ sub link_executable {
   my $object_files = [];
   my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
   push @$object_files, glob "$build_work_object_dir/$package_name.boot.o";
-  
-  my $builder = $self->builder;
   
   my $bconf = SPVM::Builder::Config->new_c99;
   
