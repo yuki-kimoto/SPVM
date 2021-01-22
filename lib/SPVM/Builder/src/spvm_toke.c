@@ -25,7 +25,6 @@
 #include "spvm_string_buffer.h"
 #include "spvm_sub.h"
 #include "spvm_package.h"
-#include "spvm_module_source.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -258,26 +257,22 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 original_src[file_size] = '\0';
                 
                 // Save module source
-                SPVM_MODULE_SOURCE* module_source = SPVM_MODULE_SOURCE_new(compiler);
-                module_source->content = original_src;
-                module_source->content_length = file_size;
-                SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), module_source);
+                SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), original_src);
               }
             }
             
             // Search module source
-            SPVM_MODULE_SOURCE* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
+            const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
             char* original_src = NULL;
             int32_t file_size = 0;
             int32_t module_not_found = 0;
             if (found_module_source) {
-              original_src = found_module_source->content;
-              file_size = found_module_source->content_length;
+              original_src = found_module_source;
+              file_size = strlen(original_src);
             }
             else {
               module_not_found = 1;
             }
-
             
             // If module not found and that is if (requre Foo) syntax, syntax is ok.
             if (module_not_found && op_use->uv.use->is_require) {

@@ -28,6 +28,9 @@ struct SPVM_compiler {
   // Current parsed source
   char* cur_src;
 
+  // Current parsed source
+  int32_t cur_src_length;
+
   // Current line number
   int32_t cur_line;
   

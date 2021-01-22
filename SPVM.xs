@@ -37,7 +37,6 @@
 #include "spvm_limit.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_my.h"
-#include "spvm_module_source.h"
 
 static const char* MFILE = "SPVM.xs";
 
@@ -421,9 +420,9 @@ get_module_source(...)
 
   // Copy package load path to builder
   SV* sv_module_source;
-  SPVM_MODULE_SOURCE* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
+  const char* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
   if (module_source) {
-    sv_module_source = sv_2mortal(newSVpv(module_source->content, module_source->content_length));
+    sv_module_source = sv_2mortal(newSVpv(module_source, 0));
   }
   else {
     sv_module_source = &PL_sv_undef;

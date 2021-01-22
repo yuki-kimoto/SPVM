@@ -384,7 +384,6 @@ lib/SPVM/Builder/include/spvm_hash_entry.h
 lib/SPVM/Builder/include/spvm_hash_func.h
 lib/SPVM/Builder/include/spvm_limit.h
 lib/SPVM/Builder/include/spvm_list.h
-lib/SPVM/Builder/include/spvm_module_source.h
 lib/SPVM/Builder/include/spvm_my.h
 lib/SPVM/Builder/include/spvm_name_info.h
 lib/SPVM/Builder/include/spvm_native.h
@@ -428,7 +427,6 @@ lib/SPVM/Builder/src/spvm_field_access.c
 lib/SPVM/Builder/src/spvm_hash.c
 lib/SPVM/Builder/src/spvm_hash_func.c
 lib/SPVM/Builder/src/spvm_list.c
-lib/SPVM/Builder/src/spvm_module_source.c
 lib/SPVM/Builder/src/spvm_my.c
 lib/SPVM/Builder/src/spvm_op.c
 lib/SPVM/Builder/src/spvm_op_checker.c
