@@ -147,7 +147,7 @@ sub build_exe_file {
     quiet => 0,
   );
 
-  # Build precopile package
+  # Build precompile package
   my $package_names = $builder->get_package_names;
   for my $precompile_package_name (@$package_names) {
     
@@ -176,19 +176,19 @@ sub build_exe_file {
     }
   }
 
-  # Create module source csources
+  # Create SPMV module C sources
   $self->create_spvm_module_csources;
 
-  # Compile SPVM runtime
+  # Compile SPVM compiler and runtime C sources
   $self->compile_spvm_module_csources;
 
-  # Compile SPVM runtime
+  # Compile SPVM compiler and runtime C sources
   $self->compile_spvm_compiler_and_runtime_csources;
 
-  # Create bootstrap c source
+  # Create bootstrap C source
   $self->create_bootstrap_csource($package_name);
 
-  # Compile bootstrap c source
+  # Compile bootstrap C source
   $self->compile_bootstrap_csource($package_name);
 
   # Link and generate executable file
