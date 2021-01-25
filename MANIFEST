@@ -915,6 +915,7 @@ t/default/warn.t
 t/default/weaken.t
 t/default/while.t
 t/exe/.spvm_build/work/include/MyExe.modsrc.h
+t/exe/.spvm_build/work/include/MyExe/Precompile.modsrc.h
 t/exe/.spvm_build/work/include/SPVM/Byte.modsrc.h
 t/exe/.spvm_build/work/include/SPVM/Double.modsrc.h
 t/exe/.spvm_build/work/include/SPVM/Float.modsrc.h
@@ -924,6 +925,8 @@ t/exe/.spvm_build/work/include/SPVM/Short.modsrc.h
 t/exe/.spvm_build/work/myexe
 t/exe/.spvm_build/work/src/MyExe.boot.c
 t/exe/.spvm_build/work/src/MyExe.modsrc.c
+t/exe/.spvm_build/work/src/MyExe/Precompile.modsrc.c
+t/exe/.spvm_build/work/src/MyExe/Precompile.precompile.c
 t/exe/.spvm_build/work/src/SPVM/Byte.modsrc.c
 t/exe/.spvm_build/work/src/SPVM/Double.modsrc.c
 t/exe/.spvm_build/work/src/SPVM/Float.modsrc.c
@@ -933,6 +936,7 @@ t/exe/.spvm_build/work/src/SPVM/Short.modsrc.c
 t/exe/exe.t
 t/exe/exe_old.t_
 t/exe/lib/MyExe.spvm
+t/exe/lib/MyExe/Precompile.spvm
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
 t/test_files/file_eof.txt
