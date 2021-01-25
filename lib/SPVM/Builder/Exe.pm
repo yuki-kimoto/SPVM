@@ -147,7 +147,7 @@ sub build_exe_file {
     quiet => 0,
   );
 
-  # Compiled package names
+  # Build precopile package
   my $package_names = $builder->get_package_names;
   for my $precompile_package_name (@$package_names) {
     
@@ -592,6 +592,8 @@ sub link_executable {
       my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($precompile_package_name, $category, 'o');
       my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);
       push @$precompile_object_files, $precompile_object_file;
+      
+      warn "BBBBBBB $precompile_object_file";
     }
   }
   push @$object_files, @$precompile_object_files;

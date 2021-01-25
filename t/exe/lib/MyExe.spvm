@@ -1,4 +1,6 @@
 package MyExe {
+  use MyExe::Precompile;
+  
   sub main : int ($args : string[]) {
     print "AAA\n";
   }
