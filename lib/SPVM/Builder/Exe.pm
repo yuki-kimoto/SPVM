@@ -177,25 +177,25 @@ sub build_exe_file {
   }
 
   # Create module source csources
-  $self->create_module_source_csources;
+  $self->create_spvm_module_csources;
 
   # Compile SPVM runtime
-  $self->compile_module_source_csources;
+  $self->compile_spvm_module_csources;
 
   # Compile SPVM runtime
-  $self->compile_spvm_runtime;
+  $self->compile_spvm_compiler_and_runtime_csources;
 
-  # Create boot csource
-  $self->create_boot_csource($package_name);
+  # Create bootstrap c source
+  $self->create_bootstrap_csource($package_name);
 
-  # compile main
-  $self->compile_main($package_name);
+  # Compile bootstrap c source
+  $self->compile_bootstrap_csource($package_name);
 
-  # compile main
-  $self->link_executable($package_name);
+  # Link and generate executable file
+  $self->link($package_name);
 }
 
-sub create_module_source_csources {
+sub create_spvm_module_csources {
   my ($self) = @_;
   
   my $builder = $self->builder;
@@ -260,7 +260,7 @@ EOS
   }
 }
 
-sub compile_module_source_csources {
+sub compile_spvm_module_csources {
   my ($self) = @_;
   
   my $builder = $self->builder;
@@ -298,7 +298,7 @@ sub compile_module_source_csources {
   }
 }
 
-sub create_boot_csource {
+sub create_bootstrap_csource {
   my ($self, $package_name) = @_;
 
   my $builder = $self->builder;
@@ -452,7 +452,7 @@ EOS
   print $boot_csource_fh $boot_csource;
 }
 
-sub compile_main {
+sub compile_bootstrap_csource {
   my ($self, $package_name) = @_;
   
   my $build_dir = $self->builder->build_dir;
@@ -481,7 +481,7 @@ sub compile_main {
   return $object_file;
 }
 
-sub compile_spvm_runtime {
+sub compile_spvm_compiler_and_runtime_csources {
   my ($self) = @_;
 
   # SPVM::Builder::Config directory
@@ -492,13 +492,13 @@ sub compile_spvm_runtime {
   $spvm_builder_dir =~ s/\/Config\.pm$//;
 
   # Add SPVM include directory
-  my $spvm_runtime_include_dir = $spvm_builder_dir;
-  $spvm_runtime_include_dir .= '/include';
+  my $spvm_compiler_and_runtime_include_dir = $spvm_builder_dir;
+  $spvm_compiler_and_runtime_include_dir .= '/include';
 
   # Add SPVM src directory
-  my $spvm_runtime_src_dir = "$spvm_builder_dir/src";
+  my $spvm_compiler_and_runtime_src_dir = "$spvm_builder_dir/src";
   
-  my @spvm_runtime_src_files = map { "$spvm_runtime_src_dir/$_" } @SPVM_RUNTIME_SRC_BASE_NAMES;
+  my @spvm_compiler_and_runtime_src_files = map { "$spvm_compiler_and_runtime_src_dir/$_" } @SPVM_RUNTIME_SRC_BASE_NAMES;
   
   # Config
   my $bconf = SPVM::Builder::Config->new_c99;;
@@ -524,7 +524,7 @@ sub compile_spvm_runtime {
   $quiet = 0;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $object_files = [];
-  for my $src_file (@spvm_runtime_src_files) {
+  for my $src_file (@spvm_compiler_and_runtime_src_files) {
     # Object file
     my $object_file = "$object_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
@@ -541,7 +541,7 @@ sub compile_spvm_runtime {
   }
 }
 
-sub link_executable {
+sub link {
   my ($self, $package_name) = @_;
   
   my $builder = $self->builder;
@@ -571,8 +571,8 @@ sub link_executable {
   $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
   
   # SPVM runtime object files
-  my @spvm_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
-  push @$object_files, @spvm_runtime_object_files;
+  my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
+  push @$object_files, @spvm_compiler_and_runtime_object_files;
   
   # SPVM module source object files
   for my $package_name (@$package_names) {
@@ -592,8 +592,6 @@ sub link_executable {
       my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($precompile_package_name, $category, 'o');
       my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);
       push @$precompile_object_files, $precompile_object_file;
-      
-      warn "BBBBBBB $precompile_object_file";
     }
   }
   push @$object_files, @$precompile_object_files;
