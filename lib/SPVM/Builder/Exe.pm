@@ -138,7 +138,44 @@ sub build_exe_file {
   unless ($compile_success) {
     exit(255);
   }
-  
+
+  # Build precompile packages
+  my $builder_c_precompile = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'precompile',
+    builder => $builder,
+    quiet => 0,
+  );
+
+  # Compiled package names
+  my $package_names = $builder->get_package_names;
+  for my $precompile_package_name (@$package_names) {
+    
+    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    if (@$precompile_sub_names) {
+      my $src_dir = $self->builder->create_build_src_path;
+      mkpath $src_dir;
+      $builder_c_precompile->create_source_precompile(
+        $precompile_package_name,
+        [],
+        {
+          src_dir => $src_dir,
+        }
+      );
+      
+      my $object_dir = $self->builder->create_build_object_path;
+      mkpath $object_dir;
+      
+      $builder_c_precompile->compile(
+        $precompile_package_name,
+        {
+          src_dir => $src_dir,
+          object_dir => $object_dir,
+        }
+      );
+    }
+  }
+
   # Create module source csources
   $self->create_module_source_csources;
 
@@ -543,6 +580,21 @@ sub link_executable {
     my $module_source_object_file = $self->builder->create_build_object_path("$package_name_rel_file.modsrc.o");
     push @$object_files, $module_source_object_file;
   }
+  
+  # SPVM precompile object files
+  my $package_names = $builder->get_package_names;
+  my $precompile_object_files = [];
+  for my $precompile_package_name (@$package_names) {
+    
+    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    if (@$precompile_sub_names) {
+      my $category = 'precompile';
+      my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($precompile_package_name, $category, 'o');
+      my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);
+      push @$precompile_object_files, $precompile_object_file;
+    }
+  }
+  push @$object_files, @$precompile_object_files;
   
   # ExeUtils::CBuilder config
   my $config = $bconf->to_hash;
