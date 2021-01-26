@@ -80,11 +80,11 @@ sub new {
   }
   
   # Excutable file name
-  my $output_name = $self->{output_name};
-  unless (defined $output_name) {
-    $output_name = $target_package_name;
-    $output_name =~ s/::/__/g;
-    $self->{output_name} = $output_name;
+  my $output_file = $self->{output_file};
+  unless (defined $output_file) {
+    $output_file = $target_package_name;
+    $output_file =~ s/::/__/g;
+    $self->{output_file} = $output_file;
   }
   
   # Quiet output
@@ -125,7 +125,7 @@ sub build_exe_file {
   my $target_package_name = $self->{target_package_name};
   
   # Excutable file name
-  my $output_name = $self->{output_name};
+  my $output_file = $self->{output_file};
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -562,7 +562,7 @@ sub link {
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
   
-  my $output_name = $self->{output_name};
+  my $output_file = $self->{output_file};
 
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
@@ -601,7 +601,7 @@ sub link {
   
   my $quiet = $self->{quiet};
   $quiet = 0;
-  my $exe_file = $output_name;
+  my $exe_file = $output_file;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_dll_file = $cbuilder->link_executable(
     objects => $object_files,
