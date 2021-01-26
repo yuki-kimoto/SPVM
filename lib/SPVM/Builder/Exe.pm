@@ -425,7 +425,27 @@ EOS
   if (compiler->error_count > 0) {
     exit(1);
   }
+EOS
+  
+  for my $precompile_package_name (@$package_names) {
+    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    
+    for my $precompile_sub_name (@$precompile_sub_names) {
+      $boot_csource .= <<"EOS";
+/*{ 
+const char* package_name = "$precompile_package_name";
+const char* sub_name = "$precompile_sub_name";
+SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
+SPVM_PACKAGE* package = basic_type->package;
+SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+sub->precompile_address = sub_precompile_address;
+} */
+EOS
+    }
+  }
 
+  $boot_csource .= <<'EOS';
+    
   // Create env
   SPVM_ENV* env = SPVM_API_create_env(compiler);
   
