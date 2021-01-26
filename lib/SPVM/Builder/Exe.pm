@@ -261,10 +261,6 @@ sub create_spvm_module_csources {
     my $native_package_name = $package_name;
     $native_package_name =~ s/::/__/g;
 
-    my $get_module_source_header = <<"EOS";
-const char* SPMODSRC__${native_package_name}__get_module_source();
-EOS
-    
     my $get_module_source_csource = <<"EOS";
 static const char* module_source = "$module_source_c_hex";
 const char* SPMODSRC__${native_package_name}__get_module_source() {
@@ -276,19 +272,6 @@ EOS
     $module_source_base =~ s|::|/|g;
     
     my $build_dir = $self->builder->build_dir;
-    
-    # Build header directory
-    my $build_header_dir = $self->builder->create_build_include_path;
-    mkpath $build_header_dir;
-
-    my $module_source_header_file = "$build_header_dir/$module_source_base.modsrc.h";
-    
-    mkpath dirname $module_source_header_file;
-
-    open my $module_source_header_fh, '>', $module_source_header_file
-      or die "Can't open file $module_source_header_file:$!";
-    
-    print $module_source_header_fh $get_module_source_header;
     
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
@@ -373,12 +356,14 @@ sub create_bootstrap_csource {
 
 EOS
   
-  $boot_csource .= "// include module source get functions\n";
+  $boot_csource .= "// module source get functions declaration\n";
+
   for my $package_name (@$package_names) {
-    my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-    my $module_source_header_file = $self->builder->create_build_include_path("$package_name_rel_file.modsrc.h");
-    my $module_source_header_file_abs = File::Spec->rel2abs($module_source_header_file);
-    $boot_csource .= qq(#include "$module_source_header_file_abs"\n);
+    my $native_package_name = $package_name;
+    $native_package_name =~ s/::/__/g;
+    $boot_csource .= <<"EOS";
+const char* SPMODSRC__${native_package_name}__get_module_source();
+EOS
   }
   
   $boot_csource .= <<'EOS';
