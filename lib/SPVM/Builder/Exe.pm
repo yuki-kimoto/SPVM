@@ -147,6 +147,9 @@ sub build_exe_file {
   # Compile precompile C sources
   $self->compile_precompile_csources;
 
+  # Compile precompile C sources
+  $self->compile_native_csources;
+
   # Create SPMV module C sources
   $self->create_spvm_module_csources;
 
@@ -240,6 +243,45 @@ sub compile_precompile_csources {
   }
 }
 
+sub compile_native_csources {
+  my ($self) = @_;
+  
+  my $builder = $self->builder;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
+  # Build native packages
+  my $builder_c_native = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'native',
+    builder => $builder,
+    quiet => 0,
+  );
+  
+  my $package_names = $builder->get_package_names;
+  for my $native_package_name (@$package_names) {
+    
+    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
+    if (@$native_sub_names) {
+      my $src_dir = $self->builder->create_build_src_path;
+      mkpath $src_dir;
+      
+      my $object_dir = $self->builder->create_build_object_path;
+      mkpath $object_dir;
+      
+      $builder_c_native->compile(
+        $native_package_name,
+        {
+          src_dir => $src_dir,
+          object_dir => $object_dir,
+        }
+      );
+    }
+  }
+}
+
 sub create_spvm_module_csources {
   my ($self) = @_;
   
@@ -258,12 +300,12 @@ sub create_spvm_module_csources {
     $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
     
     # native package name
-    my $native_package_name = $package_name;
-    $native_package_name =~ s/::/__/g;
+    my $native_package_cname = $package_name;
+    $native_package_cname =~ s/::/__/g;
 
     my $get_module_source_csource = <<"EOS";
 static const char* module_source = "$module_source_c_hex";
-const char* SPMODSRC__${native_package_name}__get_module_source() {
+const char* SPMODSRC__${native_package_cname}__get_module_source() {
   return module_source;
 }
 EOS
@@ -361,10 +403,10 @@ EOS
   
   $boot_csource .= "// module source get functions declaration\n";
   for my $package_name (@$package_names) {
-    my $native_package_name = $package_name;
-    $native_package_name =~ s/::/__/g;
+    my $native_package_cname = $package_name;
+    $native_package_cname =~ s/::/__/g;
     $boot_csource .= <<"EOS";
-const char* SPMODSRC__${native_package_name}__get_module_source();
+const char* SPMODSRC__${native_package_cname}__get_module_source();
 EOS
   }
 
@@ -376,6 +418,18 @@ EOS
       $native_package_name =~ s/::/__/g;
       $boot_csource .= <<"EOS";
 int32_t SPPRECOMPILE__${native_package_name}__$sub_name(SPVM_ENV* env, SPVM_VALUE* stack);
+EOS
+    }
+  }
+
+  $boot_csource .= "// native functions declaration\n";
+  for my $native_package_name (@$package_names) {
+    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
+    for my $sub_name (@$native_sub_names) {
+      my $native_package_name = $native_package_name;
+      $native_package_name =~ s/::/__/g;
+      $boot_csource .= <<"EOS";
+int32_t SPNATIVE__${native_package_name}__$sub_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
@@ -444,6 +498,29 @@ EOS
     SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
     assert(sub);
     sub->precompile_address = SPPRECOMPILE__${native_package_name}__$precompile_sub_name;
+  }
+EOS
+    }
+  }
+
+  for my $native_package_name (@$package_names) {
+    my $native_package_cname = $native_package_name;
+    $native_package_cname =~ s/::/__/g;
+    
+    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
+    
+    for my $native_sub_name (@$native_sub_names) {
+      $boot_csource .= <<"EOS";
+  { 
+    const char* package_name = "$native_package_name";
+    const char* sub_name = "$native_sub_name";
+    SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
+    assert(basic_type);
+    SPVM_PACKAGE* package = basic_type->package;
+    assert(package);
+    SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+    assert(sub);
+    sub->native_address = SPNATIVE__${native_package_cname}__$native_sub_name;
   }
 EOS
     }
@@ -622,9 +699,6 @@ sub link {
   
   my $builder = $self->builder;
   
-  # Compiled package names
-  my $package_names = $builder->get_package_names;
-  
   my $build_dir = $self->builder->build_dir;
   
   my $build_work_object_dir = $self->builder->create_build_object_path;
@@ -649,6 +723,9 @@ sub link {
   # SPVM runtime object files
   my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
   push @$object_files, @spvm_compiler_and_runtime_object_files;
+
+  # Compiled package names
+  my $package_names = $builder->get_package_names;
   
   # SPVM module source object files
   for my $package_name (@$package_names) {
@@ -658,7 +735,6 @@ sub link {
   }
   
   # SPVM precompile object files
-  my $package_names = $builder->get_package_names;
   my $precompile_object_files = [];
   for my $precompile_package_name (@$package_names) {
     
@@ -671,6 +747,20 @@ sub link {
     }
   }
   push @$object_files, @$precompile_object_files;
+
+  # SPVM native object files
+  my $native_object_files = [];
+  for my $native_package_name (@$package_names) {
+    
+    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
+    if (@$native_sub_names) {
+      my $category = 'native';
+      my $native_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($native_package_name, $category, 'o');
+      my $native_object_file = $self->builder->create_build_object_path($native_object_rel_file);
+      push @$native_object_files, $native_object_file;
+    }
+  }
+  push @$object_files, @$native_object_files;
   
   # ExeUtils::CBuilder config
   my $config = $bconf->to_hash;
