@@ -141,42 +141,11 @@ sub build_exe_file {
     exit(255);
   }
 
-  # Build precompile packages
-  my $builder_c_precompile = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    category => 'precompile',
-    builder => $builder,
-    quiet => 0,
-  );
-
-  # Build precompile package
-  my $package_names = $builder->get_package_names;
-  for my $precompile_package_name (@$package_names) {
-    
-    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
-    if (@$precompile_sub_names) {
-      my $src_dir = $self->builder->create_build_src_path;
-      mkpath $src_dir;
-      $builder_c_precompile->create_source_precompile(
-        $precompile_package_name,
-        [],
-        {
-          src_dir => $src_dir,
-        }
-      );
-      
-      my $object_dir = $self->builder->create_build_object_path;
-      mkpath $object_dir;
-      
-      $builder_c_precompile->compile(
-        $precompile_package_name,
-        {
-          src_dir => $src_dir,
-          object_dir => $object_dir,
-        }
-      );
-    }
-  }
+  # Create precompile C sources
+  $self->create_precompile_csources;
+  
+  # Compile precompile C sources
+  $self->compile_precompile_csources;
 
   # Create SPMV module C sources
   $self->create_spvm_module_csources;
@@ -195,6 +164,80 @@ sub build_exe_file {
 
   # Link and generate executable file
   $self->link;
+}
+
+sub create_precompile_csources {
+  my ($self) = @_;
+
+  my $builder = $self->builder;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
+  # Build precompile packages
+  my $builder_c_precompile = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'precompile',
+    builder => $builder,
+    quiet => 0,
+  );
+
+  my $package_names = $builder->get_package_names;
+  for my $precompile_package_name (@$package_names) {
+    
+    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    if (@$precompile_sub_names) {
+      my $src_dir = $self->builder->create_build_src_path;
+      mkpath $src_dir;
+      $builder_c_precompile->create_source_precompile(
+        $precompile_package_name,
+        [],
+        {
+          src_dir => $src_dir,
+        }
+      );
+    }
+  }
+}
+
+sub compile_precompile_csources {
+  my ($self) = @_;
+  
+  my $builder = $self->builder;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
+  # Build precompile packages
+  my $builder_c_precompile = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'precompile',
+    builder => $builder,
+    quiet => 0,
+  );
+  
+  my $package_names = $builder->get_package_names;
+  for my $precompile_package_name (@$package_names) {
+    
+    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    if (@$precompile_sub_names) {
+      my $src_dir = $self->builder->create_build_src_path;
+      mkpath $src_dir;
+      
+      my $object_dir = $self->builder->create_build_object_path;
+      mkpath $object_dir;
+      
+      $builder_c_precompile->compile(
+        $precompile_package_name,
+        {
+          src_dir => $src_dir,
+          object_dir => $object_dir,
+        }
+      );
+    }
+  }
 }
 
 sub create_spvm_module_csources {
