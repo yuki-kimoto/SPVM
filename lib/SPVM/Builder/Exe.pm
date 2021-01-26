@@ -73,18 +73,18 @@ sub new {
   
   my $self = {@_};
 
-  # Package name
-  my $package_name = $self->{package_name};
-  unless (defined $package_name) {
+  # Target package name
+  my $target_package_name = $self->{target_package_name};
+  unless (defined $target_package_name) {
     confess "Package name not specified";
   }
   
   # Excutable file name
-  my $exe_name = $self->{exe_name};
-  unless (defined $exe_name) {
-    $exe_name = $package_name;
-    $exe_name =~ s/::/__/g;
-    $self->{exe_name} = $exe_name;
+  my $output_name = $self->{output_name};
+  unless (defined $output_name) {
+    $output_name = $target_package_name;
+    $output_name =~ s/::/__/g;
+    $self->{output_name} = $output_name;
   }
   
   # Quiet output
@@ -121,11 +121,11 @@ sub build_exe_file {
   
   my $builder = $self->builder;
 
-  # Package name
-  my $package_name = $self->{package_name};
+  # Target package name
+  my $target_package_name = $self->{target_package_name};
   
   # Excutable file name
-  my $exe_name = $self->{exe_name};
+  my $output_name = $self->{output_name};
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -134,7 +134,7 @@ sub build_exe_file {
   # Compile SPVM
   my $file = 'internal';
   my $line = 0;
-  my $compile_success = $builder->compile_spvm($package_name, $file, $line);
+  my $compile_success = $builder->compile_spvm($target_package_name, $file, $line);
   unless ($compile_success) {
     exit(255);
   }
@@ -186,13 +186,13 @@ sub build_exe_file {
   $self->compile_spvm_compiler_and_runtime_csources;
 
   # Create bootstrap C source
-  $self->create_bootstrap_csource($package_name);
+  $self->create_bootstrap_csource($target_package_name);
 
   # Compile bootstrap C source
-  $self->compile_bootstrap_csource($package_name);
+  $self->compile_bootstrap_csource($target_package_name);
 
   # Link and generate executable file
-  $self->link($package_name);
+  $self->link($target_package_name);
 }
 
 sub create_spvm_module_csources {
@@ -299,7 +299,7 @@ sub compile_spvm_module_csources {
 }
 
 sub create_bootstrap_csource {
-  my ($self, $package_name) = @_;
+  my ($self, $target_package_name) = @_;
 
   my $builder = $self->builder;
 
@@ -341,7 +341,7 @@ EOS
 
   $boot_csource .= <<"EOS";
   // Package name
-  const char* package_name = "$package_name";
+  const char* package_name = "$target_package_name";
 EOS
 
   $boot_csource .= <<'EOS';
@@ -370,7 +370,7 @@ EOS
     $boot_csource .= "  }\n";
   }
   $boot_csource .= "\n";
-  
+
   $boot_csource .= <<'EOS';
 
   SPVM_COMPILER_compile(compiler);
@@ -435,7 +435,7 @@ EOS
 
   my $build_dir = $self->builder->build_dir;
 
-  my $boot_base = $package_name;
+  my $boot_base = $target_package_name;
   $boot_base =~ s|::|/|g;
 
   # Build source directory
@@ -453,7 +453,7 @@ EOS
 }
 
 sub compile_bootstrap_csource {
-  my ($self, $package_name) = @_;
+  my ($self, $target_package_name) = @_;
   
   my $build_dir = $self->builder->build_dir;
 
@@ -464,7 +464,7 @@ sub compile_bootstrap_csource {
   my $quiet = $self->{quiet};
   $quiet = 0;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
+  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($target_package_name);
   my $object_file = $self->builder->create_build_object_path("$package_name_rel_file.boot.o");
   my $src_file = $self->builder->create_build_src_path("$package_name_rel_file.boot.c");
   
@@ -542,7 +542,7 @@ sub compile_spvm_compiler_and_runtime_csources {
 }
 
 sub link {
-  my ($self, $package_name) = @_;
+  my ($self, $target_package_name) = @_;
   
   my $builder = $self->builder;
   
@@ -554,15 +554,15 @@ sub link {
   my $build_work_object_dir = $self->builder->create_build_object_path;
   
   my $object_files = [];
-  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-  push @$object_files, glob "$build_work_object_dir/$package_name.boot.o";
+  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($target_package_name);
+  push @$object_files, glob "$build_work_object_dir/$target_package_name.boot.o";
   
   my $bconf = SPVM::Builder::Config->new_c99;
   
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
   
-  my $exe_name = $self->{exe_name};
+  my $output_name = $self->{output_name};
 
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
@@ -601,11 +601,11 @@ sub link {
   
   my $quiet = $self->{quiet};
   $quiet = 0;
-  my $exe_file = $exe_name;
+  my $exe_file = $output_name;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_dll_file = $cbuilder->link_executable(
     objects => $object_files,
-    module_name => $package_name,
+    module_name => $target_package_name,
     exe_file => $exe_file,
     extra_linker_flags => $extra_linker_flag,
   );

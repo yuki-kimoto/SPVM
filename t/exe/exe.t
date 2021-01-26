@@ -24,16 +24,16 @@ use FindBin;
   my $exe_dir = 't/spvm_build/work/exe';
   mkpath $exe_dir;
   
-  my $package_name = 'MyExe';
+  my $target_package_name = 'MyExe';
   my $build_dir = 't/exe/.spvm_build';
   my $module_include_dir = 't/exe/lib';
-  my $exe_name = "$build_dir/work/myexe";
+  my $output_name = "$build_dir/work/myexe";
   
   unshift @INC, $module_include_dir;
   
   my $builder_exe = SPVM::Builder::Exe->new(
-    package_name => $package_name,
-    exe_name => $exe_name,
+    target_package_name => $target_package_name,
+    output_name => $output_name,
     build_dir => $build_dir,
   );
   
