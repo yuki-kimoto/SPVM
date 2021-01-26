@@ -2,6 +2,8 @@ package MyExe {
   use MyExe::Precompile;
   
   sub main : int ($args : string[]) {
-    print "AAA\n";
+    my $sum = MyExe::Precompile->sum(1, 2);
+    
+    print "AAA $sum\n";
   }
 }
