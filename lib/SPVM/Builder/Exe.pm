@@ -68,6 +68,8 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
 
 sub builder { shift->{builder} }
 
+sub target_package_name { shift->{target_package_name} }
+
 sub new {
   my $class = shift;
   
@@ -186,13 +188,13 @@ sub build_exe_file {
   $self->compile_spvm_compiler_and_runtime_csources;
 
   # Create bootstrap C source
-  $self->create_bootstrap_csource($target_package_name);
+  $self->create_bootstrap_csource;
 
   # Compile bootstrap C source
-  $self->compile_bootstrap_csource($target_package_name);
+  $self->compile_bootstrap_csource;
 
   # Link and generate executable file
-  $self->link($target_package_name);
+  $self->link;
 }
 
 sub create_spvm_module_csources {
@@ -299,7 +301,9 @@ sub compile_spvm_module_csources {
 }
 
 sub create_bootstrap_csource {
-  my ($self, $target_package_name) = @_;
+  my ($self) = @_;
+  
+  my $target_package_name = $self->target_package_name;
 
   my $builder = $self->builder;
 
@@ -453,7 +457,9 @@ EOS
 }
 
 sub compile_bootstrap_csource {
-  my ($self, $target_package_name) = @_;
+  my ($self) = @_;
+  
+  my $target_package_name = $self->target_package_name;
   
   my $build_dir = $self->builder->build_dir;
 
@@ -542,7 +548,9 @@ sub compile_spvm_compiler_and_runtime_csources {
 }
 
 sub link {
-  my ($self, $target_package_name) = @_;
+  my ($self) = @_;
+  
+  my $target_package_name = $self->target_package_name;
   
   my $builder = $self->builder;
   
