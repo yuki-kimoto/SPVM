@@ -1,3 +1,8 @@
+0.0930 2020-1-28
+  - add SPVM::Builder::Exe again. This is more stable before SPVM::Builder::Exe because compiler and runtime and SPVM module sources is embeded to exe files directry.
+  - add spvmcc again
+  - remove SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double source codes in module directry
+    because this is embded into compiler to run SPVM independent from moduel sources.
 0.0930 2020-12-28
   - remove subroutine precompile descriptor. SPVM become only support whole package precompile.
 0.0929 2020-12-23

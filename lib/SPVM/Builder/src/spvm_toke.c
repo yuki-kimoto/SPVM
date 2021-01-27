@@ -187,7 +187,27 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             *bufptr_to = '\0';
 
             char* cur_file = NULL;
-            if (!compiler->no_directry_module_search) {
+            
+            // Do directry module search
+            int32_t do_directry_module_search;
+
+            // SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double is already registered in module source symtable
+            if (
+              strcmp(package_name, "SPVM::Byte") == 0 ||
+              strcmp(package_name, "SPVM::Short") == 0 ||
+              strcmp(package_name, "SPVM::Int") == 0 ||
+              strcmp(package_name, "SPVM::Long") == 0 ||
+              strcmp(package_name, "SPVM::Float") == 0 ||
+              strcmp(package_name, "SPVM::Double") == 0
+            )
+            {
+              do_directry_module_search = 0;
+            }
+            else {
+              do_directry_module_search = !compiler->no_directry_module_search;
+            }
+            
+            if (do_directry_module_search) {
               // Search module file
               FILE* fh = NULL;
               int32_t module_include_dirs_length = compiler->module_include_dirs->length;
