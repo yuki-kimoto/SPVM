@@ -928,7 +928,6 @@ t/exe/.spvm_build/work/src/SPVM/Long.modsrc.c
 t/exe/.spvm_build/work/src/SPVM/Short.modsrc.c
 t/exe/.spvm_build/work/src/TestCase/NativeAPI2.modsrc.c
 t/exe/exe.t
-t/exe/exe_old.t_
 t/exe/lib/MyExe.spvm
 t/exe/lib/MyExe/Precompile.spvm
 t/exe/lib/TestCase/NativeAPI2.c
@@ -943,15 +942,6 @@ t/exe/lib/TestCase/NativeAPI2.native/src/baz/noneed.txt
 t/exe/lib/TestCase/NativeAPI2.native/src/foo.c
 t/exe/lib/TestCase/NativeAPI2.native/src/noneed.txt
 t/exe/lib/TestCase/NativeAPI2.spvm
-t/exe/spvm_build/work/src/MyExe.modsrc.c
-t/exe/spvm_build/work/src/MyExe/Precompile.modsrc.c
-t/exe/spvm_build/work/src/MyExe/Precompile.precompile.c
-t/exe/spvm_build/work/src/SPVM/Byte.modsrc.c
-t/exe/spvm_build/work/src/SPVM/Double.modsrc.c
-t/exe/spvm_build/work/src/SPVM/Float.modsrc.c
-t/exe/spvm_build/work/src/SPVM/Int.modsrc.c
-t/exe/spvm_build/work/src/SPVM/Long.modsrc.c
-t/exe/spvm_build/work/src/SPVM/Short.modsrc.c
 t/exe/spvmcc.t
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
