@@ -60,6 +60,10 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
+  
+  // Add SPVM::Byte source
+  const char* spvm_byte_module_source = "package SPVM::Byte {\n  has val : ro byte;\n  sub new : SPVM::Byte ($value : byte) {\n    my $self = new SPVM::Byte;\n    $self->{val} = $value;\n    return $self;\n  }\n}";
+  SPVM_HASH_insert(compiler->module_source_symtable, "SPVM::Byte", strlen("SPVM::Byte"), (void*)spvm_byte_module_source);
 
   // use SPVM::Byte module
   {
