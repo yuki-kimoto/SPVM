@@ -234,7 +234,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else {
                   // Add module file symtable
-                  SPVM_HASH_insert(compiler->module_file_symtable, cur_file, strlen(cur_file), (char*)cur_file);
+                  SPVM_HASH_insert(compiler->module_file_symtable, package_name, strlen(package_name), (void*)cur_file);
                 }
                 
                 // Open source file
