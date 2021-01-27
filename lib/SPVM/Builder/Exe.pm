@@ -692,14 +692,30 @@ sub compile_spvm_compiler_and_runtime_csources {
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
-    # Compile source file
-    $cbuilder->compile(
-      source => $src_file,
-      object_file => $object_file,
-      include_dirs => $bconf->get_include_dirs,
-      extra_compiler_flags => $bconf->get_extra_compiler_flags,
-    );
-    push @$object_files, $object_file;
+    # Do compile
+    my $do_compile;
+    
+    if (!-f $object_file) {
+      $do_compile = 1;
+    }
+    else {
+      my $mod_time_src_file = (stat($src_file))[9];
+      my $mod_time_object_file = (stat($object_file))[9];
+      if ($mod_time_src_file > $mod_time_object_file) {
+        $do_compile = 1;
+      }
+    }
+    
+    if ($do_compile) {
+      # Compile source file
+      $cbuilder->compile(
+        source => $src_file,
+        object_file => $object_file,
+        include_dirs => $bconf->get_include_dirs,
+        extra_compiler_flags => $bconf->get_extra_compiler_flags,
+      );
+      push @$object_files, $object_file;
+    }
   }
 }
 
