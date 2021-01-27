@@ -448,7 +448,6 @@ lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c
 lib/SPVM/Builder/Util.pm
 lib/SPVM/Byte.pm
-lib/SPVM/Byte.spvm
 lib/SPVM/ByteList.pm
 lib/SPVM/ByteList.spvm
 lib/SPVM/Cloner.pm
@@ -460,7 +459,6 @@ lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
 lib/SPVM/Double.pm
-lib/SPVM/Double.spvm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
 lib/SPVM/EqualityChecker.pm
@@ -469,7 +467,6 @@ lib/SPVM/EqualityChecker/SameObject.pm
 lib/SPVM/EqualityChecker/SameObject.spvm
 lib/SPVM/ExchangeAPI.pm
 lib/SPVM/Float.pm
-lib/SPVM/Float.spvm
 lib/SPVM/FloatList.pm
 lib/SPVM/FloatList.spvm
 lib/SPVM/Hash.c
@@ -479,7 +476,6 @@ lib/SPVM/Hash.spvm
 lib/SPVM/Hash/Entry.pm
 lib/SPVM/Hash/Entry.spvm
 lib/SPVM/Int.pm
-lib/SPVM/Int.spvm
 lib/SPVM/IntList.pm
 lib/SPVM/IntList.spvm
 lib/SPVM/IO/Stderr.c
@@ -493,7 +489,6 @@ lib/SPVM/IO/Stdout.spvm
 lib/SPVM/List.pm
 lib/SPVM/List.spvm
 lib/SPVM/Long.pm
-lib/SPVM/Long.spvm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
 lib/SPVM/Math.c
@@ -507,7 +502,6 @@ lib/SPVM/Regex/Pattern.spvm
 lib/SPVM/Regex/Replacer.pm
 lib/SPVM/Regex/Replacer.spvm
 lib/SPVM/Short.pm
-lib/SPVM/Short.spvm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
 lib/SPVM/Sort.c
