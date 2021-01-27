@@ -20,7 +20,7 @@ SPVM::Builder::Util::getopt
   'O|optimize=s' => \my $optimize,
 ;
 
-die SPVM::Builder::Util::extract_usage if $help || !(my $package_name = shift);
+die SPVM::Builder::Util::extract_usage if $help || !(my $target_package_name = shift);
 
 unshift @INC, @include_dirs;
 
@@ -30,8 +30,8 @@ unless (defined $build_dir) {
 
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
-  exe_name => $output,
-  package_name => $package_name,
+  output_file => $output,
+  target_package_name => $target_package_name,
   quiet => $quiet,
   library_path => \@library_paths,
   library => \@library,
