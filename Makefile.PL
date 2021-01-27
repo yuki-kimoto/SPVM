@@ -98,6 +98,7 @@ WriteMakefile(
             },
         },
     },
+    EXE_FILES => ['script/spvmcc'],
 );
 
 # Create precompile test

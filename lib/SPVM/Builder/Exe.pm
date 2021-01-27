@@ -148,7 +148,7 @@ sub build_exe_file {
   $self->compile_precompile_csources;
 
   # Compile precompile C sources
-  $self->compile_native_csources;
+  my ($native_object_files, $all_libs) = $self->compile_native_csources;
 
   # Create SPMV module C sources
   $self->create_spvm_module_csources;
@@ -166,7 +166,7 @@ sub build_exe_file {
   $self->compile_bootstrap_csource;
 
   # Link and generate executable file
-  $self->link;
+  $self->link($native_object_files, $all_libs);
 }
 
 sub create_precompile_csources {
@@ -261,25 +261,36 @@ sub compile_native_csources {
   );
   
   my $package_names = $builder->get_package_names;
+  my $all_libs = [];
+  my $all_object_files = [];
   for my $native_package_name (@$package_names) {
     
     my $native_sub_names = $builder->get_native_sub_names($native_package_name);
     if (@$native_sub_names) {
-      my $src_dir = $self->builder->create_build_src_path;
-      mkpath $src_dir;
+      my $native_module_file = $builder->get_module_file($native_package_name);
+      my $native_dir = $native_module_file;
       
+      my $native_config_file = $builder->get_config_file($native_package_name);
+      my $bconf = SPVM::Builder::Util::load_config($native_config_file);
+      push @$all_libs, $bconf->get_libs;
+      
+      $native_dir =~ s/\.spvm$//;
+      $native_dir .= 'native';
+      my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_file, $native_package_name);
       my $object_dir = $self->builder->create_build_object_path;
       mkpath $object_dir;
-      
-      $builder_c_native->compile(
+      my $object_files = $builder_c_native->compile(
         $native_package_name,
         {
           src_dir => $src_dir,
           object_dir => $object_dir,
         }
       );
+      push @$all_object_files, @$object_files;
     }
   }
+  
+  return ($all_object_files, $all_libs);
 }
 
 sub create_spvm_module_csources {
@@ -693,7 +704,7 @@ sub compile_spvm_compiler_and_runtime_csources {
 }
 
 sub link {
-  my ($self) = @_;
+  my ($self, $native_object_files) = @_;
   
   my $target_package_name = $self->target_package_name;
   
@@ -749,17 +760,6 @@ sub link {
   push @$object_files, @$precompile_object_files;
 
   # SPVM native object files
-  my $native_object_files = [];
-  for my $native_package_name (@$package_names) {
-    
-    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
-    if (@$native_sub_names) {
-      my $category = 'native';
-      my $native_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($native_package_name, $category, 'o');
-      my $native_object_file = $self->builder->create_build_object_path($native_object_rel_file);
-      push @$native_object_files, $native_object_file;
-    }
-  }
   push @$object_files, @$native_object_files;
   
   # ExeUtils::CBuilder config
