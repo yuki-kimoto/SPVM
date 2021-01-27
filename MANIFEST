@@ -927,7 +927,6 @@ t/exe/.spvm_build/work/src/SPVM/Int.modsrc.c
 t/exe/.spvm_build/work/src/SPVM/Long.modsrc.c
 t/exe/.spvm_build/work/src/SPVM/Short.modsrc.c
 t/exe/.spvm_build/work/src/TestCase/NativeAPI2.modsrc.c
-t/exe/exe.t
 t/exe/lib/MyExe.spvm
 t/exe/lib/MyExe/Precompile.spvm
 t/exe/lib/TestCase/NativeAPI2.c

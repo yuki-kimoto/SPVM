@@ -1,3 +1,4 @@
+use Test::More 'no_plan';
 use strict;
 use warnings;
 use utf8;
@@ -27,3 +28,5 @@ use lib "$FindBin::Bin/exe/lib";
   system($execute_cmd) == 0
     or die "Can't execute command $spvmcc_cmd:$!";
 }
+
+ok(1);
