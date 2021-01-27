@@ -1,4 +1,4 @@
-0.0930 2020-1-28
+0.0931 2020-1-28
   - add SPVM::Builder::Exe again. This is more stable before SPVM::Builder::Exe because compiler and runtime and SPVM module sources is embeded to exe files directry.
   - add spvmcc again
   - remove SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double source codes in module directry
