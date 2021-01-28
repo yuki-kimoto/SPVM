@@ -304,40 +304,63 @@ sub create_spvm_module_csources {
   for my $package_name (@$package_names) {
     # This source is UTF-8 binary
     my $module_source = $builder->get_module_source($package_name);
-    
-    my $module_source_c_hex = $module_source;
-    
-    # Escape to Hex C launguage string literal
-    $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
-    
-    # native package name
-    my $native_package_cname = $package_name;
-    $native_package_cname =~ s/::/__/g;
 
-    my $get_module_source_csource = <<"EOS";
+    my $loaded_module_file = $builder->get_loaded_module_file($package_name);
+
+    my $build_dir = $self->builder->build_dir;
+    my $build_src_dir = $self->builder->create_build_src_path;
+    my $module_source_base = $package_name;
+    $module_source_base =~ s|::|/|g;
+    my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
+    
+    my $do_create;
+    
+    if (!-f $module_source_csource_file) {
+      $do_create = 1;
+    }
+    else {
+      my $loaded_module_file_mtime;
+      if (defined $loaded_module_file) {
+        $loaded_module_file_mtime = (stat($loaded_module_file))[9];
+      }
+      else {
+        $loaded_module_file_mtime = 0;
+      }
+      
+      my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
+      
+      if ($loaded_module_file_mtime > $module_source_csource_file_mtime) {
+        $do_create = 1;
+      }
+    }
+    
+    if ($do_create) {
+      my $module_source_c_hex = $module_source;
+      
+      # Escape to Hex C launguage string literal
+      $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
+      
+      # native package name
+      my $native_package_cname = $package_name;
+      $native_package_cname =~ s/::/__/g;
+
+      my $get_module_source_csource = <<"EOS";
 static const char* module_source = "$module_source_c_hex";
 const char* SPMODSRC__${native_package_cname}__get_module_source() {
   return module_source;
 }
 EOS
 
-    my $module_source_base = $package_name;
-    $module_source_base =~ s|::|/|g;
-    
-    my $build_dir = $self->builder->build_dir;
-    
-    # Build source directory
-    my $build_src_dir = $self->builder->create_build_src_path;
-    mkpath $build_src_dir;
-    
-    my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
+      # Build source directory
+      mkpath $build_src_dir;
+      
+      mkpath dirname $module_source_csource_file;
+      
+      open my $module_source_csource_fh, '>', $module_source_csource_file
+        or die "Can't open file $module_source_csource_file:$!";
 
-    mkpath dirname $module_source_csource_file;
-    
-    open my $module_source_csource_fh, '>', $module_source_csource_file
-      or die "Can't open file $module_source_csource_file:$!";
-
-    print $module_source_csource_fh $get_module_source_csource;
+      print $module_source_csource_fh $get_module_source_csource;
+    }
   }
 }
 
@@ -369,13 +392,27 @@ sub compile_spvm_module_csources {
     my $module_source_object_file = "$build_object_dir/$package_name_rel_file.modsrc.o";
     mkpath dirname $module_source_object_file;
     
-    # Compile source file
-    $cbuilder->compile(
-      source => $module_source_csource_file,
-      object_file => $module_source_object_file,
-      include_dirs => $bconf->get_include_dirs,
-      extra_compiler_flags => $bconf->get_extra_compiler_flags,
-    );
+    my $do_compile;
+    if (!-f $module_source_object_file) {
+      $do_compile = 1;
+    }
+    else {
+      my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
+      my $module_source_object_file_mtime = (stat($module_source_object_file))[9];
+      if ($module_source_csource_file_mtime > $module_source_object_file_mtime) {
+        $do_compile = 1;
+      }
+    }
+    
+    if ($do_compile) {
+      # Compile source file
+      $cbuilder->compile(
+        source => $module_source_csource_file,
+        object_file => $module_source_object_file,
+        include_dirs => $bconf->get_include_dirs,
+        extra_compiler_flags => $bconf->get_extra_compiler_flags,
+      );
+    }
   }
 }
 
