@@ -227,15 +227,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
 
-                // Skip if already module file loaded
-                const char* found_module_file = SPVM_HASH_fetch(compiler->module_file_symtable, cur_file, strlen(cur_file));
-                if (found_module_file) {
-                  continue;
-                }
-                else {
-                  // Add module file symtable
-                  SPVM_HASH_insert(compiler->module_file_symtable, package_name, strlen(package_name), (void*)cur_file);
-                }
+                // Add module file symtable
+                SPVM_HASH_insert(compiler->module_file_symtable, package_name, strlen(package_name), (void*)cur_file);
                 
                 // Open source file
                 fh = fopen(cur_file, "rb");
