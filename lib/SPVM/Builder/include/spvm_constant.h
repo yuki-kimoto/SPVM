@@ -1,7 +1,7 @@
 #ifndef SPVM_CONSTANT_H
 #define SPVM_CONSTANT_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 #include "spvm_native.h"
 
 struct SPVM_constant {

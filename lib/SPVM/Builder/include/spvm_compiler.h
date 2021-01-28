@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 #include "spvm_native.h"
 
 enum {

@@ -1,7 +1,7 @@
 #ifndef SPVM_API_H
 #define SPVM_API_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 #include "spvm_native.h"
 
 /*

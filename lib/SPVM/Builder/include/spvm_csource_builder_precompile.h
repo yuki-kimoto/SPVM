@@ -1,7 +1,7 @@
 #ifndef SPVM_CSOURCE_BUILDER_PRECOMPILE_H
 #define SPVM_CSOURCE_BUILDER_PRECOMPILE_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 enum {
   SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE,

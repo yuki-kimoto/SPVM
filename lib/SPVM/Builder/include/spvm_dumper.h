@@ -1,7 +1,7 @@
 #ifndef SPVM_DUMPER_H
 #define SPVM_DUMPER_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* constants);
 void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant);

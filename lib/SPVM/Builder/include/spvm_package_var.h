@@ -1,7 +1,7 @@
 #ifndef SPVM_PACKAGE_VAR_H
 #define SPVM_PACKAGE_VAR_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 enum {
   SPVM_PACKAGE_VAR_C_FLAG_PUBLIC = 1,

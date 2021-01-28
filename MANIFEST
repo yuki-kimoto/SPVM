@@ -362,7 +362,6 @@ lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
-lib/SPVM/Builder/include/spvm_base.h
 lib/SPVM/Builder/include/spvm_basic_type.h
 lib/SPVM/Builder/include/spvm_block.h
 lib/SPVM/Builder/include/spvm_call_sub.h
@@ -400,6 +399,7 @@ lib/SPVM/Builder/include/spvm_sub.h
 lib/SPVM/Builder/include/spvm_switch_info.h
 lib/SPVM/Builder/include/spvm_toke.h
 lib/SPVM/Builder/include/spvm_type.h
+lib/SPVM/Builder/include/spvm_typedef.h
 lib/SPVM/Builder/include/spvm_use.h
 lib/SPVM/Builder/include/spvm_util_allocator.h
 lib/SPVM/Builder/include/spvm_var.h

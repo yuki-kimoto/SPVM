@@ -1,7 +1,7 @@
 #ifndef SPVM_SUB_H
 #define SPVM_SUB_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 enum {
   SPVM_SUB_C_CALL_TYPE_ID_STATIC_METHOD,

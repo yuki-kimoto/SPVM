@@ -1,7 +1,7 @@
 #ifndef SPVM_HASH_ENTRY_H
 #define SPVM_HASH_ENTRY_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 // Hash entry
 struct SPVM_hash_entry {

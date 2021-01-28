@@ -1,7 +1,7 @@
 #ifndef SPVM_VAR_H
 #define SPVM_VAR_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 struct SPVM_var {
   SPVM_OP* op_name;

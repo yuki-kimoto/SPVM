@@ -1,7 +1,7 @@
 #ifndef SPVM_LIMIT_H
 #define SPVM_LIMIT_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 enum {
   // Max count of sub arguments

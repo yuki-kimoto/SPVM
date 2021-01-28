@@ -1,5 +1,5 @@
-#ifndef SPVM_BASE_H
-#define SPVM_BASE_H
+#ifndef SPVM_TYPEDEF_H
+#define SPVM_TYPEDEF_H
 
 #include <stdint.h>
 #include <stdlib.h>

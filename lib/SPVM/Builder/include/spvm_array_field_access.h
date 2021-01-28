@@ -1,7 +1,7 @@
 #ifndef SPVM_ARRAY_FIELD_ACCESS_H
 #define SPVM_ARRAY_FIELD_ACCESS_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 struct SPVM_array_field_access {
   SPVM_FIELD* field;

@@ -1,7 +1,7 @@
 #ifndef SPVM_HASH_H
 #define SPVM_HASH_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 // Hash table
 struct SPVM_hash {

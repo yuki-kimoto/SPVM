@@ -1,7 +1,7 @@
 #ifndef SPVM_ENUMERATION_VALUE_H
 #define SPVM_ENUMERATION_VALUE_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 // Field information
 struct SPVM_enumeration_value {

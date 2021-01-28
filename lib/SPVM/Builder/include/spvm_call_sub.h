@@ -1,7 +1,7 @@
 #ifndef SPVM_CALL_SUB_H
 #define SPVM_CALL_SUB_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 struct SPVM_call_sub {
   SPVM_OP* op_invocant;

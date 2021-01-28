@@ -1,7 +1,7 @@
 #ifndef SPVM_BLOCK_H
 #define SPVM_BLOCK_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 enum {
   // Block flag

@@ -1,7 +1,7 @@
 #ifndef SPVM_OP_H
 #define SPVM_OP_H
 
-#include "spvm_base.h"
+#include "spvm_typedef.h"
 
 
 
