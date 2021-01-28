@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_var {
+struct spvm_var {
   SPVM_OP* op_name;
   SPVM_MY* my;
   int8_t is_declaration;

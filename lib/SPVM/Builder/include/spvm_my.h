@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_my {
+struct spvm_my {
   SPVM_OP* op_my;
   SPVM_TYPE* type;
   SPVM_OP* op_name;

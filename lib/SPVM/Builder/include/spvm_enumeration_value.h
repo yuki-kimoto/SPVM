@@ -4,7 +4,7 @@
 #include "spvm_typedef.h"
 
 // Field information
-struct SPVM_enumeration_value {
+struct spvm_enumeration_value {
   SPVM_OP* op_name;
   SPVM_OP* op_constant;
 };

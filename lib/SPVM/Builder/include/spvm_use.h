@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_use {
+struct spvm_use {
   SPVM_OP* op_type;
   SPVM_LIST* sub_names;
   int32_t is_require;

@@ -7,7 +7,7 @@ enum {
   SPVM_PACKAGE_VAR_C_FLAG_PUBLIC = 1,
 };
 
-struct SPVM_package_var {
+struct spvm_package_var {
   const char* name;
   const char* signature;
   SPVM_TYPE* type;

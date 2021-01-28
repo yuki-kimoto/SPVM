@@ -20,7 +20,7 @@ enum {
 };
 
 // Method information
-struct SPVM_sub {
+struct spvm_sub {
   SPVM_OP* op_sub;
   SPVM_OP* op_name;
   SPVM_OP* op_block;

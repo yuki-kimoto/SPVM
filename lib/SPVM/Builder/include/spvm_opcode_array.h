@@ -4,7 +4,7 @@
 #include "spvm_typedef.h"
 
 // Array
-struct SPVM_opcode_array {
+struct spvm_opcode_array {
   SPVM_OPCODE* values;
   int32_t length;
   int32_t capacity;

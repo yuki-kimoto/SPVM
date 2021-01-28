@@ -33,7 +33,7 @@ enum {
 
 extern const char* const SPVM_BASIC_TYPE_C_ID_NAMES[];
 
-struct SPVM_basic_type {
+struct spvm_basic_type {
   const char* name;
   SPVM_PACKAGE* package;
   int32_t id;

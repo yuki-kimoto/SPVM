@@ -234,7 +234,7 @@ enum {
 };
 
 /* Binary operation */
-struct SPVM_op {
+struct spvm_op {
   SPVM_OP* first;
   SPVM_OP* last;
   SPVM_OP* sibparent;

@@ -15,7 +15,7 @@ enum {
   SPVM_BLOCK_C_ID_LOOP_INIT,
 };
 
-struct SPVM_block {
+struct spvm_block {
   int32_t id;
   int32_t have_object_var_decl;
 };

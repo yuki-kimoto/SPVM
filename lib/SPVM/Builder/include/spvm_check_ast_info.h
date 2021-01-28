@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_check_ast_info {
+struct spvm_check_ast_info {
   // Package
   SPVM_PACKAGE* package;
   

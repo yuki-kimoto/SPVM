@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 
-struct SPVM_env;
-typedef struct SPVM_env SPVM_ENV;
+struct spvm_env;
+typedef struct spvm_env SPVM_ENV;
 
-typedef union SPVM_value SPVM_VALUE;
+typedef union spvm_value SPVM_VALUE;
 
-union SPVM_value {
+union spvm_value {
   int8_t bval;
   int16_t sval;
   int32_t ival;
@@ -294,7 +294,7 @@ union SPVM_value {
 
 
 
-struct SPVM_env {
+struct spvm_env {
   void* package_vars_heap;
   void* object_header_byte_size;
   void* object_weaken_backref_head_offset;

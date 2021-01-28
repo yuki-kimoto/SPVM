@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_list {
+struct spvm_list {
   void** values;
   int32_t length;
   int32_t capacity;

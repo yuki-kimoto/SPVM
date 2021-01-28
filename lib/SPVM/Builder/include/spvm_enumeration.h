@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_enumeration {
+struct spvm_enumeration {
   SPVM_LIST* enumeration_values;
 };
 

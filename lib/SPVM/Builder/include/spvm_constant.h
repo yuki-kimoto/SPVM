@@ -4,7 +4,7 @@
 #include "spvm_typedef.h"
 #include "spvm_native.h"
 
-struct SPVM_constant {
+struct spvm_constant {
   SPVM_OP* op_constant;
   SPVM_TYPE* type;
   SPVM_VALUE value;

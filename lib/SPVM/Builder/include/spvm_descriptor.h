@@ -19,7 +19,7 @@ enum {
 extern const char* const SPVM_DESCRIPTOR_C_ID_NAMES[];
 
 // Field information
-struct SPVM_descriptor {
+struct spvm_descriptor {
   int32_t id;
 };
 

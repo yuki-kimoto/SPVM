@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-union SPVM_yystype
+union spvm_yystype
 {
   SPVM_OP* opval;
 };

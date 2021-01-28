@@ -17,7 +17,7 @@ enum {
 
 extern const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[];
 
-struct SPVM_package {
+struct spvm_package {
   SPVM_OP* op_package;
   SPVM_OP* op_name;
   SPVM_LIST* package_vars;

@@ -8,7 +8,7 @@ enum {
   SPVM_FIELD_C_FLAG_PUBLIC = 2,
 };
 
-struct SPVM_field {
+struct spvm_field {
   const char* name;
   const char* signature;
   SPVM_TYPE* type;

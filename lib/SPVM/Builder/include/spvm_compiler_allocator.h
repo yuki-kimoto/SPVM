@@ -4,7 +4,7 @@
 #include "spvm_typedef.h"
 
 // Parser information
-struct SPVM_compiler_allocator {
+struct spvm_compiler_allocator {
   // Blocks
   SPVM_LIST* blocks;
 

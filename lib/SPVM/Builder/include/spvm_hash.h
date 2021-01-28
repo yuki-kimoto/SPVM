@@ -4,7 +4,7 @@
 #include "spvm_typedef.h"
 
 // Hash table
-struct SPVM_hash {
+struct spvm_hash {
   int32_t* table;
   char* key_buffer;
   SPVM_HASH_ENTRY* entries;

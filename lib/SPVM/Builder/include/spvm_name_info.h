@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_field_access {
+struct spvm_field_access {
   SPVM_OP* op_term_invocant;
   SPVM_OP* op_name;
   const char* resolved_name;

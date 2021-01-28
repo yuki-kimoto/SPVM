@@ -15,7 +15,7 @@ enum {
 };
 
 // Parser information
-struct SPVM_compiler {
+struct spvm_compiler {
   // Current parsed file name
   const char* cur_file;
   

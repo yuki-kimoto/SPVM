@@ -5,7 +5,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_weaken_backref {
+struct spvm_weaken_backref {
   SPVM_OBJECT** object_address;
   SPVM_WEAKEN_BACKREF* next;
 };

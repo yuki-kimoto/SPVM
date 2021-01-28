@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_call_sub {
+struct spvm_call_sub {
   SPVM_OP* op_invocant;
   SPVM_OP* op_name;
   SPVM_SUB* sub;

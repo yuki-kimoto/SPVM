@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_array_field_access {
+struct spvm_array_field_access {
   SPVM_FIELD* field;
 };
 

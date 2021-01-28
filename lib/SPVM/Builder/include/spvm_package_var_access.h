@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_package_var_access {
+struct spvm_package_var_access {
   SPVM_OP* op_name;
   SPVM_PACKAGE_VAR* package_var;
   int32_t constant_pool_id;

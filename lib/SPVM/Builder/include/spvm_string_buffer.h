@@ -3,7 +3,7 @@
 
 #include "spvm_typedef.h"
 
-struct SPVM_string_buffer {
+struct spvm_string_buffer {
   char* buffer;
   int32_t capacity;
   int32_t length;
