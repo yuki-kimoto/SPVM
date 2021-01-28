@@ -98,7 +98,7 @@ struct SPVM_compiler {
   SPVM_LIST* added_packages;
 
   // module file symtable
-  SPVM_HASH* module_file_symtable;
+  SPVM_HASH* loaded_module_file_symtable;
 
   // module relative file symtable
   SPVM_HASH* module_rel_file_symtable;
