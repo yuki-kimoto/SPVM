@@ -2,7 +2,6 @@
 #define SPVM_TYPEDEF_H
 
 #include <stdint.h>
-#include <stdlib.h>
 
 // spvm_allow.h
 struct spvm_allow;
