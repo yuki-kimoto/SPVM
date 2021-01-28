@@ -22,11 +22,11 @@ use lib "$FindBin::Bin/exe/lib";
   
   my $spvmcc_cmd = "$^X -Mblib blib/script/spvmcc -B t/exe/.spvm_build -I t/exe/lib -o t/.spvm_build/work/exe/myexe MyExe";
   system($spvmcc_cmd) == 0
-    or die "Can't execute command $spvmcc_cmd:$!";
+    or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
   my $execute_cmd = File::Spec->catfile(qw/t .spvm_build work exe myexe/);
   system($execute_cmd) == 0
-    or die "Can't execute command $spvmcc_cmd:$!";
+    or die "Can't execute exe file $execute_cmd:$!";
 }
 
 ok(1);
