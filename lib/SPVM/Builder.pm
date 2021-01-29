@@ -139,7 +139,102 @@ sub build_if_needed_and_bind_shared_lib {
     quiet => 1,
   );
   
-  $cc->build_if_needed_and_bind_shared_lib($package_name);
+  my $sub_names;
+  if ($category eq 'native') {
+    $sub_names = $cc->builder->get_native_sub_names($package_name)
+  }
+  elsif ($category eq 'precompile') {
+    $sub_names = $cc->builder->get_precompile_sub_names($package_name)
+  }
+  
+  if (@$sub_names) {
+    # Shared library is already installed in distribution directory
+    my $dll_file = $cc->get_dll_file_dist($package_name);
+    
+    # Try runtime compile if shared objectrary is not found
+    unless (-f $dll_file) {
+      if ($category eq 'native') {
+        $cc->build_dll_native_runtime($package_name, $sub_names);
+      }
+      elsif ($category eq 'precompile') {
+        $cc->build_dll_precompile_runtime($package_name, $sub_names);
+      }
+      $dll_file = $cc->get_dll_file_runtime($package_name);
+    }
+    $self->bind_subs($cc, $dll_file, $package_name, $sub_names);
+  }
+}
+
+sub bind_subs {
+  my ($self, $cc, $dll_file, $package_name, $sub_names) = @_;
+  
+  # m library is maybe not dynamic link library
+  my %must_not_load_libs = map { $_ => 1 } ('m');
+  
+  # Load pre-required dynamic library
+  my $category = $cc->category;
+  my $bconf = $cc->get_config_runtime($package_name, $category);
+  my $lib_dirs = $bconf->get_lib_dirs;
+  {
+    local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
+    my $libs = $bconf->get_libs;
+    for my $lib (@$libs) {
+      unless ($must_not_load_libs{$lib}) {
+        my ($lib_file) = DynaLoader::dl_findfile("-l$lib");
+        my $dll_libref = DynaLoader::dl_load_file($lib_file);
+        unless ($dll_libref) {
+          my $dl_error = DynaLoader::dl_error();
+          confess "Can't load dll file \"$dll_file\": $dl_error";
+        }
+      }
+    }
+  }
+  
+  for my $sub_name (@$sub_names) {
+    my $sub_abs_name = "${package_name}::$sub_name";
+
+    my $cfunc_name = $cc->create_cfunc_name($package_name, $sub_name);
+    my $cfunc_address;
+    if ($dll_file) {
+      my $dll_libref = DynaLoader::dl_load_file($dll_file);
+      if ($dll_libref) {
+        $cfunc_address = DynaLoader::dl_find_symbol($dll_libref, $cfunc_name);
+        unless ($cfunc_address) {
+          my $dl_error = DynaLoader::dl_error();
+          my $error = <<"EOS";
+Can't find native function \"$cfunc_name\" corresponding to $sub_abs_name in \"$dll_file\"
+
+You must write the following definition.
+--------------------------------------------------
+#include <spvm_native.h>
+
+int32_t $cfunc_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  
+  return SPVM_SUCCESS;
+}
+--------------------------------------------------
+
+$dl_error
+EOS
+          confess $error;
+        }
+      }
+      else {
+        my $dl_error = DynaLoader::dl_error();
+        confess "Can't load dll file \"$dll_file\": $dl_error";
+      }
+    }
+    else {
+      confess "DLL file is not specified";
+    }
+    
+    if ($category eq 'native') {
+      $cc->bind_sub_native($package_name, $sub_name, $cfunc_address);
+    }
+    elsif ($category eq 'precompile') {
+      $cc->bind_sub_precompile($package_name, $sub_name, $cfunc_address);
+    }
+  }
 }
 
 1;
