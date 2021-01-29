@@ -192,7 +192,7 @@ sub bind_subs {
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
-    my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name, $category);
+    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $sub_name, $category);
     my $cfunc_address;
     if ($dll_file) {
       my $dll_libref = DynaLoader::dl_load_file($dll_file);
@@ -234,19 +234,6 @@ EOS
       $self->bind_sub_precompile($package_name, $sub_name, $cfunc_address);
     }
   }
-}
-
-sub create_cfunc_name {
-  my ($self, $package_name, $sub_name, $category) = @_;
-  
-  my $prefix = 'SP' . uc($category) . '__';
-  
-  # Precompile Subroutine names
-  my $sub_abs_name_under_score = "${package_name}::$sub_name";
-  $sub_abs_name_under_score =~ s/:/_/g;
-  my $cfunc_name = "$prefix$sub_abs_name_under_score";
-  
-  return $cfunc_name;
 }
 
 sub get_config_runtime {

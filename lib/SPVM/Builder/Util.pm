@@ -10,10 +10,21 @@ use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
 use File::Basename 'dirname';
 
-use SPVM::Builder::Config;
-
 # SPVM::Builder::Util is used from Makefile.PL
-# so this module must be wrote as pure per script, not contain XS and don't use any other SPVM modules except for SPVM::Builder::Config.
+# so this module must be wrote as pure perl script, not contain XS functions and don't use any other SPVM modules.
+
+sub create_cfunc_name {
+  my ($package_name, $sub_name, $category) = @_;
+  
+  my $prefix = 'SP' . uc($category) . '__';
+  
+  # Precompile Subroutine names
+  my $sub_abs_name_under_score = "${package_name}::$sub_name";
+  $sub_abs_name_under_score =~ s/:/_/g;
+  my $cfunc_name = "$prefix$sub_abs_name_under_score";
+  
+  return $cfunc_name;
+}
 
 sub load_config {
   my ($config_file) = @_;
