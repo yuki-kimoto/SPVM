@@ -28,7 +28,7 @@ sub category { shift->{category} }
 
 sub builder { shift->{builder} }
 
-sub build {
+sub build_if_needed_and_bind_shared_lib {
   my ($self, $package_name, $opt) = @_;
   
   my $category = $self->{category};

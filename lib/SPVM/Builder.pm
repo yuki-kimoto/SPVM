@@ -129,34 +129,17 @@ sub build_dll_precompile_dist {
   $cc_precompile->build_dll_precompile_dist($package_name, $sub_names);
 }
 
-sub build_precompile {
-  my ($self, $package_names) = @_;
+sub build_if_needed_and_bind_shared_lib {
+  my ($self, $package_name, $category) = @_;
   
-  my $cc_precompile = SPVM::Builder::CC->new(
+  my $cc = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
-    category => 'precompile',
+    category => $category,
     builder => $self,
     quiet => 1,
   );
   
-  for my $package_name (@$package_names) {
-    $cc_precompile->build($package_name);
-  }
-}
-
-sub build_native {
-  my ($self, $package_names) = @_;
-
-  my $cc_native = SPVM::Builder::CC->new(
-    build_dir => $self->{build_dir},
-    category => 'native',
-    builder => $self,
-    quiet => 1,
-  );
-  
-  for my $package_name (@$package_names) {
-    $cc_native->build($package_name);
-  }
+  $cc->build_if_needed_and_bind_shared_lib($package_name);
 }
 
 1;
