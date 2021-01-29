@@ -639,7 +639,7 @@ sub build_dll_precompile_runtime {
   my $lib_dir = $self->builder->create_build_lib_path;
   mkpath $lib_dir;
   
-  $self->create_source_precompile(
+  $self->create_csource_precompile(
     $package_name,
     $sub_names,
     {
@@ -701,7 +701,7 @@ sub build_dll_precompile_dist {
 
   my $lib_dir = 'blib/lib';
   
-  $self->create_source_precompile(
+  $self->create_csource_precompile(
     $package_name,
     $sub_names,
     {
@@ -744,7 +744,7 @@ sub build_dll_native_dist {
   );
 }
 
-sub create_source_precompile {
+sub create_csource_precompile {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   my $src_dir = $opt->{src_dir};
@@ -761,10 +761,10 @@ sub create_source_precompile {
 
   my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);
   
-  my $is_create_source_file;
+  my $is_create_csource_file;
   # Anon sub
   if ($package_name =~ /^anon/) {
-    $is_create_source_file = 1;
+    $is_create_csource_file = 1;
   }
   # Normal sub
   else {
@@ -780,15 +780,15 @@ sub create_source_precompile {
     }
     
     if ($package_csource ne $old_package_csource) {
-      $is_create_source_file = 1;
+      $is_create_csource_file = 1;
     }
     else {
-      $is_create_source_file = 0;
+      $is_create_csource_file = 0;
     }
   }
   
   # Create source fil
-  if ($is_create_source_file) {
+  if ($is_create_csource_file) {
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
     print $fh $package_csource;
