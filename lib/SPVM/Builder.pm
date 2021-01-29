@@ -12,7 +12,23 @@ use SPVM::Builder::CC;
 # because SPVM::Builder XS method is loaded when SPVM is loaded
 use SPVM();
 
+# Accessors
 sub build_dir { shift->{build_dir} }
+
+sub new {
+  my $class = shift;
+  
+  my $self = {
+    include_dirs => \@INC,
+    @_
+  };
+  
+  bless $self, ref $class || $class;
+  
+  $self->create_compiler;
+  
+  return $self;
+}
 
 sub create_build_src_path {
   my ($self, $rel_file) = @_;
@@ -60,21 +76,6 @@ sub create_build_lib_path {
   }
   
   return $build_lib_path;
-}
-
-sub new {
-  my $class = shift;
-  
-  my $self = {
-    include_dirs => \@INC,
-    @_
-  };
-  
-  bless $self, ref $class || $class;
-  
-  $self->create_compiler;
-  
-  return $self;
 }
 
 sub get_config_file {

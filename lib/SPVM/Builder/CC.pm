@@ -66,7 +66,7 @@ sub get_dll_file_runtime {
   
   return unless defined $build_dir;
   
-  my $lib_dir = "$build_dir/work/lib";
+  my $lib_dir = $self->builder->create_build_lib_path;
   my $dll_file = "$lib_dir/$dll_rel_file";
   
   return $dll_file;
@@ -628,15 +628,15 @@ sub build_dll_precompile_runtime {
   }
   
   # Object directory
-  my $object_dir = "$build_dir/work/object";
+  my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
   
   # Source directory
-  my $src_dir = "$build_dir/work/src";
+  my $src_dir = $self->builder->create_build_src_path;
   mkpath $src_dir;
   
   # Lib directory
-  my $lib_dir = "$build_dir/work/lib";
+  my $lib_dir = $self->builder->create_build_lib_path;
   mkpath $lib_dir;
   
   $self->create_source_precompile(
@@ -673,10 +673,10 @@ sub build_dll_native_runtime {
     confess "SPVM_BUILD_DIR environment variable must be set for build native subroutine in runtime";
   }
   
-  my $object_dir = "$build_dir/work/object";
+  my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
   
-  my $lib_dir = "$build_dir/work/lib";
+  my $lib_dir = $self->builder->create_build_lib_path;
   mkpath $lib_dir;
   
   $self->build_dll(
@@ -693,10 +693,10 @@ sub build_dll_native_runtime {
 sub build_dll_precompile_dist {
   my ($self, $package_name, $sub_names) = @_;
   
-  my $object_dir = ".spvm_build/work/object";
+  my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
   
-  my $src_dir = ".spvm_build/work/src";
+  my $src_dir = $self->builder->create_build_src_path;
   mkpath $src_dir;
 
   my $lib_dir = 'blib/lib';
@@ -725,7 +725,7 @@ sub build_dll_native_dist {
   
   my $src_dir = 'lib';
 
-  my $object_dir = ".spvm_build/work/object";
+  my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
 
   my $lib_dir = 'blib/lib';
