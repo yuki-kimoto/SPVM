@@ -161,19 +161,18 @@ sub build_if_needed_and_bind_shared_lib {
       }
       $dll_file = $cc->get_dll_file_runtime($package_name);
     }
-    $self->bind_subs($cc, $dll_file, $package_name, $sub_names);
+    $self->bind_subs($cc, $dll_file, $package_name, $sub_names, $category);
   }
 }
 
 sub bind_subs {
-  my ($self, $cc, $dll_file, $package_name, $sub_names) = @_;
+  my ($self, $cc, $dll_file, $package_name, $sub_names, $category) = @_;
   
   # m library is maybe not dynamic link library
   my %must_not_load_libs = map { $_ => 1 } ('m');
   
   # Load pre-required dynamic library
-  my $category = $cc->category;
-  my $bconf = $cc->get_config_runtime($package_name, $category);
+  my $bconf = $self->get_config_runtime($package_name, $category);
   my $lib_dirs = $bconf->get_lib_dirs;
   {
     local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
@@ -193,7 +192,7 @@ sub bind_subs {
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
 
-    my $cfunc_name = $cc->create_cfunc_name($package_name, $sub_name);
+    my $cfunc_name = $self->create_cfunc_name($package_name, $sub_name, $category);
     my $cfunc_address;
     if ($dll_file) {
       my $dll_libref = DynaLoader::dl_load_file($dll_file);
@@ -229,12 +228,67 @@ EOS
     }
     
     if ($category eq 'native') {
-      $cc->bind_sub_native($package_name, $sub_name, $cfunc_address);
+      $self->bind_sub_native($package_name, $sub_name, $cfunc_address);
     }
     elsif ($category eq 'precompile') {
-      $cc->bind_sub_precompile($package_name, $sub_name, $cfunc_address);
+      $self->bind_sub_precompile($package_name, $sub_name, $cfunc_address);
     }
   }
+}
+
+sub create_cfunc_name {
+  my ($self, $package_name, $sub_name, $category) = @_;
+  
+  my $prefix = 'SP' . uc($category) . '__';
+  
+  # Precompile Subroutine names
+  my $sub_abs_name_under_score = "${package_name}::$sub_name";
+  $sub_abs_name_under_score =~ s/:/_/g;
+  my $cfunc_name = "$prefix$sub_abs_name_under_score";
+  
+  return $cfunc_name;
+}
+
+sub get_config_runtime {
+  my ($self, $package_name, $category) = @_;
+  
+  my $module_file = $self->get_module_file($package_name);
+  my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
+
+  # Config file
+  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
+  my $config_file = "$src_dir/$config_rel_file";
+  
+  # Config
+  my $bconf;
+  if (-f $config_file) {
+    $bconf = SPVM::Builder::Util::load_config($config_file);
+  }
+  else {
+    if ($category eq 'native') {
+      my $error = <<"EOS";
+Can't find $config_file.
+
+Config file must contains at least the following code
+----------------------------------------------
+use strict;
+use warnings;
+
+use SPVM::Builder::Config;
+my \$bconf = SPVM::Builder::Config->new_c99;
+
+\$bconf;
+----------------------------------------------
+$@
+EOS
+      confess $error;
+    }
+    else {
+      $bconf = SPVM::Builder::Config->new_c99;
+    }
+  }
+  
+  return $bconf;
 }
 
 1;

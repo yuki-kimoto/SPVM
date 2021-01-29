@@ -42,63 +42,6 @@ sub get_dll_file_runtime {
   return $dll_file;
 }
 
-sub create_cfunc_name {
-  my ($self, $package_name, $sub_name) = @_;
-  
-  my $category = $self->category;
-  my $prefix = 'SP' . uc($category) . '__';
-  
-  # Precompile Subroutine names
-  my $sub_abs_name_under_score = "${package_name}::$sub_name";
-  $sub_abs_name_under_score =~ s/:/_/g;
-  my $cfunc_name = "$prefix$sub_abs_name_under_score";
-  
-  return $cfunc_name;
-}
-
-sub get_config_runtime {
-  my ($self, $package_name, $category) = @_;
-  
-  my $module_file = $self->builder->get_module_file($package_name);
-  my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
-
-  # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
-  my $config_file = "$src_dir/$config_rel_file";
-  
-  # Config
-  my $bconf;
-  if (-f $config_file) {
-    $bconf = SPVM::Builder::Util::load_config($config_file);
-  }
-  else {
-    if ($category eq 'native') {
-      my $error = <<"EOS";
-Can't find $config_file.
-
-Config file must contains at least the following code
-----------------------------------------------
-use strict;
-use warnings;
-
-use SPVM::Builder::Config;
-my \$bconf = SPVM::Builder::Config->new_c99;
-
-\$bconf;
-----------------------------------------------
-$@
-EOS
-      confess $error;
-    }
-    else {
-      $bconf = SPVM::Builder::Config->new_c99;
-    }
-  }
-  
-  return $bconf;
-}
-
-
 sub build_dll {
   my ($self, $package_name, $sub_names, $opt) = @_;
   

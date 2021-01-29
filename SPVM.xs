@@ -494,6 +494,82 @@ _init(...)
 }
 
 SV*
+bind_sub_precompile(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_package_name = ST(1);
+  SV* sv_sub_name = ST(2);
+  SV* sv_precompile_address = ST(3);
+  
+  void* sub_precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
+  
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  
+  // Package name
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  // Subroutine name
+  const char* sub_name = SvPV_nolen(sv_sub_name);
+  
+  // Basic type
+  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_PACKAGE* package = basic_type->package;
+
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  sub->precompile_address = sub_precompile_address;
+  
+  XSRETURN(0);
+}
+
+SV*
+bind_sub_native(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_package_name = ST(1);
+  SV* sv_sub_name = ST(2);
+  SV* sv_native_address = ST(3);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Package name
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  // Subroutine name
+  const char* sub_name = SvPV_nolen(sv_sub_name);
+  
+  // Native address
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  // Basic type
+  SPVM_BASIC_TYPE* basic_type = (SPVM_BASIC_TYPE*)SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
+  
+  // Package name
+  SPVM_PACKAGE* package = basic_type->package;
+  
+  // Set native address to subroutine
+  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  sub->native_address = native_address;
+  
+  XSRETURN(0);
+}
+
+SV*
 DESTROY(...)
   PPCODE:
 {
@@ -545,92 +621,6 @@ build_package_csource_precompile(...)
 
   XPUSHs(sv_package_csource);
   XSRETURN(1);
-}
-
-SV*
-bind_sub_precompile(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_package_name = ST(1);
-  SV* sv_sub_name = ST(2);
-  SV* sv_precompile_address = ST(3);
-  
-  void* sub_precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
-  
-  // Builder
-  SV** sv_builder_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
-  HV* hv_builder = (HV*)SvRV(sv_builder);
-  
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  // Package name
-  const char* package_name = SvPV_nolen(sv_package_name);
-
-  // Subroutine name
-  const char* sub_name = SvPV_nolen(sv_sub_name);
-  
-  // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
-  
-  // Package name
-  SPVM_PACKAGE* package = basic_type->package;
-
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  sub->precompile_address = sub_precompile_address;
-  
-  XSRETURN(0);
-}
-
-SV*
-bind_sub_native(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_package_name = ST(1);
-  SV* sv_sub_name = ST(2);
-  SV* sv_native_address = ST(3);
-
-  // Env
-  SV** sv_builder_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
-  HV* hv_builder = (HV*)SvRV(sv_builder);
-  
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Package name
-  const char* package_name = SvPV_nolen(sv_package_name);
-
-  // Subroutine name
-  const char* sub_name = SvPV_nolen(sv_sub_name);
-  
-  // Native address
-  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
-  
-  // Basic type
-  SPVM_BASIC_TYPE* basic_type = (SPVM_BASIC_TYPE*)SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
-  
-  // Package name
-  SPVM_PACKAGE* package = basic_type->package;
-  
-  // Set native address to subroutine
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  sub->native_address = native_address;
-  
-  XSRETURN(0);
 }
 
 MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
