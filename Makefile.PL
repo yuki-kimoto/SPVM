@@ -37,7 +37,7 @@ use SPVM::Builder::Util;
   
   # old FreeBSD don't support some C99 complex functions
   if ($Config{osname} eq 'freebsd' && $Config{osvers} < 11.4) {
-    warn "SPVM don't support NetBSD before version 11.4";
+    warn "SPVM don't support FreeBSD before version 11.4";
     die "OS unsupported\n";
   }
 }
