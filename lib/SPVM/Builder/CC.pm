@@ -48,7 +48,7 @@ sub build_dll {
   # Compile source file and create object files
   my $object_files = $self->compile($package_name, $opt);
   
-  # Link object files and create shared objectrary
+  # Link object files and create shared library
   $self->link(
     $package_name,
     $sub_names,
@@ -438,7 +438,7 @@ EOS
   my $dll_dir = dirname "$lib_dir/$package_rel_file_without_ext";
   mkpath $dll_dir;
   
-  # Move shared objectrary file to blib directory
+  # Move shared library file to blib directory
   move($tmp_dll_file, $dll_file)
     or die "Can't move $tmp_dll_file to $dll_file";
   
