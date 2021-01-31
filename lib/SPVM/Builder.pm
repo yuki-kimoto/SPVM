@@ -97,7 +97,7 @@ sub build_dll_native_dist {
   
   $self->compile_spvm($package_name, '(build_dll_native_dist)', 0);
 
-  my $sub_names = $self->get_native_sub_names($package_name);
+  my $sub_names = $self->get_sub_names($package_name, 'native');
 
   my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
@@ -117,7 +117,7 @@ sub build_dll_precompile_dist {
     die "Compile error";
   }
   
-  my $sub_names = $self->get_precompile_sub_names($package_name);
+  my $sub_names = $self->get_sub_names($package_name, 'precompile');
 
   my $cc_precompile = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
@@ -139,13 +139,7 @@ sub build_if_needed_and_bind_shared_lib {
     quiet => 1,
   );
   
-  my $sub_names;
-  if ($category eq 'native') {
-    $sub_names = $cc->builder->get_native_sub_names($package_name)
-  }
-  elsif ($category eq 'precompile') {
-    $sub_names = $cc->builder->get_precompile_sub_names($package_name)
-  }
+  my $sub_names = $cc->builder->get_sub_names($package_name, $category);
   
   if (@$sub_names) {
     # Shared library is already installed in distribution directory

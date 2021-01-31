@@ -202,82 +202,6 @@ compile_spvm(...)
 }
 
 SV*
-get_precompile_sub_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_package_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* package_name = SvPV_nolen(sv_package_name);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_precompile_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_precompile_sub_names = sv_2mortal(newRV_inc((SV*)av_precompile_sub_names));
-  
-  // Copy package load path to builder
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
-
-  for (int32_t sub_index = 0; sub_index < package->subs->length; sub_index++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
-    if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
-      const char* sub_name = sub->name;
-      SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
-      av_push(av_precompile_sub_names, SvREFCNT_inc(sv_sub_name));
-    }
-  }
-  
-  XPUSHs(sv_precompile_sub_names);
-  XSRETURN(1);
-}
-
-SV*
-get_native_sub_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_package_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* package_name = SvPV_nolen(sv_package_name);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_native_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_native_sub_names = sv_2mortal(newRV_inc((SV*)av_native_sub_names));
-  
-  // Copy package load path to builder
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
-
-  for (int32_t sub_index = 0; sub_index < package->subs->length; sub_index++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
-    if (sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
-      const char* sub_name = sub->name;
-      SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
-      av_push(av_native_sub_names, SvREFCNT_inc(sv_sub_name));
-    }
-  }
-  
-  XPUSHs(sv_native_sub_names);
-  XSRETURN(1);
-}
-
-SV*
 get_sub_names(...)
   PPCODE:
 {
@@ -285,6 +209,7 @@ get_sub_names(...)
   
   SV* sv_self = ST(0);
   SV* sv_package_name = ST(1);
+  SV* sv_category = ST(2);
 
   HV* hv_self = (HV*)SvRV(sv_self);
 
@@ -306,7 +231,19 @@ get_sub_names(...)
     SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
     const char* sub_name = sub->name;
     SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
-    av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+    
+    int32_t is_push = 0;
+    if (SvOK(sv_category)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
+        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      }
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
+        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      }
+    }
+    else {
+      av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+    }
   }
   
   XPUSHs(sv_sub_names);

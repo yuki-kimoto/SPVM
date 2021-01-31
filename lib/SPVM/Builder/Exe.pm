@@ -189,7 +189,7 @@ sub create_precompile_csources {
   my $package_names = $builder->get_package_names;
   for my $precompile_package_name (@$package_names) {
     
-    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     if (@$precompile_sub_names) {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
@@ -224,7 +224,7 @@ sub compile_precompile_csources {
   my $package_names = $builder->get_package_names;
   for my $precompile_package_name (@$package_names) {
     
-    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     if (@$precompile_sub_names) {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
@@ -265,7 +265,7 @@ sub compile_native_csources {
   my $all_object_files = [];
   for my $native_package_name (@$package_names) {
     
-    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
+    my $native_sub_names = $builder->get_sub_names($native_package_name, 'native');
     if (@$native_sub_names) {
       my $native_module_file = $builder->get_module_file($native_package_name);
       my $native_dir = $native_module_file;
@@ -460,7 +460,7 @@ EOS
 
   $boot_csource .= "// precompile functions declaration\n";
   for my $precompile_package_name (@$package_names) {
-    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     for my $sub_name (@$precompile_sub_names) {
       my $native_package_name = $precompile_package_name;
       $native_package_name =~ s/::/__/g;
@@ -472,7 +472,7 @@ EOS
 
   $boot_csource .= "// native functions declaration\n";
   for my $native_package_name (@$package_names) {
-    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
+    my $native_sub_names = $builder->get_sub_names($native_package_name, 'native');
     for my $sub_name (@$native_sub_names) {
       my $native_package_name = $native_package_name;
       $native_package_name =~ s/::/__/g;
@@ -532,7 +532,7 @@ EOS
     my $native_package_name = $precompile_package_name;
     $native_package_name =~ s/::/__/g;
     
-    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     
     for my $precompile_sub_name (@$precompile_sub_names) {
       $boot_csource .= <<"EOS";
@@ -555,7 +555,7 @@ EOS
     my $native_package_cname = $native_package_name;
     $native_package_cname =~ s/::/__/g;
     
-    my $native_sub_names = $builder->get_native_sub_names($native_package_name);
+    my $native_sub_names = $builder->get_sub_names($native_package_name, 'native');
     
     for my $native_sub_name (@$native_sub_names) {
       $boot_csource .= <<"EOS";
@@ -802,7 +802,7 @@ sub link {
   my $precompile_object_files = [];
   for my $precompile_package_name (@$package_names) {
     
-    my $precompile_sub_names = $builder->get_precompile_sub_names($precompile_package_name);
+    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     if (@$precompile_sub_names) {
       my $category = 'precompile';
       my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($precompile_package_name, $category, 'o');
