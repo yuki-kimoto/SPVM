@@ -4,17 +4,16 @@ use strict;
 use warnings;
 use Carp 'confess';
 
-use SPVM::Builder::Util;
-use SPVM::Builder::Config;
-
 use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use DynaLoader;
 use Config;
 use File::Find 'find';
-
 use File::Basename 'dirname', 'basename';
+
+use SPVM::Builder::Util;
+use SPVM::Builder::Config;
 
 sub category { shift->{category} }
 sub builder { shift->{builder} }
