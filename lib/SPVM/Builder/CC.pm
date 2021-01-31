@@ -16,6 +16,9 @@ use File::Find 'find';
 
 use File::Basename 'dirname', 'basename';
 
+sub category { shift->{category} }
+sub builder { shift->{builder} }
+
 sub new {
   my $class = shift;
   
@@ -23,10 +26,6 @@ sub new {
   
   return bless $self, $class;
 }
-
-sub category { shift->{category} }
-
-sub builder { shift->{builder} }
 
 sub get_dll_file_runtime {
   my ($self, $package_name) = @_;
