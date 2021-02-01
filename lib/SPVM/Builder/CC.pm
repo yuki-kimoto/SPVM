@@ -30,7 +30,7 @@ sub get_shared_lib_file_runtime {
   my ($self, $package_name) = @_;
   
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
   
   return unless defined $build_dir;
   
@@ -59,7 +59,7 @@ sub compile {
   my ($self, $package_name, $opt) = @_;
 
   # Build directory
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
   if (defined $build_dir) {
     mkpath $build_dir;
   }
@@ -309,7 +309,7 @@ sub link {
   my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
 
   # Build directory
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
   if (defined $build_dir) {
     mkpath $build_dir;
   }
@@ -460,7 +460,7 @@ sub build_shared_lib_runtime {
   my $category = $self->category;
 
   # Build directory
-  my $build_dir = $self->{build_dir};
+  my $build_dir = $self->builder->build_dir;
   if (defined $build_dir) {
     mkpath $build_dir;
   }
