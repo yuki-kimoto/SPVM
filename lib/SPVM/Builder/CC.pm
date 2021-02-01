@@ -454,8 +454,10 @@ sub get_shared_lib_file_dist {
   return $shared_lib_file;
 }
 
-sub build_shared_lib_precompile_runtime {
+sub build_shared_lib_runtime {
   my ($self, $package_name, $sub_names) = @_;
+  
+  my $category = $self->category;
 
   # Build directory
   my $build_dir = $self->{build_dir};
@@ -463,58 +465,33 @@ sub build_shared_lib_precompile_runtime {
     mkpath $build_dir;
   }
   else {
-    confess "SPVM_BUILD_DIR environment variable must be set for build precompile subroutine in runtime";
+    confess "SPVM_BUILD_DIR environment variable must be set for build $category subroutine in runtime";
+  }
+  
+  # Source directory
+  my $src_dir;
+  if ($category eq 'precompile') {
+    $src_dir = $self->builder->create_build_src_path;
+    mkpath $src_dir;
+    
+    $self->create_precompile_csource(
+      $package_name,
+      $sub_names,
+      {
+        src_dir => $src_dir,
+      }
+    );
+  }
+  elsif ($category eq 'native') {
+    my $module_file = $self->builder->get_module_file($package_name);
+    $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
   }
   
   # Object directory
   my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
   
-  # Source directory
-  my $src_dir = $self->builder->create_build_src_path;
-  mkpath $src_dir;
-  
   # Lib directory
-  my $lib_dir = $self->builder->create_build_lib_path;
-  mkpath $lib_dir;
-  
-  $self->create_precompile_csource(
-    $package_name,
-    $sub_names,
-    {
-      src_dir => $src_dir,
-    }
-  );
-  
-  $self->build_shared_lib(
-    $package_name,
-    $sub_names,
-    {
-      src_dir => $src_dir,
-      object_dir => $object_dir,
-      lib_dir => $lib_dir,
-    }
-  );
-}
-
-sub build_shared_lib_native_runtime {
-  my ($self, $package_name, $sub_names) = @_;
-  
-  my $module_file = $self->builder->get_module_file($package_name);
-  my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
-
-  # Build directory
-  my $build_dir = $self->{build_dir};
-  if (defined $build_dir) {
-    mkpath $build_dir;
-  }
-  else {
-    confess "SPVM_BUILD_DIR environment variable must be set for build native subroutine in runtime";
-  }
-  
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
-  
   my $lib_dir = $self->builder->create_build_lib_path;
   mkpath $lib_dir;
   

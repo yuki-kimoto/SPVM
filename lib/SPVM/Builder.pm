@@ -97,8 +97,6 @@ sub build_shared_lib_dist {
   
   $self->compile_spvm($package_name, '(build_shared_lib_${category}_dist)', 0);
 
-  my $sub_names = $self->get_sub_names($package_name, 'native');
-
   my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => $category,
@@ -106,27 +104,8 @@ sub build_shared_lib_dist {
     quiet => 0,
   );
   
+  my $sub_names = $self->get_sub_names($package_name, $category);
   $cc_native->build_shared_lib_dist($package_name, $sub_names);
-}
-
-sub build_shared_lib_precompile_dist {
-  my ($self, $package_name) = @_;
-  
-  my $compile_success = $self->compile_spvm($package_name, '(build_shared_lib_precompile_dist)', 0);
-  unless ($compile_success) {
-    die "Compile error";
-  }
-  
-  my $sub_names = $self->get_sub_names($package_name, 'precompile');
-
-  my $cc_precompile = SPVM::Builder::CC->new(
-    build_dir => $self->{build_dir},
-    category => 'precompile',
-    builder => $self,
-    quiet => 0,
-  );
-  
-  $cc_precompile->build_shared_lib_dist($package_name, $sub_names);
 }
 
 sub build_if_needed_and_bind_shared_lib {
@@ -147,12 +126,7 @@ sub build_if_needed_and_bind_shared_lib {
     
     # Try runtime compile if shared objectrary is not found
     unless (-f $shared_lib_file) {
-      if ($category eq 'native') {
-        $cc->build_shared_lib_native_runtime($package_name, $sub_names);
-      }
-      elsif ($category eq 'precompile') {
-        $cc->build_shared_lib_precompile_runtime($package_name, $sub_names);
-      }
+      $cc->build_shared_lib_runtime($package_name, $sub_names);
       $shared_lib_file = $cc->get_shared_lib_file_runtime($package_name);
     }
     $self->bind_subs($cc, $shared_lib_file, $package_name, $sub_names, $category);
