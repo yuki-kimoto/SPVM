@@ -478,7 +478,7 @@ sub build_shared_lib_precompile_runtime {
   my $lib_dir = $self->builder->create_build_lib_path;
   mkpath $lib_dir;
   
-  $self->create_csource_precompile(
+  $self->create_precompile_csource(
     $package_name,
     $sub_names,
     {
@@ -535,7 +535,7 @@ sub build_shared_lib_precompile_dist {
   my $src_dir = $self->builder->create_build_src_path;
   mkpath $src_dir;
 
-  $self->create_csource_precompile(
+  $self->create_precompile_csource(
     $package_name,
     $sub_names,
     {
@@ -581,7 +581,7 @@ sub build_shared_lib_native_dist {
   );
 }
 
-sub create_csource_precompile {
+sub create_precompile_csource {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   my $src_dir = $opt->{src_dir};
