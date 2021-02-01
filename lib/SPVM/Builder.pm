@@ -78,6 +78,17 @@ sub create_build_lib_path {
   return $build_lib_path;
 }
 
+sub get_shared_lib_file_runtime {
+  my ($self, $package_name, $category) = @_;
+  
+  my $build_dir = $self->build_dir;
+  
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $category);
+  my $shared_lib_file = $self->create_build_lib_path($shared_lib_rel_file);
+  
+  return $shared_lib_file;
+}
+
 sub get_config_file {
   my ($self, $package_name) = @_;
   
@@ -127,7 +138,7 @@ sub build_if_needed_and_bind_shared_lib {
     # Try runtime compile if shared objectrary is not found
     unless (-f $shared_lib_file) {
       $cc->build_shared_lib_runtime($package_name, $sub_names);
-      $shared_lib_file = $cc->get_shared_lib_file_runtime($package_name);
+      $shared_lib_file = $self->get_shared_lib_file_runtime($package_name, $category);
     }
     $self->bind_subs($cc, $shared_lib_file, $package_name, $sub_names, $category);
   }

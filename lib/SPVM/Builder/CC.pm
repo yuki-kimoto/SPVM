@@ -26,20 +26,6 @@ sub new {
   return bless $self, $class;
 }
 
-sub get_shared_lib_file_runtime {
-  my ($self, $package_name) = @_;
-  
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
-  my $build_dir = $self->builder->build_dir;
-  
-  return unless defined $build_dir;
-  
-  my $lib_dir = $self->builder->create_build_lib_path;
-  my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
-  
-  return $shared_lib_file;
-}
-
 sub build_shared_lib {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
