@@ -426,12 +426,8 @@ EOS
     confess $error;
   }
 
-  # Create shared object blib directory
-  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-  my $shared_lib_dir = dirname "$lib_dir/$package_rel_file_without_ext";
-  mkpath $shared_lib_dir;
-  
   # Move shared library file to blib directory
+  mkpath dirname $shared_lib_file;
   move($tmp_shared_lib_file, $shared_lib_file)
     or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
   
