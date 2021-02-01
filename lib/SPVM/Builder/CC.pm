@@ -33,12 +33,14 @@ sub build_shared_lib {
   my $object_files = $self->compile($package_name, $opt);
   
   # Link object files and create shared library
-  $self->link(
+  my $build_shared_lib_file = $self->link(
     $package_name,
     $sub_names,
     $object_files,
     $opt
   );
+  
+  return $build_shared_lib_file;
 }
 
 sub compile {
@@ -481,7 +483,7 @@ sub build_shared_lib_runtime {
   my $lib_dir = $self->builder->create_build_lib_path;
   mkpath $lib_dir;
   
-  $self->build_shared_lib(
+  my $build_shared_lib_file = $self->build_shared_lib(
     $package_name,
     $sub_names,
     {
@@ -490,6 +492,8 @@ sub build_shared_lib_runtime {
       lib_dir => $lib_dir,
     }
   );
+  
+  return $build_shared_lib_file;
 }
 
 sub build_shared_lib_dist {

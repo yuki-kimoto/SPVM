@@ -129,7 +129,7 @@ sub build_if_needed_and_bind_shared_lib {
     quiet => 1,
   );
   
-  my $sub_names = $cc->builder->get_sub_names($package_name, $category);
+  my $sub_names = $self->get_sub_names($package_name, $category);
   
   if (@$sub_names) {
     # Shared library which is already installed in distribution directory
@@ -137,8 +137,7 @@ sub build_if_needed_and_bind_shared_lib {
     
     # Try runtime compile if shared objectrary is not found
     unless (-f $shared_lib_file) {
-      $cc->build_shared_lib_runtime($package_name, $sub_names);
-      $shared_lib_file = $self->get_shared_lib_file_runtime($package_name, $category);
+      $shared_lib_file = $cc->build_shared_lib_runtime($package_name, $sub_names);
     }
     $self->bind_subs($cc, $shared_lib_file, $package_name, $sub_names, $category);
   }
