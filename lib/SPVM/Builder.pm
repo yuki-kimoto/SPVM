@@ -92,10 +92,10 @@ sub get_config_file {
   return $config_file;
 }
 
-sub build_dll_native_dist {
+sub build_shared_lib_native_dist {
   my ($self, $package_name) = @_;
   
-  $self->compile_spvm($package_name, '(build_dll_native_dist)', 0);
+  $self->compile_spvm($package_name, '(build_shared_lib_native_dist)', 0);
 
   my $sub_names = $self->get_sub_names($package_name, 'native');
 
@@ -106,13 +106,13 @@ sub build_dll_native_dist {
     quiet => 0,
   );
   
-  $cc_native->build_dll_native_dist($package_name, $sub_names);
+  $cc_native->build_shared_lib_native_dist($package_name, $sub_names);
 }
 
-sub build_dll_precompile_dist {
+sub build_shared_lib_precompile_dist {
   my ($self, $package_name) = @_;
   
-  my $compile_success = $self->compile_spvm($package_name, '(build_dll_precompile_dist)', 0);
+  my $compile_success = $self->compile_spvm($package_name, '(build_shared_lib_precompile_dist)', 0);
   unless ($compile_success) {
     die "Compile error";
   }
@@ -126,7 +126,7 @@ sub build_dll_precompile_dist {
     quiet => 0,
   );
   
-  $cc_precompile->build_dll_precompile_dist($package_name, $sub_names);
+  $cc_precompile->build_shared_lib_precompile_dist($package_name, $sub_names);
 }
 
 sub build_if_needed_and_bind_shared_lib {
@@ -143,24 +143,24 @@ sub build_if_needed_and_bind_shared_lib {
   
   if (@$sub_names) {
     # Shared library is already installed in distribution directory
-    my $dll_file = $cc->get_dll_file_dist($package_name);
+    my $shared_lib_file = $cc->get_shared_lib_file_dist($package_name);
     
     # Try runtime compile if shared objectrary is not found
-    unless (-f $dll_file) {
+    unless (-f $shared_lib_file) {
       if ($category eq 'native') {
-        $cc->build_dll_native_runtime($package_name, $sub_names);
+        $cc->build_shared_lib_native_runtime($package_name, $sub_names);
       }
       elsif ($category eq 'precompile') {
-        $cc->build_dll_precompile_runtime($package_name, $sub_names);
+        $cc->build_shared_lib_precompile_runtime($package_name, $sub_names);
       }
-      $dll_file = $cc->get_dll_file_runtime($package_name);
+      $shared_lib_file = $cc->get_shared_lib_file_runtime($package_name);
     }
-    $self->bind_subs($cc, $dll_file, $package_name, $sub_names, $category);
+    $self->bind_subs($cc, $shared_lib_file, $package_name, $sub_names, $category);
   }
 }
 
 sub bind_subs {
-  my ($self, $cc, $dll_file, $package_name, $sub_names, $category) = @_;
+  my ($self, $cc, $shared_lib_file, $package_name, $sub_names, $category) = @_;
   
   # m library is maybe not dynamic link library
   my %must_not_load_libs = map { $_ => 1 } ('m');
@@ -174,10 +174,10 @@ sub bind_subs {
     for my $lib (@$libs) {
       unless ($must_not_load_libs{$lib}) {
         my ($lib_file) = DynaLoader::dl_findfile("-l$lib");
-        my $dll_libref = DynaLoader::dl_load_file($lib_file);
-        unless ($dll_libref) {
+        my $shared_lib_libref = DynaLoader::dl_load_file($lib_file);
+        unless ($shared_lib_libref) {
           my $dl_error = DynaLoader::dl_error();
-          confess "Can't load dll file \"$dll_file\": $dl_error";
+          confess "Can't load shared_lib file \"$shared_lib_file\": $dl_error";
         }
       }
     }
@@ -188,14 +188,14 @@ sub bind_subs {
 
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $sub_name, $category);
     my $cfunc_address;
-    if ($dll_file) {
-      my $dll_libref = DynaLoader::dl_load_file($dll_file);
-      if ($dll_libref) {
-        $cfunc_address = DynaLoader::dl_find_symbol($dll_libref, $cfunc_name);
+    if ($shared_lib_file) {
+      my $shared_lib_libref = DynaLoader::dl_load_file($shared_lib_file);
+      if ($shared_lib_libref) {
+        $cfunc_address = DynaLoader::dl_find_symbol($shared_lib_libref, $cfunc_name);
         unless ($cfunc_address) {
           my $dl_error = DynaLoader::dl_error();
           my $error = <<"EOS";
-Can't find native function \"$cfunc_name\" corresponding to $sub_abs_name in \"$dll_file\"
+Can't find native function \"$cfunc_name\" corresponding to $sub_abs_name in \"$shared_lib_file\"
 
 You must write the following definition.
 --------------------------------------------------
@@ -214,7 +214,7 @@ EOS
       }
       else {
         my $dl_error = DynaLoader::dl_error();
-        confess "Can't load dll file \"$dll_file\": $dl_error";
+        confess "Can't load shared_lib file \"$shared_lib_file\": $dl_error";
       }
     }
     else {

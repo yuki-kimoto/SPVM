@@ -26,21 +26,21 @@ sub new {
   return bless $self, $class;
 }
 
-sub get_dll_file_runtime {
+sub get_shared_lib_file_runtime {
   my ($self, $package_name) = @_;
   
-  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_category_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   
   return unless defined $build_dir;
   
   my $lib_dir = $self->builder->create_build_lib_path;
-  my $dll_file = "$lib_dir/$dll_rel_file";
+  my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
   
-  return $dll_file;
+  return $shared_lib_file;
 }
 
-sub build_dll {
+sub build_shared_lib {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
   # Compile source file and create object files
@@ -333,8 +333,8 @@ sub link {
   }
 
   # shared object file
-  my $dll_rel_file = SPVM::Builder::Util::convert_package_name_to_dll_category_rel_file($package_name, $self->category);
-  my $dll_file = "$lib_dir/$dll_rel_file";
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_category_rel_file($package_name, $self->category);
+  my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
 
   # Create temporary package directory
   my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, 'spvm');
@@ -413,14 +413,14 @@ EOS
   }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_dll_file;
+  my $tmp_shared_lib_file;
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
   my $extra_linker_flag = $bconf->get_extra_linker_flags;
   
   $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
   eval {
-    $tmp_dll_file = $cbuilder->link(
+    $tmp_shared_lib_file = $cbuilder->link(
       objects => $object_files,
       module_name => $package_name,
       dl_func_list => $cfunc_names,
@@ -433,28 +433,28 @@ EOS
 
   # Create shared object blib directory
   my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-  my $dll_dir = dirname "$lib_dir/$package_rel_file_without_ext";
-  mkpath $dll_dir;
+  my $shared_lib_dir = dirname "$lib_dir/$package_rel_file_without_ext";
+  mkpath $shared_lib_dir;
   
   # Move shared library file to blib directory
-  move($tmp_dll_file, $dll_file)
-    or die "Can't move $tmp_dll_file to $dll_file";
+  move($tmp_shared_lib_file, $shared_lib_file)
+    or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
   
-  return $dll_file;
+  return $shared_lib_file;
 }
 
-sub get_dll_file_dist {
+sub get_shared_lib_file_dist {
   my ($self, $package_name) = @_;
   
   my @package_name_parts = split(/::/, $package_name);
   my $module_module_file = $self->builder->get_module_file($package_name);
   
-  my $dll_file = SPVM::Builder::Util::convert_module_file_to_dll_category_file($module_module_file, $self->category);
+  my $shared_lib_file = SPVM::Builder::Util::convert_module_file_to_shared_lib_category_file($module_module_file, $self->category);
   
-  return $dll_file;
+  return $shared_lib_file;
 }
 
-sub build_dll_precompile_runtime {
+sub build_shared_lib_precompile_runtime {
   my ($self, $package_name, $sub_names) = @_;
 
   # Build directory
@@ -486,7 +486,7 @@ sub build_dll_precompile_runtime {
     }
   );
   
-  $self->build_dll(
+  $self->build_shared_lib(
     $package_name,
     $sub_names,
     {
@@ -497,7 +497,7 @@ sub build_dll_precompile_runtime {
   );
 }
 
-sub build_dll_native_runtime {
+sub build_shared_lib_native_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
   my $module_file = $self->builder->get_module_file($package_name);
@@ -518,7 +518,7 @@ sub build_dll_native_runtime {
   my $lib_dir = $self->builder->create_build_lib_path;
   mkpath $lib_dir;
   
-  $self->build_dll(
+  $self->build_shared_lib(
     $package_name,
     $sub_names,
     {
@@ -529,7 +529,7 @@ sub build_dll_native_runtime {
   );
 }
 
-sub build_dll_precompile_dist {
+sub build_shared_lib_precompile_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $object_dir = $self->builder->create_build_object_path;
@@ -548,7 +548,7 @@ sub build_dll_precompile_dist {
     }
   );
   
-  $self->build_dll(
+  $self->build_shared_lib(
     $package_name,
     $sub_names,
     {
@@ -559,7 +559,7 @@ sub build_dll_precompile_dist {
   );
 }
 
-sub build_dll_native_dist {
+sub build_shared_lib_native_dist {
   my ($self, $package_name, $sub_names) = @_;
   
   my $src_dir = 'lib';
@@ -572,7 +572,7 @@ sub build_dll_native_dist {
   my $category = $self->category;
   
   # Build shared object
-  $self->build_dll(
+  $self->build_shared_lib(
     $package_name,
     $sub_names,
     {

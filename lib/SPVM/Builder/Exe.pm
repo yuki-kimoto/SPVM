@@ -822,7 +822,7 @@ sub link {
   $quiet = 0;
   my $exe_file = $output_file;
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_dll_file = $cbuilder->link_executable(
+  my $tmp_shared_lib_file = $cbuilder->link_executable(
     objects => $object_files,
     module_name => $target_package_name,
     exe_file => $exe_file,
