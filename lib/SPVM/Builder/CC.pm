@@ -311,6 +311,9 @@ sub compile {
 
 sub link {
   my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
+  
+  # Category
+  my $category = $self->category;
 
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -318,39 +321,28 @@ sub link {
     mkpath $build_dir;
   }
   else {
-    confess "SPVM_BUILD_DIR environment variable must be set for linking" . $self->category . " build";
+    confess "SPVM_BUILD_DIR environment variable must be set for link";
   }
   
-  # Input directory
-  my $src_dir = $opt->{src_dir};
-
-  # Work temporary directory
+  # Object directory
   my $object_dir = $opt->{object_dir};
   unless (defined $object_dir && -d $object_dir) {
-    confess "Temporary directory must be specified for " . $self->category . " build";
+    confess "Object directory must be specified for link";
   }
   
-  # Output directory
+  # Shared library directory
   my $lib_dir = $opt->{lib_dir};
   unless (defined $lib_dir && -d $lib_dir) {
-    confess "Output directory must be specified for " . $self->category . " build";
+    confess "Shared lib directory must be specified for link";
   }
 
-  # shared object file
+  # Shared library file
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
 
-  # Create temporary package directory
-  my $tmp_package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, 'spvm');
-  my $tmp_package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
-  my $tmp_package_dir = "$object_dir/$tmp_package_rel_dir";
-  mkpath $tmp_package_dir;
-  
-  # Category
-  my $category = $self->category;
-
   # Config file
   my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'config');
+  my $src_dir = $opt->{src_dir};
   my $config_file = "$src_dir/$config_rel_file";
   
   # Config
