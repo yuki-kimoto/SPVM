@@ -89,6 +89,17 @@ sub get_shared_lib_file_runtime {
   return $shared_lib_file;
 }
 
+sub get_shared_lib_file_dist {
+  my ($self, $package_name, $category) = @_;
+  
+  my @package_name_parts = split(/::/, $package_name);
+  my $module_module_file = $self->builder->get_module_file($package_name);
+  
+  my $shared_lib_file = SPVM::Builder::Util::convert_module_file_to_shared_lib_file($module_module_file, $category);
+  
+  return $shared_lib_file;
+}
+
 sub get_config_file {
   my ($self, $package_name) = @_;
   
@@ -133,7 +144,7 @@ sub build_if_needed_and_bind_shared_lib {
   
   if (@$sub_names) {
     # Shared library which is already installed in distribution directory
-    my $shared_lib_file = $cc->get_shared_lib_file_dist($package_name);
+    my $shared_lib_file = $cc->get_shared_lib_file_dist($package_name, $category);
     
     # Try runtime compile if shared objectrary is not found
     unless (-f $shared_lib_file) {

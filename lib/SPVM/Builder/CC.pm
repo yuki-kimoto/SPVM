@@ -431,17 +431,6 @@ EOS
   return $shared_lib_file;
 }
 
-sub get_shared_lib_file_dist {
-  my ($self, $package_name) = @_;
-  
-  my @package_name_parts = split(/::/, $package_name);
-  my $module_module_file = $self->builder->get_module_file($package_name);
-  
-  my $shared_lib_file = SPVM::Builder::Util::convert_module_file_to_shared_lib_file($module_module_file, $self->category);
-  
-  return $shared_lib_file;
-}
-
 sub build_shared_lib_runtime {
   my ($self, $package_name, $sub_names) = @_;
   
