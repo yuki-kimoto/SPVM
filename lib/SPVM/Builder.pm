@@ -92,21 +92,21 @@ sub get_config_file {
   return $config_file;
 }
 
-sub build_shared_lib_native_dist {
-  my ($self, $package_name) = @_;
+sub build_shared_lib_dist {
+  my ($self, $package_name, $category) = @_;
   
-  $self->compile_spvm($package_name, '(build_shared_lib_native_dist)', 0);
+  $self->compile_spvm($package_name, '(build_shared_lib_${category}_dist)', 0);
 
   my $sub_names = $self->get_sub_names($package_name, 'native');
 
   my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
-    category => 'native',
+    category => $category,
     builder => $self,
     quiet => 0,
   );
   
-  $cc_native->build_shared_lib_native_dist($package_name, $sub_names);
+  $cc_native->build_shared_lib_dist($package_name, $sub_names);
 }
 
 sub build_shared_lib_precompile_dist {
@@ -126,7 +126,7 @@ sub build_shared_lib_precompile_dist {
     quiet => 0,
   );
   
-  $cc_precompile->build_shared_lib_precompile_dist($package_name, $sub_names);
+  $cc_precompile->build_shared_lib_dist($package_name, $sub_names);
 }
 
 sub build_if_needed_and_bind_shared_lib {

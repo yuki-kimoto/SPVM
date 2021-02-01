@@ -529,47 +529,33 @@ sub build_shared_lib_native_runtime {
   );
 }
 
-sub build_shared_lib_precompile_dist {
+sub build_shared_lib_dist {
   my ($self, $package_name, $sub_names) = @_;
   
-  my $src_dir = $self->builder->create_build_src_path;
-  mkpath $src_dir;
+  my $category = $self->category;
+  
+  my $src_dir;
+  if ($category eq 'precompile') {
+    $src_dir = $self->builder->create_build_src_path;
+    mkpath $src_dir;
 
-  $self->create_precompile_csource(
-    $package_name,
-    $sub_names,
-    {
-      src_dir => $src_dir,
-    }
-  );
+    $self->create_precompile_csource(
+      $package_name,
+      $sub_names,
+      {
+        src_dir => $src_dir,
+      }
+    );
+  }
+  elsif ($category eq 'native') {
+    $src_dir = 'lib';
+  }
 
   my $object_dir = $self->builder->create_build_object_path;
   mkpath $object_dir;
   
   my $lib_dir = 'blib/lib';
   
-  $self->build_shared_lib(
-    $package_name,
-    $sub_names,
-    {
-      src_dir => $src_dir,
-      object_dir => $object_dir,
-      lib_dir => $lib_dir,
-    }
-  );
-}
-
-sub build_shared_lib_native_dist {
-  my ($self, $package_name, $sub_names) = @_;
-  
-  my $src_dir = 'lib';
-
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
-
-  my $lib_dir = 'blib/lib';
-
-  # Build shared object
   $self->build_shared_lib(
     $package_name,
     $sub_names,

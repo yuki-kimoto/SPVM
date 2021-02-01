@@ -216,7 +216,7 @@ sub create_package_make_rule {
   $make_rule
     .= "$shared_lib_file :: @deps\n\n";
   $make_rule
-    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => '.spvm_build')->build_shared_lib_${category}_dist('$package_name')\"\n\n";
+    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => '.spvm_build')->build_shared_lib_dist('$package_name', '$category')\"\n\n";
   
   return $make_rule;
 }
