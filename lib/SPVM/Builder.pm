@@ -130,7 +130,7 @@ sub build_shared_lib_dist {
   $cc_native->build_shared_lib_dist($package_name, $sub_names);
 }
 
-sub build_if_needed_and_bind_shared_lib {
+sub build_and_bind_shared_lib {
   my ($self, $package_name, $category) = @_;
   
   my $cc = SPVM::Builder::CC->new(
@@ -146,7 +146,7 @@ sub build_if_needed_and_bind_shared_lib {
     # Shared library which is already installed in distribution directory
     my $shared_lib_file = $self->get_shared_lib_file_dist($package_name, $category);
     
-    # Try runtime compile if shared objectrary is not found
+    # Try runtime compile if shared library is not found
     unless (-f $shared_lib_file) {
       $shared_lib_file = $cc->build_shared_lib_runtime($package_name, $sub_names);
     }

@@ -52,12 +52,12 @@ sub import {
 
       # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
       for my $added_package_name (@$added_package_names) {
-        $BUILDER->build_if_needed_and_bind_shared_lib($added_package_name, 'precompile');
+        $BUILDER->build_and_bind_shared_lib($added_package_name, 'precompile');
       }
 
       # Build native packages - Compile C source codes and link them to SPVM native subroutine
       for my $added_package_name (@$added_package_names) {
-        $BUILDER->build_if_needed_and_bind_shared_lib($added_package_name, 'native');
+        $BUILDER->build_and_bind_shared_lib($added_package_name, 'native');
       }
 
       # Bind SPVM subroutine to Perl
