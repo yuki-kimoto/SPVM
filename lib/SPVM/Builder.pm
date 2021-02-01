@@ -237,7 +237,7 @@ sub get_config_runtime {
   my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
 
   # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
+  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
   # Config

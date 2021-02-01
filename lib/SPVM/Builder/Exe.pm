@@ -805,7 +805,7 @@ sub link {
     my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     if (@$precompile_sub_names) {
       my $category = 'precompile';
-      my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($precompile_package_name, $category, 'o');
+      my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($precompile_package_name, $category, 'o');
       my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);
       push @$precompile_object_files, $precompile_object_file;
     }

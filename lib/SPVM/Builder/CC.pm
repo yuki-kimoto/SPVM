@@ -88,7 +88,7 @@ sub compile {
   $package_base_name =~ s/^.+:://;
 
   # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
+  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
   # Native Directory
@@ -118,7 +118,7 @@ sub compile {
   my $quiet = $bconf->get_quiet;
   
   # SPVM Subroutine source file
-  my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file_without_ext($package_name, $category);
+  my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category);
   my $spvm_sub_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
   my $src_ext = $bconf->get_ext;
   unless (defined $src_ext) {
@@ -152,7 +152,7 @@ sub compile {
     my $object_file;
     # Native object file name
     if ($is_native_src) {
-      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'native');
+      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'native');
       
       my $object_file_base = $src_file;
       $object_file_base =~ s/^\Q$native_src_dir//;
@@ -166,7 +166,7 @@ sub compile {
     }
     # SPVM subroutine object file name
     else {
-      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'o');
+      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'o');
       $object_file = "$object_dir/$object_rel_file";
     }
     
@@ -346,7 +346,7 @@ sub link {
   my $category = $self->category;
 
   # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file_with_ext($package_name, $category, 'config');
+  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
   # Config
@@ -532,14 +532,9 @@ sub build_shared_lib_native_runtime {
 sub build_shared_lib_precompile_dist {
   my ($self, $package_name, $sub_names) = @_;
   
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
-  
   my $src_dir = $self->builder->create_build_src_path;
   mkpath $src_dir;
 
-  my $lib_dir = 'blib/lib';
-  
   $self->create_csource_precompile(
     $package_name,
     $sub_names,
@@ -547,6 +542,11 @@ sub build_shared_lib_precompile_dist {
       src_dir => $src_dir,
     }
   );
+
+  my $object_dir = $self->builder->create_build_object_path;
+  mkpath $object_dir;
+  
+  my $lib_dir = 'blib/lib';
   
   $self->build_shared_lib(
     $package_name,
@@ -569,8 +569,6 @@ sub build_shared_lib_native_dist {
 
   my $lib_dir = 'blib/lib';
 
-  my $category = $self->category;
-  
   # Build shared object
   $self->build_shared_lib(
     $package_name,

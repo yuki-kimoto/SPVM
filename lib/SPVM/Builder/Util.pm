@@ -87,22 +87,15 @@ sub convert_package_name_to_shared_lib_rel_file {
   return $shared_lib_category_rel_file;
 }
 
-sub convert_package_name_to_category_rel_file_with_ext {
-  my ($package_name, $category, $ext) = @_;
-  
-  my $rel_file_with_ext = $package_name;
-  $rel_file_with_ext =~ s/::/\//g;
-  $rel_file_with_ext .= $category eq 'native' ? ".$ext" : ".$category.$ext";
-  
-  return $rel_file_with_ext;
-}
-
-sub convert_package_name_to_category_rel_file_without_ext {
+sub convert_package_name_to_category_rel_file {
   my ($package_name, $category, $ext) = @_;
   
   my $rel_file_with_ext = $package_name;
   $rel_file_with_ext =~ s/::/\//g;
   $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
+  if (defined $ext) {
+    $rel_file_with_ext .= ".$ext";
+  }
   
   return $rel_file_with_ext;
 }
