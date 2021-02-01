@@ -26,6 +26,98 @@ sub new {
   return bless $self, $class;
 }
 
+sub build_shared_lib_runtime {
+  my ($self, $package_name, $sub_names) = @_;
+  
+  my $category = $self->category;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  if (defined $build_dir) {
+    mkpath $build_dir;
+  }
+  else {
+    confess "SPVM_BUILD_DIR environment variable must be set for build $category subroutine in runtime";
+  }
+  
+  # Source directory
+  my $src_dir;
+  if ($category eq 'precompile') {
+    $src_dir = $self->builder->create_build_src_path;
+    mkpath $src_dir;
+    
+    $self->create_precompile_csource(
+      $package_name,
+      $sub_names,
+      {
+        src_dir => $src_dir,
+      }
+    );
+  }
+  elsif ($category eq 'native') {
+    my $module_file = $self->builder->get_module_file($package_name);
+    $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
+  }
+  
+  # Object directory
+  my $object_dir = $self->builder->create_build_object_path;
+  mkpath $object_dir;
+  
+  # Lib directory
+  my $lib_dir = $self->builder->create_build_lib_path;
+  mkpath $lib_dir;
+  
+  my $build_shared_lib_file = $self->build_shared_lib(
+    $package_name,
+    $sub_names,
+    {
+      src_dir => $src_dir,
+      object_dir => $object_dir,
+      lib_dir => $lib_dir,
+    }
+  );
+  
+  return $build_shared_lib_file;
+}
+
+sub build_shared_lib_dist {
+  my ($self, $package_name, $sub_names) = @_;
+  
+  my $category = $self->category;
+  
+  my $src_dir;
+  if ($category eq 'precompile') {
+    $src_dir = $self->builder->create_build_src_path;
+    mkpath $src_dir;
+
+    $self->create_precompile_csource(
+      $package_name,
+      $sub_names,
+      {
+        src_dir => $src_dir,
+      }
+    );
+  }
+  elsif ($category eq 'native') {
+    $src_dir = 'lib';
+  }
+
+  my $object_dir = $self->builder->create_build_object_path;
+  mkpath $object_dir;
+  
+  my $lib_dir = 'blib/lib';
+  
+  $self->build_shared_lib(
+    $package_name,
+    $sub_names,
+    {
+      src_dir => $src_dir,
+      object_dir => $object_dir,
+      lib_dir => $lib_dir,
+    }
+  );
+}
+
 sub build_shared_lib {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
@@ -45,6 +137,9 @@ sub build_shared_lib {
 
 sub compile {
   my ($self, $package_name, $opt) = @_;
+  
+  # Category
+  my $category = $self->category;
 
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -55,26 +150,15 @@ sub compile {
     confess "SPVM_BUILD_DIR environment variable must be set for compile";
   }
   
-  # Input directory
+  # Source directory
   my $src_dir = $opt->{src_dir};
 
-  # Temporary directory
+  # Object directory
   my $object_dir = $opt->{object_dir};
   unless (defined $object_dir && -d $object_dir) {
     confess "Temporary directory must be specified for " . $self->category . " build";
   }
   
-  my $category = $self->category;
- 
-  my $package_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name, 'spvm');
-  my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
-  my $work_object_dir = "$object_dir/$package_rel_dir";
-  mkpath $work_object_dir;
-  
-  # Package base name
-  my $package_base_name = $package_name;
-  $package_base_name =~ s/^.+:://;
-
   # Config file
   my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
@@ -128,7 +212,7 @@ sub compile {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
   # Parse source code dependency
-  my $dependency = $self->_parse_native_src_dependency($native_include_dir, $native_src_dir, $src_ext);
+  my $dependency = $self->parse_native_source_dependencies($native_include_dir, $native_src_dir, $src_ext);
 
   # Native source files
   my @native_src_files = sort keys %$dependency;
@@ -198,6 +282,10 @@ sub compile {
     }
     
     if ($do_compile) {
+      my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($package_name);
+      my $work_object_dir = "$object_dir/$package_rel_dir";
+      mkpath dirname $object_file;
+  
       eval {
         # Compile source file
         $cbuilder->compile(
@@ -217,80 +305,6 @@ sub compile {
   }
   
   return $object_files;
-}
-
-sub _parse_native_src_dependency {
-  my ($self, $include_dir, $src_dir, $src_ext) = @_;
-  
-  # Get header files
-  my @include_file_names;
-  if (-d $include_dir) {
-    find(
-      {
-        wanted => sub {
-          my $include_file_name = $File::Find::name;
-          if (-f $include_file_name) {
-            push @include_file_names, $include_file_name;
-          }
-        },
-        no_chdir => 1,
-      },
-      $include_dir,
-    );
-  }
-  
-  # Get source files
-  my @src_file_names;
-  if (-d $src_dir) {
-    find(
-      {
-        wanted => sub {
-          my $src_file_name = $File::Find::name;
-          if (-f $src_file_name) {
-            push @src_file_names, $src_file_name;
-          }
-        },
-        no_chdir => 1,
-      },
-      $src_dir,
-    );
-  }
-  
-  my $dependencies = {};
-  for my $include_file_name (@include_file_names) {
-    my $include_file_name_no_ext_rel = $include_file_name;
-    $include_file_name_no_ext_rel =~ s/^\Q$include_dir//;
-    $include_file_name_no_ext_rel =~ s/^[\\\/]//;
-    $include_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
-    
-    my $match_at_least_one;
-    for my $src_file_name (@src_file_names) {
-      # Skip if file have no source extension
-      next unless $src_file_name =~ /\Q.$src_ext\E$/;
-      
-      my $src_file_name_no_ext_rel = $src_file_name;
-      $src_file_name_no_ext_rel =~ s/^\Q$src_dir//;
-      $src_file_name_no_ext_rel =~ s/^[\\\/]//;
-      $src_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
-      
-      if ($src_file_name_no_ext_rel eq $include_file_name_no_ext_rel) {
-        $dependencies->{$src_file_name} ||= [];
-        push @{$dependencies->{$src_file_name}}, $include_file_name;
-        $match_at_least_one++;
-      }
-    }
-    
-    # If not match at least one, we assume the header files is common file
-    unless ($match_at_least_one) {
-      for my $src_file_name (@src_file_names) {
-        # Skip if file have no source extension
-        next unless $src_file_name =~ /\Q.$src_ext\E$/;
-        push @{$dependencies->{$src_file_name}}, $include_file_name;
-      }
-    }
-  }
-  
-  return $dependencies;
 }
 
 sub link {
@@ -431,98 +445,6 @@ EOS
   return $shared_lib_file;
 }
 
-sub build_shared_lib_runtime {
-  my ($self, $package_name, $sub_names) = @_;
-  
-  my $category = $self->category;
-
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  if (defined $build_dir) {
-    mkpath $build_dir;
-  }
-  else {
-    confess "SPVM_BUILD_DIR environment variable must be set for build $category subroutine in runtime";
-  }
-  
-  # Source directory
-  my $src_dir;
-  if ($category eq 'precompile') {
-    $src_dir = $self->builder->create_build_src_path;
-    mkpath $src_dir;
-    
-    $self->create_precompile_csource(
-      $package_name,
-      $sub_names,
-      {
-        src_dir => $src_dir,
-      }
-    );
-  }
-  elsif ($category eq 'native') {
-    my $module_file = $self->builder->get_module_file($package_name);
-    $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $package_name);
-  }
-  
-  # Object directory
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
-  
-  # Lib directory
-  my $lib_dir = $self->builder->create_build_lib_path;
-  mkpath $lib_dir;
-  
-  my $build_shared_lib_file = $self->build_shared_lib(
-    $package_name,
-    $sub_names,
-    {
-      src_dir => $src_dir,
-      object_dir => $object_dir,
-      lib_dir => $lib_dir,
-    }
-  );
-  
-  return $build_shared_lib_file;
-}
-
-sub build_shared_lib_dist {
-  my ($self, $package_name, $sub_names) = @_;
-  
-  my $category = $self->category;
-  
-  my $src_dir;
-  if ($category eq 'precompile') {
-    $src_dir = $self->builder->create_build_src_path;
-    mkpath $src_dir;
-
-    $self->create_precompile_csource(
-      $package_name,
-      $sub_names,
-      {
-        src_dir => $src_dir,
-      }
-    );
-  }
-  elsif ($category eq 'native') {
-    $src_dir = 'lib';
-  }
-
-  my $object_dir = $self->builder->create_build_object_path;
-  mkpath $object_dir;
-  
-  my $lib_dir = 'blib/lib';
-  
-  $self->build_shared_lib(
-    $package_name,
-    $sub_names,
-    {
-      src_dir => $src_dir,
-      object_dir => $object_dir,
-      lib_dir => $lib_dir,
-    }
-  );
-}
-
 sub create_precompile_csource {
   my ($self, $package_name, $sub_names, $opt) = @_;
   
@@ -573,6 +495,80 @@ sub create_precompile_csource {
     print $fh $package_csource;
     close $fh;
   }
+}
+
+sub parse_native_source_dependencies {
+  my ($self, $include_dir, $src_dir, $src_ext) = @_;
+  
+  # Get header files
+  my @include_file_names;
+  if (-d $include_dir) {
+    find(
+      {
+        wanted => sub {
+          my $include_file_name = $File::Find::name;
+          if (-f $include_file_name) {
+            push @include_file_names, $include_file_name;
+          }
+        },
+        no_chdir => 1,
+      },
+      $include_dir,
+    );
+  }
+  
+  # Get source files
+  my @src_file_names;
+  if (-d $src_dir) {
+    find(
+      {
+        wanted => sub {
+          my $src_file_name = $File::Find::name;
+          if (-f $src_file_name) {
+            push @src_file_names, $src_file_name;
+          }
+        },
+        no_chdir => 1,
+      },
+      $src_dir,
+    );
+  }
+  
+  my $dependencies = {};
+  for my $include_file_name (@include_file_names) {
+    my $include_file_name_no_ext_rel = $include_file_name;
+    $include_file_name_no_ext_rel =~ s/^\Q$include_dir//;
+    $include_file_name_no_ext_rel =~ s/^[\\\/]//;
+    $include_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
+    
+    my $match_at_least_one;
+    for my $src_file_name (@src_file_names) {
+      # Skip if file have no source extension
+      next unless $src_file_name =~ /\Q.$src_ext\E$/;
+      
+      my $src_file_name_no_ext_rel = $src_file_name;
+      $src_file_name_no_ext_rel =~ s/^\Q$src_dir//;
+      $src_file_name_no_ext_rel =~ s/^[\\\/]//;
+      $src_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
+      
+      if ($src_file_name_no_ext_rel eq $include_file_name_no_ext_rel) {
+        $dependencies->{$src_file_name} ||= [];
+        push @{$dependencies->{$src_file_name}}, $include_file_name;
+        $match_at_least_one++;
+      }
+    }
+    
+    # If not match at least one, we assume the header files is common file
+    unless ($match_at_least_one) {
+      for my $src_file_name (@src_file_names) {
+        # Skip if file have no source extension
+        next unless $src_file_name =~ /\Q.$src_ext\E$/;
+        push @{$dependencies->{$src_file_name}}, $include_file_name;
+      }
+    }
+  }
+  
+  return $dependencies;
 }
 
 1;
