@@ -393,19 +393,18 @@ EOS
   # and overwrite user configs
   my $config = $bconf->to_hash;
   
-  my $cfunc_names = [];
+  # dl_func_list
+  # This option is needed Windows DLL file
+  my $dl_func_list = [];
   for my $sub_name (@$sub_names) {
-    my $category = $self->category;
-    my $category_uc = uc $category;
-    my $cfunc_name = "SP${category_uc}__${package_name}::$sub_name";
-    $cfunc_name =~ s/:/_/g;
-    push @$cfunc_names, $cfunc_name;
+    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $sub_name, $category);
+    push @$dl_func_list, $cfunc_name;
   }
   
   # This is dummy to suppress boot strap function
   # This is bad hack
-  unless (@$cfunc_names) {
-    push @$cfunc_names, '';
+  unless (@$dl_func_list) {
+    push @$dl_func_list, '';
   }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
@@ -419,7 +418,7 @@ EOS
     $tmp_shared_lib_file = $cbuilder->link(
       objects => $object_files,
       module_name => $package_name,
-      dl_func_list => $cfunc_names,
+      dl_func_list => $dl_func_list,
       extra_linker_flags => $extra_linker_flag
     );
   };
