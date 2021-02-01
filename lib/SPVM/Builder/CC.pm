@@ -29,7 +29,7 @@ sub new {
 sub get_shared_lib_file_runtime {
   my ($self, $package_name) = @_;
   
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_category_rel_file($package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $build_dir = $self->{build_dir};
   
   return unless defined $build_dir;
@@ -333,7 +333,7 @@ sub link {
   }
 
   # shared object file
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_category_rel_file($package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $self->category);
   my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
 
   # Create temporary package directory

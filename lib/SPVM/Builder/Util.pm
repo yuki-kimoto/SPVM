@@ -77,7 +77,7 @@ sub convert_module_file_to_shared_lib_category_file {
   return $shared_lib_category_file;
 }
 
-sub convert_package_name_to_shared_lib_category_rel_file {
+sub convert_package_name_to_shared_lib_rel_file {
   my ($package_name, $category) = @_;
   
   my $dlext = $Config{dlext};
@@ -214,7 +214,7 @@ sub create_package_make_rule {
   }
   
   # Shared library file
-  my $shared_lib_rel_file = convert_package_name_to_shared_lib_category_rel_file($package_name, $category);
+  my $shared_lib_rel_file = convert_package_name_to_shared_lib_rel_file($package_name, $category);
   my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
   
   # Get source files
