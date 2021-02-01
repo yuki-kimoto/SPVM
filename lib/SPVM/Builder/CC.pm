@@ -401,18 +401,19 @@ EOS
     push @$dl_func_list, $cfunc_name;
   }
   
-  # This is dummy to suppress boot strap function
-  # This is bad hack
+  # This is bad hack to suppress boot strap function error.
   unless (@$dl_func_list) {
     push @$dl_func_list, '';
   }
   
+  # Link option
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   my $tmp_shared_lib_file;
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
   my $extra_linker_flag = $bconf->get_extra_linker_flags;
   
+  # Link
   $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
   eval {
     $tmp_shared_lib_file = $cbuilder->link(
