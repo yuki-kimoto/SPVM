@@ -66,7 +66,7 @@ sub getopt {
   Getopt::Long::Configure($save);
 }
 
-sub convert_module_file_to_shared_lib_category_file {
+sub convert_module_file_to_shared_lib_file {
   my ($module_file, $category) = @_;
   
   my $dlext = $Config{dlext};
