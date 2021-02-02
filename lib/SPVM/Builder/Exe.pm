@@ -71,9 +71,7 @@ sub builder { shift->{builder} }
 sub build_dir { shift->builder->build_dir }
 sub target_package_name { shift->{target_package_name} }
 sub output_file { shift->{output_file} }
-sub lib_dirs { shift->{lib_dirs} }
 sub quiet { shift->{quiet} }
-sub libs { shift->{libs} }
 sub module_dirs { shift->{module_dirs} }
 
 sub new {
@@ -106,16 +104,6 @@ sub new {
     $self->{quiet} = 0;
   }
   
-  # Library searching directries
-  unless (exists $self->{lib_dirs}) {
-    $self->{lib_dirs} = [];
-  }
-
-  # Library
-  unless (exists $self->{libs}) {
-    $self->{libs} = [];
-  }
-
   # Build directory
   my $build_dir = delete $self->{build_dir};
   unless (defined $build_dir) {

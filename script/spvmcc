@@ -13,8 +13,6 @@ SPVM::Builder::Util::getopt
   'o|output=s'        => \my $output_file,
   'B|build-dir=s'   => \my $build_dir,
   'I|module-dir=s' => \my @module_dirs,
-  'L|lib-dir=s' => \my @lib_dirs,
-  'l|lib=s' => \my @libs,
   'q|quiet'   => \my $quiet,
   'D|define=s' => \my @defines,
   'O|optimize=s' => \my $optimize,
@@ -24,18 +22,11 @@ die SPVM::Builder::Util::extract_usage if $help || !(my $target_package_name = s
 
 unshift @module_dirs, @INC;
 
-unless (defined $build_dir) {
-  $build_dir = '.spvm_build';
-}
-
 my $build_exe = SPVM::Builder::Exe->new(
-  build_dir => $build_dir,
   module_dirs => \@module_dirs,
   output_file => $output_file,
   target_package_name => $target_package_name,
   quiet => $quiet,
-  lib_dirs => \@lib_dirs,
-  libs => \@libs,
   define => \@defines,
   optimize => $optimize,
 );
