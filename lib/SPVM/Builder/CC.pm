@@ -292,7 +292,6 @@ sub compile {
           source => $src_file,
           object_file => $object_file,
           include_dirs => $bconf->get_include_dirs,
-          extra_compiler_flags => $bconf->get_extra_compiler_flags,
         );
       };
       if (my $error = $@) {

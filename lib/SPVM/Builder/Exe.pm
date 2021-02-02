@@ -366,7 +366,6 @@ sub compile_spvm_module_csources {
         source => $module_source_csource_file,
         object_file => $module_source_object_file,
         include_dirs => $bconf->get_include_dirs,
-        extra_compiler_flags => $bconf->get_extra_compiler_flags,
       );
     }
   }
@@ -628,7 +627,6 @@ sub compile_bootstrap_csource {
     source => $src_file,
     object_file => $object_file,
     include_dirs => $bconf->get_include_dirs,
-    extra_compiler_flags => $bconf->get_extra_compiler_flags,
   );
   
   return $object_file;
@@ -700,7 +698,7 @@ sub compile_spvm_compiler_and_runtime_csources {
   my $bconf = SPVM::Builder::Config->new_c99;;
   
   # Default include path
-  $bconf->append_extra_compiler_flags("-Iblib/lib/SPVM/Builder/include");
+  $bconf->append_ccflags("-Iblib/lib/SPVM/Builder/include");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
@@ -742,7 +740,6 @@ sub compile_spvm_compiler_and_runtime_csources {
         source => $src_file,
         object_file => $object_file,
         include_dirs => $bconf->get_include_dirs,
-        extra_compiler_flags => $bconf->get_extra_compiler_flags,
       );
       push @$object_files, $object_file;
     }
