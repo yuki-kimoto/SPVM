@@ -188,7 +188,7 @@ sub create_precompile_csources {
     build_dir => $build_dir,
     category => 'precompile',
     builder => $builder,
-    quiet => 0,
+    quiet => $self->quiet,
   );
 
   my $package_names = $builder->get_package_names;
@@ -223,7 +223,7 @@ sub compile_precompile_csources {
     build_dir => $build_dir,
     category => 'precompile',
     builder => $builder,
-    quiet => 0,
+    quiet => $self->quiet,
   );
   
   my $package_names = $builder->get_package_names;
@@ -262,7 +262,7 @@ sub compile_native_csources {
     build_dir => $build_dir,
     category => 'native',
     builder => $builder,
-    quiet => 0,
+    quiet => $self->quiet,
   );
   
   my $package_names = $builder->get_package_names;
@@ -378,8 +378,7 @@ sub compile_spvm_module_csources {
 
   my $bconf = SPVM::Builder::Config->new_c99;
   my $config = $bconf->to_hash;
-  my $quiet = 0;
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
   
   for my $package_name (@$package_names) {
     
@@ -664,9 +663,7 @@ sub compile_bootstrap_csource {
   my $config = $bconf->to_hash;
   
   # Compile source files
-  my $quiet = $self->{quiet};
-  $quiet = 0;
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
   my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($target_package_name);
   my $object_file = $self->builder->create_build_object_path("$package_name_rel_file.boot.o");
   my $src_file = $self->builder->create_build_src_path("$package_name_rel_file.boot.c");
@@ -708,8 +705,6 @@ sub compile_spvm_compiler_and_runtime_csources {
   
   # Default include path
   $bconf->append_extra_compiler_flags("-Iblib/lib/SPVM/Builder/include");
-  
-  $bconf->set_quiet(0);
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
@@ -723,9 +718,7 @@ sub compile_spvm_compiler_and_runtime_csources {
   mkpath $object_dir;
   
   # Compile source files
-  my $quiet = $self->{quiet};
-  $quiet = 0;
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
   my $object_files = [];
   for my $src_file (@spvm_compiler_and_runtime_src_files) {
     # Object file
@@ -822,10 +815,8 @@ sub link {
   # ExeUtils::CBuilder config
   my $config = $bconf->to_hash;
   
-  my $quiet = $self->{quiet};
-  $quiet = 0;
   my $exe_file = $output_file;
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
   my $tmp_shared_lib_file = $cbuilder->link_executable(
     objects => $object_files,
     module_name => $target_package_name,
