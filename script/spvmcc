@@ -15,7 +15,7 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   'q|quiet'   => \my $quiet,
   'L|library-dir=s' => \my @library_dirs,
-  'l|library=s' => \my @library,
+  'l|library=s' => \my @libraries,
   'D|define=s' => \my @defines,
   'O|optimize=s' => \my $optimize,
 ;
@@ -34,7 +34,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   target_package_name => $target_package_name,
   quiet => $quiet,
   library_dir => \@library_dirs,
-  library => \@library,
+  library => \@libraries,
   define => \@defines,
   optimize => $optimize,
 );
