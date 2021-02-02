@@ -14,7 +14,7 @@ SPVM::Builder::Util::getopt
   'I|include-dir=s' => \my @include_dirs,
   'B|build-dir=s'   => \my $build_dir,
   'q|quiet'   => \my $quiet,
-  'L|library-path=s' => \my @library_paths,
+  'L|library-dir=s' => \my @library_dirs,
   'l|library=s' => \my @library,
   'D|define=s' => \my @defines,
   'O|optimize=s' => \my $optimize,
@@ -33,7 +33,7 @@ my $build_exe = SPVM::Builder::Exe->new(
   output_file => $output,
   target_package_name => $target_package_name,
   quiet => $quiet,
-  library_path => \@library_paths,
+  library_dir => \@library_dirs,
   library => \@library,
   define => \@defines,
   optimize => $optimize,
@@ -56,11 +56,11 @@ spvmcc - SPVM compiler to create exe file
     -h, --help                     Show this message
     -v, --version                  Version
     -o, --output                   Excutable file name
-    -I, --include-dir <directory>  Add package search path
+    -I, --include-dir <directory>  Add SPVM module and native include header searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
-    -L, --library-path <directory> Library searching path
-    -l, --library=s <file>         Library name
+    -L, --library-dir <directory> Add native library searching directory
+    -l, --library=s <file>         Add native library
 
 =head1 DESCRIPTION
 

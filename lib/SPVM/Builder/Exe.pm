@@ -71,7 +71,7 @@ sub builder { shift->{builder} }
 sub build_dir { shift->builder->build_dir }
 sub target_package_name { shift->{target_package_name} }
 sub output_file { shift->{output_file} }
-sub library_path { shift->{library_path} }
+sub library_dir { shift->{library_dir} }
 sub quiet { shift->{quiet} }
 sub library { shift->{library} }
 
@@ -100,8 +100,8 @@ sub new {
   }
   
   # Library paths
-  unless (exists $self->{library_path}) {
-    $self->{library_path} = [];
+  unless (exists $self->{library_dir}) {
+    $self->{library_dir} = [];
   }
 
   # Library
