@@ -66,9 +66,14 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
   spvm_yacc_util.c
 );
 
+# Accessors
 sub builder { shift->{builder} }
-
+sub build_dir { shift->builder->build_dir }
 sub target_package_name { shift->{target_package_name} }
+sub output_file { shift->{output_file} }
+sub library_path { shift->{library_path} }
+sub quiet { shift->{quiet} }
+sub library { shift->{library} }
 
 sub new {
   my $class = shift;
