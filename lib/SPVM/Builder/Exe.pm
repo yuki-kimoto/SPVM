@@ -23,49 +23,6 @@ use Scalar::Util 'weaken';
 
 use File::Basename 'dirname', 'basename';
 
-# SPVM runtime source files
-my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
-  spvm_allow.c
-  spvm_api.c
-  spvm_array_field_access.c
-  spvm_basic_type.c
-  spvm_block.c
-  spvm_call_sub.c
-  spvm_case_info.c
-  spvm_compiler_allocator.c
-  spvm_compiler.c
-  spvm_constant.c
-  spvm_csource_builder_precompile.c
-  spvm_descriptor.c
-  spvm_dumper.c
-  spvm_enumeration.c
-  spvm_enumeration_value.c
-  spvm_field_access.c
-  spvm_field.c
-  spvm_hash.c
-  spvm_hash_func.c
-  spvm_list.c
-  spvm_my.c
-  spvm_op.c
-  spvm_op_checker.c
-  spvm_opcode_array.c
-  spvm_opcode_builder.c
-  spvm_opcode.c
-  spvm_package.c
-  spvm_package_var_access.c
-  spvm_package_var.c
-  spvm_string_buffer.c
-  spvm_sub.c
-  spvm_switch_info.c
-  spvm_toke.c
-  spvm_type.c
-  spvm_use.c
-  spvm_util_allocator.c
-  spvm_var.c
-  spvm_yacc.c
-  spvm_yacc_util.c
-);
-
 # Accessors
 sub builder { shift->{builder} }
 sub build_dir { shift->builder->build_dir }
@@ -676,6 +633,49 @@ sub compile_bootstrap_csource {
   
   return $object_file;
 }
+
+# SPVM runtime source files
+my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
+  spvm_allow.c
+  spvm_api.c
+  spvm_array_field_access.c
+  spvm_basic_type.c
+  spvm_block.c
+  spvm_call_sub.c
+  spvm_case_info.c
+  spvm_compiler_allocator.c
+  spvm_compiler.c
+  spvm_constant.c
+  spvm_csource_builder_precompile.c
+  spvm_descriptor.c
+  spvm_dumper.c
+  spvm_enumeration.c
+  spvm_enumeration_value.c
+  spvm_field_access.c
+  spvm_field.c
+  spvm_hash.c
+  spvm_hash_func.c
+  spvm_list.c
+  spvm_my.c
+  spvm_op.c
+  spvm_op_checker.c
+  spvm_opcode_array.c
+  spvm_opcode_builder.c
+  spvm_opcode.c
+  spvm_package.c
+  spvm_package_var_access.c
+  spvm_package_var.c
+  spvm_string_buffer.c
+  spvm_sub.c
+  spvm_switch_info.c
+  spvm_toke.c
+  spvm_type.c
+  spvm_use.c
+  spvm_util_allocator.c
+  spvm_var.c
+  spvm_yacc.c
+  spvm_yacc_util.c
+);
 
 sub compile_spvm_compiler_and_runtime_csources {
   my ($self) = @_;
