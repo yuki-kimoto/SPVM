@@ -78,17 +78,6 @@ sub create_build_lib_path {
   return $build_lib_path;
 }
 
-sub get_shared_lib_file_runtime {
-  my ($self, $package_name, $category) = @_;
-  
-  my $build_dir = $self->build_dir;
-  
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($package_name, $category);
-  my $shared_lib_file = $self->create_build_lib_path($shared_lib_rel_file);
-  
-  return $shared_lib_file;
-}
-
 sub get_shared_lib_file_dist {
   my ($self, $package_name, $category) = @_;
   

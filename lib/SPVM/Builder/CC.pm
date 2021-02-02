@@ -233,8 +233,6 @@ sub compile {
       $object_file_base =~ s/\.[^\.]+$/.o/;
       $object_file = "$object_dir/$object_rel_file/$object_file_base";
       
-      warn $object_file;
-      
       my $object_dir = dirname $object_file;
       mkpath $object_dir;
     }
