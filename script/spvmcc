@@ -10,31 +10,32 @@ use SPVM::Builder::Util;
 SPVM::Builder::Util::getopt
   'h|help'          => \my $help,
   'v|version'       => \my $show_version,
-  'o|output=s'        => \my $output,
-  'I|include-dir=s' => \my @include_dirs,
+  'o|output=s'        => \my $output_file,
   'B|build-dir=s'   => \my $build_dir,
+  'I|include-dir=s' => \my @include_dirs,
+  'L|lib-dir=s' => \my @lib_dirs,
+  'l|lib=s' => \my @libs,
   'q|quiet'   => \my $quiet,
-  'L|library-dir=s' => \my @library_dirs,
-  'l|library=s' => \my @libraries,
   'D|define=s' => \my @defines,
   'O|optimize=s' => \my $optimize,
 ;
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $target_package_name = shift);
 
-unshift @INC, @include_dirs;
+unshift @include_dirs, @INC;
 
 unless (defined $build_dir) {
-  $build_dir = 'spvm_build';
+  $build_dir = '.spvm_build';
 }
 
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
-  output_file => $output,
+  include_dirs => \@include_dirs,
+  output_file => $output_file,
   target_package_name => $target_package_name,
   quiet => $quiet,
-  library_dir => \@library_dirs,
-  library => \@libraries,
+  lib_dirs => \@lib_dirs,
+  libs => \@libs,
   define => \@defines,
   optimize => $optimize,
 );
@@ -56,10 +57,10 @@ spvmcc - SPVM compiler to create exe file
     -h, --help                     Show this message
     -v, --version                  Version
     -o, --output                   Excutable file name
-    -I, --include-dir <directory>  Add SPVM module and native include header searching directory
+    -I, --include-dir <directory>  Add SPVM module searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
-    -L, --library-dir <directory> Add native library searching directory
+    -L, --library-dir <directory>  Add native library searching directory
     -l, --library=s <file>         Add native library
 
 =head1 DESCRIPTION

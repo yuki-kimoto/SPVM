@@ -35,7 +35,7 @@ sub import {
 
   unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
-    $BUILDER = SPVM::Builder->new(build_dir => $build_dir);
+    $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
   }
 
   # Add package informations

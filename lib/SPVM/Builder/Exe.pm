@@ -71,14 +71,20 @@ sub builder { shift->{builder} }
 sub build_dir { shift->builder->build_dir }
 sub target_package_name { shift->{target_package_name} }
 sub output_file { shift->{output_file} }
-sub library_dir { shift->{library_dir} }
+sub lib_dirs { shift->{lib_dirs} }
 sub quiet { shift->{quiet} }
-sub library { shift->{library} }
+sub libs { shift->{libs} }
 
 sub new {
   my $class = shift;
   
   my $self = {@_};
+  
+  # Include directries
+  my $include_dirs = $self->{include_dirs};
+  unless (exists $self->{include_dirs}) {
+    $self->{include_dirs} = [];
+  }
 
   # Target package name
   my $target_package_name = $self->{target_package_name};
@@ -99,14 +105,14 @@ sub new {
     $self->{quiet} = 0;
   }
   
-  # Library paths
-  unless (exists $self->{library_dir}) {
-    $self->{library_dir} = [];
+  # Library searching directries
+  unless (exists $self->{lib_dirs}) {
+    $self->{lib_dirs} = [];
   }
 
   # Library
-  unless (exists $self->{library}) {
-    $self->{library} = [];
+  unless (exists $self->{libs}) {
+    $self->{libs} = [];
   }
 
   # Build directory
@@ -116,7 +122,10 @@ sub new {
   }
   
   # New SPVM::Builder object
-  my $builder = SPVM::Builder->new(build_dir => $build_dir);
+  my $builder = SPVM::Builder->new(
+    build_dir => $build_dir,
+    include_dirs => $include_dirs
+  );
   
   $self->{builder} = $builder;
   
@@ -139,9 +148,7 @@ sub build_exe_file {
   mkpath $build_dir;
   
   # Compile SPVM
-  my $file = 'internal';
-  my $line = 0;
-  my $compile_success = $builder->compile_spvm($target_package_name, $file, $line);
+  my $compile_success = $builder->compile_spvm($target_package_name, __FILE__, __LINE__);
   unless ($compile_success) {
     exit(255);
   }
