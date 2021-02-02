@@ -42,7 +42,7 @@ spvmcc - SPVM compiler to create exe file
 
   Usage: spvmcc [OPTIONS] [PACKAGE]
 
-    spvmcc -Ilib -Bspvm_build -o my_app My::App
+    spvmcc -Ilib -o my_app My::App
 
   Options:
     -h, --help                     Show this message
@@ -51,11 +51,7 @@ spvmcc - SPVM compiler to create exe file
     -I, --module-dir <directory>   Add SPVM module searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
-    -L, --library-dir <directory>  Add native library searching directory
-    -l, --library=s <file>         Add native library
 
 =head1 DESCRIPTION
 
-spvmcc is SPVM compiler to create exe file.
-
-Created exe file is executed by itself.
+spvmcc is SPVM compiler to create executable file.
