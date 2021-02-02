@@ -19,8 +19,6 @@ sub new {
   
   $self->{quiet} = 1;
 
-  $self->{extra_linker_flags} = '';
-  
   bless $self, $class;
 
   # Use default config
@@ -428,42 +426,6 @@ sub push_libs {
   push @{$self->{libs}}, @libs;
 }
 
-sub get_extra_linker_flags {
-  my ($self) = @_;
-  
-  return $self->{extra_linker_flags};
-}
-
-sub set_extra_linker_flags {
-  my ($self, $extra_linker_flags) = @_;
-  
-  $self->{extra_linker_flags} = $extra_linker_flags;
-  
-  return $self;
-}
-
-sub append_extra_linker_flags {
-  my ($self, $new_extra_linker_flags) = @_;
-  
-  my $extra_linker_flags = $self->{extra_linker_flags};
-  $extra_linker_flags = '' unless defined $extra_linker_flags;
-  
-  $extra_linker_flags .= " $new_extra_linker_flags";
-  
-  $self->{extra_linker_flags} = $extra_linker_flags;
-}
-
-sub prepend_extra_linker_flags {
-  my ($self, $new_extra_linker_flags) = @_;
-  
-  my $extra_linker_flags = $self->{extra_linker_flags};
-  $extra_linker_flags = '' unless defined $extra_linker_flags;
-  
-  $extra_linker_flags = "$new_extra_linker_flags $extra_linker_flags";
-  
-  $self->{extra_linker_flags} = $extra_linker_flags;
-}
-
 sub get_force_compile {
   my ($self, $force_compile) = @_;
   
@@ -828,40 +790,6 @@ Default is copied from $Config{shrpenv}.
 Set C<shrpenv> using C<set_config> method.
 
 See C<get_shrpenv> method about C<shrpenv> option.
-
-=head2 get_extra_linker_flags
-
-  my $extra_linker_flags = $bconf->get_extra_linker_flags;
-
-Get C<extra_linker_flags> option.
-
-C<extra_linker_flags> option is passed to C<extra_linker_flags> option of L<ExtUtils::CBuilder> C<link> method.
-
-Default is emtpy string.
-
-=head2 set_extra_linker_flags
-
-  $bconf->set_extra_linker_flags($extra_linker_flags);
-
-Set C<extra_linker_flags> option.
-
-See C<get_extra_linker_flags> method about C<extra_linker_flags> option.
-
-=head2 append_extra_linker_flags
-
-  $bconf->append_extra_linker_flags($extra_linker_flags);
-
-Add new C<extra_linker_flags> option after current C<extra_linker_flags> option.
-
-See C<get_extra_linker_flags> method about C<extra_linker_flags> option.
-
-=head2 prepend_extra_linker_flags
-
-  $bconf->prepend_extra_linker_flags($extra_linker_flags);
-
-Add new C<extra_linker_flags> option before current C<extra_linker_flags> option.
-
-See C<get_extra_linker_flags> method about C<extra_linker_flags> option.
 
 =head2 get_include_dirs
 

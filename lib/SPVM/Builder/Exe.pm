@@ -770,9 +770,7 @@ sub link {
 
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
-  my $extra_linker_flag = $bconf->get_extra_linker_flags;
-  
-  $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
+  $bconf->append_lddlflags("$lib_dirs_str $libs_str");
   
   # SPVM runtime object files
   my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
@@ -814,7 +812,6 @@ sub link {
     objects => $object_files,
     module_name => $target_package_name,
     exe_file => $exe_file,
-    extra_linker_flags => $extra_linker_flag,
   );
 }
 

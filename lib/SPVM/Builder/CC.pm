@@ -402,29 +402,29 @@ EOS
   unless (@$dl_func_list) {
     push @$dl_func_list, '';
   }
-  
-  # Link option
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  my $tmp_shared_lib_file;
+
+  # Add library directories and libraries to Linker flags
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
-  my $extra_linker_flag = $bconf->get_extra_linker_flags;
+  $bconf->append_lddlflags("$lib_dirs_str $libs_str");
   
-  # Link
-  $extra_linker_flag = "$lib_dirs_str $libs_str $extra_linker_flag";
+  # ExtUtils::CBuilder object
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  
+  # Link and create shared library
+  my $tmp_shared_lib_file;
   eval {
     $tmp_shared_lib_file = $cbuilder->link(
       objects => $object_files,
       module_name => $package_name,
       dl_func_list => $dl_func_list,
-      extra_linker_flags => $extra_linker_flag
     );
   };
   if (my $error = $@) {
     confess $error;
   }
 
-  # Move shared library file to blib directory
+  # Move temporary shared library file to blib directory
   mkpath dirname $shared_lib_file;
   move($tmp_shared_lib_file, $shared_lib_file)
     or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
