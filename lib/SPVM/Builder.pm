@@ -14,13 +14,13 @@ use SPVM();
 
 # Accessors
 sub build_dir { shift->{build_dir} }
-sub include_dirs { shift->{include_dirs} }
+sub module_dirs { shift->{module_dirs} }
 
 sub new {
   my $class = shift;
   
   my $self = {
-    include_dirs => [@INC],
+    module_dirs => [@INC],
     @_
   };
   

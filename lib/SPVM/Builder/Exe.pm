@@ -74,6 +74,7 @@ sub output_file { shift->{output_file} }
 sub lib_dirs { shift->{lib_dirs} }
 sub quiet { shift->{quiet} }
 sub libs { shift->{libs} }
+sub module_dirs { shift->{module_dirs} }
 
 sub new {
   my $class = shift;
@@ -81,9 +82,9 @@ sub new {
   my $self = {@_};
   
   # Include directries
-  my $include_dirs = $self->{include_dirs};
-  unless (exists $self->{include_dirs}) {
-    $self->{include_dirs} = [];
+  my $module_dirs = $self->{module_dirs};
+  unless (exists $self->{module_dirs}) {
+    $self->{module_dirs} = [];
   }
 
   # Target package name
@@ -124,7 +125,7 @@ sub new {
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(
     build_dir => $build_dir,
-    include_dirs => $include_dirs
+    module_dirs => $module_dirs
   );
   
   $self->{builder} = $builder;

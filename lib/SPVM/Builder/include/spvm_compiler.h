@@ -70,8 +70,8 @@ struct spvm_compiler {
   // Syntax error count
   int32_t error_count;
   
-  // Include pathes
-  SPVM_LIST* module_include_dirs;
+  // Module searching directories
+  SPVM_LIST* module_dirs;
 
   // OP name symtable
   SPVM_HASH* name_symtable;

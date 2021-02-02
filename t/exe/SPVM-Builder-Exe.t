@@ -26,14 +26,14 @@ use FindBin;
   
   my $target_package_name = 'MyExe';
   my $build_dir = 't/exe/.spvm_build';
-  my $module_include_dir = ['t/exe/lib', @INC];
+  my $module_dirs = ['t/exe/lib', @INC];
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
     target_package_name => $target_package_name,
     output_file => $output_file,
     build_dir => $build_dir,
-    include_dirs => $module_include_dir,
+    module_dirs => $module_dirs,
   );
   
   $builder_exe->build_exe_file;

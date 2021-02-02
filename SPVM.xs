@@ -145,8 +145,8 @@ compile_spvm(...)
   
   
   // Include directries
-  SV** sv_include_dirs_ptr = hv_fetch(hv_self, "include_dirs", strlen("include_dirs"), 0);
-  SV* sv_include_dirs = sv_include_dirs_ptr ? *sv_include_dirs_ptr : &PL_sv_undef;
+  SV** sv_module_dirs_ptr = hv_fetch(hv_self, "module_dirs", strlen("module_dirs"), 0);
+  SV* sv_module_dirs = sv_module_dirs_ptr ? *sv_module_dirs_ptr : &PL_sv_undef;
   
   // Name
   const char* name = SvPV_nolen(sv_name);
@@ -169,19 +169,19 @@ compile_spvm(...)
   SPVM_LIST_push(compiler->op_use_stack, op_use_package);
   
   // Add include paths
-  AV* av_include_dirs;
-  if (SvOK(sv_include_dirs)) {
-    av_include_dirs = (AV*)SvRV(sv_include_dirs);
+  AV* av_module_dirs;
+  if (SvOK(sv_module_dirs)) {
+    av_module_dirs = (AV*)SvRV(sv_module_dirs);
   }
   else {
-    av_include_dirs = (AV*)sv_2mortal((SV*)newAV());
+    av_module_dirs = (AV*)sv_2mortal((SV*)newAV());
   }
-  int32_t av_include_dirs_length = (int32_t)av_len(av_include_dirs) + 1;
-  for (int32_t i = 0; i < av_include_dirs_length; i++) {
-    SV** sv_include_dir_ptr = av_fetch(av_include_dirs, i, 0);
+  int32_t av_module_dirs_length = (int32_t)av_len(av_module_dirs) + 1;
+  for (int32_t i = 0; i < av_module_dirs_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_module_dirs, i, 0);
     SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
     char* include_dir = SvPV_nolen(sv_include_dir);
-    SPVM_LIST_push(compiler->module_include_dirs, include_dir);
+    SPVM_LIST_push(compiler->module_dirs, include_dir);
   }
 
   // Compile SPVM

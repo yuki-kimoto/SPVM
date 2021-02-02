@@ -12,7 +12,7 @@ SPVM::Builder::Util::getopt
   'v|version'       => \my $show_version,
   'o|output=s'        => \my $output_file,
   'B|build-dir=s'   => \my $build_dir,
-  'I|include-dir=s' => \my @include_dirs,
+  'I|module-dir=s' => \my @module_dirs,
   'L|lib-dir=s' => \my @lib_dirs,
   'l|lib=s' => \my @libs,
   'q|quiet'   => \my $quiet,
@@ -22,7 +22,7 @@ SPVM::Builder::Util::getopt
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $target_package_name = shift);
 
-unshift @include_dirs, @INC;
+unshift @module_dirs, @INC;
 
 unless (defined $build_dir) {
   $build_dir = '.spvm_build';
@@ -30,7 +30,7 @@ unless (defined $build_dir) {
 
 my $build_exe = SPVM::Builder::Exe->new(
   build_dir => $build_dir,
-  include_dirs => \@include_dirs,
+  module_dirs => \@module_dirs,
   output_file => $output_file,
   target_package_name => $target_package_name,
   quiet => $quiet,
@@ -57,7 +57,7 @@ spvmcc - SPVM compiler to create exe file
     -h, --help                     Show this message
     -v, --version                  Version
     -o, --output                   Excutable file name
-    -I, --include-dir <directory>  Add SPVM module searching directory
+    -I, --module-dir <directory>   Add SPVM module searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
     -L, --library-dir <directory>  Add native library searching directory
