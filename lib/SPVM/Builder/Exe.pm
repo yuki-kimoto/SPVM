@@ -270,8 +270,7 @@ sub compile_native_csources {
       my $native_module_file = $builder->get_module_file($native_package_name);
       my $native_dir = $native_module_file;
       
-      my $native_config_file = $builder->get_config_file($native_package_name);
-      my $bconf = SPVM::Builder::Util::load_config($native_config_file);
+      my $bconf = $builder->get_config($native_package_name, 'native');
       push @$all_libs, $bconf->get_libs;
       
       $native_dir =~ s/\.spvm$//;

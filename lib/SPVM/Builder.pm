@@ -100,20 +100,6 @@ sub get_shared_lib_file_dist {
   return $shared_lib_file;
 }
 
-sub get_config_file {
-  my ($self, $package_name) = @_;
-  
-  my $module_file = $self->get_module_file($package_name);
-  
-  my $config_file;
-  if (defined $module_file) {
-    $config_file = $module_file;
-    $config_file =~ s/\.spvm$/.config/;
-  }
-  
-  return $config_file;
-}
-
 sub build_shared_lib_dist {
   my ($self, $package_name, $category) = @_;
   
@@ -161,7 +147,7 @@ sub bind_subs {
   my %must_not_load_libs = map { $_ => 1 } ('m');
   
   # Load pre-required dynamic library
-  my $bconf = $self->get_config_runtime($package_name, $category);
+  my $bconf = $self->get_config($package_name, $category);
   my $lib_dirs = $bconf->get_lib_dirs;
   {
     local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
@@ -225,7 +211,7 @@ EOS
   }
 }
 
-sub get_config_runtime {
+sub get_config {
   my ($self, $package_name, $category) = @_;
   
   my $module_file = $self->get_module_file($package_name);
@@ -273,4 +259,8 @@ EOS
 
 =head1 NAME
 
-SPVM::Builder - Compile SPVM program, bind native and precompile subroutines, generate Perl subrotuines correspoing to SPVM subroutines.
+SPVM::Builder - Build SPVM program
+
+=head1 DESCRIPTION
+
+Build SPVM program. Compile SPVM source codes. Bind native and precompile subroutines. Generate Perl subrotuines correspoing to SPVM subroutines. After that, run SPVM program.
