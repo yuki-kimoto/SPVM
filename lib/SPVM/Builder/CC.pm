@@ -17,6 +17,7 @@ use SPVM::Builder::Config;
 
 sub category { shift->{category} }
 sub builder { shift->{builder} }
+sub optimize { shift->{optimize} }
 
 sub new {
   my $class = shift;
@@ -203,7 +204,13 @@ sub compile {
   
   # CBuilder configs
   my $ccflags = $bconf->get_ccflags;
-  
+
+  # Optimize(Override config optimize)
+  my $optimize = $self->optimize;
+  if (defined $optimize) {
+    $bconf->set_optimize($optimize);
+  }
+
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
   my $config = $bconf->to_hash;

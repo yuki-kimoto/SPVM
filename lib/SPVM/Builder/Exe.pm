@@ -30,6 +30,7 @@ sub target_package_name { shift->{target_package_name} }
 sub output_file { shift->{output_file} }
 sub quiet { shift->{quiet} }
 sub module_dirs { shift->{module_dirs} }
+sub optimize { shift->{optimize} }
 
 sub new {
   my $class = shift;
@@ -177,6 +178,7 @@ sub compile_precompile_csources {
     category => 'precompile',
     builder => $builder,
     quiet => $self->quiet,
+    optimize => $self->optimize,
   );
   
   my $package_names = $builder->get_package_names;
@@ -216,6 +218,7 @@ sub compile_native_csources {
     category => 'native',
     builder => $builder,
     quiet => $self->quiet,
+    optimize => $self->optimize,
   );
   
   my $package_names = $builder->get_package_names;
@@ -328,9 +331,20 @@ sub compile_spvm_module_csources {
   
   # Compiled package names
   my $package_names = $builder->get_package_names;
-
+  
+  # Config
   my $bconf = SPVM::Builder::Config->new_c99;
+
+  # Optimize
+  my $optimize = $self->optimize;
+  if (defined $optimize) {
+    $bconf->set_optimize($optimize);
+  }
+  
+  # ExtUtils::CBuilder config
   my $config = $bconf->to_hash;
+  
+  # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
   
   for my $package_name (@$package_names) {
@@ -607,11 +621,22 @@ EOS
 sub compile_bootstrap_csource {
   my ($self) = @_;
   
+  # Target package name
   my $target_package_name = $self->target_package_name;
   
+  # Build directory
   my $build_dir = $self->builder->build_dir;
-
+  
+  # Config
   my $bconf = SPVM::Builder::Config->new_c99;
+  
+  # Optimize
+  my $optimize = $self->optimize;
+  if (defined $optimize) {
+    $bconf->set_optimize($optimize);
+  }
+  
+  # ExtUtils::CBuilder config
   my $config = $bconf->to_hash;
   
   # Compile source files
@@ -620,6 +645,7 @@ sub compile_bootstrap_csource {
   my $object_file = $self->builder->create_build_object_path("$package_name_rel_file.boot.o");
   my $src_file = $self->builder->create_build_src_path("$package_name_rel_file.boot.c");
   
+  # Create directory for object file output
   mkdir dirname $object_file;
   
   # Compile source file
@@ -699,7 +725,13 @@ sub compile_spvm_compiler_and_runtime_csources {
   
   # Default include path
   $bconf->append_ccflags("-Iblib/lib/SPVM/Builder/include");
-
+  
+  # Optimize
+  my $optimize = $self->optimize;
+  if (defined $optimize) {
+    $bconf->set_optimize($optimize);
+  }
+  
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
   my $config = $bconf->to_hash;
@@ -739,7 +771,7 @@ sub compile_spvm_compiler_and_runtime_csources {
       $cbuilder->compile(
         source => $src_file,
         object_file => $object_file,
-        include_dirs => $bconf->get_include_dirs,
+        include_dirs => $bconf->get_include_dirs
       );
       push @$object_files, $object_file;
     }
