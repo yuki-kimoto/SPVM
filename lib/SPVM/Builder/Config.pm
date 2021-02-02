@@ -23,8 +23,6 @@ sub new {
   
   $self->{extra_linker_flags} = '';
   
-  $self->{quiet} = 1;
-  
   bless $self, $class;
 
   # Use default config
