@@ -51,6 +51,8 @@ spvmcc - SPVM compiler to create exe file
     -I, --module-dir <directory>   Add SPVM module searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
+    -D, --define <macro>           Define macro name
+    -O --optimize <level>          Optimaization level
 
 =head1 DESCRIPTION
 
