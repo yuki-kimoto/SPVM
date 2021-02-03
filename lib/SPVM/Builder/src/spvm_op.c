@@ -1666,7 +1666,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Package is callback
   int32_t category_descriptors_count = 0;
   int32_t access_control_descriptors_count = 0;
-  int32_t package_has_precompile_descriptor = 0;
   if (op_list_descriptors) {
     SPVM_OP* op_descriptor = op_list_descriptors->first;
     while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
@@ -1694,7 +1693,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRECOMPILE:
-          package_has_precompile_descriptor = 1;
+          package->has_precompile_descriptor = 1;
           break;
         default:
           SPVM_COMPILER_error(compiler, "Invalid package descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
@@ -1955,7 +1954,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       else if (op_decl->id == SPVM_OP_C_ID_SUB) {
         SPVM_LIST_push(package->subs, op_decl->uv.sub);
         
-        if (op_decl->uv.sub->can_precompile && package_has_precompile_descriptor) {
+        if (op_decl->uv.sub->can_precompile && package->has_precompile_descriptor) {
           op_decl->uv.sub->flag |= SPVM_SUB_C_FLAG_PRECOMPILE;
         }
         
