@@ -58,6 +58,7 @@ spvmcc - SPVM compiler to create exe file
     -O, --optimize <level>         Optimaization level
     --ccflags <options>            Additional compiler flags
     --lddlflags <options>          Additional linker flags
+    -f, --force                    Force compile and link
 
 =head1 DESCRIPTION
 
