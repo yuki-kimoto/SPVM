@@ -92,6 +92,10 @@
 
 SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 
+
+
+
+  // Native APIs. If a element is added, must increment env_length variable.
   void* env_init[]  = {
     NULL, // package_vars_heap
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
@@ -216,7 +220,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_chars,
   };
   
-  int32_t env_length = 255;
+  int32_t env_length = 221;
   SPVM_ENV* env = calloc(sizeof(void*), env_length);
   if (env == NULL) {
     return NULL;
