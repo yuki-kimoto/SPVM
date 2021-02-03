@@ -1606,15 +1606,15 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     int32_t int32_max_length = 10;
     
     // Create anon sub package name
-    // If Foo::Bar anon sub is defined line 123, keyword start pos 32, the anon sub package name become anon_Foo__Bar_123_32. This is uniqe in whole program.
+    // If Foo::Bar anon sub is defined line 123, sub keyword start pos 32, the anon sub package name become anon__Foo__Bar__123__32. This is uniqe in whole program.
     const char* anon_sub_defined_rel_file_package_name = compiler->cur_rel_file_package_name;
     int32_t anon_sub_defined_line = op_sub->line;
     int32_t anon_sub_defined_keyword_start_pos = op_sub->keyword_start_pos;
-    int32_t anon_sub_package_name_length = 5 + strlen(anon_sub_defined_rel_file_package_name) + 1 + int32_max_length + 1 + int32_max_length;
+    int32_t anon_sub_package_name_length = 6 + strlen(anon_sub_defined_rel_file_package_name) + 2 + int32_max_length + 2 + int32_max_length;
     
     // Anon package name
     char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, anon_sub_package_name_length + 1);
-    sprintf(name_package, "anon_%s_%d_%d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
+    sprintf(name_package, "anon__%s__%d__%d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
     for (int32_t i = 0; i < anon_sub_package_name_length; i++) {
       if (name_package[i] == ':') {
         name_package[i] = '_';
