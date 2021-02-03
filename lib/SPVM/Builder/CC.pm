@@ -401,10 +401,6 @@ EOS
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
 
-  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
-  # and overwrite user configs
-  my $config = $bconf->to_hash;
-  
   # dl_func_list
   # This option is needed Windows DLL file
   my $dl_func_list = [];
@@ -422,6 +418,10 @@ EOS
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
   $bconf->append_lddlflags("$lib_dirs_str $libs_str");
+
+  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
+  # and overwrite user configs
+  my $config = $bconf->to_hash;
   
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
