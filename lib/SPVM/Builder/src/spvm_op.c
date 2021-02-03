@@ -1612,8 +1612,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     int32_t anon_sub_defined_keyword_start_pos = op_sub->keyword_start_pos;
     int32_t anon_sub_package_name_length = 5 + strlen(anon_sub_defined_rel_file_package_name) + 1 + int32_max_length + 1 + int32_max_length;
     
-    // warn("AAAAA %s %d %d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
-    
     // Anon package name
     char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, anon_sub_package_name_length + 1);
     sprintf(name_package, "anon_%s_%d_%d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
