@@ -33,6 +33,7 @@ sub module_dirs { shift->{module_dirs} }
 sub optimize { shift->{optimize} }
 sub extra_compiler_flags { shift->{extra_compiler_flags} }
 sub extra_linker_flags { shift->{extra_linker_flags} }
+sub force { shift->{force} }
 
 sub new {
   my $class = shift;
@@ -145,6 +146,7 @@ sub create_precompile_csources {
     category => 'precompile',
     builder => $builder,
     quiet => $self->quiet,
+    force => $self->force,
   );
 
   my $package_names = $builder->get_package_names;
@@ -182,6 +184,7 @@ sub compile_precompile_csources {
     quiet => $self->quiet,
     optimize => $self->optimize,
     extra_compiler_flags => $self->extra_compiler_flags,
+    force => $self->force,
   );
   
   my $package_names = $builder->get_package_names;
@@ -223,6 +226,7 @@ sub compile_native_csources {
     quiet => $self->quiet,
     optimize => $self->optimize,
     extra_compiler_flags => $self->extra_compiler_flags,
+    force => $self->force,
   );
   
   my $package_names = $builder->get_package_names;
@@ -278,23 +282,27 @@ sub create_spvm_module_csources {
     my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
     
     my $do_create;
-    
-    if (!-f $module_source_csource_file) {
+    if ($self->force) {
       $do_create = 1;
     }
     else {
-      my $loaded_module_file_mtime;
-      if (defined $loaded_module_file) {
-        $loaded_module_file_mtime = (stat($loaded_module_file))[9];
+      if (!-f $module_source_csource_file) {
+        $do_create = 1;
       }
       else {
-        $loaded_module_file_mtime = 0;
-      }
-      
-      my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
-      
-      if ($loaded_module_file_mtime > $module_source_csource_file_mtime) {
-        $do_create = 1;
+        my $loaded_module_file_mtime;
+        if (defined $loaded_module_file) {
+          $loaded_module_file_mtime = (stat($loaded_module_file))[9];
+        }
+        else {
+          $loaded_module_file_mtime = 0;
+        }
+        
+        my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
+        
+        if ($loaded_module_file_mtime > $module_source_csource_file_mtime) {
+          $do_create = 1;
+        }
       }
     }
     
@@ -367,14 +375,19 @@ sub compile_spvm_module_csources {
     mkpath dirname $module_source_object_file;
     
     my $do_compile;
-    if (!-f $module_source_object_file) {
+    if ($self->force) {
       $do_compile = 1;
     }
     else {
-      my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
-      my $module_source_object_file_mtime = (stat($module_source_object_file))[9];
-      if ($module_source_csource_file_mtime > $module_source_object_file_mtime) {
+      if (!-f $module_source_object_file) {
         $do_compile = 1;
+      }
+      else {
+        my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
+        my $module_source_object_file_mtime = (stat($module_source_object_file))[9];
+        if ($module_source_csource_file_mtime > $module_source_object_file_mtime) {
+          $do_compile = 1;
+        }
       }
     }
     
@@ -385,6 +398,7 @@ sub compile_spvm_module_csources {
         object_file => $module_source_object_file,
         include_dirs => $bconf->get_include_dirs,
         extra_compiler_flags => $self->extra_compiler_flags,
+        force => $self->force,
       );
     }
   }
@@ -659,6 +673,7 @@ sub compile_bootstrap_csource {
     object_file => $object_file,
     include_dirs => $bconf->get_include_dirs,
     extra_compiler_flags => $self->extra_compiler_flags,
+    force => $self->force,
   );
   
   return $object_file;
@@ -761,18 +776,24 @@ sub compile_spvm_compiler_and_runtime_csources {
     # Do compile
     my $do_compile;
     
-    if (!-f $object_file) {
+    if ($self->force) {
       $do_compile = 1;
     }
     else {
-      my $mod_time_src_file = (stat($src_file))[9];
-      my $mod_time_object_file = (stat($object_file))[9];
-      if ($mod_time_src_file > $mod_time_object_file) {
+      if (!-f $object_file) {
         $do_compile = 1;
       }
+      else {
+        my $mod_time_src_file = (stat($src_file))[9];
+        my $mod_time_object_file = (stat($object_file))[9];
+        if ($mod_time_src_file > $mod_time_object_file) {
+          $do_compile = 1;
+        }
+      }
     }
-    
+      
     if ($do_compile) {
+      
       # Compile source file
       $cbuilder->compile(
         source => $src_file,
