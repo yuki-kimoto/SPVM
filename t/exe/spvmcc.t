@@ -31,9 +31,9 @@ use lib "$FindBin::Bin/exe/lib";
       or die "Can't execute exe file $execute_cmd:$!";
   }
   
-  # -O option
+  # -O option, --ccflags, --lddlflags
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -O="-O0" -B t/exe/.spvm_build -I t/exe/lib -o t/.spvm_build/work/exe/myexe MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc --ccflags "-DSOMETHING_MACRO" --lddlflags "-Wl" -O "-O0 -g" -B t/exe/.spvm_build -I t/exe/lib -o t/.spvm_build/work/exe/myexe MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 

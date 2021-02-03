@@ -14,8 +14,9 @@ SPVM::Builder::Util::getopt
   'B|build-dir=s'   => \my $build_dir,
   'I|module-dir=s' => \my @module_dirs,
   'q|quiet'   => \my $quiet,
-  'D|define=s' => \my @defines,
   'O|optimize=s' => \my $optimize,
+  'ccflags=s' => \my $extra_compiler_flags,
+  'lddlflags=s' => \my $extra_linker_flags,
 ;
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $target_package_name = shift);
@@ -27,8 +28,9 @@ my $build_exe = SPVM::Builder::Exe->new(
   output_file => $output_file,
   target_package_name => $target_package_name,
   quiet => $quiet,
-  define => \@defines,
   optimize => $optimize,
+  extra_compiler_flags => $extra_compiler_flags,
+  extra_linker_flags => $extra_linker_flags,
 );
 $build_exe->build_exe_file;
 
@@ -42,7 +44,7 @@ spvmcc - SPVM compiler to create exe file
 
   Usage: spvmcc [OPTIONS] [PACKAGE]
 
-    spvmcc -Ilib -o my_app My::App
+    spvmcc -Ilib -o myapp Myapp
 
   Options:
     -h, --help                     Show this message
@@ -51,9 +53,11 @@ spvmcc - SPVM compiler to create exe file
     -I, --module-dir <directory>   Add SPVM module searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
-    -D, --define <macro>           Define macro name
-    -O, --optimize <level>          Optimaization level
+    -O, --optimize <level>         Optimaization level
+    --ccflags <options>            Additional compiler flags
+    --lddlflags <options>          Additional linker flags
 
 =head1 DESCRIPTION
 
 spvmcc is SPVM compiler to create executable file.
+

@@ -31,6 +31,8 @@ sub output_file { shift->{output_file} }
 sub quiet { shift->{quiet} }
 sub module_dirs { shift->{module_dirs} }
 sub optimize { shift->{optimize} }
+sub extra_compiler_flags { shift->{extra_compiler_flags} }
+sub extra_linker_flags { shift->{extra_linker_flags} }
 
 sub new {
   my $class = shift;
@@ -179,6 +181,7 @@ sub compile_precompile_csources {
     builder => $builder,
     quiet => $self->quiet,
     optimize => $self->optimize,
+    extra_compiler_flags => $self->extra_compiler_flags,
   );
   
   my $package_names = $builder->get_package_names;
@@ -219,6 +222,7 @@ sub compile_native_csources {
     builder => $builder,
     quiet => $self->quiet,
     optimize => $self->optimize,
+    extra_compiler_flags => $self->extra_compiler_flags,
   );
   
   my $package_names = $builder->get_package_names;
@@ -380,6 +384,7 @@ sub compile_spvm_module_csources {
         source => $module_source_csource_file,
         object_file => $module_source_object_file,
         include_dirs => $bconf->get_include_dirs,
+        extra_compiler_flags => $self->extra_compiler_flags,
       );
     }
   }
@@ -653,6 +658,7 @@ sub compile_bootstrap_csource {
     source => $src_file,
     object_file => $object_file,
     include_dirs => $bconf->get_include_dirs,
+    extra_compiler_flags => $self->extra_compiler_flags,
   );
   
   return $object_file;
@@ -771,7 +777,8 @@ sub compile_spvm_compiler_and_runtime_csources {
       $cbuilder->compile(
         source => $src_file,
         object_file => $object_file,
-        include_dirs => $bconf->get_include_dirs
+        include_dirs => $bconf->get_include_dirs,
+        extra_compiler_flags => $self->extra_compiler_flags,
       );
       push @$object_files, $object_file;
     }
@@ -844,6 +851,7 @@ sub link {
     objects => $object_files,
     module_name => $target_package_name,
     exe_file => $exe_file,
+    extra_linker_flags => $self->extra_linker_flags,
   );
 }
 

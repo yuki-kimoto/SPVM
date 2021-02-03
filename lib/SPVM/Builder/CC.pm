@@ -18,6 +18,8 @@ use SPVM::Builder::Config;
 sub category { shift->{category} }
 sub builder { shift->{builder} }
 sub optimize { shift->{optimize} }
+sub extra_compiler_flags { shift->{extra_compiler_flags} }
+sub extra_linker_flags { shift->{extra_linker_flags} }
 
 sub new {
   my $class = shift;
@@ -294,11 +296,17 @@ sub compile {
       mkpath dirname $object_file;
   
       eval {
+        my $extra_compiler_flags = $self->extra_compiler_flags;
+        unless (defined $extra_compiler_flags) {
+          $extra_compiler_flags = '';
+        }
+        
         # Compile source file
         $cbuilder->compile(
           source => $src_file,
           object_file => $object_file,
           include_dirs => $bconf->get_include_dirs,
+          extra_compiler_flags => $extra_compiler_flags,
         );
       };
       if (my $error = $@) {
@@ -419,12 +427,17 @@ EOS
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
   # Link and create shared library
+  my $extra_linker_flags = $self->extra_linker_flags;
+  unless (defined $extra_linker_flags) {
+    $extra_linker_flags = '';
+  }
   my $tmp_shared_lib_file;
   eval {
     $tmp_shared_lib_file = $cbuilder->link(
       objects => $object_files,
       module_name => $package_name,
       dl_func_list => $dl_func_list,
+      extra_linker_flags => $extra_linker_flags,
     );
   };
   if (my $error = $@) {
