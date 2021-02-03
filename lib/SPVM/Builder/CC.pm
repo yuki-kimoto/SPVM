@@ -429,8 +429,6 @@ EOS
   # and overwrite user configs
   my $config = $bconf->to_hash;
   
-  use D;du $config->{lddlflags};
-  
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
