@@ -1,7 +1,7 @@
 #ifndef SPVM_SWITCH_INFO_H
 #define SPVM_SWITCH_INFO_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 enum {
   SPVM_SWITCH_INFO_C_ID_TABLE_SWITCH,

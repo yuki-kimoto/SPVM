@@ -1,7 +1,7 @@
 #ifndef SPVM_DESCRIPTOR_H
 #define SPVM_DESCRIPTOR_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 enum {
   SPVM_DESCRIPTOR_C_ID_CALLBACK_T,

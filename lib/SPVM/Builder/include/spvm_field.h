@@ -1,7 +1,7 @@
 #ifndef SPVM_FIELD_H
 #define SPVM_FIELD_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 enum {
   SPVM_FIELD_C_FLAG_PRIVATE = 1,

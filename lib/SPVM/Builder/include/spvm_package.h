@@ -1,7 +1,7 @@
 #ifndef SPVM_PACKAGE_H
 #define SPVM_PACKAGE_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 enum {
   SPVM_PACKAGE_C_CATEGORY_CLASS,

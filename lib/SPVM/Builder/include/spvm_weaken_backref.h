@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 struct spvm_weaken_backref {
   SPVM_OBJECT** object_address;

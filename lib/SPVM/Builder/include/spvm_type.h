@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 enum {
   SPVM_TYPE_C_FLAG_REF = 1,

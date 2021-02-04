@@ -1,7 +1,7 @@
 #ifndef SPVM_OPCODE_ARRAY_H
 #define SPVM_OPCODE_ARRAY_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 // Array
 struct spvm_opcode_array {

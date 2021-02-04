@@ -1,7 +1,7 @@
 #ifndef SPVM_LIST_H
 #define SPVM_LIST_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 struct spvm_list {
   void** values;

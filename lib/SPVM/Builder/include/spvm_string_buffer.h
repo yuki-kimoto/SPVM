@@ -1,7 +1,7 @@
 #ifndef SPVM_STRING_BUFFER_H
 #define SPVM_STRING_BUFFER_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 struct spvm_string_buffer {
   char* buffer;

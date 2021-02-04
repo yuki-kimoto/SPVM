@@ -1,7 +1,7 @@
 #ifndef SPVM_COMPILER_ALLOCATOR_H
 #define SPVM_COMPILER_ALLOCATOR_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 // Parser information
 struct spvm_compiler_allocator {

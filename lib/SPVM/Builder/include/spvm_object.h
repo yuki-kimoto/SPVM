@@ -1,7 +1,7 @@
 #ifndef SPVM_OBJECT_H
 #define SPVM_OBJECT_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 #include "spvm_native.h"
 
 // SPVM_OBJECT

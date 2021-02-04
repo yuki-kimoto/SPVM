@@ -1,7 +1,7 @@
 #ifndef SPVM_USE_H
 #define SPVM_USE_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 struct spvm_use {
   SPVM_OP* op_type;

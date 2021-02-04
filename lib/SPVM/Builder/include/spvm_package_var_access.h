@@ -1,7 +1,7 @@
 #ifndef SPVM_PACKAGE_VAR_ACCESS_H
 #define SPVM_PACKAGE_VAR_ACCESS_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 struct spvm_package_var_access {
   SPVM_OP* op_name;

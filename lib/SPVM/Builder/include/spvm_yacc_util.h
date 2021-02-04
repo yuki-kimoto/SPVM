@@ -1,7 +1,7 @@
 #ifndef SPVM_YACC_UTIL_H
 #define SPVM_YACC_UTIL_H
 
-#include "spvm_typedef.h"
+#include "spvm_typedecl.h"
 
 union spvm_yystype
 {
