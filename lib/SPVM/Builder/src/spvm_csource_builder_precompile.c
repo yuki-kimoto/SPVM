@@ -1115,11 +1115,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_COMPILER* compil
       const char* sub_name = sub->name;
       const char* sub_signature = sub->signature;
       if (sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
-        SPVM_STRING_BUFFER_add(string_buffer, "// [SIG]");
-        SPVM_STRING_BUFFER_add(string_buffer, (char*)sub_signature);
-        SPVM_STRING_BUFFER_add(string_buffer, "\n");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_declaration(compiler, string_buffer, package_name, sub_name);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n\n");
+        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
       }
     }
   }
