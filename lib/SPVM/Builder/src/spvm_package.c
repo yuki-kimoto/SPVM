@@ -43,6 +43,7 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->op_uses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_allows = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->anon_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   return package;
 }

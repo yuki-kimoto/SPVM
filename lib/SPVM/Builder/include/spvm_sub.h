@@ -68,6 +68,7 @@ struct spvm_sub {
   int32_t tmp_vars_length;
   SPVM_OP* op_my_condition_flag;
   int32_t can_precompile;
+  const char* anon_sub_defined_package_name;
 };
 
 SPVM_SUB* SPVM_SUB_new(SPVM_COMPILER* compiler);

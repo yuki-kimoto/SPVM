@@ -1618,7 +1618,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
     
-    package->anon_sub_defined_package_name = anon_sub_defined_rel_file_package_name;
+    op_sub->uv.sub->anon_sub_defined_package_name = anon_sub_defined_rel_file_package_name;
   }
   
   const char* package_name = op_type->uv.type->basic_type->name;
