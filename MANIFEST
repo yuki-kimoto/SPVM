@@ -747,7 +747,6 @@ t/default/lib/TestCase/CompileError/Sub/SubNameStartDigit.spvm
 t/default/lib/TestCase/CompileError/Subtract/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Subtract/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Switch/NoLastBreak.spvm
-t/default/lib/TestCase/CompileError/Symbol/AnonSub.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/TestCase/CompileError/UnaryMinus/NotNumeric.spvm

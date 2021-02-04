@@ -33,15 +33,6 @@ use lib "$FindBin::Bin/lib";
   }
 }
 
-# Symbol
-{
-  {
-    my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Symbol::AnonSub', __FILE__, __LINE__);
-    ok($success == 0);
-  }
-}
-
 # Literal
 {
   {

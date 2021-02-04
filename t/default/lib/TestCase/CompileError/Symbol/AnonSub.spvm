@@ -1,5 +1,0 @@
-package TestCase::CompileError::Symbol::AnonSub {
-  sub ANON_SUB_ : void () {
-    
-  }
-}

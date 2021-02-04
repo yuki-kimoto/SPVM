@@ -2038,14 +2038,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_COMPILER_error(compiler, "Symbol name \"%s\" must not contains __ at %s line %d\n", keyword, compiler->cur_file, compiler->cur_line);
           }
 
-          // Symbol name can't 
-          if (strlen(keyword) >= 9
-            && keyword[0] == 'A' && keyword[1] == 'N' && keyword[2] == 'O' && keyword[3] == 'N' && keyword[4] == '_'
-            && keyword[5] == 'S' && keyword[6] == 'U' && keyword[7] == 'B' && keyword[8] == '_')
-          {
-            SPVM_COMPILER_error(compiler, "Symbol name \"%s\" can't start with ANON_SUB_. This is preserved for anon subroutine at %s line %d\n", keyword, compiler->cur_file, compiler->cur_line);
-          }
-          
           SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, keyword, compiler->cur_file, compiler->cur_line);
           yylvalp->opval = op_name;
           
