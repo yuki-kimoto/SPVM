@@ -61,7 +61,7 @@ int32_t SPVM_STRING_BUFFER_add_package_name(SPVM_STRING_BUFFER* string_buffer, c
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_field_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
+int32_t SPVM_STRING_BUFFER_add_field_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
   
   int32_t id = string_buffer->length;
   
@@ -73,7 +73,7 @@ int32_t SPVM_STRING_BUFFER_add_field_id_name(SPVM_STRING_BUFFER* string_buffer, 
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_field_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
+int32_t SPVM_STRING_BUFFER_add_field_access_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
   
   int32_t id = string_buffer->length;
   
@@ -85,7 +85,7 @@ int32_t SPVM_STRING_BUFFER_add_field_offset_name(SPVM_STRING_BUFFER* string_buff
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_sub_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+int32_t SPVM_STRING_BUFFER_add_sub_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
   
   int32_t id = string_buffer->length;
 
@@ -97,7 +97,7 @@ int32_t SPVM_STRING_BUFFER_add_sub_id_name(SPVM_STRING_BUFFER* string_buffer, co
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_basic_type_id_name(SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
+int32_t SPVM_STRING_BUFFER_add_basic_type_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* basic_type_name) {
   
   int32_t id = string_buffer->length;
   
@@ -107,7 +107,7 @@ int32_t SPVM_STRING_BUFFER_add_basic_type_id_name(SPVM_STRING_BUFFER* string_buf
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_package_var_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* package_var_name) {
+int32_t SPVM_STRING_BUFFER_add_package_var_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* package_var_name) {
   
   int32_t id = string_buffer->length;
   
