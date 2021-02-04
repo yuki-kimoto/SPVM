@@ -1614,13 +1614,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Anon package name
     char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, anon_sub_package_name_length + 1);
-    sprintf(name_package, "anon__%s__%d__%d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
-    for (int32_t i = 0; i < anon_sub_package_name_length; i++) {
-      if (name_package[i] == ':') {
-        name_package[i] = '_';
-      }
-    }
-    
+    sprintf(name_package, "%s::anon::%d::%d", anon_sub_defined_rel_file_package_name, anon_sub_defined_line, anon_sub_defined_keyword_start_pos);
     SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
     
