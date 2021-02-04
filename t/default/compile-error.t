@@ -23,6 +23,11 @@ use lib "$FindBin::Bin/lib";
   }
   {
     my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::Package::packagePartNameStartWithUpperCase', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
     my $success = $build->compile_spvm('foo', __FILE__, __LINE__);
     ok($success == 0);
   }

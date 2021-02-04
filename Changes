@@ -7,6 +7,9 @@
   - add --ccflags option to spvmcc
   - add --lddlflags option to spvmcc
   - add -f or --force option to spvmcc to compile and link force
+  - package part name must be start with lower case
+    (Invalid package name example) Foo::bar
+    because I want to use internal anon sub package name for this. Foo::anonsub_11_23
 0.0930 2021-01-28
   - remove subroutine precompile descriptor. SPVM become only support whole package precompile.
   - add SPVM::Builder::Exe again. This is more stable before SPVM::Builder::Exe because compiler and runtime and SPVM module sources is embeded to exe files directry.
