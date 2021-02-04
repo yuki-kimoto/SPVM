@@ -1,4 +1,4 @@
-0.0931 2021-02-03
+0.0931 2021-02-04
   - SPVM::Config extra_compiler_flag related methods is removed
     because I want to use extra_compiler_flag for spvmcc --ccflags option for future
   - SPVM::Config extra_linker_flag related methods is removed
@@ -10,6 +10,7 @@
   - package part name must be start with lower case
     (Invalid package name example) Foo::bar
     because I want to use internal anon sub package name for this. Foo::anonsub_11_23
+  - fix bug anon sub code is not precompile if package have precompile descriptor
 0.0930 2021-01-28
   - remove subroutine precompile descriptor. SPVM become only support whole package precompile.
   - add SPVM::Builder::Exe again. This is more stable before SPVM::Builder::Exe because compiler and runtime and SPVM module sources is embeded to exe files directry.

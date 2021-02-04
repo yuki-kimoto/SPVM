@@ -1135,6 +1135,13 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(SPVM_COMPILER* compil
     }
   }
   SPVM_STRING_BUFFER_add(string_buffer, "\n");
+  
+  // If package have anon subs, the anon sub source code is merged to this package
+  for (int32_t i = 0; i < package->anon_subs->length; i++) {
+    SPVM_SUB* anon_sub = SPVM_LIST_fetch(package->anon_subs, i);
+    SPVM_PACKAGE* anon_sub_package = anon_sub->package;
+    SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(compiler, string_buffer, anon_sub_package->name);
+  }
 }
 
 void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_head(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer) {

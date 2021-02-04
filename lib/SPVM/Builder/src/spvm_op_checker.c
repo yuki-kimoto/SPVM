@@ -5023,7 +5023,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       if (sub->anon_sub_defined_package_name) {
         SPVM_PACKAGE* anon_sub_defined_package = SPVM_HASH_fetch(compiler->package_symtable, sub->anon_sub_defined_package_name, strlen(sub->anon_sub_defined_package_name));
         SPVM_LIST_push(anon_sub_defined_package->anon_subs, sub);
-        // package->has_precompile_descriptor = anon_sub_defined_package->has_precompile_descriptor;
+        package->has_precompile_descriptor = anon_sub_defined_package->has_precompile_descriptor;
       }
     }
   }
