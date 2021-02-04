@@ -4792,14 +4792,6 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
   for (int32_t package_index = compiler->cur_package_base; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     
-    // Copy has_precomile_descriptor from anon sub defined package
-    /* This logic produce some bugs, so comment out for a while
-    if (package->anon_sub_defined_package_name) {
-      SPVM_PACKAGE* anon_sub_defined_package = SPVM_HASH_fetch(compiler->package_symtable, package->anon_sub_defined_package_name, strlen(package->anon_sub_defined_package_name));
-      package->has_precompile_descriptor = anon_sub_defined_package->has_precompile_descriptor;
-    }
-    */
-    
     const char* package_name = package->op_name->uv.name;
     
     // mulnum_t package limitation
@@ -5027,7 +5019,21 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       const char* sub_signature = SPVM_COMPILER_create_sub_signature(compiler, sub);
       sub->signature = sub_signature;
 
-      // Set sub precompile flag if package have package descriptor
+      // Copy has_precomile_descriptor from anon sub defined package
+      if (sub->anon_sub_defined_package_name) {
+        SPVM_PACKAGE* anon_sub_defined_package = SPVM_HASH_fetch(compiler->package_symtable, sub->anon_sub_defined_package_name, strlen(sub->anon_sub_defined_package_name));
+        SPVM_LIST_push(anon_sub_defined_package->anon_subs, sub);
+        // package->has_precompile_descriptor = anon_sub_defined_package->has_precompile_descriptor;
+      }
+    }
+  }
+  
+  for (int32_t package_index = compiler->cur_package_base; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    // Check subs
+    for (int32_t i = 0; i < package->subs->length; i++) {
+      SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
+      // Set sub precompile flag if package have precompile descriptor
       if (package->has_precompile_descriptor && sub->can_precompile) {
         sub->flag |= SPVM_SUB_C_FLAG_PRECOMPILE;
       }
