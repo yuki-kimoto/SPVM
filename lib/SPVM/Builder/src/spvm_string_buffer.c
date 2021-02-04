@@ -61,36 +61,36 @@ int32_t SPVM_STRING_BUFFER_add_package_name(SPVM_STRING_BUFFER* string_buffer, c
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_field_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
+int32_t SPVM_STRING_BUFFER_add_field_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* access_package_name, const char* field_name) {
   
   int32_t id = string_buffer->length;
   
   SPVM_STRING_BUFFER_add(string_buffer, "FIELD_ID_");
-  SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, access_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add_package_name(string_buffer, field_name);
   
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_field_access_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* field_name) {
+int32_t SPVM_STRING_BUFFER_add_field_access_offset_name(SPVM_STRING_BUFFER* string_buffer, const char* access_package_name, const char* field_name) {
   
   int32_t id = string_buffer->length;
   
   SPVM_STRING_BUFFER_add(string_buffer, "FIELD_BYTE_OFFSET_");
-  SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, access_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add_package_name(string_buffer, field_name);
   
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_sub_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* sub_name) {
+int32_t SPVM_STRING_BUFFER_add_sub_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* access_package_name, const char* sub_name) {
   
   int32_t id = string_buffer->length;
 
   SPVM_STRING_BUFFER_add(string_buffer, "SUB_ID_");
-  SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, access_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_name);
   
@@ -107,12 +107,12 @@ int32_t SPVM_STRING_BUFFER_add_basic_type_access_id_name(SPVM_STRING_BUFFER* str
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_package_var_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* package_name, const char* package_var_name) {
+int32_t SPVM_STRING_BUFFER_add_package_var_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* access_package_name, const char* package_var_name) {
   
   int32_t id = string_buffer->length;
   
   SPVM_STRING_BUFFER_add(string_buffer, "VAR_PACKAGE_VAR_ID_");
-  SPVM_STRING_BUFFER_add_package_name(string_buffer, package_name);
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, access_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
   SPVM_STRING_BUFFER_add_package_name(string_buffer, &package_var_name[1]);
   
