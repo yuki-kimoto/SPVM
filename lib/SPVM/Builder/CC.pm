@@ -32,7 +32,7 @@ sub new {
 }
 
 sub build_shared_lib_runtime {
-  my ($self, $package_name, $sub_names) = @_;
+  my ($self, $package_name) = @_;
   
   my $category = $self->category;
 
@@ -73,7 +73,6 @@ sub build_shared_lib_runtime {
   
   my $build_shared_lib_file = $self->build_shared_lib(
     $package_name,
-    $sub_names,
     {
       src_dir => $src_dir,
       object_dir => $object_dir,
@@ -85,7 +84,7 @@ sub build_shared_lib_runtime {
 }
 
 sub build_shared_lib_dist {
-  my ($self, $package_name, $sub_names) = @_;
+  my ($self, $package_name) = @_;
   
   my $category = $self->category;
   
@@ -112,7 +111,6 @@ sub build_shared_lib_dist {
   
   $self->build_shared_lib(
     $package_name,
-    $sub_names,
     {
       src_dir => $src_dir,
       object_dir => $object_dir,
@@ -122,7 +120,7 @@ sub build_shared_lib_dist {
 }
 
 sub build_shared_lib {
-  my ($self, $package_name, $sub_names, $opt) = @_;
+  my ($self, $package_name, $opt) = @_;
   
   # Compile source file and create object files
   my $object_files = $self->compile($package_name, $opt);

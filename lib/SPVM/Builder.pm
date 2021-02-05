@@ -103,7 +103,7 @@ sub build_shared_lib_dist {
   );
   
   my $sub_names = $self->get_sub_names($package_name, $category);
-  $cc_native->build_shared_lib_dist($package_name, $sub_names);
+  $cc_native->build_shared_lib_dist($package_name);
 }
 
 sub build_and_bind_shared_lib {
@@ -124,7 +124,7 @@ sub build_and_bind_shared_lib {
     
     # Try runtime compile if shared library is not found
     unless (-f $shared_lib_file) {
-      $shared_lib_file = $cc->build_shared_lib_runtime($package_name, $sub_names);
+      $shared_lib_file = $cc->build_shared_lib_runtime($package_name);
     }
     $self->bind_subs($cc, $shared_lib_file, $package_name, $sub_names, $category);
   }
