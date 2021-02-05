@@ -11,6 +11,9 @@
     (Invalid package name example) Foo::bar
     because I want to use internal anon sub package name for this. Foo::anonsub_11_23
   - fix bug anon sub code is not precompile if package have precompile descriptor
+  - exception message become more perlish
+    (Exception Message Example)
+    TestCase::OArray->basic called at t/default/lib/TestCase/OArray.spvm line 54
 0.0930 2021-01-28
   - remove subroutine precompile descriptor. SPVM become only support whole package precompile.
   - add SPVM::Builder::Exe again. This is more stable before SPVM::Builder::Exe because compiler and runtime and SPVM module sources is embeded to exe files directry.
