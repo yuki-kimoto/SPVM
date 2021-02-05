@@ -1,0 +1,5 @@
+package TestCase::CompileError::OArray::AssignNumericArray {
+  sub error : void () {
+    my $obj_elems : oarray = new int[3];
+  }
+}
