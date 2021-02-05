@@ -2,4 +2,25 @@ package MyExe::Precompile : precompile {
   sub sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
+  
+  sub anon_sub_sum : int () {
+    my $num1 = anon_sub0();
+    my $num2 = anon_sub1();
+    
+    return $num1 + $num2;
+  }
+  
+  sub anon_sub0 : int () {
+    
+    my $cb = sub : int ($self : self) { return 2; };
+    
+    return $cb->();
+  }
+  
+  sub anon_sub1 : int () {
+    
+    my $cb = sub : int ($self : self) { return 5; };
+    
+    return $cb->();
+  }
 }

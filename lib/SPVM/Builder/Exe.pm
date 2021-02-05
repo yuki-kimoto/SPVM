@@ -151,6 +151,7 @@ sub create_precompile_csources {
 
   my $package_names = $builder->get_package_names;
   for my $precompile_package_name (@$package_names) {
+    next if $precompile_package_name =~ /::anon/;
     
     my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     if (@$precompile_sub_names) {
@@ -188,6 +189,7 @@ sub compile_precompile_csources {
   
   my $package_names = $builder->get_package_names;
   for my $precompile_package_name (@$package_names) {
+    next if $precompile_package_name =~ /::anon/;
     
     my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     if (@$precompile_sub_names) {
@@ -848,6 +850,7 @@ sub link {
   # SPVM precompile object files
   my $precompile_object_files = [];
   for my $precompile_package_name (@$package_names) {
+    next if $precompile_package_name =~ /::anon/;
     
     my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
     if (@$precompile_sub_names) {

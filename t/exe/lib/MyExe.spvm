@@ -7,6 +7,8 @@ package MyExe {
     my $ret1 = TestCase::NativeAPI2->src_foo;
     my $ret2 = TestCase::NativeAPI2->src_bar;
     
-    print "AAA $sum $ret1 $ret2\n";
+    my $ret3 = MyExe::Precompile->anon_sub_sum;
+    
+    print "AAA $sum $ret1 $ret2 $ret3\n";
   }
 }
