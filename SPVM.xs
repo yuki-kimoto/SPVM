@@ -251,6 +251,47 @@ get_sub_names(...)
 }
 
 SV*
+get_anon_package_names_by_parent_package_name(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_package_name = ST(1);
+  SV* sv_category = ST(2);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Name
+  const char* package_name = SvPV_nolen(sv_package_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_anon_package_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_anon_package_names = sv_2mortal(newRV_inc((SV*)av_anon_package_names));
+  
+  // Copy package load path to builder
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+
+  for (int32_t anon_sub_index = 0; anon_sub_index < package->anon_subs->length; anon_sub_index++) {
+    
+    SPVM_SUB* anon_sub = SPVM_LIST_fetch(package->anon_subs, anon_sub_index);
+    SPVM_PACKAGE* anon_package = anon_sub->package;
+    
+    const char* anon_package_name = anon_package->name;
+    SV* sv_anon_package_name = sv_2mortal(newSVpv(anon_package_name, 0));
+    
+    av_push(av_anon_package_names, SvREFCNT_inc(sv_anon_package_name));
+  }
+  
+  XPUSHs(sv_anon_package_names);
+  XSRETURN(1);
+}
+
+SV*
 get_package_names(...)
   PPCODE:
 {
