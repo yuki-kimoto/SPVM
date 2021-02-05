@@ -472,44 +472,7 @@ _init(...)
 }
 
 SV*
-bind_sub_precompile(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_package_name = ST(1);
-  SV* sv_sub_name = ST(2);
-  SV* sv_precompile_address = ST(3);
-  
-  void* sub_precompile_address = INT2PTR(void*, SvIV(sv_precompile_address));
-  
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  // Package name
-  const char* package_name = SvPV_nolen(sv_package_name);
-
-  // Subroutine name
-  const char* sub_name = SvPV_nolen(sv_sub_name);
-  
-  // Package
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
-  
-  // Sub
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-  
-  // Set precompile sub address
-  sub->precompile_address = sub_precompile_address;
-  
-  XSRETURN(0);
-}
-
-SV*
-bind_sub_native(...)
+bind_sub(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -519,6 +482,7 @@ bind_sub_native(...)
   SV* sv_package_name = ST(1);
   SV* sv_sub_name = ST(2);
   SV* sv_native_address = ST(3);
+  SV* sv_category = ST(4);
 
   SPVM_COMPILER* compiler;
   SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
@@ -540,9 +504,23 @@ bind_sub_native(...)
   // Sub
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
   
-  // Set native sub address
-  sub->native_address = native_address;
-  
+  if (SvOK(sv_category)) {
+    if(strEQ(SvPV_nolen(sv_category), "native")) {
+      // Set native sub address
+      sub->native_address = native_address;
+    }
+    else if (strEQ(SvPV_nolen(sv_category), "precompile")) {
+      // Set precompile sub address
+      sub->precompile_address = native_address;
+    }
+    else {
+      croak("Need category");
+    }
+  }
+  else {
+    croak("Need category");
+  }
+
   XSRETURN(0);
 }
 

@@ -155,8 +155,18 @@ sub bind_subs {
   }
   
   my $sub_names = $self->get_sub_names($package_name, $category);
-  
+  my $sub_infos = [];
   for my $sub_name (@$sub_names) {
+    my $sub_info = {};
+    $sub_info->{package_name} = $package_name;
+    $sub_info->{sub_name} = $sub_name;
+    push @$sub_infos, $sub_info;
+  }
+  
+  for my $sub_info (@$sub_infos) {
+    my $package_name = $sub_info->{package_name};
+    my $sub_name = $sub_info->{sub_name};
+    
     my $sub_abs_name = "${package_name}::$sub_name";
 
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $sub_name, $category);
@@ -194,12 +204,7 @@ EOS
       confess "DLL file is not specified";
     }
     
-    if ($category eq 'native') {
-      $self->bind_sub_native($package_name, $sub_name, $cfunc_address);
-    }
-    elsif ($category eq 'precompile') {
-      $self->bind_sub_precompile($package_name, $sub_name, $cfunc_address);
-    }
+    $self->bind_sub($package_name, $sub_name, $cfunc_address, $category);
   }
 }
 
