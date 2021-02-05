@@ -1,0 +1,66 @@
+package TestCase::OArray {
+  sub basic : int () {
+    
+    # oarray - assign numeric object
+    {
+      # oarray can be assigned SPVM::Int[] object
+      my $obj_nums : oarray = [SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
+      
+      # Can get element
+      my $obj_num0 = (SPVM::Int)$obj_nums->[0];
+      my $obj_num1 = (SPVM::Int)$obj_nums->[1];
+      my $obj_num2 = (SPVM::Int)$obj_nums->[2];
+      unless ((int)$obj_num0 == 1) {
+        return 0;
+      }
+      unless ((int)$obj_num1 == 2) {
+        return 0;
+      }
+      unless ((int)$obj_num2 == 3) {
+        return 0;
+      }
+      
+      # Array invalid range access
+      eval {
+        $obj_nums->[3];
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      # isa return real type
+      unless ($obj_nums isa SPVM::Int[]) {
+        return 0;
+      }
+      
+      # SPVM::Int type can be assigned
+      $obj_nums->[2] = SPVM::Int->new(4);
+      
+      # If other type is assinged, runtime exception occur
+      eval {
+        $obj_nums->[0] = SPVM::Long->new(2);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      # Cast to SPVM::Int[];
+      my $obj_ints = (SPVM::Int[])$obj_nums;
+      unless ($obj_ints isa SPVM::Int[]) {
+        return 0;
+      }
+      
+      # Cast to Invalid array type, runtime exception occur
+      eval {
+        (SPVM::Long[])$obj_nums;
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  
+}

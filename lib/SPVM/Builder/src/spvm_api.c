@@ -1563,7 +1563,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
               SPVM_API_OBJECT_ASSIGN(element_address, object);
             }
             else {
-              void* exception = env->new_string_nolen_raw(env, "Element type is invalid");
+              void* exception = env->new_string_nolen_raw(env, "Assigned element type is invalid");
               env->set_exception(env, exception);
               exception_flag = 1;
             }
