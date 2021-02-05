@@ -402,7 +402,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
 
   compiler->error_count++;
   
-  fprintf(stderr, "%s", message);
+  fprintf(stderr, "[CompileError]%s", message);
 }
 
 const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
