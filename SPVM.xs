@@ -496,13 +496,13 @@ bind_sub_precompile(...)
   // Subroutine name
   const char* sub_name = SvPV_nolen(sv_sub_name);
   
-  // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
+  // Package
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   
-  // Package name
-  SPVM_PACKAGE* package = basic_type->package;
-
+  // Sub
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  
+  // Set precompile sub address
   sub->precompile_address = sub_precompile_address;
   
   XSRETURN(0);
@@ -534,14 +534,13 @@ bind_sub_native(...)
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
   
-  // Basic type
-  SPVM_BASIC_TYPE* basic_type = (SPVM_BASIC_TYPE*)SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
+  // Package
+  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   
-  // Package name
-  SPVM_PACKAGE* package = basic_type->package;
-  
-  // Set native address to subroutine
+  // Sub
   SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  
+  // Set native sub address
   sub->native_address = native_address;
   
   XSRETURN(0);
