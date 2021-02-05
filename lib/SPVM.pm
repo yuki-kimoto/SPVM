@@ -50,13 +50,11 @@ sub import {
     if ($compile_success) {
       my $added_package_names = $BUILDER->get_added_package_names;
 
-      # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
       for my $added_package_name (@$added_package_names) {
+        # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
         $BUILDER->build_and_bind_shared_lib($added_package_name, 'precompile');
-      }
 
-      # Build native packages - Compile C source codes and link them to SPVM native subroutine
-      for my $added_package_name (@$added_package_names) {
+        # Build native packages - Compile C source codes and link them to SPVM native subroutine
         $BUILDER->build_and_bind_shared_lib($added_package_name, 'native');
       }
 
