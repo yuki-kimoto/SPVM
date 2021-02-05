@@ -53,7 +53,6 @@ sub build_shared_lib_runtime {
     
     $self->create_precompile_csource(
       $package_name,
-      $sub_names,
       {
         src_dir => $src_dir,
       }
@@ -97,7 +96,6 @@ sub build_shared_lib_dist {
 
     $self->create_precompile_csource(
       $package_name,
-      $sub_names,
       {
         src_dir => $src_dir,
       }
@@ -465,7 +463,7 @@ EOS
 }
 
 sub create_precompile_csource {
-  my ($self, $package_name, $sub_names, $opt) = @_;
+  my ($self, $package_name, $opt) = @_;
   
   my $src_dir = $opt->{src_dir};
   mkpath $src_dir;
@@ -479,7 +477,7 @@ sub create_precompile_csource {
   my $source_dir = "$src_dir/$package_rel_dir";
   mkpath $source_dir;
 
-  my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);
+  my $package_csource = $self->build_package_csource_precompile($package_name);
   
   my $is_create_csource_file;
 

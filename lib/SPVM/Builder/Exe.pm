@@ -158,7 +158,6 @@ sub create_precompile_csources {
       mkpath $src_dir;
       $builder_c_precompile->create_precompile_csource(
         $precompile_package_name,
-        [],
         {
           src_dir => $src_dir,
         }
