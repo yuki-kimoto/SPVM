@@ -163,6 +163,17 @@ sub bind_subs {
     push @$sub_infos, $sub_info;
   }
   
+  # Add anon package sub names if precompile
+  if ($category eq 'precompile') {
+    my $anon_package_names = $self->get_anon_package_names_by_parent_package_name($package_name);
+    for my $anon_package_name (@$anon_package_names) {
+      my $sub_info = {};
+      $sub_info->{package_name} = $anon_package_name;
+      $sub_info->{sub_name} = "";
+      push @$sub_infos, $sub_info;
+    }
+  }
+  
   for my $sub_info (@$sub_infos) {
     my $package_name = $sub_info->{package_name};
     my $sub_name = $sub_info->{sub_name};
