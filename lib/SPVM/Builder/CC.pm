@@ -130,7 +130,6 @@ sub build_shared_lib {
   # Link object files and create shared library
   my $build_shared_lib_file = $self->link(
     $package_name,
-    $sub_names,
     $object_files,
     $opt
   );
@@ -327,7 +326,7 @@ sub compile {
 }
 
 sub link {
-  my ($self, $package_name, $sub_names, $object_files, $opt) = @_;
+  my ($self, $package_name, $object_files, $opt) = @_;
   
   # Category
   my $category = $self->category;
@@ -414,6 +413,7 @@ EOS
   # dl_func_list
   # This option is needed Windows DLL file
   my $dl_func_list = [];
+  my $sub_names = $self->builder->get_sub_names($package_name, $category);
   for my $sub_name (@$sub_names) {
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $sub_name, $category);
     push @$dl_func_list, $cfunc_name;
