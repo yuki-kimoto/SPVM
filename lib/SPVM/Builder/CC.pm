@@ -21,6 +21,7 @@ sub optimize { shift->{optimize} }
 sub extra_compiler_flags { shift->{extra_compiler_flags} }
 sub extra_linker_flags { shift->{extra_linker_flags} }
 sub force { shift->{force} }
+sub quiet { shift->{quiet} }
 
 sub new {
   my $class = shift;
@@ -192,6 +193,11 @@ sub compile {
 
   # Quiet output
   my $quiet = $bconf->get_quiet;
+
+  # If quiet field exists, overwrite it
+  if (defined $self->quiet) {
+    $quiet = $self->quiet;
+  }
   
   # SPVM Subroutine source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category);
@@ -403,6 +409,11 @@ EOS
 
   # Quiet output
   my $quiet = $bconf->get_quiet;
+
+  # If quiet field exists, overwrite it
+  if (defined $self->quiet) {
+    $quiet = $self->quiet;
+  }
   
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;

@@ -93,7 +93,7 @@ sub get_shared_lib_file_dist {
 sub build_shared_lib_dist {
   my ($self, $package_name, $category) = @_;
   
-  $self->compile_spvm($package_name, '(build_shared_lib_${category}_dist)', 0);
+  $self->compile_spvm($package_name, '(build_shared_lib_dist)', 0);
 
   my $cc_native = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
