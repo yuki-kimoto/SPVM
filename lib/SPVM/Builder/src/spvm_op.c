@@ -1606,7 +1606,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     int32_t int32_max_length = 10;
     
     // Create anon sub package name
-    // If Foo::Bar anon sub is defined line 123, sub keyword start pos 32, the anon sub package name become anon__Foo__Bar__123__32. This is uniqe in whole program.
+    // If Foo::Bar anon sub is defined line 123, sub keyword start pos 32, the anon sub package name become Foo::Bar::anon::123::32. This is uniqe in whole program.
     const char* anon_sub_defined_rel_file_package_name = compiler->cur_rel_file_package_name;
     int32_t anon_sub_defined_line = op_sub->line;
     int32_t anon_sub_defined_keyword_start_pos = op_sub->keyword_start_pos;
