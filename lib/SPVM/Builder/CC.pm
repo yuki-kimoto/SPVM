@@ -264,38 +264,33 @@ sub compile {
       $do_compile = 1;
     }
     else {
-      if ($package_name =~ /^anon/) {
+      if ($bconf->get_force_compile) {
         $do_compile = 1;
       }
       else {
-        if ($bconf->get_force_compile) {
+        if (!-f $object_file) {
           $do_compile = 1;
         }
         else {
-          if (!-f $object_file) {
-            $do_compile = 1;
+          # Do compile if one of dependency files(source file and include files and config file) is newer than object file
+          my @dependency_files;
+          if (-f $config_file) {
+            push @dependency_files, $config_file;
           }
-          else {
-            # Do compile if one of dependency files(source file and include files and config file) is newer than object file
-            my @dependency_files;
-            if (-f $config_file) {
-              push @dependency_files, $config_file;
+          push @dependency_files, $src_file;
+          my $dependency_files_native = $dependency->{$src_file};
+          if ($dependency_files_native) {
+            for my $dependency_file_native (@$dependency_files_native) {
+              push @dependency_files, $dependency_file_native;
             }
-            push @dependency_files, $src_file;
-            my $dependency_files_native = $dependency->{$src_file};
-            if ($dependency_files_native) {
-              for my $dependency_file_native (@$dependency_files_native) {
-                push @dependency_files, $dependency_file_native;
-              }
-            }
-            
-            my $mod_time_object_file = (stat($object_file))[9];
-            for my $dependency_file (@dependency_files) {
-              my $mod_time_dependency_file = (stat($dependency_file))[9];
-              if ($mod_time_dependency_file > $mod_time_object_file) {
-                $do_compile = 1;
-                last;
-              }
+          }
+          
+          my $mod_time_object_file = (stat($object_file))[9];
+          for my $dependency_file (@dependency_files) {
+            my $mod_time_dependency_file = (stat($dependency_file))[9];
+            if ($mod_time_dependency_file > $mod_time_object_file) {
+              $do_compile = 1;
+              last;
             }
           }
         }
@@ -487,29 +482,23 @@ sub create_precompile_csource {
   my $package_csource = $self->build_package_csource_precompile($package_name, $sub_names);
   
   my $is_create_csource_file;
-  # Anon sub
-  if ($package_name =~ /^anon/) {
+
+  # Get old csource source
+  my $old_package_csource;
+  if (-f $source_file) {
+    open my $fh, '<', $source_file
+      or die "Can't open $source_file";
+    $old_package_csource = do { local $/; <$fh> };
+  }
+  else {
+    $old_package_csource = '';
+  }
+  
+  if ($package_csource ne $old_package_csource) {
     $is_create_csource_file = 1;
   }
-  # Normal sub
   else {
-    # Get old csource source
-    my $old_package_csource;
-    if (-f $source_file) {
-      open my $fh, '<', $source_file
-        or die "Can't open $source_file";
-      $old_package_csource = do { local $/; <$fh> };
-    }
-    else {
-      $old_package_csource = '';
-    }
-    
-    if ($package_csource ne $old_package_csource) {
-      $is_create_csource_file = 1;
-    }
-    else {
-      $is_create_csource_file = 0;
-    }
+    $is_create_csource_file = 0;
   }
   
   # Create source fil
