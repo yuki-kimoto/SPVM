@@ -126,12 +126,12 @@ sub build_and_bind_shared_lib {
     unless (-f $shared_lib_file) {
       $shared_lib_file = $cc->build_shared_lib_runtime($package_name);
     }
-    $self->bind_subs($cc, $shared_lib_file, $package_name, $sub_names, $category);
+    $self->bind_subs($cc, $shared_lib_file, $package_name, $category);
   }
 }
 
 sub bind_subs {
-  my ($self, $cc, $shared_lib_file, $package_name, $sub_names, $category) = @_;
+  my ($self, $cc, $shared_lib_file, $package_name, $category) = @_;
   
   # m library is maybe not dynamic link library
   my %must_not_load_libs = map { $_ => 1 } ('m');
@@ -153,6 +153,8 @@ sub bind_subs {
       }
     }
   }
+  
+  my $sub_names = $self->get_sub_names($package_name, $category);
   
   for my $sub_name (@$sub_names) {
     my $sub_abs_name = "${package_name}::$sub_name";
