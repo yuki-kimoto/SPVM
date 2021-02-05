@@ -57,6 +57,14 @@ package TestCase::OArray {
       unless ($@) {
         return 0;
       }
+      
+      # Can assign undef
+      {
+        my $obj_elems : oarray = undef;
+        unless ($obj_elems == undef) {
+          return 0;
+        }
+      }
     }
     
     $@ = undef;
