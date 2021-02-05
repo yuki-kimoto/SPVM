@@ -4395,9 +4395,9 @@ void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top) {
 SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* sub_name, const char* file, int32_t line) {
   
   // stack trace symbols
-  const char* from_part = "\n  from ";
+  const char* new_line_part = "\n ";
   const char* arrow_part = "->";
-  const char* at_part = " at ";
+  const char* at_part = " called at ";
 
   // Exception
   int8_t* exception_bytes = env->get_elems_byte(env, exception);
@@ -4406,7 +4406,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   // Total string length
   int32_t total_length = 0;
   total_length += exception_length;
-  total_length += strlen(from_part);
+  total_length += strlen(new_line_part);
   total_length += strlen(package_name);
   total_length += strlen(arrow_part);
   total_length += strlen(sub_name);
@@ -4433,7 +4433,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   sprintf(
     (char*)new_exception_bytes + exception_length,
     "%s%s%s%s%s%s%s%" PRId32,
-    from_part,
+    new_line_part,
     package_name,
     arrow_part,
     sub_name,
