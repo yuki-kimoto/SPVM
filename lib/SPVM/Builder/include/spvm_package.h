@@ -53,6 +53,7 @@ struct spvm_package {
   int32_t fail_load;
   int32_t has_precompile_descriptor;
   SPVM_LIST* anon_subs;
+  int8_t is_anon;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);

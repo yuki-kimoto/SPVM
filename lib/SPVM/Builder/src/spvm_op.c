@@ -1587,16 +1587,10 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   package->module_file = compiler->cur_file;
   package->module_rel_file = compiler->cur_rel_file;
-
   
-  int32_t is_anon;
-  if (op_type) {
-    is_anon = 0;
-  }
-  // Anon
-  else  {
+  if (!op_type) {
     // Package is anon
-    is_anon = 1;
+    package->is_anon = 1;
     
     SPVM_OP* op_sub = op_block->first->last;
     assert(op_sub);
@@ -1627,7 +1621,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   // Add addede package names in this compile
   SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
   
-  if (!is_anon) {
+  if (!package->is_anon) {
     // If package name start with lower case, compile error occur.
     // (Invalid example) foo::Bar
     if (islower(package_name[0])) {
@@ -2055,7 +2049,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         if (sub->flag & SPVM_SUB_C_FLAG_ANON) {
           package->flag |= SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE;
           assert(package->subs->length == 1);
-          assert(is_anon);
+          assert(package->is_anon);
         }
 
         sub->rel_id = i;
