@@ -1,4 +1,4 @@
-0.0931 2021-02-04
+0.0931 2021-02-06
   - SPVM::Config extra_compiler_flag related methods is removed
     because I want to use extra_compiler_flag for spvmcc --ccflags option for future
   - SPVM::Config extra_linker_flag related methods is removed
