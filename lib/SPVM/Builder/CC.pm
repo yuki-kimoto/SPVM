@@ -417,11 +417,13 @@ EOS
     push @$dl_func_list, $cfunc_name;
   }
   
-  # Add anon package sub names to dl_func_list
-  my $anon_package_names = $self->builder->get_anon_package_names_by_parent_package_name($package_name);
-  for my $anon_package_name (@$anon_package_names) {
-    my $anon_sub_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_package_name, "", $category);
-    push @$dl_func_list, $anon_sub_cfunc_name;
+  if ($category eq 'precompile') {
+    # Add anon package sub names to dl_func_list
+    my $anon_package_names = $self->builder->get_anon_package_names_by_parent_package_name($package_name);
+    for my $anon_package_name (@$anon_package_names) {
+      my $anon_sub_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_package_name, "", $category);
+      push @$dl_func_list, $anon_sub_cfunc_name;
+    }
   }
   
   # This is bad hack to suppress boot strap function error.
