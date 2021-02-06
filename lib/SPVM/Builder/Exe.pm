@@ -314,12 +314,12 @@ sub create_spvm_module_csources {
       $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
       
       # native package name
-      my $native_package_cname = $package_name;
-      $native_package_cname =~ s/::/__/g;
+      my $package_cname = $package_name;
+      $package_cname =~ s/::/__/g;
 
       my $get_module_source_csource = <<"EOS";
 static const char* module_source = "$module_source_c_hex";
-const char* SPMODSRC__${native_package_cname}__get_module_source() {
+const char* SPMODSRC__${package_cname}__get_module_source() {
   return module_source;
 }
 EOS
@@ -440,10 +440,10 @@ EOS
   
   $boot_csource .= "// module source get functions declaration\n";
   for my $package_name (@$package_names) {
-    my $native_package_cname = $package_name;
-    $native_package_cname =~ s/::/__/g;
+    my $package_cname = $package_name;
+    $package_cname =~ s/::/__/g;
     $boot_csource .= <<"EOS";
-const char* SPMODSRC__${native_package_cname}__get_module_source();
+const char* SPMODSRC__${package_cname}__get_module_source();
 EOS
   }
 
@@ -541,8 +541,8 @@ EOS
   }
 
   for my $native_package_name (@$package_names) {
-    my $native_package_cname = $native_package_name;
-    $native_package_cname =~ s/::/__/g;
+    my $package_cname = $native_package_name;
+    $package_cname =~ s/::/__/g;
     
     my $native_sub_names = $builder->get_sub_names($native_package_name, 'native');
     
@@ -557,7 +557,7 @@ EOS
     assert(package);
     SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
     assert(sub);
-    sub->native_address = SPNATIVE__${native_package_cname}__$native_sub_name;
+    sub->native_address = SPNATIVE__${package_cname}__$native_sub_name;
   }
 EOS
     }
