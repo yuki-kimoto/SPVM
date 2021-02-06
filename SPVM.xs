@@ -312,6 +312,37 @@ get_package_names(...)
   for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
     SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
     const char* package_name = package->name;
+    if (!package->is_anon) {
+      SV* sv_package_name = sv_2mortal(newSVpv(package_name, 0));
+      av_push(av_package_names, SvREFCNT_inc(sv_package_name));
+    }
+  }
+  
+  XPUSHs(sv_package_names);
+  XSRETURN(1);
+}
+
+SV*
+get_package_names_including_anon(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_package_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_package_names = sv_2mortal(newRV_inc((SV*)av_package_names));
+  
+  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    const char* package_name = package->name;
     SV* sv_package_name = sv_2mortal(newSVpv(package_name, 0));
     av_push(av_package_names, SvREFCNT_inc(sv_package_name));
   }
@@ -322,6 +353,37 @@ get_package_names(...)
 
 SV*
 get_added_package_names(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_added_package_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_added_package_names = sv_2mortal(newRV_inc((SV*)av_added_package_names));
+  
+  for (int32_t added_package_index = 0; added_package_index < compiler->added_packages->length; added_package_index++) {
+    SPVM_PACKAGE* added_package = SPVM_LIST_fetch(compiler->added_packages, added_package_index);
+    const char* added_package_name = added_package->name;
+    if (!added_package->is_anon) {
+      SV* sv_added_package_name = sv_2mortal(newSVpv(added_package_name, 0));
+      av_push(av_added_package_names, SvREFCNT_inc(sv_added_package_name));
+    }
+  }
+  
+  XPUSHs(sv_added_package_names);
+  XSRETURN(1);
+}
+
+SV*
+get_added_package_names_including_anon(...)
   PPCODE:
 {
   (void)RETVAL;

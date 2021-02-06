@@ -149,7 +149,7 @@ sub create_precompile_csources {
     force => $self->force,
   );
 
-  my $package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names_including_anon;
   for my $precompile_package_name (@$package_names) {
     next if $precompile_package_name =~ /::anon/;
     
@@ -187,7 +187,7 @@ sub compile_precompile_csources {
     force => $self->force,
   );
   
-  my $package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names_including_anon;
   for my $precompile_package_name (@$package_names) {
     next if $precompile_package_name =~ /::anon/;
     
@@ -230,7 +230,7 @@ sub compile_native_csources {
     force => $self->force,
   );
   
-  my $package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names_including_anon;
   my $all_libs = [];
   my $all_object_files = [];
   for my $native_package_name (@$package_names) {
@@ -268,7 +268,7 @@ sub create_spvm_module_csources {
   my $builder = $self->builder;
   
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names_including_anon;
   
   for my $package_name (@$package_names) {
     # This source is UTF-8 binary
@@ -343,7 +343,7 @@ sub compile_spvm_module_csources {
   my $builder = $self->builder;
   
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names_including_anon;
   
   # Config
   my $bconf = SPVM::Builder::Config->new_c99;
@@ -413,7 +413,7 @@ sub create_bootstrap_csource {
   my $builder = $self->builder;
 
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names_including_anon;
 
   my $boot_csource = '';
   
@@ -838,7 +838,7 @@ sub link {
   push @$object_files, @spvm_compiler_and_runtime_object_files;
 
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $package_names = $builder->get_package_names_including_anon;
   
   # SPVM module source object files
   for my $package_name (@$package_names) {
