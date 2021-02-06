@@ -150,15 +150,15 @@ sub create_precompile_csources {
   );
 
   my $package_names = $builder->get_package_names_including_anon;
-  for my $precompile_package_name (@$package_names) {
-    next if $precompile_package_name =~ /::anon/;
+  for my $package_name (@$package_names) {
+    next if $package_name =~ /::anon/;
     
-    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
+    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
     if (@$precompile_sub_names) {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
       $builder_c_precompile->create_precompile_csource(
-        $precompile_package_name,
+        $package_name,
         {
           src_dir => $src_dir,
         }
@@ -188,10 +188,10 @@ sub compile_precompile_csources {
   );
   
   my $package_names = $builder->get_package_names_including_anon;
-  for my $precompile_package_name (@$package_names) {
-    next if $precompile_package_name =~ /::anon/;
+  for my $package_name (@$package_names) {
+    next if $package_name =~ /::anon/;
     
-    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
+    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
     if (@$precompile_sub_names) {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
@@ -200,7 +200,7 @@ sub compile_precompile_csources {
       mkpath $object_dir;
       
       $builder_c_precompile->compile(
-        $precompile_package_name,
+        $package_name,
         {
           src_dir => $src_dir,
           object_dir => $object_dir,
@@ -448,10 +448,10 @@ EOS
   }
 
   $boot_csource .= "// precompile functions declaration\n";
-  for my $precompile_package_name (@$package_names) {
-    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
+  for my $package_name (@$package_names) {
+    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
     for my $sub_name (@$precompile_sub_names) {
-      my $package_cname = $precompile_package_name;
+      my $package_cname = $package_name;
       $package_cname =~ s/::/__/g;
       $boot_csource .= <<"EOS";
 int32_t SPPRECOMPILE__${package_cname}__$sub_name(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -517,16 +517,16 @@ EOS
   }
 EOS
   
-  for my $precompile_package_name (@$package_names) {
-    my $package_cname = $precompile_package_name;
+  for my $package_name (@$package_names) {
+    my $package_cname = $package_name;
     $package_cname =~ s/::/__/g;
     
-    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
+    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
     
     for my $precompile_sub_name (@$precompile_sub_names) {
       $boot_csource .= <<"EOS";
   { 
-    const char* package_name = "$precompile_package_name";
+    const char* package_name = "$package_name";
     const char* sub_name = "$precompile_sub_name";
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
     assert(basic_type);
@@ -849,13 +849,13 @@ sub link {
   
   # SPVM precompile object files
   my $precompile_object_files = [];
-  for my $precompile_package_name (@$package_names) {
-    next if $precompile_package_name =~ /::anon/;
+  for my $package_name (@$package_names) {
+    next if $package_name =~ /::anon/;
     
-    my $precompile_sub_names = $builder->get_sub_names($precompile_package_name, 'precompile');
+    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
     if (@$precompile_sub_names) {
       my $category = 'precompile';
-      my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($precompile_package_name, $category, 'o');
+      my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'o');
       my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);
       push @$precompile_object_files, $precompile_object_file;
     }
