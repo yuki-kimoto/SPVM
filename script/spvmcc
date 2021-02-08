@@ -22,7 +22,7 @@ SPVM::Builder::Util::getopt
 
 die SPVM::Builder::Util::extract_usage if $help || !(my $target_package_name = shift);
 
-unshift @module_dirs, @INC;
+push @module_dirs, @INC;
 
 my $build_exe = SPVM::Builder::Exe->new(
   module_dirs => \@module_dirs,
