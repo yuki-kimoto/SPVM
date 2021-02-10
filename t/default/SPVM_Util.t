@@ -181,8 +181,14 @@ use SPVM 'SPVM::Util';
 }
 
 # srand
-{
-  ok(TestCase::Lib::SPVM::Util->test_srand);
+SKIP: {
+  if ($^O eq 'openbsd') {
+    skip "openbsd srand don't fllow POSIX", 6;
+  }
+  
+  {
+    ok(TestCase::Lib::SPVM::Util->test_srand);
+  }
 }
 
 # RAND_MAX
