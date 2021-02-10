@@ -40,6 +40,12 @@ use SPVM::Builder::Util;
     warn "SPVM don't support FreeBSD before version 11.4";
     die "OS unsupported\n";
   }
+
+  # old OpenBSD don't support some C99 complex functions
+  if ($Config{osname} eq 'openbsd' && $Config{osvers} < 6.8) {
+    warn "SPVM don't support OpenBSD before version 6.8";
+    die "OS unsupported\n";
+  }
 }
 
 my @defines;
