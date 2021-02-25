@@ -1703,7 +1703,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           package->has_precompile_descriptor = 1;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid package descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_package->file, op_package->line);
+          SPVM_COMPILER_error(compiler, "Invalid package descriptor %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_package->file, op_package->line);
       }
     }
     if (category_descriptors_count > 1) {
@@ -2257,7 +2257,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
           accessor_descriptors_count++;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid package variable descriptor in package variable declaration %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid package variable descriptor in package variable declaration %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
       if (accessor_descriptors_count > 1) {
         SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in package variable  declaration at %s line %d\n", op_package_var->file, op_package_var->line);
@@ -2317,7 +2317,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           accessor_descriptors_count++;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d\n", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
       
       if (accessor_descriptors_count > 1) {
@@ -2386,7 +2386,7 @@ SPVM_OP* SPVM_OP_build_sub(SPVM_COMPILER* compiler, SPVM_OP* op_sub, SPVM_OP* op
           sub->flag |= SPVM_SUB_C_FLAG_NATIVE;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
     }
     
@@ -2613,7 +2613,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             access_control_descriptors_count++;
             break;
           default:
-            SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", SPVM_DESCRIPTOR_C_ID_NAMES[descriptor->id], op_descriptors->file, op_descriptors->line);
+            SPVM_COMPILER_error(compiler, "invalid subroutine descriptor %s", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
         }
       }
       if (access_control_descriptors_count > 1) {

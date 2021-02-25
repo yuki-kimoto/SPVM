@@ -16,13 +16,12 @@ enum {
   SPVM_DESCRIPTOR_C_ID_WO,
 };
 
-extern const char* const SPVM_DESCRIPTOR_C_ID_NAMES[];
-
 // Field information
 struct spvm_descriptor {
   int32_t id;
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler);
+const char* SPVM_DESCRIPTOR_C_ID_NAMES(void);
 
 #endif
