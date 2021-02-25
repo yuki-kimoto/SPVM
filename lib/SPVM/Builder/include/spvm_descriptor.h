@@ -22,6 +22,6 @@ struct spvm_descriptor {
 };
 
 SPVM_DESCRIPTOR* SPVM_DESCRIPTOR_new(SPVM_COMPILER* compiler);
-const char* SPVM_DESCRIPTOR_C_ID_NAMES(void);
+const char* const* SPVM_DESCRIPTOR_C_ID_NAMES(void);
 
 #endif
