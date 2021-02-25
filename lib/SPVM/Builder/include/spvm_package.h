@@ -15,8 +15,6 @@ enum {
   SPVM_PACKAGE_C_FLAG_PUBLIC = 4,
 };
 
-extern const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[];
-
 struct spvm_package {
   SPVM_OP* op_package;
   SPVM_OP* op_name;
@@ -57,5 +55,6 @@ struct spvm_package {
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
+const char* const* SPVM_PACKAGE_C_CATEGORY_NAMES(void);
 
 #endif

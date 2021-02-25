@@ -9,11 +9,16 @@
 #include "spvm_limit.h"
 #include "spvm_hash.h"
 
-const char* const SPVM_PACKAGE_C_CATEGORY_NAMES[] = {
-  "class",
-  "callback_t",
-  "value",
-};
+const char* const* SPVM_PACKAGE_C_CATEGORY_NAMES(void) {
+  
+  static const char* const category_names[] = {
+    "class",
+    "callback_t",
+    "value",
+  };
+  
+  return category_names;
+}
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   SPVM_PACKAGE* package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_PACKAGE));
