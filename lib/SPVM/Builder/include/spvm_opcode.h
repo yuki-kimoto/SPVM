@@ -471,8 +471,6 @@ enum {
   SPVM_OPCODE_C_ID_END_SUB,
 };
 
-extern const char* const SPVM_OPCODE_C_ID_NAMES[];
-
 // Operation code is 64bit
 struct spvm_opcode {
   uint16_t id;
@@ -483,5 +481,6 @@ struct spvm_opcode {
 };
 
 SPVM_OPCODE* SPVM_OPCODE_new();
+const char* const* SPVM_OPCODE_C_ID_NAMES(void);
 
 #endif

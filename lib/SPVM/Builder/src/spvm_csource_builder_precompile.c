@@ -1537,7 +1537,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
     int32_t opcode_id = opcode->id;
 
     SPVM_STRING_BUFFER_add(string_buffer, "// ");
-    SPVM_STRING_BUFFER_add(string_buffer, (char*)SPVM_OPCODE_C_ID_NAMES[opcode_id]);
+    SPVM_STRING_BUFFER_add(string_buffer, (char*)(SPVM_OPCODE_C_ID_NAMES())[opcode_id]);
     SPVM_STRING_BUFFER_add(string_buffer, "\n");
     
     switch (opcode_id) {
