@@ -180,7 +180,7 @@ enum {
   SPVM_OP_C_ID_PRINT,
 };
 
-extern const char* const SPVM_OP_C_ID_NAMES[];
+const char* const* SPVM_OP_C_ID_NAMES(void);
 
 enum {
   // Condition flag

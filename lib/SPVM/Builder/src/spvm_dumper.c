@@ -43,7 +43,7 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       }
     }
     int32_t id = op_cur->id;
-    printf("%s", SPVM_OP_C_ID_NAMES[id]);
+    printf("%s", (SPVM_OP_C_ID_NAMES())[id]);
     if (op_cur->id == SPVM_OP_C_ID_CONSTANT) {
       SPVM_CONSTANT* constant = op_cur->uv.constant;
       if (constant->type->dimension == 0) {
