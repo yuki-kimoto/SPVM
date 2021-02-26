@@ -31,8 +31,6 @@ enum {
   SPVM_BASIC_TYPE_C_NUMERIC_OBJECT_UPGRADE_SHIFT = 9,
 };
 
-extern const char* const SPVM_BASIC_TYPE_C_ID_NAMES[];
-
 struct spvm_basic_type {
   const char* name;
   SPVM_PACKAGE* package;
@@ -41,5 +39,6 @@ struct spvm_basic_type {
 };
 
 SPVM_BASIC_TYPE* SPVM_BASIC_TYPE_new(SPVM_COMPILER* compiler);
+const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void);
 
 #endif
