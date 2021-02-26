@@ -53,14 +53,6 @@ all:
 	$cccmd -o solo/main.o solo/spvm_boot.c
 	$ldcmd -o solo/main -lm -o solo/main solo/main.o @object_files
 	mkdir -p solo/SPVM
-	cp lib/SPVM/Byte.spvm solo/SPVM/Byte.spvm
-	cp lib/SPVM/Short.spvm solo/SPVM/Short.spvm
-	cp lib/SPVM/Int.spvm solo/SPVM/Int.spvm
-	cp lib/SPVM/Long.spvm solo/SPVM/Long.spvm
-	cp lib/SPVM/Float.spvm solo/SPVM/Float.spvm
-	cp lib/SPVM/Double.spvm solo/SPVM/Double.spvm
-	cp lib/SPVM/Complex_2f.spvm solo/SPVM/Complex_2f.spvm
-	cp lib/SPVM/Complex_2d.spvm solo/SPVM/Complex_2d.spvm
 
 clean:
 	rm -rf solo/main

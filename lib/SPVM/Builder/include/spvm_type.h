@@ -44,8 +44,6 @@ enum {
   SPVM_TYPE_C_TYPE_CATEGORY_STRING,
 };
 
-extern const char* const SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES[];
-
 struct spvm_type {
   SPVM_OP* op_type;
   SPVM_BASIC_TYPE* basic_type;

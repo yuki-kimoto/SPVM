@@ -15,40 +15,45 @@
 #include "spvm_basic_type.h"
 #include "spvm_sub.h"
 
-const char* const SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES[] = {
-  "UNKNOWN",
-  "BYTE",
-  "SHORT",
-  "INT",
-  "LONG",
-  "FLOAT",
-  "DOUBLE",
-  "MULNUM_BYTE",
-  "MULNUM_SHORT",
-  "MULNUM_INT",
-  "MULNUM_LONG",
-  "MULNUM_FLOAT",
-  "MULNUM_DOUBLE",
-  "ANY_OBJECT",
-  "PACKAGE",
-  "NUMERIC_ARRAY",
-  "MULNUM_ARRAY",
-  "OBJECT_ARRAY",
-  "REF_BYTE",
-  "REF_SHORT",
-  "REF_INT",
-  "REF_LONG",
-  "REF_FLOAT",
-  "REF_DOUBLE",
-  "REF_MULNUM_BYTE",
-  "REF_MULNUM_SHORT",
-  "REF_MULNUM_INT",
-  "REF_MULNUM_LONG",
-  "REF_MULNUM_FLOAT",
-  "REF_MULNUM_DOUBLE",
-  "VOID",
-  "STRING",
-};
+const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
+
+  static const char* const id_names[] = {
+    "UNKNOWN",
+    "BYTE",
+    "SHORT",
+    "INT",
+    "LONG",
+    "FLOAT",
+    "DOUBLE",
+    "MULNUM_BYTE",
+    "MULNUM_SHORT",
+    "MULNUM_INT",
+    "MULNUM_LONG",
+    "MULNUM_FLOAT",
+    "MULNUM_DOUBLE",
+    "ANY_OBJECT",
+    "PACKAGE",
+    "NUMERIC_ARRAY",
+    "MULNUM_ARRAY",
+    "OBJECT_ARRAY",
+    "REF_BYTE",
+    "REF_SHORT",
+    "REF_INT",
+    "REF_LONG",
+    "REF_FLOAT",
+    "REF_DOUBLE",
+    "REF_MULNUM_BYTE",
+    "REF_MULNUM_SHORT",
+    "REF_MULNUM_INT",
+    "REF_MULNUM_LONG",
+    "REF_MULNUM_FLOAT",
+    "REF_MULNUM_DOUBLE",
+    "VOID",
+    "STRING",
+  };
+  
+  return id_names;
+}
 
 int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
