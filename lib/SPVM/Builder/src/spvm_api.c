@@ -220,12 +220,11 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_chars,
   };
   
-  int32_t env_length = 221;
-  SPVM_ENV* env = calloc(sizeof(void*), env_length);
+  SPVM_ENV* env = calloc(sizeof(env_init), 1);
   if (env == NULL) {
     return NULL;
   }
-  memcpy(&env[0], env_init, sizeof(void*) * env_length);
+  memcpy(env, env_init, sizeof(env_init));
 
   // Mortal stack
   int32_t native_mortal_stack_capacity = 1;
