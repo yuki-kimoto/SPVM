@@ -24,7 +24,6 @@ SPVM.c
 SPVM-.*
 ^core\.
 ^solo/jitcode/
-^\.spvm_build/[^\.]
 ^SPVM-
 ^solo/t/spvm_t_hash
 ^solo/t/spvm_t_list
@@ -35,7 +34,5 @@ SPVM-.*
 .idea/.*
 ^t/test_files_tmp
 \.so$
-^t/default/\.spvm_build/[^\.]
-^t/precompile/\.spvm_build/[^\.]
-^solo/\.spvm_build/[^\.]
 ^SPVM.def
+\.spvm_build
