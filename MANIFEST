@@ -350,6 +350,8 @@ examples/native/zlib/lib/MyZlib.c
 examples/native/zlib/lib/MyZlib.config
 examples/native/zlib/lib/MyZlib.spvm
 examples/native/zlib/zlib.pl
+examples/spvmcc/basic/MyApp.spvm
+examples/spvmcc/basic/README.txt
 lib/SPVM.pm
 lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
@@ -621,7 +623,6 @@ spvmdoc/jp/public/native-api.html
 spvmdoc/jp/public/purpose.html
 spvmdoc/jp/public/tutorial.html
 spvmdoc/jp/serve.pl
-t/.spvm_build/work/exe/myexe
 t/copy_default_to_precompile.pl
 t/default/000_use_spvm.t
 t/default/001_use_empty_package.t
@@ -731,6 +732,8 @@ t/default/lib/TestCase/CompileError/Literal/Integer/IntOutOfRange.spvm
 t/default/lib/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm
+t/default/lib/TestCase/CompileError/OArray/AssignNumeric.spvm
+t/default/lib/TestCase/CompileError/OArray/AssignNumericArray.spvm
 t/default/lib/TestCase/CompileError/Package/PackageNameDifferntFromModuleName.spvm
 t/default/lib/TestCase/CompileError/Package/packagePartNameStartWithUpperCase.spvm
 t/default/lib/TestCase/CompileError/PackageVar/OurPackageVarNameColon2Twice.spvm
@@ -838,6 +841,7 @@ t/default/lib/TestCase/NativeAPI2.native/src/foo.c
 t/default/lib/TestCase/NativeAPI2.native/src/noneed.txt
 t/default/lib/TestCase/NativeAPI2.spvm
 t/default/lib/TestCase/NumericOperator.spvm
+t/default/lib/TestCase/OArray.spvm
 t/default/lib/TestCase/Object.spvm
 t/default/lib/TestCase/OnlyField.spvm
 t/default/lib/TestCase/PACKAGE.spvm
@@ -884,6 +888,7 @@ t/default/logical_operator.t
 t/default/multiply.t
 t/default/native_api.t
 t/default/numeric_operator.t
+t/default/oarray.t
 t/default/object.t
 t/default/package_var.t
 t/default/precedence.t
@@ -933,18 +938,6 @@ t/default/value_array.t
 t/default/warn.t
 t/default/weaken.t
 t/default/while.t
-t/exe/.spvm_build/work/myexe
-t/exe/.spvm_build/work/src/MyExe.boot.c
-t/exe/.spvm_build/work/src/MyExe.modsrc.c
-t/exe/.spvm_build/work/src/MyExe/Precompile.modsrc.c
-t/exe/.spvm_build/work/src/MyExe/Precompile.precompile.c
-t/exe/.spvm_build/work/src/SPVM/Byte.modsrc.c
-t/exe/.spvm_build/work/src/SPVM/Double.modsrc.c
-t/exe/.spvm_build/work/src/SPVM/Float.modsrc.c
-t/exe/.spvm_build/work/src/SPVM/Int.modsrc.c
-t/exe/.spvm_build/work/src/SPVM/Long.modsrc.c
-t/exe/.spvm_build/work/src/SPVM/Short.modsrc.c
-t/exe/.spvm_build/work/src/TestCase/NativeAPI2.modsrc.c
 t/exe/lib/MyExe.spvm
 t/exe/lib/MyExe/Precompile.spvm
 t/exe/lib/TestCase/NativeAPI2.c
