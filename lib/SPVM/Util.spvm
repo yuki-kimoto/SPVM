@@ -109,6 +109,7 @@ package SPVM::Util : precompile {
   }
 
   native sub _snsprintf_double : string ($format : string, $value : double);
+  native sub _long_to_unsigned_digits : void ($value : long, $out_digits : byte[], $out_digit_count : int&);
 
   sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
@@ -383,23 +384,32 @@ package SPVM::Util : precompile {
           }
         }
         elsif ($specifier_char == 'l') {
-          unless ($index + 1 < $format_length && $format->[$index + 1] == 'd') {
+          unless ($index + 1 < $format_length && ($format->[$index + 1] == 'd' || $format->[$index + 1] == 'u')) {
             die "Invalid conversion in sprintf: \""
                 . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
           }
+
+          my $is_signed_format = $format->[$index + 1] == 'd';
           $index += 2;
+
           my $arg = ((SPVM::Long)$args->[$arg_count])->val;
-          my $digits = new byte[20]; # -9223372036854775808 has 20 digits
+          my $digits = new byte[20]; # -9223372036854775808[18446744073709551615] has 20 digits
           my $digit_count = 0;
-          while ($arg > 0) {
-            $digits->[$digit_count++] = (byte)('0' + $arg % 10);
-            $arg /= 10;
+
+          if ($is_signed_format) {
+            while ($arg > 0) {
+              $digits->[$digit_count++] = (byte)('0' + $arg % 10);
+              $arg /= 10;
+            }
+          }
+          else {
+            _long_to_unsigned_digits($arg, $digits, \$digit_count);
           }
 
           if ($left_justified) {
             my $space_count = $width - $digit_count;
 
-            if ($arg < 0) {
+            if ($is_signed_format && $arg < 0) {
               $buffer->push_char('-');
               --$space_count;
             }
@@ -421,7 +431,7 @@ package SPVM::Util : precompile {
           else {
             my $space_count = $width - $digit_count;
 
-            if ($arg < 0) {
+            if ($is_signed_format && $arg < 0) {
               --$space_count;
             }
             elsif ($plus_sign && $arg >= 0) {
@@ -434,7 +444,7 @@ package SPVM::Util : precompile {
               }
             }
 
-            if ($arg < 0) {
+            if ($is_signed_format && $arg < 0) {
               $buffer->push_char('-');
             }
             elsif ($plus_sign && $arg >= 0) {

@@ -394,6 +394,46 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
+  sub test_sprintf_lu : int () {
+    my $tests = [
+        [ sprintf("abc%lu", 10000000000L),                                "abc10000000000"                    ],
+        [ sprintf("%luabc", 10000000000L),                                "10000000000abc"                    ],
+        [ sprintf("%luabc%lu", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
+        [ sprintf("%lu%ld%lu", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
+        [ sprintf("%013lu", 12345678901L),                                "0012345678901"                     ],
+        [ sprintf("%+13lu", 12345678901L),                                " +12345678901"                     ],
+        [ sprintf("%-13lu", 12345678901L),                                "12345678901  "                     ],
+        [ sprintf("%lu", -1L),                                            "18446744073709551615"              ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%ld", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      eval {
+        sprintf("%l", 1L);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%l\"")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
   sub test_sprintf_f : int () {
     my $tests = [
         [ sprintf("abc%.2f", 3.14),                  "abc3.14"      ],

@@ -14,6 +14,7 @@
 static const char* MFILE = "SPVM/Util.c";
 
 #define SPRINTF_MAX_RESULT_LEN 256
+#define UINT64_MAX_LEN 20
 
 int32_t SPNATIVE__SPVM__Util___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
@@ -30,6 +31,22 @@ int32_t SPNATIVE__SPVM__Util___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack
   if (result_len < 0) { SPVM_DIE("snprintf fail", MFILE, __LINE__); }
 
   stack[0].oval = env->new_string(env, tmp_result, result_len);
+
+  return SPVM_SUCCESS;
+}
+
+int32_t SPNATIVE__SPVM__Util___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+
+  unsigned long long value = stack[0].lval;
+  void* onums = stack[1].oval;
+  int8_t* nums = env->get_elems_byte(env, onums);
+  int32_t* digit_count = stack[2].iref;
+
+  for(*digit_count = 0; value > 0 && *digit_count < UINT64_MAX_LEN; ++*digit_count){
+    nums[*digit_count] = (char)('0' + value % 10);
+    value /= 10;
+  }
 
   return SPVM_SUCCESS;
 }
