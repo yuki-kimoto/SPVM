@@ -50,6 +50,7 @@ use SPVM 'SPVM::Util';
 # sprintf
 {
   ok(TestCase::Lib::SPVM::Util->test_sprintf_d);
+  ok(TestCase::Lib::SPVM::Util->test_sprintf_u);
   ok(TestCase::Lib::SPVM::Util->test_sprintf_ld);
   ok(TestCase::Lib::SPVM::Util->test_sprintf_f);
   ok(TestCase::Lib::SPVM::Util->test_sprintf_c);

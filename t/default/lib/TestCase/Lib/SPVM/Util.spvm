@@ -324,6 +324,37 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
+  sub test_sprintf_u : int () {
+    my $tests = [
+        [ sprintf("abc%u", 123),          "abc123" ],
+        [ sprintf("%uabc", 123),          "123abc" ],
+        [ sprintf("%uabc%u", 1, 10),      "1abc10" ],
+        [ sprintf("%u%u%u", 1, 10, 100),  "110100" ],
+        [ sprintf("%05u", 123),           "00123"  ],
+        [ sprintf("%+5u", 123),           " +123"  ],
+        [ sprintf("%-5u", 123),           "123  "  ],
+        [ sprintf("%-5u", 123),           "123  "  ],
+        [ sprintf("%u", -1),              "4294967295" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%d", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
   sub test_sprintf_ld : int () {
     my $tests = [
         [ sprintf("abc%ld", 10000000000L),                                "abc10000000000"                    ],
