@@ -109,6 +109,7 @@ package SPVM::Util : precompile {
   }
 
   native sub _snsprintf_double : string ($format : string, $value : double);
+  native sub _long_to_unsigned_digits : void ($value : long, $out_digits : byte[], $out_digit_count : int&);
 
   sub sprintf : string ($format : string, $args : object[]...) {
     my $format_length = length $format;
@@ -322,14 +323,10 @@ package SPVM::Util : precompile {
             }
           }
         }
-        elsif ($specifier_char == 'l') {
-          unless ($index + 1 < $format_length && $format->[$index + 1] == 'd') {
-            die "Invalid conversion in sprintf: \""
-                . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
-          }
-          $index += 2;
-          my $arg = ((SPVM::Long)$args->[$arg_count])->val;
-          my $digits = new byte[20]; # -9223372036854775808 has 20 digits
+        elsif ($specifier_char == 'u') {
+          ++$index;
+          my $arg = ((SPVM::Int)$args->[$arg_count])->val & 0xFFFFFFFFL;
+          my $digits = new byte[10]; # 4294967295 has 10 digits
           my $digit_count = 0;
           while ($arg > 0) {
             $digits->[$digit_count++] = (byte)('0' + $arg % 10);
@@ -375,6 +372,79 @@ package SPVM::Util : precompile {
             }
 
             if ($arg < 0) {
+              $buffer->push_char('-');
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              $buffer->push_char('+');
+            }
+
+            for (my $i = 0; $i < $digit_count; ++$i) {
+              $buffer->push_char($digits->[$digit_count - $i - 1]);
+            }
+          }
+        }
+        elsif ($specifier_char == 'l') {
+          unless ($index + 1 < $format_length && ($format->[$index + 1] == 'd' || $format->[$index + 1] == 'u')) {
+            die "Invalid conversion in sprintf: \""
+                . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+          }
+
+          my $is_signed_format = $format->[$index + 1] == 'd';
+          $index += 2;
+
+          my $arg = ((SPVM::Long)$args->[$arg_count])->val;
+          my $digits = new byte[20]; # -9223372036854775808[18446744073709551615] has 20 digits
+          my $digit_count = 0;
+
+          if ($is_signed_format) {
+            while ($arg > 0) {
+              $digits->[$digit_count++] = (byte)('0' + $arg % 10);
+              $arg /= 10;
+            }
+          }
+          else {
+            _long_to_unsigned_digits($arg, $digits, \$digit_count);
+          }
+
+          if ($left_justified) {
+            my $space_count = $width - $digit_count;
+
+            if ($is_signed_format && $arg < 0) {
+              $buffer->push_char('-');
+              --$space_count;
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              $buffer->push_char('+');
+              --$space_count;
+            }
+
+            for (my $i = 0; $i < $digit_count; ++$i) {
+              $buffer->push_char($digits->[$digit_count - $i - 1]);
+            }
+
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+          }
+          else {
+            my $space_count = $width - $digit_count;
+
+            if ($is_signed_format && $arg < 0) {
+              --$space_count;
+            }
+            elsif ($plus_sign && $arg >= 0) {
+              --$space_count;
+            }
+
+            if ($space_count > 0) {
+              for (; $space_count > 0; --$space_count) {
+                $buffer->push_char($pad_char);
+              }
+            }
+
+            if ($is_signed_format && $arg < 0) {
               $buffer->push_char('-');
             }
             elsif ($plus_sign && $arg >= 0) {
