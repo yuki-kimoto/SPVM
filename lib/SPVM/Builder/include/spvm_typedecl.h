@@ -1,7 +1,8 @@
-#ifndef SPVM_TYPEDEF_H
-#define SPVM_TYPEDEF_H
+#ifndef SPVM_TYPEDECL_H
+#define SPVM_TYPEDECL_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 // spvm_allow.h
 struct spvm_allow;
