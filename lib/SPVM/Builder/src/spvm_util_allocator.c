@@ -27,12 +27,3 @@ void* SPVM_UTIL_ALLOCATOR_safe_malloc_zero(size_t byte_size) {
   
   return block;
 }
-
-const char* SPVM_UTIL_ALLOCATOR_clone_string(const char* string) {
-  int32_t string_length = strlen(string);
-  char* new_string = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(string_length + 1);
-  memcpy(new_string, string, string_length);
-  new_string[string_length] = '\0';
-  
-  return new_string;
-}

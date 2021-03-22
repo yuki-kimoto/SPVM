@@ -3,13 +3,13 @@
 #include <assert.h>
 
 #include "spvm_list.h"
-#include "spvm_util_allocator.h"
 
 SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
   
   assert(capacity >= 0);
   
-  SPVM_LIST* array = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_LIST));
+  SPVM_LIST* array = calloc(1, sizeof(SPVM_LIST));
+  
   array->length = 0;
   
   if (capacity == 0) {
@@ -19,8 +19,7 @@ SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
     array->capacity = capacity;
   }
   
-  int64_t values_byte_size = (int64_t)array->capacity * (int64_t)sizeof(void*);
-  void** values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(values_byte_size);
+  void** values = calloc(array->capacity, sizeof(void*));
   
   array->values = values;
   
@@ -37,8 +36,7 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* array) {
   if (length >= capacity) {
     int32_t new_capacity = capacity * 2;
     
-    int64_t new_values_byte_size = (int64_t)new_capacity * (int64_t)sizeof(void*);
-    void** new_values = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_values_byte_size);
+    void** new_values = calloc(new_capacity, sizeof(void*));
     memcpy(new_values, array->values, capacity * sizeof(void*));
     free(array->values);
     array->values = new_values;
