@@ -701,7 +701,6 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
   spvm_field_access.c
   spvm_field.c
   spvm_hash.c
-  spvm_hash_func.c
   spvm_list.c
   spvm_my.c
   spvm_op.c

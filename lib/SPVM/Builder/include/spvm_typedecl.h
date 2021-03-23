@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 #include "spvm_list.h"
+#include "spvm_hash.h"
 
 // spvm_allow.h
 struct spvm_allow;
@@ -177,14 +178,6 @@ typedef struct spvm_descriptor SPVM_DESCRIPTOR;
 // spvm_sub.h
 struct spvm_sub;
 typedef struct spvm_sub SPVM_SUB;
-
-// spvm_hash_entry.h
-struct spvm_hash_entry;
-typedef struct spvm_hash_entry SPVM_HASH_ENTRY;
-
-// spvm_hash.h
-struct spvm_hash;
-typedef struct spvm_hash SPVM_HASH;
 
 union spvm_yystype;
 typedef union spvm_yystype SPVM_YYSTYPE;

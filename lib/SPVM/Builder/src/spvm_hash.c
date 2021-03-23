@@ -3,16 +3,13 @@
 #include <assert.h>
 
 #include "spvm_hash.h"
-#include "spvm_hash_entry.h"
-#include "spvm_hash_func.h"
-#include "spvm_util_allocator.h"
 
 SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   
   assert(table_capacity >= 0);
 
   // Create hash
-  SPVM_HASH* hash = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_HASH));
+  SPVM_HASH* hash = calloc(1, sizeof(SPVM_HASH));
 
   // Default table capacity
   if (table_capacity == 0) {
@@ -23,20 +20,18 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   }
   
   // Initialize table
-  int64_t hash_table_byte_size = (int64_t)hash->table_capacity * (int64_t)sizeof(int32_t);
-  hash->table = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(hash_table_byte_size);
+  hash->table = calloc(hash->table_capacity, sizeof(int32_t));
   memset(hash->table, -1, hash->table_capacity * sizeof(int32_t));
   
   // Initialize entries
   hash->entries_capacity = 1;
-  int64_t hash_entries_byte_size = (int64_t)hash->entries_capacity * (int64_t)sizeof(SPVM_HASH_ENTRY);
-  hash->entries = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(hash_entries_byte_size);
+  hash->entries =  calloc(hash->entries_capacity, sizeof(SPVM_HASH_ENTRY));
   hash->entries_length = 0;
   
   // Initialize key buffer
   hash->key_buffer_capacity = 1;
   int64_t hash_key_buffer_byte_size = (int64_t)hash->key_buffer_capacity;
-  hash->key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(hash_key_buffer_byte_size);
+  hash->key_buffer = calloc(1, hash_key_buffer_byte_size);
   hash->key_buffer_length = 0;
   
   return hash;
@@ -56,7 +51,7 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
     int32_t new_entries_capacity = entries_capacity * 2;
     
     int64_t new_entries_byte_size = (int64_t)new_entries_capacity * (int64_t)sizeof(SPVM_HASH_ENTRY);
-    SPVM_HASH_ENTRY* new_entries = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_entries_byte_size);
+    SPVM_HASH_ENTRY* new_entries = calloc(1, new_entries_byte_size);
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
     free(hash->entries);
     hash->entries = new_entries;
@@ -79,7 +74,7 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
     int32_t new_key_buffer_capacity = (key_buffer_length + length + sizeof(int32_t)) * 2;
     
     int64_t new_key_buffer_byte_size = (int64_t)new_key_buffer_capacity;
-    char* new_key_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_key_buffer_byte_size);
+    char* new_key_buffer = calloc(1, new_key_buffer_byte_size);
     memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
     free(hash->key_buffer);
     hash->key_buffer = new_key_buffer;
@@ -270,4 +265,21 @@ void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
       return NULL;
     }
   }
+}
+
+int32_t SPVM_HASH_FUNC_calc_hash_for_index(const char* str, int32_t len) {
+  
+  assert(len >= 0);
+  
+  const char* str_tmp = str;
+  int32_t hash = 5381;
+  while (len--) {
+    hash = ((hash << 5) + hash) + (uint8_t) *str_tmp++;
+  }
+  
+  if (hash < 0) {
+    hash = ~hash;
+  }
+  
+  return hash;
 }

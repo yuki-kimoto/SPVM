@@ -380,8 +380,6 @@ lib/SPVM/Builder/include/spvm_enumeration_value.h
 lib/SPVM/Builder/include/spvm_field.h
 lib/SPVM/Builder/include/spvm_field_access.h
 lib/SPVM/Builder/include/spvm_hash.h
-lib/SPVM/Builder/include/spvm_hash_entry.h
-lib/SPVM/Builder/include/spvm_hash_func.h
 lib/SPVM/Builder/include/spvm_limit.h
 lib/SPVM/Builder/include/spvm_list.h
 lib/SPVM/Builder/include/spvm_my.h
@@ -426,7 +424,6 @@ lib/SPVM/Builder/src/spvm_enumeration_value.c
 lib/SPVM/Builder/src/spvm_field.c
 lib/SPVM/Builder/src/spvm_field_access.c
 lib/SPVM/Builder/src/spvm_hash.c
-lib/SPVM/Builder/src/spvm_hash_func.c
 lib/SPVM/Builder/src/spvm_list.c
 lib/SPVM/Builder/src/spvm_my.c
 lib/SPVM/Builder/src/spvm_op.c
