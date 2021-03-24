@@ -30,8 +30,7 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
   
   // Initialize key buffer
   hash->key_buffer_capacity = 1;
-  int64_t hash_key_buffer_byte_size = (int64_t)hash->key_buffer_capacity;
-  hash->key_buffer = calloc(1, hash_key_buffer_byte_size);
+  hash->key_buffer = calloc(1, hash->key_buffer_capacity);
   hash->key_buffer_length = 0;
   
   return hash;
@@ -119,8 +118,7 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
   if (entries_length >= entries_capacity) {
     int32_t new_entries_capacity = entries_capacity * 2;
     
-    int64_t new_entries_byte_size = (int64_t)new_entries_capacity * (int64_t)sizeof(SPVM_HASH_ENTRY);
-    SPVM_HASH_ENTRY* new_entries = calloc(1, new_entries_byte_size);
+    SPVM_HASH_ENTRY* new_entries = calloc(new_entries_capacity, sizeof(SPVM_HASH_ENTRY));
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
     free(hash->entries);
     hash->entries = new_entries;
@@ -142,8 +140,7 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
   if (key_buffer_length + length + (int32_t)sizeof(int32_t) >= key_buffer_capacity) {
     int32_t new_key_buffer_capacity = (key_buffer_length + length + sizeof(int32_t)) * 2;
     
-    int64_t new_key_buffer_byte_size = (int64_t)new_key_buffer_capacity;
-    char* new_key_buffer = calloc(1, new_key_buffer_byte_size);
+    char* new_key_buffer = calloc(1, new_key_buffer_capacity);
     memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
     free(hash->key_buffer);
     hash->key_buffer = new_key_buffer;
