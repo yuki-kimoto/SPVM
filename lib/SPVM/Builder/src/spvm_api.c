@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <inttypes.h>
+#include <stdarg.h>
 
 #include "spvm_list.h"
 #include "spvm_hash.h"
@@ -91,9 +92,6 @@
 
 
 SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
-
-
-
 
   // Native APIs. If a element is added, must increment env_length variable.
   void* env_init[]  = {
@@ -218,6 +216,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_free_env,
     NULL, // memory_blocks_count
     SPVM_API_get_chars,
+    SPVM_API_die,
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -254,6 +253,29 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
+}
+
+int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...) {
+  va_list args;
+  
+  char* buffer = (char*)env->alloc_memory_block_zero(env, 512);
+  int32_t message_length = strlen(message);
+  if (message_length > 255) {
+    message_length = 255;
+  }
+  memcpy(buffer, message, message_length);
+  const char* file_line = " at %s line %d";
+  memcpy(buffer + message_length, file_line, strlen(file_line));
+  
+  vsnprintf(buffer, 511, message, args);
+  
+  void* exception = env->new_string_raw(env, buffer, strlen(buffer));
+  
+  env->free_memory_block(env, buffer);
+  
+  env->set_exception(env, exception);
+  
+  return SPVM_EXCEPTION;
 }
 
 int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {

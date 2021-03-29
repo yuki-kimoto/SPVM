@@ -42,6 +42,8 @@ do {\
   *(void**)(dist_address) = tmp_object;\
 } while (0)\
 
+int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...);
+
 int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object);
 
 int32_t SPVM_API_is_utf8(SPVM_ENV* env, SPVM_OBJECT* object);

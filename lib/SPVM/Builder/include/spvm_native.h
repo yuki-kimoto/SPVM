@@ -384,5 +384,6 @@ struct spvm_env {
   void (*free_env)(SPVM_ENV* env);
   int32_t memory_blocks_count;
   const char* (*get_chars)(SPVM_ENV* env, void* string_object);
+  int32_t (*SPVM_API_die)(SPVM_ENV* env, const char* message, ...);
 };
 #endif
