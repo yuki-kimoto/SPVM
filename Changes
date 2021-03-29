@@ -1,4 +1,5 @@
-0.0934
+0.0934 2021-03-29
+  - add Add unsigned format for sprintf. %lu and %u.
   - fix msys2 t/ext fail bug.
 0.0933 2021-02-10
   - Don't support old OpenBSD before 6.8.
