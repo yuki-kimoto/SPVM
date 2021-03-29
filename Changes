@@ -1,6 +1,7 @@
 0.0934 2021-03-29
   - add Add unsigned format for sprintf. %lu and %u.
   - fix msys2 t/ext fail bug.
+  - fix spvmcc bug that if module name contain ::, compile fail.
 0.0933 2021-02-10
   - Don't support old OpenBSD before 6.8.
 0.0932 2021-02-08
