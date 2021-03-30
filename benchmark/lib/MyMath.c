@@ -11,5 +11,5 @@ int32_t SPNATIVE__MyMath__spvm_sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = total;
   
-  return SPVM_SUCCESS;
+  return 0;
 }

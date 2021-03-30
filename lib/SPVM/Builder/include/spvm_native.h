@@ -26,9 +26,6 @@ union spvm_value {
   double* dref;
 };
 
-#define SPVM_SUCCESS 0
-#define SPVM_EXCEPTION 1
-
 #define SPVM_DIE(message, ...) do {\
   char* buffer = (char*)env->alloc_memory_block_zero(env, 255);\
   snprintf(buffer, 255, message " at %s line %d", __VA_ARGS__);\

@@ -33,7 +33,7 @@ int32_t SPNATIVE__SPVM__IO__Stdout__print(SPVM_ENV* env, SPVM_VALUE* stack) {
     }
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__IO__Stdout__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -45,5 +45,5 @@ int32_t SPNATIVE__SPVM__IO__Stdout__flush(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, "Can't flush buffer to stdout", MFILE, __LINE__);
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }

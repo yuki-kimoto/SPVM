@@ -16,7 +16,7 @@ int32_t SPNATIVE__SPVM__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].lval = timer_value;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -39,7 +39,7 @@ int32_t SPNATIVE__SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = obj_time_info;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -62,7 +62,7 @@ int32_t SPNATIVE__SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = obj_time_info;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 // https://code.woboq.org/userspace/glibc/timezone/private.h.html
@@ -406,7 +406,7 @@ int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = obj_time_info;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -441,7 +441,7 @@ int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = obj_str;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Time__timelocal(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -465,5 +465,5 @@ int32_t SPNATIVE__SPVM__Time__timelocal(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].lval = ltime;
   
-  return SPVM_SUCCESS;
+  return 0;
 }

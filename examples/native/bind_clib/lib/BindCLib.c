@@ -15,5 +15,5 @@ int32_t SPNATIVE__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = total;
   
-  return SPVM_SUCCESS;
+  return 0;
 }

@@ -16,7 +16,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   if (*offset_ref < 0 || *offset_ref > str_len - 1) {
     stack[0].ival = -1;
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   utf8proc_int32_t dst;
@@ -36,7 +36,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = uchar;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -49,7 +49,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack)
   
   if (utf8_len == 0) {
     stack[0].oval = NULL;
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   void* obj_utf8_bytes = env->new_byte_array(env, utf8_len);
@@ -61,5 +61,5 @@ int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack)
   
   stack[0].oval = utf8_string;
   
-  return SPVM_SUCCESS;
+  return 0;
 }

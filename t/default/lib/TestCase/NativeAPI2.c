@@ -12,7 +12,7 @@ int32_t SPNATIVE__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* args) {
   
   args[0].ival = total;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE* args) {
@@ -26,7 +26,7 @@ int32_t SPNATIVE__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE* args)
     args[0].ival = 0;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI2__src_bar(SPVM_ENV* env, SPVM_VALUE* args) {
@@ -40,7 +40,7 @@ int32_t SPNATIVE__TestCase__NativeAPI2__src_bar(SPVM_ENV* env, SPVM_VALUE* args)
     args[0].ival = 0;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI2__src_baz(SPVM_ENV* env, SPVM_VALUE* args) {
@@ -54,5 +54,5 @@ int32_t SPNATIVE__TestCase__NativeAPI2__src_baz(SPVM_ENV* env, SPVM_VALUE* args)
     args[0].ival = 0;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }

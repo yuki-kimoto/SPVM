@@ -43,6 +43,6 @@ int32_t SPNATIVE__SPVM__Hash___murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   hash ^= hash >> 15;
   stack[0].lval = hash; // return a long value to ensure being positive.
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 

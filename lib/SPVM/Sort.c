@@ -371,14 +371,14 @@ int32_t SPNATIVE__SPVM__Sort__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int8_t* nums = env->get_elems_byte(env, onums);
   
   DualPivotQuickSort_byte(nums, 0, array_length - 1);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Sort__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -395,14 +395,14 @@ int32_t SPNATIVE__SPVM__Sort__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int16_t* nums = env->get_elems_short(env, onums);
   
   DualPivotQuickSort_short(nums, 0, array_length - 1);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Sort__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -414,14 +414,14 @@ int32_t SPNATIVE__SPVM__Sort__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int32_t* nums = env->get_elems_int(env, onums);
   
   DualPivotQuickSort_int(nums, 0, array_length - 1);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Sort__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -430,14 +430,14 @@ int32_t SPNATIVE__SPVM__Sort__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int64_t* nums = env->get_elems_long(env, onums);
   
   DualPivotQuickSort_long(nums, 0, array_length - 1);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Sort__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -446,14 +446,14 @@ int32_t SPNATIVE__SPVM__Sort__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   float* nums = env->get_elems_float(env, onums);
   
   DualPivotQuickSort_float(nums, 0, array_length - 1);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Sort__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -462,13 +462,13 @@ int32_t SPNATIVE__SPVM__Sort__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   double* nums = env->get_elems_double(env, onums);
   
   DualPivotQuickSort_double(nums, 0, array_length - 1);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 

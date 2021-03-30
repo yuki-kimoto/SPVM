@@ -28,5 +28,5 @@ int32_t SPNATIVE__MyOpenMP__sum_vec_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = obj_nums3;
   
-  return SPVM_SUCCESS;
+  return 0;
 }

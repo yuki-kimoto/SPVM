@@ -279,7 +279,7 @@ int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...) {
   
   env->set_exception(env, exception);
   
-  return SPVM_EXCEPTION;
+  return 1;
 }
 
 int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {

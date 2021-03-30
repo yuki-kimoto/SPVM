@@ -32,7 +32,7 @@ int32_t SPNATIVE__SPVM__Util___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack
 
   stack[0].oval = env->new_string(env, tmp_result, result_len);
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -48,7 +48,7 @@ int32_t SPNATIVE__SPVM__Util___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE
     value /= 10;
   }
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__strtoi(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -77,7 +77,7 @@ int32_t SPNATIVE__SPVM__Util__strtoi(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = (int32_t)num;
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -106,7 +106,7 @@ int32_t SPNATIVE__SPVM__Util__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].lval = (int64_t)num;
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__strtof(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -129,7 +129,7 @@ int32_t SPNATIVE__SPVM__Util__strtof(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].fval = num;
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__strtod(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -152,7 +152,7 @@ int32_t SPNATIVE__SPVM__Util__strtod(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].dval = num;
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__isdigit(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -163,7 +163,7 @@ int32_t SPNATIVE__SPVM__Util__isdigit(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = is_valid;
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -185,7 +185,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -207,7 +207,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memcpy((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -225,7 +225,7 @@ int32_t SPNATIVE__SPVM__Util__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -247,7 +247,7 @@ int32_t SPNATIVE__SPVM__Util__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memmove((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -265,7 +265,7 @@ int32_t SPNATIVE__SPVM__Util__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -287,7 +287,7 @@ int32_t SPNATIVE__SPVM__Util__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memcpy((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(int16_t));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -305,7 +305,7 @@ int32_t SPNATIVE__SPVM__Util__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -327,7 +327,7 @@ int32_t SPNATIVE__SPVM__Util__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memmove((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(int16_t));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -345,7 +345,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -367,7 +367,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memcpy((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(int32_t));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -385,7 +385,7 @@ int32_t SPNATIVE__SPVM__Util__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -407,7 +407,7 @@ int32_t SPNATIVE__SPVM__Util__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memmove((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(int32_t));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -425,7 +425,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -447,7 +447,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memcpy((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(int64_t));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -465,7 +465,7 @@ int32_t SPNATIVE__SPVM__Util__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -487,7 +487,7 @@ int32_t SPNATIVE__SPVM__Util__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memmove((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(int64_t));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -505,7 +505,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -527,7 +527,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memcpy((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(float));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -545,7 +545,7 @@ int32_t SPNATIVE__SPVM__Util__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -567,7 +567,7 @@ int32_t SPNATIVE__SPVM__Util__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memmove((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(float));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -585,7 +585,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -607,7 +607,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memcpy((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(double));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -625,7 +625,7 @@ int32_t SPNATIVE__SPVM__Util__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t length = stack[4].ival;
 
   if (length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   else if (length < 0) {
     return env->die(env, "Length must be zero or positive value", MFILE, __LINE__);
@@ -647,7 +647,7 @@ int32_t SPNATIVE__SPVM__Util__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   memmove((char*)(dest_data + dest_offset), (char*)(src_data + src_offset), length * sizeof(double));
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -671,7 +671,7 @@ int32_t SPNATIVE__SPVM__Util__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = obj_value;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__abs(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -681,7 +681,7 @@ int32_t SPNATIVE__SPVM__Util__abs(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = value;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -691,7 +691,7 @@ int32_t SPNATIVE__SPVM__Util__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].lval = value;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__new_object_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -710,7 +710,7 @@ int32_t SPNATIVE__SPVM__Util__new_object_array_proto(SPVM_ENV* env, SPVM_VALUE* 
   
   stack[0].oval = new_object_array;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -723,7 +723,7 @@ int32_t SPNATIVE__SPVM__Util__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int8_t* nums = env->get_elems_byte(env, onums);
@@ -734,7 +734,7 @@ int32_t SPNATIVE__SPVM__Util__reverseb(SPVM_ENV* env, SPVM_VALUE* stack) {
     nums[array_length - i - 1] = tmp;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -747,7 +747,7 @@ int32_t SPNATIVE__SPVM__Util__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int16_t* nums = env->get_elems_short(env, onums);
@@ -758,7 +758,7 @@ int32_t SPNATIVE__SPVM__Util__reverses(SPVM_ENV* env, SPVM_VALUE* stack) {
     nums[array_length - i - 1] = tmp;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -771,7 +771,7 @@ int32_t SPNATIVE__SPVM__Util__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int32_t* nums = env->get_elems_int(env, onums);
@@ -782,7 +782,7 @@ int32_t SPNATIVE__SPVM__Util__reversei(SPVM_ENV* env, SPVM_VALUE* stack) {
     nums[array_length - i - 1] = tmp;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -795,7 +795,7 @@ int32_t SPNATIVE__SPVM__Util__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   int64_t* nums = env->get_elems_long(env, onums);
@@ -806,7 +806,7 @@ int32_t SPNATIVE__SPVM__Util__reversel(SPVM_ENV* env, SPVM_VALUE* stack) {
     nums[array_length - i - 1] = tmp;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -819,7 +819,7 @@ int32_t SPNATIVE__SPVM__Util__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   float* nums = env->get_elems_float(env, onums);
@@ -830,7 +830,7 @@ int32_t SPNATIVE__SPVM__Util__reversef(SPVM_ENV* env, SPVM_VALUE* stack) {
     nums[array_length - i - 1] = tmp;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -843,7 +843,7 @@ int32_t SPNATIVE__SPVM__Util__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   double* nums = env->get_elems_double(env, onums);
@@ -854,7 +854,7 @@ int32_t SPNATIVE__SPVM__Util__reversed(SPVM_ENV* env, SPVM_VALUE* stack) {
     nums[array_length - i - 1] = tmp;
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -867,7 +867,7 @@ int32_t SPNATIVE__SPVM__Util__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   int32_t array_length = env->length(env, onums);
   if (array_length == 0) {
-    return SPVM_SUCCESS;
+    return 0;
   }
   
   for(int32_t i = 0; i < array_length / 2; i++){
@@ -876,7 +876,7 @@ int32_t SPNATIVE__SPVM__Util__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
     env->set_elem_object(env, onums, array_length - i - 1, tmp);
   }
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__get_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -890,7 +890,7 @@ int32_t SPNATIVE__SPVM__Util__get_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = type_name;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -899,7 +899,7 @@ int32_t SPNATIVE__SPVM__Util__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].fval = FLT_MAX;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -908,7 +908,7 @@ int32_t SPNATIVE__SPVM__Util__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].fval = FLT_MIN;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -917,7 +917,7 @@ int32_t SPNATIVE__SPVM__Util__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].dval = DBL_MAX;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -926,7 +926,7 @@ int32_t SPNATIVE__SPVM__Util__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].dval = DBL_MIN;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -935,19 +935,19 @@ int32_t SPNATIVE__SPVM__Util__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   srand((unsigned)seed);
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = rand();
 
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__SPVM__Util__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = RAND_MAX;
 
-  return SPVM_SUCCESS;
+  return 0;
 }

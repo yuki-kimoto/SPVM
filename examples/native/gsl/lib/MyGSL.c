@@ -17,5 +17,5 @@ int32_t SPNATIVE__MyGSL__stat(SPVM_ENV* env, SPVM_VALUE* stack) {
   printf( "mean: \t%f \n", mean);
   printf( "sd: \t%f \n", sd );
 
-  return SPVM_SUCCESS;
+  return 0;
 }
