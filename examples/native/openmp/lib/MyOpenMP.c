@@ -5,13 +5,13 @@
 int32_t SPNATIVE__MyOpenMP__sum_vec_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_nums1 = stack[0].oval;
   if (obj_nums1 == NULL) {
-    SPVM_DIE("First argument must be not null", "MyOpenMP.c", __LINE__);
+    return env->die(env, "First argument must be not null", "MyOpenMP.c", __LINE__);
   }
   int32_t* nums1 = env->get_elems_int(env, obj_nums1);
   
   void* obj_nums2 = stack[1].oval;
   if(obj_nums2 == NULL) {
-    SPVM_DIE("First argument must be not null", "MyOpenMP.c", __LINE__);
+    return env->die(env, "First argument must be not null", "MyOpenMP.c", __LINE__);
   }
   int32_t* nums2 = env->get_elems_int(env, obj_nums2);
   

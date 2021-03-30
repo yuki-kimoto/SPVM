@@ -684,56 +684,56 @@ int32_t SPNATIVE__TestCase__NativeAPI__call_void_sub_exception_native(SPVM_ENV* 
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception %s", "ppp", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception %s", "ppp", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI__call_byte_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI__call_short_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
-  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI__call_int_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI__call_long_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 float SPNATIVE__TestCase__NativeAPI__call_float_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI__call_double_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI__call_object_sub_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  SPVM_DIE("Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
+  return env->die(env, "Exception", "TestCase/NativeAPI.native/NativeAPI.c", __LINE__);
 }
 
 int32_t SPNATIVE__TestCase__NativeAPI__mortal_api(SPVM_ENV* env, SPVM_VALUE* stack) {

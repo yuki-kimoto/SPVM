@@ -258,21 +258,23 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...) {
   va_list args;
   
-  char* buffer = (char*)env->alloc_memory_block_zero(env, 512);
+  char* message_with_line = (char*)env->alloc_memory_block_zero(env, 512);
   int32_t message_length = strlen(message);
   if (message_length > 255) {
     message_length = 255;
   }
-  memcpy(buffer, message, message_length);
+  memcpy(message_with_line, message, message_length);
   const char* file_line = " at %s line %d";
-  memcpy(buffer + message_length, file_line, strlen(file_line));
-  
-  vsnprintf(buffer, 511, message, args);
-  
-  warn(buffer);
+  memcpy(message_with_line + message_length, file_line, strlen(file_line));
+
+  char* buffer = (char*)env->alloc_memory_block_zero(env, 512);
+  va_start(args, message);
+  vsnprintf(buffer, 511, message_with_line, args);
+  va_end(args);
   
   void* exception = env->new_string_raw(env, buffer, strlen(buffer));
   
+  env->free_memory_block(env, message_with_line);
   env->free_memory_block(env, buffer);
   
   env->set_exception(env, exception);

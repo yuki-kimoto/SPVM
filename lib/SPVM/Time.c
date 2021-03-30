@@ -373,11 +373,11 @@ static const unsigned char *find_string(const unsigned char *bp, int *tgt, const
 int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_str = stack[0].oval;
-  if (!obj_str) { SPVM_DIE("String must be defined", MFILE, __LINE__); }
+  if (!obj_str) { return env->die(env, "String must be defined", MFILE, __LINE__); }
   const char* str = env->get_chars(env, obj_str);
   
   void* obj_format = stack[1].oval;
-  if (!obj_format) { SPVM_DIE("Format must be defined", MFILE, __LINE__); }
+  if (!obj_format) { return env->die(env, "Format must be defined", MFILE, __LINE__); }
   const char* format = env->get_chars(env, obj_format);
 
   struct tm resultp = {0};
@@ -385,10 +385,10 @@ int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
   const char* end_ptr = SPVM_strptime(str, format, &resultp);
   
   if (end_ptr && *end_ptr != '\0') {
-    SPVM_DIE("Format parsing failed \"%s\"", end_ptr, MFILE, __LINE__);
+    return env->die(env, "Format parsing failed \"%s\"", end_ptr, MFILE, __LINE__);
   }
   else if (!end_ptr) {
-    SPVM_DIE("Format parsing failed", MFILE, __LINE__);
+    return env->die(env, "Format parsing failed", MFILE, __LINE__);
   }
 
   void* obj_time_info;
@@ -412,11 +412,11 @@ int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_format = stack[0].oval;
-  if (!obj_format) { SPVM_DIE("Format must be defined", MFILE, __LINE__); }
+  if (!obj_format) { return env->die(env, "Format must be defined", MFILE, __LINE__); }
   const char* format = env->get_chars(env, obj_format);
   
   void* obj_time_info = stack[1].oval;
-  if (!obj_time_info) { SPVM_DIE("SPVM::Time::Info object must be defined", MFILE, __LINE__); }
+  if (!obj_time_info) { return env->die(env, "SPVM::Time::Info object must be defined", MFILE, __LINE__); }
 
   struct tm resultp;
 
@@ -434,7 +434,7 @@ int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t count = strftime(str, 256, format, &resultp);
   
   if (count == 0) {
-    SPVM_DIE("strftime fail", MFILE, __LINE__);
+    return env->die(env, "strftime fail", MFILE, __LINE__);
   }
 
   void* obj_str = env->new_string(env, str, strlen(str));
@@ -447,7 +447,7 @@ int32_t SPNATIVE__SPVM__Time__strftime(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Time__timelocal(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_time_info = stack[0].oval;
-  if (!obj_time_info) { SPVM_DIE("SPVM::Time::Info object must be defined", MFILE, __LINE__); }
+  if (!obj_time_info) { return env->die(env, "SPVM::Time::Info object must be defined", MFILE, __LINE__); }
 
   struct tm resultp;
 
