@@ -148,10 +148,40 @@ int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_double_test(SPVM_ENV* env
 int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
-
-  void* minimal;
-  SPVM_NEW_OBJECT(env, "TestCase::Minimal", &minimal, MFILE, __LINE__);
+  
+  int32_t e;
+  void* minimal = env->new_object_by_name(env, "TestCase::Minimal", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
   SPVM_SET_PACKAGE_VAR_OBJECT(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, MFILE, __LINE__);
+  
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  void* minimal = env->new_object_by_name(env, "TestCase::Minimal", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].oval = minimal;
+  
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__new_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  void* minimal = env->new_object_by_name(env, "TestCase::NotFound", &e, MFILE, __LINE__);
+  if (e) {
+    return e;
+  }
+  
+  stack[0].oval = minimal;
   
   return 0;
 }

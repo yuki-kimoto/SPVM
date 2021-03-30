@@ -706,4 +706,36 @@ package TestCase::NativeAPI {
   sub my_value : int ($value : int) { return $value; }
   
   native sub native_call_sub : int ();
+
+  native sub new_object_by_name : TestCase::Minimal ();
+  native sub new_object_by_name_exception : TestCase::Minimal ();
+  
+  sub test_new_object_by_name : int () {
+    my $minimal = new_object_by_name();
+    unless ($minimal isa TestCase::Minimal) {
+      return 0;
+    }
+    
+    unless ($minimal isa TestCase::Minimal) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_new_object_by_name_exception : int () {
+    my $minimal : TestCase::Minimal;
+    eval { $minimal = new_object_by_name_exception(); };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    if ($minimal) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
 }

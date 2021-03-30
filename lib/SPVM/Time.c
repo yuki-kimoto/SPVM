@@ -21,11 +21,13 @@ int32_t SPNATIVE__SPVM__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  int32_t e;
+  
   time_t time = (time_t)stack[0].lval;
   struct tm* resultp = localtime(&time);
 
-  void* obj_time_info;
-  SPVM_NEW_OBJECT(env, "SPVM::Time::Info", &obj_time_info, MFILE, __LINE__);
+  void* obj_time_info = env->new_object_by_name(env, "SPVM::Time::Info", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "sec", resultp->tm_sec, MFILE, __LINE__);
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "min", resultp->tm_min, MFILE, __LINE__);
@@ -44,11 +46,13 @@ int32_t SPNATIVE__SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
 
 int32_t SPNATIVE__SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  int32_t e;
+
   time_t time = (time_t)stack[0].lval;
   struct tm* resultp = gmtime(&time);
 
-  void* obj_time_info;
-  SPVM_NEW_OBJECT(env, "SPVM::Time::Info", &obj_time_info, MFILE, __LINE__);
+  void* obj_time_info = env->new_object_by_name(env, "SPVM::Time::Info", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "sec", resultp->tm_sec, MFILE, __LINE__);
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "min", resultp->tm_min, MFILE, __LINE__);
@@ -372,6 +376,8 @@ static const unsigned char *find_string(const unsigned char *bp, int *tgt, const
 }
 int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
+  int32_t e;
+  
   void* obj_str = stack[0].oval;
   if (!obj_str) { return env->die(env, "String must be defined", MFILE, __LINE__); }
   const char* str = env->get_chars(env, obj_str);
@@ -391,8 +397,8 @@ int32_t SPNATIVE__SPVM__Time__strptime(SPVM_ENV* env, SPVM_VALUE* stack) {
     return env->die(env, "Format parsing failed", MFILE, __LINE__);
   }
 
-  void* obj_time_info;
-  SPVM_NEW_OBJECT(env, "SPVM::Time::Info", &obj_time_info, MFILE, __LINE__);
+  void* obj_time_info = env->new_object_by_name(env, "SPVM::Time::Info", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "sec", resultp.tm_sec, MFILE, __LINE__);
   SPVM_SET_FIELD_INT(env, obj_time_info, "SPVM::Time::Info", "min", resultp.tm_min, MFILE, __LINE__);

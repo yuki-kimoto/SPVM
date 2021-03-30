@@ -26,12 +26,6 @@ union spvm_value {
   double* dref;
 };
 
-#define SPVM_NEW_OBJECT(env, package_name, object_address, file, line) do {\
-  int32_t id = env->get_basic_type_id(env, package_name);\
-  if (id < 0) { return env->die(env, "Package \"%s\" not found", package_name, file, line); };\
-  *object_address = env->new_object(env, id);\
-} while (0)\
-
 #define SPVM_NEW_POINTER(env, package_name, pointer, object_address, file, line) do {\
   int32_t id = env->get_basic_type_id(env, package_name);\
   if (id < 0) { return env->die(env, "Package \"%s\" not found", package_name, file, line); };\

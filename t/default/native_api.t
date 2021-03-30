@@ -17,6 +17,12 @@ use SPVM 'TestCase::Pointer';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# new_object_by_name
+{
+  ok(TestCase::NativeAPI->test_new_object_by_name);
+  ok(TestCase::NativeAPI->test_new_object_by_name_exception);
+}
+
 # package variable access
 {
   ok(TestCase::NativeAPI->set_package_var_byte);
