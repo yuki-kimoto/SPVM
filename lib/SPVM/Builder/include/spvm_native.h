@@ -26,15 +26,6 @@ union spvm_value {
   double* dref;
 };
 
-#define SPVM_DIE(message, ...) do {\
-  char* buffer = (char*)env->alloc_memory_block_zero(env, 255);\
-  snprintf(buffer, 255, message " at %s line %d", __VA_ARGS__);\
-  void* exception = env->new_string_raw(env, buffer, strlen(buffer));\
-  env->free_memory_block(env, buffer);\
-  env->set_exception(env, exception);\
-  return SPVM_EXCEPTION;\
-} while (0)\
-
 #define SPVM_NEW_OBJECT(env, package_name, object_address, file, line) do {\
   int32_t id = env->get_basic_type_id(env, package_name);\
   if (id < 0) { return env->die(env, "Package \"%s\" not found", package_name, file, line); };\
