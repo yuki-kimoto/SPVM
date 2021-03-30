@@ -373,5 +373,6 @@ struct spvm_env {
   int32_t memory_blocks_count;
   const char* (*get_chars)(SPVM_ENV* env, void* string_object);
   int32_t (*die)(SPVM_ENV* env, const char* message, ...);
+  void* (*new_object_by_name)(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line);
 };
 #endif

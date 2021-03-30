@@ -42,6 +42,8 @@ do {\
   *(void**)(dist_address) = tmp_object;\
 } while (0)\
 
+void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line);
+
 int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...);
 
 int32_t SPVM_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object);

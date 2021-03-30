@@ -217,6 +217,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     NULL, // memory_blocks_count
     SPVM_API_get_chars,
     SPVM_API_die,
+    SPVM_API_new_object_by_name,
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -253,6 +254,21 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
+}
+
+void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line) {
+  *exception_flag = 0;
+  
+  int32_t id = env->get_basic_type_id(env, package_name);
+  if (id < 0) {
+    env->die(env, "Package \"%s\" not found", package_name, file, line);
+    *exception_flag = 1;
+    return NULL;
+  };
+  
+  void* object = env->new_object(env, id);
+  
+  return object;
 }
 
 int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...) {
