@@ -360,7 +360,7 @@ struct spvm_env {
   void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
   void* (*get_exception)(SPVM_ENV* env);
-  void (*set_exception)(SPVM_ENV* env, void* exception);
+  int32_t (*set_exception)(SPVM_ENV* env, void* exception);
   int32_t (*get_ref_count)(SPVM_ENV* env, void* object);
   void (*inc_ref_count)(SPVM_ENV* env, void* object);
   void (*dec_ref_count)(SPVM_ENV* env, void* object);

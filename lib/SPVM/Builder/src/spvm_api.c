@@ -4652,7 +4652,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   }
 }
 
-void SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception) {
+int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception) {
   if (env->exception_object != NULL) {
     SPVM_API_dec_ref_count(env, (SPVM_OBJECT*)env->exception_object);
   }
@@ -4662,6 +4662,8 @@ void SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception) {
   if (env->exception_object != NULL) {
     ((SPVM_OBJECT*)env->exception_object)->ref_count++;
   }
+  
+  return 1;
 }
 
 SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env) {
