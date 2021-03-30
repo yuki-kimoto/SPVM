@@ -269,6 +269,8 @@ int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...) {
   
   vsnprintf(buffer, 511, message, args);
   
+  warn(buffer);
+  
   void* exception = env->new_string_raw(env, buffer, strlen(buffer));
   
   env->free_memory_block(env, buffer);
