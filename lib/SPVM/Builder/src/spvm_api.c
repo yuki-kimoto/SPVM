@@ -249,8 +249,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_package_var_float_by_name,
     SPVM_API_get_package_var_double_by_name,
     SPVM_API_get_package_var_object_by_name,
-    SPVM_API_call_static_method_by_name,
-    SPVM_API_call_method_by_name,
+    SPVM_API_call_sub_by_name,
+    SPVM_API_call_poly_sub_by_name,
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -289,12 +289,12 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   return env;
 }
 
-void SPVM_API_call_static_method_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
 
   int32_t sub_id = env->get_sub_id(env, package_name, sub_name, signature);
   if (sub_id < 0) {
-    env->die(env, "Static method not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line);
+    env->die(env, "Subroutine not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line);
     *exception_flag = 1;
     return;
   }
@@ -306,12 +306,18 @@ void SPVM_API_call_static_method_by_name(SPVM_ENV* env, const char* package_name
   }
 }
 
-void SPVM_API_call_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_call_poly_sub_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
+
+  if (object == NULL) {
+    env->die(env, "Object must not be NULL", file, line);
+    *exception_flag = 1;
+    return;
+  };
 
   int32_t sub_id = env->get_sub_id_by_object(env, object, sub_name, signature);
   if (sub_id < 0) {
-    env->die(env, "Method not found, object:%p, sub name:%s, signature:%s", object, sub_name, signature, file, line);
+    env->die(env, "Subroutine not found, object:%p, sub name:%s, signature:%s", object, sub_name, signature, file, line);
     *exception_flag = 1;
     return;
   };
