@@ -119,7 +119,7 @@ SPVM_OBJECT* SPVM_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* s
 // ID
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
 int32_t SPVM_API_get_sub_id(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
-int32_t SPVM_API_get_method_sub_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature);
+int32_t SPVM_API_get_sub_id_by_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature);
 int32_t SPVM_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
 int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
 int32_t SPVM_API_get_field_index(SPVM_ENV* env, int32_t field_id);

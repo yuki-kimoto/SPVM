@@ -269,7 +269,7 @@ struct spvm_env {
   int32_t (*get_field_offset)(SPVM_ENV* env, int32_t field_id);
   int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
   int32_t (*get_sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
-  int32_t (*get_method_sub_id)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature);
+  int32_t (*get_sub_id_by_object)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature);
   void* (*new_object_raw)(SPVM_ENV* env, int32_t basic_type_id);
   void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
   void* (*new_byte_array_raw)(SPVM_ENV* env, int32_t length);
