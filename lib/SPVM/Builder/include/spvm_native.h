@@ -243,7 +243,6 @@ union spvm_value {
 
 
 
-
 struct spvm_env {
   void* package_vars_heap;
   void* object_header_byte_size;
@@ -397,5 +396,7 @@ struct spvm_env {
   float (*get_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
   double (*get_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
   void* (*get_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
+  void (*call_static_method_by_name)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line);
+  void (*call_method_by_name)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line);
 };
 #endif
