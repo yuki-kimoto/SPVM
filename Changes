@@ -32,6 +32,7 @@
     get_package_var_object_by_name,
     call_sub_by_name,
     call_poly_sub_by_name,
+    get_field_string_chars_by_name,
   - rename native api get_method_sub_id to get_sub_id_by_object
 0.0934 2021-03-29
   - add Add unsigned format for sprintf. %lu and %u.

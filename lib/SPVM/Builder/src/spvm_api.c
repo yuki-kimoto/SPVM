@@ -251,6 +251,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_package_var_object_by_name,
     SPVM_API_call_sub_by_name,
     SPVM_API_call_poly_sub_by_name,
+    SPVM_API_get_field_string_chars_by_name,
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -287,6 +288,25 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
+}
+
+const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+  *exception_flag = 0;
+
+  int32_t id = env->get_field_id(env, package_name, field_name, "string");
+  if (id < 0) {
+    *exception_flag = 1;
+    env->die(env, "field not found, package name:%s, field name:%s, signature:%s", package_name, field_name, signature, file, line);
+    return NULL;
+  };
+  SPVM_OBJECT* value = env->get_field_object(env, obj, id);
+  if (value == NULL) {
+    return NULL;
+  }
+  else {
+    const char* chars = env->get_chars(env, value);
+    return chars;
+  }
 }
 
 void SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line) {
