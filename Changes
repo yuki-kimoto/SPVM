@@ -1,3 +1,37 @@
+0.0945 2021-03-31
+  - add the following native APIs
+    new_object_by_name,
+    new_pointer_by_name,
+    set_field_byte_by_name,
+    set_field_short_by_name,
+    set_field_int_by_name,
+    set_field_long_by_name,
+    set_field_float_by_name,
+    set_field_double_by_name,
+    set_field_object_by_name,
+    get_field_byte_by_name,
+    get_field_short_by_name,
+    get_field_int_by_name,
+    get_field_long_by_name,
+    get_field_float_by_name,
+    get_field_double_by_name,
+    get_field_object_by_name,
+    set_package_var_byte_by_name,
+    set_package_var_short_by_name,
+    set_package_var_int_by_name,
+    set_package_var_long_by_name,
+    set_package_var_float_by_name,
+    set_package_var_double_by_name,
+    set_package_var_object_by_name,
+    get_package_var_byte_by_name,
+    get_package_var_short_by_name,
+    get_package_var_int_by_name,
+    get_package_var_long_by_name,
+    get_package_var_float_by_name,
+    get_package_var_double_by_name,
+    get_package_var_object_by_name,
+
+
 0.0934 2021-03-29
   - add Add unsigned format for sprintf. %lu and %u.
   - fix msys2 t/ext fail bug.
