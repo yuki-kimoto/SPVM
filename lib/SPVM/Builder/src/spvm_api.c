@@ -352,7 +352,7 @@ SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, const char* package_nam
   return object;
 }
 
-void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "byte");
@@ -361,10 +361,10 @@ void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char
     env->die(env, "field not found, package name:%s, field name:%s, signature:byte", package_name, field_name, file, line);
     return;
   }
-  env->set_field_byte(env, obj, id, value);
+  env->set_field_byte(env, object, id, value);
 }
 
-void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "short");
@@ -373,10 +373,10 @@ void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const cha
     env->die(env, "field not found, package name:%s, field name:%s, signature:short", package_name, field_name, file, line);
     return;
   };
-  env->set_field_short(env, obj, id, value);
+  env->set_field_short(env, object, id, value);
 }
 
-void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "int");
@@ -385,10 +385,10 @@ void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char*
     env->die(env, "field not found, package name:%s, field name:%s, signature:int", package_name, field_name, file, line);
     return;
   };
-  env->set_field_int(env, obj, id, value);
+  env->set_field_int(env, object, id, value);
 }
 
-void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "long");
@@ -397,10 +397,10 @@ void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char
     env->die(env, "field not found, package name:%s, field name:%s, signature:long", package_name, field_name, file, line);
     return;
   };
-  env->set_field_long(env, obj, id, value);
+  env->set_field_long(env, object, id, value);
 }
 
-void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, float value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, float value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "float");
@@ -409,10 +409,10 @@ void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const cha
     env->die(env, "field not found, package name:%s, field name:%s, signature:float", package_name, field_name, file, line);
     return;
   };
-  env->set_field_float(env, obj, id, value);
+  env->set_field_float(env, object, id, value);
 }
 
-void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, double value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, double value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "double");
@@ -421,10 +421,10 @@ void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const ch
     env->die(env, "field not found, package name:%s, field name:%s, signature:double", package_name, field_name, file, line);
     return;
   };
-  env->set_field_double(env, obj, id, value);
+  env->set_field_double(env, object, id, value);
 }
 
-void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, signature);
@@ -433,10 +433,10 @@ void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const ch
     env->die(env, "field not found, package name:%s, field name:%s, signature:%s", package_name, field_name, signature, file, line);
     return;
   };
-  env->set_field_object(env, obj, id, value);
+  env->set_field_object(env, object, id, value);
 }
 
-int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "byte");
@@ -445,11 +445,11 @@ int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const ch
     env->die(env, "field not found, package name:%s, field name:%s, signature:byte", package_name, field_name, file, line);
     return 0;
   };
-  int8_t value = env->get_field_byte(env, obj, id);
+  int8_t value = env->get_field_byte(env, object, id);
   return value;
 }
 
-int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "short");
@@ -458,11 +458,11 @@ int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const 
     env->die(env, "field not found, package name:%s, field name:%s, signature:short", package_name, field_name, file, line);
     return 0;
   };
-  int16_t value = env->get_field_short(env, obj, id);
+  int16_t value = env->get_field_short(env, object, id);
   return value;
 }
 
-int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "int");
@@ -471,11 +471,11 @@ int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const ch
     env->die(env, "field not found, package name:%s, field name:%s, signature:int", package_name, field_name, file, line);
     return 0;
   };
-  int32_t value = env->get_field_int(env, obj, id);
+  int32_t value = env->get_field_int(env, object, id);
   return value;
 }
 
-int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "long");
@@ -484,11 +484,11 @@ int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const c
     env->die(env, "field not found, package name:%s, field name:%s, signature:long", package_name, field_name, file, line);
     return 0;
   };
-  int64_t value = env->get_field_long(env, obj, id);
+  int64_t value = env->get_field_long(env, object, id);
   return value;
 }
 
-float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "float");
@@ -497,11 +497,11 @@ float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const ch
     env->die(env, "field not found, package name:%s, field name:%s, signature:float", package_name, field_name, file, line);
     return 0;
   };
-  float value = env->get_field_float(env, obj, id);
+  float value = env->get_field_float(env, object, id);
   return value;
 }
 
-double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, "double");
@@ -510,11 +510,11 @@ double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const 
     env->die(env, "field not found, package name:%s, field name:%s, signature:double", package_name, field_name, file, line);
     return 0;
   };
-  double value = env->get_field_double(env, obj, id);
+  double value = env->get_field_double(env, object, id);
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_field_id(env, package_name, field_name, signature);
@@ -523,7 +523,7 @@ SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, 
     env->die(env, "field not found, package name:%s, field name:%s, signature:%s", package_name, field_name, signature, file, line);
     return NULL;
   };
-  SPVM_OBJECT* value = env->get_field_object(env, obj, id);
+  SPVM_OBJECT* value = env->get_field_object(env, object, id);
   return value;
 }
 
