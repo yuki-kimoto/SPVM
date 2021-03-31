@@ -32,7 +32,6 @@
     get_package_var_object_by_name,
     call_static_method_by_name,
     call_method_by_name,
-    get_field_id_by_object
 
 0.0934 2021-03-29
   - add Add unsigned format for sprintf. %lu and %u.

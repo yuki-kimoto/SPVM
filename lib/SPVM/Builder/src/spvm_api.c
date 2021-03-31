@@ -251,7 +251,6 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_package_var_object_by_name,
     SPVM_API_call_static_method_by_name,
     SPVM_API_call_method_by_name,
-    SPVM_API_get_field_id_by_object,
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -5849,43 +5848,6 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const cha
   
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
-  if (!basic_type) {
-    return -1;
-  }
-  
-  if (!basic_type->package) {
-    return -1;
-  }
-  
-  // Package
-  SPVM_PACKAGE* package = basic_type->package;
-  
-  // Field
-  SPVM_FIELD* field = SPVM_API_field(env, package, field_name);
-  if (!field) {
-    return -1;
-  }
-
-  // Signature
-  if (strcmp(signature, field->signature) != 0) {
-    return -1;
-  }
-  
-  int32_t field_id = field->id;
-  
-  return field_id;
-}
-
-int32_t SPVM_API_get_field_id_by_object(SPVM_ENV* env, SPVM_OBJECT* obj, const char* field_name, const char* signature) {
-  (void)env;
-  
-  int32_t basic_type_id = obj->basic_type_id;
-
-  // Runtime
-  SPVM_COMPILER* compiler = env->compiler;
-
-  // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   if (!basic_type) {
     return -1;
   }

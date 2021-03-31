@@ -253,6 +253,4 @@ SPVM_OBJECT* SPVM_API_get_package_var_object_by_name(SPVM_ENV* env, const char* 
 void SPVM_API_call_static_method_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line);
 void SPVM_API_call_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line);
 
-int32_t SPVM_API_get_field_id_by_object(SPVM_ENV* env, SPVM_OBJECT* obj, const char* field_name, const char* signature);
-
 #endif
