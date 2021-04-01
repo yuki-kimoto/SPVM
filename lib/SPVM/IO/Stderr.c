@@ -6,6 +6,8 @@ static const char* MFILE = "SPVM/IO/Stderr.c";
 int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
+  int32_t e;
+
   void* string = stack[0].oval;
   
   if (!string) {
@@ -24,8 +26,7 @@ int32_t SPNATIVE__SPVM__IO__Stderr__print(SPVM_ENV* env, SPVM_VALUE* stack) {
   }
   
   // Flush buffer to stderr if auto flush is true
-  int8_t auto_flush;
-  SPVM_GET_PACKAGE_VAR_BYTE(env, "SPVM::IO::Stderr", "$AUTO_FLUSH", &auto_flush, MFILE, __LINE__);
+  int8_t auto_flush = env->get_package_var_byte_by_name(env, "SPVM::IO::Stderr", "$AUTO_FLUSH", &e, MFILE, __LINE__);
   if (auto_flush) {
     int32_t ret = fflush(stderr);//SPVM::IO::Stderr::print (Don't remove this comment for tests)
     if (ret != 0) {
