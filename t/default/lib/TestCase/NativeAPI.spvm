@@ -19,20 +19,33 @@ package TestCase::NativeAPI {
     return new TestCase::NativeAPI;
   }
 
-  sub get_package_var_byte : int () {
+  sub get_package_var_byte_by_name : int () {
     my $extension = TestCase::NativeAPI->new;
     
     $BYTE_VALUE = INT8_MIN();
     
-    my $value = get_package_var_byte_test($extension);
+    my $value = get_package_var_byte_by_name_test($extension);
     
-    if ($value == INT8_MIN()) {
-      return 1;
+    unless ($value == INT8_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-  native sub get_package_var_byte_test : byte ($extension : TestCase::NativeAPI);
+  native sub get_package_var_byte_by_name_test : byte ($extension : TestCase::NativeAPI);
+  
+  
+  sub get_package_var_byte_by_name_exception : int () {
+    
+    eval { get_package_var_byte_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_byte_by_name_test_exception : byte ();
 
   sub get_package_var_short : int () {
     my $extension = TestCase::NativeAPI->new;

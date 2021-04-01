@@ -559,7 +559,7 @@ void SPVM_API_set_package_var_byte_by_name(SPVM_ENV* env, const char* package_na
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "byte");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:byte", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
     return;
   };
   env->set_package_var_byte(env, id, value);
@@ -571,7 +571,7 @@ void SPVM_API_set_package_var_short_by_name(SPVM_ENV* env, const char* package_n
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "short");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:short", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
     return;
   };
   env->set_package_var_short(env, id, value);
@@ -583,7 +583,7 @@ void SPVM_API_set_package_var_int_by_name(SPVM_ENV* env, const char* package_nam
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "int");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:int", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
     return;
   };
   env->set_package_var_int(env, id, value);
@@ -595,7 +595,7 @@ void SPVM_API_set_package_var_long_by_name(SPVM_ENV* env, const char* package_na
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "long");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:long", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:long", package_name, package_var_name, file, line);
     return;
   };
   env->set_package_var_long(env, id, value);
@@ -607,7 +607,7 @@ void SPVM_API_set_package_var_float_by_name(SPVM_ENV* env, const char* package_n
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "float");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:float", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:float", package_name, package_var_name, file, line);
     return;
   };
   env->set_package_var_float(env, id, value);
@@ -619,19 +619,19 @@ void SPVM_API_set_package_var_double_by_name(SPVM_ENV* env, const char* package_
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "double");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:double", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:double", package_name, package_var_name, file, line);
     return;
   };
   env->set_package_var_double(env, id, value);
 }
 
-void SPVM_API_set_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, signature);
+  int32_t id = env->get_package_var_id(env, package_name, package_var_name, type_signature);
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:%s", package_name, package_var_name, signature, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:%s", package_name, package_var_name, type_signature, file, line);
     return;
   };
   env->set_package_var_object(env, id, value);
@@ -643,7 +643,7 @@ int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "byte");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, sub name:%s, signature:byte", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
     return 0;
   };
   int8_t value = env->get_package_var_byte(env, id);
@@ -656,7 +656,7 @@ int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* packag
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "short");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, sub name:%s, signature:short", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:short", package_name, package_var_name, file, line);
     return 0;
   };
   int16_t value = env->get_package_var_short(env, id);
@@ -669,7 +669,7 @@ int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "int");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, sub name:%s, signature:int", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:int", package_name, package_var_name, file, line);
     return 0;
   };
   int32_t value = env->get_package_var_int(env, id);
@@ -682,7 +682,7 @@ int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "long");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, sub name:%s, signature:long", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:long", package_name, package_var_name, file, line);
     return 0;
   };
   int64_t value = env->get_package_var_long(env, id);
@@ -695,7 +695,7 @@ float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "float");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, sub name:%s, signature:float", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:float", package_name, package_var_name, file, line);
     return 0;
   };
   float value = env->get_package_var_float(env, id);
@@ -708,20 +708,20 @@ double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* packag
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "double");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, sub name:%s, signature:double", package_name, package_var_name, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:double", package_name, package_var_name, file, line);
     return 0;
   };
   double value = env->get_package_var_double(env, id);
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_get_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, signature);
+  int32_t id = env->get_package_var_id(env, package_name, package_var_name, type_signature);
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, sub name:%s, signature:%s", package_name, package_var_name, signature, file, line);
+    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:%s", package_name, package_var_name, type_signature, file, line);
     return NULL;
   };
   SPVM_OBJECT* value = env->get_package_var_object(env, id);

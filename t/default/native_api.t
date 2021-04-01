@@ -32,7 +32,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->set_package_var_float);
   ok(TestCase::NativeAPI->set_package_var_double);
   ok(TestCase::NativeAPI->set_package_var_object);
-  ok(TestCase::NativeAPI->get_package_var_byte);
+  
+  ok(TestCase::NativeAPI->get_package_var_byte_by_name);
+  ok(TestCase::NativeAPI->get_package_var_byte_by_name_exception);
+
   ok(TestCase::NativeAPI->get_package_var_short);
   ok(TestCase::NativeAPI->get_package_var_int);
   ok(TestCase::NativeAPI->get_package_var_long);

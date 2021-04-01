@@ -189,7 +189,7 @@ sub bind_subs {
         unless ($cfunc_address) {
           my $dl_error = DynaLoader::dl_error();
           my $error = <<"EOS";
-Can't find native function \"$cfunc_name\" corresponding to $sub_abs_name in \"$shared_lib_file\"
+Can't find native function \"$cfunc_name\" corresponding to ${package_name}->$sub_name in \"$shared_lib_file\"
 
 You must write the following definition.
 --------------------------------------------------
