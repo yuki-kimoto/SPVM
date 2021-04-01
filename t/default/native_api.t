@@ -25,14 +25,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # package variable access
 {
-  ok(TestCase::NativeAPI->set_package_var_byte);
-  ok(TestCase::NativeAPI->set_package_var_short);
-  ok(TestCase::NativeAPI->set_package_var_int);
-  ok(TestCase::NativeAPI->set_package_var_long);
-  ok(TestCase::NativeAPI->set_package_var_float);
-  ok(TestCase::NativeAPI->set_package_var_double);
-  ok(TestCase::NativeAPI->set_package_var_object);
-  
   ok(TestCase::NativeAPI->get_package_var_byte_by_name);
   ok(TestCase::NativeAPI->get_package_var_byte_by_name_exception);
   ok(TestCase::NativeAPI->get_package_var_short_by_name);
@@ -47,6 +39,22 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->get_package_var_double_by_name_exception);
   ok(TestCase::NativeAPI->get_package_var_object_by_name);
   ok(TestCase::NativeAPI->get_package_var_object_by_name_exception);
+
+  ok(TestCase::NativeAPI->set_package_var_byte_by_name);
+  ok(TestCase::NativeAPI->set_package_var_byte_by_name_exception);
+  ok(TestCase::NativeAPI->set_package_var_short_by_name);
+  ok(TestCase::NativeAPI->set_package_var_short_by_name_exception);
+  ok(TestCase::NativeAPI->set_package_var_int_by_name);
+  ok(TestCase::NativeAPI->set_package_var_int_by_name_exception);
+  ok(TestCase::NativeAPI->set_package_var_long_by_name);
+  ok(TestCase::NativeAPI->set_package_var_long_by_name_exception);
+  ok(TestCase::NativeAPI->set_package_var_float_by_name);
+  ok(TestCase::NativeAPI->set_package_var_float_by_name_exception);
+  ok(TestCase::NativeAPI->set_package_var_double_by_name);
+  ok(TestCase::NativeAPI->set_package_var_double_by_name_exception);
+  ok(TestCase::NativeAPI->set_package_var_object_by_name);
+  ok(TestCase::NativeAPI->set_package_var_object_by_name_exception);
+  
 
   ok(TestCase::NativeAPI->push_mortal_multi);
 }

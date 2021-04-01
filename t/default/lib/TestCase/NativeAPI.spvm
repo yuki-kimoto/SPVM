@@ -204,10 +204,9 @@ package TestCase::NativeAPI {
   }
   native sub get_package_var_object_by_name_test_exception : object ();
   
-  sub set_package_var_byte : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub set_package_var_byte_by_name : int () {
     
-    set_package_var_byte_test($extension);
+    set_package_var_byte_by_name_test();
     
     if ($BYTE_VALUE == INT8_MIN()) {
       return 1;
@@ -215,12 +214,23 @@ package TestCase::NativeAPI {
     
     return 0;
   }
-  native sub set_package_var_byte_test : void ($extension : TestCase::NativeAPI);
+  native sub set_package_var_byte_by_name_test : void ();
 
-  sub set_package_var_short : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub set_package_var_byte_by_name_exception : int () {
     
-    set_package_var_short_test($extension);
+    eval { set_package_var_byte_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_byte_by_name_test_exception : byte ();
+
+  sub set_package_var_short_by_name : int () {
+    
+    set_package_var_short_by_name_test();
     
     if ($SHORT_VALUE == INT16_MIN()) {
       return 1;
@@ -228,12 +238,23 @@ package TestCase::NativeAPI {
     
     return 0;
   }
-  native sub set_package_var_short_test : void ($extension : TestCase::NativeAPI);
+  native sub set_package_var_short_by_name_test : void ();
 
-  sub set_package_var_int : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub set_package_var_short_by_name_exception : int () {
     
-    set_package_var_int_test($extension);
+    eval { set_package_var_short_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_short_by_name_test_exception : short ();
+
+  sub set_package_var_int_by_name : int () {
+    
+    set_package_var_int_by_name_test();
     
     if ($INT_VALUE == INT32_MIN()) {
       return 1;
@@ -241,12 +262,23 @@ package TestCase::NativeAPI {
     
     return 0;
   }
-  native sub set_package_var_int_test : void ($extension : TestCase::NativeAPI);
+  native sub set_package_var_int_by_name_test : void ();
 
-  sub set_package_var_long : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub set_package_var_int_by_name_exception : int () {
     
-    set_package_var_long_test($extension);
+    eval { set_package_var_int_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_int_by_name_test_exception : int ();
+
+  sub set_package_var_long_by_name : int () {
+    
+    set_package_var_long_by_name_test();
     
     if ($LONG_VALUE == INT64_MIN()) {
       return 1;
@@ -254,12 +286,22 @@ package TestCase::NativeAPI {
     
     return 0;
   }
-  native sub set_package_var_long_test : void ($extension : TestCase::NativeAPI);
+  native sub set_package_var_long_by_name_test : void ();
 
-  sub set_package_var_float : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub set_package_var_long_by_name_exception : int () {
     
-    set_package_var_float_test($extension);
+    eval { set_package_var_long_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_long_by_name_test_exception : long ();
+
+  sub set_package_var_float_by_name : int () {
+    set_package_var_float_by_name_test();
     
     if ($FLOAT_VALUE == FLT_MIN()) {
       return 1;
@@ -267,12 +309,22 @@ package TestCase::NativeAPI {
     
     return 0;
   }
-  native sub set_package_var_float_test : void ($extension : TestCase::NativeAPI);
+  native sub set_package_var_float_by_name_test : void ();
 
-  sub set_package_var_double : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub set_package_var_float_by_name_exception : int () {
     
-    set_package_var_double_test($extension);
+    eval { set_package_var_float_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_float_by_name_test_exception : float ();
+
+  sub set_package_var_double_by_name : int () {
+    set_package_var_double_by_name_test();
     
     if ($DOUBLE_VALUE == DBL_MIN()) {
       return 1;
@@ -280,12 +332,23 @@ package TestCase::NativeAPI {
     
     return 0;
   }
-  native sub set_package_var_double_test : void ($extension : TestCase::NativeAPI);
+  native sub set_package_var_double_by_name_test : void ();
 
-  sub set_package_var_object : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub set_package_var_double_by_name_exception : int () {
     
-    set_package_var_object_test($extension);
+    eval { set_package_var_double_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_double_by_name_test_exception : double ();
+
+  sub set_package_var_object_by_name : int () {
+    
+    set_package_var_object_by_name_test();
     
     if ($MINIMAL_VALUE isa TestCase::Minimal) {
       $MINIMAL_VALUE = undef;
@@ -294,7 +357,19 @@ package TestCase::NativeAPI {
     
     return 0;
   }
-  native sub set_package_var_object_test : void ($extension : TestCase::NativeAPI);
+  native sub set_package_var_object_by_name_test : void ();
+
+  sub set_package_var_object_by_name_exception : int () {
+    
+    eval { set_package_var_object_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_object_by_name_test_exception : object ();
 
   native sub has_callback_test : int ($object : object);
   sub has_callback : int () {
