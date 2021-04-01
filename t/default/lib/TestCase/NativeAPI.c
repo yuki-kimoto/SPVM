@@ -11,8 +11,10 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_byte_test(SPVM_ENV* env, 
   (void)env;
   (void)stack;
   
-  int8_t value;
-  SPVM_GET_PACKAGE_VAR_BYTE(env, "TestCase::NativeAPI", "$BYTE_VALUE", &value, MFILE, __LINE__);
+  int32_t e;
+  
+  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
   
   stack[0].bval = value;
 

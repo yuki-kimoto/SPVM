@@ -242,12 +242,12 @@ void SPVM_API_set_package_var_long_by_name(SPVM_ENV* env, const char* package_na
 void SPVM_API_set_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, float value, int32_t* exception_flag, const char* file, int32_t line);
 void SPVM_API_set_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, double value, int32_t* exception_flag, const char* file, int32_t line);
 void SPVM_API_set_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line);
-int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
-int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
-int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
-int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
-float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
-double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
+int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
+int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
+int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
+int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
+float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
+double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
 SPVM_OBJECT* SPVM_API_get_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
 
 void SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line);

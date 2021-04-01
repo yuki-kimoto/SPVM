@@ -637,7 +637,7 @@ void SPVM_API_set_package_var_object_by_name(SPVM_ENV* env, const char* package_
   env->set_package_var_object(env, id, value);
 }
 
-int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "byte");
@@ -650,7 +650,7 @@ int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_
   return value;
 }
 
-int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "short");
@@ -663,7 +663,7 @@ int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* packag
   return value;
 }
 
-int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "int");
@@ -676,7 +676,7 @@ int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_
   return value;
 }
 
-int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "long");
@@ -689,7 +689,7 @@ int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package
   return value;
 }
 
-float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "float");
@@ -702,7 +702,7 @@ float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_
   return value;
 }
 
-double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
   int32_t id = env->get_package_var_id(env, package_name, package_var_name, "double");
