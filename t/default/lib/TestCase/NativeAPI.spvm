@@ -20,9 +20,10 @@ package TestCase::NativeAPI {
   }
 
   sub get_package_var_byte_by_name : int () {
-    my $extension = TestCase::NativeAPI->new;
+
+    $BYTE_VALUE = INT8_MIN();
     
-    my $value = get_package_var_byte_by_name_test($extension);
+    my $value = get_package_var_byte_by_name_test();
     
     unless ($value == INT8_MIN()) {
       return 0;
@@ -30,8 +31,7 @@ package TestCase::NativeAPI {
     
     return 1;
   }
-  native sub get_package_var_byte_by_name_test : byte ($extension : TestCase::NativeAPI);
-  
+  native sub get_package_var_byte_by_name_test : byte ();
   
   sub get_package_var_byte_by_name_exception : int () {
     
@@ -45,20 +45,32 @@ package TestCase::NativeAPI {
   }
   native sub get_package_var_byte_by_name_test_exception : byte ();
 
-  sub get_package_var_short : int () {
-    my $extension = TestCase::NativeAPI->new;
-    
+  sub get_package_var_short_by_name : int () {
+
     $SHORT_VALUE = INT16_MIN();
     
-    my $value = get_package_var_short_test($extension);
+    my $value = get_package_var_short_by_name_test();
     
-    if ($value == INT16_MIN()) {
-      return 1;
+    unless ($value == INT16_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-  native sub get_package_var_short_test : short ($extension : TestCase::NativeAPI);
+  native sub get_package_var_short_by_name_test : short ();
+  
+  
+  sub get_package_var_short_by_name_exception : int () {
+    
+    eval { get_package_var_short_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_short_by_name_test_exception : short ();
 
   sub get_package_var_int : int () {
     my $extension = TestCase::NativeAPI->new;

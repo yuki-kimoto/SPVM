@@ -35,6 +35,34 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_byte_by_name_test_excepti
   return 0;
 }
 
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  int16_t value = env->get_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
+
+  stack[0].sval = value;
+
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  int8_t value = env->get_package_var_short_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].sval = value;
+
+  return 0;
+}
+
 int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
