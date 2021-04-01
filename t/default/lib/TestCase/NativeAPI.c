@@ -63,63 +63,115 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_by_name_test_except
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
-
-  int16_t value;
-  SPVM_GET_PACKAGE_VAR_SHORT(env,  "TestCase::NativeAPI", "$SHORT_VALUE", &value, MFILE, __LINE__);
   
-  stack[0].sval = value;
+  int32_t e;
+  
+  int8_t value = env->get_package_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].bval = value;
 
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
+  
+  int32_t e;
+  
+  int8_t value = env->get_package_var_int_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].bval = value;
 
-  int32_t value;
-  SPVM_GET_PACKAGE_VAR_INT(env, "TestCase::NativeAPI", "$INT_VALUE", &value, MFILE, __LINE__);
-  
-  stack[0].ival = value;
-  
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  int64_t value;
-  SPVM_GET_PACKAGE_VAR_LONG(env, "TestCase::NativeAPI", "$LONG_VALUE", &value, MFILE, __LINE__);
+  int32_t e;
   
-  stack[0].lval = value;
+  int8_t value = env->get_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
   
+  stack[0].bval = value;
+
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
+  
+  int32_t e;
+  
+  int8_t value = env->get_package_var_long_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].bval = value;
 
-  float value;
-  SPVM_GET_PACKAGE_VAR_FLOAT(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &value, MFILE, __LINE__);
-  
-  stack[0].fval = value;
-  
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
+  
+  int32_t e;
+  
+  int8_t value = env->get_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].bval = value;
 
-  double value;
-  SPVM_GET_PACKAGE_VAR_DOUBLE(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &value, MFILE, __LINE__);
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
   
-  stack[0].dval = value;
+  int32_t e;
   
+  int8_t value = env->get_package_var_float_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].bval = value;
+
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  int8_t value = env->get_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].bval = value;
+
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  int8_t value = env->get_package_var_double_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].bval = value;
+
   return 0;
 }
 

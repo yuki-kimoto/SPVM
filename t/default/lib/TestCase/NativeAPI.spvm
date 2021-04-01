@@ -59,7 +59,6 @@ package TestCase::NativeAPI {
   }
   native sub get_package_var_short_by_name_test : short ();
   
-  
   sub get_package_var_short_by_name_exception : int () {
     
     eval { get_package_var_short_by_name_test_exception(); };
@@ -72,65 +71,109 @@ package TestCase::NativeAPI {
   }
   native sub get_package_var_short_by_name_test_exception : short ();
 
-  sub get_package_var_int : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub get_package_var_int_by_name : int () {
 
     $INT_VALUE = INT32_MIN();
     
-    my $value = get_package_var_int_test($extension);
+    my $value = get_package_var_int_by_name_test();
     
-    if ($value == INT32_MIN()) {
-      return 1;
+    unless ($value == INT32_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-  native sub get_package_var_int_test : int ($extension : TestCase::NativeAPI);
-
-  sub get_package_var_long : int () {
-    my $extension = TestCase::NativeAPI->new;
+  native sub get_package_var_int_by_name_test : int ();
+  
+  sub get_package_var_int_by_name_exception : int () {
     
+    eval { get_package_var_int_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_int_by_name_test_exception : int ();
+
+  sub get_package_var_long_by_name : long () {
+
     $LONG_VALUE = INT64_MIN();
     
-    my $value = get_package_var_long_test($extension);
+    my $value = get_package_var_long_by_name_test();
     
-    if ($value == INT64_MIN()) {
-      return 1;
+    unless ($value == INT64_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-  native sub get_package_var_long_test : long ($extension : TestCase::NativeAPI);
-
-  sub get_package_var_float : int () {
-    my $extension = TestCase::NativeAPI->new;
+  native sub get_package_var_long_by_name_test : long ();
+  
+  sub get_package_var_long_by_name_exception : long () {
     
+    eval { get_package_var_long_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_long_by_name_test_exception : long ();
+
+  sub get_package_var_float_by_name : int () {
+
     $FLOAT_VALUE = FLT_MIN();
     
-    my $value = get_package_var_float_test($extension);
+    my $value = get_package_var_float_by_name_test();
     
-    if ($value == FLT_MIN()) {
-      return 1;
+    unless ($value == FLT_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-  native sub get_package_var_float_test : float ($extension : TestCase::NativeAPI);
-
-  sub get_package_var_double : int () {
-    my $extension = TestCase::NativeAPI->new;
+  native sub get_package_var_float_by_name_test : float ();
+  
+  sub get_package_var_float_by_name_exception : int () {
     
+    eval { get_package_var_float_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_float_by_name_test_exception : float ();
+
+  sub get_package_var_double_by_name : int () {
+
     $DOUBLE_VALUE = DBL_MIN();
     
-    my $value = get_package_var_double_test($extension);
+    my $value = get_package_var_double_by_name_test();
     
-    if ($value == DBL_MIN()) {
-      return 1;
+    unless ($value == DBL_MIN()) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
-  native sub get_package_var_double_test : double ($extension : TestCase::NativeAPI);
+  native sub get_package_var_double_by_name_test : double ();
+  
+  sub get_package_var_double_by_name_exception : int () {
+    
+    eval { get_package_var_double_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_double_by_name_test_exception : double ();
 
   sub get_package_var_object : int () {
     my $extension = TestCase::NativeAPI->new;
