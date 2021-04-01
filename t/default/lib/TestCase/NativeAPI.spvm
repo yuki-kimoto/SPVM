@@ -22,8 +22,6 @@ package TestCase::NativeAPI {
   sub get_package_var_byte_by_name : int () {
     my $extension = TestCase::NativeAPI->new;
     
-    $BYTE_VALUE = INT8_MIN();
-    
     my $value = get_package_var_byte_by_name_test($extension);
     
     unless ($value == INT8_MIN()) {
