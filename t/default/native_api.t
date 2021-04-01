@@ -45,8 +45,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->get_package_var_float_by_name_exception);
   ok(TestCase::NativeAPI->get_package_var_double_by_name);
   ok(TestCase::NativeAPI->get_package_var_double_by_name_exception);
+  ok(TestCase::NativeAPI->get_package_var_object_by_name);
+  ok(TestCase::NativeAPI->get_package_var_object_by_name_exception);
 
-  ok(TestCase::NativeAPI->get_package_var_object);
   ok(TestCase::NativeAPI->push_mortal_multi);
 }
 

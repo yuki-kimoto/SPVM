@@ -175,21 +175,34 @@ package TestCase::NativeAPI {
   }
   native sub get_package_var_double_by_name_test_exception : double ();
 
-  sub get_package_var_object : int () {
-    my $extension = TestCase::NativeAPI->new;
+  sub get_package_var_object_by_name : int () {
     
     $MINIMAL_VALUE = TestCase::Minimal->new;
     
-    my $value = get_package_var_object_test($extension);
+    my $value = get_package_var_object_test();
     
-    if ($value isa TestCase::Minimal) {
+    unless ($value isa TestCase::Minimal) {
       $MINIMAL_VALUE = undef;
-      return 1;
+      return 0;
     }
     
-    return 0;
+    $MINIMAL_VALUE = undef;
+    
+    return 1;
   }
-  native sub get_package_var_object_test : TestCase::Minimal ($extension : TestCase::NativeAPI);
+  native sub get_package_var_object_test : TestCase::Minimal ();
+
+  sub get_package_var_object_by_name_exception : int () {
+    
+    eval { get_package_var_object_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_object_by_name_test_exception : object ();
   
   sub set_package_var_byte : int () {
     my $extension = TestCase::NativeAPI->new;
