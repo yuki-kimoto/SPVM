@@ -26,95 +26,34 @@ union spvm_value {
   double* dref;
 };
 
-#define SPVM_NEW_POINTER(env, package_name, pointer, object_address, file, line) do {\
-  int32_t id = env->get_basic_type_id(env, package_name);\
-  if (id < 0) { return env->die(env, "Package \"%s\" not found", package_name, file, line); };\
-  *object_address = env->new_pointer(env, id, pointer);\
-} while (0)\
 
-#define SPVM_SET_FIELD_BYTE(env, object, package_name, sub_name, value, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "byte");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:byte", package_name, sub_name, file, line); };\
-  env->set_field_byte(env, object, id, value);\
-} while (0)\
 
-#define SPVM_SET_FIELD_SHORT(env, object, package_name, sub_name, value, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "short");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:short", package_name, sub_name, file, line); };\
-  env->set_field_short(env, object, id, value);\
-} while (0)\
 
-#define SPVM_SET_FIELD_INT(env, object, package_name, sub_name, value, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "int");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:int", package_name, sub_name, file, line); };\
-  env->set_field_int(env, object, id, value);\
-} while (0)\
 
-#define SPVM_SET_FIELD_LONG(env, object, package_name, sub_name, value, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "long");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:long", package_name, sub_name, file, line); };\
-  env->set_field_long(env, object, id, value);\
-} while (0)\
 
-#define SPVM_SET_FIELD_FLOAT(env, object, package_name, sub_name, value, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "float");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:float", package_name, sub_name, file, line); };\
-  env->set_field_float(env, object, id, value);\
-} while (0)\
 
-#define SPVM_SET_FIELD_DOUBLE(env, object, package_name, sub_name, value, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "double");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:double", package_name, sub_name, file, line); };\
-  env->set_field_double(env, object, id, value);\
-} while (0)\
 
-#define SPVM_SET_FIELD_OBJECT(env, object, package_name, sub_name, signature, value, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, signature);\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
-  env->set_field_object(env, object, id, value);\
-} while (0)\
 
-#define SPVM_GET_FIELD_BYTE(env, object, package_name, sub_name, value_address, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "byte");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:byte", package_name, sub_name, file, line); };\
-  *value_address = env->get_field_byte(env, object, id);\
-} while (0)\
 
-#define SPVM_GET_FIELD_SHORT(env, object, package_name, sub_name, value_address, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "short");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:short", package_name, sub_name, file, line); };\
-  *value_address = env->get_field_short(env, object, id);\
-} while (0)\
 
-#define SPVM_GET_FIELD_INT(env, object, package_name, sub_name, value_address, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "int");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:int", package_name, sub_name, file, line); };\
-  *value_address = env->get_field_int(env, object, id);\
-} while (0)\
 
-#define SPVM_GET_FIELD_LONG(env, object, package_name, sub_name, value_address, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "long");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:long", package_name, sub_name, file, line); };\
-  *value_address = env->get_field_long(env, object, id);\
-} while (0)\
 
-#define SPVM_GET_FIELD_FLOAT(env, object, package_name, sub_name, value_address, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "float");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:float", package_name, sub_name, file, line); };\
-  *value_address = env->get_field_float(env, object, id);\
-} while (0)\
 
-#define SPVM_GET_FIELD_DOUBLE(env, object, package_name, sub_name, value_address, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, "double");\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:double", package_name, sub_name, file, line); };\
-  *value_address = env->get_field_double(env, object, id);\
-} while (0)\
 
-#define SPVM_GET_FIELD_OBJECT(env, object, package_name, sub_name, signature, value_address, file, line) do {\
-  int32_t id = env->get_field_id(env, package_name, sub_name, signature);\
-  if (id < 0) { return env->die(env, "Field not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line); };\
-  *value_address = env->get_field_object(env, object, id);\
-} while (0)\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
