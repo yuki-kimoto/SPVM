@@ -290,13 +290,13 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   return env;
 }
 
-const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
 
   int32_t id = env->get_field_id(env, package_name, field_name, "string");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:%s", package_name, field_name, signature, file, line);
+    env->die(env, "field not found, package name:%s, field name:%s, type:string", package_name, field_name, file, line);
     return NULL;
   };
   SPVM_OBJECT* value = env->get_field_object(env, obj, id);

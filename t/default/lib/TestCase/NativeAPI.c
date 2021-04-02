@@ -998,6 +998,44 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_get_field_object_by_name(SPVM_ENV*
   return 0;
 }
 
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  int32_t e;
+  
+  void* string_chars_simple = stack[0].oval;
+  
+  const char* string_chars = env->get_field_string_chars_by_name(env, string_chars_simple, "TestCase::Simple", "string_value", &e, MFILE, __LINE__);
+  if (e) { return e; };
+  
+  if (strcmp(string_chars, "abc") == 0) {
+    stack[0].ival = 1;
+  }
+  else {
+    stack[0].ival = 0;
+  }
+  
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__native_get_field_string_chars_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  int32_t e;
+  
+  void* string_chars_simple = stack[0].oval;
+  
+  const char* string_chars = env->get_field_string_chars_by_name(env, string_chars_simple, "TestCase::Simple", "not_found", &e, MFILE, __LINE__);
+  if (e) {
+    stack[0].ival = 1;
+  }
+  else {
+    stack[0].ival = 0;
+  }
+  
+  return 0;
+}
+
 int32_t SPNATIVE__TestCase__NativeAPI__native_get_field_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

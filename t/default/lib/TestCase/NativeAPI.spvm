@@ -856,7 +856,27 @@ package TestCase::NativeAPI {
     return 1;
   }
   native sub native_get_field_object_by_name_exception : int ($simple : TestCase::Simple);
-  
+
+  sub get_field_string_chars_by_name : int () {
+    my $simple = TestCase::Simple->new;
+    $simple->{string_value} = "abc";
+    
+    my $success = native_get_field_string_chars_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_string_chars_by_name : int ($simple : TestCase::Simple);
+
+  sub get_field_string_chars_by_name_exception : int () {
+    my $simple = TestCase::Simple->new;
+    $simple->{string_value} = "abc";
+    
+    my $success = native_get_field_string_chars_by_name_exception($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_string_chars_by_name_exception : int ($simple : TestCase::Simple);
+
   sub spvm_extension_add_iarray : int () {
     my $nums1 = [1, 2, 3];
     my $nums2 = [4, 5, 6];
