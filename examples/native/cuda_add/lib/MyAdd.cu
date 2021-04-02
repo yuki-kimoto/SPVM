@@ -17,7 +17,7 @@ int32_t SPNATIVE__MyAdd__add_cuda(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   cuda_array_culc_add_float(nums1, nums2, length1);
  
-  return SPVM_SUCCESS;
+  return 0;
 }
 } // End of extern "C"
 

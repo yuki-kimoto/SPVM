@@ -31,15 +31,15 @@ int32_t SPNATIVE__Eigen__add3d(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].oval = obj_nums3;
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 int32_t SPNATIVE__Eigen__compile_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  SPVM_DIE("Error %d", 1);
+  env->die(env, "Error %d", 1);
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 
 }
