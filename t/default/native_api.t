@@ -59,6 +59,39 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->push_mortal_multi);
 }
 
+# Field
+{
+  ok(TestCase::NativeAPI->get_field_byte_by_name());
+  ok(TestCase::NativeAPI->get_field_byte_by_name_exception());
+  ok(TestCase::NativeAPI->get_field_short_by_name());
+  ok(TestCase::NativeAPI->get_field_short_by_name_exception());
+  ok(TestCase::NativeAPI->get_field_int_by_name());
+  ok(TestCase::NativeAPI->get_field_int_by_name_exception());
+  ok(TestCase::NativeAPI->get_field_long_by_name());
+  ok(TestCase::NativeAPI->get_field_long_by_name_exception());
+  ok(TestCase::NativeAPI->get_field_float_by_name());
+  ok(TestCase::NativeAPI->get_field_float_by_name_exception());
+  ok(TestCase::NativeAPI->get_field_double_by_name());
+  ok(TestCase::NativeAPI->get_field_double_by_name_exception());
+  ok(TestCase::NativeAPI->get_field_object_by_name());
+  ok(TestCase::NativeAPI->get_field_object_by_name_exception());
+
+  ok(TestCase::NativeAPI->set_field_byte_by_name());
+  ok(TestCase::NativeAPI->set_field_byte_by_name_exception());
+  ok(TestCase::NativeAPI->set_field_short_by_name());
+  ok(TestCase::NativeAPI->set_field_short_by_name_exception());
+  ok(TestCase::NativeAPI->set_field_int_by_name());
+  ok(TestCase::NativeAPI->set_field_int_by_name_exception());
+  ok(TestCase::NativeAPI->set_field_long_by_name());
+  ok(TestCase::NativeAPI->set_field_long_by_name_exception());
+  ok(TestCase::NativeAPI->set_field_float_by_name());
+  ok(TestCase::NativeAPI->set_field_float_by_name_exception());
+  ok(TestCase::NativeAPI->set_field_double_by_name());
+  ok(TestCase::NativeAPI->set_field_double_by_name_exception());
+  ok(TestCase::NativeAPI->set_field_object_by_name());
+  ok(TestCase::NativeAPI->set_field_object_by_name_exception());
+}
+
 # has_callback
 {
   ok(TestCase::NativeAPI->has_callback);
@@ -86,25 +119,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->native_call_sub);
 }
 
-# Field
-{
-  ok(TestCase::NativeAPI->get_field_byte());
-  ok(TestCase::NativeAPI->get_field_short());
-  ok(TestCase::NativeAPI->get_field_int());
-  ok(TestCase::NativeAPI->get_field_long());
-  ok(TestCase::NativeAPI->get_field_float());
-  ok(TestCase::NativeAPI->get_field_double());
-  ok(TestCase::NativeAPI->get_field_object());
-
-  ok(TestCase::NativeAPI->set_field_byte());
-  ok(TestCase::NativeAPI->set_field_short());
-  ok(TestCase::NativeAPI->set_field_int());
-  ok(TestCase::NativeAPI->set_field_long());
-  ok(TestCase::NativeAPI->set_field_float());
-  ok(TestCase::NativeAPI->set_field_double());
-  ok(TestCase::NativeAPI->set_field_object());
-
-}
 
 # Ref
 {
