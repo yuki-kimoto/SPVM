@@ -361,7 +361,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_object_by_name_test_excep
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_new_object_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -374,12 +374,41 @@ int32_t SPNATIVE__TestCase__NativeAPI__new_object_by_name(SPVM_ENV* env, SPVM_VA
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__new_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__native_new_object_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
-  void* minimal = env->new_object_by_name(env, "TestCase::NotFound", &e, MFILE, __LINE__);
+  void* minimal = env->new_object_by_name(env, "NotFound", &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].oval = minimal;
+  
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__native_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  void* pointer;
+  
+  int32_t e;
+  void* minimal = env->new_pointer_by_name(env, "TestCase::Pointer", pointer, &e, MFILE, __LINE__);
+  if (e) { return e; }
+  
+  stack[0].oval = minimal;
+  
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__native_new_pointer_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  void* pointer;
+  int32_t e;
+  void* minimal = env->new_pointer_by_name(env, "TestCase::NotFound", pointer, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = minimal;

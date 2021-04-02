@@ -2,6 +2,7 @@ package TestCase::NativeAPI {
   use TestCase;
   use TestCase::Simple;
   use TestCase::Minimal;
+  use TestCase::Pointer;
   use TestCase::Callback::Callback;
   use TestCase::Callback::ImplementCallback1;
   use TestCase::Callback::ImplementCallback2;
@@ -1058,11 +1059,8 @@ package TestCase::NativeAPI {
   
   native sub native_call_sub : int ();
 
-  native sub new_object_by_name : TestCase::Minimal ();
-  native sub new_object_by_name_exception : TestCase::Minimal ();
-  
-  sub test_new_object_by_name : int () {
-    my $minimal = new_object_by_name();
+  sub new_object_by_name : int () {
+    my $minimal = native_new_object_by_name();
     unless ($minimal isa TestCase::Minimal) {
       return 0;
     }
@@ -1073,10 +1071,11 @@ package TestCase::NativeAPI {
     
     return 1;
   }
+  native sub native_new_object_by_name : TestCase::Minimal ();
 
-  sub test_new_object_by_name_exception : int () {
+  sub new_object_by_name_exception : int () {
     my $minimal : TestCase::Minimal;
-    eval { $minimal = new_object_by_name_exception(); };
+    eval { $minimal = native_new_object_by_name_exception(); };
     
     unless ($@) {
       return 0;
@@ -1089,4 +1088,31 @@ package TestCase::NativeAPI {
     $@ = undef;
     return 1;
   }
+  native sub native_new_object_by_name_exception : TestCase::Minimal ();
+
+
+  
+  sub new_pointer_by_name : int () {
+    my $pointer = native_new_pointer_by_name();
+    unless ($pointer isa TestCase::Pointer) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_new_pointer_by_name : TestCase::Pointer ();
+
+  sub new_pointer_by_name_exception : int () {
+    my $pointer : TestCase::Pointer;
+    eval { $pointer = native_new_pointer_by_name_exception(); };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub native_new_pointer_by_name_exception : TestCase::Pointer ();
+
 }
