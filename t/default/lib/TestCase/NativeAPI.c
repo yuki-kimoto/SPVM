@@ -1410,6 +1410,52 @@ int32_t SPNATIVE__TestCase__NativeAPI__native_call_sub(SPVM_ENV* env, SPVM_VALUE
   return 0;
 }
 
+int32_t SPNATIVE__TestCase__NativeAPI__native_call_sub_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t output;
+  {
+    stack[0].ival = 5;
+    int32_t exception_flag = env->call_sub_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, MFILE, __LINE__);
+    if (exception_flag) {
+      return exception_flag;
+    }
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = 0;
+  
+  if (output == 5) {
+    stack[0].ival = 1;
+  }
+  
+  return 0;
+}
+
+int32_t SPNATIVE__TestCase__NativeAPI__native_call_sub_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t output;
+  {
+    stack[0].ival = 5;
+    int32_t exception_flag = env->call_sub_by_name(env, "TestCase::NativeAPI", "not_found", "int(int)", stack, MFILE, __LINE__);
+    if (exception_flag) {
+      return exception_flag;
+    }
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = 0;
+  
+  if (output == 5) {
+    stack[0].ival = 1;
+  }
+  
+  return 0;
+}
+
 int32_t SPNATIVE__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

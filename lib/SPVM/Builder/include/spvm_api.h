@@ -253,8 +253,8 @@ float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_
 double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
 SPVM_OBJECT* SPVM_API_get_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature, int32_t* exception_flag, const char* file, int32_t line);
 
-void SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_call_poly_sub_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line);
+int32_t SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
+int32_t SPVM_API_call_poly_sub_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
 const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
 
 #endif

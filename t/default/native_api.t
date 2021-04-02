@@ -125,6 +125,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->native_call_sub);
 }
 
+# env->call_sub_by_name
+{
+  ok(TestCase::NativeAPI->native_call_sub);
+  
+  eval { TestCase::NativeAPI->native_call_sub_exception };
+  ok($@);
+}
 
 # Ref
 {

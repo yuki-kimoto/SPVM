@@ -309,45 +309,44 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* 
   }
 }
 
-void SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line) {
-  *exception_flag = 0;
-
+int32_t SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
+  
   int32_t sub_id = env->get_sub_id(env, package_name, sub_name, signature);
   if (sub_id < 0) {
     env->die(env, "Subroutine not found, package name:%s, sub name:%s, signature:%s", package_name, sub_name, signature, file, line);
-    *exception_flag = 1;
-    return;
+    return 1;
   }
-  *exception_flag = env->call_sub(env, sub_id, stack);
-  if (*exception_flag) {
+  int32_t e = env->call_sub(env, sub_id, stack);
+  if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
     env->die(env, "%s", message, file, line);
-    return;
+    return e;
   }
+  
+  return 0;
 }
 
-void SPVM_API_call_poly_sub_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, int32_t* exception_flag, const char* file, int32_t line) {
-  *exception_flag = 0;
+int32_t SPVM_API_call_poly_sub_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
 
   if (object == NULL) {
     env->die(env, "Object must not be NULL", file, line);
-    *exception_flag = 1;
-    return;
+    return 1;
   };
 
   int32_t sub_id = env->get_sub_id_by_object(env, object, sub_name, signature);
   if (sub_id < 0) {
     env->die(env, "Subroutine not found, object:%p, sub name:%s, signature:%s", object, sub_name, signature, file, line);
-    *exception_flag = 1;
-    return;
+    return 1;
   };
   env->call_sub(env, sub_id, stack);
-  *exception_flag = env->call_sub(env, sub_id, stack);
-  if (*exception_flag) {
+  int32_t e = env->call_sub(env, sub_id, stack);
+  if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
     env->die(env, "%s", message, file, line);
-    return;
+    return e;
   }
+  
+  return 0;
 }
 
 void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line) {

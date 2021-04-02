@@ -1058,6 +1058,8 @@ package TestCase::NativeAPI {
   sub my_value : int ($value : int) { return $value; }
   
   native sub native_call_sub : int ();
+  native sub native_call_sub_by_name : int ();
+  native sub native_call_sub_by_name_exception : int ();
 
   sub new_object_by_name : int () {
     my $minimal = native_new_object_by_name();
