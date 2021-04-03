@@ -2319,6 +2319,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   arg_index++;
                 }
+                
+                // Empty vaargs 
+                if (arg_index == sub_args_count - 1) {
+                  vaarg_last_arg_is_not_array = 1;
+                }
               }
 
               // Variable length arguments

@@ -1,3 +1,5 @@
+0.0946 2021-04-03
+  - fix bug that when variable argument is empty, compile error occur.
 0.0945 2021-04-02
   - add the following native APIs
     new_object_by_name,

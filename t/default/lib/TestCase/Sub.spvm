@@ -107,9 +107,22 @@ package TestCase::Sub {
     
     return 1;
   }
-  
+
+  sub test_vaarg_objects_pass_empty : int ($string : string, $nums : object[]...) {
+    
+    unless (@$nums == 0) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub vaarg_objects_pass_each_values : int () {
     return test_vaarg_objects_pass_each_values("a", 1, 2, 3);
+  }
+
+  sub vaarg_objects_pass_empty : int () {
+    return test_vaarg_objects_pass_empty("a");
   }
 
   sub test_vaarg_pass_array : int ($string : string, $nums : int[]...) {

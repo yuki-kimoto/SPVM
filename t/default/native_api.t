@@ -23,6 +23,18 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->new_object_by_name_exception);
 }
 
+=pod
+
+# TODO mac os tests
+
+# new_pointer_by_name
+{
+  ok(TestCase::NativeAPI->new_pointer_by_name);
+  ok(TestCase::NativeAPI->new_pointer_by_name_exception);
+}
+
+=cut
+
 # get_field_string_chars_by_name
 {
   ok(TestCase::NativeAPI->get_field_string_chars_by_name);
