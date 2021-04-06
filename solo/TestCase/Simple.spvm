@@ -13,7 +13,7 @@ package TestCase::Simple : public {
   
   has title : public int;
   
-  has minimal : public TestCase::Minimal;
+  has minimal : rw public TestCase::Minimal;
   
   sub new : TestCase::Simple () {
     return new TestCase::Simple;

@@ -72,6 +72,15 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $simple = TestCase::Simple->new;
+      my $minimal = TestCase::Minimal->new;
+      $simple->set_minimal($minimal);
+      
+      $simple->minimal->x;
+      
+    }
+
+    {
       # my $nums : byte[] = "abc";
       # my $string : string = new byte[3];;
     }
