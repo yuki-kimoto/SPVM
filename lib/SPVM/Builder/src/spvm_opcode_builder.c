@@ -4212,21 +4212,38 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                       SPVM_TYPE* array_type = SPVM_OP_get_type(compiler, op_term_array);
 
                       if (SPVM_TYPE_is_oarray_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
-                        SPVM_OPCODE opcode;
-                        memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                        
-                        SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT_CHECK_TYPE);
-                        int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
-                        
-                        int32_t mem_id_array = SPVM_OP_get_mem_id(compiler, op_term_array);
-                        int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_term_index);
-                        
-                        opcode.operand0 = mem_id_array;
-                        opcode.operand1 = mem_id_index;
-                        opcode.operand2 = mem_id_in;
-                        SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                        SPVM_TYPE* src_type = SPVM_OP_get_type(compiler, op_assign_src);
 
-                        SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
+                        if (SPVM_TYPE_is_undef_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_STORE_UNDEF);
+                          
+                          int32_t mem_id_array = SPVM_OP_get_mem_id(compiler, op_term_array);
+                          int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_term_index);
+                          
+                          opcode.operand0 = mem_id_array;
+                          opcode.operand1 = mem_id_index;
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                        }
+                        else {
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+                          
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_STORE_OBJECT_CHECK_TYPE);
+                          int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
+                          
+                          int32_t mem_id_array = SPVM_OP_get_mem_id(compiler, op_term_array);
+                          int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_term_index);
+                          
+                          opcode.operand0 = mem_id_array;
+                          opcode.operand1 = mem_id_index;
+                          opcode.operand2 = mem_id_in;
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+
+                          SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, sub->op_sub, op_cur->line);
+                        }
                       }
                       else if (SPVM_TYPE_is_value_array_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
                         SPVM_PACKAGE* package = array_type->basic_type->package;

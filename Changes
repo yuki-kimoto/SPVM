@@ -1,3 +1,5 @@
+0.0939 2021-04-09
+  - fix bug that oarray element can't assign undef
 0.0938 2021-04-09
   - fix bug that segfault occur in SPVM::Builder->build_shared_lib_dist in syntax error
   - add SPVM::List->resize method
