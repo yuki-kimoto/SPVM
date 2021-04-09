@@ -34,6 +34,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::List->test_to_array);
   ok(TestCase::Lib::SPVM::List->insert);
   ok(TestCase::Lib::SPVM::List->remove);
+  ok(TestCase::Lib::SPVM::List->test_resize);
 }
 
 # All object is freed

@@ -307,4 +307,25 @@ package SPVM::List : precompile {
 
     return $extracted;
   }
+  
+  sub resize : void ($self : self, $new_length : int) {
+    if ($new_length < 0) {
+      die "New length must be more than or equals to 0";
+    }
+    
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($new_length > $length) {
+      if ($new_length > $capacity) {
+        $self->_extend_with_capacity($new_length);
+      }
+    }
+    elsif ($new_length < $length) {
+      for (my $i = $new_length; $i < $length; $i++) {
+        $self->{values}[$i] = undef;
+      }
+    }
+    $self->{length} = $new_length;
+  }
 }
