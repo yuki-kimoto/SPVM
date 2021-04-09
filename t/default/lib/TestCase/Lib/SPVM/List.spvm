@@ -195,14 +195,14 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_ctor_default : int () {
+  sub ctor_default : int () {
     unless (check_fields(SPVM::List->new_len(0), 16, -16, 0)) {
       return 0;
     }
     return 1;
   }
 
-  sub test_ctor_with_capacity : int () {
+  sub ctor_with_capacity : int () {
     unless (check_fields(SPVM::List->new_capacity(20000), 20000, -20000, 0)) {
       return 0;
     }
@@ -223,7 +223,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_ctor_with_array : int () {
+  sub ctor_with_array : int () {
     my $list = SPVM::List->new(new object[0]);
     unless (check_fields($list, 0, 0, 0)) {
       return 0;
@@ -253,7 +253,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_length : int () {
+  sub length : int () {
     if (SPVM::List->new_len(0)->length != 0) {
       return 0;
     }
@@ -263,7 +263,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_push : int () {
+  sub push : int () {
     my $list = SPVM::List->new_capacity(1);
 
     my $v1 = SPVM::Int->new(1);
@@ -306,7 +306,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_pop : int () {
+  sub pop : int () {
     my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
     unless (((SPVM::Int)$list->pop)->val == 2) {
       return 0;
@@ -334,7 +334,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_unshift : int () {
+  sub unshift : int () {
     my $list = SPVM::List->new_capacity(1);
 
     my $v1 = SPVM::Int->new(1);
@@ -374,7 +374,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_shift : int () {
+  sub shift : int () {
     my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
     unless (((SPVM::Int)$list->shift)->val == 1) {
       return 0;
@@ -402,7 +402,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_offset_by_alternate_push_and_shift : int () {
+  sub offset_by_alternate_push_and_shift : int () {
     my $list = SPVM::List->new_capacity(4);
     for (my $i = 0; $i < 16; $i++) {
       $list->push(1);
@@ -414,7 +414,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_offset_by_alternate_unshift_and_pop : int () {
+  sub offset_by_alternate_unshift_and_pop : int () {
     my $list = SPVM::List->new_capacity(4);
     for (my $i = 0; $i < 16; $i++) {
       $list->unshift(1);
@@ -426,7 +426,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_set : int () {
+  sub set : int () {
     my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef]);
 
     my $v1 = SPVM::Int->new(2);
@@ -444,7 +444,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_get : int () {
+  sub get : int () {
     my $list = SPVM::List->new([(object) SPVM::Int->new(1), undef]);
     unless (((SPVM::Int)$list->get(0))->val == 1) {
       return 0;
@@ -455,7 +455,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_splice : int () {
+  sub splice : int () {
     my $v1 = SPVM::Int->new(1);
     my $v2 = SPVM::Int->new(2);
     my $v3 = SPVM::Int->new(3);
@@ -559,7 +559,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_splice_no_reallocation : int () {
+  sub splice_no_reallocation : int () {
     my $v1 = SPVM::Int->new(1);
     my $v2 = SPVM::Int->new(2);
     my $vi1 = SPVM::Int->new(10);
@@ -633,7 +633,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_splice_offset_is_valid_when_removed : int () {
+  sub splice_offset_is_valid_when_removed : int () {
     my $list = SPVM::List->new_capacity(2);
     my $v1 = SPVM::Int->new(1);
     my $v2 = SPVM::Int->new(2);
@@ -652,7 +652,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_splice_offset_is_valid_when_appended : int () {
+  sub splice_offset_is_valid_when_appended : int () {
     my $list = SPVM::List->new_capacity(3);
     my $v1 = SPVM::Int->new(1);
     my $v2 = SPVM::Int->new(2);
@@ -673,7 +673,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_to_array : int () {
+  sub to_array : int () {
     my $list = SPVM::List->new([(object)"abc", 1, 3.14]);
     my $objects = $list->to_array;
 
@@ -690,7 +690,7 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub test_resize : int () {
+  sub resize : int () {
     my $a = "a";
     my $b = "b";
     my $c = "c";
