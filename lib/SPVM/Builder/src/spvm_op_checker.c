@@ -2839,7 +2839,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (!field) {
                 const char* invoker_type_name = SPVM_TYPE_new_type_name(compiler, invoker_type->basic_type->id, invoker_type->dimension, invoker_type->flag);
-                SPVM_COMPILER_error(compiler, "Unknown field %s->%s at %s line %d\n", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Unknown field %s->{%s} at %s line %d\n", invoker_type_name, op_name->uv.name, op_cur->file, op_cur->line);
                 return;
               }
 

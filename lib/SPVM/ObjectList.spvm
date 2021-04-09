@@ -1,0 +1,334 @@
+package SPVM::ObjectList : precompile {
+  has values   : object[];
+  has capacity : ro int;
+  has length   : ro int;
+
+  private enum {
+    DEFAULT_CAPACITY = 16,
+  }
+  sub to_array : object[] ($self : self) {
+    my $length = $self->{length};
+    my $objects = new object[$length];
+    for (my $i = 0; $i < $length; $i++) {
+      $objects->[$i] = $self->{values}[$i];
+    }
+    return $objects;
+  }
+
+  sub new_capacity : SPVM::ObjectList ($capacity : int) {
+    my $self = new SPVM::ObjectList;
+    unless ($capacity > 0) {
+      die "capacity must be positive";
+    }
+    $self->{capacity} = $capacity;
+    $self->{values} = new object [$capacity];
+    return $self;
+  }
+
+  sub new : SPVM::ObjectList ($objects : object[]) {
+    my $self = new SPVM::ObjectList;
+    my $length = @$objects;
+    
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
+    
+    $self->{values} = new object [$capacity];
+    for (my $i = 0; $i < @$objects; ++$i) {
+      $self->{values}[$i] = $objects->[$i];
+    }
+    $self->{length} = @$objects;
+
+    return $self;
+  }
+
+  sub new_len : SPVM::ObjectList ($length : int) {
+    my $self = new SPVM::ObjectList;
+    unless ($length >= 0) {
+      die "length must be more than or equals to zero";
+    }
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
+    $self->{length} = $length;
+    $self->{values} = new object[$capacity];
+    return $self;
+  }
+  
+  sub insert : void ($self : self, $index : int, $value : object) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0 && $index <= $length) {
+      die "Out of range";
+    }
+    
+    if ($length >= $capacity) {
+      $self->_extend;
+    }
+    
+    my $values = $self->{values};
+    if ($index != $length) {
+      for (my $i = $length - 1; $i >= $index; $i--) {
+        $values->[$i + 1] = $values->[$i];
+      }
+    }
+    $values->[$index] = $value;
+    
+    $self->{length}++;
+  }
+
+  sub remove : object ($self : self, $index : int) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    unless ($index >= 0 && $index < $length) {
+      die "Out of range";
+    }
+    
+    my $values = $self->{values};
+    my $remove_value = $values->[$index];
+
+    for (my $i = $index; $i < $length - 1; $i++) {
+      $values->[$i] = $values->[$i + 1];
+    }
+    $values->[$length - 1] = undef;
+    
+    $self->{length}--;
+    
+    return $remove_value;
+  }
+
+  sub push : void ($self : self, $value : object) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+
+    if ($length >= $capacity) {
+      $self->_extend;
+    }
+    my $index = $self->{length};
+    $self->{values}[$index] = $value;
+    ++$self->{length};
+  }
+  
+  sub pop : object ($self : self) {
+    if ($self->{length} <= 0) {
+      die "Length must be more than 0 for pop";
+    }
+    
+    my $index = $self->{length};
+    
+    my $ret = $self->{values}[$index - 1];
+    
+    $self->{values}[$index - 1] = undef;
+    
+    --$self->{length};
+    
+    return $ret;
+  }
+
+  sub unshift : void ($self : self, $value : object) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length >= $capacity) {
+      $self->_extend;
+    }
+    
+    my $values = $self->{values};
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $values->[$length - $i] = $values->[$length - $i - 1];
+    }
+    
+    $values->[0] = $value;
+    $self->{length}++;
+  }
+
+  sub shift : object ($self : self) {
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($length == 0) {
+      die "Length must be more than 0 for shift";
+    }
+    
+    my $values = $self->{values};
+    
+    my $value = $values->[0];
+    
+    for (my $i = 0; $i < $length - 1; $i++) {
+      $values->[$i] = $values->[$i + 1];
+    }
+    $values->[$length - 1] = undef;
+    
+    $self->{length}--;
+    
+    return $value;
+  }
+
+  sub set : void ($self : self, $index : int, $value : object) {
+    my $length = $self->length;
+
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    $self->{values}[$index] = $value;
+  }
+
+  sub get : object ($self : self, $index : int) {
+    my $length = $self->length;
+
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    return $self->{values}[$index];
+  }
+
+  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_values = new object [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
+  }
+
+  private sub _extend : void ($self : self) {
+    my $capacity = $self->{capacity};
+    my $length = $self->{length};
+    my $values = $self->{values};
+    
+    my $new_capacity = $capacity * 2;
+    
+    my $new_values = new object[$new_capacity];
+    
+    for (my $i = 0; $i < $length; $i++) {
+      $new_values->[$i] = $values->[$i];
+    }
+    
+    $self->{values} = $new_values;
+    $self->{capacity} = $new_capacity;
+  }
+  
+  # splice is EXPERIMENTAL
+  # range of $cut_offset: [0, $cut_length]
+  # O($self->{capacity})
+  sub splice : object[] ($self : self, $cut_offset : int, $cut_length : int, $replace : object[]) {
+    if ($cut_offset > $self->{length}) {
+      warn("splice_with_list() offset past end of array");
+      $cut_offset = $self->{length};
+      $cut_length = 0;
+    }
+
+    # fit cut_length to the end.
+    if ($cut_length > $self->{length}) {
+      $cut_length = $self->{length};
+    }
+    if ($cut_offset > $self->{length} - $cut_length) { # always $self->{length} - $cut_length >= 0
+      $cut_length = $self->{length} - $cut_offset;
+    }
+
+    my $replace_length = 0;
+    if ($replace) {
+      $replace_length = @$replace;
+    }
+
+    if ($self->{length} - $cut_length + $replace_length > $self->{capacity}) {
+      # O($new_values_length)
+      $self->_extend_with_capacity($self->{length} - $cut_length + $replace_length);
+    }
+
+    # extract elements
+    # O($cut_length)
+    my $extracted = new object [$cut_length];
+    for (my $i = 0; $i < $cut_length; ++$i) {
+      my $target = $i;
+      if ($target > 0) { $target -= $self->{capacity}; } # to avoid overflow on the next statement
+      $target += $cut_offset;
+      if ($target < 0) { $target += $self->{capacity}; }
+      $extracted->[$i] = $self->{values}[$target];
+    }
+
+    my $last_sequence_length = $self->{length} - $cut_offset - $cut_length;
+    # move last sequence to forward
+    if ($cut_length > $replace_length) {
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $cut_offset + $cut_length + $i;
+        if ($origin < 0) { $origin += $self->{capacity}; }
+        if ($origin >= $self->{capacity}) { $origin -= $self->{capacity}; }
+        my $target = $cut_offset + $replace_length + $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
+        $self->{values}[$target] = $self->{values}[$origin];
+      }
+      # deallocate unused sequence
+      for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
+        my $target = $cut_offset + $replace_length + $last_sequence_length + $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
+        $self->{values}[$target] = undef;
+      }
+    }
+    else {
+      # move last sequence to backward
+      for (my $i = 0; $i < $last_sequence_length; ++$i) {
+        my $origin = $self->{length} - 1 - $i;
+        if ($origin < 0) { $origin += $self->{capacity}; }
+        my $target = $cut_offset + $replace_length + $last_sequence_length - 1 - $i;
+        if ($target < 0) { $target += $self->{capacity}; }
+        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
+        $self->{values}[$target] = $self->{values}[$origin];
+      }
+    }
+
+    # replace with new array
+    for (my $i = 0; $i < $replace_length; ++$i) {
+      my $target = $cut_offset + $i;
+      if ($target < 0) {
+        $target += $self->{capacity};
+      }
+      $self->{values}[$target] = $replace->[$i];
+    }
+
+    # update fields
+    $self->{length} += $replace_length - $cut_length;
+
+    return $extracted;
+  }
+  
+  sub resize : void ($self : self, $new_length : int) {
+    if ($new_length < 0) {
+      die "New length must be more than or equals to 0";
+    }
+    
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($new_length > $length) {
+      if ($new_length > $capacity) {
+        $self->_extend_with_capacity($new_length);
+      }
+    }
+    elsif ($new_length < $length) {
+      for (my $i = $new_length; $i < $length; $i++) {
+        $self->{values}[$i] = undef;
+      }
+    }
+    $self->{length} = $new_length;
+  }
+}
