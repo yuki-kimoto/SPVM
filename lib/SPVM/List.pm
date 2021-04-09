@@ -133,6 +133,6 @@ Convert L<SPVM::List> to object array.
 
   sub resize : void ($self : self, $new_length : int)
 
-Resize array list.
+Resize list.
 
 New length must be more than or equals to 0, otherwise a exception occur.
