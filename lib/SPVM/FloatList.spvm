@@ -149,6 +149,8 @@ package SPVM::FloatList : precompile {
     }
     
     my $value = $self->{values}[$length - 1];
+
+    $self->{values}[$length - 1] = 0;
     
     $self->{length}--;
     
@@ -184,6 +186,8 @@ package SPVM::FloatList : precompile {
     my $value = $values->[0];
     
     memmovef($values, 0, $values, 1, $length - 1);
+    
+    $values->[$length - 1] = 0;
     
     $self->{length}--;
     

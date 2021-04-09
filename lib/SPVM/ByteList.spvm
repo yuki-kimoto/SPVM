@@ -152,6 +152,8 @@ package SPVM::ByteList : precompile {
     
     my $value = $self->{values}[$length - 1];
     
+    $self->{values}[$length - 1] = 0;
+    
     $self->{length}--;
     
     return $value;
@@ -186,6 +188,8 @@ package SPVM::ByteList : precompile {
     my $value = $values->[0];
     
     memmoveb($values, 0, $values, 1, $length - 1);
+
+    $values->[$length - 1] = 0;
     
     $self->{length}--;
     

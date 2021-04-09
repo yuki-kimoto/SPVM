@@ -129,7 +129,9 @@ package SPVM::List : precompile {
     my $index = $self->{length};
     
     my $ret = $self->{values}[$index - 1];
+    
     $self->{values}[$index - 1] = undef;
+    
     --$self->{length};
     
     return $ret;
@@ -168,7 +170,7 @@ package SPVM::List : precompile {
     for (my $i = 0; $i < $length - 1; $i++) {
       $values->[$i] = $values->[$i + 1];
     }
-    $values->[$length] = undef;
+    $values->[$length - 1] = undef;
     
     $self->{length}--;
     

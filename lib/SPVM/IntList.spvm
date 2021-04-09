@@ -150,6 +150,8 @@ package SPVM::IntList : precompile {
     }
     
     my $value = $self->{values}[$length - 1];
+
+    $self->{values}[$length - 1] = 0;
     
     $self->{length}--;
     
@@ -185,6 +187,8 @@ package SPVM::IntList : precompile {
     my $value = $values->[0];
     
     memmovei($values, 0, $values, 1, $length - 1);
+    
+    $values->[$length - 1] = 0;
     
     $self->{length}--;
     
