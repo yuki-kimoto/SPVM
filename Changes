@@ -1,4 +1,5 @@
-0.0938 2021-04-06
+0.0938 2021-04-09
+  - fix bug that segfault occur in SPVM::Builder->build_shared_lib_dist in syntax error
   - add SPVM::List->resize method
 0.0937 2021-04-06
   - fix accessor get chain bug
