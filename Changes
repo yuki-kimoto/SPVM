@@ -1,6 +1,12 @@
 0.0938 2021-04-09
   - fix bug that segfault occur in SPVM::Builder->build_shared_lib_dist in syntax error
   - add SPVM::List->resize method
+  - add SPVM::ByteList->resize method
+  - add SPVM::ShortList->resize method
+  - add SPVM::IntList->resize method
+  - add SPVM::LongList->resize method
+  - add SPVM::FloatList->resize method
+  - add SPVM::DoubleList->resize method
 0.0937 2021-04-06
   - fix accessor get chain bug
 0.0936 2021-04-03

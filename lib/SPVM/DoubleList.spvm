@@ -59,7 +59,17 @@ package SPVM::DoubleList : precompile {
     return $self;
   }
   
-  
+  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_values = new double [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
+  }
+
   private sub _extend : void ($self : self) {
     my $capacity = $self->{capacity};
     my $length = $self->{length};
@@ -213,5 +223,26 @@ package SPVM::DoubleList : precompile {
     memcpyd($array, 0, $values, 0, $length);
     
     return $array;
+  }
+
+  sub resize : void ($self : self, $new_length : int) {
+    if ($new_length < 0) {
+      die "New length must be more than or equals to 0";
+    }
+    
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($new_length > $length) {
+      if ($new_length > $capacity) {
+        $self->_extend_with_capacity($new_length);
+      }
+    }
+    elsif ($new_length < $length) {
+      for (my $i = $new_length; $i < $length; $i++) {
+        $self->{values}[$i] = 0;
+      }
+    }
+    $self->{length} = $new_length;
   }
 }

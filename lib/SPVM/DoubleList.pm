@@ -129,3 +129,11 @@ Remove and return the element which is specified by the index.
   sub to_array : double[] ($self : self)
 
 Convert L<SPVM::DoubleList> to double array.
+
+=head2 resize
+
+  sub resize : void ($self : self, $new_length : int)
+
+Resize list.
+
+New length must be more than or equals to 0, otherwise a exception occur.

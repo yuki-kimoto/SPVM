@@ -128,3 +128,11 @@ Remove and return the element which is specified by the index.
   sub to_array : byte[] ($self : self)
 
 Convert L<SPVM::ByteList> to byte array.
+
+=head2 resize
+
+  sub resize : void ($self : self, $new_length : int)
+
+Resize list.
+
+New length must be more than or equals to 0, otherwise a exception occur.

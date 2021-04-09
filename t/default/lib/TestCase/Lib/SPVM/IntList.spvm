@@ -468,4 +468,83 @@ package TestCase::Lib::SPVM::IntList {
     return 1;
   }
 
+  sub resize : int () {
+    my $a = (int)1;
+    my $b = (int)2;
+    my $c = (int)3;
+
+    # 3 to 3
+    {
+      my $list = SPVM::IntList->new(new int[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    
+    # 3 to 0
+    {
+      my $list = SPVM::IntList->new(new int[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(0);
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+
+    
+    # 3 to 4
+    {
+      my $list = SPVM::IntList->new(new int[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(4);
+      unless ($list->length == 4) {
+        return 0;
+      }
+      unless ($list->get(3) == 0 && $list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    
+    # 3 to 32(over capacity)
+    {
+      my $list = SPVM::IntList->new(new int[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(32);
+      unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->get(3) == 0 && $list->get(31) == 0) {
+        return 0;
+      }
+    }
+    
+    # Exception - New length must be more than or equals to 0
+    {
+      my $list = SPVM::IntList->new(new int[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      eval { $list->resize(-1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+
 }
