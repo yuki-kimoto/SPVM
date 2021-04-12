@@ -143,7 +143,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::FloatList');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::DoubleList');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ObjectList');
   }
   
   return $make_rule;
