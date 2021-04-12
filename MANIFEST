@@ -493,6 +493,8 @@ lib/SPVM/Math.c
 lib/SPVM/Math.config
 lib/SPVM/Math.pm
 lib/SPVM/Math.spvm
+lib/SPVM/ObjectList.pm
+lib/SPVM/ObjectList.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
@@ -559,6 +561,7 @@ solo/TestCase/EnumA.spvm
 solo/TestCase/EnumB.spvm
 solo/TestCase/EnumC.spvm
 solo/TestCase/EnumD.spvm
+solo/TestCase/GenericList.spvm
 solo/TestCase/ImplementCallback1.spvm
 solo/TestCase/ImplementCallback2.spvm
 solo/TestCase/Inline.spvm
@@ -794,6 +797,7 @@ t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
 t/default/lib/TestCase/Lib/SPVM/Math.spvm
+t/default/lib/TestCase/Lib/SPVM/ObjectList.spvm
 t/default/lib/TestCase/Lib/SPVM/Regex.spvm
 t/default/lib/TestCase/Lib/SPVM/Short.spvm
 t/default/lib/TestCase/Lib/SPVM/ShortList.spvm
@@ -912,6 +916,7 @@ t/default/SPVM_List.t
 t/default/SPVM_Long.t
 t/default/SPVM_LongList.t
 t/default/SPVM_Math.t
+t/default/SPVM_ObjectList.t
 t/default/SPVM_Regex.t
 t/default/SPVM_Short.t
 t/default/SPVM_ShortList.t
@@ -936,6 +941,7 @@ t/default/warn.t
 t/default/weaken.t
 t/default/while.t
 t/exe/lib/MyExe.spvm
+t/exe/lib/MyExe/Foo/Bar.spvm
 t/exe/lib/MyExe/Precompile.spvm
 t/exe/lib/TestCase/NativeAPI2.c
 t/exe/lib/TestCase/NativeAPI2.config
