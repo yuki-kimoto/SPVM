@@ -26,25 +26,25 @@ SPVM::List - Continuous dynamic object array
   my $length = $object_list->length;
   
   # Push object value
-  $object_list->push(SPVM::Long->new(3));
+  $object_list->push(SPVM::Int->new(3));
 
   # Pop object value.
   my $object_value = $object_list->pop;
 
   # Unshift object value.
-  $object_list->unshift(SPVM::Long->new(3));
+  $object_list->unshift(SPVM::Int->new(3));
   
   # Shift object value.
   my $object_value = $object_list->shift;
   
   # Set object value.
-  $object_list->set(2, SPVM::Long->new(3));
+  $object_list->set(2, SPVM::Int->new(3));
   
   # Get object value.
   my $object_value = $object_list->get(2);
 
   # Insert object value
-  $object_list->insert(1, SPVM::Long->new(3));
+  $object_list->insert(1, SPVM::Int->new(3));
 
   # Remove object value
   my $object_value = $object_list->remove(1);

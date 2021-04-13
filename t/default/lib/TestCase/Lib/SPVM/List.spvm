@@ -440,7 +440,13 @@ package TestCase::Lib::SPVM::List {
     unless (equals_list_deeply($list, SPVM::List->new($expected))) {
       return 0;
     }
-
+    
+    eval { $list->set(0, SPVM::Long->new(1)); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
     return 1;
   }
 
