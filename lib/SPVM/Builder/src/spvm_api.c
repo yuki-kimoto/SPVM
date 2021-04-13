@@ -252,6 +252,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_call_sub_by_name,
     SPVM_API_call_poly_sub_by_name,
     SPVM_API_get_field_string_chars_by_name,
+    (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, // any_object_basic_type_id
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -2051,6 +2052,9 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
               int32_t element_basic_type_id = *(int32_t*)((intptr_t)object + (intptr_t)env->object_basic_type_id_offset);
               int32_t element_type_dimension = *(uint8_t*)((intptr_t)object + (intptr_t)env->object_type_dimension_offset);
               if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {
+                is_valid = 1;
+              }
+              else if (array_basic_type_id == (intptr_t)env->any_object_basic_type_id && array_type_dimension == element_type_dimension + 1) {
                 is_valid = 1;
               }
               else {

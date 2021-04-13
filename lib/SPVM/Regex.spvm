@@ -30,7 +30,7 @@ package SPVM::Regex : precompile {
   sub new : SPVM::Regex ($re_str : string) {
     my $self = new SPVM::Regex;
     
-    $self->{patterns} = SPVM::List->new_len(0);
+    $self->{patterns} = SPVM::List->new_len(new SPVM::Regex::Pattern[0], 0);
     
     $self->compile($re_str);
     

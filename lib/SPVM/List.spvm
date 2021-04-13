@@ -1,31 +1,42 @@
 package SPVM::List : precompile {
-  has values   : object[];
+  use SPVM::Util(new_object_array_proto);
+  
+  has values   : oarray;
   has capacity : ro int;
   has length   : ro int;
 
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-  sub to_array : object[] ($self : self) {
+  sub to_array : oarray ($self : self) {
     my $length = $self->{length};
-    my $objects = new object[$length];
+    my $objects = new_object_array_proto($self->{values}, $length);
     for (my $i = 0; $i < $length; $i++) {
       $objects->[$i] = $self->{values}[$i];
     }
     return $objects;
   }
 
-  sub new_capacity : SPVM::List ($capacity : int) {
+  sub new_capacity : SPVM::List ($proto_array : oarray, $capacity : int) {
+    unless ($proto_array) {
+      die "First argument must not be undef";
+    }
+
     my $self = new SPVM::List;
     unless ($capacity > 0) {
       die "capacity must be positive";
     }
     $self->{capacity} = $capacity;
-    $self->{values} = new object [$capacity];
+    $self->{values} = new_object_array_proto($proto_array, $capacity);
     return $self;
   }
 
-  sub new : SPVM::List ($objects : object[]) {
+  sub new : SPVM::List ($objects : oarray) {
+    
+    unless ($objects) {
+      die "First argument must not be undef";
+    }
+    
     my $self = new SPVM::List;
     my $length = @$objects;
     
@@ -38,7 +49,7 @@ package SPVM::List : precompile {
     }
     $self->{capacity} = $capacity;
     
-    $self->{values} = new object [$capacity];
+    $self->{values} = new_object_array_proto($objects, $capacity);
     for (my $i = 0; $i < @$objects; ++$i) {
       $self->{values}[$i] = $objects->[$i];
     }
@@ -47,7 +58,11 @@ package SPVM::List : precompile {
     return $self;
   }
 
-  sub new_len : SPVM::List ($length : int) {
+  sub new_len : SPVM::List ($proto_array : oarray, $length : int) {
+    unless ($proto_array) {
+      die "First argument must not be undef";
+    }
+    
     my $self = new SPVM::List;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
@@ -61,7 +76,7 @@ package SPVM::List : precompile {
     }
     $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = new object[$capacity];
+    $self->{values} = new_object_array_proto($proto_array, $capacity);
     return $self;
   }
   
@@ -198,7 +213,7 @@ package SPVM::List : precompile {
   }
 
   private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
-    my $new_values = new object [$new_capacity];
+    my $new_values = new_object_array_proto($self->{values}, $new_capacity);
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
       if ($target < 0) { $target += $self->{capacity}; };
@@ -215,7 +230,7 @@ package SPVM::List : precompile {
     
     my $new_capacity = $capacity * 2;
     
-    my $new_values = new object[$new_capacity];
+    my $new_values = new_object_array_proto($self->{values}, $new_capacity);
     
     for (my $i = 0; $i < $length; $i++) {
       $new_values->[$i] = $values->[$i];
@@ -228,7 +243,7 @@ package SPVM::List : precompile {
   # splice is EXPERIMENTAL
   # range of $cut_offset: [0, $cut_length]
   # O($self->{capacity})
-  sub splice : object[] ($self : self, $cut_offset : int, $cut_length : int, $replace : object[]) {
+  sub splice : oarray ($self : self, $cut_offset : int, $cut_length : int, $replace : oarray) {
     if ($cut_offset > $self->{length}) {
       warn("splice_with_list() offset past end of array");
       $cut_offset = $self->{length};
@@ -255,7 +270,7 @@ package SPVM::List : precompile {
 
     # extract elements
     # O($cut_length)
-    my $extracted = new object [$cut_length];
+    my $extracted = new_object_array_proto($self->{values}, $cut_length);
     for (my $i = 0; $i < $cut_length; ++$i) {
       my $target = $i;
       if ($target > 0) { $target -= $self->{capacity}; } # to avoid overflow on the next statement

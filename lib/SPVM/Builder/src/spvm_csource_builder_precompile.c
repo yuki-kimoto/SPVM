@@ -2439,6 +2439,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_STRING_BUFFER_add(string_buffer, "          if (array_basic_type_id == element_basic_type_id && array_type_dimension == element_type_dimension + 1) {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "            is_valid = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          else if (array_basic_type_id == (intptr_t)env->any_object_basic_type_id && array_type_dimension == element_type_dimension + 1) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "            is_valid = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "            is_valid = 0;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          }\n");
@@ -2447,7 +2450,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_STRING_BUFFER_add(string_buffer, "          SPVM_API_OBJECT_ASSIGN(element_address, object);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        else {\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "          void* exception = env->new_string_nolen_raw(env, \"Element type is invalid\");\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "          void* exception = env->new_string_nolen_raw(env, \"Assigned element type is invalid\");\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          env->set_exception(env, exception);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "          exception_flag = 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "        }");

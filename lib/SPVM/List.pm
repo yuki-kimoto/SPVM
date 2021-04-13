@@ -54,15 +54,15 @@ L<SPVM::List> is continuous dynamic object array.
 
 =head2 new
 
-    sub new : SPVM::List ($array : object[])
+    sub new : SPVM::List ($objects : oarray)
 
 Create a new L<SPVM::List> object with specific C<object> array.
 
 =head2 new_len
 
-    sub new_len : SPVM::List ($length : int)
+    sub new_len : SPVM::List ($proto_array : oarray, $length : int)
 
-Create a new L<SPVM::List> object with array length.
+Create a new L<SPVM::List> object with prototype array and array length. Prototype array is used to decide the array type of internal values.
 
 =head1 INSTANCE METHODS
 
@@ -125,7 +125,7 @@ Remove and return the element which is specified by the index.
   
 =head2 to_array
 
-  sub to_array : object[] ($self : self)
+  sub to_array : oarray ($self : self)
 
 Convert L<SPVM::List> to object array.
 

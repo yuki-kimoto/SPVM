@@ -1,5 +1,22 @@
 0.0939 2021-04-09
   - fix bug that oarray element can't assign undef
+  - Change SPVM::List values type from object[] to oarray.
+  - Change SPVM::List new definition
+    [before]
+    sub new : SPVM::List ($objects : object[])
+    [after]
+    sub new : SPVM::List ($objects : oarray)
+  - Change SPVM::List new_len definition
+    [before]
+    sub new_len : SPVM::List ($length : int)
+    [after]
+    sub new_len : SPVM::List ($proto_array : oarray, $length : int)
+  - Change SPVM::List new definition
+    [before]
+    sub to_array : object[] ($self : self)
+    [after]
+    sub to_array : oarray ($self : self)
+  - add any_object_basic_type_id native api
 0.0938 2021-04-09
   - fix bug that segfault occur in SPVM::Builder->build_shared_lib_dist in syntax error
   - add SPVM::List->resize method

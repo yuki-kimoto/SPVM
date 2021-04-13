@@ -131,10 +131,6 @@ sub MY::postamble {
     # Precompile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringBuffer');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::List');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ByteList');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ShortList');
@@ -143,6 +139,10 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::FloatList');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::DoubleList');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringBuffer');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
   }
   
   return $make_rule;
