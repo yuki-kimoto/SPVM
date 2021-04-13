@@ -13,9 +13,12 @@ SPVM::List - Continuous dynamic object array
   # Create a object list
   my $object_list = SPVM::List->new_len;
 
+  # Create a SPVM::Int list with array
+  my $object_list = SPVM::List->new([SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Int->new(3)]);
+  
   # Create a object list with array
   my $object_list = SPVM::List->new([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
-  
+
   # Get list length
   my $length = $object_list->length;
   
@@ -44,7 +47,10 @@ SPVM::List - Continuous dynamic object array
   my $object_value = $object_list->remove(1);
 
   # Convert SPVM::List to object array.
-  my $object_array = $object_list->to_array;
+  my $int_array = $object_list->to_array;
+
+  # Convert SPVM::List to SPVM::Int array.
+  my $int_array = (SPVM::Int[])$object_list->to_array;
 
 =head1 DESCRIPTION
 
