@@ -934,7 +934,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "Can't create object of callback package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  else if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+                  else if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
                     SPVM_COMPILER_error(compiler, "Can't create object of mulnum_t package at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -2855,7 +2855,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_private = 0;
                 }
                 // If multi numeric type, field is public
-                else if (field->package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+                else if (field->package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
                   is_private = 0;
                 }
                 // Default is private
@@ -4811,7 +4811,7 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
     const char* package_name = package->op_name->uv.name;
     
     // mulnum_t package limitation
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
       // Can't have subroutines
       if (package->subs->length > 0) {
         SPVM_COMPILER_error(compiler, "mulnum_t package can't have subroutines at %s line %d\n", package->op_package->file, package->op_package->line);

@@ -3,7 +3,7 @@ package SPVM::Hash : precompile {
   use SPVM::Util (INT32_MAX, copy_str);
 
   has bucket_count : int;
-  has count : int;
+  has count : ro int;
   has entries : SPVM::Hash::Entry [];
 
   private enum {
@@ -18,10 +18,6 @@ package SPVM::Hash : precompile {
     $self->{entries} = new SPVM::Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
     return $self;
-  }
-
-  sub count : int ($self : self) {
-    return $self->{count};
   }
 
   sub set : void ($self : self, $key : string, $val : object) {

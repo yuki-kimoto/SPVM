@@ -1691,7 +1691,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_MULNUM_T:
-          package->category = SPVM_PACKAGE_C_CATEGORY_VALUE;
+          package->category = SPVM_PACKAGE_C_CATEGORY_MULNUM;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
@@ -1756,6 +1756,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         }
         SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
 
+    
+        // mulnum_t package don't have accessor
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
+          package_var->has_getter = 0;
+          package_var->has_setter = 0;
+        }
+        
         // Getter
         if (package_var->has_getter) {
           // sub FOO : int () {
@@ -1848,6 +1855,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_COMPILER_error(compiler, "Callback package can't have field at %s line %d\n", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(package->fields, field);
+
+        // mulnum_t package don't have accessor
+        if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
+          field->has_getter = 0;
+          field->has_setter = 0;
+        }
         
         // Getter
         if (field->has_getter) {
@@ -2246,6 +2259,12 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
           package_var->flag |= SPVM_PACKAGE_VAR_C_FLAG_PUBLIC;
           access_control_descriptors_count++;
           break;
+        case SPVM_DESCRIPTOR_C_ID_NORW: {
+          package_var->has_setter = 0;
+          package_var->has_getter = 0;
+          accessor_descriptors_count++;
+          break;
+        }
         case SPVM_DESCRIPTOR_C_ID_RW:
           package_var->has_setter = 1;
           package_var->has_getter = 1;
@@ -2268,6 +2287,11 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
       if (access_control_descriptors_count > 1) {
         SPVM_COMPILER_error(compiler, "private, public can be specifed only one in package variable declaration at %s line %d\n", op_package_var->file, op_package_var->line);
       }
+    }
+    // Have get and set accessor by default
+    if (accessor_descriptors_count == 0) {
+      package_var->has_setter = 1;
+      package_var->has_getter = 1;
     }
   }
   
@@ -2306,6 +2330,12 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           field->flag |= SPVM_FIELD_C_FLAG_PUBLIC;
           access_control_descriptors_count++;
           break;
+        case SPVM_DESCRIPTOR_C_ID_NORW: {
+          field->has_setter = 0;
+          field->has_getter = 0;
+          accessor_descriptors_count++;
+          break;
+        }
         case SPVM_DESCRIPTOR_C_ID_RW:
           field->has_setter = 1;
           field->has_getter = 1;
@@ -2329,6 +2359,11 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
       if (access_control_descriptors_count > 1) {
         SPVM_COMPILER_error(compiler, "public, private can be specifed only one in field declaration at %s line %d\n", op_field->file, op_field->line);
       }
+    }
+    // Have get and set accessor by default
+    if (accessor_descriptors_count == 0) {
+      field->has_setter = 1;
+      field->has_getter = 1;
     }
   }
   

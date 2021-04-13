@@ -16,6 +16,7 @@ const char* const* SPVM_DESCRIPTOR_C_ID_NAMES(void) {
     "rw",
     "ro",
     "wo",
+    "norw",
   };
   
   return id_names;

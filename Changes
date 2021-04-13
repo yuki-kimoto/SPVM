@@ -1,4 +1,9 @@
-0.0939 2021-04-09
+0.0940 2021-04-13
+  - add norw package variable descriptor
+  - add norw field descriptor
+  - rw become package variable declaration default
+  - rw become field declaration default
+0.0939 2021-04-13
   - fix bug that oarray element can't assign undef
   - Change SPVM::List values type from object[] to oarray.
   - Change SPVM::List new definition
