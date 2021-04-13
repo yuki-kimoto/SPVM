@@ -11,13 +11,16 @@ SPVM::List - Continuous dynamic object array
   use SPVM::List;
   
   # Create a object list
-  my $object_list = SPVM::List->new_len;
+  my $object_list = SPVM::List->new([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
 
-  # Create a SPVM::Int list with array
+  # Create a SPVM::Int list
   my $object_list = SPVM::List->new([SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Int->new(3)]);
   
-  # Create a object list with array
-  my $object_list = SPVM::List->new([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
+  # Create a object list with length
+  my $object_list = SPVM::List->new_len([], 3);
+
+  # Create a SPVM::Int list with length
+  my $object_list = SPVM::List->new_len(new SPVM::Int[0], 3);
 
   # Get list length
   my $length = $object_list->length;
