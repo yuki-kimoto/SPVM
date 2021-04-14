@@ -6,7 +6,7 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Util;
   use SPVM::Sort;
 
-  sub test_set_get_numeric : int () {
+  sub set_get_numeric : int () {
 
     my $hash = SPVM::Hash->new;
 
@@ -105,7 +105,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_murmur_hash : int () {
+  sub murmur_hash : int () {
     my $seed = 123456789;
     # Testcase is created from https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
     # Change size_t to uint32_t to use 32bit integer.
@@ -121,7 +121,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_set : int () {
+  sub set : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), undef, SPVM::Int->new(3)];
     my $hash = SPVM::Hash->new;
@@ -139,7 +139,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_set_do_not_refer_caller_key : int () {
+  sub set_do_not_refer_caller_key : int () {
     my $hash = SPVM::Hash->new;
     my $key = "a";
     $hash->set($key, SPVM::Int->new(1));
@@ -153,7 +153,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_get : int () {
+  sub get : int () {
     my $hash = SPVM::Hash->new;
     $hash->set_int("a" => 1);
     $hash->set("b" => undef);
@@ -174,7 +174,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_exists : int () {
+  sub exists : int () {
     my $keys = ["alice", "bob"];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2)];
     my $hash = SPVM::Hash->new;
@@ -192,7 +192,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_delete_with_no_hash_collision : int () {
+  sub delete_with_no_hash_collision : int () {
     my $hash = SPVM::Hash->new;
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
@@ -220,7 +220,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_delete_with_hash_collision : int () {
+  sub delete_with_hash_collision : int () {
     my $hash = SPVM::Hash->new;
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
@@ -255,7 +255,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_rehash : int () {
+  sub rehash : int () {
     my $initial_capacity = 16;
     my $hash = SPVM::Hash->new;
     for (my $i = 0; $i < 14; ++$i) {
@@ -277,7 +277,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_keys : int () {
+  sub keys : int () {
     my $hash = SPVM::Hash->new;
     my $key0 = "a";
     my $key1 = "b";
@@ -310,7 +310,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_values : int () {
+  sub values : int () {
     my $hash = SPVM::Hash->new;
     my $key0 = "a";
     my $key1 = "b";
@@ -348,7 +348,7 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub test_copy : int () {
+  sub copy : int () {
     my $hash = SPVM::Hash->new;
     for (my $i = 0; $i < 3; ++$i) {
       $hash->set("key$i", $i);
@@ -368,4 +368,87 @@ package TestCase::Lib::SPVM::Hash {
     }
     return 1;
   }
+
+  sub newa : int () {
+    # Empty array
+    {
+      my $hash = SPVM::Hash->newa([]);
+      my $keys = $hash->keys;
+      unless (@$keys == 0) {
+        return 0;
+      }
+    }
+    
+    # object array
+    {
+      my $hash = SPVM::Hash->newa([(object)foo => 1, bar => 3L]);
+      my $keys = $hash->keys;
+      unless (@$keys == 2) {
+        return 0;
+      }
+      
+      {
+        my $foo = (SPVM::Int)$hash->get("foo");
+        unless ($foo->val == 1) {
+          return 0;
+        }
+        my $bar = (SPVM::Long)$hash->get("bar");
+        unless ($bar->val == 3) {
+          return 0;
+        }
+      }
+
+      {
+        my $foo = (int)$hash->get("foo");
+        unless ($foo == 1) {
+          return 0;
+        }
+      }
+    }
+
+    # string array
+    {
+      my $hash = SPVM::Hash->newa([foo => "4px", bar => "5px"]);
+      my $keys = $hash->keys;
+      unless (@$keys == 2) {
+        return 0;
+      }
+      
+      {
+        my $foo = (string)$hash->get("foo");
+        unless ($foo && $foo eq "4px") {
+          return 0;
+        }
+        my $bar = (string)$hash->get("bar");
+        unless ($bar && $bar eq "5px") {
+          return 0;
+        }
+      }
+    }
+    
+    # Exception
+    {
+      # odd number array
+      {
+        eval { SPVM::Hash->newa([foo => "4px", "bar"]); };
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      # Key must be string
+      {
+        eval { SPVM::Hash->newa([(object)1 => "4px"]); };
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
 }

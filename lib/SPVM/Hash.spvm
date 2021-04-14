@@ -4,7 +4,7 @@ package SPVM::Hash : precompile {
 
   has bucket_count : int;
   has count : ro int;
-  has entries : SPVM::Hash::Entry [];
+  has entries : SPVM::Hash::Entry[];
 
   private enum {
     _DEFALUT_HASH_TABLE_LENGTH = 16,
@@ -17,6 +17,28 @@ package SPVM::Hash : precompile {
     $self->{bucket_count} = _DEFALUT_HASH_TABLE_LENGTH();
     $self->{entries} = new SPVM::Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
+    return $self;
+  }
+  
+  sub newa : SPVM::Hash ($key_values : oarray) {
+    my $self = SPVM::Hash->new;
+    
+    my $length = @$key_values;
+    
+    if ($length % 2 != 0) {
+      die "Odd number array is invalid";
+    }
+    
+    for (my $i = 0; $i < @$key_values; $i += 2) {
+      my $key = $key_values->[$i];
+      my $value = $key_values->[$i + 1];
+      unless ($key isa string) {
+        die "Key must be string";
+      }
+
+      $self->set((string)$key => $value);
+    }
+    
     return $self;
   }
 

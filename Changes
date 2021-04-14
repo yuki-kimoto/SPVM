@@ -1,3 +1,8 @@
+0.0941 2021-04-14
+  - add SPVM::Hash->newa again. argument become oarray type
+  
+    sub newa : SPVM::Hash ($key_values : oarray)
+    
 0.0940 2021-04-13
   - add norw package variable descriptor
   - add norw field descriptor
