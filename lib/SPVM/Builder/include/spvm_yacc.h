@@ -122,7 +122,7 @@
      MINUS = 338,
      PLUS = 339,
      DEREF = 340,
-     REF = 341,
+     CREATE_REF = 341,
      BIT_NOT = 342,
      LOGICAL_NOT = 343,
      DEC = 344,
@@ -214,7 +214,7 @@
 #define MINUS 338
 #define PLUS 339
 #define DEREF 340
-#define REF 341
+#define CREATE_REF 341
 #define BIT_NOT 342
 #define LOGICAL_NOT 343
 #define DEC 344

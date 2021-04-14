@@ -157,7 +157,7 @@
      MINUS = 338,
      PLUS = 339,
      DEREF = 340,
-     REF = 341,
+     CREATE_REF = 341,
      BIT_NOT = 342,
      LOGICAL_NOT = 343,
      DEC = 344,
@@ -249,7 +249,7 @@
 #define MINUS 338
 #define PLUS 339
 #define DEREF 340
-#define REF 341
+#define CREATE_REF 341
 #define BIT_NOT 342
 #define LOGICAL_NOT 343
 #define DEC 344
@@ -744,7 +744,7 @@ static const char *const yytname[] =
   "STRNE", "STREQ", "NUMNE", "NUMEQ", "ISA", "STRLE", "STRLT", "STRGE",
   "STRGT", "NUMLE", "NUMLT", "NUMGE", "NUMGT", "SHIFT", "'+'", "'-'",
   "'.'", "REMAINDER", "DIVIDE", "MULTIPLY", "'@'", "REFCNT", "ISWEAK",
-  "LENGTH", "SCALAR", "CONVERT", "MINUS", "PLUS", "DEREF", "REF",
+  "LENGTH", "SCALAR", "CONVERT", "MINUS", "PLUS", "DEREF", "CREATE_REF",
   "BIT_NOT", "LOGICAL_NOT", "DEC", "INC", "ARROW", "':'", "';'", "'}'",
   "')'", "','", "']'", "$accept", "grammar", "opt_packages", "packages",
   "package", "package_block", "opt_declarations", "declarations",
@@ -3685,7 +3685,7 @@ yyreduce:
   case 204:
 #line 1092 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, (yyvsp[(1) - (2)].opval)->file, (yyvsp[(1) - (2)].opval)->line);
+      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CREATE_REF, (yyvsp[(1) - (2)].opval)->file, (yyvsp[(1) - (2)].opval)->line);
       (yyval.opval) = SPVM_OP_build_ref(compiler, op_ref, (yyvsp[(2) - (2)].opval));
     ;}
     break;

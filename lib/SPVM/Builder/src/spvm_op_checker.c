@@ -385,7 +385,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_REFCNT: {
+            case SPVM_OP_C_ID_CREATE_REFCNT: {
               
               SPVM_OP* op_term = op_cur->first;
               
@@ -2115,7 +2115,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
-            case SPVM_OP_C_ID_REF: {
+            case SPVM_OP_C_ID_CREATE_REF: {
               
               SPVM_OP* op_var = op_cur->first;
               SPVM_TYPE* var_type = SPVM_OP_get_type(compiler, op_var);
@@ -3558,9 +3558,9 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
                         case SPVM_OP_C_ID_SWITCH_CONDITION:
                         case SPVM_OP_C_ID_ARRAY_FIELD_ACCESS:
-                        case SPVM_OP_C_ID_REF:
+                        case SPVM_OP_C_ID_CREATE_REF:
                         case SPVM_OP_C_ID_DEREF:
-                        case SPVM_OP_C_ID_REFCNT:
+                        case SPVM_OP_C_ID_CREATE_REFCNT:
                         case SPVM_OP_C_ID_FIELD_ACCESS:
                         case SPVM_OP_C_ID_ARRAY_ACCESS:
                         case SPVM_OP_C_ID_CALL_SUB:

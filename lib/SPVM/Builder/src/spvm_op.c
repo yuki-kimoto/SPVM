@@ -1161,13 +1161,13 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   else if (op->id == SPVM_OP_C_ID_SEQUENCE) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->last);
   }
-  else if (op->id == SPVM_OP_C_ID_REF) {
+  else if (op->id == SPVM_OP_C_ID_CREATE_REF) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
   else if (op->id == SPVM_OP_C_ID_DEREF) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
-  else if (op->id == SPVM_OP_C_ID_REFCNT) {
+  else if (op->id == SPVM_OP_C_ID_CREATE_REFCNT) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
   else {
@@ -1265,7 +1265,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_ARRAY_LENGTH:
     case SPVM_OP_C_ID_STRING_LENGTH:
-    case SPVM_OP_C_ID_REFCNT:
+    case SPVM_OP_C_ID_CREATE_REFCNT:
     {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
@@ -1412,7 +1412,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = field->type;
       break;
     }
-    case SPVM_OP_C_ID_REF: {
+    case SPVM_OP_C_ID_CREATE_REF: {
       SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op->first);
       assert(term_type->dimension == 0);
       switch (term_type->basic_type->id) {

@@ -54,7 +54,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -1088,9 +1088,9 @@ deref
     }
 
 ref
-  : REF var
+  : CREATE_REF var
     {
-      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_REF, $1->file, $1->line);
+      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CREATE_REF, $1->file, $1->line);
       $$ = SPVM_OP_build_ref(compiler, op_ref, $2);
     }
 
