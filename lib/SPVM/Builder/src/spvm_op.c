@@ -1167,7 +1167,7 @@ SPVM_OP* SPVM_OP_get_target_op_var(SPVM_COMPILER* compiler, SPVM_OP* op) {
   else if (op->id == SPVM_OP_C_ID_DEREF) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
-  else if (op->id == SPVM_OP_C_ID_CREATE_REFCNT) {
+  else if (op->id == SPVM_OP_C_ID_REFCNT) {
     op_var = SPVM_OP_get_target_op_var(compiler, op->first);
   }
   else {
@@ -1265,7 +1265,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_ARRAY_LENGTH:
     case SPVM_OP_C_ID_STRING_LENGTH:
-    case SPVM_OP_C_ID_CREATE_REFCNT:
+    case SPVM_OP_C_ID_REFCNT:
     {
       SPVM_OP* op_type = SPVM_OP_new_op_int_type(compiler, op->file, op->line);
       type = op_type->uv.type;
