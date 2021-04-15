@@ -114,20 +114,21 @@
      REMAINDER = 330,
      DIVIDE = 331,
      MULTIPLY = 332,
-     REFCNT = 333,
-     ISWEAK = 334,
-     LENGTH = 335,
-     SCALAR = 336,
-     CONVERT = 337,
-     MINUS = 338,
-     PLUS = 339,
-     DEREF = 340,
-     CREATE_REF = 341,
-     BIT_NOT = 342,
-     LOGICAL_NOT = 343,
-     DEC = 344,
-     INC = 345,
-     ARROW = 346
+     REFOP = 333,
+     REFCNT = 334,
+     ISWEAK = 335,
+     LENGTH = 336,
+     SCALAR = 337,
+     CONVERT = 338,
+     MINUS = 339,
+     PLUS = 340,
+     DEREF = 341,
+     CREATE_REF = 342,
+     BIT_NOT = 343,
+     LOGICAL_NOT = 344,
+     DEC = 345,
+     INC = 346,
+     ARROW = 347
    };
 #endif
 /* Tokens.  */
@@ -206,20 +207,21 @@
 #define REMAINDER 330
 #define DIVIDE 331
 #define MULTIPLY 332
-#define REFCNT 333
-#define ISWEAK 334
-#define LENGTH 335
-#define SCALAR 336
-#define CONVERT 337
-#define MINUS 338
-#define PLUS 339
-#define DEREF 340
-#define CREATE_REF 341
-#define BIT_NOT 342
-#define LOGICAL_NOT 343
-#define DEC 344
-#define INC 345
-#define ARROW 346
+#define REFOP 333
+#define REFCNT 334
+#define ISWEAK 335
+#define LENGTH 336
+#define SCALAR 337
+#define CONVERT 338
+#define MINUS 339
+#define PLUS 340
+#define DEREF 341
+#define CREATE_REF 342
+#define BIT_NOT 343
+#define LOGICAL_NOT 344
+#define DEC 345
+#define INC 346
+#define ARROW 347
 
 
 

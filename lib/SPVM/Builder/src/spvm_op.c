@@ -1259,11 +1259,6 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = op_type->uv.type;
       break;
     }
-    case SPVM_OP_C_ID_CONCAT: {
-      SPVM_OP* op_type = SPVM_OP_new_op_string_type(compiler, op->file, op->line);
-      type = op_type->uv.type;
-      break;
-    }
     case SPVM_OP_C_ID_ARRAY_LENGTH:
     case SPVM_OP_C_ID_STRING_LENGTH:
     case SPVM_OP_C_ID_REFCNT:
@@ -1371,7 +1366,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       }
       break;
     }
-    case SPVM_OP_C_ID_EXCEPTION_VAR: {
+    case SPVM_OP_C_ID_CONCAT:
+    case SPVM_OP_C_ID_REFOP:
+    case SPVM_OP_C_ID_EXCEPTION_VAR:
+    {
       SPVM_OP* op_type = SPVM_OP_new_op_string_type(compiler, op->file, op->line);
       type = op_type->uv.type;
       break;

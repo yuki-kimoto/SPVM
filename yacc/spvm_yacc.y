@@ -37,7 +37,7 @@
 %type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-%type <opval> deref ref assign inc dec allow
+%type <opval> deref ref assign inc dec allow refop
 %type <opval> new array_init
 %type <opval> my_var var
 %type <opval> expression opt_expressions expressions opt_expression case_statements

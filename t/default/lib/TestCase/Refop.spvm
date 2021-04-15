@@ -1,0 +1,49 @@
+package TestCase::Refop {
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  
+  sub refop : int () {
+    {
+      my $minimal = TestCase::Minimal->new;
+      
+      unless (ref $minimal eq "TestCase::Minimal") {
+        return 0;
+      }
+    }
+    {
+      my $minimal = TestCase::Minimal->new;
+      my $type_name = ref $minimal;
+      
+      unless ($type_name eq "TestCase::Minimal") {
+        return 0;
+      }
+    }
+    {
+      my $obj = new TestCase::Minimal[3];
+      my $type_name = ref $obj;
+      
+      unless ($type_name eq "TestCase::Minimal[]") {
+        return 0;
+      }
+    }
+    {
+      my $obj = new TestCase::Minimal[][3];
+      my $type_name = ref $obj;
+      
+      unless ($type_name eq "TestCase::Minimal[][]") {
+        return 0;
+      }
+    }
+
+    {
+      my $obj : object = undef;
+      my $type_name = ref $obj;
+      
+      unless ($type_name == undef) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

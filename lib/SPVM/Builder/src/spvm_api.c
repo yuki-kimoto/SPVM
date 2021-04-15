@@ -3196,6 +3196,17 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         
         break;
       }
+      case SPVM_OPCODE_C_ID_REFOP: {
+        void* object = object_vars[opcode->operand1];
+        if (object == NULL) {
+          object_vars[opcode->operand0] = NULL;
+        }
+        else {
+          void* type_name = env->get_type_name_raw(env, object);
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], type_name);
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_GOTO:
         opcode_rel_index = opcode->operand0;
         continue;
@@ -4309,17 +4320,6 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_REFOP: {
-        void* object = object_vars[opcode->operand1];
-        if (object == NULL) {
-          object_vars[opcode->operand0] = NULL;
-        }
-        else {
-          void* type_name = env->get_type_name(env, object);
-          object_vars[opcode->operand0] = type_name;
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_REF_BYTE:
         *(void**)&ref_vars[opcode->operand0] = &byte_vars[opcode->operand1];
         break;
@@ -4848,12 +4848,14 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t length = 0;
   
+  
   // Basic type
   length += strlen(basic_type_name);
   
   //[]
   length += type_dimension * 2;
   
+  int32_t scope_id = env->enter_scope(env);
   void* type_name_barray = env->new_byte_array(env, length + 1);
   
   int8_t* cur = env->get_elems_byte(env, type_name_barray);
@@ -4868,9 +4870,11 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
     cur_index += 2;
   }
   
-  void* type_name = env->new_string_raw(env, (const char*)cur, length);
+  void* sv_type_name = env->new_string_raw(env, (const char*)cur, length);
   
-  return type_name;
+  env->leave_scope(env, scope_id);
+  
+  return sv_type_name;
 }
 
 SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_OBJECT* object_in) {

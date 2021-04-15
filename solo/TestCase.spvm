@@ -1,76 +1,16 @@
 package TestCase {
-  use TestCase::EnumA;
-  use TestCase::EnumB;
-  use TestCase::EnumC;
-  use TestCase::EnumD;
-  use TestCase::Simple;
   use TestCase::Minimal;
-  use TestCase::Destructor;
-  use TestCase::Callback1;
-  use TestCase::Callback2;
-  use TestCase::ImplementCallback1;
-  use TestCase::ImplementCallback2;
-  use TestCase::Comparator;
-  use TestCase::Pointer;
-  use TestCase::ComplexCalc;
-  use TestCase::Minimal::XGetter;
-  use TestCase::Point_3b;
-  use TestCase::Point_3s;
-  use TestCase::Point_3i;
-  use TestCase::Point_3l;
-  use TestCase::Point_3f;
-  use TestCase::Point_3d;
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
-
-=pod
-
-ABCDE
-
-=cut ppppp
-
-=head1 NAME
-
-SPVM::Test - SPVM test module
-
-=cut
-
-  
-  our $PACKAGE_VAR_INT : public int;
-  our $PACKAGE_VAR_TEST_CASE : public TestCase;
-  
-  our $PACKAGE_VAR_RW : public rw int;
-  
-  our $BEGIN_INIT : int;
-  
-  INIT {
-    $BEGIN_INIT = 7;
-  }
-  
-  has next_test : public TestCase;
-  has minimal : public TestCase::Minimal;
-  has x_byte : public byte;
-  has x_short : public short;
-  has x_int : public int;
-  has x_long : public long;
-  has x_float : public float;
-  has x_double : public double;
-  has private_field : public int;
-  
-  has x_rw : public rw int;
-  
-  sub BYTE_MAX : byte () { return (byte)127; }
-  sub BYTE_MIN : byte () { return (byte)-128; }
-  sub SHORT_MAX : short () { return (short)32767; }
-  sub SHORT_MIN : short () { return (short)-32768; }
-  sub INT_MAX : int () { return 2147483647; }
-  sub INT_MIN : int () { return -2147483648; }
-  sub LONG_MAX : long () { return 9223372036854775807L; }
-  sub LONG_MIN : long () { return -9223372036854775808L; }
-  sub FLOAT_PRECICE : float () { return 32767f; }
-  sub DOUBLE_PRECICE : double () { return 2147483647.0; }
-
   sub main : int ($args : string[]) {
+    my $minimal : object;
+    
+    "aaa" . "bbb";
+    my $name = ref $minimal;
+    
+    warn "AAAAA $name";
+  }
+}
+__END__
+
     {
       my $simple = TestCase::Simple->new;
       my $minimal = TestCase::Minimal->new;

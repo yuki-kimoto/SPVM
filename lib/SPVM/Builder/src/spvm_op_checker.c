@@ -3568,6 +3568,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_STRING_LENGTH:
                         case SPVM_OP_C_ID_NEW:
                         case SPVM_OP_C_ID_CONCAT:
+                        case SPVM_OP_C_ID_REFOP:
                         case SPVM_OP_C_ID_EXCEPTION_VAR:
                         case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
                         case SPVM_OP_C_ID_SWITCH_CONDITION:
