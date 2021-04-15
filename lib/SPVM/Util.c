@@ -879,20 +879,6 @@ int32_t SPNATIVE__SPVM__Util__reverseo(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__get_type_name(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* object = stack[0].oval;
-  
-  if (object == NULL) {
-    return env->die(env, "Object must be not null", MFILE, __LINE__);
-  }
-  
-  void* type_name = env->get_type_name(env, object);
-  
-  stack[0].oval = type_name;
-  
-  return 0;
-}
-
 int32_t SPNATIVE__SPVM__Util__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

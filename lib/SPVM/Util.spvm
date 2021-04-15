@@ -740,8 +740,6 @@ package SPVM::Util : precompile {
 
   sub E : double () { return 2.7182818284590452354; }
 
-  native sub get_type_name : string ($obj : object);
-
   sub index : int ($str : string, $substr : string, $posision : int) {
     my $strCount = length $str;
     my $substrCount = length $substr;

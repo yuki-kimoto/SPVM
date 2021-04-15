@@ -323,11 +323,6 @@ SKIP: {
   ok(TestCase::Lib::SPVM::Util->test_PI);
 }
 
-# get_type_name
-{
-  ok(TestCase::Lib::SPVM::Util->test_get_type_name);
-}
-
 # equals
 {
   # equals_barray

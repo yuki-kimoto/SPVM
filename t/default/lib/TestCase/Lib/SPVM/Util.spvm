@@ -2507,35 +2507,6 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
-  sub test_get_type_name : int () {
-    {
-      my $minimal = TestCase::Minimal->new;
-      my $type_name = get_type_name($minimal);
-      
-      unless ($type_name eq "TestCase::Minimal") {
-        return 0;
-      }
-    }
-    {
-      my $obj = new TestCase::Minimal[3];
-      my $type_name = get_type_name($obj);
-      
-      unless ($type_name eq "TestCase::Minimal[]") {
-        return 0;
-      }
-    }
-    {
-      my $obj = new TestCase::Minimal[][3];
-      my $type_name = get_type_name($obj);
-      
-      unless ($type_name eq "TestCase::Minimal[][]") {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
   sub test_copy_str : int () {
     my $string = "abc";
     my $string_out = copy_str($string);

@@ -858,6 +858,7 @@ t/default/lib/TestCase/Print.spvm
 t/default/lib/TestCase/Private.spvm
 t/default/lib/TestCase/Ref.spvm
 t/default/lib/TestCase/Refcnt.spvm
+t/default/lib/TestCase/Refop.spvm
 t/default/lib/TestCase/Remainder.spvm
 t/default/lib/TestCase/Return.spvm
 t/default/lib/TestCase/Seqop.spvm
@@ -893,6 +894,7 @@ t/default/precedence.t
 t/default/print.t
 t/default/ref.t
 t/default/refcnt.t
+t/default/refop.t
 t/default/remainder.t
 t/default/return.t
 t/default/seqop.t
