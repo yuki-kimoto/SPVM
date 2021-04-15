@@ -468,6 +468,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "UNWEAKEN_FIELD",
     "ISWEAK_FIELD",
     "REFCNT",
+    "REFOP",
     "END_SUB",
   };
   

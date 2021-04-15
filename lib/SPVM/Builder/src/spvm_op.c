@@ -178,6 +178,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "BREAK",
     "WARN",
     "PRINT",
+    "REFOP",
   };
   
   return id_names;
@@ -3011,6 +3012,13 @@ SPVM_OP* SPVM_OP_build_refcnt(SPVM_COMPILER* compiler, SPVM_OP* op_refcnt, SPVM_
   SPVM_OP_insert_child(compiler, op_refcnt, op_refcnt->last, op_term);
   
   return op_refcnt;
+}
+
+SPVM_OP* SPVM_OP_build_refop(SPVM_COMPILER* compiler, SPVM_OP* op_refop, SPVM_OP* op_term) {
+  
+  SPVM_OP_insert_child(compiler, op_refop, op_refop->last, op_term);
+  
+  return op_refop;
 }
 
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term) {

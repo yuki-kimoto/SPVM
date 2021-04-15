@@ -4309,6 +4309,17 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         }
         break;
       }
+      case SPVM_OPCODE_C_ID_REFOP: {
+        void* object = object_vars[opcode->operand1];
+        if (object == NULL) {
+          object_vars[opcode->operand0] = NULL;
+        }
+        else {
+          void* type_name = env->get_type_name(env, object);
+          object_vars[opcode->operand0] = type_name;
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_REF_BYTE:
         *(void**)&ref_vars[opcode->operand0] = &byte_vars[opcode->operand1];
         break;

@@ -778,6 +778,22 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           
                           break;
                         }
+                        case SPVM_OP_C_ID_REFOP : {
+                          
+                          SPVM_OPCODE opcode;
+                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
+
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_REFOP);
+                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                          int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src);
+                          
+                          opcode.operand0 = mem_id_out;
+                          opcode.operand1 = mem_id_in;
+
+                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
+                          
+                          break;
+                        }
                         case SPVM_OP_C_ID_UNDEF : {
 
                           SPVM_OPCODE opcode;

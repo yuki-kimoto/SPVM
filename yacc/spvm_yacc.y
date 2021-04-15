@@ -54,7 +54,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT REFOP
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -708,6 +708,7 @@ expression
   | assign
   | inc
   | dec
+  | refop
   | '(' expressions ')'
     {
       if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -735,6 +736,12 @@ refcnt
   : REFCNT var
     {
       $$ = SPVM_OP_build_refcnt(compiler, $1, $2);
+    }
+
+refop
+  : REFOP expression
+    {
+      $$ = SPVM_OP_build_refop(compiler, $1, $2);
     }
 
 expressions

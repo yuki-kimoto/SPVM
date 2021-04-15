@@ -1,3 +1,5 @@
+0.0942 2021-04-15
+  - add ref operator to get object type name
 0.0941 2021-04-14
   - add SPVM::Hash->newa again. argument become oarray type
   

@@ -178,6 +178,7 @@ enum {
   SPVM_OP_C_ID_BREAK,
   SPVM_OP_C_ID_WARN,
   SPVM_OP_C_ID_PRINT,
+  SPVM_OP_C_ID_REFOP,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -278,6 +279,8 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current,
 SPVM_OP* SPVM_OP_new_op_assign_bool(SPVM_COMPILER* compiler, SPVM_OP* op_operand, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_build_refcnt(SPVM_COMPILER* compiler, SPVM_OP* op_refcnt, SPVM_OP* op_term);
+
+SPVM_OP* SPVM_OP_build_refop(SPVM_COMPILER* compiler, SPVM_OP* op_refop, SPVM_OP* op_term);
 
 SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op_expression);
 
