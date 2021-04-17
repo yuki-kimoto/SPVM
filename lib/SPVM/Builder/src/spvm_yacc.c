@@ -153,7 +153,7 @@
      REFOP = 334,
      REFCNT = 335,
      ISWEAK = 336,
-     LENGTH = 337,
+     STRING_LENGTH = 337,
      SCALAR = 338,
      CONVERT = 339,
      MINUS = 340,
@@ -247,7 +247,7 @@
 #define REFOP 334
 #define REFCNT 335
 #define ISWEAK 336
-#define LENGTH 337
+#define STRING_LENGTH 337
 #define SCALAR 338
 #define CONVERT 339
 #define MINUS 340
@@ -747,9 +747,9 @@ static const char *const yytname[] =
   "STRNE", "STREQ", "NUMNE", "NUMEQ", "ISA", "STRLE", "STRLT", "STRGE",
   "STRGT", "NUMLE", "NUMLT", "NUMGE", "NUMGT", "SHIFT", "'+'", "'-'",
   "'.'", "REMAINDER", "DIVIDE", "MULTIPLY", "'@'", "SPACE_SHIP", "REFOP",
-  "REFCNT", "ISWEAK", "LENGTH", "SCALAR", "CONVERT", "MINUS", "PLUS",
-  "DEREF", "CREATE_REF", "BIT_NOT", "LOGICAL_NOT", "DEC", "INC", "ARROW",
-  "':'", "';'", "'}'", "')'", "','", "']'", "$accept", "grammar",
+  "REFCNT", "ISWEAK", "STRING_LENGTH", "SCALAR", "CONVERT", "MINUS",
+  "PLUS", "DEREF", "CREATE_REF", "BIT_NOT", "LOGICAL_NOT", "DEC", "INC",
+  "ARROW", "':'", "';'", "'}'", "')'", "','", "']'", "$accept", "grammar",
   "opt_packages", "packages", "package", "package_block",
   "opt_declarations", "declarations", "declaration", "init_block", "use",
   "require", "allow", "enumeration", "enumeration_block",

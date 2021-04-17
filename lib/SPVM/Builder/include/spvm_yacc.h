@@ -118,7 +118,7 @@
      REFOP = 334,
      REFCNT = 335,
      ISWEAK = 336,
-     LENGTH = 337,
+     STRING_LENGTH = 337,
      SCALAR = 338,
      CONVERT = 339,
      MINUS = 340,
@@ -212,7 +212,7 @@
 #define REFOP 334
 #define REFCNT 335
 #define ISWEAK 336
-#define LENGTH 337
+#define STRING_LENGTH 337
 #define SCALAR 338
 #define CONVERT 339
 #define MINUS 340
