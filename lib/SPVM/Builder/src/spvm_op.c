@@ -179,6 +179,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "WARN",
     "PRINT",
     "REFOP",
+    "SPACE_SHIP",
   };
   
   return id_names;
@@ -2809,15 +2810,6 @@ SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op
   SPVM_OP_build_assign(compiler, op_assign, op_var, op_isa);
   
   return op_assign;
-}
-
-SPVM_OP* SPVM_OP_build_concat(SPVM_COMPILER* compiler, SPVM_OP* op_cancat, SPVM_OP* op_first, SPVM_OP* op_last) {
-  
-  // Build op
-  SPVM_OP_insert_child(compiler, op_cancat, op_cancat->last, op_first);
-  SPVM_OP_insert_child(compiler, op_cancat, op_cancat->last, op_last);
-  
-  return op_cancat;
 }
 
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {

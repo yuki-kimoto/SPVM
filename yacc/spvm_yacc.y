@@ -850,7 +850,7 @@ binary_op
     }
   | expression '.' expression
     {
-      $$ = SPVM_OP_build_concat(compiler, $2, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
 
 num_comparison_op
