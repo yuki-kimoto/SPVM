@@ -697,9 +697,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else {
           if (*compiler->bufptr == '>') {
             compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPACE_SHIP);
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_CMP);
             yylvalp->opval = op;
-            return SPACE_SHIP;
+            return STRING_CMP;
           }
           else {
             compiler->bufptr++;

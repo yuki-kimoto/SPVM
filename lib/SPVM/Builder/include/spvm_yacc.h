@@ -101,8 +101,8 @@
      STREQ = 317,
      NUMNE = 318,
      NUMEQ = 319,
-     CMP = 320,
-     SPACE_SHIP = 321,
+     STRING_CMP = 320,
+     NUMERIC_CMP = 321,
      ISA = 322,
      STRLE = 323,
      STRLT = 324,
@@ -196,8 +196,8 @@
 #define STREQ 317
 #define NUMNE 318
 #define NUMEQ 319
-#define CMP 320
-#define SPACE_SHIP 321
+#define STRING_CMP 320
+#define NUMERIC_CMP 321
 #define ISA 322
 #define STRLE 323
 #define STRLT 324

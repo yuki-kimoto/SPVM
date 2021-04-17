@@ -50,7 +50,7 @@
 %left <opval> BIT_OR BIT_XOR
 %left <opval> '&'
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA SPACE_SHIP CMP
+%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER

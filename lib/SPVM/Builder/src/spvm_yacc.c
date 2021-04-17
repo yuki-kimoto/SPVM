@@ -136,8 +136,8 @@
      STREQ = 317,
      NUMNE = 318,
      NUMEQ = 319,
-     CMP = 320,
-     SPACE_SHIP = 321,
+     STRING_CMP = 320,
+     NUMERIC_CMP = 321,
      ISA = 322,
      STRLE = 323,
      STRLT = 324,
@@ -231,8 +231,8 @@
 #define STREQ 317
 #define NUMNE 318
 #define NUMEQ 319
-#define CMP 320
-#define SPACE_SHIP 321
+#define STRING_CMP 320
+#define NUMERIC_CMP 321
 #define ISA 322
 #define STRLE 323
 #define STRLT 324
@@ -744,13 +744,13 @@ static const char *const yytname[] =
   "WO", "INIT", "NEW", "RETURN", "WEAKEN", "DIE", "WARN", "PRINT",
   "CURRENT_PACKAGE", "'['", "UNWEAKEN", "'{'", "'('", "SPECIAL_ASSIGN",
   "ASSIGN", "LOGICAL_OR", "LOGICAL_AND", "BIT_XOR", "BIT_OR", "'&'",
-  "STRNE", "STREQ", "NUMNE", "NUMEQ", "CMP", "SPACE_SHIP", "ISA", "STRLE",
-  "STRLT", "STRGE", "STRGT", "NUMLE", "NUMLT", "NUMGE", "NUMGT", "SHIFT",
-  "'+'", "'-'", "'.'", "REMAINDER", "DIVIDE", "MULTIPLY", "'@'", "REFOP",
-  "REFCNT", "ISWEAK", "STRING_LENGTH", "SCALAR", "CONVERT", "MINUS",
-  "PLUS", "DEREF", "CREATE_REF", "BIT_NOT", "LOGICAL_NOT", "DEC", "INC",
-  "ARROW", "':'", "';'", "'}'", "')'", "','", "']'", "$accept", "grammar",
-  "opt_packages", "packages", "package", "package_block",
+  "STRNE", "STREQ", "NUMNE", "NUMEQ", "STRING_CMP", "NUMERIC_CMP", "ISA",
+  "STRLE", "STRLT", "STRGE", "STRGT", "NUMLE", "NUMLT", "NUMGE", "NUMGT",
+  "SHIFT", "'+'", "'-'", "'.'", "REMAINDER", "DIVIDE", "MULTIPLY", "'@'",
+  "REFOP", "REFCNT", "ISWEAK", "STRING_LENGTH", "SCALAR", "CONVERT",
+  "MINUS", "PLUS", "DEREF", "CREATE_REF", "BIT_NOT", "LOGICAL_NOT", "DEC",
+  "INC", "ARROW", "':'", "';'", "'}'", "')'", "','", "']'", "$accept",
+  "grammar", "opt_packages", "packages", "package", "package_block",
   "opt_declarations", "declarations", "declaration", "init_block", "use",
   "require", "allow", "enumeration", "enumeration_block",
   "opt_enumeration_values", "enumeration_values", "enumeration_value",

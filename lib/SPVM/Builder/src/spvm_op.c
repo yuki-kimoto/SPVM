@@ -179,7 +179,8 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "WARN",
     "PRINT",
     "REFOP",
-    "SPACE_SHIP",
+    "NUMERIC_CMP",
+    "STRING_CMP",
   };
   
   return id_names;
