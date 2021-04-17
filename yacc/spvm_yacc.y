@@ -34,7 +34,7 @@
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block init_block switch_block if_require_statement
-%type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
+%type <opval> unary_op binary_op comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow
@@ -50,11 +50,11 @@
 %left <opval> BIT_OR BIT_XOR
 %left <opval> '&'
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
-%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA
+%nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA SPACE_SHIP CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP SPACE_SHIP
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -722,8 +722,7 @@ expression
     }
   | CURRENT_PACKAGE
   | isweak_field
-  | num_comparison_op
-  | str_comparison_op
+  | comparison_op
   | isa
   | logical_op
 
@@ -856,7 +855,7 @@ binary_op
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
 
-num_comparison_op
+comparison_op
   : expression NUMEQ expression
     {
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
@@ -881,9 +880,7 @@ num_comparison_op
     {
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
     }
-
-str_comparison_op
-  : expression STREQ expression
+  | expression STREQ expression
     {
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
     }
@@ -907,13 +904,13 @@ str_comparison_op
     {
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
     }
-    
 isa
   : expression ISA type
     {
       $$ = SPVM_OP_build_isa(compiler, $2, $1, $3);
     }
 
+    
 logical_op
   : expression LOGICAL_OR expression
     {

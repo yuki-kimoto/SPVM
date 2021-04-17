@@ -180,6 +180,7 @@ enum {
   SPVM_OP_C_ID_PRINT,
   SPVM_OP_C_ID_REFOP,
   SPVM_OP_C_ID_SPACE_SHIP,
+  SPVM_OP_C_ID_CMP,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

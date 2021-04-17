@@ -2750,6 +2750,21 @@ SPVM_OP* SPVM_OP_build_comparison_op(SPVM_COMPILER* compiler, SPVM_OP* op_compar
   return op_assign;
 }
 
+SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term, SPVM_OP* op_type) {
+  
+  // Build op
+  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_term);
+  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_type);
+
+  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "@condition_flag", op_isa->file, op_isa->line);
+  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
+  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_isa->file, op_isa->line);
+  SPVM_OP_build_assign(compiler, op_assign, op_var, op_isa);
+  
+  return op_assign;
+}
+
+
 SPVM_OP* SPVM_OP_build_binary_op(SPVM_COMPILER* compiler, SPVM_OP* op_bin, SPVM_OP* op_first, SPVM_OP* op_last) {
   
   // Build op
@@ -2783,20 +2798,6 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   return op_dec;
 }
 
-
-SPVM_OP* SPVM_OP_build_isa(SPVM_COMPILER* compiler, SPVM_OP* op_isa, SPVM_OP* op_term, SPVM_OP* op_type) {
-  
-  // Build op
-  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_term);
-  SPVM_OP_insert_child(compiler, op_isa, op_isa->last, op_type);
-
-  SPVM_OP* op_name_var = SPVM_OP_new_op_name(compiler, "@condition_flag", op_isa->file, op_isa->line);
-  SPVM_OP* op_var = SPVM_OP_new_op_var(compiler, op_name_var);
-  SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_isa->file, op_isa->line);
-  SPVM_OP_build_assign(compiler, op_assign, op_var, op_isa);
-  
-  return op_assign;
-}
 
 SPVM_OP* SPVM_OP_build_and(SPVM_COMPILER* compiler, SPVM_OP* op_and, SPVM_OP* op_first, SPVM_OP* op_last) {
   
