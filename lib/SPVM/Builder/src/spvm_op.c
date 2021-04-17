@@ -244,20 +244,6 @@ SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const cha
   return op_type;
 }
 
-SPVM_OP* SPVM_OP_build_deref(SPVM_COMPILER* compiler, SPVM_OP* op_deref, SPVM_OP* op_var) {
-  
-  SPVM_OP_insert_child(compiler, op_deref, op_deref->last, op_var);
-
-  return op_deref;
-}
-
-SPVM_OP* SPVM_OP_build_ref(SPVM_COMPILER* compiler, SPVM_OP* op_ref, SPVM_OP* op_var) {
-  
-  SPVM_OP_insert_child(compiler, op_ref, op_ref->last, op_var);
-  
-  return op_ref;
-}
-
 int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
   (void)compiler;
   
@@ -467,7 +453,7 @@ SPVM_OP* SPVM_OP_new_op_deref_clone(SPVM_COMPILER* compiler, SPVM_OP* original_o
   
   SPVM_OP* op_var = SPVM_OP_new_op_var_clone_var_or_assign(compiler, original_op_deref->first);
   
-  SPVM_OP_build_deref(compiler, op_deref, op_var);
+  SPVM_OP_build_unary_op(compiler, op_deref, op_var);
   
   return op_deref;
 }
@@ -2995,20 +2981,6 @@ SPVM_OP* SPVM_OP_build_expression_statement(SPVM_COMPILER* compiler, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_free_tmp, op_free_tmp->last, op_expression);
   
   return op_free_tmp;
-}
-
-SPVM_OP* SPVM_OP_build_refcnt(SPVM_COMPILER* compiler, SPVM_OP* op_refcnt, SPVM_OP* op_term) {
-  
-  SPVM_OP_insert_child(compiler, op_refcnt, op_refcnt->last, op_term);
-  
-  return op_refcnt;
-}
-
-SPVM_OP* SPVM_OP_build_refop(SPVM_COMPILER* compiler, SPVM_OP* op_refop, SPVM_OP* op_term) {
-  
-  SPVM_OP_insert_child(compiler, op_refop, op_refop->last, op_term);
-  
-  return op_refop;
 }
 
 SPVM_OP* SPVM_OP_build_die(SPVM_COMPILER* compiler, SPVM_OP* op_die, SPVM_OP* op_term) {

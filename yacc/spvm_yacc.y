@@ -26,10 +26,10 @@
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_PACKAGE UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_packages packages package package_block refcnt
+%type <opval> opt_packages packages package package_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub anon_sub opt_args args arg invocant has use require our string_length
+%type <opval> sub anon_sub opt_args args arg invocant has use require our
 %type <opval> opt_descriptors descriptors sub_names opt_sub_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -37,7 +37,7 @@
 %type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
 %type <opval> call_sub opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
-%type <opval> deref ref assign inc dec allow refop
+%type <opval> assign inc dec allow
 %type <opval> new array_init
 %type <opval> my_var var
 %type <opval> expression opt_expressions expressions opt_expression case_statements
@@ -54,7 +54,7 @@
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
 %left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT REFOP
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR LENGTH ISWEAK REFCNT REFOP SPACE_SHIP
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -698,17 +698,12 @@ expression
   | new
   | array_init
   | array_length
-  | string_length
-  | refcnt
   | my_var
-  | binary_op
   | unary_op
-  | ref
-  | deref
+  | binary_op
   | assign
   | inc
   | dec
-  | refop
   | '(' expressions ')'
     {
       if ($2->id == SPVM_OP_C_ID_LIST) {
@@ -731,18 +726,6 @@ expression
   | str_comparison_op
   | isa
   | logical_op
-
-refcnt
-  : REFCNT var
-    {
-      $$ = SPVM_OP_build_refcnt(compiler, $1, $2);
-    }
-
-refop
-  : REFOP expression
-    {
-      $$ = SPVM_OP_build_refop(compiler, $1, $2);
-    }
 
 expressions
   : expressions ',' expression
@@ -780,6 +763,26 @@ unary_op
       $$ = SPVM_OP_build_unary_op(compiler, op_negate, $2);
     }
   | BIT_NOT expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | REFCNT var
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | REFOP expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | LENGTH expression
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | DEREF var
+    {
+      $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
+    }
+  | CREATE_REF var
     {
       $$ = SPVM_OP_build_unary_op(compiler, $1, $2);
     }
@@ -1080,25 +1083,6 @@ array_length
     {
       SPVM_OP* op_array_length = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_LENGTH, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_array_length(compiler, op_array_length, $4);
-    }
-
-string_length
-  : LENGTH expression
-    {
-      $$ = SPVM_OP_build_string_length(compiler, $1, $2);
-    }
-    
-deref
-  : DEREF var
-    {
-      $$ = SPVM_OP_build_deref(compiler, $1, $2);
-    }
-
-ref
-  : CREATE_REF var
-    {
-      SPVM_OP* op_ref = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CREATE_REF, $1->file, $1->line);
-      $$ = SPVM_OP_build_ref(compiler, op_ref, $2);
     }
 
 my_var

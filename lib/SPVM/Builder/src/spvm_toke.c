@@ -695,10 +695,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
         // <
         else {
-          compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LT);
-          yylvalp->opval = op;
-          return NUMLT;
+          if (*compiler->bufptr == '>') {
+            compiler->bufptr++;
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPACE_SHIP);
+            yylvalp->opval = op;
+            return SPACE_SHIP;
+          }
+          else {
+            compiler->bufptr++;
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LT);
+            yylvalp->opval = op;
+            return NUMLT;
+          }
         }
       
       case '>':
@@ -1259,6 +1267,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '\\':
         compiler->bufptr++;
+        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CREATE_REF);
+        yylvalp->opval = op;
         return CREATE_REF;
       default:
         // Variable
