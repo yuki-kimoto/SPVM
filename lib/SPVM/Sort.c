@@ -361,113 +361,76 @@ static void DualPivotQuickSort_double(double* arr, int32_t low, int32_t high)
     } 
 }
 
-int32_t SPNATIVE__SPVM__Sort__sortb(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Sort__sortb_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* onums = stack[0].oval;
+  void* sv_nums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
   
-  if (onums == NULL) {
-    return env->die(env, "Array must be defined", MFILE, __LINE__);
-  }
-
-  int32_t array_length = env->length(env, onums);
-  if (array_length == 0) {
-    return 0;
-  }
+  int8_t* nums = env->get_elems_byte(env, sv_nums);
   
-  int8_t* nums = env->get_elems_byte(env, onums);
-  
-  DualPivotQuickSort_byte(nums, 0, array_length - 1);
+  DualPivotQuickSort_byte(nums, offset, offset + length - 1);
   
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Sort__sorts(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Sort__sorts_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  void* onums = stack[0].oval;
+  void* sv_nums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
   
-  if (onums == NULL) {
-    return env->die(env, "Array must be defined", MFILE, __LINE__);
-  }
+  int16_t* nums = env->get_elems_short(env, sv_nums);
   
-  if (onums == NULL) {
-    return env->die(env, "Array must be defined", MFILE, __LINE__);
-  }
-
-  int32_t array_length = env->length(env, onums);
-  if (array_length == 0) {
-    return 0;
-  }
-  
-  int16_t* nums = env->get_elems_short(env, onums);
-  
-  DualPivotQuickSort_short(nums, 0, array_length - 1);
+  DualPivotQuickSort_short(nums, offset, offset + length - 1);
   
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Sort__sorti(SPVM_ENV* env, SPVM_VALUE* stack) {
-  void* onums = stack[0].oval;
+int32_t SPNATIVE__SPVM__Sort__sorti_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* sv_nums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
   
-  if (onums == NULL) {
-    return env->die(env, "Array must be defined", MFILE, __LINE__);
-  }
-
-  int32_t array_length = env->length(env, onums);
-  if (array_length == 0) {
-    return 0;
-  }
+  int32_t* nums = env->get_elems_int(env, sv_nums);
   
-  int32_t* nums = env->get_elems_int(env, onums);
-  
-  DualPivotQuickSort_int(nums, 0, array_length - 1);
+  DualPivotQuickSort_int(nums, offset, offset + length - 1);
   
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Sort__sortl(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Sort__sortl_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* sv_nums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
   
-  void* onums = stack[0].oval;
-
-  int32_t array_length = env->length(env, onums);
-  if (array_length == 0) {
-    return 0;
-  }
+  int64_t* nums = env->get_elems_long(env, sv_nums);
   
-  int64_t* nums = env->get_elems_long(env, onums);
-  
-  DualPivotQuickSort_long(nums, 0, array_length - 1);
+  DualPivotQuickSort_long(nums, offset, offset + length - 1);
   
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Sort__sortf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Sort__sortf_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* sv_nums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
   
-  void* onums = stack[0].oval;
+  float* nums = env->get_elems_float(env, sv_nums);
   
-  int32_t array_length = env->length(env, onums);
-  if (array_length == 0) {
-    return 0;
-  }
-  
-  float* nums = env->get_elems_float(env, onums);
-  
-  DualPivotQuickSort_float(nums, 0, array_length - 1);
+  DualPivotQuickSort_float(nums, offset, offset + length - 1);
   
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Sort__sortd(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Sort__sortd_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  void* sv_nums = stack[0].oval;
+  int32_t offset = stack[1].ival;
+  int32_t length = stack[2].ival;
   
-  void* onums = stack[0].oval;
-
-  int32_t array_length = env->length(env, onums);
-  if (array_length == 0) {
-    return 0;
-  }
+  double* nums = env->get_elems_double(env, sv_nums);
   
-  double* nums = env->get_elems_double(env, onums);
-  
-  DualPivotQuickSort_double(nums, 0, array_length - 1);
+  DualPivotQuickSort_double(nums, offset, offset + length - 1);
   
   return 0;
 }

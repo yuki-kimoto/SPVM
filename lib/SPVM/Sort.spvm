@@ -1,13 +1,198 @@
 package SPVM::Sort : precompile {
   use SPVM::Comparator;
   use SPVM::Util(new_object_array_proto);
+  
+  sortb($nums, $offset, $length, sub : int ($self : self, $a : int, $b : int) {
+    return $a <=> $b;
+  );
+  
+  enum {
+    ASC,
+    DESC,
+  }
+  sub sortb : void ($nums : byte[], $offset : int, $length : int, $flag : int) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length is out of range";
+    }
+    
+    sortb_native($nums, $offset, $length);
+  }
+  private native sub sortb_native : void ($nums : byte[]);
+  
+  sub sorts : void ($nums : short[], $offset : int, $length : int) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length is out of range";
+    }
+    
+    
+    sorts_native($nums, $offset, $length);
+  }
+  private native sub sorts_native : void ($nums : short[]);
+  
+  sub sorti : void ($nums : int[], $offset : int, $length : int) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length is out of range";
+    }
+    
+    
+    sorti_native($nums, $offset, $length);
+  }
+  private native sub sorti_native : void ($nums : int[]);
+  
+  sub sortl : void ($nums : long[], $offset : int, $length : int) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length is out of range";
+    }
+    
+    
+    sortl_native($nums, $offset, $length);
+  }
+  private native sub sortl_native : void ($nums : long[]);
+  
+  sub sortf : void ($nums : float[], $offset : int, $length : int) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length is out of range";
+    }
+    
+    
+    sortf_native($nums, $offset, $length);
+  }
+  private native sub sortf_native : void ($nums : float[]);
+  
+  sub sortd : void ($nums : double[], $offset : int, $length : int) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length is out of range";
+    }
+    
+    sortd_native($nums, $offset, $length);
+  }
+  private native sub sortd_native : void ($nums : double[]);
+  
+  sub sorto : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length is out of range";
+    }
+    
+    my $length = @$objs;
+    my $b = new_object_array_proto($objs, $length);
+    _merge_sort($objs, $b, $offset, $offset + $length - 1, $length, $comparator);
+  }
 
-  native sub sortb : void ($nums : byte[]);
-  native sub sorts : void ($nums : short[]);
-  native sub sorti : void ($nums : int[]);
-  native sub sortl : void ($nums : long[]);
-  native sub sortf : void ($nums : float[]);
-  native sub sortd : void ($nums : double[]);
+  sub sortstr : void ($strs : string[], $offset : int, $length : int, ) {
+    sorto($strs, sub : int ($self : self, $a : object, $b : object) {
+      if (!$a || !$b) {
+        die "Can't compare undef value";
+      }
+      
+      if ((string)$a le (string)$b) {
+        return -1;
+      }
+      elsif ((string)$a ge (string)$b) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    });
+  }
 
   sub _merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
       my $i = $left;
@@ -56,32 +241,5 @@ package SPVM::Sort : precompile {
       _merge_sort($a, $b, $left, $mid, $n, $comparator);
       _merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
       _merge($a, $b, $left, $mid, $right, $n, $comparator);
-  }
-  
-  sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator) {
-    if ($objs == undef) {
-      die "Array must be defined";
-    }
-    my $length = @$objs;
-    my $b = new_object_array_proto($objs, $length);
-    _merge_sort($objs, $b, 0, $length - 1, $length, $comparator);
-  }
-
-  sub sortstr : void ($strs : string[]) {
-    sorto($strs, sub : int ($self : self, $a : object, $b : object) {
-      if (!$a || !$b) {
-        die "Can't compare undef value";
-      }
-      
-      if ((string)$a le (string)$b) {
-        return -1;
-      }
-      elsif ((string)$a ge (string)$b) {
-        return 1;
-      }
-      else {
-        return 0;
-      }
-    });
   }
 }
