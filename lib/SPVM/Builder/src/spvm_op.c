@@ -272,12 +272,14 @@ int32_t SPVM_OP_is_rel_op(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NUMERIC_GE:
     case SPVM_OP_C_ID_NUMERIC_LT:
     case SPVM_OP_C_ID_NUMERIC_LE:
+    case SPVM_OP_C_ID_NUMERIC_CMP:
     case SPVM_OP_C_ID_STRING_EQ:
     case SPVM_OP_C_ID_STRING_NE:
     case SPVM_OP_C_ID_STRING_GT:
     case SPVM_OP_C_ID_STRING_GE:
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
+    case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
       return 1;
   }
@@ -1177,12 +1179,14 @@ int32_t SPVM_OP_get_mem_id(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NUMERIC_GE:
     case SPVM_OP_C_ID_NUMERIC_LT:
     case SPVM_OP_C_ID_NUMERIC_LE:
+    case SPVM_OP_C_ID_NUMERIC_CMP:
     case SPVM_OP_C_ID_STRING_EQ:
     case SPVM_OP_C_ID_STRING_NE:
     case SPVM_OP_C_ID_STRING_GT:
     case SPVM_OP_C_ID_STRING_GE:
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
+    case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
     case SPVM_OP_C_ID_ISWEAK_FIELD:
       return 0;
@@ -1232,6 +1236,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_NUMERIC_GE:
     case SPVM_OP_C_ID_NUMERIC_LT:
     case SPVM_OP_C_ID_NUMERIC_LE:
+    case SPVM_OP_C_ID_NUMERIC_CMP:
     case SPVM_OP_C_ID_BOOL:
     case SPVM_OP_C_ID_STRING_EQ:
     case SPVM_OP_C_ID_STRING_NE:
@@ -1239,6 +1244,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_STRING_GE:
     case SPVM_OP_C_ID_STRING_LT:
     case SPVM_OP_C_ID_STRING_LE:
+    case SPVM_OP_C_ID_STRING_CMP:
     case SPVM_OP_C_ID_ISA:
     case SPVM_OP_C_ID_IF:
     case SPVM_OP_C_ID_ISWEAK_FIELD:

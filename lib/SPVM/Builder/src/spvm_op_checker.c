@@ -797,6 +797,157 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               break;
             }
+            case SPVM_OP_C_ID_NUMERIC_CMP: {
+
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+
+              // Left operand must be numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of > operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Right operand must be numeric type
+              if (!SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of > operator must be numeric type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+
+              // Apply binary numeric convertion
+              SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
+              if (compiler->error_count > 0) {
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_EQ: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_NE: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_GT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_GE: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_LT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_LE: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_STRING_CMP: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand must be string type
+              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
             case SPVM_OP_C_ID_NEW: {
               assert(op_cur->first);
               if (op_cur->first->id == SPVM_OP_C_ID_TYPE) {
@@ -1066,114 +1217,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 // Add type info to constant pool
                 SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type);
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_STRING_EQ: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_STRING_NE: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_STRING_GT: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_STRING_GE: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_STRING_LT: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_STRING_LE: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d\n", op_cur->file, op_cur->line);
-                return;
               }
               
               break;
@@ -3598,12 +3641,14 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_NUMERIC_GE:
                         case SPVM_OP_C_ID_NUMERIC_LT:
                         case SPVM_OP_C_ID_NUMERIC_LE:
+                        case SPVM_OP_C_ID_NUMERIC_CMP:
                         case SPVM_OP_C_ID_STRING_EQ:
                         case SPVM_OP_C_ID_STRING_NE:
                         case SPVM_OP_C_ID_STRING_GT:
                         case SPVM_OP_C_ID_STRING_GE:
                         case SPVM_OP_C_ID_STRING_LT:
                         case SPVM_OP_C_ID_STRING_LE:
+                        case SPVM_OP_C_ID_STRING_CMP:
                         case SPVM_OP_C_ID_ISA:
                         case SPVM_OP_C_ID_BOOL:
                           assert(0);

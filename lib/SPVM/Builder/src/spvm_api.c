@@ -1161,105 +1161,162 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
     int32_t opcode_id = opcode->id;
     
     switch (opcode_id) {
-      case SPVM_OPCODE_C_ID_BOOL_INT:
+      case SPVM_OPCODE_C_ID_BOOL_INT: {
         int_vars[0] = int_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_BOOL_LONG:
+      }
+      case SPVM_OPCODE_C_ID_BOOL_LONG: {
         int_vars[0] = !!long_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_BOOL_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_BOOL_FLOAT: {
         int_vars[0] = !!float_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_BOOL_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_BOOL_DOUBLE: {
         int_vars[0] = !!double_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_BOOL_OBJECT:
+      }
+      case SPVM_OPCODE_C_ID_BOOL_OBJECT: {
         int_vars[0] = !!*(void**)&object_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_IS_UNDEF:
+      }
+      case SPVM_OPCODE_C_ID_IS_UNDEF: {
         int_vars[0] = *(void**)&object_vars[opcode->operand1] == NULL;
         break;
-      case SPVM_OPCODE_C_ID_IS_NOT_UNDEF:
+      }
+      case SPVM_OPCODE_C_ID_IS_NOT_UNDEF: {
         int_vars[0] = *(void**)&object_vars[opcode->operand1] != NULL;
         break;
-      case SPVM_OPCODE_C_ID_EQ_INT:
+      }
+      case SPVM_OPCODE_C_ID_EQ_INT: {
         int_vars[0] = int_vars[opcode->operand1] == int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_EQ_LONG:
+      }
+      case SPVM_OPCODE_C_ID_EQ_LONG: {
         int_vars[0] = long_vars[opcode->operand1] == long_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_EQ_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_EQ_FLOAT: {
         int_vars[0] = float_vars[opcode->operand1] == float_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_EQ_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_EQ_DOUBLE: {
         int_vars[0] = double_vars[opcode->operand1] == double_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_EQ_OBJECT:
+      }
+      case SPVM_OPCODE_C_ID_EQ_OBJECT: {
         int_vars[0] = *(void**)&object_vars[opcode->operand1] == *(void**)&object_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_NE_INT:
+      }
+      case SPVM_OPCODE_C_ID_NE_INT: {
         int_vars[0] = int_vars[opcode->operand1] != int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_NE_LONG:
+      }
+      case SPVM_OPCODE_C_ID_NE_LONG: {
         int_vars[0] = long_vars[opcode->operand1] != long_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_NE_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_NE_FLOAT: {
         int_vars[0] = float_vars[opcode->operand1] != float_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_NE_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_NE_DOUBLE: {
         int_vars[0] = double_vars[opcode->operand1] != double_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_NE_OBJECT:
+      }
+      case SPVM_OPCODE_C_ID_NE_OBJECT: {
         int_vars[0] = *(void**)&object_vars[opcode->operand1] != *(void**)&object_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GT_INT:
+      }
+      case SPVM_OPCODE_C_ID_GT_INT: {
         int_vars[0] = int_vars[opcode->operand1] > int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GT_LONG:
+      }
+      case SPVM_OPCODE_C_ID_GT_LONG: {
         int_vars[0] = long_vars[opcode->operand1] > long_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GT_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_GT_FLOAT: {
         int_vars[0] = float_vars[opcode->operand1] > float_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GT_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_GT_DOUBLE: {
         int_vars[0] = double_vars[opcode->operand1] > double_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GE_INT:
+      }
+      case SPVM_OPCODE_C_ID_GE_INT: {
         int_vars[0] = int_vars[opcode->operand1] >= int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GE_LONG:
+      }
+      case SPVM_OPCODE_C_ID_GE_LONG: {
         int_vars[0] = long_vars[opcode->operand1] >= long_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GE_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_GE_FLOAT: {
         int_vars[0] = float_vars[opcode->operand1] >= float_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_GE_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_GE_DOUBLE: {
         int_vars[0] = double_vars[opcode->operand1] >= double_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LT_INT:
+      }
+      case SPVM_OPCODE_C_ID_LT_INT: {
         int_vars[0] = int_vars[opcode->operand1] < int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LT_LONG:
+      }
+      case SPVM_OPCODE_C_ID_LT_LONG: {
         int_vars[0] = long_vars[opcode->operand1] < long_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LT_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_LT_FLOAT: {
         int_vars[0] = float_vars[opcode->operand1] < float_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LT_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_LT_DOUBLE: {
         int_vars[0] = double_vars[opcode->operand1] < double_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LE_INT:
+      }
+      case SPVM_OPCODE_C_ID_LE_INT: {
         int_vars[0] = int_vars[opcode->operand1] <= int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LE_LONG:
+      }
+      case SPVM_OPCODE_C_ID_LE_LONG: {
         int_vars[0] = long_vars[opcode->operand1] <= long_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LE_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_LE_FLOAT: {
         int_vars[0] = float_vars[opcode->operand1] <= float_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_LE_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_LE_DOUBLE: {
         int_vars[0] = double_vars[opcode->operand1] <= double_vars[opcode->operand2];
         break;
+      }
+      case SPVM_OPCODE_C_ID_CMP_INT: {
+        int_vars[0] = int_vars[opcode->operand1] > int_vars[opcode->operand2] ? 1
+                    : int_vars[opcode->operand1] < int_vars[opcode->operand2] ? -1
+                    : 0;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CMP_LONG: {
+        int_vars[0] = long_vars[opcode->operand1] > long_vars[opcode->operand2] ? 1
+                    : long_vars[opcode->operand1] < long_vars[opcode->operand2] ? -1
+                    : 0;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CMP_FLOAT: {
+        int_vars[0] = float_vars[opcode->operand1] > float_vars[opcode->operand2] ? 1
+                    : float_vars[opcode->operand1] < float_vars[opcode->operand2] ? -1
+                    : 0;
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CMP_DOUBLE: {
+        int_vars[0] = double_vars[opcode->operand1] > double_vars[opcode->operand2] ? 1
+                    : double_vars[opcode->operand1] < double_vars[opcode->operand2] ? -1
+                    : 0;
+        break;
+      }
       case SPVM_OPCODE_C_ID_IS_TYPE: {
         void* object = *(void**)&object_vars[opcode->operand1];
         int32_t check_basic_type_id = opcode->operand2;
@@ -1293,6 +1350,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       case SPVM_OPCODE_C_ID_STRING_GE:
       case SPVM_OPCODE_C_ID_STRING_LT:
       case SPVM_OPCODE_C_ID_STRING_LE:
+      case SPVM_OPCODE_C_ID_STRING_CMP:
       {
         void* object1 = *(void**)&object_vars[opcode->operand1];
         void* object2 = *(void**)&object_vars[opcode->operand2];
@@ -1322,24 +1380,34 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
           }
           
           switch (opcode_id) {
-            case SPVM_OPCODE_C_ID_STRING_EQ:
+            case SPVM_OPCODE_C_ID_STRING_EQ: {
               int_vars[0] = (cmp == 0);
               break;
-            case SPVM_OPCODE_C_ID_STRING_NE:
+            }
+            case SPVM_OPCODE_C_ID_STRING_NE: {
               int_vars[0] = (cmp != 0);
               break;
-            case SPVM_OPCODE_C_ID_STRING_GT:
+            }
+            case SPVM_OPCODE_C_ID_STRING_GT: {
               int_vars[0] = (cmp == 1);
               break;
-            case SPVM_OPCODE_C_ID_STRING_GE:
+            }
+            case SPVM_OPCODE_C_ID_STRING_GE: {
               int_vars[0] = (cmp >= 0);
               break;
-            case SPVM_OPCODE_C_ID_STRING_LT:
+            }
+            case SPVM_OPCODE_C_ID_STRING_LT: {
               int_vars[0] = (cmp == -1);
               break;
-            case SPVM_OPCODE_C_ID_STRING_LE:
+            }
+            case SPVM_OPCODE_C_ID_STRING_LE: {
               int_vars[0] = (cmp <= 0);
               break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_CMP: {
+              int_vars[0] = cmp;
+              break;
+            }
           }
         }
 
