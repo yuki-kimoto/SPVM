@@ -2062,12 +2062,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     
     // Subroutine declarations
     {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
-        if (package->subs->length != 1) {
-          SPVM_COMPILER_error(compiler, "Callback type must have only one method at %s line %d\n", op_package->file, op_package->line);
-        }
-      }
-
       int32_t i;
       for (i = 0; i < package->subs->length; i++) {
         SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, i);
