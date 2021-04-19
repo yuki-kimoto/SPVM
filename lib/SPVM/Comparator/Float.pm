@@ -4,7 +4,7 @@ package SPVM::Comparator::Float;
 
 =head1 NAME
 
-SPVM::Comparator - a callback type for comparation
+SPVM::Comparator::Float - a callback type for float comparation
 
 =head1 SYNOPSYS
   

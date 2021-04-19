@@ -480,7 +480,19 @@ SPVM Core Modules.
 
 =item * L<SPVM::Cloner>
 
-=item * L<SPVM::Comparator>
+=item * L<SPVM::Comparator::Byte>
+
+=item * L<SPVM::Comparator::Short>
+
+=item * L<SPVM::Comparator::Int>
+
+=item * L<SPVM::Comparator::Long>
+
+=item * L<SPVM::Comparator::Float>
+
+=item * L<SPVM::Comparator::Double>
+
+=item * L<SPVM::Comparator::Object>
 
 =item * L<SPVM::Complex_2d>
 

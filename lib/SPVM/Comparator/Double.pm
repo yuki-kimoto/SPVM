@@ -4,7 +4,7 @@ package SPVM::Comparator::Double;
 
 =head1 NAME
 
-SPVM::Comparator - a callback type for comparation
+SPVM::Comparator::Double - a callback type for double comparation
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::Comparator::Int;
 
 =head1 NAME
 
-SPVM::Comparator - a callback type for comparation
+SPVM::Comparator::Int - a callback type for int comparation
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::Comparator::Long;
 
 =head1 NAME
 
-SPVM::Comparator - a callback type for comparation
+SPVM::Comparator::Long - a callback type for long comparation
 
 =head1 SYNOPSYS
   

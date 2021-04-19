@@ -1,7 +1,7 @@
 package TestCase::Isa {
   use TestCase::Minimal;
   use TestCase::Simple;
-  use SPVM::Comparator;
+  use SPVM::Comparator::Object;
   use SPVM::Complex_2d;
   use SPVM::Complex_2f;
 
@@ -92,9 +92,9 @@ package TestCase::Isa {
     my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
       
     };
-    if ($comparator isa SPVM::Comparator) {
+    if ($comparator isa SPVM::Comparator::Object) {
       my $object : object = $comparator;
-      if ($object isa SPVM::Comparator) {
+      if ($object isa SPVM::Comparator::Object) {
         return 1;
       }
     }
@@ -103,9 +103,9 @@ package TestCase::Isa {
   }
 
   sub isa_not_match_callback_undef : int () {
-    my $comparator : SPVM::Comparator;
+    my $comparator : SPVM::Comparator::Object;
     
-    if (!($comparator isa SPVM::Comparator)) {
+    if (!($comparator isa SPVM::Comparator::Object)) {
       return 1;
     }
     
@@ -114,7 +114,7 @@ package TestCase::Isa {
 
   sub isa_not_match_callback : int () {
     my $minimal : TestCase::Minimal = TestCase::Minimal->new;
-    if (!($minimal isa SPVM::Comparator)) {
+    if (!($minimal isa SPVM::Comparator::Object)) {
       return 1;
     }
     

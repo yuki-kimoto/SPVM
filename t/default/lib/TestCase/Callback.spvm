@@ -3,7 +3,7 @@ package TestCase::Callback {
   use TestCase::Callback::Callback;
   use TestCase::Callback::ImplementCallback1;
   use TestCase::Callback::ImplementCallback2;
-  use SPVM::Comparator;
+  use SPVM::Comparator::Object;
   
   our $var_prec : int;
   INIT {
@@ -44,7 +44,7 @@ package TestCase::Callback {
     return 1;
   }
   
-  sub sort_obj : void ($values : oarray, $comparator : SPVM::Comparator) {
+  sub sort_obj : void ($values : oarray, $comparator : SPVM::Comparator::Object) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){

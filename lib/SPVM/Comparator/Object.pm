@@ -4,7 +4,7 @@ package SPVM::Comparator::Object;
 
 =head1 NAME
 
-SPVM::Comparator - a callback type for comparation
+SPVM::Comparator::Object - a callback type for comparation
 
 =head1 SYNOPSYS
   
