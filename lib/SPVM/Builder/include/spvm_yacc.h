@@ -101,34 +101,36 @@
      STREQ = 317,
      NUMNE = 318,
      NUMEQ = 319,
-     ISA = 320,
-     STRLE = 321,
-     STRLT = 322,
-     STRGE = 323,
-     STRGT = 324,
-     NUMLE = 325,
-     NUMLT = 326,
-     NUMGE = 327,
-     NUMGT = 328,
-     SHIFT = 329,
-     REMAINDER = 330,
-     DIVIDE = 331,
-     MULTIPLY = 332,
-     REFOP = 333,
-     REFCNT = 334,
-     ISWEAK = 335,
-     LENGTH = 336,
-     SCALAR = 337,
-     CONVERT = 338,
-     MINUS = 339,
-     PLUS = 340,
-     DEREF = 341,
-     CREATE_REF = 342,
-     BIT_NOT = 343,
-     LOGICAL_NOT = 344,
-     DEC = 345,
-     INC = 346,
-     ARROW = 347
+     STRING_CMP = 320,
+     NUMERIC_CMP = 321,
+     ISA = 322,
+     STRLE = 323,
+     STRLT = 324,
+     STRGE = 325,
+     STRGT = 326,
+     NUMLE = 327,
+     NUMLT = 328,
+     NUMGE = 329,
+     NUMGT = 330,
+     SHIFT = 331,
+     REMAINDER = 332,
+     DIVIDE = 333,
+     MULTIPLY = 334,
+     REFOP = 335,
+     REFCNT = 336,
+     ISWEAK = 337,
+     STRING_LENGTH = 338,
+     SCALAR = 339,
+     CONVERT = 340,
+     MINUS = 341,
+     PLUS = 342,
+     DEREF = 343,
+     CREATE_REF = 344,
+     BIT_NOT = 345,
+     LOGICAL_NOT = 346,
+     DEC = 347,
+     INC = 348,
+     ARROW = 349
    };
 #endif
 /* Tokens.  */
@@ -194,34 +196,36 @@
 #define STREQ 317
 #define NUMNE 318
 #define NUMEQ 319
-#define ISA 320
-#define STRLE 321
-#define STRLT 322
-#define STRGE 323
-#define STRGT 324
-#define NUMLE 325
-#define NUMLT 326
-#define NUMGE 327
-#define NUMGT 328
-#define SHIFT 329
-#define REMAINDER 330
-#define DIVIDE 331
-#define MULTIPLY 332
-#define REFOP 333
-#define REFCNT 334
-#define ISWEAK 335
-#define LENGTH 336
-#define SCALAR 337
-#define CONVERT 338
-#define MINUS 339
-#define PLUS 340
-#define DEREF 341
-#define CREATE_REF 342
-#define BIT_NOT 343
-#define LOGICAL_NOT 344
-#define DEC 345
-#define INC 346
-#define ARROW 347
+#define STRING_CMP 320
+#define NUMERIC_CMP 321
+#define ISA 322
+#define STRLE 323
+#define STRLT 324
+#define STRGE 325
+#define STRGT 326
+#define NUMLE 327
+#define NUMLT 328
+#define NUMGE 329
+#define NUMGT 330
+#define SHIFT 331
+#define REMAINDER 332
+#define DIVIDE 333
+#define MULTIPLY 334
+#define REFOP 335
+#define REFCNT 336
+#define ISWEAK 337
+#define STRING_LENGTH 338
+#define SCALAR 339
+#define CONVERT 340
+#define MINUS 341
+#define PLUS 342
+#define DEREF 343
+#define CREATE_REF 344
+#define BIT_NOT 345
+#define LOGICAL_NOT 346
+#define DEC 347
+#define INC 348
+#define ARROW 349
 
 
 

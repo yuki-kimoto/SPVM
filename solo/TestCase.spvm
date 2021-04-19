@@ -72,6 +72,14 @@ SPVM::Test - SPVM test module
 
   sub main : int ($args : string[]) {
     {
+      my $array = {};
+    }
+    
+    {
+      my $array = {foo => 1, bar => 2};
+    }
+
+    {
       my $minimal = TestCase::Minimal->new;
       my $name = ref $minimal;
     }
@@ -86,7 +94,8 @@ SPVM::Test - SPVM test module
 
     {
       # my $nums : byte[] = "abc";
-      # my $string : string = new byte[3];;
+      # my $string : string = new byte[3];
+      1;
     }
     
     {
@@ -818,6 +827,7 @@ SPVM::Test - SPVM test module
     
     {
       # error_call_stack();
+      1;
     }
     
     {
@@ -1539,12 +1549,12 @@ SPVM::Test - SPVM test module
     
     # Basic operation byte
     {
-    
+      1;
     }
     
     # Basic operation short
     {
-    
+      1;
     }
     
     # Basic operation int

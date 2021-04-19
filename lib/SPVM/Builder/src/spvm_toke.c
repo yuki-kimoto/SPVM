@@ -689,9 +689,20 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // <=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LE);
-          yylvalp->opval = op;
-          return NUMLE;
+
+          // <=>
+          if (*compiler->bufptr == '>') {
+            compiler->bufptr++;
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_CMP);
+            yylvalp->opval = op;
+            return NUMERIC_CMP;
+          }
+          // <=
+          else {
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LE);
+            yylvalp->opval = op;
+            return NUMLE;
+          }
         }
         // <
         else {
@@ -1259,6 +1270,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       }
       case '\\':
         compiler->bufptr++;
+        SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CREATE_REF);
+        yylvalp->opval = op;
         return CREATE_REF;
       default:
         // Variable
@@ -1720,6 +1733,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);
                   return CASE;
                 }
+                else if (strcmp(keyword, "cmp") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_CMP);
+                  return STRING_CMP;
+                }
                 break;
               case 'd' :
                 if (strcmp(keyword, "default") == 0) {
@@ -1815,7 +1832,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
                 else if (strcmp(keyword, "length") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LENGTH);
-                  return LENGTH;
+                  return STRING_LENGTH;
                 }
                 else if (strcmp(keyword, "lt") == 0) {
                   SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_LT);

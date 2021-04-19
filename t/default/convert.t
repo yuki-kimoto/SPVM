@@ -13,6 +13,11 @@ use SPVM 'TestCase::Convert';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Convert undef to object
+{
+  ok(TestCase::Convert->convert_undef_to_object);
+}
+
 # Convert type - floating point narrowing convertion
 {
   ok(TestCase::Convert->convert_float_to_byte());

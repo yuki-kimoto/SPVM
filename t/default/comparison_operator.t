@@ -166,6 +166,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     ok(TestCase::ComparisonOperator->numeric_ne_undef);
   }
 
+  # a <=> b
+  {
+    ok(TestCase::ComparisonOperator->numeric_cmp_byte);
+    ok(TestCase::ComparisonOperator->numeric_cmp_short);
+    ok(TestCase::ComparisonOperator->numeric_cmp_int);
+    ok(TestCase::ComparisonOperator->numeric_cmp_long);
+    ok(TestCase::ComparisonOperator->numeric_cmp_float);
+    ok(TestCase::ComparisonOperator->numeric_cmp_double);
+  }
+
   # String comparison operator
   {
     {
@@ -175,6 +185,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       ok(TestCase::ComparisonOperator->string_ge);
       ok(TestCase::ComparisonOperator->string_lt);
       ok(TestCase::ComparisonOperator->string_le);
+      ok(TestCase::ComparisonOperator->string_cmp);
     }
   }
 }

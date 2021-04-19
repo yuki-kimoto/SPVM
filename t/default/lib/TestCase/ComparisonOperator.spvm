@@ -353,6 +353,80 @@ package TestCase::ComparisonOperator {
     return 1;
   }
 
+  sub string_cmp  : int () {
+    
+    {
+      my $ret = "abd" cmp "abc";
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abcd" cmp "abc";
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abb" cmp "abc";
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abc" cmp "abcd";
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abc" cmp "abc";
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+
+    {
+      my $ret = "abc" cmp "abc" || "abd" cmp "abc";
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
+    {
+      my $string_undef = (string)undef;
+      eval {
+        if ($string_undef cmp "abc") {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    {
+      my $string_undef = (string)undef;
+      eval {
+        if ("abc" cmp $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
   # Bool
   sub bool_true_byte : int () {
     if ((int)(byte)1) {
@@ -1571,5 +1645,168 @@ package TestCase::ComparisonOperator {
     else {
       return 0;
     }
+  }
+
+  sub numeric_cmp_byte  : int () {
+    
+    {
+      my $ret = (byte)3 <=> (byte)1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (byte)1 <=> (byte)3;
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (byte)3 <=> (byte)3;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub numeric_cmp_short  : int () {
+    
+    {
+      my $ret = (short)3 <=> (short)1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (short)1 <=> (short)3;
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (short)3 <=> (short)3;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub numeric_cmp_int  : int () {
+    
+    {
+      my $ret = (int)3 <=> (int)1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (int)1 <=> (int)3;
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (int)3 <=> (int)3;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (int)3 <=> (int)3 || (int)4 <=> (int)3;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub numeric_cmp_long  : int () {
+    
+    {
+      my $ret = (long)3 <=> (long)1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (long)1 <=> (long)3;
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (long)3 <=> (long)3;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub numeric_cmp_float  : int () {
+    
+    {
+      my $ret = (float)3 <=> (float)1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (float)1 <=> (float)3;
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (float)3 <=> (float)3;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub numeric_cmp_double  : int () {
+    
+    {
+      my $ret = (double)3 <=> (double)1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (double)1 <=> (double)3;
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (double)3 <=> (double)3;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    return 1;
   }
 }

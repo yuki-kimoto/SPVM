@@ -6,6 +6,88 @@ package TestCase::Array {
   INIT {
     $BIG_INDEX = 200_000_000;
   }
+
+  # Array init {}
+  sub array_init_key_values_empty : int () {
+    my $objects = {};
+    unless (@$objects == 0) {
+      return 0;
+    }
+
+    unless ($objects isa object[]) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  # Array init {} with string
+  sub array_init_key_values : int () {
+    {
+      my $objects = {foo => 1, bar => 2};
+      unless (@$objects == 4) {
+        return 0;
+      }
+
+      unless ($objects isa object[]) {
+        return 0;
+      }
+      
+      my $key1 = (string)$objects->[0];
+      my $value1 = (SPVM::Int)$objects->[1];
+      my $key2 = (string)$objects->[2];
+      my $value2 = (SPVM::Int)$objects->[3];
+      
+      unless ($key1 eq "foo") {
+        return 0;
+      }
+      
+      unless ($value1->val == 1) {
+        return 0;
+      }
+      
+      unless ($key2 eq "bar") {
+        return 0;
+      }
+      
+      unless ($value2->val == 2) {
+        return 0;
+      }
+    }
+    {
+      my $objects = {foo => 1, bar => 2};
+      unless (@$objects == 4) {
+        return 0;
+      }
+
+      unless ($objects isa object[]) {
+        return 0;
+      }
+      
+      my $key1 = (string)$objects->[0];
+      my $value1 = (SPVM::Int)$objects->[1];
+      my $key2 = (string)$objects->[2];
+      my $value2 = (SPVM::Int)$objects->[3];
+      
+      unless ($key1 eq "foo") {
+        return 0;
+      }
+      
+      unless ($value1->val == 1) {
+        return 0;
+      }
+      
+      unless ($key2 eq "bar") {
+        return 0;
+      }
+      
+      unless ($value2->val == 2) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
   
   # Array store undef
   sub array_init_empty : int () {
