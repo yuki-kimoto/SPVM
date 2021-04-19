@@ -2064,7 +2064,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     {
       if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
         if (package->subs->length != 1) {
-          SPVM_COMPILER_error(compiler, "Callback type must have only one method at %s line %d\n", package->op_package->file, package->op_package->line);
+          SPVM_COMPILER_error(compiler, "Callback type must have only one method at %s line %d\n", op_package->file, op_package->line);
         }
       }
 
