@@ -1,16 +1,14 @@
 package SPVM::Sort : precompile {
-  use SPVM::Comparator;
+  use SPVM::Comparator::Byte;
+  use SPVM::Comparator::Short;
+  use SPVM::Comparator::Int;
+  use SPVM::Comparator::Long;
+  use SPVM::Comparator::Float;
+  use SPVM::Comparator::Double;
+  use SPVM::Comparator::Object;
   use SPVM::Util(new_object_array_proto);
   
-  sortb($nums, $offset, $length, sub : int ($self : self, $a : int, $b : int) {
-    return $a <=> $b;
-  );
-  
-  enum {
-    ASC,
-    DESC,
-  }
-  sub sortb : void ($nums : byte[], $offset : int, $length : int, $flag : int) {
+  sub sortb : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -26,14 +24,65 @@ package SPVM::Sort : precompile {
     }
     
     if ($offset + $length > $nums_length) {
-      die "Offset + Length is out of range";
+      die "Offset + Length must be in the array range";
     }
     
-    sortb_native($nums, $offset, $length);
+    if ($length == 0) {
+      return;
+    }
+    
+    my $b = new byte[$length];
+    _sortb_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private native sub sortb_native : void ($nums : byte[]);
+  private sub _sortb_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sortb_merge_sort : void($a : byte[], $b : byte[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sortb_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sortb_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sortb_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
   
-  sub sorts : void ($nums : short[], $offset : int, $length : int) {
+  sub sorts : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -49,15 +98,65 @@ package SPVM::Sort : precompile {
     }
     
     if ($offset + $length > $nums_length) {
-      die "Offset + Length is out of range";
+      die "Offset + Length must be in the array range";
     }
     
+    if ($length == 0) {
+      return;
+    }
     
-    sorts_native($nums, $offset, $length);
+    my $b = new short[$length];
+    _sorts_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private native sub sorts_native : void ($nums : short[]);
+  private sub _sorts_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sorts_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sorts_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sorts_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sorts_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
   
-  sub sorti : void ($nums : int[], $offset : int, $length : int) {
+  sub sorti : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -73,15 +172,65 @@ package SPVM::Sort : precompile {
     }
     
     if ($offset + $length > $nums_length) {
-      die "Offset + Length is out of range";
+      die "Offset + Length must be in the array range";
     }
     
+    if ($length == 0) {
+      return;
+    }
     
-    sorti_native($nums, $offset, $length);
+    my $b = new int[$length];
+    _sorti_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private native sub sorti_native : void ($nums : int[]);
+  private sub _sorti_merge : void($a : int[], $b : int[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sorti_merge_sort : void($a : int[], $b : int[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sorti_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sorti_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sorti_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
   
-  sub sortl : void ($nums : long[], $offset : int, $length : int) {
+  sub sortl : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -97,15 +246,65 @@ package SPVM::Sort : precompile {
     }
     
     if ($offset + $length > $nums_length) {
-      die "Offset + Length is out of range";
+      die "Offset + Length must be in the array range";
     }
     
+    if ($length == 0) {
+      return;
+    }
     
-    sortl_native($nums, $offset, $length);
+    my $b = new long[$length];
+    _sortl_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private native sub sortl_native : void ($nums : long[]);
+  private sub _sortl_merge : void($a : long[], $b : long[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sortl_merge_sort : void($a : long[], $b : long[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sortl_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sortl_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sortl_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
   
-  sub sortf : void ($nums : float[], $offset : int, $length : int) {
+  sub sortf : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -121,15 +320,65 @@ package SPVM::Sort : precompile {
     }
     
     if ($offset + $length > $nums_length) {
-      die "Offset + Length is out of range";
+      die "Offset + Length must be in the array range";
     }
     
+    if ($length == 0) {
+      return;
+    }
     
-    sortf_native($nums, $offset, $length);
+    my $b = new float[$length];
+    _sortf_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private native sub sortf_native : void ($nums : float[]);
+  private sub _sortf_merge : void($a : float[], $b : float[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sortf_merge_sort : void($a : float[], $b : float[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sortf_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sortf_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sortf_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
   
-  sub sortd : void ($nums : double[], $offset : int, $length : int) {
+  sub sortd : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -145,19 +394,70 @@ package SPVM::Sort : precompile {
     }
     
     if ($offset + $length > $nums_length) {
-      die "Offset + Length is out of range";
+      die "Offset + Length must be in the array range";
     }
     
-    sortd_native($nums, $offset, $length);
+    if ($length == 0) {
+      return;
+    }
+    
+    my $b = new double[$length];
+    _sortd_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private native sub sortd_native : void ($nums : double[]);
+  private sub _sortd_merge : void($a : double[], $b : double[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sortd_merge_sort : void($a : double[], $b : double[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sortd_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sortd_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sortd_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
   
-  sub sorto : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator) {
-    if ($nums == undef) {
+  sub sorto : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object) {
+    if ($objs == undef) {
       die "Array must be not undef";
     }
     
-    my $nums_length = @$nums;
+    my $objs_length = @$objs;
     
     if ($offset < 0) {
       die "Offset must be more than or equals to 0";
@@ -167,34 +467,15 @@ package SPVM::Sort : precompile {
       die "Length must be more than or equals to 0";
     }
     
-    if ($offset + $length > $nums_length) {
-      die "Offset + Length is out of range";
+    if ($offset + $length > $objs_length) {
+      die "Offset + Length must be in the array range";
     }
     
-    my $length = @$objs;
     my $b = new_object_array_proto($objs, $length);
-    _merge_sort($objs, $b, $offset, $offset + $length - 1, $length, $comparator);
+    _sorto_merge_sort($objs, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
-  sub sortstr : void ($strs : string[], $offset : int, $length : int, ) {
-    sorto($strs, sub : int ($self : self, $a : object, $b : object) {
-      if (!$a || !$b) {
-        die "Can't compare undef value";
-      }
-      
-      if ((string)$a le (string)$b) {
-        return -1;
-      }
-      elsif ((string)$a ge (string)$b) {
-        return 1;
-      }
-      else {
-        return 0;
-      }
-    });
-  }
-
-  sub _merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator) {
+  private sub _sorto_merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object) {
       my $i = $left;
       my $j = $mid + 1;
       my $k = 0;
@@ -231,15 +512,15 @@ package SPVM::Sort : precompile {
       }
   }
 
-  sub _merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator){
-      if ($left >= $right) {
-        return;
-      }
+  private sub _sorto_merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object){
+    if ($left >= $right) {
+      return;
+    }
 
-      my $mid = ($left + $right) / 2;
+    my $mid = ($left + $right) / 2;
 
-      _merge_sort($a, $b, $left, $mid, $n, $comparator);
-      _merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-      _merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sorto_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sorto_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sorto_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 }

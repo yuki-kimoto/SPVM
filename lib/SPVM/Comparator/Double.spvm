@@ -1,0 +1,3 @@
+package SPVM::Comparator::Double : callback_t {
+  sub : int ($self : self, $a : double, $b : double);
+}

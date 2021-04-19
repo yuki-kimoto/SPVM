@@ -12,60 +12,57 @@ SPVM::Sort - Sort functions
   
   # Sort byte array itself by asc order
   my $nums = [(byte)2, 3, 1];
-  SPVM::Sort::sortb($nums);
+  SPVM::Sort::sortb($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+    return $a <=> $b;
+  });
 
   # Sort short array itself by asc order
   my $nums = [(short)2, 3, 1];
-  SPVM::Sort::sorts($nums);
+  SPVM::Sort::sorts($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+    return $a <=> $b;
+  });
 
   # Sort int array itself by asc order
   my $nums = [2, 3, 1];
-  SPVM::Sort::sorti($nums);
+  SPVM::Sort::sorti($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+    return $a <=> $b;
+  });
 
   # Sort long array itself by asc order
   my $nums = [(long)2, 3, 1];
-  SPVM::Sort::sortl($nums);
+  SPVM::Sort::sortl($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+    return $a <=> $b;
+  });
 
   # Sort float array itself by asc order
   my $nums = [(float)2, 3, 1];
-  SPVM::Sort::sortf($nums);
+  SPVM::Sort::sortf($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+    return $a <=> $b;
+  });
 
   # Sort double array itself by asc order
   my $nums = [(double)2, 3, 1];
-  SPVM::Sort::sortd($nums);
+  SPVM::Sort::sortd($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+    return $a <=> $b;
+  });
 
-  # Sort string array itself by asc order
-  my $nums = [(string)"abc", "def", "ghi"];
-  SPVM::Sort::sortd($nums);
-  
   # Sort object array itself by asc order
-  my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
-    my $minimal1 = (TestCase::Minimal)$object1;
-    my $minimal2 = (TestCase::Minimal)$object2;
-    
-    my $x1 = $minimal1->{x};
-    my $x2 = $minimal2->{x};
-    
-    if ($x1 > $x2) {
-      return 1;
-    }
-    elsif ($x1 < $x2) {
-      return -1;
-    }
-    else {
-      return 0;
-    }
-  };
-  
   my $minimals = new TestCase::Minimal[3];
   $minimals->[0] = TestCase::Minimal->new;
   $minimals->[0]{x} = 3;
+  $minimals->[0]{y} = 5;
   $minimals->[1] = TestCase::Minimal->new;
-  $minimals->[1]{x} = 1;
+  $minimals->[1]{x} = 3;
+  $minimals->[1]{y} = 7;
   $minimals->[2] = TestCase::Minimal->new;
   $minimals->[2]{x} = 2;
-  
-  SPVM::Sort::sort_obj($minimals, $comparator);
+  $minimals->[2]{y} = 9;
+  SPVM::Sort::sort_obj($minimals, 0, scalar @$minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
+    my $minimal1 = (TestCase::Minimal)$object1;
+    my $minimal2 = (TestCase::Minimal)$object2;
+    
+    return $minimal1->{x} <=> $minimal2->{x} || $minimal1->{y} <=> $minimal2->{y};
+  };
 
 =head1 DESCRIPTION
 
@@ -75,97 +72,98 @@ L<SPVM::Sort> defines sort functions
 
 =head2 sortb
 
-    sub sortb : void ($nums : byte[])
+    sub sortb : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte)
 
-Sort byte array itself by asc order.
+Sort byte array itself with a offset, a length, and a L<SPVM::Comparator::Byte> comparator.
 
-  my $nums = [(byte)2, 3, 1];
-  SPVM::Sort::sortb($nums);
+Array must be not undef. Otherwise a exception occurs.
+
+Offset must be more than or equals to 0. Otherwise a exception occurs.
+
+Length must be more than or equals to 0. Otherwise a exception occurs.
+
+Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sorts
 
-    sub sorts : void ($nums : short[])
+    sub sorts : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short)
 
-  my $nums = [(short)2, 3, 1];
-  SPVM::Sort::sorts($nums);
+Sort short array itself with a offset, a length, and a L<SPVM::Comparator::Short> comparator.
 
-Sort short array itself by asc order.
+Array must be not undef. Otherwise a exception occurs.
+
+Offset must be more than or equals to 0. Otherwise a exception occurs.
+
+Length must be more than or equals to 0. Otherwise a exception occurs.
+
+Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sorti
 
-    sub sorti : void ($nums : int[])
+    sub sorti : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int)
 
-Sort int array itself by asc order.
+Sort int array itself with a offset, a length, and a L<SPVM::Comparator::Int> comparator.
 
-  my $nums = [2, 3, 1];
-  SPVM::Sort::sorti($nums);
+Array must be not undef. Otherwise a exception occurs.
+
+Offset must be more than or equals to 0. Otherwise a exception occurs.
+
+Length must be more than or equals to 0. Otherwise a exception occurs.
+
+Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sortl
 
-    sub sortl : void ($nums : long[])
+    sub sortl : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long)
 
-Sort long array itself by asc order.
+Sort long array itself with a offset, a length, and a L<SPVM::Comparator::Long> comparator.
 
-  my $nums = [(long)2, 3, 1];
-  SPVM::Sort::sortl($nums);
+Array must be not undef. Otherwise a exception occurs.
+
+Offset must be more than or equals to 0. Otherwise a exception occurs.
+
+Length must be more than or equals to 0. Otherwise a exception occurs.
+
+Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sortf
 
-    sub sub sortf : void ($nums : float[])
+    sub sub sortf : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float)
 
-Sort float array itself by asc order.
+Sort float array itself with a offset, a length, and a L<SPVM::Comparator::Float> comparator.
 
-  my $nums = [(float)2, 3, 1];
-  SPVM::Sort::sortf($nums);
+Array must be not undef. Otherwise a exception occurs.
+
+Offset must be more than or equals to 0. Otherwise a exception occurs.
+
+Length must be more than or equals to 0. Otherwise a exception occurs.
+
+Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sortd
 
-    sub sortd : void ($nums : double[])
+    sub sortd : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
 
-Sort double array itself by asc order.
+Sort double array itself with a offset, a length, and a L<SPVM::Comparator::Double> comparator.
 
-  my $nums = [(double)2, 3, 1];
-  SPVM::Sort::sortd($nums);
+Array must be not undef. Otherwise a exception occurs.
 
-=head2 sortstr
+Offset must be more than or equals to 0. Otherwise a exception occurs.
 
-    sub sortstr : void ($strs : string[])
+Length must be more than or equals to 0. Otherwise a exception occurs.
 
-Sort string array itself by asc order. All string element must be not undef. otherwise exception occur.
-
-  my $nums = [(string)"abc", "def", "ghi"];
-  SPVM::Sort::sortd($nums);
+Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sorto
 
-    sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator)
+    sub sorto : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object)
 
-Sort object array itself which element fits L<SPVM::Comparator> by asc order.
+Sort object array itself with a offset, a length, and a L<SPVM::Comparator::Object> comparator.
 
-Object array must fit oarray type.
+Array must be not undef. Otherwise a exception occurs.
 
-  my $minimals = new TestCase::Minimal[3];
-  $minimals->[0] = TestCase::Minimal->new;
-  $minimals->[0]{x} = 3;
-  $minimals->[1] = TestCase::Minimal->new;
-  $minimals->[1]{x} = 1;
-  $minimals->[2] = TestCase::Minimal->new;
-  $minimals->[2]{x} = 2;
-  
-  SPVM::Sort::sort_obj($minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
-    my $minimal1 = (TestCase::Minimal)$object1;
-    my $minimal2 = (TestCase::Minimal)$object2;
-    
-    my $x1 = $minimal1->{x};
-    my $x2 = $minimal2->{x};
-    
-    if ($x1 > $x2) {
-      return 1;
-    }
-    elsif ($x1 < $x2) {
-      return -1;
-    }
-    else {
-      return 0;
-    }
-  });
+Offset must be more than or equals to 0. Otherwise a exception occurs.
+
+Length must be more than or equals to 0. Otherwise a exception occurs.
+
+Offset + Length must be in the array range. Otherwise a exception occurs.

@@ -11,6 +11,7 @@ package TestCase {
   use TestCase::ImplementCallback1;
   use TestCase::ImplementCallback2;
   use TestCase::Comparator;
+  use TestCase::Comparator::Byte;
   use TestCase::Pointer;
   use TestCase::ComplexCalc;
   use TestCase::Minimal::XGetter;

@@ -1,6 +1,49 @@
 0.0943 2021-04-19
   - add <=> and cmp operator
   - add {} array init syntax
+  - remove SPVM::Sort->sortstr
+  - change the definition of the following SPVM::Sort functions.
+    
+    [Before]
+    sub sortb : void ($nums : byte[])
+    [After]
+
+    [Before]
+    sub sorts : void ($nums : short[])
+    [After]
+    sub sorts : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short)
+
+    [Before]
+    sub sorti : void ($nums : int[])
+    [After]
+    sub sorti : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int)
+
+    [Before]
+    [After]
+    sub sortl : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long)
+
+    [Before]
+    sub sub sortf : void ($nums : float[])
+    [After]
+    sub sub sortf : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float)
+
+    [Before]
+    [After]
+    sub sortd : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
+
+    [Before]
+    sub sorto : void ($objs : oarray, $comparator : SPVM::Comparator::Object)
+    [After]
+    sub sorto : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object)
+  - remove SPVM::Comparator
+  - add SPVM::Comparator::Byte
+  - add SPVM::Comparator::Short
+  - add SPVM::Comparator::Int
+  - add SPVM::Comparator::Long
+  - add SPVM::Comparator::Float
+  - add SPVM::Comparator::Double
+  - add SPVM::Comparator::Object
+
 0.0942 2021-04-15
   - add ref operator to get object type name
   - remove SPVM::Util->get_type_name. use ref operator instead of this.

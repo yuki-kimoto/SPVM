@@ -1,0 +1,3 @@
+package SPVM::Comparator::Long : callback_t {
+  sub : int ($self : self, $a : long, $b : long);
+}

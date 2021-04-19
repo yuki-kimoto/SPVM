@@ -5,6 +5,8 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::List;
   use SPVM::Util;
   use SPVM::Sort;
+  use SPVM::Comparator::Object;
+  use SPVM::Comparator::Int;
 
   sub set_get_numeric : int () {
 
@@ -293,7 +295,9 @@ package TestCase::Lib::SPVM::Hash {
       return 0;
     }
 
-    SPVM::Sort->sortstr($keys);
+    SPVM::Sort->sorto($keys, 0, scalar @$keys, sub : int ($self : self, $a : object, $b : object) {
+      return (string)$a cmp (string)$b;
+    });
 
     unless ($keys->[0] == $key0) {
       return 0;
@@ -331,7 +335,9 @@ package TestCase::Lib::SPVM::Hash {
     $int_values->[1] = (int)$values->[1];
     $int_values->[2] = (int)$values->[2];
 
-    SPVM::Sort->sorti($int_values);
+    SPVM::Sort->sorti($int_values, 0, scalar @$int_values, sub : int ($self : self, $a : int, $b : int) {
+      return $a <=> $b;
+    });
 
     unless ($int_values->[0] == 1) {
       return 0;
