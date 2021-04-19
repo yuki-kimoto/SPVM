@@ -287,8 +287,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 length = index;
               }
               
-              // Default element type is any object
-              if (length == 0) {
+              if (length == 0 || op_array_init->flag & SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES) {
                 op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
                 SPVM_TYPE* type_element = op_type_element->uv.type;
                 SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
@@ -304,7 +303,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_var_tmp_new = SPVM_OP_CHECKER_new_op_var_tmp(compiler, sub, type_var_tmp_new, file, line);
               
               SPVM_OP_build_assign(compiler, op_assign_new, op_var_tmp_new, op_new);
-
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_new);
 
               if (length > 0) {

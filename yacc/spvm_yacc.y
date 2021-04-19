@@ -982,7 +982,21 @@ array_init
   : '[' opt_expressions ']'
     {
       SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->cur_file, compiler->cur_line);
-      $$ = SPVM_OP_build_array_init(compiler, op_array_init, $2);
+      int32_t is_key_values = 0;
+      $$ = SPVM_OP_build_array_init(compiler, op_array_init, $2, is_key_values);
+    }
+  | '{' expressions '}'
+    {
+      SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->cur_file, compiler->cur_line);
+      int32_t is_key_values = 1;
+      $$ = SPVM_OP_build_array_init(compiler, op_array_init, $2, is_key_values);
+    }
+  | '{' '}'
+    {
+      SPVM_OP* op_array_init = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ARRAY_INIT, compiler->cur_file, compiler->cur_line);
+      int32_t is_key_values = 1;
+      SPVM_OP* op_list_elements = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_array_init(compiler, op_array_init, op_list_elements, is_key_values);
     }
 
 convert

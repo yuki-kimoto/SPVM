@@ -1124,7 +1124,24 @@ SPVM_OP* SPVM_OP_build_new(SPVM_COMPILER* compiler, SPVM_OP* op_new, SPVM_OP* op
   return op_new;
 }
 
-SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_init, SPVM_OP* op_list_elements) {
+SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_init, SPVM_OP* op_list_elements, int32_t is_key_values) {
+
+  // Check key value pairs count when {} array init syntax
+  if (is_key_values) {
+    if (op_list_elements) {
+      int32_t element_index = 0;
+      SPVM_OP* op_term_element = op_list_elements->first;
+      while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+        op_term_element->no_need_check = 1;
+        element_index++;
+      }
+      int32_t is_odd = element_index % 2 == 1;
+      if (is_odd) {
+        SPVM_COMPILER_error(compiler, "Odd number of elements in {} array init syntax\n");
+      }
+    }
+    op_array_init->flag |= SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES;
+  }
   
   SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_elements);
   

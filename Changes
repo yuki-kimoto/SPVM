@@ -1,5 +1,6 @@
 0.0943 2021-04-19
   - add <=> and cmp operator
+  - add {} array init syntax
 0.0942 2021-04-15
   - add ref operator to get object type name
   - remove SPVM::Util->get_type_name. use ref operator instead of this.
