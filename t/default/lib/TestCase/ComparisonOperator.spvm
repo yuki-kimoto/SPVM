@@ -390,6 +390,14 @@ package TestCase::ComparisonOperator {
       }
     }
 
+
+    {
+      my $ret = "abc" cmp "abc" || "abd" cmp "abc";
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+    
     {
       my $string_undef = (string)undef;
       eval {
@@ -1710,6 +1718,13 @@ package TestCase::ComparisonOperator {
     {
       my $ret = (int)3 <=> (int)3;
       unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (int)3 <=> (int)3 || (int)4 <=> (int)3;
+      unless ($ret == 1) {
         return 0;
       }
     }
