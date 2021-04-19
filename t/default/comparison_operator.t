@@ -169,6 +169,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # a <=> b
   {
     ok(TestCase::ComparisonOperator->numeric_cmp_byte);
+    ok(TestCase::ComparisonOperator->numeric_cmp_short);
+    ok(TestCase::ComparisonOperator->numeric_cmp_int);
+    ok(TestCase::ComparisonOperator->numeric_cmp_long);
+    ok(TestCase::ComparisonOperator->numeric_cmp_float);
+    ok(TestCase::ComparisonOperator->numeric_cmp_double);
   }
 
   # String comparison operator
