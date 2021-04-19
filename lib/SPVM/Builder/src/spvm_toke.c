@@ -689,24 +689,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         // <=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LE);
-          yylvalp->opval = op;
-          return NUMLE;
+
+          // <=>
+          if (*compiler->bufptr == '>') {
+            warn("BBBBBB");
+            compiler->bufptr++;
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_CMP);
+            yylvalp->opval = op;
+            return NUMERIC_CMP;
+          }
+          // <=
+          else {
+            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LE);
+            yylvalp->opval = op;
+            return NUMLE;
+          }
         }
         // <
         else {
-          if (*compiler->bufptr == '>') {
-            compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_CMP);
-            yylvalp->opval = op;
-            return STRING_CMP;
-          }
-          else {
-            compiler->bufptr++;
-            SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LT);
-            yylvalp->opval = op;
-            return NUMLT;
-          }
+          compiler->bufptr++;
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_LT);
+          yylvalp->opval = op;
+          return NUMLT;
         }
       
       case '>':
@@ -1729,6 +1733,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "case") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CASE);
                   return CASE;
+                }
+                else if (strcmp(keyword, "cmp") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_CMP);
+                  return STRING_CMP;
                 }
                 break;
               case 'd' :

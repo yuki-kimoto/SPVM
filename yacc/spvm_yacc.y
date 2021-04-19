@@ -880,6 +880,10 @@ comparison_op
     {
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
     }
+  | expression NUMERIC_CMP expression
+    {
+      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+    }
   | expression STREQ expression
     {
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
@@ -904,6 +908,11 @@ comparison_op
     {
       $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
     }
+  | expression STRING_CMP expression
+    {
+      $$ = SPVM_OP_build_comparison_op(compiler, $2, $1, $3);
+    }
+
 isa
   : expression ISA type
     {

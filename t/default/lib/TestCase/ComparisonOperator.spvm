@@ -1572,4 +1572,30 @@ package TestCase::ComparisonOperator {
       return 0;
     }
   }
+
+  sub numeric_cmp_byte  : int () {
+    
+    {
+      my $ret = (byte)3 <=> (byte)1;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (byte)1 <=> (byte)3;
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (byte)3 <=> (byte)3;
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
 }
