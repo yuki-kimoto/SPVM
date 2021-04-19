@@ -246,6 +246,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "MOVE_FLOAT",
     "MOVE_DOUBLE",
     "MOVE_OBJECT",
+    "MOVE_UNDEF",
     "MOVE_REF",
     "CONVERT_BYTE_TO_SHORT",
     "CONVERT_BYTE_TO_INT",

@@ -2850,30 +2850,42 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         value_ref[field_index] = double_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_BYTE:
+      case SPVM_OPCODE_C_ID_MOVE_BYTE: {
         byte_vars[opcode->operand0] = byte_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_MOVE_SHORT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_SHORT: {
         short_vars[opcode->operand0] = short_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_MOVE_INT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_INT: {
         int_vars[opcode->operand0] = int_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_MOVE_LONG:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_LONG: {
         long_vars[opcode->operand0] = long_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_MOVE_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_FLOAT: {
         float_vars[opcode->operand0] = float_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_MOVE_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_DOUBLE: {
         double_vars[opcode->operand0] = double_vars[opcode->operand1];
         break;
-      case SPVM_OPCODE_C_ID_MOVE_OBJECT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT: {
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&object_vars[opcode->operand1]);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_REF:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_UNDEF: {
+        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_MOVE_REF: {
         *(void**)&ref_vars[opcode->operand0] = *(void**)&ref_vars[opcode->operand1];
         break;
+      }
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_BYTE: {
         int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {

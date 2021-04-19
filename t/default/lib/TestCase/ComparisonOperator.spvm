@@ -353,6 +353,72 @@ package TestCase::ComparisonOperator {
     return 1;
   }
 
+  sub string_cmp  : int () {
+    
+    {
+      my $ret = "abd" cmp "abc";
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abcd" cmp "abc";
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abb" cmp "abc";
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abc" cmp "abcd";
+      unless ($ret == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abc" cmp "abc";
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $string_undef = (string)undef;
+      eval {
+        if ($string_undef cmp "abc") {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    {
+      my $string_undef = (string)undef;
+      eval {
+        if ("abc" cmp $string_undef) {
+          
+        }
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
   # Bool
   sub bool_true_byte : int () {
     if ((int)(byte)1) {
@@ -1728,5 +1794,4 @@ package TestCase::ComparisonOperator {
 
     return 1;
   }
-
 }

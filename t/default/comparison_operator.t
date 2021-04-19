@@ -185,6 +185,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       ok(TestCase::ComparisonOperator->string_ge);
       ok(TestCase::ComparisonOperator->string_lt);
       ok(TestCase::ComparisonOperator->string_le);
+      ok(TestCase::ComparisonOperator->string_cmp);
     }
   }
 }

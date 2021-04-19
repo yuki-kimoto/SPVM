@@ -2604,34 +2604,48 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_value_array_field_store(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2, fields_length, field_index);
         break;
       }
-      case SPVM_OPCODE_C_ID_MOVE_BYTE:
+      case SPVM_OPCODE_C_ID_MOVE_BYTE: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BYTE, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_SHORT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_SHORT: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_SHORT, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_INT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_INT: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_LONG:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_LONG: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_FLOAT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_FLOAT: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_DOUBLE:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_DOUBLE: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1);
         break;
-      case SPVM_OPCODE_C_ID_MOVE_OBJECT:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_OBJECT: {
           SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(&");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
           SPVM_STRING_BUFFER_add(string_buffer, ", ");
           SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
           SPVM_STRING_BUFFER_add(string_buffer, ");\n");
         break;
-      case SPVM_OPCODE_C_ID_MOVE_REF:
+      }
+      case SPVM_OPCODE_C_ID_MOVE_UNDEF: {
+          SPVM_STRING_BUFFER_add(string_buffer, "  SPVM_API_OBJECT_ASSIGN(&");
+          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
+          SPVM_STRING_BUFFER_add(string_buffer, ", NULL);");
+        break;
+      }
+      case SPVM_OPCODE_C_ID_MOVE_REF: {
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_move(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_REF, opcode->operand0, opcode->operand1);
         break;
+      }
       case SPVM_OPCODE_C_ID_MULNUM_MOVE_BYTE: {
         int32_t fields_length = opcode->operand2;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {

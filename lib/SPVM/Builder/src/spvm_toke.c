@@ -692,7 +692,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           // <=>
           if (*compiler->bufptr == '>') {
-            warn("BBBBBB");
             compiler->bufptr++;
             SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NUMERIC_CMP);
             yylvalp->opval = op;
