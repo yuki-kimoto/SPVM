@@ -1,9 +1,9 @@
 package TestCase::Lib::SPVM::Sort {
   use SPVM::Sort;
   use SPVM::Util;
-  use SPVM::Comparator::Byte;
   
   sub sortb : int () {
+    # Sort array by asc order
     {
       my $nums = [(byte)2, 3, 1];
       
@@ -16,6 +16,7 @@ package TestCase::Lib::SPVM::Sort {
       }
     }
 
+    # Sort byte array by desc order
     {
       my $nums = [(byte)2, 3, 1];
       
@@ -28,6 +29,7 @@ package TestCase::Lib::SPVM::Sort {
       }
     }
 
+    # If length is 0, There is nothing to do
     {
       my $nums = [(byte)2, 3, 1];
       
@@ -39,7 +41,8 @@ package TestCase::Lib::SPVM::Sort {
         return 0;
       }
     }
-
+    
+    # Sort partially
     {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
@@ -52,6 +55,7 @@ package TestCase::Lib::SPVM::Sort {
       }
     }
 
+    # Exception - Array must be not undef
     {
       my $nums = [(byte)2, 3, 1];
       
@@ -65,6 +69,7 @@ package TestCase::Lib::SPVM::Sort {
       }
     }
     
+    # Exception - Offset must be more than or equals to 0
     {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
@@ -78,6 +83,7 @@ package TestCase::Lib::SPVM::Sort {
       }
     }
 
+    # Exception - Length must be more than or equals to 0
     {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
@@ -91,6 +97,7 @@ package TestCase::Lib::SPVM::Sort {
       }
     }
 
+    # Exception - Offset + Length must be in the array range
     {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
