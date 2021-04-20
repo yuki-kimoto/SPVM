@@ -1,6 +1,7 @@
 package TestCase::Lib::SPVM::Sort {
   use SPVM::Sort;
   use SPVM::Util;
+  use TestCase::Minimal;
   
   sub sortb : int () {
     # Sort array by asc order
@@ -685,6 +686,170 @@ package TestCase::Lib::SPVM::Sort {
     
     return 1;
   }
+  
+  sub new_minimal : TestCase::Minimal ($x : int, $y : int) {
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x($x);
+    $minimal->set_y($y);
+    
+    return $minimal;
+  }
+  
+  sub sorto : int () {
+    
+    # Sort array by asc order
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      SPVM::Sort->sorto($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+      });
+      
+      my $is_equals = SPVM::Util->equals_oarray($objs, [new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
 
+=pod
+    # Sort array by multiple conditions
+    {
+      my $objs = [new_minimal(2, 1), new_minimal(2, 2), new_minimal(1, 0)];
+      
+      SPVM::Sort->sorto($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x || ((TestCase::Minimal)$a)->y <=> ((TestCase::Minimal)$b)->y;
+      });
+      
+      warn "len: " . @$objs;
+      
+      my $is_equals = SPVM::Util->equals_oarray($objs, [new_minimal(1, 0), new_minimal(2, 1), new_minimal(2, 2)], sub : int ($self : self, $a : object, $b : object) {
+        warn "a: " . ((TestCase::Minimal)$a)->x . " " . ((TestCase::Minimal)$a)->y;
+        warn "b: " . ((TestCase::Minimal)$b)->x . " " . ((TestCase::Minimal)$b)->y;
+        
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x && ((TestCase::Minimal)$a)->y == ((TestCase::Minimal)$b)->y;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+=cut
+
+    # Sort array by desc order
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      SPVM::Sort->sorto($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$b)->x <=> ((TestCase::Minimal)$a)->x;
+      });
+      
+      my $is_equals = SPVM::Util->equals_oarray($objs, [new_minimal(3, 0), new_minimal(2, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      SPVM::Sort->sorto($objs, 0, 0, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+      });
+      
+      my $is_equals = SPVM::Util->equals_oarray($objs, [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+      });
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      
+      SPVM::Sort->sorto($objs, 1, 3, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+      });
+      
+      my $is_equals = SPVM::Util->equals_oarray(
+        $objs,
+        [new_minimal(5, 0), new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(-10, 0)],
+        sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+        }
+      );
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      eval {
+        SPVM::Sort->sorto(undef, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      eval {
+        SPVM::Sort->sorto($objs, -1, 3, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      
+      eval {
+        SPVM::Sort->sorto($objs, 1, -1, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      
+      eval {
+        SPVM::Sort->sorto($objs, 3, 3, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
 
 }

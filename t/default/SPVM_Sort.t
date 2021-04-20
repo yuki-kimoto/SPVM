@@ -21,6 +21,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::Sort->sortl);
   ok(TestCase::Lib::SPVM::Sort->sortf);
   ok(TestCase::Lib::SPVM::Sort->sortd);
+  ok(TestCase::Lib::SPVM::Sort->sorto);
 }
 
 # All object is freed
