@@ -14,6 +14,25 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Logical operator
+{
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::LogicalOperator::AndNotExpression', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::LogicalOperator::OrNotExpression', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::LogicalOperator::NotNotExpression', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+}
+
 # oarray
 {
   {

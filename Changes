@@ -1,3 +1,5 @@
+0.0944 2021-04-20
+  - Logical Operator become non-expression.
 0.0943 2021-04-19
   - add <=> and cmp operator
   - add {} array init syntax

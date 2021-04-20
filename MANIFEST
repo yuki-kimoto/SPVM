@@ -738,6 +738,9 @@ t/default/lib/TestCase/CompileError/LexVar/LexVarNameStartDigit.spvm
 t/default/lib/TestCase/CompileError/Literal/Character/InvalidCharacterLiteral.spvm
 t/default/lib/TestCase/CompileError/Literal/Character/InvalidCharacterLiteralEmpty.spvm
 t/default/lib/TestCase/CompileError/Literal/Integer/IntOutOfRange.spvm
+t/default/lib/TestCase/CompileError/LogicalOperator/AndNotExpression.spvm
+t/default/lib/TestCase/CompileError/LogicalOperator/NotNotExpression.spvm
+t/default/lib/TestCase/CompileError/LogicalOperator/OrNotExpression.spvm
 t/default/lib/TestCase/CompileError/Multiply/LeftIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/TestCase/CompileError/New/Private.spvm

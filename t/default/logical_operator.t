@@ -17,7 +17,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # logical not
   {
-    ok(TestCase::LogicalOperator->logical_not_true());
     ok(TestCase::LogicalOperator->logical_not_false());
   }
 
