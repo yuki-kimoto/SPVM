@@ -557,65 +557,55 @@ If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If 
 
 If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
 
-=head2 join_byte
+=head2 dump_byte_array
 
-  sub join_byte : string ($sep : string, $nums : byte[])
+  sub dump_byte_array : string ($nums : byte[])
   
-Join a byte array as string with separater and return it.
+Convert the elements in the byte array to string and join them with "," and surround it with "[" and "]", and return it.
 
-If separater is undef, a exception occurs.
+If byte array is undef, return undef.
 
-If byte array is undef, a exception occurs.
+=head2 dump_short_array
 
-=head2 join_short
-
-  sub join_short : string ($sep : string, $nums : short[])
+  sub dump_short_array : string ($nums : short[])
   
-Join a short array as string with separater and return it.
+Convert the elements in the short array to string and join them with "," and surround it with "[" and "]".
 
-If separater is undef, a exception occurs.
+For Easy-to-read spaces and line breaks are inserted.
 
-If short array is undef, a exception occurs.
+If byte array is undef, return undef.
 
-=head2 join_int
+=head2 dump_int_array
 
-  sub join_int : string ($sep : string, $nums : int[])
+  sub dump_int_array : string ($nums : int[])
   
-Join a int array as string with separater and return it.
+Convert the elements in the int array to string and join them with "," and surround it with "[" and "]", and return it.
 
-If separater is undef, a exception occurs.
+If byte array is undef, return undef.
 
-If int array is undef, a exception occurs.
+=head2 dump_long_array
 
-=head2 join_long
-
-  sub join_long : string ($sep : string, $nums : long[])
+  sub dump_long_array : string ($nums : long[])
   
-Join a long array as string with separater and return it.
+Convert the elements in the long array to string and join them with "," and surround it with "[" and "]", and return it.
 
-If separater is undef, a exception occurs.
+If byte array is undef, return undef.
 
-If long array is undef, a exception occurs.
+=head2 dump_float_array
 
-=head2 join_float
-
-  sub join_float : string ($sep : string, $nums : float[])
+  sub dump_float_array : string ($nums : float[])
   
-Join a float array as string with separater and return it.
+Convert the elements in the float array to string and join them with "," and surround it with "[" and "]", and return it.
 
-If separater is undef, a exception occurs.
+If byte array is undef, return undef.
 
-If float array is undef, a exception occurs.
+=head2 dump_double_array
 
-=head2 join_double
-
-  sub join_double : string ($sep : string, $nums : double[])
+  sub dump_double_array : string ($nums : double[])
   
-Join a double array as string with separater and return it.
+Convert the elements in the double array to string and join them with "," and surround it with "[" and "]", and return it.
 
-If separater is undef, a exception occurs.
-
-If double array is undef, a exception occurs.
+If byte array is undef, return undef.
 
 =head2 join
 

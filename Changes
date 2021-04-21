@@ -42,12 +42,18 @@
   - rename SPVM::Util->memmovel to SPVM::Util->memmove_long
   - rename SPVM::Util->memmovef to SPVM::Util->memmove_float
   - rename SPVM::Util->memmoved to SPVM::Util->memmove_double
-  - rename SPVM::Util->joinb to SPVM::Util->join_byte
-  - rename SPVM::Util->joins to SPVM::Util->join_short
-  - rename SPVM::Util->joini to SPVM::Util->join_int
-  - rename SPVM::Util->joinl to SPVM::Util->join_long
-  - rename SPVM::Util->joinf to SPVM::Util->join_float
-  - rename SPVM::Util->joind to SPVM::Util->join_double
+  - remove SPVM::Util->joinb
+  - remove SPVM::Util->joins
+  - remove SPVM::Util->joini
+  - remove SPVM::Util->joinl
+  - remove SPVM::Util->joinf
+  - remove SPVM::Util->joind
+  - add SPVM::Util->dump_byte_array
+  - add SPVM::Util->dump_short_array
+  - add SPVM::Util->dump_int_array
+  - add SPVM::Util->dump_long_array
+  - add SPVM::Util->dump_float_array
+  - add SPVM::Util->dump_double_array
   
 0.0943 2021-04-19
   - add <=> and cmp operator

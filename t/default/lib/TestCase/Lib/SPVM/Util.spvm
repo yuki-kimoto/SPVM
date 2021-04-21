@@ -47,12 +47,12 @@ package TestCase::Lib::SPVM::Util {
     tolower,
     toupper,
     join,
-    join_byte,
-    join_short,
-    join_int,
-    join_long,
-    join_float,
-    join_double,
+    dump_byte_array,
+    dump_short_array,
+    dump_int_array,
+    dump_long_array,
+    dump_float_array,
+    dump_double_array,
     lc,
     lcfirst,
     uc,
@@ -1895,84 +1895,159 @@ package TestCase::Lib::SPVM::Util {
   sub test_join : int () {
     my $strings = ["abc", "def", "hij"];
 
-    my $join = join(",", $strings);
+    my $dump = join(",", $strings);
 
-    if ($join eq "abc,def,hij") {
+    if ($dump eq "abc,def,hij") {
       return 1;
     }
 
     return 0;
   }
 
-  sub test_join_byte : int () {
-    my $nums = [(byte)1, 2, INT8_MIN()];
+  sub test_dump_byte_array : int () {
+    # Dump array
+    {
+      my $nums = [(byte)1, 2, INT8_MIN()];
 
-    my $join = join_byte(",", $nums);
-
-    if ($join eq "1,2,-128") {
-      return 1;
+      my $dump = dump_byte_array($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  -128\n]") {
+        return 0;
+      }
     }
 
-    return 0;
+    # Dump undef
+    {
+      my $dump = dump_byte_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
   }
 
-  sub test_join_short : int () {
-    my $nums = [(short)1, 2, INT16_MIN()];
+  sub test_dump_short_array : int () {
+    # Dump array
+    {
+      my $nums = [(short)1, 2, INT16_MIN()];
 
-    my $join = join_short(",", $nums);
+      my $dump = dump_short_array($nums);
 
-    if ($join eq "1,2,-32768") {
-      return 1;
+      unless ($dump eq "[\n  1,\n  2,\n  -32768\n]") {
+        return 0;
+      }
+    }
+    
+    # Dump undef
+    {
+      my $dump = dump_short_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
     }
 
-    return 0;
+    return 1;
   }
 
-  sub test_join_int : int () {
-    my $nums = [(int)1, 2, INT32_MIN()];
+  sub test_dump_int_array : int () {
+    # Dump array
+    {
+      my $nums = [(int)1, 2, INT32_MIN()];
 
-    my $join = join_int(",", $nums);
+      my $dump = dump_int_array($nums);
 
-    if ($join eq "1,2,-2147483648") {
-      return 1;
+      unless ($dump eq "[\n  1,\n  2,\n  -2147483648\n]") {
+        return 0;
+      }
     }
 
-    return 0;
+    # Dump undef
+    {
+      my $dump = dump_int_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+
+    return 1;
   }
 
-  sub test_join_long : int () {
-    my $nums = [(long)1, 2, INT64_MIN()];
+  sub test_dump_long_array : int () {
+    # Dump array
+    {
+      my $nums = [(long)1, 2, INT64_MIN()];
 
-    my $join = join_long(",", $nums);
+      my $dump = dump_long_array($nums);
 
-    if ($join eq "1,2,-9223372036854775808") {
-      return 1;
+      unless ($dump eq "[\n  1,\n  2,\n  -9223372036854775808\n]") {
+        return 0;
+      }
     }
 
-    return 0;
+    # Dump undef
+    {
+      my $dump = dump_long_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+
+    return 1;
   }
 
-  sub test_join_float : int () {
-    my $nums = [(float)1, 2, 2.45f];
+  sub test_dump_float_array : int () {
+    # Dump array
+    {
+      my $nums = [(float)1, 2, 2.45f];
 
-    my $join = join_float(",", $nums);
+      my $dump = dump_float_array($nums);
 
-    if ($join eq "1,2,2.45") {
-      return 1;
+      unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
+        return 0;
+      }
     }
 
-    return 0;
+    # Dump undef
+    {
+      my $dump = dump_float_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+
+    return 1;
   }
-  sub test_join_double : int () {
-    my $nums = [(double)1, 2, 2.45];
+  sub test_dump_double_array : int () {
+    # Dump array
+    {
+      my $nums = [(double)1, 2, 2.45];
 
-    my $join = join_double(",", $nums);
+      my $dump = dump_double_array($nums);
 
-    if ($join eq "1,2,2.45") {
-      return 1;
+      unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
+        return 0;
+      }
     }
 
-    return 0;
+    # Dump undef
+    {
+      my $dump = dump_double_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
   }
 
   sub test_byte_constant : int () {

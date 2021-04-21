@@ -975,88 +975,148 @@ package SPVM::Util : precompile {
     return $ispword;
   }
 
-  sub join_byte : string ($sep : string, $nums : byte[]) {
-    my $join = "";
+  sub dump_byte_array : string ($nums : byte[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
       my $string = (string)$nums->[$i];
-      $join .= $string;
+      $dump .= "  $string";
       if ($i != @$nums - 1) {
-        $join .= $sep;
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
       }
     }
+    
+    $dump .= "]";
 
-    return $join;
+    return $dump;
   }
 
-  sub join_short : string ($sep : string, $nums : short[]) {
-    my $join = "";
+  sub dump_short_array : string ($nums : short[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
       my $string = (string)$nums->[$i];
-      $join .= $string;
+      $dump .= "  $string";
       if ($i != @$nums - 1) {
-        $join .= $sep;
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
       }
     }
+    
+    $dump .= "]";
 
-    return $join;
+    return $dump;
   }
 
-  sub join_int : string ($sep : string, $nums : int[]) {
-    my $join = "";
+  sub dump_int_array : string ($nums : int[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
       my $string = (string)$nums->[$i];
-      $join .= $string;
+      $dump .= "  $string";
       if ($i != @$nums - 1) {
-        $join .= $sep;
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
       }
     }
+    
+    $dump .= "]";
 
-    return $join;
+    return $dump;
   }
 
-  sub join_long : string ($sep : string, $nums : long[]) {
-    my $join = "";
+  sub dump_long_array : string ($nums : long[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
       my $string = (string)$nums->[$i];
-      $join .= $string;
+      $dump .= "  $string";
       if ($i != @$nums - 1) {
-        $join .= $sep;
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
       }
     }
+    
+    $dump .= "]";
 
-    return $join;
+    return $dump;
   }
 
-  sub join_float : string ($sep : string, $nums : float[]) {
-    my $join = "";
+  sub dump_float_array : string ($nums : float[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
       my $string = (string)$nums->[$i];
-      $join .= $string;
+      $dump .= "  $string";
       if ($i != @$nums - 1) {
-        $join .= $sep;
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
       }
     }
+    
+    $dump .= "]";
 
-    return $join;
+    return $dump;
   }
 
-  sub join_double : string ($sep : string, $nums : double[]) {
-    my $join = "";
+  sub dump_double_array : string ($nums : double[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
       my $string = (string)$nums->[$i];
-      $join .= $string;
+      $dump .= "  $string";
       if ($i != @$nums - 1) {
-        $join .= $sep;
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
       }
     }
+    
+    $dump .= "]";
 
-    return $join;
+    return $dump;
   }
 
   sub join : string ($sep : string, $strings : string[]) {

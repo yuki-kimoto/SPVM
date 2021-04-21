@@ -281,12 +281,12 @@ SKIP: {
 # join
 {
   ok(TestCase::Lib::SPVM::Util->test_join);
-  ok(TestCase::Lib::SPVM::Util->test_join_byte);
-  ok(TestCase::Lib::SPVM::Util->test_join_short);
-  ok(TestCase::Lib::SPVM::Util->test_join_int);
-  ok(TestCase::Lib::SPVM::Util->test_join_long);
-  ok(TestCase::Lib::SPVM::Util->test_join_float);
-  ok(TestCase::Lib::SPVM::Util->test_join_double);
+  ok(TestCase::Lib::SPVM::Util->test_dump_byte_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_short_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_int_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_long_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_float_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_double_array);
 }
 
 # E
