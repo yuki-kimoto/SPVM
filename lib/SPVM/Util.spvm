@@ -1292,14 +1292,6 @@ package SPVM::Util : precompile {
   native sub abs : int ($x : int);
   native sub labs : long ($x : long);
 
-  native sub reverseb : void ($nums : byte[]);
-  native sub reverses : void ($nums : short[]);
-  native sub reversei : void ($nums : int[]);
-  native sub reversel : void ($nums : long[]);
-  native sub reversef : void ($nums : float[]);
-  native sub reversed : void ($nums : double[]);
-  native sub reverseo : void ($objs : oarray);
-
   sub substr : string ($string : string, $offset : int, $length : int) {
 
     if ($string == undef) {

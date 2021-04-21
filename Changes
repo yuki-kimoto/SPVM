@@ -16,6 +16,20 @@
   - rename SPVM::Util->equals_strarray to SPVM::Util->equals_string_array
   - rename SPVM::Util->copy_oarray to SPVM::Util->copy_object_array
   - rename SPVM::Util->equals_oarray to SPVM::Util->equals_object_array
+  - rename SPVM::Util->sliceb to SPVM::Util->slice_byte
+  - rename SPVM::Util->slices to SPVM::Util->slice_short
+  - rename SPVM::Util->slicei to SPVM::Util->slice_int
+  - rename SPVM::Util->slicel to SPVM::Util->slice_long
+  - rename SPVM::Util->slicef to SPVM::Util->slice_float
+  - rename SPVM::Util->sliced to SPVM::Util->slice_double
+  - rename SPVM::Util->sliceo to SPVM::Util->slice_object
+  - remove reverseb
+  - remove reverses
+  - remove reversei
+  - remove reversel
+  - remove reversef
+  - remove reversed
+  - remove reverseo
   
 0.0943 2021-04-19
   - add <=> and cmp operator

@@ -278,30 +278,6 @@ SKIP: {
   ok(TestCase::Lib::SPVM::Util->test_slice_object);
 }
 
-# reverse
-{
-  # reverseb
-  ok(TestCase::Lib::SPVM::Util->test_reverseb);
-
-  # reverses
-  ok(TestCase::Lib::SPVM::Util->test_reverses);
-
-  # reversei
-  ok(TestCase::Lib::SPVM::Util->test_reversei);
-
-  # reversel
-  ok(TestCase::Lib::SPVM::Util->test_reversel);
-
-  # reversef
-  ok(TestCase::Lib::SPVM::Util->test_reversef);
-
-  # reversed
-  ok(TestCase::Lib::SPVM::Util->test_reversed);
-
-  # reversed
-  ok(TestCase::Lib::SPVM::Util->test_reverseo);
-}
-
 # join
 {
   ok(TestCase::Lib::SPVM::Util->test_join);
