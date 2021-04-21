@@ -156,7 +156,7 @@ SPVM::Util - Variouse utilities
   
   # Stringify all object and join them by the specific separator
   my $objects = new Foo[3];
-  my $str = SPVM::Util->joino(",", $objects, sub : string ($self : self, $obj : object) {
+  my $str = SPVM::Util->join_object(",", $objects, sub : string ($self : self, $obj : object) {
     my $point = (SPVM::Point)$obj;
     my $x = $point->x;
     my $y = $point->y;
@@ -192,9 +192,9 @@ $objs1 and $objs2 and $equality_checker must be defined, otherwise a exception o
 
 Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
 
-=head2 joino
+=head2 join_object
 
-  sub joino : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer)
+  sub join_object : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer)
 
 Stringify all objects and join them by specific separator.
 You must specify a L<SPVM::Stringer> object to stringify each element.
@@ -557,9 +557,9 @@ If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If 
 
 If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
 
-=head2 joinb
+=head2 join_byte
 
-  sub joinb : string ($sep : string, $nums : byte[])
+  sub join_byte : string ($sep : string, $nums : byte[])
   
 Join a byte array as string with separater and return it.
 
@@ -567,9 +567,9 @@ If separater is undef, a exception occurs.
 
 If byte array is undef, a exception occurs.
 
-=head2 joins
+=head2 join_short
 
-  sub joins : string ($sep : string, $nums : short[])
+  sub join_short : string ($sep : string, $nums : short[])
   
 Join a short array as string with separater and return it.
 
@@ -577,9 +577,9 @@ If separater is undef, a exception occurs.
 
 If short array is undef, a exception occurs.
 
-=head2 joini
+=head2 join_int
 
-  sub joini : string ($sep : string, $nums : int[])
+  sub join_int : string ($sep : string, $nums : int[])
   
 Join a int array as string with separater and return it.
 
@@ -587,9 +587,9 @@ If separater is undef, a exception occurs.
 
 If int array is undef, a exception occurs.
 
-=head2 joinl
+=head2 join_long
 
-  sub joinl : string ($sep : string, $nums : long[])
+  sub join_long : string ($sep : string, $nums : long[])
   
 Join a long array as string with separater and return it.
 
@@ -597,9 +597,9 @@ If separater is undef, a exception occurs.
 
 If long array is undef, a exception occurs.
 
-=head2 joinf
+=head2 join_float
 
-  sub joinf : string ($sep : string, $nums : float[])
+  sub join_float : string ($sep : string, $nums : float[])
   
 Join a float array as string with separater and return it.
 
@@ -607,9 +607,9 @@ If separater is undef, a exception occurs.
 
 If float array is undef, a exception occurs.
 
-=head2 joind
+=head2 join_double
 
-  sub joind : string ($sep : string, $nums : double[])
+  sub join_double : string ($sep : string, $nums : double[])
   
 Join a double array as string with separater and return it.
 

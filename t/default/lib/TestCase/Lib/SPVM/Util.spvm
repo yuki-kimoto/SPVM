@@ -1,5 +1,5 @@
 package TestCase::Lib::SPVM::Util {
-  use SPVM::Util(joino, split, copy_object_array, equals_object_array, sprintf);
+  use SPVM::Util(join_object, split, copy_object_array, equals_object_array, sprintf);
 
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
@@ -47,12 +47,12 @@ package TestCase::Lib::SPVM::Util {
     tolower,
     toupper,
     join,
-    joinb,
-    joins,
-    joini,
-    joinl,
-    joinf,
-    joind,
+    join_byte,
+    join_short,
+    join_int,
+    join_long,
+    join_float,
+    join_double,
     lc,
     lcfirst,
     uc,
@@ -185,7 +185,7 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
-  sub test_joino : int () {
+  sub test_join_object : int () {
 
     my $minimals = [
       TestCase::Minimal->newp(1, 2),
@@ -193,7 +193,7 @@ package TestCase::Lib::SPVM::Util {
       TestCase::Minimal->newp(5, 6)
     ];
 
-    my $join = joino(",", $minimals, sub : string ($self : self, $obj : object) {
+    my $join = join_object(",", $minimals, sub : string ($self : self, $obj : object) {
       my $minimal = (TestCase::Minimal)$obj;
       my $x = $minimal->x;
       my $y = $minimal->y;
@@ -1904,10 +1904,10 @@ package TestCase::Lib::SPVM::Util {
     return 0;
   }
 
-  sub test_joinb : int () {
+  sub test_join_byte : int () {
     my $nums = [(byte)1, 2, INT8_MIN()];
 
-    my $join = joinb(",", $nums);
+    my $join = join_byte(",", $nums);
 
     if ($join eq "1,2,-128") {
       return 1;
@@ -1916,10 +1916,10 @@ package TestCase::Lib::SPVM::Util {
     return 0;
   }
 
-  sub test_joins : int () {
+  sub test_join_short : int () {
     my $nums = [(short)1, 2, INT16_MIN()];
 
-    my $join = joins(",", $nums);
+    my $join = join_short(",", $nums);
 
     if ($join eq "1,2,-32768") {
       return 1;
@@ -1928,10 +1928,10 @@ package TestCase::Lib::SPVM::Util {
     return 0;
   }
 
-  sub test_joini : int () {
+  sub test_join_int : int () {
     my $nums = [(int)1, 2, INT32_MIN()];
 
-    my $join = joini(",", $nums);
+    my $join = join_int(",", $nums);
 
     if ($join eq "1,2,-2147483648") {
       return 1;
@@ -1940,10 +1940,10 @@ package TestCase::Lib::SPVM::Util {
     return 0;
   }
 
-  sub test_joinl : int () {
+  sub test_join_long : int () {
     my $nums = [(long)1, 2, INT64_MIN()];
 
-    my $join = joinl(",", $nums);
+    my $join = join_long(",", $nums);
 
     if ($join eq "1,2,-9223372036854775808") {
       return 1;
@@ -1952,10 +1952,10 @@ package TestCase::Lib::SPVM::Util {
     return 0;
   }
 
-  sub test_joinf : int () {
+  sub test_join_float : int () {
     my $nums = [(float)1, 2, 2.45f];
 
-    my $join = joinf(",", $nums);
+    my $join = join_float(",", $nums);
 
     if ($join eq "1,2,2.45") {
       return 1;
@@ -1963,10 +1963,10 @@ package TestCase::Lib::SPVM::Util {
 
     return 0;
   }
-  sub test_joind : int () {
+  sub test_join_double : int () {
     my $nums = [(double)1, 2, 2.45];
 
-    my $join = joind(",", $nums);
+    my $join = join_double(",", $nums);
 
     if ($join eq "1,2,2.45") {
       return 1;

@@ -39,7 +39,7 @@ use SPVM 'SPVM::Util';
 
 # join
 {
-  ok(TestCase::Lib::SPVM::Util->test_joino);
+  ok(TestCase::Lib::SPVM::Util->test_join_object);
 }
 
 # split
@@ -281,12 +281,12 @@ SKIP: {
 # join
 {
   ok(TestCase::Lib::SPVM::Util->test_join);
-  ok(TestCase::Lib::SPVM::Util->test_joinb);
-  ok(TestCase::Lib::SPVM::Util->test_joins);
-  ok(TestCase::Lib::SPVM::Util->test_joini);
-  ok(TestCase::Lib::SPVM::Util->test_joinl);
-  ok(TestCase::Lib::SPVM::Util->test_joinf);
-  ok(TestCase::Lib::SPVM::Util->test_joind);
+  ok(TestCase::Lib::SPVM::Util->test_join_byte);
+  ok(TestCase::Lib::SPVM::Util->test_join_short);
+  ok(TestCase::Lib::SPVM::Util->test_join_int);
+  ok(TestCase::Lib::SPVM::Util->test_join_long);
+  ok(TestCase::Lib::SPVM::Util->test_join_float);
+  ok(TestCase::Lib::SPVM::Util->test_join_double);
 }
 
 # E

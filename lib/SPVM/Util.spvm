@@ -41,7 +41,7 @@ package SPVM::Util : precompile {
     return $is_equals;
   }
 
-  sub joino : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer) {
+  sub join_object : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer) {
     my $join = "";
 
     for (my $i = 0; $i < @$objects; $i++) {
@@ -975,7 +975,7 @@ package SPVM::Util : precompile {
     return $ispword;
   }
 
-  sub joinb : string ($sep : string, $nums : byte[]) {
+  sub join_byte : string ($sep : string, $nums : byte[]) {
     my $join = "";
 
     for (my $i = 0; $i < @$nums; $i++) {
@@ -989,7 +989,7 @@ package SPVM::Util : precompile {
     return $join;
   }
 
-  sub joins : string ($sep : string, $nums : short[]) {
+  sub join_short : string ($sep : string, $nums : short[]) {
     my $join = "";
 
     for (my $i = 0; $i < @$nums; $i++) {
@@ -1003,7 +1003,7 @@ package SPVM::Util : precompile {
     return $join;
   }
 
-  sub joini : string ($sep : string, $nums : int[]) {
+  sub join_int : string ($sep : string, $nums : int[]) {
     my $join = "";
 
     for (my $i = 0; $i < @$nums; $i++) {
@@ -1017,7 +1017,7 @@ package SPVM::Util : precompile {
     return $join;
   }
 
-  sub joinl : string ($sep : string, $nums : long[]) {
+  sub join_long : string ($sep : string, $nums : long[]) {
     my $join = "";
 
     for (my $i = 0; $i < @$nums; $i++) {
@@ -1031,7 +1031,7 @@ package SPVM::Util : precompile {
     return $join;
   }
 
-  sub joinf : string ($sep : string, $nums : float[]) {
+  sub join_float : string ($sep : string, $nums : float[]) {
     my $join = "";
 
     for (my $i = 0; $i < @$nums; $i++) {
@@ -1045,7 +1045,7 @@ package SPVM::Util : precompile {
     return $join;
   }
 
-  sub joind : string ($sep : string, $nums : double[]) {
+  sub join_double : string ($sep : string, $nums : double[]) {
     my $join = "";
 
     for (my $i = 0; $i < @$nums; $i++) {
