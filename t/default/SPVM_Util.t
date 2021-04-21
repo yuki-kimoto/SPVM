@@ -343,8 +343,8 @@ SKIP: {
   # equals_double_array
   ok(TestCase::Lib::SPVM::Util->test_equals_double_array);
 
-  # equals_strarray
-  ok(TestCase::Lib::SPVM::Util->test_equals_strarray);
+  # equals_string_array
+  ok(TestCase::Lib::SPVM::Util->test_equals_string_array);
 }
 
 # Copy
@@ -370,8 +370,8 @@ SKIP: {
   # copy_double_array
   ok(TestCase::Lib::SPVM::Util->test_copy_double_array);
 
-  # copy_strarray
-  ok(TestCase::Lib::SPVM::Util->test_copy_strarray);
+  # copy_string_array
+  ok(TestCase::Lib::SPVM::Util->test_copy_string_array);
 }
 
 # Constant integral functions

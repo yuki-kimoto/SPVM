@@ -12,6 +12,8 @@
   - rename SPVM::Util->equals_farray to SPVM::Util->equals_float_array
   - rename SPVM::Util->copy_darray to SPVM::Util->copy_double_array
   - rename SPVM::Util->equals_darray to SPVM::Util->equals_double_array
+  - rename SPVM::Util->copy_strarray to SPVM::Util->copy_string_array
+  - rename SPVM::Util->equals_strarray to SPVM::Util->equals_string_array
   
 0.0943 2021-04-19
   - add <=> and cmp operator

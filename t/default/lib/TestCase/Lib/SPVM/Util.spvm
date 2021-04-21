@@ -4,7 +4,7 @@ package TestCase::Lib::SPVM::Util {
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
   use SPVM::Math (fabsf, fabs);
-  use SPVM::Util (equals_strarray, contains);
+  use SPVM::Util (equals_string_array, contains);
   use SPVM::Util (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   use TestCase::Minimal;
   use SPVM::Time (time);
@@ -22,7 +22,7 @@ package TestCase::Lib::SPVM::Util {
     copy_float_array,
     copy_double_array,
     E,
-    copy_strarray,
+    copy_string_array,
     equals_byte_array,
     equals_short_array,
     equals_int_array,
@@ -219,7 +219,7 @@ package TestCase::Lib::SPVM::Util {
     {
       my $str = "foo,bar,baz";
       my $split_strs = split(",", $str);
-      unless (equals_strarray($split_strs, ["foo", "bar", "baz"])) {
+      unless (equals_string_array($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
@@ -227,7 +227,7 @@ package TestCase::Lib::SPVM::Util {
     {
       my $str = "foo,bar,";
       my $split_strs = split(",", $str);
-      unless (equals_strarray($split_strs, ["foo", "bar", ""])) {
+      unless (equals_string_array($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
@@ -235,7 +235,7 @@ package TestCase::Lib::SPVM::Util {
     {
       my $str = ",foo,,bar,,";
       my $split_strs = split(",", $str);
-      unless (equals_strarray($split_strs, ["", "foo", "", "bar", "", ""])) {
+      unless (equals_string_array($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
@@ -243,21 +243,21 @@ package TestCase::Lib::SPVM::Util {
     {
       my $str = "foo : bar : baz";
       my $split_strs = split(" : ", $str);
-      unless (equals_strarray($split_strs, ["foo", "bar", "baz"])) {
+      unless (equals_string_array($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
     {
       my $str = "foo : bar : ";
       my $split_strs = split(" : ", $str);
-      unless (equals_strarray($split_strs, ["foo", "bar", ""])) {
+      unless (equals_string_array($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
     {
       my $str = " : foo :  : bar :  : ";
       my $split_strs = split(" : ", $str);
-      unless (equals_strarray($split_strs, ["", "foo", "", "bar", "", ""])) {
+      unless (equals_string_array($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
@@ -265,21 +265,21 @@ package TestCase::Lib::SPVM::Util {
     {
       my $str = "foo---bar---baz";
       my $split_strs = split("---", $str);
-      unless (equals_strarray($split_strs, ["foo", "bar", "baz"])) {
+      unless (equals_string_array($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
     {
       my $str = "foo---bar---";
       my $split_strs = split("---", $str);
-      unless (equals_strarray($split_strs, ["foo", "bar", ""])) {
+      unless (equals_string_array($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
     {
       my $str = "---foo------bar------";
       my $split_strs = split("---", $str);
-      unless (equals_strarray($split_strs, ["", "foo", "", "bar", "", ""])) {
+      unless (equals_string_array($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
@@ -287,7 +287,7 @@ package TestCase::Lib::SPVM::Util {
     {
       my $str = "foo--!bar---baz";
       my $split_strs = split("---", $str);
-      unless (equals_strarray($split_strs, ["foo--!bar", "baz"])) {
+      unless (equals_string_array($split_strs, ["foo--!bar", "baz"])) {
         return 0;
       }
     }
@@ -2465,26 +2465,26 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
-  sub test_equals_strarray : int () {
+  sub test_equals_string_array : int () {
     my $strings1 = ["abc", "def", "ghi"];
     my $strings2 = ["abc", "def", "ghi"];
     my $strings3 = ["abc", "def"];
     my $strings4 = ["abc", "def", "xxx"];
 
     {
-      my $is_equals = equals_strarray($strings1, $strings2);
+      my $is_equals = equals_string_array($strings1, $strings2);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_strarray($strings1, $strings3);
+      my $is_equals = equals_string_array($strings1, $strings3);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_strarray($strings1, $strings4);
+      my $is_equals = equals_string_array($strings1, $strings4);
       if ($is_equals) {
         return 0;
       }
@@ -2656,9 +2656,9 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
-  sub test_copy_strarray : int () {
+  sub test_copy_string_array : int () {
     my $strings = ["abc", "def", "hij"];
-    my $strings_out = copy_strarray($strings);
+    my $strings_out = copy_string_array($strings);
 
     unless ($strings->[0] eq $strings_out->[0]) {
       return 0;

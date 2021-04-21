@@ -611,7 +611,7 @@ package SPVM::Util : precompile {
     return $new_nums;
   }
 
-  sub copy_strarray : string[] ($strings : string[]) {
+  sub copy_string_array : string[] ($strings : string[]) {
     my $length = @$strings;
 
     my $new_strings = new string[$length];
@@ -721,7 +721,7 @@ package SPVM::Util : precompile {
     return $is_equals;
   }
 
-  sub equals_strarray : int ($strings1 : string[], $strings2 : string[]) {
+  sub equals_string_array : int ($strings1 : string[], $strings2 : string[]) {
     my $is_equals = 1;
     if (@$strings1 == @$strings2) {
       for (my $i = 0; $i < @$strings1; $i++) {

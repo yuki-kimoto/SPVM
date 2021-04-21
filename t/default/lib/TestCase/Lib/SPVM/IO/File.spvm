@@ -1,7 +1,7 @@
 package TestCase::Lib::SPVM::IO::File {
   use SPVM::IO::File;
   use SPVM::StringList;
-  use SPVM::Util (chomp_lf, equals_strarray, sliceb);
+  use SPVM::Util (chomp_lf, equals_string_array, sliceb);
 
   sub test_flush : int ($file : string) {
     
@@ -182,7 +182,7 @@ package TestCase::Lib::SPVM::IO::File {
     }
     my $strings = $lstrings->to_array;
     
-    unless (equals_strarray($strings, ["abcd\n", "fghi\n", "klm\n"])) {
+    unless (equals_string_array($strings, ["abcd\n", "fghi\n", "klm\n"])) {
       return 0;
     }
     
@@ -321,7 +321,7 @@ package TestCase::Lib::SPVM::IO::File {
     }
     my $strings = $lstrings->to_array;
     
-    unless (equals_strarray($strings, ["abcd", "fghi", "klm"])) {
+    unless (equals_string_array($strings, ["abcd", "fghi", "klm"])) {
       return 0;
     }
     

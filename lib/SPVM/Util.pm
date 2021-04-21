@@ -89,7 +89,7 @@ SPVM::Util - Variouse utilities
   # Copy a string array
   {
     my $strs = ["abc", "def", "ghi"]
-    my $strs_copy = copy_strarray($strs);
+    my $strs_copy = copy_string_array($strs);
   }
   
   # Check if the two byte arrays equal
@@ -138,7 +138,7 @@ SPVM::Util - Variouse utilities
   {
     my $strs1 = ["abc", "def"];
     my $strs2 = ["abc", "def"];
-    my $ret = equals_strarray($strs1, $strs2);
+    my $ret = equals_string_array($strs1, $strs2);
   }
   
   # Search substr
@@ -301,9 +301,9 @@ Copy a double array.
 
 If the array is undefined, a exception occurs.
 
-=head2 copy_strarray
+=head2 copy_string_array
 
-  sub copy_strarray : string[] ($strings : string[])
+  sub copy_string_array : string[] ($strings : string[])
 
 Copy a string array.
 
@@ -357,9 +357,9 @@ Check if two double arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 equals_strarray
+=head2 equals_string_array
 
-  sub equals_strarray : int ($strs1 : double[], $strs2 : double[])
+  sub equals_string_array : int ($strs1 : double[], $strs2 : double[])
 
 Check if two string arrays equal.
 
