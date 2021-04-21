@@ -17,7 +17,7 @@ package TestCase {
   has x_long : rw public long;
   has x_float : rw public float;
   has x_double : rw public double;
-  has x_iarray : rw public int[];
+  has x_int_array : rw public int[];
   has x_byte_array : rw public byte[];
   has x_test_case : rw public TestCase;
   has minimal : rw public TestCase::Minimal;

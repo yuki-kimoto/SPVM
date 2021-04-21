@@ -611,7 +611,7 @@ package TestCase::Sub {
   }
   
   # short array argument
-  sub call_sub_sarray : short ($nums : short[]) {
+  sub call_sub_short_array : short ($nums : short[]) {
     
     my $total = (short)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -622,7 +622,7 @@ package TestCase::Sub {
   }
   
   # int array argument
-  sub call_sub_iarray : int ($nums : int[]) {
+  sub call_sub_int_array : int ($nums : int[]) {
     
     my $total = 0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -633,7 +633,7 @@ package TestCase::Sub {
   }
 
   # long array argument
-  sub call_sub_larray : long ($nums : long[]) {
+  sub call_sub_long_array : long ($nums : long[]) {
     
     my $total = (long)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -644,7 +644,7 @@ package TestCase::Sub {
   }
 
   # float array argument
-  sub call_sub_farray : float ($nums : float[]) {
+  sub call_sub_float_array : float ($nums : float[]) {
     
     my $total = (float)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -655,7 +655,7 @@ package TestCase::Sub {
   }
 
   # double array argument
-  sub call_sub_darray : double ($nums : double[]) {
+  sub call_sub_double_array : double ($nums : double[]) {
     
     my $total = (double)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -689,7 +689,7 @@ package TestCase::Sub {
     return 0;
   }
 
-  sub call_sub_return_sarray : short[] () {
+  sub call_sub_return_short_array : short[] () {
     my $nums = new short[3];
     
     $nums->[0] = (short)1;
@@ -698,7 +698,7 @@ package TestCase::Sub {
     
     return $nums;
   }
-  sub call_sub_return_sarray_check : int ($nums : short[]) {
+  sub call_sub_return_short_array_check : int ($nums : short[]) {
     
     if ((int)$nums->[0] == (int)(short)1) {
       if ((int)$nums->[1] == (int)(short)2) {
@@ -713,7 +713,7 @@ package TestCase::Sub {
     return 0;
   }
 
-  sub call_sub_return_iarray : int[] () {
+  sub call_sub_return_int_array : int[] () {
     my $nums = new int[3];
     
     $nums->[0] = (int)1;
@@ -722,7 +722,7 @@ package TestCase::Sub {
     
     return $nums;
   }
-  sub call_sub_return_iarray_check : int ($nums : int[]) {
+  sub call_sub_return_int_array_check : int ($nums : int[]) {
     
     if ($nums->[0] == (int)1) {
       if ($nums->[1] == (int)2) {
@@ -737,7 +737,7 @@ package TestCase::Sub {
     return 0;
   }
 
-  sub call_sub_return_larray : long[] () {
+  sub call_sub_return_long_array : long[] () {
     my $nums = new long[3];
     
     $nums->[0] = (long)1;
@@ -746,7 +746,7 @@ package TestCase::Sub {
     
     return $nums;
   }
-  sub call_sub_return_larray_check : int ($nums : long[]) {
+  sub call_sub_return_long_array_check : int ($nums : long[]) {
     
     if ($nums->[0] == (long)1) {
       if ($nums->[1] == (long)2) {
@@ -761,7 +761,7 @@ package TestCase::Sub {
     return 0;
   }
 
-  sub call_sub_return_farray : float[] () {
+  sub call_sub_return_float_array : float[] () {
     my $nums = new float[3];
     
     $nums->[0] = (float)1;
@@ -770,7 +770,7 @@ package TestCase::Sub {
     
     return $nums;
   }
-  sub call_sub_return_farray_check : int ($nums : float[]) {
+  sub call_sub_return_float_array_check : int ($nums : float[]) {
     
     if ($nums->[0] == (float)1) {
       if ($nums->[1] == (float)2) {
@@ -785,7 +785,7 @@ package TestCase::Sub {
     return 0;
   }
 
-  sub call_sub_return_darray : double[] () {
+  sub call_sub_return_double_array : double[] () {
     my $nums = new double[3];
     
     $nums->[0] = (double)1;
@@ -794,7 +794,7 @@ package TestCase::Sub {
     
     return $nums;
   }
-  sub call_sub_return_darray_check : int ($nums : double[]) {
+  sub call_sub_return_double_array_check : int ($nums : double[]) {
     
     if ($nums->[0] == (double)1) {
       if ($nums->[1] == (double)2) {

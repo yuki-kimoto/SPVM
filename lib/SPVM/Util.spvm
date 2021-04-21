@@ -551,7 +551,7 @@ package SPVM::Util : precompile {
     return (string)$bytes;
   }
 
-  sub copy_sarray : short[] ($nums : short[]) {
+  sub copy_short_array : short[] ($nums : short[]) {
     my $length = @$nums;
 
     my $new_nums = new short[$length];
@@ -563,7 +563,7 @@ package SPVM::Util : precompile {
     return $new_nums;
   }
 
-  sub copy_iarray : int[] ($nums : int[]) {
+  sub copy_int_array : int[] ($nums : int[]) {
     my $length = @$nums;
 
     my $new_nums = new int[$length];
@@ -575,7 +575,7 @@ package SPVM::Util : precompile {
     return $new_nums;
   }
 
-  sub copy_larray : long[] ($nums : long[]) {
+  sub copy_long_array : long[] ($nums : long[]) {
     my $length = @$nums;
 
     my $new_nums = new long[$length];
@@ -587,7 +587,7 @@ package SPVM::Util : precompile {
     return $new_nums;
   }
 
-  sub copy_farray : float[] ($nums : float[]) {
+  sub copy_float_array : float[] ($nums : float[]) {
     my $length = @$nums;
 
     my $new_nums = new float[$length];
@@ -599,7 +599,7 @@ package SPVM::Util : precompile {
     return $new_nums;
   }
 
-  sub copy_darray : double[] ($nums : double[]) {
+  sub copy_double_array : double[] ($nums : double[]) {
     my $length = @$nums;
 
     my $new_nums = new double[$length];
@@ -640,7 +640,7 @@ package SPVM::Util : precompile {
     return $is_equals;
   }
 
-  sub equals_sarray : int ($nums1 : short[], $nums2 : short[]) {
+  sub equals_short_array : int ($nums1 : short[], $nums2 : short[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -656,7 +656,7 @@ package SPVM::Util : precompile {
 
     return $is_equals;
   }
-  sub equals_iarray : int ($nums1 : int[], $nums2 : int[]) {
+  sub equals_int_array : int ($nums1 : int[], $nums2 : int[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -672,7 +672,7 @@ package SPVM::Util : precompile {
 
     return $is_equals;
   }
-  sub equals_larray : int ($nums1 : long[], $nums2 : long[]) {
+  sub equals_long_array : int ($nums1 : long[], $nums2 : long[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -688,7 +688,7 @@ package SPVM::Util : precompile {
 
     return $is_equals;
   }
-  sub equals_farray : int ($nums1 : float[], $nums2 : float[]) {
+  sub equals_float_array : int ($nums1 : float[], $nums2 : float[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {
@@ -704,7 +704,7 @@ package SPVM::Util : precompile {
 
     return $is_equals;
   }
-  sub equals_darray : int ($nums1 : double[], $nums2 : double[]) {
+  sub equals_double_array : int ($nums1 : double[], $nums2 : double[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {

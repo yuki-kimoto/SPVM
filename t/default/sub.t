@@ -116,31 +116,31 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # call_sub sarray
   {
     my $sp_values = SPVM::new_short_array([1, 2, 3]);
-    is(TestCase::Sub->call_sub_sarray($sp_values), 6);
+    is(TestCase::Sub->call_sub_short_array($sp_values), 6);
   }
 
   # call_sub iarray
   {
     my $sp_values = SPVM::new_int_array([1, 2, 3]);
-    is(TestCase::Sub->call_sub_iarray($sp_values), 6);
+    is(TestCase::Sub->call_sub_int_array($sp_values), 6);
   }
 
   # call_sub larray
   {
     my $sp_values = SPVM::new_long_array([1, 2, 3]);
-    is(TestCase::Sub->call_sub_larray($sp_values), 6);
+    is(TestCase::Sub->call_sub_long_array($sp_values), 6);
   }
 
   # call_sub farray
   {
     my $sp_values = SPVM::new_float_array([0.5, 0.5, 1.0]);
-    is(TestCase::Sub->call_sub_farray($sp_values), 2.0);
+    is(TestCase::Sub->call_sub_float_array($sp_values), 2.0);
   }
 
   # call_sub darray
   {
     my $sp_values = SPVM::new_double_array([0.5, 0.5, 1.0]);
-    is(TestCase::Sub->call_sub_darray($sp_values), 2.0);
+    is(TestCase::Sub->call_sub_double_array($sp_values), 2.0);
   }
 }
 
@@ -160,24 +160,24 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     TestCase::Sub->call_sub_return_byte_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase::Sub->call_sub_return_sarray();
-    TestCase::Sub->call_sub_return_sarray_check($sp_values);
+    my $sp_values = TestCase::Sub->call_sub_return_short_array();
+    TestCase::Sub->call_sub_return_short_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase::Sub->call_sub_return_iarray();
-    TestCase::Sub->call_sub_return_iarray_check($sp_values);
+    my $sp_values = TestCase::Sub->call_sub_return_int_array();
+    TestCase::Sub->call_sub_return_int_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase::Sub->call_sub_return_larray();
-    TestCase::Sub->call_sub_return_larray_check($sp_values);
+    my $sp_values = TestCase::Sub->call_sub_return_long_array();
+    TestCase::Sub->call_sub_return_long_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase::Sub->call_sub_return_farray();
-    TestCase::Sub->call_sub_return_farray_check($sp_values);
+    my $sp_values = TestCase::Sub->call_sub_return_float_array();
+    TestCase::Sub->call_sub_return_float_array_check($sp_values);
   }
   {
-    my $sp_values = TestCase::Sub->call_sub_return_darray();
-    TestCase::Sub->call_sub_return_darray_check($sp_values);
+    my $sp_values = TestCase::Sub->call_sub_return_double_array();
+    TestCase::Sub->call_sub_return_double_array_check($sp_values);
   }
 }
 

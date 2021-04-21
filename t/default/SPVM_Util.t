@@ -328,20 +328,20 @@ SKIP: {
   # equals_byte_array
   ok(TestCase::Lib::SPVM::Util->test_equals_byte_array);
 
-  # equals_sarray
-  ok(TestCase::Lib::SPVM::Util->test_equals_sarray);
+  # equals_short_array
+  ok(TestCase::Lib::SPVM::Util->test_equals_short_array);
 
-  # equals_iarray
-  ok(TestCase::Lib::SPVM::Util->test_equals_iarray);
+  # equals_int_array
+  ok(TestCase::Lib::SPVM::Util->test_equals_int_array);
 
-  # equeals_larray
-  ok(TestCase::Lib::SPVM::Util->test_equals_larray);
+  # equeals_long_array
+  ok(TestCase::Lib::SPVM::Util->test_equals_long_array);
 
-  # equals_farray
-  ok(TestCase::Lib::SPVM::Util->test_equals_farray);
+  # equals_float_array
+  ok(TestCase::Lib::SPVM::Util->test_equals_float_array);
 
-  # equals_darray
-  ok(TestCase::Lib::SPVM::Util->test_equals_darray);
+  # equals_double_array
+  ok(TestCase::Lib::SPVM::Util->test_equals_double_array);
 
   # equals_strarray
   ok(TestCase::Lib::SPVM::Util->test_equals_strarray);
@@ -355,20 +355,20 @@ SKIP: {
   # copy_byte_array
   ok(TestCase::Lib::SPVM::Util->test_copy_byte_array);
 
-  # copy_sarray
-  ok(TestCase::Lib::SPVM::Util->test_copy_sarray);
+  # copy_short_array
+  ok(TestCase::Lib::SPVM::Util->test_copy_short_array);
 
-  # copy_iarray
-  ok(TestCase::Lib::SPVM::Util->test_copy_iarray);
+  # copy_int_array
+  ok(TestCase::Lib::SPVM::Util->test_copy_int_array);
 
-  # copy_larray
-  ok(TestCase::Lib::SPVM::Util->test_copy_larray);
+  # copy_long_array
+  ok(TestCase::Lib::SPVM::Util->test_copy_long_array);
 
-  # copy_farray
-  ok(TestCase::Lib::SPVM::Util->test_copy_farray);
+  # copy_float_array
+  ok(TestCase::Lib::SPVM::Util->test_copy_float_array);
 
-  # copy_darray
-  ok(TestCase::Lib::SPVM::Util->test_copy_darray);
+  # copy_double_array
+  ok(TestCase::Lib::SPVM::Util->test_copy_double_array);
 
   # copy_strarray
   ok(TestCase::Lib::SPVM::Util->test_copy_strarray);

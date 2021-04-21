@@ -152,7 +152,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_sarray($nums, [(short)1, 2, 3])) {
+      unless (SPVM::Util->equals_short_array($nums, [(short)1, 2, 3])) {
         return 0;
       }
     }
@@ -165,7 +165,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_sarray($nums, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_short_array($nums, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -178,7 +178,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_sarray($nums, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_short_array($nums, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -191,7 +191,7 @@ package TestCase::Lib::SPVM::Sort {
         return $b <=> $a;
       });
       
-      unless (SPVM::Util->equals_sarray($nums, [(short)3, 2, 1])) {
+      unless (SPVM::Util->equals_short_array($nums, [(short)3, 2, 1])) {
         return 0;
       }
     }
@@ -204,7 +204,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_sarray($nums, [(short)2, 3, 1])) {
+      unless (SPVM::Util->equals_short_array($nums, [(short)2, 3, 1])) {
         return 0;
       }
     }
@@ -217,7 +217,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_sarray($nums, [(short)5, 1, 2, 3, -10])) {
+      unless (SPVM::Util->equals_short_array($nums, [(short)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -292,7 +292,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_iarray($nums, [(int)1, 2, 3])) {
+      unless (SPVM::Util->equals_int_array($nums, [(int)1, 2, 3])) {
         return 0;
       }
     }
@@ -305,7 +305,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_iarray($nums, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_int_array($nums, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -318,7 +318,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_iarray($nums, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_int_array($nums, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -331,7 +331,7 @@ package TestCase::Lib::SPVM::Sort {
         return $b <=> $a;
       });
       
-      unless (SPVM::Util->equals_iarray($nums, [(int)3, 2, 1])) {
+      unless (SPVM::Util->equals_int_array($nums, [(int)3, 2, 1])) {
         return 0;
       }
     }
@@ -344,7 +344,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_iarray($nums, [(int)2, 3, 1])) {
+      unless (SPVM::Util->equals_int_array($nums, [(int)2, 3, 1])) {
         return 0;
       }
     }
@@ -357,7 +357,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_iarray($nums, [(int)5, 1, 2, 3, -10])) {
+      unless (SPVM::Util->equals_int_array($nums, [(int)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -432,7 +432,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_larray($nums, [(long)1, 2, 3])) {
+      unless (SPVM::Util->equals_long_array($nums, [(long)1, 2, 3])) {
         return 0;
       }
     }
@@ -445,7 +445,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_larray($nums, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_long_array($nums, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -458,7 +458,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_larray($nums, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_long_array($nums, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -471,7 +471,7 @@ package TestCase::Lib::SPVM::Sort {
         return $b <=> $a;
       });
       
-      unless (SPVM::Util->equals_larray($nums, [(long)3, 2, 1])) {
+      unless (SPVM::Util->equals_long_array($nums, [(long)3, 2, 1])) {
         return 0;
       }
     }
@@ -484,7 +484,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_larray($nums, [(long)2, 3, 1])) {
+      unless (SPVM::Util->equals_long_array($nums, [(long)2, 3, 1])) {
         return 0;
       }
     }
@@ -497,7 +497,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_larray($nums, [(long)5, 1, 2, 3, -10])) {
+      unless (SPVM::Util->equals_long_array($nums, [(long)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -572,7 +572,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_farray($nums, [(float)1, 2, 3])) {
+      unless (SPVM::Util->equals_float_array($nums, [(float)1, 2, 3])) {
         return 0;
       }
     }
@@ -585,7 +585,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_farray($nums, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_float_array($nums, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -598,7 +598,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_farray($nums, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_float_array($nums, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -611,7 +611,7 @@ package TestCase::Lib::SPVM::Sort {
         return $b <=> $a;
       });
       
-      unless (SPVM::Util->equals_farray($nums, [(float)3, 2, 1])) {
+      unless (SPVM::Util->equals_float_array($nums, [(float)3, 2, 1])) {
         return 0;
       }
     }
@@ -624,7 +624,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_farray($nums, [(float)2, 3, 1])) {
+      unless (SPVM::Util->equals_float_array($nums, [(float)2, 3, 1])) {
         return 0;
       }
     }
@@ -637,7 +637,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_farray($nums, [(float)5, 1, 2, 3, -10])) {
+      unless (SPVM::Util->equals_float_array($nums, [(float)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -712,7 +712,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_darray($nums, [(double)1, 2, 3])) {
+      unless (SPVM::Util->equals_double_array($nums, [(double)1, 2, 3])) {
         return 0;
       }
     }
@@ -725,7 +725,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_darray($nums, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_double_array($nums, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -738,7 +738,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_darray($nums, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (SPVM::Util->equals_double_array($nums, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -751,7 +751,7 @@ package TestCase::Lib::SPVM::Sort {
         return $b <=> $a;
       });
       
-      unless (SPVM::Util->equals_darray($nums, [(double)3, 2, 1])) {
+      unless (SPVM::Util->equals_double_array($nums, [(double)3, 2, 1])) {
         return 0;
       }
     }
@@ -764,7 +764,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_darray($nums, [(double)2, 3, 1])) {
+      unless (SPVM::Util->equals_double_array($nums, [(double)2, 3, 1])) {
         return 0;
       }
     }
@@ -777,7 +777,7 @@ package TestCase::Lib::SPVM::Sort {
         return $a <=> $b;
       });
       
-      unless (SPVM::Util->equals_darray($nums, [(double)5, 1, 2, 3, -10])) {
+      unless (SPVM::Util->equals_double_array($nums, [(double)5, 1, 2, 3, -10])) {
         return 0;
       }
     }

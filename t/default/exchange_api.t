@@ -127,7 +127,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $object2 = SPVM::new_short_array([4, 5, 6]);
     my $oarray = SPVM::new_object_array("short[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_sarray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_short_array($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -141,7 +141,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $object2 = SPVM::new_int_array([4, 5, 6]);
     my $oarray = SPVM::new_object_array("int[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_iarray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_int_array($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -154,7 +154,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $object1 = SPVM::new_long_array([1, 2, 3]);
     my $object2 = SPVM::new_long_array([4, 5, 6]);
     my $oarray = SPVM::new_object_array("long[][]", [$object1, $object2]);
-    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_larray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_long_array($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -168,7 +168,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $object2 = SPVM::new_float_array([4, 5, 6]);
     my $oarray = SPVM::new_object_array("float[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_farray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_float_array($oarray));
     
     my $oarray_out = $oarray->to_elems;
 
@@ -182,7 +182,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $object2 = SPVM::new_double_array([4, 5, 6]);
     my $oarray = SPVM::new_object_array("double[][]", [$object1, $object2]);
     
-    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_darray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_double_array($oarray));
     
     my $oarray_out = $oarray->to_elems;
 

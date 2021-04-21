@@ -24,14 +24,14 @@ SPVM::Util - Variouse utilities
   {
     my $re_values = [1.5f, 2.5f, 3.5f];
     my $im_values = [5.5f, 6.5f, 7.5f];
-    my $farray = complex_farray($re_values, $im_values);
+    my $farray = complex_float_array($re_values, $im_values);
   }
 
   # Create a new double complex array
   {
     my $re_values = [1.5, 2.5, 3.5];
     my $im_values = [5.5, 6.5, 7.5];
-    my $farray = complex_darray($re_values, $im_values);
+    my $farray = complex_double_array($re_values, $im_values);
   }
   
   # Create a new float complex value
@@ -59,31 +59,31 @@ SPVM::Util - Variouse utilities
   # Copy a short array
   {
     my $nums = [(short)1, 2, 3];
-    my $nums_copy = copy_sarray($nums);
+    my $nums_copy = copy_short_array($nums);
   }
 
   # Copy a int array
   {
     my $nums = [1, 2, 3];
-    my $nums_copy = copy_iarray($nums);
+    my $nums_copy = copy_int_array($nums);
   }
 
   # Copy a long array
   {
     my $nums = [(long)1, 2, 3];
-    my $nums_copy = copy_larray($nums);
+    my $nums_copy = copy_long_array($nums);
   }
 
   # Copy a float array
   {
     my $nums = [1.5f, 2.5f, 3.5f];
-    my $nums_copy = copy_farray($nums);
+    my $nums_copy = copy_float_array($nums);
   }
 
   # Copy a double array
   {
     my $nums = [1.5, 2.5, 3.5];
-    my $nums_copy = copy_darray($nums);
+    my $nums_copy = copy_double_array($nums);
   }
   
   # Copy a string array
@@ -103,35 +103,35 @@ SPVM::Util - Variouse utilities
   {
     my $nums1 = [(short)1, 2];
     my $nums2 = [(short)1, 2];
-    my $ret = equals_sarray($nums1, $nums2);
+    my $ret = equals_short_array($nums1, $nums2);
   }
 
   # Check if the two int arrays equal
   {
     my $nums1 = [(int)1, 2];
     my $nums2 = [(int)1, 2];
-    my $ret = equals_iarray($nums1, $nums2);
+    my $ret = equals_int_array($nums1, $nums2);
   }
 
   # Check if the two long arrays equal
   {
     my $nums1 = [(long)1, 2];
     my $nums2 = [(long)1, 2];
-    my $ret = equals_larray($nums1, $nums2);
+    my $ret = equals_long_array($nums1, $nums2);
   }
 
   # Check if the two float arrays equal
   {
     my $nums1 = [(float)1, 2];
     my $nums2 = [(float)1, 2];
-    my $ret = equals_farray($nums1, $nums2);
+    my $ret = equals_float_array($nums1, $nums2);
   }
 
   # Check if the two double arrays equal
   {
     my $nums1 = [(double)1, 2];
     my $nums2 = [(double)1, 2];
-    my $ret = equals_darray($nums1, $nums2);
+    my $ret = equals_double_array($nums1, $nums2);
   }
 
   # Check if the two string arrays equal
@@ -221,15 +221,15 @@ Copy the string and remove the newline "\n" from the end of string and return it
 
 Copy the string and remove the newline "\r\n" from the end of string and return it.
 
-=head2 complex_farray
+=head2 complex_float_array
 
-  sub complex_farray : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[])
+  sub complex_float_array : SPVM::Complex_2f[] ($re_values : float[], $im_values : float[])
 
 Create a new array of L<SPVM::Complex_2f> with real values and imaginary values.
 
-=head2 complex_darray
+=head2 complex_double_array
 
-  sub complex_darray : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[])
+  sub complex_double_array : SPVM::Complex_2d[] ($re_values : double[], $im_values : double[])
 
 Create a new array of L<SPVM::Complex_2d> with real values and imaginary values.
 
@@ -261,41 +261,41 @@ Copy a string.
 
 If the array is undefined, a exception occurs.
 
-=head2 copy_sarray
+=head2 copy_short_array
 
-  sub copy_sarray : short[] ($nums : short[])
+  sub copy_short_array : short[] ($nums : short[])
 
 Copy a short array.
 
 If the array is undefined, a exception occurs.
   
-=head2 copy_iarray
+=head2 copy_int_array
 
-  sub copy_iarray : int[] ($nums : int[])
+  sub copy_int_array : int[] ($nums : int[])
 
 Copy a int array.
 
 If the array is undefined, a exception occurs.
   
-=head2 copy_larray
+=head2 copy_long_array
 
-  sub copy_larray : long[] ($nums : long[])
+  sub copy_long_array : long[] ($nums : long[])
 
 Copy a long array.
 
 If the array is undefined, a exception occurs.
 
-=head2 copy_farray
+=head2 copy_float_array
 
-  sub copy_farray : float[] ($nums : float[])
+  sub copy_float_array : float[] ($nums : float[])
 
 Copy a float array.
 
 If the array is undefined, a exception occurs.
 
-=head2 copy_darray
+=head2 copy_double_array
 
-  sub copy_darray : double[] ($nums : double[])
+  sub copy_double_array : double[] ($nums : double[])
 
 Copy a double array.
 
@@ -317,41 +317,41 @@ Check if two byte arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 equals_sarray
+=head2 equals_short_array
 
-  sub equals_sarray : int ($nums1 : short[], $nums2 : short[])
+  sub equals_short_array : int ($nums1 : short[], $nums2 : short[])
 
 Check if two short arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 equals_iarray
+=head2 equals_int_array
 
-  sub equals_iarray : int ($nums1 : int[], $nums2 : int[])
+  sub equals_int_array : int ($nums1 : int[], $nums2 : int[])
 
 Check if two int arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 equals_larray
+=head2 equals_long_array
 
-  sub equals_larray : int ($nums1 : long[], $nums2 : long[])
+  sub equals_long_array : int ($nums1 : long[], $nums2 : long[])
 
 Check if two long arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 equals_farray
+=head2 equals_float_array
 
-  sub equals_farray : int ($nums1 : float[], $nums2 : float[])
+  sub equals_float_array : int ($nums1 : float[], $nums2 : float[])
 
 Check if two float arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 equals_darray
+=head2 equals_double_array
 
-  sub equals_darray : int ($nums1 : double[], $nums2 : double[])
+  sub equals_double_array : int ($nums1 : double[], $nums2 : double[])
 
 Check if two double arrays equal.
 

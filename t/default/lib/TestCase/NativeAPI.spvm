@@ -877,11 +877,11 @@ package TestCase::NativeAPI {
   }
   native sub native_get_field_string_chars_by_name_exception : int ($simple : TestCase::Simple);
 
-  sub spvm_extension_add_iarray : int () {
+  sub spvm_extension_add_int_array : int () {
     my $nums1 = [1, 2, 3];
     my $nums2 = [4, 5, 6];
     
-    my $nums3 = add_iarray($nums1, $nums2);
+    my $nums3 = add_int_array($nums1, $nums2);
     
     if ($nums3->[0] == 5) {
       if ($nums3->[1] == 7) {
@@ -964,7 +964,7 @@ package TestCase::NativeAPI {
 
   native sub sum : int ($num1 : int, $num2 : int);
   
-  native sub add_iarray : int[] ($nums1 : int[], $nums2 : int[]);
+  native sub add_int_array : int[] ($nums1 : int[], $nums2 : int[]);
 
   sub call_void_sub_exception : int () {
     eval {

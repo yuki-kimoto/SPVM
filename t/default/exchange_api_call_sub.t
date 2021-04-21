@@ -699,7 +699,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # Create object
   {
     my $object = TestCase->new();
-    $object->set_x_iarray(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
+    $object->set_x_int_array(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
     my $spvm_values = SPVM::new_byte_array_from_bin("abc");
     $object->set_x_byte_array($spvm_values);
     ok(TestCase::ExchangeAPI->spvm_object_set_object($object));
@@ -713,7 +713,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     $object->set_x_long($LONG_MAX);
     $object->set_x_float($FLOAT_PRECICE);
     $object->set_x_double($DOUBLE_PRECICE);
-    $object->set_x_iarray(SPVM::new_int_array([1, 2, 3, 4]));
+    $object->set_x_int_array(SPVM::new_int_array([1, 2, 3, 4]));
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(3);
     $object->set_minimal($minimal);

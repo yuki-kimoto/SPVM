@@ -259,7 +259,7 @@ package TestCase::ExchangeAPI {
   }
   
   sub spvm_object_set_object : int ($obj : TestCase) {
-    my $nums = $obj->{x_iarray};
+    my $nums = $obj->{x_int_array};
     my $values = ($obj->{x_byte_array});
     
     
@@ -519,7 +519,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_object_array_len_element_sarray : int ($nums : short[][]) {
+  sub spvm_new_object_array_len_element_short_array : int ($nums : short[][]) {
     if ((int)$nums->[0][0] == (int)(short)1) {
       if ((int)$nums->[0][1] == (int)(short)2) {
         if ((int)$nums->[0][2] == (int)(short)3) {
@@ -537,7 +537,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_object_array_len_element_iarray : int ($nums : int[][]) {
+  sub spvm_new_object_array_len_element_int_array : int ($nums : int[][]) {
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
         if ($nums->[0][2] == 3) {
@@ -555,7 +555,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_object_array_len_element_larray : int ($nums : long[][]) {
+  sub spvm_new_object_array_len_element_long_array : int ($nums : long[][]) {
     if ($nums->[0][0] == (long)1) {
       if ($nums->[0][1] == (long)2) {
         if ($nums->[0][2] == (long)3) {
@@ -573,7 +573,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_object_array_len_element_farray : int ($nums : float[][]) {
+  sub spvm_new_object_array_len_element_float_array : int ($nums : float[][]) {
     if ($nums->[0][0] == (float)1) {
       if ($nums->[0][1] == (float)2) {
         if ($nums->[0][2] == (float)3) {
@@ -591,7 +591,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_object_array_len_element_darray : int ($nums : double[][]) {
+  sub spvm_new_object_array_len_element_double_array : int ($nums : double[][]) {
     if ($nums->[0][0] == (double)1) {
       if ($nums->[0][1] == (double)2) {
         if ($nums->[0][2] == (double)3) {

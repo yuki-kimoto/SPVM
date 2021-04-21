@@ -2,6 +2,16 @@
   - Logical Operator become non-expression.
   - rename SPVM::Util->copy_barray to SPVM::Util->copy_byte_array
   - rename SPVM::Util->equals_barray to SPVM::Util->equals_byte_array
+  - rename SPVM::Util->copy_sarray to SPVM::Util->copy_short_array
+  - rename SPVM::Util->equals_sarray to SPVM::Util->equals_short_array
+  - rename SPVM::Util->copy_iarray to SPVM::Util->copy_int_array
+  - rename SPVM::Util->equals_iarray to SPVM::Util->equals_int_array
+  - rename SPVM::Util->copy_larray to SPVM::Util->copy_long_array
+  - rename SPVM::Util->equals_larray to SPVM::Util->equals_long_array
+  - rename SPVM::Util->copy_farray to SPVM::Util->copy_float_array
+  - rename SPVM::Util->equals_farray to SPVM::Util->equals_float_array
+  - rename SPVM::Util->copy_darray to SPVM::Util->copy_double_array
+  - rename SPVM::Util->equals_darray to SPVM::Util->equals_double_array
   
 0.0943 2021-04-19
   - add <=> and cmp operator

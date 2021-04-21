@@ -1216,7 +1216,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 }
 
 
-int32_t SPNATIVE__TestCase__NativeAPI__add_iarray(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__add_int_array(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
