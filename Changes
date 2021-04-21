@@ -23,13 +23,13 @@
   - rename SPVM::Util->slicef to SPVM::Util->slice_float
   - rename SPVM::Util->sliced to SPVM::Util->slice_double
   - rename SPVM::Util->sliceo to SPVM::Util->slice_object
-  - remove reverseb
-  - remove reverses
-  - remove reversei
-  - remove reversel
-  - remove reversef
-  - remove reversed
-  - remove reverseo
+  - remove SPVM::Util->reverseb
+  - remove SPVM::Util->reverses
+  - remove SPVM::Util->reversei
+  - remove SPVM::Util->reversel
+  - remove SPVM::Util->reversef
+  - remove SPVM::Util->reversed
+  - remove SPVM::Util->reverseo
   
 0.0943 2021-04-19
   - add <=> and cmp operator
