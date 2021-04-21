@@ -1,5 +1,8 @@
-0.0944 2021-04-20
+0.0944 2021-04-21
   - Logical Operator become non-expression.
+  - rename SPVM::Util->copy_barray to SPVM::Util->copy_byte_array
+  - rename SPVM::Util->equals_barray to SPVM::Util->equals_byte_array
+  
 0.0943 2021-04-19
   - add <=> and cmp operator
   - add {} array init syntax

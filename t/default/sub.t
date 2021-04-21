@@ -110,7 +110,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # call_sub barray
   {
     my $sp_values = SPVM::new_byte_array([1, 2, 3]);
-    is(TestCase::Sub->call_sub_barray($sp_values), 6);
+    is(TestCase::Sub->call_sub_byte_array($sp_values), 6);
   }
 
   # call_sub sarray
@@ -156,8 +156,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # call_sub return array
 {
   {
-    my $sp_values = TestCase::Sub->call_sub_return_barray();
-    TestCase::Sub->call_sub_return_barray_check($sp_values);
+    my $sp_values = TestCase::Sub->call_sub_return_byte_array();
+    TestCase::Sub->call_sub_return_byte_array_check($sp_values);
   }
   {
     my $sp_values = TestCase::Sub->call_sub_return_sarray();

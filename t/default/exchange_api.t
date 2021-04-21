@@ -114,7 +114,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $object2 = SPVM::new_byte_array([4, 5, 6]);
     my $oarray = SPVM::new_object_array("byte[][]", [$object1, $object2]);
 
-    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_barray($oarray));
+    ok(TestCase::ExchangeAPI->spvm_new_object_array_len_element_byte_array($oarray));
     
     my $oarray_out = $oarray->to_elems;
     is_deeply($oarray_out->[0]->to_elems, [1, 2, 3]);

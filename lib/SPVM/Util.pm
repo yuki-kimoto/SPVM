@@ -47,7 +47,7 @@ SPVM::Util - Variouse utilities
   # Copy a byte array
   {
     my $nums = [(byte)1, 2, 3];
-    my $nums_copy = copy_barray($nums);
+    my $nums_copy = copy_byte_array($nums);
   }
 
   # Copy a string
@@ -96,7 +96,7 @@ SPVM::Util - Variouse utilities
   {
     my $nums1 = [(byte)1, 2];
     my $nums2 = [(byte)1, 2];
-    my $ret = equals_barray($nums1, $nums2);
+    my $ret = equals_byte_array($nums1, $nums2);
   }
 
   # Check if the two short arrays equal
@@ -245,9 +245,9 @@ sub complexd : SPVM::Complex_2d ($re : double, $im : double)
 
 Return a new value of L<SPVM::Complex_2d>.
 
-=head2 copy_barray
+=head2 copy_byte_array
 
-  sub copy_barray : byte[] ($nums : byte[])
+  sub copy_byte_array : byte[] ($nums : byte[])
 
 Copy a byte array.
 
@@ -309,9 +309,9 @@ Copy a string array.
 
 If the array is undefined, a exception occurs.
 
-=head2 equals_barray
+=head2 equals_byte_array
 
-  sub equals_barray : int ($nums1 : byte[], $nums2 : byte[])
+  sub equals_byte_array : int ($nums1 : byte[], $nums2 : byte[])
 
 Check if two byte arrays equal.
 

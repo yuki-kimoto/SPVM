@@ -701,7 +701,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $object = TestCase->new();
     $object->set_x_iarray(SPVM::new_int_array([$INT_MAX, $INT_MAX]));
     my $spvm_values = SPVM::new_byte_array_from_bin("abc");
-    $object->set_x_barray($spvm_values);
+    $object->set_x_byte_array($spvm_values);
     ok(TestCase::ExchangeAPI->spvm_object_set_object($object));
   }
   # Create object

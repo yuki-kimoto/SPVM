@@ -533,7 +533,7 @@ package SPVM::Util : precompile {
     return $new_string;
   }
 
-  sub copy_barray : byte[] ($nums : byte[]) {
+  sub copy_byte_array : byte[] ($nums : byte[]) {
     my $length = @$nums;
 
     my $new_nums = new byte[$length];
@@ -623,7 +623,7 @@ package SPVM::Util : precompile {
     return $new_strings;
   }
 
-  sub equals_barray : int ($nums1 : byte[], $nums2 : byte[]) {
+  sub equals_byte_array : int ($nums1 : byte[], $nums2 : byte[]) {
     my $is_equals = 1;
     if (@$nums1 == @$nums2) {
       for (my $i = 0; $i < @$nums1; $i++) {

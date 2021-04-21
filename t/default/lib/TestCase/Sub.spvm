@@ -600,7 +600,7 @@ package TestCase::Sub {
     return 0;
   }
   # byte array argument
-  sub call_sub_barray : byte ($nums : byte[]) {
+  sub call_sub_byte_array : byte ($nums : byte[]) {
     
     my $total = (byte)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -665,7 +665,7 @@ package TestCase::Sub {
     return $total;
   }
   # call_sub return value
-  sub call_sub_return_barray  : byte[] () {
+  sub call_sub_return_byte_array  : byte[] () {
     my $nums = new byte[3];
     
     $nums->[0] = (byte)1;
@@ -674,7 +674,7 @@ package TestCase::Sub {
     
     return $nums;
   }
-  sub call_sub_return_barray_check : int ($nums : byte[]) {
+  sub call_sub_return_byte_array_check : int ($nums : byte[]) {
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {

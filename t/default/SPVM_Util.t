@@ -325,8 +325,8 @@ SKIP: {
 
 # equals
 {
-  # equals_barray
-  ok(TestCase::Lib::SPVM::Util->test_equals_barray);
+  # equals_byte_array
+  ok(TestCase::Lib::SPVM::Util->test_equals_byte_array);
 
   # equals_sarray
   ok(TestCase::Lib::SPVM::Util->test_equals_sarray);
@@ -352,8 +352,8 @@ SKIP: {
   # copy_str
   ok(TestCase::Lib::SPVM::Util->test_copy_str);
 
-  # copy_barray
-  ok(TestCase::Lib::SPVM::Util->test_copy_barray);
+  # copy_byte_array
+  ok(TestCase::Lib::SPVM::Util->test_copy_byte_array);
 
   # copy_sarray
   ok(TestCase::Lib::SPVM::Util->test_copy_sarray);

@@ -4936,9 +4936,9 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   length += type_dimension * 2;
   
   int32_t scope_id = env->enter_scope(env);
-  void* type_name_barray = env->new_byte_array(env, length + 1);
+  void* type_name_byte_array = env->new_byte_array(env, length + 1);
   
-  int8_t* cur = env->get_elems_byte(env, type_name_barray);
+  int8_t* cur = env->get_elems_byte(env, type_name_byte_array);
   
   int32_t cur_index = 0;
   sprintf((char*)cur, "%s", basic_type_name);

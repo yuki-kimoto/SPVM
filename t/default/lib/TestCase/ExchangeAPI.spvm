@@ -260,7 +260,7 @@ package TestCase::ExchangeAPI {
   
   sub spvm_object_set_object : int ($obj : TestCase) {
     my $nums = $obj->{x_iarray};
-    my $values = ($obj->{x_barray});
+    my $values = ($obj->{x_byte_array});
     
     
     # [INT32_MAX, INT32_MAX]
@@ -500,7 +500,7 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_object_array_len_element_barray : int ($nums : byte[][]) {
+  sub spvm_new_object_array_len_element_byte_array : int ($nums : byte[][]) {
     
     if ($nums->[0][0] == 1) {
       if ($nums->[0][1] == 2) {
