@@ -12,7 +12,7 @@ package SPVM::Util : precompile {
     srand(time());
   }
   
-  sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner) {
+  sub copy_object_array : object[] ($objects : object[], $cloner : SPVM::Cloner) {
     my $length = @$objects;
 
     my $new_objects = new object[$length];
@@ -24,7 +24,7 @@ package SPVM::Util : precompile {
     return $new_objects;
   }
 
-  sub equals_oarray : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker) {
+  sub equals_object_array : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker) {
     my $is_equals = 1;
     if (@$objs1 == @$objs2) {
       for (my $i = 0; $i < @$objs1; $i++) {

@@ -148,7 +148,7 @@ SPVM::Util - Variouse utilities
 
   # Copy object array
   my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-  my $objects_copy = copy_oarray($objects, sub : object ($self : self, $obj : object) {
+  my $objects_copy = copy_object_array($objects, sub : object ($self : self, $obj : object) {
     my $int_obj = (SPVM::Int)$obj;
     my $new_int_obj = SPVM::Int->new($int_obj->val);
     return $new_int_obj;
@@ -176,15 +176,15 @@ Unix standard library.
 
 =head1 STATIC METHODS
 
-=head2 copy_oarray
+=head2 copy_object_array
 
-  sub copy_oarray : object[] ($objects : object[], $cloner : SPVM::Cloner)
+  sub copy_object_array : object[] ($objects : object[], $cloner : SPVM::Cloner)
 
 Copy object array. You must specify a L<SPVM::Cloner> object to copy each element.
 
-=head2 equals_oarray
+=head2 equals_object_array
 
-  sub sub equals_oarray : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker)
+  sub sub equals_object_array : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker)
 
 Check equality of two objects. You must sepecify a L<SPVM::EqualityChecker> object to check the equality of each element.
 

@@ -61,14 +61,14 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_sprintf_all);
 }
 
-# copy_oarray
+# copy_object_array
 {
-  ok(TestCase::Lib::SPVM::Util->test_copy_oarray);
+  ok(TestCase::Lib::SPVM::Util->test_copy_object_array);
 }
 
-# equals_oarray
+# equals_object_array
 {
-  ok(TestCase::Lib::SPVM::Util->test_equals_oarray);
+  ok(TestCase::Lib::SPVM::Util->test_equals_object_array);
 }
 
 # strtoi
