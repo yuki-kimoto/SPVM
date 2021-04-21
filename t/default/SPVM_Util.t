@@ -250,32 +250,32 @@ SKIP: {
 
 # new_object_array_proto
 {
-  # sliceb
+  # slice_byte
   ok(TestCase::Lib::SPVM::Util->test_new_object_array_proto);
 }
 
 # slice
 {
-  # sliceb
-  ok(TestCase::Lib::SPVM::Util->test_sliceb);
+  # slice_byte
+  ok(TestCase::Lib::SPVM::Util->test_slice_byte);
 
-  # slices
-  ok(TestCase::Lib::SPVM::Util->test_slices);
+  # slice_short
+  ok(TestCase::Lib::SPVM::Util->test_slice_short);
 
-  # slicei
-  ok(TestCase::Lib::SPVM::Util->test_slicei);
+  # slice_int
+  ok(TestCase::Lib::SPVM::Util->test_slice_int);
 
-  # slicel
-  ok(TestCase::Lib::SPVM::Util->test_slicel);
+  # slice_long
+  ok(TestCase::Lib::SPVM::Util->test_slice_long);
 
-  # slicef
-  ok(TestCase::Lib::SPVM::Util->test_slicef);
+  # slice_float
+  ok(TestCase::Lib::SPVM::Util->test_slice_float);
 
-  # sliced
-  ok(TestCase::Lib::SPVM::Util->test_sliced);
+  # slice_double
+  ok(TestCase::Lib::SPVM::Util->test_slice_double);
 
-  # sliced
-  ok(TestCase::Lib::SPVM::Util->test_sliceo);
+  # slice_double
+  ok(TestCase::Lib::SPVM::Util->test_slice_object);
 }
 
 # reverse

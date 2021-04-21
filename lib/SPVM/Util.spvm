@@ -501,7 +501,7 @@ package SPVM::Util : precompile {
     }
     else {
       if ($string->[$length - 1] == '\n') {
-        $new_string = (string)sliceb((byte[])$string, 0, $length - 1);
+        $new_string = (string)slice_byte((byte[])$string, 0, $length - 1);
       }
       else {
         $new_string = copy_str($string);
@@ -523,7 +523,7 @@ package SPVM::Util : precompile {
     }
     else {
       if ($string->[$length - 2] == '\r' && $string->[$length - 1] == '\n') {
-        $new_string = (string)sliceb((byte[])$string, 0, $length - 2);
+        $new_string = (string)slice_byte((byte[])$string, 0, $length - 2);
       }
       else {
         $new_string = copy_str($string);
@@ -1331,7 +1331,7 @@ package SPVM::Util : precompile {
     return (string)$slice;
   }
 
-  sub sliceb : byte[] ($nums : byte[], $offset : int, $length : int) {
+  sub slice_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Array must be defined";
@@ -1362,7 +1362,7 @@ package SPVM::Util : precompile {
     return $slice;
   }
 
-  sub slices : short[] ($nums : short[], $offset : int, $length : int) {
+  sub slice_short : short[] ($nums : short[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Array must be defined";
@@ -1393,7 +1393,7 @@ package SPVM::Util : precompile {
     return $slice;
   }
 
-  sub slicei : int[] ($nums : int[], $offset : int, $length : int) {
+  sub slice_int : int[] ($nums : int[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Array must be defined";
@@ -1424,7 +1424,7 @@ package SPVM::Util : precompile {
     return $slice;
   }
 
-  sub slicel : long[] ($nums : long[], $offset : int, $length : int) {
+  sub slice_long : long[] ($nums : long[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Array must be defined";
@@ -1455,7 +1455,7 @@ package SPVM::Util : precompile {
     return $slice;
   }
 
-  sub slicef : float[] ($nums : float[], $offset : int, $length : int) {
+  sub slice_float : float[] ($nums : float[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Array must be defined";
@@ -1486,7 +1486,7 @@ package SPVM::Util : precompile {
     return $slice;
   }
 
-  sub sliced : double[] ($nums : double[], $offset : int, $length : int) {
+  sub slice_double : double[] ($nums : double[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Array must be defined";
@@ -1517,7 +1517,7 @@ package SPVM::Util : precompile {
     return $slice;
   }
 
-  sub sliceo : oarray ($elems : oarray, $offset : int, $length : int) {
+  sub slice_object : oarray ($elems : oarray, $offset : int, $length : int) {
 
     if ($elems == undef) {
       die "Array must be defined";

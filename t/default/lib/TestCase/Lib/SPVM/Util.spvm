@@ -74,12 +74,12 @@ package TestCase::Lib::SPVM::Util {
     reversef,
     reversed,
     reverseo,
-    sliceb,
-    slices,
-    slicei,
-    slicel,
-    slicef,
-    sliced,
+    slice_byte,
+    slice_short,
+    slice_int,
+    slice_long,
+    slice_float,
+    slice_double,
     copy_str,
     index,
     memcpyb,
@@ -95,7 +95,7 @@ package TestCase::Lib::SPVM::Util {
     memmovef,
     memmoved,
     new_object_array_proto,
-    sliceo,
+    slice_object,
   );
 
   sub test_equals_object_array : int () {
@@ -2036,10 +2036,10 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
-  sub test_sliceb : int () {
+  sub test_slice_byte : int () {
     {
       my $nums = [(byte)5, -7, 9, INT8_MIN(), 127, 15, 19];
-      my $slice = sliceb($nums, 0, 7);
+      my $slice = slice_byte($nums, 0, 7);
       unless (equals_byte_array($slice, [(byte)5, -7, 9, INT8_MIN(), 127, 15, 19])) {
         return 0;
       }
@@ -2047,7 +2047,7 @@ package TestCase::Lib::SPVM::Util {
 
     {
       my $nums = [(byte)5, -7, 9, INT8_MIN(), 127, 15, 19];
-      my $slice = sliceb($nums, 1, 3);
+      my $slice = slice_byte($nums, 1, 3);
       unless (equals_byte_array($slice, [(byte)-7, 9, INT8_MIN()])) {
         return 0;
       }
@@ -2055,17 +2055,17 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
-  sub test_slices : int () {
+  sub test_slice_short : int () {
     {
       my $nums = [(short)5, -7, 9, INT16_MIN(), 127, 15, 19];
-      my $slice = slices($nums, 0, 7);
+      my $slice = slice_short($nums, 0, 7);
       unless (equals_short_array($slice, [(short)5, -7, 9, INT16_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(short)5, -7, 9, INT16_MIN(), 127, 15, 19];
-      my $slice = slices($nums, 1, 3);
+      my $slice = slice_short($nums, 1, 3);
       unless (equals_short_array($slice, [(short)-7, 9, INT16_MIN()])) {
         return 0;
       }
@@ -2073,34 +2073,34 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
-  sub test_slicei : int () {
+  sub test_slice_int : int () {
     {
       my $nums = [(int)5, -7, 9, INT32_MIN(), 127, 15, 19];
-      my $slice = slicei($nums, 0, 7);
+      my $slice = slice_int($nums, 0, 7);
       unless (equals_int_array($slice, [(int)5, -7, 9, INT32_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(int)5, -7, 9, INT32_MIN(), 127, 15, 19];
-      my $slice = slicei($nums, 1, 3);
+      my $slice = slice_int($nums, 1, 3);
       unless (equals_int_array($slice, [(int)-7, 9, INT32_MIN()])) {
         return 0;
       }
     }
     return 1;
   }
-  sub test_slicel : int () {
+  sub test_slice_long : int () {
     {
       my $nums = [(long)5, -7, 9, INT64_MIN(), 127, 15, 19];
-      my $slice = slicel($nums, 0, 7);
+      my $slice = slice_long($nums, 0, 7);
       unless (equals_long_array($slice, [(long)5, -7, 9, INT64_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(long)5, -7, 9, INT64_MIN(), 127, 15, 19];
-      my $slice = slicel($nums, 1, 3);
+      my $slice = slice_long($nums, 1, 3);
       unless (equals_long_array($slice, [(long)-7, 9, INT64_MIN()])) {
         return 0;
       }
@@ -2108,17 +2108,17 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
-  sub test_slicef : int () {
+  sub test_slice_float : int () {
     {
       my $nums = [(float)5, -7, 9, FLT_MIN(), 127, 15, 19];
-      my $slice = slicef($nums, 0, 7);
+      my $slice = slice_float($nums, 0, 7);
       unless (equals_float_array($slice, [(float)5, -7, 9, FLT_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(float)5, -7, 9, FLT_MIN(), 127, 15, 19];
-      my $slice = slicef($nums, 1, 3);
+      my $slice = slice_float($nums, 1, 3);
       unless (equals_float_array($slice, [(float)-7, 9, FLT_MIN()])) {
         return 0;
       }
@@ -2127,24 +2127,24 @@ package TestCase::Lib::SPVM::Util {
 
     return 1;
   }
-  sub test_sliced : int () {
+  sub test_slice_double : int () {
     {
       my $nums = [(double)5, -7, 9, DBL_MIN(), 127, 15, 19];
-      my $slice = sliced($nums, 0, 7);
+      my $slice = slice_double($nums, 0, 7);
       unless (equals_double_array($slice, [(double)5, -7, 9, DBL_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(double)5, -7, 9, DBL_MIN(), 127, 15, 19];
-      my $slice = sliced($nums, 1, 3);
+      my $slice = slice_double($nums, 1, 3);
       unless (equals_double_array($slice, [(double)-7, 9, DBL_MIN()])) {
         return 0;
       }
     }
     return 1;
   }
-  sub test_sliceo : int () {
+  sub test_slice_object : int () {
 
     {
       my $minimal1 = TestCase::Minimal->new;
@@ -2153,7 +2153,7 @@ package TestCase::Lib::SPVM::Util {
       my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $slice = (TestCase::Minimal[])sliceo($elems, 0, 4);
+      my $slice = (TestCase::Minimal[])slice_object($elems, 0, 4);
       unless (SPVM::Util->equals_object_array($slice, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
@@ -2165,7 +2165,7 @@ package TestCase::Lib::SPVM::Util {
       my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $slice = (TestCase::Minimal[])sliceo($elems, 1, 2);
+      my $slice = (TestCase::Minimal[])slice_object($elems, 1, 2);
       unless (SPVM::Util->equals_object_array($slice, [$minimal2, $minimal3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
