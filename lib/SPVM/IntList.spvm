@@ -1,5 +1,5 @@
 package SPVM::IntList : precompile {
-  use SPVM::Util (memcpyi, memmovei);
+  use SPVM::Util (memcpy_int, memmove_int);
   
   has values   : int[];
   has capacity : ro int;
@@ -34,7 +34,7 @@ package SPVM::IntList : precompile {
     
     $self->{length} = $length;
     
-    memcpyi($values, 0, $array, 0, $length);
+    memcpy_int($values, 0, $array, 0, $length);
     
     $self->{values} = $values;
     
@@ -79,7 +79,7 @@ package SPVM::IntList : precompile {
     
     my $new_values = new int[$new_capacity];
     
-    memcpyi($new_values, 0, $values, 0, $length);
+    memcpy_int($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -101,7 +101,7 @@ package SPVM::IntList : precompile {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      memmovei($values, $dist_index, $values, $index, $move_length);
+      memmove_int($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -122,7 +122,7 @@ package SPVM::IntList : precompile {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    memmovei($values, $dist_index, $values, $src_index, $move_length);
+    memmove_int($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -168,7 +168,7 @@ package SPVM::IntList : precompile {
     
     my $values = $self->{values};
     
-    memmovei($values, 1, $values, 0, $length);
+    memmove_int($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -186,7 +186,7 @@ package SPVM::IntList : precompile {
     
     my $value = $values->[0];
     
-    memmovei($values, 0, $values, 1, $length - 1);
+    memmove_int($values, 0, $values, 1, $length - 1);
     
     $values->[$length - 1] = 0;
     
@@ -224,7 +224,7 @@ package SPVM::IntList : precompile {
     
     my $values = $self->{values};
     
-    memcpyi($array, 0, $values, 0, $length);
+    memcpy_int($array, 0, $values, 0, $length);
     
     return $array;
   }

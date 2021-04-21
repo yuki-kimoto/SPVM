@@ -1,5 +1,5 @@
 package SPVM::FloatList : precompile {
-  use SPVM::Util (memcpyf, memmovef);
+  use SPVM::Util (memcpy_float, memmove_float);
   
   has values   : float[];
   has capacity : ro int;
@@ -33,7 +33,7 @@ package SPVM::FloatList : precompile {
     my $values = new float[$capacity];
     $self->{length} = $length;
     
-    memcpyf($values, 0, $array, 0, $length);
+    memcpy_float($values, 0, $array, 0, $length);
     
     $self->{values} = $values;
     
@@ -78,7 +78,7 @@ package SPVM::FloatList : precompile {
     
     my $new_values = new float[$new_capacity];
     
-    memcpyf($new_values, 0, $values, 0, $length);
+    memcpy_float($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -100,7 +100,7 @@ package SPVM::FloatList : precompile {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      memmovef($values, $dist_index, $values, $index, $move_length);
+      memmove_float($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -121,7 +121,7 @@ package SPVM::FloatList : precompile {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    memmovef($values, $dist_index, $values, $src_index, $move_length);
+    memmove_float($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -167,7 +167,7 @@ package SPVM::FloatList : precompile {
     
     my $values = $self->{values};
     
-    memmovef($values, 1, $values, 0, $length);
+    memmove_float($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -185,7 +185,7 @@ package SPVM::FloatList : precompile {
     
     my $value = $values->[0];
     
-    memmovef($values, 0, $values, 1, $length - 1);
+    memmove_float($values, 0, $values, 1, $length - 1);
     
     $values->[$length - 1] = 0;
     
@@ -223,7 +223,7 @@ package SPVM::FloatList : precompile {
     
     my $values = $self->{values};
     
-    memcpyf($array, 0, $values, 0, $length);
+    memcpy_float($array, 0, $values, 0, $length);
     
     return $array;
   }

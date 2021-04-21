@@ -223,14 +223,14 @@ SKIP: {
   ok(TestCase::Lib::SPVM::Util->test_replace);
 }
 
-# memmoveb
+# memmove_byte
 {
-  ok(TestCase::Lib::SPVM::Util->test_memmoveb);
+  ok(TestCase::Lib::SPVM::Util->test_memmove_byte);
 }
 
-# memcpyb
+# memcpy_byte
 {
-  ok(TestCase::Lib::SPVM::Util->test_memcpyb);
+  ok(TestCase::Lib::SPVM::Util->test_memcpy_byte);
 }
 
 # index

@@ -639,9 +639,9 @@ Convert uppercase string to lowercase string.
 
 Convert first chracter of string from uppercase to lowercase.
 
-=head2 memcpyb
+=head2 memcpy_byte
 
-  sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
+  sub memcpy_byte : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
 
 Copy source byte array to destination byte array with the each offset and a length.
 
@@ -655,9 +655,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memcpys
+=head2 memcpy_short
 
-  sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
+  sub memcpy_short : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
 
 Copy source short array to destination short array with the each offset and a length.
 
@@ -671,9 +671,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memcpyi
+=head2 memcpy_int
   
-  sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
+  sub memcpy_int : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
 
 Copy source int array to destination int array with the each offset and a length.
 
@@ -687,9 +687,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memcpyl
+=head2 memcpy_long
   
-  sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
+  sub memcpy_long : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
 
 Copy source long array to destination long array with the each offset and a length.
 
@@ -703,9 +703,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memcpyf
+=head2 memcpy_float
   
-  sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
+  sub memcpy_float : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
 
 Copy source float array to destination float array with the each offset and a length.
 
@@ -719,9 +719,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memcpyd
+=head2 memcpy_double
   
-  sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
+  sub memcpy_double : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
 
 Copy source double array to destination double array with the each offset and a length.
 
@@ -735,9 +735,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memmoveb
+=head2 memmove_byte
 
-  sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
+  sub memmove_byte : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
 
 Copy source byte array to destination byte array with the each offset and a length.
 
@@ -751,9 +751,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memmoves
+=head2 memmove_short
 
-  sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
+  sub memmove_short : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
 
 Copy source short array to destination short array with the each offset and a length.
 
@@ -767,9 +767,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memmovei
+=head2 memmove_int
   
-  sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
+  sub memmove_int : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
 
 Copy source int array to destination int array with the each offset and a length.
 
@@ -783,9 +783,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memmovel
+=head2 memmove_long
   
-  sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
+  sub memmove_long : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
 
 Copy source long array to destination long array with the each offset and a length.
 
@@ -799,9 +799,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memmovef
+=head2 memmove_float
   
-  sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
+  sub memmove_float : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
 
 Copy source float array to destination float array with the each offset and a length.
 
@@ -815,9 +815,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 memmoved
+=head2 memmove_double
   
-  sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
+  sub memmove_double : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
 
 Copy source double array to destination double array with the each offset and a length.
 

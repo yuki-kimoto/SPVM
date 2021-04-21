@@ -30,6 +30,18 @@
   - remove SPVM::Util->reversef
   - remove SPVM::Util->reversed
   - remove SPVM::Util->reverseo
+  - rename SPVM::Util->memcpyb to SPVM::Util->memcpy_byte
+  - rename SPVM::Util->memcpys to SPVM::Util->memcpy_short
+  - rename SPVM::Util->memcpyi to SPVM::Util->memcpy_int
+  - rename SPVM::Util->memcpyl to SPVM::Util->memcpy_long
+  - rename SPVM::Util->memcpyf to SPVM::Util->memcpy_float
+  - rename SPVM::Util->memcpyd to SPVM::Util->memcpy_double
+  - rename SPVM::Util->mommoveb to SPVM::Util->mommove_byte
+  - rename SPVM::Util->mommoves to SPVM::Util->mommove_short
+  - rename SPVM::Util->mommovei to SPVM::Util->mommove_int
+  - rename SPVM::Util->mommovel to SPVM::Util->mommove_long
+  - rename SPVM::Util->mommovef to SPVM::Util->mommove_float
+  - rename SPVM::Util->mommoved to SPVM::Util->mommove_double
   
 0.0943 2021-04-19
   - add <=> and cmp operator

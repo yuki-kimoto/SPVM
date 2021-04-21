@@ -166,7 +166,7 @@ int32_t SPNATIVE__SPVM__Util__isdigit(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) {
@@ -210,7 +210,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyb(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -250,7 +250,7 @@ int32_t SPNATIVE__SPVM__Util__memmoveb(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -290,7 +290,7 @@ int32_t SPNATIVE__SPVM__Util__memcpys(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -330,7 +330,7 @@ int32_t SPNATIVE__SPVM__Util__memmoves(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -370,7 +370,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyi(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -410,7 +410,7 @@ int32_t SPNATIVE__SPVM__Util__memmovei(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -450,7 +450,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyl(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -490,7 +490,7 @@ int32_t SPNATIVE__SPVM__Util__memmovel(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -530,7 +530,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyf(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -570,7 +570,7 @@ int32_t SPNATIVE__SPVM__Util__memmovef(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }
@@ -610,7 +610,7 @@ int32_t SPNATIVE__SPVM__Util__memcpyd(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__memmoved(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__Util__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_dest_data = stack[0].oval;
   if (!obj_dest_data) { return env->die(env, "Dist string must be defined", MFILE, __LINE__); }

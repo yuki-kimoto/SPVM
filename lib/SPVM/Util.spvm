@@ -1112,19 +1112,19 @@ package SPVM::Util : precompile {
     return (string)$new_string;
   }
 
-  native sub memcpyb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
-  native sub memcpys : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
-  native sub memcpyi : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
-  native sub memcpyl : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
-  native sub memcpyf : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
-  native sub memcpyd : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
+  native sub memcpy_byte : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memcpy_short : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memcpy_int : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memcpy_long : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memcpy_float : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memcpy_double : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
-  native sub memmoveb : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
-  native sub memmoves : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
-  native sub memmovei : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
-  native sub memmovel : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
-  native sub memmovef : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
-  native sub memmoved : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
+  native sub memmove_byte : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
+  native sub memmove_short : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
+  native sub memmove_int : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);
+  native sub memmove_long : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int);
+  native sub memmove_float : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int);
+  native sub memmove_double : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
   native sub new_object_array_proto : oarray ($proto_array : oarray, $length : int);
 
@@ -1156,15 +1156,15 @@ package SPVM::Util : precompile {
       my $result_str = new byte[$result_str_len];
 
       if ($found_offset > 0) {
-        memmoveb((byte[])$result_str, 0, (byte[])$str, 0, $found_offset);
+        memmove_byte((byte[])$result_str, 0, (byte[])$str, 0, $found_offset);
       }
-      memmoveb((byte[])$result_str, $found_offset, (byte[])$replace, 0, $replace_len);
+      memmove_byte((byte[])$result_str, $found_offset, (byte[])$replace, 0, $replace_len);
 
       my $str_rest_offset = $found_offset + $substr_len;
       my $str_rest_length = $str_len - $str_rest_offset;
       my $result_rest_offset = $found_offset + $replace_len;
       my $result_rest_length = $result_str_len - $result_rest_offset;
-      memmoveb((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
+      memmove_byte((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
 
       return (string)$result_str;
     }

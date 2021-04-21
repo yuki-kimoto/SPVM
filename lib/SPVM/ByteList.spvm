@@ -1,5 +1,5 @@
 package SPVM::ByteList : precompile {
-  use SPVM::Util (memcpyb, memmoveb);
+  use SPVM::Util (memcpy_byte, memmove_byte);
   
   has values   : byte[];
   has capacity : ro int;
@@ -53,7 +53,7 @@ package SPVM::ByteList : precompile {
     $self->{capacity} = $capacity;
     $self->{length} = $length;
     
-    memcpyb($values, 0, $array, 0, $length);
+    memcpy_byte($values, 0, $array, 0, $length);
     
     $self->{values} = $values;
     
@@ -80,7 +80,7 @@ package SPVM::ByteList : precompile {
     
     my $new_values = new byte[$new_capacity];
     
-    memcpyb($new_values, 0, $values, 0, $length);
+    memcpy_byte($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -102,7 +102,7 @@ package SPVM::ByteList : precompile {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      memmoveb($values, $dist_index, $values, $index, $move_length);
+      memmove_byte($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -123,7 +123,7 @@ package SPVM::ByteList : precompile {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    memmoveb($values, $dist_index, $values, $src_index, $move_length);
+    memmove_byte($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -169,7 +169,7 @@ package SPVM::ByteList : precompile {
     
     my $values = $self->{values};
     
-    memmoveb($values, 1, $values, 0, $length);
+    memmove_byte($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -187,7 +187,7 @@ package SPVM::ByteList : precompile {
     
     my $value = $values->[0];
     
-    memmoveb($values, 0, $values, 1, $length - 1);
+    memmove_byte($values, 0, $values, 1, $length - 1);
 
     $values->[$length - 1] = 0;
     
@@ -225,7 +225,7 @@ package SPVM::ByteList : precompile {
     
     my $values = $self->{values};
     
-    memcpyb($array, 0, $values, 0, $length);
+    memcpy_byte($array, 0, $values, 0, $length);
     
     return $array;
   }
