@@ -1,5 +1,18 @@
 package TestCase::Add {
 
+  sub add_int_max_plus_one_2s_complement : int () {
+    {
+      my $int_max_plus_one = 2147483647 + 1;
+      
+      my $int_min = -2147483648;
+      unless ($int_max_plus_one == $int_min) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub add_byte_byte : int () {
     my $total = (byte)126 + (byte)127;
     

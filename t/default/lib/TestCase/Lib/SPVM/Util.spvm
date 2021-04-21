@@ -2023,9 +2023,9 @@ package TestCase::Lib::SPVM::Util {
       }
     }
 
-
     return 1;
   }
+
   sub test_dump_double_array : int () {
     # Dump array
     {
@@ -2041,6 +2041,102 @@ package TestCase::Lib::SPVM::Util {
     # Dump undef
     {
       my $dump = dump_double_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_byte_array : int () {
+    # Dump array
+    {
+      my $nums = [(byte)1, 2, -1, SPVM::Util->UINT8_MAX];
+      
+      my $dump = SPVM::Util->dump_unsigned_byte_array($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  255,\n  255\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = SPVM::Util->dump_unsigned_byte_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_short_array : int () {
+    # Dump array
+    {
+      my $nums = [(short)1, 2, -1, SPVM::Util->UINT16_MAX];
+      
+      my $dump = SPVM::Util->dump_unsigned_short_array($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  65535,\n  65535\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = SPVM::Util->dump_unsigned_short_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_int_array : int () {
+    # Dump array
+    {
+      my $nums = [(int)1, 2, -1, SPVM::Util->UINT32_MAX];
+      
+      my $dump = SPVM::Util->dump_unsigned_int_array($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  4294967295,\n  4294967295\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = SPVM::Util->dump_unsigned_int_array(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_long_array : long () {
+    # Dump array
+    {
+      my $nums = [(long)1, 2, -1, SPVM::Util->UINT64_MAX];
+      
+      my $dump = SPVM::Util->dump_unsigned_long_array($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = SPVM::Util->dump_unsigned_long_array(undef);
       
       unless ($dump == undef) {
         return 0;

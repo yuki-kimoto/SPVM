@@ -62,6 +62,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   is(TestCase::Add->add_long_min(), -9223372036854775807);
 }
 
+# 2's complement
+{
+  ok(TestCase::Add->add_int_max_plus_one_2s_complement());
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);

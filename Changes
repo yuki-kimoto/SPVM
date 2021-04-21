@@ -54,6 +54,14 @@
   - add SPVM::Util->dump_long_array
   - add SPVM::Util->dump_float_array
   - add SPVM::Util->dump_double_array
+  - add SPVM::Util->dump_unsigned_byte_array
+  - add SPVM::Util->dump_unsigned_short_array
+  - add SPVM::Util->dump_unsigned_int_array
+  - add SPVM::Util->dump_unsigned_long_array
+  - add SPVM::Util->UINT8_MAX
+  - add SPVM::Util->UINT16_MAX
+  - add SPVM::Util->UINT32_MAX
+  - add SPVM::Util->UINT64_MAX
   
 0.0943 2021-04-19
   - add <=> and cmp operator

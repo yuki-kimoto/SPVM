@@ -103,6 +103,10 @@ package TestCase::BitOperator {
       }
     }
 
+    unless ($byte_success) {
+      return 0;
+    }
+    
     # short
     my $short_success = 0;
     {
@@ -110,6 +114,10 @@ package TestCase::BitOperator {
       if (($value1 & 0xFFFF) == 0xF000) {
         $short_success = 1;
       }
+    }
+    
+    unless ($short_success) {
+      return 0;
     }
     
     # int
@@ -130,11 +138,11 @@ package TestCase::BitOperator {
       }
     }
     
-    if ($byte_success && $short_success && $int_success && $long_success) {
-      return 1;
+    unless ($long_success) {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 
   sub bit_or : int () {

@@ -791,10 +791,13 @@ package SPVM::Util : precompile {
   sub INT32_MIN : int () { return -2147483648; }
   sub INT32_MAX : int () { return 2147483647; }
 
-  sub UINT32_MAX : long () { return 4294967295L; }
-
   sub INT64_MIN : long () { return -9223372036854775808L; }
   sub INT64_MAX : long () { return 9223372036854775807L; }
+
+  sub UINT8_MAX : byte () { return (byte)0xFF; }
+  sub UINT16_MAX : short () { return (short)0xFFFF; }
+  sub UINT32_MAX : int () { return 0xFFFFFFFF; }
+  sub UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
   
   native sub RAND_MAX : int ();
     
@@ -1057,6 +1060,102 @@ package SPVM::Util : precompile {
 
     for (my $i = 0; $i < @$nums; $i++) {
       my $string = (string)$nums->[$i];
+      $dump .= "  $string";
+      if ($i != @$nums - 1) {
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
+      }
+    }
+    
+    $dump .= "]";
+
+    return $dump;
+  }
+
+  sub dump_unsigned_byte_array : string ($nums : byte[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
+
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = sprintf("%u", (int)$nums->[$i] & 0xFF);
+      $dump .= "  $string";
+      if ($i != @$nums - 1) {
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
+      }
+    }
+    
+    $dump .= "]";
+
+    return $dump;
+  }
+
+  sub dump_unsigned_short_array : string ($nums : short[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
+
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = sprintf("%u", (int)$nums->[$i] & 0xFFFF);
+      $dump .= "  $string";
+      if ($i != @$nums - 1) {
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
+      }
+    }
+    
+    $dump .= "]";
+
+    return $dump;
+  }
+
+  sub dump_unsigned_int_array : string ($nums : int[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
+
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = sprintf("%u", $nums->[$i]);
+      $dump .= "  $string";
+      if ($i != @$nums - 1) {
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
+      }
+    }
+    
+    $dump .= "]";
+
+    return $dump;
+  }
+
+  sub dump_unsigned_long_array : string ($nums : long[]) {
+    
+    if ($nums == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
+
+    for (my $i = 0; $i < @$nums; $i++) {
+      my $string = sprintf("%lu", $nums->[$i]);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";

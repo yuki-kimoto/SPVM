@@ -287,6 +287,10 @@ SKIP: {
   ok(TestCase::Lib::SPVM::Util->test_dump_long_array);
   ok(TestCase::Lib::SPVM::Util->test_dump_float_array);
   ok(TestCase::Lib::SPVM::Util->test_dump_double_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_byte_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_short_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_int_array);
+  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_long_array);
 }
 
 # E
@@ -360,6 +364,10 @@ SKIP: {
   is(SPVM::Util->INT32_MIN, -2147483648);
   is(SPVM::Util->INT64_MAX, 9223372036854775807);
   is(SPVM::Util->INT64_MIN, -9223372036854775808);
+  is(SPVM::Util->UINT8_MAX, -1);
+  is(SPVM::Util->UINT16_MAX, -1);
+  is(SPVM::Util->UINT32_MAX, -1);
+  is(SPVM::Util->UINT64_MAX, -1);
 }
 
 # Constant floating point number functions

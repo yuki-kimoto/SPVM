@@ -391,75 +391,99 @@ returns -1.
             
 =head2 INT8_MIN
 
-B<sub INT8_MIN : byte ()>
+  sub INT8_MIN : byte ()
 
-Wapper of INT8_MIN of C99 cstdint library.
+byte(8bit integer) min value. return -128.
 
 =head2 INT8_MAX
 
-B<INT8_MAX : byte ()>
+  INT8_MAX : byte ()
 
-Wapper of INT8_MAX of C99 cstdint library.
+byte(8bit integer) max value. return 127.
 
 =head2 INT16_MIN
 
-B<sub INT16_MIN : short ()>
+  sub INT16_MIN : short ()
 
-Wapper of INT16_MIN of C99 cstdint library.
+short(16bit integer) min value. return -32768.
 
 =head2 INT16_MAX
 
-B<sub INT16_MAX : short ()>
+  sub INT16_MAX : short ()
 
-Wapper of INT16_MAX of C99 cstdint library.
+short(16bit integer) max value. return 32767.
 
 =head2 INT32_MIN
 
-B<sub INT32_MIN : int ()>
+  sub INT32_MIN : int ()
 
-Wapper of INT32_MIN of C99 cstdint library.
+int(32bit integer) min value. return -2147483648.
 
 =head2 INT32_MAX
 
-B<sub INT32_MAX : int ()>
+  sub INT32_MAX : int ()
 
-Wapper of INT32_MAX of C99 cstdint library.
+int(32bit integer) max value. return 2147483647.
 
 =head2 INT64_MIN
 
-B<sub INT64_MIN : long ()>
+  sub INT64_MIN : long ()
 
-Wapper of INT64_MIN of C99 cstdint library.
+long(64bit integer) min value. return -9223372036854775808.
 
 =head2 INT64_MAX
 
-B<sub INT64_MAX : long ()>
+  sub INT64_MAX : long ()
 
-Wapper of INT64_MAX of C99 cstdint library.
+long(64bit integer) max value. return 9223372036854775807.
+
+=head2 UINT8_MAX
+
+  sub UINT8_MAX : byte ()
+
+return -1. This is same as bit expression of 0xFF in unsigned 8bit integer in 2's complement.
+
+=head2 UINT16_MAX
+
+  sub UINT16_MAX : short ()
+
+return -1. This is same as bit expression of 0xFFFF in unsigned 8bit integer in 2's complement.
+
+=head2 UINT32_MAX
+
+  sub UINT32_MAX : int ()
+
+return -1. This is same as bit expression of 0xFFFFFFFF in unsigned 8bit integer in 2's complement.
+
+=head2 UINT64_MAX
+
+  sub UINT64_MAX : long ()
+
+return -1. This is same as bit expression of 0xFFFFFFFFFFFFFFFF in unsigned 8bit integer in 2's complement.
 
 =head2 FLT_MIN
 
-B<sub FLT_MIN : float ()>
+  sub FLT_MIN : float ()
 
-Wapper of FLT_MIN of C99 float library.
+return the value of FLT_MIN macro of float.h C library.
 
 =head2 FLT_MAX
 
-B<sub FLT_MAX : float ()>
+  sub FLT_MAX : float ()
 
-Wapper of FLT_MAX of C99 float library.
+return the value of FLT_MAX macro of float.h C library.
 
 =head2 DBL_MIN
 
-B<sub DBL_MIN : double ()>
+  sub DBL_MIN : double ()
 
-Wapper of DBL_MIN of C99 float library.
+return the value of DBL_MIN macro of float.h C library.
 
 =head2 DBL_MAX
 
-B<sub DBL_MAX : double ()>
+  sub DBL_MAX : double ()
 
-Wapper of DBL_MAX of C99 float library.
+return the value of DBL_MAX macro of float.h C library.
 
 =head2 isalnum
 
@@ -588,6 +612,40 @@ If byte array is undef, return undef.
   sub dump_long_array : string ($nums : long[])
   
 Convert the elements in the long array to string and join them with "," and surround it with "[" and "]", and return it.
+
+If byte array is undef, return undef.
+
+=head2 dump_unsigned_byte_array
+
+  sub dump_unsigned_byte_array : string ($nums : byte[])
+  
+Convert the elements in the byte array to string interpreting as an unsigned 8bit integer and join them with "," and surround it with "[" and "]", and return it.
+
+If byte array is undef, return undef.
+
+=head2 dump_unsigned_short_array
+
+  sub dump_unsigned_short_array : string ($nums : short[])
+  
+Convert the elements in the short array to string interpreting as an unsigned 16bit integer and join them with "," and surround it with "[" and "]".
+
+For Easy-to-read spaces and line breaks are inserted.
+
+If byte array is undef, return undef.
+
+=head2 dump_unsigned_int_array
+
+  sub dump_unsigned_int_array : string ($nums : int[])
+  
+Convert the elements in the int array to string interpreting as an unsigned 32bit integer and join them with "," and surround it with "[" and "]", and return it.
+
+If byte array is undef, return undef.
+
+=head2 dump_unsigned_long_array
+
+  sub dump_unsigned_long_array : string ($nums : long[])
+  
+Convert the elements in the long array to string interpreting as an unsigned 64bit integer and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
@@ -975,65 +1033,3 @@ Get the abusolute value of a int value.
   sub labs : long ($x : long);
 
 Get the abusolute value for a long value.
-
-=head2 reverseb
-
-  native sub reverseb : void ($nums : byte[]);
-
-Reverse the order of the elements of the byte array.
-
-If the argument is undef, a exception occurs.
-
-=head2 reverses
-
-  native sub reverses : void ($nums : short[]);
-
-Reverse the order of the elements of the short array.
-
-If the argument is undef, a exception occurs.
-
-=head2 reversei
-
-  native sub reversei : void ($nums : int[]);
-
-Reverse the order of the elements of the int array.
-
-If the argument is undef, a exception occurs.
-
-=head2 reversel
-
-  native sub reversel : void ($nums : long[]);
-
-Reverse the order of the elements of the long array.
-
-If the argument is undef, a exception occurs.
-
-=head2 reversef
-
-  native sub reversef : void ($nums : float[]);
-
-Reverse the order of the elements of the float array.
-
-If the argument is undef, a exception occurs.
-
-=head2 reversed
-
-  native sub reversed : void ($nums : double[]);
-
-Reverse the order of the elements of the double array.
-
-If the argument is undef, a exception occurs.
-
-=head2 reverseo
-
-  native sub reverseo : void ($objs : oarray);
-
-Reverse the order of the elements of the object array.
-
-If the argument is undef, a exception occurs.
-
-=head2 warn
-
-  sub warn : void ($string : string);
-
-Print string with file name and line number to stderr. line break is added to end of string.
