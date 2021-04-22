@@ -2,8 +2,6 @@ package SPVM::Byte;
 
 1;
 
-# Check document 2019/07/23 almost ok.
-
 =head1 NAME
 
 SPVM::Byte - Byte object
@@ -17,9 +15,9 @@ SPVM::Byte - Byte object
 
 =head1 DESCRIPTION
 
-L<SPVM::Byte> object stores a C<byte> value.
+L<SPVM::Byte> object holds a byte type value.
 
-This object is immutable.
+This object is immutable and its value cannot be changed .
 
 =head1 STATIC METHODS
 

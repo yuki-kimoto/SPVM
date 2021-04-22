@@ -20,7 +20,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.0943';
+our $VERSION = '0.0944';
 
 my $SPVM_INITED;
 my $BUILDER;
@@ -472,93 +472,7 @@ Currently some ports of document are use Automatic translation, so not accurate 
 
 SPVM Core Modules.
 
-=over 2
-
-=item * L<SPVM::Byte>
-
-=item * L<SPVM::ByteList>
-
-=item * L<SPVM::Cloner>
-
-=item * L<SPVM::Comparator::Byte>
-
-=item * L<SPVM::Comparator::Short>
-
-=item * L<SPVM::Comparator::Int>
-
-=item * L<SPVM::Comparator::Long>
-
-=item * L<SPVM::Comparator::Float>
-
-=item * L<SPVM::Comparator::Double>
-
-=item * L<SPVM::Comparator::Object>
-
-=item * L<SPVM::Complex_2d>
-
-=item * L<SPVM::Complex_2f>
-
-=item * L<SPVM::Double>
-
-=item * L<SPVM::DoubleList>
-
-=item * L<SPVM::EqualityChecker>
-
-=item * L<SPVM::EqualityChecker::SameObject>
-
-=item * L<SPVM::Float>
-
-=item * L<SPVM::FloatList>
-
-=item * L<SPVM::Hash>
-
-=item * L<SPVM::Hash::Entry>
-
-=item * L<SPVM::Int>
-
-=item * L<SPVM::IntList>
-
-=item * L<SPVM::IO::Stderr>
-
-=item * L<SPVM::IO::Stdout>
-
-=item * L<SPVM::Long>
-
-=item * L<SPVM::LongList>
-
-=item * L<SPVM::Math>
-
-=item * L<SPVM::Matrix::Double>
-
-=item * L<SPVM::Matrix::Float>
-
-=item * L<SPVM::List>
-
-=item * L<SPVM::Regex>
-
-=item * L<SPVM::Regex::Pattern>
-
-=item * L<SPVM::Regex::Replacer>
-
-=item * L<SPVM::Short>
-
-=item * L<SPVM::ShortList>
-
-=item * L<SPVM::Sort>
-
-=item * L<SPVM::StringBuffer>
-
-=item * L<SPVM::Stringer>
-
-=item * L<SPVM::StringList>
-
-=item * L<SPVM::Time>
-
-=item * L<SPVM::Time::Info>
-
-=item * L<SPVM::Unicode>
-
-=item * L<SPVM::Util>
+L<SPVM::Document::Modules>
 
 =back
 
