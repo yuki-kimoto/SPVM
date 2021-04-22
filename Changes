@@ -10,7 +10,7 @@
   - remove SPVM::Math->pi
   - move SPVM::Util->abs to SPVM::Math->abs
   - move SPVM::Util->labs to SPVM::Math->labs
-  - allow condition of switch statement short and byte value
+
 0.0944 2021-04-21
   - Logical Operator become non-expression.
   - rename SPVM::Util->copy_barray to SPVM::Util->copy_byte_array
@@ -75,25 +75,7 @@
   - add SPVM::Util->UINT16_MAX
   - add SPVM::Util->UINT32_MAX
   - add SPVM::Util->UINT64_MAX
-  - argument type become byte from int in the following SPVM::Util method
-    isalnum
-    isalpha
-    isblank
-    iscntrl
-    isdigit
-    isgraph
-    islower
-    isprint
-    ispunct
-    isspace
-    isupper
-    isxdigit
-    tolower
-    toupper
-    is_perl_space
-    is_perl_word
-
-
+  
 0.0943 2021-04-19
   - add <=> and cmp operator
   - add {} array init syntax

@@ -481,97 +481,97 @@ return the value of DBL_MAX macro of float.h C library.
 
 =head2 isalnum
 
-  sub isalnum : int ($char : byte)
+  sub isalnum : int ($char : int)
 
 If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return 1. If not, return 0.
 
 =head2 isalpha
 
-  sub isalpha : int ($char : byte)
+  sub isalpha : int ($char : int)
 
 If character is alphabetic('A'-'Z', 'a'-'z'), return 1. If not, return 0.
 
 =head2 isblank
 
-  sub isblank : int ($char : byte)
+  sub isblank : int ($char : int)
 
 If character is blank(' ', '\t'), return 1. If not, return 0.
 
 =head2 iscntrl
 
-  sub iscntrl : int ($char : byte)
+  sub iscntrl : int ($char : int)
 
 If character is a control character(0x00-0x1F, 0x7F), return 1. If not, return 0.
 
 =head2 isdigit
 
-  sub isdigit : int ($char : byte)
+  sub isdigit : int ($char : int)
 
 If character is decimal digit ('0'～'9'), return 1. If not, return 0.
 
 =head2 isgraph
 
-  sub isgraph : int ($char : byte)
+  sub isgraph : int ($char : int)
 
 If character has graphical representation(0x21-0x7E), return 1. If not, return 0.
 
 =head2 islower
 
-  sub islower : int ($char : byte)
+  sub islower : int ($char : int)
 
 If character is lowercase letter('a'-'z'), return 1. If not, return 0.
 
 =head2 isprint
 
-  sub isprint : int ($char : byte)
+  sub isprint : int ($char : int)
 
 If character is printable(0x20-0x7E), return 1. If not, return 0.
 
 =head2 ispunct
 
-  sub ispunct : int ($char : byte)
+  sub ispunct : int ($char : int)
 
 If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return 1. If not, return 0.
 
 =head2 isspace
 
-  sub isspace : int ($char : byte)
+  sub isspace : int ($char : int)
 
 If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not, return 0.
 
 =head2 isupper
 
-  sub isupper : int ($char : byte)
+  sub isupper : int ($char : int)
 
 If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
 
 =head2 isxdigit
 
-  sub isxdigit : int ($char : byte)
+  sub isxdigit : int ($char : int)
 
 If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
 
 =head2 tolower
 
-  sub tolower : int ($char : byte)
+  sub tolower : int ($char : int)
 
 Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
 
 =head2 toupper
 
-  sub toupper : int ($char : byte)
+  sub toupper : int ($char : int)
 
 Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
 
 =head2 is_perl_space
 
-  sub is_perl_space : int ($char : byte)
+  sub is_perl_space : int ($char : int)
 
 If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If not, return 0.
 
 =head2 is_perl_word
 
-  sub is_perl_word : int ($char : byte)
+  sub is_perl_word : int ($char : int)
 
 If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
 
