@@ -10,11 +10,11 @@ List of SPVM Core Modules
 
 =head2 SPVM::Byte
 
-L<SPVM::Byte> - Byte object
+L<SPVM::Byte> - byte object
 
 =head2 SPVM::ByteList
 
-L<SPVM::ByteList> - 0 index based continuous dynamic byte array
+L<SPVM::ByteList>
 
 =head2 SPVM::Cloner
 
@@ -26,7 +26,7 @@ L<SPVM::Comparator::Byte> -
 
 =head2 SPVM::Comparator::Short
 
-L<SPVM::Comparator::Short> - 
+L<SPVM::Comparator::Short> -  short object
 
 =head2 SPVM::Comparator::Int
 
@@ -58,7 +58,7 @@ L<SPVM::Complex_2f> -
 
 =head2 SPVM::Double
 
-L<SPVM::Double> - 
+L<SPVM::Double> - double object
 
 =head2 SPVM::DoubleList
 
@@ -88,7 +88,7 @@ L<SPVM::Hash> -
 
 L<SPVM::Hash::Entry>
 
-=head2 SPVM::Int - 
+=head2 SPVM::Int - int object
 
 L<SPVM::Int>
 
@@ -106,7 +106,7 @@ L<SPVM::IO::Stdout> -
 
 =head2 SPVM::Long
 
-L<SPVM::Long> - 
+L<SPVM::Long> - long object
 
 =head2 SPVM::LongList
 
@@ -115,14 +115,6 @@ L<SPVM::LongList> -
 =head2 SPVM::Math
 
 L<SPVM::Math> - 
-
-=head2 SPVM::Matrix::Double
-
-L<SPVM::Matrix::Double> - 
-
-=head2 SPVM::Matrix::Float
-
-L<SPVM::Matrix::Float> - 
 
 =head2 SPVM::List
 
