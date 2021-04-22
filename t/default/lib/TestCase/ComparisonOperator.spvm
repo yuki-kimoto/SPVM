@@ -733,9 +733,9 @@ package TestCase::ComparisonOperator {
   
   sub numeric_eq_object_same  : int () {
     
-    my $obj1 = TestCase::Minimal->new;
+    my $object1 = TestCase::Minimal->new;
     
-    if ($obj1 == $obj1) {
+    if ($object1 == $object1) {
       return 1;
     }
     else {
@@ -744,10 +744,10 @@ package TestCase::ComparisonOperator {
   }
 
   sub numeric_eq_object_different  : int () {
-    my $obj1 = TestCase::Minimal->new;
-    my $obj2 = TestCase::Minimal->new;
+    my $object1 = TestCase::Minimal->new;
+    my $object2 = TestCase::Minimal->new;
     
-    if ($obj1 == $obj2) {
+    if ($object1 == $object2) {
       return 0;
     }
     else {
@@ -894,9 +894,9 @@ package TestCase::ComparisonOperator {
   
   sub numeric_ne_object_same  : int () {
     
-    my $obj1 = TestCase::Minimal->new;
+    my $object1 = TestCase::Minimal->new;
     
-    if ($obj1 != $obj1) {
+    if ($object1 != $object1) {
       return 0;
     }
     else {
@@ -905,10 +905,10 @@ package TestCase::ComparisonOperator {
   }
 
   sub numeric_ne_object_different  : int () {
-    my $obj1 = TestCase::Minimal->new;
-    my $obj2 = TestCase::Minimal->new;
+    my $object1 = TestCase::Minimal->new;
+    my $object2 = TestCase::Minimal->new;
     
-    if ($obj1 != $obj2) {
+    if ($object1 != $object2) {
       return 1;
     }
     else {

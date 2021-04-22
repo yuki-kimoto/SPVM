@@ -10,9 +10,9 @@ SPVM::Comparator::Object - a callback type for comparation
   
   use SPVM::Comparator::Object;
   
-  my $comparator : SPVM::Comparator::Object = sub : int ($self : self, $obj1 : object, $obj2 : object); {
-    my $point1 = (SPVM::Point)$obj1;
-    my $point2 = (SPVM::Point)$obj2;
+  my $comparator : SPVM::Comparator::Object = sub : int ($self : self, $object1 : object, $object2 : object); {
+    my $point1 = (SPVM::Point)$object1;
+    my $point2 = (SPVM::Point)$object2;
     
     if ($point1->x > $point2->x) {
       return 1;
@@ -35,6 +35,6 @@ L<SPVM::Comparator::Object> is a callback type to compare objects.
 
 =head1 CALLBACK METHOD
 
-  sub : int ($self : self, $obj1 : object, $obj2 : object);
+  sub : int ($self : self, $object1 : object, $object2 : object);
 
-This method should receive two objects and return 1 if $obj1 is more than $obj2, -1 if $x is lass than $obj2, 0 if $obj1 equals $obj2 in the implementation.
+This method should receive two objects and return 1 if $object1 is more than $object2, -1 if $x is lass than $object2, 0 if $object1 equals $object2 in the implementation.

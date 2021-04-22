@@ -3,8 +3,8 @@ package SPVM::EqualityChecker::SameObject {
     return new SPVM::EqualityChecker::SameObject;
   }
   
-  sub : int ($self : self, $obj1 : object, $obj2 : object) {
-    if ($obj1 == $obj2) {
+  sub : int ($self : self, $object1 : object, $object2 : object) {
+    if ($object1 == $object2) {
       return 1;
     }
     else {

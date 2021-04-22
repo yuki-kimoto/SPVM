@@ -102,9 +102,9 @@ package TestCase::Lib::SPVM::Util {
     my $nums4 = [$minimal1, $minimal2, $minimal4];
     my $nums5 = [(object)$minimal1, $minimal2, $minimal3];
 
-    my $equality_checker = sub : int ($self : self, $obj1 : object, $obj2 : object) {
-      my $minimal1 = (TestCase::Minimal)$obj1;
-      my $minimal2 = (TestCase::Minimal)$obj2;
+    my $equality_checker = sub : int ($self : self, $object1 : object, $object2 : object) {
+      my $minimal1 = (TestCase::Minimal)$object1;
+      my $minimal2 = (TestCase::Minimal)$object2;
 
       if ($minimal1 == $minimal2) {
         return 1;

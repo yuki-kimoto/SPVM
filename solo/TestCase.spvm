@@ -996,13 +996,13 @@ SPVM::Test - SPVM test module
       TestCase::Minimal->new()->{x};
     }
     
-    my $obj1 = TestCase::Minimal->new();
+    my $object1 = TestCase::Minimal->new();
     
     # last
     {
       while (1) {
-        my $obj1 = TestCase::Minimal->new();
-        my $obj2 = TestCase::Minimal->new();
+        my $object1 = TestCase::Minimal->new();
+        my $object2 = TestCase::Minimal->new();
         {
           my $obj3 = TestCase::Minimal->new();
           last;
@@ -1158,9 +1158,9 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $obj1 = TestCase::Minimal->new();
+      my $object1 = TestCase::Minimal->new();
       
-      my $obj2 : TestCase::Minimal;
+      my $object2 : TestCase::Minimal;
       
       my $obj3 : TestCase::Minimal = undef;
     }
@@ -1749,13 +1749,13 @@ SPVM::Test - SPVM test module
   sub return_object : TestCase::Minimal () {
     my $obj0 = TestCase::Minimal->new();
     {
-      my $obj1 = TestCase::Minimal->new();
+      my $object1 = TestCase::Minimal->new();
       
-      my $obj2 : TestCase::Minimal;
+      my $object2 : TestCase::Minimal;
       
       my $obj3 : TestCase::Minimal = undef;
 
-      return $obj2;
+      return $object2;
     }
   }
 
@@ -1763,9 +1763,9 @@ SPVM::Test - SPVM test module
     my $obj0 = TestCase::Minimal->new();
     
     eval {
-      my $obj1 = TestCase::Minimal->new();
+      my $object1 = TestCase::Minimal->new();
       
-      my $obj2 : TestCase::Minimal;
+      my $object2 : TestCase::Minimal;
       
       my $obj3 : TestCase::Minimal = undef;
       

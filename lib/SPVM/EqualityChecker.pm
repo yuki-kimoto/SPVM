@@ -10,9 +10,9 @@ SPVM::EqualityChecker - a callback type to check the object equality
   
   use SPVM::EqualityChecker;
   
-  my $equality_checker : SPVM::EqualityChecker = sub : int ($self : self, $obj1 : object, $obj2 : object) {
-    my $point1 = (SPVM::Point)$obj1;
-    my $point2 = (SPVM::Point)$obj2;
+  my $equality_checker : SPVM::EqualityChecker = sub : int ($self : self, $object1 : object, $object2 : object) {
+    my $point1 = (SPVM::Point)$object1;
+    my $point2 = (SPVM::Point)$object2;
     
     if ($point1->x == $point2->x && $point1->y == $point2->y) {
       return 1;
@@ -33,7 +33,7 @@ L<SPVM::EqualityChecker> is a callback type to check the object equality.
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $obj1 : object, $obj2 : object)
+  sub : int ($self : self, $object1 : object, $object2 : object)
 
 If the two objects are equals, return 1, otherwise return 0.
 

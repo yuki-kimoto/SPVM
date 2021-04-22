@@ -36,6 +36,6 @@ Create a new L<SPVM::EqualityChecker::SameObject> object.
 
 =head1 CALLBACK METHOD IMPLEMENTATION
 
-  sub : int ($self : self, $obj1 : object, $obj2 : object)
+  sub : int ($self : self, $object1 : object, $object2 : object)
 
 If the address of the two objects are equal, return 1, otherwise return 0.
