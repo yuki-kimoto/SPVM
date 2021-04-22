@@ -1,5 +1,5 @@
 package SPVM::ByteList : precompile {
-  use SPVM::Util (memcpy_byte, memmove_byte);
+  use SPVM::ArrayUtil (memcpy_byte, memmove_byte);
   
   has values   : byte[];
   has capacity : ro int;

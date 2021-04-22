@@ -6,7 +6,7 @@ package SPVM::Sort : precompile {
   use SPVM::Comparator::Float;
   use SPVM::Comparator::Double;
   use SPVM::Comparator::Object;
-  use SPVM::Util(new_object_array_proto);
+  use SPVM::ArrayUtil(new_object_array_proto);
   
   sub sortb : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte) {
     if ($nums == undef) {

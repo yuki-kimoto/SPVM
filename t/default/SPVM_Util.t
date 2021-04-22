@@ -61,16 +61,6 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_sprintf_all);
 }
 
-# copy_object_array
-{
-  ok(TestCase::Lib::SPVM::Util->test_copy_object_array);
-}
-
-# equals_object_array
-{
-  ok(TestCase::Lib::SPVM::Util->test_equals_object_array);
-}
-
 # strtoi
 {
   ok(TestCase::Lib::SPVM::Util->test_strtoi);
@@ -223,16 +213,6 @@ SKIP: {
   ok(TestCase::Lib::SPVM::Util->test_replace);
 }
 
-# memmove_byte
-{
-  ok(TestCase::Lib::SPVM::Util->test_memmove_byte);
-}
-
-# memcpy_byte
-{
-  ok(TestCase::Lib::SPVM::Util->test_memcpy_byte);
-}
-
 # index
 {
   ok(TestCase::Lib::SPVM::Util->test_index);
@@ -248,100 +228,16 @@ SKIP: {
   ok(TestCase::Lib::SPVM::Util->test_contains);
 }
 
-# new_object_array_proto
-{
-  # slice_byte
-  ok(TestCase::Lib::SPVM::Util->test_new_object_array_proto);
-}
-
-# slice
-{
-  # slice_byte
-  ok(TestCase::Lib::SPVM::Util->test_slice_byte);
-
-  # slice_short
-  ok(TestCase::Lib::SPVM::Util->test_slice_short);
-
-  # slice_int
-  ok(TestCase::Lib::SPVM::Util->test_slice_int);
-
-  # slice_long
-  ok(TestCase::Lib::SPVM::Util->test_slice_long);
-
-  # slice_float
-  ok(TestCase::Lib::SPVM::Util->test_slice_float);
-
-  # slice_double
-  ok(TestCase::Lib::SPVM::Util->test_slice_double);
-
-  # slice_double
-  ok(TestCase::Lib::SPVM::Util->test_slice_object);
-}
-
 # join
 {
   ok(TestCase::Lib::SPVM::Util->test_join);
-  ok(TestCase::Lib::SPVM::Util->test_dump_byte_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_short_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_int_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_long_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_float_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_double_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_byte_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_short_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_int_array);
-  ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_long_array);
 }
 
-# equals
-{
-  # equals_byte_array
-  ok(TestCase::Lib::SPVM::Util->test_equals_byte_array);
-
-  # equals_short_array
-  ok(TestCase::Lib::SPVM::Util->test_equals_short_array);
-
-  # equals_int_array
-  ok(TestCase::Lib::SPVM::Util->test_equals_int_array);
-
-  # equeals_long_array
-  ok(TestCase::Lib::SPVM::Util->test_equals_long_array);
-
-  # equals_float_array
-  ok(TestCase::Lib::SPVM::Util->test_equals_float_array);
-
-  # equals_double_array
-  ok(TestCase::Lib::SPVM::Util->test_equals_double_array);
-
-  # equals_string_array
-  ok(TestCase::Lib::SPVM::Util->test_equals_string_array);
-}
 
 # Copy
 {
   # copy_str
   ok(TestCase::Lib::SPVM::Util->test_copy_str);
-
-  # copy_byte_array
-  ok(TestCase::Lib::SPVM::Util->test_copy_byte_array);
-
-  # copy_short_array
-  ok(TestCase::Lib::SPVM::Util->test_copy_short_array);
-
-  # copy_int_array
-  ok(TestCase::Lib::SPVM::Util->test_copy_int_array);
-
-  # copy_long_array
-  ok(TestCase::Lib::SPVM::Util->test_copy_long_array);
-
-  # copy_float_array
-  ok(TestCase::Lib::SPVM::Util->test_copy_float_array);
-
-  # copy_double_array
-  ok(TestCase::Lib::SPVM::Util->test_copy_double_array);
-
-  # copy_string_array
-  ok(TestCase::Lib::SPVM::Util->test_copy_string_array);
 }
 
 # Constant integral functions
@@ -389,15 +285,6 @@ SKIP: {
   like(SPVM::Util->FLT_MAX(), qr/[0-9]/);
   like(SPVM::Util->FLT_MIN(), qr/[0-9]/);
 }
-
-# getenv
-=pod
-{
-  # TODO: Windows compatibility
-  $ENV{SPVM_ENV_NAME} = "SPVM_ENV_VALUE";
-  ok(TestCase::Lib::SPVM::Util->test_getenv);
-}
-=cut
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

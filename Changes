@@ -1,7 +1,7 @@
 0.0946 2021-04-22
   
   - Create SPVM::ArrayUtil module
-  - move the followingf SPVM::Util methods to SPVM::Array
+  - move the following SPVM::Util methods to SPVM::ArrayUtil
     copy_object_array
     copy_byte_array
     copy_short_array

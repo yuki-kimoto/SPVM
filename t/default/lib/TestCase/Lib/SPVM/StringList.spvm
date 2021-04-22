@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::StringList {
   use SPVM::StringList;
-  use SPVM::Util (equals_string_array);
+  use SPVM::ArrayUtil (equals_string_array);
 
   sub new : int () {
     {

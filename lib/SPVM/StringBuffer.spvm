@@ -1,6 +1,6 @@
 package SPVM::StringBuffer : precompile {
   use SPVM::Hash;
-  use SPVM::Util (slice_byte);
+  use SPVM::ArrayUtil (slice_byte);
 
   has value : byte[];
   has length : ro int;

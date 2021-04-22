@@ -1,5 +1,5 @@
 package SPVM::FloatList : precompile {
-  use SPVM::Util (memcpy_float, memmove_float);
+  use SPVM::ArrayUtil (memcpy_float, memmove_float);
   
   has values   : float[];
   has capacity : ro int;

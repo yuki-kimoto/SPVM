@@ -1,5 +1,5 @@
 package SPVM::IntList : precompile {
-  use SPVM::Util (memcpy_int, memmove_int);
+  use SPVM::ArrayUtil (memcpy_int, memmove_int);
   
   has values   : int[];
   has capacity : ro int;

@@ -1,5 +1,5 @@
 package SPVM::List : precompile {
-  use SPVM::Util(new_object_array_proto);
+  use SPVM::ArrayUtil(new_object_array_proto);
   
   has values   : oarray;
   has capacity : ro int;

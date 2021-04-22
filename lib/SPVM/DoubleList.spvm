@@ -1,5 +1,5 @@
 package SPVM::DoubleList : precompile {
-  use SPVM::Util (memcpy_double, memmove_double);
+  use SPVM::ArrayUtil (memcpy_double, memmove_double);
   
   has values   : double[];
   has capacity : ro int;

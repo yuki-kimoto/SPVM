@@ -1,5 +1,5 @@
 package SPVM::ShortList : precompile {
-  use SPVM::Util (memcpy_short, memmove_short);
+  use SPVM::ArrayUtil (memcpy_short, memmove_short);
   
   has values   : short[];
   has capacity : ro int;

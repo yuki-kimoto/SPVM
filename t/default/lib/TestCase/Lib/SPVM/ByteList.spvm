@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::ByteList {
   use SPVM::ByteList;
-  use SPVM::Util (equals_byte_array);
+  use SPVM::ArrayUtil (equals_byte_array);
   use SPVM::Util (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   sub new : int () {

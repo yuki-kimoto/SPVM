@@ -1,5 +1,5 @@
 package SPVM::LongList : precompile {
-  use SPVM::Util (memcpy_long, memmove_long);
+  use SPVM::ArrayUtil (memcpy_long, memmove_long);
   
   has values   : long[];
   has capacity : ro int;
