@@ -2,8 +2,6 @@ package SPVM::Double;
 
 1;
 
-# Check document 2019/07/23 almost ok.
-
 =head1 NAME
 
 SPVM::Double - Double object
@@ -19,7 +17,9 @@ SPVM::Double - Double object
 
 L<SPVM::Double> object stores a C<double> value.
 
-This object is immutable.
+This object is immutable and its value cannot be changed.
+
+L<SPVM::Double> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -27,7 +27,7 @@ This object is immutable.
 
   sub new : SPVM::Double ($value : double)
 
-Create a new L<SPVM::Double> object with specific C<double> value.
+Create a new L<SPVM::Double> object with a C<double> value.
 
 =head1 INSTANCE METHODS
 

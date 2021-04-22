@@ -2,8 +2,6 @@ package SPVM::Float;
 
 1;
 
-# Check document 2019/07/23 almost ok.
-
 =head1 NAME
 
 SPVM::Float - Float object
@@ -19,7 +17,9 @@ SPVM::Float - Float object
 
 L<SPVM::Float> object stores a C<float> value.
 
-This object is immutable.
+This object is immutable and its value cannot be changed.
+
+L<SPVM::Float> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -27,7 +27,7 @@ This object is immutable.
 
   sub new : SPVM::Float ($value : float)
 
-Create a new L<SPVM::Float> object with specific C<float> value.
+Create a new L<SPVM::Float> object with a C<float> value.
 
 =head1 INSTANCE METHODS
 

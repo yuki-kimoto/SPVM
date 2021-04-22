@@ -2,8 +2,6 @@ package SPVM::Int;
 
 1;
 
-# Check document 2019/07/23 almost ok.
-
 =head1 NAME
 
 SPVM::Int - Int object
@@ -19,7 +17,9 @@ SPVM::Int - Int object
 
 L<SPVM::Int> object stores a C<int> value.
 
-This object is immutable.
+This object is immutable and its value cannot be changed.
+
+L<SPVM::Int> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -27,7 +27,7 @@ This object is immutable.
 
   sub new : SPVM::Int ($value : int)
 
-Create a new L<SPVM::Int> object with specific C<int> value.
+Create a new L<SPVM::Int> object with a C<int> value.
 
 =head1 INSTANCE METHODS
 
