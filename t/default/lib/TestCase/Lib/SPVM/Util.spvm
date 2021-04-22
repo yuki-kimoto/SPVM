@@ -2534,20 +2534,6 @@ package TestCase::Lib::SPVM::Util {
     return 1;
   }
 
-  sub test_E : int () {
-    unless (E() == 2.7182818284590452354) {
-      return 0;
-    }
-    return 1;
-  }
-
-  sub test_PI : int () {
-    unless (PI() == 3.14159265358979323846) {
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_copy_str : int () {
     my $string = "abc";
     my $string_out = copy_str($string);

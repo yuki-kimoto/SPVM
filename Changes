@@ -5,6 +5,9 @@
   - rename SPVM::Long->val to SPVM::Long->value
   - rename SPVM::Float->val to SPVM::Float->value
   - rename SPVM::Double->val to SPVM::Double->value
+  - move SPVM::Util->PI to SPVM::Math->PI
+  - move SPVM::Util->E to SPVM::Math->E
+  - remove SPVM::Math->pi
 
 0.0944 2021-04-21
   - Logical Operator become non-expression.

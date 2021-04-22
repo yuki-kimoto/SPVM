@@ -10,6 +10,9 @@ use POSIX();
 use TestFile;
 use Math::Complex;
 
+use Math::Trig 'pi';
+
+
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
 my $SHORT_MAX = 32767;
@@ -35,7 +38,17 @@ use SPVM 'TestCase::Lib::SPVM::Math';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-ok(TestCase::Lib::SPVM::Math->test_pi);
+# PI
+{
+  ok(TestCase::Lib::SPVM::Math->test_PI);
+  is(SPVM::Math->PI, pi());
+}
+
+# E
+{
+  ok(TestCase::Lib::SPVM::Math->test_E);
+  is(SPVM::Math->E, exp(1));
+}
 
 # Trigonometric functions
 ok(TestCase::Lib::SPVM::Math->test_cos);

@@ -365,12 +365,6 @@ Check if two string arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 E
-
-  sub E : double ()
-
-Get a napier number.
-
 =head2 get_type_name
 
   sub get_type_name : string ($obj : object)

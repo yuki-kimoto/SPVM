@@ -10,14 +10,25 @@ SPVM::Math - Mathmatical functions
 
   use SPVM::Math;
   
-  my $pi = SPVM::Math->pi;
-  my $sin = SPVM::Math->sin($pi / 4);
+  my $sin = SPVM::Math->sin(SPVM::Math->PI / 4);
   
 =head1 DESCRIPTION
 
 L<SPVM::Math> defines mathmatical functions. 
 
 =head1 STATIC METHODS
+
+=head2 E
+
+  sub E : double ()
+
+The double value that is closer than any other to e, the base of the natural logarithms.
+
+=head2 PI
+
+  sub PI : double ()
+
+The double value that is closer than any other to pi, the ratio of the circumference of a circle to its diameter.
 
 =head2 FE_DOWNWARD
 
@@ -462,18 +473,6 @@ cpow function in C99 complex.h.
   sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
 
 cpowf function in C99 complex.h.
-
-=head2 cproj
-
-  sub cproj : SPVM::Complex_2d ($z : SPVM::Complex_2d)
-
-cproj function in C99 complex.h.
-
-=head2 cprojf
-
-  sub cprojf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
-
-cprojf function in C99 complex.h.
 
 =head2 cscamul
 
@@ -1020,12 +1019,6 @@ nexttoward function in C99 math.h.
   sub nexttowardf : float ($x1 : float, $x2 : double)
 
 nexttowardf function in C99 math.h.
-
-=head2 pi
-
-  sub pi : double ()
-
-pi constant value. 3.141592653589793115997963468544185161590576171875
 
 =head2 pow
 

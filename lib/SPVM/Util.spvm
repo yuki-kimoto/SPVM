@@ -738,8 +738,6 @@ package SPVM::Util : precompile {
     return $is_equals;
   }
 
-  sub E : double () { return 2.7182818284590452354; }
-
   sub index : int ($str : string, $substr : string, $posision : int) {
     my $strCount = length $str;
     my $substrCount = length $substr;
@@ -1286,8 +1284,6 @@ package SPVM::Util : precompile {
   native sub memmove_double : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int);
 
   native sub new_object_array_proto : oarray ($proto_array : oarray, $length : int);
-
-  sub PI : double () { return 3.14159265358979323846; }
 
   native sub srand : void ($seed : long);
   native sub crand : int ();

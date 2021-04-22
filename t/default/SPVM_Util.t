@@ -293,16 +293,6 @@ SKIP: {
   ok(TestCase::Lib::SPVM::Util->test_dump_unsigned_long_array);
 }
 
-# E
-{
-  ok(TestCase::Lib::SPVM::Util->test_E);
-}
-
-# PI
-{
-  ok(TestCase::Lib::SPVM::Util->test_PI);
-}
-
 # equals
 {
   # equals_byte_array

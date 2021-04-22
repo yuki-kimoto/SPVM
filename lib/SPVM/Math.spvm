@@ -1,7 +1,10 @@
 package SPVM::Math {
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
-  
+
+  sub E : double () { return 2.7182818284590452354; }
+  sub PI : double () { return 3.14159265358979323846; }
+
   native sub HUGE_VALF : float ();
   native sub INFINITYF : float ();
   native sub NANF : float ();
@@ -21,8 +24,6 @@ package SPVM::Math {
   native sub isnan : int ($x : double);
   native sub fpclassify : int ($x : double);
   native sub signbit : int ($x : double);
-
-  sub pi : double () { return 3.141592653589793115997963468544185161590576171875; }
 
   native sub FE_DOWNWARD : int ();
   native sub FE_TONEAREST : int ();
