@@ -1,3 +1,53 @@
+0.0946 2021-04-22
+  
+  - Create SPVM::ArrayUtil module
+  - move the followingf SPVM::Util methods to SPVM::Array
+    copy_object_array
+    copy_byte_array
+    copy_short_array
+    copy_int_array
+    copy_long_array
+    copy_float_array
+    copy_double_array
+    equals_object_array
+    copy_string_array
+    equals_byte_array
+    equals_short_array
+    equals_int_array
+    equals_long_array
+    equals_float_array
+    equals_double_array
+    equals_string_array
+    dump_byte_array
+    dump_short_array
+    dump_int_array
+    dump_long_array
+    dump_unsigned_byte_array
+    dump_unsigned_short_array
+    dump_unsigned_int_array
+    dump_unsigned_long_array
+    dump_float_array
+    dump_double_array
+    memcpy_byte
+    memcpy_short
+    memcpy_int
+    memcpy_long
+    memcpy_float
+    memcpy_double
+    memmove_byte
+    memmove_short
+    memmove_int
+    memmove_long
+    memmove_float
+    memmove_double
+    new_object_array_proto
+    slice_byte
+    slice_short
+    slice_int
+    slice_long
+    slice_float
+    slice_double
+
 0.0945 2021-04-22
   - rename SPVM::Byte->val to SPVM::Byte->value
   - rename SPVM::Short->val to SPVM::Short->value
