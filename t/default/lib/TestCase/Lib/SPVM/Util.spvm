@@ -692,7 +692,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
         my $ret = isalnum($char);
@@ -719,7 +719,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
         my $ret = isalpha($char);
@@ -746,7 +746,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char >= ' ' ||  $char <= '\t') {
         my $ret = isblank($char);
@@ -773,7 +773,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
         my $ret = iscntrl($char);
@@ -800,7 +800,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char >= '0' && $char <= '9') {
         my $ret = isdigit($char);
@@ -827,7 +827,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char >= 0x21 && $char <= 0x7e) {
         my $ret = isgraph($char);
@@ -854,7 +854,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
     if ($char >= 'a' && $char <= 'z') {
         my $ret = islower($char);
@@ -881,7 +881,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char >= 0x20 && $char <= 0x7e) {
         my $ret = isprint($char);
@@ -908,7 +908,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
         my $ret = ispunct($char);
@@ -935,7 +935,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
         my $ret = isspace($char);
@@ -962,7 +962,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char >= 'A' && $char <= 'Z') {
         my $ret = isupper($char);
@@ -989,7 +989,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
         my $ret = isxdigit($char);
@@ -1016,7 +1016,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char >= 'A' && $char <= 'Z') {
         my $ret = tolower($char);
@@ -1043,7 +1043,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
     if ($char >= 'a' && $char <= 'z') {
         my $ret = toupper($char);
@@ -1070,25 +1070,32 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
         my $ret = is_perl_space($char);
         unless ($ret == 1) {
+          warn("CCCCCCCC $char");
           $ok = 0;
+          last;
         }
       }
       else {
         my $ret = is_perl_space($char);
         unless ($ret == 0) {
-          $ok = 0;
+           warn("DDDDDD $char");
+         $ok = 0;
+         last;
         }
       }
     }
+    
+    warn "AAAAAAAA";
 
     unless ($ok) {
       return 0;
     }
+    warn "BBBBBB";
 
     return 1;
   }
@@ -1097,7 +1104,7 @@ package TestCase::Lib::SPVM::Util {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
-      my $char = $i;
+      my $char = (byte)$i;
 
       if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
         my $ret = is_perl_word($char);

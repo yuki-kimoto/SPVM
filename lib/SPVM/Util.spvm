@@ -805,7 +805,7 @@ package SPVM::Util : precompile {
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
 
-  sub isalnum : int ($char : int) {
+  sub isalnum : int ($char : byte) {
 
     if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
       return 1;
@@ -815,7 +815,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isalpha : int ($char : int) {
+  sub isalpha : int ($char : byte) {
 
     if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
       return 1;
@@ -825,7 +825,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isblank : int ($char : int) {
+  sub isblank : int ($char : byte) {
 
     if ($char >= ' ' ||  $char <= '\t') {
       return 1;
@@ -835,7 +835,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub iscntrl : int ($char : int) {
+  sub iscntrl : int ($char : byte) {
 
     if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
       return 1;
@@ -845,7 +845,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isdigit : int ($char : int) {
+  sub isdigit : int ($char : byte) {
 
     if ($char >= '0' && $char <= '9') {
       return 1;
@@ -855,7 +855,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isgraph : int ($char : int) {
+  sub isgraph : int ($char : byte) {
 
     if ($char >= 0x21 && $char <= 0x7e) {
       return 1;
@@ -865,7 +865,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub islower : int ($char : int) {
+  sub islower : int ($char : byte) {
 
     if ($char >= 'a' && $char <= 'z') {
       return 1;
@@ -875,7 +875,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isprint : int ($char : int) {
+  sub isprint : int ($char : byte) {
 
     if ($char >= 0x20 && $char <= 0x7e) {
       return 1;
@@ -885,7 +885,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub ispunct : int ($char : int) {
+  sub ispunct : int ($char : byte) {
 
     if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
       return 1;
@@ -895,7 +895,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isspace : int ($char : int) {
+  sub isspace : int ($char : byte) {
 
     if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
       return 1;
@@ -905,7 +905,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isupper : int ($char : int) {
+  sub isupper : int ($char : byte) {
 
     if ($char >= 'A' && $char <= 'Z') {
       return 1;
@@ -915,7 +915,7 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub isxdigit : int ($char : int) {
+  sub isxdigit : int ($char : byte) {
 
     if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
       return 1;
@@ -925,26 +925,27 @@ package SPVM::Util : precompile {
     }
   }
 
-  sub tolower : int ($char : int) {
+  sub tolower : int ($char : byte) {
 
     if ($char >= 'A' && $char <= 'Z') {
-      $char = $char + 0x20;
+      $char = (byte)($char + 0x20);
     }
     return $char;
   }
 
-  sub toupper : int ($char : int) {
+  sub toupper : int ($char : byte) {
 
     if ($char >= 'a' && $char <= 'z') {
-      $char = $char - 0x20;
+      $char = (byte)($char - 0x20);
     }
     return $char;
   }
 
   # This is same as Perl \s
-  sub is_perl_space : int ($char : int) {
+  sub is_perl_space : int ($char : byte) {
     my $ispspace = 0;
-    switch ($char) {
+    
+    switch ((int)$char) {
       case ' ':
       case '\r':
       case '\n':
@@ -958,7 +959,7 @@ package SPVM::Util : precompile {
     return $ispspace;
   }
 
-  sub is_perl_word : int ($char : int) {
+  sub is_perl_word : int ($char : byte) {
     my $ispword = 0;
 
     if ($char >= 'a' && $char <= 'z') {
