@@ -66,15 +66,15 @@ L<SPVM::DoubleList> -
 
 =head2 SPVM::EqualityChecker
 
-L<SPVM::EqualityChecker> - 
+L<SPVM::EqualityChecker> - a callback type to check the object equality
 
 =head2 SPVM::EqualityChecker::SameObject
 
-L<SPVM::EqualityChecker::SameObject> - 
+L<SPVM::EqualityChecker::SameObject> - a callback implementation of L<SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
 =head2 SPVM::Float
 
-L<SPVM::Float> - 
+L<SPVM::Float> - float object
 
 =head2 SPVM::FloatList
 

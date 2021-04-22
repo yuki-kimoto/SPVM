@@ -4,22 +4,27 @@ package SPVM::EqualityChecker::SameObject;
 
 =head1 NAME
 
-SPVM::EqualityChecker::SameObject - a equality checker to check the equality of adresses of two object.
+SPVM::EqualityChecker::SameObject - a callback implementation of L<SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
 =head1 SYNOPSYS
   
   use SPVM::EqualityChecker::SameObject;
   
-  my $equality_checker : SPVM::EqualityChecker = SPVM::EqualityChecker::SameObject->new;
+  my $equality_checker = SPVM::EqualityChecker::SameObject->new;
   
   my $point1 = SPVM::Point->new(1, 2);
-  my $point2 = SPVM::Point->new(5, 6);
+  my $point2 = $point1;
+  my $point3 = SPVM::Point->new(1, 2);
   
+  # Equals
   my $is_equal = $equality_checker->($point1, $point2);
+  
+  # Not equals
+  my $is_equal = $equality_checker->($point1, $point3);
 
 =head1 DESCRIPTION
 
-L<SPVM::EqualityChecker::SameObject> is a equality checker to check the equality of adresses of two object.
+L<SPVM::EqualityChecker::SameObject> is a callback implementation of L<SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
 =head1 STATIC METHODS
 
@@ -29,10 +34,8 @@ L<SPVM::EqualityChecker::SameObject> is a equality checker to check the equality
 
 Create a new L<SPVM::EqualityChecker::SameObject> object.
 
-=head1 INSTANCE METHODS
-
-=head2 ANON
+=head1 CALLBACK METHOD IMPLEMENTATION
 
   sub : int ($self : self, $obj1 : object, $obj2 : object)
 
-This method receive tow objects and return 1 if the address of the two object equals, return 0 if not.
+If the address of the two objects are equal, return 1, otherwise return 0.

@@ -4,7 +4,7 @@ package SPVM::EqualityChecker;
 
 =head1 NAME
 
-SPVM::EqualityChecker - a callback type to check the equality
+SPVM::EqualityChecker - a callback type to check the object equality
 
 =head1 SYNOPSYS
   
@@ -29,10 +29,12 @@ SPVM::EqualityChecker - a callback type to check the equality
 
 =head1 DESCRIPTION
 
-L<SPVM::EqualityChecker> is a callback type to check the equality.
+L<SPVM::EqualityChecker> is a callback type to check the object equality.
 
-=head1 CALLBACK METHOD
+=head1 CALLBACK METHOD INTERFACE
 
   sub : int ($self : self, $obj1 : object, $obj2 : object)
 
-This method should receive tow objects and return 1 if two object equals, return 0 if not in the method implementation.
+If the two objects are equals, return 1, otherwise return 0.
+
+This method is planned to be implemented in other classes.
