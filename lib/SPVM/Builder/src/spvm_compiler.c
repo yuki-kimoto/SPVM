@@ -61,27 +61,27 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER_add_basic_types(compiler);
   
   // Add SPVM::Byte source
-  const char* spvm_byte_module_source = "package SPVM::Byte {\n  has val : ro byte;\n  sub new : SPVM::Byte ($value : byte) {\n    my $self = new SPVM::Byte;\n    $self->{val} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_byte_module_source = "package SPVM::Byte {\n  has value : ro byte;\n  sub new : SPVM::Byte ($value : byte) {\n    my $self = new SPVM::Byte;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "SPVM::Byte", strlen("SPVM::Byte"), (void*)spvm_byte_module_source);
 
   // Add SPVM::Short source
-  const char* spvm_short_module_source = "package SPVM::Short {\n  has val : ro short;\n  sub new : SPVM::Short ($value : short) {\n    my $self = new SPVM::Short;\n    $self->{val} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_short_module_source = "package SPVM::Short {\n  has value : ro short;\n  sub new : SPVM::Short ($value : short) {\n    my $self = new SPVM::Short;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "SPVM::Short", strlen("SPVM::Short"), (void*)spvm_short_module_source);
 
   // Add SPVM::Int source
-  const char* spvm_int_module_source = "package SPVM::Int {\n  has val : ro int;\n  sub new : SPVM::Int ($value : int) {\n    my $self = new SPVM::Int;\n    $self->{val} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_int_module_source = "package SPVM::Int {\n  has value : ro int;\n  sub new : SPVM::Int ($value : int) {\n    my $self = new SPVM::Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "SPVM::Int", strlen("SPVM::Int"), (void*)spvm_int_module_source);
 
   // Add SPVM::Long source
-  const char* spvm_long_module_source = "package SPVM::Long {\n  has val : ro long;\n  sub new : SPVM::Long ($value : long) {\n    my $self = new SPVM::Long;\n    $self->{val} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_long_module_source = "package SPVM::Long {\n  has value : ro long;\n  sub new : SPVM::Long ($value : long) {\n    my $self = new SPVM::Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "SPVM::Long", strlen("SPVM::Long"), (void*)spvm_long_module_source);
 
   // Add SPVM::Float source
-  const char* spvm_float_module_source = "package SPVM::Float {\n  has val : ro float;\n  sub new : SPVM::Float ($value : float) {\n    my $self = new SPVM::Float;\n    $self->{val} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_float_module_source = "package SPVM::Float {\n  has value : ro float;\n  sub new : SPVM::Float ($value : float) {\n    my $self = new SPVM::Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "SPVM::Float", strlen("SPVM::Float"), (void*)spvm_float_module_source);
 
   // Add SPVM::Double source
-  const char* spvm_double_module_source = "package SPVM::Double {\n  has val : ro double;\n  sub new : SPVM::Double ($value : double) {\n    my $self = new SPVM::Double;\n    $self->{val} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_double_module_source = "package SPVM::Double {\n  has value : ro double;\n  sub new : SPVM::Double ($value : double) {\n    my $self = new SPVM::Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "SPVM::Double", strlen("SPVM::Double"), (void*)spvm_double_module_source);
 
   // use SPVM::Byte module

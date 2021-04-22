@@ -11,7 +11,7 @@ SPVM::Byte - Byte object
   use SPVM::Byte;
   
   my $byte_object = SPVM::Byte->new(5);
-  my $byte_value = $byte_object->val;
+  my $byte_value = $byte_object->value;
 
 =head1 DESCRIPTION
 
@@ -29,8 +29,8 @@ Create a new L<SPVM::Byte> object with specific C<byte> value.
 
 =head1 INSTANCE METHODS
 
-=head2 val
+=head2 value
 
-  sub val : byte ($self : self)
+  sub value : byte ($self : self)
 
 Get a C<byte> value.

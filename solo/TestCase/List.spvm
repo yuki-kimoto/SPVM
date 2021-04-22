@@ -19,9 +19,9 @@ package TestCase::List {
     my $onum3 = (SPVM::Int)$onums->[1];
     
     my $ok = 0;
-    if ($onum1->val == 2) {
-      if ($onum2->val == 4) {
-        if ($onum3->val == 5) {
+    if ($onum1->value == 2) {
+      if ($onum2->value == 4) {
+        if ($onum3->value == 5) {
           $ok = 1;
         }
       }

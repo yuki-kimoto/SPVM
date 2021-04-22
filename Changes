@@ -1,3 +1,11 @@
+0.0945 2021-04-22
+  - rename SPVM::Byte->val to SPVM::Byte->value
+  - rename SPVM::Short->val to SPVM::Short->value
+  - rename SPVM::Int->val to SPVM::Int->value
+  - rename SPVM::Long->val to SPVM::Long->value
+  - rename SPVM::Float->val to SPVM::Float->value
+  - rename SPVM::Double->val to SPVM::Double->value
+
 0.0944 2021-04-21
   - Logical Operator become non-expression.
   - rename SPVM::Util->copy_barray to SPVM::Util->copy_byte_array

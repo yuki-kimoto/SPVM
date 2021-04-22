@@ -150,7 +150,7 @@ SPVM::Util - Variouse utilities
   my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
   my $objects_copy = copy_object_array($objects, sub : object ($self : self, $obj : object) {
     my $int_obj = (SPVM::Int)$obj;
-    my $new_int_obj = SPVM::Int->new($int_obj->val);
+    my $new_int_obj = SPVM::Int->new($int_obj->value);
     return $new_int_obj;
   });
   

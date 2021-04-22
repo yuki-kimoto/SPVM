@@ -326,7 +326,7 @@ package TestCase::Assign {
     my $byte_obj : SPVM::Byte = $byte;
     
     if ($byte_obj isa SPVM::Byte) {
-      if ($byte_obj->val == INT8_MIN()) {
+      if ($byte_obj->value == INT8_MIN()) {
         return 1;
       }
     }
@@ -338,7 +338,7 @@ package TestCase::Assign {
     my $short_obj : SPVM::Short = $short;
     
     if ($short_obj isa SPVM::Short) {
-      if ($short_obj->val == INT16_MIN()) {
+      if ($short_obj->value == INT16_MIN()) {
         return 1;
       }
     }
@@ -350,7 +350,7 @@ package TestCase::Assign {
     my $int_obj : SPVM::Int = $int;
     
     if ($int_obj isa SPVM::Int) {
-      if ($int_obj->val == INT32_MIN()) {
+      if ($int_obj->value == INT32_MIN()) {
         return 1;
       }
     }
@@ -362,7 +362,7 @@ package TestCase::Assign {
     my $long_obj : SPVM::Long = $long;
     
     if ($long_obj isa SPVM::Long) {
-      if ($long_obj->val == INT64_MIN()) {
+      if ($long_obj->value == INT64_MIN()) {
         return 1;
       }
     }
@@ -374,7 +374,7 @@ package TestCase::Assign {
     my $float_obj : SPVM::Float = $float;
     
     if ($float_obj isa SPVM::Float) {
-      if ($float_obj->val == FLT_MIN()) {
+      if ($float_obj->value == FLT_MIN()) {
         return 1;
       }
     }
@@ -386,7 +386,7 @@ package TestCase::Assign {
     my $double_obj : SPVM::Double = $double;
     
     if ($double_obj isa SPVM::Double) {
-      if ($double_obj->val == DBL_MIN()) {
+      if ($double_obj->value == DBL_MIN()) {
         return 1;
       }
     }
@@ -399,7 +399,7 @@ package TestCase::Assign {
     
     if ($byte_obj isa SPVM::Byte) {
       my $byte_obj2 = (SPVM::Byte)$byte_obj;
-      if ($byte_obj2->val == INT8_MIN()) {
+      if ($byte_obj2->value == INT8_MIN()) {
         return 1;
       }
     }
@@ -412,7 +412,7 @@ package TestCase::Assign {
     
     if ($short_obj isa SPVM::Short) {
       my $short_obj2 = (SPVM::Short)$short_obj;
-      if ($short_obj2->val == INT16_MIN()) {
+      if ($short_obj2->value == INT16_MIN()) {
         return 1;
       }
     }
@@ -425,7 +425,7 @@ package TestCase::Assign {
     
     if ($int_obj isa SPVM::Int) {
       my $int_obj2 = (SPVM::Int)$int_obj;
-      if ($int_obj2->val == INT32_MIN()) {
+      if ($int_obj2->value == INT32_MIN()) {
         return 1;
       }
     }
@@ -438,7 +438,7 @@ package TestCase::Assign {
     
     if ($long_obj isa SPVM::Long) {
       my $long_obj2 = (SPVM::Long)$long_obj;
-      if ($long_obj2->val == INT64_MIN()) {
+      if ($long_obj2->value == INT64_MIN()) {
         return 1;
       }
     }
@@ -451,7 +451,7 @@ package TestCase::Assign {
     
     if ($float_obj isa SPVM::Float) {
       my $float_obj2 = (SPVM::Float)$float_obj;
-      if ($float_obj2->val == FLT_MIN()) {
+      if ($float_obj2->value == FLT_MIN()) {
         return 1;
       }
     }
@@ -464,7 +464,7 @@ package TestCase::Assign {
     
     if ($double_obj isa SPVM::Double) {
       my $double_obj2 = (SPVM::Double)$double_obj;
-      if ($double_obj2->val == DBL_MIN()) {
+      if ($double_obj2->value == DBL_MIN()) {
         return 1;
       }
     }

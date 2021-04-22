@@ -737,8 +737,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $list = SPVM::List->new([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
     my $x = $list->get(0);
     
-    is($list->get(0)->val, 1);
-    is($list->get(1)->val, 2.5);
+    is($list->get(0)->value, 1);
+    is($list->get(1)->value, 2.5);
     ok(!defined $list->get(2));
   }
 }
@@ -747,37 +747,37 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Numeric value to numeric object - number to SPVM::Byte
   {
-    my $val = TestCase::ExchangeAPI->return_byte_object_only(SPVM::Byte->new($BYTE_MAX))->val;
+    my $val = TestCase::ExchangeAPI->return_byte_object_only(SPVM::Byte->new($BYTE_MAX))->value;
     is($val, $BYTE_MAX);
   }
 
   # Numeric value to numeric object - number to SPVM::Short
   {
-    my $val = TestCase::ExchangeAPI->return_short_object_only(SPVM::Short->new($SHORT_MAX))->val;
+    my $val = TestCase::ExchangeAPI->return_short_object_only(SPVM::Short->new($SHORT_MAX))->value;
     is($val, $SHORT_MAX);
   }
 
   # Numeric value to numeric object - number to SPVM::Int
   {
-    my $val = TestCase::ExchangeAPI->return_int_object_only(SPVM::Int->new($INT_MAX))->val;
+    my $val = TestCase::ExchangeAPI->return_int_object_only(SPVM::Int->new($INT_MAX))->value;
     is($val, $INT_MAX);
   }
 
   # Numeric value to numeric object - number to SPVM::Long
   {
-    my $val = TestCase::ExchangeAPI->return_long_object_only(SPVM::Long->new($LONG_MAX))->val;
+    my $val = TestCase::ExchangeAPI->return_long_object_only(SPVM::Long->new($LONG_MAX))->value;
     is($val, $LONG_MAX);
   }
 
   # Numeric value to numeric object - number to SPVM::Float
   {
-    my $val = TestCase::ExchangeAPI->return_float_object_only(SPVM::Float->new($FLT_MAX))->val;
+    my $val = TestCase::ExchangeAPI->return_float_object_only(SPVM::Float->new($FLT_MAX))->value;
     is($val, $FLT_MAX);
   }
 
   # Numeric value to numeric object - number to SPVM::Double
   {
-    my $val = TestCase::ExchangeAPI->return_double_object_only(SPVM::Double->new($DBL_MAX))->val;
+    my $val = TestCase::ExchangeAPI->return_double_object_only(SPVM::Double->new($DBL_MAX))->value;
     is($val, $DBL_MAX);
   }
 }
@@ -789,7 +789,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $ret = TestCase::ExchangeAPI->any_object_array($bytes);
     
     isa_ok($ret, 'SPVM::BlessedObject::Array');
-    is_deeply([$ret->to_elems->[0]->val, $ret->to_elems->[1]->val, $ret->to_elems->[2]->val], [1, 2, 5]);
+    is_deeply([$ret->to_elems->[0]->value, $ret->to_elems->[1]->value, $ret->to_elems->[2]->value], [1, 2, 5]);
   }
 }
 
@@ -817,8 +817,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $hash = SPVM::Hash->new;
     $hash->set_int(x => 1);
     $hash->set_double(y => 2.5);
-    is($hash->get("x")->val, 1);
-    is($hash->get("y")->val, 2.5);
+    is($hash->get("x")->value, 1);
+    is($hash->get("y")->value, 2.5);
   }
 }
 

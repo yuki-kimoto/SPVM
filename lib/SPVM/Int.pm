@@ -13,7 +13,7 @@ SPVM::Int - Int object
   use SPVM::Int;
 
   my $int_object = SPVM::Int->new(5);
-  my $int_value = $int_object->val;
+  my $int_value = $int_object->value;
 
 =head1 DESCRIPTION
 
@@ -31,8 +31,8 @@ Create a new L<SPVM::Int> object with specific C<int> value.
 
 =head1 INSTANCE METHODS
 
-=head2 val
+=head2 value
 
-  sub val : int ($self : self)
+  sub value : int ($self : self)
 
 Get a C<int> value.

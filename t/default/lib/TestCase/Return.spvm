@@ -11,6 +11,6 @@ package TestCase::Return {
   
   sub return_implicite_convertion_stub : string () {
     my $int = SPVM::Int->new(1);
-    return $int->val;
+    return $int->value;
   }
 }

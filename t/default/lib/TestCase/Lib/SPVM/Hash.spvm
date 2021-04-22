@@ -161,7 +161,7 @@ package TestCase::Lib::SPVM::Hash {
     $hash->set("b" => undef);
     $hash->set("c" => "str");
 
-    unless (((SPVM::Int)($hash->get("a")))->val == 1) {
+    unless (((SPVM::Int)($hash->get("a")))->value == 1) {
       return 0;
     }
     unless ($hash->get("b") == undef) {
@@ -198,7 +198,7 @@ package TestCase::Lib::SPVM::Hash {
     my $hash = SPVM::Hash->new;
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
-    unless (((SPVM::Int)($hash->delete("alice")))->val == 1) {
+    unless (((SPVM::Int)($hash->delete("alice")))->value == 1) {
       return 0;
     }
     unless ($hash->exists("alice") == 0) {
@@ -226,7 +226,7 @@ package TestCase::Lib::SPVM::Hash {
     my $hash = SPVM::Hash->new;
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
-    unless (((SPVM::Int)$hash->delete("alice"))->val == 1) {
+    unless (((SPVM::Int)$hash->delete("alice"))->value == 1) {
       return 0;
     }
     unless ($hash->exists("alice") == 0) {
@@ -245,7 +245,7 @@ package TestCase::Lib::SPVM::Hash {
     unless ($hash->exists("bob") == 1) {
       return 0;
     }
-    unless (((SPVM::Int)($hash->delete("bob")))->val == 2) {
+    unless (((SPVM::Int)($hash->delete("bob")))->value == 2) {
       return 0;
     }
     unless ($hash->count == 0) {
@@ -361,7 +361,7 @@ package TestCase::Lib::SPVM::Hash {
     }
     my $copied = $hash->copy;
     for (my $i = 0; $i < 3; ++$i) {
-      unless (((SPVM::Int)$copied->get("key$i"))->val == $i) {
+      unless (((SPVM::Int)$copied->get("key$i"))->value == $i) {
         return 0;
       }
     }
@@ -395,11 +395,11 @@ package TestCase::Lib::SPVM::Hash {
       
       {
         my $foo = (SPVM::Int)$hash->get("foo");
-        unless ($foo->val == 1) {
+        unless ($foo->value == 1) {
           return 0;
         }
         my $bar = (SPVM::Long)$hash->get("bar");
-        unless ($bar->val == 3) {
+        unless ($bar->value == 3) {
           return 0;
         }
       }

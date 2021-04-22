@@ -13,7 +13,7 @@ SPVM::Float - Float object
   use SPVM::Float;
 
   my $float_object = SPVM::Float->new(0.25f);
-  my $float_value = $float_object->val;
+  my $float_value = $float_object->value;
 
 =head1 DESCRIPTION
 
@@ -31,8 +31,8 @@ Create a new L<SPVM::Float> object with specific C<float> value.
 
 =head1 INSTANCE METHODS
 
-=head2 val
+=head2 value
 
-  sub val : float ($self : self)
+  sub value : float ($self : self)
 
 Get a C<float> value.

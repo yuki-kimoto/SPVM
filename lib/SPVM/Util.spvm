@@ -224,7 +224,7 @@ package SPVM::Util : precompile {
         my $specifier_char = $format->[$index];
         if ($specifier_char == 'c') {
           ++$index;
-          my $arg = ((SPVM::Byte)$args->[$arg_count])->val;
+          my $arg = ((SPVM::Byte)$args->[$arg_count])->value;
 
           if ($left_justified) {
             $buffer->push_char($arg);
@@ -265,7 +265,7 @@ package SPVM::Util : precompile {
         }
         elsif ($specifier_char == 'd') {
           ++$index;
-          my $arg = ((SPVM::Int)$args->[$arg_count])->val;
+          my $arg = ((SPVM::Int)$args->[$arg_count])->value;
           my $digits = new byte[11]; # -2147483648 has 11 digits
           my $digit_count = 0;
           while ($arg > 0) {
@@ -325,7 +325,7 @@ package SPVM::Util : precompile {
         }
         elsif ($specifier_char == 'u') {
           ++$index;
-          my $arg = ((SPVM::Int)$args->[$arg_count])->val & 0xFFFFFFFFL;
+          my $arg = ((SPVM::Int)$args->[$arg_count])->value & 0xFFFFFFFFL;
           my $digits = new byte[10]; # 4294967295 has 10 digits
           my $digit_count = 0;
           while ($arg > 0) {
@@ -392,7 +392,7 @@ package SPVM::Util : precompile {
           my $is_signed_format = $format->[$index + 1] == 'd';
           $index += 2;
 
-          my $arg = ((SPVM::Long)$args->[$arg_count])->val;
+          my $arg = ((SPVM::Long)$args->[$arg_count])->value;
           my $digits = new byte[20]; # -9223372036854775808[18446744073709551615] has 20 digits
           my $digit_count = 0;
 
@@ -460,13 +460,13 @@ package SPVM::Util : precompile {
           ++$index;
           my $arg = (SPVM::Double)$args->[$arg_count];
           my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
-          my $str = _snsprintf_double($specifier_str, $arg->val);
+          my $str = _snsprintf_double($specifier_str, $arg->value);
           $buffer->push($str);
         }
         elsif ($specifier_char == 'U') {
           ++$index;
           my $arg = (SPVM::Int)$args->[$arg_count];
-          my $utf8 = uchar_to_utf8($arg->val);
+          my $utf8 = uchar_to_utf8($arg->value);
           $buffer->push($utf8);
         }
         else {

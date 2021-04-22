@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::Float {
   
   sub basic : int () {
     my $oval = SPVM::Float->new(FLT_MIN());
-    my $value1 = $oval->val;
+    my $value1 = $oval->value;
     
     unless ($value1 == FLT_MIN()) {
       return 0;

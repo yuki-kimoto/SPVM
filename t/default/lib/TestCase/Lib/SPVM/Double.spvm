@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::Double {
   
   sub basic : int () {
     my $oval = SPVM::Double->new(DBL_MIN());
-    my $value1 = $oval->val;
+    my $value1 = $oval->value;
     
     unless ($value1 == DBL_MIN()) {
       return 0;

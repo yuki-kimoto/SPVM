@@ -13,7 +13,7 @@ SPVM::Long - Long object
   use SPVM::Long;
   
   my $long_object = SPVM::Long->new(5L);
-  my $long_value = $long_object->val;
+  my $long_value = $long_object->value;
 
 =head1 DESCRIPTION
 
@@ -31,8 +31,8 @@ Create a new L<SPVM::Long> object with specific C<long> value.
 
 =head1 INSTANCE METHODS
 
-=head2 val
+=head2 value
 
-  sub val : long ($self : self)
+  sub value : long ($self : self)
 
 Get a C<long> value.
