@@ -353,6 +353,10 @@ examples/native/zlib/zlib.pl
 examples/spvmcc/basic/MyApp.spvm
 examples/spvmcc/basic/README.txt
 lib/SPVM.pm
+lib/SPVM/ArrayUtil.c
+lib/SPVM/ArrayUtil.config
+lib/SPVM/ArrayUtil.pm
+lib/SPVM/ArrayUtil.spvm
 lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
 lib/SPVM/BlessedObject/Package.pm
@@ -468,6 +472,7 @@ lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
+lib/SPVM/Document/Modules.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
@@ -792,6 +797,7 @@ t/default/lib/TestCase/Increment.spvm
 t/default/lib/TestCase/Inline.spvm
 t/default/lib/TestCase/Isa.spvm
 t/default/lib/TestCase/LexicalVar.spvm
+t/default/lib/TestCase/Lib/SPVM/ArrayUtil.spvm
 t/default/lib/TestCase/Lib/SPVM/Byte.spvm
 t/default/lib/TestCase/Lib/SPVM/ByteList.spvm
 t/default/lib/TestCase/Lib/SPVM/Double.spvm
@@ -913,6 +919,7 @@ t/default/remainder.t
 t/default/return.t
 t/default/seqop.t
 t/default/special_assign.t
+t/default/SPVM_ArrayUtil.t
 t/default/SPVM_Build_Util.t
 t/default/SPVM_Byte.t
 t/default/SPVM_ByteList.t
