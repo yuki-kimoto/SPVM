@@ -1,6 +1,24 @@
 package SPVM::Math {
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
+  
+  sub abs : int ($x : int) {
+    if ($x < 0) {
+      return -$x;
+    }
+    else {
+      return $x;
+    }
+  }
+
+  sub labs : long ($x : long) {
+    if ($x < 0) {
+      return -$x;
+    }
+    else {
+      return $x;
+    }
+  }
 
   sub E : double () { return 2.7182818284590452354; }
   sub PI : double () { return 3.14159265358979323846; }

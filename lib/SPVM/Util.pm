@@ -1016,14 +1016,3 @@ Same as "index" function except that the search is the last of the string.
 
 If the string contains the sub string, return 1. If not, return 0.
 
-=head2 abs
-
-  sub abs : int ($x : int);
-
-Get the abusolute value of a int value.
-
-=head2 labs
-
-  sub labs : long ($x : long);
-
-Get the abusolute value for a long value.

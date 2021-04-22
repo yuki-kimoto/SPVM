@@ -108,11 +108,17 @@ ok(TestCase::Lib::SPVM::Math->test_scalbnf);
 ok(TestCase::Lib::SPVM::Math->test_scalbln);
 ok(TestCase::Lib::SPVM::Math->test_scalblnf);
 
-# Power function and absolute value functions
+#absolute value functions
+{
+  ok(TestCase::Lib::SPVM::Math->test_abs);
+  ok(TestCase::Lib::SPVM::Math->test_labs);
+  ok(TestCase::Lib::SPVM::Math->test_fabs);
+  ok(TestCase::Lib::SPVM::Math->test_fabsf);
+}
+
+# Power function
 ok(TestCase::Lib::SPVM::Math->test_cbrt);
 ok(TestCase::Lib::SPVM::Math->test_cbrtf);
-ok(TestCase::Lib::SPVM::Math->test_fabs);
-ok(TestCase::Lib::SPVM::Math->test_fabsf);
 ok(TestCase::Lib::SPVM::Math->test_hypot);
 ok(TestCase::Lib::SPVM::Math->test_hypotf);
 ok(TestCase::Lib::SPVM::Math->test_pow);

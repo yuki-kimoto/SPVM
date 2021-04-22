@@ -674,26 +674,6 @@ int32_t SPNATIVE__SPVM__Util__getenv(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Util__abs(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  int32_t value = (int32_t)labs(stack[0].ival);
-  
-  stack[0].ival = value;
-  
-  return 0;
-}
-
-int32_t SPNATIVE__SPVM__Util__labs(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  
-  int64_t value = (int64_t)labs(stack[0].lval);
-  
-  stack[0].lval = value;
-  
-  return 0;
-}
-
 int32_t SPNATIVE__SPVM__Util__new_object_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* oarray = stack[0].oval;

@@ -120,6 +120,18 @@ NAN constant value in C99 math.h.
 
 NAN constant value for float type in C99 math.h.
 
+=head2 abs
+
+  sub abs : int ($x : int);
+
+Get the abusolute value of a int value.
+
+=head2 labs
+
+  sub labs : long ($x : long);
+
+Get the abusolute value of a long value.
+
 =head2 acos
 
   sub acos : double ($x : double)

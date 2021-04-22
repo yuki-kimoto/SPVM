@@ -1444,9 +1444,6 @@ package SPVM::Util : precompile {
     }
   }
 
-  native sub abs : int ($x : int);
-  native sub labs : long ($x : long);
-
   sub substr : string ($string : string, $offset : int, $length : int) {
 
     if ($string == undef) {

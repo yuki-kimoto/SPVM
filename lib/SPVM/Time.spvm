@@ -1,7 +1,6 @@
 package SPVM::Time {
   use SPVM::Time::Info;
-  use SPVM::Math (pow);
-  use SPVM::Util (labs);
+  use SPVM::Math (pow, labs);
   
   native sub time : long ();
   native sub localtime : SPVM::Time::Info ($time : long);

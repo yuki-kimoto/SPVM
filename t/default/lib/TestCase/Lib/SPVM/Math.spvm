@@ -1472,6 +1472,65 @@ package TestCase::Lib::SPVM::Math {
     return 1;
   }
 
+  sub test_abs : int () {
+    # Positive value
+    {
+      my $num      = 2147483647;
+      my $abs      = SPVM::Math->abs($num);
+      unless ($abs == 2147483647) {
+        return 0;
+      }
+    }
+
+    # Negative value
+    {
+      my $num      = -2147483647;
+      my $abs      = SPVM::Math->abs($num);
+      unless ($abs == 2147483647) {
+        return 0;
+      }
+    }
+    # 0
+    {
+      my $num      = 0;
+      my $abs      = SPVM::Math->abs($num);
+      unless ($abs == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  sub test_labs : int () {
+    # Positive value
+    {
+      my $num      = 9223372036854775807L;
+      my $labs      = SPVM::Math->labs($num);
+      unless ($labs == 9223372036854775807L) {
+        return 0;
+      }
+    }
+
+    # Negative value
+    {
+      my $num      = -9223372036854775807L;
+      my $labs      = SPVM::Math->labs($num);
+      unless ($labs == 9223372036854775807L) {
+        return 0;
+      }
+    }
+    # 0
+    {
+      my $num      = 0;
+      my $labs      = SPVM::Math->labs($num);
+      unless ($labs == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub test_fabs : int () {
     my $eps      = 0.000000001;
     my $got      = SPVM::Math->fabs(-PI());

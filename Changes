@@ -8,6 +8,8 @@
   - move SPVM::Util->PI to SPVM::Math->PI
   - move SPVM::Util->E to SPVM::Math->E
   - remove SPVM::Math->pi
+  - move SPVM::Util->abs to SPVM::Math->abs
+  - move SPVM::Util->labs to SPVM::Math->labs
 
 0.0944 2021-04-21
   - Logical Operator become non-expression.
