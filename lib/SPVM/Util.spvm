@@ -804,7 +804,12 @@ package SPVM::Util : precompile {
 
   native sub FLT_MAX : float ();
   native sub FLT_MIN : float();
-
+  
+  # The argument type of following charcter checking functions are int, not byte. This is intentinal.
+  # ASCII code is represented by byte type.
+  # On the other hand, Unicode Code Point can be represented by int tyep.
+  # Unicode Code Point is upper compatibility of ASCII code.
+  # So the following character check functions receive int type argument.
   sub isalnum : int ($char : int) {
 
     if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
