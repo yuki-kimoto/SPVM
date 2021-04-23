@@ -453,7 +453,7 @@ package SPVM::StringUtil : precompile {
     }
     else {
       if ($string->[$length - 1] == '\n') {
-        $new_string = (string)SPVM::ArrayUtil->slice_byte((byte[])$string, 0, $length - 1);
+        $new_string = (string)SPVM::ArrayUtil->copy_array_range_byte((byte[])$string, 0, $length - 1);
       }
       else {
         $new_string = copy_string($string);
@@ -475,7 +475,7 @@ package SPVM::StringUtil : precompile {
     }
     else {
       if ($string->[$length - 2] == '\r' && $string->[$length - 1] == '\n') {
-        $new_string = (string)SPVM::ArrayUtil->slice_byte((byte[])$string, 0, $length - 2);
+        $new_string = (string)SPVM::ArrayUtil->copy_array_range_byte((byte[])$string, 0, $length - 2);
       }
       else {
         $new_string = copy_string($string);

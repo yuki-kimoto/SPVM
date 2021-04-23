@@ -8,7 +8,7 @@ package SPVM::Regex : precompile {
   use SPVM::Regex::Pattern;
   use SPVM::StringUtil (is_perl_word, isdigit, strtoi, substr, copy_string);
   use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
-  use SPVM::ArrayUtil (slice_byte);
+  use SPVM::ArrayUtil (copy_array_range_byte);
   has patterns : SPVM::List;
   has string_start : int;
   has string_end : int;
@@ -650,7 +650,7 @@ package SPVM::Regex : precompile {
       
       my $rest_length = $tarlength - $match_end;
       
-      my $before_result = (string)slice_byte((byte[])$target, $target_base_index, $match_start - $target_base_index);
+      my $before_result = (string)copy_array_range_byte((byte[])$target, $target_base_index, $match_start - $target_base_index);
       $result_buffer->push($before_result);
       $result_buffer->push($replace);
       

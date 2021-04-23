@@ -1,3 +1,22 @@
+0.0947 2021-04-23
+  - array equals methods return 1 if both arrays is undef. return 0 if only one one arrays is undef.
+    equals_byte_array
+    equals_short_array
+    equals_int_array
+    equals_long_array
+    equals_float_array
+    equals_double_array
+    equals_string_array
+    equals_object_array
+  - rename SPVM::ArrayUtil->slice_byte to SPVM::ArrayUtil->copy_array_range_byte
+  - rename SPVM::ArrayUtil->slice_short to SPVM::ArrayUtil->copy_array_range_short
+  - rename SPVM::ArrayUtil->slice_int to SPVM::ArrayUtil->copy_array_range_int
+  - rename SPVM::ArrayUtil->slice_long to SPVM::ArrayUtil->copy_array_range_long
+  - rename SPVM::ArrayUtil->slice_float to SPVM::ArrayUtil->copy_array_range_float
+  - rename SPVM::ArrayUtil->slice_double to SPVM::ArrayUtil->copy_array_range_double
+  - rename SPVM::ArrayUtil->slice_string to SPVM::ArrayUtil->copy_array_range_string
+  - rename SPVM::ArrayUtil->slice_object to SPVM::ArrayUtil->copy_array_range_object
+
 0.0946 2021-04-23
   - Create SPVM::ArrayUtil module
   - move the following SPVM::Util methods to SPVM::ArrayUtil

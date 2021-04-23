@@ -57,35 +57,35 @@ use SPVM 'SPVM::ArrayUtil';
 
 # new_array_proto
 {
-  # slice_byte
+  # copy_array_range_byte
   ok(TestCase::Lib::SPVM::ArrayUtil->test_new_array_proto);
 }
 
 # slice
 {
-  # slice_byte
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_byte);
+  # copy_array_range_byte
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_byte);
 
-  # slice_short
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_short);
+  # copy_array_range_short
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_short);
 
-  # slice_int
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_int);
+  # copy_array_range_int
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_int);
 
-  # slice_long
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_long);
+  # copy_array_range_long
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_long);
 
-  # slice_float
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_float);
+  # copy_array_range_float
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_float);
 
-  # slice_double
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_double);
+  # copy_array_range_double
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_double);
 
-  # slice_double
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_string);
+  # copy_array_range_double
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_string);
 
-  # slice_double
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_object);
+  # copy_array_range_double
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_range_object);
 }
 
 # dump array

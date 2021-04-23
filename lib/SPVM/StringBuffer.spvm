@@ -1,6 +1,6 @@
 package SPVM::StringBuffer : precompile {
   use SPVM::Hash;
-  use SPVM::ArrayUtil (slice_byte);
+  use SPVM::ArrayUtil (copy_array_range_byte);
 
   has value : byte[];
   has length : ro int;
@@ -75,7 +75,7 @@ package SPVM::StringBuffer : precompile {
   }
 
   sub to_string : string ($self : self) {
-    return (string)(slice_byte($self->{value}, 0, $self->{length}));
+    return (string)(copy_array_range_byte($self->{value}, 0, $self->{length}));
   }
 
   sub substr : string ($self : self, $offset : int, $length : int) {
