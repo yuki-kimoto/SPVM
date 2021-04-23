@@ -1,7 +1,7 @@
 package TestCase::Lib::SPVM::List {
   use SPVM::Int;
   use SPVM::List;
-  use SPVM::ArrayUtil (equals_object_array);
+  use SPVM::ArrayUtil (equals_array_object);
   use SPVM::EqualityChecker::SameObject;
 
   sub insert : int () {
@@ -14,7 +14,7 @@ package TestCase::Lib::SPVM::List {
       
       my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
-      unless (equals_object_array($list->to_array, [$x4, $x1, $x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x4, $x1, $x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -28,7 +28,7 @@ package TestCase::Lib::SPVM::List {
       
       my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(2 => $x4);
-      unless (equals_object_array($list->to_array, [$x1, $x2, $x4, $x3], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x2, $x4, $x3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -42,7 +42,7 @@ package TestCase::Lib::SPVM::List {
       
       my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->insert(3 => $x4);
-      unless (equals_object_array($list->to_array, [$x1, $x2, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x2, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -91,7 +91,7 @@ package TestCase::Lib::SPVM::List {
       
       my $list = SPVM::List->new([(object)$x1, $x2, $x3, $x4]);
       my $value = $list->remove(1);
-      unless (equals_object_array($list->to_array, [$x1, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
       unless ($value == $x2) {
@@ -108,7 +108,7 @@ package TestCase::Lib::SPVM::List {
       
       my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->remove(2);
-      unless (equals_object_array($list->to_array, [$x1, $x2], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x2], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -122,7 +122,7 @@ package TestCase::Lib::SPVM::List {
 
       my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
       $list->remove(0);
-      unless (equals_object_array($list->to_array, [$x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
     }

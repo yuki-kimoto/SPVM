@@ -42,12 +42,12 @@ use SPVM 'SPVM::ArrayUtil';
   ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_object_array);
 }
 
-# copy_object_array
+# copy_array_object
 {
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_object_array);
 }
 
-# equals_object_array
+# equals_array_object
 {
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_object_array);
 }
@@ -108,49 +108,49 @@ use SPVM 'SPVM::ArrayUtil';
 
 # equals
 {
-  # equals_byte_array
+  # equals_array_byte
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_byte_array);
 
-  # equals_short_array
+  # equals_array_short
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_short_array);
 
-  # equals_int_array
+  # equals_array_int
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_int_array);
 
   # equeals_long_array
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_long_array);
 
-  # equals_float_array
+  # equals_array_float
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_float_array);
 
-  # equals_double_array
+  # equals_array_double
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_double_array);
 
-  # equals_string_array
+  # equals_array_string
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_string_array);
 }
 
 # Copy
 {
-  # copy_byte_array
+  # copy_array_byte
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_byte_array);
 
-  # copy_short_array
+  # copy_array_short
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_short_array);
 
-  # copy_int_array
+  # copy_array_int
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_int_array);
 
-  # copy_long_array
+  # copy_array_long
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_long_array);
 
-  # copy_float_array
+  # copy_array_float
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_float_array);
 
-  # copy_double_array
+  # copy_array_double
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_double_array);
 
-  # copy_string_array
+  # copy_array_string
   ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_string_array);
 }
 

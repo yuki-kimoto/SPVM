@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::StringList {
   use SPVM::StringList;
-  use SPVM::ArrayUtil (equals_string_array);
+  use SPVM::ArrayUtil (equals_array_string);
 
   sub new : int () {
     {
@@ -64,7 +64,7 @@ package TestCase::Lib::SPVM::StringList {
     {
       my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(0 => "4");
-      unless (equals_string_array($list->to_array, [(string)"4", "1", "2", "3"])) {
+      unless (equals_array_string($list->to_array, [(string)"4", "1", "2", "3"])) {
         return 0;
       }
     }
@@ -73,7 +73,7 @@ package TestCase::Lib::SPVM::StringList {
     {
       my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(2 => "4");
-      unless (equals_string_array($list->to_array, [(string)"1", "2", "4", "3"])) {
+      unless (equals_array_string($list->to_array, [(string)"1", "2", "4", "3"])) {
         return 0;
       }
     }
@@ -82,7 +82,7 @@ package TestCase::Lib::SPVM::StringList {
     {
       my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->insert(3 => "4");
-      unless (equals_string_array($list->to_array, [(string)"1", "2", "3", "4"])) {
+      unless (equals_array_string($list->to_array, [(string)"1", "2", "3", "4"])) {
         return 0;
       }
     }
@@ -121,7 +121,7 @@ package TestCase::Lib::SPVM::StringList {
     {
       my $list = SPVM::StringList->new([(string)"1", "2", "3", "4"]);
       my $value = $list->remove(1);
-      unless (equals_string_array($list->to_array, [(string)"1", "3", "4"])) {
+      unless (equals_array_string($list->to_array, [(string)"1", "3", "4"])) {
         return 0;
       }
       unless ($value eq "2") {
@@ -133,7 +133,7 @@ package TestCase::Lib::SPVM::StringList {
     {
       my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->remove(2);
-      unless (equals_string_array($list->to_array, [(string)"1", "2"])) {
+      unless (equals_array_string($list->to_array, [(string)"1", "2"])) {
         return 0;
       }
     }
@@ -142,7 +142,7 @@ package TestCase::Lib::SPVM::StringList {
     {
       my $list = SPVM::StringList->new([(string)"1", "2", "3"]);
       $list->remove(0);
-      unless (equals_string_array($list->to_array, [(string)"2", "3"])) {
+      unless (equals_array_string($list->to_array, [(string)"2", "3"])) {
         return 0;
       }
     }
