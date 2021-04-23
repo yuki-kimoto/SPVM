@@ -90,6 +90,14 @@
     and these string comparison operators don't throw a exception.
   - add SPVM::ArrayUtil->dump_array_string
   - add SPVM::ArrayUtil->slice_array_string
+  - SPVM::ArrayUtil->copy_byte_array return undef if the argument is undef.
+  - SPVM::ArrayUtil->copy_short_array return undef if the argument is undef.
+  - SPVM::ArrayUtil->copy_int_array return undef if the argument is undef.
+  - SPVM::ArrayUtil->copy_long_array return undef if the argument is undef.
+  - SPVM::ArrayUtil->copy_float_array return undef if the argument is undef.
+  - SPVM::ArrayUtil->copy_double_array return undef if the argument is undef.
+  - SPVM::ArrayUtil->copy_string_array return undef if the argument is undef.
+  - SPVM::ArrayUtil->copy_object_array return undef if the argument is undef.
 0.0945 2021-04-22
   - rename SPVM::Byte->val to SPVM::Byte->value
   - rename SPVM::Short->val to SPVM::Short->value

@@ -53,6 +53,300 @@ package TestCase::Lib::SPVM::ArrayUtil {
     new_array_proto,
   );
 
+  sub test_copy_array_byte : int () {
+    # Copy array
+    {
+      my $nums = [(byte)1, 2, SPVM::NumberUtil->INT8_MIN()];
+      my $nums_out = copy_array_byte($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == SPVM::NumberUtil->INT8_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+    
+    # Array is undef
+    {
+      my $output = copy_array_byte(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_short : int () {
+    # Copy array
+    {
+      my $nums = [(short)1, 2, SPVM::NumberUtil->INT16_MIN()];
+      my $nums_out = copy_array_short($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == SPVM::NumberUtil->INT16_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+    
+    # Array is undef
+    {
+      my $output = copy_array_short(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_int : int () {
+    # Copy array
+    {
+      my $nums = [(int)1, 2, SPVM::NumberUtil->INT32_MIN()];
+      my $nums_out = copy_array_int($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == SPVM::NumberUtil->INT32_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_int(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_long : int () {
+    # Copy array
+    {
+      my $nums = [(long)1, 2, SPVM::NumberUtil->INT64_MIN()];
+      my $nums_out = copy_array_long($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == SPVM::NumberUtil->INT64_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_long(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_float : int () {
+    # Copy array
+    {
+      my $nums = [(float)0.5f, 0.25f, SPVM::NumberUtil->FLT_MIN()];
+      my $nums_out = copy_array_float($nums);
+
+      unless ($nums->[0] == 0.5) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 0.25) {
+        return 0;
+      }
+
+      unless ($nums->[2] == SPVM::NumberUtil->FLT_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_float(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_double : int () {
+    # Copy array
+    {
+      my $nums = [(double)0.5, 0.25, SPVM::NumberUtil->DBL_MIN()];
+      my $nums_out = copy_array_double($nums);
+
+      unless ($nums->[0] == 0.5) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 0.25) {
+        return 0;
+      }
+
+      unless ($nums->[2] == SPVM::NumberUtil->DBL_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_double(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_string : int () {
+    # Copy array
+    {
+      my $strings = ["abc", "def", "hij"];
+      my $strings_out = copy_array_string($strings);
+
+      unless ($strings->[0] eq $strings_out->[0]) {
+        return 0;
+      }
+      unless ($strings->[1] eq $strings_out->[1]) {
+        return 0;
+      }
+      unless ($strings->[2] eq $strings_out->[2]) {
+        return 0;
+      }
+
+      unless ($strings->[0] != $strings_out->[0]) {
+        return 0;
+      }
+
+      unless ($strings->[1] != $strings_out->[1]) {
+        return 0;
+      }
+
+      unless ($strings->[2] != $strings_out->[2]) {
+        return 0;
+      }
+
+      unless (@$strings_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_string(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_object : int () {
+    # Copy array
+    {
+      my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(SPVM::NumberUtil->INT32_MIN())];
+      my $objects_out = copy_array_object($objects, sub : object ($self : self, $obj : object) {
+        my $int_obj = (SPVM::Int)$obj;
+        my $new_int_obj = SPVM::Int->new($int_obj->value);
+        return $new_int_obj;
+      });
+
+      if ($objects->[0] == $objects_out->[0]) {
+        return 0;
+      }
+
+      if ($objects->[1] == $objects_out->[1]) {
+        return 0;
+      }
+
+      if ($objects->[2] == $objects_out->[2]) {
+        return 0;
+      }
+
+      unless ((int)$objects_out->[0] == 1) {
+        return 0;
+      }
+
+      unless ((int)$objects_out->[1] == 2) {
+        return 0;
+      }
+
+      unless ((int)$objects_out->[2] == SPVM::NumberUtil->INT32_MIN()) {
+        return 0;
+      }
+
+      unless (@$objects_out == 3) {
+        return 0;
+      }
+
+      unless ($objects != $objects_out) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
   sub test_equals_array_object : int () {
     my $minimal1 = TestCase::Minimal->new;
     my $minimal2 = TestCase::Minimal->new;
@@ -99,49 +393,6 @@ package TestCase::Lib::SPVM::ArrayUtil {
       unless ($is_equals) {
         return 0;
       }
-    }
-
-    return 1;
-  }
-
-  sub test_copy_array_object : int () {
-    my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(SPVM::NumberUtil->INT32_MIN())];
-    my $objects_out = copy_array_object($objects, sub : object ($self : self, $obj : object) {
-      my $int_obj = (SPVM::Int)$obj;
-      my $new_int_obj = SPVM::Int->new($int_obj->value);
-      return $new_int_obj;
-    });
-
-    if ($objects->[0] == $objects_out->[0]) {
-      return 0;
-    }
-
-    if ($objects->[1] == $objects_out->[1]) {
-      return 0;
-    }
-
-    if ($objects->[2] == $objects_out->[2]) {
-      return 0;
-    }
-
-    unless ((int)$objects_out->[0] == 1) {
-      return 0;
-    }
-
-    unless ((int)$objects_out->[1] == 2) {
-      return 0;
-    }
-
-    unless ((int)$objects_out->[2] == SPVM::NumberUtil->INT32_MIN()) {
-      return 0;
-    }
-
-    unless (@$objects_out == 3) {
-      return 0;
-    }
-
-    unless ($objects != $objects_out) {
-      return 0;
     }
 
     return 1;
@@ -883,176 +1134,6 @@ package TestCase::Lib::SPVM::ArrayUtil {
       if ($is_equals) {
         return 0;
       }
-    }
-
-    return 1;
-  }
-  sub test_copy_array_byte : int () {
-    my $nums = [(byte)1, 2, SPVM::NumberUtil->INT8_MIN()];
-    my $nums_out = copy_array_byte($nums);
-
-    unless ($nums->[0] == 1) {
-      return 0;
-    }
-
-    unless ($nums->[1] == 2) {
-      return 0;
-    }
-
-    unless ($nums->[2] == SPVM::NumberUtil->INT8_MIN()) {
-      return 0;
-    }
-
-    unless (@$nums_out == 3) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_copy_array_short : int () {
-    my $nums = [(short)1, 2, SPVM::NumberUtil->INT16_MIN()];
-    my $nums_out = copy_array_short($nums);
-
-    unless ($nums->[0] == 1) {
-      return 0;
-    }
-
-    unless ($nums->[1] == 2) {
-      return 0;
-    }
-
-    unless ($nums->[2] == SPVM::NumberUtil->INT16_MIN()) {
-      return 0;
-    }
-
-    unless (@$nums_out == 3) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_copy_array_int : int () {
-    my $nums = [(int)1, 2, SPVM::NumberUtil->INT32_MIN()];
-    my $nums_out = copy_array_int($nums);
-
-    unless ($nums->[0] == 1) {
-      return 0;
-    }
-
-    unless ($nums->[1] == 2) {
-      return 0;
-    }
-
-    unless ($nums->[2] == SPVM::NumberUtil->INT32_MIN()) {
-      return 0;
-    }
-
-    unless (@$nums_out == 3) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_copy_array_long : int () {
-    my $nums = [(long)1, 2, SPVM::NumberUtil->INT64_MIN()];
-    my $nums_out = copy_array_long($nums);
-
-    unless ($nums->[0] == 1) {
-      return 0;
-    }
-
-    unless ($nums->[1] == 2) {
-      return 0;
-    }
-
-    unless ($nums->[2] == SPVM::NumberUtil->INT64_MIN()) {
-      return 0;
-    }
-
-    unless (@$nums_out == 3) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_copy_array_float : int () {
-    my $nums = [(float)0.5f, 0.25f, SPVM::NumberUtil->FLT_MIN()];
-    my $nums_out = copy_array_float($nums);
-
-    unless ($nums->[0] == 0.5) {
-      return 0;
-    }
-
-    unless ($nums->[1] == 0.25) {
-      return 0;
-    }
-
-    unless ($nums->[2] == SPVM::NumberUtil->FLT_MIN()) {
-      return 0;
-    }
-
-    unless (@$nums_out == 3) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_copy_array_double : int () {
-    my $nums = [(double)0.5, 0.25, SPVM::NumberUtil->DBL_MIN()];
-    my $nums_out = copy_array_double($nums);
-
-    unless ($nums->[0] == 0.5) {
-      return 0;
-    }
-
-    unless ($nums->[1] == 0.25) {
-      return 0;
-    }
-
-    unless ($nums->[2] == SPVM::NumberUtil->DBL_MIN()) {
-      return 0;
-    }
-
-    unless (@$nums_out == 3) {
-      return 0;
-    }
-
-    return 1;
-  }
-
-  sub test_copy_array_string : int () {
-    my $strings = ["abc", "def", "hij"];
-    my $strings_out = copy_array_string($strings);
-
-    unless ($strings->[0] eq $strings_out->[0]) {
-      return 0;
-    }
-    unless ($strings->[1] eq $strings_out->[1]) {
-      return 0;
-    }
-    unless ($strings->[2] eq $strings_out->[2]) {
-      return 0;
-    }
-
-    unless ($strings->[0] != $strings_out->[0]) {
-      return 0;
-    }
-
-    unless ($strings->[1] != $strings_out->[1]) {
-      return 0;
-    }
-
-    unless ($strings->[2] != $strings_out->[2]) {
-      return 0;
-    }
-
-    unless (@$strings_out == 3) {
-      return 0;
     }
 
     return 1;

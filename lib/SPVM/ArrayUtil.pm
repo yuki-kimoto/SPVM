@@ -121,7 +121,7 @@ Array Utilities.
 
 Copy a byte array.
 
-If the array is undefined, a exception occurs.
+If the array is undef, return undef.
 
 =head2 copy_array_short
 
@@ -129,7 +129,7 @@ If the array is undefined, a exception occurs.
 
 Copy a short array.
 
-If the array is undefined, a exception occurs.
+If the array is undef, return undef.
   
 =head2 copy_array_int
 
@@ -137,7 +137,7 @@ If the array is undefined, a exception occurs.
 
 Copy a int array.
 
-If the array is undefined, a exception occurs.
+If the array is undef, return undef.
   
 =head2 copy_array_long
 
@@ -145,7 +145,7 @@ If the array is undefined, a exception occurs.
 
 Copy a long array.
 
-If the array is undefined, a exception occurs.
+If the array is undef, return undef.
 
 =head2 copy_array_float
 
@@ -153,7 +153,7 @@ If the array is undefined, a exception occurs.
 
 Copy a float array.
 
-If the array is undefined, a exception occurs.
+If the array is undef, return undef.
 
 =head2 copy_array_double
 
@@ -161,7 +161,7 @@ If the array is undefined, a exception occurs.
 
 Copy a double array.
 
-If the array is undefined, a exception occurs.
+If the array is undef, return undef.
 
 =head2 copy_array_string
 
@@ -169,13 +169,15 @@ If the array is undefined, a exception occurs.
 
 Copy a string array.
 
-If the array is undefined, a exception occurs.
+If the array is undef, return undef.
 
 =head2 copy_array_object
 
   sub copy_array_object : object[] ($objects : object[], $cloner : SPVM::Cloner)
 
-Copy object array. You must specify a L<SPVM::Cloner> object to copy each element.
+Copy a object array with a L<SPVM::Cloner> callback implemetation.
+
+If the array is undef, return undef.
 
 =head2 equals_array_byte
 
@@ -183,7 +185,7 @@ Copy object array. You must specify a L<SPVM::Cloner> object to copy each elemen
 
 Check if two byte arrays equal.
 
-If at least one of the arrays is undefined, a excetpion occurs.
+If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_short
 
@@ -191,7 +193,7 @@ If at least one of the arrays is undefined, a excetpion occurs.
 
 Check if two short arrays equal.
 
-If at least one of the arrays is undefined, a excetpion occurs.
+If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_int
 
@@ -199,7 +201,7 @@ If at least one of the arrays is undefined, a excetpion occurs.
 
 Check if two int arrays equal.
 
-If at least one of the arrays is undefined, a excetpion occurs.
+If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_long
 
@@ -207,7 +209,7 @@ If at least one of the arrays is undefined, a excetpion occurs.
 
 Check if two long arrays equal.
 
-If at least one of the arrays is undefined, a excetpion occurs.
+If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_float
 
@@ -215,7 +217,7 @@ If at least one of the arrays is undefined, a excetpion occurs.
 
 Check if two float arrays equal.
 
-If at least one of the arrays is undefined, a excetpion occurs.
+If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_double
 
@@ -223,7 +225,7 @@ If at least one of the arrays is undefined, a excetpion occurs.
 
 Check if two double arrays equal.
 
-If at least one of the arrays is undefined, a excetpion occurs.
+If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_string
 
@@ -231,7 +233,7 @@ If at least one of the arrays is undefined, a excetpion occurs.
 
 Check if two string arrays equal.
 
-If at least one of the arrays is undefined, a excetpion occurs.
+If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_object
 
