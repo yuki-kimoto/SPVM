@@ -37,7 +37,7 @@ my $nan_re = qr/(nan|ind)/i;
 use SPVM 'TestCase::Lib::SPVM::ArrayUtil';
 use SPVM 'SPVM::ArrayUtil';
 
-# dump_object_array
+# dump_array_object
 {
   ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_object_array);
 }

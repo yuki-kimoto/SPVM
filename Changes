@@ -162,7 +162,17 @@
   - add SPVM::Util->UINT16_MAX
   - add SPVM::Util->UINT32_MAX
   - add SPVM::Util->UINT64_MAX
-  
+  - rename SPVM::Util->dump_byte_array to SPVM::Util->dump_array_byte
+  - rename SPVM::Util->dump_short_array to SPVM::Util->dump_array_short
+  - rename SPVM::Util->dump_int_array to SPVM::Util->dump_array_int
+  - rename SPVM::Util->dump_long_array to SPVM::Util->dump_array_long
+  - rename SPVM::Util->dump_float_array to SPVM::Util->dump_array_float
+  - rename SPVM::Util->dump_double_array to SPVM::Util->dump_array_double
+  - rename SPVM::Util->dump_unsigned_byte_array to SPVM::Util->dump_array_unsigned_byte
+  - rename SPVM::Util->dump_unsigned_short_array to SPVM::Util->dump_array_unsigned_short
+  - rename SPVM::Util->dump_unsigned_int_array to SPVM::Util->dump_array_unsigned_int
+  - rename SPVM::Util->dump_unsigned_long_array to SPVM::Util->dump_array_unsigned_long
+
 0.0943 2021-04-19
   - add <=> and cmp operator
   - add {} array init syntax

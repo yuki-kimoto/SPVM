@@ -243,17 +243,17 @@ Check if two string arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
 
-=head2 dump_byte_array
+=head2 dump_array_byte
 
-  sub dump_byte_array : string ($nums : byte[])
+  sub dump_array_byte : string ($nums : byte[])
   
 Convert the elements in the byte array to string and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
-=head2 dump_short_array
+=head2 dump_array_short
 
-  sub dump_short_array : string ($nums : short[])
+  sub dump_array_short : string ($nums : short[])
   
 Convert the elements in the short array to string and join them with "," and surround it with "[" and "]".
 
@@ -261,33 +261,33 @@ For Easy-to-read spaces and line breaks are inserted.
 
 If byte array is undef, return undef.
 
-=head2 dump_int_array
+=head2 dump_array_int
 
-  sub dump_int_array : string ($nums : int[])
+  sub dump_array_int : string ($nums : int[])
   
 Convert the elements in the int array to string and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
-=head2 dump_long_array
+=head2 dump_array_long
 
-  sub dump_long_array : string ($nums : long[])
+  sub dump_array_long : string ($nums : long[])
   
 Convert the elements in the long array to string and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
-=head2 dump_unsigned_byte_array
+=head2 dump_array_unsigned_byte
 
-  sub dump_unsigned_byte_array : string ($nums : byte[])
+  sub dump_array_unsigned_byte : string ($nums : byte[])
   
 Convert the elements in the byte array to string interpreting as an unsigned 8bit integer and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
-=head2 dump_unsigned_short_array
+=head2 dump_array_unsigned_short
 
-  sub dump_unsigned_short_array : string ($nums : short[])
+  sub dump_array_unsigned_short : string ($nums : short[])
   
 Convert the elements in the short array to string interpreting as an unsigned 16bit integer and join them with "," and surround it with "[" and "]".
 
@@ -295,33 +295,33 @@ For Easy-to-read spaces and line breaks are inserted.
 
 If byte array is undef, return undef.
 
-=head2 dump_unsigned_int_array
+=head2 dump_array_unsigned_int
 
-  sub dump_unsigned_int_array : string ($nums : int[])
+  sub dump_array_unsigned_int : string ($nums : int[])
   
 Convert the elements in the int array to string interpreting as an unsigned 32bit integer and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
-=head2 dump_unsigned_long_array
+=head2 dump_array_unsigned_long
 
-  sub dump_unsigned_long_array : string ($nums : long[])
+  sub dump_array_unsigned_long : string ($nums : long[])
   
 Convert the elements in the long array to string interpreting as an unsigned 64bit integer and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
-=head2 dump_float_array
+=head2 dump_array_float
 
-  sub dump_float_array : string ($nums : float[])
+  sub dump_array_float : string ($nums : float[])
   
 Convert the elements in the float array to string and join them with "," and surround it with "[" and "]", and return it.
 
 If byte array is undef, return undef.
 
-=head2 dump_double_array
+=head2 dump_array_double
 
-  sub dump_double_array : string ($nums : double[])
+  sub dump_array_double : string ($nums : double[])
   
 Convert the elements in the double array to string and join them with "," and surround it with "[" and "]", and return it.
 

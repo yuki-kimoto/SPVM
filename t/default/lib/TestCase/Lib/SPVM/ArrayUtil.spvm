@@ -25,12 +25,12 @@ package TestCase::Lib::SPVM::ArrayUtil {
     equals_float_array,
     equals_double_array,
     get_type_name,
-    dump_byte_array,
-    dump_short_array,
-    dump_int_array,
-    dump_long_array,
-    dump_float_array,
-    dump_double_array,
+    dump_array_byte,
+    dump_array_short,
+    dump_array_int,
+    dump_array_long,
+    dump_array_float,
+    dump_array_double,
     slice_byte,
     slice_short,
     slice_int,
@@ -224,7 +224,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)1, 2, SPVM::Util->INT8_MIN()];
 
-      my $dump = dump_byte_array($nums);
+      my $dump = dump_array_byte($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  -128\n]") {
         return 0;
@@ -233,7 +233,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = dump_byte_array(undef);
+      my $dump = dump_array_byte(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -248,7 +248,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)1, 2, SPVM::Util->INT16_MIN()];
 
-      my $dump = dump_short_array($nums);
+      my $dump = dump_array_short($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  -32768\n]") {
         return 0;
@@ -257,7 +257,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     
     # Dump undef
     {
-      my $dump = dump_short_array(undef);
+      my $dump = dump_array_short(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -272,7 +272,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)1, 2, SPVM::Util->INT32_MIN()];
 
-      my $dump = dump_int_array($nums);
+      my $dump = dump_array_int($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  -2147483648\n]") {
         return 0;
@@ -281,7 +281,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = dump_int_array(undef);
+      my $dump = dump_array_int(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -297,7 +297,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)1, 2, SPVM::Util->INT64_MIN()];
 
-      my $dump = dump_long_array($nums);
+      my $dump = dump_array_long($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  -9223372036854775808\n]") {
         return 0;
@@ -306,7 +306,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = dump_long_array(undef);
+      my $dump = dump_array_long(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -322,7 +322,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(float)1, 2, 2.45f];
 
-      my $dump = dump_float_array($nums);
+      my $dump = dump_array_float($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
         return 0;
@@ -331,7 +331,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = dump_float_array(undef);
+      my $dump = dump_array_float(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -346,7 +346,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(double)1, 2, 2.45];
 
-      my $dump = dump_double_array($nums);
+      my $dump = dump_array_double($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
         return 0;
@@ -355,7 +355,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = dump_double_array(undef);
+      my $dump = dump_array_double(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -370,7 +370,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)1, 2, -1, SPVM::Util->UINT8_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_unsigned_byte_array($nums);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_byte($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  255,\n  255\n]") {
         return 0;
@@ -379,7 +379,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_unsigned_byte_array(undef);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_byte(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -394,7 +394,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)1, 2, -1, SPVM::Util->UINT16_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_unsigned_short_array($nums);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_short($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  65535,\n  65535\n]") {
         return 0;
@@ -403,7 +403,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_unsigned_short_array(undef);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_short(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -418,7 +418,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)1, 2, -1, SPVM::Util->UINT32_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_unsigned_int_array($nums);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_int($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  4294967295,\n  4294967295\n]") {
         return 0;
@@ -427,7 +427,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_unsigned_int_array(undef);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_int(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -442,7 +442,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)1, 2, -1, SPVM::Util->UINT64_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_unsigned_long_array($nums);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_long($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n]") {
         return 0;
@@ -451,7 +451,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_unsigned_long_array(undef);
+      my $dump = SPVM::ArrayUtil->dump_array_unsigned_long(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -470,7 +470,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
         TestCase::Minimal->newp(5, 6)
       ];
 
-      my $dump = SPVM::ArrayUtil->dump_object_array($minimals, sub : string ($self : self, $obj : object) {
+      my $dump = SPVM::ArrayUtil->dump_array_object($minimals, sub : string ($self : self, $obj : object) {
         my $minimal = (TestCase::Minimal)$obj;
         my $x = $minimal->x;
         my $y = $minimal->y;
@@ -485,7 +485,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_object_array(undef, undef);
+      my $dump = SPVM::ArrayUtil->dump_array_object(undef, undef);
       
       unless ($dump == undef) {
         return 0;

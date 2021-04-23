@@ -231,7 +231,7 @@ package SPVM::ArrayUtil : precompile {
     return $is_equals;
   }
 
-  sub dump_byte_array : string ($nums : byte[]) {
+  sub dump_array_byte : string ($nums : byte[]) {
     
     if ($nums == undef) {
       return undef;
@@ -255,7 +255,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_short_array : string ($nums : short[]) {
+  sub dump_array_short : string ($nums : short[]) {
     
     if ($nums == undef) {
       return undef;
@@ -279,7 +279,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_int_array : string ($nums : int[]) {
+  sub dump_array_int : string ($nums : int[]) {
     
     if ($nums == undef) {
       return undef;
@@ -303,7 +303,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_long_array : string ($nums : long[]) {
+  sub dump_array_long : string ($nums : long[]) {
     
     if ($nums == undef) {
       return undef;
@@ -327,7 +327,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_unsigned_byte_array : string ($nums : byte[]) {
+  sub dump_array_unsigned_byte : string ($nums : byte[]) {
     
     if ($nums == undef) {
       return undef;
@@ -351,7 +351,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_unsigned_short_array : string ($nums : short[]) {
+  sub dump_array_unsigned_short : string ($nums : short[]) {
     
     if ($nums == undef) {
       return undef;
@@ -375,7 +375,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_unsigned_int_array : string ($nums : int[]) {
+  sub dump_array_unsigned_int : string ($nums : int[]) {
     
     if ($nums == undef) {
       return undef;
@@ -399,7 +399,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_unsigned_long_array : string ($nums : long[]) {
+  sub dump_array_unsigned_long : string ($nums : long[]) {
     
     if ($nums == undef) {
       return undef;
@@ -423,7 +423,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_float_array : string ($nums : float[]) {
+  sub dump_array_float : string ($nums : float[]) {
     
     if ($nums == undef) {
       return undef;
@@ -447,7 +447,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_double_array : string ($nums : double[]) {
+  sub dump_array_double : string ($nums : double[]) {
     
     if ($nums == undef) {
       return undef;
@@ -471,7 +471,7 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
-  sub dump_object_array : string ($objects : oarray, $stringer : SPVM::Stringer) {
+  sub dump_array_object : string ($objects : oarray, $stringer : SPVM::Stringer) {
     
     if ($objects == undef) {
       return undef;
