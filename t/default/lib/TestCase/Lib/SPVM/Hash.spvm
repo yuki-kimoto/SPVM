@@ -3,7 +3,7 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Hash;
   use SPVM::Comparator::Object;
   use SPVM::List;
-  use SPVM::Util;
+  use SPVM::NumberUtil;
   use SPVM::Sort;
   use SPVM::Comparator::Object;
   use SPVM::Comparator::Int;
@@ -14,39 +14,39 @@ package TestCase::Lib::SPVM::Hash {
 
     # set_byte, get_byte
     {
-      $hash->set_byte(foo => SPVM::Util->INT8_MAX());
+      $hash->set_byte(foo => SPVM::NumberUtil->INT8_MAX());
       unless ($hash->get("foo") isa SPVM::Byte) {
         return 0;
       }
       my $value = $hash->get_byte("foo");
 
-      unless ($value == SPVM::Util->INT8_MAX()) {
+      unless ($value == SPVM::NumberUtil->INT8_MAX()) {
         return 0;
       }
     }
 
     # set_short, get_short
     {
-      $hash->set_short(foo => SPVM::Util->INT16_MAX());
+      $hash->set_short(foo => SPVM::NumberUtil->INT16_MAX());
       unless ($hash->get("foo") isa SPVM::Short) {
         return 0;
       }
       my $value = $hash->get_short("foo");
 
-      unless ($value == SPVM::Util->INT16_MAX()) {
+      unless ($value == SPVM::NumberUtil->INT16_MAX()) {
         return 0;
       }
     }
 
     # set_int, get_int
     {
-      $hash->set_int(foo => SPVM::Util->INT32_MAX());
+      $hash->set_int(foo => SPVM::NumberUtil->INT32_MAX());
       unless ($hash->get("foo") isa SPVM::Int) {
         return 0;
       }
       my $value = $hash->get_int("foo");
 
-      unless ($value == SPVM::Util->INT32_MAX()) {
+      unless ($value == SPVM::NumberUtil->INT32_MAX()) {
         return 0;
       }
     }
@@ -67,39 +67,39 @@ package TestCase::Lib::SPVM::Hash {
 
     # set_long, get_long
     {
-      $hash->set_long(foo => SPVM::Util->INT64_MAX());
+      $hash->set_long(foo => SPVM::NumberUtil->INT64_MAX());
       unless ($hash->get("foo") isa SPVM::Long) {
         return 0;
       }
       my $value = $hash->get_long("foo");
 
-      unless ($value == SPVM::Util->INT64_MAX()) {
+      unless ($value == SPVM::NumberUtil->INT64_MAX()) {
         return 0;
       }
     }
 
     # set_float, get_float
     {
-      $hash->set_float(foo => SPVM::Util->FLT_MIN());
+      $hash->set_float(foo => SPVM::NumberUtil->FLT_MIN());
       unless ($hash->get("foo") isa SPVM::Float) {
         return 0;
       }
       my $value = $hash->get_float("foo");
 
-      unless ($value == SPVM::Util->FLT_MIN()) {
+      unless ($value == SPVM::NumberUtil->FLT_MIN()) {
         return 0;
       }
     }
 
     # set_double, get_double
     {
-      $hash->set_double(foo => SPVM::Util->DBL_MIN());
+      $hash->set_double(foo => SPVM::NumberUtil->DBL_MIN());
       unless ($hash->get("foo") isa SPVM::Double) {
         return 0;
       }
       my $value = $hash->get_double("foo");
 
-      unless ($value == SPVM::Util->DBL_MIN()) {
+      unless ($value == SPVM::NumberUtil->DBL_MIN()) {
         return 0;
       }
     }

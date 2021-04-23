@@ -8,6 +8,10 @@ List of SPVM Core Modules
 
 =head1 CORE MODULES
 
+=head2 SPVM::ArrayUtil
+
+L<SPVM::ArrayUtil> - 
+
 =head2 SPVM::Byte
 
 L<SPVM::Byte> - byte object
@@ -104,6 +108,10 @@ L<SPVM::IO::Stderr> -
 
 L<SPVM::IO::Stdout> - 
 
+=head2 SPVM::List
+
+L<SPVM::List> - 
+
 =head2 SPVM::Long
 
 L<SPVM::Long> - long object
@@ -116,9 +124,9 @@ L<SPVM::LongList> -
 
 L<SPVM::Math> - 
 
-=head2 SPVM::List
+=head2 SPVM::NumberUtil
 
-L<SPVM::List> - 
+L<SPVM::NumberUtil> - 
 
 =head2 SPVM::Regex
 
@@ -156,6 +164,10 @@ L<SPVM::Stringer> -
 
 L<SPVM::StringList> - 
 
+=head2 SPVM::StringUtil
+
+L<SPVM::StringUtil> - 
+
 =head2 SPVM::Time
 
 L<SPVM::Time> - 
@@ -167,7 +179,3 @@ L<SPVM::Time::Info> -
 =head2 SPVM::Unicode
 
 L<SPVM::Unicode> - 
-
-=head2 SPVM::Util
-
-L<SPVM::Util> - 

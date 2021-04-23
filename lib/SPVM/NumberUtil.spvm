@@ -1,4 +1,4 @@
-package SPVM::Util : precompile {
+package SPVM::NumberUtil : precompile {
   use SPVM::Stringer;
   use SPVM::Cloner;
   use SPVM::EqualityChecker;

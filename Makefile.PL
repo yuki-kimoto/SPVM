@@ -119,7 +119,7 @@ sub MY::postamble {
   
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Util');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::NumberUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::StringUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::ArrayUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Math');
@@ -130,7 +130,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::IO::Stderr');
     
     # Precompile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Util');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::NumberUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ArrayUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');

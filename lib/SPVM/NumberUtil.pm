@@ -1,19 +1,19 @@
-package SPVM::Util;
+package SPVM::NumberUtil;
 
 1;
 
 =head1 NAME
 
-SPVM::Util - Variouse utilities
+SPVM::NumberUtil - Variouse utilities
 
 =head1 SYNOPSYS
   
-  use SPVM::Util;
+  use SPVM::NumberUtil;
   
-  my $int8_max = SPVM::Util->INT8_MAX();
-  my $int16_max = SPVM::Util->INT16_MAX();
-  my $int32_max = SPVM::Util->INT32_MAX();
-  my $int64_max = SPVM::Util->INT64_MAX();
+  my $int8_max = SPVM::NumberUtil->INT8_MAX();
+  my $int16_max = SPVM::NumberUtil->INT16_MAX();
+  my $int32_max = SPVM::NumberUtil->INT32_MAX();
+  my $int64_max = SPVM::NumberUtil->INT64_MAX();
   
 
 =head1 DESCRIPTION
@@ -122,7 +122,7 @@ return the value of DBL_MAX macro of float.h C library.
 
   sub crand : int ();
 
-Get random number(0 to SPVM::Util->RAND_MAX). This is same as rand function of C language.
+Get random number(0 to SPVM::NumberUtil->RAND_MAX). This is same as rand function of C language.
 
 The first seed is epoch time usually. Second seed is the return value.
 

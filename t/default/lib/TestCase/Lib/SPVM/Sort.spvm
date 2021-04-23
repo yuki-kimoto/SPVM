@@ -1,6 +1,6 @@
 package TestCase::Lib::SPVM::Sort {
   use SPVM::Sort;
-  use SPVM::Util;
+  use SPVM::NumberUtil;
   use TestCase::Minimal;
   
   sub sortb : int () {
