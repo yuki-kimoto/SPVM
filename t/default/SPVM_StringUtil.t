@@ -176,9 +176,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringUtil->test_join);
 }
 
-# copy_str
+# copy_string
 {
-  # copy_str
+  # copy_string
   ok(TestCase::Lib::SPVM::StringUtil->test_copy_str);
 }
 

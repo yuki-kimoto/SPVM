@@ -63,7 +63,7 @@ SKIP: {
 
 # Copy
 {
-  # copy_str
+  # copy_string
   ok(TestCase::Lib::SPVM::Util->test_copy_str);
 }
 

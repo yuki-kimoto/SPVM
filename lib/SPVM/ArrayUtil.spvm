@@ -110,7 +110,7 @@ package SPVM::ArrayUtil : precompile {
     my $new_strings = new string[$length];
 
     for (my $i = 0; $i < $length; $i++) {
-      $new_strings->[$i] = SPVM::StringUtil->copy_str($strings->[$i]);
+      $new_strings->[$i] = SPVM::StringUtil->copy_string($strings->[$i]);
     }
 
     return $new_strings;

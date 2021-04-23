@@ -449,14 +449,14 @@ package SPVM::StringUtil : precompile {
     my $new_string : string;
     my $length = length $string;
     if ($length == 0) {
-      $new_string = copy_str($string);
+      $new_string = copy_string($string);
     }
     else {
       if ($string->[$length - 1] == '\n') {
         $new_string = (string)SPVM::ArrayUtil->slice_byte((byte[])$string, 0, $length - 1);
       }
       else {
-        $new_string = copy_str($string);
+        $new_string = copy_string($string);
       }
     }
 
@@ -471,14 +471,14 @@ package SPVM::StringUtil : precompile {
     my $new_string : string;
     my $length = length $string;
     if ($length == 0 || $length == 1) {
-      $new_string = copy_str($string);
+      $new_string = copy_string($string);
     }
     else {
       if ($string->[$length - 2] == '\r' && $string->[$length - 1] == '\n') {
         $new_string = (string)SPVM::ArrayUtil->slice_byte((byte[])$string, 0, $length - 2);
       }
       else {
-        $new_string = copy_str($string);
+        $new_string = copy_string($string);
       }
     }
 
@@ -784,8 +784,8 @@ package SPVM::StringUtil : precompile {
       return (string)$result_str;
     }
     else {
-      my $copy_str = copy_str($str);
-      return $copy_str;
+      my $copy_string = copy_string($str);
+      return $copy_string;
     }
   }
 
@@ -935,7 +935,7 @@ package SPVM::StringUtil : precompile {
     return (string)$slice;
   }
 
-  sub copy_str : string ($string : string) {
+  sub copy_string : string ($string : string) {
     my $bytes = (byte[])$string;
 
     return (string)$bytes;

@@ -23,7 +23,7 @@ SPVM::StringUtil - Variouse utilities
   # Copy a string
   {
     my $str = "abc";
-    my $str_copy = copy_str($str);
+    my $str_copy = copy_string($str);
   }
 
   # Search substr
@@ -59,9 +59,9 @@ Copy the string and remove the newline "\n" from the end of string and return it
 
 Copy the string and remove the newline "\r\n" from the end of string and return it.
 
-=head2 copy_str
+=head2 copy_string
 
-  sub copy_str : string ($string : string)
+  sub copy_string : string ($string : string)
 
 Copy a string.
 

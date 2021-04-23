@@ -40,7 +40,7 @@ package TestCase::Lib::SPVM::StringUtil {
     strtof,
     strtoi,
     strtol,
-    copy_str,
+    copy_string,
     index,
     split,
     sprintf,
@@ -1578,7 +1578,7 @@ package TestCase::Lib::SPVM::StringUtil {
 
   sub test_copy_str : int () {
     my $string = "abc";
-    my $string_out = copy_str($string);
+    my $string_out = copy_string($string);
 
     unless ($string_out eq "abc") {
       return 0;

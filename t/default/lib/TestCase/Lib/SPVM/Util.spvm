@@ -154,7 +154,7 @@ package TestCase::Lib::SPVM::Util {
 
   sub test_copy_str : int () {
     my $string = "abc";
-    my $string_out = SPVM::StringUtil->copy_str($string);
+    my $string_out = SPVM::StringUtil->copy_string($string);
 
     unless ($string_out eq "abc") {
       return 0;
