@@ -649,7 +649,7 @@ package SPVM::ArrayUtil : precompile {
 
   native sub new_array_proto : oarray ($proto_array : oarray, $length : int);
 
-  sub slice_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+  sub copy_array_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Offset $offset must be in the array range";
@@ -680,7 +680,7 @@ package SPVM::ArrayUtil : precompile {
     return $slice;
   }
 
-  sub slice_short : short[] ($nums : short[], $offset : int, $length : int) {
+  sub copy_array_range_short : short[] ($nums : short[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Offset $offset must be in the array range";
@@ -711,7 +711,7 @@ package SPVM::ArrayUtil : precompile {
     return $slice;
   }
 
-  sub slice_int : int[] ($nums : int[], $offset : int, $length : int) {
+  sub copy_array_range_int : int[] ($nums : int[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Offset $offset must be in the array range";
@@ -742,7 +742,7 @@ package SPVM::ArrayUtil : precompile {
     return $slice;
   }
 
-  sub slice_long : long[] ($nums : long[], $offset : int, $length : int) {
+  sub copy_array_range_long : long[] ($nums : long[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Offset $offset must be in the array range";
@@ -773,7 +773,7 @@ package SPVM::ArrayUtil : precompile {
     return $slice;
   }
 
-  sub slice_float : float[] ($nums : float[], $offset : int, $length : int) {
+  sub copy_array_range_float : float[] ($nums : float[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Offset $offset must be in the array range";
@@ -804,7 +804,7 @@ package SPVM::ArrayUtil : precompile {
     return $slice;
   }
 
-  sub slice_double : double[] ($nums : double[], $offset : int, $length : int) {
+  sub copy_array_range_double : double[] ($nums : double[], $offset : int, $length : int) {
 
     if ($nums == undef) {
       die "Offset $offset must be in the array range";
@@ -835,7 +835,7 @@ package SPVM::ArrayUtil : precompile {
     return $slice;
   }
 
-  sub slice_string : string[] ($strings : string[], $offset : int, $length : int) {
+  sub copy_array_range_string : string[] ($strings : string[], $offset : int, $length : int) {
 
     if ($strings == undef) {
       die "Offset $offset must be in the array range";
@@ -866,7 +866,7 @@ package SPVM::ArrayUtil : precompile {
     return $slice;
   }
 
-  sub slice_object : oarray ($objects : oarray, $offset : int, $length : int) {
+  sub copy_array_range_object : oarray ($objects : oarray, $offset : int, $length : int) {
 
     if ($objects == undef) {
       die "Offset $offset must be in the array range";

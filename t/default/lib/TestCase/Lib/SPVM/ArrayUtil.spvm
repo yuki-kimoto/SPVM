@@ -31,13 +31,13 @@ package TestCase::Lib::SPVM::ArrayUtil {
     dump_array_long,
     dump_array_float,
     dump_array_double,
-    slice_byte,
-    slice_short,
-    slice_int,
-    slice_long,
-    slice_float,
-    slice_double,
-    slice_object,
+    copy_array_range_byte,
+    copy_array_range_short,
+    copy_array_range_int,
+    copy_array_range_long,
+    copy_array_range_float,
+    copy_array_range_double,
+    copy_array_range_object,
     memcpy_byte,
     memcpy_short,
     memcpy_int,
@@ -1128,10 +1128,10 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     return 1;
   }
-  sub test_slice_byte : int () {
+  sub test_copy_array_range_byte : int () {
     {
       my $nums = [(byte)5, -7, 9, SPVM::NumberUtil->INT8_MIN(), 127, 15, 19];
-      my $slice = slice_byte($nums, 0, 7);
+      my $slice = copy_array_range_byte($nums, 0, 7);
       unless (equals_array_byte($slice, [(byte)5, -7, 9, SPVM::NumberUtil->INT8_MIN(), 127, 15, 19])) {
         return 0;
       }
@@ -1139,7 +1139,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     {
       my $nums = [(byte)5, -7, 9, SPVM::NumberUtil->INT8_MIN(), 127, 15, 19];
-      my $slice = slice_byte($nums, 1, 3);
+      my $slice = copy_array_range_byte($nums, 1, 3);
       unless (equals_array_byte($slice, [(byte)-7, 9, SPVM::NumberUtil->INT8_MIN()])) {
         return 0;
       }
@@ -1147,17 +1147,17 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     return 1;
   }
-  sub test_slice_short : int () {
+  sub test_copy_array_range_short : int () {
     {
       my $nums = [(short)5, -7, 9, SPVM::NumberUtil->INT16_MIN(), 127, 15, 19];
-      my $slice = slice_short($nums, 0, 7);
+      my $slice = copy_array_range_short($nums, 0, 7);
       unless (equals_array_short($slice, [(short)5, -7, 9, SPVM::NumberUtil->INT16_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(short)5, -7, 9, SPVM::NumberUtil->INT16_MIN(), 127, 15, 19];
-      my $slice = slice_short($nums, 1, 3);
+      my $slice = copy_array_range_short($nums, 1, 3);
       unless (equals_array_short($slice, [(short)-7, 9, SPVM::NumberUtil->INT16_MIN()])) {
         return 0;
       }
@@ -1165,34 +1165,34 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     return 1;
   }
-  sub test_slice_int : int () {
+  sub test_copy_array_range_int : int () {
     {
       my $nums = [(int)5, -7, 9, SPVM::NumberUtil->INT32_MIN(), 127, 15, 19];
-      my $slice = slice_int($nums, 0, 7);
+      my $slice = copy_array_range_int($nums, 0, 7);
       unless (equals_array_int($slice, [(int)5, -7, 9, SPVM::NumberUtil->INT32_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(int)5, -7, 9, SPVM::NumberUtil->INT32_MIN(), 127, 15, 19];
-      my $slice = slice_int($nums, 1, 3);
+      my $slice = copy_array_range_int($nums, 1, 3);
       unless (equals_array_int($slice, [(int)-7, 9, SPVM::NumberUtil->INT32_MIN()])) {
         return 0;
       }
     }
     return 1;
   }
-  sub test_slice_long : int () {
+  sub test_copy_array_range_long : int () {
     {
       my $nums = [(long)5, -7, 9, SPVM::NumberUtil->INT64_MIN(), 127, 15, 19];
-      my $slice = slice_long($nums, 0, 7);
+      my $slice = copy_array_range_long($nums, 0, 7);
       unless (equals_array_long($slice, [(long)5, -7, 9, SPVM::NumberUtil->INT64_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(long)5, -7, 9, SPVM::NumberUtil->INT64_MIN(), 127, 15, 19];
-      my $slice = slice_long($nums, 1, 3);
+      my $slice = copy_array_range_long($nums, 1, 3);
       unless (equals_array_long($slice, [(long)-7, 9, SPVM::NumberUtil->INT64_MIN()])) {
         return 0;
       }
@@ -1200,17 +1200,17 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     return 1;
   }
-  sub test_slice_float : int () {
+  sub test_copy_array_range_float : int () {
     {
       my $nums = [(float)5, -7, 9, SPVM::NumberUtil->FLT_MIN(), 127, 15, 19];
-      my $slice = slice_float($nums, 0, 7);
+      my $slice = copy_array_range_float($nums, 0, 7);
       unless (equals_array_float($slice, [(float)5, -7, 9, SPVM::NumberUtil->FLT_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(float)5, -7, 9, SPVM::NumberUtil->FLT_MIN(), 127, 15, 19];
-      my $slice = slice_float($nums, 1, 3);
+      my $slice = copy_array_range_float($nums, 1, 3);
       unless (equals_array_float($slice, [(float)-7, 9, SPVM::NumberUtil->FLT_MIN()])) {
         return 0;
       }
@@ -1220,17 +1220,17 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
   
-  sub test_slice_double : int () {
+  sub test_copy_array_range_double : int () {
     {
       my $nums = [(double)5, -7, 9, SPVM::NumberUtil->DBL_MIN(), 127, 15, 19];
-      my $slice = slice_double($nums, 0, 7);
+      my $slice = copy_array_range_double($nums, 0, 7);
       unless (equals_array_double($slice, [(double)5, -7, 9, SPVM::NumberUtil->DBL_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(double)5, -7, 9, SPVM::NumberUtil->DBL_MIN(), 127, 15, 19];
-      my $slice = slice_double($nums, 1, 3);
+      my $slice = copy_array_range_double($nums, 1, 3);
       unless (equals_array_double($slice, [(double)-7, 9, SPVM::NumberUtil->DBL_MIN()])) {
         return 0;
       }
@@ -1238,17 +1238,17 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_slice_string : int () {
+  sub test_copy_array_range_string : int () {
     {
       my $strings = ["a", "b", "c", "d", "e", "f", "g"];
-      my $slice = SPVM::ArrayUtil->slice_string($strings, 0, 7);
+      my $slice = SPVM::ArrayUtil->copy_array_range_string($strings, 0, 7);
       unless (equals_array_string($slice, ["a", "b", "c", "d", "e", "f", "g"])) {
         return 0;
       }
     }
     {
       my $strings = ["a", "b", "c", "d", "e", "f", "g"];
-      my $slice = SPVM::ArrayUtil->slice_string($strings, 1, 3);
+      my $slice = SPVM::ArrayUtil->copy_array_range_string($strings, 1, 3);
       unless (equals_array_string($slice, ["b", "c", "d"])) {
         return 0;
       }
@@ -1256,7 +1256,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_slice_object : int () {
+  sub test_copy_array_range_object : int () {
 
     {
       my $minimal1 = TestCase::Minimal->new;
@@ -1265,7 +1265,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
       my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $slice = (TestCase::Minimal[])slice_object($elems, 0, 4);
+      my $slice = (TestCase::Minimal[])copy_array_range_object($elems, 0, 4);
       unless (SPVM::ArrayUtil->equals_array_object($slice, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
@@ -1277,7 +1277,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
       my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $slice = (TestCase::Minimal[])slice_object($elems, 1, 2);
+      my $slice = (TestCase::Minimal[])copy_array_range_object($elems, 1, 2);
       unless (SPVM::ArrayUtil->equals_array_object($slice, [$minimal2, $minimal3], SPVM::EqualityChecker::SameObject->new)) {
         return 0;
       }
