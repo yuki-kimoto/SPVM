@@ -1355,11 +1355,101 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         void* object1 = *(void**)&object_vars[opcode->operand1];
         void* object2 = *(void**)&object_vars[opcode->operand2];
         
-        if (__builtin_expect(object1 == NULL || object2 == NULL, 0)) {
-          int_vars[0] = 0;
-          void* exception = env->new_string_nolen_raw(env, "Use of uninitialized value in string comparison operator");
-          env->set_exception(env, exception);
-          exception_flag = 1;
+        if (object1 == NULL && object2 == NULL) {
+         switch (opcode_id) {
+            case SPVM_OPCODE_C_ID_STRING_EQ: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_NE: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_GT: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_GE: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_LT: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_LE: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_CMP: {
+              int_vars[0] = 0;
+              break;
+            }
+          }
+        }
+        else if (object1 != NULL && object2 == NULL) {
+          switch (opcode_id) {
+            case SPVM_OPCODE_C_ID_STRING_EQ: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_NE: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_GT: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_GE: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_LT: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_LE: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_CMP: {
+              int_vars[0] = 1;
+              break;
+            }
+          }
+        }
+        else if (object1 == NULL && object2 != NULL) {
+          switch (opcode_id) {
+            case SPVM_OPCODE_C_ID_STRING_EQ: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_NE: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_GT: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_GE: {
+              int_vars[0] = 0;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_LT: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_LE: {
+              int_vars[0] = 1;
+              break;
+            }
+            case SPVM_OPCODE_C_ID_STRING_CMP: {
+              int_vars[0] = -1;
+              break;
+            }
+          }
         }
         else {
           int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);

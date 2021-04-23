@@ -45,28 +45,24 @@ package TestCase::ComparisonOperator {
       }
     }
     
-    {
-      eval {
-        if ($string_undef eq $string) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef eq $string_undef) {
+      # OK
+    } else {
+      return 0;
     }
 
-    {
-      eval {
-        if ($string eq $string_undef) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef eq $string_empty) {
+      return 0;
+    }
+    else {
+      # OK
+    }
+
+    if ($string_empty eq $string_undef) {
+      return 0;
+    }
+    else {
+      # OK
     }
     
     return 1;
@@ -102,29 +98,26 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     
-    {
-      eval {
-        if ($string_undef ne $string) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef ne $string_undef) {
+      return 0;
+    } else {
+      # OK
     }
 
-    {
-      eval {
-        if ($string ne $string_undef) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef ne $string_empty) {
+      # OK
     }
+    else {
+      return 0;
+    }
+
+    if ($string_empty ne $string_undef) {
+      # OK
+    }
+    else {
+      return 0;
+    }
+
     return 1;
   }
 
@@ -158,29 +151,26 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     
-    {
-      eval {
-        if ($string_undef gt $string) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef gt $string_undef) {
+      return 0;
+    } else {
+      # OK
     }
 
-    {
-      eval {
-        if ($string gt $string_undef) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef gt $string_empty) {
+      return 0;
     }
+    else {
+      # OK
+    }
+
+    if ($string_empty gt $string_undef) {
+      # OK
+    }
+    else {
+      return 0;
+    }
+
     return 1;
   }
 
@@ -214,29 +204,26 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     
-    {
-      eval {
-        if ($string_undef ge $string) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef ge $string_undef) {
+      # OK
+    } else {
+      return 0;
     }
 
-    {
-      eval {
-        if ($string ge $string_undef) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef ge $string_empty) {
+      return 0;
     }
+    else {
+      # OK
+    }
+
+    if ($string_empty ge $string_undef) {
+      # OK
+    }
+    else {
+      return 0;
+    }
+
     return 1;
   }
 
@@ -252,7 +239,7 @@ package TestCase::ComparisonOperator {
     
     # lt
     unless ($string lt $string_same) {
-      return 0;
+      return 1;
     }
     unless (!($string lt $string_short)) {
       return 0;
@@ -269,30 +256,28 @@ package TestCase::ComparisonOperator {
     unless (!($string lt $string_empty)) {
       return 0;
     }
+
     
-    {
-      eval {
-        if ($string_undef lt $string) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef lt $string_undef) {
+      return 0;
+    } else {
+      # OK
     }
 
-    {
-      eval {
-        if ($string lt $string_undef) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef lt $string_empty) {
+      # OK
     }
+    else {
+      return 0;
+    }
+
+    if ($string_empty lt $string_undef) {
+      return 0;
+    }
+    else {
+      # OK
+    }
+
     return 1;
   }
 
@@ -327,33 +312,32 @@ package TestCase::ComparisonOperator {
       return 0;
     }
     
-    {
-      eval {
-        if ($string_undef le $string) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef le $string_undef) {
+      # OK
+    } else {
+      return 0;
     }
 
-    {
-      eval {
-        if ($string le $string_undef) {
-          
-        }
-      };
-      unless ($@) {
-        return 0;
-      }
-      $@ = undef;
+    if ($string_undef le $string_empty) {
+      # OK
     }
+    else {
+      return 0;
+    }
+
+    if ($string_empty le $string_undef) {
+      return 0;
+    }
+    else {
+      # OK
+    }
+
     return 1;
   }
 
   sub string_cmp  : int () {
+    my $string_empty = "";
+    my $string_undef : string;
     
     {
       my $ret = "abd" cmp "abc";
@@ -390,32 +374,26 @@ package TestCase::ComparisonOperator {
       }
     }
 
-
     {
-      my $string_undef = (string)undef;
-      eval {
-        if ($string_undef cmp "abc") {
-          
-        }
-      };
-      unless ($@) {
+      my $ret = $string_undef cmp $string_undef;
+      unless ($ret == 0) {
         return 0;
       }
     }
 
     {
-      my $string_undef = (string)undef;
-      eval {
-        if ("abc" cmp $string_undef) {
-          
-        }
-      };
-      unless ($@) {
+      my $ret = $string_undef cmp $string_empty;
+      unless ($ret == -1) {
         return 0;
       }
     }
-    
-    $@ = undef;
+
+    {
+      my $ret = $string_empty cmp $string_undef;
+      unless ($ret == 1) {
+        return 0;
+      }
+    }
     
     return 1;
   }

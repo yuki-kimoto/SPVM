@@ -1,5 +1,4 @@
-0.0946 2021-04-22
-  
+0.0946 2021-04-23
   - Create SPVM::ArrayUtil module
   - move the following SPVM::Util methods to SPVM::ArrayUtil
     copy_object_array
@@ -86,6 +85,9 @@
   - add SPVM::ArrayUtil->dump_object_array
   - rename SPVM::ArrayUtil->copy_str to SPVM::ArrayUtil->copy_string
   - rename SPVM::Util to SPVM::NumberUtil
+  - fix bug that le operator means lt.
+  - in eq, ne, gt, ge, lt, le string comparison, undef is treated as most small value
+    and these string comparison operators don't throw a exception.
 0.0945 2021-04-22
   - rename SPVM::Byte->val to SPVM::Byte->value
   - rename SPVM::Short->val to SPVM::Short->value

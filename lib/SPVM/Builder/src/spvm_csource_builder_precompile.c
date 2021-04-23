@@ -1796,11 +1796,110 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_STRING_BUFFER_add(string_buffer, "    void* object2 = ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "    if (__builtin_expect(object1 == NULL || object2 == NULL, 0)) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    if (object1 == NULL && object2 == NULL) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = 0;\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, env->new_string_nolen_raw(env, \"Use of uninitialized value in string comparison operator\")); \n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      exception_flag = 1;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_STRING_EQ: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_NE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_GT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_GE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_LT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_LE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_CMP: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    else if (object1 != NULL && object2 == NULL) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_STRING_EQ: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_NE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_GT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_GE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_LT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_LE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_CMP: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+        }
+        SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    else if (object1 == NULL && object2 != NULL) {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
+        SPVM_STRING_BUFFER_add(string_buffer, " = ");
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_STRING_EQ: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_NE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_GT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_GE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "0;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_LT: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_LE: {
+            SPVM_STRING_BUFFER_add(string_buffer, "1;\n");
+            break;
+          }
+          case SPVM_OPCODE_C_ID_STRING_CMP: {
+            SPVM_STRING_BUFFER_add(string_buffer, "-1;\n");
+            break;
+          }
+        }
         SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);\n");
@@ -1818,7 +1917,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_sub_implementation(SPVM_COMPILER* com
         SPVM_STRING_BUFFER_add(string_buffer, "        cmp = length1 < lenght2 ? -1 : 1;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
         
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_STRING_BUFFER_add(string_buffer, "      ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, 0);
         SPVM_STRING_BUFFER_add(string_buffer, " = ");
         switch (opcode_id) {
