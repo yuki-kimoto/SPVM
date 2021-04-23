@@ -1,0 +1,1587 @@
+package TestCase::Lib::SPVM::StringUtil {
+  use SPVM::Util(join_object, split, sprintf);
+
+  use SPVM::Unicode (uchar);
+  use TestCase::Minimal;
+  use SPVM::StringUtil (contains);
+  use TestCase::Minimal;
+  use SPVM::EqualityChecker;
+  use SPVM::EqualityChecker::SameObject;
+  use SPVM::ArrayUtil(equals_byte_array, equals_short_array, equals_int_array, equals_long_array, equals_float_array, equals_double_array, equals_string_array);
+
+  use SPVM::Util (
+    chomp_lf,
+    chomp_crlf,
+    is_perl_space,
+    is_perl_word,
+    isalnum,
+    isalpha,
+    isblank,
+    iscntrl,
+    isdigit,
+    isgraph,
+    islower,
+    isprint,
+    ispunct,
+    isspace,
+    isupper,
+    isxdigit,
+    tolower,
+    toupper,
+    join,
+    lc,
+    lcfirst,
+    uc,
+    ucfirst,
+    replace,
+    replace_all,
+    rindex,
+    strtod,
+    strtof,
+    strtoi,
+    strtol,
+    copy_str,
+    index,
+  );
+
+  sub test_split : int () {
+    {
+      my $str = "foo,bar,baz";
+      my $split_strs = split(",", $str);
+      unless (equals_string_array($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foo,bar,";
+      my $split_strs = split(",", $str);
+      unless (equals_string_array($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = ",foo,,bar,,";
+      my $split_strs = split(",", $str);
+      unless (equals_string_array($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foo : bar : baz";
+      my $split_strs = split(" : ", $str);
+      unless (equals_string_array($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $str = "foo : bar : ";
+      my $split_strs = split(" : ", $str);
+      unless (equals_string_array($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $str = " : foo :  : bar :  : ";
+      my $split_strs = split(" : ", $str);
+      unless (equals_string_array($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foo---bar---baz";
+      my $split_strs = split("---", $str);
+      unless (equals_string_array($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $str = "foo---bar---";
+      my $split_strs = split("---", $str);
+      unless (equals_string_array($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $str = "---foo------bar------";
+      my $split_strs = split("---", $str);
+      unless (equals_string_array($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foo--!bar---baz";
+      my $split_strs = split("---", $str);
+      unless (equals_string_array($split_strs, ["foo--!bar", "baz"])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_sprintf_d : int () {
+    my $tests = [
+        [ sprintf("abc%d", 123),          "abc123" ],
+        [ sprintf("%dabc", 123),          "123abc" ],
+        [ sprintf("%dabc%d", 1, 10),      "1abc10" ],
+        [ sprintf("%d%d%d", 1, 10, 100),  "110100" ],
+        [ sprintf("%d%d%d", 1, 10, 100),  "110100" ],
+        [ sprintf("%05d", 123),           "00123"  ],
+        [ sprintf("%+5d", 123),           " +123"  ],
+        [ sprintf("%-5d", 123),           "123  "  ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%d", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_u : int () {
+    my $tests = [
+        [ sprintf("abc%u", 123),          "abc123" ],
+        [ sprintf("%uabc", 123),          "123abc" ],
+        [ sprintf("%uabc%u", 1, 10),      "1abc10" ],
+        [ sprintf("%u%u%u", 1, 10, 100),  "110100" ],
+        [ sprintf("%05u", 123),           "00123"  ],
+        [ sprintf("%+5u", 123),           " +123"  ],
+        [ sprintf("%-5u", 123),           "123  "  ],
+        [ sprintf("%-5u", 123),           "123  "  ],
+        [ sprintf("%u", -1),              "4294967295" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%d", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_ld : int () {
+    my $tests = [
+        [ sprintf("abc%ld", 10000000000L),                                "abc10000000000"                    ],
+        [ sprintf("%ldabc", 10000000000L),                                "10000000000abc"                    ],
+        [ sprintf("%ldabc%ld", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
+        [ sprintf("%ld%ld%ld", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
+        [ sprintf("%013ld", 12345678901L),                                "0012345678901"                     ],
+        [ sprintf("%+13ld", 12345678901L),                                " +12345678901"                     ],
+        [ sprintf("%-13ld", 12345678901L),                                "12345678901  "                     ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%ld", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      eval {
+        sprintf("%l", 1L);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%l\"")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_lu : int () {
+    my $tests = [
+        [ sprintf("abc%lu", 10000000000L),                                "abc10000000000"                    ],
+        [ sprintf("%luabc", 10000000000L),                                "10000000000abc"                    ],
+        [ sprintf("%luabc%lu", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
+        [ sprintf("%lu%ld%lu", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
+        [ sprintf("%013lu", 12345678901L),                                "0012345678901"                     ],
+        [ sprintf("%+13lu", 12345678901L),                                " +12345678901"                     ],
+        [ sprintf("%-13lu", 12345678901L),                                "12345678901  "                     ],
+        [ sprintf("%lu", -1L),                                            "18446744073709551615"              ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%ld", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      eval {
+        sprintf("%l", 1L);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%l\"")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_f : int () {
+    my $tests = [
+        [ sprintf("abc%.2f", 3.14),                  "abc3.14"      ],
+        [ sprintf("%.2fabc", 3.14),                  "3.14abc"      ],
+        [ sprintf("%.2fabc%.2f", 3.14, 2.71),        "3.14abc2.71"  ],
+        [ sprintf("%.2f%.2f%.2f", 3.14, 2.71, 2.67), "3.142.712.67" ],
+        [ sprintf("%.10f", 3.14),                    "3.1400000000" ],
+        [ sprintf("%012.6f", 3.14),                  "00003.140000" ],
+        [ sprintf("%+12.6f", 3.14),                  "   +3.140000" ],
+        [ sprintf("%-12.6f", 3.14),                  "3.140000    " ],
+        [ sprintf("%+-12.6f", 3.14),                 "+3.140000   " ],
+        [ sprintf("%g", 3.14),                       "3.14"         ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%f", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_c : int () {
+    my $tests = [
+        [ sprintf("abc%c", 'x'),            "abcx"  ],
+        [ sprintf("%cabc", 'x'),            "xabc"  ],
+        [ sprintf("%cabc%c", 'x', 'y'),     "xabcy" ],
+        [ sprintf("%c%c%c", 'x', 'y', 'z'), "xyz"   ],
+        [ sprintf("%05c", 'x'),             "0000x" ],
+        [ sprintf("%-5c", 'x'),             "x    " ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%c", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_s : int () {
+    my $tests = [
+        [ sprintf("abc%s", "ABC"),                "abcABC"    ],
+        [ sprintf("%sabc", "ABC"),                "ABCabc"    ],
+        [ sprintf("%sabc%s", "ABC", "XYZ"),       "ABCabcXYZ" ],
+        [ sprintf("%s%s%s", "ABC", "XYZ", "123"), "ABCXYZ123" ],
+        [ sprintf("%05s", "str"),                 "00str"     ],
+        [ sprintf("%-5s", "str"),                 "str  "     ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%s", 1);
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  private sub _first_uchar : int ($str : string) {
+    my $uchar_pos = 0;
+    return uchar($str, \$uchar_pos);
+  }
+
+  sub test_sprintf_U : int () {
+    my $tests = [
+        [ sprintf("abc%U", _first_uchar("あ")), "abcあ" ],
+        [ sprintf("%Uabc", _first_uchar("あ")), "あabc" ],
+        [ sprintf("%Uabc%U", _first_uchar("あ"), _first_uchar("い")), "あabcい" ],
+        [ sprintf("%U%U%U", _first_uchar("あ"), _first_uchar("い"), _first_uchar("う")), "あいう" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%U", "str");
+      };
+      unless ($@ && contains($@, "Can't cast")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_percent : int () {
+    my $tests = [
+        [ sprintf("%d%%",    1), "1%"    ],
+        [ sprintf("%%%d",    1), "%1"    ],
+        [ sprintf("%d%%str", 1), "1%str" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_sprintf_all : int () {
+    {
+      # Invalid conversion (end of string)
+      eval {
+        sprintf("%d%", 1);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: end of string")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Invalid conversion (unknown specifier)
+      eval {
+        sprintf("%d%k", 1, 2);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%k\"")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Invalid conversion (no type)
+      eval {
+        sprintf("%012.3", 3.14);
+      };
+      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%012.3\"")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Missing argument
+      eval {
+        sprintf("%d%d", 1);
+      };
+      unless ($@ && contains($@, "Missing argument in sprintf")) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      my $str = "abc\n";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "abc";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_chomp_lf : int () {
+    {
+      my $str = "abc\n";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "abc";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "";
+      my $ret = chomp_lf($str);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  sub test_chomp_crlf : int () {
+    {
+      my $str = "abc\r\n";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "abc";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+    {
+      my $str = "a";
+      my $ret = chomp_crlf($str);
+      unless ($ret eq "a") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_isalnum : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
+        my $ret = isalnum($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isalnum($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isalpha : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
+        my $ret = isalpha($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isalpha($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isblank : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= ' ' ||  $char <= '\t') {
+        my $ret = isblank($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isblank($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_iscntrl : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
+        my $ret = iscntrl($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = iscntrl($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isdigit : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= '0' && $char <= '9') {
+        my $ret = isdigit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isdigit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isgraph : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 0x21 && $char <= 0x7e) {
+        my $ret = isgraph($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isgraph($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_islower : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = islower($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = islower($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isprint : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 0x20 && $char <= 0x7e) {
+        my $ret = isprint($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isprint($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ispunct : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+        my $ret = ispunct($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = ispunct($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isspace : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+        my $ret = isspace($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isspace($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isupper : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = isupper($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isupper($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isxdigit : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
+        my $ret = isxdigit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = isxdigit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_tolower : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = tolower($char);
+        unless ($ret == $char + 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = tolower($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_toupper : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = toupper($char);
+        unless ($ret == $char - 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = toupper($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_perl_space : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
+        my $ret = is_perl_space($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_space($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_perl_word : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
+        my $ret = is_perl_word($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_word($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_strtoi : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-2147483648";
+      my $num = strtoi($string, 10);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == -2147483648) {
+        return 0;
+      }
+    }
+
+    # 10 digit max
+    {
+      my $string = "2147483647";
+      my $num = strtoi($string, 10);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == 2147483647) {
+        return 0;
+      }
+    }
+
+    # 2 digit
+    {
+      my $string = "11";
+      my $num = strtoi($string, 2);
+
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # 8 digit
+    {
+      my $string = "11";
+      my $num = strtoi($string, 8);
+
+      unless ($num == 9) {
+        return 0;
+      }
+    }
+
+    # 16 digit
+    {
+      my $string = "FF";
+      my $num = strtoi($string, 16);
+
+      unless ($num == 255) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10oppp";
+      eval {
+        strtoi($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Invalid digit
+    {
+      my $string = "10";
+      eval {
+        strtoi($string, 100);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range max + 1
+    {
+      my $string = "2147483648";
+      eval {
+        strtoi($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-2147483649";
+      eval {
+        strtoi($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_strtol : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-9223372036854775808";
+      my $num = strtol($string, 10);
+      unless ($num isa long) {
+        return 0;
+      }
+
+      unless ($num == -9223372036854775808L) {
+        return 0;
+      }
+    }
+
+    # 10 digit max
+    {
+      my $string = "9223372036854775807";
+      my $num = strtol($string, 10);
+
+      unless ($num == 9223372036854775807L) {
+        return 0;
+      }
+    }
+
+    # 2 digit
+    {
+      my $string = "11";
+      my $num = strtol($string, 2);
+
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # 8 digit
+    {
+      my $string = "11";
+      my $num = strtol($string, 8);
+
+      unless ($num == 9) {
+        return 0;
+      }
+    }
+
+    # 16 digit
+    {
+      my $string = "FF";
+      my $num = strtol($string, 16);
+
+      unless ($num == 255) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10oppp";
+      eval {
+        strtol($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Invalid digit
+    {
+      my $string = "10";
+      eval {
+        strtol($string, 100);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range max + 1
+    {
+      my $string = "9223372036854775808";
+      eval {
+        strtol($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-9223372036854775809";
+      eval {
+        strtol($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_strtof : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = strtof($string);
+      unless ($num isa float) {
+        return 0;
+      }
+
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        strtof($string);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_strtod : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = strtod($string);
+      unless ($num isa double) {
+        return 0;
+      }
+
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        strtod($string);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_ucfirst : int () {
+    {
+      my $str = "@abc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "@abc") {
+        return 0;
+      }
+    }
+    {
+      my $str = "[abc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "[abc") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "aabc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "Aabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "pabc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "Pabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "zabc";
+      my $result_str = ucfirst($str);
+      unless ($result_str eq "Zabc") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_uc : int () {
+    {
+      my $str = "@[apz[";
+      my $result_str = uc($str);
+      unless ($result_str eq "@[APZ[") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_lc : int () {
+    {
+      my $str = "@[APZ[";
+      my $result_str = lc($str);
+      unless ($result_str eq "@[apz[") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_lcfirst : int () {
+    {
+      my $str = "@ABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "@ABC") {
+        return 0;
+      }
+    }
+    {
+      my $str = "[ABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "[ABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "AABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "aABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "PABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "pABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "ZABC";
+      my $result_str = lcfirst($str);
+      unless ($result_str eq "zABC") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+  sub test_replace_all : int () {
+
+    {
+      my $str = "foo bar foo bar foo";
+      my $substr = "bar";
+      my $replace = "AB";
+      my $result_str = replace_all($str, $substr, $replace);
+      unless ($result_str eq "foo AB foo AB foo") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "foobarfoobarfoo";
+      my $substr = "bar";
+      my $replace = "";
+      my $result_str = replace_all($str, $substr, $replace);
+      unless ($result_str eq "foofoofoo") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_replace : int () {
+
+    {
+      my $str = "abcde";
+      my $substr = "bcd";
+      my $replace = "AB";
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 1) {
+        return 0;
+      }
+      unless ($result_str eq "aABe") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "abcde";
+      my $substr = "bcd";
+      my $replace = "AB";
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 2, \$found_offset);
+      unless ($found_offset == -1) {
+        return 0;
+      }
+      unless ($result_str eq $str) {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "abcde";
+      my $substr = "abc";
+      my $replace = "ABCD";
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 0) {
+        return 0;
+      }
+      unless ($result_str eq "ABCDde") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "abcde";
+      my $substr = "cde";
+      my $replace = "ABCD";
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      unless ($found_offset == 2) {
+        return 0;
+      }
+      unless ($result_str eq "abABCD") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "abcdcd";
+      my $substr = "cd";
+      my $replace = "A";
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 4, \$found_offset);
+      unless ($found_offset == 4) {
+        return 0;
+      }
+      unless ($result_str eq "abcdA") {
+        return 0;
+      }
+    }
+
+    {
+      my $str = "abcd";
+      my $substr = "bc";
+      my $replace = "";
+      my $found_offset = 0;
+      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+
+      unless ($found_offset == 1) {
+        return 0;
+      }
+      unless ($result_str eq "ad") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_index : int () {
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = index($target, $search, 0);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = index($target, $search, 1);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = index($target, $search, 2);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "pq";
+      my $pos = index($target, $search, 2);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_rindex : int () {
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 3);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 2);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 1);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 0);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "pq";
+      my $pos = rindex($target, $search, 2);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_contains : int () {
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $ret = contains($target, $search);
+      unless ($ret) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "ppp";
+      my $ret = contains($target, $search);
+      if ($ret) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_join : int () {
+    my $strings = ["abc", "def", "hij"];
+
+    my $dump = join(",", $strings);
+
+    if ($dump eq "abc,def,hij") {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  sub test_copy_str : int () {
+    my $string = "abc";
+    my $string_out = copy_str($string);
+
+    unless ($string_out eq "abc") {
+      return 0;
+    }
+
+    return 1;
+  }
+}

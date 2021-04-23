@@ -47,6 +47,41 @@
     slice_long
     slice_float
     slice_double
+  - move the following SPVM::Util methods to SPVM::StringUtil
+    split
+    chomp_lf
+    chomp_crlf
+    copy_str
+    index
+    isalnum
+    isalpha
+    isblank
+    iscntrl
+    isdigit
+    isgraph
+    islower
+    isprint
+    ispunct
+    isspace
+    isupper
+    isxdigit
+    tolower
+    toupper
+    is_perl_space
+    is_perl_word
+    join
+    lc
+    lcfirst
+    replace
+    replace_all
+    strtoi
+    strtol
+    strtof
+    strtod
+    uc
+    ucfirst
+    rindex
+    contains
 
 0.0945 2021-04-22
   - rename SPVM::Byte->val to SPVM::Byte->value
