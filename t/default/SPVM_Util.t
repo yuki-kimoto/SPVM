@@ -11,8 +11,6 @@ use SPVM 'SPVM::Util';
 use POSIX();
 use TestFile;
 
-
-
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
@@ -42,126 +40,6 @@ use SPVM 'SPVM::Util';
   ok(TestCase::Lib::SPVM::Util->test_join_object);
 }
 
-# split
-{
-  ok(TestCase::Lib::SPVM::Util->test_split);
-}
-
-# sprintf
-{
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_d);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_u);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_ld);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_lu);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_f);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_c);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_s);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_U);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_percent);
-  ok(TestCase::Lib::SPVM::Util->test_sprintf_all);
-}
-
-# strtoi
-{
-  ok(TestCase::Lib::SPVM::Util->test_strtoi);
-  ok(TestCase::Lib::SPVM::Util->test_strtol);
-  ok(TestCase::Lib::SPVM::Util->test_strtof);
-  ok(TestCase::Lib::SPVM::Util->test_strtod);
-}
-# chomp_lf
-{
-  ok(TestCase::Lib::SPVM::Util->test_chomp_lf);
-}
-# chomp_crlf
-{
-  ok(TestCase::Lib::SPVM::Util->test_chomp_crlf);
-}
-
-# isalnum
-{
-  ok(TestCase::Lib::SPVM::Util->test_isalnum);
-}
-
-# isalpha
-{
-  ok(TestCase::Lib::SPVM::Util->test_isalpha);
-}
-
-# isalpha
-{
-  ok(TestCase::Lib::SPVM::Util->test_isblank);
-}
-
-# iscntrl
-{
-  ok(TestCase::Lib::SPVM::Util->test_iscntrl);
-}
-
-# isdigit
-{
-  ok(TestCase::Lib::SPVM::Util->test_isdigit);
-}
-
-# isgraph
-{
-  ok(TestCase::Lib::SPVM::Util->test_isgraph);
-}
-
-# islower
-{
-  ok(TestCase::Lib::SPVM::Util->test_islower);
-}
-
-# isprint
-{
-  ok(TestCase::Lib::SPVM::Util->test_isprint);
-}
-
-# isprint
-{
-  ok(TestCase::Lib::SPVM::Util->test_isprint);
-}
-
-# ispunct
-{
-  ok(TestCase::Lib::SPVM::Util->test_ispunct);
-}
-
-# isspace
-{
-  ok(TestCase::Lib::SPVM::Util->test_isspace);
-}
-
-# isupper
-{
-  ok(TestCase::Lib::SPVM::Util->test_isupper);
-}
-
-# isxdigit
-{
-  ok(TestCase::Lib::SPVM::Util->test_isxdigit);
-}
-
-# tolower
-{
-  ok(TestCase::Lib::SPVM::Util->test_tolower);
-}
-
-# toupper
-{
-  ok(TestCase::Lib::SPVM::Util->test_toupper);
-}
-
-# is_perl_space
-{
-  ok(TestCase::Lib::SPVM::Util->test_is_perl_space);
-}
-
-# is_perl_word
-{
-  ok(TestCase::Lib::SPVM::Util->test_is_perl_word);
-}
-
 # crand
 {
   ok(TestCase::Lib::SPVM::Util->test_crand);
@@ -187,52 +65,6 @@ SKIP: {
 {
   ok(TestCase::Lib::SPVM::Util->test_RAND_MAX);
 }
-
-# uc
-{
-  ok(TestCase::Lib::SPVM::Util->test_uc);
-}
-
-# lcfirst
-{
-  ok(TestCase::Lib::SPVM::Util->test_lcfirst);
-}
-
-# lc
-{
-  ok(TestCase::Lib::SPVM::Util->test_lc);
-}
-
-# replace
-{
-  ok(TestCase::Lib::SPVM::Util->test_replace_all);
-}
-
-# replace
-{
-  ok(TestCase::Lib::SPVM::Util->test_replace);
-}
-
-# index
-{
-  ok(TestCase::Lib::SPVM::Util->test_index);
-}
-
-# rindex
-{
-  ok(TestCase::Lib::SPVM::Util->test_rindex);
-}
-
-# contains
-{
-  ok(TestCase::Lib::SPVM::Util->test_contains);
-}
-
-# join
-{
-  ok(TestCase::Lib::SPVM::Util->test_join);
-}
-
 
 # Copy
 {

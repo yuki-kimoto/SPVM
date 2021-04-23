@@ -1,5 +1,5 @@
 package TestCase::Lib::SPVM::StringUtil {
-  use SPVM::Util(join_object, split, sprintf);
+  use SPVM::Util(join_object);
 
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
@@ -9,7 +9,7 @@ package TestCase::Lib::SPVM::StringUtil {
   use SPVM::EqualityChecker::SameObject;
   use SPVM::ArrayUtil(equals_byte_array, equals_short_array, equals_int_array, equals_long_array, equals_float_array, equals_double_array, equals_string_array);
 
-  use SPVM::Util (
+  use SPVM::StringUtil (
     chomp_lf,
     chomp_crlf,
     is_perl_space,
@@ -42,6 +42,8 @@ package TestCase::Lib::SPVM::StringUtil {
     strtol,
     copy_str,
     index,
+    split,
+    sprintf,
   );
 
   sub test_split : int () {

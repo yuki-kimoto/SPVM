@@ -1,7 +1,7 @@
 package SPVM::ArrayUtil : precompile {
   use SPVM::Cloner;
   use SPVM::EqualityChecker;
-  use SPVM::Util;
+  use SPVM::StringUtil;
   
   sub copy_object_array : object[] ($objects : object[], $cloner : SPVM::Cloner) {
     my $length = @$objects;
@@ -110,7 +110,7 @@ package SPVM::ArrayUtil : precompile {
     my $new_strings = new string[$length];
 
     for (my $i = 0; $i < $length; $i++) {
-      $new_strings->[$i] = SPVM::Util->copy_str($strings->[$i]);
+      $new_strings->[$i] = SPVM::StringUtil->copy_str($strings->[$i]);
     }
 
     return $new_strings;
@@ -336,7 +336,7 @@ package SPVM::ArrayUtil : precompile {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = SPVM::Util->sprintf("%u", (int)$nums->[$i] & 0xFF);
+      my $string = SPVM::StringUtil->sprintf("%u", (int)$nums->[$i] & 0xFF);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -360,7 +360,7 @@ package SPVM::ArrayUtil : precompile {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = SPVM::Util->sprintf("%u", (int)$nums->[$i] & 0xFFFF);
+      my $string = SPVM::StringUtil->sprintf("%u", (int)$nums->[$i] & 0xFFFF);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -384,7 +384,7 @@ package SPVM::ArrayUtil : precompile {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = SPVM::Util->sprintf("%u", $nums->[$i]);
+      my $string = SPVM::StringUtil->sprintf("%u", $nums->[$i]);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
@@ -408,7 +408,7 @@ package SPVM::ArrayUtil : precompile {
     my $dump = "[\n";
 
     for (my $i = 0; $i < @$nums; $i++) {
-      my $string = SPVM::Util->sprintf("%lu", $nums->[$i]);
+      my $string = SPVM::StringUtil->sprintf("%lu", $nums->[$i]);
       $dump .= "  $string";
       if ($i != @$nums - 1) {
         $dump .= ",\n";
