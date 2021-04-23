@@ -115,12 +115,6 @@ Array Utilities.
 
 =head1 STATIC METHODS
 
-=head2 copy_array_object
-
-  sub copy_array_object : object[] ($objects : object[], $cloner : SPVM::Cloner)
-
-Copy object array. You must specify a L<SPVM::Cloner> object to copy each element.
-
 =head2 copy_array_byte
 
   sub copy_array_byte : byte[] ($nums : byte[])
@@ -169,16 +163,6 @@ Copy a double array.
 
 If the array is undefined, a exception occurs.
 
-=head2 equals_array_object
-
-  sub sub equals_array_object : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker)
-
-Check equality of two objects. You must sepecify a L<SPVM::EqualityChecker> object to check the equality of each element.
-
-$objs1 and $objs2 and $equality_checker must be defined, otherwise a exception occur.
-
-Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
-
 =head2 copy_array_string
 
   sub copy_array_string : string[] ($strings : string[])
@@ -186,6 +170,12 @@ Return 1 if the length of $objs1 and $objs2 is same and all element is same, oth
 Copy a string array.
 
 If the array is undefined, a exception occurs.
+
+=head2 copy_array_object
+
+  sub copy_array_object : object[] ($objects : object[], $cloner : SPVM::Cloner)
+
+Copy object array. You must specify a L<SPVM::Cloner> object to copy each element.
 
 =head2 equals_array_byte
 
@@ -242,6 +232,16 @@ If at least one of the arrays is undefined, a excetpion occurs.
 Check if two string arrays equal.
 
 If at least one of the arrays is undefined, a excetpion occurs.
+
+=head2 equals_array_object
+
+  sub sub equals_array_object : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker)
+
+Check equality of two objects. You must sepecify a L<SPVM::EqualityChecker> object to check the equality of each element.
+
+$objs1 and $objs2 and $equality_checker must be defined, otherwise a exception occur.
+
+Return 1 if the length of $objs1 and $objs2 is same and all element is same, otherwise return 0.
 
 =head2 dump_array_byte
 
@@ -536,4 +536,3 @@ Create a new generic object array as the same type as the given array.
 =head2 slice_float
 
 =head2 slice_double
-

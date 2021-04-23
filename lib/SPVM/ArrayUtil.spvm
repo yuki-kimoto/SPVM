@@ -2,35 +2,6 @@ package SPVM::ArrayUtil : precompile {
   use SPVM::Cloner;
   use SPVM::EqualityChecker;
   use SPVM::StringUtil;
-  
-  sub copy_array_object : object[] ($objects : object[], $cloner : SPVM::Cloner) {
-    my $length = @$objects;
-
-    my $new_objects = new object[$length];
-
-    for (my $i = 0; $i < $length; $i++) {
-      $new_objects->[$i] = $cloner->($objects->[$i]);
-    }
-
-    return $new_objects;
-  }
-
-  sub equals_array_object : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker) {
-    my $is_equals = 1;
-    if (@$objs1 == @$objs2) {
-      for (my $i = 0; $i < @$objs1; $i++) {
-        if (!$equality_checker->($objs1->[$i], $objs2->[$i])) {
-          $is_equals = 0;
-          last;
-        }
-      }
-    }
-    else {
-      $is_equals = 0;
-    }
-
-    return $is_equals;
-  }
 
   sub copy_array_byte : byte[] ($nums : byte[]) {
     my $length = @$nums;
@@ -115,6 +86,19 @@ package SPVM::ArrayUtil : precompile {
 
     return $new_strings;
   }
+  
+  sub copy_array_object : object[] ($objects : object[], $cloner : SPVM::Cloner) {
+    my $length = @$objects;
+
+    my $new_objects = new object[$length];
+
+    for (my $i = 0; $i < $length; $i++) {
+      $new_objects->[$i] = $cloner->($objects->[$i]);
+    }
+
+    return $new_objects;
+  }
+
 
   sub equals_array_byte : int ($nums1 : byte[], $nums2 : byte[]) {
     my $is_equals = 1;
@@ -219,6 +203,23 @@ package SPVM::ArrayUtil : precompile {
     if (@$strings1 == @$strings2) {
       for (my $i = 0; $i < @$strings1; $i++) {
         if ($strings1->[$i] ne $strings2->[$i]) {
+          $is_equals = 0;
+          last;
+        }
+      }
+    }
+    else {
+      $is_equals = 0;
+    }
+
+    return $is_equals;
+  }
+
+  sub equals_array_object : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker) {
+    my $is_equals = 1;
+    if (@$objs1 == @$objs2) {
+      for (my $i = 0; $i < @$objs1; $i++) {
+        if (!$equality_checker->($objs1->[$i], $objs2->[$i])) {
           $is_equals = 0;
           last;
         }
