@@ -37,19 +37,14 @@ my $nan_re = qr/(nan|ind)/i;
 use SPVM 'TestCase::Lib::SPVM::ArrayUtil';
 use SPVM 'SPVM::ArrayUtil';
 
-# dump_array_object
-{
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_object_array);
-}
-
 # copy_array_object
 {
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_object_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_object);
 }
 
 # equals_array_object
 {
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_object_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_object);
 }
 
 # memmove_byte
@@ -94,64 +89,67 @@ use SPVM 'SPVM::ArrayUtil';
 
 # dump array
 {
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_byte_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_short_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_int_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_long_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_float_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_double_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_byte_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_short_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_int_array);
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_long_array);
+  # dump_array_object
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_byte);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_short);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_int);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_long);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_float);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_double);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_array_byte);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_array_short);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_array_int);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_unsigned_array_long);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_string);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_dump_array_object);
 }
 
 # equals
 {
   # equals_array_byte
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_byte_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_byte);
 
   # equals_array_short
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_short_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_short);
 
   # equals_array_int
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_int_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_int);
 
-  # equeals_long_array
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_long_array);
+  # equeals_array_long
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_long);
 
   # equals_array_float
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_float_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_float);
 
   # equals_array_double
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_double_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_double);
 
   # equals_array_string
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_string_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_string);
 }
 
 # Copy
 {
   # copy_array_byte
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_byte_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_byte);
 
   # copy_array_short
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_short_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_short);
 
   # copy_array_int
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_int_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_int);
 
   # copy_array_long
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_long_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_long);
 
   # copy_array_float
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_float_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_float);
 
   # copy_array_double
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_double_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_double);
 
   # copy_array_string
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_string_array);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_copy_array_string);
 }
 
 # All object is freed

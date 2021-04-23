@@ -13,97 +13,97 @@ SPVM::ArrayUtil - Array Utilities
   # Copy a byte array
   {
     my $nums = [(byte)1, 2, 3];
-    my $nums_copy = copy_array_byte($nums);
+    my $nums_copy = SPVM::ArrayUtil->copy_array_byte($nums);
   }
 
   # Copy a short array
   {
     my $nums = [(short)1, 2, 3];
-    my $nums_copy = copy_array_short($nums);
+    my $nums_copy = SPVM::ArrayUtil->copy_array_short($nums);
   }
 
   # Copy a int array
   {
     my $nums = [1, 2, 3];
-    my $nums_copy = copy_array_int($nums);
+    my $nums_copy = SPVM::ArrayUtil->copy_array_int($nums);
   }
 
   # Copy a long array
   {
     my $nums = [(long)1, 2, 3];
-    my $nums_copy = copy_array_long($nums);
+    my $nums_copy = SPVM::ArrayUtil->copy_array_long($nums);
   }
 
   # Copy a float array
   {
     my $nums = [1.5f, 2.5f, 3.5f];
-    my $nums_copy = copy_array_float($nums);
+    my $nums_copy = SPVM::ArrayUtil->copy_array_float($nums);
   }
 
   # Copy a double array
   {
     my $nums = [1.5, 2.5, 3.5];
-    my $nums_copy = copy_array_double($nums);
+    my $nums_copy = SPVM::ArrayUtil->copy_array_double($nums);
   }
   
   # Copy a string array
   {
     my $strs = ["abc", "def", "ghi"]
-    my $strs_copy = copy_array_string($strs);
+    my $strs_copy = SPVM::ArrayUtil->copy_array_string($strs);
   }
   
   # Check if the two byte arrays equal
   {
     my $nums1 = [(byte)1, 2];
     my $nums2 = [(byte)1, 2];
-    my $ret = equals_array_byte($nums1, $nums2);
+    my $ret = SPVM::ArrayUtil->equals_array_byte($nums1, $nums2);
   }
 
   # Check if the two short arrays equal
   {
     my $nums1 = [(short)1, 2];
     my $nums2 = [(short)1, 2];
-    my $ret = equals_array_short($nums1, $nums2);
+    my $ret = SPVM::ArrayUtil->equals_array_short($nums1, $nums2);
   }
 
   # Check if the two int arrays equal
   {
     my $nums1 = [(int)1, 2];
     my $nums2 = [(int)1, 2];
-    my $ret = equals_array_int($nums1, $nums2);
+    my $ret = SPVM::ArrayUtil->equals_array_int($nums1, $nums2);
   }
 
   # Check if the two long arrays equal
   {
     my $nums1 = [(long)1, 2];
     my $nums2 = [(long)1, 2];
-    my $ret = equals_array_long($nums1, $nums2);
+    my $ret = SPVM::ArrayUtil->equals_array_long($nums1, $nums2);
   }
 
   # Check if the two float arrays equal
   {
     my $nums1 = [(float)1, 2];
     my $nums2 = [(float)1, 2];
-    my $ret = equals_array_float($nums1, $nums2);
+    my $ret = SPVM::ArrayUtil->equals_array_float($nums1, $nums2);
   }
 
   # Check if the two double arrays equal
   {
     my $nums1 = [(double)1, 2];
     my $nums2 = [(double)1, 2];
-    my $ret = equals_array_double($nums1, $nums2);
+    my $ret = SPVM::ArrayUtil->equals_array_double($nums1, $nums2);
   }
 
   # Check if the two string arrays equal
   {
     my $strs1 = ["abc", "def"];
     my $strs2 = ["abc", "def"];
-    my $ret = equals_array_string($strs1, $strs2);
+    my $ret = SPVM::ArrayUtil->equals_array_string($strs1, $strs2);
   }
   
   # Copy object array
   my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-  my $objects_copy = copy_array_object($objects, sub : object ($self : self, $obj : object) {
+  my $objects_copy = SPVM::ArrayUtil->copy_array_object($objects, sub : object ($self : self, $obj : object) {
     my $int_obj = (SPVM::Int)$obj;
     my $new_int_obj = SPVM::Int->new($int_obj->value);
     return $new_int_obj;
@@ -249,6 +249,8 @@ Return 1 if the length of $objs1 and $objs2 is same and all element is same, oth
   
 Convert the elements in the byte array to string and join them with "," and surround it with "[" and "]", and return it.
 
+For readability spaces and line breaks are inserted.
+
 If byte array is undef, return undef.
 
 =head2 dump_array_short
@@ -257,7 +259,7 @@ If byte array is undef, return undef.
   
 Convert the elements in the short array to string and join them with "," and surround it with "[" and "]".
 
-For Easy-to-read spaces and line breaks are inserted.
+For readability spaces and line breaks are inserted.
 
 If byte array is undef, return undef.
 
@@ -291,7 +293,7 @@ If byte array is undef, return undef.
   
 Convert the elements in the short array to string interpreting as an unsigned 16bit integer and join them with "," and surround it with "[" and "]".
 
-For Easy-to-read spaces and line breaks are inserted.
+For readability spaces and line breaks are inserted.
 
 If byte array is undef, return undef.
 
@@ -309,6 +311,8 @@ If byte array is undef, return undef.
   
 Convert the elements in the long array to string interpreting as an unsigned 64bit integer and join them with "," and surround it with "[" and "]", and return it.
 
+For readability spaces and line breaks are inserted.
+
 If byte array is undef, return undef.
 
 =head2 dump_array_float
@@ -316,6 +320,8 @@ If byte array is undef, return undef.
   sub dump_array_float : string ($nums : float[])
   
 Convert the elements in the float array to string and join them with "," and surround it with "[" and "]", and return it.
+
+For readability spaces and line breaks are inserted.
 
 If byte array is undef, return undef.
 
@@ -325,7 +331,29 @@ If byte array is undef, return undef.
   
 Convert the elements in the double array to string and join them with "," and surround it with "[" and "]", and return it.
 
+For readability spaces and line breaks are inserted.
+
 If byte array is undef, return undef.
+
+=head2 dump_array_string
+
+  sub dump_array_string : string ($strings : string[])
+  
+Join the strings in the array with "," and surround it with "[" and "]", and return it.
+
+For readability spaces and line breaks are inserted.
+
+If string array is undef, return undef.
+
+=head2 dump_array_object
+
+  sub dump_array_object : string ($objects : oarray, $stringer : SPVM::Stringer)
+  
+Convert the elements in the object array to string by a C<SPVM::Stringer> callback implementation and join them with "," and surround it with "[" and "]", and return it.
+
+For readability spaces and line breaks are inserted.
+
+If string array is undef, return undef.
 
 =head2 memcpy_byte
 

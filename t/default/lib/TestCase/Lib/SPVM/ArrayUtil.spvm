@@ -53,7 +53,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     new_array_proto,
   );
 
-  sub test_equals_object_array : int () {
+  sub test_equals_array_object : int () {
     my $minimal1 = TestCase::Minimal->new;
     my $minimal2 = TestCase::Minimal->new;
     my $minimal3 = TestCase::Minimal->new;
@@ -104,7 +104,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_copy_object_array : int () {
+  sub test_copy_array_object : int () {
     my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(SPVM::NumberUtil->INT32_MIN())];
     my $objects_out = copy_array_object($objects, sub : object ($self : self, $obj : object) {
       my $int_obj = (SPVM::Int)$obj;
@@ -219,7 +219,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_byte_array : int () {
+  sub test_dump_array_byte : int () {
     # Dump array
     {
       my $nums = [(byte)1, 2, SPVM::NumberUtil->INT8_MIN()];
@@ -243,7 +243,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_short_array : int () {
+  sub test_dump_array_short : int () {
     # Dump array
     {
       my $nums = [(short)1, 2, SPVM::NumberUtil->INT16_MIN()];
@@ -267,7 +267,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_int_array : int () {
+  sub test_dump_array_int : int () {
     # Dump array
     {
       my $nums = [(int)1, 2, SPVM::NumberUtil->INT32_MIN()];
@@ -292,7 +292,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_long_array : int () {
+  sub test_dump_array_long : int () {
     # Dump array
     {
       my $nums = [(long)1, 2, SPVM::NumberUtil->INT64_MIN()];
@@ -317,7 +317,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_float_array : int () {
+  sub test_dump_array_float : int () {
     # Dump array
     {
       my $nums = [(float)1, 2, 2.45f];
@@ -341,7 +341,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_double_array : int () {
+  sub test_dump_array_double : int () {
     # Dump array
     {
       my $nums = [(double)1, 2, 2.45];
@@ -365,7 +365,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_unsigned_byte_array : int () {
+  sub test_dump_unsigned_array_byte : int () {
     # Dump array
     {
       my $nums = [(byte)1, 2, -1, SPVM::NumberUtil->UINT8_MAX];
@@ -389,7 +389,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_unsigned_short_array : int () {
+  sub test_dump_unsigned_array_short : int () {
     # Dump array
     {
       my $nums = [(short)1, 2, -1, SPVM::NumberUtil->UINT16_MAX];
@@ -413,7 +413,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_unsigned_int_array : int () {
+  sub test_dump_unsigned_array_int : int () {
     # Dump array
     {
       my $nums = [(int)1, 2, -1, SPVM::NumberUtil->UINT32_MAX];
@@ -437,7 +437,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_unsigned_long_array : long () {
+  sub test_dump_unsigned_array_long : long () {
     # Dump array
     {
       my $nums = [(long)1, 2, -1, SPVM::NumberUtil->UINT64_MAX];
@@ -461,7 +461,31 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_dump_object_array : int () {
+  sub test_dump_array_string : int () {
+    # Dump array
+    {
+      my $strings = ["abc", "def", "ghi"];
+
+      my $dump = SPVM::ArrayUtil->dump_array_string($strings);
+
+      unless ($dump eq "[\n  abc,\n  def,\n  ghi\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = SPVM::ArrayUtil->dump_array_string(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_array_object : int () {
     
     {
       my $minimals = [
@@ -499,11 +523,11 @@ package TestCase::Lib::SPVM::ArrayUtil {
   sub test_new_array_proto : int () {
     my $minimals = new TestCase::Minimal[1];
 
-    my $new_object_array = new_array_proto($minimals, 2);
-    unless ($new_object_array isa TestCase::Minimal[]) {
+    my $new_array_object = new_array_proto($minimals, 2);
+    unless ($new_array_object isa TestCase::Minimal[]) {
       return 0;
     }
-    my $new_minimals = (TestCase::Minimal[])$new_object_array;
+    my $new_minimals = (TestCase::Minimal[])$new_array_object;
     unless (@$new_minimals == 2) {
       return 0;
     }
@@ -647,7 +671,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_equals_byte_array : int () {
+  sub test_equals_array_byte : int () {
     my $nums1 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
     my $nums2 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
     my $nums3 = [(byte)0, 1];
@@ -674,7 +698,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_equals_short_array : int () {
+  sub test_equals_array_short : int () {
     my $nums1 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
     my $nums2 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
     my $nums3 = [(short)0, 1];
@@ -704,7 +728,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_equals_int_array : int () {
+  sub test_equals_array_int : int () {
     my $nums1 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
     my $nums2 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
     my $nums3 = [(int)0, 1];
@@ -732,7 +756,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_equals_long_array : int () {
+  sub test_equals_array_long : int () {
     my $nums1 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
     my $nums2 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
     my $nums3 = [(long)0, 1];
@@ -760,7 +784,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_equals_float_array : int () {
+  sub test_equals_array_float : int () {
     my $nums1 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
     my $nums2 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
     my $nums3 = [0.0f, 1.5f];
@@ -788,7 +812,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_equals_double_array : int () {
+  sub test_equals_array_double : int () {
     my $nums1 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
     my $nums2 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
     my $nums3 = [0.0, 1.5];
@@ -816,7 +840,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_equals_string_array : int () {
+  sub test_equals_array_string : int () {
     my $strings1 = ["abc", "def", "ghi"];
     my $strings2 = ["abc", "def", "ghi"];
     my $strings3 = ["abc", "def"];
@@ -843,7 +867,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     return 1;
   }
-  sub test_copy_byte_array : int () {
+  sub test_copy_array_byte : int () {
     my $nums = [(byte)1, 2, SPVM::NumberUtil->INT8_MIN()];
     my $nums_out = copy_array_byte($nums);
 
@@ -866,7 +890,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_copy_short_array : int () {
+  sub test_copy_array_short : int () {
     my $nums = [(short)1, 2, SPVM::NumberUtil->INT16_MIN()];
     my $nums_out = copy_array_short($nums);
 
@@ -889,7 +913,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_copy_int_array : int () {
+  sub test_copy_array_int : int () {
     my $nums = [(int)1, 2, SPVM::NumberUtil->INT32_MIN()];
     my $nums_out = copy_array_int($nums);
 
@@ -912,7 +936,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_copy_long_array : int () {
+  sub test_copy_array_long : int () {
     my $nums = [(long)1, 2, SPVM::NumberUtil->INT64_MIN()];
     my $nums_out = copy_array_long($nums);
 
@@ -935,7 +959,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_copy_float_array : int () {
+  sub test_copy_array_float : int () {
     my $nums = [(float)0.5f, 0.25f, SPVM::NumberUtil->FLT_MIN()];
     my $nums_out = copy_array_float($nums);
 
@@ -958,7 +982,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_copy_double_array : int () {
+  sub test_copy_array_double : int () {
     my $nums = [(double)0.5, 0.25, SPVM::NumberUtil->DBL_MIN()];
     my $nums_out = copy_array_double($nums);
 
@@ -981,7 +1005,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub test_copy_string_array : int () {
+  sub test_copy_array_string : int () {
     my $strings = ["abc", "def", "hij"];
     my $strings_out = copy_array_string($strings);
 

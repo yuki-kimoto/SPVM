@@ -472,6 +472,30 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
+  sub dump_array_string : string ($strings : string[]) {
+    
+    if ($strings == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
+
+    for (my $i = 0; $i < @$strings; $i++) {
+      my $string = $strings->[$i];
+      $dump .= "  $string";
+      if ($i != @$strings - 1) {
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
+      }
+    }
+    
+    $dump .= "]";
+
+    return $dump;
+  }
+
   sub dump_array_object : string ($objects : oarray, $stringer : SPVM::Stringer) {
     
     if ($objects == undef) {
