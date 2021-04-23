@@ -471,6 +471,30 @@ package SPVM::ArrayUtil : precompile {
     return $dump;
   }
 
+  sub dump_object_array : string ($objects : oarray, $stringer : SPVM::Stringer) {
+    
+    if ($objects == undef) {
+      return undef;
+    }
+    
+    my $dump = "[\n";
+
+    for (my $i = 0; $i < @$objects; $i++) {
+      my $string = $stringer->($objects->[$i]);
+      $dump .= "  $string";
+      if ($i != @$objects - 1) {
+        $dump .= ",\n";
+      }
+      else {
+        $dump .= "\n";
+      }
+    }
+    
+    $dump .= "]";
+
+    return $dump;
+  }
+
   native sub memcpy_byte : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int);
   native sub memcpy_short : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int);
   native sub memcpy_int : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int);

@@ -13,20 +13,6 @@ package SPVM::Util : precompile {
     srand(time());
   }
   
-  sub join_object : string ($sep : string, $objects : oarray, $stringer : SPVM::Stringer) {
-    my $join = "";
-
-    for (my $i = 0; $i < @$objects; $i++) {
-      my $str = $stringer->($objects->[$i]);
-      $join .= $str;
-      if ($i != @$objects - 1) {
-        $join .= $sep;
-      }
-    }
-
-    return $join;
-  }
-
   sub INT8_MIN : byte () { return -128; }
   sub INT8_MAX : byte () { return 127; }
 

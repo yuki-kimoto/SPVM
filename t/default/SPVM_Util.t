@@ -35,11 +35,6 @@ my $nan_re = qr/(nan|ind)/i;
 use SPVM 'TestCase::Lib::SPVM::Util';
 use SPVM 'SPVM::Util';
 
-# join
-{
-  ok(TestCase::Lib::SPVM::Util->test_join_object);
-}
-
 # crand
 {
   ok(TestCase::Lib::SPVM::Util->test_crand);

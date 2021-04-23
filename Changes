@@ -82,7 +82,8 @@
     ucfirst
     rindex
     contains
-
+  - remove SPVM::Util->join_object in favor of SPVM::ArrayUtil->dump_object_array
+  - add SPVM::ArrayUtil->dump_object_array
 0.0945 2021-04-22
   - rename SPVM::Byte->val to SPVM::Byte->value
   - rename SPVM::Short->val to SPVM::Short->value

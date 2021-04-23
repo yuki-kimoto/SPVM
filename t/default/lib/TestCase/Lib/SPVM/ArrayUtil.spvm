@@ -461,6 +461,41 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
+  sub test_dump_object_array : int () {
+    
+    {
+      my $minimals = [
+        TestCase::Minimal->newp(1, 2),
+        TestCase::Minimal->newp(3, 4),
+        TestCase::Minimal->newp(5, 6)
+      ];
+
+      my $dump = SPVM::ArrayUtil->dump_object_array($minimals, sub : string ($self : self, $obj : object) {
+        my $minimal = (TestCase::Minimal)$obj;
+        my $x = $minimal->x;
+        my $y = $minimal->y;
+        my $str = "($x,$y)";
+        return $str;
+      });
+
+      if ($dump eq "[\n  (1,2),\n  (3,4),\n  (5,6)\n]") {
+        return 1;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = SPVM::ArrayUtil->dump_object_array(undef, undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+
   sub test_new_object_array_proto : int () {
     my $minimals = new TestCase::Minimal[1];
 
