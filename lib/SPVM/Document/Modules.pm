@@ -30,7 +30,7 @@ L<SPVM::Comparator::Byte> -
 
 =head2 SPVM::Comparator::Short
 
-L<SPVM::Comparator::Short> -  short object
+L<SPVM::Comparator::Short> -
 
 =head2 SPVM::Comparator::Int
 
@@ -126,7 +126,7 @@ L<SPVM::Math> -
 
 =head2 SPVM::NumberUtil
 
-L<SPVM::NumberUtil> - 
+L<SPVM::NumberUtil> - Number Utilities
 
 =head2 SPVM::Regex
 
@@ -142,7 +142,7 @@ L<SPVM::Regex::Replacer> -
 
 =head2 SPVM::Short
 
-L<SPVM::Short> - 
+L<SPVM::Short> - short object
 
 =head2 SPVM::ShortList
 
