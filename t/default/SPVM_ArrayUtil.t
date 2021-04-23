@@ -62,10 +62,10 @@ use SPVM 'SPVM::ArrayUtil';
   ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_byte);
 }
 
-# new_object_array_proto
+# new_array_proto
 {
   # slice_byte
-  ok(TestCase::Lib::SPVM::ArrayUtil->test_new_object_array_proto);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_new_array_proto);
 }
 
 # slice

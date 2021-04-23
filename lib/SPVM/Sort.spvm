@@ -6,7 +6,7 @@ package SPVM::Sort : precompile {
   use SPVM::Comparator::Float;
   use SPVM::Comparator::Double;
   use SPVM::Comparator::Object;
-  use SPVM::ArrayUtil(new_object_array_proto);
+  use SPVM::ArrayUtil(new_array_proto);
   
   sub sortb : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte) {
     if ($nums == undef) {
@@ -471,7 +471,7 @@ package SPVM::Sort : precompile {
       die "Offset + Length must be in the array range";
     }
     
-    my $b = new_object_array_proto($objs, $length);
+    my $b = new_array_proto($objs, $length);
     _sorto_merge_sort($objs, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 

@@ -487,7 +487,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memmove_double(SPVM_ENV* env, SPVM_VALUE* sta
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__new_object_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__ArrayUtil__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* oarray = stack[0].oval;
   int32_t length = stack[1].ival;

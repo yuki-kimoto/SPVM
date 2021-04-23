@@ -519,9 +519,9 @@ If length is nagative, a exception occurs.
 
 If copy is not in the valid rainge, a exception occurs.
 
-=head2 new_object_array_proto
+=head2 new_array_proto
 
-  sub new_object_array_proto : oarray ($proto_array : oarray, $length : int)
+  sub new_array_proto : oarray ($proto_array : oarray, $length : int)
 
 Create a new generic object array as the same type as the given array.
 

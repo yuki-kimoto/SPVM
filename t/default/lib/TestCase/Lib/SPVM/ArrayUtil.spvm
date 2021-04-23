@@ -50,7 +50,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
     memmove_long,
     memmove_float,
     memmove_double,
-    new_object_array_proto,
+    new_array_proto,
   );
 
   sub test_equals_object_array : int () {
@@ -496,10 +496,10 @@ package TestCase::Lib::SPVM::ArrayUtil {
   }
 
 
-  sub test_new_object_array_proto : int () {
+  sub test_new_array_proto : int () {
     my $minimals = new TestCase::Minimal[1];
 
-    my $new_object_array = new_object_array_proto($minimals, 2);
+    my $new_object_array = new_array_proto($minimals, 2);
     unless ($new_object_array isa TestCase::Minimal[]) {
       return 0;
     }
