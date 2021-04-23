@@ -347,6 +347,349 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
+  sub test_equals_array_byte : int () {
+    my $nums1 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
+    my $nums2 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
+    my $nums3 = [(byte)0, 1];
+    my $nums4 = [(byte)0, 1, 2];
+    {
+      my $is_equals = equals_array_byte($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_byte($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_byte($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_byte(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_byte($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_byte(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_short : int () {
+    my $nums1 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
+    my $nums2 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
+    my $nums3 = [(short)0, 1];
+    my $nums4 = [(short)0, 1, 2];
+
+    {
+      my $is_equals = equals_array_short($nums1, $nums2);
+
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_short($nums1, $nums3);
+
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_short($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_short(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_short($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_short(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_int : int () {
+    my $nums1 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
+    my $nums2 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
+    my $nums3 = [(int)0, 1];
+    my $nums4 = [(int)0, 1, 2];
+
+    {
+      my $is_equals = equals_array_int($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_int($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_int($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_int(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_int($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_int(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_long : int () {
+    my $nums1 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
+    my $nums2 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
+    my $nums3 = [(long)0, 1];
+    my $nums4 = [(long)0, 1, 2];
+
+    {
+      my $is_equals = equals_array_long($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_long($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_long($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_long(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_long($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_long(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_float : int () {
+    my $nums1 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
+    my $nums2 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
+    my $nums3 = [0.0f, 1.5f];
+    my $nums4 = [(float)0.0f, 1.5f, 0.5f];
+
+    {
+      my $is_equals = equals_array_float($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_float($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_float($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_float(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_float($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_float(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_double : int () {
+    my $nums1 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
+    my $nums2 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
+    my $nums3 = [0.0, 1.5];
+    my $nums4 = [(double)0.0, 1.5, 0.5];
+
+    {
+      my $is_equals = equals_array_double($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_double($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_double($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_double(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_double($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_double(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_string : int () {
+    my $strings1 = ["abc", "def", "ghi"];
+    my $strings2 = ["abc", "def", "ghi"];
+    my $strings3 = ["abc", "def"];
+    my $strings4 = ["abc", "def", "xxx"];
+
+    {
+      my $is_equals = equals_array_string($strings1, $strings2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_string($strings1, $strings3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_string($strings1, $strings4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_string(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_string($strings1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_string(undef, $strings1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
   sub test_equals_array_object : int () {
     my $minimal1 = TestCase::Minimal->new;
     my $minimal2 = TestCase::Minimal->new;
@@ -939,203 +1282,6 @@ package TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
     }
-    return 1;
-  }
-
-  sub test_equals_array_byte : int () {
-    my $nums1 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
-    my $nums2 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
-    my $nums3 = [(byte)0, 1];
-    my $nums4 = [(byte)0, 1, 2];
-    {
-      my $is_equals = equals_array_byte($nums1, $nums2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_byte($nums1, $nums3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_byte($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_equals_array_short : int () {
-    my $nums1 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
-    my $nums2 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
-    my $nums3 = [(short)0, 1];
-    my $nums4 = [(short)0, 1, 2];
-
-    {
-      my $is_equals = equals_array_short($nums1, $nums2);
-
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_short($nums1, $nums3);
-
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_short($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_equals_array_int : int () {
-    my $nums1 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
-    my $nums2 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
-    my $nums3 = [(int)0, 1];
-    my $nums4 = [(int)0, 1, 2];
-
-    {
-      my $is_equals = equals_array_int($nums1, $nums2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_int($nums1, $nums3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_int($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_equals_array_long : int () {
-    my $nums1 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
-    my $nums2 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
-    my $nums3 = [(long)0, 1];
-    my $nums4 = [(long)0, 1, 2];
-
-    {
-      my $is_equals = equals_array_long($nums1, $nums2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_long($nums1, $nums3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_long($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_equals_array_float : int () {
-    my $nums1 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
-    my $nums2 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
-    my $nums3 = [0.0f, 1.5f];
-    my $nums4 = [(float)0.0f, 1.5f, 0.5f];
-
-    {
-      my $is_equals = equals_array_float($nums1, $nums2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_float($nums1, $nums3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_float($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_equals_array_double : int () {
-    my $nums1 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
-    my $nums2 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
-    my $nums3 = [0.0, 1.5];
-    my $nums4 = [(double)0.0, 1.5, 0.5];
-
-    {
-      my $is_equals = equals_array_double($nums1, $nums2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_double($nums1, $nums3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_double($nums1, $nums4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_equals_array_string : int () {
-    my $strings1 = ["abc", "def", "ghi"];
-    my $strings2 = ["abc", "def", "ghi"];
-    my $strings3 = ["abc", "def"];
-    my $strings4 = ["abc", "def", "xxx"];
-
-    {
-      my $is_equals = equals_array_string($strings1, $strings2);
-      unless ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_string($strings1, $strings3);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-    {
-      my $is_equals = equals_array_string($strings1, $strings4);
-      if ($is_equals) {
-        return 0;
-      }
-    }
-
     return 1;
   }
 }
