@@ -625,6 +625,7 @@ package TestCase::Lib::SPVM::ArrayUtil {
 
     return 1;
   }
+  
   sub test_slice_double : int () {
     {
       my $nums = [(double)5, -7, 9, SPVM::NumberUtil->DBL_MIN(), 127, 15, 19];
@@ -642,6 +643,25 @@ package TestCase::Lib::SPVM::ArrayUtil {
     }
     return 1;
   }
+
+  sub test_slice_string : int () {
+    {
+      my $strings = ["a", "b", "c", "d", "e", "f", "g"];
+      my $slice = SPVM::ArrayUtil->slice_string($strings, 0, 7);
+      unless (equals_array_string($slice, ["a", "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $strings = ["a", "b", "c", "d", "e", "f", "g"];
+      my $slice = SPVM::ArrayUtil->slice_string($strings, 1, 3);
+      unless (equals_array_string($slice, ["b", "c", "d"])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
   sub test_slice_object : int () {
 
     {

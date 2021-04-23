@@ -555,12 +555,112 @@ Create a new generic object array as the same type as the given array.
 
 =head2 slice_byte
 
+  sub slice_byte : byte[] ($nums : byte[], $offset : int, $length : int)
+  
+Slice elements in the byte array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.
+
 =head2 slice_short
+
+  sub slice_short : short[] ($nums : short[], $offset : int, $length : int)
+
+Slice elements in the short array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.
 
 =head2 slice_int
 
+  sub slice_int : int[] ($nums : int[], $offset : int, $length : int)
+
+Slice elements in the int array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.
+
 =head2 slice_long
+
+  sub slice_long : long[] ($nums : long[], $offset : int, $length : int)
+
+Slice elements in the long array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.
 
 =head2 slice_float
 
+  sub slice_float : float[] ($nums : float[], $offset : int, $length : int)
+
+Slice elements in the float array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.
+
 =head2 slice_double
+
+  sub slice_double : double[] ($nums : double[], $offset : int, $length : int)
+
+Slice elements in the double array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.
+
+=head2 slice_string
+  
+  sub slice_string : string[] ($strings : string[], $offset : int, $length : int)
+
+Slice elements in the string array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.
+
+=head2 slice_object
+
+  sub slice_object : oarray ($elems : oarray, $offset : int, $length : int)
+
+Slice elements in the object array with the start offset and the length.
+
+Array must be defined, otherwise a exception occurs.
+
+Offset must be in the array range, otherwise a exception occurs.
+
+Length must be more than or equals to 0, othrewise a exception occurs.
+
+Offset + length must not be in the array range, othrewise a exception occurs.

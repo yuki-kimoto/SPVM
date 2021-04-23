@@ -88,6 +88,8 @@
   - fix bug that le operator means lt.
   - in eq, ne, gt, ge, lt, le string comparison, undef is treated as most small value
     and these string comparison operators don't throw a exception.
+  - add SPVM::ArrayUtil->dump_array_string
+  - add SPVM::ArrayUtil->slice_array_string
 0.0945 2021-04-22
   - rename SPVM::Byte->val to SPVM::Byte->value
   - rename SPVM::Short->val to SPVM::Short->value

@@ -11,8 +11,6 @@ use SPVM 'SPVM::ArrayUtil';
 use POSIX();
 use TestFile;
 
-
-
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
@@ -82,6 +80,9 @@ use SPVM 'SPVM::ArrayUtil';
 
   # slice_double
   ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_double);
+
+  # slice_double
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_string);
 
   # slice_double
   ok(TestCase::Lib::SPVM::ArrayUtil->test_slice_object);
