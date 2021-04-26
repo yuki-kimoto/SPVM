@@ -44,7 +44,7 @@ package TestCase::Callback {
     return 1;
   }
   
-  sub sort_obj : void ($values : oarray, $comparator : SPVM::Comparator::Object) {
+  sub sort_objectect : void ($values : oarray, $comparator : SPVM::Comparator::Object) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
@@ -88,7 +88,7 @@ package TestCase::Callback {
       $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
-      sort_obj($minimals, $comparator);
+      sort_objectect($minimals, $comparator);
       
       if ($minimals->[0]{x} == 1 && $minimals->[1]{x} == 2 && $minimals->[2]{x} == 3) {
         return 1;

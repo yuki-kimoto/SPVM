@@ -640,7 +640,7 @@ SPVM::Test - SPVM test module
       $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
-      sort_obj($minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
+      sort_objectect($minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         
@@ -1867,7 +1867,7 @@ SPVM::Test - SPVM test module
     return 0;
   }
 
-  sub sort_obj : void ($values : oarray, $comparator : TestCase::Comparator) {
+  sub sort_objectect : void ($values : oarray, $comparator : TestCase::Comparator) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){

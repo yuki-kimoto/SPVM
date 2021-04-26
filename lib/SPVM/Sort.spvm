@@ -8,7 +8,7 @@ package SPVM::Sort : precompile {
   use SPVM::Comparator::Object;
   use SPVM::ArrayUtil(new_array_proto);
   
-  sub sortb : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte) {
+  sub sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -32,9 +32,9 @@ package SPVM::Sort : precompile {
     }
     
     my $b = new byte[$length];
-    _sortb_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    _sort_byte_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private sub _sortb_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte) {
+  private sub _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -70,19 +70,19 @@ package SPVM::Sort : precompile {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private sub _sortb_merge_sort : void($a : byte[], $b : byte[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte){
+  private sub _sort_byte_merge_sort : void($a : byte[], $b : byte[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte){
     if ($left >= $right) {
       return;
     }
 
     my $mid = ($left + $right) / 2;
 
-    _sortb_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sortb_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sortb_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sort_byte_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_byte_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_byte_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  sub sorts : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short) {
+  sub sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -106,9 +106,9 @@ package SPVM::Sort : precompile {
     }
     
     my $b = new short[$length];
-    _sorts_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    _sort_short_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private sub _sorts_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short) {
+  private sub _sort_short_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -144,19 +144,19 @@ package SPVM::Sort : precompile {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private sub _sorts_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short){
+  private sub _sort_short_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short){
     if ($left >= $right) {
       return;
     }
 
     my $mid = ($left + $right) / 2;
 
-    _sorts_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sorts_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sorts_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sort_short_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_short_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_short_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  sub sorti : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int) {
+  sub sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -180,9 +180,9 @@ package SPVM::Sort : precompile {
     }
     
     my $b = new int[$length];
-    _sorti_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    _sort_int_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private sub _sorti_merge : void($a : int[], $b : int[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int) {
+  private sub _sort_int_merge : void($a : int[], $b : int[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -218,19 +218,19 @@ package SPVM::Sort : precompile {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private sub _sorti_merge_sort : void($a : int[], $b : int[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int){
+  private sub _sort_int_merge_sort : void($a : int[], $b : int[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int){
     if ($left >= $right) {
       return;
     }
 
     my $mid = ($left + $right) / 2;
 
-    _sorti_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sorti_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sorti_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sort_int_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_int_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_int_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  sub sortl : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long) {
+  sub sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -254,9 +254,9 @@ package SPVM::Sort : precompile {
     }
     
     my $b = new long[$length];
-    _sortl_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    _sort_long_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private sub _sortl_merge : void($a : long[], $b : long[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long) {
+  private sub _sort_long_merge : void($a : long[], $b : long[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -292,19 +292,19 @@ package SPVM::Sort : precompile {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private sub _sortl_merge_sort : void($a : long[], $b : long[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long){
+  private sub _sort_long_merge_sort : void($a : long[], $b : long[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long){
     if ($left >= $right) {
       return;
     }
 
     my $mid = ($left + $right) / 2;
 
-    _sortl_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sortl_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sortl_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sort_long_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_long_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_long_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  sub sortf : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float) {
+  sub sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -328,9 +328,9 @@ package SPVM::Sort : precompile {
     }
     
     my $b = new float[$length];
-    _sortf_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    _sort_float_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private sub _sortf_merge : void($a : float[], $b : float[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float) {
+  private sub _sort_float_merge : void($a : float[], $b : float[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -366,19 +366,19 @@ package SPVM::Sort : precompile {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private sub _sortf_merge_sort : void($a : float[], $b : float[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float){
+  private sub _sort_float_merge_sort : void($a : float[], $b : float[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float){
     if ($left >= $right) {
       return;
     }
 
     my $mid = ($left + $right) / 2;
 
-    _sortf_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sortf_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sortf_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sort_float_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_float_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_float_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  sub sortd : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double) {
+  sub sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double) {
     if ($nums == undef) {
       die "Array must be not undef";
     }
@@ -402,9 +402,9 @@ package SPVM::Sort : precompile {
     }
     
     my $b = new double[$length];
-    _sortd_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    _sort_double_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-  private sub _sortd_merge : void($a : double[], $b : double[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double) {
+  private sub _sort_double_merge : void($a : double[], $b : double[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double) {
     my $i = $left;
     my $j = $mid + 1;
     my $k = 0;
@@ -440,19 +440,19 @@ package SPVM::Sort : precompile {
       $a->[$i + $left] = $b->[$i];
     }
   }
-  private sub _sortd_merge_sort : void($a : double[], $b : double[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double){
+  private sub _sort_double_merge_sort : void($a : double[], $b : double[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double){
     if ($left >= $right) {
       return;
     }
 
     my $mid = ($left + $right) / 2;
 
-    _sortd_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sortd_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sortd_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sort_double_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_double_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_double_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
   
-  sub sorto : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object) {
+  sub sort_object : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object) {
     if ($objs == undef) {
       die "Array must be not undef";
     }
@@ -472,10 +472,10 @@ package SPVM::Sort : precompile {
     }
     
     my $b = new_array_proto($objs, $length);
-    _sorto_merge_sort($objs, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    _sort_object_merge_sort($objs, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
-  private sub _sorto_merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object) {
+  private sub _sort_object_merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object) {
       my $i = $left;
       my $j = $mid + 1;
       my $k = 0;
@@ -512,15 +512,15 @@ package SPVM::Sort : precompile {
       }
   }
 
-  private sub _sorto_merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object){
+  private sub _sort_object_merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object){
     if ($left >= $right) {
       return;
     }
 
     my $mid = ($left + $right) / 2;
 
-    _sorto_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sorto_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sorto_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    _sort_object_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_object_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_object_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 }

@@ -15,13 +15,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # sort
 {
-  ok(TestCase::Lib::SPVM::Sort->sortb);
-  ok(TestCase::Lib::SPVM::Sort->sorts);
-  ok(TestCase::Lib::SPVM::Sort->sorti);
-  ok(TestCase::Lib::SPVM::Sort->sortl);
-  ok(TestCase::Lib::SPVM::Sort->sortf);
-  ok(TestCase::Lib::SPVM::Sort->sortd);
-  ok(TestCase::Lib::SPVM::Sort->sorto);
+  ok(TestCase::Lib::SPVM::Sort->sort_byte);
+  ok(TestCase::Lib::SPVM::Sort->sort_short);
+  ok(TestCase::Lib::SPVM::Sort->sort_int);
+  ok(TestCase::Lib::SPVM::Sort->sort_long);
+  ok(TestCase::Lib::SPVM::Sort->sort_float);
+  ok(TestCase::Lib::SPVM::Sort->sort_double);
+  ok(TestCase::Lib::SPVM::Sort->sort_object);
 }
 
 # All object is freed
