@@ -16,7 +16,7 @@
   - rename SPVM::ArrayUtil->slice_double to SPVM::ArrayUtil->copy_array_range_double
   - rename SPVM::ArrayUtil->slice_string to SPVM::ArrayUtil->copy_array_range_string
   - rename SPVM::ArrayUtil->slice_object to SPVM::ArrayUtil->copy_array_range_object
-
+  - fix bug that import subroutine is not checked the existance
 0.0946 2021-04-23
   - Create SPVM::ArrayUtil module
   - move the following SPVM::Util methods to SPVM::ArrayUtil

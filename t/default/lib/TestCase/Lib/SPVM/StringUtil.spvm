@@ -1,6 +1,4 @@
 package TestCase::Lib::SPVM::StringUtil {
-  use SPVM::NumberUtil(join_object);
-
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
   use SPVM::StringUtil (contains);

@@ -5119,4 +5119,35 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       }
     }
   }
+  
+  // Check import subroutine
+  for (int32_t package_index = compiler->cur_package_base; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    const char* package_name = package->op_name->uv.name;
+    SPVM_LIST* op_uses = package->op_uses;
+    
+    for (int32_t uses_index = 0; uses_index < op_uses->length; uses_index++) {
+      SPVM_OP* op_use = (SPVM_OP*)SPVM_LIST_fetch(op_uses, uses_index);
+      
+      SPVM_OP* use_op_type = op_use->uv.use->op_type;
+      const char* use_package_name = use_op_type->uv.type->basic_type->name;
+      SPVM_PACKAGE* use_package = SPVM_HASH_fetch(compiler->package_symtable, use_package_name, strlen(use_package_name));
+      
+      SPVM_LIST* import_sub_names = op_use->uv.use->sub_names;
+      if (import_sub_names) {
+        for (int32_t import_sub_name_index = 0; import_sub_name_index < import_sub_names->length; import_sub_name_index++) {
+          const char* import_sub_name = SPVM_LIST_fetch(import_sub_names, import_sub_name_index);
+          SPVM_SUB* found_sub = SPVM_HASH_fetch(
+            use_package->sub_symtable,
+            import_sub_name,
+            strlen(import_sub_name)
+          );
+          if (!found_sub) {
+            SPVM_COMPILER_error(compiler, "Fail subroutine importing. Not found \"%s->%s\" at %s line %d\n", use_package_name, import_sub_name, op_use->file, op_use->line);
+            return;
+          }
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,6 @@
 package SPVM::Hash : precompile {
   use SPVM::Hash::Entry;
-  use SPVM::NumberUtil (INT32_MAX, copy_string);
+  use SPVM::NumberUtil (INT32_MAX);
 
   has bucket_count : int;
   has count : ro int;

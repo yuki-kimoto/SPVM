@@ -1,5 +1,5 @@
 package TestCase::Lib::SPVM::ArrayUtil {
-  use SPVM::ArrayUtil(join_object, split, copy_array_object, equals_array_object, sprintf);
+  use SPVM::ArrayUtil(copy_array_object, equals_array_object);
   
   use SPVM::NumberUtil;
   use SPVM::Unicode (uchar);
@@ -24,7 +24,6 @@ package TestCase::Lib::SPVM::ArrayUtil {
     equals_array_long,
     equals_array_float,
     equals_array_double,
-    get_type_name,
     dump_array_byte,
     dump_array_short,
     dump_array_int,

@@ -1,9 +1,6 @@
 package TestCase::Lib::SPVM::NumberUtil {
-  use SPVM::NumberUtil(split, sprintf);
-
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
-  use SPVM::NumberUtil (contains);
   use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   use TestCase::Minimal;
   use SPVM::Time (time);
