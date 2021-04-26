@@ -8,6 +8,7 @@ package SPVM::ArrayUtil : precompile {
   use SPVM::Comparator::Long;
   use SPVM::Comparator::Float;
   use SPVM::Comparator::Double;
+  use SPVM::Comparator::String;
   use SPVM::Comparator::Object;
 
   sub copy_array_byte : byte[] ($nums : byte[]) {
@@ -1346,13 +1347,13 @@ package SPVM::ArrayUtil : precompile {
     _sort_double_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
     _sort_double_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
-  
-  sub sort_object : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object) {
-    if ($objs == undef) {
+
+  sub sort_string : void ($strings : string[], $offset : int, $length : int, $comparator : SPVM::Comparator::String) {
+    if ($strings == undef) {
       die "Array must be not undef";
     }
     
-    my $objs_length = @$objs;
+    my $strings_length = @$strings;
     
     if ($offset < 0) {
       die "Offset must be more than or equals to 0";
@@ -1362,12 +1363,85 @@ package SPVM::ArrayUtil : precompile {
       die "Length must be more than or equals to 0";
     }
     
-    if ($offset + $length > $objs_length) {
+    if ($offset + $length > $strings_length) {
       die "Offset + Length must be in the array range";
     }
     
-    my $b = new_array_proto($objs, $length);
-    _sort_object_merge_sort($objs, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    my $b = new string[$length];
+    _sort_string_merge_sort($strings, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+  }
+
+  private sub _sort_string_merge : void($a : string[], $b : string[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::String) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+
+  private sub _sort_string_merge_sort : void($a : string[], $b : string[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::String){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sort_string_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_string_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+
+  sub sort_object : void ($objects : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object) {
+    if ($objects == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $objects_length = @$objects;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $objects_length) {
+      die "Offset + Length must be in the array range";
+    }
+    
+    my $b = new_array_proto($objects, $length);
+    
+    _sort_object_merge_sort($objects, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
   private sub _sort_object_merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object) {
@@ -1375,32 +1449,32 @@ package SPVM::ArrayUtil : precompile {
       my $j = $mid + 1;
       my $k = 0;
       while ($i <= $mid && $j <= $right) {
-          $i = $left;
-          $j = $mid + 1;
-          $k = 0;
-          while ($i <= $mid && $j <= $right) {
-              if ($comparator->($a->[$i], $a->[$j]) <= 0) {
-                  $b->[$k] = $a->[$i];
-                  $i++;
-              } else {
-                  $b->[$k] = $a->[$j];
-                  $j++;
-              }
-              $k++;
-          }
-          if ($i == $mid + 1) {
-              while ($j <= $right) {
-                  $b->[$k] = $a->[$j]; 
-                  $j++;
-                  $k++;
-              }
+        $i = $left;
+        $j = $mid + 1;
+        $k = 0;
+        while ($i <= $mid && $j <= $right) {
+          if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+            $b->[$k] = $a->[$i];
+            $i++;
           } else {
-              while($i <= $mid) {
-                  $b->[$k] = $a->[$i];
-                  $i++;
-                  $k++;
-              }
+            $b->[$k] = $a->[$j];
+            $j++;
           }
+          $k++;
+        }
+        if ($i == $mid + 1) {
+          while ($j <= $right) {
+            $b->[$k] = $a->[$j]; 
+            $j++;
+            $k++;
+          }
+        } else {
+          while($i <= $mid) {
+            $b->[$k] = $a->[$i];
+            $i++;
+            $k++;
+          }
+        }
       }
       for ($i = 0; $i < $k; $i++) {
         $a->[$i + $left] = $b->[$i];

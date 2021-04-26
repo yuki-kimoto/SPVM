@@ -32,7 +32,9 @@
   - move SPVM::Sort->sort_double to SPVM::ArrayUtil->sort_double
   - move SPVM::Sort->sort_object to SPVM::ArrayUtil->sort_object
   - remove SPVM::Sort
-
+  - add SPVM::ArrayUtil->sort_string
+  - add SPVM::Comparator::String
+  
 0.0946 2021-04-23
   - Create SPVM::ArrayUtil module
   - move the following SPVM::Util methods to SPVM::ArrayUtil

@@ -158,6 +158,7 @@ use SPVM 'SPVM::ArrayUtil';
   ok(TestCase::Lib::SPVM::ArrayUtil->sort_long);
   ok(TestCase::Lib::SPVM::ArrayUtil->sort_float);
   ok(TestCase::Lib::SPVM::ArrayUtil->sort_double);
+  ok(TestCase::Lib::SPVM::ArrayUtil->sort_string);
   ok(TestCase::Lib::SPVM::ArrayUtil->sort_object);
 }
 

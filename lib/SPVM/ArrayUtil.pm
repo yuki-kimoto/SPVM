@@ -145,6 +145,12 @@ SPVM::ArrayUtil - Array Utilities
     return $a <=> $b;
   });
 
+  # Sort string array itself by asc order
+  my $nums = ["11", "1", "2", undef, ""];
+  SPVM::Sort->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+    return $a <=> $b;
+  });
+
   # Sort object array itself by asc order
   my $minimals = new TestCase::Minimal[3];
   $minimals->[0] = TestCase::Minimal->new;
@@ -796,6 +802,20 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
     sub sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
 
 Sort double array itself with a offset, a length, and a L<SPVM::Comparator::Double> comparator.
+
+Array must be not undef. Otherwise a exception occurs.
+
+Offset must be more than or equals to 0. Otherwise a exception occurs.
+
+Length must be more than or equals to 0. Otherwise a exception occurs.
+
+Offset + Length must be in the array range. Otherwise a exception occurs.
+
+=head2 sort_string
+
+    sub sort_string : void ($nums : string[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
+
+Sort string array itself with a offset, a length, and a L<SPVM::Comparator::String> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 

@@ -2123,7 +2123,160 @@ package TestCase::Lib::SPVM::ArrayUtil {
     
     return 1;
   }
-  
+
+  sub sort_string : int () {
+    # Sort array by asc order
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $strings = [(string)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $strings = [(string)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort string array by desc order
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $b cmp $a;
+      });
+      
+      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      SPVM::ArrayUtil->sort_string($strings, 0, 0, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      SPVM::ArrayUtil->sort_string($strings, 1, 3, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Sort length is differnt and contain empty string and undef
+    {
+      my $strings = ["11", "1", "2", undef, ""];
+      
+      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)undef, "", "1", "11", "2"])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      eval {
+        SPVM::ArrayUtil->sort_string(undef, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      eval {
+        SPVM::ArrayUtil->sort_string($strings, -1, 3, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      eval {
+        SPVM::ArrayUtil->sort_string($strings, 1, -1, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      eval {
+        SPVM::ArrayUtil->sort_string($strings, 3, 3, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
   sub new_minimal : TestCase::Minimal ($x : int, $y : int) {
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x($x);

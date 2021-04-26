@@ -37,4 +37,4 @@ L<SPVM::Comparator::Object> is a callback type to compare objects.
 
   sub : int ($self : self, $object1 : object, $object2 : object);
 
-This method should receive two objects and return 1 if $object1 is more than $object2, -1 if $x is lass than $object2, 0 if $object1 equals $object2 in the implementation.
+This method should receive two objects and return 1 if $object1 is more than $object2, -1 if $x is less than $object2, 0 if $object1 equals $object2 in the implementation.
