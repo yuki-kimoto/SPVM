@@ -17,13 +17,22 @@
   - rename SPVM::ArrayUtil->slice_string to SPVM::ArrayUtil->copy_array_range_string
   - rename SPVM::ArrayUtil->slice_object to SPVM::ArrayUtil->copy_array_range_object
   - fix bug that import subroutine is not checked the existance
-  - rename SPVM::ArrayUtil->sortb to SPVM::ArrayUtil->sort_byte
-  - rename SPVM::ArrayUtil->sorts to SPVM::ArrayUtil->sort_short
-  - rename SPVM::ArrayUtil->sorti to SPVM::ArrayUtil->sort_int
-  - rename SPVM::ArrayUtil->sortl to SPVM::ArrayUtil->sort_long
-  - rename SPVM::ArrayUtil->sortf to SPVM::ArrayUtil->sort_float
-  - rename SPVM::ArrayUtil->sortd to SPVM::ArrayUtil->sort_double
-  - rename SPVM::ArrayUtil->sorto to SPVM::ArrayUtil->sort_object
+  - rename SPVM::Sort->sortb to SPVM::Sort->sort_byte
+  - rename SPVM::Sort->sorts to SPVM::Sort->sort_short
+  - rename SPVM::Sort->sorti to SPVM::Sort->sort_int
+  - rename SPVM::Sort->sortl to SPVM::Sort->sort_long
+  - rename SPVM::Sort->sortf to SPVM::Sort->sort_float
+  - rename SPVM::Sort->sortd to SPVM::Sort->sort_double
+  - rename SPVM::Sort->sorto to SPVM::Sort->sort_object
+  - move SPVM::Sort->sort_byte   to SPVM::ArrayUtil->sort_byte  
+  - move SPVM::Sort->sort_short  to SPVM::ArrayUtil->sort_short 
+  - move SPVM::Sort->sort_int    to SPVM::ArrayUtil->sort_int   
+  - move SPVM::Sort->sort_long   to SPVM::ArrayUtil->sort_long  
+  - move SPVM::Sort->sort_float  to SPVM::ArrayUtil->sort_float 
+  - move SPVM::Sort->sort_double to SPVM::ArrayUtil->sort_double
+  - move SPVM::Sort->sort_object to SPVM::ArrayUtil->sort_object
+  - remove SPVM::Sort
+
 0.0946 2021-04-23
   - Create SPVM::ArrayUtil module
   - move the following SPVM::Util methods to SPVM::ArrayUtil

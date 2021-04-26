@@ -12,37 +12,37 @@ SPVM::Sort - Sort functions
   
   # Sort byte array itself by asc order
   my $nums = [(byte)2, 3, 1];
-  SPVM::Sort::sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+  SPVM::Sort->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
     return $a <=> $b;
   });
 
   # Sort short array itself by asc order
   my $nums = [(short)2, 3, 1];
-  SPVM::Sort::sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+  SPVM::Sort->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
     return $a <=> $b;
   });
 
   # Sort int array itself by asc order
   my $nums = [2, 3, 1];
-  SPVM::Sort::sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+  SPVM::Sort->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
     return $a <=> $b;
   });
 
   # Sort long array itself by asc order
   my $nums = [(long)2, 3, 1];
-  SPVM::Sort::sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+  SPVM::Sort->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
     return $a <=> $b;
   });
 
   # Sort float array itself by asc order
   my $nums = [(float)2, 3, 1];
-  SPVM::Sort::sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+  SPVM::Sort->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
     return $a <=> $b;
   });
 
   # Sort double array itself by asc order
   my $nums = [(double)2, 3, 1];
-  SPVM::Sort::sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+  SPVM::Sort->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
     return $a <=> $b;
   });
 
@@ -57,7 +57,7 @@ SPVM::Sort - Sort functions
   $minimals->[2] = TestCase::Minimal->new;
   $minimals->[2]{x} = 2;
   $minimals->[2]{y} = 9;
-  SPVM::Sort::sort_object$minimals, 0, scalar @$minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
+  SPVM::Sort->sort_object$minimals, 0, scalar @$minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
     my $minimal1 = (TestCase::Minimal)$object1;
     my $minimal2 = (TestCase::Minimal)$object2;
     

@@ -133,7 +133,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::NumberUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ArrayUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Sort');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::List');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ByteList');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ShortList');

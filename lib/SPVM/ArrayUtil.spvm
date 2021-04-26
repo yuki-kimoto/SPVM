@@ -2,6 +2,13 @@ package SPVM::ArrayUtil : precompile {
   use SPVM::Cloner;
   use SPVM::EqualityChecker;
   use SPVM::StringUtil;
+  use SPVM::Comparator::Byte;
+  use SPVM::Comparator::Short;
+  use SPVM::Comparator::Int;
+  use SPVM::Comparator::Long;
+  use SPVM::Comparator::Float;
+  use SPVM::Comparator::Double;
+  use SPVM::Comparator::Object;
 
   sub copy_array_byte : byte[] ($nums : byte[]) {
     if ($nums == undef) {
@@ -131,6 +138,253 @@ package SPVM::ArrayUtil : precompile {
     return $new_objects;
   }
 
+  sub copy_array_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
+
+    if ($nums == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$nums;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be non-zero value";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be over array length";
+    }
+
+    my $slice = new byte[$length];
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
+
+  sub copy_array_range_short : short[] ($nums : short[], $offset : int, $length : int) {
+
+    if ($nums == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$nums;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be non-zero value";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be over array length";
+    }
+
+    my $slice = new short[$length];
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
+
+  sub copy_array_range_int : int[] ($nums : int[], $offset : int, $length : int) {
+
+    if ($nums == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$nums;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be non-zero value";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be over array length";
+    }
+
+    my $slice = new int[$length];
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
+
+  sub copy_array_range_long : long[] ($nums : long[], $offset : int, $length : int) {
+
+    if ($nums == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$nums;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be in the array range";
+    }
+
+    my $slice = new long[$length];
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
+
+  sub copy_array_range_float : float[] ($nums : float[], $offset : int, $length : int) {
+
+    if ($nums == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$nums;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be in the array range";
+    }
+
+    my $slice = new float[$length];
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
+
+  sub copy_array_range_double : double[] ($nums : double[], $offset : int, $length : int) {
+
+    if ($nums == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$nums;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be in the array range";
+    }
+
+    my $slice = new double[$length];
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $nums->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
+
+  sub copy_array_range_string : string[] ($strings : string[], $offset : int, $length : int) {
+
+    if ($strings == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$strings;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be in the array range";
+    }
+
+    my $slice = new string[$length];
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $strings->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
+
+  sub copy_array_range_object : oarray ($objects : oarray, $offset : int, $length : int) {
+
+    if ($objects == undef) {
+      die "Offset $offset must be in the array range";
+    }
+
+    my $array_length = @$objects;
+
+    if ($offset < 0 || $offset > $array_length - 1) {
+      die "Invalid offset $offset";
+    }
+
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+
+    if ($offset + $length > $array_length) {
+      die "Offset + length must not be in the array range";
+    }
+
+    my $slice = new_array_proto($objects, $length);
+
+    my $pos = 0;
+    for (my $i = $offset; $i < $offset + $length; $i++) {
+      $slice->[$pos] = $objects->[$i];
+      $pos++;
+    }
+
+    return $slice;
+  }
 
   sub equals_array_byte : int ($nums1 : byte[], $nums2 : byte[]) {
     
@@ -649,252 +903,519 @@ package SPVM::ArrayUtil : precompile {
 
   native sub new_array_proto : oarray ($proto_array : oarray, $length : int);
 
-  sub copy_array_range_byte : byte[] ($nums : byte[], $offset : int, $length : int) {
-
+  sub sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte) {
     if ($nums == undef) {
-      die "Offset $offset must be in the array range";
+      die "Array must be not undef";
     }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
     }
-
-    if ($length < 0) {
-      die "Length must be non-zero value";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
-    }
-
-    my $slice = new byte[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $slice;
-  }
-
-  sub copy_array_range_short : short[] ($nums : short[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "Offset $offset must be in the array range";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
-    }
-
-    if ($length < 0) {
-      die "Length must be non-zero value";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
-    }
-
-    my $slice = new short[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $slice;
-  }
-
-  sub copy_array_range_int : int[] ($nums : int[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "Offset $offset must be in the array range";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
-    }
-
-    if ($length < 0) {
-      die "Length must be non-zero value";
-    }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
-    }
-
-    my $slice = new int[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $nums->[$i];
-      $pos++;
-    }
-
-    return $slice;
-  }
-
-  sub copy_array_range_long : long[] ($nums : long[], $offset : int, $length : int) {
-
-    if ($nums == undef) {
-      die "Offset $offset must be in the array range";
-    }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
-    }
-
+    
     if ($length < 0) {
       die "Length must be more than or equals to 0";
     }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length must be in the array range";
     }
-
-    my $slice = new long[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $nums->[$i];
-      $pos++;
+    
+    if ($length == 0) {
+      return;
     }
-
-    return $slice;
+    
+    my $b = new byte[$length];
+    _sort_byte_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
+  private sub _sort_byte_merge : void($a : byte[], $b : byte[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sort_byte_merge_sort : void($a : byte[], $b : byte[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Byte){
+    if ($left >= $right) {
+      return;
+    }
 
-  sub copy_array_range_float : float[] ($nums : float[], $offset : int, $length : int) {
+    my $mid = ($left + $right) / 2;
 
+    _sort_byte_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_byte_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_byte_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  sub sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short) {
     if ($nums == undef) {
-      die "Offset $offset must be in the array range";
+      die "Array must be not undef";
     }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
     }
-
+    
     if ($length < 0) {
       die "Length must be more than or equals to 0";
     }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length must be in the array range";
     }
-
-    my $slice = new float[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $nums->[$i];
-      $pos++;
+    
+    if ($length == 0) {
+      return;
     }
-
-    return $slice;
+    
+    my $b = new short[$length];
+    _sort_short_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
+  private sub _sort_short_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sort_short_merge_sort : void($a : short[], $b : short[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Short){
+    if ($left >= $right) {
+      return;
+    }
 
-  sub copy_array_range_double : double[] ($nums : double[], $offset : int, $length : int) {
+    my $mid = ($left + $right) / 2;
 
+    _sort_short_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_short_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_short_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  sub sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int) {
     if ($nums == undef) {
-      die "Offset $offset must be in the array range";
+      die "Array must be not undef";
     }
-
-    my $array_length = @$nums;
-
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
     }
-
+    
     if ($length < 0) {
       die "Length must be more than or equals to 0";
     }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length must be in the array range";
     }
-
-    my $slice = new double[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $nums->[$i];
-      $pos++;
+    
+    if ($length == 0) {
+      return;
     }
-
-    return $slice;
+    
+    my $b = new int[$length];
+    _sort_int_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-
-  sub copy_array_range_string : string[] ($strings : string[], $offset : int, $length : int) {
-
-    if ($strings == undef) {
-      die "Offset $offset must be in the array range";
+  private sub _sort_int_merge : void($a : int[], $b : int[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sort_int_merge_sort : void($a : int[], $b : int[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Int){
+    if ($left >= $right) {
+      return;
     }
 
-    my $array_length = @$strings;
+    my $mid = ($left + $right) / 2;
 
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
+    _sort_int_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_int_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_int_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  sub sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long) {
+    if ($nums == undef) {
+      die "Array must be not undef";
     }
-
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
     if ($length < 0) {
       die "Length must be more than or equals to 0";
     }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length must be in the array range";
     }
-
-    my $slice = new string[$length];
-
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $strings->[$i];
-      $pos++;
+    
+    if ($length == 0) {
+      return;
     }
-
-    return $slice;
+    
+    my $b = new long[$length];
+    _sort_long_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
-
-  sub copy_array_range_object : oarray ($objects : oarray, $offset : int, $length : int) {
-
-    if ($objects == undef) {
-      die "Offset $offset must be in the array range";
+  private sub _sort_long_merge : void($a : long[], $b : long[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sort_long_merge_sort : void($a : long[], $b : long[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Long){
+    if ($left >= $right) {
+      return;
     }
 
-    my $array_length = @$objects;
+    my $mid = ($left + $right) / 2;
 
-    if ($offset < 0 || $offset > $array_length - 1) {
-      die "Invalid offset $offset";
+    _sort_long_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_long_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_long_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  sub sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float) {
+    if ($nums == undef) {
+      die "Array must be not undef";
     }
-
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
     if ($length < 0) {
       die "Length must be more than or equals to 0";
     }
-
-    if ($offset + $length > $array_length) {
-      die "Offset + length must not be in the array range";
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length must be in the array range";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    my $b = new float[$length];
+    _sort_float_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+  }
+  private sub _sort_float_merge : void($a : float[], $b : float[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sort_float_merge_sort : void($a : float[], $b : float[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Float){
+    if ($left >= $right) {
+      return;
     }
 
-    my $slice = new_array_proto($objects, $length);
+    my $mid = ($left + $right) / 2;
 
-    my $pos = 0;
-    for (my $i = $offset; $i < $offset + $length; $i++) {
-      $slice->[$pos] = $objects->[$i];
-      $pos++;
+    _sort_float_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_float_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_float_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  sub sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double) {
+    if ($nums == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $nums_length = @$nums;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $nums_length) {
+      die "Offset + Length must be in the array range";
+    }
+    
+    if ($length == 0) {
+      return;
+    }
+    
+    my $b = new double[$length];
+    _sort_double_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+  }
+  private sub _sort_double_merge : void($a : double[], $b : double[], $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double) {
+    my $i = $left;
+    my $j = $mid + 1;
+    my $k = 0;
+    while ($i <= $mid && $j <= $right) {
+      $i = $left;
+      $j = $mid + 1;
+      $k = 0;
+      while ($i <= $mid && $j <= $right) {
+        if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+          $b->[$k] = $a->[$i];
+          $i++;
+        } else {
+          $b->[$k] = $a->[$j];
+          $j++;
+        }
+        $k++;
+      }
+      if ($i == $mid + 1) {
+        while ($j <= $right) {
+          $b->[$k] = $a->[$j]; 
+          $j++;
+          $k++;
+        }
+      } else {
+        while($i <= $mid) {
+          $b->[$k] = $a->[$i];
+          $i++;
+          $k++;
+        }
+      }
+    }
+    for ($i = 0; $i < $k; $i++) {
+      $a->[$i + $left] = $b->[$i];
+    }
+  }
+  private sub _sort_double_merge_sort : void($a : double[], $b : double[], $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Double){
+    if ($left >= $right) {
+      return;
     }
 
-    return $slice;
+    my $mid = ($left + $right) / 2;
+
+    _sort_double_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_double_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_double_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
+  
+  sub sort_object : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object) {
+    if ($objs == undef) {
+      die "Array must be not undef";
+    }
+    
+    my $objs_length = @$objs;
+    
+    if ($offset < 0) {
+      die "Offset must be more than or equals to 0";
+    }
+    
+    if ($length < 0) {
+      die "Length must be more than or equals to 0";
+    }
+    
+    if ($offset + $length > $objs_length) {
+      die "Offset + Length must be in the array range";
+    }
+    
+    my $b = new_array_proto($objs, $length);
+    _sort_object_merge_sort($objs, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
+  private sub _sort_object_merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object) {
+      my $i = $left;
+      my $j = $mid + 1;
+      my $k = 0;
+      while ($i <= $mid && $j <= $right) {
+          $i = $left;
+          $j = $mid + 1;
+          $k = 0;
+          while ($i <= $mid && $j <= $right) {
+              if ($comparator->($a->[$i], $a->[$j]) <= 0) {
+                  $b->[$k] = $a->[$i];
+                  $i++;
+              } else {
+                  $b->[$k] = $a->[$j];
+                  $j++;
+              }
+              $k++;
+          }
+          if ($i == $mid + 1) {
+              while ($j <= $right) {
+                  $b->[$k] = $a->[$j]; 
+                  $j++;
+                  $k++;
+              }
+          } else {
+              while($i <= $mid) {
+                  $b->[$k] = $a->[$i];
+                  $i++;
+                  $k++;
+              }
+          }
+      }
+      for ($i = 0; $i < $k; $i++) {
+        $a->[$i + $left] = $b->[$i];
+      }
+  }
+
+  private sub _sort_object_merge_sort : void($a : oarray, $b : oarray, $left : int, $right : int, $n : int, $comparator : SPVM::Comparator::Object){
+    if ($left >= $right) {
+      return;
+    }
+
+    my $mid = ($left + $right) / 2;
+
+    _sort_object_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    _sort_object_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    _sort_object_merge($a, $b, $left, $mid, $right, $n, $comparator);
+  }
 }
