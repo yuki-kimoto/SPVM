@@ -134,9 +134,14 @@ use SPVM 'SPVM::ArrayUtil';
   ok(TestCase::Lib::SPVM::ArrayUtil->test_equals_array_object);
 }
 
-# memcpy_byte
+# memcpy
 {
   ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_byte);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_short);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_int);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_long);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_float);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_double);
 }
 
 # memmove_byte

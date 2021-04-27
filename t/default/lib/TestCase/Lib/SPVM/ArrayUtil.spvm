@@ -835,6 +835,482 @@ package TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
+
+  sub test_memcpy_short : int () {
+    
+    # Copy
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memcpy_short($dest, 0, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memcpy_short($dest, 1, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5, 9];
+      memcpy_short($dest, 1, $source, 1, 2);
+      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memcpy_short($dest, 0, $source, 0, 0);
+      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new short[4];
+      eval { memcpy_short($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_int : int () {
+    
+    # Copy
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memcpy_int($dest, 0, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memcpy_int($dest, 1, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5, 9];
+      memcpy_int($dest, 1, $source, 1, 2);
+      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memcpy_int($dest, 0, $source, 0, 0);
+      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new int[4];
+      eval { memcpy_int($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_long : int () {
+    
+    # Copy
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memcpy_long($dest, 0, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memcpy_long($dest, 1, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5, 9];
+      memcpy_long($dest, 1, $source, 1, 2);
+      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memcpy_long($dest, 0, $source, 0, 0);
+      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new long[4];
+      eval { memcpy_long($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_float : int () {
+    
+    # Copy
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memcpy_float($dest, 0, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memcpy_float($dest, 1, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5, 9];
+      memcpy_float($dest, 1, $source, 1, 2);
+      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memcpy_float($dest, 0, $source, 0, 0);
+      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new float[4];
+      eval { memcpy_float($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_double : int () {
+    
+    # Copy
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memcpy_double($dest, 0, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memcpy_double($dest, 1, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5, 9];
+      memcpy_double($dest, 1, $source, 1, 2);
+      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memcpy_double($dest, 0, $source, 0, 0);
+      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new double[4];
+      eval { memcpy_double($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
   sub test_memmove_byte : int () {
 
     {
