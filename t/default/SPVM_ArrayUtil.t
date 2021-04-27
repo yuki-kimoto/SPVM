@@ -144,9 +144,14 @@ use SPVM 'SPVM::ArrayUtil';
   ok(TestCase::Lib::SPVM::ArrayUtil->test_memcpy_double);
 }
 
-# memmove_byte
+# memmove
 {
   ok(TestCase::Lib::SPVM::ArrayUtil->test_memmove_byte);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memmove_short);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memmove_int);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memmove_long);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memmove_float);
+  ok(TestCase::Lib::SPVM::ArrayUtil->test_memmove_double);
 }
 
 # new_array_proto
