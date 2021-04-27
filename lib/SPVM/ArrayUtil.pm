@@ -419,19 +419,21 @@ If string array is undef, return undef.
 
 =head2 memcpy_byte
 
-  sub memcpy_byte : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
+  sub memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
 
 Copy source byte array to destination byte array with the each offset and a length.
 
 If source data range and destination data overlap, the result is not guaranteed.
 
-If source byte array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source byte array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memcpy_short
 
@@ -441,13 +443,15 @@ Copy source short array to destination short array with the each offset and a le
 
 If source data range and destination data overlap, the result is not guaranteed.
 
-If source short array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source short array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memcpy_int
   
@@ -455,15 +459,15 @@ If copy is not in the valid rainge, a exception occurs.
 
 Copy source int array to destination int array with the each offset and a length.
 
-If source data range and destination data overlap, the result is not guaranteed.
+Destnation must be defined, otherwise a exception occurs.
 
-If source int array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If source int array or destination array is undef, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memcpy_long
   
@@ -473,13 +477,15 @@ Copy source long array to destination long array with the each offset and a leng
 
 If source data range and destination data overlap, the result is not guaranteed.
 
-If source long array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source long array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memcpy_float
   
@@ -489,13 +495,15 @@ Copy source float array to destination float array with the each offset and a le
 
 If source data range and destination data overlap, the result is not guaranteed.
 
-If source float array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source float array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memcpy_double
   
@@ -505,13 +513,15 @@ Copy source double array to destination double array with the each offset and a 
 
 If source data range and destination data overlap, the result is not guaranteed.
 
-If source double array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source double array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memmove_byte
 
@@ -521,13 +531,15 @@ Copy source byte array to destination byte array with the each offset and a leng
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
-If source byte array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source byte array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memmove_short
 
@@ -537,13 +549,15 @@ Copy source short array to destination short array with the each offset and a le
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
-If source short array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source short array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memmove_int
   
@@ -553,13 +567,15 @@ Copy source int array to destination int array with the each offset and a length
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
-If source int array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source int array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memmove_long
   
@@ -569,13 +585,15 @@ Copy source long array to destination long array with the each offset and a leng
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
-If source long array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source long array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memmove_float
   
@@ -585,13 +603,15 @@ Copy source float array to destination float array with the each offset and a le
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
-If source float array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source float array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 memmove_double
   
@@ -601,13 +621,15 @@ Copy source double array to destination double array with the each offset and a 
 
 Even if source data range and destination data overlap, the result is guaranteed.
 
-If source double array or destination array is undef, a exception occurs.
+Destnation must be defined, otherwise a exception occurs.
 
-If source double array or destination array is undef, a exception occurs.
+Source must be defined, otherwise a exception occurs.
 
-If length is nagative, a exception occurs.
+Length must be more than or equals to 0, otherwise a exception occurs.
 
-If copy is not in the valid rainge, a exception occurs.
+Destnation offset + length must be within the range of the destnation array, otherwise a exception occurs.
+
+Source offset + length must be within the range of the source array, otherwise a exception occurs.
 
 =head2 new_array_proto
 
