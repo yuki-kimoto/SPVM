@@ -468,6 +468,8 @@ lib/SPVM/Comparator/Object.pm
 lib/SPVM/Comparator/Object.spvm
 lib/SPVM/Comparator/Short.pm
 lib/SPVM/Comparator/Short.spvm
+lib/SPVM/Comparator/String.pm
+lib/SPVM/Comparator/String.spvm
 lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
