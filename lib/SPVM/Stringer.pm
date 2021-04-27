@@ -4,31 +4,33 @@ package SPVM::Stringer;
 
 =head1 NAME
 
-SPVM::Stringer - a callback type for stringification
+SPVM::Stringer - a callback type to stringify a object
 
 =head1 SYNOPSYS
   
   use SPVM::Stringer;
   
-  my $stringer : SPVM::Stringer = sub : string ($self : self, $obj : object) {
-    my $point = (SPVM::Point)$obj;
+  my $stringer = (SPVM::Stringer)sub : string ($self : self, $object : object) {
+    my $point = (SPVM::Point)$object;
     my $x = $point->x;
     my $y = $point->y;
     
-    my $str = "($x, $y)";
+    my $string = "($x, $y)";
     
-    return $str;
+    return $string;
   };
   
   my $point = SPVM::Point->new(1, 2);
-  my $str = $stringer->($point);
+  my $string = $stringer->($point);
 
 =head1 DESCRIPTION
 
 L<SPVM::Stringer> is a callback type to stringify a object.
 
-=head1 CALLBACK METHOD
+=head1 CALLBACK METHOD INTERFACE
 
-  sub : string ($self : self, $obj : object)
+  sub : string ($self : self, $object : object)
 
-This method should receive a object and return the string expression in the method imlementaion.
+This method receives a object and return the string expression.
+
+This method is planned to be implemented in other classes.

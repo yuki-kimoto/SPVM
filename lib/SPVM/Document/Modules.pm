@@ -152,17 +152,13 @@ L<SPVM::Short> - short object
 
 L<SPVM::ShortList> - 
 
-=head2 SPVM::Sort
-
-L<SPVM::Sort> - 
-
 =head2 SPVM::StringBuffer
 
 L<SPVM::StringBuffer> - 
 
 =head2 SPVM::Stringer
 
-L<SPVM::Stringer> - 
+L<SPVM::Stringer> - a callback type to stringify a object
 
 =head2 SPVM::StringList
 
