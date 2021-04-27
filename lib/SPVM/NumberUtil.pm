@@ -127,6 +127,8 @@ Get random number(0 <= rundom_number <= SPVM::NumberUtil->RAND_MAX). This is sam
 
 The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> static method.
 
+This method is not thread safe because internaly this method use rand function of C language.
+
 =head2 rand
 
   sub rand : double ();
@@ -134,6 +136,8 @@ The first seed is initialized by epoch time automatically. If you set a seed man
 Get random number(0 <= random_number < 1). This is same as rand function of Perl language.
 
 The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> static method.
+
+This method is not thread safe because internaly this method use rand function of C language.
 
 =head2 srand
 

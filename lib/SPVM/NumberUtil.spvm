@@ -1,13 +1,5 @@
 package SPVM::NumberUtil : precompile {
-  use SPVM::Stringer;
-  use SPVM::Cloner;
-  use SPVM::EqualityChecker;
-  use SPVM::StringBuffer;
-  use SPVM::StringList;
-  use SPVM::Unicode (uchar_to_utf8);
-  use SPVM::Math (fabs, floor, log10, pow, sqrt, sqrtf);
   use SPVM::Time (time);
-  use SPVM::ArrayUtil;
   
   INIT {
     srand(time());
@@ -48,5 +40,4 @@ package SPVM::NumberUtil : precompile {
     
     return $random_number;
   }
-
 }
