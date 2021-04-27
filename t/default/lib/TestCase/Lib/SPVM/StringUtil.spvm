@@ -1,7 +1,6 @@
 package TestCase::Lib::SPVM::StringUtil {
   use SPVM::Unicode (uchar);
   use TestCase::Minimal;
-  use SPVM::StringUtil (contains);
   use TestCase::Minimal;
   use SPVM::EqualityChecker;
   use SPVM::EqualityChecker::SameObject;
@@ -144,7 +143,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%d", "str");
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -175,7 +174,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%d", "str");
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -204,7 +203,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%ld", "str");
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -214,7 +213,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%l", 1L);
       };
-      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%l\"")) {
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -244,7 +243,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%ld", "str");
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -254,7 +253,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%l", 1L);
       };
-      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%l\"")) {
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -286,7 +285,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%f", "str");
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -314,7 +313,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%c", "str");
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -342,7 +341,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%s", 1);
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -373,7 +372,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%U", "str");
       };
-      unless ($@ && contains($@, "Can't cast")) {
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -403,7 +402,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%d%", 1);
       };
-      unless ($@ && contains($@, "Invalid conversion in sprintf: end of string")) {
+      unless ($@ && index($@, "Invalid conversion in sprintf: end of string", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -414,7 +413,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%d%k", 1, 2);
       };
-      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%k\"")) {
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%k\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -425,7 +424,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%012.3", 3.14);
       };
-      unless ($@ && contains($@, "Invalid conversion in sprintf: \"%012.3\"")) {
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%012.3\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -436,7 +435,7 @@ package TestCase::Lib::SPVM::StringUtil {
       eval {
         sprintf("%d%d", 1);
       };
-      unless ($@ && contains($@, "Missing argument in sprintf")) {
+      unless ($@ && index($@, "Missing argument in sprintf", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -1485,7 +1484,7 @@ package TestCase::Lib::SPVM::StringUtil {
         return 0;
       }
     }
-
+    
     return 1;
   }
 
@@ -1532,29 +1531,6 @@ package TestCase::Lib::SPVM::StringUtil {
       my $search = "pq";
       my $pos = rindex($target, $search, 2);
       unless ($pos == -1) {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
-  sub test_contains : int () {
-
-    {
-      my $target = "abcde";
-      my $search = "bcd";
-      my $ret = contains($target, $search);
-      unless ($ret) {
-        return 0;
-      }
-    }
-
-    {
-      my $target = "abcde";
-      my $search = "ppp";
-      my $ret = contains($target, $search);
-      if ($ret) {
         return 0;
       }
     }

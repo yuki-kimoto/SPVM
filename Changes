@@ -34,6 +34,7 @@
   - remove SPVM::Sort
   - add SPVM::ArrayUtil->sort_string
   - add SPVM::Comparator::String
+  - remove SPVM::StringUtil->contains in favor of SPVM::StringUtil->index
   
 0.0946 2021-04-23
   - Create SPVM::ArrayUtil module

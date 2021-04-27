@@ -166,11 +166,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringUtil->test_rindex);
 }
 
-# contains
-{
-  ok(TestCase::Lib::SPVM::StringUtil->test_contains);
-}
-
 # join
 {
   ok(TestCase::Lib::SPVM::StringUtil->test_join);
