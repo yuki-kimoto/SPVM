@@ -10,7 +10,7 @@ SPVM::Stringer - a callback type to stringify a object
   
   use SPVM::Stringer;
   
-  my $stringer = (SPVM::Stringer)sub : string ($self : self, $object : object) {
+  my $stringer : SPVM::Stringer = sub : string ($self : self, $object : object) {
     my $point = (SPVM::Point)$object;
     my $x = $point->x;
     my $y = $point->y;

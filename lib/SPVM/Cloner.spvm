@@ -1,3 +1,3 @@
 package SPVM::Cloner : callback_t {
-  sub : object ($self : self, $obj : object);
+  sub : object ($self : self, $object : object);
 }

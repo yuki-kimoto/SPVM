@@ -22,7 +22,7 @@ L<SPVM::ByteList>
 
 =head2 SPVM::Cloner
 
-L<SPVM::Cloner> - 
+L<SPVM::Cloner> - a callback type to clone a object
 
 =head2 SPVM::Comparator::Byte
 
