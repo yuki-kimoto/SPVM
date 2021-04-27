@@ -10,7 +10,7 @@ List of SPVM Core Modules
 
 =head2 SPVM::ArrayUtil
 
-L<SPVM::ArrayUtil> - 
+L<SPVM::ArrayUtil> - Array Utilities
 
 =head2 SPVM::Byte
 
