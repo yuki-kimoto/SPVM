@@ -741,30 +741,33 @@ package TestCase::Lib::SPVM::ArrayUtil {
   }
 
   sub test_memcpy_byte : int () {
-
+    
+    # Copy
     {
-      my $target = (byte[])"abcde";
-      my $search = (byte[])"ABC";
-      memcpy_byte($target, 0, $search, 0, 3);
-      unless ((string)$target eq (string)"ABCde") {
+      my $dist = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memcpy_byte($dist, 0, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_byte($dist, [(byte)1, 3, 5, 0])) {
         return 0;
       }
     }
 
+    # Copy with offset
     {
-      my $target = (byte[])"abcde";
-      my $search = (byte[])"ABC";
-      memcpy_byte($target, 2, $search, 0, 3);
-      unless ((string)$target eq (string)"abABC") {
+      my $dist = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memcpy_byte($dist, 1, $source, 0, 3);
+      unless (SPVM::ArrayUtil->equals_array_byte($dist, [(byte)0, 1, 3, 5])) {
         return 0;
       }
     }
 
+    # Copy with offset and length
     {
-      my $target = (byte[])"abcde";
-      my $search = (byte[])"ABC";
-      memcpy_byte($target, 2, $search, 0, 3);
-      unless ((string)$target eq (string)"abABC") {
+      my $dist = new byte[4];
+      my $source = [(byte)1, 3, 5, 9];
+      memcpy_byte($dist, 1, $source, 1, 2);
+      unless (SPVM::ArrayUtil->equals_array_byte($dist, [(byte)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -775,36 +778,36 @@ package TestCase::Lib::SPVM::ArrayUtil {
   sub test_memmove_byte : int () {
 
     {
-      my $target = (byte[])"abcde";
-      my $search = (byte[])"ABC";
-      memmove_byte($target, 0, $search, 0, 3);
-      unless ((string)$target eq (string)"ABCde") {
+      my $dist = (byte[])"abcde";
+      my $source = (byte[])"ABC";
+      memmove_byte($dist, 0, $source, 0, 3);
+      unless ((string)$dist eq (string)"ABCde") {
         return 0;
       }
     }
 
     {
-      my $target = (byte[])"abcde";
-      my $search = (byte[])"ABC";
-      memmove_byte($target, 2, $search, 0, 3);
-      unless ((string)$target eq (string)"abABC") {
+      my $dist = (byte[])"abcde";
+      my $source = (byte[])"ABC";
+      memmove_byte($dist, 2, $source, 0, 3);
+      unless ((string)$dist eq (string)"abABC") {
         return 0;
       }
     }
 
     {
-      my $target = (byte[])"abcde";
-      my $search = (byte[])"ABC";
-      memmove_byte($target, 2, $search, 0, 3);
-      unless ((string)$target eq (string)"abABC") {
+      my $dist = (byte[])"abcde";
+      my $source = (byte[])"ABC";
+      memmove_byte($dist, 2, $source, 0, 3);
+      unless ((string)$dist eq (string)"abABC") {
         return 0;
       }
     }
 
     {
-      my $target = (byte[])"abcde";
-      memmove_byte($target, 0, $target, 2, 2);
-      unless ((string)$target eq (string)"cdcde") {
+      my $dist = (byte[])"abcde";
+      memmove_byte($dist, 0, $dist, 2, 2);
+      unless ((string)$dist eq (string)"cdcde") {
         return 0;
       }
     }
