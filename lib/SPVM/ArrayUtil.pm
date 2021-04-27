@@ -419,7 +419,7 @@ If string array is undef, return undef.
 
 =head2 memcpy_byte
 
-  sub memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int);
+  sub memcpy_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
 
 Copy source byte array to destination byte array with the each offset and a length.
 
@@ -437,7 +437,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memcpy_short
 
-  sub memcpy_short : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
+  sub memcpy_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
 
 Copy source short array to destination short array with the each offset and a length.
 
@@ -455,7 +455,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memcpy_int
   
-  sub memcpy_int : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
+  sub memcpy_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int)
 
 Copy source int array to destination int array with the each offset and a length.
 
@@ -471,7 +471,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memcpy_long
   
-  sub memcpy_long : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
+  sub memcpy_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int)
 
 Copy source long array to destination long array with the each offset and a length.
 
@@ -489,7 +489,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memcpy_float
   
-  sub memcpy_float : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
+  sub memcpy_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int)
 
 Copy source float array to destination float array with the each offset and a length.
 
@@ -507,7 +507,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memcpy_double
   
-  sub memcpy_double : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
+  sub memcpy_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int)
 
 Copy source double array to destination double array with the each offset and a length.
 
@@ -525,7 +525,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memmove_byte
 
-  sub memmove_byte : void ($dest_data : byte[], $dest_offset : int, $src_data : byte[], $src_offset : int, $length : int)
+  sub memmove_byte : void ($dest : byte[], $dest_offset : int, $source : byte[], $source_offset : int, $length : int)
 
 Copy source byte array to destination byte array with the each offset and a length.
 
@@ -543,7 +543,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memmove_short
 
-  sub memmove_short : void ($dest_data : short[], $dest_offset : int, $src_data : short[], $src_offset : int, $length : int)
+  memmove_short : void ($dest : short[], $dest_offset : int, $source : short[], $source_offset : int, $length : int)
 
 Copy source short array to destination short array with the each offset and a length.
 
@@ -561,7 +561,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memmove_int
   
-  sub memmove_int : void ($dest_data : int[], $dest_offset : int, $src_data : int[], $src_offset : int, $length : int)
+  memmove_int : void ($dest : int[], $dest_offset : int, $source : int[], $source_offset : int, $length : int)
 
 Copy source int array to destination int array with the each offset and a length.
 
@@ -579,7 +579,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memmove_long
   
-  sub memmove_long : void ($dest_data : long[], $dest_offset : int, $src_data : long[], $src_offset : int, $length : int)
+  memmove_long : void ($dest : long[], $dest_offset : int, $source : long[], $source_offset : int, $length : int)
 
 Copy source long array to destination long array with the each offset and a length.
 
@@ -597,7 +597,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memmove_float
   
-  sub memmove_float : void ($dest_data : float[], $dest_offset : int, $src_data : float[], $src_offset : int, $length : int)
+  sub memmove_float : void ($dest : float[], $dest_offset : int, $source : float[], $source_offset : int, $length : int)
 
 Copy source float array to destination float array with the each offset and a length.
 
@@ -615,7 +615,7 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 memmove_double
   
-  sub memmove_double : void ($dest_data : double[], $dest_offset : int, $src_data : double[], $src_offset : int, $length : int)
+  memmove_double : void ($dest : double[], $dest_offset : int, $source : double[], $source_offset : int, $length : int)
 
 Copy source double array to destination double array with the each offset and a length.
 
