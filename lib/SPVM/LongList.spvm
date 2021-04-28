@@ -1,8 +1,8 @@
 package SPVM::LongList : precompile {
   use SPVM::ArrayUtil (memcpy_long, memmove_long);
   
-  has values   : long[];
-  has capacity : ro int;
+  has values   : norw long[];
+  has capacity : norw int;
   has length   : ro int;
   
   private enum {

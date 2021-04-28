@@ -34,7 +34,23 @@
   - remove SPVM::StringList->new_capacity
   - remove SPVM::List->new_capacity
   - remove SPVM::List->splice
-
+  - remove SPVM::ByteList->capacity
+  - remove SPVM::ShortList->capacity
+  - remove SPVM::IntList->capacity
+  - remove SPVM::LongList->capacity
+  - remove SPVM::FloatList->capacity
+  - remove SPVM::DoubleList->capacity
+  - remove SPVM::StringList->capacity
+  - remove SPVM::List->capacity
+  - remove SPVM::ByteList->values
+  - remove SPVM::ShortList->values
+  - remove SPVM::IntList->values
+  - remove SPVM::LongList->values
+  - remove SPVM::FloatList->values
+  - remove SPVM::DoubleList->values
+  - remove SPVM::StringList->values
+  - remove SPVM::List->values
+  
 0.0947 2021-04-27
   - array equals methods return 1 if both arrays is undef. return 0 if only one one arrays is undef.
     equals_byte_array

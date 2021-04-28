@@ -1,19 +1,10 @@
 package SPVM::StringList : precompile {
-  has values   : string[];
-  has capacity : ro int;
+  has values   : norw string[];
+  has capacity : norw int;
   has length   : ro int;
   
   private enum {
     DEFAULT_CAPACITY = 16,
-  }
-  sub new_capacity : SPVM::StringList ($capacity : int) {
-    my $self = new SPVM::StringList;
-    unless ($capacity > 0) {
-      die "capacity must be positive";
-    }
-    $self->{capacity} = $capacity;
-    $self->{values} = new string[$capacity];
-    return $self;
   }
 
   sub new : SPVM::StringList ($array : string[]) {

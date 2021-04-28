@@ -1,8 +1,8 @@
 package SPVM::List : precompile {
   use SPVM::ArrayUtil(new_array_proto);
   
-  has values   : oarray;
-  has capacity : ro int;
+  has values   : norw oarray;
+  has capacity : norw int;
   has length   : ro int;
 
   private enum {

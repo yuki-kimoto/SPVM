@@ -1,8 +1,8 @@
 package SPVM::ByteList : precompile {
   use SPVM::ArrayUtil (memcpy_byte, memmove_byte);
   
-  has values   : byte[];
-  has capacity : ro int;
+  has values   : norw byte[];
+  has capacity : norw int;
   has length   : ro int;
   
   private enum {
