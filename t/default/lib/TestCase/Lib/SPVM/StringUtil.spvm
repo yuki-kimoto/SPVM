@@ -44,76 +44,76 @@ package TestCase::Lib::SPVM::StringUtil {
 
   sub test_split : int () {
     {
-      my $str = "foo,bar,baz";
-      my $split_strs = split(",", $str);
+      my $string = "foo,bar,baz";
+      my $split_strs = split(",", $string);
       unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
 
     {
-      my $str = "foo,bar,";
-      my $split_strs = split(",", $str);
+      my $string = "foo,bar,";
+      my $split_strs = split(",", $string);
       unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
 
     {
-      my $str = ",foo,,bar,,";
-      my $split_strs = split(",", $str);
+      my $string = ",foo,,bar,,";
+      my $split_strs = split(",", $string);
       unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
 
     {
-      my $str = "foo : bar : baz";
-      my $split_strs = split(" : ", $str);
+      my $string = "foo : bar : baz";
+      my $split_strs = split(" : ", $string);
       unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
     {
-      my $str = "foo : bar : ";
-      my $split_strs = split(" : ", $str);
+      my $string = "foo : bar : ";
+      my $split_strs = split(" : ", $string);
       unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
     {
-      my $str = " : foo :  : bar :  : ";
-      my $split_strs = split(" : ", $str);
+      my $string = " : foo :  : bar :  : ";
+      my $split_strs = split(" : ", $string);
       unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
 
     {
-      my $str = "foo---bar---baz";
-      my $split_strs = split("---", $str);
+      my $string = "foo---bar---baz";
+      my $split_strs = split("---", $string);
       unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
     {
-      my $str = "foo---bar---";
-      my $split_strs = split("---", $str);
+      my $string = "foo---bar---";
+      my $split_strs = split("---", $string);
       unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
     {
-      my $str = "---foo------bar------";
-      my $split_strs = split("---", $str);
+      my $string = "---foo------bar------";
+      my $split_strs = split("---", $string);
       unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
 
     {
-      my $str = "foo--!bar---baz";
-      my $split_strs = split("---", $str);
+      my $string = "foo--!bar---baz";
+      my $split_strs = split("---", $string);
       unless (equals_array_string($split_strs, ["foo--!bar", "baz"])) {
         return 0;
       }
@@ -349,9 +349,9 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  private sub _first_uchar : int ($str : string) {
+  private sub _first_uchar : int ($string : string) {
     my $uchar_pos = 0;
-    return uchar($str, \$uchar_pos);
+    return uchar($string, \$uchar_pos);
   }
 
   sub test_sprintf_U : int () {
@@ -441,22 +441,22 @@ package TestCase::Lib::SPVM::StringUtil {
       $@ = undef;
     }
     {
-      my $str = "abc\n";
-      my $ret = chomp_lf($str);
+      my $string = "abc\n";
+      my $ret = chomp_lf($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
-      my $str = "abc";
-      my $ret = chomp_lf($str);
+      my $string = "abc";
+      my $ret = chomp_lf($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
-      my $str = "";
-      my $ret = chomp_lf($str);
+      my $string = "";
+      my $ret = chomp_lf($string);
       unless ($ret eq "") {
         return 0;
       }
@@ -467,22 +467,22 @@ package TestCase::Lib::SPVM::StringUtil {
 
   sub test_chomp_lf : int () {
     {
-      my $str = "abc\n";
-      my $ret = chomp_lf($str);
+      my $string = "abc\n";
+      my $ret = chomp_lf($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
-      my $str = "abc";
-      my $ret = chomp_lf($str);
+      my $string = "abc";
+      my $ret = chomp_lf($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
-      my $str = "";
-      my $ret = chomp_lf($str);
+      my $string = "";
+      my $ret = chomp_lf($string);
       unless ($ret eq "") {
         return 0;
       }
@@ -492,29 +492,29 @@ package TestCase::Lib::SPVM::StringUtil {
   }
   sub test_chomp_crlf : int () {
     {
-      my $str = "abc\r\n";
-      my $ret = chomp_crlf($str);
+      my $string = "abc\r\n";
+      my $ret = chomp_crlf($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
-      my $str = "abc";
-      my $ret = chomp_crlf($str);
+      my $string = "abc";
+      my $ret = chomp_crlf($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
-      my $str = "";
-      my $ret = chomp_crlf($str);
+      my $string = "";
+      my $ret = chomp_crlf($string);
       unless ($ret eq "") {
         return 0;
       }
     }
     {
-      my $str = "a";
-      my $ret = chomp_crlf($str);
+      my $string = "a";
+      my $ret = chomp_crlf($string);
       unless ($ret eq "a") {
         return 0;
       }
@@ -1228,39 +1228,39 @@ package TestCase::Lib::SPVM::StringUtil {
 
   sub test_ucfirst : int () {
     {
-      my $str = "@abc";
-      my $result_str = ucfirst($str);
+      my $string = "@abc";
+      my $result_str = ucfirst($string);
       unless ($result_str eq "@abc") {
         return 0;
       }
     }
     {
-      my $str = "[abc";
-      my $result_str = ucfirst($str);
+      my $string = "[abc";
+      my $result_str = ucfirst($string);
       unless ($result_str eq "[abc") {
         return 0;
       }
     }
 
     {
-      my $str = "aabc";
-      my $result_str = ucfirst($str);
+      my $string = "aabc";
+      my $result_str = ucfirst($string);
       unless ($result_str eq "Aabc") {
         return 0;
       }
     }
 
     {
-      my $str = "pabc";
-      my $result_str = ucfirst($str);
+      my $string = "pabc";
+      my $result_str = ucfirst($string);
       unless ($result_str eq "Pabc") {
         return 0;
       }
     }
 
     {
-      my $str = "zabc";
-      my $result_str = ucfirst($str);
+      my $string = "zabc";
+      my $result_str = ucfirst($string);
       unless ($result_str eq "Zabc") {
         return 0;
       }
@@ -1270,8 +1270,8 @@ package TestCase::Lib::SPVM::StringUtil {
 
   sub test_uc : int () {
     {
-      my $str = "@[apz[";
-      my $result_str = uc($str);
+      my $string = "@[apz[";
+      my $result_str = uc($string);
       unless ($result_str eq "@[APZ[") {
         return 0;
       }
@@ -1281,8 +1281,8 @@ package TestCase::Lib::SPVM::StringUtil {
 
   sub test_lc : int () {
     {
-      my $str = "@[APZ[";
-      my $result_str = lc($str);
+      my $string = "@[APZ[";
+      my $result_str = lc($string);
       unless ($result_str eq "@[apz[") {
         return 0;
       }
@@ -1292,39 +1292,39 @@ package TestCase::Lib::SPVM::StringUtil {
 
   sub test_lcfirst : int () {
     {
-      my $str = "@ABC";
-      my $result_str = lcfirst($str);
+      my $string = "@ABC";
+      my $result_str = lcfirst($string);
       unless ($result_str eq "@ABC") {
         return 0;
       }
     }
     {
-      my $str = "[ABC";
-      my $result_str = lcfirst($str);
+      my $string = "[ABC";
+      my $result_str = lcfirst($string);
       unless ($result_str eq "[ABC") {
         return 0;
       }
     }
 
     {
-      my $str = "AABC";
-      my $result_str = lcfirst($str);
+      my $string = "AABC";
+      my $result_str = lcfirst($string);
       unless ($result_str eq "aABC") {
         return 0;
       }
     }
 
     {
-      my $str = "PABC";
-      my $result_str = lcfirst($str);
+      my $string = "PABC";
+      my $result_str = lcfirst($string);
       unless ($result_str eq "pABC") {
         return 0;
       }
     }
 
     {
-      my $str = "ZABC";
-      my $result_str = lcfirst($str);
+      my $string = "ZABC";
+      my $result_str = lcfirst($string);
       unless ($result_str eq "zABC") {
         return 0;
       }
@@ -1334,11 +1334,11 @@ package TestCase::Lib::SPVM::StringUtil {
   sub test_replace : int () {
 
     {
-      my $str = "abcde";
+      my $string = "abcde";
       my $substr = "bcd";
       my $replace = "AB";
       my $found_offset = 0;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
       unless ($found_offset == 1) {
         return 0;
       }
@@ -1348,25 +1348,25 @@ package TestCase::Lib::SPVM::StringUtil {
     }
 
     {
-      my $str = "abcde";
+      my $string = "abcde";
       my $substr = "bcd";
       my $replace = "AB";
       my $found_offset = 0;
-      my $result_str = replace($str, $substr, $replace, 2, \$found_offset);
+      my $result_str = replace($string, $substr, $replace, 2, \$found_offset);
       unless ($found_offset == -1) {
         return 0;
       }
-      unless ($result_str eq $str) {
+      unless ($result_str eq $string) {
         return 0;
       }
     }
 
     {
-      my $str = "abcde";
+      my $string = "abcde";
       my $substr = "abc";
       my $replace = "ABCD";
       my $found_offset = 0;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
       unless ($found_offset == 0) {
         return 0;
       }
@@ -1376,11 +1376,11 @@ package TestCase::Lib::SPVM::StringUtil {
     }
 
     {
-      my $str = "abcde";
+      my $string = "abcde";
       my $substr = "cde";
       my $replace = "ABCD";
       my $found_offset = 0;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
       unless ($found_offset == 2) {
         return 0;
       }
@@ -1390,11 +1390,11 @@ package TestCase::Lib::SPVM::StringUtil {
     }
 
     {
-      my $str = "abcdcd";
+      my $string = "abcdcd";
       my $substr = "cd";
       my $replace = "A";
       my $found_offset = 0;
-      my $result_str = replace($str, $substr, $replace, 4, \$found_offset);
+      my $result_str = replace($string, $substr, $replace, 4, \$found_offset);
       unless ($found_offset == 4) {
         return 0;
       }
@@ -1404,11 +1404,11 @@ package TestCase::Lib::SPVM::StringUtil {
     }
 
     {
-      my $str = "abcd";
+      my $string = "abcd";
       my $substr = "bc";
       my $replace = "";
       my $found_offset = 0;
-      my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
 
       unless ($found_offset == 1) {
         return 0;

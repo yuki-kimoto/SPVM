@@ -22,8 +22,8 @@ SPVM::StringUtil - Variouse utilities
   
   # Copy a string
   {
-    my $str = "abc";
-    my $str_copy = copy_string($str);
+    my $string = "abc";
+    my $string_copy = copy_string ($string);
   }
 
   # Search substr
@@ -32,8 +32,8 @@ SPVM::StringUtil - Variouse utilities
   }
 
   # split a string by the specific separator
-  my $str = "foo,bar,baz";
-  my $splited_strs = split(",", $str);
+  my $string = "foo,bar,baz";
+  my $splited_strs = split(",", $string);
 
 =head1 DESCRIPTION
 
@@ -69,10 +69,10 @@ If the array is undefined, a exception occurs.
 
 =head2 index
 
-  sub index : int ($str : string, $substr : string, $posision : int)
+  sub index : int ($string : string, $sub_string : string, $posision : int)
 
 index function searches for one string within another.
-It returns the position of the first occurrence of $substr in $str at or after $position. If $position is omitted, starts
+It returns the position of the first occurrence of $sub_string in $string at or after $position. If $position is omitted, starts
 searching from the beginning of the string. $position before the
 beginning of the string or after its end is treated as if it were
 the beginning or the end, respectively. $position and the return
@@ -81,97 +81,97 @@ returns -1.
             
 =head2 isalnum
 
-  sub isalnum : int ($char : int)
+  sub isalnum : int ($code_point : int)
 
 If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return 1. If not, return 0.
 
 =head2 isalpha
 
-  sub isalpha : int ($char : int)
+  sub isalpha : int ($code_point : int)
 
 If character is alphabetic('A'-'Z', 'a'-'z'), return 1. If not, return 0.
 
 =head2 isblank
 
-  sub isblank : int ($char : int)
+  sub isblank : int ($code_point : int)
 
 If character is blank(' ', '\t'), return 1. If not, return 0.
 
 =head2 iscntrl
 
-  sub iscntrl : int ($char : int)
+  sub iscntrl : int ($code_point : int)
 
 If character is a control character(0x00-0x1F, 0x7F), return 1. If not, return 0.
 
 =head2 isdigit
 
-  sub isdigit : int ($char : int)
+  sub isdigit : int ($code_point : int)
 
 If character is decimal digit ('0'～'9'), return 1. If not, return 0.
 
 =head2 isgraph
 
-  sub isgraph : int ($char : int)
+  sub isgraph : int ($code_point : int)
 
 If character has graphical representation(0x21-0x7E), return 1. If not, return 0.
 
 =head2 islower
 
-  sub islower : int ($char : int)
+  sub islower : int ($code_point : int)
 
 If character is lowercase letter('a'-'z'), return 1. If not, return 0.
 
 =head2 isprint
 
-  sub isprint : int ($char : int)
+  sub isprint : int ($code_point : int)
 
 If character is printable(0x20-0x7E), return 1. If not, return 0.
 
 =head2 ispunct
 
-  sub ispunct : int ($char : int)
+  sub ispunct : int ($code_point : int)
 
 If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return 1. If not, return 0.
 
 =head2 isspace
 
-  sub isspace : int ($char : int)
+  sub isspace : int ($code_point : int)
 
 If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not, return 0.
 
 =head2 isupper
 
-  sub isupper : int ($char : int)
+  sub isupper : int ($code_point : int)
 
 If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
 
 =head2 isxdigit
 
-  sub isxdigit : int ($char : int)
+  sub isxdigit : int ($code_point : int)
 
 If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
 
 =head2 tolower
 
-  sub tolower : int ($char : int)
+  sub tolower : int ($code_point : int)
 
 Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
 
 =head2 toupper
 
-  sub toupper : int ($char : int)
+  sub toupper : int ($code_point : int)
 
 Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
 
 =head2 is_perl_space
 
-  sub is_perl_space : int ($char : int)
+  sub is_perl_space : int ($code_point : int)
 
 If character is Perl space character(' ', '\r', '\n', '\t', '\f'), return 1. If not, return 0.
 
 =head2 is_perl_word
 
-  sub is_perl_word : int ($char : int)
+  sub is_perl_word : int ($code_point : int)
 
 If character is Perl word character('a'-'z', 'A'-'Z', '_', '0'-'9'), return 1. If not, return 0.
 
@@ -187,19 +187,19 @@ If string array is undef, a exception occurs.
 
 =head2 lc
 
-  sub lc : string($str : string)
+  sub lc : string ($string : string)
 
 Convert uppercase string to lowercase string.
 
 =head2 lcfirst
 
-  sub lcfirst : string($str : string)
+  sub lcfirst : string ($string : string)
 
 Convert first chracter of string from uppercase to lowercase.
 
 =head2 replace
 
-  sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&)
+  sub replace : string ($string : string, $sub_string : string, $replace : string, $start_offset : int, $found_offset_ref : int&)
 
 Replace the sub string in the string with a replace string and return the result string.
 
@@ -207,11 +207,11 @@ You can specify a byte offset of the string.
 
 You can get the found byte offset by int reference.
 
-  my $str = "abcde";
-  my $substr = "bcd";
+  my $string = "abcde";
+  my $sub_string = "bcd";
   my $replace = "AB";
   my $found_offset = 0;
-  my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
+  my $result_str = replace($string, $sub_string, $replace, 0, \$found_offset);
 
 =head2 strtoi
 
@@ -267,7 +267,7 @@ If the convertion fails, a exception occuer.
 
 =head2 uc
 
-  sub uc : string($str : string)
+  sub uc : string ($string : string)
 
 Convert a lowercase string to a uppercase string.
 
@@ -275,7 +275,7 @@ If the string is undef, a exception occur.
 
 =head2 ucfirst
 
-  sub ucfirst : string($str : string)
+  sub ucfirst : string ($string : string)
 
 Convert the first character of a string to a uppercase character.
 
@@ -283,12 +283,12 @@ If the string is undef, a exception occur.
 
 =head2 rindex
 
-  sub rindex : int ($str : string, $substr : string, $offset : int)
+  sub rindex : int ($string : string, $sub_string : string, $offset : int)
 
 Same as "index" function except that the search is the last of the string.
 
 =head2 contains
 
-  sub contains : int ($str : string, $substr : string)
+  sub contains : int ($string : string, $sub_string : string)
 
 If the string contains the sub string, return 1. If not, return 0.

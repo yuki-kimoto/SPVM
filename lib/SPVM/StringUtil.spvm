@@ -57,14 +57,14 @@ package SPVM::StringUtil : precompile {
     return $new_string;
   }
 
-  sub index : int ($str : string, $substr : string, $posision : int) {
-    my $strCount = length $str;
-    my $substrCount = length $substr;
+  sub index : int ($string : string, $sub_string : string, $posision : int) {
+    my $stringCount = length $string;
+    my $sub_stringCount = length $sub_string;
 
-    if ($posision >= $strCount) {
+    if ($posision >= $stringCount) {
       my $ret : int;
-      if ($substrCount == 0) {
-        $ret = $strCount;
+      if ($sub_stringCount == 0) {
+        $ret = $stringCount;
       }
       else {
         $ret = -1;
@@ -74,22 +74,22 @@ package SPVM::StringUtil : precompile {
     if ($posision < 0) {
       $posision = 0;
     }
-    if ($substrCount == 0) {
+    if ($sub_stringCount == 0) {
       return $posision;
     }
 
-    my $first : byte  = $substr->[0];
-    my $max : int = ($strCount - $substrCount);
+    my $first : byte  = $sub_string->[0];
+    my $max : int = ($stringCount - $sub_stringCount);
 
     for (my $i = $posision; $i <= $max; $i++) {
-      if ($str->[$i] != $first) {
-        while (++$i <= $max && $str->[$i] != $first) {}
+      if ($string->[$i] != $first) {
+        while (++$i <= $max && $string->[$i] != $first) {}
       }
 
       if ($i <= $max) {
         my $j = $i + 1;
-        my $end = $j + $substrCount - 1;
-        for (my $k = 01; $j < $end && $str->[$j] == $substr->[$k]; ($j++, $k++)) {}
+        my $end = $j + $sub_stringCount - 1;
+        for (my $k = 01; $j < $end && $string->[$j] == $sub_string->[$k]; ($j++, $k++)) {}
 
         if ($j == $end) {
           return $i;
@@ -104,9 +104,9 @@ package SPVM::StringUtil : precompile {
   # On the other hand, Unicode Code Point can be represented by int tyep.
   # Unicode Code Point is upper compatibility of ASCII code.
   # So the following character check functions receive int type argument.
-  sub isalnum : int ($char : int) {
+  sub isalnum : int ($code_point : int) {
 
-    if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
+    if (($code_point >= 'A' && $code_point <= 'Z') || ($code_point >= 'a' && $code_point <= 'z') || ($code_point >= '0' && $code_point <= '9')) {
       return 1;
     }
     else {
@@ -114,9 +114,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isalpha : int ($char : int) {
+  sub isalpha : int ($code_point : int) {
 
-    if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
+    if (($code_point >= 'A' && $code_point <= 'Z') || ($code_point >= 'a' && $code_point <= 'z')) {
       return 1;
     }
     else {
@@ -124,9 +124,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isblank : int ($char : int) {
+  sub isblank : int ($code_point : int) {
 
-    if ($char >= ' ' ||  $char <= '\t') {
+    if ($code_point >= ' ' ||  $code_point <= '\t') {
       return 1;
     }
     else {
@@ -134,9 +134,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub iscntrl : int ($char : int) {
+  sub iscntrl : int ($code_point : int) {
 
-    if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
+    if (($code_point >= 0x00 && $code_point <= 0x1f) || $code_point == 0x7f) {
       return 1;
     }
     else {
@@ -144,9 +144,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isdigit : int ($char : int) {
+  sub isdigit : int ($code_point : int) {
 
-    if ($char >= '0' && $char <= '9') {
+    if ($code_point >= '0' && $code_point <= '9') {
       return 1;
     }
     else {
@@ -154,9 +154,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isgraph : int ($char : int) {
+  sub isgraph : int ($code_point : int) {
 
-    if ($char >= 0x21 && $char <= 0x7e) {
+    if ($code_point >= 0x21 && $code_point <= 0x7e) {
       return 1;
     }
     else {
@@ -164,9 +164,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub islower : int ($char : int) {
+  sub islower : int ($code_point : int) {
 
-    if ($char >= 'a' && $char <= 'z') {
+    if ($code_point >= 'a' && $code_point <= 'z') {
       return 1;
     }
     else {
@@ -174,9 +174,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isprint : int ($char : int) {
+  sub isprint : int ($code_point : int) {
 
-    if ($char >= 0x20 && $char <= 0x7e) {
+    if ($code_point >= 0x20 && $code_point <= 0x7e) {
       return 1;
     }
     else {
@@ -184,9 +184,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub ispunct : int ($char : int) {
+  sub ispunct : int ($code_point : int) {
 
-    if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+    if (($code_point >= 0x21 && $code_point <= 0x2f) || ($code_point >= 0x3a && $code_point <= 0x40) || ($code_point >= 0x5b && $code_point <= 0x60) || ($code_point >= 0x7b && $code_point <= 0x7e)) {
       return 1;
     }
     else {
@@ -194,9 +194,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isspace : int ($char : int) {
+  sub isspace : int ($code_point : int) {
 
-    if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+    if (($code_point >= 0x09 && $code_point <= 0x0d) || $code_point == 0x20) {
       return 1;
     }
     else {
@@ -204,9 +204,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isupper : int ($char : int) {
+  sub isupper : int ($code_point : int) {
 
-    if ($char >= 'A' && $char <= 'Z') {
+    if ($code_point >= 'A' && $code_point <= 'Z') {
       return 1;
     }
     else {
@@ -214,9 +214,9 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isxdigit : int ($char : int) {
+  sub isxdigit : int ($code_point : int) {
 
-    if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
+    if (($code_point >= 'A' && $code_point <= 'F') || ($code_point >= 'a' && $code_point <= 'f') || ($code_point >= '0' && $code_point <= '9')) {
       return 1;
     }
     else {
@@ -224,26 +224,26 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub tolower : int ($char : int) {
+  sub tolower : int ($code_point : int) {
 
-    if ($char >= 'A' && $char <= 'Z') {
-      $char = $char + 0x20;
+    if ($code_point >= 'A' && $code_point <= 'Z') {
+      $code_point = $code_point + 0x20;
     }
-    return $char;
+    return $code_point;
   }
 
-  sub toupper : int ($char : int) {
+  sub toupper : int ($code_point : int) {
 
-    if ($char >= 'a' && $char <= 'z') {
-      $char = $char - 0x20;
+    if ($code_point >= 'a' && $code_point <= 'z') {
+      $code_point = $code_point - 0x20;
     }
-    return $char;
+    return $code_point;
   }
 
   # This is same as Perl \s
-  sub is_perl_space : int ($char : int) {
+  sub is_perl_space : int ($code_point : int) {
     my $ispspace = 0;
-    switch ($char) {
+    switch ($code_point) {
       case ' ':
       case '\r':
       case '\n':
@@ -257,19 +257,19 @@ package SPVM::StringUtil : precompile {
     return $ispspace;
   }
 
-  sub is_perl_word : int ($char : int) {
+  sub is_perl_word : int ($code_point : int) {
     my $ispword = 0;
 
-    if ($char >= 'a' && $char <= 'z') {
+    if ($code_point >= 'a' && $code_point <= 'z') {
       $ispword = 1;
     }
-    elsif ($char >= 'A' && $char <= 'Z') {
+    elsif ($code_point >= 'A' && $code_point <= 'Z') {
       $ispword = 1;
     }
-    elsif ($char == '_') {
+    elsif ($code_point == '_') {
       $ispword = 1;
     }
-    elsif ($char >= '0' && $char <= '9') {
+    elsif ($code_point >= '0' && $code_point <= '9') {
       $ispword = 1;
     }
     return $ispword;
@@ -289,32 +289,32 @@ package SPVM::StringUtil : precompile {
     return $join;
   }
 
-  sub lc : string($str : string) {
+  sub lc : string ($string : string) {
 
-    unless ($str) { die "String must be defined"; }
+    unless ($string) { die "String must be defined"; }
 
-    my $length = length $str;
+    my $length = length $string;
     my $new_string = new byte [$length];
     for (my $i = 0; $i < $length; $i++) {
-      my $char = $str->[$i];
+      my $char = $string->[$i];
       if ($char >= 'A' && $char <= 'Z') {
-        $new_string->[$i] = (byte)($str->[$i] + 32);
+        $new_string->[$i] = (byte)($string->[$i] + 32);
       }
       else {
-        $new_string->[$i] = $str->[$i];
+        $new_string->[$i] = $string->[$i];
       }
     }
     return (string)$new_string;
   }
 
-  sub lcfirst : string($str : string) {
+  sub lcfirst : string ($string : string) {
 
-    unless ($str) { die "String must be defined"; }
+    unless ($string) { die "String must be defined"; }
 
-    my $length = length $str;
+    my $length = length $string;
     my $new_string = new byte [$length];
     if ($length > 0) {
-      my $char = $str->[0];
+      my $char = $string->[0];
       if ($char >= 'A' && $char <= 'Z') {
         $new_string->[0] = (byte)($char + 32);
       }
@@ -323,40 +323,40 @@ package SPVM::StringUtil : precompile {
       }
     }
     for (my $i = 1; $i < $length; ++$i) {
-      $new_string->[$i] = $str->[$i];
+      $new_string->[$i] = $string->[$i];
     }
     return (string)$new_string;
   }
 
-  sub replace : string ($str : string, $substr : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
-    unless ($substr && length $substr > 0) {
+  sub replace : string ($string : string, $sub_string : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
+    unless ($sub_string && length $sub_string > 0) {
       die "Sub string must have length";
     }
-    my $found_offset = index($str, $substr, $start_offset);
+    my $found_offset = index($string, $sub_string, $start_offset);
     $$found_offset_ref = $found_offset;
     if ($found_offset >= 0) {
-      my $str_len = length $str;
-      my $substr_len = length $substr;
+      my $string_len = length $string;
+      my $sub_string_len = length $sub_string;
       my $replace_len = length $replace;
 
-      my $result_str_len = $str_len + $replace_len - $substr_len;
+      my $result_str_len = $string_len + $replace_len - $sub_string_len;
       my $result_str = new byte[$result_str_len];
 
       if ($found_offset > 0) {
-        SPVM::ArrayUtil->memmove_byte((byte[])$result_str, 0, (byte[])$str, 0, $found_offset);
+        SPVM::ArrayUtil->memmove_byte((byte[])$result_str, 0, (byte[])$string, 0, $found_offset);
       }
       SPVM::ArrayUtil->memmove_byte((byte[])$result_str, $found_offset, (byte[])$replace, 0, $replace_len);
 
-      my $str_rest_offset = $found_offset + $substr_len;
-      my $str_rest_length = $str_len - $str_rest_offset;
+      my $string_rest_offset = $found_offset + $sub_string_len;
+      my $string_rest_length = $string_len - $string_rest_offset;
       my $result_rest_offset = $found_offset + $replace_len;
       my $result_rest_length = $result_str_len - $result_rest_offset;
-      SPVM::ArrayUtil->memmove_byte((byte[])$result_str, $result_rest_offset, (byte[])$str, $str_rest_offset, $str_rest_length);
+      SPVM::ArrayUtil->memmove_byte((byte[])$result_str, $result_rest_offset, (byte[])$string, $string_rest_offset, $string_rest_length);
 
       return (string)$result_str;
     }
     else {
-      my $copy_string = copy_string($str);
+      my $copy_string = copy_string($string);
       return $copy_string;
     }
   }
@@ -366,32 +366,32 @@ package SPVM::StringUtil : precompile {
   native sub strtof : float ($string : string);
   native sub strtod : double ($string : string);
 
-  sub uc : string($str : string) {
+  sub uc : string ($string : string) {
 
-    unless ($str) { die "String must be defined"; }
+    unless ($string) { die "String must be defined"; }
 
-    my $length = length $str;
+    my $length = length $string;
     my $new_string = new byte [$length];
     for (my $i = 0; $i < $length; $i++) {
-      my $char = $str->[$i];
+      my $char = $string->[$i];
       if ($char >= 'a' && $char <= 'z') {
-        $new_string->[$i] = (byte)($str->[$i] - 32);
+        $new_string->[$i] = (byte)($string->[$i] - 32);
       }
       else {
-        $new_string->[$i] = $str->[$i];
+        $new_string->[$i] = $string->[$i];
       }
     }
     return (string)$new_string;
   }
 
-  sub ucfirst : string($str : string) {
+  sub ucfirst : string ($string : string) {
 
-    unless ($str) { die "String must be defined"; }
+    unless ($string) { die "String must be defined"; }
 
-    my $length = length $str;
+    my $length = length $string;
     my $new_string = new byte [$length];
     if ($length > 0) {
-      my $char = $str->[0];
+      my $char = $string->[0];
       if ($char >= 'a' && $char <= 'z') {
         $new_string->[0] = (byte)($char - 32);
       }
@@ -400,21 +400,21 @@ package SPVM::StringUtil : precompile {
       }
     }
     for (my $i = 1; $i < $length; ++$i) {
-      $new_string->[$i] = $str->[$i];
+      $new_string->[$i] = $string->[$i];
     }
     return (string)$new_string;
   }
 
-  sub rindex : int ($str : string, $substr : string, $offset : int) {
-    my $str_len = length $str;
-    my $substr_len = length $substr;
-    if ($offset > $str_len - $substr_len) {
-      $offset = $str_len - $substr_len;
+  sub rindex : int ($string : string, $sub_string : string, $offset : int) {
+    my $string_len = length $string;
+    my $sub_string_len = length $sub_string;
+    if ($offset > $string_len - $sub_string_len) {
+      $offset = $string_len - $sub_string_len;
     }
     for (my $i = $offset; $i >= 0; --$i) {
       my $match = 1;
-      for (my $j = 0; $j < $substr_len; ++$j) {
-        if ($str->[$i + $j] != $substr->[$j]) {
+      for (my $j = 0; $j < $sub_string_len; ++$j) {
+        if ($string->[$i + $j] != $sub_string->[$j]) {
           $match = 0;
           last;
         }
@@ -828,8 +828,8 @@ package SPVM::StringUtil : precompile {
           ++$index;
           my $arg = (SPVM::Double)$args->[$arg_count];
           my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
-          my $str = _snsprintf_double($specifier_str, $arg->value);
-          $buffer->push($str);
+          my $string = _snsprintf_double($specifier_str, $arg->value);
+          $buffer->push($string);
         }
         elsif ($specifier_char == 'U') {
           ++$index;
