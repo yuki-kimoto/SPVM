@@ -139,22 +139,6 @@ package TestCase::Lib::SPVM::ByteList {
     return 1;
   }
 
-  sub new_capacity : int () {
-    {
-      my $list = SPVM::ByteList->new_capacity(32);
-      
-      unless ($list->length == 0) {
-        return 0;
-      }
-      
-      unless ($list->capacity == 32) {
-        return 0;
-      }
-    }
-    
-    return 1;
-  }
-
   sub new_len : int () {
     {
       my $list = SPVM::ByteList->new_len(32);

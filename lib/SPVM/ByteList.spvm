@@ -9,16 +9,6 @@ package SPVM::ByteList : precompile {
     DEFAULT_CAPACITY = 16,
   }
   
-  sub new_capacity : SPVM::ByteList ($capacity : int) {
-    my $self = new SPVM::ByteList;
-    unless ($capacity > 0) {
-      die "capacity must be positive";
-    }
-    $self->{capacity} = $capacity;
-    $self->{values} = new byte[$capacity];
-    return $self;
-  }
-
   sub new_len : SPVM::ByteList ($length : int) {
     my $self = new SPVM::ByteList;
     unless ($length >= 0) {

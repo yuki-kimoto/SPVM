@@ -8,29 +8,6 @@ package SPVM::List : precompile {
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-  sub to_array : oarray ($self : self) {
-    my $length = $self->{length};
-    my $objects = new_array_proto($self->{values}, $length);
-    for (my $i = 0; $i < $length; $i++) {
-      $objects->[$i] = $self->{values}[$i];
-    }
-    return $objects;
-  }
-
-  sub new_capacity : SPVM::List ($proto_array : oarray, $capacity : int) {
-    unless ($proto_array) {
-      die "First argument must not be undef";
-    }
-
-    my $self = new SPVM::List;
-    unless ($capacity > 0) {
-      die "capacity must be positive";
-    }
-    $self->{capacity} = $capacity;
-    $self->{values} = new_array_proto($proto_array, $capacity);
-    return $self;
-  }
-
   sub new : SPVM::List ($objects : oarray) {
     
     unless ($objects) {
@@ -240,92 +217,6 @@ package SPVM::List : precompile {
     $self->{capacity} = $new_capacity;
   }
   
-  # splice is EXPERIMENTAL
-  # range of $cut_offset: [0, $cut_length]
-  # O($self->{capacity})
-  sub splice : oarray ($self : self, $cut_offset : int, $cut_length : int, $replace : oarray) {
-    if ($cut_offset > $self->{length}) {
-      warn("splice_with_list() offset past end of array");
-      $cut_offset = $self->{length};
-      $cut_length = 0;
-    }
-
-    # fit cut_length to the end.
-    if ($cut_length > $self->{length}) {
-      $cut_length = $self->{length};
-    }
-    if ($cut_offset > $self->{length} - $cut_length) { # always $self->{length} - $cut_length >= 0
-      $cut_length = $self->{length} - $cut_offset;
-    }
-
-    my $replace_length = 0;
-    if ($replace) {
-      $replace_length = @$replace;
-    }
-
-    if ($self->{length} - $cut_length + $replace_length > $self->{capacity}) {
-      # O($new_values_length)
-      $self->_extend_with_capacity($self->{length} - $cut_length + $replace_length);
-    }
-
-    # extract elements
-    # O($cut_length)
-    my $extracted = new_array_proto($self->{values}, $cut_length);
-    for (my $i = 0; $i < $cut_length; ++$i) {
-      my $target = $i;
-      if ($target > 0) { $target -= $self->{capacity}; } # to avoid overflow on the next statement
-      $target += $cut_offset;
-      if ($target < 0) { $target += $self->{capacity}; }
-      $extracted->[$i] = $self->{values}[$target];
-    }
-
-    my $last_sequence_length = $self->{length} - $cut_offset - $cut_length;
-    # move last sequence to forward
-    if ($cut_length > $replace_length) {
-      for (my $i = 0; $i < $last_sequence_length; ++$i) {
-        my $origin = $cut_offset + $cut_length + $i;
-        if ($origin < 0) { $origin += $self->{capacity}; }
-        if ($origin >= $self->{capacity}) { $origin -= $self->{capacity}; }
-        my $target = $cut_offset + $replace_length + $i;
-        if ($target < 0) { $target += $self->{capacity}; }
-        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
-        $self->{values}[$target] = $self->{values}[$origin];
-      }
-      # deallocate unused sequence
-      for (my $i = 0; $i < $cut_length - $replace_length; ++$i) {
-        my $target = $cut_offset + $replace_length + $last_sequence_length + $i;
-        if ($target < 0) { $target += $self->{capacity}; }
-        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
-        $self->{values}[$target] = undef;
-      }
-    }
-    else {
-      # move last sequence to backward
-      for (my $i = 0; $i < $last_sequence_length; ++$i) {
-        my $origin = $self->{length} - 1 - $i;
-        if ($origin < 0) { $origin += $self->{capacity}; }
-        my $target = $cut_offset + $replace_length + $last_sequence_length - 1 - $i;
-        if ($target < 0) { $target += $self->{capacity}; }
-        if ($target >= $self->{capacity}) { $target -= $self->{capacity}; }
-        $self->{values}[$target] = $self->{values}[$origin];
-      }
-    }
-
-    # replace with new array
-    for (my $i = 0; $i < $replace_length; ++$i) {
-      my $target = $cut_offset + $i;
-      if ($target < 0) {
-        $target += $self->{capacity};
-      }
-      $self->{values}[$target] = $replace->[$i];
-    }
-
-    # update fields
-    $self->{length} += $replace_length - $cut_length;
-
-    return $extracted;
-  }
-  
   sub resize : void ($self : self, $new_length : int) {
     if ($new_length < 0) {
       die "New length must be more than or equals to 0";
@@ -345,5 +236,13 @@ package SPVM::List : precompile {
       }
     }
     $self->{length} = $new_length;
+  }
+  sub to_array : oarray ($self : self) {
+    my $length = $self->{length};
+    my $objects = new_array_proto($self->{values}, $length);
+    for (my $i = 0; $i < $length; $i++) {
+      $objects->[$i] = $self->{values}[$i];
+    }
+    return $objects;
   }
 }

@@ -15,9 +15,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::List
 {
-  ok(TestCase::Lib::SPVM::List->ctor_default);
-  ok(TestCase::Lib::SPVM::List->ctor_with_capacity);
-  ok(TestCase::Lib::SPVM::List->ctor_with_array);
   ok(TestCase::Lib::SPVM::List->length);
   ok(TestCase::Lib::SPVM::List->push);
   ok(TestCase::Lib::SPVM::List->pop);
@@ -27,14 +24,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::List->offset_by_alternate_unshift_and_pop);
   ok(TestCase::Lib::SPVM::List->set);
   ok(TestCase::Lib::SPVM::List->get);
-  ok(TestCase::Lib::SPVM::List->splice);
-  ok(TestCase::Lib::SPVM::List->splice_no_reallocation);
-  ok(TestCase::Lib::SPVM::List->splice_offset_is_valid_when_removed);
-  ok(TestCase::Lib::SPVM::List->splice_offset_is_valid_when_appended);
-  ok(TestCase::Lib::SPVM::List->to_array);
   ok(TestCase::Lib::SPVM::List->insert);
   ok(TestCase::Lib::SPVM::List->remove);
   ok(TestCase::Lib::SPVM::List->resize);
+  ok(TestCase::Lib::SPVM::List->to_array);
 }
 
 # All object is freed

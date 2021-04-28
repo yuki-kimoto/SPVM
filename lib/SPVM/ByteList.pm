@@ -10,12 +10,12 @@ SPVM::ByteList - 0 index based continuous dynamic byte array
   
   use SPVM::ByteList;
   
-  # Create a byte list with array length
-  my $byte_list = SPVM::ByteList->new_len(10);
-
   # Create a byte list with array
   my $byte_list = SPVM::ByteList->new([(byte)1, 2, 3]);
   
+  # Create a byte list with array length
+  my $byte_list = SPVM::ByteList->new_len(10);
+
   # Get list length
   my $length = $byte_list->length;
   

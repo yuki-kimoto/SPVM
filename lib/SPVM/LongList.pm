@@ -64,7 +64,6 @@ Create a new L<SPVM::LongList> object with specific C<long> array.
 
 Create a new L<SPVM::LongList> object with array length.
 
-
 =head1 INSTANCE METHODS
 
 =head2 length

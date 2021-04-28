@@ -64,7 +64,6 @@ Create a new L<SPVM::DoubleList> object with specific C<double> array.
 
 Create a new L<SPVM::DoubleList> object with array length.
 
-
 =head1 INSTANCE METHODS
 
 =head2 length

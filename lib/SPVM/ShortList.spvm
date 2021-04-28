@@ -8,15 +8,6 @@ package SPVM::ShortList : precompile {
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-  sub new_capacity : SPVM::ShortList ($capacity : int) {
-    my $self = new SPVM::ShortList;
-    unless ($capacity > 0) {
-      die "capacity must be positive";
-    }
-    $self->{capacity} = $capacity;
-    $self->{values} = new short[$capacity];
-    return $self;
-  }
 
   sub new_len : SPVM::ShortList ($length : int) {
     my $self = new SPVM::ShortList;
