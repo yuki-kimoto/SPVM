@@ -184,6 +184,46 @@ You can get the found byte offset by int reference.
   my $found_offset = 0;
   my $result_str = replace($string, $sub_string, $replace, 0, \$found_offset);
 
+=head2 rindex
+
+  sub rindex : int ($string : string, $sub_string : string, $offset : int)
+
+Same as "index" function except that the search is the last of the string.
+
+=head2 split
+
+  sub split : string[] ($sep : string, $string : string)
+
+Split a string by the specific separator.
+
+=head2 uc
+
+  sub uc : string ($string : string)
+
+Convert a lowercase string to a uppercase string.
+
+If the string is undef, a exception occur.
+
+=head2 ucfirst
+
+  sub ucfirst : string ($string : string)
+
+Convert the first character of a string to a uppercase character.
+
+If the string is undef, a exception occur.
+
+=head2 to_lower
+
+  sub to_lower : int ($code_point : int)
+
+Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
+
+=head2 to_upper
+
+  sub to_upper : int ($code_point : int)
+
+Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
+
 =head2 to_int
 
   sub to_int : int ($string : string, $digit : int);
@@ -253,44 +293,4 @@ If the convertion fails, a exception occuer.
 
   my $string = "1.25";
   my $num = to_double($string);
-
-=head2 rindex
-
-  sub rindex : int ($string : string, $sub_string : string, $offset : int)
-
-Same as "index" function except that the search is the last of the string.
-
-=head2 split
-
-  sub split : string[] ($sep : string, $string : string)
-
-Split a string by the specific separator.
-
-=head2 uc
-
-  sub uc : string ($string : string)
-
-Convert a lowercase string to a uppercase string.
-
-If the string is undef, a exception occur.
-
-=head2 ucfirst
-
-  sub ucfirst : string ($string : string)
-
-Convert the first character of a string to a uppercase character.
-
-If the string is undef, a exception occur.
-
-=head2 to_lower
-
-  sub to_lower : int ($code_point : int)
-
-Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
-
-=head2 to_upper
-
-  sub to_upper : int ($code_point : int)
-
-Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
 
