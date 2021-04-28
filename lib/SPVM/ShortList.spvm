@@ -1,8 +1,8 @@
 package SPVM::ShortList : precompile {
   use SPVM::ArrayUtil (memcpy_short, memmove_short);
   
-  has values   : norw short[];
-  has capacity : norw int;
+  has values   : short[];
+  has capacity : int;
   has length   : ro int;
   
   private enum {

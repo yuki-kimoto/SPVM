@@ -1882,11 +1882,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NEW);
                   return NEW;
                 }
-                else if (strcmp(keyword, "norw") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_NORW, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
-                }
                 break;
               case 'o' :
                 if (strcmp(keyword, "our") == 0) {

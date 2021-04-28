@@ -1,6 +1,6 @@
 package SPVM::StringList : precompile {
-  has values   : norw string[];
-  has capacity : norw int;
+  has values   : string[];
+  has capacity : int;
   has length   : ro int;
   
   private enum {

@@ -1024,7 +1024,7 @@ int32_t SPVM_TYPE_is_multi_numeric_type(SPVM_COMPILER* compiler, int32_t basic_t
     SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
     // Package
     if (package) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
         is_mulnum_t = 1;
       }
       else {
@@ -1055,7 +1055,7 @@ int32_t SPVM_TYPE_is_value_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_
     SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
     // Package
     if (package) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
         is_value_ref_type = 1;
       }
       else {
@@ -1086,7 +1086,7 @@ int32_t SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, int32_t basic_typ
     SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
     // Package
     if (package) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
+      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
         is_value_array_type = 1;
       }
       else {
@@ -1118,7 +1118,7 @@ int32_t SPVM_TYPE_basic_type_is_multi_numeric_type(SPVM_COMPILER* compiler, int3
   
   // Package
   if (package) {
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_MULNUM) {
+    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
       is_basic_type_mulnum_t = 1;
     }
     else {

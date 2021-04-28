@@ -1,8 +1,8 @@
 package SPVM::IntList : precompile {
   use SPVM::ArrayUtil (memcpy_int, memmove_int);
   
-  has values   : norw int[];
-  has capacity : norw int;
+  has values   : int[];
+  has capacity : int;
   has length   : ro int;
   
   private enum {

@@ -1,8 +1,8 @@
 package SPVM::FloatList : precompile {
   use SPVM::ArrayUtil (memcpy_float, memmove_float);
   
-  has values   : norw float[];
-  has capacity : norw int;
+  has values   : float[];
+  has capacity : int;
   has length   : ro int;
   
   private enum {
