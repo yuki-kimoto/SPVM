@@ -8,22 +8,21 @@ package TestCase::Lib::SPVM::StringUtil {
 
   use SPVM::StringUtil (
     chompr,
+    copy_string,
     is_perl_space,
     is_perl_word,
-    isalnum,
-    isalpha,
-    isblank,
-    iscntrl,
-    isdigit,
-    isgraph,
-    islower,
-    isprint,
-    ispunct,
-    isspace,
-    isupper,
-    isxdigit,
-    tolower,
-    toupper,
+    is_alnum,
+    is_alpha,
+    is_blank,
+    is_cntrl,
+    is_digit,
+    is_graph,
+    is_lower,
+    is_print,
+    is_punct,
+    is_space,
+    is_upper,
+    is_xdigit,
     join,
     lc,
     lcfirst,
@@ -35,10 +34,11 @@ package TestCase::Lib::SPVM::StringUtil {
     strtof,
     strtoi,
     strtol,
-    copy_string,
     index,
     split,
     sprintf,
+    to_lower,
+    to_upper,
   );
 
   sub test_split : int () {
@@ -490,20 +490,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
   
-  sub test_isalnum : int () {
+  sub test_is_alnum : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
-        my $ret = isalnum($char);
+        my $ret = is_alnum($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isalnum($char);
+        my $ret = is_alnum($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -517,20 +517,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isalpha : int () {
+  sub test_is_alpha : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
-        my $ret = isalpha($char);
+        my $ret = is_alpha($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isalpha($char);
+        my $ret = is_alpha($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -544,20 +544,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isblank : int () {
+  sub test_is_blank : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if ($char >= ' ' ||  $char <= '\t') {
-        my $ret = isblank($char);
+        my $ret = is_blank($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isblank($char);
+        my $ret = is_blank($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -571,20 +571,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_iscntrl : int () {
+  sub test_is_cntrl : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
-        my $ret = iscntrl($char);
+        my $ret = is_cntrl($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = iscntrl($char);
+        my $ret = is_cntrl($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -598,20 +598,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isdigit : int () {
+  sub test_is_digit : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if ($char >= '0' && $char <= '9') {
-        my $ret = isdigit($char);
+        my $ret = is_digit($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isdigit($char);
+        my $ret = is_digit($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -625,20 +625,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isgraph : int () {
+  sub test_is_graph : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if ($char >= 0x21 && $char <= 0x7e) {
-        my $ret = isgraph($char);
+        my $ret = is_graph($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isgraph($char);
+        my $ret = is_graph($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -652,20 +652,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_islower : int () {
+  sub test_is_lower : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
     if ($char >= 'a' && $char <= 'z') {
-        my $ret = islower($char);
+        my $ret = is_lower($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = islower($char);
+        my $ret = is_lower($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -679,20 +679,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isprint : int () {
+  sub test_is_print : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if ($char >= 0x20 && $char <= 0x7e) {
-        my $ret = isprint($char);
+        my $ret = is_print($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isprint($char);
+        my $ret = is_print($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -706,20 +706,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_ispunct : int () {
+  sub test_is_punct : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
-        my $ret = ispunct($char);
+        my $ret = is_punct($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = ispunct($char);
+        my $ret = is_punct($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -733,20 +733,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isspace : int () {
+  sub test_is_space : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
-        my $ret = isspace($char);
+        my $ret = is_space($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isspace($char);
+        my $ret = is_space($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -760,20 +760,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isupper : int () {
+  sub test_is_upper : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if ($char >= 'A' && $char <= 'Z') {
-        my $ret = isupper($char);
+        my $ret = is_upper($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isupper($char);
+        my $ret = is_upper($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -787,20 +787,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_isxdigit : int () {
+  sub test_is_xdigit : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
-        my $ret = isxdigit($char);
+        my $ret = is_xdigit($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = isxdigit($char);
+        my $ret = is_xdigit($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -814,20 +814,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_tolower : int () {
+  sub test_to_lower : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
       if ($char >= 'A' && $char <= 'Z') {
-        my $ret = tolower($char);
+        my $ret = to_lower($char);
         unless ($ret == $char + 0x20) {
           $ok = 0;
         }
       }
       else {
-        my $ret = tolower($char);
+        my $ret = to_lower($char);
         unless ($ret == $char) {
           $ok = 0;
         }
@@ -841,20 +841,20 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_toupper : int () {
+  sub test_to_upper : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
       my $char = $i;
 
     if ($char >= 'a' && $char <= 'z') {
-        my $ret = toupper($char);
+        my $ret = to_upper($char);
         unless ($ret == $char - 0x20) {
           $ok = 0;
         }
       }
       else {
-        my $ret = toupper($char);
+        my $ret = to_upper($char);
         unless ($ret == $char) {
           $ok = 0;
         }
@@ -1491,7 +1491,7 @@ package TestCase::Lib::SPVM::StringUtil {
     return 0;
   }
 
-  sub test_copy_str : int () {
+  sub test_copy_string : int () {
     my $string = "abc";
     my $string_out = copy_string($string);
 

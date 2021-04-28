@@ -82,7 +82,7 @@ package SPVM::StringUtil : precompile {
   # On the other hand, Unicode Code Point can be represented by int tyep.
   # Unicode Code Point is upper compatibility of ASCII code.
   # So the following character check functions receive int type argument.
-  sub isalnum : int ($code_point : int) {
+  sub is_alnum : int ($code_point : int) {
 
     if (($code_point >= 'A' && $code_point <= 'Z') || ($code_point >= 'a' && $code_point <= 'z') || ($code_point >= '0' && $code_point <= '9')) {
       return 1;
@@ -92,7 +92,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isalpha : int ($code_point : int) {
+  sub is_alpha : int ($code_point : int) {
 
     if (($code_point >= 'A' && $code_point <= 'Z') || ($code_point >= 'a' && $code_point <= 'z')) {
       return 1;
@@ -102,7 +102,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isblank : int ($code_point : int) {
+  sub is_blank : int ($code_point : int) {
 
     if ($code_point >= ' ' ||  $code_point <= '\t') {
       return 1;
@@ -112,7 +112,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub iscntrl : int ($code_point : int) {
+  sub is_cntrl : int ($code_point : int) {
 
     if (($code_point >= 0x00 && $code_point <= 0x1f) || $code_point == 0x7f) {
       return 1;
@@ -122,7 +122,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isdigit : int ($code_point : int) {
+  sub is_digit : int ($code_point : int) {
 
     if ($code_point >= '0' && $code_point <= '9') {
       return 1;
@@ -132,7 +132,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isgraph : int ($code_point : int) {
+  sub is_graph : int ($code_point : int) {
 
     if ($code_point >= 0x21 && $code_point <= 0x7e) {
       return 1;
@@ -142,7 +142,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub islower : int ($code_point : int) {
+  sub is_lower : int ($code_point : int) {
 
     if ($code_point >= 'a' && $code_point <= 'z') {
       return 1;
@@ -152,7 +152,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isprint : int ($code_point : int) {
+  sub is_print : int ($code_point : int) {
 
     if ($code_point >= 0x20 && $code_point <= 0x7e) {
       return 1;
@@ -162,7 +162,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub ispunct : int ($code_point : int) {
+  sub is_punct : int ($code_point : int) {
 
     if (($code_point >= 0x21 && $code_point <= 0x2f) || ($code_point >= 0x3a && $code_point <= 0x40) || ($code_point >= 0x5b && $code_point <= 0x60) || ($code_point >= 0x7b && $code_point <= 0x7e)) {
       return 1;
@@ -172,7 +172,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isspace : int ($code_point : int) {
+  sub is_space : int ($code_point : int) {
 
     if (($code_point >= 0x09 && $code_point <= 0x0d) || $code_point == 0x20) {
       return 1;
@@ -182,7 +182,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isupper : int ($code_point : int) {
+  sub is_upper : int ($code_point : int) {
 
     if ($code_point >= 'A' && $code_point <= 'Z') {
       return 1;
@@ -192,7 +192,7 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub isxdigit : int ($code_point : int) {
+  sub is_xdigit : int ($code_point : int) {
 
     if (($code_point >= 'A' && $code_point <= 'F') || ($code_point >= 'a' && $code_point <= 'f') || ($code_point >= '0' && $code_point <= '9')) {
       return 1;
@@ -813,7 +813,7 @@ package SPVM::StringUtil : precompile {
     return (string)$slice;
   }
 
-  sub tolower : int ($code_point : int) {
+  sub to_lower : int ($code_point : int) {
 
     if ($code_point >= 'A' && $code_point <= 'Z') {
       $code_point = $code_point + 0x20;
@@ -821,7 +821,7 @@ package SPVM::StringUtil : precompile {
     return $code_point;
   }
 
-  sub toupper : int ($code_point : int) {
+  sub to_upper : int ($code_point : int) {
 
     if ($code_point >= 'a' && $code_point <= 'z') {
       $code_point = $code_point - 0x20;

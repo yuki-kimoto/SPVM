@@ -62,75 +62,75 @@ the beginning or the end, respectively. $position and the return
 value are based at zero. If the substring is not found, "index"
 returns -1.
             
-=head2 isalnum
+=head2 is_alnum
 
-  sub isalnum : int ($code_point : int)
+  sub is_alnum : int ($code_point : int)
 
 If character is alphanumeric('A'-'Z', 'a'-'z', '0'-'9'), return 1. If not, return 0.
 
-=head2 isalpha
+=head2 is_alpha
 
-  sub isalpha : int ($code_point : int)
+  sub is_alpha : int ($code_point : int)
 
 If character is alphabetic('A'-'Z', 'a'-'z'), return 1. If not, return 0.
 
-=head2 isblank
+=head2 is_blank
 
-  sub isblank : int ($code_point : int)
+  sub is_blank : int ($code_point : int)
 
 If character is blank(' ', '\t'), return 1. If not, return 0.
 
-=head2 iscntrl
+=head2 is_cntrl
 
-  sub iscntrl : int ($code_point : int)
+  sub is_cntrl : int ($code_point : int)
 
 If character is a control character(0x00-0x1F, 0x7F), return 1. If not, return 0.
 
-=head2 isdigit
+=head2 is_digit
 
-  sub isdigit : int ($code_point : int)
+  sub is_digit : int ($code_point : int)
 
 If character is decimal digit ('0'～'9'), return 1. If not, return 0.
 
-=head2 isgraph
+=head2 is_graph
 
-  sub isgraph : int ($code_point : int)
+  sub is_graph : int ($code_point : int)
 
 If character has graphical representation(0x21-0x7E), return 1. If not, return 0.
 
-=head2 islower
+=head2 is_lower
 
-  sub islower : int ($code_point : int)
+  sub is_lower : int ($code_point : int)
 
 If character is lowercase letter('a'-'z'), return 1. If not, return 0.
 
-=head2 isprint
+=head2 is_print
 
-  sub isprint : int ($code_point : int)
+  sub is_print : int ($code_point : int)
 
 If character is printable(0x20-0x7E), return 1. If not, return 0.
 
-=head2 ispunct
+=head2 is_punct
 
-  sub ispunct : int ($code_point : int)
+  sub is_punct : int ($code_point : int)
 
 If character is a punctuation character(0x21-0x2f, 0x3a-0x40, 0x5b-0x60, 0x7b-0x7e), return 1. If not, return 0.
 
-=head2 isspace
+=head2 is_space
 
-  sub isspace : int ($code_point : int)
+  sub is_space : int ($code_point : int)
 
 If character is a white-space(' ',  '\t', '\n', '\v', '\f', '\r'), return 1. If not, return 0.
 
-=head2 isupper
+=head2 is_upper
 
-  sub isupper : int ($code_point : int)
+  sub is_upper : int ($code_point : int)
 
 If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
 
-=head2 isxdigit
+=head2 is_xdigit
 
-  sub isxdigit : int ($code_point : int)
+  sub is_xdigit : int ($code_point : int)
 
 If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
 
@@ -264,15 +264,15 @@ Convert the first character of a string to a uppercase character.
 
 If the string is undef, a exception occur.
 
-=head2 tolower
+=head2 to_lower
 
-  sub tolower : int ($code_point : int)
+  sub to_lower : int ($code_point : int)
 
 Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
 
-=head2 toupper
+=head2 to_upper
 
-  sub toupper : int ($code_point : int)
+  sub to_upper : int ($code_point : int)
 
 Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
 

@@ -1,7 +1,23 @@
 0.0948 2021-04-28
   - remove SPVM::StringUtil->replace_all
-  - remove chomp_crlf
-  - rename chomp_lf to chompr
+  - remove SPVM::StringUtil->chomp_crlf
+  - rename SPVM::StringUtil->chomp_lf to SPVM::StringUtil->chompr
+  - rename the following SPVM::StringUtil methods
+    isalnum to is_alnum
+    isalpha to is_alpha
+    isalpha to is_alpha
+    iscntrl to is_cntrl
+    isdigit to is_digit
+    isgraph to is_graph
+    islower to is_lower
+    isprint to is_print
+    isprint to is_print
+    ispunct to is_punct
+    isspace to is_space
+    isupper to is_upper
+    isxdigit to is_xdigit
+    tolower to to_lower
+    toupper to to_upper
 
 0.0947 2021-04-27
   - array equals methods return 1 if both arrays is undef. return 0 if only one one arrays is undef.

@@ -42,79 +42,79 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::StringUtil->test_chompr);
 }
-# isalnum
+# is_alnum
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isalnum);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_alnum);
 }
 
-# isalpha
+# is_alpha
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isalpha);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_alpha);
 }
 
-# isalpha
+# is_alpha
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isblank);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_blank);
 }
 
-# iscntrl
+# is_cntrl
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_iscntrl);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_cntrl);
 }
 
-# isdigit
+# is_digit
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isdigit);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_digit);
 }
 
-# isgraph
+# is_graph
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isgraph);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_graph);
 }
 
-# islower
+# is_lower
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_islower);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_lower);
 }
 
-# isprint
+# is_print
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isprint);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_print);
 }
 
-# isprint
+# is_print
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isprint);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_print);
 }
 
-# ispunct
+# is_punct
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_ispunct);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_punct);
 }
 
-# isspace
+# is_space
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isspace);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_space);
 }
 
-# isupper
+# is_upper
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isupper);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_upper);
 }
 
-# isxdigit
+# is_xdigit
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_isxdigit);
+  ok(TestCase::Lib::SPVM::StringUtil->test_is_xdigit);
 }
 
-# tolower
+# to_lower
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_tolower);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_lower);
 }
 
-# toupper
+# to_upper
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_toupper);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_upper);
 }
 
 # is_perl_space
@@ -164,7 +164,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # copy_string
 {
   # copy_string
-  ok(TestCase::Lib::SPVM::StringUtil->test_copy_str);
+  ok(TestCase::Lib::SPVM::StringUtil->test_copy_string);
 }
 
 # All object is freed
