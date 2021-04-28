@@ -273,6 +273,39 @@ package TestCase::Lib::SPVM::LongList {
     return 1;
   }
 
+  sub set_array : int () {
+    # Set array
+    {
+      my $list = SPVM::LongList->new([(long)1, 2, 3]);
+      $list->set_array([(long)3, 4, 5]);
+      unless (SPVM::ArrayUtil->equals_array_long($list->to_array, [(long)3, 4, 5])) {
+        return 0;
+      }
+    }
+    
+    # Exception - Array must be defined
+    {
+      my $list = SPVM::LongList->new([(long)1, 2, 3]);
+      eval { $list->set_array(undef); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - The length of argument array must be same as the length of current list array
+    {
+      my $list = SPVM::LongList->new([(long)1, 2, 3]);
+      eval { $list->set_array([(long)1, 2, 3, 4]); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
   sub push : int () {
     # push
     {

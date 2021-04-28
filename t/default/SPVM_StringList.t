@@ -24,6 +24,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringList->length);
   ok(TestCase::Lib::SPVM::StringList->get);
   ok(TestCase::Lib::SPVM::StringList->set);
+  ok(TestCase::Lib::SPVM::StringList->set_array);
   ok(TestCase::Lib::SPVM::StringList->to_array);
   ok(TestCase::Lib::SPVM::StringList->insert);
   ok(TestCase::Lib::SPVM::StringList->remove);

@@ -196,6 +196,23 @@ package SPVM::DoubleList : precompile {
     $self->{values}[$index] = $value;
   }
   
+  sub set_array : void ($self : self, $array : double[]) {
+    unless ($array) {
+      die "Array must be defined";
+    }
+    
+    my $cur_length = $self->length;
+    
+    my $set_length = @$array;
+    
+    unless ($set_length == $cur_length) {
+      die "The length of argument array must be same as the length of current list array";
+    }
+    
+    
+    SPVM::ArrayUtil->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
+  }
+
   sub get : double ($self : self, $index : int) {
     my $length = $self->length;
     

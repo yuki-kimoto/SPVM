@@ -170,6 +170,25 @@ package SPVM::StringList : precompile {
     $self->{values}[$index] = $value;
   }
   
+  sub set_array : void ($self : self, $array : string[]) {
+    unless ($array) {
+      die "Array must be defined";
+    }
+    
+    my $cur_length = $self->length;
+    
+    my $set_length = @$array;
+    
+    unless ($set_length == $cur_length) {
+      die "The length of argument array must be same as the length of current list array";
+    }
+    
+    my $values = $self->{values};
+    for (my $i = 0; $i < $cur_length; $i++) {
+      $values->[$i] = $array->[$i];
+    }
+  }
+
   sub get : string ($self : self, $index : int) {
     my $length = $self->length;
     

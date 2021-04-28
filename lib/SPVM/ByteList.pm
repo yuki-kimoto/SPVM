@@ -66,13 +66,6 @@ Create a new L<SPVM::ByteList> object with array length.
 
 =head1 INSTANCE METHODS
 
-=head2 length
-  
-  sub length : int ()
-
-Get list length.
-
-           
 =head2 get
 
   sub get : byte ($self : self, $index : int)
@@ -85,6 +78,12 @@ Get the value with index.
 
 Insert a element to the specific index.
 
+=head2 length
+  
+  sub length : int ()
+
+Get list length.
+           
 =head2 remove
 
   sub remove : byte ($self : self, $index : int)
@@ -105,13 +104,7 @@ Set a array. Each elements of the array is copied to the correspoinding index of
 
 Array must be defined, otherwise a exception occurs.
 
-The length of argument array must be same as the length of current list arraym, otherwise a exception occures.
-
-=head2 to_array
-
-  sub to_array : byte[] ($self : self)
-
-Convert L<SPVM::ByteList> to byte array.
+The length of argument array must be same as the length of current list array, otherwise a exception occures.
 
 =head2 pop
 
@@ -141,6 +134,12 @@ New length must be more than or equals to 0, otherwise a exception occur.
 Shifts the first value of the list off and returns it, shortening
 the array by 1 and moving everything down.
 If there are no elements in the list, exception occur.
+
+=head2 to_array
+
+  sub to_array : byte[] ($self : self)
+
+Convert L<SPVM::ByteList> to byte array.
 
 =head2 unshift
 

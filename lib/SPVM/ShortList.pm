@@ -66,12 +66,6 @@ Create a new L<SPVM::ShortList> object with array length.
 
 =head1 INSTANCE METHODS
 
-=head2 length
-  
-  sub length : int ()
-
-Get list length.
-
 =head2 get
 
   sub get : short ($self : self, $index : int)
@@ -83,6 +77,12 @@ Get the value with index.
   sub insert : void ($self : self, $index : int, $value : short)
 
 Insert a element to the specific index.
+
+=head2 length
+  
+  sub length : int ()
+
+Get list length.
 
 =head2 pop
 
@@ -116,6 +116,16 @@ New length must be more than or equals to 0, otherwise a exception occur.
   sub set : void ($self : self, $index : int, $value : short)
 
 Set the value with index.
+
+=head2 set_array
+
+  sub set_array : void ($self : self, $array : short[])
+
+Set a array. Each elements of the array is copied to the correspoinding index of the array this list has.
+
+Array must be defined, otherwise a exception occurs.
+
+The length of argument array must be same as the length of current list array, otherwise a exception occures.
 
 =head2 shift
 

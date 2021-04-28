@@ -72,39 +72,6 @@ Create a new L<SPVM::StringList> object with array length.
 
 Get list length.
 
-=head2 push
-  
-  sub push : void ($self : self, $value : string)
-
-Appending the value to the end of list.
-
-=head2 pop
-
-  sub pop : string ($self : self)
-
-Pops and returns the last value of the list, shortening the array by one element
-If there are no elements in the list, exception occur.
-
-=head2 unshift
-
-  sub unshift : void ($self : self, $value : string)
-
-Appending the value to the top of list.
-
-=head2 shift
-
-  sub shift : string ($self : self)
-
-Shifts the first value of the list off and returns it, shortening
-the array by 1 and moving everything down.
-If there are no elements in the list, exception occur.
-
-=head2 set
-
-  sub set : void ($self : self, $index : int, $value : string)
-
-Set the value with index.
-
 =head2 get
 
   sub get : string ($self : self, $index : int)
@@ -121,8 +88,52 @@ Insert a element to the specific index.
 
   sub remove : string ($self : self, $index : int)
 
+=head2 pop
+
+  sub pop : string ($self : self)
+
+Pops and returns the last value of the list, shortening the array by one element
+If there are no elements in the list, exception occur.
+
+=head2 push
+  
+  sub push : void ($self : self, $value : string)
+
+Appending the value to the end of list.
+
 =head2 to_array
 
   sub to_array : string[] ($self : self)
 
 Convert L<SPVM::StringList> to string array.
+
+=head2 set
+
+  sub set : void ($self : self, $index : int, $value : string)
+
+Set the value with index.
+
+=head2 set_array
+
+  sub set_array : void ($self : self, $array : string[])
+
+Set a array. Each elements of the array is copied to the correspoinding index of the array this list has. Note that this copy is address copy.
+
+Array must be defined, otherwise a exception occurs.
+
+The length of argument array must be same as the length of current list array, otherwise a exception occures.
+
+=head2 shift
+
+  sub shift : string ($self : self)
+
+Shifts the first value of the list off and returns it, shortening
+the array by 1 and moving everything down.
+If there are no elements in the list, exception occur.
+
+=head2 unshift
+
+  sub unshift : void ($self : self, $value : string)
+
+Appending the value to the top of list.
+

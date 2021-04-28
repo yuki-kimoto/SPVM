@@ -23,6 +23,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::List->offset_by_alternate_push_and_shift);
   ok(TestCase::Lib::SPVM::List->offset_by_alternate_unshift_and_pop);
   ok(TestCase::Lib::SPVM::List->set);
+  ok(TestCase::Lib::SPVM::List->set_array);
   ok(TestCase::Lib::SPVM::List->get);
   ok(TestCase::Lib::SPVM::List->insert);
   ok(TestCase::Lib::SPVM::List->remove);

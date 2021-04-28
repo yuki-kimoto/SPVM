@@ -335,6 +335,39 @@ package TestCase::Lib::SPVM::List {
     return 1;
   }
 
+  sub set_array : int () {
+    # Set array
+    {
+      my $list = SPVM::List->new(["1", "2", "3"]);
+      $list->set_array(["3", "4", "5"]);
+      unless (SPVM::ArrayUtil->equals_array_string((string[])$list->to_array, ["3", "4", "5"])) {
+        return 0;
+      }
+    }
+    
+    # Exception - Array must be defined
+    {
+      my $list = SPVM::List->new(["1", "2", "3"]);
+      eval { $list->set_array(undef); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - The length of argument array must be same as the length of current list array
+    {
+      my $list = SPVM::List->new(["1", "2", "3"]);
+      eval { $list->set_array(["1", "2", "3", "4"]); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
   sub get : int () {
     my $list = SPVM::List->new([SPVM::Int->new(1), undef]);
     unless (((SPVM::Int)$list->get(0))->value == 1) {
