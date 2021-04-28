@@ -184,9 +184,18 @@ You can get the found byte offset by int reference.
   my $found_offset = 0;
   my $result_str = replace($string, $sub_string, $replace, 0, \$found_offset);
 
-=head2 strtoi
+=head2 to_int
 
-  sub strtoi : int ($string : string, $digit : int);
+  sub to_int : int ($string : string, $digit : int);
+
+Convert the string to a int value. This method is same as to_int_with_base($string, 10).
+
+  my $string = "-2147483648";
+  my $num = to_int($string);
+
+=head2 to_int_with_base
+
+  sub to_int_with_base : int ($string : string, $digit : int);
 
 Convert the string to a int value with a digit(2, 8, 10, 16).
 
@@ -195,11 +204,20 @@ Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][one more t
 If convertion fails, a exception occuer.
 
   my $string = "-2147483648";
-  my $num = strtoi($string, 10);
+  my $num = to_int_with_base($string, 10);
 
-=head2 strtol
+=head2 to_long
 
-  sub strtol : long ($string : string, $digit : int);
+  sub to_long : long ($string : string);
+
+Convert the string to long value. This method is same as to_long($string, 10).
+
+  my $string = "-9223372036854775808";
+  my $num = to_long($string);
+
+=head2 to_long_with_base
+
+  sub to_long_with_base : long ($string : string, $digit : int);
 
 Convert the string to long value with digit(2, 8, 10, 16).
 
@@ -208,24 +226,11 @@ Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][0][x][zero more 
 If the convertion fails, a exception occuer.
 
   my $string = "-9223372036854775808";
-  my $num = strtol($string, 10);
+  my $num = to_long_with_base($string, 10);
 
-=head2 strtof
+=head2 to_float
 
-  sub strtof : float ($string : string);
-
-Convert the string to float value.
-
-Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
-
-If the convertion fails, a exception occuer.
-
-  my $string = "1.25";
-  my $num = strtof($string);
-
-=head2 strtod
-
-  sub strtod : double ($string : string);
+  sub to_float : float ($string : string);
 
 Convert the string to float value.
 
@@ -234,7 +239,20 @@ Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0
 If the convertion fails, a exception occuer.
 
   my $string = "1.25";
-  my $num = strtod($string);
+  my $num = to_float($string);
+
+=head2 to_double
+
+  sub to_double : double ($string : string);
+
+Convert the string to float value.
+
+Format is [' ' or '\t' or '\n' or '\v' or '\f' or '\r'][+ or -][zero more than 0-9][.][zero more than 0-9][e or E[+ or -]zero more than 0-9]. Internal of [] is optional.
+
+If the convertion fails, a exception occuer.
+
+  my $string = "1.25";
+  my $num = to_double($string);
 
 =head2 rindex
 

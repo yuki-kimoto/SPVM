@@ -31,12 +31,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringUtil->test_sprintf_all);
 }
 
-# strtoi
+# to_int_with_base
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_strtoi);
-  ok(TestCase::Lib::SPVM::StringUtil->test_strtol);
-  ok(TestCase::Lib::SPVM::StringUtil->test_strtof);
-  ok(TestCase::Lib::SPVM::StringUtil->test_strtod);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_int);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_int_with_base);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_long);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_long_with_base);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_float);
+  ok(TestCase::Lib::SPVM::StringUtil->test_to_double);
 }
 # chompr
 {

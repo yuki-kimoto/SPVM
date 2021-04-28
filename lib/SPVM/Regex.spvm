@@ -6,7 +6,7 @@ package SPVM::Regex : precompile {
   use SPVM::StringBuffer;
   use SPVM::Regex::Replacer;
   use SPVM::Regex::Pattern;
-  use SPVM::StringUtil (is_perl_word, is_digit, strtoi, substr, copy_string);
+  use SPVM::StringUtil (is_perl_word, is_digit, to_int_with_base, substr, copy_string);
   use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   use SPVM::ArrayUtil (copy_array_range_byte);
   has patterns : SPVM::List;
@@ -288,7 +288,7 @@ package SPVM::Regex : precompile {
                 unless ($status == STATUS_QUANTIFIER_MAX()) {
                   die "Regex compile error";
                 }
-                my $quantifier_max = strtoi($quantifier_max_str, 10);
+                my $quantifier_max = to_int_with_base($quantifier_max_str, 10);
                 my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
                 $last_pattern->{max_repeat} = $quantifier_max;
                 
@@ -303,7 +303,7 @@ package SPVM::Regex : precompile {
                     $quantifier_min_str .= $uchar - '0';
                   }
                   elsif ($uchar == ',') {
-                    my $quantifier_min = strtoi($quantifier_min_str, 10);
+                    my $quantifier_min = to_int_with_base($quantifier_min_str, 10);
                     my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
                     $last_pattern->{min_repeat} = $quantifier_min;
                     

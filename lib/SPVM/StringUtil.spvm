@@ -322,11 +322,20 @@ package SPVM::StringUtil : precompile {
       return $copy_string;
     }
   }
+  
+  sub to_int : int ($string : string) {
+    return to_int_with_base($string, 10);
+  }
+  
+  native sub to_int_with_base : int ($string : string, $digit : int);
+  
+  sub to_long : long ($string : string) {
+    return to_long_with_base($string, 10);
+  }
+  native sub to_long_with_base : long ($string : string, $digit : int);
 
-  native sub strtoi : int ($string : string, $digit : int);
-  native sub strtol : long ($string : string, $digit : int);
-  native sub strtof : float ($string : string);
-  native sub strtod : double ($string : string);
+  native sub to_float : float ($string : string);
+  native sub to_double : double ($string : string);
 
   sub rindex : int ($string : string, $sub_string : string, $offset : int) {
     my $string_len = length $string;

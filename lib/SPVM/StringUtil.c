@@ -51,7 +51,7 @@ int32_t SPNATIVE__SPVM__StringUtil___long_to_unsigned_digits(SPVM_ENV* env, SPVM
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__strtoi(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__StringUtil__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -80,7 +80,7 @@ int32_t SPNATIVE__SPVM__StringUtil__strtoi(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__StringUtil__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -109,7 +109,7 @@ int32_t SPNATIVE__SPVM__StringUtil__strtol(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__strtof(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__StringUtil__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -132,7 +132,7 @@ int32_t SPNATIVE__SPVM__StringUtil__strtof(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__strtod(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__StringUtil__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {

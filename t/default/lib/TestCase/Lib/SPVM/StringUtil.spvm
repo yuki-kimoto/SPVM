@@ -30,10 +30,12 @@ package TestCase::Lib::SPVM::StringUtil {
     ucfirst,
     replace,
     rindex,
-    strtod,
-    strtof,
-    strtoi,
-    strtol,
+    to_double,
+    to_float,
+    to_int,
+    to_int_with_base,
+    to_long,
+    to_long_with_base,
     index,
     split,
     sprintf,
@@ -922,11 +924,28 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_strtoi : int () {
+  sub test_to_int : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "-2147483648";
-      my $num = strtoi($string, 10);
+      my $num = to_int($string);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == -2147483648) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_to_int_with_base : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-2147483648";
+      my $num = to_int_with_base($string, 10);
       unless ($num isa int) {
         return 0;
       }
@@ -939,7 +958,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 10 digit max
     {
       my $string = "2147483647";
-      my $num = strtoi($string, 10);
+      my $num = to_int_with_base($string, 10);
       unless ($num isa int) {
         return 0;
       }
@@ -952,7 +971,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 2 digit
     {
       my $string = "11";
-      my $num = strtoi($string, 2);
+      my $num = to_int_with_base($string, 2);
 
       unless ($num == 3) {
         return 0;
@@ -962,7 +981,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 8 digit
     {
       my $string = "11";
-      my $num = strtoi($string, 8);
+      my $num = to_int_with_base($string, 8);
 
       unless ($num == 9) {
         return 0;
@@ -972,7 +991,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 16 digit
     {
       my $string = "FF";
-      my $num = strtoi($string, 16);
+      my $num = to_int_with_base($string, 16);
 
       unless ($num == 255) {
         return 0;
@@ -983,7 +1002,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "10oppp";
       eval {
-        strtoi($string, 10);
+        to_int_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -995,7 +1014,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "10";
       eval {
-        strtoi($string, 100);
+        to_int_with_base($string, 100);
       };
       unless ($@) {
         return 0;
@@ -1007,7 +1026,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "2147483648";
       eval {
-        strtoi($string, 10);
+        to_int_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1019,7 +1038,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "-2147483649";
       eval {
-        strtoi($string, 10);
+        to_int_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1030,11 +1049,28 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_strtol : int () {
+  sub test_to_long : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "-9223372036854775808";
-      my $num = strtol($string, 10);
+      my $num = to_long($string);
+      unless ($num isa long) {
+        return 0;
+      }
+
+      unless ($num == -9223372036854775808L) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub test_to_long_with_base : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-9223372036854775808";
+      my $num = to_long_with_base($string, 10);
       unless ($num isa long) {
         return 0;
       }
@@ -1047,7 +1083,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 10 digit max
     {
       my $string = "9223372036854775807";
-      my $num = strtol($string, 10);
+      my $num = to_long_with_base($string, 10);
 
       unless ($num == 9223372036854775807L) {
         return 0;
@@ -1057,7 +1093,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 2 digit
     {
       my $string = "11";
-      my $num = strtol($string, 2);
+      my $num = to_long_with_base($string, 2);
 
       unless ($num == 3) {
         return 0;
@@ -1067,7 +1103,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 8 digit
     {
       my $string = "11";
-      my $num = strtol($string, 8);
+      my $num = to_long_with_base($string, 8);
 
       unless ($num == 9) {
         return 0;
@@ -1077,7 +1113,7 @@ package TestCase::Lib::SPVM::StringUtil {
     # 16 digit
     {
       my $string = "FF";
-      my $num = strtol($string, 16);
+      my $num = to_long_with_base($string, 16);
 
       unless ($num == 255) {
         return 0;
@@ -1088,7 +1124,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "10oppp";
       eval {
-        strtol($string, 10);
+        to_long_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1100,7 +1136,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "10";
       eval {
-        strtol($string, 100);
+        to_long_with_base($string, 100);
       };
       unless ($@) {
         return 0;
@@ -1112,7 +1148,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "9223372036854775808";
       eval {
-        strtol($string, 10);
+        to_long_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1124,7 +1160,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "-9223372036854775809";
       eval {
-        strtol($string, 10);
+        to_long_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1135,11 +1171,11 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_strtof : int () {
+  sub test_to_float : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "1.25";
-      my $num = strtof($string);
+      my $num = to_float($string);
       unless ($num isa float) {
         return 0;
       }
@@ -1153,7 +1189,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "10.5oppp";
       eval {
-        strtof($string);
+        to_float($string);
       };
       unless ($@) {
         return 0;
@@ -1164,11 +1200,11 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_strtod : int () {
+  sub test_to_double : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "1.25";
-      my $num = strtod($string);
+      my $num = to_double($string);
       unless ($num isa double) {
         return 0;
       }
@@ -1182,7 +1218,7 @@ package TestCase::Lib::SPVM::StringUtil {
     {
       my $string = "10.5oppp";
       eval {
-        strtod($string);
+        to_double($string);
       };
       unless ($@) {
         return 0;
