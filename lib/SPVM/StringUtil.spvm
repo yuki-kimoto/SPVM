@@ -35,33 +35,11 @@ package SPVM::StringUtil : precompile {
     return $new_string;
   }
 
-  sub chomp_crlf : string ($string : string) {
-    unless ($string) {
-      return undef;
-    }
-
-    my $new_string : string;
-    my $length = length $string;
-    if ($length == 0 || $length == 1) {
-      $new_string = copy_string($string);
-    }
-    else {
-      if ($string->[$length - 2] == '\r' && $string->[$length - 1] == '\n') {
-        $new_string = (string)SPVM::ArrayUtil->copy_array_range_byte((byte[])$string, 0, $length - 2);
-      }
-      else {
-        $new_string = copy_string($string);
-      }
-    }
-
-    return $new_string;
-  }
-
-  sub index : int ($string : string, $sub_string : string, $posision : int) {
+  sub index : int ($string : string, $sub_string : string, $position : int) {
     my $stringCount = length $string;
     my $sub_stringCount = length $sub_string;
 
-    if ($posision >= $stringCount) {
+    if ($position >= $stringCount) {
       my $ret : int;
       if ($sub_stringCount == 0) {
         $ret = $stringCount;
@@ -71,17 +49,17 @@ package SPVM::StringUtil : precompile {
       }
       return $ret;
     }
-    if ($posision < 0) {
-      $posision = 0;
+    if ($position < 0) {
+      $position = 0;
     }
     if ($sub_stringCount == 0) {
-      return $posision;
+      return $position;
     }
 
     my $first : byte  = $sub_string->[0];
     my $max : int = ($stringCount - $sub_stringCount);
 
-    for (my $i = $posision; $i <= $max; $i++) {
+    for (my $i = $position; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
         while (++$i <= $max && $string->[$i] != $first) {}
       }

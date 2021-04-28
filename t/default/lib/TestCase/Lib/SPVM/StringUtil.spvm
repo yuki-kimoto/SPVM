@@ -8,7 +8,6 @@ package TestCase::Lib::SPVM::StringUtil {
 
   use SPVM::StringUtil (
     chomp_lf,
-    chomp_crlf,
     is_perl_space,
     is_perl_word,
     isalnum,
@@ -490,39 +489,7 @@ package TestCase::Lib::SPVM::StringUtil {
 
     return 1;
   }
-  sub test_chomp_crlf : int () {
-    {
-      my $string = "abc\r\n";
-      my $ret = chomp_crlf($string);
-      unless ($ret eq "abc") {
-        return 0;
-      }
-    }
-    {
-      my $string = "abc";
-      my $ret = chomp_crlf($string);
-      unless ($ret eq "abc") {
-        return 0;
-      }
-    }
-    {
-      my $string = "";
-      my $ret = chomp_crlf($string);
-      unless ($ret eq "") {
-        return 0;
-      }
-    }
-    {
-      my $string = "a";
-      my $ret = chomp_crlf($string);
-      unless ($ret eq "a") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
+  
   sub test_isalnum : int () {
 
     my $ok = 1;

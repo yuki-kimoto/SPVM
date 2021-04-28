@@ -4,36 +4,31 @@ package SPVM::StringUtil;
 
 =head1 NAME
 
-SPVM::StringUtil - Variouse utilities
+SPVM::StringUtil - String Utilities
 
 =head1 SYNOPSYS
   
-  use SPVM::StringUtil (chomp_lf, chomp_crlf);
+  use SPVM::StringUtil;
 
   # Cut a newline LF
   {
-    my $ret = chomp_lf("abc\n");
-  }
-  
-  # Cut a newline CR LF
-  {
-    my $ret = chomp_crlf("abc\r\n");
+    my $ret = SPVM::StringUtil->chomp_lf("abc\n");
   }
   
   # Copy a string
   {
     my $string = "abc";
-    my $string_copy = copy_string ($string);
+    my $string_copy = SPVM::StringUtil->copy_string ($string);
   }
 
   # Search substr
   {
-    my $found_offset = index("pppabcde", "bcd", 2);
+    my $found_offset = SPVM::StringUtil->index("pppabcde", "bcd", 2);
   }
 
   # split a string by the specific separator
   my $string = "foo,bar,baz";
-  my $splited_strs = split(",", $string);
+  my $splited_strs = SPVM::StringUtil->split(",", $string);
 
 =head1 DESCRIPTION
 
@@ -41,23 +36,11 @@ String Utilities
 
 =head1 STATIC METHODS
 
-=head2 split
-
-  sub split : string[] ($sep : string, $string : string)
-
-Split a string by the specific separator.
-
 =head2 chomp_lf
 
   sub chomp_lf : string ($string : string)
 
 Copy the string and remove the newline "\n" from the end of string and return it.
-
-=head2 chomp_crlf
-
-  sub chomp_crlf : string ($string : string)
-
-Copy the string and remove the newline "\r\n" from the end of string and return it.
 
 =head2 copy_string
 
@@ -69,7 +52,7 @@ If the array is undefined, a exception occurs.
 
 =head2 index
 
-  sub index : int ($string : string, $sub_string : string, $posision : int)
+  sub index : int ($string : string, $sub_string : string, $position : int)
 
 index function searches for one string within another.
 It returns the position of the first occurrence of $sub_string in $string at or after $position. If $position is omitted, starts
@@ -287,8 +270,9 @@ If the string is undef, a exception occur.
 
 Same as "index" function except that the search is the last of the string.
 
-=head2 contains
+=head2 split
 
-  sub contains : int ($string : string, $sub_string : string)
+  sub split : string[] ($sep : string, $string : string)
 
-If the string contains the sub string, return 1. If not, return 0.
+Split a string by the specific separator.
+
