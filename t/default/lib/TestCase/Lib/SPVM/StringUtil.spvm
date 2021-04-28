@@ -28,7 +28,6 @@ package TestCase::Lib::SPVM::StringUtil {
     lcfirst,
     uc,
     ucfirst,
-    replace,
     rindex,
     to_double,
     to_float,
@@ -1332,95 +1331,6 @@ package TestCase::Lib::SPVM::StringUtil {
         return 0;
       }
     }
-    return 1;
-  }
-  sub test_replace : int () {
-
-    {
-      my $string = "abcde";
-      my $substr = "bcd";
-      my $replace = "AB";
-      my $found_offset = 0;
-      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
-      unless ($found_offset == 1) {
-        return 0;
-      }
-      unless ($result_str eq "aABe") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcde";
-      my $substr = "bcd";
-      my $replace = "AB";
-      my $found_offset = 0;
-      my $result_str = replace($string, $substr, $replace, 2, \$found_offset);
-      unless ($found_offset == -1) {
-        return 0;
-      }
-      unless ($result_str eq $string) {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcde";
-      my $substr = "abc";
-      my $replace = "ABCD";
-      my $found_offset = 0;
-      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
-      unless ($found_offset == 0) {
-        return 0;
-      }
-      unless ($result_str eq "ABCDde") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcde";
-      my $substr = "cde";
-      my $replace = "ABCD";
-      my $found_offset = 0;
-      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
-      unless ($found_offset == 2) {
-        return 0;
-      }
-      unless ($result_str eq "abABCD") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcdcd";
-      my $substr = "cd";
-      my $replace = "A";
-      my $found_offset = 0;
-      my $result_str = replace($string, $substr, $replace, 4, \$found_offset);
-      unless ($found_offset == 4) {
-        return 0;
-      }
-      unless ($result_str eq "abcdA") {
-        return 0;
-      }
-    }
-
-    {
-      my $string = "abcd";
-      my $substr = "bc";
-      my $replace = "";
-      my $found_offset = 0;
-      my $result_str = replace($string, $substr, $replace, 0, \$found_offset);
-
-      unless ($found_offset == 1) {
-        return 0;
-      }
-      unless ($result_str eq "ad") {
-        return 0;
-      }
-    }
-
     return 1;
   }
 

@@ -168,22 +168,6 @@ Convert uppercase string to lowercase string.
 
 Convert first chracter of string from uppercase to lowercase.
 
-=head2 replace
-
-  sub replace : string ($string : string, $sub_string : string, $replace : string, $start_offset : int, $found_offset_ref : int&)
-
-Replace the sub string in the string with a replace string and return the result string.
-
-You can specify a byte offset of the string.
-
-You can get the found byte offset by int reference.
-
-  my $string = "abcde";
-  my $sub_string = "bcd";
-  my $replace = "AB";
-  my $found_offset = 0;
-  my $result_str = replace($string, $sub_string, $replace, 0, \$found_offset);
-
 =head2 rindex
 
   sub rindex : int ($string : string, $sub_string : string, $offset : int)

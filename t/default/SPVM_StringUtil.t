@@ -143,11 +143,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringUtil->test_lc);
 }
 
-# replace
-{
-  ok(TestCase::Lib::SPVM::StringUtil->test_replace);
-}
-
 # index
 {
   ok(TestCase::Lib::SPVM::StringUtil->test_index);

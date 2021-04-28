@@ -1,4 +1,5 @@
 0.0948 2021-04-28
+  - remove SPVM::StringUtil->replace
   - remove SPVM::StringUtil->replace_all
   - remove SPVM::StringUtil->chomp_crlf
   - rename SPVM::StringUtil->chomp_lf to SPVM::StringUtil->chompr

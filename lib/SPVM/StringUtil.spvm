@@ -290,39 +290,6 @@ package SPVM::StringUtil : precompile {
     return (string)$new_string;
   }
 
-  sub replace : string ($string : string, $sub_string : string, $replace : string, $start_offset : int, $found_offset_ref : int&) {
-    unless ($sub_string && length $sub_string > 0) {
-      die "Sub string must have length";
-    }
-    my $found_offset = index($string, $sub_string, $start_offset);
-    $$found_offset_ref = $found_offset;
-    if ($found_offset >= 0) {
-      my $string_len = length $string;
-      my $sub_string_len = length $sub_string;
-      my $replace_len = length $replace;
-
-      my $result_str_len = $string_len + $replace_len - $sub_string_len;
-      my $result_str = new byte[$result_str_len];
-
-      if ($found_offset > 0) {
-        SPVM::ArrayUtil->memmove_byte((byte[])$result_str, 0, (byte[])$string, 0, $found_offset);
-      }
-      SPVM::ArrayUtil->memmove_byte((byte[])$result_str, $found_offset, (byte[])$replace, 0, $replace_len);
-
-      my $string_rest_offset = $found_offset + $sub_string_len;
-      my $string_rest_length = $string_len - $string_rest_offset;
-      my $result_rest_offset = $found_offset + $replace_len;
-      my $result_rest_length = $result_str_len - $result_rest_offset;
-      SPVM::ArrayUtil->memmove_byte((byte[])$result_str, $result_rest_offset, (byte[])$string, $string_rest_offset, $string_rest_length);
-
-      return (string)$result_str;
-    }
-    else {
-      my $copy_string = copy_string($string);
-      return $copy_string;
-    }
-  }
-  
   sub to_int : int ($string : string) {
     return to_int_with_base($string, 10);
   }
