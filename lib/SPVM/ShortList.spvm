@@ -9,24 +9,6 @@ package SPVM::ShortList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new_len : SPVM::ShortList ($length : int) {
-    my $self = new SPVM::ShortList;
-    unless ($length >= 0) {
-      die "length must be more than or equals to zero";
-    }
-    my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
-    }
-    else {
-      $capacity = $length;
-    }
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
-    $self->{values} = new short[$capacity];
-    return $self;
-  }
-
   sub new : SPVM::ShortList ($array : short[]) {
     my $self = new SPVM::ShortList;
     my $length = @$array;
@@ -50,6 +32,24 @@ package SPVM::ShortList : precompile {
     return $self;
   }
   
+  sub new_len : SPVM::ShortList ($length : int) {
+    my $self = new SPVM::ShortList;
+    unless ($length >= 0) {
+      die "length must be more than or equals to zero";
+    }
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    $self->{capacity} = $capacity;
+    $self->{length} = $length;
+    $self->{values} = new short[$capacity];
+    return $self;
+  }
+
   private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
     my $new_values = new short [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
@@ -76,6 +76,18 @@ package SPVM::ShortList : precompile {
     $self->{capacity} = $new_capacity;
   }
 
+  sub get : short ($self : self, $index : int) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    my $value = $self->{values}[$index];
+    
+    return $value;
+  }
+  
   sub insert : void ($self : self, $index : int, $value : short) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
@@ -99,27 +111,6 @@ package SPVM::ShortList : precompile {
     $self->{length}++;
   }
 
-  sub remove : short ($self : self, $index : int) {
-    my $length = $self->{length};
-    my $capacity = $self->{capacity};
-    
-    unless ($index >= 0 && $index < $length) {
-      die "Out of range";
-    }
-    
-    my $values = $self->{values};
-    my $remove_value = $values->[$index];
-
-    my $dist_index = $index;
-    my $src_index = $index + 1;
-    my $move_length = $length - $index - 1;
-    memmove_short($values, $dist_index, $values, $src_index, $move_length);
-    
-    $self->{length}--;
-    
-    return $remove_value;
-  }
-  
   sub push : void ($self : self, $value : short) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
@@ -149,22 +140,75 @@ package SPVM::ShortList : precompile {
     return $value;
   }
   
-  sub unshift : void ($self : self, $value : short) {
+  sub remove : short ($self : self, $index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($length >= $capacity) {
-      $self->_extend;
+    unless ($index >= 0 && $index < $length) {
+      die "Out of range";
     }
     
     my $values = $self->{values};
+    my $remove_value = $values->[$index];
+
+    my $dist_index = $index;
+    my $src_index = $index + 1;
+    my $move_length = $length - $index - 1;
+    memmove_short($values, $dist_index, $values, $src_index, $move_length);
     
-    memmove_short($values, 1, $values, 0, $length);
+    $self->{length}--;
     
-    $values->[0] = $value;
-    $self->{length}++;
+    return $remove_value;
   }
   
+  sub resize : void ($self : self, $new_length : int) {
+    if ($new_length < 0) {
+      die "New length must be more than or equals to 0";
+    }
+    
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($new_length > $length) {
+      if ($new_length > $capacity) {
+        $self->_extend_with_capacity($new_length);
+      }
+    }
+    elsif ($new_length < $length) {
+      for (my $i = $new_length; $i < $length; $i++) {
+        $self->{values}[$i] = 0;
+      }
+    }
+    $self->{length} = $new_length;
+  }
+
+  sub set : void ($self : self, $index : int, $value : short) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    $self->{values}[$index] = $value;
+  }
+
+  sub set_array : void ($self : self, $array : short[]) {
+    unless ($array) {
+      die "Array must be defined";
+    }
+    
+    my $cur_length = $self->length;
+    
+    my $set_length = @$array;
+    
+    unless ($set_length == $cur_length) {
+      die "The length of argument array must be same as the length of current list array";
+    }
+    
+    
+    SPVM::ArrayUtil->memcpy_short($self->{values}, 0, $array, 0, $cur_length);
+  }
+
   sub shift : short ($self : self) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
@@ -186,28 +230,6 @@ package SPVM::ShortList : precompile {
     return $value;
   }
   
-  sub set : void ($self : self, $index : int, $value : short) {
-    my $length = $self->length;
-    
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    $self->{values}[$index] = $value;
-  }
-  
-  sub get : short ($self : self, $index : int) {
-    my $length = $self->length;
-    
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    my $value = $self->{values}[$index];
-    
-    return $value;
-  }
-  
   sub to_array : short[] ($self : self) {
     my $length = $self->length;
     
@@ -220,24 +242,19 @@ package SPVM::ShortList : precompile {
     return $array;
   }
 
-  sub resize : void ($self : self, $new_length : int) {
-    if ($new_length < 0) {
-      die "New length must be more than or equals to 0";
-    }
-    
+  sub unshift : void ($self : self, $value : short) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
-    if ($new_length > $length) {
-      if ($new_length > $capacity) {
-        $self->_extend_with_capacity($new_length);
-      }
+    if ($length >= $capacity) {
+      $self->_extend;
     }
-    elsif ($new_length < $length) {
-      for (my $i = $new_length; $i < $length; $i++) {
-        $self->{values}[$i] = 0;
-      }
-    }
-    $self->{length} = $new_length;
+    
+    my $values = $self->{values};
+    
+    memmove_short($values, 1, $values, 0, $length);
+    
+    $values->[0] = $value;
+    $self->{length}++;
   }
 }

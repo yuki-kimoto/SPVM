@@ -4,7 +4,7 @@ package SPVM::ByteList;
 
 =head1 NAME
 
-SPVM::ByteList - 0 index based continuous dynamic byte array
+SPVM::ByteList - Dynamic Byte Array
 
 =head1 SYNOPSYS
   
