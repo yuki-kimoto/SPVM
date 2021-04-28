@@ -4,7 +4,7 @@ package SPVM::StringList;
 
 =head1 NAME
 
-SPVM::StringList - Continuous dynamic string array
+SPVM::StringList - Dynamic string array
 
 =head1 SYNOPSYS
   
@@ -48,7 +48,7 @@ SPVM::StringList - Continuous dynamic string array
 
 =head1 DESCRIPTION
 
-L<SPVM::StringList> is continuous dynamic string array.
+L<SPVM::StringList> is dynamic string array.
 
 =head1 STATIC METHODS
 

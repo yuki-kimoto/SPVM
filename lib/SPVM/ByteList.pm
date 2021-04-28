@@ -48,7 +48,7 @@ SPVM::ByteList - Dynamic Byte Array
 
 =head1 DESCRIPTION
 
-L<SPVM::ByteList> is continuous dynamic byte array.
+L<SPVM::ByteList> is Dynamic Byte Array.
 
 =head1 STATIC METHODS
 

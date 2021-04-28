@@ -4,7 +4,7 @@ package SPVM::DoubleList;
 
 =head1 NAME
 
-SPVM::DoubleList - Continuous dynamic double array
+SPVM::DoubleList - Dynamic double array
 
 =head1 SYNOPSYS
   
@@ -48,7 +48,7 @@ SPVM::DoubleList - Continuous dynamic double array
 
 =head1 DESCRIPTION
 
-L<SPVM::DoubleList> is continuous dynamic double array.
+L<SPVM::DoubleList> is dynamic double array.
 
 =head1 STATIC METHODS
 

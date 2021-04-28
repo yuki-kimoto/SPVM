@@ -4,7 +4,7 @@ package SPVM::IntList;
 
 =head1 NAME
 
-SPVM::IntList - Continuous dynamic int array
+SPVM::IntList - Dynamic int array
 
 =head1 SYNOPSYS
   
@@ -48,7 +48,7 @@ SPVM::IntList - Continuous dynamic int array
 
 =head1 DESCRIPTION
 
-L<SPVM::IntList> is continuous dynamic int array.
+L<SPVM::IntList> is dynamic int array.
 
 =head1 STATIC METHODS
 

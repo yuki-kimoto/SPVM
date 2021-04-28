@@ -4,7 +4,7 @@ package SPVM::LongList;
 
 =head1 NAME
 
-SPVM::LongList - Continuous dynamic long array
+SPVM::LongList - Dynamic long array
 
 =head1 SYNOPSYS
   
@@ -48,7 +48,7 @@ SPVM::LongList - Continuous dynamic long array
 
 =head1 DESCRIPTION
 
-L<SPVM::LongList> is continuous dynamic long array.
+L<SPVM::LongList> is dynamic long array.
 
 =head1 STATIC METHODS
 

@@ -48,7 +48,7 @@ SPVM::ShortList - Dynamic short array
 
 =head1 DESCRIPTION
 
-L<SPVM::ShortList> is continuous dynamic short array.
+L<SPVM::ShortList> is dynamic  short array.
 
 =head1 STATIC METHODS
 

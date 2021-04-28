@@ -4,7 +4,7 @@ package SPVM::FloatList;
 
 =head1 NAME
 
-SPVM::FloatList - Continuous dynamic float array
+SPVM::FloatList - Dynamic float array
 
 =head1 SYNOPSYS
   
@@ -48,7 +48,7 @@ SPVM::FloatList - Continuous dynamic float array
 
 =head1 DESCRIPTION
 
-L<SPVM::FloatList> is continuous dynamic float array.
+L<SPVM::FloatList> is dynamic float array.
 
 =head1 STATIC METHODS
 

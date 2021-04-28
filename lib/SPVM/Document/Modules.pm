@@ -18,7 +18,7 @@ L<SPVM::Byte> - byte object
 
 =head2 SPVM::ByteList
 
-L<SPVM::ByteList>
+L<SPVM::ByteList> - Dynamic Byte Array
 
 =head2 SPVM::Cloner
 
@@ -70,7 +70,7 @@ L<SPVM::Double> - double object
 
 =head2 SPVM::DoubleList
 
-L<SPVM::DoubleList> - 
+L<SPVM::DoubleList> - Dynamic double array
 
 =head2 SPVM::EqualityChecker
 
@@ -86,7 +86,7 @@ L<SPVM::Float> - float object
 
 =head2 SPVM::FloatList
 
-L<SPVM::FloatList> - 
+L<SPVM::FloatList> - Dynamic float array
 
 =head2 SPVM::Hash
 
@@ -102,7 +102,7 @@ L<SPVM::Int>
 
 =head2 SPVM::IntList
 
-L<SPVM::IntList> - 
+L<SPVM::IntList> - Dynamic int array
 
 =head2 SPVM::IO::Stderr
 
@@ -114,7 +114,7 @@ L<SPVM::IO::Stdout> -
 
 =head2 SPVM::List
 
-L<SPVM::List> - 
+L<SPVM::List> - Dynamic object array
 
 =head2 SPVM::Long
 
@@ -122,7 +122,7 @@ L<SPVM::Long> - long object
 
 =head2 SPVM::LongList
 
-L<SPVM::LongList> - 
+L<SPVM::LongList> - Dynamic long array
 
 =head2 SPVM::Math
 
@@ -150,7 +150,7 @@ L<SPVM::Short> - short object
 
 =head2 SPVM::ShortList
 
-L<SPVM::ShortList> - 
+L<SPVM::ShortList> - Dynamic short array
 
 =head2 SPVM::StringBuffer
 
@@ -162,7 +162,7 @@ L<SPVM::Stringer> - a callback type to stringify a object
 
 =head2 SPVM::StringList
 
-L<SPVM::StringList> - 
+L<SPVM::StringList> - Dynamic string array
 
 =head2 SPVM::StringUtil
 

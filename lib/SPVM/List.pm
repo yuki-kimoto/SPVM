@@ -4,7 +4,7 @@ package SPVM::List;
 
 =head1 NAME
 
-SPVM::List - Continuous dynamic object array
+SPVM::List - Dynamic object array
 
 =head1 SYNOPSYS
   
@@ -57,7 +57,7 @@ SPVM::List - Continuous dynamic object array
 
 =head1 DESCRIPTION
 
-L<SPVM::List> is continuous dynamic object array.
+L<SPVM::List> is dynamic object array.
 
 =head1 STATIC METHODS
 
