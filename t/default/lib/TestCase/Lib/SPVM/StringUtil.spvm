@@ -7,7 +7,7 @@ package TestCase::Lib::SPVM::StringUtil {
   use SPVM::ArrayUtil(equals_array_byte, equals_array_short, equals_array_int, equals_array_long, equals_array_float, equals_array_double, equals_array_string);
 
   use SPVM::StringUtil (
-    chomp_lf,
+    chompr,
     is_perl_space,
     is_perl_word,
     isalnum,
@@ -441,21 +441,21 @@ package TestCase::Lib::SPVM::StringUtil {
     }
     {
       my $string = "abc\n";
-      my $ret = chomp_lf($string);
+      my $ret = chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "abc";
-      my $ret = chomp_lf($string);
+      my $ret = chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "";
-      my $ret = chomp_lf($string);
+      my $ret = chompr($string);
       unless ($ret eq "") {
         return 0;
       }
@@ -464,24 +464,24 @@ package TestCase::Lib::SPVM::StringUtil {
     return 1;
   }
 
-  sub test_chomp_lf : int () {
+  sub test_chompr : int () {
     {
       my $string = "abc\n";
-      my $ret = chomp_lf($string);
+      my $ret = chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "abc";
-      my $ret = chomp_lf($string);
+      my $ret = chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "";
-      my $ret = chomp_lf($string);
+      my $ret = chompr($string);
       unless ($ret eq "") {
         return 0;
       }

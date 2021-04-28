@@ -12,7 +12,7 @@ SPVM::StringUtil - String Utilities
 
   # Cut a newline LF
   {
-    my $ret = SPVM::StringUtil->chomp_lf("abc\n");
+    my $ret = SPVM::StringUtil->chompr("abc\n");
   }
   
   # Copy a string
@@ -36,11 +36,11 @@ String Utilities
 
 =head1 STATIC METHODS
 
-=head2 chomp_lf
+=head2 chompr
 
-  sub chomp_lf : string ($string : string)
+  sub chompr : string ($string : string)
 
-Copy the string and remove the newline "\n" from the end of string and return it.
+Copy the string and remove "\n" of the end of line and return it.
 
 =head2 copy_string
 
@@ -133,18 +133,6 @@ If character is uppercase letter('A'-'Z'), return 1. If not, return 0.
   sub isxdigit : int ($code_point : int)
 
 If character is hexadecimal digit('0'-'9', 'A'-'F', 'a'-'f'), return 1. If not, return 0.
-
-=head2 tolower
-
-  sub tolower : int ($code_point : int)
-
-Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
-
-=head2 toupper
-
-  sub toupper : int ($code_point : int)
-
-Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
 
 =head2 is_perl_space
 
@@ -248,6 +236,18 @@ If the convertion fails, a exception occuer.
   my $string = "1.25";
   my $num = strtod($string);
 
+=head2 rindex
+
+  sub rindex : int ($string : string, $sub_string : string, $offset : int)
+
+Same as "index" function except that the search is the last of the string.
+
+=head2 split
+
+  sub split : string[] ($sep : string, $string : string)
+
+Split a string by the specific separator.
+
 =head2 uc
 
   sub uc : string ($string : string)
@@ -264,15 +264,15 @@ Convert the first character of a string to a uppercase character.
 
 If the string is undef, a exception occur.
 
-=head2 rindex
+=head2 tolower
 
-  sub rindex : int ($string : string, $sub_string : string, $offset : int)
+  sub tolower : int ($code_point : int)
 
-Same as "index" function except that the search is the last of the string.
+Convert uppercase letter('A'-'Z') to lowercase. If the character is not uppercase letter, return the character.
 
-=head2 split
+=head2 toupper
 
-  sub split : string[] ($sep : string, $string : string)
+  sub toupper : int ($code_point : int)
 
-Split a string by the specific separator.
+Convert lowercase letter('a'-'z') to lowercase. If the character is not uppercase letter, return the character.
 

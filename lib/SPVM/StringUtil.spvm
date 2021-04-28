@@ -7,13 +7,7 @@ package SPVM::StringUtil : precompile {
   use SPVM::Unicode (uchar_to_utf8);
   use SPVM::ArrayUtil;
 
-  sub copy_string : string ($string : string) {
-    my $bytes = (byte[])$string;
-
-    return (string)$bytes;
-  }
-
-  sub chomp_lf : string ($string : string) {
+  sub chompr : string ($string : string) {
     unless ($string) {
       return undef;
     }
@@ -33,6 +27,12 @@ package SPVM::StringUtil : precompile {
     }
 
     return $new_string;
+  }
+
+  sub copy_string : string ($string : string) {
+    my $bytes = (byte[])$string;
+
+    return (string)$bytes;
   }
 
   sub index : int ($string : string, $sub_string : string, $position : int) {
@@ -202,22 +202,6 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub tolower : int ($code_point : int) {
-
-    if ($code_point >= 'A' && $code_point <= 'Z') {
-      $code_point = $code_point + 0x20;
-    }
-    return $code_point;
-  }
-
-  sub toupper : int ($code_point : int) {
-
-    if ($code_point >= 'a' && $code_point <= 'z') {
-      $code_point = $code_point - 0x20;
-    }
-    return $code_point;
-  }
-
   # This is same as Perl \s
   sub is_perl_space : int ($code_point : int) {
     my $ispspace = 0;
@@ -343,45 +327,6 @@ package SPVM::StringUtil : precompile {
   native sub strtol : long ($string : string, $digit : int);
   native sub strtof : float ($string : string);
   native sub strtod : double ($string : string);
-
-  sub uc : string ($string : string) {
-
-    unless ($string) { die "String must be defined"; }
-
-    my $length = length $string;
-    my $new_string = new byte [$length];
-    for (my $i = 0; $i < $length; $i++) {
-      my $char = $string->[$i];
-      if ($char >= 'a' && $char <= 'z') {
-        $new_string->[$i] = (byte)($string->[$i] - 32);
-      }
-      else {
-        $new_string->[$i] = $string->[$i];
-      }
-    }
-    return (string)$new_string;
-  }
-
-  sub ucfirst : string ($string : string) {
-
-    unless ($string) { die "String must be defined"; }
-
-    my $length = length $string;
-    my $new_string = new byte [$length];
-    if ($length > 0) {
-      my $char = $string->[0];
-      if ($char >= 'a' && $char <= 'z') {
-        $new_string->[0] = (byte)($char - 32);
-      }
-      else {
-        $new_string->[0] = $char;
-      }
-    }
-    for (my $i = 1; $i < $length; ++$i) {
-      $new_string->[$i] = $string->[$i];
-    }
-    return (string)$new_string;
-  }
 
   sub rindex : int ($string : string, $sub_string : string, $offset : int) {
     my $string_len = length $string;
@@ -866,5 +811,60 @@ package SPVM::StringUtil : precompile {
     }
 
     return (string)$slice;
+  }
+
+  sub tolower : int ($code_point : int) {
+
+    if ($code_point >= 'A' && $code_point <= 'Z') {
+      $code_point = $code_point + 0x20;
+    }
+    return $code_point;
+  }
+
+  sub toupper : int ($code_point : int) {
+
+    if ($code_point >= 'a' && $code_point <= 'z') {
+      $code_point = $code_point - 0x20;
+    }
+    return $code_point;
+  }
+
+  sub uc : string ($string : string) {
+
+    unless ($string) { die "String must be defined"; }
+
+    my $length = length $string;
+    my $new_string = new byte [$length];
+    for (my $i = 0; $i < $length; $i++) {
+      my $char = $string->[$i];
+      if ($char >= 'a' && $char <= 'z') {
+        $new_string->[$i] = (byte)($string->[$i] - 32);
+      }
+      else {
+        $new_string->[$i] = $string->[$i];
+      }
+    }
+    return (string)$new_string;
+  }
+
+  sub ucfirst : string ($string : string) {
+
+    unless ($string) { die "String must be defined"; }
+
+    my $length = length $string;
+    my $new_string = new byte [$length];
+    if ($length > 0) {
+      my $char = $string->[0];
+      if ($char >= 'a' && $char <= 'z') {
+        $new_string->[0] = (byte)($char - 32);
+      }
+      else {
+        $new_string->[0] = $char;
+      }
+    }
+    for (my $i = 1; $i < $length; ++$i) {
+      $new_string->[$i] = $string->[$i];
+    }
+    return (string)$new_string;
   }
 }

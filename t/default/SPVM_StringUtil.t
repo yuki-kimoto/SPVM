@@ -38,9 +38,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::StringUtil->test_strtof);
   ok(TestCase::Lib::SPVM::StringUtil->test_strtod);
 }
-# chomp_lf
+# chompr
 {
-  ok(TestCase::Lib::SPVM::StringUtil->test_chomp_lf);
+  ok(TestCase::Lib::SPVM::StringUtil->test_chompr);
 }
 # isalnum
 {
