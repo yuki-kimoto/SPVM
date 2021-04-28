@@ -50,6 +50,10 @@
   - remove SPVM::DoubleList->values
   - remove SPVM::StringList->values
   - remove SPVM::List->values
+  - revert [0.0940]add norw package variable descriptor
+  - revert [0.0940]add norw field descriptor
+  - revert [0.0940]rw become package variable declaration default
+  - revert [0.0940]rw become field declaration default
   
 0.0947 2021-04-27
   - array equals methods return 1 if both arrays is undef. return 0 if only one one arrays is undef.
