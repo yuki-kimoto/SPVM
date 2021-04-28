@@ -166,7 +166,7 @@ L<SPVM::StringList> -
 
 =head2 SPVM::StringUtil
 
-L<SPVM::StringUtil> - 
+L<SPVM::StringUtil> - String Utilities
 
 =head2 SPVM::Time
 
