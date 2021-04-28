@@ -213,17 +213,6 @@ You can get the found byte offset by int reference.
   my $found_offset = 0;
   my $result_str = replace($str, $substr, $replace, 0, \$found_offset);
 
-=head2 replace_all
-
-  sub replace_all : string ($str : string, $substr : string, $replace : string)
-
-Replace all the sub string in the string with a replace string and return the result string.
-
-  my $str = "foo bar foo bar foo";
-  my $substr = "bar";
-  my $replace = "AB";
-  my $result_str = replace_all($str, $substr, $replace);
-
 =head2 strtoi
 
   sub strtoi : int ($string : string, $digit : int);

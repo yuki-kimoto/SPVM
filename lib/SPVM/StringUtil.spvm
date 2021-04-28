@@ -361,25 +361,6 @@ package SPVM::StringUtil : precompile {
     }
   }
 
-  sub replace_all : string ($str : string, $substr : string, $replace : string) {
-
-    unless ($str) { die "String must be defined"; }
-
-    my $offset = 0;
-    my $found_offset : int;
-    my $substr_len = length $substr;
-    my $result_str = $str;
-    while (1) {
-      $result_str = replace($result_str, $substr, $replace, $offset, \$found_offset);
-      if ($found_offset >= 0) {
-        $offset = $found_offset + $substr_len;
-      }
-      else {
-        return $result_str;
-      }
-    }
-  }
-
   native sub strtoi : int ($string : string, $digit : int);
   native sub strtol : long ($string : string, $digit : int);
   native sub strtof : float ($string : string);

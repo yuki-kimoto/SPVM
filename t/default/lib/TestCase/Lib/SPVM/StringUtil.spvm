@@ -31,7 +31,6 @@ package TestCase::Lib::SPVM::StringUtil {
     uc,
     ucfirst,
     replace,
-    replace_all,
     rindex,
     strtod,
     strtof,
@@ -1332,31 +1331,6 @@ package TestCase::Lib::SPVM::StringUtil {
     }
     return 1;
   }
-  sub test_replace_all : int () {
-
-    {
-      my $str = "foo bar foo bar foo";
-      my $substr = "bar";
-      my $replace = "AB";
-      my $result_str = replace_all($str, $substr, $replace);
-      unless ($result_str eq "foo AB foo AB foo") {
-        return 0;
-      }
-    }
-
-    {
-      my $str = "foobarfoobarfoo";
-      my $substr = "bar";
-      my $replace = "";
-      my $result_str = replace_all($str, $substr, $replace);
-      unless ($result_str eq "foofoofoo") {
-        return 0;
-      }
-    }
-
-    return 1;
-  }
-
   sub test_replace : int () {
 
     {
