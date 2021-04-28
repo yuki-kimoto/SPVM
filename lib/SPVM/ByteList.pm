@@ -72,39 +72,7 @@ Create a new L<SPVM::ByteList> object with array length.
 
 Get list length.
 
-=head2 push
-  
-  sub push : void ($self : self, $value : byte)
-
-Appending the value to the end of list.
-
-=head2 pop
-
-  sub pop : byte ($self : self)
-
-Pops and returns the last value of the list, shortening the array by one element
-If there are no elements in the list, exception occur.
-            
-=head2 unshift
-
-  sub unshift : void ($self : self, $value : byte)
-
-Appending the value to the top of list.
-
-=head2 shift
-
-  sub shift : byte ($self : self)
-
-Shifts the first value of the list off and returns it, shortening
-the array by 1 and moving everything down.
-If there are no elements in the list, exception occur.
-
-=head2 set
-
-  sub set : void ($self : self, $index : int, $value : byte)
-
-Set the value with index.
-
+           
 =head2 get
 
   sub get : byte ($self : self, $index : int)
@@ -122,12 +90,41 @@ Insert a element to the specific index.
   sub remove : byte ($self : self, $index : int)
 
 Remove and return the element which is specified by the index.
-  
+
+=head2 set
+
+  sub set : void ($self : self, $index : int, $value : byte)
+
+Set the value with index.
+
+=head2 set_array
+
+  sub set_array : void ($self : self, $array : byte[])
+
+Set a array. Each elements of the array is copied to the correspoinding index of the array this list has.
+
+Array must be defined, otherwise a exception occurs.
+
+The length of argument array must be same as the length of current list arraym, otherwise a exception occures.
+
 =head2 to_array
 
   sub to_array : byte[] ($self : self)
 
 Convert L<SPVM::ByteList> to byte array.
+
+=head2 pop
+
+  sub pop : byte ($self : self)
+
+Pops and returns the last value of the list, shortening the array by one element
+If there are no elements in the list, exception occur.
+
+=head2 push
+  
+  sub push : void ($self : self, $value : byte)
+
+Appending the value to the end of list.
 
 =head2 resize
 
@@ -136,3 +133,18 @@ Convert L<SPVM::ByteList> to byte array.
 Resize list.
 
 New length must be more than or equals to 0, otherwise a exception occur.
+
+=head2 shift
+
+  sub shift : byte ($self : self)
+
+Shifts the first value of the list off and returns it, shortening
+the array by 1 and moving everything down.
+If there are no elements in the list, exception occur.
+
+=head2 unshift
+
+  sub unshift : void ($self : self, $value : byte)
+
+Appending the value to the top of list.
+
