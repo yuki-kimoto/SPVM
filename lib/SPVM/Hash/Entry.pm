@@ -12,4 +12,4 @@ SPVM::Hash::Entry - Hash entry
 
 =head1 DESCRIPTION
 
-L<SPVM::Hash::Entry> is a internal data structure for L<SPVM::Hash>.
+L<SPVM::Hash::Entry> is used for L<SPVM::Hash> internally.

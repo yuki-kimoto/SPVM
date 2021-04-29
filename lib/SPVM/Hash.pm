@@ -92,37 +92,37 @@ Get a value.
 
   get_byte : byte ($self : self, $name : string)
 
-Set value with a key. the value is converted to byte type.
+Get value with a key. the value is converted to byte type.
 
 =head2 get_short
 
   get_short : short ($self : self, $name : string)
 
-Set value with a key. the value is converted to short type.
+Get value with a key. the value is converted to short type.
   
 =head2 get_int
 
   get_int : int ($self : self, $name : string)
 
-Set value with a key. the value is converted to int type.
+Get value with a key. the value is converted to int type.
   
 =head2 get_long
 
   get_long : long ($self : self, $name : string)
 
-Set value with a key. the value is converted to long type.
+Get value with a key. the value is converted to long type.
 
 =head2 get_float
 
   get_float : float ($self : self, $name : string)
 
-Set value with a key. the value is converted to float type.
+Get value with a key. the value is converted to float type.
   
 =head2 get_double
 
   get_double : double ($self : self, $name : string)
 
-Set value with a key. the value is converted to double type.
+Get value with a key. the value is converted to double type.
 
 =head2 set
   

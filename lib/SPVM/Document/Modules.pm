@@ -90,11 +90,11 @@ L<SPVM::FloatList> - Dynamic float array
 
 =head2 SPVM::Hash
 
-L<SPVM::Hash> - 
+L<SPVM::Hash> - Hash Data Structure
 
 =head2 SPVM::Hash::Entry
 
-L<SPVM::Hash::Entry>
+L<SPVM::Hash::Entry> - Hash entry
 
 =head2 SPVM::Int - int object
 
