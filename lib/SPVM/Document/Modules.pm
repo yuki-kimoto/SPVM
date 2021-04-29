@@ -58,11 +58,11 @@ L<SPVM::Comparator::Object> - a callback type for object comparation
 
 =head2 SPVM::Complex_2d
 
-L<SPVM::Complex_2d> - 
+L<SPVM::Complex_2d> - double complex type
 
 =head2 SPVM::Complex_2f
 
-L<SPVM::Complex_2f> - 
+L<SPVM::Complex_2f> - float complex type
 
 =head2 SPVM::Double
 

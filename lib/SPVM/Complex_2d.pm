@@ -1,6 +1,6 @@
 =head1 NAME
 
-SPVM::Complex_2d - Complex double multi numeric type
+SPVM::Complex_2d - double complex type
 
 =head1 SYNOPSYS
 
@@ -10,4 +10,25 @@ SPVM::Complex_2d - Complex double multi numeric type
   
 =head1 DESCRIPTION
 
-SPVM::Complex_2d is Complex double multi numeric type.
+SPVM::Complex_2d is double complex type.
+
+This module is multi numeric type.
+
+  package SPVM::Complex_2d : mulnum_t {
+    has re : double;
+    has im : double;
+  }
+
+=head1 FIELDS
+
+=head2 re
+
+  has re : double;
+
+Real number.
+
+=head2 im
+
+  has im : double;
+
+Imaginary number.
