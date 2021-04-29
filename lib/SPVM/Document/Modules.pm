@@ -8,174 +8,92 @@ List of SPVM Core Modules
 
 =head1 CORE MODULES
 
-=head2 SPVM::ArrayUtil
+=over 2
 
-L<SPVM::ArrayUtil> - Array Utilities
+=item * L<SPVM::ArrayUtil> - Array Utilities
 
-=head2 SPVM::Byte
+=item * L<SPVM::Byte> - byte object
 
-L<SPVM::Byte> - byte object
+=item * L<SPVM::ByteList> - Dynamic Byte Array
 
-=head2 SPVM::ByteList
+=item * L<SPVM::Cloner> - a callback type to clone a object
 
-L<SPVM::ByteList> - Dynamic Byte Array
+=item * L<SPVM::Comparator::Byte> - a callback type for byte comparation
 
-=head2 SPVM::Cloner
+=item * L<SPVM::Comparator::Short> - a callback type for short comparation
 
-L<SPVM::Cloner> - a callback type to clone a object
+=item * L<SPVM::Comparator::Int> - a callback type for int comparation
 
-=head2 SPVM::Comparator::Byte
+=item * L<SPVM::Comparator::Long> - a callback type for long comparation
 
-L<SPVM::Comparator::Byte> - a callback type for byte comparation
+=item * L<SPVM::Comparator::Float> - a callback type for float comparation
 
-=head2 SPVM::Comparator::Short
+=item * L<SPVM::Comparator::Double> - a callback type for double comparation
 
-L<SPVM::Comparator::Short> - a callback type for short comparation
+=item * L<SPVM::Comparator::String> - a callback type for string comparation
 
-=head2 SPVM::Comparator::Int
+=item * L<SPVM::Comparator::Object> - a callback type for object comparation
 
-L<SPVM::Comparator::Int> - a callback type for int comparation
+=item * L<SPVM::Complex_2d> - double complex type
 
-=head2 SPVM::Comparator::Long
+=item * L<SPVM::Complex_2f> - float complex type
 
-L<SPVM::Comparator::Long> - a callback type for long comparation
+=item * L<SPVM::Double> - double object
 
-=head2 SPVM::Comparator::Float
+=item * L<SPVM::DoubleList> - Dynamic double array
 
-L<SPVM::Comparator::Float> - a callback type for float comparation
+=item * L<SPVM::EqualityChecker> - a callback type to check the object equality
 
-=head2 SPVM::Comparator::Double
+=item * L<SPVM::EqualityChecker::SameObject> - a callback implementation of L<SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
-L<SPVM::Comparator::Double> - a callback type for double comparation
+=item * L<SPVM::Float> - float object
 
-=head2 SPVM::Comparator::String
+=item * L<SPVM::FloatList> - Dynamic float array
 
-L<SPVM::Comparator::String> - a callback type for string comparation
+=item * L<SPVM::Hash> - Hash Data Structure
 
-=head2 SPVM::Comparator::Object
+=item * L<SPVM::Hash::Entry> - Hash entry
 
-L<SPVM::Comparator::Object> - a callback type for object comparation
+=item * L<SPVM::Int> - int object
 
-=head2 SPVM::Complex_2d
+=item * L<SPVM::IntList> - Dynamic int array
 
-L<SPVM::Complex_2d> - double complex type
+=item * L<SPVM::IO::Stderr> - 
 
-=head2 SPVM::Complex_2f
+=item * L<SPVM::IO::Stdout> - 
 
-L<SPVM::Complex_2f> - float complex type
+=item * L<SPVM::List> - Dynamic object array
 
-=head2 SPVM::Double
+=item * L<SPVM::Long> - long object
 
-L<SPVM::Double> - double object
+=item * L<SPVM::LongList> - Dynamic long array
 
-=head2 SPVM::DoubleList
+=item * L<SPVM::Math> - 
 
-L<SPVM::DoubleList> - Dynamic double array
+=item * L<SPVM::NumberUtil> - Number Utilities
 
-=head2 SPVM::EqualityChecker
+=item * L<SPVM::Regex> - 
 
-L<SPVM::EqualityChecker> - a callback type to check the object equality
+=item * L<SPVM::Regex::Pattern> - 
 
-=head2 SPVM::EqualityChecker::SameObject
+=item * L<SPVM::Regex::Replacer> - 
 
-L<SPVM::EqualityChecker::SameObject> - a callback implementation of L<SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
+=item * L<SPVM::Short> - short object
 
-=head2 SPVM::Float
+=item * L<SPVM::ShortList> - Dynamic short array
 
-L<SPVM::Float> - float object
+=item * L<SPVM::StringBuffer> - 
 
-=head2 SPVM::FloatList
+=item * L<SPVM::Stringer> - a callback type to stringify a object
 
-L<SPVM::FloatList> - Dynamic float array
+=item * L<SPVM::StringList> - Dynamic string array
 
-=head2 SPVM::Hash
+=item * L<SPVM::StringUtil> - String Utilities
 
-L<SPVM::Hash> - Hash Data Structure
+=item * L<SPVM::Time> - 
 
-=head2 SPVM::Hash::Entry
+=item * L<SPVM::Time::Info> - 
 
-L<SPVM::Hash::Entry> - Hash entry
+=item * L<SPVM::Unicode> - 
 
-=head2 SPVM::Int - int object
-
-L<SPVM::Int>
-
-=head2 SPVM::IntList
-
-L<SPVM::IntList> - Dynamic int array
-
-=head2 SPVM::IO::Stderr
-
-L<SPVM::IO::Stderr> - 
-
-=head2 SPVM::IO::Stdout
-
-L<SPVM::IO::Stdout> - 
-
-=head2 SPVM::List
-
-L<SPVM::List> - Dynamic object array
-
-=head2 SPVM::Long
-
-L<SPVM::Long> - long object
-
-=head2 SPVM::LongList
-
-L<SPVM::LongList> - Dynamic long array
-
-=head2 SPVM::Math
-
-L<SPVM::Math> - 
-
-=head2 SPVM::NumberUtil
-
-L<SPVM::NumberUtil> - Number Utilities
-
-=head2 SPVM::Regex
-
-L<SPVM::Regex> - 
-
-=head2 SPVM::Regex::Pattern
-
-L<SPVM::Regex::Pattern> - 
-
-=head2 SPVM::Regex::Replacer
-
-L<SPVM::Regex::Replacer> - 
-
-=head2 SPVM::Short
-
-L<SPVM::Short> - short object
-
-=head2 SPVM::ShortList
-
-L<SPVM::ShortList> - Dynamic short array
-
-=head2 SPVM::StringBuffer
-
-L<SPVM::StringBuffer> - 
-
-=head2 SPVM::Stringer
-
-L<SPVM::Stringer> - a callback type to stringify a object
-
-=head2 SPVM::StringList
-
-L<SPVM::StringList> - Dynamic string array
-
-=head2 SPVM::StringUtil
-
-L<SPVM::StringUtil> - String Utilities
-
-=head2 SPVM::Time
-
-L<SPVM::Time> - 
-
-=head2 SPVM::Time::Info
-
-L<SPVM::Time::Info> - 
-
-=head2 SPVM::Unicode
-
-L<SPVM::Unicode> - 
+=back
