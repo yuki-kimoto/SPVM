@@ -12,13 +12,6 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
-  sub test_ctor_default : int () {
-    unless (check_fields(SPVM::StringBuffer->new, 16, 0)) {
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_new_opt : int () {
     my $opt = SPVM::Hash->new({});
     $opt->set_int(capacity => 20000);
@@ -54,68 +47,6 @@ package TestCase::Lib::SPVM::StringBuffer {
     $buffer2->push("a");
     unless ($buffer2->length == 1) {
       return 0;
-    }
-    return 1;
-  }
-
-  sub test_substr : int () {
-    my $buffer = SPVM::StringBuffer->new;
-    $buffer->push("abcd");
-    unless ($buffer->substr(1, 2) eq "bc") {
-      return 0;
-    }
-    eval {
-      my $buffer = SPVM::StringBuffer->new;
-      $buffer->push("a");
-      $buffer->substr(1, 1);
-    };
-    unless ($@) {
-      return 0;
-    }
-    eval {
-      my $opt = SPVM::Hash->new({});
-      $opt->set_int(capacity => 1);
-      my $buffer = SPVM::StringBuffer->new_opt($opt);
-      $buffer->push("a");
-      $buffer->substr(0, 2);
-    };
-    unless ($@) {
-      return 0;
-    }
-    
-    $@ = undef;
-    
-    return 1;
-  }
-
-  sub test_substr_copy_on_write : int () {
-    {
-      my $buffer = SPVM::StringBuffer->new;
-      $buffer->push("abc");
-      my $temp = (byte[])$buffer->to_string;
-      unless (refcnt $temp == 2) { # referenced by field and temp
-        return 0;
-      }
-    }
-    {
-      my $buffer = SPVM::StringBuffer->new;
-      $buffer->push("abc");
-      $buffer->substr(1, 1);
-      my $temp = (byte[])$buffer->to_string;
-      unless (refcnt $temp == 2) {
-        warn("substr is used. string is referenced by text's field and temp, but refcnt: " . refcnt $temp);
-        return 0;
-      }
-    }
-    {
-      my $buffer = SPVM::StringBuffer->new;
-      $buffer->push("abc");
-      my $buffer_sub = $buffer->substr(1, 1);
-      my $temp = (byte[])$buffer_sub;
-      unless (refcnt $temp == 3) {
-        warn("substr is used and text_sub is created. string is referenced by text's and text_sub fields and temp, but refcnt: " . refcnt $temp);
-        return 0;
-      }
     }
     return 1;
   }
@@ -210,24 +141,6 @@ package TestCase::Lib::SPVM::StringBuffer {
       unless ($large_buf->to_string eq "b") {
         return 0;
       }
-    }
-    return 1;
-  }
-
-  sub test_index : int () {
-    my $buf = SPVM::StringBuffer->new;
-    $buf->push ("hogehogefuga");
-    unless ($buf->index("hoge", 0) == 0) {
-      return 0;
-    }
-    unless ($buf->index("hoge", 1) == 4) {
-      return 0;
-    }
-    unless ($buf->index("fuga", 0) == 8) {
-      return 0;
-    }
-    unless ($buf->index("foo", 0) == -1) {
-      return 0;
     }
     return 1;
   }

@@ -85,20 +85,6 @@ Push string to string buffer.
 
 Convert string buffer to string.
 
-=head2 substr
-
-  sub substr : string ($self : self, $offset : int, $length : int)
-
-Get sub string.
-
-=head2 index
-
-  sub index : int ($self : self, $search : string, $offset : int)
-
-Search string. Return value is position of found string.
-
-If string is not found, Return value is -1.
-
 =head2 clear
 
   sub clear : void ($self : self)

@@ -15,15 +15,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::StringBuffer
 {
-  ok(TestCase::Lib::SPVM::StringBuffer->test_ctor_default);
   ok(TestCase::Lib::SPVM::StringBuffer->test_new_opt);
   ok(TestCase::Lib::SPVM::StringBuffer->test_length);
-  ok(TestCase::Lib::SPVM::StringBuffer->test_substr);
   ok(TestCase::Lib::SPVM::StringBuffer->test_push);
   ok(TestCase::Lib::SPVM::StringBuffer->test_push_char);
   ok(TestCase::Lib::SPVM::StringBuffer->test_push_range);
   ok(TestCase::Lib::SPVM::StringBuffer->test_to_string);
-  ok(TestCase::Lib::SPVM::StringBuffer->test_index);
 }
 
 # All object is freed

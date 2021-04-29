@@ -78,37 +78,6 @@ package SPVM::StringBuffer : precompile {
     return (string)(copy_array_range_byte($self->{value}, 0, $self->{length}));
   }
 
-  sub substr : string ($self : self, $offset : int, $length : int) {
-    if ($offset >= $self->{length}) {
-      die("substr offset is greater or equal than string length");
-    }
-    
-    my $new_text = new byte[$length];
-    
-    for (my $i = 0; $i < $length; $i++) {
-      $new_text->[$i] = $self->{value}[$offset + $i];
-    }
-    
-    return (string)$new_text;
-  }
-
-  sub index : int ($self : self, $search : string, $offset : int) {
-    my $slen = length $search;
-    for (my $i = $offset; $i < $self->{length} - $slen + 1; ++$i) {
-      my $found = 1;
-      for (my $j = 0; $j < $slen; ++$j) {
-        if ($self->{value}[$i + $j] != $search->[$j]) {
-          $found = 0;
-          last;
-        }
-      }
-      if ($found) {
-        return $i;
-      }
-    }
-    return -1;
-  }
-
   sub clear : void ($self : self) {
     $self->{length} = 0;
   }
