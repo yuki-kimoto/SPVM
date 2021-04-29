@@ -11,7 +11,13 @@ package SPVM::FloatList : precompile {
 
   sub new : SPVM::FloatList ($array : float[]) {
     my $self = new SPVM::FloatList;
-    my $length = @$array;
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
     
     my $capacity = 0;
     if ($length < DEFAULT_CAPACITY()) {
@@ -24,7 +30,9 @@ package SPVM::FloatList : precompile {
     my $values = new float[$capacity];
     $self->{length} = $length;
     
-    memcpy_float($values, 0, $array, 0, $length);
+    if ($array) {
+      memcpy_float($values, 0, $array, 0, $length);
+    }
     
     $self->{values} = $values;
     

@@ -3,6 +3,7 @@ package TestCase::Lib::SPVM::StringList {
   use SPVM::ArrayUtil (equals_array_string);
 
   sub new : int () {
+    # new with array
     {
       my $list = SPVM::StringList->new([(string)"abc", "def", "ABC"]);
       
@@ -20,6 +21,15 @@ package TestCase::Lib::SPVM::StringList {
       
       my $length = $list->length;
       unless ($length == 3) {
+        return 0;
+      }
+    }
+
+    # new with undef
+    {
+      my $list = SPVM::StringList->new(undef);
+      
+      unless ($list->length == 0) {
         return 0;
       }
     }

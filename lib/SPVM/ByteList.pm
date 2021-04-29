@@ -56,7 +56,11 @@ L<SPVM::ByteList> is Dynamic Byte Array.
 
     sub new : SPVM::ByteList ($array : byte[])
 
-Create a new L<SPVM::ByteList> object with specific C<byte> array.
+Create a new L<SPVM::ByteList> object with byte array.
+
+Internally, new array is created, and each element of argument array is copied to internal array.
+
+If array is undef, 0-length internal array is created.
 
 =head2 new_len
 

@@ -58,6 +58,10 @@ L<SPVM::StringList> is dynamic string array.
 
 Create a new L<SPVM::StringList> object with specific C<string> array.
 
+Internally, new array is created, and each element of argument array is copied to internal array.
+
+If array is undef, 0-length internal array is created.
+
 =head2 new_len
 
     sub new_len : SPVM::StringList ($length : int)

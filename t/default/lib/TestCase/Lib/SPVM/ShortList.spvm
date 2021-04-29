@@ -24,6 +24,16 @@ package TestCase::Lib::SPVM::ShortList {
         return 0;
       }
     }
+
+    # new with undef
+    {
+      my $list = SPVM::ShortList->new(undef);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+    
     
     return 1;
   }

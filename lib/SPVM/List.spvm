@@ -9,13 +9,15 @@ package SPVM::List : precompile {
     DEFAULT_CAPACITY = 16,
   }
   sub new : SPVM::List ($objects : oarray) {
-    
-    unless ($objects) {
-      die "First argument must not be undef";
-    }
-    
     my $self = new SPVM::List;
-    my $length = @$objects;
+    
+    my $length : int;
+    if ($objects) {
+      $length = @$objects;
+    }
+    else {
+      $length = 0;
+    }
     
     my $capacity = 0;
     if ($length < DEFAULT_CAPACITY()) {
@@ -26,7 +28,13 @@ package SPVM::List : precompile {
     }
     $self->{capacity} = $capacity;
     
-    $self->{values} = new_array_proto($objects, $capacity);
+    if ($objects) {
+      $self->{values} = new_array_proto($objects, $capacity);
+    }
+    else {
+      $self->{values} = new_array_proto(new object[0], $capacity);
+    }
+    
     for (my $i = 0; $i < @$objects; ++$i) {
       $self->{values}[$i] = $objects->[$i];
     }

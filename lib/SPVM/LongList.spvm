@@ -11,7 +11,13 @@ package SPVM::LongList : precompile {
 
   sub new : SPVM::LongList ($array : long[]) {
     my $self = new SPVM::LongList;
-    my $length = @$array;
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
     
     my $capacity = 0;
     if ($length < DEFAULT_CAPACITY()) {
@@ -25,7 +31,9 @@ package SPVM::LongList : precompile {
     
     $self->{length} = $length;
     
-    memcpy_long($values, 0, $array, 0, $length);
+    if ($array) {
+      memcpy_long($values, 0, $array, 0, $length);
+    }
     
     $self->{values} = $values;
     

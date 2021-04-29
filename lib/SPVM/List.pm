@@ -67,6 +67,10 @@ L<SPVM::List> is dynamic object array.
 
 Create a new L<SPVM::List> object with specific C<object> array.
 
+Internally, new array is created, and each element of argument array is copied to internal array.
+
+If array is undef, 0-length internal array is created.
+
 =head2 new_len
 
     sub new_len : SPVM::List ($proto_array : oarray, $length : int)

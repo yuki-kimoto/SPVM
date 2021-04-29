@@ -4,6 +4,7 @@ package TestCase::Lib::SPVM::ByteList {
   use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   sub new : int () {
+    # new with array
     {
       my $list = SPVM::ByteList->new([(byte)3, 5, INT8_MAX()]);
       
@@ -21,6 +22,15 @@ package TestCase::Lib::SPVM::ByteList {
       
       my $length = $list->length;
       unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    # new with undef
+    {
+      my $list = SPVM::ByteList->new(undef);
+      
+      unless ($list->length == 0) {
         return 0;
       }
     }

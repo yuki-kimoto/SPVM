@@ -58,6 +58,10 @@ L<SPVM::LongList> is dynamic long array.
 
 Create a new L<SPVM::LongList> object with specific C<long> array.
 
+Internally, new array is created, and each element of argument array is copied to internal array.
+
+If array is undef, 0-length internal array is created.
+
 =head2 new_len
 
     sub new_len : SPVM::LongList ($length : int)

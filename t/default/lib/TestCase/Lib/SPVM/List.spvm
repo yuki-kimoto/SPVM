@@ -3,7 +3,25 @@ package TestCase::Lib::SPVM::List {
   use SPVM::List;
   use SPVM::ArrayUtil (equals_array_object);
   use SPVM::EqualityChecker::SameObject;
-
+  
+  sub new : int () {
+    # new with undef
+    {
+      my $list = SPVM::List->new(undef);
+      
+      unless ($list->length == 0) {
+        return 0;
+      }
+      
+      $list->push(SPVM::Int->new(1));
+      unless ((int)$list->get(0) == 1) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub insert : int () {
     # Insert to first
     {

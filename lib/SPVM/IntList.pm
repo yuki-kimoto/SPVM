@@ -58,6 +58,10 @@ L<SPVM::IntList> is dynamic int array.
 
 Create a new L<SPVM::IntList> object with specific C<int> array.
 
+Internally, new array is created, and each element of argument array is copied to internal array.
+
+If array is undef, 0-length internal array is created.
+
 =head2 new_len
 
     sub new_len : SPVM::IntList ($length : int)

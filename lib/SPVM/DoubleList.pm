@@ -58,6 +58,10 @@ L<SPVM::DoubleList> is dynamic double array.
 
 Create a new L<SPVM::DoubleList> object with specific C<double> array.
 
+Internally, new array is created, and each element of argument array is copied to internal array.
+
+If array is undef, 0-length internal array is created.
+
 =head2 new_len
 
     sub new_len : SPVM::DoubleList ($length : int)

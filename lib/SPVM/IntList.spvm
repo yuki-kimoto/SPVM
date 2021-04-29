@@ -11,7 +11,13 @@ package SPVM::IntList : precompile {
 
   sub new : SPVM::IntList ($array : int[]) {
     my $self = new SPVM::IntList;
-    my $length = @$array;
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
     
     my $capacity = 0;
     if ($length < DEFAULT_CAPACITY()) {
@@ -25,7 +31,9 @@ package SPVM::IntList : precompile {
     
     $self->{length} = $length;
     
-    memcpy_int($values, 0, $array, 0, $length);
+    if ($array) {
+      memcpy_int($values, 0, $array, 0, $length);
+    }
     
     $self->{values} = $values;
     

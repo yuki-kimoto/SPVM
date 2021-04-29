@@ -58,6 +58,10 @@ L<SPVM::FloatList> is dynamic float array.
 
 Create a new L<SPVM::FloatList> object with specific C<float> array.
 
+Internally, new array is created, and each element of argument array is copied to internal array.
+
+If array is undef, 0-length internal array is created.
+
 =head2 new_len
 
     sub new_len : SPVM::FloatList ($length : int)

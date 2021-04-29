@@ -9,6 +9,38 @@ package SPVM::ByteList : precompile {
     DEFAULT_CAPACITY = 16,
   }
   
+  sub new : SPVM::ByteList ($array : byte[]) {
+    my $self = new SPVM::ByteList;
+    
+    my $length : int;
+    if ($array) {
+      $length = @$array;
+    }
+    else {
+      $length = 0;
+    }
+    
+    my $capacity = 0;
+    if ($length < DEFAULT_CAPACITY()) {
+      $capacity = DEFAULT_CAPACITY();
+    }
+    else {
+      $capacity = $length;
+    }
+    my $values = new byte[$capacity];
+    
+    $self->{capacity} = $capacity;
+    $self->{length} = $length;
+    
+    if ($array) {
+      memcpy_byte($values, 0, $array, 0, $length);
+    }
+    
+    $self->{values} = $values;
+    
+    return $self;
+  }
+  
   sub new_len : SPVM::ByteList ($length : int) {
     my $self = new SPVM::ByteList;
     unless ($length >= 0) {
@@ -24,29 +56,6 @@ package SPVM::ByteList : precompile {
     $self->{capacity} = $capacity;
     $self->{length} = $length;
     $self->{values} = new byte[$capacity];
-    return $self;
-  }
-  
-  sub new : SPVM::ByteList ($array : byte[]) {
-    my $self = new SPVM::ByteList;
-    my $length = @$array;
-    
-    my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
-    }
-    else {
-      $capacity = $length;
-    }
-    my $values = new byte[$capacity];
-    
-    $self->{capacity} = $capacity;
-    $self->{length} = $length;
-    
-    memcpy_byte($values, 0, $array, 0, $length);
-    
-    $self->{values} = $values;
-    
     return $self;
   }
   
