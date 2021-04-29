@@ -525,8 +525,6 @@ lib/SPVM/Regex/Replacer.spvm
 lib/SPVM/Short.pm
 lib/SPVM/ShortList.pm
 lib/SPVM/ShortList.spvm
-lib/SPVM/Sort.pm
-lib/SPVM/Sort.spvm
 lib/SPVM/StringBuffer.pm
 lib/SPVM/StringBuffer.spvm
 lib/SPVM/Stringer.pm

@@ -1,3 +1,5 @@
+0.0949 2021-04-29
+  - remove SPVM::Sort. This is 0.0947 change, but I forgot to remove SPVM::Sort.
 0.0948 2021-04-28
   - remove SPVM::StringUtil->replace
   - remove SPVM::StringUtil->replace_all
