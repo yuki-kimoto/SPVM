@@ -170,5 +170,5 @@ Set key and value pair. double value is converted to L<SPVM::Double> object.
 
   set_string : void ($self : self, $name : string, $value : string)
 
-Set key and value pair with string value..
+Set key and value pair with string value.
 
