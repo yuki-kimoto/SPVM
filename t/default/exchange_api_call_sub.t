@@ -797,7 +797,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   {
     # SPVM::Hash
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new([]);
     $opt->set_int(count => 5);
     my $count = $opt->get_int("count");
     
@@ -807,14 +807,14 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # Empty Hash new
   {
     {
-      my $hash = SPVM::Hash->new;
+      my $hash = SPVM::Hash->new([]);
       is_deeply($hash->count, 0);
     }
   }
 
   # Pass hash
   {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new([]);
     $hash->set_int(x => 1);
     $hash->set_double(y => 2.5);
     is($hash->get("x")->value, 1);
@@ -927,7 +927,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Get hash key - any object
 {
   my $biases = SPVM::new_float_array([1, 2, 3]);
-  my $hash = SPVM::Hash->new;
+  my $hash = SPVM::Hash->new([]);
   $hash->set(biases => $biases);
   $hash->set("int" => SPVM::Int->new(4));
   my $get_biases = $hash->get("biases");

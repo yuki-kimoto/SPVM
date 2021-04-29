@@ -11,17 +11,17 @@ package SPVM::Hash : precompile {
   }
   private sub _MAX_LOAD_FACTOR : double () { return 0.75; }
 
-  sub new : SPVM::Hash () {
+  sub new : SPVM::Hash ($key_values : oarray) {
     my $self = new SPVM::Hash;
+    
+    unless ($key_values) {
+      die "Key value pairs must be defined";
+    }
+
     my $default_capacity = 32;
     $self->{bucket_count} = _DEFALUT_HASH_TABLE_LENGTH();
     $self->{entries} = new SPVM::Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
-    return $self;
-  }
-  
-  sub newa : SPVM::Hash ($key_values : oarray) {
-    my $self = SPVM::Hash->new;
     
     my $length = @$key_values;
     
@@ -146,7 +146,7 @@ package SPVM::Hash : precompile {
   }
 
   sub copy : SPVM::Hash ($self : self) {
-    my $ret = SPVM::Hash->new;
+    my $ret = SPVM::Hash->new({});
     my $keys = $self->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
       $ret->set($keys->[$i], $self->get($keys->[$i]));

@@ -25,7 +25,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::Lib::SPVM::Hash->keys);
   ok(TestCase::Lib::SPVM::Hash->values);
   ok(TestCase::Lib::SPVM::Hash->copy);
-  ok(TestCase::Lib::SPVM::Hash->newa);
+  ok(TestCase::Lib::SPVM::Hash->new);
 }
 
 # All object is freed

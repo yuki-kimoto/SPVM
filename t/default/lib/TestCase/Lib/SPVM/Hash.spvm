@@ -10,7 +10,7 @@ package TestCase::Lib::SPVM::Hash {
 
   sub set_get_numeric : int () {
 
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
 
     # set_byte, get_byte
     {
@@ -126,7 +126,7 @@ package TestCase::Lib::SPVM::Hash {
   sub set : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2), undef, SPVM::Int->new(3)];
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
@@ -142,7 +142,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub set_do_not_refer_caller_key : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     my $key = "a";
     $hash->set($key, SPVM::Int->new(1));
     $key = "b";
@@ -156,7 +156,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub get : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     $hash->set_int("a" => 1);
     $hash->set("b" => undef);
     $hash->set("c" => "str");
@@ -179,7 +179,7 @@ package TestCase::Lib::SPVM::Hash {
   sub exists : int () {
     my $keys = ["alice", "bob"];
     my $vals = [SPVM::Int->new(1), SPVM::Int->new(2)];
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     for (my $i = 0; $i < @$keys; ++$i) {
       $hash->set($keys->[$i], $vals->[$i]);
     }
@@ -195,7 +195,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub delete_with_no_hash_collision : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
     unless (((SPVM::Int)($hash->delete("alice")))->value == 1) {
@@ -223,7 +223,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub delete_with_hash_collision : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     $hash->set("alice", SPVM::Int->new(1));
     $hash->set("bob", SPVM::Int->new(2));
     unless (((SPVM::Int)$hash->delete("alice"))->value == 1) {
@@ -259,7 +259,7 @@ package TestCase::Lib::SPVM::Hash {
 
   sub rehash : int () {
     my $initial_capacity = 16;
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     for (my $i = 0; $i < 14; ++$i) {
       my $key = "key" . $i;
       $hash->set_int($key => $i);
@@ -280,7 +280,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub keys : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     my $key0 = "a";
     my $key1 = "b";
     my $key2 = "c";
@@ -315,7 +315,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub values : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     my $key0 = "a";
     my $key1 = "b";
     my $key2 = "c";
@@ -355,7 +355,7 @@ package TestCase::Lib::SPVM::Hash {
   }
 
   sub copy : int () {
-    my $hash = SPVM::Hash->new;
+    my $hash = SPVM::Hash->new({});
     for (my $i = 0; $i < 3; ++$i) {
       $hash->set("key$i", $i);
     }
@@ -375,10 +375,10 @@ package TestCase::Lib::SPVM::Hash {
     return 1;
   }
 
-  sub newa : int () {
+  sub new : int () {
     # Empty array
     {
-      my $hash = SPVM::Hash->newa([]);
+      my $hash = SPVM::Hash->new({});
       my $keys = $hash->keys;
       unless (@$keys == 0) {
         return 0;
@@ -387,7 +387,7 @@ package TestCase::Lib::SPVM::Hash {
     
     # object array
     {
-      my $hash = SPVM::Hash->newa([(object)foo => 1, bar => 3L]);
+      my $hash = SPVM::Hash->new({foo => 1, bar => 3L});
       my $keys = $hash->keys;
       unless (@$keys == 2) {
         return 0;
@@ -414,7 +414,7 @@ package TestCase::Lib::SPVM::Hash {
 
     # string array
     {
-      my $hash = SPVM::Hash->newa([foo => "4px", bar => "5px"]);
+      my $hash = SPVM::Hash->new({foo => "4px", bar => "5px"});
       my $keys = $hash->keys;
       unless (@$keys == 2) {
         return 0;
@@ -436,7 +436,7 @@ package TestCase::Lib::SPVM::Hash {
     {
       # odd number array
       {
-        eval { SPVM::Hash->newa([foo => "4px", "bar"]); };
+        eval { SPVM::Hash->new([foo => "4px", "bar"]); };
         unless ($@) {
           return 0;
         }
@@ -444,7 +444,7 @@ package TestCase::Lib::SPVM::Hash {
       
       # Key must be string
       {
-        eval { SPVM::Hash->newa([(object)1 => "4px"]); };
+        eval { SPVM::Hash->new({1 => "4px"}); };
         unless ($@) {
           return 0;
         }

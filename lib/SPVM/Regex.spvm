@@ -553,25 +553,25 @@ package SPVM::Regex : precompile {
   }
   
   sub replace  : string ($self : self, $target : string, $target_offset : int, $replace : string) {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(replace_all => 0);
     return $self->replace_opt($target, $target_offset, $replace, $opt);
   }
 
   sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(replace_all => 0);
     return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
   }
 
   sub replace_all  : string ($self : self, $target : string, $target_offset : int, $replace : string) {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(replace_all => 1);
     return $self->replace_opt($target, $target_offset, $replace, $opt);
   }
 
   sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(replace_all => 1);
     return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
   }

@@ -20,13 +20,13 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_new_opt : int () {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(capacity => 20000);
     unless (check_fields(SPVM::StringBuffer->new_opt($opt), 20000, 0)) {
       return 0;
     }
     eval {
-      my $opt = SPVM::Hash->new;
+      my $opt = SPVM::Hash->new({});
       $opt->set_int(capacity => 0);
       SPVM::StringBuffer->new_opt($opt);
     };
@@ -35,7 +35,7 @@ package TestCase::Lib::SPVM::StringBuffer {
     }
     $@ = undef;
     eval {
-      my $opt = SPVM::Hash->new;
+      my $opt = SPVM::Hash->new({});
       $opt->set_int(capacity => -1);
       SPVM::StringBuffer->new_opt($opt);
     };
@@ -73,7 +73,7 @@ package TestCase::Lib::SPVM::StringBuffer {
       return 0;
     }
     eval {
-      my $opt = SPVM::Hash->new;
+      my $opt = SPVM::Hash->new({});
       $opt->set_int(capacity => 1);
       my $buffer = SPVM::StringBuffer->new_opt($opt);
       $buffer->push("a");
@@ -121,7 +121,7 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_push  : int () {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(capacity => 1);
     my $buffer = SPVM::StringBuffer->new_opt($opt);
     $buffer->push ("abc");
@@ -143,7 +143,7 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_push_char  : int () {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(capacity => 1);
     my $buffer = SPVM::StringBuffer->new_opt($opt);
     $buffer->push_char('a');
@@ -165,7 +165,7 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_push_range  : int () {
-    my $opt = SPVM::Hash->new;
+    my $opt = SPVM::Hash->new({});
     $opt->set_int(capacity => 1);
     my $buffer = SPVM::StringBuffer->new_opt($opt);
     my $string = "abcde";
@@ -194,7 +194,7 @@ package TestCase::Lib::SPVM::StringBuffer {
 
   sub test_to_string : int () {
     {
-      my $opt = SPVM::Hash->new;
+      my $opt = SPVM::Hash->new({});
       $opt->set_int(capacity => 1);
       my $minimal_buf = SPVM::StringBuffer->new_opt($opt);
       $minimal_buf->push ("a");
@@ -203,7 +203,7 @@ package TestCase::Lib::SPVM::StringBuffer {
       }
     }
     {
-      my $opt = SPVM::Hash->new;
+      my $opt = SPVM::Hash->new({});
       $opt->set_int(capacity => 1000000);
       my $large_buf = SPVM::StringBuffer->new_opt($opt);
       $large_buf->push ("b");
