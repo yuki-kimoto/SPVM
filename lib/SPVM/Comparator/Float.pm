@@ -4,7 +4,7 @@ package SPVM::Comparator::Float;
 
 =head1 NAME
 
-SPVM::Comparator::Float - a callback type for float comparation
+SPVM::Comparator::Float - a callback interface for float comparation
 
 =head1 SYNOPSYS
   
@@ -18,10 +18,12 @@ SPVM::Comparator::Float - a callback type for float comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator> is a callback type to compare two numbers.
+L<SPVM::Comparator::Float> is a callback interface to compare two float values.
 
-=head1 CALLBACK METHOD
+=head1 CALLBACK METHOD INTERFACE
 
   sub : int ($self : self, $a : float, $b : float);
 
-This method should receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
+This method must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
+
+This method is planned to be implemented in other classes.

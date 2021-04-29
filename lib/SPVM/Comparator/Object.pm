@@ -4,7 +4,7 @@ package SPVM::Comparator::Object;
 
 =head1 NAME
 
-SPVM::Comparator::Object - a callback type for comparation
+SPVM::Comparator::Object - a callback interface for comparation
 
 =head1 SYNOPSYS
   
@@ -31,10 +31,12 @@ SPVM::Comparator::Object - a callback type for comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator::Object> is a callback type to compare objects.
+L<SPVM::Comparator::Object> is a callback interface to compare two objects.
 
-=head1 CALLBACK METHOD
+=head1 CALLBACK METHOD INTERFACE
 
   sub : int ($self : self, $object1 : object, $object2 : object);
 
-This method should receive two objects and return 1 if $object1 is more than $object2, -1 if $x is less than $object2, 0 if $object1 equals $object2 in the implementation.
+This method must receive two objects and return 1 if $object1 is more than $object2, -1 if $x is less than $object2, 0 if $object1 equals $object2 in the implementation.
+
+This method is planned to be implemented in other classes.

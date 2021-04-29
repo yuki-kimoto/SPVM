@@ -16,23 +16,23 @@ List of SPVM Core Modules
 
 =item * L<SPVM::ByteList> - Dynamic Byte Array
 
-=item * L<SPVM::Cloner> - a callback type to clone a object
+=item * L<SPVM::Cloner> - a callback interface to clone a object
 
-=item * L<SPVM::Comparator::Byte> - a callback type for byte comparation
+=item * L<SPVM::Comparator::Byte> - a callback interface for byte comparation
 
-=item * L<SPVM::Comparator::Short> - a callback type for short comparation
+=item * L<SPVM::Comparator::Short> - a callback interface for short comparation
 
-=item * L<SPVM::Comparator::Int> - a callback type for int comparation
+=item * L<SPVM::Comparator::Int> - a callback interface for int comparation
 
-=item * L<SPVM::Comparator::Long> - a callback type for long comparation
+=item * L<SPVM::Comparator::Long> - a callback interface for long comparation
 
-=item * L<SPVM::Comparator::Float> - a callback type for float comparation
+=item * L<SPVM::Comparator::Float> - a callback interface for float comparation
 
-=item * L<SPVM::Comparator::Double> - a callback type for double comparation
+=item * L<SPVM::Comparator::Double> - a callback interface for double comparation
 
-=item * L<SPVM::Comparator::String> - a callback type for string comparation
+=item * L<SPVM::Comparator::String> - a callback interface for string comparation
 
-=item * L<SPVM::Comparator::Object> - a callback type for object comparation
+=item * L<SPVM::Comparator::Object> - a callback interface for object comparation
 
 =item * L<SPVM::Complex_2d> - double complex type
 
@@ -42,7 +42,7 @@ List of SPVM Core Modules
 
 =item * L<SPVM::DoubleList> - Dynamic double array
 
-=item * L<SPVM::EqualityChecker> - a callback type to check the object equality
+=item * L<SPVM::EqualityChecker> - a callback interface to check the object equality
 
 =item * L<SPVM::EqualityChecker::SameObject> - a callback implementation of L<SPVM::EqualityChecker> to check if the memory addresses of the two objects are equal.
 
@@ -80,7 +80,7 @@ List of SPVM Core Modules
 
 =item * L<SPVM::StringBuffer> - 
 
-=item * L<SPVM::Stringer> - a callback type to stringify a object
+=item * L<SPVM::Stringer> - a callback interface to stringify a object
 
 =item * L<SPVM::StringList> - Dynamic string array
 
