@@ -1,4 +1,4 @@
-0.0949 2021-04-29
+0.0949 2021-04-30
   - remove SPVM::Sort. This is 0.0947 change, but I forgot to remove SPVM::Sort.
   - rename SPVM::Hash->newa to SPVM::Hash->new. Original SPVM::Hash->new is removed.
   - SPVM::ByteList->new can receive undef.
@@ -12,6 +12,8 @@
   - SPVM::Hash->new can receive undef.
   - remove SPVM::StringBuffer->index
   - remove SPVM::StringBuffer->substr
+  - remove SPVM::IO::Stdout
+  - remove SPVM::IO::Stderr
 0.0948 2021-04-28
   - remove SPVM::StringUtil->replace
   - remove SPVM::StringUtil->replace_all

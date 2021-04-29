@@ -1,7 +1,0 @@
-package SPVM::IO::Stdout {
-  
-  our $AUTO_FLUSH : rw byte;
-  
-  native sub print : void ($string : string);
-  native sub flush : void ();
-}

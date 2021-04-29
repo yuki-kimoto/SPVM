@@ -58,10 +58,6 @@ List of SPVM Core Modules
 
 =item * L<SPVM::IntList> - Dynamic int array
 
-=item * L<SPVM::IO::Stderr> - 
-
-=item * L<SPVM::IO::Stdout> - 
-
 =item * L<SPVM::List> - Dynamic object array
 
 =item * L<SPVM::Long> - long object

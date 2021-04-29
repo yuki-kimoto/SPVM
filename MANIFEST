@@ -495,14 +495,6 @@ lib/SPVM/Hash/Entry.spvm
 lib/SPVM/Int.pm
 lib/SPVM/IntList.pm
 lib/SPVM/IntList.spvm
-lib/SPVM/IO/Stderr.c
-lib/SPVM/IO/Stderr.config
-lib/SPVM/IO/Stderr.pm
-lib/SPVM/IO/Stderr.spvm
-lib/SPVM/IO/Stdout.c
-lib/SPVM/IO/Stdout.config
-lib/SPVM/IO/Stdout.pm
-lib/SPVM/IO/Stdout.spvm
 lib/SPVM/List.pm
 lib/SPVM/List.spvm
 lib/SPVM/Long.pm
@@ -812,10 +804,6 @@ t/default/lib/TestCase/Lib/SPVM/FloatList.spvm
 t/default/lib/TestCase/Lib/SPVM/Hash.spvm
 t/default/lib/TestCase/Lib/SPVM/Int.spvm
 t/default/lib/TestCase/Lib/SPVM/IntList.spvm
-t/default/lib/TestCase/Lib/SPVM/IO/File.spvm
-t/default/lib/TestCase/Lib/SPVM/IO/FileHandle.spvm
-t/default/lib/TestCase/Lib/SPVM/IO/Stderr.spvm
-t/default/lib/TestCase/Lib/SPVM/IO/Stdout.spvm
 t/default/lib/TestCase/Lib/SPVM/List.spvm
 t/default/lib/TestCase/Lib/SPVM/Long.spvm
 t/default/lib/TestCase/Lib/SPVM/LongList.spvm
@@ -935,8 +923,6 @@ t/default/SPVM_FloatList.t
 t/default/SPVM_Hash.t
 t/default/SPVM_Int.t
 t/default/SPVM_IntList.t
-t/default/SPVM_IO_Stderr.t
-t/default/SPVM_IO_Stdout.t
 t/default/SPVM_List.t
 t/default/SPVM_Long.t
 t/default/SPVM_LongList.t
