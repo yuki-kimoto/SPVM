@@ -46,9 +46,9 @@ Copy the string and remove "\n" of the end of line and return it.
 
   sub copy_string : string ($string : string)
 
-Copy a string.
+Copy the value of the string, and return a new string.
 
-If the array is undefined, a exception occurs.
+If the argument string is undef, return undef.
 
 =head2 index
 

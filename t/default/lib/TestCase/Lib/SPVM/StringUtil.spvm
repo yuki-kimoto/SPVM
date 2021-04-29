@@ -1438,12 +1438,31 @@ package TestCase::Lib::SPVM::StringUtil {
   }
 
   sub test_copy_string : int () {
-    my $string = "abc";
-    my $string_out = copy_string($string);
-
-    unless ($string_out eq "abc") {
-      return 0;
-    }
+    # copy string
+    {
+	    my $string = "abc";
+	    my $string_out = copy_string($string);
+      
+      # Equals the value
+	    unless ($string_out eq "abc") {
+	      return 0;
+	    }
+	    
+	    # Not equals address
+	    if ($string == $string_out) {
+	      return 0;
+	    }
+	  }
+	  
+	  # undef
+	  {
+	    my $string_out = copy_string(undef);
+      
+      # Equals the value
+	    unless ($string_out == undef) {
+	      return 0;
+	    }
+	  }
 
     return 1;
   }

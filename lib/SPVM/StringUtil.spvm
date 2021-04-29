@@ -30,6 +30,12 @@ package SPVM::StringUtil : precompile {
   }
 
   sub copy_string : string ($string : string) {
+    unless ($string) {
+      return undef;
+    }
+    
+    my $string_length = length $string;
+    
     my $bytes = (byte[])$string;
 
     return (string)$bytes;

@@ -14,6 +14,7 @@
   - remove SPVM::StringBuffer->substr
   - remove SPVM::IO::Stdout
   - remove SPVM::IO::Stderr
+  - SPVM::StringUtil->copy_string can receive undef
 0.0948 2021-04-28
   - remove SPVM::StringUtil->replace
   - remove SPVM::StringUtil->replace_all
