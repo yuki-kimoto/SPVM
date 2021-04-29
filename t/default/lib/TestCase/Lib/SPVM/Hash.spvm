@@ -8,6 +8,97 @@ package TestCase::Lib::SPVM::Hash {
   use SPVM::Comparator::Object;
   use SPVM::Comparator::Int;
 
+  sub new : int () {
+    # undef
+    {
+      my $hash = SPVM::Hash->new(undef);
+      my $keys = $hash->keys;
+      unless (@$keys == 0) {
+        return 0;
+      }
+    }
+    
+    # Empty array
+    {
+      my $hash = SPVM::Hash->new({});
+      my $keys = $hash->keys;
+      unless (@$keys == 0) {
+        return 0;
+      }
+    }
+    
+    # object array
+    {
+      my $hash = SPVM::Hash->new({foo => 1, bar => 3L});
+      my $keys = $hash->keys;
+      unless (@$keys == 2) {
+        return 0;
+      }
+      
+      {
+        my $foo = (SPVM::Int)$hash->get("foo");
+        unless ($foo->value == 1) {
+          return 0;
+        }
+        my $bar = (SPVM::Long)$hash->get("bar");
+        unless ($bar->value == 3) {
+          return 0;
+        }
+      }
+
+      {
+        my $foo = (int)$hash->get("foo");
+        unless ($foo == 1) {
+          return 0;
+        }
+      }
+    }
+
+    # string array
+    {
+      my $hash = SPVM::Hash->new({foo => "4px", bar => "5px"});
+      my $keys = $hash->keys;
+      unless (@$keys == 2) {
+        return 0;
+      }
+      
+      {
+        my $foo = (string)$hash->get("foo");
+        unless ($foo && $foo eq "4px") {
+          return 0;
+        }
+        my $bar = (string)$hash->get("bar");
+        unless ($bar && $bar eq "5px") {
+          return 0;
+        }
+      }
+    }
+    
+    # Exception
+    {
+      # odd number array
+      {
+        eval { SPVM::Hash->new([foo => "4px", "bar"]); };
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+      # Key must be string
+      {
+        eval { SPVM::Hash->new({1 => "4px"}); };
+        unless ($@) {
+          return 0;
+        }
+      }
+      
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
   sub set_get_numeric : int () {
 
     my $hash = SPVM::Hash->new({});
@@ -374,87 +465,4 @@ package TestCase::Lib::SPVM::Hash {
     }
     return 1;
   }
-
-  sub new : int () {
-    # Empty array
-    {
-      my $hash = SPVM::Hash->new({});
-      my $keys = $hash->keys;
-      unless (@$keys == 0) {
-        return 0;
-      }
-    }
-    
-    # object array
-    {
-      my $hash = SPVM::Hash->new({foo => 1, bar => 3L});
-      my $keys = $hash->keys;
-      unless (@$keys == 2) {
-        return 0;
-      }
-      
-      {
-        my $foo = (SPVM::Int)$hash->get("foo");
-        unless ($foo->value == 1) {
-          return 0;
-        }
-        my $bar = (SPVM::Long)$hash->get("bar");
-        unless ($bar->value == 3) {
-          return 0;
-        }
-      }
-
-      {
-        my $foo = (int)$hash->get("foo");
-        unless ($foo == 1) {
-          return 0;
-        }
-      }
-    }
-
-    # string array
-    {
-      my $hash = SPVM::Hash->new({foo => "4px", bar => "5px"});
-      my $keys = $hash->keys;
-      unless (@$keys == 2) {
-        return 0;
-      }
-      
-      {
-        my $foo = (string)$hash->get("foo");
-        unless ($foo && $foo eq "4px") {
-          return 0;
-        }
-        my $bar = (string)$hash->get("bar");
-        unless ($bar && $bar eq "5px") {
-          return 0;
-        }
-      }
-    }
-    
-    # Exception
-    {
-      # odd number array
-      {
-        eval { SPVM::Hash->new([foo => "4px", "bar"]); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      
-      # Key must be string
-      {
-        eval { SPVM::Hash->new({1 => "4px"}); };
-        unless ($@) {
-          return 0;
-        }
-      }
-      
-    }
-    
-    $@ = undef;
-    
-    return 1;
-  }
-
 }

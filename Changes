@@ -9,6 +9,7 @@
   - SPVM::DoubleList->new can receive undef.
   - SPVM::StringList->new can receive undef.
   - SPVM::List->new can receive undef.
+  - SPVM::Hash->new can receive undef.
 0.0948 2021-04-28
   - remove SPVM::StringUtil->replace
   - remove SPVM::StringUtil->replace_all

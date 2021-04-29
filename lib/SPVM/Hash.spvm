@@ -14,29 +14,33 @@ package SPVM::Hash : precompile {
   sub new : SPVM::Hash ($key_values : oarray) {
     my $self = new SPVM::Hash;
     
-    unless ($key_values) {
-      die "Key value pairs must be defined";
-    }
-
     my $default_capacity = 32;
     $self->{bucket_count} = _DEFALUT_HASH_TABLE_LENGTH();
     $self->{entries} = new SPVM::Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
     
-    my $length = @$key_values;
+    my $length : int;
+    if ($key_values) {
+      $length = @$key_values;
+    }
+    else {
+      $length = 0;
+    }
     
     if ($length % 2 != 0) {
       die "Odd number array is invalid";
     }
     
-    for (my $i = 0; $i < @$key_values; $i += 2) {
-      my $key = $key_values->[$i];
-      my $value = $key_values->[$i + 1];
-      unless ($key isa string) {
-        die "Key must be string";
-      }
+    if ($key_values) {
+      for (my $i = 0; $i < @$key_values; $i += 2) {
+        my $key = $key_values->[$i];
+        my $value = $key_values->[$i + 1];
+        unless ($key isa string) {
+          die "Key must be string";
+        }
 
-      $self->set((string)$key => $value);
+        $self->set((string)$key => $value);
+      }
     }
     
     return $self;
