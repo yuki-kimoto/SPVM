@@ -152,11 +152,11 @@ package SPVM::ArrayUtil : precompile {
     }
 
     if ($length < 0) {
-      die "Length must be non-zero value";
+      die "Length must be more than or equals to 0";
     }
 
     if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
+      die "Offset + length must be in the array range";
     }
 
     my $range = new byte[$length];
@@ -183,11 +183,11 @@ package SPVM::ArrayUtil : precompile {
     }
 
     if ($length < 0) {
-      die "Length must be non-zero value";
+      die "Length must be more than or equals to 0";
     }
 
     if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
+      die "Offset + length must be in the array range";
     }
 
     my $range = new short[$length];
@@ -214,11 +214,11 @@ package SPVM::ArrayUtil : precompile {
     }
 
     if ($length < 0) {
-      die "Length must be non-zero value";
+      die "Length must be more than or equals to 0";
     }
 
     if ($offset + $length > $array_length) {
-      die "Offset + length must not be over array length";
+      die "Offset + length must be in the array range";
     }
 
     my $range = new int[$length];
