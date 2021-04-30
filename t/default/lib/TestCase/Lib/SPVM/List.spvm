@@ -498,6 +498,25 @@ package TestCase::Lib::SPVM::List {
         return 0;
       }
     }
+
+    # 3 to 2, 2 to 3 again
+    {
+      my $list = SPVM::List->new([]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(2);
+      unless ($list->length == 2) {
+        return 0;
+      }
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(2) == undef) {
+        return 0;
+      }
+    }
     
     # Exception - New length must be more than or equals to 0
     {

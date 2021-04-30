@@ -49,6 +49,69 @@ package TestCase::Lib::SPVM::StringList {
     return 1;
   }
 
+  sub get : int () {
+    {
+      my $list = SPVM::StringList->new([(string)"abc", "def", "ABC"]);
+      
+      unless ($list->get(0) eq "abc") {
+        return 0;
+      }
+
+      unless ($list->get(0) isa string) {
+        return 0;
+      }
+
+      unless ($list->get(1) eq "def") {
+        return 0;
+      }
+
+      unless ($list->get(2) eq "ABC") {
+        return 0;
+      }
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(-1);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      eval {
+        $list->get(3);
+      };
+      unless ($@) {
+        return 0;
+      }
+      
+      $@ = undef;
+    }
+    
+    return 1;
+  }
+
+  sub length : int () {
+    # length
+    {
+      my $list = SPVM::StringList->new_len(0);
+      
+      $list->unshift("abc");
+      $list->unshift("def");
+      $list->unshift("ABC");
+      
+      my $length = $list->length;
+      unless ($length == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   sub insert : int () {
     # Insert to first
     {
@@ -186,51 +249,6 @@ package TestCase::Lib::SPVM::StringList {
       unless ($length == 3) {
         return 0;
       }
-    }
-    
-    return 1;
-  }
-
-  sub get : int () {
-    {
-      my $list = SPVM::StringList->new([(string)"abc", "def", "ABC"]);
-      
-      unless ($list->get(0) eq "abc") {
-        return 0;
-      }
-
-      unless ($list->get(0) isa string) {
-        return 0;
-      }
-
-      unless ($list->get(1) eq "def") {
-        return 0;
-      }
-
-      unless ($list->get(2) eq "ABC") {
-        return 0;
-      }
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(-1);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      eval {
-        $list->get(3);
-      };
-      unless ($@) {
-        return 0;
-      }
-      
-      $@ = undef;
     }
     
     return 1;
@@ -447,6 +465,102 @@ package TestCase::Lib::SPVM::StringList {
     return 1;
   }
 
+  sub resize : int () {
+    my $a = (string)1;
+    my $b = (string)2;
+    my $c = (string)3;
+
+    # 3 to 3
+    {
+      my $list = SPVM::StringList->new(new string[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    
+    # 3 to 0
+    {
+      my $list = SPVM::StringList->new(new string[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(0);
+      unless ($list->length == 0) {
+        return 0;
+      }
+    }
+
+    
+    # 3 to 4
+    {
+      my $list = SPVM::StringList->new(new string[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(4);
+      unless ($list->length == 4) {
+        return 0;
+      }
+      unless ($list->get(3) == undef && $list->get(0) == $a && $list->get(1) == $b && $list->get(2) == $c) {
+        return 0;
+      }
+    }
+    
+    # 3 to 32(over capacity)
+    {
+      my $list = SPVM::StringList->new(new string[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      $list->resize(32);
+      unless ($list->length == 32) {
+        return 0;
+      }
+      unless ($list->get(3) == undef && $list->get(31) == undef) {
+        return 0;
+      }
+    }
+
+    # 3 to 2 and 2 to 3 again
+    {
+      my $list = SPVM::StringList->new([(string)1, 2, 3]);
+      $list->resize(2);
+      unless ($list->length == 2) {
+        return 0;
+      }
+      
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(2) == undef) {
+        return 0;
+      }
+    }
+    
+    # Exception - New length must be more than or equals to 0
+    {
+      my $list = SPVM::StringList->new(new string[0]);
+      $list->push($a);
+      $list->push($b);
+      $list->push($c);
+      eval { $list->resize(-1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+
   sub shift : int () {
     # shift
     {
@@ -480,24 +594,6 @@ package TestCase::Lib::SPVM::StringList {
         return 0;
       }
       $@ = undef;
-    }
-    
-    return 1;
-  }
-
-  sub length : int () {
-    # length
-    {
-      my $list = SPVM::StringList->new_len(0);
-      
-      $list->unshift("abc");
-      $list->unshift("def");
-      $list->unshift("ABC");
-      
-      my $length = $list->length;
-      unless ($length == 3) {
-        return 0;
-      }
     }
     
     return 1;
