@@ -29,8 +29,6 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_push  : int () {
-    my $opt = SPVM::Hash->new({});;
-    $opt->set_int(capacity => 1);
     my $buffer = SPVM::StringBuffer->new;
     $buffer->push ("abc");
     unless ($buffer->to_string eq "abc") {
@@ -51,8 +49,6 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_push_char  : int () {
-    my $opt = SPVM::Hash->new({});
-    $opt->set_int(capacity => 1);
     my $buffer = SPVM::StringBuffer->new;
     $buffer->push_char('a');
     unless ($buffer->to_string eq "a") {
@@ -79,8 +75,6 @@ package TestCase::Lib::SPVM::StringBuffer {
 
   sub test_to_string : int () {
     {
-      my $opt = SPVM::Hash->new({});
-      $opt->set_int(capacity => 1);
       my $minimal_buf = SPVM::StringBuffer->new;
       $minimal_buf->push ("a");
       unless ($minimal_buf->to_string eq "a") {
@@ -88,8 +82,6 @@ package TestCase::Lib::SPVM::StringBuffer {
       }
     }
     {
-      my $opt = SPVM::Hash->new({});
-      $opt->set_int(capacity => 1000000);
       my $large_buf = SPVM::StringBuffer->new;
       $large_buf->push ("b");
       unless ($large_buf->to_string eq "b") {

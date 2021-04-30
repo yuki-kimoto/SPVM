@@ -25,6 +25,10 @@
   - SPVM::FloatList->resize added elements are set to 0 always
   - SPVM::DoubleList->resize added elements are set to 0 always
   - add SPVM::StringList->resize
+  - add SPVM::StringBuffer->resize
+  - remove SPVM::StringBuffer->clear
+  - remove SPVM::StringBuffer->capacity
+  - remove SPVM::StringBuffer->new_opt
 0.0948 2021-04-28
   - remove SPVM::StringUtil->replace
   - remove SPVM::StringUtil->replace_all

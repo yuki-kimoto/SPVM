@@ -1,23 +1,9 @@
 package SPVM::StringBuffer : precompile {
-  use SPVM::Hash;
   use SPVM::ArrayUtil (copy_array_range_byte);
 
   has value : byte[];
   has length : ro int;
   
-  private enum {
-    DEFAULT_CAPACITY = 16,
-  }
-  
-  # O($new_capacity)
-  private sub _reallocate : void ($self : self, $new_capacity : int) {
-    my $new_string = new byte [$new_capacity];
-    for (my $i = 0; $i < $self->{length}; ++$i) {
-      $new_string->[$i] = $self->{value}[$i];
-    }
-    $self->{value} = $new_string;
-  }
-
   sub new : SPVM::StringBuffer () {
     my $self = new SPVM::StringBuffer;
     my $default_capacity = DEFAULT_CAPACITY();
@@ -57,7 +43,16 @@ package SPVM::StringBuffer : precompile {
     return (string)(copy_array_range_byte($self->{value}, 0, $self->{length}));
   }
 
-  sub clear : void ($self : self) {
-    $self->{length} = 0;
+  private enum {
+    DEFAULT_CAPACITY = 16,
+  }
+  
+  # O($new_capacity)
+  private sub _reallocate : void ($self : self, $new_capacity : int) {
+    my $new_string = new byte [$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      $new_string->[$i] = $self->{value}[$i];
+    }
+    $self->{value} = $new_string;
   }
 }

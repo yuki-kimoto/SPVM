@@ -78,7 +78,7 @@ List of SPVM Core Modules
 
 =item * L<SPVM::ShortList> - Dynamic short array
 
-=item * L<SPVM::StringBuffer> - 
+=item * L<SPVM::StringBuffer> - String buffer
 
 =item * L<SPVM::Stringer> - a callback interface to stringify a object
 
