@@ -70,27 +70,23 @@ Create a new L<SPVM::StringList> object with array length.
 
 =head1 INSTANCE METHODS
 
-=head2 length
-  
-  sub length : int ()
-
-Get list length.
-
 =head2 get
 
   sub get : string ($self : self, $index : int)
 
 Get the value with index.
 
+=head2 length
+  
+  sub length : int ()
+
+Get list length.
+
 =head2 insert
 
   sub insert : void ($self : self, $index : int, $value : string)
 
 Insert a element to the specific index.
-
-=head2 remove
-
-  sub remove : string ($self : self, $index : int)
 
 =head2 pop
 
@@ -105,11 +101,19 @@ If there are no elements in the list, exception occur.
 
 Appending the value to the end of list.
 
-=head2 to_array
+=head2 remove
 
-  sub to_array : string[] ($self : self)
+  sub remove : string ($self : self, $index : int)
 
-Convert L<SPVM::StringList> to string array.
+Remove and return the element which is specified by the index.
+
+=head2 resize
+
+  sub resize : void ($self : self, $new_length : int)
+
+Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to undef.
+
+New length must be more than or equals to 0, otherwise a exception occur.
 
 =head2 set
 
@@ -122,7 +126,6 @@ Set the value with index.
   sub set_array : void ($self : self, $array : string[])
 
 Set a array. Each elements of the array is copied to the correspoinding index of the array this list has. Note that this copy is address copy.
-
 Array must be defined, otherwise a exception occurs.
 
 The length of argument array must be same as the length of current list array, otherwise a exception occures.
@@ -135,9 +138,14 @@ Shifts the first value of the list off and returns it, shortening
 the array by 1 and moving everything down.
 If there are no elements in the list, exception occur.
 
+=head2 to_array
+
+  sub to_array : string[] ($self : self)
+
+Convert L<SPVM::StringList> to string array.
+
 =head2 unshift
 
   sub unshift : void ($self : self, $value : string)
 
 Appending the value to the top of list.
-

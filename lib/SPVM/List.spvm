@@ -264,6 +264,7 @@ package SPVM::List : precompile {
     }
     $self->{length} = $new_length;
   }
+  
   sub to_array : oarray ($self : self) {
     my $length = $self->{length};
     my $objects = new_array_proto($self->{values}, $length);

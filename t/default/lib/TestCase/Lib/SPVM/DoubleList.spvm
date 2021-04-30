@@ -561,6 +561,23 @@ package TestCase::Lib::SPVM::DoubleList {
         return 0;
       }
     }
+
+    # 3 to 2 and 2 to 3 again
+    {
+      my $list = SPVM::DoubleList->new([(double)1, 2, 3]);
+      $list->resize(2);
+      unless ($list->length == 2) {
+        return 0;
+      }
+      
+      $list->resize(3);
+      unless ($list->length == 3) {
+        return 0;
+      }
+      unless ($list->get(2) == 0) {
+        return 0;
+      }
+    }
     
     # Exception - New length must be more than or equals to 0
     {

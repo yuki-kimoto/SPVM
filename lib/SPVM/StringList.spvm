@@ -55,6 +55,18 @@ package SPVM::StringList : precompile {
     $self->{values} = new string[$capacity];
     return $self;
   }
+
+  sub get : string ($self : self, $index : int) {
+    my $length = $self->length;
+    
+    if ($index < 0 || $index > $length - 1) {
+      die "Out of range";
+    }
+    
+    my $value = $self->{values}[$index];
+    
+    return $value;
+  }
   
   sub insert : void ($self : self, $index : int, $value : string) {
     my $length = $self->{length};
@@ -165,7 +177,28 @@ package SPVM::StringList : precompile {
     
     return $value;
   }
-  
+
+  sub resize : void ($self : self, $new_length : int) {
+    if ($new_length < 0) {
+      die "New length must be more than or equals to 0";
+    }
+    
+    my $length = $self->{length};
+    my $capacity = $self->{capacity};
+    
+    if ($new_length > $length) {
+      if ($new_length > $capacity) {
+        $self->_extend_with_capacity($new_length);
+      }
+    }
+    elsif ($new_length < $length) {
+      for (my $i = $new_length; $i < $length; $i++) {
+        $self->{values}[$i] = undef;
+      }
+    }
+    $self->{length} = $new_length;
+  }
+
   sub set : void ($self : self, $index : int, $value : string) {
     my $length = $self->length;
     
@@ -195,18 +228,6 @@ package SPVM::StringList : precompile {
     }
   }
 
-  sub get : string ($self : self, $index : int) {
-    my $length = $self->length;
-    
-    if ($index < 0 || $index > $length - 1) {
-      die "Out of range";
-    }
-    
-    my $value = $self->{values}[$index];
-    
-    return $value;
-  }
-  
   sub grep : int ($self : self, $search : string) {
     for (my $i = 0; $i < $self->length; ++$i) {
       if ($self->{values}->[$i] eq $search) {
@@ -245,5 +266,17 @@ package SPVM::StringList : precompile {
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
+  }
+
+
+  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+    my $new_values = new string[$new_capacity];
+    for (my $i = 0; $i < $self->{length}; ++$i) {
+      my $target = $i;
+      if ($target < 0) { $target += $self->{capacity}; };
+      $new_values->[$i] = $self->{values}[$target];
+    }
+    $self->{capacity} = $new_capacity;
+    $self->{values} = $new_values;
   }
 }

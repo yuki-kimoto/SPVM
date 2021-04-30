@@ -18,6 +18,13 @@
   - remove SPVM::StringBuffer->push_range
   - remove SPVM::StringBuffer->capacity
   - remove SPVM::StringBuffer->new_opt
+  - SPVM::ByteList->resize added elements are set to 0 always
+  - SPVM::ShortList->resize added elements are set to 0 always
+  - SPVM::IntList->resize added elements are set to 0 always
+  - SPVM::LongList->resize added elements are set to 0 always
+  - SPVM::FloatList->resize added elements are set to 0 always
+  - SPVM::DoubleList->resize added elements are set to 0 always
+  - add SPVM::StringList->resize
 0.0948 2021-04-28
   - remove SPVM::StringUtil->replace
   - remove SPVM::StringUtil->replace_all

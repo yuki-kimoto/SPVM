@@ -502,5 +502,4 @@ package TestCase::Lib::SPVM::StringList {
     
     return 1;
   }
-
 }
