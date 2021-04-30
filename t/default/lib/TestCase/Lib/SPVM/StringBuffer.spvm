@@ -1,28 +1,18 @@
 package TestCase::Lib::SPVM::StringBuffer {
   use SPVM::StringBuffer;
 
-  sub test_new_opt : int () {
-    my $opt = SPVM::Hash->new({});
-    $opt->set_int(capacity => 20000);
-
-    eval {
-      my $opt = SPVM::Hash->new({});
-      $opt->set_int(capacity => 0);
-      SPVM::StringBuffer->new_opt($opt);
-    };
-    unless ($@) {
+  sub test_new : int () {
+    
+    my $buffer = SPVM::StringBuffer->new;
+    
+    unless ($buffer isa SPVM::StringBuffer) {
       return 0;
     }
-    $@ = undef;
-    eval {
-      my $opt = SPVM::Hash->new({});
-      $opt->set_int(capacity => -1);
-      SPVM::StringBuffer->new_opt($opt);
-    };
-    unless ($@) {
+    
+    unless ($buffer->length == 0) {
       return 0;
     }
-    $@ = undef;
+    
     return 1;
   }
 
@@ -39,9 +29,9 @@ package TestCase::Lib::SPVM::StringBuffer {
   }
 
   sub test_push  : int () {
-    my $opt = SPVM::Hash->new({});
+    my $opt = SPVM::Hash->new({});;
     $opt->set_int(capacity => 1);
-    my $buffer = SPVM::StringBuffer->new_opt($opt);
+    my $buffer = SPVM::StringBuffer->new;
     $buffer->push ("abc");
     unless ($buffer->to_string eq "abc") {
       warn("actual string: " . $buffer->to_string);
@@ -63,7 +53,7 @@ package TestCase::Lib::SPVM::StringBuffer {
   sub test_push_char  : int () {
     my $opt = SPVM::Hash->new({});
     $opt->set_int(capacity => 1);
-    my $buffer = SPVM::StringBuffer->new_opt($opt);
+    my $buffer = SPVM::StringBuffer->new;
     $buffer->push_char('a');
     unless ($buffer->to_string eq "a") {
       warn("actual string: " . $buffer->to_string);
@@ -91,7 +81,7 @@ package TestCase::Lib::SPVM::StringBuffer {
     {
       my $opt = SPVM::Hash->new({});
       $opt->set_int(capacity => 1);
-      my $minimal_buf = SPVM::StringBuffer->new_opt($opt);
+      my $minimal_buf = SPVM::StringBuffer->new;
       $minimal_buf->push ("a");
       unless ($minimal_buf->to_string eq "a") {
         return 0;
@@ -100,7 +90,7 @@ package TestCase::Lib::SPVM::StringBuffer {
     {
       my $opt = SPVM::Hash->new({});
       $opt->set_int(capacity => 1000000);
-      my $large_buf = SPVM::StringBuffer->new_opt($opt);
+      my $large_buf = SPVM::StringBuffer->new;
       $large_buf->push ("b");
       unless ($large_buf->to_string eq "b") {
         return 0;

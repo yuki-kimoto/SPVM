@@ -60,27 +60,4 @@ package SPVM::StringBuffer : precompile {
   sub clear : void ($self : self) {
     $self->{length} = 0;
   }
-
-  sub new_opt : SPVM::StringBuffer ($opt : SPVM::Hash) {
-    
-    my $self = new SPVM::StringBuffer;
-
-    my $default_capacity : int;
-    if ($opt->exists("capacity")) {
-      $default_capacity = (int)$opt->delete("capacity");
-    }
-    else {
-      $default_capacity = DEFAULT_CAPACITY();
-    }
-    
-    # Minimal capacity is 1
-    if ($default_capacity < 1) {
-      die "Invalid capacity";
-    }
-    
-    $self->{value} = new byte [$default_capacity];
-    $self->{length} = 0;
-    
-    return $self;
-  }
 }

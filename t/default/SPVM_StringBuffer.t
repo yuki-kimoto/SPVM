@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::StringBuffer
 {
-  ok(TestCase::Lib::SPVM::StringBuffer->test_new_opt);
+  ok(TestCase::Lib::SPVM::StringBuffer->test_new);
   ok(TestCase::Lib::SPVM::StringBuffer->test_length);
   ok(TestCase::Lib::SPVM::StringBuffer->test_push);
   ok(TestCase::Lib::SPVM::StringBuffer->test_push_char);
