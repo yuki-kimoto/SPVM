@@ -95,29 +95,6 @@ package TestCase::Lib::SPVM::StringBuffer {
     return 1;
   }
 
-  sub test_push_range  : int () {
-    my $opt = SPVM::Hash->new({});
-    $opt->set_int(capacity => 1);
-    my $buffer = SPVM::StringBuffer->new_opt($opt);
-    my $string = "abcde";
-    $buffer->push_range($string, 0, 3);
-    unless ($buffer->to_string eq "abc" && $buffer->capacity == 3) {
-      warn("actual string: " . $buffer->to_string . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    $buffer->push_range($string, 1, 3);
-    unless ($buffer->to_string eq "abcbcd" && $buffer->capacity == 6) {
-      warn("actual string: " . $buffer->to_string . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    $buffer->push_range($string, 2, 3);
-    unless ($buffer->to_string eq "abcbcdcde" && $buffer->capacity == 12) {
-      warn("actual string: " . $buffer->to_string . ", capacity: " . $buffer->capacity);
-      return 0;
-    }
-    return 1;
-  }
-
   sub test_append_copy_on_write : int () {
     warn("TODO: append copy-on-write test is not implemented yet");
     return 0;

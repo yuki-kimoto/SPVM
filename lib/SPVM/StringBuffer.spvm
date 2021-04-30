@@ -57,23 +57,6 @@ package SPVM::StringBuffer : precompile {
     $self->{value}[$self->{length}++] = $char;
   }
 
-  sub push_range : void ($self : self, $string : string, $offset : int, $length : int) {
-    my $capacity = @$self->{value};
-    if ($self->{length} + $length > $capacity) {
-      my $new_capacity : int;
-      if ($self->{length} + $length > $capacity * 2) {
-        $new_capacity = $self->{length} + $length;
-      } else {
-        $new_capacity = $capacity * 2;
-      }
-      $self->_reallocate($new_capacity);
-    }
-    for (my $i = 0; $i < $length; ++$i) {
-      $self->{value}[$self->{length} + $i] = $string->[$offset + $i];
-    }
-    $self->{length} += $length;
-  }
-
   sub to_string : string ($self : self) {
     return (string)(copy_array_range_byte($self->{value}, 0, $self->{length}));
   }
