@@ -258,12 +258,16 @@ package SPVM::ByteList : precompile {
       if ($new_length > $capacity) {
         $self->_extend_with_capacity($new_length);
       }
+      for (my $i = $length; $i < $new_length; $i++) {
+        $self->{values}[$i] = 0;
+      }
     }
     elsif ($new_length < $length) {
       for (my $i = $new_length; $i < $length; $i++) {
         $self->{values}[$i] = 0;
       }
     }
+    
     $self->{length} = $new_length;
   }
 }

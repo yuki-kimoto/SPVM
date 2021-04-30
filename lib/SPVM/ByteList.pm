@@ -127,7 +127,7 @@ Appending the value to the end of list.
 
   sub resize : void ($self : self, $new_length : int)
 
-Resize list.
+Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to 0.
 
 New length must be more than or equals to 0, otherwise a exception occur.
 
