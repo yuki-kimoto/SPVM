@@ -9,10 +9,6 @@ package SPVM::StringBuffer : precompile {
     DEFAULT_CAPACITY = 16,
   }
   
-  sub capacity : int ($self : self) {
-    return @$self->{value};
-  }
-
   # O($new_capacity)
   private sub _reallocate : void ($self : self, $new_capacity : int) {
     my $new_string = new byte [$new_capacity];
