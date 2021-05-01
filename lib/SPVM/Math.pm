@@ -18,119 +18,11 @@ L<SPVM::Math> defines mathmatical functions.
 
 =head1 STATIC METHODS
 
-=head2 E
-
-  sub E : double ()
-
-The double value that is closer than any other to e, the base of the natural logarithms.
-
-=head2 PI
-
-  sub PI : double ()
-
-The double value that is closer than any other to pi, the ratio of the circumference of a circle to its diameter.
-
-=head2 FE_DOWNWARD
-
-  sub FE_DOWNWARD : int ()
-
-FE_DOWNWARD constant value in C99 fenv.h.
-
-=head2 FE_TONEAREST
-
-  sub FE_TONEAREST : int ()
-
-FE_TONEAREST constant value in C99 fenv.h.
-
-=head2 FE_TOWARDZERO
-
-  sub FE_TOWARDZERO : int ()
-
-FE_TOWARDZERO constant value in C99 fenv.h.
-
-=head2 FE_UPWARD
-
-  sub FE_UPWARD : int ()
-
-FE_UPWARD constant value in C99 fenv.h.
- 
-=head2 FP_ILOGB0
-
-  sub FP_ILOGB0 : int ()
-
-FP_ILOGB0 constant value in C99 fenv.h.
- 
-=head2 FP_ILOGBNAN
-
-  sub FP_ILOGBNAN : int ()
-
-FP_ILOGBNAN constant value in C99 fenv.h.
- 
-=head2 FP_INFINITE
-
-  sub FP_INFINITE : int ()
-
-FP_INFINITE constant value in C99 fenv.h.
- 
-=head2 FP_NAN
-
-  sub FP_NAN : int ()
-
-FP_NAN constant value in C99 fenv.h.
- 
-=head2 FP_ZERO
-
-  sub FP_ZERO : int ()
-
-FP_ZERO constant value in C99 fenv.h.
- 
-=head2 HUGE_VAL
-
-  sub HUGE_VAL : double ()
-
-HUGE_VAL constant value in C99 math.h.
- 
-=head2 HUGE_VALF
-
-  sub HUGE_VALF : float ()
-
-HUGE_VALF constant value in C99 math.h.
- 
-=head2 INFINITY
-
-  sub INFINITY : double ()
-
-INFINITY constant value in C99 math.h.
- 
-=head2 INFINITYF
-
-  sub INFINITYF : float ()
-
-INFINITY constant value for float type in C99 math.h.
- 
-=head2 NAN
-
-  sub NAN : double ()
-
-NAN constant value in C99 math.h.
-
-=head2 NANF
-
-  sub NANF : float ()
-
-NAN constant value for float type in C99 math.h.
-
 =head2 abs
 
   sub abs : int ($x : int);
 
 Get the abusolute value of a int value.
-
-=head2 labs
-
-  sub labs : long ($x : long);
-
-Get the abusolute value of a long value.
 
 =head2 acos
 
@@ -570,6 +462,12 @@ ctanh function in C99 complex.h.
 
 ctanhf function in C99 complex.h.
 
+=head2 E
+
+  sub E : double ()
+
+The double value that is closer than any other to e, the base of the natural logarithms.
+
 =head2 erf
 
   sub erf : double ($x : double)
@@ -654,6 +552,30 @@ fdim function in C99 math.h.
 
 fdimf function in C99 math.h.
 
+=head2 FE_DOWNWARD
+
+  sub FE_DOWNWARD : int ()
+
+FE_DOWNWARD constant value in C99 fenv.h.
+
+=head2 FE_TONEAREST
+
+  sub FE_TONEAREST : int ()
+
+FE_TONEAREST constant value in C99 fenv.h.
+
+=head2 FE_TOWARDZERO
+
+  sub FE_TOWARDZERO : int ()
+
+FE_TOWARDZERO constant value in C99 fenv.h.
+
+=head2 FE_UPWARD
+
+  sub FE_UPWARD : int ()
+
+FE_UPWARD constant value in C99 fenv.h.
+
 =head2 fesetround
 
   sub fesetround : int ($round : int)
@@ -720,6 +642,36 @@ fmod function in C99 math.h.
 
 fmodf function in C99 math.h.
 
+=head2 FP_ILOGB0
+
+  sub FP_ILOGB0 : int ()
+
+FP_ILOGB0 constant value in C99 fenv.h.
+
+=head2 FP_ILOGBNAN
+
+  sub FP_ILOGBNAN : int ()
+
+FP_ILOGBNAN constant value in C99 fenv.h.
+
+=head2 FP_INFINITE
+
+  sub FP_INFINITE : int ()
+
+FP_INFINITE constant value in C99 fenv.h.
+
+=head2 FP_NAN
+
+  sub FP_NAN : int ()
+
+FP_NAN constant value in C99 fenv.h.
+
+=head2 FP_ZERO
+
+  sub FP_ZERO : int ()
+
+FP_ZERO constant value in C99 fenv.h.
+
 =head2 fpclassify
 
   sub fpclassify : int ($x : double)
@@ -744,6 +696,18 @@ frexp function in C99 math.h.
 
 frexpf function in C99 math.h.
 
+=head2 HUGE_VAL
+
+  sub HUGE_VAL : double ()
+
+HUGE_VAL constant value in C99 math.h.
+
+=head2 HUGE_VALF
+
+  sub HUGE_VALF : float ()
+
+HUGE_VALF constant value in C99 math.h.
+
 =head2 hypot
 
   sub hypot : double ($x : double, $y : double)
@@ -767,6 +731,18 @@ ilogb function in C99 math.h.
   sub ilogbf : int ($x : float)
 
 ilogbf function in C99 math.h.
+
+=head2 INFINITY
+
+  sub INFINITY : double ()
+
+INFINITY constant value in C99 math.h.
+
+=head2 INFINITYF
+
+  sub INFINITYF : float ()
+
+INFINITY constant value for float type in C99 math.h.
 
 =head2 isfinite
 
@@ -876,6 +852,12 @@ isunordered function in C99 math.h.
 
 isunorderedf function in C99 math.h.
 
+=head2 labs
+
+  sub labs : long ($x : long);
+
+Get the abusolute value of a long value.
+
 =head2 ldexp
 
   sub ldexp : double ($x : double, $exp : int)
@@ -984,11 +966,23 @@ modf function in C99 math.h.
 
 modff function in C99 math.h.
 
+=head2 NAN
+
+  sub NAN : double ()
+
+NAN constant value in C99 math.h.
+
 =head2 nan
 
   sub nan : double ($str : string)
 
 nan function in C99 math.h.
+
+=head2 NANF
+
+  sub NANF : float ()
+
+NAN constant value for float type in C99 math.h.
 
 =head2 nanf
 
@@ -1031,6 +1025,12 @@ nexttoward function in C99 math.h.
   sub nexttowardf : float ($x1 : float, $x2 : double)
 
 nexttowardf function in C99 math.h.
+
+=head2 PI
+
+  sub PI : double ()
+
+The double value that is closer than any other to pi, the ratio of the circumference of a circle to its diameter.
 
 =head2 pow
 
@@ -1148,8 +1148,6 @@ sqrt function in C99 math.h.
 
 =head2 sqrtf
 
-  sub sqrtf : float ($x : float)
-
 sqrtf function in C99 math.h.
 
 =head2 tan
@@ -1157,10 +1155,6 @@ sqrtf function in C99 math.h.
   sub tan : double ($x : double)
 
 tan function in C99 math.h.
-
-=head2 sqrtf
-
-sqrtf function in C99 math.h.
 
 =head2 tanf
 
