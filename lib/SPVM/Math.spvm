@@ -10,7 +10,223 @@ package SPVM::Math {
       return $x;
     }
   }
-
+  
+  native sub acos : double ($x : double);
+  native sub acosf : float ($x : float);
+  native sub acosh : double ($x : double);
+  native sub acoshf : float ($x : float);
+  native sub asin : double ($x : double);
+  native sub asinf : float ($x : float);
+  native sub asinh : double ($x : double);
+  native sub asinhf : float ($x : float);
+  native sub atan : double ($x : double);
+  native sub atan2 : double ($y : double, $x : double);
+  native sub atanf : float ($x : float);
+  native sub atanh : double ($x : double);
+  native sub atanhf : float ($x : float);
+  native sub cabs : double ($z : SPVM::Complex_2d);
+  native sub cabsf : float ($z : SPVM::Complex_2f);
+  native sub cacos : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub cacosf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub cacosh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub cacoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  
+  sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{re} = $z1->{re} + $z2->{re};
+    $z_out->{im} = $z1->{im} + $z2->{im};
+    return $z_out;
+  }
+  
+  sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{re} = $z1->{re} + $z2->{re};
+    $z_out->{im} = $z1->{im} + $z2->{im};
+    return $z_out;
+  }
+  
+  native sub carg : double ($z : SPVM::Complex_2d);
+  native sub cargf : float ($z : SPVM::Complex_2f);
+  native sub casin : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub casinf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub casinh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub casinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub catan : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub catanf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub catanh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub catanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub cbrt : double ($x : double);
+  native sub cbrtf : float ($x : float);
+  native sub ccos : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub ccosf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub ccosh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub ccoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  
+  sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
+    $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
+    return $z_out;
+  }
+  
+  sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
+    $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
+    return $z_out;
+  }
+  
+  native sub ceil : double ($x : double);
+  native sub ceilf : float ($x : float);
+  native sub cexp : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub cexpf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub clog : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub clogf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  
+  sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
+    $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
+    return $z_out;
+  }
+  
+  sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
+    $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
+    return $z_out;
+  }
+  
+  sub complex : SPVM::Complex_2d ($x : double, $y : double) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{re} = $x;
+    $z_out->{im} = $y;
+    return $z_out;
+  }
+  
+  sub complexf : SPVM::Complex_2f ($x : float, $y : float) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{re} = $x;
+    $z_out->{im} = $y;
+    return $z_out;
+  }
+  
+  native sub conj : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub conjf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub copysign : double ($x1 : double, $x2 : double);
+  native sub copysignf : float ($x1 : float, $x2 : float);
+  native sub cos : double ($x : double);
+  native sub cosf : float ($x : float);
+  native sub cosh : double ($x : double);
+  native sub coshf : float ($x : float);
+  native sub cpow : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
+  native sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
+  
+  sub cscamul : SPVM::Complex_2d ($c : double, $z : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{re} = $c * $z->{re};
+    $z_out->{im} = $c * $z->{im};
+    return $z_out;
+  }
+  
+  sub cscamulf : SPVM::Complex_2f ($c : float, $z : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{re} = $c * $z->{re};
+    $z_out->{im} = $c * $z->{im};
+    return $z_out;
+  }
+  
+  native sub csin : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub csinf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub csinh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub csinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub csqrt : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub csqrtf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  
+  sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+    my $z_out : SPVM::Complex_2d;
+    $z_out->{re} = $z1->{re} - $z2->{re};
+    $z_out->{im} = $z1->{im} - $z2->{im};
+    return $z_out;
+  }
+  
+  sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
+    my $z_out : SPVM::Complex_2f;
+    $z_out->{re} = $z1->{re} - $z2->{re};
+    $z_out->{im} = $z1->{im} - $z2->{im};
+    return $z_out;
+  }
+  
+  native sub ctan : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub ctanf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub ctanh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
+  native sub ctanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  sub E : double () { return 2.7182818284590452354; }
+  native sub erf : double ($x : double);
+  native sub erfc : double ($x : double);
+  native sub erfcf : float ($x : float);
+  native sub erff : float ($x : float);
+  native sub exp : double ($x : double);
+  native sub exp2 : double ($x : double);
+  native sub exp2f : float ($x : float);
+  native sub expf : float ($x : float);
+  native sub expm1 : double ($x : double);
+  native sub expm1f : float ($x : float);
+  native sub fabs : double ($x : double);
+  native sub fabsf : float ($x : float);
+  native sub fdim : double ($x1 : double, $x2 : double);
+  native sub fdimf : float ($x1 : float, $x2 : float);
+  native sub FE_DOWNWARD : int ();
+  native sub FE_TONEAREST : int ();
+  native sub FE_TOWARDZERO : int ();
+  native sub FE_UPWARD : int ();
+  native sub fesetround : int ($round : int);
+  native sub floor : double ($x : double);
+  native sub floorf : float ($x : float);
+  native sub fma : double ($x1 : double, $x2 : double, $x3 : double);
+  native sub fmaf : float ($x1 : float, $x2 : float, $x3 : float);
+  native sub fmax : double ($x1 : double, $x2 : double);
+  native sub fmaxf : float ($x1 : float, $x2 : float);
+  native sub fmin : double ($x1 : double, $x2 : double);
+  native sub fminf : float ($x1 : float, $x2 : float);
+  native sub fmod : double ($x1 : double, $x2 : double);
+  native sub fmodf : float ($x1 : float, $x2 : float);
+  native sub FP_ILOGB0 : int ();
+  native sub FP_ILOGBNAN : int ();
+  native sub FP_INFINITE : int ();
+  native sub FP_NAN : int ();
+  native sub FP_ZERO : int ();
+  native sub fpclassify : int ($x : double);
+  native sub fpclassifyf : int ($x : float);
+  native sub frexp : double ($x : double, $exp : int&);
+  native sub frexpf : float ($x : float, $exp : int&);
+  native sub HUGE_VAL : double ();
+  native sub HUGE_VALF : float ();
+  native sub hypot : double ($x : double, $y : double);
+  native sub hypotf : float ($x : float, $y : float);
+  native sub ilogb : int ($x : double);
+  native sub ilogbf : int ($x : float);
+  native sub INFINITY : double ();
+  native sub INFINITYF : float ();
+  native sub isfinite : int ($x : double);
+  native sub isfinitef : int($x : float);
+  native sub isgreater : int ($x1 : double, $x2 : double);
+  native sub isgreaterequal : int ($x1 : double, $x2 : double);
+  native sub isgreaterequalf : int ($x1 : float, $x2 : float);
+  native sub isgreaterf : int ($x1 : float, $x2 : float);
+  native sub isinf : int ($x : double);
+  native sub isinff : int($x : float);
+  native sub isless : int ($x1 : double, $x2 : double);
+  native sub islessequal : int ($x1 : double, $x2 : double);
+  native sub islessequalf : int ($x1 : float, $x2 : float);
+  native sub islessf : int ($x1 : float, $x2 : float);
+  native sub islessgreater : int ($x1 : double, $x2 : double);
+  native sub islessgreaterf : int ($x1 : float, $x2 : float);
+  native sub isnan : int ($x : double);
+  native sub isnanf : int ($x : float);
+  native sub isunordered : int ($x1 : double, $x2 : double);
+  native sub isunorderedf : int ($x1 : float, $x2 : float);
+  
   sub labs : long ($x : long) {
     if ($x < 0) {
       return -$x;
@@ -19,88 +235,12 @@ package SPVM::Math {
       return $x;
     }
   }
-
-  sub E : double () { return 2.7182818284590452354; }
-  sub PI : double () { return 3.14159265358979323846; }
-
-  native sub HUGE_VALF : float ();
-  native sub INFINITYF : float ();
-  native sub NANF : float ();
-
-  native sub isinff : int($x : float);
-  native sub isfinitef : int($x : float);
-  native sub isnanf : int ($x : float);
-  native sub fpclassifyf : int ($x : float);
-  native sub signbitf : int ($x : float);
-
-  native sub HUGE_VAL : double ();
-  native sub INFINITY : double ();
-  native sub NAN : double ();
-
-  native sub isinf : int ($x : double);
-  native sub isfinite : int ($x : double);
-  native sub isnan : int ($x : double);
-  native sub fpclassify : int ($x : double);
-  native sub signbit : int ($x : double);
-
-  native sub FE_DOWNWARD : int ();
-  native sub FE_TONEAREST : int ();
-  native sub FE_TOWARDZERO : int ();
-  native sub FE_UPWARD : int ();
-
-  native sub fesetround : int ($round : int);
-
-  native sub FP_INFINITE : int ();
-  native sub FP_NAN : int ();
-  native sub FP_ZERO : int ();
-
-  native sub FP_ILOGB0 : int ();
-  native sub FP_ILOGBNAN : int ();
-
-  # Trigonometric functions
-  native sub cos : double ($x : double);
-  native sub cosf : float ($x : float);
-  native sub sin : double ($x : double);
-  native sub sinf : float ($x : float);
-  native sub tan : double ($x : double);
-  native sub tanf : float ($x : float);
-  native sub acos : double ($x : double);
-  native sub acosf : float ($x : float);
-  native sub asin : double ($x : double);
-  native sub asinf : float ($x : float);
-  native sub atan : double ($x : double);
-  native sub atanf : float ($x : float);
-  native sub atan2 : double ($y : double, $x : double);
-
-  # Hyperbolic functions
-  native sub cosh : double ($x : double);
-  native sub coshf : float ($x : float);
-  native sub sinh : double ($x : double);
-  native sub sinhf : float ($x : float);
-  native sub tanh : double ($x : double);
-  native sub tanhf : float ($x : float);
-  native sub acosh : double ($x : double);
-  native sub acoshf : float ($x : float);
-  native sub asinh : double ($x : double);
-  native sub asinhf : float ($x : float);
-  native sub atanh : double ($x : double);
-  native sub atanhf : float ($x : float);
-
-  # Exponential functions and logarithmic functions
-  native sub exp : double ($x : double);
-  native sub expf : float ($x : float);
-  native sub exp2 : double ($x : double);
-  native sub exp2f : float ($x : float);
-  native sub expm1 : double ($x : double);
-  native sub expm1f : float ($x : float);
-  native sub frexp : double ($x : double, $exp : int&);
-  native sub frexpf : float ($x : float, $exp : int&);
-  native sub ilogb : int ($x : double);
-  native sub ilogbf : int ($x : float);
+  
   native sub ldexp : double ($x : double, $exp : int);
   native sub ldexpf : float ($x : float, $exp : int);
+  native sub lgamma : double ($x : double);
+  native sub lgammaf : float ($x : float);
   native sub log : double ($x : double);
-  native sub logf : float ($x : float);
   native sub log10 : double ($x : double);
   native sub log10f : float ($x : float);
   native sub log1p : double ($x : double);
@@ -109,232 +249,48 @@ package SPVM::Math {
   native sub log2f : float ($x : float);
   native sub logb : double ($x : double);
   native sub logbf : float ($x : float);
-  native sub modf : double ($x : double, $intpart : double&);
-  native sub modff : float ($x : float, $intpart : float&);
-  native sub scalbn : double ($x : double, $exp : int);
-  native sub scalbnf : float ($x : float, $exp : int);
-  native sub scalbln : double ($x : double, $exp : long);
-  native sub scalblnf : float ($x : float, $exp : long);
-
-  # Exponentiation functions and Absolute value functions
-  native sub cbrt : double ($x : double);
-  native sub cbrtf : float ($x : float);
-  native sub fabs : double ($x : double);
-  native sub fabsf : float ($x : float);
-  native sub hypot : double ($x : double, $y : double);
-  native sub hypotf : float ($x : float, $y : float);
-  native sub pow : double ($x : double, $y : double);
-  native sub powf : float ($x : float, $y : float);
-  native sub sqrt : double ($x : double);
-  native sub sqrtf : float ($x : float);
-
-  # Error function and Gamma function
-  native sub erf : double ($x : double);
-  native sub erff : float ($x : float);
-  native sub erfc : double ($x : double);
-  native sub erfcf : float ($x : float);
-  native sub lgamma : double ($x : double);
-  native sub lgammaf : float ($x : float);
-  native sub tgamma : double ($x : double);
-  native sub tgammaf : float ($x : float);
-
-  # Nearest integer function
-  native sub ceil : double ($x : double);
-  native sub ceilf : float ($x : float);
-  native sub floor : double ($x : double);
-  native sub floorf : float ($x : float);
-  native sub nearbyint : double ($x : double);
-  native sub nearbyintf : float ($x : float);
-  native sub round : double ($x : double);
-  native sub roundf : float ($x : float);
+  native sub logf : float ($x : float);
   native sub lround : long ($x : double);
   native sub lroundf : long ($x : float);
-  native sub trunc : double ($x : double);
-  native sub truncf : float ($x : float);
-
-  # Surplus functions
-  native sub fmod : double ($x1 : double, $x2 : double);
-  native sub fmodf : float ($x1 : float, $x2 : float);
-  native sub remainder : double ($x1 : double, $x2 : double);
-  native sub remainderf : float ($x1 : float, $x2 : float);
-  native sub remquo : double ($x1 : double, $x2 : double, $quo : int&);
-  native sub remquof : float ($x1 : float, $x2 : float, $quo : int&);
-
-  # Real number operation functions
-  native sub copysign : double ($x1 : double, $x2 : double);
-  native sub copysignf : float ($x1 : float, $x2 : float);
+  native sub modf : double ($x : double, $intpart : double&);
+  native sub modff : float ($x : float, $intpart : float&);
   native sub nan : double ($str : string);
+  native sub NAN : double ();
+  native sub NANF : float ();
   native sub nanf : float ($str : string);
+  native sub nearbyint : double ($x : double);
+  native sub nearbyintf : float ($x : float);
   native sub nextafter : double ($x1 : double, $x2 : double);
   native sub nextafterf : float ($x1 : float, $x2 : float);
   native sub nexttoward : double ($x1 : double, $x2 : double);
   native sub nexttowardf : float ($x1 : float, $x2 : double);
-
-  # Maximum, minimum and positive difference functions
-  native sub fdim : double ($x1 : double, $x2 : double);
-  native sub fdimf : float ($x1 : float, $x2 : float);
-  native sub fmax : double ($x1 : double, $x2 : double);
-  native sub fmaxf : float ($x1 : float, $x2 : float);
-  native sub fmin : double ($x1 : double, $x2 : double);
-  native sub fminf : float ($x1 : float, $x2 : float);
-
-
-  # Floating point multiplication and additions
-  native sub fma : double ($x1 : double, $x2 : double, $x3 : double);
-  native sub fmaf : float ($x1 : float, $x2 : float, $x3 : float);
-
-  # Comparison
-  native sub isgreater : int ($x1 : double, $x2 : double);
-  native sub isgreaterf : int ($x1 : float, $x2 : float);
-  native sub isgreaterequal : int ($x1 : double, $x2 : double);
-  native sub isgreaterequalf : int ($x1 : float, $x2 : float);
-  native sub isless : int ($x1 : double, $x2 : double);
-  native sub islessf : int ($x1 : float, $x2 : float);
-  native sub islessequal : int ($x1 : double, $x2 : double);
-  native sub islessequalf : int ($x1 : float, $x2 : float);
-  native sub islessgreater : int ($x1 : double, $x2 : double);
-  native sub islessgreaterf : int ($x1 : float, $x2 : float);
-  native sub isunordered : int ($x1 : double, $x2 : double);
-  native sub isunorderedf : int ($x1 : float, $x2 : float);
-
-  sub complexf : SPVM::Complex_2f ($x : float, $y : float) {
-    my $z_out : SPVM::Complex_2f;
-    $z_out->{re} = $x;
-    $z_out->{im} = $y;
-    return $z_out;
-  }
-
-  sub complex : SPVM::Complex_2d ($x : double, $y : double) {
-    my $z_out : SPVM::Complex_2d;
-    $z_out->{re} = $x;
-    $z_out->{im} = $y;
-    return $z_out;
-  }
-
-  sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
-    $z_out->{re} = $z1->{re} + $z2->{re};
-    $z_out->{im} = $z1->{im} + $z2->{im};
-    return $z_out;
-  }
-
-  sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
-    $z_out->{re} = $z1->{re} + $z2->{re};
-    $z_out->{im} = $z1->{im} + $z2->{im};
-    return $z_out;
-  }
-
-  sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
-    $z_out->{re} = $z1->{re} - $z2->{re};
-    $z_out->{im} = $z1->{im} - $z2->{im};
-    return $z_out;
-  }
-
-  sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
-    $z_out->{re} = $z1->{re} - $z2->{re};
-    $z_out->{im} = $z1->{im} - $z2->{im};
-    return $z_out;
-  }
-
-  sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
-    $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
-    $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
-    return $z_out;
-  }
-
-  sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
-    $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
-    $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
-    return $z_out;
-  }
-
-  sub cscamulf : SPVM::Complex_2f ($c : float, $z : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
-    $z_out->{re} = $c * $z->{re};
-    $z_out->{im} = $c * $z->{im};
-    return $z_out;
-  }
-
-  sub cscamul : SPVM::Complex_2d ($c : double, $z : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
-    $z_out->{re} = $c * $z->{re};
-    $z_out->{im} = $c * $z->{im};
-    return $z_out;
-  }
-
-  sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
-    $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
-    $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
-    return $z_out;
-  }
-
-  sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
-    $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
-    $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
-    return $z_out;
-  }
-
-  native sub cacos : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub cacosf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub casin : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub casinf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub catan : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub catanf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub ccos : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ccosf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub csin : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub csinf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub ctan : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ctanf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub cacosh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub cacoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub casinh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub casinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub catanh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub catanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub ccosh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ccoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub csinh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub csinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub ctanh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ctanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub cexp : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub cexpf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub clog : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub clogf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub cabs : double ($z : SPVM::Complex_2d);
-  native sub cabsf : float ($z : SPVM::Complex_2f);
-
-  native sub cpow : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
-  native sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
-
-  native sub csqrt : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub csqrtf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-
-  native sub carg : double ($z : SPVM::Complex_2d);
-  native sub cargf : float ($z : SPVM::Complex_2f);
-
-  native sub conj : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub conjf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  sub PI : double () { return 3.14159265358979323846; }
+  native sub pow : double ($x : double, $y : double);
+  native sub powf : float ($x : float, $y : float);
+  native sub remainder : double ($x1 : double, $x2 : double);
+  native sub remainderf : float ($x1 : float, $x2 : float);
+  native sub remquo : double ($x1 : double, $x2 : double, $quo : int&);
+  native sub remquof : float ($x1 : float, $x2 : float, $quo : int&);
+  native sub round : double ($x : double);
+  native sub roundf : float ($x : float);
+  native sub scalbln : double ($x : double, $exp : long);
+  native sub scalblnf : float ($x : float, $exp : long);
+  native sub scalbn : double ($x : double, $exp : int);
+  native sub scalbnf : float ($x : float, $exp : int);
+  native sub signbit : int ($x : double);
+  native sub signbitf : int ($x : float);
+  native sub sin : double ($x : double);
+  native sub sinf : float ($x : float);
+  native sub sinh : double ($x : double);
+  native sub sinhf : float ($x : float);
+  native sub sqrt : double ($x : double);
+  native sub sqrtf : float ($x : float);
+  native sub tan : double ($x : double);
+  native sub tanf : float ($x : float);
+  native sub tanh : double ($x : double);
+  native sub tanhf : float ($x : float);
+  native sub tgamma : double ($x : double);
+  native sub tgammaf : float ($x : float);
+  native sub trunc : double ($x : double);
+  native sub truncf : float ($x : float);
 }

@@ -1,4 +1,4 @@
-# SPVMモジュールの関数名を50音順に並べ替える
+# Sort the spvm sub by name asc order
 
 my $is_sub;
 
