@@ -1013,7 +1013,7 @@ int32_t SPNATIVE__SPVM__Math__floor(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__floorf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  float value = floor(stack[0].fval);
+  float value = floorf(stack[0].fval);
 
   stack[0].fval = value;
 
