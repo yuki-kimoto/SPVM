@@ -906,7 +906,7 @@ int32_t SPNATIVE__SPVM__Math__expm1(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__expm1f(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  float value = expm1(stack[0].fval);
+  float value = expm1f(stack[0].fval);
 
   stack[0].fval = value;
 
