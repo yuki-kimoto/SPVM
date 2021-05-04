@@ -28,223 +28,223 @@ Get the abusolute value of a int value.
 
   sub acos : double ($x : double)
 
-acos function in C99 math.h.
+acos function defined in C language math.h.
 
 =head2 acosf
 
   sub acosf : float ($x : float)
 
-acosf function in C99 math.h.
+acosf function defined in C language math.h.
 
 =head2 acosh
 
   sub acosh : double ($x : double)
 
-acosh function in C99 math.h.
+acosh function defined in C language math.h.
 
 =head2 acoshf
 
   sub acoshf : float ($x : float)
 
-acoshf function in C99 math.h.
+acoshf function defined in C language math.h.
 
 =head2 asin
 
   sub asin : double ($x : double)
 
-asin function in C99 math.h.
+asin function defined in C language math.h.
 
 =head2 asinf
 
   sub asinf : float ($x : float)
 
-asinf function in C99 math.h.
+asinf function defined in C language math.h.
 
 =head2 asinh
 
   sub asinh : double ($x : double)
 
-asinh function in C99 math.h.
+asinh function defined in C language math.h.
 
 =head2 asinhf
 
   sub asinhf : float ($x : float)
 
-asinhf function in C99 math.h.
+asinhf function defined in C language math.h.
 
 =head2 atan
 
   sub atan : double ($x : double)
 
-atan function in C99 math.h.
+atan function defined in C language math.h.
 
 =head2 atan2
 
   sub atan2 : double ($y : double, $x : double)
 
-atan2 function in C99 math.h.
+atan2 function defined in C language math.h.
 
 =head2 atanf
 
   sub atanf : float ($x : float)
 
-atanf function in C99 math.h.
+atanf function defined in C language math.h.
 
 =head2 atanh
 
   sub atanh : double ($x : double)
 
-atanh function in C99 math.h.
+atanh function defined in C language math.h.
 
 =head2 atanhf
 
   sub atanhf : float ($x : float)
 
-atanhf function in C99 math.h.
+atanhf function defined in C language math.h.
 
 =head2 cabs
 
   sub cabs : double ($z : SPVM::Complex_2d)
 
-cabs function in C99 complex.h.
+cabs function defined in C language complex.h.
 
 =head2 cabsf
 
   sub cabsf : float ($z : SPVM::Complex_2f)
 
-cabsf function in C99 complex.h.
+cabsf function defined in C language complex.h.
 
 =head2 cacos
 
   sub cacos : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-cacos function in C99 complex.h.
+cacos function defined in C language complex.h.
 
 =head2 cacosf
 
   sub cacosf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-cacosf function in C99 complex.h.
+cacosf function defined in C language complex.h.
 
 =head2 cacosh
 
   sub cacosh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-cacosh function in C99 complex.h.
+cacosh function defined in C language complex.h.
 
 =head2 cacoshf
 
   sub cacoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-cacoshf function in C99 complex.h.
+cacoshf function defined in C language complex.h.
 
 =head2 cadd
 
   sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
-cadd function in C99 complex.h.
+cadd function defined in C language complex.h.
 
 =head2 caddf
 
   sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
 
-caddf function in C99 complex.h.
+caddf function defined in C language complex.h.
 
 =head2 carg
 
   sub carg : double ($z : SPVM::Complex_2d)
 
-carg function in C99 complex.h.
+carg function defined in C language complex.h.
 
 =head2 cargf
 
   sub cargf : float ($z : SPVM::Complex_2f)
 
-cargf function in C99 complex.h.
+cargf function defined in C language complex.h.
 
 =head2 casin
 
   sub casin : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-casin function in C99 complex.h.
+casin function defined in C language complex.h.
 
 =head2 casinf
 
   sub casinf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-casinf function in C99 complex.h.
+casinf function defined in C language complex.h.
 
 =head2 casinh
 
   sub casinh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-casinh function in C99 complex.h.
+casinh function defined in C language complex.h.
 
 =head2 casinhf
 
   sub casinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-casinhf function in C99 complex.h.
+casinhf function defined in C language complex.h.
 
 =head2 catan
 
   sub catan : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-catan function in C99 complex.h.
+catan function defined in C language complex.h.
 
 =head2 catanf
 
   sub catanf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-catanf function in C99 complex.h.
+catanf function defined in C language complex.h.
 
 =head2 catanh
 
   sub catanh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-catanh function in C99 complex.h.
+catanh function defined in C language complex.h.
 
 =head2 catanhf
 
   sub catanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-catanhf function in C99 complex.h.
+catanhf function defined in C language complex.h.
 
 =head2 cbrt
 
   sub cbrt : double ($x : double)
 
-cbrt function in C99 math.h.
+cbrt function defined in C language math.h.
 
 =head2 cbrtf
 
   sub cbrtf : float ($x : float)
 
-cbrtf function in C99 math.h.
+cbrtf function defined in C language math.h.
 
 =head2 ccos
 
   sub ccos : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-ccos function in C99 complex.h.
+ccos function defined in C language complex.h.
 
 =head2 ccosf
 
   sub ccosf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-ccosf function in C99 complex.h.
+ccosf function defined in C language complex.h.
 
 =head2 ccosh
 
   sub ccosh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-ccosh function in C99 complex.h.
+ccosh function defined in C language complex.h.
 
 =head2 ccoshf
 
   sub ccoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-ccoshf function in C99 complex.h.
+ccoshf function defined in C language complex.h.
 
 =head2 cdiv
 
@@ -262,37 +262,37 @@ float complex division.
 
   sub ceil : double ($x : double)
 
-ceil function in C99 math.h.
+ceil function defined in C language math.h.
 
 =head2 ceilf
 
   sub ceilf : float ($x : float)
 
-ceilf function in C99 math.h.
+ceilf function defined in C language math.h.
 
 =head2 cexp
 
   sub cexp : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-cexp function in C99 complex.h.
+cexp function defined in C language complex.h.
 
 =head2 cexpf
 
   sub cexpf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-cexpf function in C99 complex.h.
+cexpf function defined in C language complex.h.
 
 =head2 clog
 
   sub clog : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-clog function in C99 complex.h.
+clog function defined in C language complex.h.
 
 =head2 clogf
 
   sub clogf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-clogf function in C99 complex.h.
+clogf function defined in C language complex.h.
 
 =head2 cmul
 
@@ -310,73 +310,73 @@ float complex multiplication.
 
   sub complex : SPVM::Complex_2d ($x : double, $y : double)
 
-Create double complex multi numeric(SPVM::Complex_2d) value.
+Create double complex value. This value is defined in L<SPVM::Complex_2d>.
 
 =head2 complexf
 
   sub complexf : SPVM::Complex_2f ($x : float, $y : float)
 
-Create float complex multi numeric(SPVM::Complex_2f) value.
+Create float complex value. This value is defined in L<SPVM::Complex_2f>.
 
 =head2 conj
 
   sub conj : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-conj function in C99 complex.h.
+conj function defined in C language complex.h.
 
 =head2 conjf
 
   sub conjf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-conjf function in C99 complex.h.
+conjf function defined in C language complex.h.
 
 =head2 copysign
 
   sub copysign : double ($x1 : double, $x2 : double)
 
-copysign function in C99 math.h.
+copysign function defined in C language math.h.
 
 =head2 copysignf
 
   sub copysignf : float ($x1 : float, $x2 : float)
 
-copysignf function in C99 math.h.
+copysignf function defined in C language math.h.
 
 =head2 cos
 
   sub cos : double ($x : double)
 
-cos function in C99 math.h.
+cos function defined in C language math.h.
 
 =head2 cosf
 
   sub cosf : float ($x : float)
 
-cosf function in C99 math.h.
+cosf function defined in C language math.h.
 
 =head2 cosh
 
   sub cosh : double ($x : double)
 
-cosh function in C99 math.h.
+cosh function defined in C language math.h.
 
 =head2 coshf
 
   sub coshf : float ($x : float)
 
-coshf function in C99 math.h.
+coshf function defined in C language math.h.
 
 =head2 cpow
 
   sub cpow : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
-cpow function in C99 complex.h.
+cpow function defined in C language complex.h.
 
 =head2 cpowf
 
   sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
 
-cpowf function in C99 complex.h.
+cpowf function defined in C language complex.h.
 
 =head2 cscamul
 
@@ -394,73 +394,73 @@ float complex scalar multiplication.
 
   sub csin : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-csin function in C99 complex.h.
+csin function defined in C language complex.h.
 
 =head2 csinf
 
   sub csinf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-csinf function in C99 complex.h.
+csinf function defined in C language complex.h.
 
 =head2 csinh
 
   sub csinh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-csinh function in C99 complex.h.
+csinh function defined in C language complex.h.
 
 =head2 csinhf
 
   sub csinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-csinhf function in C99 complex.h.
+csinhf function defined in C language complex.h.
 
 =head2 csqrt
 
   sub csqrt : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-csqrt function in C99 complex.h.
+csqrt function defined in C language complex.h.
 
 =head2 csqrtf
 
   sub csqrtf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-csqrtf function in C99 complex.h.
+csqrtf function defined in C language complex.h.
 
 =head2 csub
 
   sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
 
-csub function in C99 complex.h.
+csub function defined in C language complex.h.
 
 =head2 csubf
 
   sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
 
-csubf function in C99 complex.h.
+csubf function defined in C language complex.h.
 
 =head2 ctan
 
   sub ctan : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-ctan function in C99 complex.h.
+ctan function defined in C language complex.h.
 
 =head2 ctanf
 
   sub ctanf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-ctanf function in C99 complex.h.
+ctanf function defined in C language complex.h.
 
 =head2 ctanh
 
   sub ctanh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
 
-ctanh function in C99 complex.h.
+ctanh function defined in C language complex.h.
 
 =head2 ctanhf
 
   sub ctanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
 
-ctanhf function in C99 complex.h.
+ctanhf function defined in C language complex.h.
 
 =head2 E
 
@@ -472,385 +472,385 @@ The double value that is closer than any other to e, the base of the natural log
 
   sub erf : double ($x : double)
 
-erf function in C99 math.h.
+erf function defined in C language math.h.
 
 =head2 erfc
 
   sub erfc : double ($x : double)
 
-erfc function in C99 math.h.
+erfc function defined in C language math.h.
 
 =head2 erfcf
 
   sub erfcf : float ($x : float)
 
-erfcf function in C99 math.h.
+erfcf function defined in C language math.h.
 
 =head2 erff
 
   sub erff : float ($x : float)
 
-erff function in C99 math.h.
+erff function defined in C language math.h.
 
 =head2 exp
 
   sub exp : double ($x : double)
 
-exp function in C99 math.h.
+exp function defined in C language math.h.
 
 =head2 exp2
 
   sub exp2 : double ($x : double)
 
-exp2 function in C99 math.h.
+exp2 function defined in C language math.h.
 
 =head2 exp2f
 
   sub exp2f : float ($x : float)
 
-exp2f function in C99 math.h.
+exp2f function defined in C language math.h.
 
 =head2 expf
 
   sub expf : float ($x : float)
 
-expf function in C99 math.h.
+expf function defined in C language math.h.
 
 =head2 expm1
 
   sub expm1 : double ($x : double)
 
-expm1 function in C99 math.h.
+expm1 function defined in C language math.h.
 
 =head2 expm1f
 
   sub expm1f : float ($x : float)
 
-expm1f function in C99 math.h.
+expm1f function defined in C language math.h.
 
 =head2 fabs
 
   sub fabs : double ($x : double)
 
-fabs function in C99 math.h.
+fabs function defined in C language math.h.
 
 =head2 fabsf
 
   sub fabsf : float ($x : float)
 
-fabsf function in C99 math.h.
+fabsf function defined in C language math.h.
 
 =head2 fdim
 
   sub fdim : double ($x1 : double, $x2 : double)
 
-fdim function in C99 math.h.
+fdim function defined in C language math.h.
 
 =head2 fdimf
 
   sub fdimf : float ($x1 : float, $x2 : float)
 
-fdimf function in C99 math.h.
+fdimf function defined in C language math.h.
 
 =head2 FE_DOWNWARD
 
   sub FE_DOWNWARD : int ()
 
-FE_DOWNWARD constant value in C99 fenv.h.
+FE_DOWNWARD macro defined in C language fenv.h.
 
 =head2 FE_TONEAREST
 
   sub FE_TONEAREST : int ()
 
-FE_TONEAREST constant value in C99 fenv.h.
+FE_TONEAREST macro defined in C language fenv.h.
 
 =head2 FE_TOWARDZERO
 
   sub FE_TOWARDZERO : int ()
 
-FE_TOWARDZERO constant value in C99 fenv.h.
+FE_TOWARDZERO macro defined in C language fenv.h.
 
 =head2 FE_UPWARD
 
   sub FE_UPWARD : int ()
 
-FE_UPWARD constant value in C99 fenv.h.
+FE_UPWARD macro defined in C language fenv.h.
 
 =head2 fesetround
 
   sub fesetround : int ($round : int)
 
-fesetround function in C99 math.h.
+fesetround function defined in C language math.h.
 
 =head2 floor
 
   sub floor : double ($x : double)
 
-floor function in C99 math.h.
+floor function defined in C language math.h.
 
 =head2 floorf
 
   sub floorf : float ($x : float)
 
-floorf function in C99 math.h.
+floorf function defined in C language math.h.
 
 =head2 fma
 
   sub fma : double ($x1 : double, $x2 : double, $x3 : double)
 
-fma function in C99 math.h.
+fma function defined in C language math.h.
 
 =head2 fmaf
 
   sub fmaf : float ($x1 : float, $x2 : float, $x3 : float)
 
-fmaf function in C99 math.h.
+fmaf function defined in C language math.h.
 
 =head2 fmax
 
   sub fmax : double ($x1 : double, $x2 : double)
 
-fmax function in C99 math.h.
+fmax function defined in C language math.h.
 
 =head2 fmaxf
 
   sub fmaxf : float ($x1 : float, $x2 : float)
 
-fmaxf function in C99 math.h.
+fmaxf function defined in C language math.h.
 
 =head2 fmin
 
   sub fmin : double ($x1 : double, $x2 : double)
 
-fmin function in C99 math.h.
+fmin function defined in C language math.h.
 
 =head2 fminf
 
   sub fminf : float ($x1 : float, $x2 : float)
 
-fminf function in C99 math.h.
+fminf function defined in C language math.h.
 
 =head2 fmod
 
   sub fmod : double ($x1 : double, $x2 : double)
 
-fmod function in C99 math.h.
+fmod function defined in C language math.h.
 
 =head2 fmodf
 
   sub fmodf : float ($x1 : float, $x2 : float)
 
-fmodf function in C99 math.h.
+fmodf function defined in C language math.h.
 
 =head2 FP_ILOGB0
 
   sub FP_ILOGB0 : int ()
 
-FP_ILOGB0 constant value in C99 fenv.h.
+FP_ILOGB0 macro defined in C language fenv.h.
 
 =head2 FP_ILOGBNAN
 
   sub FP_ILOGBNAN : int ()
 
-FP_ILOGBNAN constant value in C99 fenv.h.
+FP_ILOGBNAN macro defined in C language fenv.h.
 
 =head2 FP_INFINITE
 
   sub FP_INFINITE : int ()
 
-FP_INFINITE constant value in C99 fenv.h.
+FP_INFINITE macro defined in C language fenv.h.
 
 =head2 FP_NAN
 
   sub FP_NAN : int ()
 
-FP_NAN constant value in C99 fenv.h.
+FP_NAN macro defined in C language fenv.h.
 
 =head2 FP_ZERO
 
   sub FP_ZERO : int ()
 
-FP_ZERO constant value in C99 fenv.h.
+FP_ZERO macro defined in C language fenv.h.
 
 =head2 fpclassify
 
   sub fpclassify : int ($x : double)
 
-fpclassify function in C99 math.h.
+fpclassify macro defined in C language math.h. This method receives a double value.
 
 =head2 fpclassifyf
 
   sub fpclassifyf : int ($x : float)
 
-fpclassify function in C99 math.h for float type.
+fpclassify macro defined in C language math.h for float type. This method receives a float value.
 
 =head2 frexp
 
   sub frexp : double ($x : double, $exp : int&)
 
-frexp function in C99 math.h.
+frexp function defined in C language math.h.
 
 =head2 frexpf
 
   sub frexpf : float ($x : float, $exp : int&)
 
-frexpf function in C99 math.h.
+frexpf function defined in C language math.h.
 
 =head2 HUGE_VAL
 
   sub HUGE_VAL : double ()
 
-HUGE_VAL constant value in C99 math.h.
+HUGE_VAL macro defined in C language math.h.
 
 =head2 HUGE_VALF
 
   sub HUGE_VALF : float ()
 
-HUGE_VALF constant value in C99 math.h.
+HUGE_VALF macro defined in C language math.h.
 
 =head2 hypot
 
   sub hypot : double ($x : double, $y : double)
 
-hypot function in C99 math.h.
+hypot function defined in C language math.h.
 
 =head2 hypotf
 
   sub hypotf : float ($x : float, $y : float)
 
-hypotf function in C99 math.h.
+hypotf function defined in C language math.h.
 
 =head2 ilogb
 
   sub ilogb : int ($x : double)
 
-ilogb function in C99 math.h.
+ilogb function defined in C language math.h.
 
 =head2 ilogbf
 
   sub ilogbf : int ($x : float)
 
-ilogbf function in C99 math.h.
+ilogbf function defined in C language math.h.
 
 =head2 INFINITY
 
   sub INFINITY : double ()
 
-INFINITY constant value in C99 math.h.
+INFINITY macro defined in C language math.h. This method returns a double value.
 
 =head2 INFINITYF
 
   sub INFINITYF : float ()
 
-INFINITY constant value for float type in C99 math.h.
+INFINITY macro for float type defined in C language math.h. This method returns a float value.
 
 =head2 isfinite
 
   sub isfinite : int ($x : double)
 
-isfinite function in C99 math.h.
+isfinite macro defined in C language math.h. This method receives a double value.
 
 =head2 isfinitef
 
   sub isfinitef : int($x : float)
 
-isfinite function in C99 math.h for float type.
+isfinite macro defined in C language math.h for float type. This method receives a float value.
 
 =head2 isgreater
 
   sub isgreater : int ($x1 : double, $x2 : double)
 
-isgreater function in C99 math.h.
+isgreater macro defined in C language math.h. This method receives two double values.
 
 =head2 isgreaterequal
 
   sub isgreaterequal : int ($x1 : double, $x2 : double)
 
-isgreaterequal function in C99 math.h for float type.
+isgreaterequal macro defined in C language math.h. This method receives two double values.
 
 =head2 isgreaterequalf
 
   sub isgreaterequalf : int ($x1 : float, $x2 : float)
 
-isgreaterequal function in C99 math.h for float type.
+isgreaterequal macro defined in C language math.h. This method receives two float values.
 
 =head2 isgreaterf
 
   sub isgreaterf : int ($x1 : float, $x2 : float)
 
-isgreater function in C99 math.h for float type.
+isgreater macro defined in C language math.h. This method receives two float values.
 
 =head2 isinf
 
   sub isinf : int ($x : double)
 
-isinf function in C99 math.h.
+isinf macro defined in C language math.h. This method receives a double value.
 
 =head2 isinff
 
   sub isinff : int($x : float)
 
-isinf function in C99 math.h for float type.
+isinf macro defined in C language math.h. This method receives a float value.
 
 =head2 isless
 
   sub isless : int ($x1 : double, $x2 : double)
 
-isless function in C99 math.h.
+isless macro defined in C language math.h. This method receives two double values.
 
 =head2 islessequal
 
   sub islessequal : int ($x1 : double, $x2 : double)
 
-islessequal function in C99 math.h.
+islessequal macro defined in C language math.h. This method receives two double values.
 
 =head2 islessequalf
 
   sub islessequalf : int ($x1 : float, $x2 : float)
 
-islessequalf function in C99 math.h for float type.
+islessequalf macro defined in C language math.h. This method receives two float values.
 
 =head2 islessf
 
   sub islessf : int ($x1 : float, $x2 : float)
 
-islessf function in C99 math.h for float type.
+islessf macro defined in C language math.h. This method receives two float values.
 
 =head2 islessgreater
 
   sub islessgreater : int ($x1 : double, $x2 : double)
 
-islessgreater function in C99 math.h for float type.
+islessgreater macro defined in C language math.h. This method receives two double values.
 
 =head2 islessgreaterf
 
   sub islessgreaterf : int ($x1 : float, $x2 : float)
 
-islessgreater function in C99 math.h.
+islessgreater macro defined in C language math.h. This method receives two float values.
 
 =head2 isnan
 
   sub isnan : int ($x : double)
 
-isnan function in C99 math.h.
+isnan macro defined in C language math.h. This method receives a double value.
 
 =head2 isnanf
 
   sub isnanf : int ($x : float)
 
-isnanf function in C99 math.h.
+isnanf macro defined in C language math.h. This method receives a float value.
 
 =head2 isunordered
 
   sub isunordered : int ($x1 : double, $x2 : double)
 
-isunordered function in C99 math.h.
+isunordered macro defined in C language math.h. This method receives two double values.
 
 =head2 isunorderedf
 
   sub isunorderedf : int ($x1 : float, $x2 : float)
 
-isunorderedf function in C99 math.h.
+isunorderedf macro defined in C language math.h. This method receives two float values.
 
 =head2 labs
 
@@ -862,169 +862,173 @@ Get the abusolute value of a long value.
 
   sub ldexp : double ($x : double, $exp : int)
 
-ldexp function in C99 math.h.
+ldexp function defined in C language math.h.
 
 =head2 ldexpf
 
   sub ldexpf : float ($x : float, $exp : int)
 
-ldexpf function in C99 math.h.
+ldexpf function defined in C language math.h.
 
 =head2 lgamma
 
   sub lgamma : double ($x : double)
 
-lgamma function in C99 math.h.
+lgamma function defined in C language math.h.
 
 =head2 lgammaf
 
   sub lgammaf : float ($x : float)
 
-lgammaf function in C99 math.h.
+lgammaf function defined in C language math.h.
 
 =head2 log
 
   sub log : double ($x : double)
 
-log function in C99 math.h.
+log function defined in C language math.h.
 
 =head2 log10
 
   sub log10 : double ($x : double)
 
-log10 function in C99 math.h.
+log10 function defined in C language math.h.
 
 =head2 log10f
 
   sub log10f : float ($x : float)
 
-log10f function in C99 math.h.
+log10f function defined in C language math.h.
 
 =head2 log1p
 
   sub log1p : double ($x : double)
 
-log1p function in C99 math.h.
+log1p function defined in C language math.h.
 
 =head2 log1pf
 
   sub log1pf : float ($x : float)
 
-log1pf function in C99 math.h.
+log1pf function defined in C language math.h.
 
 =head2 log2
 
   sub log2 : double ($x : double)
 
-log2 function in C99 math.h.
+log2 function defined in C language math.h.
 
 =head2 log2f
 
   sub log2f : float ($x : float)
 
-log2f function in C99 math.h.
+log2f function defined in C language math.h.
 
 =head2 logb
 
   sub logb : double ($x : double)
 
-logb function in C99 math.h.
+logb function defined in C language math.h.
 
 =head2 logbf
 
   sub logbf : float ($x : float)
 
-logbf function in C99 math.h.
+logbf function defined in C language math.h.
 
 =head2 logf
 
   sub logf : float ($x : float)
 
-logf function in C99 math.h.
+logf function defined in C language math.h.
 
 =head2 lround
 
   sub lround : long ($x : double)
 
-lround function in C99 math.h.
+llround function defined in C language math.h. Note that call llround instead of lround in C level.
 
 =head2 lroundf
 
   sub lroundf : long ($x : float)
 
-lroundf function in C99 math.h.
+llroundf function defined in C language math.h. Note that call llroundf instead of lroundf in C level.
 
 =head2 modf
 
   sub modf : double ($x : double, $intpart : double&)
 
-modf function in C99 math.h.
+modf function defined in C language math.h.
 
 =head2 modff
 
   sub modff : float ($x : float, $intpart : float&)
 
-modff function in C99 math.h.
+modff function defined in C language math.h.
 
 =head2 NAN
 
   sub NAN : double ()
 
-NAN constant value in C99 math.h.
+NAN macro defined in C language math.h.
 
 =head2 nan
 
   sub nan : double ($str : string)
 
-nan function in C99 math.h.
+nan function defined in C language math.h.
+
+String must be defined, otherwise a exception occurs.
 
 =head2 NANF
 
   sub NANF : float ()
 
-NAN constant value for float type in C99 math.h.
+NAN macro for float type defined in C language math.h.
 
 =head2 nanf
 
   sub nanf : float ($str : string)
 
-nanf function in C99 math.h.
+nanf function defined in C language math.h.
+
+String must be defined, otherwise a exception occurs.
 
 =head2 nearbyint
 
   sub nearbyint : double ($x : double)
 
-nearbyint function in C99 math.h.
+nearbyint function defined in C language math.h.
 
 =head2 nearbyintf
 
   sub nearbyintf : float ($x : float)
 
-nearbyintf function in C99 math.h.
+nearbyintf function defined in C language math.h.
 
 =head2 nextafter
 
   sub nextafter : double ($x1 : double, $x2 : double)
 
-nextafter function in C99 math.h.
+nextafter function defined in C language math.h.
 
 =head2 nextafterf
 
   sub nextafterf : float ($x1 : float, $x2 : float)
 
-nextafterf function in C99 math.h.
+nextafterf function defined in C language math.h.
 
 =head2 nexttoward
 
   sub nexttoward : double ($x1 : double, $x2 : double)
 
-nexttoward function in C99 math.h.
+nexttoward function defined in C language math.h.
 
 =head2 nexttowardf
 
   sub nexttowardf : float ($x1 : float, $x2 : double)
 
-nexttowardf function in C99 math.h.
+nexttowardf function defined in C language math.h.
 
 =head2 PI
 
@@ -1036,164 +1040,164 @@ The double value that is closer than any other to pi, the ratio of the circumfer
 
   sub pow : double ($x : double, $y : double)
 
-pow function in C99 math.h.
+pow function defined in C language math.h.
 
 =head2 powf
 
   sub powf : float ($x : float, $y : float)
 
-powf function in C99 math.h.
+powf function defined in C language math.h.
 
 =head2 remainder
 
   sub remainder : double ($x1 : double, $x2 : double)
 
-remainder function in C99 math.h.
+remainder function defined in C language math.h.
 
 =head2 remainderf
 
   sub remainderf : float ($x1 : float, $x2 : float)
 
-remainderf function in C99 math.h.
+remainderf function defined in C language math.h.
 
 =head2 remquo
 
   sub remquo : double ($x1 : double, $x2 : double, $quo : int&)
 
-remquo function in C99 math.h.
+remquo function defined in C language math.h.
 
 =head2 remquof
 
   sub remquof : float ($x1 : float, $x2 : float, $quo : int&)
 
-remquof function in C99 math.h.
+remquof function defined in C language math.h.
 
 =head2 round
 
   sub round : double ($x : double)
 
-round function in C99 math.h.
+round function defined in C language math.h.
 
 =head2 roundf
 
   sub roundf : float ($x : float)
 
-roundf function in C99 math.h.
+roundf function defined in C language math.h.
 
 =head2 scalbln
 
   sub scalbln : double ($x : double, $exp : long)
 
-scalbln function in C99 math.h.
+scalbln function defined in C language math.h.
 
 =head2 scalblnf
 
   sub scalblnf : float ($x : float, $exp : long)
 
-scalblnf function in C99 math.h.
+scalblnf function defined in C language math.h.
 
 =head2 scalbn
 
   sub scalbn : double ($x : double, $exp : int)
 
-scalbn function in C99 math.h.
+scalbn function defined in C language math.h.
 
 =head2 scalbnf
 
   sub scalbnf : float ($x : float, $exp : int)
 
-scalbnf function in C99 math.h.
+scalbnf function defined in C language math.h.
 
 =head2 signbit
 
   sub signbit : int ($x : double)
 
-signbit function in C99 math.h.
+signbit function defined in C language math.h.
 
 =head2 signbitf
 
   sub signbitf : int ($x : float)
 
-signbitf function in C99 math.h.
+signbitf function defined in C language math.h.
 
 =head2 sin
 
   sub sin : double ($x : double)
 
-sin function in C99 math.h.
+sin function defined in C language math.h.
 
 =head2 sinf
 
   sub sinf : float ($x : float)
 
-sinf function in C99 math.h.
+sinf function defined in C language math.h.
 
 =head2 sinh
 
   sub sinh : double ($x : double)
 
-sinh function in C99 math.h.
+sinh function defined in C language math.h.
 
 =head2 sinhf
 
   sub sinhf : float ($x : float)
 
-sinhf function in C99 math.h.
+sinhf function defined in C language math.h.
 
 =head2 sqrt
 
   sub sqrt : double ($x : double)
 
-sqrt function in C99 math.h.
+sqrt function defined in C language math.h.
 
 =head2 sqrtf
 
-sqrtf function in C99 math.h.
+sqrtf function defined in C language math.h.
 
 =head2 tan
 
   sub tan : double ($x : double)
 
-tan function in C99 math.h.
+tan function defined in C language math.h.
 
 =head2 tanf
 
   sub tanf : float ($x : float)
 
-tanf function in C99 math.h.
+tanf function defined in C language math.h.
 
 =head2 tanh
 
   sub tanh : double ($x : double)
 
-tanh function in C99 math.h.
+tanh function defined in C language math.h.
 
 =head2 tanhf
 
   sub tanhf : float ($x : float)
 
-tanhf function in C99 math.h.
+tanhf function defined in C language math.h.
 
 =head2 tgamma
 
   sub tgamma : double ($x : double)
 
-tgamma function in C99 math.h.
+tgamma function defined in C language math.h.
 
 =head2 tgammaf
 
   sub tgammaf : float ($x : float)
 
-tgammaf function in C99 math.h.
+tgammaf function defined in C language math.h.
 
 =head2 trunc
 
   sub trunc : double ($x : double)
 
-trunc function in C99 math.h.
+trunc function defined in C language math.h.
 
 =head2 truncf
 
   sub truncf : float ($x : float)
 
-truncf function in C99 math.h.
+truncf function defined in C language math.h.
