@@ -1515,7 +1515,7 @@ int32_t SPNATIVE__SPVM__Math__log10(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__log10f(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  float value = log10(stack[0].fval);
+  float value = log10f(stack[0].fval);
 
   stack[0].fval = value;
 
