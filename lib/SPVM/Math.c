@@ -1765,7 +1765,6 @@ int32_t SPNATIVE__SPVM__Math__powf(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__remainder(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
-  // re - Math.Round(re / im) * im
   double value = remainder(stack[0].dval, stack[1].dval);
 
   stack[0].dval = value;
@@ -1776,7 +1775,6 @@ int32_t SPNATIVE__SPVM__Math__remainder(SPVM_ENV* env, SPVM_VALUE* stack) {
 int32_t SPNATIVE__SPVM__Math__remainderf(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
-  // re - Math.Round(re / im) * im
   float value = remainderf(stack[0].fval, stack[1].fval);
 
   stack[0].fval = value;

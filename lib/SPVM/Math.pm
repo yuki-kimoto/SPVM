@@ -970,7 +970,7 @@ modff function defined in C language math.h.
 
   sub NAN : double ()
 
-NAN macro defined in C language math.h.
+NAN macro defined in C language math.h. This method return a double value.
 
 =head2 nan
 
@@ -984,7 +984,7 @@ String must be defined, otherwise a exception occurs.
 
   sub NANF : float ()
 
-NAN macro for float type defined in C language math.h.
+NAN macro defined in C language math.h. This method return a float value.
 
 =head2 nanf
 
