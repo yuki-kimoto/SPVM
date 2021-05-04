@@ -64,7 +64,7 @@ List of SPVM Core Modules
 
 =item * L<SPVM::LongList> - Dynamic long array
 
-=item * L<SPVM::Math> - 
+=item * L<SPVM::Math> - Math functions
 
 =item * L<SPVM::NumberUtil> - Number Utilities
 

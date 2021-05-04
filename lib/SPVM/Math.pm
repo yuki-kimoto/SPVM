@@ -4,7 +4,7 @@ package SPVM::Math;
 
 =head1 NAME
 
-SPVM::Math - Mathmatical functions
+SPVM::Math - Math functions
 
 =head1 SYNOPSYS
 
