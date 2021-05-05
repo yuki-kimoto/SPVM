@@ -181,6 +181,7 @@ enum {
   SPVM_OP_C_ID_WARN,
   SPVM_OP_C_ID_PRINT,
   SPVM_OP_C_ID_REFOP,
+  SPVM_OP_C_ID_DUMP,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);

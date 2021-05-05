@@ -2,6 +2,8 @@
   - fix SPVM::Math->expm1f bug that internally call expm1 instead of expm1f
   - fix SPVM::Math->floorf bug that internally call floor instead of floorf
   - fix SPVM::Math->log10f bug that internally call log10 instead of log10f
+  - add dump native api
+  - add dump operator
 0.0949 2021-04-30
   - remove SPVM::Sort. This is 0.0947 change, but I forgot to remove SPVM::Sort.
   - rename SPVM::Hash->newa to SPVM::Hash->new. Original SPVM::Hash->new is removed.

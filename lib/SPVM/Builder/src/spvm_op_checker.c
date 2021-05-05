@@ -405,7 +405,21 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Must be object type
               if (!SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Operand of ref must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "The operand of ref operator must be object type at %s line %d\n", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_DUMP: {
+              
+              SPVM_OP* op_term = op_cur->first;
+              
+              SPVM_TYPE* term_type = SPVM_OP_get_type(compiler, op_term);
+              
+              // Must be object type
+              if (!SPVM_TYPE_is_object_type(compiler, term_type->basic_type->id, term_type->dimension, term_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The operand of dump operator must be object type at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -3616,6 +3630,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_NEW:
                         case SPVM_OP_C_ID_CONCAT:
                         case SPVM_OP_C_ID_REFOP:
+                        case SPVM_OP_C_ID_DUMP:
                         case SPVM_OP_C_ID_EXCEPTION_VAR:
                         case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
                         case SPVM_OP_C_ID_SWITCH_CONDITION:

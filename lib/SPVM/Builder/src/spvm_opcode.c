@@ -97,6 +97,7 @@
 const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
 
   static const char* const id_names[] = {
+    "END_SUB",
     "MULNUM_ARRAY_FIELD_FETCH_BYTE",
     "MULNUM_ARRAY_FIELD_FETCH_SHORT",
     "MULNUM_ARRAY_FIELD_FETCH_INT",
@@ -475,7 +476,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "ISWEAK_FIELD",
     "REFCNT",
     "REFOP",
-    "END_SUB",
+    "DUMP",
   };
   
   return id_names;

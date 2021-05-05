@@ -3676,6 +3676,12 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
         }
         break;
       }
+      case SPVM_OPCODE_C_ID_DUMP: {
+        void* object = object_vars[opcode->operand1];
+        void* dump = env->dump(env, object);
+        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], dump);
+        break;
+      }
       case SPVM_OPCODE_C_ID_GOTO:
         opcode_rel_index = opcode->operand0;
         continue;

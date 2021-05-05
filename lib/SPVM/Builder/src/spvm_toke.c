@@ -1751,6 +1751,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DOUBLE);
                   return DOUBLE;
                 }
+                else if (strcmp(keyword, "dump") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DUMP);
+                  return DUMP;
+                }
                 break;
               case 'e' :
                 if (strcmp(keyword, "elsif") == 0) {

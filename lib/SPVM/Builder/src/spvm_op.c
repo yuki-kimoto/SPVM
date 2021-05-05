@@ -181,6 +181,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "WARN",
     "PRINT",
     "REFOP",
+    "DUMP",
   };
   
   return id_names;
@@ -1379,6 +1380,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     }
     case SPVM_OP_C_ID_CONCAT:
     case SPVM_OP_C_ID_REFOP:
+    case SPVM_OP_C_ID_DUMP:
     case SPVM_OP_C_ID_EXCEPTION_VAR:
     {
       SPVM_OP* op_type = SPVM_OP_new_op_string_type(compiler, op->file, op->line);
