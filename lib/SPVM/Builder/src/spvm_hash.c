@@ -53,6 +53,11 @@ void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* va
 }
 
 void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
+  int32_t exists = 0;
+  return SPVM_HASH_fetch_with_exists(hash, key, length, &exists);
+}
+
+void* SPVM_HASH_fetch_with_exists(SPVM_HASH* hash, const char* key, int32_t length, int32_t* exists) {
   
   assert(hash);
   assert(length >= 0);
@@ -78,6 +83,7 @@ void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
       }
       
       if (match) {
+        *exists = 1;
         return hash->entries[entry_index].value;
       }
       else {
