@@ -253,6 +253,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_call_poly_sub_by_name,
     SPVM_API_get_field_string_chars_by_name,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, // any_object_basic_type_id
+    SPVM_API_dump,
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -291,20 +292,26 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   return env;
 }
 
-SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable);
+SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
+  
+  int32_t depth = 0;
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(255);
+  SPVM_HASH* address_symtable = SPVM_HASH_new(255);
+  
+  SPVM_API_dump_recursive(env, object, &depth, string_buffer, address_symtable);
+  
+  SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length);
+  
+  SPVM_HASH_free(address_symtable);
+  SPVM_STRING_BUFFER_free(string_buffer);
+  
+  return dump;
+}
 
-SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable) {
+void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable) {
   
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
-  if (string_buffer == NULL) {
-    string_buffer = SPVM_STRING_BUFFER_new(255);
-  }
-
-  if (address_symtable == NULL) {
-    address_symtable = SPVM_HASH_new(255);
-  }
-
   char tmp_buffer[256];
   
   SPVM_OBJECT* dump;
@@ -533,7 +540,7 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, S
                 else {
                   SPVM_HASH_insert(address_symtable, tmp_buffer, strlen(tmp_buffer), NULL);
                   (*depth)++;
-                  SPVM_API_dump(env, field_object, depth, string_buffer, address_symtable);
+                  SPVM_API_dump_recursive(env, field_object, depth, string_buffer, address_symtable);
                 }
               }
             }
@@ -552,7 +559,7 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, S
           else {
             SPVM_HASH_insert(address_symtable, tmp_buffer, strlen(tmp_buffer), NULL);
             (*depth)++;
-            SPVM_API_dump(env, element, depth, string_buffer, address_symtable);
+            SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
           }
         }
         else {
@@ -580,18 +587,6 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, S
         assert(0);
       }
     }
-  }
-
-  if (depth == 0) {
-    SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length);
-    
-    SPVM_HASH_free(address_symtable);
-    SPVM_STRING_BUFFER_free(string_buffer);
-    
-    return dump;
-  }
-  else {
-    return NULL;
   }
 }
 

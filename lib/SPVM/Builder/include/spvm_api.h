@@ -257,4 +257,7 @@ int32_t SPVM_API_call_sub_by_name(SPVM_ENV* env, const char* package_name, const
 int32_t SPVM_API_call_poly_sub_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
 const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
 
+SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object);
+void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable);
+
 #endif
