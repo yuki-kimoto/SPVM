@@ -33,6 +33,7 @@ SPVM_HASH* SPVM_HASH_new(int32_t capacity);
 
 void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value);
 void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length);
+void* SPVM_HASH_fetch_with_exists(SPVM_HASH* hash, const char* key, int32_t length, int32_t* exists);
 
 void SPVM_HASH_free(SPVM_HASH* hash);
 

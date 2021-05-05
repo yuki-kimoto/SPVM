@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../../lib/SPVM/Builder/include/spvm_list.h"
+#include "spvm_list.h"
 
 #define OK(condition) \
   if (condition) {\
