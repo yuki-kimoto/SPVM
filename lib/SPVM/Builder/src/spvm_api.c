@@ -300,7 +300,15 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   SPVM_API_dump_recursive(env, object, &depth, string_buffer, address_symtable);
   
-  SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length);
+  int32_t string_buffer_length;
+  if (string_buffer->buffer[string_buffer->length - 1] == '\n') {
+    string_buffer_length = string_buffer->length - 1;
+  }
+  else {
+    string_buffer_length = string_buffer->length;
+  }
+  
+  SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length - 1);
   
   SPVM_HASH_free(address_symtable);
   SPVM_STRING_BUFFER_free(string_buffer);
