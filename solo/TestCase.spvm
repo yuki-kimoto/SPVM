@@ -72,6 +72,68 @@ SPVM::Test - SPVM test module
   sub DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   sub main : int ($args : string[]) {
+    # dump
+    {
+      # string
+      {
+        my $string = "Hello";
+        warn dump $string;
+      }
+
+      # undef
+      {
+        my $string = (string)undef;
+        warn dump $string;
+      }
+      
+      # byte array
+      {
+        my $array = [(byte)1, 2];
+        warn dump $array;
+      }
+
+      # short array
+      {
+        my $array = [(short)1, 2];
+        warn dump $array;
+      }
+
+      # int array
+      {
+        my $array = [(int)1, 2];
+        warn dump $array;
+      }
+
+      # long array
+      {
+        my $array = [(long)1, 2];
+        warn dump $array;
+      }
+
+      # float array
+      {
+        my $array = [(float)1.2f, 2.4f];
+        warn dump $array;
+      }
+
+      # double array
+      {
+        my $array = [(double)1.2, 2.4];
+        warn dump $array;
+      }
+      
+      # byte muti numeric array
+      {
+			  my $array = new TestCase::Point_3b[2];
+			  $array->[0]{x} = 1;
+			  $array->[0]{y} = 2;
+			  $array->[0]{z} = 3;
+			  $array->[1]{x} = 4;
+			  $array->[1]{y} = 5;
+			  $array->[1]{z} = 6;
+        warn dump $array;
+      }
+    }
     {
       my $array = {};
     }
