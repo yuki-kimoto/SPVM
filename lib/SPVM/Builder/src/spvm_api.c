@@ -344,6 +344,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       SPVM_STRING_BUFFER_add(string_buffer, " [\n");
             
       for (int32_t array_index = 0; array_index < array_length; array_index++) {
+    
         for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
           SPVM_STRING_BUFFER_add(string_buffer, "  ");
         }
@@ -577,7 +578,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
         const char* chars = env->get_chars(env, object);
         int32_t chars_length  = env->length(env, object);
+        SPVM_STRING_BUFFER_add(string_buffer, "\"");
         SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
+        SPVM_STRING_BUFFER_add(string_buffer, "\"");
       }
       else if(SPVM_TYPE_is_class_type(compiler, basic_type_id, 0, 0)) {
         sprintf(tmp_buffer, "%p", object);
