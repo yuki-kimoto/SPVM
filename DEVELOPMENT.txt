@@ -42,10 +42,10 @@ DEVELOPERS NOTE
        # Debug run - Print AST, package information, operaion codes
        yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_ALLOC_MEMORY_COUNT && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_ALLOC_MEMORY_COUNT && make -f solo/Makefile && ./solo/main foo bar
 
-       # Debug run - Only syntax check, don't use SPVM::CORE and don't compile core modules
+       # Debug run - Only syntax check, don't compile core modules
        yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DONT_USE_SPVM_CORE --DEFINE=SPVM_DONT_COMPILE_CORE_MODULES && make && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g" && make -f solo/Makefile && ./solo/main foo bar
 
-       # Debug run - Print yacc result, don't use SPVM::CORE and don't compile core modules
+       # Debug run - Print yacc result, don't compile core modules
        yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DONT_USE_SPVM_CORE --DEFINE=SPVM_DONT_COMPILE_CORE_MODULES && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make -f solo/Makefile && ./solo/main foo bar
     
        # Cleanup
