@@ -133,7 +133,68 @@ SPVM::Test - SPVM test module
 			  $array->[1]{z} = 6;
         warn dump $array;
       }
+
+      # short muti numeric array
+      {
+			  my $array = new TestCase::Point_3s[2];
+			  $array->[0]{x} = 1;
+			  $array->[0]{y} = 2;
+			  $array->[0]{z} = 3;
+			  $array->[1]{x} = 4;
+			  $array->[1]{y} = 5;
+			  $array->[1]{z} = 6;
+        warn dump $array;
+      }
+
+      # int muti numeric array
+      {
+			  my $array = new TestCase::Point_3i[2];
+			  $array->[0]{x} = 1;
+			  $array->[0]{y} = 2;
+			  $array->[0]{z} = 3;
+			  $array->[1]{x} = 4;
+			  $array->[1]{y} = 5;
+			  $array->[1]{z} = 6;
+        warn dump $array;
+      }
+
+      # long muti numeric array
+      {
+			  my $array = new TestCase::Point_3f[2];
+			  $array->[0]{x} = 1;
+			  $array->[0]{y} = 2;
+			  $array->[0]{z} = 3;
+			  $array->[1]{x} = 4;
+			  $array->[1]{y} = 5;
+			  $array->[1]{z} = 6;
+        warn dump $array;
+      }
+
+      # float muti numeric array
+      {
+			  my $array = new TestCase::Point_3f[2];
+			  $array->[0]{x} = 1.1f;
+			  $array->[0]{y} = 2.1f;
+			  $array->[0]{z} = 3.1f;
+			  $array->[1]{x} = 4.1f;
+			  $array->[1]{y} = 5.1f;
+			  $array->[1]{z} = 6.1f;
+        warn dump $array;
+      }
+
+      # double muti numeric array
+      {
+			  my $array = new TestCase::Point_3d[2];
+			  $array->[0]{x} = 1.1;
+			  $array->[0]{y} = 2.1;
+			  $array->[0]{z} = 3.1;
+			  $array->[1]{x} = 4.1;
+			  $array->[1]{y} = 5.1;
+			  $array->[1]{z} = 6.1;
+        warn dump $array;
+      }
     }
+
     {
       my $array = {};
     }
