@@ -193,6 +193,12 @@ SPVM::Test - SPVM test module
         $array->[1]{z} = 6.1;
         warn dump $array;
       }
+
+      # string array
+      {
+        my $array = ["abc", "def", undef];
+        warn dump $array;
+      }
     }
 
     {
