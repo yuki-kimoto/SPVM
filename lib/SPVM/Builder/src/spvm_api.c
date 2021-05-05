@@ -443,9 +443,82 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, S
             SPVM_STRING_BUFFER_add(string_buffer, "undef\n");
           }
           else {
-            (*depth)++;
-            SPVM_API_dump(env, element, depth, string_buffer, address_symtable);
+            SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
+            SPVM_PACKAGE* package = basic_type->package;
+            assert(package);
+            
+            SPVM_STRING_BUFFER_add(string_buffer, package->name);
+            
+            SPVM_STRING_BUFFER_add(string_buffer, " {");
+            
+            // Free object fields
+            SPVM_LIST* fields = package->fields;
+            for (int32_t field_index = 0; field_index < fields->length; field_index++) {
+              for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
+                SPVM_STRING_BUFFER_add(string_buffer, "  ");
+              }
+
+              SPVM_FIELD* field = SPVM_LIST_fetch(fields, field_index);
+              
+              int32_t field_basic_type_id = field->type->basic_type->id;
+              int32_t field_type_dimension = field->type->dimension;
+              int32_t field_offset = field->offset;
+              
+              if (SPVM_TYPE_is_numeric_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
+                switch (field_basic_type_id) {
+                  case SPVM_BASIC_TYPE_C_ID_BYTE: {
+                    int8_t field_value = *(int8_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
+                    sprintf(tmp_buffer, "%d\n", field_value);
+                    SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_SHORT: {
+                    int16_t field_value = *(int16_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
+                    sprintf(tmp_buffer, "%d\n", field_value);
+                    SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_INT: {
+                    int32_t field_value = *(int32_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
+                    sprintf(tmp_buffer, "%d\n", field_value);
+                    SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_LONG: {
+                    int64_t field_value = *(int64_t*)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
+                    sprintf(tmp_buffer, "%lld\n", (long long int)field_value);
+                    SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+                    float field_value = *(float*)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
+                    sprintf(tmp_buffer, "%g\n", field_value);
+                    SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
+                    break;
+                  }
+                  case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+                    double field_value = *(double*)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
+                    sprintf(tmp_buffer, "%g\n", field_value);
+                    SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
+                    break;
+                  }
+                  default : {
+                    assert(0);
+                  }
+                }
+              }
+              else {
+                SPVM_OBJECT* field_object = *(SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
+                (*depth)++;
+                SPVM_API_dump(env, field_object, depth, string_buffer, address_symtable);
+              }
+            }
+
+            SPVM_STRING_BUFFER_add(string_buffer, " }");
           }
+            
+          (*depth)++;
+          SPVM_API_dump(env, element, depth, string_buffer, address_symtable);
         }
         else {
           assert(0);
@@ -474,30 +547,10 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, S
     }
   }
 
-  /*
-    SPVM_BASIC_TYPE_C_ID_UNKNOWN,
-    SPVM_BASIC_TYPE_C_ID_UNDEF,
-    SPVM_BASIC_TYPE_C_ID_VOID,
-    SPVM_BASIC_TYPE_C_ID_BYTE,
-    SPVM_BASIC_TYPE_C_ID_SHORT,
-    SPVM_BASIC_TYPE_C_ID_INT,
-    SPVM_BASIC_TYPE_C_ID_LONG,
-    SPVM_BASIC_TYPE_C_ID_FLOAT,
-    SPVM_BASIC_TYPE_C_ID_DOUBLE,
-    SPVM_BASIC_TYPE_C_ID_STRING,
-    SPVM_BASIC_TYPE_C_ID_ANY_OBJECT,
-    SPVM_BASIC_TYPE_C_ID_OARRAY,
-    SPVM_BASIC_TYPE_C_ID_BYTE_OBJECT,
-    SPVM_BASIC_TYPE_C_ID_SHORT_OBJECT,
-    SPVM_BASIC_TYPE_C_ID_INT_OBJECT,
-    SPVM_BASIC_TYPE_C_ID_LONG_OBJECT,
-    SPVM_BASIC_TYPE_C_ID_FLOAT_OBJECT,
-    SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT,
-  */
-  
   if (depth == 0) {
     SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length);
     
+    SPVM_HASH_free(address_symtable);
     SPVM_STRING_BUFFER_free(string_buffer);
     
     return dump;
