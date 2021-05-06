@@ -4,12 +4,9 @@ benchmark/lib/MyMath.config
 benchmark/lib/MyMath.spvm
 Changes
 ctest/ctest_Makefile.PL
-ctest/Makefile
 ctest/README.txt
-ctest/t/spvm_t_hash
-ctest/t/spvm_t_hash.c
-ctest/t/spvm_t_list
-ctest/t/spvm_t_list.c
+ctest/t/test_spvm_hash.c
+ctest/t/test_spvm_list.c
 DEVELOPMENT.txt
 doc_save.txt
 examples/complex/complex.pl
@@ -968,6 +965,9 @@ t/exe/lib/TestCase/NativeAPI2.spvm
 t/exe/spvmcc.t
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
+t/sort_sub_name_native.pl
+t/sort_sub_name_pod.pl
+t/sort_sub_name_spvm.pl
 t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt

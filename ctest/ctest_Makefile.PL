@@ -30,8 +30,6 @@ my $ccflags = $build_config->get_ccflags;
 
 my $header_dir = "../lib/SPVM/Builder/include";
 my $src_dir = "../lib/SPVM/Builder/src";
-my @csource_files = glob "$src_dir/*.c";
-my @object_files = map { my $object_file = $_; $object_file =~ s/\.c$/.o/; $object_file } @csource_files;
 
 my $object_dir = 'ctest';
 
@@ -41,18 +39,21 @@ my $ldcmd = "cc ";
 my $makefile = <<"EOS";
 
 all:
-	$cccmd -I $header_dir -o spvm_list.o $src_dir/spvm_list.c
-	$cccmd -I $header_dir -o spvm_hash.o $src_dir/spvm_hash.c
+	$cccmd -I $header_dir $src_dir/spvm_list.c
+	$cccmd -I $header_dir t/test_spvm_list.c
+	$ldcmd -o test_spvm_list test_spvm_list.o spvm_list.o 
+	$cccmd -I $header_dir $src_dir/spvm_hash.c
+	$cccmd -I $header_dir t/test_spvm_hash.c
+	$ldcmd -o test_spvm_hash test_spvm_hash.o spvm_hash.o 
 
 test:
-	t/spvm_t_list
-	t/spvm_t_hash
+	./test_spvm_list
+	./test_spvm_hash
 
 clean:
-	rm -f t/spvm_t_list
-	rm -f t/spvm_t_hash
-	rm -f spvm_list.o
-	rm -f spvm_hash.o
+	rm *.o
+	rm -f test_spvm_list
+	rm -f test_spvm_hash
 	rm -f Makefile
 EOS
 

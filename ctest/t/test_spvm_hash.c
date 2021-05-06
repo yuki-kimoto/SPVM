@@ -3,9 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "../../lib/SPVM/Builder/include/spvm_hash.h"
-#include "../../lib/SPVM/Builder/include/spvm_hash_entry.h"
-#include "../../lib/SPVM/Builder/include/spvm_hash_func.h"
+#include "spvm_hash.h"
 
 #define OK(condition) \
   if (condition) {\
@@ -63,7 +61,7 @@ int main()
     SPVM_HASH* hash = SPVM_HASH_new(101);
     int32_t value1 = 3;
     SPVM_HASH_insert_norehash(hash, "key1", 4, &value1);
-    int32_t hash_value1 = SPVM_HASH_FUNC_calc_hash_for_index("key1", 4);
+    int32_t hash_value1 = SPVM_HASH_calc_hash_value("key1", 4);
     int32_t index1 = hash_value1 % 101;
    
     OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[index1]])->value == 3);
@@ -71,7 +69,7 @@ int main()
 
     int32_t value2 = 5;
     SPVM_HASH_insert_norehash(hash, "key2", 4, &value2);
-    int32_t hash_value2 = SPVM_HASH_FUNC_calc_hash_for_index("key2", 4);
+    int32_t hash_value2 = SPVM_HASH_calc_hash_value("key2", 4);
     int32_t index2 = hash_value2 % 101;
     
     OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[index2]])->value == 5);
@@ -80,7 +78,7 @@ int main()
     // Replace
     int32_t value3 = 7;
     SPVM_HASH_insert_norehash(hash, "key1", 4, &value3);
-    int32_t hash_value3 = SPVM_HASH_FUNC_calc_hash_for_index("key1", 4);
+    int32_t hash_value3 = SPVM_HASH_calc_hash_value("key1", 4);
     int32_t index3 = hash_value3 % 101;
     
     OK(*(int32_t*)((SPVM_HASH_ENTRY*)&hash->entries[hash->table[index3]])->value == 7);
@@ -119,7 +117,7 @@ int main()
     OK(hash->entries_length == 5);
 
     int32_t* search_value1_ptr = SPVM_HASH_fetch(hash, "key1", 4);
-    int32_t* search_value1 = *search_value1_ptr;
+    int32_t search_value1 = *search_value1_ptr;
     OK(search_value1 == 1);
 
     int32_t search_value2 = *(int32_t*)SPVM_HASH_fetch(hash, "key2", 4);
@@ -230,6 +228,25 @@ int main()
     // free
     SPVM_HASH_free(hash);
   }
+  
+  // fetch_with_exists
+  {
+    SPVM_HASH* hash = SPVM_HASH_new(0);
+    
+    SPVM_HASH_insert(hash, "foo", strlen("foo"), (void*)(intptr_t)-1);
+    int32_t foo_exists = 0;
+    SPVM_HASH_fetch_with_exists(hash, "foo", strlen("foo"), &foo_exists);
+    OK(foo_exists);
+    
+    SPVM_HASH_insert(hash, "bar", strlen("bar"), (void*)NULL);
+    int32_t bar_exists = 0;
+    SPVM_HASH_fetch_with_exists(hash, "bar", strlen("bar"), &bar_exists);
+    OK(bar_exists);
 
+    int32_t baz_exists = 0;
+    SPVM_HASH_fetch_with_exists(hash, "baz", strlen("baz"), &baz_exists);
+    OK(!baz_exists);
+  }
+  
   return 0;
 }
