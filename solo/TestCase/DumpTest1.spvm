@@ -7,4 +7,5 @@ package TestCase::DumpTest1 : public {
   has double_value : public double;
   has string_value : public string;
   has int_array : public int[];
+  has object_value : public TestCase::DumpTest1;
 }

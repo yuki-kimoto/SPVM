@@ -593,7 +593,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
               SPVM_API_dump_recursive(env, field_value, depth, string_buffer, address_symtable);
               (*depth)--;
             }
-            else if (SPVM_TYPE_is_numeric_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
+            else if (SPVM_TYPE_is_object_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
               
               sprintf(tmp_buffer, "%p", object);
               int32_t exists = 0;
@@ -621,6 +621,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           }
         }
 
+        for (int32_t depth_index = 0; depth_index < *depth; depth_index++) {
+          SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        }
         SPVM_STRING_BUFFER_add(string_buffer, "}");
 
         SPVM_STRING_BUFFER_add(string_buffer, " : ");

@@ -21,6 +21,7 @@ package TestCase {
   use TestCase::Point_3l;
   use TestCase::Point_3f;
   use TestCase::Point_3d;
+  use TestCase::DumpTest1;
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
 
@@ -204,6 +205,22 @@ SPVM::Test - SPVM test module
       {
         my $array = [["abc", "def", undef], ["a", "b"]];
         warn dump $array;
+      }
+      
+      # object
+      {
+        my $object = new TestCase::DumpTest1;
+        $object->{byte_value} = 1;
+        $object->{short_value} = 2;
+        $object->{int_value} = 3;
+        $object->{long_value} = 4;
+        $object->{float_value} = 1.1f;
+        $object->{double_value} = 1.2;
+        $object->{string_value} = "a";
+        $object->{int_array} = [1, 2, 3];
+        $object->{object_value} = new TestCase::DumpTest1;
+        
+        warn dump $object;
       }
     }
 
