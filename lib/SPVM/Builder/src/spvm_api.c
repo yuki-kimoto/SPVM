@@ -331,15 +331,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       int32_t array_length = object->length;
       int32_t element_type_dimension = type_dimension - 1;
 
-      SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
-      for (int32_t type_dimension_index = 0; type_dimension_index < type_dimension; type_dimension_index++) {
-        SPVM_STRING_BUFFER_add(string_buffer, "[]");
-      }
-      
-      sprintf(tmp_buffer, "(%p)", object);
-      SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
-      
-      SPVM_STRING_BUFFER_add(string_buffer, " [\n");
+      SPVM_STRING_BUFFER_add(string_buffer, "[\n");
             
       for (int32_t array_index = 0; array_index < array_length; array_index++) {
     
@@ -605,6 +597,15 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
       }
       SPVM_STRING_BUFFER_add(string_buffer, "]");
+
+      SPVM_STRING_BUFFER_add(string_buffer, " ");
+      SPVM_STRING_BUFFER_add(string_buffer, basic_type_name);
+      for (int32_t type_dimension_index = 0; type_dimension_index < type_dimension; type_dimension_index++) {
+        SPVM_STRING_BUFFER_add(string_buffer, "[]");
+      }
+      
+      sprintf(tmp_buffer, " %p", object);
+      SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
     }
     else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, type_dimension, 0)) {
       if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
