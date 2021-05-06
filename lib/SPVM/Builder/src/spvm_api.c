@@ -452,28 +452,14 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
             }
           }
         }
-        else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, element_type_dimension, 0)) {
+        else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0)) {
           SPVM_OBJECT* element = (((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[array_index]);
           (*depth)++;
           SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
           (*depth)--;
         }
-        else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, element_type_dimension, 0)) {
-          SPVM_OBJECT* element = (((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[array_index]);
-          
-          sprintf(tmp_buffer, "%p", tmp_buffer);
-          int32_t exists = 0;
-          (void*)SPVM_HASH_fetch_with_exists(address_symtable, tmp_buffer, strlen(tmp_buffer), &exists);
-          
-          if (exists) {
-            sprintf(tmp_buffer, "REUSE_ADDRESS(%p)", tmp_buffer);
-            SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
-          }
-          else {
-            (*depth)++;
-            SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
-            (*depth)--;
-          }
+        else {
+          assert(0);
         }
         
         if (array_index == array_length - 1) {
@@ -508,13 +494,14 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
     else if(SPVM_TYPE_is_class_type(compiler, basic_type_id, 0, 0)) {
 
       sprintf(tmp_buffer, "%p", object);
-      int32_t exists = 0;
-      (void*)SPVM_HASH_fetch_with_exists(address_symtable, tmp_buffer, strlen(tmp_buffer), &exists);
+      int32_t exists = (int32_t)(intptr_t)SPVM_HASH_fetch(address_symtable, tmp_buffer, strlen(tmp_buffer));
       if (exists) {
-        sprintf(tmp_buffer, "REUSE_ADDRESS(%p)\n", object);
+        sprintf(tmp_buffer, "REUSE_OBJECT(%p)", object);
         SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
       }
       else {
+        SPVM_HASH_insert(address_symtable, tmp_buffer, strlen(tmp_buffer), (void*)(intptr_t)1);
+        
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
         SPVM_PACKAGE* package = basic_type->package;
         assert(package);
@@ -583,31 +570,9 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           }
           else if (SPVM_TYPE_is_object_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
             SPVM_OBJECT* field_value = *(SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + field_offset);
-            if (field_value == NULL) {
-              (*depth)++;
-              SPVM_API_dump_recursive(env, field_value, depth, string_buffer, address_symtable);
-              (*depth)--;
-            }
-            else if (SPVM_TYPE_is_string_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
-              (*depth)++;
-              SPVM_API_dump_recursive(env, field_value, depth, string_buffer, address_symtable);
-              (*depth)--;
-            }
-            else if (SPVM_TYPE_is_object_type(compiler, field_basic_type_id, field_type_dimension, 0)) {
-              
-              sprintf(tmp_buffer, "%p", object);
-              int32_t exists = 0;
-              (void*)SPVM_HASH_fetch_with_exists(address_symtable, tmp_buffer, strlen(tmp_buffer), &exists);
-              if (exists) {
-                sprintf(tmp_buffer, "REUSE_ADDRESS(%p)", tmp_buffer);
-                SPVM_STRING_BUFFER_add(string_buffer, tmp_buffer);
-              }
-              else {
-                (*depth)++;
-                SPVM_API_dump_recursive(env, field_value, depth, string_buffer, address_symtable);
-                (*depth)--;
-              }
-            }
+            (*depth)++;
+            SPVM_API_dump_recursive(env, field_value, depth, string_buffer, address_symtable);
+            (*depth)--;
           }
           else {
             assert(0);
