@@ -199,6 +199,12 @@ SPVM::Test - SPVM test module
         my $array = ["abc", "def", undef];
         warn dump $array;
       }
+
+      # string array of array
+      {
+        my $array = [["abc", "def", undef], ["a", "b"]];
+        warn dump $array;
+      }
     }
 
     {

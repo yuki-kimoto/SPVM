@@ -300,15 +300,9 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   SPVM_API_dump_recursive(env, object, &depth, string_buffer, address_symtable);
   
-  int32_t string_buffer_length;
-  if (string_buffer->buffer[string_buffer->length - 1] == '\n') {
-    string_buffer_length = string_buffer->length - 1;
-  }
-  else {
-    string_buffer_length = string_buffer->length;
-  }
+  int32_t string_buffer_length = string_buffer->length;
   
-  SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length - 1);
+  SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length);
   
   SPVM_HASH_free(address_symtable);
   SPVM_STRING_BUFFER_free(string_buffer);
@@ -324,7 +318,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
   
   SPVM_OBJECT* dump;
   if (object == NULL) {
-    SPVM_STRING_BUFFER_add(string_buffer, "undef\n");
+    SPVM_STRING_BUFFER_add(string_buffer, "undef");
   }
   else {
     int32_t basic_type_id = object->basic_type_id;
@@ -379,45 +373,52 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
               case SPVM_BASIC_TYPE_C_ID_BYTE: {
                 int8_t* element = &((int8_t*)((intptr_t)object + env->object_header_byte_size))[array_index * fields_length];
                 SPVM_STRING_BUFFER_add(string_buffer, field_name);
-                sprintf(tmp_buffer, " => %d,\n", element[field_index]);
+                sprintf(tmp_buffer, " => %d", element[field_index]);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_SHORT: {
                 int16_t* element = &((int16_t*)((intptr_t)object + env->object_header_byte_size))[array_index * fields_length];
                 SPVM_STRING_BUFFER_add(string_buffer, field_name);
-                sprintf(tmp_buffer, " => %d,\n", element[field_index]);
+                sprintf(tmp_buffer, " => %d", element[field_index]);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_INT: {
                 int32_t* element = &((int32_t*)((intptr_t)object + env->object_header_byte_size))[array_index * fields_length];
                 SPVM_STRING_BUFFER_add(string_buffer, field_name);
-                sprintf(tmp_buffer, " => %d,\n", element[field_index]);
+                sprintf(tmp_buffer, " => %d", element[field_index]);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_LONG: {
                 int64_t* element = &((int64_t*)((intptr_t)object + env->object_header_byte_size))[array_index * fields_length];
                 SPVM_STRING_BUFFER_add(string_buffer, field_name);
-                sprintf(tmp_buffer, " => %lldd,\n", (long long int)element[field_index]);
+                sprintf(tmp_buffer, " => %lldd", (long long int)element[field_index]);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_FLOAT: {
                 float* element = &((float*)((intptr_t)object + env->object_header_byte_size))[array_index * fields_length];
                 SPVM_STRING_BUFFER_add(string_buffer, field_name);
-                sprintf(tmp_buffer, " => %g,\n", element[field_index]);
+                sprintf(tmp_buffer, " => %g", element[field_index]);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
               case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
                 double* element = &((double*)((intptr_t)object + env->object_header_byte_size))[array_index * fields_length];
                 SPVM_STRING_BUFFER_add(string_buffer, field_name);
-                sprintf(tmp_buffer, " => %g,\n", element[field_index]);
+                sprintf(tmp_buffer, " => %g", element[field_index]);
                 SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
                 break;
               }
+            }
+            
+            if (field_index == fields_length - 1) {
+              SPVM_STRING_BUFFER_add(string_buffer, "\n");
+            }
+            else {
+              SPVM_STRING_BUFFER_add(string_buffer, ",\n");
             }
           }
 
@@ -427,37 +428,37 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           switch (basic_type_id) {
             case SPVM_BASIC_TYPE_C_ID_BYTE: {
               int8_t element = ((int8_t*)((intptr_t)object + env->object_header_byte_size))[array_index];
-              sprintf(tmp_buffer, "%d,\n", element);
+              sprintf(tmp_buffer, "%d", element);
               SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_SHORT: {
               int16_t element = ((int16_t*)((intptr_t)object + env->object_header_byte_size))[array_index];
-              sprintf(tmp_buffer, "%d,\n", element);
+              sprintf(tmp_buffer, "%d", element);
               SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_INT: {
               int32_t element = ((int32_t*)((intptr_t)object + env->object_header_byte_size))[array_index];
-              sprintf(tmp_buffer, "%d,\n", element);
+              sprintf(tmp_buffer, "%d", element);
               SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_LONG: {
               int64_t element = ((int64_t*)((intptr_t)object + env->object_header_byte_size))[array_index];
-              sprintf(tmp_buffer, "%lld,\n", (long long int)element);
+              sprintf(tmp_buffer, "%lld", (long long int)element);
               SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_FLOAT: {
               float element = ((float*)((intptr_t)object + env->object_header_byte_size))[array_index];
-              sprintf(tmp_buffer, "%g,\n", element);
+              sprintf(tmp_buffer, "%g", element);
               SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
             case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
               double element = ((double*)((intptr_t)object + env->object_header_byte_size))[array_index];
-              sprintf(tmp_buffer, "%g,\n", element);
+              sprintf(tmp_buffer, "%g", element);
               SPVM_STRING_BUFFER_add(string_buffer, (const char*)tmp_buffer);
               break;
             }
@@ -467,17 +468,25 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           SPVM_OBJECT* element = (((SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size))[array_index]);
           
           if (element == NULL) {
-            SPVM_STRING_BUFFER_add(string_buffer, "undef\n");
+            (*depth)++;
+            SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
+            (*depth)--;
           }
           else {
             int32_t element_basic_type_id = element->basic_type_id;
             int32_t element_type_dimension = element->type_dimension;
 
             if (SPVM_TYPE_is_string_type(compiler, element_basic_type_id, element_type_dimension, 0)) {
+              (*depth)++;
               SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
-              SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+              (*depth)--;
             }
-            else {
+            else if (SPVM_TYPE_is_array_type(compiler, element_basic_type_id, element_type_dimension, 0)) {
+              (*depth)++;
+              SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
+              (*depth)--;
+            }
+            else if (SPVM_TYPE_is_object_type(compiler, element_basic_type_id, element_type_dimension, 0)) {
               SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, element_basic_type_id);
               SPVM_PACKAGE* package = basic_type->package;
               assert(package);
@@ -558,6 +567,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
                     SPVM_HASH_insert(address_symtable, tmp_buffer, strlen(tmp_buffer), NULL);
                     (*depth)++;
                     SPVM_API_dump_recursive(env, field_object, depth, string_buffer, address_symtable);
+                    (*depth)--;
                   }
                 }
               }
@@ -576,22 +586,31 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
                 SPVM_HASH_insert(address_symtable, tmp_buffer, strlen(tmp_buffer), NULL);
                 (*depth)++;
                 SPVM_API_dump_recursive(env, element, depth, string_buffer, address_symtable);
+                (*depth)--;
               }
+            }
+            else {
+              assert(0);
             }
           }
         }
         else {
           assert(0);
         }
+        if (array_index == array_length - 1) {
+          SPVM_STRING_BUFFER_add(string_buffer, "\n");
+        }
+        else {
+          SPVM_STRING_BUFFER_add(string_buffer, ",\n");
+        }
       }
 
-      SPVM_STRING_BUFFER_add(string_buffer, "]\n");
-    }
-    else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, type_dimension, 0)) {
       for (int32_t depth_index = 0; depth_index < *depth; depth_index++) {
         SPVM_STRING_BUFFER_add(string_buffer, "  ");
       }
-      
+      SPVM_STRING_BUFFER_add(string_buffer, "]");
+    }
+    else if (SPVM_TYPE_is_object_type(compiler, basic_type_id, type_dimension, 0)) {
       if (basic_type_id == SPVM_BASIC_TYPE_C_ID_STRING) {
         const char* chars = env->get_chars(env, object);
         int32_t chars_length  = env->length(env, object);
