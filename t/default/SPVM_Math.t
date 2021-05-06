@@ -41,13 +41,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # PI
 {
   ok(TestCase::Lib::SPVM::Math->test_PI);
-  is(SPVM::Math->PI, pi());
 }
 
 # E
 {
   ok(TestCase::Lib::SPVM::Math->test_E);
-  is(SPVM::Math->E, exp(1));
 }
 
 # Trigonometric functions
