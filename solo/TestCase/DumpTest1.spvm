@@ -1,0 +1,10 @@
+package TestCase::DumpTest1 : public {
+  has byte_value : public byte;
+  has short_value : public short;
+  has int_value : public int;
+  has long_value : public long;
+  has float_value : public float;
+  has double_value : public double;
+  has string_value : public string;
+  has int_array : public int[];
+}

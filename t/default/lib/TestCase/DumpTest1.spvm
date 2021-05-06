@@ -1,0 +1,11 @@
+package TestCase::DumpTest1 {
+  has byte_value : byte;
+  has short_value : short;
+  has int_value : int;
+  has long_value : long;
+  has float_value : float;
+  has double_value : double;
+  has string_value : string;
+  has int_array : int[];
+  has object_value : TestCase::DumpTest1;
+}
