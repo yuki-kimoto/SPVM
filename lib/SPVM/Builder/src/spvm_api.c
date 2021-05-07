@@ -299,7 +299,7 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
   SPVM_OBJECT* str = SPVM_API_dump_raw(env, object);
   
   SPVM_API_push_mortal(env, str);
-  
+
   return str;
 }
 
@@ -3699,7 +3699,7 @@ int32_t SPVM_API_call_sub_vm(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* stack) {
       }
       case SPVM_OPCODE_C_ID_DUMP: {
         void* object = object_vars[opcode->operand1];
-        void* dump = env->dump(env, object);
+        void* dump = env->dump_raw(env, object);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], dump);
         break;
       }

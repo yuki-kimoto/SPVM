@@ -1,11 +1,11 @@
-package TestCase::DumpTest1 {
-  has byte_value : byte;
-  has short_value : short;
-  has int_value : int;
-  has long_value : long;
-  has float_value : float;
-  has double_value : double;
-  has string_value : string;
-  has int_array : int[];
-  has object_value : TestCase::DumpTest1;
+package TestCase::DumpTest1 : public {
+  has byte_value : public byte;
+  has short_value : public short;
+  has int_value : public int;
+  has long_value : public long;
+  has float_value : public float;
+  has double_value : public double;
+  has string_value : public string;
+  has int_array : public int[];
+  has object_value : public TestCase::DumpTest1;
 }
