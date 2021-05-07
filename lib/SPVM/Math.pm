@@ -466,7 +466,7 @@ ctanhf function defined in C language complex.h.
 
   sub E : double ()
 
-The double value that is closer than any other to e, the base of the natural logarithms.
+Euler’s Number e. This value is 0x1.5bf0a8b145769p+1.
 
 =head2 erf
 
@@ -1034,7 +1034,7 @@ nexttowardf function defined in C language math.h.
 
   sub PI : double ()
 
-The double value that is closer than any other to pi, the ratio of the circumference of a circle to its diameter.
+pi. This value is 0x1.921fb54442d18p+1.
 
 =head2 pow
 

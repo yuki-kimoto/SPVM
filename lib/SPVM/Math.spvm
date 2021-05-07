@@ -161,7 +161,7 @@ package SPVM::Math {
   native sub ctanf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
   native sub ctanh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
   native sub ctanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  sub E : double () { return 2.7182818284590452354; }
+  sub E : double () { return 0x1.5bf0a8b145769p+1; }
   native sub erf : double ($x : double);
   native sub erfc : double ($x : double);
   native sub erfcf : float ($x : float);
@@ -264,7 +264,7 @@ package SPVM::Math {
   native sub nextafterf : float ($x1 : float, $x2 : float);
   native sub nexttoward : double ($x1 : double, $x2 : double);
   native sub nexttowardf : float ($x1 : float, $x2 : double);
-  sub PI : double () { return 3.14159265358979323846; }
+  sub PI : double () { return 0x1.921fb54442d18p+1; }
   native sub pow : double ($x : double, $y : double);
   native sub powf : float ($x : float, $y : float);
   native sub remainder : double ($x1 : double, $x2 : double);

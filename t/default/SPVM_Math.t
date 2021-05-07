@@ -41,26 +41,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # PI
 {
   ok(TestCase::Lib::SPVM::Math->test_PI);
-  
-  {
-    my $spvm_pi = SPVM::Math->PI;
-    my $spvm_pi_15 = sprintf("%.15f", $spvm_pi);
-    my $perl_pi = pi();
-    my $perl_pi_15 = sprintf("%.15f", $perl_pi);
-    is($spvm_pi_15, $perl_pi_15);
+  if ($] >= 5.022) {
+    is(SPVM::Math->PI, 0x1.921fb54442d18p+1);
   }
 }
 
 # E
 {
   ok(TestCase::Lib::SPVM::Math->test_E);
-  
-  {
-    my $spvm_e = SPVM::Math->E;
-    my $spvm_e_15 = sprintf("%.15f", $spvm_e);
-    my $perl_e = exp(1);
-    my $perl_e_15 = sprintf("%.15f", $perl_e);
-    is($spvm_e_15, $perl_e_15);
+  if ($] >= 5.022) {
+    is(SPVM::Math->E, 0x1.5bf0a8b145769p+1);
   }
 }
 
