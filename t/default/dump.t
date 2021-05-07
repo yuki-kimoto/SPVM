@@ -47,6 +47,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
   like(TestCase::Dump->dump_string_array_of_array, qr/^\s*\[\s*\[\s*"abc"\s*,\s*"def"\s*,\s*undef\s*\]\s*[^,]*?,\s*\[\s*"a"\s*,\s*"b"\s*\]\s*[^\]]*\]/s);
   like(TestCase::Dump->dump_string_array_of_array, qr/\s*:\s*string\[\]\[\]/);
+
+  like(TestCase::Dump->dump_object, qr/{\s*byte_value\s*=>\s*1\s*,\s*short_value\s*=>\s*2\s*,\s*int_value\s*=>\s*3\s*,\s*long_value\s*=>\s*4\s*,\s*float_value\s*=>\s*1\.1\s*,\s*double_value\s*=>\s*1\.2,\s*string_value\s*=>\s*"a"\s*,\s*int_array\s*=>\s*\[\s*1\s*,\s*2\s*,\s*3\s*\].[^,]*,\s*object_value\s*=>\s*{[^}]*}[^}]*}/);
+  like(TestCase::Dump->dump_object, qr/\s*:\s*TestCase::DumpTest1/);
+
+  like(TestCase::Dump->dump_object_reuse, qr/object_value\s*=>\s*REUSE_OBJECT/);
+  like(TestCase::Dump->dump_object_reuse, qr/REUSE_OBJECT\([^\)]*\)\s*,/);
 }
 
 # All object is freed

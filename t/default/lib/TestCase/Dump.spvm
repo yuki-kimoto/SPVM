@@ -170,38 +170,34 @@ package TestCase::Dump {
     my $dump = dump $array;
     return $dump;
   }
-}
 
-=pod
-  sub test_dump : void () {
-    # dump
-    {
-      # object
-      {
-        my $object = new TestCase::DumpTest1;
-        $object->{byte_value} = 1;
-        $object->{short_value} = 2;
-        $object->{int_value} = 3;
-        $object->{long_value} = 4;
-        $object->{float_value} = 1.1f;
-        $object->{double_value} = 1.2;
-        $object->{string_value} = "a";
-        $object->{int_array} = [1, 2, 3];
-        $object->{object_value} = new TestCase::DumpTest1;
-        
-        warn dump $object;
-      }
+  sub dump_object : string () {
+    my $object = new TestCase::DumpTest1;
+    $object->{byte_value} = 1;
+    $object->{short_value} = 2;
+    $object->{int_value} = 3;
+    $object->{long_value} = 4;
+    $object->{float_value} = 1.1f;
+    $object->{double_value} = 1.2;
+    $object->{string_value} = "a";
+    $object->{int_array} = [1, 2, 3];
+    $object->{object_value} = new TestCase::DumpTest1;
+    
+    my $dump = dump $object;
+    
+    return $dump;
+  }
 
-      # object array, reuse, object[]
-      {
-        my $object = new TestCase::DumpTest1;
-        $object->{object_value} = $object;
-        
-        my $array = [(object)$object, $object, $object];
-        
-        warn dump $array;
-      }
-    }
+  sub dump_object_reuse : string () {
+    my $object = new TestCase::DumpTest1;
+    $object->{object_value} = $object;
+    
+    my $array = [(object)$object, $object, $object];
+    
+    my $dump = dump $array;
+    
+    $object->{object_value} = undef;
+    
+    return $dump;
   }
 }
-=cut
