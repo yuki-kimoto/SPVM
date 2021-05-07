@@ -1,6 +1,12 @@
 package TestCase::Dump {
   use TestCase::DumpTest1;
   use SPVM::StringUtil;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
 
   sub dump_string : string () {
     # dump string
@@ -10,132 +16,152 @@ package TestCase::Dump {
     
     return $dump;
   }
+
+  sub dump_undef : string () {
+    # dump undef
+    my $string = (string)undef;
+    my $dump = dump $string;
+    
+    return $dump;
+  }
+
+  sub dump_byte_array : string () {
+    # dump byte array
+    my $array = [(byte)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_short_array : string () {
+    # dump short array
+    my $array = [(short)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_int_array : string () {
+    # dump int array
+    my $array = [(int)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_long_array : string () {
+    # dump long array
+    my $array = [(long)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_float_array : string () {
+    # dump float array
+    my $array = [(float)1.2f, 2.4f];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_double_array : string () {
+    # dump double array
+    my $array = [(double)1.2, 2.4];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_byte_array : string () {
+    # dump numeric byte array
+    my $array = new TestCase::Point_3b[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_short_array : string () {
+    # dump numeric short array
+    my $array = new TestCase::Point_3s[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_int_array : string () {
+    # dump numeric int array
+    my $array = new TestCase::Point_3i[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_long_array : string () {
+    # dump numeric long array
+    my $array = new TestCase::Point_3l[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_float_array : string () {
+    # dump numeric float array
+    my $array = new TestCase::Point_3f[2];
+    $array->[0]{x} = 1.1f;
+    $array->[0]{y} = 2.1f;
+    $array->[0]{z} = 3.1f;
+    $array->[1]{x} = 4.1f;
+    $array->[1]{y} = 5.1f;
+    $array->[1]{z} = 6.1f;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_double_array : string () {
+    # dump numeric double array
+    my $array = new TestCase::Point_3d[2];
+    $array->[0]{x} = 1.1;
+    $array->[0]{y} = 2.1;
+    $array->[0]{z} = 3.1;
+    $array->[1]{x} = 4.1;
+    $array->[1]{y} = 5.1;
+    $array->[1]{z} = 6.1;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
 }
 
 =pod
   sub test_dump : void () {
     # dump
     {
-      # string
-      {
-        my $string = "Hello";
-        warn dump $string;
-      }
-
-      # undef
-      {
-        my $string = (string)undef;
-        warn dump $string;
-      }
-      
-      # byte array
-      {
-        my $array = [(byte)1, 2];
-        warn dump $array;
-      }
-
-      # short array
-      {
-        my $array = [(short)1, 2];
-        warn dump $array;
-      }
-
-      # int array
-      {
-        my $array = [(int)1, 2];
-        warn dump $array;
-      }
-
-      # long array
-      {
-        my $array = [(long)1, 2];
-        warn dump $array;
-      }
-
-      # float array
-      {
-        my $array = [(float)1.2f, 2.4f];
-        warn dump $array;
-      }
-
-      # double array
-      {
-        my $array = [(double)1.2, 2.4];
-        warn dump $array;
-      }
-      
-      # byte muti numeric array
-      {
-        my $array = new TestCase::Point_3b[2];
-        $array->[0]{x} = 1;
-        $array->[0]{y} = 2;
-        $array->[0]{z} = 3;
-        $array->[1]{x} = 4;
-        $array->[1]{y} = 5;
-        $array->[1]{z} = 6;
-        warn dump $array;
-      }
-
-      # short muti numeric array
-      {
-        my $array = new TestCase::Point_3s[2];
-        $array->[0]{x} = 1;
-        $array->[0]{y} = 2;
-        $array->[0]{z} = 3;
-        $array->[1]{x} = 4;
-        $array->[1]{y} = 5;
-        $array->[1]{z} = 6;
-        warn dump $array;
-      }
-
-      # int muti numeric array
-      {
-        my $array = new TestCase::Point_3i[2];
-        $array->[0]{x} = 1;
-        $array->[0]{y} = 2;
-        $array->[0]{z} = 3;
-        $array->[1]{x} = 4;
-        $array->[1]{y} = 5;
-        $array->[1]{z} = 6;
-        warn dump $array;
-      }
-
-      # long muti numeric array
-      {
-        my $array = new TestCase::Point_3f[2];
-        $array->[0]{x} = 1;
-        $array->[0]{y} = 2;
-        $array->[0]{z} = 3;
-        $array->[1]{x} = 4;
-        $array->[1]{y} = 5;
-        $array->[1]{z} = 6;
-        warn dump $array;
-      }
-
-      # float muti numeric array
-      {
-        my $array = new TestCase::Point_3f[2];
-        $array->[0]{x} = 1.1f;
-        $array->[0]{y} = 2.1f;
-        $array->[0]{z} = 3.1f;
-        $array->[1]{x} = 4.1f;
-        $array->[1]{y} = 5.1f;
-        $array->[1]{z} = 6.1f;
-        warn dump $array;
-      }
-
-      # double muti numeric array
-      {
-        my $array = new TestCase::Point_3d[2];
-        $array->[0]{x} = 1.1;
-        $array->[0]{y} = 2.1;
-        $array->[0]{z} = 3.1;
-        $array->[1]{x} = 4.1;
-        $array->[1]{y} = 5.1;
-        $array->[1]{z} = 6.1;
-        warn dump $array;
-      }
-
       # string array
       {
         my $array = ["abc", "def", undef];
