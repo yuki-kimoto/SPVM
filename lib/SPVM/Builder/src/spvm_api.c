@@ -253,6 +253,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_call_poly_sub_by_name,
     SPVM_API_get_field_string_chars_by_name,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, // any_object_basic_type_id
+    SPVM_API_dump_raw,
     SPVM_API_dump,
   };
   
@@ -293,6 +294,16 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 }
 
 SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
+  (void)env;
+  
+  SPVM_OBJECT* str = SPVM_API_dump_raw(env, object);
+  
+  SPVM_API_push_mortal(env, str);
+  
+  return str;
+}
+
+SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t depth = 0;
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(255);
@@ -302,7 +313,7 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t string_buffer_length = string_buffer->length;
   
-  SPVM_OBJECT* dump = SPVM_API_new_string(env, string_buffer->buffer, string_buffer->length);
+  SPVM_OBJECT* dump = SPVM_API_new_string_raw(env, string_buffer->buffer, string_buffer->length);
   
   SPVM_HASH_free(address_symtable);
   SPVM_STRING_BUFFER_free(string_buffer);
