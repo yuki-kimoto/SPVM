@@ -156,24 +156,26 @@ package TestCase::Dump {
     
     return $dump;
   }
+
+  sub dump_string_array : string () {
+    # dump numeric double array
+    my $array = ["abc", "def", undef];
+    my $dump = dump $array;
+    return $dump;
+  }
+
+  sub dump_string_array_of_array : string () {
+    # dump numeric double array
+    my $array = [["abc", "def", undef], ["a", "b"]];
+    my $dump = dump $array;
+    return $dump;
+  }
 }
 
 =pod
   sub test_dump : void () {
     # dump
     {
-      # string array
-      {
-        my $array = ["abc", "def", undef];
-        warn dump $array;
-      }
-
-      # string array of array
-      {
-        my $array = [["abc", "def", undef], ["a", "b"]];
-        warn dump $array;
-      }
-      
       # object
       {
         my $object = new TestCase::DumpTest1;

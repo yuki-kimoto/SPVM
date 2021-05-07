@@ -41,6 +41,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   like(TestCase::Dump->dump_multi_numeric_int_array, qr/\s*:\s*TestCase::Point_3i\[\]/);
   like(TestCase::Dump->dump_multi_numeric_long_array, qr/\s*\[\s*\{\s*x\s*=>\s*1\s*,\s*y\s*=>\s*2\s*,\s*z\s*=>\s*3\s*}\s*,\s*{\s*x\s*=>\s*4\s*,\s*y\s*=>\s*5\s*,\s*z\s*=>\s*6\s*}\s*\]\s*/s);
   like(TestCase::Dump->dump_multi_numeric_long_array, qr/\s*:\s*TestCase::Point_3l\[\]/);
+
+  like(TestCase::Dump->dump_string_array, qr/^\s*\[\s*"abc"\s*,\s*"def"\s*,\s*undef\s*\]\s*/s);
+  like(TestCase::Dump->dump_string_array, qr/\s*:\s*string\[\]/);
+
+  like(TestCase::Dump->dump_string_array_of_array, qr/^\s*\[\s*\[\s*"abc"\s*,\s*"def"\s*,\s*undef\s*\]\s*[^,]*?,\s*\[\s*"a"\s*,\s*"b"\s*\]\s*[^\]]*\]/s);
+  like(TestCase::Dump->dump_string_array_of_array, qr/\s*:\s*string\[\]\[\]/);
 }
 
 # All object is freed
