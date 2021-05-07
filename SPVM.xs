@@ -632,7 +632,7 @@ build_package_csource_precompile(...)
   // Build package csource
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_package_csource(compiler, string_buffer, package_name);
   
-  SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer + 1, string_buffer->length - 1));
+  SV* sv_package_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
   SPVM_STRING_BUFFER_free(string_buffer);
 

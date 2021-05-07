@@ -19,9 +19,6 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(int32_t capacity) {
   string_buffer->capacity = capacity;
   string_buffer->buffer = (char*)SPVM_UTIL_ALLOCATOR_safe_malloc_zero(capacity);
   
-  // Zero is not used because 0 mean string is not exists in string symbol table
-  string_buffer->length = 1;
-  
   return string_buffer;
 }
 
