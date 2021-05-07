@@ -222,6 +222,16 @@ SPVM::Test - SPVM test module
         
         warn dump $object;
       }
+
+      # object array, reuse, object[]
+      {
+        my $object = new TestCase::DumpTest1;
+        $object->{object_value} = $object;
+        
+        my $array = [(object)$object, $object, $object];
+        
+        warn dump $array;
+      }
     }
 
     {
