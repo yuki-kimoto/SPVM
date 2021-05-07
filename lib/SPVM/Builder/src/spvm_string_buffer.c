@@ -11,7 +11,7 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(int32_t capacity) {
   
   
   if (capacity == 0) {
-    capacity = 0xFFFF;
+    capacity = 16;
   }
   
   SPVM_STRING_BUFFER* string_buffer = (SPVM_STRING_BUFFER*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_STRING_BUFFER));
@@ -33,7 +33,7 @@ char* SPVM_STRING_BUFFER_get_buffer(SPVM_STRING_BUFFER* string_buffer) {
 void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t new_length) {
   
   // Extend
-  if (new_length > string_buffer->capacity) {
+  while (new_length > string_buffer->capacity) {
     int32_t new_capacity = string_buffer->capacity * 2;
     char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_capacity);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
