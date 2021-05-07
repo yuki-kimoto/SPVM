@@ -564,6 +564,7 @@ solo/TestCase/Complex_2d.spvm
 solo/TestCase/ComplexCalc.spvm
 solo/TestCase/Data/Weaken.spvm
 solo/TestCase/Destructor.spvm
+solo/TestCase/DumpTest1.spvm
 solo/TestCase/EnumA.spvm
 solo/TestCase/EnumB.spvm
 solo/TestCase/EnumC.spvm
@@ -656,6 +657,7 @@ t/default/constant.t
 t/default/convert.t
 t/default/default_loaded_modules.t
 t/default/divide.t
+t/default/dump.t
 t/default/enum.t
 t/default/examples.t
 t/default/exception.t
@@ -776,6 +778,8 @@ t/default/lib/TestCase/Convert.spvm
 t/default/lib/TestCase/Data/Weaken.spvm
 t/default/lib/TestCase/Destructor.spvm
 t/default/lib/TestCase/Divide.spvm
+t/default/lib/TestCase/Dump.spvm
+t/default/lib/TestCase/DumpTest1.spvm
 t/default/lib/TestCase/Empty.spvm
 t/default/lib/TestCase/Enum.spvm
 t/default/lib/TestCase/Enum/Data1.spvm
