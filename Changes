@@ -1,6 +1,7 @@
-0.0953 2021-05-10
+0.9001 2021-05-10
   - remove SPVM::Time->strptime because this method is too complex as version 1.0 core module.
   - remove SPVM::Time->strftime because this method is too complex as version 1.0 core module.
+
 0.0952 2021-05-10
   - fix PI and E tests again. This is fix the mistake of
     [0.0951] and
