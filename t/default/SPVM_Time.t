@@ -61,16 +61,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($perl_gmtime[8], $time_info->isdst);
 }
 
-# strptime
-{
-  ok(TestCase::Lib::SPVM::Time->test_strptime);
-}
-
-# strftime
-{
-  ok(TestCase::Lib::SPVM::Time->test_strftime);
-}
-
 # timelocal
 {
   ok(TestCase::Lib::SPVM::Time->test_timelocal);

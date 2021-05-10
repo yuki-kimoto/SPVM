@@ -86,9 +86,9 @@ List of SPVM Core Modules
 
 =item * L<SPVM::StringUtil> - String Utilities
 
-=item * L<SPVM::Time> - 
+=item * L<SPVM::Time> - Time manipulation
 
-=item * L<SPVM::Time::Info> - 
+=item * L<SPVM::Time::Info> - Time information
 
 =item * L<SPVM::Unicode> - 
 

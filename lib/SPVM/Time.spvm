@@ -6,14 +6,7 @@ package SPVM::Time {
   native sub localtime : SPVM::Time::Info ($time : long);
   native sub gmtime : SPVM::Time::Info ($time : long);
   
-  # Note: Time zone is not supported
-  native sub strptime : SPVM::Time::Info ($str : string, $format : string);
-  
-  # Note: Time zone is not supported
-  native sub strftime : string ($format : string, $time_info : SPVM::Time::Info);
-  
   native sub timelocal : long ($time_info : SPVM::Time::Info);
-
   sub timegm : long ($time_info : SPVM::Time::Info) {
       
     my $sec = $time_info->sec;
