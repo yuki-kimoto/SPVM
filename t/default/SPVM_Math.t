@@ -42,7 +42,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::Math->test_PI);
   if ($] >= 5.022) {
-    is(SPVM::Math->PI, 0x1.921fb54442d18p+1);
+    my $val = eval "0x1.921fb54442d18p+1";
+    is(SPVM::Math->PI, $val);
   }
 }
 
@@ -50,7 +51,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(TestCase::Lib::SPVM::Math->test_E);
   if ($] >= 5.022) {
-    is(SPVM::Math->E, 0x1.5bf0a8b145769p+1);
+    my $val = eval "0x1.5bf0a8b145769p+1";
+    is(SPVM::Math->E, $val);
   }
 }
 

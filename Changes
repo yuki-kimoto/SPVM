@@ -1,3 +1,8 @@
+0.0952 2021-05-10
+  - fix PI and E tests again. This is fix the mistake of
+    [0.0951] and
+    [0.0950] - fix PI and E tests because in long double environment is different from SPVM and Perl.
+
 0.0951 2021-05-07
   - add dump native api
   - add dump_raw native api
