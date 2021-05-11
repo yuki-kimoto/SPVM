@@ -471,6 +471,7 @@ lib/SPVM/Complex_2d.pm
 lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
+lib/SPVM/Document/Benchmark.pm
 lib/SPVM/Document/Modules.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
