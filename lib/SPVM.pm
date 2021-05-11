@@ -310,7 +310,7 @@ SPVM Module:
     }
   }
 
-Use SPVM Module from Perl
+Call SPVM subroutine from Perl
 
   # spvm.pl
   use strict;
@@ -332,11 +332,11 @@ Use SPVM Module from Perl
 
   print "Total Packed: $total_packed\n";
 
-Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
+Precompiled SPVM Subroutine. This code is converted to C language and then converted to a shared library.
 
   # lib/MyMath.spvm
   package MyMath : precompile {
-    sub sum_precompile : int ($nums : int[]) {
+    sub sum : int ($nums : int[]) {
 
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {
@@ -347,84 +347,11 @@ Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
     }
   }
 
-Call SPVM Precompile Subroutine from Perl
-
-  # spvm.pl
-  use strict;
-  use warnings;
-  use FindBin;
-  use lib "$FindBin::Bin/lib";
-
-  use SPVM 'MyMath';
-
-  # Call precompile subroutine
-  my $total_precompile = MyMath->sum_precompile([3, 6, 8, 9]);
-
-  print "Total Precompile: $total_precompile\n";
-
-SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
-
-  # lib/MyMath.spvm
-  package MyMath {
-    native sub sum_native : int ($nums : int[]);
-  }
-
-  // lib/MyMath.c
-  #include "spvm_native.h"
-
-  int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
-
-    void* sv_nums = stack[0].oval;
-
-    int32_t length = env->length(env, sv_nums);
-
-    int32_t* nums = env->get_elems_int(env, sv_nums);
-
-    int32_t total = 0;
-    for (int32_t i = 0; i < length; i++) {
-      total += nums[i];
-    }
-
-    stack[0].ival = total;
-
-    return SPVM_SUCCESS;
-  }
-
-  # lib/MyMath.config
-
-  use strict;
-  use warnings;
-
-  use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_c99;
-
-  $bconf;
-
-Use SPVM Native Subroutine from Perl
-
-  # spvm.pl
-  use strict;
-  use warnings;
-  use FindBin;
-  use lib "$FindBin::Bin/lib";
-
-  use SPVM 'MyMath';
-
-  # Call native subroutine
-  my $total_native = MyMath->sum_native([3, 6, 8, 9]);
-
-  print "Total Native: $total_native\n";
-
-Environment Variable "SPVM_BUILD_DIR" must be set for precompile and native subroutine
-
-  # bash example
-  export SPVM_BUILD_DIR=~/.spvm_build
-
 =head1 DESCRIPTION
 
 SPVM is Static Perl Virtual Machine. SPVM is a programming language which has Perlish syntax. SPVM provide L<Fast Calculation|SPVM::Document::Benchmark> & easy C/C++ Binding.
 
-At first, see L<SPVM Tutorial|SPVM::Document::Tutorial>.
+See L<SPVM Tutorial|SPVM::Document::Tutorial> at first.
 
 B<Features:>
 
