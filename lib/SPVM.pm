@@ -354,6 +354,7 @@ SPVM is Static Perl Virtual Machine. SPVM is a programming language which has Pe
 See L<SPVM Tutorial|SPVM::Document::Tutorial> at first.
 If you want to convert Perl Data structres to SPVM data structures, See L<SPVM Exchange API|SPVM::Document::ExchangeAPI>. 
 If you check SPVM performance, see L<SPVM Performance Benchmark|SPVM::Document::Benchmark>.
+If you call C function from SPVM, see L<SPVM Native API|SPVM::Document::NativeAPI>.
 
 =head1 FEATURES
 
@@ -381,11 +382,9 @@ If you check SPVM performance, see L<SPVM Performance Benchmark|SPVM::Document::
 
 =item * L<SPVM::Document::ExchangeAPI>
 
-=item * L<SPVM Document|https://yuki-kimoto.github.io/spvmdoc-public>
+=item * LSPVM::Document::NativeAPI>
 
 =item * L<SPVM Language Specification|https://yuki-kimoto.github.io/spvmdoc-public/language.html>
-
-=item * L<SPVM Native API|https://yuki-kimoto.github.io/spvmdoc-public/native-api.html>
 
 =back
 
