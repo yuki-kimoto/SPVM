@@ -355,29 +355,19 @@ See L<SPVM Tutorial|SPVM::Document::Tutorial> at first.
 If you want to convert Perl Data structres to SPVM data structures, See L<SPVM Exchange API|SPVM::Document::ExchangeAPI>. 
 If you check SPVM performance, see L<SPVM Performance Benchmark|SPVM::Document::Benchmark>.
 
-B<SPVM Features:>
+=head1 FEATURES
 
 =over 4
 
-=item * B<Fast culcuration>, B<Fast array operation>, B<Small memory>
+=item * Fast culcuration, Fast array operation
 
-=item * B<Perl syntax>, B<Static typing>, B<Switch syntax>, B<Have language specification>
+=item * Precompile Subroutine, Easy way to C/C++ binding, C99 math functions
 
-=item * B<Enum>, B<Type inference>, B<Anon subroutine>, B<Variable captures>
+=item * Perlish syntax, Static typing, Type inference
 
-=item * B<Array initialization>,
+=item * Reference count GC, Weaken reference, Exception, Module
 
-=item * B<Reference count GC>, B<Weaken reference>, B<Module system>
-
-=item * B<Exception>, B<Package variable>
-
-=item * B<Object oriented programming>, B<Callback type>, B<Multi numeric type>, B<Multi numeric array type>, B<Reference type>
-
-=item * B<Easy way to C/C++ binding>, B<Automatically Perl binding>, B<C99 math functions>
-
-=item * B<Shared Library>, B<Precompile Subroutine into Machine code>
-
-=item * B<Native API(C level api)>, B<C99 standard>
+=item * Object oriented programming
 
 =back
 
