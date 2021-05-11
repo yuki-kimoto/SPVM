@@ -351,11 +351,6 @@ Precompiled SPVM Subroutine. This code is converted to C language and then conve
 
 SPVM is Static Perl Virtual Machine. SPVM is a programming language which has Perlish syntax. SPVM provides fast Calculation & easy C/C++ Binding.
 
-See L<SPVM Tutorial|SPVM::Document::Tutorial> at first.
-If you want to convert Perl Data structres to SPVM data structures, See L<SPVM Exchange API|SPVM::Document::ExchangeAPI>. 
-If you check SPVM performance, see L<SPVM Performance Benchmark|SPVM::Document::Benchmark>.
-If you call C function from SPVM, see L<SPVM Native API|SPVM::Document::NativeAPI>.
-
 =head1 FEATURES
 
 =over 4
@@ -374,25 +369,26 @@ If you call C function from SPVM, see L<SPVM Native API|SPVM::Document::NativeAP
 
 =head1 DOCUMENT
 
+See L<SPVM Tutorial|SPVM::Document::Tutorial> at first.
+If you want to know SPVM language, see L<SPVM Language Specification|SPVM::Document::LanguageSpecification>.
+If you know SPVM core module, see L<SPVM Core Modules|SPVM::Document::Modules>
+If you check SPVM performance, see L<SPVM Performance Benchmark|SPVM::Document::Benchmark>.
+If you want to convert Perl Data structres to SPVM data structures, see L<SPVM Exchange API|SPVM::Document::ExchangeAPI>. 
+If you call C function from SPVM, see L<SPVM Native API|SPVM::Document::NativeAPI>.
+
 =over 2
 
 =item * L<SPVM::Document::Tutorial>
+
+=item * L<SPVM::Document::LanguageSpecification>
+
+=item * L<SPVM::Document::Modules>
 
 =item * L<SPVM::Document::Benchmark>
 
 =item * L<SPVM::Document::ExchangeAPI>
 
-=item * LSPVM::Document::NativeAPI>
-
-=item * L<SPVM Language Specification|https://yuki-kimoto.github.io/spvmdoc-public/language.html>
-
-=back
-
-=head1 CORE MODULES
-
-=over 2
-
-=item * L<SPVM::Document::Modules>
+=item * L<SPVM::Document::NativeAPI>
 
 =back
 
