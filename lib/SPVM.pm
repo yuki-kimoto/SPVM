@@ -424,6 +424,8 @@ Environment Variable "SPVM_BUILD_DIR" must be set for precompile and native subr
 
 SPVM is Static Perl Virtual Machine. SPVM is a programming language which has Perlish syntax. SPVM provide L<Fast Calculation|SPVM::Document::Benchmark> & easy C/C++ Binding.
 
+At first, see L<SPVM Tutorial|SPVM::Document::Tutorial>.
+
 B<Features:>
 
 =over 4
@@ -452,13 +454,15 @@ B<Features:>
 
 =head1 DOCUMENT
 
-Currently some ports of document are use Automatic translation, so not accurate and maybe difficult to read.
+SPVM Documentaion.
 
 =over 2
 
-=item * L<SPVM Document|https://yuki-kimoto.github.io/spvmdoc-public>
+=item * L<SPVM::Document::Tutorial>
 
-=item * L<SPVM Tutorial|https://yuki-kimoto.github.io/spvmdoc-public/tutorial.html>
+=item * L<SPVM::Document::Benchmark>
+
+=item * L<SPVM Document|https://yuki-kimoto.github.io/spvmdoc-public>
 
 =item * L<SPVM Language Specification|https://yuki-kimoto.github.io/spvmdoc-public/language.html>
 
@@ -466,13 +470,15 @@ Currently some ports of document are use Automatic translation, so not accurate 
 
 =item * L<SPVM Native API|https://yuki-kimoto.github.io/spvmdoc-public/native-api.html>
 
-=item * L<SPVM::Document::Benchmark>
+=back
 
 =head1 CORE MODULES
 
 SPVM Core Modules.
 
-L<SPVM::Document::Modules>
+=over 2
+
+=item * L<SPVM::Document::Modules>
 
 =back
 

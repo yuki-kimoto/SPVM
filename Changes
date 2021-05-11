@@ -2,6 +2,7 @@
   - remove SPVM::Time->strptime because this method is too complex as version 1.0 core module.
   - remove SPVM::Time->strftime because this method is too complex as version 1.0 core module.
   - add SPVM::Document::Benchmark. This document was on github pages and is moved to CPAN.
+  - add SPVM::Document::Tutorial. This document was on github pages and is moved to CPAN.
 0.0952 2021-05-10
   - fix PI and E tests again. This is fix the mistake of
     [0.0951] and
