@@ -103,8 +103,8 @@ struct spvm_env {
   void* object_ref_count_offset;
   void* object_basic_type_id_offset;
   void* object_type_dimension_offset;
-  void* object_type_runtime_type_offset;
-  void* object_type_flag_offset;
+  void* object_type_category_offset;
+  void* object_flag_offset;
   void* object_length_offset;
   void* byte_object_basic_type_id;
   void* short_object_basic_type_id;
