@@ -2438,8 +2438,15 @@ Example:
 
 =head2 any_object_basic_type_id
 
-
   void* any_object_basic_type_id;
+
+=head2 dump_raw
+
+  void* (*dump_raw)(SPVM_ENV* env, void* object);
+
+=head2 any_object_basic_type_id
+
+  void* (*dump)(SPVM_ENV* env, void* object);
 
 =head1 Native API indexes
 
@@ -2451,7 +2458,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   3 object_ref_count_offset
   4 object_basic_type_id_offset
   5 object_type_dimension_offset
-  6 object_runtime_type_category_offset
+  6 object_type_category_offset
   7 object_flag_offset
   8 object_length_offset
   9 byte_object_basic_type_id
@@ -2470,7 +2477,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   22 get_field_offset
   23 get_package_var_id
   24 get_sub_id
-  25 get_method_sub_id
+  25 get_sub_id_by_object
   26 new_object_raw
   27 new_object
   28 new_byte_array_raw
@@ -2480,7 +2487,8 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   32 new_int_array_raw
   33 new_int_array
   34 new_long_array_raw
-  35 new_long_array36    new_float_array_raw
+  35 new_long_array
+  36 new_float_array_raw
   37 new_float_array
   38 new_double_array_raw
   39 new_double_array
@@ -2563,7 +2571,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   116 get_type_name
   117 new_env
   118 free_env
-  119 memry_blocks_count
+  119 memory_blocks_count
   120 get_chars
   121 die
   122 new_object_by_name
@@ -2599,5 +2607,6 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   152 call_sub_by_name
   153 call_poly_sub_by_name
   154 get_field_string_chars_by_name
-  154 get_field_string_chars_by_name
   155 any_object_basic_type_id
+  156 dump_raw
+  157 dump
