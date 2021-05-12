@@ -548,7 +548,7 @@ stack[1] .dval = retval_y;
 int32_t sub_id = env->get_sub_id(env, "Foo", "sum", "int (int, int)");
 
 // For method
-int32_t sub_id = env->get_method_sub_id(env, object, "sum", "int (self, int, int)");
+int32_t sub_id = env->get_sub_id_by_object(env, object, "sum", "int (self, int, int)");
 </pre>
   <p>
     If sub_id is less than 0, it means that the subroutine was not found. It is safe to handle exceptions as follows.
@@ -786,101 +786,99 @@ int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 
 =head2 package_vars_heap
 
-the pointer to the storage area of the package variables. It is used internally.
+the pointer to the storage area of the package variables. This is used internally.
 
 
 =head2 object_header_byte_size
 
-The byte size of the object's header. It is used internally.
+The byte size of the object's header. This is used internally.
 
 
 =head2 object_weaken_backref_head_offset
 
-Offset to a pointer to the back reference of the weak reference in the object structure. It is used internally.
+Offset to a pointer to the back reference of the weak reference in the object structure. This is used internally.
 
 
 =head2 object_ref_count_offset
 
-Reference count offset in the object structure. It is used internally.
+Reference count offset in the object structure. This is used internally.
 
 
 =head2 object_basic_type_id_offset
 
-Offset of basic type ID in object structure. It is used internally.
+Offset of basic type ID in object structure. This is used internally.
 
 
 =head2 object_type_dimension_offset
 
-Offset of type dimension in object structure. It is used internally.
+Offset of type dimension in object structure. This is used internally.
 
+=head2 object_type_category_offset
 
-=head2 object_runtime_type_category_offset
-
-Offset of runtime type category in object structure. It is used internally.
-
+Offset of runtime type category in object structure. This is used internally.
 
 =head2 object_flag_offset
 
-Offset of flag in object structure. It is used internally.
+Offset of flag in object structure. This is used internally.
 
 
 =head2 object_length_offset
 
-The length offset in the object structure. It is used internally.
+The length offset in the object structure. This is used internally.
 
 
 =head2 byte_object_basic_type_id
 
-Basic type ID of SPVM::Byte type. It is used internally.
+Basic type ID of SPVM::Byte type. This is used internally.
 
 
 =head2 short_object_basic_type_id
 
-ID of the base type of SPVM::Short type. It is used internally.
+ID of the base type of SPVM::Short type. This is used internally.
 
 
 =head2 int_object_basic_type_id
 
-ID of the base type of SPVM::Int type. It is used internally.
+ID of the base type of SPVM::Int type. This is used internally.
 
 
 =head2 long_object_basic_type_id
 
-ID of the base type of SPVM::Long type. It is used internally.
+ID of the base type of SPVM::Long type. This is used internally.
 
 
 =head2 float_object_basic_type_id
 
-ID of the base type of SPVM::Float type. It is used internally.
+ID of the base type of SPVM::Float type. This is used internally.
 
 
 =head2 double_object_basic_type_id
 
-ID of the base type of SPVM::Double type. It is used internally.
+ID of the base type of SPVM::Double type. This is used internally.
 
 
 =head2 compiler
 
-A pointer to the SPVM compiler. It is used internally.
+A pointer to the SPVM compiler. This is used internally.
 
 
 =head2 exception_object
 
-Exception object. It is used internally.
+Exception object. This is used internally.
 
 
 =head2 native_mortal_stack
 
-Mortal stack used for native calls. It is used internally.
+Mortal stack used for native calls. This is used internally.
 
 =head2 native_mortal_stack_top
 
-The top position of the mortal stack used for native calls. It is used internally.
+The top position of the mortal stack used for native calls. This is used internally.
 
 
 =head2 native_mortal_stack_capacity
 
-The amount of mortal stack used for native calls. It is used internally.
+The amount of mortal stack used for native calls. This is used internally.
 
 
 =head2 get_basic_type_id
@@ -959,9 +957,9 @@ Example:
   int32_t sub_id = env->get_sub_id(env, "Foo", "func", "int (long, string)");
 
 
-=head2 get_method_sub_id
+=head2 get_sub_id_by_object
 
-  int32_t (*get_method_sub_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  int32_t (*get_sub_id_by_object)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 
 
 Get the subroutine ID by specifying the object and method name. If the method does not exist, a value less than 0 is returned.
@@ -973,7 +971,7 @@ The signature is the same as the sub_id signature.
 Example:
 
 
-  int32_t sub_id = env->get_method_sub_id(env, object, "method", "int(self,long,string)");
+  int32_t sub_id = env->get_sub_id_by_object(env, object, "method", "int(self,long,string)");
 
 
 =head2 new_object_raw
@@ -1271,8 +1269,8 @@ This function does not add any objects to the mortal stack, so for normal use us
 
 
 =head2 new_string
-<P> Generates and returns a character string type object by specifying the character string and length in C language. Add the newly created object to the mortal stack.
 
+Generates and returns a character string type object by specifying the character string and length in C language. Add the newly created object to the mortal stack.
 
   void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
 
@@ -2181,7 +2179,7 @@ Release the execution environment.
 
 =head2 memory_blocks_count
 
-Memory blocks count. It is used internally.
+Memory blocks count. This is used internally.
 
 
   void* memory_blocks_count;
@@ -2223,217 +2221,217 @@ Example:
 
 
   void (*set_field_byte_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int8_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_short_by_name
 
 
   void (*set_field_short_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int16_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_int_by_name
 
 
   void (*set_field_int_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int32_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_long_by_name
 
 
   void (*set_field_long_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int64_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_float_by_name
 
 
   void (*set_field_float_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, float value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_double_by_name
 
 
   void (*set_field_double_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, double value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_object_by_name
 
 
   void (*set_field_object_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, const char* signature, void* value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_byte_by_name
 
 
   int8_t (*get_field_byte_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_short_by_name
 
 
   int16_t (*get_field_short_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_int_by_name
 
 
   int32_t (*get_field_int_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_long_by_name
 
 
   int64_t (*get_field_long_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_float_by_name
 
 
   float (*get_field_float_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_double_by_name
 
 
   double (*get_field_double_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_object_by_name
 
 
   void* (*get_field_object_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, const char* signature,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_byte_by_name
 
 
   void (*set_package_var_byte_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int8_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_short_by_name
 
 
   void (*set_package_var_short_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int16_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_int_by_name
 
 
   void (*set_package_var_int_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_long_by_name
 
 
   void (*set_package_var_long_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int64_t value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_float_by_name
 
 
   void (*set_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, float value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_double_by_name
 
 
   void (*set_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, double value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_object_by_name
 
 
   void (*set_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, void* value,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_byte_by_name
 
 
   int8_t (*get_package_var_byte_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_short_by_name
 
 
   int16_t (*get_package_var_short_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_int_by_name
 
 
   int32_t (*get_package_var_int_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_long_by_name
 
 
   int64_t (*get_package_var_long_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_float_by_name
 
 
   float (*get_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_double_by_name
 
 
   double (*get_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_object_by_name
 
 
   void* (*get_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 call_sub_by_name
 
 
   int32_t (*call_sub_by_name)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack,
-  const char* file, int32_t line);
+    const char* file, int32_t line);
 
 
 =head2 call_poly_sub_by_name
 
 
   int32_t (*call_poly_sub_by_name)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature, SPVM_VALUE* stack,
-  const char* file, int32_t line);
+    const char* file, int32_t line);
 
 
 =head2 get_field_string_chars_by_name
 
 
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, void* obj, const char* package_name, const char* field_name,
-  int32_t* exception_flag, const char* file, int32_t line);
+    int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 any_object_basic_type_id
