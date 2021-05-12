@@ -4,9 +4,9 @@ SPVM::Document::NativeAPI - SPVM Native APIs
 
 =head1 DESCRIPTION
 
-SPVM Native APIs is C APIs used in SPVM native method. This document describes the way to define native methods, and shows the all of SPVM Native APIs.
+SPVM Native APIs is C APIs used in SPVM native method. This document describes the way to define native methods, and shows the all of SPVM Native APIs. If you want to know the list of Native APIs, see L<List of Native APIs|/"List-of-Native-APIs">.
 
-If you want to know the list of Native APIs, see L<List of Native APIs|/"List-of-Native-APIs">. If you see examples of SPVM Native APIs, see L<Examples using SPVM Native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>.
+Native method can be written by C language or C++, If the code is compatible with C language or C++(for example, CUDA/nvcc), it can be compiled into native method. If you see examples of SPVM Native APIs, see L<Examples using SPVM Native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>. This contains the examples of C language, C++ and CUDA/nvcc.
 
 =head1 How to define SPVM native method?
 
@@ -14,7 +14,7 @@ If you want to know the list of Native APIs, see L<List of Native APIs|/"List-of
 
 <h2>Native Method Declaration</h2>
 
-<b>SPVM Native Method Declaration</b> is written using Method Descriptor "native" in SPVM module file.
+Native Method Declaration is written using Method Descriptor "native" in SPVM module file. SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
 
 <pre>
 # Foo/Bar.spvm
@@ -23,42 +23,23 @@ package Foo::Bar {
 }
 </pre>
 
-SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
+<h2>SPVM Native Config File</h2>
 
-Multiple Native Methods can be declared. Normal Method can be defined with Native Method.
-
-<pre>
-# Foo/Bar.spvm
-package Foo::Bar {
-  native sub sum : int ($num1 : int, $num2 : int);
-  
-  natvie sub native_foo : long ($num : long);
-  
-  sub bar : int ($num : int) {
-    return $num * 2;
-  }
-}
-</pre>
-
-<h2 id="native-api-native-configuration">SPVM Native Config File</h2>
-
-<b>SPVM Native Config File</b> must be created for SPVM Native Method. The base name of native configuration file is same as SPVM module file. the extesion is ".config".
+SPVM Native Config File must be created for SPVM Native Method. The base name without the extension of native config file must be same as SPVM module file and the extension must be ".config".
 
 <pre>
 # Native configuration file for Foo::Bar module
 Foo/Bar.config
 </pre>
 
-If native configuration file does not exist, an exception is raised.
+If native configuration file does not exist, an exception occurs.
 
-Native Config File is Perl source code. Native Config File must return properly <a href="https://metacpan.org/pod/SPVM::Builder::Config">SPVM::Builder:Config</a> object, otherwise an exception occurs.
+Native Config File is Perl source code. Native Config File must return properly L<SPVM::Builder:Config> object, otherwise an exception occurs.
 
-<b>1. C99 SPVM Native Config File Example</b>
+<b>1. C99 Config File Example</b>
 
-An example native source code written by C (C99 is SPVM default).
- 
 <pre>
-# C99 SPVM Native Config File
+# C99 Config File
 use strict;
 use warnings;
 
@@ -68,10 +49,10 @@ my $bconf = SPVM::Builder::Config->new_c99;
 $bconf;
 </pre>
 
-<b>2. C11 SPVM Native Config File Example</b>
+<b>2. C11 Config File Example</b>
 
 <pre>
-# C11 SPVM Native Config File
+# C11 Config File
 use strict;
 use warnings;
 
@@ -83,10 +64,10 @@ $bconf->set_std('c11');
 $bconf;
 </pre>
 
-<b>3. C++ SPVM Native Config File Example</b>
+<b>3. C++ Config File Example</b>
 
 <pre>
-# C++ SPVM Native Config File
+# C++ Config File
 use strict;
 use warnings;
 
@@ -96,10 +77,10 @@ my $bconf = SPVM::Builder::Config->new_cpp;
 $bconf;
 </pre>
 
-<b>4. C++11 SPVM Native Config File Example</b>
+<b>4. C++11 Config File Example</b>
 
 <pre>
-# C++11 SPVM Native Config File
+# C++11 Config File
 use strict;
 use warnings;
 
@@ -111,7 +92,7 @@ $bconf->set_std('c++11');
 $bconf;
 </pre>
 
-<b>5. CUDA/nvcc SPVM Native Config File Example</b>
+<b>5. CUDA/nvcc Config File Example</b>
 
 <pre>
 use strict;
