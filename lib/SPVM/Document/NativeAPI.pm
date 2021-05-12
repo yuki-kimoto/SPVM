@@ -4,42 +4,42 @@ SPVM::Document::NativeAPI - SPVM Native API
 
 =head1 DESCRIPTION
 
-SPVM Native API is C APIs used in APIs SPVM Native Subroutine.
+SPVM Native API is C APIs used in APIs SPVM Native Method.
 
 =head1 WHAT IS SPVM NATIVE API?
 
 =begin html
 
 
-SPVM Native API is C API which can be used in SPVM Native Subroutine. SPVM Native API is a part of SPVM Specification.
+SPVM Native API is C API which can be used in SPVM Native Method. SPVM Native API is a part of SPVM Specification.
 
 <ul class="toc">
   <li><a href="#native-api-summary">What is SPVM Native API</a></li>
-  <li><a href="#native-api-native-sub-declaration">SPVM Native Subroutine Declaration</a></li>
+  <li><a href="#native-api-native-sub-declaration">SPVM Native Method Declaration</a></li>
   <li><a href="#native-api-native-configuration">SPVM Native Config File</a></li>
-  <li><a href="#native-api-native-sub-definition">SPVM Native Subroutine Definition</a></li>
-  <li><a href="#native-api-native-sub-compile">Compile Native Subroutine</a></li>
-  <li><a href="#native-api-native-sub-get-arg">Arguments of Native Subroutine</a></li>
-  <li><a href="#native-api-native-sub-set-retval">Return Value of Native Subroutine</a></li>
+  <li><a href="#native-api-native-sub-definition">SPVM Native Method Definition</a></li>
+  <li><a href="#native-api-native-sub-compile">Compile Native Method</a></li>
+  <li><a href="#native-api-native-sub-get-arg">Arguments of Native Method</a></li>
+  <li><a href="#native-api-native-sub-set-retval">Return Value of Native Method</a></li>
   <li><a href="#native-api-native-call-sub">Call SPVM Subroutine</a></li>
-  <li><a href="#native-api-native-sub-scope">Native Subroutine Scope</a></li>
-  <li><a href="#native-api-native-sub-exception">Exception of Native Subroutine</a></li>
+  <li><a href="#native-api-native-sub-scope">Native Method Scope</a></li>
+  <li><a href="#native-api-native-sub-exception">Exception of Native Method</a></li>
   <li><a href="#native-api-use-pointer-type">Pointer Type</a></li>
 </ul>
   
 <h2 id="native-api-summary">What is the SPVM Native API?</h2>
 
-<b>SPVM Native API</b> is C API which can be used in SPVM Native Subroutine.
+<b>SPVM Native API</b> is C API which can be used in SPVM Native Method.
 
 <ul>
   <li><a href="#native-api-list">List of SPVM Native APIs</a></li>
 </ul>
 
-In this document, in addition to SPVM Native API, <a href="#native-api-native-sub-declaration">SPVM Native Subroutine Declaration</a>, <a href="#native-api-native-sub-definition">SPVM Native Subroutine Definition</a>, How to receive Arguments, How to return value is described.
+In this document, in addition to SPVM Native API, <a href="#native-api-native-sub-declaration">SPVM Native Method Declaration</a>, <a href="#native-api-native-sub-definition">SPVM Native Method Definition</a>, How to receive Arguments, How to return value is described.
 
-<h2 id="native-api-native-sub-declaration">SPVM Native Subroutine Declaration</h2>
+<h2 id="native-api-native-sub-declaration">SPVM Native Method Declaration</h2>
 
-<b>SPVM Native Subroutine Declaration</b> is written using Subroutine Descriptor "native" in SPVM module file.
+<b>SPVM Native Method Declaration</b> is written using Subroutine Descriptor "native" in SPVM module file.
 
 <pre>
 # Foo/Bar.spvm
@@ -48,9 +48,9 @@ package Foo::Bar {
 }
 </pre>
 
-SPVM Native Subroutine Declaration ends with a semicolon without Sobroutine Block.
+SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
 
-Multiple Native Subroutines can be declared. Normal Subroutine can be defined with Native Subroutine.
+Multiple Native Methods can be declared. Normal Subroutine can be defined with Native Method.
 
 <pre>
 # Foo/Bar.spvm
@@ -67,7 +67,7 @@ package Foo::Bar {
 
 <h2 id="native-api-native-configuration">SPVM Native Config File</h2>
 
-<b>SPVM Native Config File</b> must be created for SPVM Native Subroutine. The base name of native configuration file is same as SPVM module file. the extesion is ".config".
+<b>SPVM Native Config File</b> must be created for SPVM Native Method. The base name of native configuration file is same as SPVM module file. the extesion is ".config".
 
 <pre>
 # Native configuration file for Foo::Bar module
@@ -159,9 +159,9 @@ $bconf->set_lddlflags('-shared');
 $bconf;
 </pre>
 
-<h2 id="native-api-native-sub-definition">Native Subroutine Definition</h2>
+<h2 id="native-api-native-sub-definition">Native Method Definition</h2>
 
-Native Subroutine Definition is written in native source file. native source file is basically C language source file which extension is ".c". This extension can be changed to ".cpp" for C++ source file, to ".cu" for CUDA source file, etc.
+Native Method Definition is written in native source file. native source file is basically C language source file which extension is ".c". This extension can be changed to ".cpp" for C++ source file, to ".cu" for CUDA source file, etc.
 
 <pre>
 # Native source file for Foo::Bar module
@@ -209,7 +209,7 @@ The return type is "int32_t". If the subroutine raises an exception, "1" is retu
 
 <h3>Function Name</h3>
 
-Native Subroutine Definition is a simple C language function such as
+Native Method Definition is a simple C language function such as
 
 <pre>
 SPNATIVE__Foo__Bar__sum
@@ -223,7 +223,7 @@ Followed by "__".
 
 Followed by subroutine name "sum".
 
-If Native Subroutine Name is invalid, a compile error will occur.
+If Native Method Name is invalid, a compile error will occur.
 
 
   <p>
@@ -235,7 +235,7 @@ If Native Subroutine Name is invalid, a compile error will occur.
     In the above sample, it takes two int type arguments of SPVM, calculates the sum, and returns the return value.
   </p>
   
-  <h2 id="native-api-native-sub-compile">Compile Native Subroutine</h2>
+  <h2 id="native-api-native-sub-compile">Compile Native Method</h2>
   <p>
     Native subroutine are compiled with Perl and are compiled into a dynamically readable shared library depending on the OS. Shared libraries (.so) on Unix/Linux, dynamic link libraries (.dll) on Windows.
   </p>
@@ -246,7 +246,7 @@ If Native Subroutine Name is invalid, a compile error will occur.
     The default build directory is the "~/.spvm_build" directory in the directory containing the executed Perl script, and can be changed with the environment variable "SPVM_BUILD_DIR".
   </p>
   <p>
-    If you want to use SPVM Native Subroutine from Perl, create a "~/.spvm_build" directory in the directory where the executed Perl script exists.
+    If you want to use SPVM Native Method from Perl, create a "~/.spvm_build" directory in the directory where the executed Perl script exists.
   </p>
 <pre>
 script.pl
@@ -291,7 +291,7 @@ script.pl
   
 <h3 href = "# native-api-native-sub-get-arg-stack">Arguments and Stack</h3>
   <p>
-    The stack is the "SPVM_VALUE* stack" passed as the second argument in the definition of the Native Subroutine, and the arguments are stored in this.
+    The stack is the "SPVM_VALUE* stack" passed as the second argument in the definition of the Native Method, and the arguments are stored in this.
   </p>
 <pre>
 int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -302,7 +302,7 @@ int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
     SPVM_VALUE is a C language union for storing SPVM values. You can save numeric, object, and reference values.
   </p>
   <p>
-    Pointer to the beginning of the "SPVM_VALUE type array" of "SPVM_VALUE* stack". The value of the argument of the Native Subroutine called from SPVM side is set in this array.
+    Pointer to the beginning of the "SPVM_VALUE type array" of "SPVM_VALUE* stack". The value of the argument of the Native Method called from SPVM side is set in this array.
   </p>
   <p>
     For example, to get the value of the first argument(0th) of int type, write as follows.
@@ -423,7 +423,7 @@ double* args0 = stack[0].dref;
 
 <h3 id="native-api-native-sub-get-arg-mulnum">Get multiple numeric type arguments</h3>
   <p>
-    In a Native Subroutine, multiple numeric type arguments are assigned to multiple arguments.
+    In a Native Method, multiple numeric type arguments are assigned to multiple arguments.
   </p>
   <p>
     For example, in the case of the argument of SPVM::Complex_2d type, it gets from two arguments. Note that you cannot access it by field name.
@@ -527,7 +527,7 @@ stack[0].oval = retval;
 
 <h3 id="native-api-native-sub-set-retval-mulnum">Set multiple numeric return value</h3>
   <p>
-    In a Native Subroutine, multiple numeric return values assigned to multiple return values.
+    In a Native Method, multiple numeric return values assigned to multiple return values.
   </p>
   <p>
     For example, for the return value of SPVM::Complex_2d type, set two return values.
@@ -581,12 +581,12 @@ int32_t exception_flag = env->call_sub(env, sub_id, stack);
 int32_t total = stack[0].ival;
 </pre>
 
-  <h2 id="native-api-native-sub-scope">Native Subroutine Scope</h2>
+  <h2 id="native-api-native-sub-scope">Native Method Scope</h2>
   <p>
     Native subroutine are entirely enclosed in scope.
   </p>
   <p>
-    Objects added to the mortal stack will automatically have their reference count decremented by 1 when the Native Subroutine ends. When the reference count reaches 0, it is released.
+    Objects added to the mortal stack will automatically have their reference count decremented by 1 when the Native Method ends. When the reference count reaches 0, it is released.
   </p>
   <p>
     Use push_mortal to add objects to the mortal stack.
@@ -620,9 +620,9 @@ env->remove_mortal(env, scope_id, object);
     Information about the mortal stack is stored in env.
   </p>
 
-  <h2 id="native-api-native-sub-exception">Exception in Native Subroutine</h2>
+  <h2 id="native-api-native-sub-exception">Exception in Native Method</h2>
   <p>
-    In the Native Subroutine, it is the return value that indicates whether an exception has occurred.
+    In the Native Method, it is the return value that indicates whether an exception has occurred.
   </p>
 <pre>
 return 0;
@@ -680,7 +680,7 @@ package MyTimeInfo : pointer_t {
 }
 </pre>
   <p>
-    It defines a new constructor, a method that takes seconds information called sec, and a destructor called DESTROY. These are Native Subroutine.
+    It defines a new constructor, a method that takes seconds information called sec, and a destructor called DESTROY. These are Native Method.
   </p>
   <p>
     Next is the definition on the C language side.
@@ -772,170 +772,6 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
     Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by alloc_memory_block_zero with the free_memory_block function. Releases the memory and decrements the memory block count by one.
   </p>
 
-  <h2 id="native-api-index">Native API index</h2>
-  <p>
-    The Native API has an index that corresponds to the name. This number is permanently maintained for binary compatibility with Native Subroutine. When adding a new API, it will be added at the end.
-  </p>
-
-<pre>
-0 package_vars_heap
-1 object_header_byte_size
-2 object_weaken_backref_head_offset
-3 object_ref_count_offset
-4 object_basic_type_id_offset
-5 object_type_dimension_offset
-6 object_runtime_type_category_offset
-7 object_flag_offset
-8 object_length_offset
-9 byte_object_basic_type_id
-10 short_object_basic_type_id
-11 int_object_basic_type_id
-12 long_object_basic_type_id
-13 float_object_basic_type_id
-14 double_object_basic_type_id
-15 compiler
-16 exception_object
-17 native_mortal_stack
-18 native_mortal_stack_top
-19 native_mortal_stack_capacity
-20 get_basic_type_id
-21 get_field_id
-22 get_field_offset
-23 get_package_var_id
-24 get_sub_id
-25 get_method_sub_id
-26 new_object_raw
-27 new_object
-28 new_byte_array_raw
-29 new_byte_array
-30 new_short_array_raw
-31 new_short_array
-32 new_int_array_raw
-33 new_int_array
-34 new_long_array_raw
-35 new_long_array36    new_float_array_raw
-37 new_float_array
-38 new_double_array_raw
-39 new_double_array
-40 new_object_array_raw
-41 new_object_array
-42 new_muldim_array_raw
-43 new_muldim_array
-44 new_mulnum_array_raw
-45 new_mulnum_array
-46 new_string_nolen_raw
-47 new_string_nolen
-48 new_string_raw
-49 new_string
-50 new_pointer_raw
-51 new_pointer
-52 concat_raw
-53 concat
-54 new_stack_trace_raw
-55 new_stack_trace
-56 length
-57 get_elems_byte
-58 get_elems_short
-59 get_elems_int
-60 get_elems_long
-61 get_elems_float
-62 get_elems_double
-63 get_elem_object
-64 set_elem_object
-65 get_field_byte
-66 get_field_short
-67 get_field_int
-68 get_field_long
-69 get_field_float
-70 get_field_double
-71 get_field_object
-72 set_field_byte
-73 set_field_short
-74 set_field_int
-75 set_field_long
-76 set_field_float
-77 set_field_double
-78 set_field_object
-79 get_package_var_byte
-80 get_package_var_short
-81 get_package_var_int
-82 get_package_var_long
-83 get_package_var_float
-84 get_package_var_double
-85 get_package_var_object
-86 set_package_var_byte
-87 set_package_var_short
-88 set_package_var_int
-89 set_package_var_long
-90 set_package_var_float
-91 set_package_var_double
-92 set_package_var_object
-93 get_pointer
-94 set_pointer
-95 call_sub
-96 get_exception
-97 set_exception
-98 get_ref_count
-99 inc_ref_count
-100 dec_ref_count
-101 enter_scope
-102 push_mortal
-103 leave_scope
-104 remove_mortal
-105 is_type
-106 has_callback
-107 get_object_basic_type_id
-108 get_object_type_dimension
-109 weaken
-110 isweak
-111 unweaken
-112 alloc_memory_block_zero
-113 free_memory_block
-114 get_memory_blocks_count
-115 get_type_name_raw
-116 get_type_name
-117 new_env
-118 free_env
-119 memry_blocks_count
-120 get_chars
-121 die
-122 new_object_by_name
-123 new_pointer_by_name
-124 set_field_byte_by_name
-125 set_field_short_by_name
-126 set_field_int_by_name
-127 set_field_long_by_name
-128 set_field_float_by_name
-129 set_field_double_by_name
-130 set_field_object_by_name
-131 get_field_byte_by_name
-132 get_field_short_by_name
-133 get_field_int_by_name
-134 get_field_long_by_name
-135 get_field_float_by_name
-136 get_field_double_by_name
-137 get_field_object_by_name
-138 set_package_var_byte_by_name
-139 set_package_var_short_by_name
-140 set_package_var_int_by_name
-141 set_package_var_long_by_name
-142 set_package_var_float_by_name
-143 set_package_var_double_by_name
-144 set_package_var_object_by_name
-145 get_package_var_byte_by_name
-146 get_package_var_short_by_name
-147 get_package_var_int_by_name
-148 get_package_var_long_by_name
-149 get_package_var_float_by_name
-150 get_package_var_double_by_name
-151 get_package_var_object_by_name
-152 call_sub_by_name
-153 call_poly_sub_by_name
-154 get_field_string_chars_by_name
-154 get_field_string_chars_by_name
-155 any_object_basic_type_id
-</pre>
-
   <h2 id="native-api-call">Call Native API</h2>
   <p>
     Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
@@ -946,7 +782,7 @@ int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 
 =end html
 
-=head1 LIST OF NATIVE APIS
+=head1 List of Native APIs
 
 =head2 package_vars_heap
 
@@ -2604,3 +2440,164 @@ Example:
 
 
   void* any_object_basic_type_id;
+
+=head1 Native API indexes
+
+Native APIs have indexes which correspond to the names. These indexes are permanently same for the binary compatibility. When a new Native API is added, it will be added to the end.
+
+  0 package_vars_heap
+  1 object_header_byte_size
+  2 object_weaken_backref_head_offset
+  3 object_ref_count_offset
+  4 object_basic_type_id_offset
+  5 object_type_dimension_offset
+  6 object_runtime_type_category_offset
+  7 object_flag_offset
+  8 object_length_offset
+  9 byte_object_basic_type_id
+  10 short_object_basic_type_id
+  11 int_object_basic_type_id
+  12 long_object_basic_type_id
+  13 float_object_basic_type_id
+  14 double_object_basic_type_id
+  15 compiler
+  16 exception_object
+  17 native_mortal_stack
+  18 native_mortal_stack_top
+  19 native_mortal_stack_capacity
+  20 get_basic_type_id
+  21 get_field_id
+  22 get_field_offset
+  23 get_package_var_id
+  24 get_sub_id
+  25 get_method_sub_id
+  26 new_object_raw
+  27 new_object
+  28 new_byte_array_raw
+  29 new_byte_array
+  30 new_short_array_raw
+  31 new_short_array
+  32 new_int_array_raw
+  33 new_int_array
+  34 new_long_array_raw
+  35 new_long_array36    new_float_array_raw
+  37 new_float_array
+  38 new_double_array_raw
+  39 new_double_array
+  40 new_object_array_raw
+  41 new_object_array
+  42 new_muldim_array_raw
+  43 new_muldim_array
+  44 new_mulnum_array_raw
+  45 new_mulnum_array
+  46 new_string_nolen_raw
+  47 new_string_nolen
+  48 new_string_raw
+  49 new_string
+  50 new_pointer_raw
+  51 new_pointer
+  52 concat_raw
+  53 concat
+  54 new_stack_trace_raw
+  55 new_stack_trace
+  56 length
+  57 get_elems_byte
+  58 get_elems_short
+  59 get_elems_int
+  60 get_elems_long
+  61 get_elems_float
+  62 get_elems_double
+  63 get_elem_object
+  64 set_elem_object
+  65 get_field_byte
+  66 get_field_short
+  67 get_field_int
+  68 get_field_long
+  69 get_field_float
+  70 get_field_double
+  71 get_field_object
+  72 set_field_byte
+  73 set_field_short
+  74 set_field_int
+  75 set_field_long
+  76 set_field_float
+  77 set_field_double
+  78 set_field_object
+  79 get_package_var_byte
+  80 get_package_var_short
+  81 get_package_var_int
+  82 get_package_var_long
+  83 get_package_var_float
+  84 get_package_var_double
+  85 get_package_var_object
+  86 set_package_var_byte
+  87 set_package_var_short
+  88 set_package_var_int
+  89 set_package_var_long
+  90 set_package_var_float
+  91 set_package_var_double
+  92 set_package_var_object
+  93 get_pointer
+  94 set_pointer
+  95 call_sub
+  96 get_exception
+  97 set_exception
+  98 get_ref_count
+  99 inc_ref_count
+  100 dec_ref_count
+  101 enter_scope
+  102 push_mortal
+  103 leave_scope
+  104 remove_mortal
+  105 is_type
+  106 has_callback
+  107 get_object_basic_type_id
+  108 get_object_type_dimension
+  109 weaken
+  110 isweak
+  111 unweaken
+  112 alloc_memory_block_zero
+  113 free_memory_block
+  114 get_memory_blocks_count
+  115 get_type_name_raw
+  116 get_type_name
+  117 new_env
+  118 free_env
+  119 memry_blocks_count
+  120 get_chars
+  121 die
+  122 new_object_by_name
+  123 new_pointer_by_name
+  124 set_field_byte_by_name
+  125 set_field_short_by_name
+  126 set_field_int_by_name
+  127 set_field_long_by_name
+  128 set_field_float_by_name
+  129 set_field_double_by_name
+  130 set_field_object_by_name
+  131 get_field_byte_by_name
+  132 get_field_short_by_name
+  133 get_field_int_by_name
+  134 get_field_long_by_name
+  135 get_field_float_by_name
+  136 get_field_double_by_name
+  137 get_field_object_by_name
+  138 set_package_var_byte_by_name
+  139 set_package_var_short_by_name
+  140 set_package_var_int_by_name
+  141 set_package_var_long_by_name
+  142 set_package_var_float_by_name
+  143 set_package_var_double_by_name
+  144 set_package_var_object_by_name
+  145 get_package_var_byte_by_name
+  146 get_package_var_short_by_name
+  147 get_package_var_int_by_name
+  148 get_package_var_long_by_name
+  149 get_package_var_float_by_name
+  150 get_package_var_double_by_name
+  151 get_package_var_object_by_name
+  152 call_sub_by_name
+  153 call_poly_sub_by_name
+  154 get_field_string_chars_by_name
+  154 get_field_string_chars_by_name
+  155 any_object_basic_type_id
