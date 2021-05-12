@@ -1,45 +1,20 @@
 =head1 NAME
 
-SPVM::Document::NativeAPI - SPVM Native API
+SPVM::Document::NativeAPI - SPVM Native APIs
 
 =head1 DESCRIPTION
 
-SPVM Native API is C APIs used in APIs SPVM Native Method.
+SPVM Native APIs is C APIs used in SPVM native method. This document describes the way to define native methods, and shows the all of SPVM Native APIs.
 
-=head1 WHAT IS SPVM NATIVE API?
+If you want to know the list of Native APIs, see L<List of Native APIs|/"List-of-Native-APIs">. If you see examples of SPVM Native APIs, see L<Examples using SPVM Native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>.
+
+=head1 How to define SPVM native method?
 
 =begin html
 
+<h2>Native Method Declaration</h2>
 
-SPVM Native API is C API which can be used in SPVM Native Method. SPVM Native API is a part of SPVM Specification.
-
-<ul class="toc">
-  <li><a href="#native-api-summary">What is SPVM Native API</a></li>
-  <li><a href="#native-api-native-sub-declaration">SPVM Native Method Declaration</a></li>
-  <li><a href="#native-api-native-configuration">SPVM Native Config File</a></li>
-  <li><a href="#native-api-native-sub-definition">SPVM Native Method Definition</a></li>
-  <li><a href="#native-api-native-sub-compile">Compile Native Method</a></li>
-  <li><a href="#native-api-native-sub-get-arg">Arguments of Native Method</a></li>
-  <li><a href="#native-api-native-sub-set-retval">Return Value of Native Method</a></li>
-  <li><a href="#native-api-native-call-sub">Call SPVM Subroutine</a></li>
-  <li><a href="#native-api-native-sub-scope">Native Method Scope</a></li>
-  <li><a href="#native-api-native-sub-exception">Exception of Native Method</a></li>
-  <li><a href="#native-api-use-pointer-type">Pointer Type</a></li>
-</ul>
-  
-<h2 id="native-api-summary">What is the SPVM Native API?</h2>
-
-<b>SPVM Native API</b> is C API which can be used in SPVM Native Method.
-
-<ul>
-  <li><a href="#native-api-list">List of SPVM Native APIs</a></li>
-</ul>
-
-In this document, in addition to SPVM Native API, <a href="#native-api-native-sub-declaration">SPVM Native Method Declaration</a>, <a href="#native-api-native-sub-definition">SPVM Native Method Definition</a>, How to receive Arguments, How to return value is described.
-
-<h2 id="native-api-native-sub-declaration">SPVM Native Method Declaration</h2>
-
-<b>SPVM Native Method Declaration</b> is written using Subroutine Descriptor "native" in SPVM module file.
+<b>SPVM Native Method Declaration</b> is written using Method Descriptor "native" in SPVM module file.
 
 <pre>
 # Foo/Bar.spvm
@@ -50,7 +25,7 @@ package Foo::Bar {
 
 SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
 
-Multiple Native Methods can be declared. Normal Subroutine can be defined with Native Method.
+Multiple Native Methods can be declared. Normal Method can be defined with Native Method.
 
 <pre>
 # Foo/Bar.spvm
@@ -539,7 +514,7 @@ stack[0].dval = retval_x;
 stack[1] .dval = retval_y;
 </pre>
 
-  <h2 id="native-api-native-call-sub">Call SPVM Subroutine</h2>
+  <h2 id="native-api-native-call-sub">Call SPVM Method</h2>
   <p>
     To call the SPVM subroutine, first use the <a href="#native-api-native-sub-api-sub_id">sub_id</a> function or the <a href = "# native-api-native- Get the ID of the subroutine using the sub-api-method_sub_id ">method_sub_id</a> function
   </p>
@@ -2608,3 +2583,12 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   155 any_object_basic_type_id
   156 dump_raw
   157 dump
+
+=head1 Examples
+
+=over 2
+
+=item * L<Examples using SPVM Native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>
+
+=back
+

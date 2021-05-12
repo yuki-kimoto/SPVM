@@ -22,7 +22,7 @@ SPVM Language Specification.
   <li><a href="#language-module">Module</a></li>
   <li><a href="#language-package-var">Package Variable</a></li>
   <li><a href="#language-field">Field</a></li>
-  <li><a href="#language-sub">Subroutine</a></li>
+  <li><a href="#language-method">Method</a></li>
   <li><a href="#language-enum">Enumeration</a></li>
   <li><a href="#language-begin-block">INIT Block</a></li>
   <li><a href="#language-lex-var">Lexical Variable</a></li>
@@ -223,7 +223,7 @@ Space Character has no meaning in the program execution.
 
 <h3 id="language-lex-identifier">Identifiers</h3><!-- 2019/2/27 maybe ok-->
 
-Identifiers in SPVM are <a href="#language-lex-identifier-package-name">Package Name</a>, <a href="#language-lex-identifier-sub-name">Subroutine Name</a>, <a href="#language-lex-identifier-field-name">Field Name</a>, <a href="#language-lex-identifier-package-var-name">Package Variable Name</a>, and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a>.
+Identifiers in SPVM are <a href="#language-lex-identifier-package-name">Package Name</a>, <a href="#language-lex-identifier-sub-name">Method Name</a>, <a href="#language-lex-identifier-field-name">Field Name</a>, <a href="#language-lex-identifier-package-var-name">Package Variable Name</a>, and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a>.
 
 <h3 id="language-lex-identifier-package-name">Package Name</h3><!-- 2021-02-08 updated -->
 
@@ -262,16 +262,16 @@ Foo__Bar
 Foo::bar
 </pre>
 
-<h3 id="language-lex-identifier-sub-name">Subroutine Name</h3><!-- 2019/2/27 almost ok-->
+<h3 id="language-lex-identifier-sub-name">Method Name</h3><!-- 2019/2/27 almost ok-->
 
-Subroutine Name is one or more alphabet(a-zA-Z), number(0-9), or underscore(_) of ASCII Code.
+Method Name is one or more alphabet(a-zA-Z), number(0-9), or underscore(_) of ASCII Code.
 
 First character must not number character.
 
 Underscore cannot be continued twice.
 
 <pre>
-# Valid Subroutine Name
+# Valid Method Name
 FOO
 FOO_BAR3
 foo
@@ -279,7 +279,7 @@ foo_bar
 _foo
 _foo_bar_
 
-# Invalid Subroutine Name
+# Invalid Method Name
 foo__bar
 </pre>
 
@@ -1230,7 +1230,7 @@ package Point : public {
 }
 </pre>
 
-In direct children of the package block, <a href="#language-module-use">use</a>, <a href="#language-package-var-definition">our</a>, <a href="#language-field-definition">has</a>, <a href="#language-enum-definition">enum</a>, <a href="#language-sub-definition">sub</a> can be defined.
+In direct children of the package block, <a href="#language-module-use">use</a>, <a href="#language-package-var-definition">our</a>, <a href="#language-field-definition">has</a>, <a href="#language-enum-definition">enum</a>, <a href="#language-method-definition">sub</a> can be defined.
 
 <pre>
 package Foo {
@@ -1249,7 +1249,7 @@ package Foo {
     CONST_VAL2,
   }
 
-  # Subroutine Definition
+  # Method Definition
   sub foo : int ($num : int) {
 
   }
@@ -1329,7 +1329,7 @@ If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, Compile
 
 If the package is <a href="#language-type-class">Class Type</a>, the package defined a destructor.
 
-Destructor is a special <a href="#language-sub">Subroutine</a> called when the object of this class is freed.
+Destructor is a special <a href="#language-method">Method</a> called when the object of this class is freed.
 
 Destructor name must be "DESTROY".
 
@@ -1361,11 +1361,11 @@ package Foo {
 
 <h3 id="language-package-allow-package-access">Allow Package Access</h3>
 
-By default, private Subroutines, Fields, and Package Variables cannot be accessed from outside the Package.
+By default, private Methods, Fields, and Package Variables cannot be accessed from outside the Package.
 
 Also, Private Package cannot <a href="#language-expression-new">Create Object</a> from outside of Package.
 
-If the package allow other package, the other package can access private Subroutines, Fields, and Package Variables, and can <a href="#language-expression-new">Create Object</a> of the package.
+If the package allow other package, the other package can access private Methods, Fields, and Package Variables, and can <a href="#language-expression-new">Create Object</a> of the package.
 
 <pre>
 allow PACKAGE_NAME;
@@ -1379,7 +1379,7 @@ package Foo {
 }
 </pre>
 
-In this example, Bar can access the private Subroutine, Field, and Package Variable of Foo can be accessed and can Create Object of Foo.
+In this example, Bar can access the private Method, Field, and Package Variable of Foo can be accessed and can Create Object of Foo.
 
 Specifying the module of <b>allow</b> also loads the module by <a href="#language-module-use">use</a> at the same time.
 
@@ -1507,7 +1507,7 @@ else {
 
 <h3 id="language-module-function-import">Function Import</h3>
 
-Subroutine which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
+The Method which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
 
 <pre>
 use Foo(method1, method2);
@@ -1798,7 +1798,7 @@ See <a href="#language-expression-set-field">Set Field Value</a> to set field of
 
 <b>2. Multi Numeric Field Access</b>
 
-Multi Numeric Field Access is Field Access from the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>. The value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> is allocated Callstack of Subroutine.
+Multi Numeric Field Access is Field Access from the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>. The value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> is allocated Callstack of Method.
 
 <pre>
 my $z : SPVM::Complex_2d;
@@ -1825,21 +1825,21 @@ See <a href="#language-expression-get-field-multi-numeric-deref">Get Multi Numer
 
 See <a href="#language-expression-set-field-multi-numeric-deref">Set Multi Numeric Field Value via Dereference</a> to set Multi Numeric Field via Dereference.
 
-<h2 id="language-sub">Subroutine</h2>
+<h2 id="language-method">Method</h2>
 <ul>
-  <li><a href="#language-sub-definition">Subroutine Definition</a></li>
-  <li><a href="#language-sub-descriptor">Subroutine Descriptor</a></li>
-  <li><a href="#language-sub-native">Native Subroutine</a></li>
-  <li><a href="#language-sub-precompiled">Precompiled Subroutine</a></li>
-  <li><a href="#language-sub-constant">Constant Subroutine</a></li>
-  <li><a href="#language-sub-method">Method</a></li>
-  <li><a href="#language-sub-signature">Signature</a></li>
-  <li><a href="#language-sub-stack">Subroutine Callstack</a></li>
+  <li><a href="#language-method-definition">Method Definition</a></li>
+  <li><a href="#language-method-descriptor">Method Descriptor</a></li>
+  <li><a href="#language-method-native">Native Method</a></li>
+  <li><a href="#language-method-precompiled">Precompiled Method</a></li>
+  <li><a href="#language-method-constant">Constant Method</a></li>
+  <li><a href="#language-method-method">Method</a></li>
+  <li><a href="#language-method-signature">Signature</a></li>
+  <li><a href="#language-method-stack">Method Callstack</a></li>
 </ul>
 
-<h3 id="language-sub-definition">Subroutine Definition</h3>
+<h3 id="language-method-definition">Method Definition</h3>
 
-"sub" Keyword defines Subroutine.
+"sub" Keyword defines Method.
 
 <pre>
 sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME () {
@@ -1850,11 +1850,11 @@ sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAM
 }
 </pre>
 
-Subroutine must be defined directly under <a href="#language-package-definition">Package Definition</a>.
+Method must be defined directly under <a href="#language-package-definition">Package Definition</a>.
 
-Subroutine name must be follow the rule of <a href="#language-lex-identifier-sub-name">Subroutine Name</a>.
+Method name must be follow the rule of <a href="#language-lex-identifier-sub-name">Method Name</a>.
 
-Subroutine Name is allowed as same as <a href="#language-lex-keyword">Keyword</a>. 
+Method Name is allowed as same as <a href="#language-lex-keyword">Keyword</a>. 
 
 Type of Return Value must be <a href="#language-type-void">void Type</a>, <a href="#language-type-numeric">Numeric Type</a>, or <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
 
@@ -1864,11 +1864,11 @@ Minimal Argument Count is 0. Max Argument Count is 255.
 
 Type of Argument must be <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-object">Object Type</a>, or <a href="#language-type-reference">Reference Type</a>, otherwise Compile Error occurs.
 
-The defined Subroutine can be called. See <a href="#language-expression-callsub">Subroutine Call</a> about calling Subroutine, .
+The defined Method can be called. See <a href="#language-expression-callsub">Method Call</a> about calling Method, .
 
-<a href="#language-scope-block-statement-sub">Subroutine Block</a> can have zero or more Statements.
+<a href="#language-scope-block-statement-sub">Method Block</a> can have zero or more Statements.
 
-Subroutine Definition can have <a href="#language-sub-descriptor">Subroutine Descriptor</a>.
+Method Definition can have <a href="#language-method-descriptor">Method Descriptor</a>.
 
 <pre>
 DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME () {
@@ -1898,14 +1898,14 @@ sub sprintf : string ($format : string, $values : object[]...) {
 
 }
 
-# Call Variable Length Argument Subroutine with multi values.
+# Call Variable Length Argument Method with multi values.
 sprintf("Value %d %f", 1, 2.0);
 </pre>
 
 Variable Length Argument can recieve Array.
 
 <pre>
-# Call Variable Length Argument Subroutine with Array.
+# Call Variable Length Argument Method with Array.
 sprintf("Value  %d %f", [(object)1, 2.0]);
 </pre>
 
@@ -1915,9 +1915,9 @@ If you want to treat the value of Array as an individual element of the variable
 sprintf("aaa %p", (object)[(object)1, 2.0]);
 </pre>
 
-<h3 id="language-sub-descriptor">Subroutine Descriptor</h3>
+<h3 id="language-method-descriptor">Method Descriptor</h3>
 
-List of Subroutine Descriptor.
+List of Method Descriptor.
 
 <table>
   <tr>
@@ -1933,30 +1933,30 @@ List of Subroutine Descriptor.
       <b>native</b>
     </td>
     <td>
-      This Subroutine is <a href="#language-sub-native">Native Subroutine</a>. 
+      This Method is <a href="#language-method-native">Native Method</a>. 
     </td>
   </tr>
 </table>
 
-<h3 id="language-sub-native">Native Subroutine</h3>
+<h3 id="language-method-native">Native Method</h3>
 
-Native Subroutine is Subroutine that call function written in Native Language(C, C++, etc).
+Native Method is Method that call function written in Native Language(C, C++, etc).
 
-See <a href="/native-api.html">SPVM Native API</a> Native Subroutine.
+See <a href="/native-api.html">SPVM Native API</a> Native Method.
 
-<h3 id="language-sub-precompiled">Precompiled Subroutine</h3>
+<h3 id="language-method-precompiled">Precompiled Method</h3>
 
-If the Package has "precompile" descriptor, the subroutines of the package become Precompiled Subroutine.
+If the Package has "precompile" descriptor, the subroutines of the package become Precompiled Method.
 
-Precompiled Subroutine is translated into C99 Compliant source code and converted into machine code.
+Precompiled Method is translated into C99 Compliant source code and converted into machine code.
 
 The precompiled subroutines are C code, so you can get performance of C language.
 
-Precompiled Subroutine needs Build Directory described in <a href="/native-api.html">SPVM Native API</a>
+Precompiled Method needs Build Directory described in <a href="/native-api.html">SPVM Native API</a>
 
-<h3 id="language-sub-constant">Constant Subroutine</h3>
+<h3 id="language-method-constant">Constant Method</h3>
 
-Constant Subroutine is a Subroutine that Return Type is <a href="#language-type-numeric">Numeric Type</a> and returns Constant Value.
+Constant Method is a Method that Return Type is <a href="#language-type-numeric">Numeric Type</a> and returns Constant Value.
 
 <pre>
 sub foo : int () { return 5; }
@@ -1965,18 +1965,18 @@ sub foo : float () { return 5.0f; }
 sub foo : double () { return 5.0; }
 </pre>
 
-Inline Expansion optimization is performed to Constant Subroutine.
+Inline Expansion optimization is performed to Constant Method.
 
 Note that SPVM does not perform constant convolution optimization, so if a constant is calculated, it will not performe Inline Expansion.
 
 <pre>
-# This is not Constant Subroutine.  Inline Expansion is not performed
+# This is not Constant Method.  Inline Expansion is not performed
 sub foo : int () { return 5 + 3; }
 </pre>
 
-<h3 id="language-sub-method">Method</h3>
+<h3 id="language-method-method">Method</h3>
 
-Method is Subroutine that has <a href="#language-type-self">self Type</a> as its first argument.
+Method is Method that has <a href="#language-type-self">self Type</a> as its first argument.
 
 <pre>
 sub SUB_NAME : TYPE  ($self : self, ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
@@ -1986,13 +1986,13 @@ sub SUB_NAME : TYPE  ($self : self, ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUME
 
 <a href="#language-type-self">self Type</a> must be first argument.
 
-Method can be called from the object created by <a href="#language-expression-new">new</a>. See <a href="#language-expression-callsub">Subroutine Call</a> for Method Call.
+Method can be called from the object created by <a href="#language-expression-new">new</a>. See <a href="#language-expression-callsub">Method Call</a> for Method Call.
 
 $self is called Invocant.
 
-<h3 id="language-sub-signature">Signature</h3>
+<h3 id="language-method-signature">Signature</h3>
 
-Signature is a string that follow the following rule sequence of Subroutine Retrun Value and arguments arranged according to the following rules. Arguments do not need to exist. There cannot be spaces between them.
+Signature is a string that follow the following rule sequence of Method Retrun Value and arguments arranged according to the following rules. Arguments do not need to exist. There cannot be spaces between them.
 
 1. RETURN_VALUE_TYPE
 
@@ -2005,28 +2005,28 @@ Signature is a string that follow the following rule sequence of Subroutine Retr
 <b>Signature Example:</b>
 
 <pre>
-# Subroutine Definition
+# Method Definition
 sub foo : int ($num1 : double, $num2 : long[])
 
 # Signature
 int(double,long[])
 
-# Subroutine Definition
+# Method Definition
 sub foo : void ()
 
 # Signature
 void()
 </pre>
 
-Signature is not used in SPVM programs. Signature is used when calling the SPVM Subroutine from <a href="/native-api.html">SPVM Native API</a>.
+Signature is not used in SPVM programs. Signature is used when calling the SPVM Method from <a href="/native-api.html">SPVM Native API</a>.
 
-<h3 id="language-sub-stack">Subroutine Callstack</h3>
+<h3 id="language-method-stack">Method Callstack</h3>
 
-Subroutine Callstack is memory area allocated in each subroutine call.
+Method Callstack is memory area allocated in each subroutine call.
 
 
 <p>
-  Subroutine Callstack save the folloing information.
+  Method Callstack save the folloing information.
 </p>
 <p>
   1. Memroy area for <a href="#language-lex-var">Lexical Variable</a>
@@ -2051,7 +2051,7 @@ Subroutine Callstack is memory area allocated in each subroutine call.
 
 <h3 id="language-enum-definition">Enumeration Definition</h3>
 
-Enumeration Definition is a syntax to define multiple <a href="#language-sub-constant">Constant Subroutines</a> easily.
+Enumeration Definition is a syntax to define multiple <a href="#language-method-constant">Constant Methods</a> easily.
 
 <pre>
 # Enumeration Definition
@@ -2086,7 +2086,7 @@ enum {
 }
 </pre>
 
-Enumeration is an alias for <a href="#language-sub-constant">Constant Subroutine</a> that Return Type is <a href="#language-type-int">int Type</a>. It is equivalent to the following Subroutine Definition:
+Enumeration is an alias for <a href="#language-method-constant">Constant Method</a> that Return Type is <a href="#language-type-int">int Type</a>. It is equivalent to the following Method Definition:
 
 <pre>
 sub FLAG1 : int () { return 0; }
@@ -2154,7 +2154,7 @@ If both "public" and "private" Descriptors are specified, Compile Error occurs.
 
 <h3 id="language-enum-call">Enumeration Call</h3>
 
-Enumeration is an alias for <a href="#language-sub-constant">Constant Subroutine</a>, so it can be called in exactly the same way as Subroutine call.
+Enumeration is an alias for <a href="#language-method-constant">Constant Method</a>, so it can be called in exactly the same way as Method call.
 
 <pre>
 my $flag1 = Foo->FLAG1;
@@ -2219,7 +2219,7 @@ INIT {
 
 <a href="#language-statement-return">return Statement</a> cannot be written in INIT Block.
 
-Internally, INIT Block is a <a href="#language-sub">Subroutine</a> that Return Type is <a href="#language-type-void">void Type</a> and has no arguments.
+Internally, INIT Block is a <a href="#language-method">Method</a> that Return Type is <a href="#language-type-void">void Type</a> and has no arguments.
 
 You can define multiple INIT Blocks.
 
@@ -2398,7 +2398,7 @@ There are <a href="#language-scope-scope-block">Scope Block</a> that creates a s
 
 <ul>
   <li><a href="#language-scope-block-statement-simple">Simple Block</a></li>
-  <li><a href="#language-scope-block-statement-sub">Subroutine Block</a></li>
+  <li><a href="#language-scope-block-statement-sub">Method Block</a></li>
   <li><a href="#language-scope-block-statement-eval">eval Block</a></li>
   <li><a href="#language-scope-block-statement-if">if Block</a></li>
   <li><a href="#language-scope-block-statement-elsif">elsif Block</a></li>
@@ -2419,12 +2419,12 @@ Simple Block is a scope block.
 }
 </pre>
 
-<h3 id="language-scope-block-statement-sub">Subroutine Block</h3>
+<h3 id="language-scope-block-statement-sub">Method Block</h3>
 
-Subroutine Block is a scope block.
+Method Block is a scope block.
 
 <pre>
-# Subroutine Block
+# Method Block
 sub foo : int () {
 
 }
@@ -2539,9 +2539,9 @@ If <a href="#language-type-long">long Type</a> Integer Literal  exceeds the rang
 
 "_" can be used as a Separator. Separator has no meaning.
 
-If Integer Literal is assigned to a <a href="#language-type-byte">byte Type</a> variable or passed to <a href="#language-type-byte">byte Type</a> Subroutine Argument, and does not exceed the range of numbers that can be represented by <a href="#language-type-byte">byte Type</a>, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to <a href="#language-type-byte">byte Type</a> value. If it exceeds the range, Compile Error will occur.
+If Integer Literal is assigned to a <a href="#language-type-byte">byte Type</a> variable or passed to <a href="#language-type-byte">byte Type</a> Method Argument, and does not exceed the range of numbers that can be represented by <a href="#language-type-byte">byte Type</a>, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to <a href="#language-type-byte">byte Type</a> value. If it exceeds the range, Compile Error will occur.
 
-If Integer Literal is assigned to a <a href="#language-type-short">short Type</a> variable or passed to <a href="#language-type-short">short Type</a> Subroutine Argument, and does not exceed the range of numbers that can be represented by <a href="#language-type-short">short Type</a>, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to <a href="#language-type-short">short Type</a> value. If it exceeds the range, Compile Error will occur.
+If Integer Literal is assigned to a <a href="#language-type-short">short Type</a> variable or passed to <a href="#language-type-short">short Type</a> Method Argument, and does not exceed the range of numbers that can be represented by <a href="#language-type-short">short Type</a>, <a href = "#language-type-convertion-numeric-narrowing">Numeric Narrowing Type Conversion</a> is applied and the value converted to <a href="#language-type-short">short Type</a> value. If it exceeds the range, Compile Error will occur.
 
 <b>Integer Literal Example:</b>
 
@@ -3169,9 +3169,9 @@ The maximum number of Fields is 255.
 
 Multi Numeric Type can be used as <a href="#language-type">Type</a> of <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>.
 
-Multi Numeric Type can be used as an argument <a href="#language-type">Type</a> in <a href="#language-sub-definition">Subroutine Definition</a> .
+Multi Numeric Type can be used as an argument <a href="#language-type">Type</a> in <a href="#language-method-definition">Method Definition</a> .
 
-Multi Numeric Type can be used as <a href="#language-type">Type</a> of Return Value in <a href="#language-sub-definition">Subroutine Definition</a>.
+Multi Numeric Type can be used as <a href="#language-type">Type</a> of Return Value in <a href="#language-method-definition">Method Definition</a>.
 
 Multi Numeric Type can be used as <a href="#language-type-basic">Basic Type</a> of <a href="#language-type-array">Array Type</a> .
 
@@ -3263,7 +3263,7 @@ use Complex_2d;
 </pre>
 
 
-Next is <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>. Lexical Variable Declaration create continuous area for fields of Multi Numeric Type Value on <a href="#language-sub-stack">Subroutine Callstack</a>. All fields of of Multi Numeric Type Value are initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
+Next is <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>. Lexical Variable Declaration create continuous area for fields of Multi Numeric Type Value on <a href="#language-method-stack">Method Callstack</a>. All fields of of Multi Numeric Type Value are initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
 
 <pre>
 my $point : Point_3i;
@@ -3347,15 +3347,15 @@ my $point_ref : Point_3d& = \$point;
 
 Target of Reference Operator is Variable of <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. <a href="#language-type-object">Object Type</a> Variable or <a href="#language-literal">Literal</a> can't be target of Reference Operator.
 
-<a href="#language-type-ref">Reference Type</a> can be used in Subroutine Argument.
+<a href="#language-type-ref">Reference Type</a> can be used in Method Argument.
 
 <pre>
-# Subroutine Definition
+# Method Definition
 sub sum : void ($out_ref : int&, $in1 : int, $in2 : int) {
   $$out_ref = $in1 + $in2;
 }
 
-# Subroutine Call
+# Method Call
 my $num1 = 1;
 my $num2 = 2;
 my $out : int;
@@ -3415,7 +3415,7 @@ $point_ref->{x} = 1;
   <li><a href="#language-expression-new">Create Object</a></li>
   <li><a href="#language-expression-new-array">Create Array</a></li>
   <li><a href="#language-expression-array-init">Array Initialization</a></li>
-  <li><a href="#language-expression-callsub">Subroutine Call</a></li>
+  <li><a href="#language-expression-callsub">Method Call</a></li>
   <li><a href="#language-expression-callsub-static-method-call">Static Method Call</a></li>
   <li><a href="#language-expression-callsub-method-call">Method Call</a></li>
   <li><a href="#language-expression-callsub-function-call">Function Call</a></li>
@@ -3932,19 +3932,19 @@ my $key_values = {};
 my $key_values = {foo => 1, bar => "Hello"};
 </pre>
 
-<h3 id="language-expression-callsub">Subroutine Call</h3>
+<h3 id="language-expression-callsub">Method Call</h3>
 
-Subroutines defined by <a href="#language-sub-definition">Subroutine Definition</a> can be called from program. There are three types of subroutine calls. <b>Static Method Call</b> and <b>Method Call</b>.
+Methods defined by <a href="#language-method-definition">Method Definition</a> can be called from program. There are three types of subroutine calls. <b>Static Method Call</b> and <b>Method Call</b>.
 
 Defined subroutine can be called by Static Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
 
 <pre>
-PackageName->SubroutineName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+PackageName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 
 The arguments max count is 255.
 
-If the number of arguments does not match the number of arguments defined in the Subroutine Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Subroutine Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs.
+If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs.
 
 <b>Static Method Call Example</b>
 
@@ -3954,14 +3954,14 @@ my $ret = Foo->bar(1, 2, 3);
 
 <h3 id="language-expression-callsub-function-call">Function Call</h3>
 
-Subroutine which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
+Method which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
 
 <pre>
-use Foo(SubroutineName);
+use Foo(MethodName);
 </pre>
 
 <pre>
-SubroutineName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 
 Function Call is <a href="#language-expression">Expression</a>.
@@ -3980,7 +3980,7 @@ package Foo {
 
 <h3 id="language-expression-callsub-method">Method Call</h3>
 <p>
-  Method Call is a method to call Subroutine which is <a href="#language-sub-method">Method</a>. In <a href="#language-sub-definition">Subroutine Definition</a>, the first argument is <a href="#language-type-self">self Type</a> If the argument of> is specified, it becomes Method.
+  Method Call is a method to call Method which is <a href="#language-method-method">Method</a>. In <a href="#language-method-definition">Method Definition</a>, the first argument is <a href="#language-type-self">self Type</a> If the argument of> is specified, it becomes Method.
 </p>
 <p>
   Method Call can be done with the following syntax using the object created by <a href="#language-expression-new">Create Object</a>.
@@ -3989,7 +3989,7 @@ package Foo {
 OBJECT_EXPRESSION->SUB_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 <p>
-  Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Subroutine Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Subroutine Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
+  Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
 </p>
 <p>
   Method Call returns Return Value if Return Value is other than <a href="#language-type-void">void Type</a>.
@@ -4005,7 +4005,7 @@ my $point = new Point;
 $point->set_x(3);
 </pre>
 <p>
-  Since the object created by <a href="#language-sub-new-callback-object">Create Callback Object</a> is a normal object, you can call Method.
+  Since the object created by <a href="#language-method-new-callback-object">Create Callback Object</a> is a normal object, you can call Method.
 </p>
 <pre>
 OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
@@ -5732,7 +5732,7 @@ switch (CONDITION_EXPRESSION) {
   As the condition Expression, <a href="#language-expression">Expression</a> can be specified. <a href="#language-type-convertion-bool">Bool Type Conversion</a> is executed for the condition Expression.
 </p>
 <p>
-  The constants specified in case Statement are <a href="#language-type-byte">byte Type</a> or <a href="#language-type-int">int Type</a> constants. must be. For a constant of <a href="#language-type-byte">byte Type</a>, type conversion to <a href="#language-type-int">int Type</a> at compile time. Will be done. The value of enumType and Constant Subroutine of <a href="#language-type-int">int Type</a> are constants of <a href="#language-type-int">int Type</a>. As it is expanded at the time of syntax analysis, it can be used.
+  The constants specified in case Statement are <a href="#language-type-byte">byte Type</a> or <a href="#language-type-int">int Type</a> constants. must be. For a constant of <a href="#language-type-byte">byte Type</a>, type conversion to <a href="#language-type-int">int Type</a> at compile time. Will be done. The value of enumType and Constant Method of <a href="#language-type-int">int Type</a> are constants of <a href="#language-type-int">int Type</a>. As it is expanded at the time of syntax analysis, it can be used.
 </p>
 <p>
   The constants specified in the case statement must not overlap. If there are duplicates, Compile Error occurs
@@ -5971,7 +5971,7 @@ for (my $i = 0; $i <5; $i++) {
 
 <h3 id = "language-statement-return">returnl Statement</h3>
 <p>
-  Use the returnl Statement to get out of the Subroutine. The object assigned to the mortal variable is automatically released.
+  Use the returnl Statement to get out of the Method. The object assigned to the mortal variable is automatically released.
 </p>
 <pre>
 return;
@@ -5983,10 +5983,10 @@ return;
 return EXPRESSION;
 </pre>
 <p>
-  If the Return Value Type in <a href="#language-sub-definition">Subroutine Definition</a> is <a href="#language-type-void">void Type</a>, Expression Must not exist, otherwise Compile Error occurs.
+  If the Return Value Type in <a href="#language-method-definition">Method Definition</a> is <a href="#language-type-void">void Type</a>, Expression Must not exist, otherwise Compile Error occurs.
 </p>
 <p>
-  <a href="#language-sub-definition">Subroutine Definition</a>, if the Return Value Type is other than <a href="#language-type-void">void Type</a>, Expression Must match the Type of, otherwise Compile Error occurs.
+  <a href="#language-method-definition">Method Definition</a>, if the Return Value Type is other than <a href="#language-type-void">void Type</a>, Expression Must match the Type of, otherwise Compile Error occurs.
 </p>
 
 <h3 id = "language-statement-die">die Statement</h3>
@@ -6232,7 +6232,7 @@ my $num = 1 + 2;
 SPVM is a static type language. All data has a static type.
 
 <p>
-  <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-package-var-definition">Package Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-sub-definition">Subroutine Definition</a> must specify <b>Type</b>.
+  <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-package-var-definition">Package Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
 </p>
 
 In <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-type-inference">Type Inference</a> can be used.
@@ -6649,9 +6649,9 @@ package SPVM::Comparator: callback_t {
 
 Callback Type is designed to provide a feature corresponding to Function Pointer in C language.
 
-Callback Type must have only one <a href="#language-sub-definition">Subroutine Definition</a>. Subroutine must be <a href="#language-sub-method">Method</a>.
+Callback Type must have only one <a href="#language-method-definition">Method Definition</a>. Method must be <a href="#language-method-method">Method</a>.
 
-Subroutine Name of Callback Type must be anonymouse.
+Method Name of Callback Type must be anonymouse.
 
 Callback Type must not have any <a href="#language-field-definition">Field Definition</a> and <a href="#language-package-var-definition">Package Variable Definition</a>.
 
@@ -6661,7 +6661,7 @@ Callback Type cannot be the operand of <a href="#language-expression-new">new St
 
 The variable of Callback Type can be assigned a <a href="#language-type-class">Class Type</a> object that matches the Callback Type. "Matches the Callback Type" means the following two cases.
 
-1. Class Type object with anonimouse name and the <a href="#language-sub-signature">Signature</a> is same as Callback Type
+1. Class Type object with anonimouse name and the <a href="#language-method-signature">Signature</a> is same as Callback Type
 
 <pre>
 # Callback Type Definition
@@ -6684,7 +6684,7 @@ package SomeComparator {
 my $comparator: SPVM::Comparator = SomeComparator->new;
 </pre>
 
-2. Class Type object which is created by <a href="#language-sub-new-callback-object">Create Callback Object</a> and the <a href="#language-sub-signature">Signature</a> is same as Callback Type.
+2. Class Type object which is created by <a href="#language-method-new-callback-object">Create Callback Object</a> and the <a href="#language-method-signature">Signature</a> is same as Callback Type.
 
 <pre>
 Definition of #Callback Type
@@ -6723,12 +6723,12 @@ self
 </pre>
 
 <p>
-  It can only be used as the Type of the first argument in <a href="#language-sub-definition">Subroutine Definition</a>.
+  It can only be used as the Type of the first argument in <a href="#language-method-definition">Method Definition</a>.
 </p>
 
 <h3 id = "language-type-void">void Type</h3>
 
-<b>void Type</b> is a special Type that can only be used in Return Type of <a href="#language-sub-definition">Subroutine Definition</a> and indicates the Subroutine has no Return Value.
+<b>void Type</b> is a special Type that can only be used in Return Type of <a href="#language-method-definition">Method Definition</a> and indicates the Method has no Return Value.
 
 <pre>
 void
@@ -7004,10 +7004,10 @@ my $point_ref : Point_3i& = \$point;
   Reference Type can be used as Type of <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>. The address of the Lexical Variable must be stored by the Reference Operator. In case of only Lexical Variable Declaration, Compile Error occurs
 </p>
 <p>
-  Reference Type can be used as Type of argument in <a href="#language-sub-definition">Subroutine Definition</a>.
+  Reference Type can be used as Type of argument in <a href="#language-method-definition">Method Definition</a>.
 </p>
 <p>
-  Reference Type cannot be used as Return Value Type in <a href="#language-sub-definition">Subroutine Definition</a>.
+  Reference Type cannot be used as Return Value Type in <a href="#language-method-definition">Method Definition</a>.
 </p>
 <p>
   Reference Type cannot be used as the Type of Field in <a href="#language-package-definition">Package Definition</a>.
@@ -7259,7 +7259,7 @@ my $num : int = (int)4;
 </p>
 <ul>
   <li>When assigning to a different Type</li>
-  <li>When passing to Subroutine Arguments of different Type</li>
+  <li>When passing to Method Arguments of different Type</li>
   <li>When returning a Type different from Return Value</li>
 </ul>
 <p>
@@ -7576,7 +7576,7 @@ die EXPRESSION;
   Expression must be <a href="#language-type-string">String Type</a>.
 </p>
 <p>
-  When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes Package Name, Subroutine Name, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
+  When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes Package Name, Method Name, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
 </p>
 <pre>
 Error
@@ -7632,8 +7632,8 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
 <h2 id="language-callback">Callback</h2>
 
 <ul>
-  <li><a href="#language-sub-new-callback-object">Create Callback Object</a></li>
-  <li><a href="#language-sub-capture">Capture</a></li>
+  <li><a href="#language-method-new-callback-object">Create Callback Object</a></li>
+  <li><a href="#language-method-capture">Capture</a></li>
 </ul>
 
 <p>
@@ -7695,7 +7695,7 @@ my $ret = $foo->(5);
   For more information on Callback Type, see <a href="#language-type-callback">Callback Type</a>.
 </p>
 
-<h3 id="language-sub-new-callback-object">Create Callback Object</h3>
+<h3 id="language-method-new-callback-object">Create Callback Object</h3>
 
 <p>
   Create Callback Object is a Syntax that creates an object that conforms to Callback Type by using a special syntax for the purpose of Callback.
@@ -7718,7 +7718,7 @@ my $cb_obj = sub : TYPE ($self : self, ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn 
 </pre>
 
 <p>
-  Subroutine defined by Create Callback Object must be <a href="#language-sub-method">Method</a>. It must also be a Subroutine with no name.
+  Method defined by Create Callback Object must be <a href="#language-method-method">Method</a>. It must also be a Method with no name.
 </p>
 
 <p>
@@ -7732,16 +7732,16 @@ my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
 </pre>
 
 <p>
-  You can call Method because the object created by Create Callback Object is a normal object. For the call to Create Callback Object, see <a href="#language-expression-callsub">Subroutine Call</a>.
+  You can call Method because the object created by Create Callback Object is a normal object. For the call to Create Callback Object, see <a href="#language-expression-callsub">Method Call</a>.
 <p>
 
-<h3 id="language-sub-capture">Capture</h3>
+<h3 id="language-method-capture">Capture</h3>
 <p>
-  In Create Callback Object, you can use the syntax called Capture to use the variables defined outside the Subroutine defined by Create Callback Object inside the Subroutine defined by Create Callback Object.
+  In Create Callback Object, you can use the syntax called Capture to use the variables defined outside the Method defined by Create Callback Object inside the Method defined by Create Callback Object.
 </p>
 <pre>
 # Capture
-[VariableName1 : Type1, VariableName2 : Type2] sub Subroutine Name : int ($self : self, $x1 : object, $x2 : object) {
+[VariableName1 : Type1, VariableName2 : Type2] sub Method Name : int ($self : self, $x1 : object, $x2 : object) {
 
 };
 </pre>
