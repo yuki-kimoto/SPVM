@@ -227,6 +227,7 @@ SPVM::Test - SPVM test module
       {
         my $object = new TestCase::DumpTest1;
         $object->{object_value} = $object;
+        weaken $object->{object_value};
         
         my $array = [(object)$object, $object, $object];
         
