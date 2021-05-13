@@ -173,7 +173,7 @@ int32_t SPVM_API_isweak(SPVM_ENV* env, SPVM_OBJECT** object_address);
 
 // Global information
 SPVM_ENV* SPVM_API_env_runtime();
-int32_t SPVM_API_memory_blocks_count(SPVM_ENV* env);
+int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env);
 
 // Scope
 int32_t SPVM_API_enter_scope(SPVM_ENV* env);
