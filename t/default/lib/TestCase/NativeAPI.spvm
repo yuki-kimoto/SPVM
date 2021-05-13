@@ -20,6 +20,8 @@ package TestCase::NativeAPI {
     return new TestCase::NativeAPI;
   }
 
+  native sub check_native_api_indexes : int ();
+
   sub get_package_var_byte_by_name : int () {
 
     $BYTE_VALUE = INT8_MIN();

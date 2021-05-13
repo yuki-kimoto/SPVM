@@ -35,6 +35,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 =cut
 
+{
+  ok(TestCase::NativeAPI->check_native_api_indexes);
+}
+
 # get_field_string_chars_by_name
 {
   ok(TestCase::NativeAPI->get_field_string_chars_by_name);
