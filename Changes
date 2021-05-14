@@ -1,5 +1,6 @@
-0.9002 2021-05-13
+0.9002 2021-05-14
   - fix memory blocks count internal bugs
+  - fix Windows unexpected native api memory bug about get_field_object. I don't know the reason, but it was maybe type problem.
 0.9001 2021-05-11
   - remove SPVM::Time->strptime because this method is too complex as version 1.0 core module.
   - remove SPVM::Time->strftime because this method is too complex as version 1.0 core module.

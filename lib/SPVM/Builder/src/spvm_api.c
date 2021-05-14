@@ -296,13 +296,9 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  fprintf(stderr, "START API_dump %p\n", object);
-  
   SPVM_OBJECT* str = SPVM_API_dump_raw(env, object);
   
   SPVM_API_push_mortal(env, str);
-
-  fprintf(stderr, "END API_dump %p\n", object);
 
   return str;
 }
@@ -6174,11 +6170,7 @@ int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object) {
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  fprintf(stderr, "START API_length %p\n", object);
-  
   int32_t length = object->length;
-  
-  fprintf(stderr, "END API_length %p\n", object);
   
   return length;
 }
@@ -6228,9 +6220,10 @@ double* SPVM_API_get_elems_double(SPVM_ENV* env, SPVM_OBJECT* object) {
 SPVM_OBJECT* SPVM_API_get_elem_object(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index) {
   (void)env;
   
-  SPVM_OBJECT* oval = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(((void**)((intptr_t)array + env->object_header_byte_size))[index]);
+  SPVM_OBJECT* object_maybe_weaken = ((SPVM_OBJECT**)((intptr_t)array + env->object_header_byte_size))[index];
+  SPVM_OBJECT* object = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(object_maybe_weaken);
   
-  return oval;
+  return object;
 }
 
 void SPVM_API_set_elem_object(SPVM_ENV* env, SPVM_OBJECT* array, int32_t index, SPVM_OBJECT* oval) {
@@ -6695,7 +6688,8 @@ SPVM_OBJECT* SPVM_API_get_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32
   SPVM_FIELD* field = SPVM_LIST_fetch(compiler->fields, field_id);
   
   // Get field value
-  void* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(*(void**)((intptr_t)object + env->object_header_byte_size + field->offset));
+  SPVM_OBJECT* value_maybe_weaken = *(SPVM_OBJECT**)((intptr_t)object + env->object_header_byte_size + field->offset);
+  SPVM_OBJECT* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(value_maybe_weaken);
   
   return value;
 }
@@ -6877,7 +6871,8 @@ double SPVM_API_get_package_var_double(SPVM_ENV* env, int32_t packagke_var_id) {
 SPVM_OBJECT* SPVM_API_get_package_var_object(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  void* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].oval);
+  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].oval;
+  SPVM_OBJECT* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(value_maybe_weaken);
   
   return value;
 }
