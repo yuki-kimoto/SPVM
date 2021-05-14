@@ -296,9 +296,13 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
+  fprintf(stderr, "START API_dump %p\n", object);
+  
   SPVM_OBJECT* str = SPVM_API_dump_raw(env, object);
   
   SPVM_API_push_mortal(env, str);
+
+  fprintf(stderr, "END API_dump %p\n", object);
 
   return str;
 }
@@ -6170,7 +6174,13 @@ int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object) {
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  return object->length;
+  fprintf(stderr, "START API_length %p\n", object);
+  
+  int32_t length = object->length;
+  
+  fprintf(stderr, "END API_length %p\n", object);
+  
+  return length;
 }
 
 int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_OBJECT* object) {
