@@ -42,6 +42,55 @@ package TestCase::Lib::SPVM::StringUtil {
     to_upper,
   );
 
+  sub test_trim_ascii_space : int () {
+    # undef
+    {
+      my $string = (string)undef;
+      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      unless ($trimed_string == undef) {
+        return 0;
+      }
+    }
+    
+    # no left and right spaces
+    {
+      my $string = (string)"ab  c";
+      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # left spaces
+    {
+      my $string = (string)"  \t  \nab  c";
+      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # right spaces
+    {
+      my $string = (string)"ab  c  \t  \n";
+      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # left and right spaces
+    {
+      my $string = (string)"  \t  \nab  c  \t  \n";
+      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
   sub test_split : int () {
     {
       my $string = "foo,bar,baz";

@@ -278,3 +278,10 @@ If the convertion fails, a exception occuer.
   my $string = "1.25";
   my $num = to_double($string);
 
+=head2 trim_ascii_space
+
+  sub trim_ascii_space : string ($string : string)
+
+Remove right and left spaces of the string. These spaces is ascii standard spaces which can be checked by C<is_space> method.
+
+If the argument string is undef, return undef.

@@ -7,6 +7,57 @@ package SPVM::StringUtil : precompile {
   use SPVM::Unicode (uchar_to_utf8);
   use SPVM::ArrayUtil;
 
+  sub trim_ascii_space : string ($string : string) {
+    
+    unless ($string) {
+      return undef;
+    }
+    
+    my $length = length $string;
+    my $start_string_index = -1;
+    my $end_string_index = -1;
+    
+    for (my $i = 0; $i < $length; $i++) {
+      if ($start_string_index == -1) {
+        if (is_space($string->[$i])) {
+          # Skip
+        }
+        else {
+          $start_string_index = $i;
+          last;
+        }
+      }
+    }
+
+    for (my $i = $length - 1; $i >= 0; $i--) {
+      if ($end_string_index == -1) {
+        if (is_space($string->[$i])) {
+          # Skip
+        }
+        else {
+          $end_string_index = $i;
+          last;
+        }
+      }
+    }
+    
+    my $trimed_string : string;
+    if ($start_string_index == -1 && $end_string_index == -1) {
+      return "";
+    }
+    elsif ($end_string_index == -1) {
+      $trimed_string = substr($string, $start_string_index, $length - $start_string_index);
+    }
+    elsif ($end_string_index == -1) {
+      $trimed_string = substr($string, 0, $end_string_index + 1);
+    }
+    else {
+      $trimed_string = substr($string, $start_string_index, $end_string_index - $start_string_index + 1);
+    }
+    
+    return $trimed_string;
+  }
+
   sub chompr : string ($string : string) {
     unless ($string) {
       return undef;
