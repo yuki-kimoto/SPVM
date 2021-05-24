@@ -42,6 +42,100 @@ package TestCase::Lib::SPVM::StringUtil {
     to_upper,
   );
 
+  sub test_hex : int () {
+    # 0
+    {
+      my $hex_string = (string)"0";
+      my $hex_num = SPVM::StringUtil->hex($hex_string);
+      unless ($hex_num isa int) {
+        return 0;
+      }
+      unless ($hex_num == 0) {
+        return 0;
+      }
+    }
+
+    # 1-9
+    {
+      unless (SPVM::StringUtil->hex("1") == 1) { return 0; }
+      unless (SPVM::StringUtil->hex("2") == 2) { return 0; }
+      unless (SPVM::StringUtil->hex("3") == 3) { return 0; }
+      unless (SPVM::StringUtil->hex("4") == 4) { return 0; }
+      unless (SPVM::StringUtil->hex("5") == 5) { return 0; }
+      unless (SPVM::StringUtil->hex("6") == 6) { return 0; }
+      unless (SPVM::StringUtil->hex("7") == 7) { return 0; }
+      unless (SPVM::StringUtil->hex("8") == 8) { return 0; }
+      unless (SPVM::StringUtil->hex("9") == 9) { return 0; }
+    }
+
+    # a-z
+    {
+      unless (SPVM::StringUtil->hex("a") == 10) { return 0; }
+      unless (SPVM::StringUtil->hex("b") == 11) { return 0; }
+      unless (SPVM::StringUtil->hex("c") == 12) { return 0; }
+      unless (SPVM::StringUtil->hex("d") == 13) { return 0; }
+      unless (SPVM::StringUtil->hex("e") == 14) { return 0; }
+      unless (SPVM::StringUtil->hex("f") == 15) { return 0; }
+    }
+
+    # A-Z
+    {
+      unless (SPVM::StringUtil->hex("A") == 10) { return 0; }
+      unless (SPVM::StringUtil->hex("B") == 11) { return 0; }
+      unless (SPVM::StringUtil->hex("C") == 12) { return 0; }
+      unless (SPVM::StringUtil->hex("D") == 13) { return 0; }
+      unless (SPVM::StringUtil->hex("E") == 14) { return 0; }
+      unless (SPVM::StringUtil->hex("F") == 15) { return 0; }
+    }
+
+    # 19afAF25
+    {
+      unless (SPVM::StringUtil->hex("19afAF25") == 430944037) { return 0; }
+      unless (SPVM::StringUtil->hex("19afAF25") == 430944037) { return 0; }
+    }
+
+    # FFFFFFFF
+    {
+      unless (SPVM::StringUtil->hex("FFFFFFFF") == 0xFFFFFFFF) { return 0; }
+    }
+    
+    # Exception - undef
+    {
+      eval { SPVM::StringUtil->hex(undef); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Empty String
+    {
+      eval { SPVM::StringUtil->hex(""); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Invalid hex string
+    {
+      eval { SPVM::StringUtil->hex("g"); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Too long
+    {
+      eval { SPVM::StringUtil->hex("111111111"); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
   sub test_trim_ascii_space : int () {
     # undef
     {

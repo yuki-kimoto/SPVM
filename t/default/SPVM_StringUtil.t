@@ -12,6 +12,11 @@ use SPVM 'TestCase::Lib::SPVM::StringUtil';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# hex
+{
+  ok(TestCase::Lib::SPVM::StringUtil->test_hex);
+}
+
 # trim_ascii_space
 {
   ok(TestCase::Lib::SPVM::StringUtil->test_trim_ascii_space);

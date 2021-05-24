@@ -6,7 +6,47 @@ package SPVM::StringUtil : precompile {
   use SPVM::StringList;
   use SPVM::Unicode (uchar_to_utf8);
   use SPVM::ArrayUtil;
-
+  use SPVM::Regex;
+  use SPVM::Math;
+  
+  sub hex : int ($hex_string : string) {
+    
+    unless ($hex_string) {
+      die "the hex string must be defined";
+    }
+    
+    my $re = SPVM::Regex->new("^([0-9a-fA-F]{1,8})$");
+    
+    my $hex_value = 0;
+    my $digit = 0;
+    my $value = 0;
+    if ($re->match($hex_string, 0)) {
+      my $length = length $hex_string;
+      for (my $i = $length - 1; $i >= 0; $i--) {
+        my $ascii_code = $hex_string->[$i];
+        
+        my $digit_value = 0;
+        if ($ascii_code >= '0' && $ascii_code <= '9') {
+          $digit_value = $ascii_code - 48;
+        }
+        elsif ($ascii_code >= 'a' && $ascii_code <= 'f') {
+          $digit_value = $ascii_code - 87;
+        }
+        elsif ($ascii_code >= 'A' && $ascii_code <= 'F') {
+          $digit_value = $ascii_code - 55;
+        }
+        $value += $digit_value * (int)SPVM::Math->pow(16, $digit);
+        
+        $digit += 1;
+      }
+    }
+    else {
+      die "the hex string must be a valid expression";
+    }
+    
+    return $value;
+  }
+  
   sub trim_ascii_space : string ($string : string) {
     
     unless ($string) {
