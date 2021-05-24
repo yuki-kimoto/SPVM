@@ -13,7 +13,7 @@ package SPVM::Regex : precompile {
   has string_start : int;
   has string_end : int;
   
-  has caps : ro string[];
+  has captures : ro string[];
   
   has match_start : ro int;
   has match_length : ro int;
@@ -35,7 +35,7 @@ package SPVM::Regex : precompile {
     
     $self->compile($re_str);
     
-    $self->{caps} = new string[256];
+    $self->{captures} = new string[256];
     
     return $self;
   }
@@ -504,7 +504,7 @@ package SPVM::Regex : precompile {
         
         if ($match_uchar_repeat) {
           if ($pattern->{capture_end}) {
-            $self->{caps}[$capture_count] = substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
+            $self->{captures}[$capture_count] = substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
             $capture_count++;
             if ($capture_count > 255) {
               die "Too many captures";
@@ -620,7 +620,7 @@ package SPVM::Regex : precompile {
             $replace_buffer->push((string)$replace_elem_object);
           }
           elsif ($replace_elem_object isa SPVM::Int) {
-            my $capture = $self->caps->[(int)$replace_elem_object];
+            my $capture = $self->captures->[(int)$replace_elem_object];
             $replace_buffer->push($capture);
           }
           else {
