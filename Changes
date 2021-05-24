@@ -1,5 +1,6 @@
 0.9003 2021-05-21
   - add SPVM::StringUtil->hex method
+  - rename SPVM::Regex->caps method to SPVM::Regex->captures
 0.9002 2021-05-20
   - add SPVM::StringUtil->trim_ascii_space method
   - fix memory blocks count internal bugs
