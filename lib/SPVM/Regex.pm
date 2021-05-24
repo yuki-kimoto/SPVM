@@ -16,16 +16,32 @@ SPVM::Regex - Regular expression
     my $target = "zabcz";
     my $match = $re->match($target, 0);
   }
-  
+
+  # Pattern match - UTF-8
+  {
+    my $re = SPVM::Regex->new("あ+");
+    my $target = "いあああい";
+    my $match = $re->match($target, 0);
+  }
+
+  # Pattern match - Character class and the nagation
+  {
+    my $re = SPVM::Regex->new("[A-Z]+[^A-Z]+");
+    my $target = "ABCzab";
+    my $match = $re->match($target, 0);
+  }
+
   # Pattern match with captures
   {
     my $re = SPVM::Regex->new("^(\w+) (\w+) (\w+)$");
     my $target = "abc1 abc2 abc3";
     my $match = $re->match($target, 0);
     
-    my $cap1 = $re->captures->[0];
-    my $cap2 = $re->captures->[1];
-    my $cpa3 = $re->captures->[2];
+    if ($match) {
+      my $cap1 = $re->captures->[0];
+      my $cap2 = $re->captures->[1];
+      my $cpa3 = $re->captures->[2];
+    }
   }
   
   # Replace
@@ -76,7 +92,7 @@ L<SPVM::Regex> provides regular expression functions.
 
 =head1 REGULAR EXPRESSION SYNTAX
 
-L<SPVM::Regex> provides subset of Perl regular expression.
+L<SPVM::Regex> provides the subset of Perl regular expression. The target string and regex string is interpretted as UTF-8 string.
   
   # Quantifier
   +     more than or equals to 1 repeats
@@ -94,23 +110,26 @@ L<SPVM::Regex> provides subset of Perl regular expression.
   \w   [a-zA-Z0-9_]
   \W   not \w
   
-  # Character class
+  # Character class and the negatiton
   [a-z0-9]
+  [^a-z0-9]
   
   # Capture
   (foo)
 
-L<SPVM::Regex> do not support the same set of characters after quantifier.
+B<Limitations:>
+
+L<SPVM::Regex> do not support the same set of characters after a quantifier.
       
-  # Compile error
+  # A exception occurs
   SPVM::Regex->new("a*a");
   SPVM::Regex->new("a?a");
   SPVM::Regex->new("a+a");
   SPVM::Regex->new("a{1,3}a")
       
-If 0 width quantifir is between two same set of characters after quantifier, it is invalid.
+If 0 width quantifir is between two same set of characters after a quantifier, it is invalid.
       
-  # Compile error
+  # A exception occurs
   SPVM::Regex->new("\d+\D*\d+");
   SPVM::Regex->new("\d+\D?\d+");
 
