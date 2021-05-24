@@ -438,6 +438,30 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
 
+    # Match char class negate UTF-8
+    {
+      my $re = SPVM::Regex->new("[^あ]+");
+      my $target = "いうえ";
+      
+      my $match = $re->match($target, 0);
+      
+      unless ($match) {
+        return 0;
+      }
+    }
+
+    # Don't Match char class negate UTF-8
+    {
+      my $re = SPVM::Regex->new("[^あ]+");
+      my $target = "あああ";
+      
+      my $match = $re->match($target, 0);
+      
+      if ($match) {
+        return 0;
+      }
+    }
+
     return 1;
   }
   
