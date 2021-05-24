@@ -68,7 +68,7 @@ List of SPVM Core Modules
 
 =item * L<SPVM::NumberUtil> - Number Utilities
 
-=item * L<SPVM::Regex> - 
+=item * L<SPVM::Regex> - Regular expression
 
 =item * L<SPVM::Regex::Pattern> - 
 
