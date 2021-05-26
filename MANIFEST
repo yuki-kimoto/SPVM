@@ -2,6 +2,10 @@ benchmark/benchmark-synopsys.pl
 benchmark/lib/MyMath.c
 benchmark/lib/MyMath.config
 benchmark/lib/MyMath.spvm
+benchmark/lib/MyMathNative.c
+benchmark/lib/MyMathNative.config
+benchmark/lib/MyMathNative.spvm
+benchmark/lib/MyMathPrecompile.spvm
 Changes
 ctest/ctest_Makefile.PL
 ctest/README.txt
@@ -472,7 +476,11 @@ lib/SPVM/Complex_2d.spvm
 lib/SPVM/Complex_2f.pm
 lib/SPVM/Complex_2f.spvm
 lib/SPVM/Document/Benchmark.pm
+lib/SPVM/Document/ExchangeAPI.pm
+lib/SPVM/Document/LanguageSpecification.pm
 lib/SPVM/Document/Modules.pm
+lib/SPVM/Document/NativeAPI.pm
+lib/SPVM/Document/Tutorial.pm
 lib/SPVM/Double.pm
 lib/SPVM/DoubleList.pm
 lib/SPVM/DoubleList.spvm
@@ -968,6 +976,7 @@ t/exe/lib/TestCase/NativeAPI2.native/src/foo.c
 t/exe/lib/TestCase/NativeAPI2.native/src/noneed.txt
 t/exe/lib/TestCase/NativeAPI2.spvm
 t/exe/spvmcc.t
+t/get_native_api_indexes.pl
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
 t/sort_sub_name_native.pl
