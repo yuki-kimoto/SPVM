@@ -2810,9 +2810,11 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
 
 <b>String Literal</b> represents String.
 
-String Literal is enclosed in double quotes '"'.
+String Literal is enclosed in double quotes '"'. String Literal return the value of string type.
 
 The content of String Literal is zero or more ASCII printable Characters or Escape Characters of String Literal".
+
+<h4>Escape charaters of String Literal</h4>
 
 <table class="toc">
   <tr>
@@ -2921,61 +2923,17 @@ The content of String Literal is zero or more ASCII printable Characters or Esca
   </tr>
   <tr>
     <td>
-      <b>\s</b>
+      <b>Raw escape character</b><br>(For example, \s is become \s. This represents a sequence of two characters in a character literal '\\' 's')</b>
     </td>
     <td>
-      ASCII Code 92,115 \s
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\S</b>
-    </td>
-    <td>
-      ASCII Code 92,83 \S
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\d</b>
-    </td>
-    <td>
-      ASCII Code 92,100 \d
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\D</b>
-    </td>
-    <td>
-      ASCII Code 92,68 \D
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\w</b>
-    </td>
-    <td>
-      ASCII Code 92,119 \w
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\W</b>
-    </td>
-    <td>
-      ASCII Code 92,87 \W
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\ + ASCII Code Punctuation Character(33 to 47, 58 to 64, 91 to 96, 123 to 125)</b>
-    </td>
-    <td>
-      ASCII Code 92, Number of ASCII Code Punctuation Character. For eample, \- represents \-. \+ represents \+.
+      \s \S \d \D \w \W \p \P \X \g \k \K \v \V \h \H \R \b \B \A \Z \z \G \N<br>
+      \1 \2 \3 \4 \5 \6 \7 \8 \9 <br>
+      \! \# \@ \% \& \( \) \* \+ \- \. \/ \: \; \< \= \> \? \[ \] \^ \_ \` \{ \| \} \~ \,
     </td>
   </tr>
 </table>
+
+If the espape characters which is not included avobe is used, a compiler error occurs.<br>
 
 <b>String Literal Example:</b>
 

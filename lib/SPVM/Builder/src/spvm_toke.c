@@ -1059,11 +1059,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
-                else if (*char_ptr == 'b') {
-                  str[str_length] = '\b';
-                  str_length++;
-                  char_ptr++;
-                }
                 else if (*char_ptr == 'f') {
                   str[str_length] = '\f';
                   str_length++;
@@ -1104,55 +1099,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   str_length++;
                   char_ptr++;
                 }
-                // Excape for regular expression \s
-                else if (*char_ptr == 's') {
-                  str[str_length] = '\\';
-                  str_length++;
-                  str[str_length] = 's';
-                  str_length++;
-                  char_ptr++;
-                }
-                // Excape for regular expression \S
-                else if (*char_ptr == 'S') {
-                  str[str_length] = '\\';
-                  str_length++;
-                  str[str_length] = 'S';
-                  str_length++;
-                  char_ptr++;
-                }
-                // Excape for regular expression \d
-                else if (*char_ptr == 'd') {
-                  str[str_length] = '\\';
-                  str_length++;
-                  str[str_length] = 'd';
-                  str_length++;
-                  char_ptr++;
-                }
-                // Excape for regular expression \D
-                else if (*char_ptr == 'D') {
-                  str[str_length] = '\\';
-                  str_length++;
-                  str[str_length] = 'D';
-                  str_length++;
-                  char_ptr++;
-                }
-                // Excape for regular expression \w
-                else if (*char_ptr == 'w') {
-                  str[str_length] = '\\';
-                  str_length++;
-                  str[str_length] = 'w';
-                  str_length++;
-                  char_ptr++;
-                }
-                // Excape for regular expression \W
-                else if (*char_ptr == 'W') {
-                  str[str_length] = '\\';
-                  str_length++;
-                  str[str_length] = 'W';
-                  str_length++;
-                  char_ptr++;
-                }
-                // Hex ascii code
                 else if (*char_ptr == 'x') {
                   char_ptr++;
                   if (*char_ptr == '0' || *char_ptr == '1' || *char_ptr == '2' || *char_ptr == '3' || *char_ptr == '4' || *char_ptr == '5' || *char_ptr == '6' || *char_ptr == '7') {
@@ -1181,7 +1127,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 // Unicode code point. This is converted to UTF-8
-                else if (*char_ptr == 'N') {
+                else if (*char_ptr == 'N' && *(char_ptr + 1) == '{') {
                   char_ptr++;
                   if (*char_ptr == '{' && *(char_ptr + 1) == 'U' && *(char_ptr + 2) == '+') {
                     char_ptr += 3;
@@ -1234,15 +1180,79 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   }
                 }
                 else {
-                  if (ispunct(*char_ptr)) {
-                    str[str_length] = '\\';
-                    str_length++;
-                    str[str_length] = *char_ptr;
-                    str_length++;
-                    char_ptr++;
-                  }
-                  else {
-                    SPVM_COMPILER_error(compiler, "Invalid escape character in string literal \"\\%c\" at %s line %d\n", *char_ptr, compiler->cur_file, compiler->cur_line);
+                  switch(*char_ptr) {
+                    case 'w':
+                    case 'W':
+                    case 's':
+                    case 'S':
+                    case 'd':
+                    case 'D':
+                    case 'p':
+                    case 'P':
+                    case 'X':
+                    case 'g':
+                    case 'k':
+                    case 'K':
+                    case 'v':
+                    case 'V':
+                    case 'h':
+                    case 'H':
+                    case 'R':
+                    case 'b':
+                    case 'B':
+                    case 'A':
+                    case 'Z':
+                    case 'z':
+                    case 'G':
+                    case 'N':
+                    case '!':
+                    case '#':
+                    case '@':
+                    case '%':
+                    case '&':
+                    case '(':
+                    case ')':
+                    case '*':
+                    case '+':
+                    case ',':
+                    case '-':
+                    case '.':
+                    case '/':
+                    case ':':
+                    case ';':
+                    case '<':
+                    case '=':
+                    case '>':
+                    case '?':
+                    case '[':
+                    case ']':
+                    case '^':
+                    case '_':
+                    case '`':
+                    case '{':
+                    case '|':
+                    case '}':
+                    case '~':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    {
+                      str[str_length] = '\\';
+                      str_length++;
+                      str[str_length] = *char_ptr;
+                      str_length++;
+                      char_ptr++;
+                      break;
+                    }
+                    default: {
+                      SPVM_COMPILER_error(compiler, "Invalid escape character in string literal \"\\%c\" at %s line %d\n", *char_ptr, compiler->cur_file, compiler->cur_line);
+                    }
                   }
                 }
               }

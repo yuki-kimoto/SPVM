@@ -1,3 +1,55 @@
+0.9004 2021-05-26
+  - remove escape charcter \b of string literal
+  - add raw escape character of string literal
+    \p
+    \P
+    \X
+    \g
+    \k
+    \K
+    \v
+    \V
+    \h
+    \H
+    \R
+    \b
+    \B
+    \A
+    \Z
+    \z
+    \G
+    \N
+    \1, \2, \3, \4, \5, \6, \7, \8, \9
+    \!
+    \#
+    \@
+    \%
+    \&
+    \(
+    \)
+    \*
+    \+
+    \,
+    \-
+    \.
+    \/
+    \:
+    \;
+    \<
+    \=
+    \>
+    \?
+    \[
+    \]
+    \^
+    \_
+    \`
+    \{
+    \|
+    \}
+    \~
+
+
 0.9003 2021-05-21
   - add SPVM::StringUtil->hex method
   - rename SPVM::Regex->caps method to SPVM::Regex->captures

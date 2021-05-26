@@ -15,12 +15,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # String literal
 {
+  ok(TestCase::Literal::String->raw_escape);
   ok(TestCase::Literal::String->var_expansion);
-  ok(TestCase::Literal::String->characters());
-  ok(TestCase::Literal::String->escape());
-  ok(TestCase::Literal::String->escape_ascii());
-  ok(TestCase::Literal::String->escape_unicode());
-  ok(TestCase::Literal::String->edge_case());
+  ok(TestCase::Literal::String->characters);
+  ok(TestCase::Literal::String->escape);
+  ok(TestCase::Literal::String->escape_ascii);
+  ok(TestCase::Literal::String->escape_unicode);
+  ok(TestCase::Literal::String->edge_case);
 }
 
 # All object is freed

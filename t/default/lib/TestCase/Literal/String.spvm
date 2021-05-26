@@ -3,6 +3,142 @@ package TestCase::Literal::String {
   
   our $VAR_EXPANSION1 : int;
 
+  sub raw_escape : int () {
+    
+    # Raw escape - Character and number
+    {
+      my $string = "\w\W\s\S\d\D\p\P\X\g\k\K\v\V\h\H\R\b\B\A\Z\z\G\N\1\2\3\4\5\6\7\8\9";
+      
+      unless ($string->[0] == '\\') { return 0; }
+      unless ($string->[1] == 'w') { return 0; }
+      unless ($string->[2] == '\\') { return 0; }
+      unless ($string->[3] == 'W') { return 0; }
+      unless ($string->[4] == '\\') { return 0; }
+      unless ($string->[5] == 's') { return 0; }
+      unless ($string->[6] == '\\') { return 0; }
+      unless ($string->[7] == 'S') { return 0; }
+      unless ($string->[8] == '\\') { return 0; }
+      unless ($string->[9] == 'd') { return 0; }
+      unless ($string->[10] == '\\') { return 0; }
+      unless ($string->[11] == 'D') { return 0; }
+      unless ($string->[12] == '\\') { return 0; }
+      unless ($string->[13] == 'p') { return 0; }
+      unless ($string->[14] == '\\') { return 0; }
+      unless ($string->[15] == 'P') { return 0; }
+      unless ($string->[16] == '\\') { return 0; }
+      unless ($string->[17] == 'X') { return 0; }
+      unless ($string->[18] == '\\') { return 0; }
+      unless ($string->[19] == 'g') { return 0; }
+      unless ($string->[20] == '\\') { return 0; }
+      unless ($string->[21] == 'k') { return 0; }
+      unless ($string->[22] == '\\') { return 0; }
+      unless ($string->[23] == 'K') { return 0; }
+      unless ($string->[24] == '\\') { return 0; }
+      unless ($string->[25] == 'v') { return 0; }
+      unless ($string->[26] == '\\') { return 0; }
+      unless ($string->[27] == 'V') { return 0; }
+      unless ($string->[28] == '\\') { return 0; }
+      unless ($string->[29] == 'h') { return 0; }
+      unless ($string->[30] == '\\') { return 0; }
+      unless ($string->[31] == 'H') { return 0; }
+      unless ($string->[32] == '\\') { return 0; }
+      unless ($string->[33] == 'R') { return 0; }
+      unless ($string->[34] == '\\') { return 0; }
+      unless ($string->[35] == 'b') { return 0; }
+      unless ($string->[36] == '\\') { return 0; }
+      unless ($string->[37] == 'B') { return 0; }
+      unless ($string->[38] == '\\') { return 0; }
+      unless ($string->[39] == 'A') { return 0; }
+      unless ($string->[40] == '\\') { return 0; }
+      unless ($string->[41] == 'Z') { return 0; }
+      unless ($string->[42] == '\\') { return 0; }
+      unless ($string->[43] == 'z') { return 0; }
+      unless ($string->[44] == '\\') { return 0; }
+      unless ($string->[45] == 'G') { return 0; }
+      unless ($string->[46] == '\\') { return 0; }
+      unless ($string->[47] == 'N') { return 0; }
+      unless ($string->[48] == '\\') { return 0; }
+      unless ($string->[49] == '1') { return 0; }
+      unless ($string->[50] == '\\') { return 0; }
+      unless ($string->[51] == '2') { return 0; }
+      unless ($string->[52] == '\\') { return 0; }
+      unless ($string->[53] == '3') { return 0; }
+      unless ($string->[54] == '\\') { return 0; }
+      unless ($string->[55] == '4') { return 0; }
+      unless ($string->[56] == '\\') { return 0; }
+      unless ($string->[57] == '5') { return 0; }
+      unless ($string->[58] == '\\') { return 0; }
+      unless ($string->[59] == '6') { return 0; }
+      unless ($string->[60] == '\\') { return 0; }
+      unless ($string->[61] == '7') { return 0; }
+      unless ($string->[62] == '\\') { return 0; }
+      unless ($string->[63] == '8') { return 0; }
+      unless ($string->[64] == '\\') { return 0; }
+      unless ($string->[65] == '9') { return 0; }
+    }
+
+    # Raw escape - punct characters
+    {
+      my $string = "\!\#\@\%\&\(\)\*\+\,\-\.\/\:\;\<\=\>\?\[\]\^\_\`\{\|\}\~";
+      unless ($string->[0] == '\\') { return 0; }
+      unless ($string->[1] == '!') { return 0; }
+      unless ($string->[2] == '\\') { return 0; }
+      unless ($string->[3] == '#') { return 0; }
+      unless ($string->[4] == '\\') { return 0; }
+      unless ($string->[5] == '@') { return 0; }
+      unless ($string->[6] == '\\') { return 0; }
+      unless ($string->[7] == '%') { return 0; }
+      unless ($string->[8] == '\\') { return 0; }
+      unless ($string->[9] == '&') { return 0; }
+      unless ($string->[10] == '\\') { return 0; }
+      unless ($string->[11] == '(') { return 0; }
+      unless ($string->[12] == '\\') { return 0; }
+      unless ($string->[13] == ')') { return 0; }
+      unless ($string->[14] == '\\') { return 0; }
+      unless ($string->[15] == '*') { return 0; }
+      unless ($string->[16] == '\\') { return 0; }
+      unless ($string->[17] == '+') { return 0; }
+      unless ($string->[18] == '\\') { return 0; }
+      unless ($string->[19] == ',') { return 0; }
+      unless ($string->[20] == '\\') { return 0; }
+      unless ($string->[21] == '-') { return 0; }
+      unless ($string->[22] == '\\') { return 0; }
+      unless ($string->[23] == '.') { return 0; }
+      unless ($string->[24] == '\\') { return 0; }
+      unless ($string->[25] == '/') { return 0; }
+      unless ($string->[26] == '\\') { return 0; }
+      unless ($string->[27] == ':') { return 0; }
+      unless ($string->[28] == '\\') { return 0; }
+      unless ($string->[29] == ';') { return 0; }
+      unless ($string->[30] == '\\') { return 0; }
+      unless ($string->[31] == '<') { return 0; }
+      unless ($string->[32] == '\\') { return 0; }
+      unless ($string->[33] == '=') { return 0; }
+      unless ($string->[34] == '\\') { return 0; }
+      unless ($string->[35] == '>') { return 0; }
+      unless ($string->[36] == '\\') { return 0; }
+      unless ($string->[37] == '?') { return 0; }
+      unless ($string->[38] == '\\') { return 0; }
+      unless ($string->[39] == '[') { return 0; }
+      unless ($string->[40] == '\\') { return 0; }
+      unless ($string->[41] == ']') { return 0; }
+      unless ($string->[42] == '\\') { return 0; }
+      unless ($string->[43] == '^') { return 0; }
+      unless ($string->[44] == '\\') { return 0; }
+      unless ($string->[45] == '_') { return 0; }
+      unless ($string->[46] == '\\') { return 0; }
+      unless ($string->[47] == '`') { return 0; }
+      unless ($string->[48] == '\\') { return 0; }
+      unless ($string->[49] == '{') { return 0; }
+      unless ($string->[50] == '\\') { return 0; }
+      unless ($string->[51] == '|') { return 0; }
+      unless ($string->[52] == '\\') { return 0; }
+      unless ($string->[53] == '}') { return 0; }
+    }
+    
+    return 1;
+  }
+  
   sub edge_case : int () {
 
     # String literal last character is \\
@@ -52,10 +188,6 @@ ef"
       unless ($str eq "ab\ncd\n5\nef") {
         return 0;
       }
-      
-      unless (__LINE__ == 56) {
-        return 0;
-      }
     }
     
     return 1;
@@ -64,7 +196,7 @@ ef"
   sub escape : int () {
     
     # Escape sequence
-    my $string = "a\0\a\b\t\n\f\r\"\'\\z";
+    my $string = "a\0\a \t\n\f\r\"\'\\z";
     
     # \0
     unless ($string->[1] == 0) {
@@ -73,11 +205,6 @@ ef"
     
     # \a
     unless ($string->[2] == 7) {
-      return 0;
-    }
-    
-    # \b
-    unless ($string->[3] == 8) {
       return 0;
     }
     
