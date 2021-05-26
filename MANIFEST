@@ -1,6 +1,4 @@
 benchmark/benchmark-synopsys.pl
-benchmark/lib/MyMath.c
-benchmark/lib/MyMath.config
 benchmark/lib/MyMath.spvm
 benchmark/lib/MyMathNative.c
 benchmark/lib/MyMathNative.config
