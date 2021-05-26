@@ -1,0 +1,3 @@
+package MyMathNative {
+  native sub spvm_sum : int ($loop_count : int);
+}
