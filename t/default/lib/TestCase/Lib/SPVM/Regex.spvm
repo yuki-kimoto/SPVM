@@ -789,6 +789,16 @@ package TestCase::Lib::SPVM::Regex {
       unless ($@) {
         return 0;
       }
+
+      eval { SPVM::Regex->new(".*."); };
+      unless ($@) {
+        return 0;
+      }
+
+      eval { SPVM::Regex->new(".*a"); };
+      unless ($@) {
+        return 0;
+      }
       
       $@ = undef;
     }
