@@ -9,10 +9,12 @@ package SPVM::Regex : precompile {
   use SPVM::StringUtil (is_perl_word, is_digit, to_int_with_base, substr, copy_string);
   use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   use SPVM::ArrayUtil (copy_array_range_byte);
+  use SPVM::Hash;
   has patterns : SPVM::List;
   has string_start : byte;
   has string_end : byte;
   has single_line_mode : byte;
+  has ascii_mode : byte;
   
   has captures : ro string[];
   
@@ -42,11 +44,26 @@ package SPVM::Regex : precompile {
     my $self = _new_without_compile();
     
     if ($option_chars) {
+      my $options_h = SPVM::Hash->new({});
+      
       my $option_chars_length = length $option_chars;
       for (my $i = 0; $i < $option_chars_length; $i++) {
         my $option_char = $option_chars->[$i];
         if ($option_char == 's') {
+          my $found = $options_h->get("s");
+          if ($found) {
+            die "s option must be used once";
+          }
           $self->{single_line_mode} = 1;
+          $options_h->set_int("s" => 1);
+        }
+        elsif ($option_char == 'a') {
+          my $found = $options_h->get("a");
+          if ($found) {
+            die "a option must be used once";
+          }
+          $self->{ascii_mode} = 1;
+          $options_h->set_int("a" => 1);
         }
       }
     }
@@ -113,36 +130,66 @@ package SPVM::Regex : precompile {
           
           switch ($next_uchar) {
             case 'd': {
-              $cur_is_char = 1;
-              $cur_uchar_min_maxs = [(int)'0', '9'];
+              if ($self->{ascii_mode}) {
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)'0', '9'];
+              }
+              else {
+                die "\d must be used with ascii option";
+              }
               break;
             }
             case 'D': {
-              $cur_is_char = 1;
-              $cur_uchar_min_maxs = [(int)'0', '9'];
-              $cur_negate = 1;
+              if ($self->{ascii_mode}) {
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)'0', '9'];
+                $cur_negate = 1;
+              }
+              else {
+                die "\D must be used with ascii option";
+              }
               break;
             }
             case 'w': {
-              $cur_is_char = 1;
-              $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+              if ($self->{ascii_mode}) {
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+              }
+              else {
+                die "\w  must be used with ascii option";
+              }
               break;
             }
             case 'W': {
-              $cur_is_char = 1;
-              $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
-              $cur_negate = 1;
+              if ($self->{ascii_mode}) {
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)'0', '9', 'a', 'z', 'A', 'Z', '_', '_'];
+                $cur_negate = 1;
+              }
+              else {
+                die "\W must be used with ascii option";
+              }
               break;
             }
             case 's': {
-              $cur_is_char = 1;
-              $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+              if ($self->{ascii_mode}) {
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+              }
+              else {
+                die "\s must be used with ascii option";
+              }
               break;
             }
             case 'S': {
-              $cur_is_char = 1;
-              $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
-              $cur_negate = 1;
+              if ($self->{ascii_mode}) {
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)' ', ' ', '\t', '\t', '\f', '\f', '\r', '\r', '\n', '\n'];
+                $cur_negate = 1;
+              }
+              else {
+                die "\S must be used with ascii option";
+              }
               break;
             }
             default: {

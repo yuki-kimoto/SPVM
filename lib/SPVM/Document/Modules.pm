@@ -70,9 +70,9 @@ List of SPVM Core Modules
 
 =item * L<SPVM::Regex> - Regular expression
 
-=item * L<SPVM::Regex::Pattern> - 
+=item * L<SPVM::Regex::Pattern> - Regular expression pattern
 
-=item * L<SPVM::Regex::Replacer> - 
+=item * L<SPVM::Regex::Replacer> - Regular expression replacer
 
 =item * L<SPVM::Short> - short object
 

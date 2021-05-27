@@ -1,7 +1,7 @@
 0.9005 2021-05-27
   - add SPVM::Regex "." regular expression character.
   - add SPVM::Regex single line mode option "s"
-
+  - add SPVM::Regex ascii mode and don't support \d, \D, \w, \W, \s, \S without ascii mode option
 0.9004 2021-05-26
   - remove escape charcter \b of string literal
   - add raw escape character of string literal

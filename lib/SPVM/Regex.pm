@@ -103,13 +103,15 @@ L<SPVM::Regex> provides the subset of Perl regular expression. The target string
   # Regular expression character
   ^    first of string
   $    last of string
-  \d   [0-9]
-  \D   not \d
-  \s   " ", "\t", "\f", "\r", "\n"
-  \S   not \s
-  \w   [a-zA-Z0-9_]
-  \W   not \w
   .    all character except "\n"
+  
+  #    Default mode     ASCII mode
+  \d   Not supported    [0-9]
+  \D   Not supported    not \d
+  \s   Not supported    " ", "\t", "\f", "\r", "\n"
+  \S   Not supported    not \s
+  \w   Not supported    [a-zA-Z0-9_]
+  \W   Not supported    not \w
   
   # Character class and the negatiton
   [a-z0-9]
@@ -121,6 +123,11 @@ L<SPVM::Regex> provides the subset of Perl regular expression. The target string
 B<Regex Options:>
 
   s    single line mode
+  a    ascii mode
+
+Regex options is used by C<new_with_options> method.
+
+  my $re = SPVM::Regex->new("^ab+c", "sa");
 
 B<Limitations:>
 
