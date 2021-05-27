@@ -425,6 +425,22 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
     
+    # . - single line mode
+    {
+      my $re = SPVM::Regex->new_with_options("(.+)", "s");
+      my $target = "abc\ndef";
+      
+      my $match = $re->match($target, 0);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->captures->[0] eq "abc\ndef") {
+        return 0;
+      }
+    }
+
     return 1;
   }
 

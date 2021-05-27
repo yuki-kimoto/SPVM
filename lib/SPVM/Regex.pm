@@ -118,6 +118,10 @@ L<SPVM::Regex> provides the subset of Perl regular expression. The target string
   # Capture
   (foo)
 
+B<Regex Options:>
+
+  s    single line mode
+
 B<Limitations:>
 
 L<SPVM::Regex> do not support the same set of characters after a quantifier.
@@ -136,9 +140,17 @@ If 0 width quantifir is between two same set of characters after a quantifier, i
 
 =head1 STATIC METHODS
 
+=head2 new
+
   my $re = SPVM::Regex->new("^ab+c");
 
-Create a new L<SPVM::Regex> object and compile the specific regex.
+Create a new L<SPVM::Regex> object and compile the regex.
+
+=head2 new_with_options
+
+  my $re = SPVM::Regex->new("^ab+c", "s");
+
+Create a new L<SPVM::Regex> object and compile the regex with the options.
 
 =head1 INSTANCE METHODS
 
