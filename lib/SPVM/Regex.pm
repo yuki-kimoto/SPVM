@@ -109,6 +109,7 @@ L<SPVM::Regex> provides the subset of Perl regular expression. The target string
   \S   not \s
   \w   [a-zA-Z0-9_]
   \W   not \w
+  .    all character except "\n"
   
   # Character class and the negatiton
   [a-z0-9]

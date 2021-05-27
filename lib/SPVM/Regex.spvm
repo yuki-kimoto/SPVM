@@ -39,7 +39,7 @@ package SPVM::Regex : precompile {
     
     return $self;
   }
-
+  
   private sub compile : void ($self : self, $re_str : string) {
     
     unless ($re_str) {
@@ -204,7 +204,9 @@ package SPVM::Regex : precompile {
                 break;
               }
               case '.': {
-                die ". is not supported";
+                $cur_is_char = 1;
+                $cur_uchar_min_maxs = [(int)'\n', '\n'];
+                $cur_negate = 1;
                 break;
               }
               case '$': {

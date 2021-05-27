@@ -409,6 +409,22 @@ package TestCase::Lib::SPVM::Regex {
       }
     }
     
+    # .
+    {
+      my $re = SPVM::Regex->new("(.+)");
+      my $target = "abc\ndef";
+      
+      my $match = $re->match($target, 0);
+      
+      unless ($match) {
+        return 0;
+      }
+      
+      unless ($re->captures->[0] eq "abc") {
+        return 0;
+      }
+    }
+    
     return 1;
   }
 
