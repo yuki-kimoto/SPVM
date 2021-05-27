@@ -2,6 +2,7 @@
   - add SPVM::Regex "." regular expression character.
   - add SPVM::Regex single line mode option "s"
   - add SPVM::Regex ascii mode and don't support \d, \D, \w, \W, \s, \S without ascii mode option
+  - Fix SPVM::Math->pi and SPVM::Math->e tests. Values is compared as numbers instead of strings
 0.9004 2021-05-26
   - remove escape charcter \b of string literal
   - add raw escape character of string literal
