@@ -8,168 +8,167 @@ SPVM Native APIs is C APIs used in SPVM native method. This document describes t
 
 Native method can be written by C language or C++, If the code is compatible with C language or C++(for example, CUDA/nvcc), it can be compiled into native method. If you see examples of SPVM Native APIs, see L<Examples using SPVM Native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>. This contains the examples of C language, C++ and CUDA/nvcc.
 
-=head1 How to define SPVM native method?
+=head1 Defintion of SPVM Native Method
 
-=begin html
-
-<h2>Native Method Declaration</h2>
+=head2 Native Method Declaration
 
 Native Method Declaration is written using Method Descriptor "native" in SPVM module file. SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
 
-<pre>
-# Foo/Bar.spvm
-package Foo::Bar {
-  native sub sum : int ($num1 : int, $num2 : int);
-}
-</pre>
+  # Foo/Bar.spvm
+  package Foo::Bar {
+    native sub sum : int ($num1 : int, $num2 : int);
+  }
 
-<h2>SPVM Native Config File</h2>
+=head2 SPVM Native Config File
 
 SPVM Native Config File must be created for SPVM Native Method. The base name without the extension of native config file must be same as SPVM module file and the extension must be ".config".
 
-<pre>
-# Native configuration file for Foo::Bar module
-Foo/Bar.config
-</pre>
+  # Native configuration file for Foo::Bar module
+  Foo/Bar.config
 
 If native configuration file does not exist, an exception occurs.
 
-Native Config File is Perl source code. Native Config File must return properly L<SPVM::Builder:Config> object, otherwise an exception occurs.
+Native Config File is Perl source code. Native Config File must return properly L<SPVM::Builder::Config> object, otherwise an exception occurs.
 
-<b>1. C99 Config File Example</b>
+=head3 C99 Config File Example
 
-<pre>
-# C99 Config File
-use strict;
-use warnings;
+  # C99 Config File
+  use strict;
+  use warnings;
 
-use SPVM::Builder::Config;
-my $bconf = SPVM::Builder::Config->new_c99;
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_c99;
 
-$bconf;
-</pre>
+  $bconf;
 
-<b>2. C11 Config File Example</b>
+=head3 C11 Config File Example
 
-<pre>
-# C11 Config File
-use strict;
-use warnings;
+  # C11 Config File
+  use strict;
+  use warnings;
 
-use SPVM::Builder::Config;
-my $bconf = SPVM::Builder::Config->new_c;
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_c;
 
-$bconf->set_std('c11');
+  $bconf->set_std('c11');
 
-$bconf;
-</pre>
+  $bconf;
 
-<b>3. C++ Config File Example</b>
+=head3 C++ Config File Example
 
-<pre>
-# C++ Config File
-use strict;
-use warnings;
+  # C++ Config File
+  use strict;
+  use warnings;
 
-use SPVM::Builder::Config;
-my $bconf = SPVM::Builder::Config->new_cpp;
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_cpp;
 
-$bconf;
-</pre>
+  $bconf;
 
-<b>4. C++11 Config File Example</b>
+=head3 C++11 Config File Example
 
-<pre>
-# C++11 Config File
-use strict;
-use warnings;
+  # C++11 Config File
+  use strict;
+  use warnings;
 
-use SPVM::Builder::Config;
-my $bconf = SPVM::Builder::Config->new_cpp;
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_cpp;
 
-$bconf->set_std('c++11');
+  $bconf->set_std('c++11');
 
-$bconf;
-</pre>
+  $bconf;
 
-<b>5. CUDA/nvcc Config File Example</b>
+=head3 CUDA/nvcc Config File Example
 
-<pre>
-use strict;
-use warnings;
+  use strict;
+  use warnings;
 
-my $bconf = SPVM::Builder::Config->new;
+  my $bconf = SPVM::Builder::Config->new;
 
-# Compiler and Linker common
-$bconf->set_cccdlflags(q(--compiler-options '-fPIC'));
+  # Compiler and Linker common
+  $bconf->set_cccdlflags(q(--compiler-options '-fPIC'));
 
-# Compiler
-$bconf->set_cc('nvcc');
-$bconf->set_ccflags('');
-$bconf->set_ext('cu');
+  # Compiler
+  $bconf->set_cc('nvcc');
+  $bconf->set_ccflags('');
+  $bconf->set_ext('cu');
 
-# Linker
-$bconf->set_ld('nvcc');
-$bconf->set_lddlflags('-shared');
+  # Linker
+  $bconf->set_ld('nvcc');
+  $bconf->set_lddlflags('-shared');
 
-$bconf;
-</pre>
+  $bconf;
 
-<h2 id="native-api-native-sub-definition">Native Method Definition</h2>
+=head3 Show the compile commands
 
-Native Method Definition is written in native source file. native source file is basically C language source file which extension is ".c". This extension can be changed to ".cpp" for C++ source file, to ".cu" for CUDA source file, etc.
+  # C99 Config File
+  use strict;
+  use warnings;
 
-<pre>
-# Native source file for Foo::Bar module
-Foo/Bar.c
-</pre>
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_c99;
+
+  # Show the compile commands
+  $bconf->set_quiet(0);
+
+  $bconf;
+
+=head3 Force the compiles
+
+  use strict;
+  use warnings;
+
+  use SPVM::Builder::Config;
+  my $bconf = SPVM::Builder::Config->new_c99;
+
+  # Show the compile commands
+  $bconf->set_force_compile(1);
+
+  $bconf;
+
+=head2 Native Method Definition
+
+Native Method Definition is written in native source file. Native source file is basically C language source file which extension is ".c". This extension can be changed to ".cpp" for C++ source file, or ".cu" for CUDA source file, etc.
+
+  # Native source file for Foo::Bar module
+  Foo/Bar.c
 
 The following is natvie source file example written by C language.
 
-<pre>
-#include "spvm_native.h"
+  #include "spvm_native.h"
 
-int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  int32_t num1 = stack[0].ival;
-  int32_t num2 = stakc[1].ival;
+    int32_t num1 = stack[0].ival;
+    int32_t num2 = stakc[1].ival;
 
-  int32_t total = num1 + num2;
+    int32_t total = num1 + num2;
 
-  stack[0].ival = total;
+    stack[0].ival = total;
 
-  return 0;
-}
-</pre>
+    return 0;
+  }
 
-<h3>Include spvm_native.h</h3>
+=head3 Include spvm_native.h
 
-Include "spvm_native.h" at the beginning of the native source file. This header file defines SPVM Native APIs and data structures for Native API and useful macro functions.
+Include "spvm_native.h" at the beginning of the native source file. This header file defines SPVM Native APIs and data structures for Native APIs.
 
-See <a href="#native-api-list">List of SPVM Native APIs</a> about included SPVM Native APIs by this header.
+spvm_native.h include the following types.
 
-spvm_native.h include the following data structures.
+  SPVM_ENV
+  SPVM_VALUE
 
-<pre>
-SPVM_ENV
-SPVM_VALUE
-</pre>
+See L<List of Native APIs|/"List-of-Native-APIs"> about included SPVM Native APIs.
 
-See <a href="#native-api-list">List of SPVM Native APIs</a> about included SPVM Native APIs by this header.
+=head3 Return Value
 
-See <a href="#native-api-list">List of SPVM Native APIs</a> about included SPVM Native APIs by this header.
+The return type is "int32_t" type. If the subroutine raises an exception, "1" is returned. If the subroutine is succeed "0" is returned.
 
-<h3>Return Value</h3>
-
-The return type is "int32_t". If the subroutine raises an exception, "1" is returned, otherwise "0" is returned.
-
-<h3>Function Name</h3>
+=head3 Function Name
 
 Native Method Definition is a simple C language function such as
 
-<pre>
-SPNATIVE__Foo__Bar__sum
-</pre>
+  SPNATIVE__Foo__Bar__sum
 
 The function name starts with "SPNATIVE__".
 
@@ -181,319 +180,228 @@ Followed by subroutine name "sum".
 
 If Native Method Name is invalid, a compile error will occur.
 
+There are two arguments, the first argument is "SPVM_ENV* env" which has the information of the execution environment, and the second argument is "SPVM_VALUE* stack" which is used for the argument and return value.
 
-  <p>
-    There are two arguments, the first argument is "SPVM_ENV* env" which has the information of the execution environment, and the second argument is "SPVM_VALUE* stack" which is used for the argument and return value.
-  </p>
-  <p>
-  </p>
-  <p>
-    In the above sample, it takes two int type arguments of SPVM, calculates the sum, and returns the return value.
-  </p>
+  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  <h2 id="native-api-native-sub-compile">Compile Native Method</h2>
-  <p>
-    Native subroutine are compiled with Perl and are compiled into a dynamically readable shared library depending on the OS. Shared libraries (.so) on Unix/Linux, dynamic link libraries (.dll) on Windows.
-  </p>
-  <p>
-    Compilation into a dynamically readable shared library is done during SPVM compilation. The build directory must exist at compile time. If the build directory does not exist, an exception will be thrown.
-  </p>
-  <p>
-    The default build directory is the "~/.spvm_build" directory in the directory containing the executed Perl script, and can be changed with the environment variable "SPVM_BUILD_DIR".
-  </p>
-  <p>
-    If you want to use SPVM Native Method from Perl, create a "~/.spvm_build" directory in the directory where the executed Perl script exists.
-  </p>
-<pre>
-script.pl
-~/.spvm_build
-</pre>
-  <p>
-    The intermediately generated object files are generated under "work/object" under the build directory. The object file name has the extension of the SPVM module changed to ".o".
-  </p>
-<pre>
-~/.spvm_build/work/object/Foo/Bar.o
-</pre>
-  <p>
-    Dynamically readable shared libraries are generated under "work/lib" under the build directory. The file name of the dynamically readable shared library is the extension of the SPVM module changed to the dynamically readable shared library extension according to the OS.
-  </p>
-<pre>
-# Unix/Linux
-~/.spvm_build/work/object/Foo/Bar.so
+  }
 
-# Windows
-~/.spvm_build/work/object/Foo/Bar.dll
-</pre>
+In the above sample, it takes two int type arguments of SPVM, calculates the sum, and returns the return value.
 
-  <h2 id="native-api-native-sub-get-arg">Arguments</h2>
-  <ul>
-    <li><a href="#native-api-native-sub-get-arg-stack">Arguments and Stack</a></li>
-    <li><a href="#native-api-native-sub-get-arg-byte">Get byte type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-short">Get short type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-int">Get int type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-long">Get long type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-float">Get float type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-double">Get double type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-object">Get object type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-stack">Stack of arguments</a></li>
-    <li><a href="#native-api-native-sub-get-arg-byte-ref">Get reference type argument of byte</a></li>
-    <li><a href="#native-api-native-sub-get-arg-short-ref">Get reference type argument of short</a></li>
-    <li><a href="#native-api-native-sub-get-arg-int-ref">Get int reference type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-long-ref">Get long reference type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-float-ref">Get float reference type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-double-ref">Get double reference type argument</a></li>
-    <li><a href="#native-api-native-sub-get-arg-mulnum">Get multiple numeric argument</a></li>
-  </ul>
+  #include "spvm_native.h"
+
+  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+    int32_t num1 = stack[0].ival;
+    int32_t num2 = stakc[1].ival;
+
+    int32_t total = num1 + num2;
+
+    stack[0].ival = total;
+
+    return 0;
+  }
+
+=head2 Compile Native Method
+
+Native subroutines are compiled into a shared libraries. teay are shared libraries (.so) on Unix/Linux, dynamic link libraries (.dll) on Windows or etc corresponding to your os.
+
+The compilation is done when SPVM is compiled. The build directory must exist, otherwise an exception occures.
+
+The default build directory is the "~/.spvm_build" directory in the directory containing the executed Perl script, and can be changed with the environment variable "SPVM_BUILD_DIR".
+
+If you want to use SPVM Native Method from Perl, create a "~/.spvm_build" directory in the directory where the executed Perl script exists.
+
+  ~/.spvm_build
+
+The generated object files exists under "work/object" under the build directory. The object file name is the name which the extension of the SPVM module name is changed to ".o".
+
+  ~/.spvm_build/work/object/Foo/Bar.o
+
+The generated shared libraries exists under "work/lib" under the build directory. The name of shared library is the name which the extension of the SPVM module name is changed to ".so", or etc corresponding to your os.
+
+  # Unix/Linux
+  ~/.spvm_build/work/object/Foo/Bar.so
+
+  # Windows
+  ~/.spvm_build/work/object/Foo/Bar.dll
+
+=head2 Stack
+
+The stack is the second argument of the definition of the Native Method. This is called stack. Stack is used getting arguments and return the value.
+
+  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+  }
+
+SPVM_VALUE is a union type of C language to store SPVM values. You can save integral value, floating point value, object value, and reference value to it.
+
+For example, to get the value of the first argument(0th) of int type, write as follows.
+
+  int32_t args0 = stack[0].ival;
+
+For example, to get the value of the second argument(1th) of long type, write as follows.
+
+  int64_t args1 = stack[1].lval;
+
+For example, to return a value of double type, write as follows.
+
+  stack[0].dval = 0.5;
   
-<h3 href = "# native-api-native-sub-get-arg-stack">Arguments and Stack</h3>
-  <p>
-    The stack is the "SPVM_VALUE* stack" passed as the second argument in the definition of the Native Method, and the arguments are stored in this.
-  </p>
-<pre>
-int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+=head2 Getting Arguments
 
-}
-</pre>
-  <p>
-    SPVM_VALUE is a C language union for storing SPVM values. You can save numeric, object, and reference values.
-  </p>
-  <p>
-    Pointer to the beginning of the "SPVM_VALUE type array" of "SPVM_VALUE* stack". The value of the argument of the Native Method called from SPVM side is set in this array.
-  </p>
-  <p>
-    For example, to get the value of the first argument(0th) of int type, write as follows.
-  </p>
-<pre>
-int32_t args0 = stack[0].ival;
-</pre>
-  <p>
-    For example, to get the value of the second argument(1th) of long type, write as follows.
-  </p>
-<pre>
-int64_t args1 = stack[1].lval;
-</pre>
+=head3 Get byte type argument
 
-<h3 id="native-api-native-sub-get-arg-byte">Get byte type argument</h3>
-  <p>
-    To get the SPVM byte argument, access the bval field. Assign to the C language int8_t type.
-  </p>
-<pre>
-int8_t args0 = stack[0].bval;
-</pre>
+To get the SPVM byte argument, access the bval field. Assign to the C language int8_t type.
 
-<h3 id="native-api-native-sub-get-arg-short">Get short type argument</h3>
-  <p>
-    To get the short argument of SPVM, access the sval field. Assign it to the C language int16_t type.
-  </p>
-<pre>
-int16_t args0 = stack[0].sval;
-</pre>
+  int8_t args0 = stack[0].bval;
 
-<h3 id="native-api-native-sub-get-arg-int">Get int type argument</h3>
-  <p>
-    To get the SPVM int type argument, access the ival field. Assign to the C language int32_t type.
-  </p>
-<pre>
-int32_t args0 = stack[0].ival;
-</pre>
+=head3 Get short type argument
 
-<h3 id="native-api-native-sub-get-arg-long">Get long type argument</h3>
-  <p>
-    To get the long argument of SPVM, access the lval field. Assign to the C language int64_t type.
-  </p>
-<pre>
-int64_t args0 = stack[0].lval;
-</pre>
+To get the short argument of SPVM, access the sval field. Assign it to the C language int16_t type.
 
-<h3 id="native-api-native-sub-get-arg-float">Get float type argument</h3>
-  <p>
-    To get the SPVM float type argument, access the fval field. Assign to float type of C language.
-  </p>
-<pre>
-float args0 = stack[0].fval;
-</pre>
+  int16_t args0 = stack[0].sval;
 
-<h3 id="native-api-native-sub-get-arg-double">Get double type argument</h3>
-  <p>
-    To get the SPVM double argument, access the dval field. Assign to the C language double type.
-  </p>
-<pre>
-double args0 = stack[0].dval;
-</pre>
+=head3 Get int type argument
 
-<h3 id="native-api-native-sub-get-arg-object">Get object type argument</h3>
-  <p>
-    To get the SPVM object type argument, access the oval field. Assign it to void* type in C language.
-  </p>
-<pre>
-void* args0 = stack[0].oval;
-</pre>
+To get the SPVM int type argument, access the ival field. Assign to the C language int32_t type.
 
-<h3 id="native-api-native-sub-get-arg-byte-ref">Get byte Reference Type Argument</h3>
+  int32_t args0 = stack[0].ival;
+
+=head3 Get long type argument
+
+To get the long argument of SPVM, access the lval field. Assign to the C language int64_t type.
+
+  int64_t args0 = stack[0].lval;
+
+=head3 Get float type argument
+
+To get the SPVM float type argument, access the fval field. Assign to float type of C language.
+
+  float args0 = stack[0].fval;
+
+=head3 Get double type argument
+
+To get the SPVM double argument, access the dval field. Assign to the C language double type.
+
+  double args0 = stack[0].dval;
+
+=head3 Get object type argument
+
+To get the SPVM object type argument, access the oval field. Assign it to void* type in C language.
+
+  void* args0 = stack[0].oval;
+
+=head3 Get byte Reference Type Argument
 
 If you get SPVM byte Reference Type argument, use "bref" field. it can be assinged to the value of C language int8_t* type.
 
-<pre>
-int8_t* args0 = stack[0].bref;
-</pre>
+  int8_t* args0 = stack[0].bref;
 
-<h3 id="native-api-native-sub-get-arg-short">Get short Reference Type Argument</h3>
+=head3 Get short Reference Type Argument
 
 If you get SPVM short Reference Type argument, use "sref" field. it can be assinged to the value of C language int16_t* type.
 
-<pre>
-int16_t* args0 = stack[0].sref;
-</pre>
+  int16_t* args0 = stack[0].sref;
 
-<h3 id="native-api-native-sub-get-arg-int">Get int Reference Type Argument</h3>
+=head3 Get int Reference Type Argument
 
 If you get SPVM int Reference Type argument, use "iref" field. it can be assinged to the value of C language int32_t* type.
 
-<pre>
-int32_t* args0 = stack[0].iref;
-</pre>
+  int32_t* args0 = stack[0].iref;
 
-<h3 id="native-api-native-sub-get-arg-long">Get long Reference Type Argument</h3>
+=head3 Get long Reference Type Argument
 
 If you get SPVM long Reference Type argument, use "lref" field. it can be assinged to the value of C language int64_t* type.
 
-<pre>
-int64_t* args0 = stack[0].lref;
-</pre>
+  int64_t* args0 = stack[0].lref;
 
-<h3 id="native-api-native-sub-get-arg-float">Get float Reference Type Argument</h3>
+=head3 Get float Reference Type Argument
 
 If you get SPVM float Reference Type argument, use "fref" field. it can be assinged to the value of C language float* type.
 
-<pre>
-float* args0 = stack[0].fref;
-</pre>
+  float* args0 = stack[0].fref;
 
-<h3 id="native-api-native-sub-get-arg-double">Get double Reference Type Argument</h3>
+=head3 Get double Reference Type Argument
 
 If you get SPVM double Reference Type Argument, use "dref" field. it can be assinged to the value of C language double* type.
 
-<pre>
-double* args0 = stack[0].dref;
-</pre>
+  double* args0 = stack[0].dref;
 
-<h3 id="native-api-native-sub-get-arg-mulnum">Get multiple numeric type arguments</h3>
-  <p>
-    In a Native Method, multiple numeric type arguments are assigned to multiple arguments.
-  </p>
-  <p>
-    For example, in the case of the argument of SPVM::Complex_2d type, it gets from two arguments. Note that you cannot access it by field name.
-  </p>
-<pre>
-double args_re = stack[0].dval;
-double args_im = stack[1].dval;
-</pre>
+=head3 Get multiple numeric type arguments
 
-  <h2 id="native-api-native-sub-set-retval">Return Value</h2>
-  <ul>
-    <li><a href="#native-api-native-sub-set-retval-stack">Return value and stack</a></li>
-    <li><a href="#native-api-native-sub-set-retval-byte">Set return value of byte type</a></li>
-    <li><a href="#native-api-native-sub-set-retval-short">Set return value of short type</a></li>
-    <li><a href="#native-api-native-sub-set-retval-int">Set return value of int type</a></li>
-    <li><a href="#native-api-native-sub-set-retval-long">Set long type return value</a></li>
-    <li><a href="#native-api-native-sub-set-retval-float">Set return value of float type</a></li>
-    <li><a href="#native-api-native-sub-set-retval-double">Set return value of double type</a></li>
-    <li><a href="#native-api-native-sub-set-retval-object">Set return value of object type</a></li>
-    <li><a href="#native-api-native-sub-set-retval-mulnum">Multiple numeric return value setting</a></li>
-  </ul>
+In a Native Method, multiple numeric type arguments are assigned to the coresponding multiple arguments.
+
+For example, In the case of the argument values of L<SPVM::Complex_2d> type, you can get them by the following way.
+
+  double args_re = stack[0].dval;
+  double args_im = stack[1].dval;
+
+Note that you cannot access the values by the field name of L<SPVM::Complex_2d>.
+
+
+=head2 Return Value
   
-<h3 id="native-api-native-sub-set-retval-stack">Return value and stack</h3>
-  <p>
-    Native subroutine use the stack to set the return value, rather than returning it with a C language return statement.
-  </p>
-  <p>
-    For example, to return an int type return value, write as follows.
-  </p>
-<pre>
-stack[0].ival = 3;
-</pre>
-  <p>
-    For example, to get the value of the second argument of long type, write as follows.
-  </p>
-<pre>
-stack[0].lval = 56;
-</pre>
+=head3 Set return value of byte type
 
-<h3 id="native-api-native-sub-set-retval-byte">Set return value of byte type</h3>
-  <p>
-    To set the SPVM byte return value, assign it to the bval field. Assigns a value of type int8_t in C language.
-  </p>
-<pre>
-int8_t retval;
-stack[0].bval = retval;
-</pre>
+To set the SPVM byte return value, assign it to the bval field. Assigns a value of type int8_t in C language.
 
-<h3 id="native-api-native-sub-set-retval-short">Set return value of short type</h3>
-  <p>
-    To set the SPVM short return value, assign it to the sval field. Assigns a C language int16_t type value.
-  </p>
-<pre>
-int16_t retval;
-stack[0].sval = retval;
-</pre>
+  int8_t retval;
+  stack[0].bval = retval;
 
-<h3 id="native-api-native-sub-set-retval-int">Set return value of int type</h3>
-  <p>
-    To set the SPVM int return value, assign it to the ival field. Assigns a C language int32_t type value.
-  </p>
-<pre>
-int32_t retval;
-stack[0].ival = retval;
-</pre>
+=head3 Set return value of short type
 
-<h3 id="native-api-native-sub-set-retval-long">Set long type return value</h3>
-  <p>
-    To set the SPVM long return value, assign it to the lval field. Assigns a value of C language int64_t type.
-  </p>
-<pre>
-int64_t retval;
-stack[0].lval = retval;
-</pre>
+To set the SPVM short return value, assign it to the sval field. Assigns a C language int16_t type value.
 
-<h3 id="native-api-native-sub-set-retval-float">Set return value of float type</h3>
-  <p>
-    To set the SPVM float return value, assign it to the fval field. Substitutes a C type float type value.
-  </p>
-<pre>
-float retval;
-stack[0].fval = retval;
-</pre>
+  int16_t retval;
+  stack[0].sval = retval;
 
-<h3 id="native-api-native-sub-set-retval-double">Set return value of double type</h3>
-  <p>
-    To set the SPVM double return value, assign it to the dval field. Assigns a C type double value.
-  </p>
-<pre>
-double retval;
-</pre>
+=head3 Set return value of int type
 
-<h3 id="native-api-native-sub-set-retval-object">Set return value of object type</h3>
-  <p>
-    To set the return value of the SPVM object type, assign it to the oval field. Assign a value of void* type in C language.
-  </p>
-<pre>
-void* retval;
-stack[0].oval = retval;
-</pre>
+To set the SPVM int return value, assign it to the ival field. Assigns a C language int32_t type value.
 
-<h3 id="native-api-native-sub-set-retval-mulnum">Set multiple numeric return value</h3>
-  <p>
+  int32_t retval;
+  stack[0].ival = retval;
+
+=head3 Set long type return value
+
+To set the SPVM long return value, assign it to the lval field. Assigns a value of C language int64_t type.
+
+  int64_t retval;
+  stack[0].lval = retval;
+
+=head3 Set return value of float type
+
+To set the SPVM float return value, assign it to the fval field. Substitutes a C type float type value.
+
+  float retval;
+  stack[0].fval = retval;
+
+=head3 Set return value of double type
+
+To set the SPVM double return value, assign it to the dval field. Assigns a C type double value.
+
+  double retval;
+
+=head3 Set return value of object type
+
+To set the return value of the SPVM object type, assign it to the oval field. Assign a value of void* type in C language.
+
+  void* retval;
+  stack[0].oval = retval;
+
+=head3 Set multiple numeric return value
+
     In a Native Method, multiple numeric return values assigned to multiple return values.
-  </p>
-  <p>
+
     For example, for the return value of SPVM::Complex_2d type, set two return values.
-  </p>
-<pre>
-double retval_x;
-double retval_y;
-stack[0].dval = retval_x;
-stack[1] .dval = retval_y;
-</pre>
+
+  double retval_x;
+  double retval_y;
+  stack[0].dval = retval_x;
+  stack[1] .dval = retval_y;
+
+=begin html
 
   <h2 id="native-api-native-call-sub">Call SPVM Method</h2>
   <p>
