@@ -344,307 +344,250 @@ Note that you cannot access the values by the field name of L<SPVM::Complex_2d>.
   
 =head3 Set return value of byte type
 
-To set the SPVM byte return value, assign it to the bval field. Assigns a value of type int8_t in C language.
+Use C<bval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<byte>. This is corresponding to C<int8_t> type of C language.
 
   int8_t retval;
   stack[0].bval = retval;
 
 =head3 Set return value of short type
 
-To set the SPVM short return value, assign it to the sval field. Assigns a C language int16_t type value.
+Use C<sval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<short>. This is corresponding to C<int16_t> type of C language.
 
   int16_t retval;
   stack[0].sval = retval;
 
 =head3 Set return value of int type
 
-To set the SPVM int return value, assign it to the ival field. Assigns a C language int32_t type value.
+Use C<ival> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<int>. This is corresponding to C<int32_t> type of C language.
 
   int32_t retval;
   stack[0].ival = retval;
 
 =head3 Set long type return value
 
-To set the SPVM long return value, assign it to the lval field. Assigns a value of C language int64_t type.
+Use C<lval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<long>. This is corresponding to C<int64_t> type of C language.
 
   int64_t retval;
   stack[0].lval = retval;
 
 =head3 Set return value of float type
 
-To set the SPVM float return value, assign it to the fval field. Substitutes a C type float type value.
+Use C<fval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<float>. This is corresponding to C<float> type of C language.
 
   float retval;
   stack[0].fval = retval;
 
 =head3 Set return value of double type
 
-To set the SPVM double return value, assign it to the dval field. Assigns a C type double value.
+Use C<dval> field of C<SPVM_VALUE> to set a return value which type of SPVM is C<double>. This is corresponding to C<double> type of C language.
 
   double retval;
+  stack[0].dval = retval;
 
 =head3 Set return value of object type
 
-To set the return value of the SPVM object type, assign it to the oval field. Assign a value of void* type in C language.
+Use C<oval> field of C<SPVM_VALUE> to set a return value which type of SPVM is object. This is corresponding to C<void*> type of C language.
 
   void* retval;
   stack[0].oval = retval;
 
 =head3 Set multiple numeric return value
 
-    In a Native Method, multiple numeric return values assigned to multiple return values.
+If you set multiple numeric return value in native method, set multiple return values.
 
-    For example, for the return value of SPVM::Complex_2d type, set two return values.
+For example, in the case of L<SPVM::Complex_2d>, do the following.
 
   double retval_x;
   double retval_y;
   stack[0].dval = retval_x;
-  stack[1] .dval = retval_y;
+  stack[1].dval = retval_y;
 
-=begin html
+=head2 Call SPVM Method
 
-  <h2 id="native-api-native-call-sub">Call SPVM Method</h2>
-  <p>
-    To call the SPVM subroutine, first use the <a href="#native-api-native-sub-api-sub_id">sub_id</a> function or the <a href = "# native-api-native- Get the ID of the subroutine using the sub-api-method_sub_id ">method_sub_id</a> function
-  </p>
-<pre>
-// For a subroutine that is not a method
-int32_t sub_id = env->get_sub_id(env, "Foo", "sum", "int (int, int)");
+To call the SPVM subroutine, first use the <a href="#native-api-native-sub-api-sub_id">sub_id</a> function or the <a href = "# native-api-native- Get the ID of the subroutine using the sub-api-method_sub_id ">method_sub_id</a> function
 
-// For method
-int32_t sub_id = env->get_sub_id_by_object(env, object, "sum", "int (self, int, int)");
-</pre>
-  <p>
-    If sub_id is less than 0, it means that the subroutine was not found. It is safe to handle exceptions as follows.
-  </p>
-<pre>
-if (sub_id <0) {
-  SPVM_DIE ("Can't find sub id", "Foo/Bar.c", __LINE__);
-}
-</pre>
-  <p>
-    Set the SPVM subroutine argument to stack before calling the subroutine.
-  </p>
-<pre>
-stack[0].ival = 1;
-stack[0].ival = 2;
-</pre>
-  <p>
-    To call a SPVM subroutine, use the <a href="#native-api-native-sub-api-call_sub">call_sub</a> function.
-  </p>
-<pre>
-int32_t exception_flag = env->call_sub(env, sub_id, stack);
-</pre>
-  <p>
-    Nonzero if the subroutine raised an exception, 0 if no exception occurred.
-  </p>
-  <p>
-    The return value of the subroutine is stored in the first element of the stack.
-  </p>
-<pre>
-int32_t total = stack[0].ival;
-</pre>
+  // For a subroutine that is not a method
+  int32_t sub_id = env->get_sub_id(env, "Foo", "sum", "int (int, int)");
 
-  <h2 id="native-api-native-sub-scope">Native Method Scope</h2>
-  <p>
-    Native subroutine are entirely enclosed in scope.
-  </p>
-  <p>
-    Objects added to the mortal stack will automatically have their reference count decremented by 1 when the Native Method ends. When the reference count reaches 0, it is released.
-  </p>
-  <p>
-    Use push_mortal to add objects to the mortal stack.
-  </p>
-<pre>
-env->push_mortal(env, object);
-</pre>
-  <p>
-    Native APIs that normally create an object such as "new_object" will add the automatically created object to the mortal stack so you don't need to use this.
-  </p>
-  <p>
-    Use "enter_scope" to create a scope. The return value is the ID of that scope.
-  </p>
-<pre>
-int32_t scope_id = env->enter_scope (env);
-</pre>
-  <p>
-    Use "leave_scope" to leave the scope. For the argument, it is necessary to specify the scope ID obtained in "enter_scope".
-  </p>
-<pre>
-env->leave_scope(env, scope_id);
-</pre>
-  
-  <p>
-    Use "remove_mortal" to remove the object from the mortal stack. For the argument, specify the scope ID obtained by "enter_scope" and the object you want to remove. The object is removed from the mortal stack and the reference count is automatically decremented by 1. When the reference count reaches 0, it is released.
-  </p>
-<pre>
-env->remove_mortal(env, scope_id, object);
-</pre>
-  <p>
-    Information about the mortal stack is stored in env.
-  </p>
+  // For method
+  int32_t sub_id = env->get_sub_id_by_object(env, object, "sum", "int (self, int, int)");
 
-  <h2 id="native-api-native-sub-exception">Exception in Native Method</h2>
-  <p>
-    In the Native Method, it is the return value that indicates whether an exception has occurred.
-  </p>
-<pre>
-return 0;
+If sub_id is less than 0, it means that the subroutine was not found. It is safe to handle exceptions as follows.
 
-return 1;
-</pre>
-  <p>
-    If no exception occurs, "0" is returned. This is defined as "0".
-  <p>
-  <p>
-    If an exception occurs, "1" is returned. It is defined as a value other than "0".
-  <p>
-  <p>
-    If you want to set the exception message yourself, you can create an exception message with "new_string_nolen" and set it with "set_exception".
-  </p>
-<pre>
-env->set_exception(env, env->new_string_nolen(env, "Exception occur");
-return 1;
-</pre>
-  <p>
-    If no exception message is set, a default exception message will be set.
-  </p>
-  <p>
-    Usually, "SPVM_DIE" is defined to make it easier to use, so it is better to use this.
-  </p>
-<pre>
-SPVM_DIE ("Error. Values must be %d and %d", 3, 5, "Foo/Bar.c", __LINE__);
-</pre>
-  <p>
-    SPVM_DIE can be used in the same way as the C language sprintf function. Be sure to include this file name in the second from the end, and the line number in the last argument. If the message exceeds 255 bytes, the excess is truncated.
-  </p>
-  <p>
-    The exception is stored in env.
-  </p>
+  if (sub_id <0) {
+    SPVM_DIE ("Can't find sub id", "Foo/Bar.c", __LINE__);
+  }
 
-  <h2 id="native-api-use-pointer-type">Pointer Type</h2>
-  <p>
-    There is a type called pointer type in SPVM, but I will explain how to use it.
-  </p>
-  <p>
-    The pointer type definition specifies the pointer_t descriptor in the SPVM package definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
-  </p>
-<pre>
-# MyTimeInfo.spvm
-package MyTimeInfo : pointer_t {
+Set the SPVM subroutine argument to stack before calling the subroutine.
 
-  # Constructor
-  native sub new : MyTimeInfo ();
+  stack[0].ival = 1;
+  stack[0].ival = 2;
 
-  # Get second
-  native sub sec : int ($self : self);
+To call a SPVM subroutine, use the <a href="#native-api-native-sub-api-call_sub">call_sub</a> function.
 
-  # Destructor
-  native sub DESTROY : ($self : self);
-}
-</pre>
-  <p>
-    It defines a new constructor, a method that takes seconds information called sec, and a destructor called DESTROY. These are Native Method.
-  </p>
-  <p>
-    Next is the definition on the C language side.
-  </p>
-<pre>
-# MyTimeInfo.c
+  int32_t exception_flag = env->call_sub(env, sub_id, stack);
 
-int32_t SPNATIVE__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+Nonzero if the subroutine raised an exception, 0 if no exception occurred.
+
+The return value of the subroutine is stored in the first element of the stack.
+
+  int32_t total = stack[0].ival;
+
+=head2 Native Method Scope
+
+Native subroutine are entirely enclosed in scope.
+
+Objects added to the mortal stack will automatically have their reference count decremented by 1 when the Native Method ends. When the reference count reaches 0, it is released.
+
+Use push_mortal to add objects to the mortal stack.
+
+  env->push_mortal(env, object);
+
+Native APIs that normally create an object such as "new_object" will add the automatically created object to the mortal stack so you don't need to use this.
+
+Use "enter_scope" to create a scope. The return value is the ID of that scope.
+
+  int32_t scope_id = env->enter_scope (env);
+
+Use "leave_scope" to leave the scope. For the argument, it is necessary to specify the scope ID obtained in "enter_scope".
+
+  env->leave_scope(env, scope_id);
+
+Use "remove_mortal" to remove the object from the mortal stack. For the argument, specify the scope ID obtained by "enter_scope" and the object you want to remove. The object is removed from the mortal stack and the reference count is automatically decremented by 1. When the reference count reaches 0, it is released.
+
+  env->remove_mortal(env, scope_id, object);
+
+Information about the mortal stack is stored in env.
+
+=head2 Exception in Native Method
+
+In the Native Method, it is the return value that indicates whether an exception has occurred.
+
+  return 0;
+
+  return 1;
+
+If no exception occurs, "0" is returned. This is defined as "0".
+
+If an exception occurs, "1" is returned. It is defined as a value other than "0".
+
+If you want to set the exception message yourself, you can create an exception message with "new_string_nolen" and set it with "set_exception".
+
+  env->set_exception(env, env->new_string_nolen(env, "Exception occur");
+  return 1;
+
+If no exception message is set, a default exception message will be set.
+
+Usually, "SPVM_DIE" is defined to make it easier to use, so it is better to use this.
+
+  SPVM_DIE ("Error. Values must be %d and %d", 3, 5, "Foo/Bar.c", __LINE__);
+
+SPVM_DIE can be used in the same way as the C language sprintf function. Be sure to include this file name in the second from the end, and the line number in the last argument. If the message exceeds 255 bytes, the excess is truncated.
+
+The exception is stored in env.
+
+=head2 Pointer Type
+
+There is a type called pointer type in SPVM, but I will explain how to use it.
+
+The pointer type definition specifies the pointer_t descriptor in the SPVM package definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
+
+  # MyTimeInfo.spvm
+  package MyTimeInfo : pointer_t {
+
+    # Constructor
+    native sub new : MyTimeInfo ();
+
+    # Get second
+    native sub sec : int ($self : self);
+
+    # Destructor
+    native sub DESTROY : ($self : self);
+  }
+
+It defines a new constructor, a method that takes seconds information called sec, and a destructor called DESTROY. These are Native Method.
+
+Next is the definition on the C language side.
+
+  # MyTimeInfo.c
+
+  int32_t SPNATIVE__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+    // Alloc strcut tm
+    void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
+
+    // Create strcut tm instance
+    void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
+
+    stack[0].oval = tm_obj;
+
+    return 0;
+  }
+
+  int32_t SPNATIVE__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+    void* tm_obj = stack[0].oval;
+
+    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+
+    stack[0].ival = tm_ptr-> tm_sec;
+
+    return 0;
+  }
+
+  int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+
+    void* tm_obj = stack[0].oval;
+    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+
+    env->free_memory_block (tm_ptr);
+
+    return 0;
+  }
+
+In the constructor new, the memory of "struct tm" is first allocated by the alloc_memory_block_zero function. This is a function that reserves one memory block in SPVM. Similar to malloc, this function increments the memory block count by one, making it easier to spot memory leaks.
 
   // Alloc strcut tm
   void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
 
+Next, use the new_pointer function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
+
   // Create strcut tm instance
   void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
 
-  stack[0].oval = tm_obj;
+If you return this as a return value, the constructor is complete.
 
+  stack[0].ival = tm_ptr-> tm_sec;
+  
   return 0;
-}
 
-int32_t SPNATIVE__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+Next, let's get the value of tm_sec. sec method. The get_pointer function can be used to get a pointer to the memory allocated as a "struct tm" from a pointer type object.
+
   void* tm_obj = stack[0].oval;
 
   strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
 
   stack[0].ival = tm_ptr-> tm_sec;
 
-  return 0;
-}
+The last is the destructor. Be sure to define a destructor, as the allocated memory will not be released automatically.
 
-int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
-  void* tm_obj = stack[0].oval;
-  strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+    void* tm_obj = stack[0].oval;
 
-  env->free_memory_block (tm_ptr);
+    strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
 
-  return 0;
-}
-</pre>
-  <p>
-    In the constructor new, the memory of "struct tm" is first allocated by the alloc_memory_block_zero function. This is a function that reserves one memory block in SPVM. Similar to malloc, this function increments the memory block count by one, making it easier to spot memory leaks.
-  </p>
-<pre>
-// Alloc strcut tm
-void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
-</pre>
-  <p>
-    Next, use the new_pointer function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
-  </p>
-<pre>
-// Create strcut tm instance
-void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
-</pre>
-  <p>
-    If you return this as a return value, the constructor is complete.
-  </p>
-<pre>
-stack[0].ival = tm_ptr-> tm_sec;
+    env->free_memory_block (tm_ptr);
 
-return 0;
-</pre>
-  <p>
-    Next, let's get the value of tm_sec. sec method. The get_pointer function can be used to get a pointer to the memory allocated as a "struct tm" from a pointer type object.
-  </p>
-<pre>
-void* tm_obj = stack[0].oval;
+    return 0;
+  }
 
-strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
+Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by alloc_memory_block_zero with the free_memory_block function. Releases the memory and decrements the memory block count by one.
 
-stack[0].ival = tm_ptr-> tm_sec;
-</pre>
-  <p>
-    The last is the destructor. Be sure to define a destructor, as the allocated memory will not be released automatically.
-  </p>
-<pre>
-int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+=head2 Call Native API
 
-  void* tm_obj = stack[0].oval;
+Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
 
-  strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
-
-  env->free_memory_block (tm_ptr);
-
-  return 0;
-}
-</pre>
-  <p>
-    Execute the free_memory_block function to free the memory. Be sure to free the memory allocated by alloc_memory_block_zero with the free_memory_block function. Releases the memory and decrements the memory block count by one.
-  </p>
-
-  <h2 id="native-api-call">Call Native API</h2>
-  <p>
-    Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
-  </p>
-<pre>
-int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
-</pre>
-
-=end html
+  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 
 =head1 List of Native APIs
 
