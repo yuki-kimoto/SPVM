@@ -1691,197 +1691,515 @@ Example:
 
   int32_t (*die)(SPVM_ENV* env, const char* message, ...);
 
+Create a C<sprintf> formatted message with file name and line number and set it to the exception.
+
+Last two arguments are file name and line number.
+
+Return value is always 1;
+
+Example:
+
+  return env->die(env, "Value must be %d", 3, __FILE__, __LINE__);
+
 =head2 new_object_by_name
 
   void* (*new_object_by_name)(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line);
+
+This is same as C<new_object> function, but you can specify package name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  void* minimal = env->new_object_by_name(env, "TestCase::Minimal", &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 new_pointer_by_name
 
   void* (*new_pointer_by_name)(SPVM_ENV* env, const char* package_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<new_pointer> function, but you can specify package name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+  int32_t e;
+  void* minimal = env->new_pointer_by_name(env, "TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
+  if (e) { return e; }
+
 =head2 set_field_byte_by_name
 
-  void (*set_field_byte_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int8_t value,
+  void (*set_field_byte_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, int8_t value,
     int32_t* exception_flag, const char* file, int32_t line);
+
+This is same as C<set_field_byte> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_field_byte_by_name(env, object, "TestCase::Simple", "byte_value", 13, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_field_short_by_name
 
-  void (*set_field_short_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int16_t value,
+  void (*set_field_short_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, int16_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_field_short> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_field_short_by_name(env, object, "TestCase::Simple", "short_value", 13, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_field_int_by_name
 
-  void (*set_field_int_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int32_t value,
+  void (*set_field_int_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, int32_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_field_int> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_field_int_by_name(env, object, "TestCase::Simple", "int_value", 13, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_field_long_by_name
 
-  void (*set_field_long_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int64_t value,
+  void (*set_field_long_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, int64_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_field_long> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_field_long_by_name(env, object, "TestCase::Simple", "long_value", 13, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_field_float_by_name
 
-  void (*set_field_float_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, float value,
+  void (*set_field_float_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, float value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_field_float> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_field_float_by_name(env, object, "TestCase::Simple", "float_value", 13, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_field_double_by_name
 
-  void (*set_field_double_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, double value,
+  void (*set_field_double_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, double value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_field_double> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_field_double_by_name(env, object, "TestCase::Simple", "double_value", 13, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_field_object_by_name
 
-  void (*set_field_object_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, const char* signature, void* value,
+  void (*set_field_object_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, const char* signature, void* value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_field_object> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_field_object_by_name(env, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", object_minimal, &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 get_field_byte_by_name
 
-  int8_t (*get_field_byte_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
+  int8_t (*get_field_byte_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_field_byte> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t byte_value = env->get_field_byte_by_name(env, object, "TestCase::Simple", "byte_value", &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 get_field_short_by_name
 
-  int16_t (*get_field_short_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
+  int16_t (*get_field_short_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_field_short> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t short_value = env->get_field_short_by_name(env, object, "TestCase::Simple", "short_value", &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 get_field_int_by_name
 
-  int32_t (*get_field_int_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
+  int32_t (*get_field_int_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_field_int> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t int_value = env->get_field_int_by_name(env, object, "TestCase::Simple", "int_value", &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 get_field_long_by_name
 
-  int64_t (*get_field_long_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
+  int64_t (*get_field_long_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_field_long> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t long_value = env->get_field_long_by_name(env, object, "TestCase::Simple", "long_value", &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 get_field_float_by_name
 
-  float (*get_field_float_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
+  float (*get_field_float_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_field_float> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t float_value = env->get_field_float_by_name(env, object, "TestCase::Simple", "float_value", &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 get_field_double_by_name
 
-  double (*get_field_double_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
+  double (*get_field_double_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_field_double> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t double_value = env->get_field_double_by_name(env, object, "TestCase::Simple", "double_value", &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 get_field_object_by_name
 
-  void* (*get_field_object_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, const char* signature,
+  void* (*get_field_object_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name, const char* signature,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_field_object> function, but you can specify package name and field name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  void* object_minimal = env->get_field_object_by_name(env, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 set_package_var_byte_by_name
 
-  void (*set_package_var_byte_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int8_t value,
+  void (*set_package_var_byte_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name, int8_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_package_var_byte> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_package_var_short_by_name
 
-  void (*set_package_var_short_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int16_t value,
+  void (*set_package_var_short_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name, int16_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_package_var_short> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_package_var_int_by_name
 
-  void (*set_package_var_int_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t value,
+  void (*set_package_var_int_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name, int32_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_package_var_int> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_package_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", 15, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_package_var_long_by_name
 
-  void (*set_package_var_long_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int64_t value,
+  void (*set_package_var_long_by_name)(SPVM_ENV* env
+    const char* package_name, const char* package_var_name, int64_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_package_var_long> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_package_var_float_by_name
 
-  void (*set_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, float value,
+  void (*set_package_var_float_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name, float value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_package_var_float> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_package_var_double_by_name
 
-  void (*set_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, double value,
+  void (*set_package_var_double_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name, double value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_package_var_double> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 set_package_var_object_by_name
 
-  void (*set_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, void* value,
+  void (*set_package_var_object_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name, const char* signature, void* value,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<set_package_var_object> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  env->set_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, __FILE__, __LINE__);
+  if (e) { return e; }
 
 =head2 get_package_var_byte_by_name
 
-  int8_t (*get_package_var_byte_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
+  int8_t (*get_package_var_byte_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_package_var_byte> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 get_package_var_short_by_name
 
-  int16_t (*get_package_var_short_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
+  int16_t (*get_package_var_short_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_package_var_short> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int16_t value = env->get_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 get_package_var_int_by_name
 
-  int32_t (*get_package_var_int_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
+  int32_t (*get_package_var_int_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_package_var_int> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 get_package_var_long_by_name
 
-  int64_t (*get_package_var_long_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
+  int64_t (*get_package_var_long_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_package_var_long> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  int64_t value = env->get_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 get_package_var_float_by_name
 
-  float (*get_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
+  float (*get_package_var_float_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_package_var_float> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  float value = env->get_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 get_package_var_double_by_name
 
-  double (*get_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
+  double (*get_package_var_double_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_package_var_double> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+
+  int32_t e;
+  double value = env->get_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 get_package_var_object_by_name
 
-  void* (*get_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature,
+  void* (*get_package_var_object_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* package_var_name, const char* signature,
     int32_t* exception_flag, const char* file, int32_t line);
 
+This is same as C<get_package_var_object> function, but you can specify the package name directry.
+
+If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, C<exception_flag> is get to 1. 
+
+Example:
+  
+  int32_t e;
+  void* value = env->get_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &e, MFILE, __LINE__);
+  if (e) { return e; }
 
 =head2 call_sub_by_name
 
-  int32_t (*call_sub_by_name)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack,
+  int32_t (*call_sub_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
+
+Example:
 
 
 =head2 call_poly_sub_by_name
 
-  int32_t (*call_poly_sub_by_name)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature, SPVM_VALUE* stack,
+  int32_t (*call_poly_sub_by_name)(SPVM_ENV* env, void* object,
+    const char* sub_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
+
+Example:
 
 
 =head2 get_field_string_chars_by_name
 
-  const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, void* obj, const char* package_name, const char* field_name,
+  const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, void* object,
+    const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
+
+Example:
 
 
 =head2 any_object_basic_type_id
@@ -1892,7 +2210,7 @@ Example:
 
   void* (*dump_raw)(SPVM_ENV* env, void* object);
 
-=head2 any_object_basic_type_id
+=head2 dump
 
   void* (*dump)(SPVM_ENV* env, void* object);
 
