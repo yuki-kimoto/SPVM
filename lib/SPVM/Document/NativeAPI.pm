@@ -593,217 +593,208 @@ Native API can be called from "SPVM_ENV* env" passed as an argument. Note that y
 
 =head2 package_vars_heap
 
-the pointer to the storage area of the package variables. This is used internally.
+  void* package_vars_heap;
 
+the pointer to the storage area of the package variables. This is used internally.
 
 =head2 object_header_byte_size
 
-The byte size of the object's header. This is used internally.
+  void* object_header_byte_size;
 
+The byte size of the object's header. This is used internally.
 
 =head2 object_weaken_backref_head_offset
 
-Offset to a pointer to the back reference of the weak reference in the object structure. This is used internally.
+  void* object_weaken_backref_head_offset;
 
+Offset to a pointer to the back reference of the weak reference in the object structure. This is used internally.
 
 =head2 object_ref_count_offset
 
-Reference count offset in the object structure. This is used internally.
+  void* object_ref_count_offset;
 
+Reference count offset in the object structure. This is used internally.
 
 =head2 object_basic_type_id_offset
 
+  void* object_basic_type_id_offset;
+
 Offset of basic type ID in object structure. This is used internally.
 
-
 =head2 object_type_dimension_offset
+
+  void* object_type_dimension_offset;
 
 Offset of type dimension in object structure. This is used internally.
 
 =head2 object_type_category_offset
 
+  void* object_type_category_offset;
+
 Offset of runtime type category in object structure. This is used internally.
 
 =head2 object_flag_offset
 
-Offset of flag in object structure. This is used internally.
+  void* object_flag_offset;
 
+Offset of flag in object structure. This is used internally.
 
 =head2 object_length_offset
 
-The length offset in the object structure. This is used internally.
+  void* object_length_offset;
 
+The length offset in the object structure. This is used internally.
 
 =head2 byte_object_basic_type_id
 
-Basic type ID of SPVM::Byte type. This is used internally.
+  void* byte_object_basic_type_id;
 
+Basic type ID of SPVM::Byte type. This is used internally.
 
 =head2 short_object_basic_type_id
 
-ID of the base type of SPVM::Short type. This is used internally.
+  void* short_object_basic_type_id;
 
+ID of the base type of SPVM::Short type. This is used internally.
 
 =head2 int_object_basic_type_id
 
-ID of the base type of SPVM::Int type. This is used internally.
+  void* int_object_basic_type_id;
 
+ID of the base type of SPVM::Int type. This is used internally.
 
 =head2 long_object_basic_type_id
 
-ID of the base type of SPVM::Long type. This is used internally.
+  void* long_object_basic_type_id;
 
+ID of the base type of SPVM::Long type. This is used internally.
 
 =head2 float_object_basic_type_id
 
-ID of the base type of SPVM::Float type. This is used internally.
+  void* float_object_basic_type_id;
 
+ID of the base type of SPVM::Float type. This is used internally.
 
 =head2 double_object_basic_type_id
 
-ID of the base type of SPVM::Double type. This is used internally.
+  void* double_object_basic_type_id;
 
+ID of the base type of SPVM::Double type. This is used internally.
 
 =head2 compiler
 
-A pointer to the SPVM compiler. This is used internally.
+  void* compiler;
 
+A pointer to the SPVM compiler. This is used internally.
 
 =head2 exception_object
 
+  void* exception_object;
+
 Exception object. This is used internally.
 
-
 =head2 native_mortal_stack
+
+  void* native_mortal_stack;
 
 Mortal stack used for native calls. This is used internally.
 
 =head2 native_mortal_stack_top
 
-The top position of the mortal stack used for native calls. This is used internally.
+  void* native_mortal_stack_top;
 
+The top position of the mortal stack used for native calls. This is used internally.
 
 =head2 native_mortal_stack_capacity
 
-The amount of mortal stack used for native calls. This is used internally.
+  void* native_mortal_stack_capacity;
 
+The amount of mortal stack used for native calls. This is used internally.
 
 =head2 get_basic_type_id
 
-Get the ID of the base type given the name of the base type. If it does not exist, a value less than 0 is returned.
-
-
   int32_t (*get_basic_type_id)(SPVM_ENV* env, const char* basic_type_name);
 
+Get the ID of the base type given the name of the base type. If it does not exist, a value less than 0 is returned.
 
 Example:
-
 
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
 
-
 =head2 get_field_id
-
-Get the ID of the field given the package name, field name, and signature. If the field does not exist, a value less than 0 is returned.
-
 
   int32_t (*get_field_id)(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
 
+Get the ID of the field given the package name, field name, and signature. If the field does not exist, a value less than 0 is returned.
 
 The signature is the same as the field type name.
 
-
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "int");
 
-
 =head2 get_field_offset
-
-Gets the offset of the field given the field ID. The field ID must be a valid field ID obtained with the field_id function.
-
 
   int32_t (*get_field_offset)(SPVM_ENV* env, int32_t field_id);
 
+Gets the offset of the field given the field ID. The field ID must be a valid field ID obtained with the field_id function.
 
 =head2 get_package_var_id
 
-Get the package variable ID given the package name, package variable name and signature. If the package variable does not exist, a value less than 0 is returned.
-
-
   int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
 
+Get the package variable ID given the package name, package variable name and signature. If the package variable does not exist, a value less than 0 is returned.
 
 The signature is the same as the package variable type name.
 
-
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
 
-
 =head2 get_sub_id
-
-Get the subroutine ID by specifying the package name, subroutine name, and signature. If no subroutine exists, a value less than 0 is returned.
-
 
   int32_t (*get_sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
 
+Get the subroutine ID by specifying the package name, subroutine name, and signature. If no subroutine exists, a value less than 0 is returned.
 
 The signature has the following format: Must not contain white space.
 
-
-  Return value type name (argument type name 1, argument type name 2, ...)
-
+  ReturnValueType(ArgumentType1,ArgumentType2,...)
 
 Example:
 
-
-  int32_t sub_id = env->get_sub_id(env, "Foo", "func", "int (long, string)");
-
+  int32_t sub_id = env->get_sub_id(env, "Foo", "func", "int(long,string)");
 
 =head2 get_sub_id_by_object
 
   int32_t (*get_sub_id_by_object)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 
-
 Get the subroutine ID by specifying the object and method name. If the method does not exist, a value less than 0 is returned.
-
 
 The signature is the same as the sub_id signature.
 
-
 Example:
-
 
   int32_t sub_id = env->get_sub_id_by_object(env, object, "method", "int(self,long,string)");
 
-
 =head2 new_object_raw
-
-Generates a new object with a base type ID. The base type ID must be the correct base type ID obtained by the "basic_type_id function".
-
 
   void* (*new_object_raw)(SPVM_ENV* env, int32_t basic_type_id);
 
+Generates a new object with a base type ID. The base type ID must be the correct base type ID obtained by the "basic_type_id function".
 
 This function does not add objects to the mortal stack, so use new_object to avoid memory leaks for normal use.
 
 =head2 new_object
 
-Generates and returns a new object with a base type ID. The base type ID must be the correct base type ID obtained in the basic_type_id. Adds a newly generated object to the mortal stack.
-
-
   void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
 
+Generates and returns a new object with a base type ID. The base type ID must be the correct base type ID obtained in the basic_type_id. Adds a newly generated object to the mortal stack.
 
-Sample:
+Example:
 
-
-  int32_t basic_type_id = env-&gt;get_basic_type_id(env,"SPVM::Int");
-  void* object = env-&gt;new_object(env, basic_type_id);
+  int32_t basic_type_id = env->get_basic_type_id(env,"SPVM::Int");
+  void* object = env->new_object(env, basic_type_id);
 
 =head2 new_byte_array_raw
 
@@ -823,1000 +814,734 @@ Generates and returns a new "byte[] type" object with the length of the array. T
   void* (*new_byte_array)(SPVM_ENV* env, int32_t length);
 
 
-Sample:
+Example:
 
-
-  void* byte_array_obj = env-&gt;new_byte_array(env, 100);
-
+  void* byte_array_obj = env->new_byte_array(env, 100);
 
 =head2 new_short_array_raw
 
-Generates a new "short[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-
   void* (*new_short_array_raw)(SPVM_ENV* env, int32_t length);
 
+Generates a new "short[] type" object by specifying the length of the array. The initial value of all elements is 0.
 
 This function does not add objects to the mortal stack, so use new_short_array to avoid memory leaks for normal use.
 
-
 =head2 new_short_array
-
-Generates and returns a new "short[] type" object with the length of the array. The initial value of all elements is 0. Adds a newly generated object to the mortal stack.
-
 
   void* (*new_short_array)(SPVM_ENV* env, int32_t length);
 
+Generates and returns a new "short[] type" object with the length of the array. The initial value of all elements is 0. Adds a newly generated object to the mortal stack.
 
-Sample:
+Example:
 
-
-  void* short_array_obj = env-&gt;new_short_array(env, 100);
-
+  void* short_array_obj = env->new_short_array(env, 100);
 
 =head2 new_int_array_raw
 
-Generates a new "int[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-
   void* (*new_int_array_raw)(SPVM_ENV* env, int32_t length);
 
+Generates a new "int[] type" object by specifying the length of the array. The initial value of all elements is 0.
 
 This function does not add objects to the mortal stack, so normal use should use new_int_array to avoid memory leaks.
 
-
 =head2 new_int_array
-
-Generates and returns a new "int[] type" object with the length of the array. The initial value of all elements is 0. Adds a newly generated object to the mortal stack.
-
 
   void* (*new_int_array)(SPVM_ENV* env, int32_t length);
 
+Generates and returns a new "int[] type" object with the length of the array. The initial value of all elements is 0. Adds a newly generated object to the mortal stack.
 
-Sample:
+Example:
 
-
-  void* int_array_obj = env-&gt;new_int_array(env, 100);
-
+  void* int_array_obj = env->new_int_array(env, 100);
 
 =head2 new_long_array_raw
 
-Creates a new "long[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-
   void* (*new_long_array_raw)(SPVM_ENV* env, int32_t length);
 
+Creates a new "long[] type" object by specifying the length of the array. The initial value of all elements is 0.
 
 This function does not add objects to the mortal stack, so use normal_new_long_array to avoid memory leaks.
 
-
 =head2 new_long_array
-
-Create a new "long[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
-
 
   void* (*new_long_array)(SPVM_ENV* env, int32_t length);
 
+Create a new "long[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
 
 Example:
-
 
   void* long_array_obj = env->new_long_array(env, 100);
 
-
 =head2 new_float_array_raw
-
-Create a new "float[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
 
   void* (*new_float_array_raw)(SPVM_ENV* env, int32_t length);
 
+Create a new "float[] type" object by specifying the length of the array. The initial value of all elements is 0.
 
 This function does not add any objects to the mortal stack, so use new_float_array for normal use to avoid memory leaks.
 
-
 =head2 new_float_array
-
-Create a new "float[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
-
 
   void* (*new_float_array)(SPVM_ENV* env, int32_t length);
 
+Create a new "float[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
 
 Example:
-
 
   void* float_array_obj = env->new_float_array(env, 100);
 
-
 =head2 new_double_array_raw
-
-Creates a new "double[]" object by specifying the length of the array. The initial value of all elements is 0.
-
 
   void* (*new_double_array_raw)(SPVM_ENV* env, int32_t length);
 
+Creates a new "double[]" object by specifying the length of the array. The initial value of all elements is 0.
 
 This function does not add any objects to the mortal stack, so use normal_new_double_array to avoid memory leaks.
 
-
 =head2 new_double_array
-
-Generate a new "double[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
-
 
   void* (*new_double_array)(SPVM_ENV* env, int32_t length);
 
+Generate a new "double[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
 
 Example:
-
 
   void* double_array_obj = env->new_double_array(env, 100);
 
 
 =head2 new_object_array_raw
 
-Create a new object type array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null.
-
-
   void* (*new_object_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
-
+Create a new object type array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null.
 
 This function does not add objects to the mortal stack, so use normal_new_object_array to avoid memory leaks.
 
-
 =head2 new_object_array
-
-Create a new object type array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null. Add the newly created object to the mortal stack.
-
 
   void* (*new_object_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
-
+Create a new object type array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null. Add the newly created object to the mortal stack.
 
 Example:
-
 
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
   void* object_array_obj = env->new_object_array(env, basic_type_id, 100);
 
-
 =head2 new_muldim_array_raw
-
-Generates and returns a new multidimensional object type array by specifying the basic type ID, element type dimension, and array length. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null.
-
 
   void* (*new_muldim_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 
+Generates and returns a new multidimensional object type array by specifying the basic type ID, element type dimension, and array length. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null.
 
 This function does not add any objects to the mortal stack, so use new_muldim_array for normal use to avoid memory leaks.
 
 
 =head2 new_muldim_array
 
-Generates and returns a new multidimensional object type array by specifying the basic type ID, element type dimension, and array length. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null. Add the newly created object to the mortal stack.
-
-
   void* (*new_muldim_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 
+Generates and returns a new multidimensional object type array by specifying the basic type ID, element type dimension, and array length. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null. Add the newly created object to the mortal stack.
 
 Element type dimensions must be less than 255.
 
-
 Example:
-
 
   // new SPVM::Int[][][100]
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
   void* multi_array_obj = env->new_muldim_array(env, basic_type_id, 2, 100);
 
-
 =head2 new_mulnum_array_raw
-
-Generate a new multi-numeric array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and must be valid as a composite numeric type. The initial value of all fields for all elements is 0.
-
 
   void* (*new_mulnum_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
+Generate a new multi-numeric array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and must be valid as a composite numeric type. The initial value of all fields for all elements is 0.
 
 This function does not add any objects to the mortal stack, so use new_mulnum_array for normal use to avoid memory leaks.
 
-
 =head2 new_mulnum_array
-
-Generate a new multi-numeric array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and must be valid as a composite numeric type. The initial value of all fields for all elements is 0.
-
 
   void* (*new_mulnum_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
+Generate a new multi-numeric array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and must be valid as a composite numeric type. The initial value of all fields for all elements is 0.
 
 Example:
-
 
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Complex_2d");
   void* value_array_obj = env->new_mulnum_array(env, basic_type_id, 100);
 
-
 =head2 new_string_nolen_raw
-
-Specify a C language string to generate a string type object and return it. The string must end with "\0".
-
 
   void* (*new_string_nolen_raw)(SPVM_ENV* env, const char* bytes);
 
+Specify a C language string to generate a string type object and return it. The string must end with "\0".
 
 This function does not add any objects to the mortal stack, so for normal use use new_string to avoid memory leaks.
 
-
 =head2 new_string_nolen
-
-Specify a C language string to generate a string type object and return it. The string must end with "\0". Add the newly created object to the mortal stack.
-
 
   void* (*new_string_nolen)(SPVM_ENV* env, const char* bytes);
 
+Specify a C language string to generate a string type object and return it. The string must end with "\0". Add the newly created object to the mortal stack.
 
 Example:
 
 
   void* str_obj = env->new_string_nolen(env, "Hello World");
 
-
 =head2 new_string_raw
-
-Specify a C language string and length to generate a string type object and return it.
-
 
   void* (*new_string_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
 
+Specify a C language string and length to generate a string type object and return it.
 
 This function does not add any objects to the mortal stack, so for normal use use new_string to avoid memory leaks.
 
-
-
 =head2 new_string
-
-Generates and returns a character string type object by specifying the character string and length in C language. Add the newly created object to the mortal stack.
 
   void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
 
+Generates and returns a character string type object by specifying the character string and length in C language. Add the newly created object to the mortal stack.
 
 Example:
-
 
   void* str_obj = env->new_string(env, "Hello \0World", 11);
 
-
 =head2 new_pointer_raw
-
-Specify a basic type ID and a C language pointer to create a pointer type object and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and valid as a pointer type.
-
-
 
   void* (*new_pointer_raw)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
 
-
+Specify a basic type ID and a C language pointer to create a pointer type object and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and valid as a pointer type.
 
 This function does not add any objects to the mortal stack, so for normal use use new_pointer to avoid memory leaks.
 
-
 =head2 new_pointer
-
-Specify a basic type ID and a C language pointer to create a pointer type object and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and valid as a pointer type. Add the newly created object to the mortal stack.
-
 
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
 
+Specify a basic type ID and a C language pointer to create a pointer type object and return it. The basic type ID must be the correct basic type ID acquired by the C<get_basic_type_id> function and valid as a pointer type. Add the newly created object to the mortal stack.
 
 Example:
 
-
-  void* pointer = malloc (sizeof (struct tm));
-  void* pointer_obj = env->new_pointer(env, "MyTimeInfo", pointer);
-
-
-
-See <a href="#native-api-use-pointer-type">Using pointer types</a> for a detailed sample.
-
+  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::MyTime");
+  void* pointer = malloc(sizeof (struct tm));
+  void* pointer_obj = env->new_pointer(env, basic_type_id, pointer);
 
 =head2 concat_raw
 
-Returns a new byte[] type object that is a concatenation of two byte[] type strings.
-
-
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);
 
-
+Returns a new byte[] type object that is a concatenation of two byte[] type strings.
 
 This function does not add objects to the mortal stack, so use concat for normal use to avoid memory leaks.
 
-
 =head2 concat
-
-Returns a new byte[] type object that is a concatenation of two byte[] type strings. Add the newly created object to the mortal stack.
-
 
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
 
+Returns a new byte[] type object that is a concatenation of two byte[] type strings. Add the newly created object to the mortal stack.
 
 =head2 new_stack_trace_raw
 
-If you specify a byte[] type exception message and a package name, subroutine name, file name and line number, the character string of the package name, subroutine name, file name and line number is added to the end of the byte[] type exception message. The added character string will be returned.
-
-
   void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
 
+If you specify a byte[] type exception message and a package name, subroutine name, file name and line number, the character string of the package name, subroutine name, file name and line number is added to the end of the byte[] type exception message. The added character string will be returned.
 
 This function does not add objects to the mortal stack, use new_stack_trace to avoid memory leaks for normal use.
 
-
 =head2 new_stack_trace
-
-When a byte[] type exception message and a package name, subroutine name, file name and line number are specified, the string of the package name, subroutine name, file name and line number is added to the end of the string type exception message. Returns a new string type object. Add the newly created object to the mortal stack.
-
 
   void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
 
+When a byte[] type exception message and a package name, subroutine name, file name and line number are specified, the string of the package name, subroutine name, file name and line number is added to the end of the string type exception message. Returns a new string type object. Add the newly created object to the mortal stack.
 
 =head2 length
 
-If you specify an array, the length of the array is returned.
-
-
   int32_t (*length)(SPVM_ENV*, void* array);
 
+If you specify an array, the length of the array is returned.
 
 Example:
-
 
   int32_t length = env->length(env, array);
 
-
 =head2 get_elems_byte
-
-If you specify a byte[] type array, the pointer at the beginning of the internally stored C language int8_t[] type array is returned.  
 
   int8_t* (*get_elems_byte)(SPVM_ENV* env, void* array);
 
+If you specify a byte[] type array, the pointer at the beginning of the internally stored C language int8_t[] type array is returned.  
 
 Example:
-
 
   int8_t* values = env->get_elems_byte(env, array);
   values[3] = 5;
 
-
 =head2 get_elems_short
-
-If a short[] type array is specified, the pointer at the beginning of the internally stored C language int16_t[] type array is returned.
-
 
   int16_t* (*get_elems_short)(SPVM_ENV* env, void* array);
 
+If a short[] type array is specified, the pointer at the beginning of the internally stored C language int16_t[] type array is returned.
 
 Example:
-
 
   int16_t* values = env->get_elems_short(env, array);
   values[3] = 5;
 
-
 =head2 get_elems_int
-
-When an int[] type array is specified, the pointer at the beginning of the internally stored C language int32_t[] type array is returned.
-
 
   int32_t* (*get_elems_int)(SPVM_ENV* env, void* array);
 
+When an int[] type array is specified, the pointer at the beginning of the internally stored C language int32_t[] type array is returned.
 
 Example:
-
 
   int32_t* values = env->get_elems_int(env, array);
   values[3] = 5;
 
-
 =head2 get_elems_long
-
-When a long[] type array is specified, the pointer at the beginning of the internally stored C language int64_t[] type array is returned.
-
 
   int64_t* (*get_elems_long)(SPVM_ENV* env, void* array);
 
+When a long[] type array is specified, the pointer at the beginning of the internally stored C language int64_t[] type array is returned.
 
 Example:
-
 
   int64_t* values = env->get_elems_long(env, array);
   values[3] = 5;
 
-
 =head2 get_elems_float
-
-When a float[] type array is specified, the pointer at the beginning of the C language float[] type array internally held is returned.
-
 
   float* (*get_elems_float)(SPVM_ENV* env, void* array);
 
+When a float[] type array is specified, the pointer at the beginning of the C language float[] type array internally held is returned.
 
 Example:
-
 
   float* values = env->get_elems_float(env, array);
   values[3] = 1.5f;
 
-
 =head2 get_elems_double
-
-If a double[] type array is specified, the pointer at the beginning of the internally stored C double[] type array is returned.
-
 
   double* (*get_elems_double)(SPVM_ENV* env, void* array);
 
+If a double[] type array is specified, the pointer at the beginning of the internally stored C double[] type array is returned.
 
 Example:
-
 
   double* values = env->get_elems_double(env, array);
   values[3] = 1.5;
 
-
 =head2 get_elem_object
-
-Gets an object of an element given an array of object types and a subscript. If the element is a weak reference, the weak reference is removed.
-
 
   void* (*get_elem_object)(SPVM_ENV* env, void* array, int32_t index);
 
+Gets an object of an element given an array of object types and a subscript. If the element is a weak reference, the weak reference is removed.
 
 Example:
-
 
   void* object = env->get_elem_object(env, array, 3);
 
 =head2 set_elem_object
 
-If you specify an array of object type and subscript and element objects, the element object is assigned to the corresponding subscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
-
-
   void (*set_elem_object)(SPVM_ENV* env, void* array, int32_t index, void* value);
 
+If you specify an array of object type and subscript and element objects, the element object is assigned to the corresponding subscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
 
 Example:
-
 
   env->get_elem_object(env, array, 3, object);
 
 =head2 get_field_byte
 
-If an object and field ID are specified, the byte field value will be returned as a C language int8_t type value. The field ID must be a valid field ID obtained with the field_id function.
-
-
   int8_t (*get_field_byte)(SPVM_ENV* env, void* object, int32_t field_id);
 
+If an object and field ID are specified, the byte field value will be returned as a C language int8_t type value. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "byte");
   int8_t field_value = env->get_field_byte(env, object, field_id);
 
-
 =head2 get_field_short
-
-If you specify the object and field ID, the value of the short type field will be returned as the int16_t type value of C language. The field ID must be a valid field ID obtained with the field_id function.
-
 
   int16_t (*get_field_short)(SPVM_ENV* env, void* object, int32_t field_id);
 
+If you specify the object and field ID, the value of the short type field will be returned as the int16_t type value of C language. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "short");
   int16_t field_value = env->get_field_short(env, object, field_id);
 
-
 =head2 get_field_int
-
-If an object and a field ID are specified, the value of the int type field will be returned as a C language int32_t type value. The field ID must be a valid field ID obtained with the field_id function.
-
 
   int32_t (*get_field_int)(SPVM_ENV* env, void* object, int32_t field_id);
 
+If an object and a field ID are specified, the value of the int type field will be returned as a C language int32_t type value. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "int");
   int32_t field_value = env->get_field_int(env, object, field_id);
 
-
 =head2 get_field_long
-
-If you specify the object and field ID, the value of the long type field will be returned as the value of int64_t type of C language. The field ID must be a valid field ID obtained with the field_id function.
-
 
   int64_t (*get_field_long)(SPVM_ENV* env, void* object, int32_t field_id);
 
+If you specify the object and field ID, the value of the long type field will be returned as the value of int64_t type of C language. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "long");
   int64_t field_value = env->get_field_long(env, object, field_id);
 
-
 =head2 get_field_float
-
-If you specify the object and field ID, the value of the float type field will be returned as a C language float type value. The field ID must be a valid field ID obtained with the field_id function.
-
 
   float (*get_field_float)(SPVM_ENV* env, void* object, int32_t field_id);
 
+If you specify the object and field ID, the value of the float type field will be returned as a C language float type value. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "float");
   float field_value = env->get_field_float(env, object, field_id);
 
-
 =head2 get_field_double
-
-If you specify the object and field ID, the value of the double type field will be returned as a double type value in C language. The field ID must be a valid field ID obtained with the field_id function.
-
 
   double (*get_field_double)(SPVM_ENV* env, void* object, int32_t field_id);
 
+If you specify the object and field ID, the value of the double type field will be returned as a double type value in C language. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "double");
   double field_value = env->get_field_double(env, object, field_id);
 
-
 =head2 get_field_object
-
-If you specify the object and field ID, the value of the object type field is returned as a void* type value in C language. The field ID must be a valid field ID obtained with the field_id function. If the field is a weak reference, it will be removed.
-
 
   void* (*get_field_object)(SPVM_ENV* env, void* object, int32_t field_id);
 
+If you specify the object and field ID, the value of the object type field is returned as a void* type value in C language. The field ID must be a valid field ID obtained with the field_id function. If the field is a weak reference, it will be removed.
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "SPVM::Int");
   void* field_value = env->get_field_object(env, object, field_id);
 
-
 =head2 set_field_byte
-
-If you specify the object and field ID and the value of the field, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_field_byte)(SPVM_ENV* env, void* object, int32_t field_id, int8_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "byte");
   int8_t field_value = 5;
   env->set_field_byte(env, object, field_id, field_value);
 
-
 =head2 set_field_short
-
-If you specify the object and field ID and the value of the field, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_field_short)(SPVM_ENV* env, void* object, int32_t field_id, int16_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "short");
   int16_t field_value = 5;
   env->set_field_short(env, object, field_id, field_value);
 
-
 =head2 set_field_int
-
-If you specify the object and field ID and the value of the field, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_field_int)(SPVM_ENV* env, void* object, int32_t field_id, int32_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "int");
   int32_t field_value = 5;
   env->set_field_int(env, object, field_id, field_value);
 
-
 =head2 set_field_long
-
-If you specify the object and field ID and the value of the field, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_field_long)(SPVM_ENV* env, void* object, int32_t field_id, int64_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "long");
   int64_t field_value = 5;
   env->set_field_long(env, object, field_id, field_value);
 
-
 =head2 set_field_float
-
-If you specify the object and field ID and the value of the field, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_field_float)(SPVM_ENV* env, void* object, int32_t field_id, float value);
 
+If you specify the object and field ID and the value of the field, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "float");
   float field_value = 1.5f;
   env->set_field_float(env, object, field_id, field_value);
 
-
 =head2 set_field_double
-
-If you specify the object and field ID and the value of the field, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_field_double)(SPVM_ENV* env, void* object, int32_t field_id, double value);
 
+If you specify the object and field ID and the value of the field, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "double");
   double field_value = 1.55;
   env->set_field_double(env, object, field_id, field_value);
 
-
 =head2 set_field_object
-
-Object and field Specify the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
-
 
   void (*set_field_object)(SPVM_ENV* env, void* object, int32_t field_id, void* value);
 
+Object and field Specify the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 Example:
-
 
   int32_t field_id = env->get_field_id(env, "Foo", "x", "SPVM::Int");
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
   void* object = env->new_object(env, basic_type_id);
   env->set_field_object(env, object, field_id, object);
 
-
 =head2 get_package_var_byte
-
-If an object and a package variable ID are specified, the value of the byte type package variable is returned as a C language int8_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
-
 
   int8_t (*get_package_var_byte)(SPVM_ENV* env, int32_t pkgvar_id);
 
+If an object and a package variable ID are specified, the value of the byte type package variable is returned as a C language int8_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "byte");
   int8_t pkgvar_value = env->get_package_var_byte(env, object, pkgvar_id);
 
-
 =head2 get_package_var_short
-
-If an object and a package variable ID are specified, the value of the short type package variable will be returned as a C language int16_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
-
 
   int16_t (*get_package_var_short)(SPVM_ENV* env, int32_t pkgvar_id);
 
+If an object and a package variable ID are specified, the value of the short type package variable will be returned as a C language int16_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "short");
   int16_t pkgvar_value = env->get_package_var_short(env, object, pkgvar_id);
 
-
 =head2 get_package_var_int
-
-If an object and a package variable ID are specified, the value of the int type package variable will be returned as a C language int32_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
-
 
   int32_t (*get_package_var_int)(SPVM_ENV* env, int32_t pkgvar_id);
 
+If an object and a package variable ID are specified, the value of the int type package variable will be returned as a C language int32_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
   int32_t pkgvar_value = env->get_package_var_int(env, object, pkgvar_id);
 
-
 =head2 get_package_var_long
-
-If an object and a package variable ID are specified, the value of the long type package variable will be returned as a C language int64_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
-
 
   int64_t (*get_package_var_long)(SPVM_ENV* env, int32_t pkgvar_id);
 
+If an object and a package variable ID are specified, the value of the long type package variable will be returned as a C language int64_t type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "long");
   int64_t pkgvar_value = env->get_package_var_long(env, object, pkgvar_id);
 
-
 =head2 get_package_var_float
-
-If an object and a package variable ID are specified, the value of the float type package variable will be returned as a C language float type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
-
 
   float (*get_package_var_float)(SPVM_ENV* env, int32_t pkgvar_id);
 
+If an object and a package variable ID are specified, the value of the float type package variable will be returned as a C language float type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "float");
   float pkgvar_value = env->get_package_var_float(env, object, pkgvar_id);
 
-
 =head2 get_package_var_double
-
-If you specify an object and a package variable ID, the value of the double type package variable is returned as a C type double type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
-
 
   double (*get_package_var_double)(SPVM_ENV* env, int32_t pkgvar_id);
 
+If you specify an object and a package variable ID, the value of the double type package variable is returned as a C type double type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "double");
   double pkgvar_value = env->get_package_var_double(env, object, pkgvar_id);
 
-
 =head2 get_package_var_object
-
-When an object and a package variable ID are specified, the value of the object type package variable is returned as a C language void* type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
-
 
   void* (*get_package_var_object)(SPVM_ENV* env, int32_t pkgvar_id);
 
+When an object and a package variable ID are specified, the value of the object type package variable is returned as a C language void* type value. The package variable ID must be a valid package variable ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "SPVM::Int");
   void* pkgvar_value = env->get_package_var_byte(env, object, pkgvar_id);
 
-
 =head2 set_package_var_byte
-
-If you specify the object and field ID and the value of the field, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_package_var_byte)(SPVM_ENV* env, int32_t pkgvar_id, int8_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the byte type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "byte");
   int8_t pkgvar_value = 5;
   env->set_package_var_byte(env, pkgvar_id, pkgvar_value);
 
-
 =head2 set_package_var_short
-
-If you specify the object and field ID and the value of the field, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_package_var_short)(SPVM_ENV* env, int32_t pkgvar_id, int16_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the short type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "short");
   int16_t pkgvar_value = 5;
   env->set_package_var_short(env, pkgvar_id, pkgvar_value);
 
-
 =head2 set_package_var_int
-
-If you specify the object and field ID and the value of the field, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_package_var_int)(SPVM_ENV* env, int32_t pkgvar_id, int32_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the int type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
   int32_t pkgvar_value = 5;
   env->set_package_var_int(env, pkgvar_id, pkgvar_value);
 
-
 =head2 set_package_var_long
-
-If you specify the object and field ID and the value of the field, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_package_var_long)(SPVM_ENV* env, int32_t pkgvar_id, int64_t value);
 
+If you specify the object and field ID and the value of the field, the value is set to the long type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "long");
   int64_t pkgvar_value = 5;
   env->set_package_var_long(env, pkgvar_id, pkgvar_value);
 
-
 =head2 set_package_var_float
-
-If you specify the object and field ID and the value of the field, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_package_var_float)(SPVM_ENV* env, int32_t pkgvar_id, float value);
 
+If you specify the object and field ID and the value of the field, the value is set to the float type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "float");
   float pkgvar_value = 5;
   env->set_package_var_float(env, pkgvar_id, pkgvar_value);
 
-
 =head2 set_package_var_double
-
-If you specify the object and field ID and the value of the field, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
-
 
   void (*set_package_var_double)(SPVM_ENV* env, int32_t pkgvar_id, double value);
 
+If you specify the object and field ID and the value of the field, the value is set to the double type field. The field ID must be a valid field ID obtained with the field_id function.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "double");
   double pkgvar_value = 5;
   env->set_package_var_double(env, pkgvar_id, pkgvar_value);
 
-
 =head2 set_package_var_object
-
-Object and field Specify the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
-
 
   void (*set_package_var_object)(SPVM_ENV* env, int32_t pkgvar_id, void* value);
 
+Object and field Specify the ID and the value of the field and set the value to the object type field. The field ID must be a valid field ID obtained with the field_id function. After setting, the reference count is incremented by 1. The original value has the reference count decremented by 1.
 
 Example:
-
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "SPVM::Int");
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
   void* object = env->new_object(env, basic_type_id);
   env->set_package_var_object(env, pkgvar_id, pkgvar_value);
 
-
 =head2 get_pointer
-
-Specify a pointer type object and return the C language pointer stored inside the object.
-
 
   void* (*get_pointer)(SPVM_ENV* env, void* pointer_object);
 
-
+Specify a pointer type object and return the C language pointer stored inside the object.
 
 Example:
 
-
   strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
-
-
-See <a href="#native-api-use-pointer-type">Using pointer types</a> for a detailed sample.
-
 
 =head2 set_pointer
 
-If you specify a pointer type object and a C language pointer, the C language pointer is saved in the internal data of the pointer type object.
-
-
   void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
 
+If you specify a pointer type object and a C language pointer, the C language pointer is saved in the internal data of the pointer type object.
 
 =head2 call_sub
 
-Call the subroutine by specifying the subroutine ID and argument. The return value is non-zero when an exception occurs in the subroutine, 0 is returned when the exception does not occur.
-
-
   int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
 
+Call the subroutine by specifying the subroutine ID and argument. The return value is non-zero when an exception occurs in the subroutine, 0 is returned when the exception does not occur.
 
 The return value of the subroutine is set to "args[0]".
 
-
 =head2 get_exception
-
-Returns the byte[] type object saved as an exception.
-
 
   void* (*get_exception)(SPVM_ENV* env);
 
+Returns the byte[] type object saved as an exception.
 
 =head2 set_exception
 
-If you specify an object of type byte[], it will be saved as an exception.
-
-
   void (*set_exception)(SPVM_ENV* env, void* exception);
 
+If you specify an object of type byte[], it will be saved as an exception.
 
 =head2 get_ref_count
 
-
   int32_t (*get_ref_count)(SPVM_ENV* env, void* object);
 
+Get the refernce count of the object.
 
 =head2 inc_ref_count
 
-Specifying an object increments the reference count of the object.
-
-
   void (*inc_ref_count)(SPVM_ENV* env, void* object);
 
+Specifying an object increments the reference count of the object.
 
 Use this method only if you have a specific reason to use it. Normally, the reference count is managed automatically.
-
 
 =head2 dec_ref_count
 
-Specifying an object decrements the object's reference count by 1. When the reference count reaches 0, the object is released.
-
-
   void (*dec_ref_count)(SPVM_ENV* env, void* object);
 
+Specifying an object decrements the object's reference count by 1. When the reference count reaches 0, the object is released.
 
 Use this method only if you have a specific reason to use it. Normally, the reference count is managed automatically.
 
-
 =head2 enter_scope
-
-Create a new scope and return the scope ID.
-
 
   int32_t (*enter_scope)(SPVM_ENV* env);
 
+Create a new scope and return the scope ID.
 
 =head2 push_mortal
 
-Add an object to the mortal stack.
-
-
   int32_t (*push_mortal)(SPVM_ENV* env, void* object);
 
+Add an object to the mortal stack.
 
 If this method succeed, return 0.
 
@@ -1824,57 +1549,43 @@ If this method don't alloc memory for new mortal information, return 1.
 
 =head2 leave_scope
 
-Specify a scope ID to exit that scope and decrement the object's reference count stored in the mortal stack. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
-
-
   void (*leave_scope)(SPVM_ENV* env, int32_t scope_id);
 
+Specify a scope ID to exit that scope and decrement the object's reference count stored in the mortal stack. Objects with a reference count of 0 are released. The scope ID must be the ID obtained by the enter_scope function.
 
 =head2 remove_mortal
 
-Given a scope ID and an object, delete the specified object from the mortal stack.
-
-
   int32_t (*remove_mortal)(SPVM_ENV* env, int32_t scope_id, void* remove_object);
 
+Given a scope ID and an object, delete the specified object from the mortal stack.
 
 =head2 is_type
 
-Given an object and a base type ID and a type dimension, returns a nonzero value if the object matches both the base type ID and the type dimension, and 0 otherwise.
-
-
   int32_t (*is_type)(SPVM_ENV* env, void* object, int32_t basic_type_id, int32_t type_dimension);
 
+Given an object and a base type ID and a type dimension, returns a nonzero value if the object matches both the base type ID and the type dimension, and 0 otherwise.
 
 =head2 has_callback
 
-Given a base type id for the object and the callback type, returns a non-zero value if the object conforms to the callback type, and zero otherwise.
-
-
   int32_t (*has_callback)(SPVM_ENV* env, void* object, int32_t callback_basic_type_id);
 
+Given a base type id for the object and the callback type, returns a non-zero value if the object conforms to the callback type, and zero otherwise.
 
 =head2 get_object_basic_type_id
 
-Gets the base type ID of the object.
-
-
   int32_t (*get_object_basic_type_id)(SPVM_ENV* env, void* object);
 
+Gets the base type ID of the object.
 
 =head2 get_object_type_dimension
 
-Gets the dimension of the type of object.
-
-
   int32_t (*get_object_type_dimension)(SPVM_ENV* env, void* object);
 
+Gets the dimension of the type of object.
 
 =head2 weaken
 
-
   int32_t (*weaken)(SPVM_ENV* env, void** object_address);
-
 
 Create weak reference to the object which is specified by object address.
 
@@ -1893,146 +1604,107 @@ This method success return 0.
 If failing memory allocation of back reference, return 1.
 
 =head2 isweak 
-Given the address of an object, returns non-zero if the object is a weak reference, 0 otherwise.
-
 
   int32_t (*isweak()SPVM_ENV* env, void** object);
 
+Given the address of an object, returns non-zero if the object is a weak reference, 0 otherwise.
 
 =head2 unweaken
 
-Specifying the address of the object releases the weak reference to the object.
-
-
   void (*unweaken)(SPVM_ENV* env, void** object_address);
 
+Specifying the address of the object releases the weak reference to the object.
 
 =head2 alloc_memory_block_zero
 
-
   void* (*alloc_memory_block_zero)(SPVM_ENV* env, int64_t byte_size);
-
-
 
 If you specify the size in bytes, the memory block is allocated and the pointer of the allocated memory block is returned. If fail to alloc memory, return NULL. If success, all bits in the memory block are initialized with 0 and the memory block count (memory_blocks_count)is incremented by 1.
 
-
 =head2 free_memory_block
 
-
   void (*free_memory_block)(SPVM_ENV* env, void* block);
-
 
 If block is not NULL, free the memory and memory blocks count(memory_blocks_count) is decremented by 1.
 
 =head2 get_memory_blocks_count
 
-Returns the current number of memory blocks.
-
-
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
 
+Returns the current number of memory blocks.
 
 The memory block is increased by 1 when an object is created, when the alloc_memory_block_zero function is called, and when a back reference is added by the weaken function.
 
-
 =head2 get_type_name_raw
-
-If you specify an object, a new byte[] type object that stores the type name is returned.
-
 
   void* (*get_type_name_raw)(SPVM_ENV* env, void* object);
 
+If you specify an object, a new byte[] type object that stores the type name is returned.
 
 This function does not add objects to the mortal stack, so use type_name for normal use to avoid memory leaks.
 
-
 =head2 get_type_name
-
-If you specify an object, a new byte[] type object that stores the type name is returned. Add the newly created object to the mortal stack.
-
 
   void* (*get_type_name)(SPVM_ENV* env, void* object);
 
+If you specify an object, a new byte[] type object that stores the type name is returned. Add the newly created object to the mortal stack.
+
 =head2 new_env
-
-Create a new execution environment based on the current execution environment.
-
 
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
 
+Create a new execution environment based on the current execution environment.
 
 Create a new SPVM runtime environment.
 
-
 The exception object and mortal stack information will be initialized.
-
 
 Share the package variables with the original execution environment.
 
-
 The number of memory blocks is shared with the original execution environment.
-
 
 If thie method can't allocate memory for SPVM runtime environment, return NULL.
 
 =head2 free_env
 
-Release the execution environment.
-
-
   void (*free_env)(SPVM_ENV* env);
 
+Release the execution environment.
 
 =head2 memory_blocks_count
 
-Memory blocks count. This is used internally.
-
-
   void* memory_blocks_count;
 
+Memory blocks count. This is used internally.
 
 =head2 get_chars
 
-Get characters pointer in the string object.
-
-
   const char* (*get_chars)(SPVM_ENV* env, void* string_object);
 
+Get characters pointer in the string object.
 
 Example:
 
-
   const char* bytes = env->get_chars(env, string_object);
-
 
 =head2 die
 
-
   int32_t (*die)(SPVM_ENV* env, const char* message, ...);
-
 
 =head2 new_object_by_name
 
-
   void* (*new_object_by_name)(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line);
-
 
 =head2 new_pointer_by_name
 
-
   void* (*new_pointer_by_name)(SPVM_ENV* env, const char* package_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line);
 
-
 =head2 set_field_byte_by_name
-
 
   void (*set_field_byte_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int8_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
-
 =head2 set_field_short_by_name
-
 
   void (*set_field_short_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int16_t value,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2040,13 +1712,11 @@ Example:
 
 =head2 set_field_int_by_name
 
-
   void (*set_field_int_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int32_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_long_by_name
-
 
   void (*set_field_long_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, int64_t value,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2054,13 +1724,11 @@ Example:
 
 =head2 set_field_float_by_name
 
-
   void (*set_field_float_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, float value,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_field_double_by_name
-
 
   void (*set_field_double_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, double value,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2068,13 +1736,11 @@ Example:
 
 =head2 set_field_object_by_name
 
-
   void (*set_field_object_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, const char* signature, void* value,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_byte_by_name
-
 
   int8_t (*get_field_byte_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2082,13 +1748,11 @@ Example:
 
 =head2 get_field_short_by_name
 
-
   int16_t (*get_field_short_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_int_by_name
-
 
   int32_t (*get_field_int_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2096,13 +1760,11 @@ Example:
 
 =head2 get_field_long_by_name
 
-
   int64_t (*get_field_long_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_float_by_name
-
 
   float (*get_field_float_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2110,13 +1772,11 @@ Example:
 
 =head2 get_field_double_by_name
 
-
   double (*get_field_double_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_field_object_by_name
-
 
   void* (*get_field_object_by_name)(SPVM_ENV* env, void* object, const char* package_name, const char* field_name, const char* signature,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2124,13 +1784,11 @@ Example:
 
 =head2 set_package_var_byte_by_name
 
-
   void (*set_package_var_byte_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int8_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_short_by_name
-
 
   void (*set_package_var_short_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int16_t value,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2138,13 +1796,11 @@ Example:
 
 =head2 set_package_var_int_by_name
 
-
   void (*set_package_var_int_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t value,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_long_by_name
-
 
   void (*set_package_var_long_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int64_t value,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2152,13 +1808,11 @@ Example:
 
 =head2 set_package_var_float_by_name
 
-
   void (*set_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, float value,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 set_package_var_double_by_name
-
 
   void (*set_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, double value,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2166,13 +1820,11 @@ Example:
 
 =head2 set_package_var_object_by_name
 
-
   void (*set_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, void* value,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_byte_by_name
-
 
   int8_t (*get_package_var_byte_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2180,13 +1832,11 @@ Example:
 
 =head2 get_package_var_short_by_name
 
-
   int16_t (*get_package_var_short_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_int_by_name
-
 
   int32_t (*get_package_var_int_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2194,13 +1844,11 @@ Example:
 
 =head2 get_package_var_long_by_name
 
-
   int64_t (*get_package_var_long_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_float_by_name
-
 
   float (*get_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2208,13 +1856,11 @@ Example:
 
 =head2 get_package_var_double_by_name
 
-
   double (*get_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name,
     int32_t* exception_flag, const char* file, int32_t line);
 
 
 =head2 get_package_var_object_by_name
-
 
   void* (*get_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature,
     int32_t* exception_flag, const char* file, int32_t line);
@@ -2222,20 +1868,17 @@ Example:
 
 =head2 call_sub_by_name
 
-
   int32_t (*call_sub_by_name)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
 
 
 =head2 call_poly_sub_by_name
 
-
   int32_t (*call_poly_sub_by_name)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
 
 
 =head2 get_field_string_chars_by_name
-
 
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, void* obj, const char* package_name, const char* field_name,
     int32_t* exception_flag, const char* file, int32_t line);
