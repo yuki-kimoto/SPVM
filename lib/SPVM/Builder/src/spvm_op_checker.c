@@ -254,11 +254,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                     
                     if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
-                      {
-                        SPVM_OP* op_type_tmp = op_type_element;
-
-                        SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type_tmp);
-                      }
+                      SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type_element);
                     }
                                             
                     // Create array type
