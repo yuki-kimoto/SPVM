@@ -217,7 +217,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               
               SPVM_OP* op_list_elements = op_array_init->first;
-              SPVM_OP* op_type_new_default = op_array_init->last;
               
               const char* file = op_list_elements->file;
               int32_t line = op_list_elements->line;
@@ -226,17 +225,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               SPVM_OP* op_type_new = NULL;
               SPVM_OP* op_type_element = NULL;
-              
-              if (op_type_new_default->id == SPVM_OP_C_ID_TYPE) {
-                op_type_new = op_type_new_default;
-                
-                // Create element type
-                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
-                type_element->basic_type = op_type_new->uv.type->basic_type;
-                type_element->dimension = op_type_new->uv.type->dimension - 1;
-                type_element->flag = op_type_new->uv.type->flag;
-                op_type_element = SPVM_OP_new_op_type(compiler, type_element, op_type_new_default->file, op_type_new_default->line);
-              }
               
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
               op_cur = op_sequence;
