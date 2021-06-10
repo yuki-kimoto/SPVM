@@ -243,14 +243,12 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (length > 0) {
                 SPVM_OP* op_term_element = op_list_elements->first;
                 
-                // First element
+                // Element type is same as the type of first element
                 op_term_element = SPVM_OP_sibling(compiler, op_term_element);
-                
                 if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
                   SPVM_COMPILER_error(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
                   return;
                 }
-
                 SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
                 
                 op_term_element->no_need_check = 1;
@@ -272,8 +270,19 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 type_new->dimension = type_term_element->dimension + 1;
                 op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
+              else if (length == 0) {
+                op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
+                SPVM_TYPE* type_element = op_type_element->uv.type;
+                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
+                type_new->basic_type = type_element->basic_type;
+                type_new->dimension = type_element->dimension + 1;
+                op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
+              }
+              else {
+                assert(0);
+              }
               
-              if (length == 0 || op_array_init->flag & SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES) {
+              if (length > 0 && op_array_init->flag & SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES) {
                 op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
                 SPVM_TYPE* type_element = op_type_element->uv.type;
                 SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
