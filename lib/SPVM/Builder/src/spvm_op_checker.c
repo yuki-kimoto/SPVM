@@ -223,15 +223,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, file, line);
 
-              SPVM_OP* op_type_new = NULL;
-              SPVM_OP* op_type_element = NULL;
-              
               SPVM_OP* op_sequence = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SEQUENCE, file, line);
               op_cur = op_sequence;
               SPVM_OP* op_assign_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, file, line);
               
               // Resolve array type and element type
               int32_t length = 0;
+              SPVM_OP* op_type_element = NULL;
+              SPVM_OP* op_type_new = NULL;
               {
                 SPVM_OP* op_term_element = op_list_elements->first;
                 int32_t index = 0;
@@ -263,12 +262,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                                             
                     // Create array type
-                    if (op_type_new == NULL) {
-                      SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                      type_new->basic_type = type_term_element->basic_type;
-                      type_new->dimension = type_term_element->dimension + 1;
-                      op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
-                    }
+                    SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
+                    type_new->basic_type = type_term_element->basic_type;
+                    type_new->dimension = type_term_element->dimension + 1;
+                    op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
                   }
                   index++;
                 }
