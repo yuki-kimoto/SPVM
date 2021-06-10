@@ -229,6 +229,15 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Resolve array type and element type
               int32_t length = 0;
+              {
+                SPVM_OP* op_term_element = op_list_elements->first;
+                int32_t index = 0;
+                while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+                  index++;
+                }
+                length = index;
+              }
+
               SPVM_OP* op_type_element = NULL;
               SPVM_OP* op_type_new = NULL;
               {
@@ -265,7 +274,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   }
                   index++;
                 }
-                length = index;
               }
               
               if (length == 0 || op_array_init->flag & SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES) {
