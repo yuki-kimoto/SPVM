@@ -1133,6 +1133,14 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
       int32_t element_index = 0;
       SPVM_OP* op_term_element = op_list_elements->first;
       while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
+        if (element_index == 0) {
+          // Convert to any object type
+          SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_term_element);
+          SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_term_element->file, op_term_element->line);
+          SPVM_OP* op_dist_type = SPVM_OP_new_op_any_object_type(compiler, op_term_element->file, op_term_element->line);
+          SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_term_element);
+          SPVM_OP_replace_op(compiler, op_stab, op_convert);
+        }
         element_index++;
       }
       int32_t is_odd = element_index % 2 == 1;
@@ -1140,7 +1148,6 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
         SPVM_COMPILER_error(compiler, "Odd number of elements in {} array init syntax at %s line %d\n", op_list_elements->file, op_list_elements->line);
       }
     }
-    op_array_init->flag |= SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES;
   }
   
   SPVM_OP_insert_child(compiler, op_array_init, op_array_init->last, op_list_elements);

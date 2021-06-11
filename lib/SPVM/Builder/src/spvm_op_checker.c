@@ -243,41 +243,29 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               if (length > 0) {
                 SPVM_OP* op_term_element = op_list_elements->first;
 
-                // Array init {} is always object[] type
-                if (op_array_init->flag & SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES) {
-                  op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);
-                  SPVM_TYPE* type_element = op_type_element->uv.type;
-                  SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                  type_new->basic_type = type_element->basic_type;
-                  type_new->dimension = type_element->dimension + 1;
-                  op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
+                op_term_element = SPVM_OP_sibling(compiler, op_term_element);
+                if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
+                  SPVM_COMPILER_error(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
+                  return;
                 }
-                // In the case of Array init [], element type is same as the type of first element
-                else {
-                  op_term_element = SPVM_OP_sibling(compiler, op_term_element);
-                  if (op_term_element->id == SPVM_OP_C_ID_UNDEF) {
-                    SPVM_COMPILER_error(compiler, "Array initialization first element must not be undef at %s line %d\n", file, line);
-                    return;
-                  }
-                  SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
+                SPVM_TYPE* type_term_element = SPVM_OP_get_type(compiler, op_term_element);
 
-                  // Create element type
-                  SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
-                  type_element->basic_type = type_term_element->basic_type;
-                  type_element->dimension = type_term_element->dimension;
-                  op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
-                  
-                  // Register basic type
-                  if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
-                    SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type_element);
-                  }
-                                          
-                  // Create array type
-                  SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
-                  type_new->basic_type = type_term_element->basic_type;
-                  type_new->dimension = type_term_element->dimension + 1;
-                  op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
+                // Create element type
+                SPVM_TYPE* type_element = SPVM_TYPE_new(compiler);
+                type_element->basic_type = type_term_element->basic_type;
+                type_element->dimension = type_term_element->dimension;
+                op_type_element = SPVM_OP_new_op_type(compiler, type_element, file, line);
+                
+                // Register basic type
+                if (!SPVM_TYPE_is_numeric_type(compiler, op_type_element->uv.type->basic_type->id,op_type_element->uv.type->dimension, op_type_element->uv.type->flag)) {
+                  SPVM_OP_CHECKER_add_no_dup_basic_type(compiler, package->op_package, op_type_element);
                 }
+                                        
+                // Create array type
+                SPVM_TYPE* type_new = SPVM_TYPE_new(compiler);
+                type_new->basic_type = type_term_element->basic_type;
+                type_new->dimension = type_term_element->dimension + 1;
+                op_type_new = SPVM_OP_new_op_type(compiler, type_new, file, line);
               }
               else if (length == 0) {
                 op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);

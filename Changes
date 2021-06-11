@@ -1,5 +1,5 @@
-0.9006 2021-06-10
-  - 
+0.9006 2021-06-11
+  - fix array init {} bugs that {foo => SPVM::Int->new(5)} was segfault
 0.9005 2021-05-27
   - add SPVM::Regex "." regular expression character.
   - add SPVM::Regex single line mode option "s"

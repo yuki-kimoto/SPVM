@@ -85,7 +85,17 @@ package TestCase::Array {
         return 0;
       }
     }
-    
+
+    {
+      my $objects = {foo => SPVM::Int->new(5)};
+      
+      my $num = (int)$objects->[1];
+      
+      unless ($num == 5) {
+        return 0;
+      }
+    }
+
     return 1;
   }
   
