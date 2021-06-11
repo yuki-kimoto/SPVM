@@ -242,10 +242,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_type_new = NULL;
               if (length > 0) {
                 SPVM_OP* op_term_element = op_list_elements->first;
-                
-                // Element is no need check
-                op_term_element->no_need_check = 1;
-                
+
                 // Array init {} is always object[] type
                 if (op_array_init->flag & SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES) {
                   op_type_element = SPVM_OP_new_op_any_object_type(compiler, op_cur->file, op_cur->line);

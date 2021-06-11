@@ -1133,7 +1133,6 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
       int32_t element_index = 0;
       SPVM_OP* op_term_element = op_list_elements->first;
       while ((op_term_element = SPVM_OP_sibling(compiler, op_term_element))) {
-        op_term_element->no_need_check = 1;
         element_index++;
       }
       int32_t is_odd = element_index % 2 == 1;
