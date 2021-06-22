@@ -798,116 +798,99 @@ Example:
 
 =head2 new_byte_array_raw
 
-Generates a new "byte[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-
   void* (*new_byte_array_raw)(SPVM_ENV* env, int32_t length);
 
-
-This function does not add objects to the mortal stack, so use new_byte_array to avoid memory leaks for normal use.
+Create a new byte[] type array by specifying the length.
 
 =head2 new_byte_array
 
-Generates and returns a new "byte[] type" object with the length of the array. The initial value of all elements is 0. Adds a newly generated object to the mortal stack.
-
-
   void* (*new_byte_array)(SPVM_ENV* env, int32_t length);
 
+Do the same as C<new_byte_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_byte_array_raw>.
 
 Example:
 
-  void* byte_array_obj = env->new_byte_array(env, 100);
+  void* byte_array = env->new_byte_array(env, 100);
 
 =head2 new_short_array_raw
 
   void* (*new_short_array_raw)(SPVM_ENV* env, int32_t length);
 
-Generates a new "short[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-This function does not add objects to the mortal stack, so use new_short_array to avoid memory leaks for normal use.
+Create a new short[] type array by specifying the length.
 
 =head2 new_short_array
 
   void* (*new_short_array)(SPVM_ENV* env, int32_t length);
 
-Generates and returns a new "short[] type" object with the length of the array. The initial value of all elements is 0. Adds a newly generated object to the mortal stack.
+Do the same as C<new_short_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_short_array_raw>.
 
 Example:
 
-  void* short_array_obj = env->new_short_array(env, 100);
+  void* short_array = env->new_short_array(env, 100);
 
 =head2 new_int_array_raw
 
   void* (*new_int_array_raw)(SPVM_ENV* env, int32_t length);
 
-Generates a new "int[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-This function does not add objects to the mortal stack, so normal use should use new_int_array to avoid memory leaks.
+Create a new int[] type array by specifying the length.
 
 =head2 new_int_array
 
   void* (*new_int_array)(SPVM_ENV* env, int32_t length);
 
-Generates and returns a new "int[] type" object with the length of the array. The initial value of all elements is 0. Adds a newly generated object to the mortal stack.
+Do the same as C<new_int_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_int_array_raw>.
 
 Example:
 
-  void* int_array_obj = env->new_int_array(env, 100);
+  void* int_array = env->new_int_array(env, 100);
 
 =head2 new_long_array_raw
 
   void* (*new_long_array_raw)(SPVM_ENV* env, int32_t length);
 
-Creates a new "long[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-This function does not add objects to the mortal stack, so use normal_new_long_array to avoid memory leaks.
+Create a new long[] type array by specifying the length.
 
 =head2 new_long_array
 
   void* (*new_long_array)(SPVM_ENV* env, int32_t length);
 
-Create a new "long[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
+Do the same as C<new_long_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_long_array_raw>.
 
 Example:
 
-  void* long_array_obj = env->new_long_array(env, 100);
+  void* long_array = env->new_long_array(env, 100);
 
 =head2 new_float_array_raw
 
   void* (*new_float_array_raw)(SPVM_ENV* env, int32_t length);
 
-Create a new "float[] type" object by specifying the length of the array. The initial value of all elements is 0.
-
-This function does not add any objects to the mortal stack, so use new_float_array for normal use to avoid memory leaks.
+Create a new float[] type array by specifying the length.
 
 =head2 new_float_array
 
   void* (*new_float_array)(SPVM_ENV* env, int32_t length);
 
-Create a new "float[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
+Do the same as C<new_float_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_float_array_raw>.
 
 Example:
 
-  void* float_array_obj = env->new_float_array(env, 100);
+  void* float_array = env->new_float_array(env, 100);
 
 =head2 new_double_array_raw
 
   void* (*new_double_array_raw)(SPVM_ENV* env, int32_t length);
 
-Creates a new "double[]" object by specifying the length of the array. The initial value of all elements is 0.
-
-This function does not add any objects to the mortal stack, so use normal_new_double_array to avoid memory leaks.
+Create a new double[] type array by specifying the length.
 
 =head2 new_double_array
 
   void* (*new_double_array)(SPVM_ENV* env, int32_t length);
 
-Generate a new "double[] type" object by specifying the length of the array and return it. The initial value of all elements is 0. Add the newly created object to the mortal stack.
+Do the same as C<new_double_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_double_array_raw>.
 
 Example:
 
-  void* double_array_obj = env->new_double_array(env, 100);
-
+  void* double_array = env->new_double_array(env, 100);
 
 =head2 new_object_array_raw
 
@@ -926,7 +909,7 @@ Create a new object type array by specifying the basic type ID and array length 
 Example:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
-  void* object_array_obj = env->new_object_array(env, basic_type_id, 100);
+  void* object_array = env->new_object_array(env, basic_type_id, 100);
 
 =head2 new_muldim_array_raw
 
@@ -949,7 +932,7 @@ Example:
 
   // new SPVM::Int[][][100]
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
-  void* multi_array_obj = env->new_muldim_array(env, basic_type_id, 2, 100);
+  void* multi_array = env->new_muldim_array(env, basic_type_id, 2, 100);
 
 =head2 new_mulnum_array_raw
 
@@ -968,7 +951,7 @@ Generate a new multi-numeric array by specifying the basic type ID and array len
 Example:
 
   int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Complex_2d");
-  void* value_array_obj = env->new_mulnum_array(env, basic_type_id, 100);
+  void* value_array = env->new_mulnum_array(env, basic_type_id, 100);
 
 =head2 new_string_nolen_raw
 
@@ -2206,6 +2189,8 @@ Example:
 
   void* any_object_basic_type_id;
 
+Basic type ID of any object type. This is used internally.
+
 =head2 dump_raw
 
   void* (*dump_raw)(SPVM_ENV* env, void* object);
@@ -2213,6 +2198,8 @@ Example:
 =head2 dump
 
   void* (*dump)(SPVM_ENV* env, void* object);
+
+The contents of the dumped string may vary from SPVM version to version. Please use dump operator only for viewing the content of object data.
 
 =head1 Native API indexes
 
