@@ -781,19 +781,17 @@ Example:
 
   void* (*new_object_raw)(SPVM_ENV* env, int32_t basic_type_id);
 
-Generates a new object with a base type ID. The base type ID must be the correct base type ID obtained by the "basic_type_id function".
-
-This function does not add objects to the mortal stack, so use new_object to avoid memory leaks for normal use.
+Create a new object with a basic type ID. The basic type ID must be the correct base type ID return by C<get_basic_type_id> function.
 
 =head2 new_object
 
   void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
 
-Generates and returns a new object with a base type ID. The base type ID must be the correct base type ID obtained in the basic_type_id. Adds a newly generated object to the mortal stack.
+Do the same as C<new_object_raw>, and add the created object to the mortal stack of the environment. Use this function in normal use instead of C<new_object_raw>.
 
 Example:
 
-  int32_t basic_type_id = env->get_basic_type_id(env,"SPVM::Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
   void* object = env->new_object(env, basic_type_id);
 
 =head2 new_byte_array_raw
@@ -896,15 +894,13 @@ Example:
 
   void* (*new_object_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
-Create a new object type array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null.
-
-This function does not add objects to the mortal stack, so use normal_new_object_array to avoid memory leaks.
+Create a new object type array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
 
 =head2 new_object_array
 
   void* (*new_object_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
-Create a new object type array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null. Add the newly created object to the mortal stack.
+Do the same as C<new_object_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_object_array_raw>.
 
 Example:
 
@@ -915,18 +911,13 @@ Example:
 
   void* (*new_muldim_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 
-Generates and returns a new multidimensional object type array by specifying the basic type ID, element type dimension, and array length. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null.
-
-This function does not add any objects to the mortal stack, so use new_muldim_array for normal use to avoid memory leaks.
-
+Create a new multi dimension array by specifying the basic type ID, the type dimension of the element, and the array length. The basic type ID must be the correct basic type ID got bu C<get_basic_type_id> function. the type dimension of the element must be less than or equals to 255.
 
 =head2 new_muldim_array
 
   void* (*new_muldim_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t element_dimension, int32_t length);
 
-Generates and returns a new multidimensional object type array by specifying the basic type ID, element type dimension, and array length. The basic type ID must be the correct basic type ID obtained with the "basic_type_id function". The initial value of all elements is null. Add the newly created object to the mortal stack.
-
-Element type dimensions must be less than 255.
+Do the same as C<new_muldim_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_muldim_array_raw>.
 
 Example:
 
@@ -938,15 +929,13 @@ Example:
 
   void* (*new_mulnum_array_raw)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
-Generate a new multi-numeric array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and must be valid as a composite numeric type. The initial value of all fields for all elements is 0.
-
-This function does not add any objects to the mortal stack, so use new_mulnum_array for normal use to avoid memory leaks.
+Create a new multi-numeric array by specifying the basic type ID and the array length. The basic type ID must be the correct basic type ID got by C<basic_type_id> function.
 
 =head2 new_mulnum_array
 
   void* (*new_mulnum_array)(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 
-Generate a new multi-numeric array by specifying the basic type ID and array length and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and must be valid as a composite numeric type. The initial value of all fields for all elements is 0.
+Do the same as C<new_mulnum_array_raw>, and add the created array to the mortal stack of the environment. Use this function in normal use instead of C<new_mulnum_array_raw>.
 
 Example:
 
@@ -957,18 +946,15 @@ Example:
 
   void* (*new_string_nolen_raw)(SPVM_ENV* env, const char* bytes);
 
-Specify a C language string to generate a string type object and return it. The string must end with "\0".
-
-This function does not add any objects to the mortal stack, so for normal use use new_string to avoid memory leaks.
+Create a new string object by specifying C language char* type value. this value must end with "\0".
 
 =head2 new_string_nolen
 
   void* (*new_string_nolen)(SPVM_ENV* env, const char* bytes);
 
-Specify a C language string to generate a string type object and return it. The string must end with "\0". Add the newly created object to the mortal stack.
+Do the same as C<new_string_nolen_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<new_string_nolen_raw>.
 
 Example:
-
 
   void* str_obj = env->new_string_nolen(env, "Hello World");
 
@@ -976,15 +962,13 @@ Example:
 
   void* (*new_string_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
 
-Specify a C language string and length to generate a string type object and return it.
-
-This function does not add any objects to the mortal stack, so for normal use use new_string to avoid memory leaks.
+Create a new string object by specifying C language char* type value and the length.
 
 =head2 new_string
 
   void* (*new_string)(SPVM_ENV* env, const char* bytes, int32_t length);
 
-Generates and returns a character string type object by specifying the character string and length in C language. Add the newly created object to the mortal stack.
+Do the same as C<new_string_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<new_string_raw>.
 
 Example:
 
@@ -994,15 +978,13 @@ Example:
 
   void* (*new_pointer_raw)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
 
-Specify a basic type ID and a C language pointer to create a pointer type object and return it. The basic type ID must be the correct basic type ID acquired by the "basic_type_id function" and valid as a pointer type.
-
-This function does not add any objects to the mortal stack, so for normal use use new_pointer to avoid memory leaks.
+Create a pointer type object by specifying a basic type ID and a C language pointer. The basic type ID must be the correct basic type ID got by C<get_basic_type_id> function.
 
 =head2 new_pointer
 
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
 
-Specify a basic type ID and a C language pointer to create a pointer type object and return it. The basic type ID must be the correct basic type ID acquired by the C<get_basic_type_id> function and valid as a pointer type. Add the newly created object to the mortal stack.
+Do the same as C<new_pointer_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<new_pointer_raw>.
 
 Example:
 
@@ -1014,15 +996,13 @@ Example:
 
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);
 
-Returns a new byte[] type object that is a concatenation of two byte[] type strings.
-
-This function does not add objects to the mortal stack, so use concat for normal use to avoid memory leaks.
+Concat two strings.
 
 =head2 concat
 
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
 
-Returns a new byte[] type object that is a concatenation of two byte[] type strings. Add the newly created object to the mortal stack.
+Do the same as C<concat_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<concat_raw>.
 
 =head2 new_stack_trace_raw
 
@@ -2184,7 +2164,6 @@ Example:
 
 Example:
 
-
 =head2 any_object_basic_type_id
 
   void* any_object_basic_type_id;
@@ -2195,11 +2174,13 @@ Basic type ID of any object type. This is used internally.
 
   void* (*dump_raw)(SPVM_ENV* env, void* object);
 
+Get the string which dump the object. The string is the same as the return value of C<dump> operator.
+
 =head2 dump
 
   void* (*dump)(SPVM_ENV* env, void* object);
 
-The contents of the dumped string may vary from SPVM version to version. Please use dump operator only for viewing the content of object data.
+Do the same as C<dump_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<dump_raw>.
 
 =head1 Native API indexes
 
