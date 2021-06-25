@@ -182,7 +182,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 }
 
 # Check not creating no needed object file
-ok(!-f "$FindBin::Bin/spvm_build/work/object/SPVM/CORE.o");
+ok(!-f "$FindBin::Bin/.spvm_build/work/object/SPVM/CORE.o");
 
 # Clear exception
 SPVM::set_exception(undef);
