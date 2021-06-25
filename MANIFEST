@@ -10,7 +10,6 @@ ctest/README.txt
 ctest/t/test_spvm_hash.c
 ctest/t/test_spvm_list.c
 DEVELOPMENT.txt
-doc_save.txt
 examples/complex/complex.pl
 examples/complex/lib/MyComplex.spvm
 examples/native/bind_clib/bind_clib.pl
