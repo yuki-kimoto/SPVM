@@ -59,13 +59,13 @@ typedef struct spvm_package_var_access SPVM_PACKAGE_VAR_ACCESS;
 struct spvm_package_var;
 typedef struct spvm_package_var SPVM_PACKAGE_VAR;
 
-// spvm_call_sub.h
-struct spvm_call_sub;
-typedef struct spvm_call_sub SPVM_CALL_SUB;
+// spvm_call_method.h
+struct spvm_call_method;
+typedef struct spvm_call_method SPVM_CALL_METHOD;
 
-// spvm_sub_check_info.h
-struct spvm_sub_check_info;
-typedef struct spvm_sub_check_info SPVM_SUB_CHECK_INFO;
+// spvm_method_check_info.h
+struct spvm_method_check_info;
+typedef struct spvm_method_check_info SPVM_METHOD_CHECK_INFO;
 
 // spvm_object.h
 struct spvm_object;
@@ -175,9 +175,9 @@ typedef struct spvm_field SPVM_FIELD;
 struct spvm_descriptor;
 typedef struct spvm_descriptor SPVM_DESCRIPTOR;
 
-// spvm_sub.h
-struct spvm_sub;
-typedef struct spvm_sub SPVM_SUB;
+// spvm_method.h
+struct spvm_method;
+typedef struct spvm_method SPVM_METHOD;
 
 union spvm_yystype;
 typedef union spvm_yystype SPVM_YYSTYPE;

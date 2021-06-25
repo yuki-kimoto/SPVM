@@ -31,15 +31,15 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
-  package->subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->methods = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->method_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->package_var_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   
   package->info_package_var_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_package_var_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  package->info_sub_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->info_sub_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  package->info_method_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->info_method_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->info_field_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_field_id_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   package->info_basic_type_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
@@ -48,7 +48,7 @@ SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler) {
   package->op_uses = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->op_allows = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   package->info_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  package->anon_subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  package->anon_methods = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
 
   return package;
 }

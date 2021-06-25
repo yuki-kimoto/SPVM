@@ -162,7 +162,7 @@ See L<List of Native APIs|/"List-of-Native-APIs"> about included SPVM Native API
 
 =head3 Return Value
 
-The return type is "int32_t" type. If the subroutine raises an exception, "1" is returned. If the subroutine is succeed "0" is returned.
+The return type is "int32_t" type. If the method raises an exception, "1" is returned. If the method is succeed "0" is returned.
 
 =head3 Function Name
 
@@ -176,7 +176,7 @@ Followed by package name "Foo__Bar", which is replaced "::" in Foo::Bar.
 
 Followed by "__".
 
-Followed by subroutine name "sum".
+Followed by method name "sum".
 
 If Native Method Name is invalid, a compile error will occur.
 
@@ -204,7 +204,7 @@ In the above sample, it takes two int type arguments of SPVM, calculates the sum
 
 =head2 Compile Native Method
 
-Native subroutines are compiled into a shared libraries. teay are shared libraries (.so) on Unix/Linux, dynamic link libraries (.dll) on Windows or etc corresponding to your os.
+Native methods are compiled into a shared libraries. teay are shared libraries (.so) on Unix/Linux, dynamic link libraries (.dll) on Windows or etc corresponding to your os.
 
 The compilation is done when SPVM is compiled. The build directory must exist, otherwise an exception occures.
 
@@ -404,38 +404,38 @@ For example, in the case of L<SPVM::Complex_2d>, do the following.
 
 =head2 Call SPVM Method
 
-To call the SPVM subroutine, first use the <a href="#native-api-native-sub-api-sub_id">sub_id</a> function or the <a href = "# native-api-native- Get the ID of the subroutine using the sub-api-method_sub_id ">method_sub_id</a> function
+To call the SPVM method, first use the <a href="#native-api-native-sub-api-method_id">method_id</a> function or the <a href = "# native-api-native- Get the ID of the method using the sub-api-method_method_id ">method_method_id</a> function
 
-  // For a subroutine that is not a method
-  int32_t sub_id = env->get_sub_id(env, "Foo", "sum", "int (int, int)");
+  // For a method that is not a method
+  int32_t method_id = env->get_method_id(env, "Foo", "sum", "int (int, int)");
 
   // For method
-  int32_t sub_id = env->get_sub_id_by_object(env, object, "sum", "int (self, int, int)");
+  int32_t method_id = env->get_method_id_by_object(env, object, "sum", "int (self, int, int)");
 
-If sub_id is less than 0, it means that the subroutine was not found. It is safe to handle exceptions as follows.
+If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
-  if (sub_id <0) {
+  if (method_id <0) {
     SPVM_DIE ("Can't find sub id", "Foo/Bar.c", __LINE__);
   }
 
-Set the SPVM subroutine argument to stack before calling the subroutine.
+Set the SPVM method argument to stack before calling the method.
 
   stack[0].ival = 1;
   stack[0].ival = 2;
 
-To call a SPVM subroutine, use the <a href="#native-api-native-sub-api-call_sub">call_sub</a> function.
+To call a SPVM method, use the <a href="#native-api-native-sub-api-call_spvm_method">call_spvm_method</a> function.
 
-  int32_t exception_flag = env->call_sub(env, sub_id, stack);
+  int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
 
-Nonzero if the subroutine raised an exception, 0 if no exception occurred.
+Nonzero if the method raised an exception, 0 if no exception occurred.
 
-The return value of the subroutine is stored in the first element of the stack.
+The return value of the method is stored in the first element of the stack.
 
   int32_t total = stack[0].ival;
 
 =head2 Native Method Scope
 
-Native subroutine are entirely enclosed in scope.
+Native method are entirely enclosed in scope.
 
 Objects added to the mortal stack will automatically have their reference count decremented by 1 when the Native Method ends. When the reference count reaches 0, it is released.
 
@@ -751,11 +751,11 @@ Example:
 
   int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
 
-=head2 get_sub_id
+=head2 get_method_id
 
-  int32_t (*get_sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
+  int32_t (*get_method_id)(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature);
 
-Get the subroutine ID by specifying the package name, subroutine name, and signature. If no subroutine exists, a value less than 0 is returned.
+Get the method ID by specifying the package name, method name, and signature. If no method exists, a value less than 0 is returned.
 
 The signature has the following format: Must not contain white space.
 
@@ -763,19 +763,19 @@ The signature has the following format: Must not contain white space.
 
 Example:
 
-  int32_t sub_id = env->get_sub_id(env, "Foo", "func", "int(long,string)");
+  int32_t method_id = env->get_method_id(env, "Foo", "func", "int(long,string)");
 
-=head2 get_sub_id_by_object
+=head2 get_method_id_by_object
 
-  int32_t (*get_sub_id_by_object)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  int32_t (*get_method_id_by_object)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 
-Get the subroutine ID by specifying the object and method name. If the method does not exist, a value less than 0 is returned.
+Get the method ID by specifying the object and method name. If the method does not exist, a value less than 0 is returned.
 
-The signature is the same as the sub_id signature.
+The signature is the same as the method_id signature.
 
 Example:
 
-  int32_t sub_id = env->get_sub_id_by_object(env, object, "method", "int(self,long,string)");
+  int32_t method_id = env->get_method_id_by_object(env, object, "method", "int(self,long,string)");
 
 =head2 new_object_raw
 
@@ -1006,17 +1006,17 @@ Do the same as C<concat_raw>, and add the created string object to the mortal st
 
 =head2 new_stack_trace_raw
 
-  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
 
-If you specify a byte[] type exception message and a package name, subroutine name, file name and line number, the character string of the package name, subroutine name, file name and line number is added to the end of the byte[] type exception message. The added character string will be returned.
+If you specify a byte[] type exception message and a package name, method name, file name and line number, the character string of the package name, method name, file name and line number is added to the end of the byte[] type exception message. The added character string will be returned.
 
 This function does not add objects to the mortal stack, use new_stack_trace to avoid memory leaks for normal use.
 
 =head2 new_stack_trace
 
-  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
 
-When a byte[] type exception message and a package name, subroutine name, file name and line number are specified, the string of the package name, subroutine name, file name and line number is added to the end of the string type exception message. Returns a new string type object. Add the newly created object to the mortal stack.
+When a byte[] type exception message and a package name, method name, file name and line number are specified, the string of the package name, method name, file name and line number is added to the end of the string type exception message. Returns a new string type object. Add the newly created object to the mortal stack.
 
 =head2 length
 
@@ -1098,7 +1098,7 @@ Example:
 
   void* (*get_elem_object)(SPVM_ENV* env, void* array, int32_t index);
 
-Gets an object of an element given an array of object types and a subscript. If the element is a weak reference, the weak reference is removed.
+Gets an object of an element given an array of object types and a methodscript. If the element is a weak reference, the weak reference is removed.
 
 Example:
 
@@ -1108,7 +1108,7 @@ Example:
 
   void (*set_elem_object)(SPVM_ENV* env, void* array, int32_t index, void* value);
 
-If you specify an array of object type and subscript and element objects, the element object is assigned to the corresponding subscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
+If you specify an array of object type and methodscript and element objects, the element object is assigned to the corresponding methodscript position. If the element's object has a weak reference, the weak reference is removed. The reference count of the originally assigned object is decremented by 1.
 
 Example:
 
@@ -1452,13 +1452,13 @@ Example:
 
 If you specify a pointer type object and a C language pointer, the C language pointer is saved in the internal data of the pointer type object.
 
-=head2 call_sub
+=head2 call_spvm_method
 
-  int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int32_t (*call_spvm_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
 
-Call a subroutine by specifying the subroutine ID and argument. If an exception occurs in the subroutine, The return value is 1. If not, return 0.
+Call a method by specifying the method ID and argument. If an exception occurs in the method, The return value is 1. If not, return 0.
 
-The return value of the subroutine is set to args[0].
+The return value of the method is set to args[0].
 
 =head2 get_exception
 
@@ -2138,30 +2138,30 @@ Example:
   void* value = env->get_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
-=head2 call_sub_by_name
+=head2 call_spvm_method_by_name
 
-  int32_t (*call_sub_by_name)(SPVM_ENV* env,
-    const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack,
+  int32_t (*call_spvm_method_by_name)(SPVM_ENV* env,
+    const char* package_name, const char* method_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
 
-This is same as C<call_sub> function, but you can specify the package name and sub name directry.
+This is same as C<call_spvm_method> function, but you can specify the package name and sub name directry.
 
 Example:
 
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_sub_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
+    int32_t exception_flag = env->call_spvm_method_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
     if (exception_flag) {
       return exception_flag;
     }
     output = stack[0].ival;
   }
 
-=head2 call_poly_sub_by_name
+=head2 call_poly_method_by_name
 
-  int32_t (*call_poly_sub_by_name)(SPVM_ENV* env, void* object,
-    const char* sub_name, const char* signature, SPVM_VALUE* stack,
+  int32_t (*call_poly_method_by_name)(SPVM_ENV* env, void* object,
+    const char* method_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
 
 Example:
@@ -2221,8 +2221,8 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   21 get_field_id
   22 get_field_offset
   23 get_package_var_id
-  24 get_sub_id
-  25 get_sub_id_by_object
+  24 get_method_id
+  25 get_method_id_by_object
   26 new_object_raw
   27 new_object
   28 new_byte_array_raw
@@ -2292,7 +2292,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   92 set_package_var_object
   93 get_pointer
   94 set_pointer
-  95 call_sub
+  95 call_spvm_method
   96 get_exception
   97 set_exception
   98 get_ref_count
@@ -2349,8 +2349,8 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   149 get_package_var_float_by_name
   150 get_package_var_double_by_name
   151 get_package_var_object_by_name
-  152 call_sub_by_name
-  153 call_poly_sub_by_name
+  152 call_spvm_method_by_name
+  153 call_poly_method_by_name
   154 get_field_string_chars_by_name
   155 any_object_basic_type_id
   156 dump_raw

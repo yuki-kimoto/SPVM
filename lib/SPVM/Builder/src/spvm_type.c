@@ -13,7 +13,7 @@
 #include "spvm_field.h"
 #include "spvm_limit.h"
 #include "spvm_basic_type.h"
-#include "spvm_sub.h"
+#include "spvm_method.h"
 
 const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
 
@@ -250,13 +250,13 @@ int32_t SPVM_TYPE_has_callback(
   SPVM_PACKAGE* callback = callback_basic_type->package;
   
   // Package which have only anon sub
-  if (package->flag & SPVM_PACKAGE_C_FLAG_ANON_SUB_PACKAGE) {
-    assert(package->subs->length == 1);
-    assert(callback->subs->length == 1);
-    SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback->subs, 0);
-    SPVM_SUB* found_sub = SPVM_LIST_fetch(package->subs, 0);
+  if (package->flag & SPVM_PACKAGE_C_FLAG_ANON_METHOD_PACKAGE) {
+    assert(package->methods->length == 1);
+    assert(callback->methods->length == 1);
+    SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback->methods, 0);
+    SPVM_METHOD* found_method = SPVM_LIST_fetch(package->methods, 0);
     
-    if (strcmp(sub_callback->signature, found_sub->signature) == 0) {
+    if (strcmp(method_callback->signature, found_method->signature) == 0) {
       return 1;
     }
     else {
@@ -265,15 +265,15 @@ int32_t SPVM_TYPE_has_callback(
   }
   // Normal package
   else {
-    assert(callback->subs->length == 1);
-    SPVM_SUB* sub_callback = SPVM_LIST_fetch(callback->subs, 0);
+    assert(callback->methods->length == 1);
+    SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback->methods, 0);
     
-    SPVM_SUB* found_sub = SPVM_HASH_fetch(package->sub_symtable, sub_callback->name, strlen(sub_callback->name));
-    if (!found_sub) {
+    SPVM_METHOD* found_method = SPVM_HASH_fetch(package->method_symtable, method_callback->name, strlen(method_callback->name));
+    if (!found_method) {
       return 0;
     }
     
-    if (strcmp(sub_callback->signature, found_sub->signature) == 0) {
+    if (strcmp(method_callback->signature, found_method->signature) == 0) {
       return 1;
     }
     else {

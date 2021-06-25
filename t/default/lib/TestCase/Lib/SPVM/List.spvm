@@ -191,7 +191,7 @@ package TestCase::Lib::SPVM::List {
     }
     for (my $i = 0; $i < @$expected; $i++) {
       if ($got->[$i] != $expected->[$i]) {
-        warn("Array content mismatch. subscript " . $i);
+        warn("Array content mismatch. methodscript " . $i);
         return 0;
       }
     }

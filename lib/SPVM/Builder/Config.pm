@@ -869,7 +869,7 @@ C<libs> option is used by C<link> method of L<SPVM::Builder::CC> to set -l<lib>.
 
 Don't add prefix '-l' or 'lib' before library name. 'gsl' is valid. 'libgsl', '-lgsl' is invalid.
 
-The shared libraries of C<libs> option, unlike the C <lddlflags> option, is loaded using C<dl_load_file> function of L<DynaLoader> when the SPVM subroutine is bind to Perl subroutines.
+The shared libraries of C<libs> option, unlike the C <lddlflags> option, is loaded using C<dl_load_file> function of L<DynaLoader> when the SPVM method is bind to Perl methods.
 
 =head2 set_libs
 

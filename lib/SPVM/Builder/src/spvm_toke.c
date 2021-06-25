@@ -23,7 +23,7 @@
 #include "spvm_basic_type.h"
 #include "spvm_my.h"
 #include "spvm_string_buffer.h"
-#include "spvm_sub.h"
+#include "spvm_method.h"
 #include "spvm_package.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
@@ -97,8 +97,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
   int32_t minus = 0;
   
   // Expect sub name
-  int32_t expect_sub_name = compiler->expect_sub_name;
-  compiler->expect_sub_name = 0;
+  int32_t expect_method_name = compiler->expect_method_name;
+  compiler->expect_method_name = 0;
   
   // Before token is arrow
   int32_t before_token_is_arrow = compiler->before_token_is_arrow;
@@ -449,7 +449,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (*compiler->bufptr == '>') {
           compiler->bufptr++;
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
-          compiler->expect_sub_name = 1;
+          compiler->expect_method_name = 1;
           compiler->before_token_is_arrow = 1;
           
           return ARROW;
@@ -462,7 +462,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
           SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
-          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT;
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_METHODTRACT;
           
           yylvalp->opval = op_special_assign;
           
@@ -1707,7 +1707,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           // Keyword
-          if (expect_sub_name) {
+          if (expect_method_name) {
             // None
           }
           else if (expect_field_name) {
@@ -1981,10 +1981,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return SWITCH;
                 }
                 else if (strcmp(keyword, "sub") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP_with_keyword_start_pos(compiler, SPVM_OP_C_ID_SUB, keyword_start_pos);
-                  compiler->expect_sub_name = 1;
+                  yylvalp->opval = SPVM_TOKE_newOP_with_keyword_start_pos(compiler, SPVM_OP_C_ID_METHOD, keyword_start_pos);
+                  compiler->expect_method_name = 1;
                   
-                  return SUB;
+                  return METHOD;
                 }
                 else if (strcmp(keyword, "string") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);

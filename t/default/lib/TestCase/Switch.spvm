@@ -1,7 +1,7 @@
 package TestCase::Switch {
 
   sub switch_return : int () {
-    my $ret = switch_return_sub();
+    my $ret = switch_return_method();
     
     unless ($ret == 5) {
       return 0;
@@ -10,7 +10,7 @@ package TestCase::Switch {
     return 1;
   }
 
-  sub switch_return_sub : int () {
+  sub switch_return_method : int () {
     my $i = 2;
     switch ($i) {
       case 1: {

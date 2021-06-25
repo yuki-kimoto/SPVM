@@ -27,7 +27,7 @@ my $file = basename $0;
 # Exception
 {
   {
-    ok(TestCase::Exception->exception_eval_call_sub());
+    ok(TestCase::Exception->exception_eval_call_spvm_method());
   }
   
   {

@@ -78,20 +78,20 @@ package MyMath {
 
 See also <a href="/language.html#language-package">Package - SPVM Language Specification</a> about Package.
 
-<h4>Subroutine Definition</h4>
+<h4>Method Definition</h4>
 
-Write <b>Subroutine Definition</b> by <b>sub</b> keyword. Unlike Perl, SPVM Subroutine Definition have return type and argument types.
+Write <b>Method Definition</b> by <b>sub</b> keyword. Unlike Perl, SPVM Method Definition have return type and argument types.
   
 <pre>
 package MyMath {
-  # Subroutine Definition
+  # Method Definition
   sub sum : int ($nums : int[]) {
     
   }
 }
 </pre>
 
-See also <a href="/language.html#language-sub">Subroutine - SPVM Language Specification</a> about Subroutine.
+See also <a href="/language.html#language-sub">Method - SPVM Language Specification</a> about Method.
 
 <h4>Numeric Types</h4>
 
@@ -322,7 +322,7 @@ return $total;
 See <a href="/language.html#language-statement-return">return Statement - SPVM Language Specification</a> about return Statement.
 
 
-<h3>Call SPVM Subroutine from Perl</h3>
+<h3>Call SPVM Method from Perl</h3>
 
 Create "sum.pl" file  and write the following code. This is Perl program.
 
@@ -334,12 +334,12 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'MyMath';
 
-# Call subroutine
+# Call method
 my $total = MyMath->sum([3, 6, 8, 9]);
 
 print "Total: $total\n";
 
-# Call subroutine with packed data
+# Call method with packed data
 my $nums_packed = pack('l*', 3, 6, 8, 9);
 my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
 my $total_packed = MyMath->sum($sv_nums);
@@ -367,12 +367,12 @@ use SPVM 'MyMath';
 
 In this place, compilation is not done. Collect SPVM modules.
 
-<h4>Call SPVM Subroutine</h4>
+<h4>Call SPVM Method</h4>
 
-Call SPVM Subroutine. It's amazing that SPVM subroutine can be called as Perl subroutine.
+Call SPVM Method. It's amazing that SPVM method can be called as Perl method.
 
 <pre>
-# Call subroutine
+# Call method
 my $total = MyMath->sum([3, 6, 8, 9]);
 </pre>
 
@@ -384,12 +384,12 @@ SPVM int return value is converted to Perl Scalar.
 
 See <a href="/exchange-api.html#exchange-api-spvm-value-to-perl-data">Converting SPVM Value to Perl Data - SPVM Exchange API</a> about Conversion of Perl Data to SPVM Value.
 
-<h4>Call SPVM Subroutine with packed data</h4>
+<h4>Call SPVM Method with packed data</h4>
 
 you can pass packed binary data. SPVM::new_int_array_from_bin create SPVM int array from packed binary data. This is efficient.
 
 <pre>
-# Call subroutine with packed data
+# Call method with packed data
 my $nums_packed = pack('l*', 3, 6, 8, 9);
 my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
 my $total_packed = MyMath->sum($sv_nums);
@@ -438,12 +438,12 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'MyMath';
 
-# Call subroutine
+# Call method
 my $total = MyMath->sum([3, 6, 8, 9]);
 
 print "Total: $total\n";
 
-# Call subroutine with packed data
+# Call method with packed data
 my $nums_packed = pack('l*', 3, 6, 8, 9);
 my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
 my $total_packed = MyMath->sum($sv_nums);
@@ -451,7 +451,7 @@ my $total_packed = MyMath->sum($sv_nums);
 print "Total Packed: $total_packed\n";
 </pre>
 
-Precompiled SPVM Subroutine. This means SPVM code is converted to Machine Code:
+Precompiled SPVM Method. This means SPVM code is converted to Machine Code:
 
 <pre>
 # lib/MyMath.spvm
@@ -468,7 +468,7 @@ package MyMath : precompile {
 }
 </pre>
 
-Call SPVM Precompile Subroutine from Perl
+Call SPVM Precompile Method from Perl
 
 <pre>
 # spvm.pl
@@ -479,13 +479,13 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'MyMath';
 
-# Call precompile subroutine
+# Call precompile method
 my $total_precompile = MyMath->sum_precompile([3, 6, 8, 9]);
 
 print "Total Precompile: $total_precompile\n";
 </pre>
 
-SPVM Native Subroutine. This means SPVM subroutine call C/C++ native subroutine:
+SPVM Native Method. This means SPVM method call C/C++ native method:
 
 <pre>
 # lib/MyMath.spvm
@@ -525,7 +525,7 @@ my $bconf = SPVM::Builder::Config->new_c99;
 $bconf;
 </pre>
 
-Use SPVM Native Subroutine from Perl
+Use SPVM Native Method from Perl
 
 <pre>
 # spvm.pl
@@ -536,13 +536,13 @@ use lib "$FindBin::Bin/lib";
 
 use SPVM 'MyMath';
 
-# Call native subroutine
+# Call native method
 my $total_native = MyMath->sum_native([3, 6, 8, 9]);
 
 print "Total Native: $total_native\n";
 </pre>
 
-Environment Variable "SPVM_BUILD_DIR" must be set for precompile and native subroutine
+Environment Variable "SPVM_BUILD_DIR" must be set for precompile and native method
 
 <pre>
 # bash example
@@ -553,7 +553,7 @@ export SPVM_BUILD_DIR=~/.spvm_build
 
 The advantage of SPVM is that you can easily bind C/C++/CUDA.
 
-Subroutines bound with SPVM can be easily called from Perl.
+Methods bound with SPVM can be easily called from Perl.
 
 Before reading this page, you need to understand Native API.
 
@@ -588,7 +588,7 @@ my $total = BindCLib->sum([1, 2, 3, 4]);
 print "Total: $total\n";
 </pre>
 
-SPVM Subroutine Definition.
+SPVM Method Definition.
 
 <pre>
 # lib/BindCLib.spvm
@@ -702,7 +702,7 @@ SPVM provides common arithmetic for complex numbers at the same level as C99.
 
 Complex Type is SPVM::Complex_2f for complex float and SPVM::Complex_2d for complex double.
 
-SPVM::Complex_2f and SPVM::Complex_2d is <a href="/language.html#language-type-multi-numeric">Multi Numeric Type</a>. This is allocated on Subroutine Call Stack.
+SPVM::Complex_2f and SPVM::Complex_2d is <a href="/language.html#language-type-multi-numeric">Multi Numeric Type</a>. This is allocated on Method Call Stack.
 
 This is not Object Type which is allocated on Heap Memory.
 
@@ -761,7 +761,7 @@ my $z2 = complexf(2.5f, 2.7f);
 my $z_add = caddf($z1, $z2);
 
 # Subtract
-my $z_sub = csubf($z1, $z2);
+my $z_method = csubf($z1, $z2);
 
 # Multiply
 my $z_mul = cmulf($z1, $z2);
@@ -786,7 +786,7 @@ my $z2 = complex(2.5, 2.7);
 my $z_add = cadd($z1, $z2);
 
 # Subtract
-my $z_sub = csub($z1, $z2);
+my $z_method = csub($z1, $z2);
 
 # Multiply
 my $z_mul = cmul($z1, $z2);

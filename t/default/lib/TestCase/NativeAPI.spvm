@@ -968,9 +968,9 @@ package TestCase::NativeAPI {
   
   native sub add_int_array : int[] ($nums1 : int[], $nums2 : int[]);
 
-  sub call_void_sub_exception : int () {
+  sub call_void_method_exception : int () {
     eval {
-      call_void_sub_exception_native();
+      call_void_method_exception_native();
     };
     
     if ($@) {
@@ -980,9 +980,9 @@ package TestCase::NativeAPI {
     return 0;
   }
 
-  sub call_byte_sub_exception : int () {
+  sub call_byte_method_exception : int () {
     eval {
-      call_byte_sub_exception_native();
+      call_byte_method_exception_native();
     };
     
     if ($@) {
@@ -992,9 +992,9 @@ package TestCase::NativeAPI {
     return 0;
   }
 
-  sub call_short_sub_exception : int () {
+  sub call_short_method_exception : int () {
     eval {
-      call_short_sub_exception_native();
+      call_short_method_exception_native();
     };
     
     if ($@) {
@@ -1004,9 +1004,9 @@ package TestCase::NativeAPI {
     return 0;
   }
 
-  sub call_int_sub_exception : int () {
+  sub call_int_method_exception : int () {
     eval {
-      call_int_sub_exception_native();
+      call_int_method_exception_native();
     };
     
     if ($@) {
@@ -1016,9 +1016,9 @@ package TestCase::NativeAPI {
     return 0;
   }
 
-  sub call_long_sub_exception : int () {
+  sub call_long_method_exception : int () {
     eval {
-      call_long_sub_exception_native();
+      call_long_method_exception_native();
     };
     
     if ($@) {
@@ -1028,9 +1028,9 @@ package TestCase::NativeAPI {
     return 0;
   }
 
-  sub call_float_sub_exception : int () {
+  sub call_float_method_exception : int () {
     eval {
-      call_float_sub_exception_native();
+      call_float_method_exception_native();
     };
     
     if ($@) {
@@ -1040,9 +1040,9 @@ package TestCase::NativeAPI {
     return 0;
   }
 
-  sub call_double_sub_exception : int () {
+  sub call_double_method_exception : int () {
     eval {
-      call_double_sub_exception_native();
+      call_double_method_exception_native();
     };
     
     if ($@) {
@@ -1052,9 +1052,9 @@ package TestCase::NativeAPI {
     return 0;
   }
   
-  sub call_object_sub_exception : int () {
+  sub call_object_method_exception : int () {
     eval {
-      call_object_sub_exception_native();
+      call_object_method_exception_native();
     };
     
     if ($@) {
@@ -1064,14 +1064,14 @@ package TestCase::NativeAPI {
     return 0;
   }
   
-  native sub call_void_sub_exception_native : void ();
-  native sub call_byte_sub_exception_native : byte ();
-  native sub call_short_sub_exception_native : short ();
-  native sub call_int_sub_exception_native : int ();
-  native sub call_long_sub_exception_native : long ();
-  native sub call_float_sub_exception_native : float ();
-  native sub call_double_sub_exception_native : double ();
-  native sub call_object_sub_exception_native : double ();
+  native sub call_void_method_exception_native : void ();
+  native sub call_byte_method_exception_native : byte ();
+  native sub call_short_method_exception_native : short ();
+  native sub call_int_method_exception_native : int ();
+  native sub call_long_method_exception_native : long ();
+  native sub call_float_method_exception_native : float ();
+  native sub call_double_method_exception_native : double ();
+  native sub call_object_method_exception_native : double ();
   
   native sub mortal_api : int ();
   native sub enter_scope_leave_scope : int ();
@@ -1079,9 +1079,9 @@ package TestCase::NativeAPI {
   
   sub my_value : int ($value : int) { return $value; }
   
-  native sub native_call_sub : int ();
-  native sub native_call_sub_by_name : int ();
-  native sub native_call_sub_by_name_exception : int ();
+  native sub native_call_spvm_method : int ();
+  native sub native_call_spvm_method_by_name : int ();
+  native sub native_call_spvm_method_by_name_exception : int ();
 
   sub new_object_by_name : int () {
     my $minimal = native_new_object_by_name();

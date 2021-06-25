@@ -469,20 +469,20 @@ stack[1].dval = retval_im;
 
       <h2 id="native-api-native-call-sub">サブルーチンの呼び出し</h2>
       <p>
-        SPVMのサブルーチンを呼び出すには、最初に、<a href="#native-api-native-sub-api-sub_id">sub_id</a>関数か、<a href="#native-api-native-sub-api-method_sub_id">method_sub_id</a>関数を使ってサブルーチンのIDを取得します
+        SPVMのサブルーチンを呼び出すには、最初に、<a href="#native-api-native-sub-api-method_id">method_id</a>関数か、<a href="#native-api-native-sub-api-method_method_id">method_method_id</a>関数を使ってサブルーチンのIDを取得します
       </p>
 <pre>
 // メソッドでないサブルーチンの場合
-int32_t sub_id = env->get_sub_id(env, "Foo", "sum", "int(int,int)");
+int32_t method_id = env->get_method_id(env, "Foo", "sum", "int(int,int)");
 
 // メソッドの場合
-int32_t sub_id = env->get_method_sub_id(env, object, "sum", "int(self,int,int)");
+int32_t method_id = env->get_method_method_id(env, object, "sum", "int(self,int,int)");
 </pre>
       <p>
-        sub_idが0より小さい場合は、サブルーチンが見つからなかったことを示します。以下のように、例外処理をしておくと安全です。
+        method_idが0より小さい場合は、サブルーチンが見つからなかったことを示します。以下のように、例外処理をしておくと安全です。
       </p>
 <pre>
-if (sub_id < 0) {
+if (method_id < 0) {
   SPVM_DIE("Can't find sub id", "Foo/Bar.c", __LINE__);
 }
 </pre>
@@ -494,10 +494,10 @@ if (sub_id < 0) {
   stack[0].ival = 2;
 </pre>
       <p>
-        SPVMのサブルーチンを呼び出すには<a href="#native-api-native-sub-api-call_sub">call_sub</a>関数を使用します。
+        SPVMのサブルーチンを呼び出すには<a href="#native-api-native-sub-api-call_spvm_method">call_spvm_method</a>関数を使用します。
       </p>
 <pre>
-int32_t exception_flag = env->call_sub(env, sub_id, stack);
+int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
 </pre>
       <p>
         サブルーチンで例外が発生した場合は0以外、例外が発生しなかった場合は、0が返されます。
@@ -731,8 +731,8 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 21    get_field_id
 22    get_field_offset
 23    get_package_var_id
-24    get_sub_id
-25    get_method_sub_id
+24    get_method_id
+25    get_method_method_id
 26    new_object_raw
 27    new_object
 28    new_byte_array_raw
@@ -802,7 +802,7 @@ int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 92    set_package_var_object
 93    get_pointer
 94    set_pointer
-95    call_sub
+95    call_spvm_method
 96    get_exception
 97    set_exception
 98    get_ref_count
@@ -862,8 +862,8 @@ int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-get_field_id">get_field_id</a></li>
         <li><a href="#native-api-native-sub-api-get_field_offset">get_field_offset</a></li>
         <li><a href="#native-api-native-sub-api-get_package_var_id">get_package_var_id</a></li>
-        <li><a href="#native-api-native-sub-api-get_sub_id">get_sub_id</a></li>
-        <li><a href="#native-api-native-sub-api-get_method_sub_id">get_method_sub_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_method_id">get_method_id</a></li>
+        <li><a href="#native-api-native-sub-api-get_method_method_id">get_method_method_id</a></li>
         <li><a href="#native-api-native-sub-api-new_object_raw">new_object_raw</a></li>
         <li><a href="#native-api-native-sub-api-new_object">new_object</a></li>
         <li><a href="#native-api-native-sub-api-new_byte_array_raw">new_byte_array_raw</a></li>
@@ -933,7 +933,7 @@ int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
         <li><a href="#native-api-native-sub-api-set_package_var_object">set_package_var_object</a></li>
         <li><a href="#native-api-native-sub-api-get_pointer">get_pointer</a></li>
         <li><a href="#native-api-native-sub-api-set_pointer">set_pointer</a></li>
-        <li><a href="#native-api-native-sub-api-call_sub">call_sub</a></li>
+        <li><a href="#native-api-native-sub-api-call_spvm_method">call_spvm_method</a></li>
         <li><a href="#native-api-native-sub-api-get_exception">get_exception</a></li>
         <li><a href="#native-api-native-sub-api-set_exception">set_exception</a></li>
         <li><a href="#native-api-native-sub-api-get_ref_count">get_ref_count</a></li>
@@ -1115,12 +1115,12 @@ int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const cha
 int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "int");
 </pre>
 
-      <h3 id="native-api-native-sub-api-get_sub_id">get_sub_id</h3>
+      <h3 id="native-api-native-sub-api-get_method_id">get_method_id</h3>
       <p>
         パッケージ名とサブルーチン名とシグネチャを指定して、サブルーチンIDを取得します。サブルーチンが存在しない場合は、0より小さい値が返されます。
       </p>
 <pre>
-int32_t (*get_sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
+int32_t (*get_method_id)(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature);
 </pre>
       <p>
         シグネチャは、次のフォーマットで指定します。空白を含んではいけません。
@@ -1132,24 +1132,24 @@ int32_t (*get_sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_n
         サンプル:
       </p>
 <pre>
-int32_t sub_id = env->get_sub_id(env, "Foo", "func", "int(long,string)");
+int32_t method_id = env->get_method_id(env, "Foo", "func", "int(long,string)");
 </pre>
 
-      <h3 id="native-api-native-sub-api-get_method_sub_id">get_method_sub_id</h3>
+      <h3 id="native-api-native-sub-api-get_method_method_id">get_method_method_id</h3>
 <pre>
-int32_t (*get_method_sub_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+int32_t (*get_method_method_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 </pre>
       <p>
         オブジェクトとメソッド名を指定して、サブルーチンIDを取得します。メソッドが存在しない場合は、0より小さい値が返されます。
       </p>
       <p>
-        シグネチャは、sub_idのシグネチャと同一です。
+        シグネチャは、method_idのシグネチャと同一です。
       </p>
       <p>
         サンプル:
       </p>
 <pre>
-int32_t sub_id = env->get_method_sub_id(env, object, "method", "int(self,long,string)");
+int32_t method_id = env->get_method_method_id(env, object, "method", "int(self,long,string)");
 </pre>
 
       <h3 id="native-api-native-sub-api-new_object_raw">new_object_raw</h3>
@@ -1519,7 +1519,7 @@ void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
         byte[]型の例外メッセージと、パッケージ名、サブルーチン名、ファイル名と行番号を指定すると、byte[]型の例外メッセージの末尾に、パッケージ名、サブルーチン名、ファイル名と行番号の文字列を追加した文字列を返却します。
       </p>
 <pre>
-void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
 </pre>
       <p>
         この関数は、モータルスタックにオブジェクトを追加しないので、通常の利用はメモリリークを避けるために、new_stack_traceを使用してください。
@@ -1530,7 +1530,7 @@ void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package
         byte[]型の例外メッセージと、パッケージ名、サブルーチン名、ファイル名と行番号を指定すると、string型の例外メッセージの末尾に、パッケージ名、サブルーチン名、ファイル名と行番号の文字列を追加した新しいstring型のオブジェクトを返却します。モータルスタックに新しく生成されたオブジェクトを追加します。
       </p>
 <pre>
-void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
 </pre>
       
       <h3 id="native-api-native-sub-api-len">len</h3>
@@ -2123,12 +2123,12 @@ strcut tm* tm_ptr = (struct tm*)env->get_pointer(env, tm_obj);
 void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
 </pre>
       
-      <h3 id="native-api-native-sub-api-call_sub">call_sub</h3>
+      <h3 id="native-api-native-sub-api-call_spvm_method">call_spvm_method</h3>
       <p>
         サブルーチンIDと引数を指定して、サブルーチンを呼び出します。戻り値は、サブルーチンで例外が発生した場合は0以外を、例外が発生しなかった場合は0を返却します。
       </p>
 <pre>
-int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+int32_t (*call_spvm_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
 </pre>
       <p>
         サブルーチンの戻り値は「args[0]」に、設定されます。

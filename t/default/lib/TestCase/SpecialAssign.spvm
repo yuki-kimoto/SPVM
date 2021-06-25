@@ -310,7 +310,7 @@ package TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_subtract_var : int () {
+  sub special_assign_methodtract_var : int () {
     my $value_byte = (byte)INT8_MAX();
     my $value_short = (short)INT16_MAX();
     my $value_int = INT32_MAX();

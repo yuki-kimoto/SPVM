@@ -34,7 +34,7 @@ This is similar with L<NativeAPI::C>, but L<SPVM> implement this feature by defa
     return SPVM_SUCCESS;
   }
 
-At first, you specify C<native> descripter at SPVM subroutine.
+At first, you specify C<native> descripter at SPVM method.
 
   package TestCase::NativeAPI {
     # native descripter
@@ -52,7 +52,7 @@ Next, you write C language. You include C<spvm_native.h>.
 
 C Function name start with C<SPNATIVE__>.
 C Function name must be replace C<:> with <_>.
-If SPVM subroutine belong to C<TestCase::NativeAPI> package and subroutine name is Csum>,
+If SPVM method belong to C<TestCase::NativeAPI> package and method name is Csum>,
 Declaration is the following.
 
   int32_t SPNATIVE__TestCase__NativeAPI__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
@@ -103,11 +103,11 @@ The SPVM 1.0 Language Specification is described in this document.
 SPVM is in beta testing for the 1.0 release.
 Language specifications are subject to change without warning.
 
-SPVM Language is designed to be used from Perl. Perl can call SPVM subroutines.
+SPVM Language is designed to be used from Perl. Perl can call SPVM methods.
 
 SPVM Language provides fast array operation and fast numeric calculation.
 
-SPVM subroutines is executed by the SPVM Runtime. its can be converted to shared libraries or DLL.
+SPVM methods is executed by the SPVM Runtime. its can be converted to shared libraries or DLL.
 
 SPVM Language can be converted to machine codes, and you can execute them as a single executable.
 
@@ -258,7 +258,7 @@ The SPVM type exactly matches the following C99 types:
 
 =head1 field
 
-=head1 subroutine
+=head1 method
 
 =head1 Enumeration
 

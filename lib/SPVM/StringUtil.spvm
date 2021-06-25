@@ -86,13 +86,13 @@ package SPVM::StringUtil : precompile {
       return "";
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = substr($string, $start_string_index, $length - $start_string_index);
+      $trimed_string = methodstr($string, $start_string_index, $length - $start_string_index);
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = substr($string, 0, $end_string_index + 1);
+      $trimed_string = methodstr($string, 0, $end_string_index + 1);
     }
     else {
-      $trimed_string = substr($string, $start_string_index, $end_string_index - $start_string_index + 1);
+      $trimed_string = methodstr($string, $start_string_index, $end_string_index - $start_string_index + 1);
     }
     
     return $trimed_string;
@@ -132,13 +132,13 @@ package SPVM::StringUtil : precompile {
     return (string)$bytes;
   }
 
-  sub index : int ($string : string, $sub_string : string, $position : int) {
+  sub index : int ($string : string, $method_string : string, $position : int) {
     my $stringCount = length $string;
-    my $sub_stringCount = length $sub_string;
+    my $method_stringCount = length $method_string;
 
     if ($position >= $stringCount) {
       my $ret : int;
-      if ($sub_stringCount == 0) {
+      if ($method_stringCount == 0) {
         $ret = $stringCount;
       }
       else {
@@ -149,12 +149,12 @@ package SPVM::StringUtil : precompile {
     if ($position < 0) {
       $position = 0;
     }
-    if ($sub_stringCount == 0) {
+    if ($method_stringCount == 0) {
       return $position;
     }
 
-    my $first : byte  = $sub_string->[0];
-    my $max : int = ($stringCount - $sub_stringCount);
+    my $first : byte  = $method_string->[0];
+    my $max : int = ($stringCount - $method_stringCount);
 
     for (my $i = $position; $i <= $max; $i++) {
       if ($string->[$i] != $first) {
@@ -163,8 +163,8 @@ package SPVM::StringUtil : precompile {
 
       if ($i <= $max) {
         my $j = $i + 1;
-        my $end = $j + $sub_stringCount - 1;
-        for (my $k = 01; $j < $end && $string->[$j] == $sub_string->[$k]; ($j++, $k++)) {}
+        my $end = $j + $method_stringCount - 1;
+        for (my $k = 01; $j < $end && $string->[$j] == $method_string->[$k]; ($j++, $k++)) {}
 
         if ($j == $end) {
           return $i;
@@ -401,16 +401,16 @@ package SPVM::StringUtil : precompile {
   native sub to_float : float ($string : string);
   native sub to_double : double ($string : string);
 
-  sub rindex : int ($string : string, $sub_string : string, $offset : int) {
+  sub rindex : int ($string : string, $method_string : string, $offset : int) {
     my $string_len = length $string;
-    my $sub_string_len = length $sub_string;
-    if ($offset > $string_len - $sub_string_len) {
-      $offset = $string_len - $sub_string_len;
+    my $method_string_len = length $method_string;
+    if ($offset > $string_len - $method_string_len) {
+      $offset = $string_len - $method_string_len;
     }
     for (my $i = $offset; $i >= 0; --$i) {
       my $match = 1;
-      for (my $j = 0; $j < $sub_string_len; ++$j) {
-        if ($string->[$i + $j] != $sub_string->[$j]) {
+      for (my $j = 0; $j < $method_string_len; ++$j) {
+        if ($string->[$i + $j] != $method_string->[$j]) {
           $match = 0;
           last;
         }
@@ -455,7 +455,7 @@ package SPVM::StringUtil : precompile {
           }
         }
         if ($match) {
-          my $separated_string = substr($string, $string_base, $string_index - $string_base);
+          my $separated_string = methodstr($string, $string_base, $string_index - $string_base);
           $separated_strings_list->push($separated_string);
           $string_base = $string_index + $sep_length;
           $string_index += $sep_length - 1;
@@ -466,7 +466,7 @@ package SPVM::StringUtil : precompile {
       $separated_strings_list->push("");
     }
     else {
-      my $separated_string = substr($string, $string_base, $string_length - $string_base);
+      my $separated_string = methodstr($string, $string_base, $string_length - $string_base);
       $separated_strings_list->push($separated_string);
     }
 
@@ -496,7 +496,7 @@ package SPVM::StringUtil : precompile {
 
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = SPVM::StringUtil->substr($format, $index, $constant_string_length);
+          my $format_part = SPVM::StringUtil->methodstr($format, $index, $constant_string_length);
           
           $buffer->push($format_part);
           $index += $constant_string_length;
@@ -512,7 +512,7 @@ package SPVM::StringUtil : precompile {
       else {
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = SPVM::StringUtil->substr($format, $index, $constant_string_length);
+          my $format_part = SPVM::StringUtil->methodstr($format, $index, $constant_string_length);
           $buffer->push($format_part);
           $index += $constant_string_length;
           $constant_string_length = 0;
@@ -585,7 +585,7 @@ package SPVM::StringUtil : precompile {
 
         unless ($index < $format_length) {
           die "Invalid conversion in sprintf: \""
-              . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
+              . methodstr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
         }
 
         my $specifier_char = $format->[$index];
@@ -753,7 +753,7 @@ package SPVM::StringUtil : precompile {
         elsif ($specifier_char == 'l') {
           unless ($index + 1 < $format_length && ($format->[$index + 1] == 'd' || $format->[$index + 1] == 'u')) {
             die "Invalid conversion in sprintf: \""
-                . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+                . methodstr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
           }
 
           my $is_signed_format = $format->[$index + 1] == 'd';
@@ -826,7 +826,7 @@ package SPVM::StringUtil : precompile {
         elsif ($specifier_char == 'f' || $specifier_char == 'g') {
           ++$index;
           my $arg = (SPVM::Double)$args->[$arg_count];
-          my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
+          my $specifier_str = methodstr($format, $specifier_base_index, $index - $specifier_base_index);
           my $string = _snsprintf_double($specifier_str, $arg->value);
           $buffer->push($string);
         }
@@ -838,7 +838,7 @@ package SPVM::StringUtil : precompile {
         }
         else {
           die "Invalid conversion in sprintf: \""
-              . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+              . methodstr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
         }
 
         ++$arg_count;
@@ -847,7 +847,7 @@ package SPVM::StringUtil : precompile {
 
     # Add constant string
     if ($constant_string_length > 0) {
-      my $format_part = SPVM::StringUtil->substr($format, $index, $constant_string_length);
+      my $format_part = SPVM::StringUtil->methodstr($format, $index, $constant_string_length);
       $buffer->push($format_part);
       $index += $constant_string_length;
       $constant_string_length = 0;
@@ -859,7 +859,7 @@ package SPVM::StringUtil : precompile {
   native sub _snsprintf_double : string ($format : string, $value : double);
   native sub _long_to_unsigned_digits : void ($value : long, $out_digits : byte[], $out_digit_count : int&);
 
-  sub substr : string ($string : string, $offset : int, $length : int) {
+  sub methodstr : string ($string : string, $offset : int, $length : int) {
 
     if ($string == undef) {
       die "String must be defined";

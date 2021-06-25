@@ -10,7 +10,7 @@
  * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * all copies or methodstantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -331,7 +331,7 @@ typedef enum {
   UTF8PROC_DECOMP_TYPE_ISOLATED  = 6, /**< Isolated */
   UTF8PROC_DECOMP_TYPE_CIRCLE    = 7, /**< Circle */
   UTF8PROC_DECOMP_TYPE_SUPER     = 8, /**< Super */
-  UTF8PROC_DECOMP_TYPE_SUB       = 9, /**< Sub */
+  UTF8PROC_DECOMP_TYPE_METHOD       = 9, /**< Method */
   UTF8PROC_DECOMP_TYPE_VERTICAL = 10, /**< Vertical */
   UTF8PROC_DECOMP_TYPE_WIDE     = 11, /**< Wide */
   UTF8PROC_DECOMP_TYPE_NARROW   = 12, /**< Narrow */

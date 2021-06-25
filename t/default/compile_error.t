@@ -18,7 +18,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Use::ImportSubNotFound', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Use::ImportMethodNotFound', __FILE__, __LINE__);
     ok($success == 0);
   }
 }
@@ -167,21 +167,21 @@ use lib "$FindBin::Bin/lib";
   }
 }
 
-# Sub
+# Method
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Sub::Begin', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Method::Begin', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Sub::SubNameStartDigit', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Method::MethodNameStartDigit', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Sub::SubNameContainsUnderScoreTwice', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice', __FILE__, __LINE__);
     ok($success == 0);
   }
 }
@@ -242,7 +242,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::CallSub::NotFound', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::CallMethod::NotFound', __FILE__, __LINE__);
     ok($success == 0);
   }
 }

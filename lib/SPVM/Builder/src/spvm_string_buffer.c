@@ -86,16 +86,16 @@ int32_t SPVM_STRING_BUFFER_add_field_access_offset_name(SPVM_STRING_BUFFER* stri
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_sub_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* cur_package_name, const char* access_package_name, const char* sub_name) {
+int32_t SPVM_STRING_BUFFER_add_method_access_id_name(SPVM_STRING_BUFFER* string_buffer, const char* cur_package_name, const char* access_package_name, const char* method_name) {
   (void)cur_package_name;
   
   int32_t id = string_buffer->length;
 
   SPVM_STRING_BUFFER_add_package_name(string_buffer, cur_package_name);
-  SPVM_STRING_BUFFER_add(string_buffer, "_ACCESS_SUB_ID_");
+  SPVM_STRING_BUFFER_add(string_buffer, "_ACCESS_METHOD_ID_");
   SPVM_STRING_BUFFER_add_package_name(string_buffer, access_package_name);
   SPVM_STRING_BUFFER_add(string_buffer, "__");
-  SPVM_STRING_BUFFER_add_package_name(string_buffer, sub_name);
+  SPVM_STRING_BUFFER_add_package_name(string_buffer, method_name);
   
   return id;
 }

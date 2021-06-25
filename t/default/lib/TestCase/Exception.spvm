@@ -114,7 +114,7 @@ package TestCase::Exception {
     
     return 0;
   }
-  sub exception_eval_call_sub : int () {
+  sub exception_eval_call_spvm_method : int () {
     eval {
       exception_die_return_int();
     };

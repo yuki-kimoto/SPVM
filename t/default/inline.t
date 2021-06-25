@@ -15,8 +15,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Inline constant sub
 {
-  ok(TestCase::Inline->constant_sub);
-  ok(TestCase::Inline->constant_sub_return_double == 0.25);
+  ok(TestCase::Inline->constant_method);
+  ok(TestCase::Inline->constant_method_return_double == 0.25);
 }
 
 # Inline new

@@ -92,7 +92,7 @@ L<SPVM::Regex> provides regular expression functions.
 
 =head1 REGULAR EXPRESSION SYNTAX
 
-L<SPVM::Regex> provides the subset of Perl regular expression. The target string and regex string is interpretted as UTF-8 string.
+L<SPVM::Regex> provides the methodset of Perl regular expression. The target string and regex string is interpretted as UTF-8 string.
   
   # Quantifier
   +     more than or equals to 1 repeats

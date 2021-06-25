@@ -1046,8 +1046,8 @@ SPVM::Test - SPVM test module
     print("a" . "\n");
     
     # Default return value object
-    if (TestCase->default_return_value_object_sub() == undef) {
-      if (TestCase->default_return_value_object_sub_empty() == undef) {
+    if (TestCase->default_return_value_object_method() == undef) {
+      if (TestCase->default_return_value_object_method_empty() == undef) {
         1;
       }
     }
@@ -1146,7 +1146,7 @@ SPVM::Test - SPVM test module
       print($obj->{values1}[0] . "\n");
     }
     
-    # Call new subroutine without variable
+    # Call new method without variable
     {
       TestCase::Minimal->new();
       sum0(1, 3);
@@ -1812,13 +1812,13 @@ SPVM::Test - SPVM test module
   }
 
   # Call void function
-  sub call_void_sub : void ($nums : int[]) {
+  sub call_void_method : void ($nums : int[]) {
     $nums->[0] = 5;
   }
   sub call_void : int () {
     my $nums = [1];
     
-    call_void_sub($nums);
+    call_void_method($nums);
     
     if ($nums->[0] == 5) {
       return 1;
@@ -1960,10 +1960,10 @@ SPVM::Test - SPVM test module
     my $true_result = new int[1];
     return $true_result;
   }
-  sub default_return_value_object_sub : TestCase () {
+  sub default_return_value_object_method : TestCase () {
     1;
   }
-  sub default_return_value_object_sub_empty : TestCase () {
+  sub default_return_value_object_method_empty : TestCase () {
     
   }
   sub weaken_reference_count1_object : int (){
@@ -2021,12 +2021,12 @@ SPVM::Test - SPVM test module
     return new TestCase;
   }
 
-  sub call_sub_args_convertion_stab1 : double ($var6 : double) {
+  sub call_spvm_method_args_convertion_stab1 : double ($var6 : double) {
     return ($var6);
   }
   
-  sub call_sub_args_convertion : int () {
-    my $return_value1 = call_sub_args_convertion_stab1(16);
+  sub call_spvm_method_args_convertion : int () {
+    my $return_value1 = call_spvm_method_args_convertion_stab1(16);
     return 0;
   }
 

@@ -1,13 +1,13 @@
 package TestCase::Inline {
   
   # Inline expansion
-  sub constant_sub_return_double : double () {
+  sub constant_method_return_double : double () {
     return 0.25;
   }
   
   # Array store undef
-  sub constant_sub : int () {
-    unless (constant_sub_return_double() == 0.25) {
+  sub constant_method : int () {
+    unless (constant_method_return_double() == 0.25) {
       return 0;
     }
     

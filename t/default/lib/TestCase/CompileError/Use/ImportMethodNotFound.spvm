@@ -1,0 +1,3 @@
+package TestCase::CompileError::Use::ImportMethodNotFound {
+  use SPVM::Byte(not_found);
+}

@@ -46,8 +46,8 @@ struct spvm_compiler {
   // Before buffer position
   char* befbufptr;
 
-  // Expect subroutine name
-  int8_t expect_sub_name;
+  // Expect method name
+  int8_t expect_method_name;
 
   // Expect field name
   int8_t expect_field_name;
@@ -115,11 +115,11 @@ struct spvm_compiler {
   // OP our symtable
   SPVM_LIST* package_vars;
 
-  // Subroutine ops
-  SPVM_LIST* subs;
+  // Method ops
+  SPVM_LIST* methods;
   
-  // Subroutine absolute name symbol table
-  SPVM_HASH* sub_symtable;
+  // Method absolute name symbol table
+  SPVM_HASH* method_symtable;
 
   // Field ops
   SPVM_LIST* fields;
@@ -137,7 +137,7 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler);
 SPVM_RUNTIME* SPVM_COMPILER_new_runtime(SPVM_COMPILER* compiler);
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
 
-const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub);
+const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_METHOD* method);
 const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field);
 const char* SPVM_COMPILER_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_PACKAGE_VAR* package_var);
 

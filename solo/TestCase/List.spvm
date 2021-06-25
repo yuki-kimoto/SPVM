@@ -15,7 +15,7 @@ package TestCase::List {
     
     my $onum2 = (SPVM::Int)$list->get(2);
 
-    my $onums = $list->sub_list(2, 3);
+    my $onums = $list->method_list(2, 3);
     my $onum3 = (SPVM::Int)$onums->[1];
     
     my $ok = 0;
@@ -70,7 +70,7 @@ package TestCase::List {
     return $self->{values}[$index];
   }
   
-  sub sub_list : object[] ($self : self, $from : int, $to : int) {
+  sub method_list : object[] ($self : self, $from : int, $to : int) {
     my $length = $to - $from + 1;
     
     my $new_values = new object[$length];

@@ -58,7 +58,7 @@
 /* Using locations.  */
 #define YYLSP_NEEDED 0
 
-/* Substitute the variable and function names.  */
+/* Methodstitute the variable and function names.  */
 #define yyparse SPVM_yyparse
 #define yylex   SPVM_yylex
 #define yyerror SPVM_yyerror
@@ -76,7 +76,7 @@
    enum yytokentype {
      PACKAGE = 258,
      HAS = 259,
-     SUB = 260,
+     METHOD = 260,
      OUR = 261,
      ENUM = 262,
      MY = 263,
@@ -172,7 +172,7 @@
 /* Tokens.  */
 #define PACKAGE 258
 #define HAS 259
-#define SUB 260
+#define METHOD 260
 #define OUR 261
 #define ENUM 262
 #define MY 263
@@ -743,7 +743,7 @@ static const yytype_uint16 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "PACKAGE", "HAS", "SUB", "OUR", "ENUM",
+  "$end", "error", "$undefined", "PACKAGE", "HAS", "METHOD", "OUR", "ENUM",
   "MY", "SELF", "USE", "REQUIRE", "ALLOW", "DESCRIPTOR", "IF", "UNLESS",
   "ELSIF", "ELSE", "FOR", "WHILE", "LAST", "NEXT", "SWITCH", "CASE",
   "DEFAULT", "BREAK", "EVAL", "NAME", "VAR_NAME", "CONSTANT",
@@ -762,7 +762,7 @@ static const char *const yytname[] =
   "package_block", "opt_declarations", "declarations", "declaration",
   "init_block", "use", "require", "allow", "enumeration",
   "enumeration_block", "opt_enumeration_values", "enumeration_values",
-  "enumeration_value", "our", "has", "sub", "anon_sub", "opt_args", "args",
+  "enumeration_value", "our", "has", "sub", "anon_method", "opt_args", "args",
   "arg", "opt_vaarg", "invocant", "opt_descriptors", "descriptors",
   "opt_statements", "statements", "statement", "for_statement",
   "while_statement", "switch_statement", "switch_block", "case_statements",
@@ -771,10 +771,10 @@ static const char *const yytname[] =
   "opt_expressions", "opt_expression", "expression_or_logical_op",
   "expression", "expressions", "unary_op", "inc", "dec", "binary_op",
   "comparison_op", "isa", "logical_op", "assign", "new", "array_init",
-  "convert", "array_access", "call_sub", "field_access", "weaken_field",
+  "convert", "array_access", "call_spvm_method", "field_access", "weaken_field",
   "unweaken_field", "isweak_field", "array_length", "my_var", "var",
   "type", "basic_type", "ref_type", "array_type", "array_type_with_length",
-  "type_or_void", "field_name", "sub_name", "opt_sub_names", "sub_names", 0
+  "type_or_void", "field_name", "method_name", "opt_method_names", "method_names", 0
 };
 #endif
 
@@ -2581,11 +2581,11 @@ yyreduce:
   case 23:
 #line 174 "yacc/spvm_yacc.y"
     { 
-      SPVM_OP* op_sub = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUB, compiler->cur_file, compiler->cur_line);
-      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
       int32_t can_precompile = 0;
-      (yyval.opval) = SPVM_OP_build_sub(compiler, op_sub, op_sub_name, op_void_type, NULL, NULL, (yyvsp[(2) - (2)].opval), NULL, NULL, 1, 0, can_precompile);
+      (yyval.opval) = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, NULL, (yyvsp[(2) - (2)].opval), NULL, NULL, 1, 0, can_precompile);
     ;}
     break;
 
@@ -2704,7 +2704,7 @@ yyreduce:
 #line 279 "yacc/spvm_yacc.y"
     {
        int32_t can_precompile = 1;
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(2) - (10)].opval), (yyvsp[(3) - (10)].opval), (yyvsp[(5) - (10)].opval), (yyvsp[(7) - (10)].opval), (yyvsp[(1) - (10)].opval), (yyvsp[(10) - (10)].opval), NULL, (yyvsp[(8) - (10)].opval), 0, 0, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[(2) - (10)].opval), (yyvsp[(3) - (10)].opval), (yyvsp[(5) - (10)].opval), (yyvsp[(7) - (10)].opval), (yyvsp[(1) - (10)].opval), (yyvsp[(10) - (10)].opval), NULL, (yyvsp[(8) - (10)].opval), 0, 0, can_precompile);
      ;}
     break;
 
@@ -2712,7 +2712,7 @@ yyreduce:
 #line 284 "yacc/spvm_yacc.y"
     {
        int32_t can_precompile = 0;
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(2) - (10)].opval), (yyvsp[(3) - (10)].opval), (yyvsp[(5) - (10)].opval), (yyvsp[(7) - (10)].opval), (yyvsp[(1) - (10)].opval), NULL, NULL, (yyvsp[(8) - (10)].opval), 0, 0, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[(2) - (10)].opval), (yyvsp[(3) - (10)].opval), (yyvsp[(5) - (10)].opval), (yyvsp[(7) - (10)].opval), (yyvsp[(1) - (10)].opval), NULL, NULL, (yyvsp[(8) - (10)].opval), 0, 0, can_precompile);
      ;}
     break;
 
@@ -2720,7 +2720,7 @@ yyreduce:
 #line 289 "yacc/spvm_yacc.y"
     {
        int32_t can_precompile = 1;
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), (yyvsp[(9) - (9)].opval), NULL, (yyvsp[(7) - (9)].opval), 0, 0, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), (yyvsp[(9) - (9)].opval), NULL, (yyvsp[(7) - (9)].opval), 0, 0, can_precompile);
      ;}
     break;
 
@@ -2728,7 +2728,7 @@ yyreduce:
 #line 294 "yacc/spvm_yacc.y"
     {
        int32_t can_precompile = 0;
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), NULL, NULL, (yyvsp[(7) - (9)].opval), 0, 0, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), NULL, NULL, (yyvsp[(7) - (9)].opval), 0, 0, can_precompile);
      ;}
     break;
 
@@ -2739,7 +2739,7 @@ yyreduce:
        int32_t is_anon = 1;
        int32_t can_precompile = 1;
        
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), (yyvsp[(9) - (9)].opval), NULL, (yyvsp[(7) - (9)].opval), is_begin, is_anon, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[(2) - (9)].opval), NULL, (yyvsp[(4) - (9)].opval), (yyvsp[(6) - (9)].opval), (yyvsp[(1) - (9)].opval), (yyvsp[(9) - (9)].opval), NULL, (yyvsp[(7) - (9)].opval), is_begin, is_anon, can_precompile);
      ;}
     break;
 
@@ -2758,7 +2758,7 @@ yyreduce:
        int32_t is_begin = 0;
        int32_t is_anon = 1;
        int32_t can_precompile = 1;
-       (yyval.opval) = SPVM_OP_build_sub(compiler, (yyvsp[(5) - (12)].opval), NULL, (yyvsp[(7) - (12)].opval), (yyvsp[(9) - (12)].opval), (yyvsp[(4) - (12)].opval), (yyvsp[(12) - (12)].opval), op_list_args, (yyvsp[(10) - (12)].opval), is_begin, is_anon, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[(5) - (12)].opval), NULL, (yyvsp[(7) - (12)].opval), (yyvsp[(9) - (12)].opval), (yyvsp[(4) - (12)].opval), (yyvsp[(12) - (12)].opval), op_list_args, (yyvsp[(10) - (12)].opval), is_begin, is_anon, can_precompile);
      ;}
     break;
 
@@ -3355,7 +3355,7 @@ yyreduce:
   case 152:
 #line 827 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, (yyvsp[(2) - (3)].opval)->file, (yyvsp[(2) - (3)].opval)->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHODTRACT, (yyvsp[(2) - (3)].opval)->file, (yyvsp[(2) - (3)].opval)->line);
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, op, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval));
     ;}
     break;
@@ -3581,26 +3581,26 @@ yyreduce:
   case 184:
 #line 968 "yacc/spvm_yacc.y"
     {
-      // Sub
-      SPVM_OP* op_sub = (yyvsp[(1) - (1)].opval);
+      // Method
+      SPVM_OP* op_method = (yyvsp[(1) - (1)].opval);
       
       // Package
-      SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_sub->file, op_sub->line);
+      SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_method->file, op_method->line);
       
       // Create class block
-      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_sub->file, op_sub->line);
+      SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
       SPVM_OP* op_list_declarations = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-      SPVM_OP_insert_child(compiler, op_list_declarations, op_list_declarations->last, op_sub);
+      SPVM_OP_insert_child(compiler, op_list_declarations, op_list_declarations->last, op_method);
       SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_declarations);
       
       // Build package
       SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
 
       // Type
-      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, op_sub->file, op_sub->line);
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, op_method->file, op_method->line);
       
       // New
-      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_sub->file, op_sub->line);
+      SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);
       (yyval.opval) = SPVM_OP_build_new(compiler, op_new, op_type, NULL);
     ;}
     break;
@@ -3665,14 +3665,14 @@ yyreduce:
   case 192:
 #line 1036 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_call_sub(compiler, NULL, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
+      (yyval.opval) = SPVM_OP_build_call_spvm_method(compiler, NULL, (yyvsp[(1) - (4)].opval), (yyvsp[(3) - (4)].opval));
     ;}
     break;
 
   case 193:
 #line 1040 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_call_sub(compiler, (yyvsp[(1) - (6)].opval), (yyvsp[(3) - (6)].opval), (yyvsp[(5) - (6)].opval));
+      (yyval.opval) = SPVM_OP_build_call_spvm_method(compiler, (yyvsp[(1) - (6)].opval), (yyvsp[(3) - (6)].opval), (yyvsp[(5) - (6)].opval));
     ;}
     break;
 
@@ -3680,14 +3680,14 @@ yyreduce:
 #line 1044 "yacc/spvm_yacc.y"
     {
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(2) - (3)].opval)->line);
-      (yyval.opval) = SPVM_OP_build_call_sub(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval), op_expressions);
+      (yyval.opval) = SPVM_OP_build_call_spvm_method(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval), op_expressions);
     ;}
     break;
 
   case 195:
 #line 1049 "yacc/spvm_yacc.y"
     {
-      (yyval.opval) = SPVM_OP_build_call_sub(compiler, (yyvsp[(1) - (6)].opval), (yyvsp[(3) - (6)].opval), (yyvsp[(5) - (6)].opval));
+      (yyval.opval) = SPVM_OP_build_call_spvm_method(compiler, (yyvsp[(1) - (6)].opval), (yyvsp[(3) - (6)].opval), (yyvsp[(5) - (6)].opval));
     ;}
     break;
 
@@ -3695,15 +3695,15 @@ yyreduce:
 #line 1053 "yacc/spvm_yacc.y"
     {
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, (yyvsp[(1) - (3)].opval)->file, (yyvsp[(2) - (3)].opval)->line);
-      (yyval.opval) = SPVM_OP_build_call_sub(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval), op_expressions);
+      (yyval.opval) = SPVM_OP_build_call_spvm_method(compiler, (yyvsp[(1) - (3)].opval), (yyvsp[(3) - (3)].opval), op_expressions);
     ;}
     break;
 
   case 197:
 #line 1058 "yacc/spvm_yacc.y"
     {
-      SPVM_OP* op_sub_name = SPVM_OP_new_op_name(compiler, "", (yyvsp[(2) - (5)].opval)->file, (yyvsp[(2) - (5)].opval)->line);
-      (yyval.opval) = SPVM_OP_build_call_sub(compiler, (yyvsp[(1) - (5)].opval), op_sub_name, (yyvsp[(4) - (5)].opval));
+      SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "", (yyvsp[(2) - (5)].opval)->file, (yyvsp[(2) - (5)].opval)->line);
+      (yyval.opval) = SPVM_OP_build_call_spvm_method(compiler, (yyvsp[(1) - (5)].opval), op_method_name, (yyvsp[(4) - (5)].opval));
     ;}
     break;
 

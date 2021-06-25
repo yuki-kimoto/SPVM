@@ -20,9 +20,9 @@
 #include "spvm_list.h"
 #include "spvm_util_allocator.h"
 #include "spvm_op.h"
-#include "spvm_sub.h"
+#include "spvm_method.h"
 #include "spvm_package.h"
-#include "spvm_sub.h"
+#include "spvm_method.h"
 #include "spvm_type.h"
 #include "spvm_basic_type.h"
 #include "spvm_field.h"
@@ -202,7 +202,7 @@ compile_spvm(...)
 }
 
 SV*
-get_sub_names(...)
+get_method_names(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -221,32 +221,32 @@ get_sub_names(...)
   SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
   compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
 
-  AV* av_sub_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_sub_names = sv_2mortal(newRV_inc((SV*)av_sub_names));
+  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
   
   // Copy package load path to builder
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
 
-  for (int32_t sub_index = 0; sub_index < package->subs->length; sub_index++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_index);
-    const char* sub_name = sub->name;
-    SV* sv_sub_name = sv_2mortal(newSVpv(sub_name, 0));
+  for (int32_t method_index = 0; method_index < package->methods->length; method_index++) {
+    SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, method_index);
+    const char* method_name = method->name;
+    SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
     
     int32_t is_push = 0;
     if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && sub->flag & SPVM_SUB_C_FLAG_NATIVE) {
-        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      if(strEQ(SvPV_nolen(sv_category), "native") && method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && sub->flag & SPVM_SUB_C_FLAG_PRECOMPILE) {
-        av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
       }
     }
     else {
-      av_push(av_sub_names, SvREFCNT_inc(sv_sub_name));
+      av_push(av_method_names, SvREFCNT_inc(sv_method_name));
     }
   }
   
-  XPUSHs(sv_sub_names);
+  XPUSHs(sv_method_names);
   XSRETURN(1);
 }
 
@@ -276,10 +276,10 @@ get_anon_package_names_by_parent_package_name(...)
   // Copy package load path to builder
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
 
-  for (int32_t anon_sub_index = 0; anon_sub_index < package->anon_subs->length; anon_sub_index++) {
+  for (int32_t anon_method_index = 0; anon_method_index < package->anon_methods->length; anon_method_index++) {
     
-    SPVM_SUB* anon_sub = SPVM_LIST_fetch(package->anon_subs, anon_sub_index);
-    SPVM_PACKAGE* anon_package = anon_sub->package;
+    SPVM_METHOD* anon_method = SPVM_LIST_fetch(package->anon_methods, anon_method_index);
+    SPVM_PACKAGE* anon_package = anon_method->package;
     
     const char* anon_package_name = anon_package->name;
     SV* sv_anon_package_name = sv_2mortal(newSVpv(anon_package_name, 0));
@@ -534,7 +534,7 @@ _init(...)
 }
 
 SV*
-bind_sub(...)
+bind_method(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -542,7 +542,7 @@ bind_sub(...)
   SV* sv_self = ST(0);
   HV* hv_self = (HV*)SvRV(sv_self);
   SV* sv_package_name = ST(1);
-  SV* sv_sub_name = ST(2);
+  SV* sv_method_name = ST(2);
   SV* sv_native_address = ST(3);
   SV* sv_category = ST(4);
 
@@ -554,8 +554,8 @@ bind_sub(...)
   // Package name
   const char* package_name = SvPV_nolen(sv_package_name);
 
-  // Subroutine name
-  const char* sub_name = SvPV_nolen(sv_sub_name);
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
   
   // Native address
   void* native_address = INT2PTR(void*, SvIV(sv_native_address));
@@ -563,17 +563,17 @@ bind_sub(...)
   // Package
   SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
   
-  // Sub
-  SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
+  // Method
+  SPVM_METHOD* method = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
   
   if (SvOK(sv_category)) {
     if(strEQ(SvPV_nolen(sv_category), "native")) {
-      // Set native sub address
-      sub->native_address = native_address;
+      // Set native method address
+      method->native_address = native_address;
     }
     else if (strEQ(SvPV_nolen(sv_category), "precompile")) {
-      // Set precompile sub address
-      sub->precompile_address = native_address;
+      // Set precompile method address
+      method->precompile_address = native_address;
     }
     else {
       croak("Need category");
@@ -2122,7 +2122,7 @@ get_memory_blocks_count(...)
 }
 
 SV*
-call_sub(...)
+call_spvm_method(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -2130,7 +2130,7 @@ call_sub(...)
   // Arguments
   SV* sv_env = ST(0);
   SV* sv_package_name = ST(1);
-  SV* sv_sub_name = ST(2);
+  SV* sv_method_name = ST(2);
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
@@ -2141,8 +2141,8 @@ call_sub(...)
   // Package Name
   const char* package_name = SvPV_nolen(sv_package_name);
   
-  // Sub name
-  const char* sub_name = SvPV_nolen(sv_sub_name);
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
 
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
@@ -2150,47 +2150,47 @@ call_sub(...)
   // Package
   SPVM_PACKAGE* package = basic_type->package;
   
-  // Subroutine not found
-  int32_t sub_not_found;
-  SPVM_SUB* sub = NULL;
+  // Method not found
+  int32_t method_not_found;
+  SPVM_METHOD* method = NULL;
   if (package == NULL) {
-    sub_not_found = 1;
+    method_not_found = 1;
   }
   else {
-    sub = SPVM_API_sub(env, package, sub_name);
-    if (sub == NULL) {
-      sub_not_found = 1;
+    method = SPVM_API_method(env, package, method_name);
+    if (method == NULL) {
+      method_not_found = 1;
     }
     else {
-      sub_not_found = 0;
+      method_not_found = 0;
     }
   }
-  if (sub_not_found) {
-    croak("%s->%s method not found at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+  if (method_not_found) {
+    croak("%s->%s method not found at %s line %d\n", package_name, method_name, MFILE, __LINE__);
   }
   
   // Argument stack
-  SPVM_VALUE stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
+  SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
   
   // Reference stack
   int32_t ref_stack_top = 0;
-  SPVM_VALUE ref_stack[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
-  int32_t ref_stack_ids[SPVM_LIMIT_C_SUB_ARGS_MAX_COUNT];
+  SPVM_VALUE ref_stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  int32_t ref_stack_ids[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
 
   // Base index of SPVM arguments
   int32_t spvm_args_base = 3;
 
   // If class method, first argument is ignored
-  if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_STATIC_METHOD) {
+  if (method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD) {
     spvm_args_base++;
   }
   
   // Check argument count
-  if (items - spvm_args_base < sub->args->length) {
-    croak("Too few arguments %s->%s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+  if (items - spvm_args_base < method->args->length) {
+    croak("Too few arguments %s->%s at %s line %d\n", package_name, method_name, MFILE, __LINE__);
   }
-  else if (items - spvm_args_base > sub->args->length) {
-    croak("Too many arguments %s->%s at %s line %d\n", package_name, sub_name, MFILE, __LINE__);
+  else if (items - spvm_args_base > method->args->length) {
+    croak("Too many arguments %s->%s at %s line %d\n", package_name, method_name, MFILE, __LINE__);
   }
   
   // If Argument contains reference type, this value become 1
@@ -2200,13 +2200,13 @@ call_sub(...)
   int32_t arg_values_offset = 0;
 
   // Arguments
-  for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
+  for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
     
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + arg_index);
     
     // Argument information
-    SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
+    SPVM_MY* arg = SPVM_LIST_fetch(method->args, arg_index);
     int32_t arg_basic_type_id = arg->type->basic_type->id;
     int32_t arg_type_dimension = arg->type->dimension;
     
@@ -2278,13 +2278,13 @@ call_sub(...)
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
             if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-              croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+              croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
             }
             
             stack[arg_values_offset].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
           }
         }
         arg_values_offset++;
@@ -2446,13 +2446,13 @@ call_sub(...)
                         SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
                         
                         if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                          croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                          croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
                         }
                         
                         env->set_elem_object(env, array, i, object);
                       }
                       else {
-                        croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                        croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
                       }
                     }
                   }
@@ -2492,7 +2492,7 @@ call_sub(...)
                       }
                       
                       if (!sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-                        croak("Element of %dth argument of %s->%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                        croak("Element of %dth argument of %s->%s() must inherit SPVM::BlessedObject object at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
                       }
                       
                       env->set_elem_object(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
@@ -2518,19 +2518,19 @@ call_sub(...)
             
             if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
               if (object->type_dimension == 0) {
-                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
               }
             }
             else {
               if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
               }
             }
             
             stack[arg_values_offset].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
           }
         }
         
@@ -2552,14 +2552,14 @@ call_sub(...)
             assert(arg_type_dimension == 0);
             if (arg_basic_type_id != SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
               if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
               }
             }
             
             stack[arg_values_offset].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
           }
         }
         
@@ -2606,7 +2606,7 @@ call_sub(...)
           arg_values_offset += arg_package->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2651,7 +2651,7 @@ call_sub(...)
           arg_values_offset += arg_package->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2695,7 +2695,7 @@ call_sub(...)
           arg_values_offset += arg_package->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2739,7 +2739,7 @@ call_sub(...)
           arg_values_offset += arg_package->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2783,7 +2783,7 @@ call_sub(...)
           arg_values_offset += arg_package->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2827,14 +2827,14 @@ call_sub(...)
           arg_values_offset += arg_package->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int8_t value = (int8_t)SvIV(sv_value_deref);
@@ -2848,7 +2848,7 @@ call_sub(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int16_t value = (int16_t)SvIV(sv_value_deref);
@@ -2862,7 +2862,7 @@ call_sub(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int32_t value = (int32_t)SvIV(sv_value_deref);
@@ -2876,7 +2876,7 @@ call_sub(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int64_t value = (int64_t)SvIV(sv_value_deref);
@@ -2890,7 +2890,7 @@ call_sub(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         float value = (float)SvNV(sv_value_deref);
@@ -2904,7 +2904,7 @@ call_sub(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE: {
         args_contain_ref = 1;
         if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         double value = (double)SvNV(sv_value_deref);
@@ -2938,7 +2938,7 @@ call_sub(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3004,7 +3004,7 @@ call_sub(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3069,7 +3069,7 @@ call_sub(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
         
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3134,7 +3134,7 @@ call_sub(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
 
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3199,7 +3199,7 @@ call_sub(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
 
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3264,7 +3264,7 @@ call_sub(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, sub_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
         }
 
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3313,12 +3313,12 @@ call_sub(...)
   
   // Return
 
-  int32_t sub_return_basic_type_id = sub->return_type->basic_type->id;
-  int32_t sub_return_type_dimension = sub->return_type->dimension;
+  int32_t method_return_basic_type_id = method->return_type->basic_type->id;
+  int32_t method_return_type_dimension = method->return_type->dimension;
 
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
-  switch (sub->return_type_category) {
+  switch (method->return_type_category) {
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT:
@@ -3326,23 +3326,23 @@ call_sub(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE:
     {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       
-      SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, sub_return_basic_type_id);
+      SPVM_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, method_return_basic_type_id);
 
-      SPVM_PACKAGE* sub_return_package = sub_return_basic_type->package;
-      assert(sub_return_package);
+      SPVM_PACKAGE* method_return_package = method_return_basic_type->package;
+      assert(method_return_package);
       
-      SPVM_FIELD* sub_return_first_field = SPVM_LIST_fetch(sub_return_package->fields, 0);
-      assert(sub_return_first_field);
+      SPVM_FIELD* method_return_first_field = SPVM_LIST_fetch(method_return_package->fields, 0);
+      assert(method_return_first_field);
       
       HV* hv_value = (HV*)sv_2mortal((SV*)newHV());
-      for (int32_t field_index = 0; field_index < sub_return_package->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_fetch(sub_return_package->fields, field_index);
+      for (int32_t field_index = 0; field_index < method_return_package->fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_fetch(method_return_package->fields, field_index);
         const char* field_name = field->name;
         
         SV* sv_field_value = NULL;
-        switch (sub_return_first_field->type->basic_type->id) {
+        switch (method_return_first_field->type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
             sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
             break;
@@ -3378,15 +3378,15 @@ call_sub(...)
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
     {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
         sv_return_value = NULL;
         if (return_value != NULL) {
           env->inc_ref_count(env, return_value);
           
-          SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, env->get_object_basic_type_id(env, return_value));
-          const char* basic_type_name = sub_return_basic_type->name;
+          SPVM_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, env->get_object_basic_type_id(env, return_value));
+          const char* basic_type_name = method_return_basic_type->name;
 
           SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
           
@@ -3402,7 +3402,7 @@ call_sub(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
     {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
         sv_return_value = NULL;
@@ -3418,7 +3418,7 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         void* return_value = stack[0].oval;
         sv_return_value = NULL;
@@ -3435,7 +3435,7 @@ call_sub(...)
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
     {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         SPVM_OBJECT* return_value = (SPVM_OBJECT*)stack[0].oval;
         sv_return_value = NULL;
@@ -3458,8 +3458,8 @@ call_sub(...)
               env->dec_ref_count(env, return_value);
             }
             else {
-              SPVM_BASIC_TYPE* sub_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, return_value->basic_type_id);
-              const char* basic_type_name = sub_return_basic_type->name;
+              SPVM_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, return_value->basic_type_id);
+              const char* basic_type_name = method_return_basic_type->name;
               SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
               sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_basic_type_name));
             }
@@ -3472,46 +3472,46 @@ call_sub(...)
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].bval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].sval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].ival));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSViv(stack[0].lval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
-      excetpion_flag = env->call_sub(env, sub->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
         sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
       }
@@ -3523,10 +3523,10 @@ call_sub(...)
 
   // Restore reference value
   if (args_contain_ref) {
-    for (int32_t arg_index = 0; arg_index < sub->args->length; arg_index++) {
+    for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
       SV* sv_value = ST(spvm_args_base + arg_index);
       
-      SPVM_MY* arg = SPVM_LIST_fetch(sub->args, arg_index);
+      SPVM_MY* arg = SPVM_LIST_fetch(method->args, arg_index);
       
       // Convert to runtime type
       int32_t arg_basic_type_id = arg->type->basic_type->id;
@@ -3669,7 +3669,7 @@ call_sub(...)
   // Success
   else {
     int32_t return_count;
-    if (sub->return_type_category == SPVM_TYPE_C_TYPE_CATEGORY_VOID) {
+    if (method->return_type_category == SPVM_TYPE_C_TYPE_CATEGORY_VOID) {
       return_count = 0;
     }
     else {

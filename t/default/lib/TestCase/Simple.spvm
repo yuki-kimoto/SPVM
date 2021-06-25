@@ -26,11 +26,11 @@ package TestCase::Simple : public {
     return new TestCase::Simple;
   }
   
-  sub import_sub1 : int () {
+  sub import_method1 : int () {
     return 1;
   }
 
-  sub import_sub2 : int () {
+  sub import_method2 : int () {
     return 2;
   }
 }

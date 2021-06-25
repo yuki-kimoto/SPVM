@@ -14,14 +14,14 @@ use File::Basename 'dirname';
 # so this module must be wrote as pure perl script, not contain XS functions and don't use any other SPVM modules.
 
 sub create_cfunc_name {
-  my ($package_name, $sub_name, $category) = @_;
+  my ($package_name, $method_name, $category) = @_;
   
   my $prefix = 'SP' . uc($category) . '__';
   
-  # Precompile Subroutine names
-  my $sub_abs_name_under_score = "${package_name}::$sub_name";
-  $sub_abs_name_under_score =~ s/:/_/g;
-  my $cfunc_name = "$prefix$sub_abs_name_under_score";
+  # Precompile Method names
+  my $method_abs_name_under_score = "${package_name}::$method_name";
+  $method_abs_name_under_score =~ s/:/_/g;
+  my $cfunc_name = "$prefix$method_abs_name_under_score";
   
   return $cfunc_name;
 }

@@ -36,7 +36,7 @@ package MyComplex {
     my $z_add = caddf($z1, $z2);
 
     # Subtract
-    my $z_sub = csubf($z1, $z2);
+    my $z_method = csubf($z1, $z2);
 
     # Multiply
     my $z_mul = cmulf($z1, $z2);
@@ -57,7 +57,7 @@ package MyComplex {
     my $z_add = cadd($z1, $z2);
 
     # Subtract
-    my $z_sub = csub($z1, $z2);
+    my $z_method = csub($z1, $z2);
 
     # Multiply
     my $z_mul = cmul($z1, $z2);

@@ -19,7 +19,7 @@ SPVM Exchange API is APIs to convert Perl data structures to SPVM data structure
     <li><a href="#exchange-api-summary">What is the SPVM Exchange API</a></li>
     <li><a href="#exchange-api-perl-data-to-spvm-value">Convert Perl Data to SPVM Value</a></li>
     <li><a href="#exchange-api-spvm-value-to-perl-data">Converting SPVM Value to Perl Data</a></li>
-    <li><a href="#exchange-api-call-spvm-sub">Call SPVM Subroutine</a></li>
+    <li><a href="#exchange-api-call-spvm-sub">Call SPVM Method</a></li>
     <li><a href="#exchange-api-utility">Utility Functions</a></li>
     <li><a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data to SPVM Numeric Value</a></li>
     <li><a href="#exchange-api-rule-spvm-numeric-to-perl-scalar">Rule to Convert SPVM Numeric Value to Perl Scalar Data</a></li>
@@ -27,11 +27,11 @@ SPVM Exchange API is APIs to convert Perl data structures to SPVM data structure
   
 <h3 id="exchange-api-summary">What is SPVM Exchange API?</h3>
   <p>
-    <b>SPVM Exchange API</b> is API for converting Perl data structure to/from SPVM data structure, and calling SPVM Subroutine from Perl.
+    <b>SPVM Exchange API</b> is API for converting Perl data structure to/from SPVM data structure, and calling SPVM Method from Perl.
   </p>
   <ul class="list">
     <li>Convert Perl data structure such as Perl numbers, strings, arrays to/from SPVM data structure</li>
-    <li>Call SPVM Subroutine from Perl</li>
+    <li>Call SPVM Method from Perl</li>
   </ul>
   <p>
     SPVM Module can be used as Perl Module.
@@ -744,11 +744,11 @@ my $perl_array_ref = $spvm_string_array->to_strings;
     If the Data in SPVM is of a type other than the above, an Exception is raised.
   </p>
 
-<h3 id="exchange-api-call-spvm-sub">Call SPVM Subroutine</h3>
+<h3 id="exchange-api-call-spvm-sub">Call SPVM Method</h3>
   
 <ul class="toc">
   <li><a href="#exchange-api-call-spvm-sub-use-Module">Load SPVM Module</a></li>
-  <li><a href="#exchange-api-call-spvm-sub-sub-call">Call Subroutine</a></li>
+  <li><a href="#exchange-api-call-spvm-sub-sub-call">Call Method</a></li>
   <li><a href="#exchange-api-call-spvm-sub-method-call">Call Method</a></li>
   <li><a href="#exchange-api-call-spvm-sub-convert-argument">Argument Type Conversion</a></li>
   <li><a href="#exchange-api-call-spvm-sub-convert-return-value">Return Value Type Conversion</a></li>
@@ -777,9 +777,9 @@ package Foo {
 }
 </pre>
 
-  <h4 id = "exchange-api-call-spvm-sub-sub-call">Call Subroutine</h4>
+  <h4 id = "exchange-api-call-spvm-sub-sub-call">Call Method</h4>
   <p>
-    In order to call a Subroutine, the SPVM Module must be loaded by <a href="#exchange-api-call-spvm-sub-use-Module">Load SPVM Module</a>.
+    In order to call a Method, the SPVM Module must be loaded by <a href="#exchange-api-call-spvm-sub-use-Module">Load SPVM Module</a>.
   </p>
   
 <pre>
@@ -801,7 +801,7 @@ package Foo {
 </pre>
 
   <p>
-    SPVM Subroutine are wrapped in Perl Subroutine and can be called using Perl class Call Method.
+    SPVM Method are wrapped in Perl Method and can be called using Perl class Call Method.
   </p>
 
 <pre>
@@ -811,13 +811,13 @@ use SPVM 'Foo';
 my $total = Foo->sum(1, 2);
 </pre>
   <p>
-    If the number of arguments does not match the number of arguments of the SPVM Subroutine, an Exception will be thrown.
+    If the number of arguments does not match the number of arguments of the SPVM Method, an Exception will be thrown.
   </p>
   <p>
     The Perl value passed as an argument is converted to the SPVM value by <a href="#exchange-api-call-spvm-sub-convert-argument">Argument Type Conversion</a>.
   </p>
   <p>
-    If the converted type does not match the argument type of the SPVM Subroutine, an Exception is thrown.
+    If the converted type does not match the argument type of the SPVM Method, an Exception is thrown.
   </p>
   <p>
     The return value is transformed by the conversion on the return value.
@@ -854,7 +854,7 @@ package Foo {
 </pre>
 
   <p>
-    SPVM Method are wrapped in Perl Subroutine and can be called using Perl Call Method.
+    SPVM Method are wrapped in Perl Method and can be called using Perl Call Method.
   </p>
 
 <pre>
@@ -866,13 +866,13 @@ my $foo = Foo->new;
 my $total = $foo->sum(1, 2);
 </pre>
   <p>
-    If the number of arguments does not match the number of arguments of the SPVM Subroutine, an Exception will be thrown.
+    If the number of arguments does not match the number of arguments of the SPVM Method, an Exception will be thrown.
   </p>
   <p>
     The Perl value passed as an argument is converted to the SPVM value by <a href="#exchange-api-call-spvm-sub-convert-argument">Argument Type Conversion</a>.
   </p>
   <p>
-    If the converted type does not match the argument type of the SPVM Subroutine, an Exception is thrown.
+    If the converted type does not match the argument type of the SPVM Method, an Exception is thrown.
   </p>
   <p>
     The return value is transformed by the conversion on the return value.
@@ -885,10 +885,10 @@ my $total = $foo->sum(1, 2);
 
   <h5>Numeric Type</h5>
   <p>
-    If the argument type of the SPVM Subroutine definition is a Numeric Type, the argument value is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perl Scalar Data. It is converted</a> to SPVM number by the Rule to Convert to SPVM number types.
+    If the argument type of the SPVM Method definition is a Numeric Type, the argument value is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perl Scalar Data. It is converted</a> to SPVM number by the Rule to Convert to SPVM number types.
   </p>
 <pre>
-# SPVM Subroutine definition
+# SPVM Method definition
 package Foo {
   sub call_byte : void ($num: byte);
   sub call_short : void ($num: short);
@@ -909,10 +909,10 @@ Foo->call_double(2.3);
 
   <h5>Multi Numeric Type</h5>
   <p>
-    If the argument type in the SPVM Subroutine definition was a Multi Numeric Type, the argument value must be a hash reference and the key must contain all Multi Numeric field names. Otherwise, an Exception will be raised. The value of the hash reference is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Is converted to a value.
+    If the argument type in the SPVM Method definition was a Multi Numeric Type, the argument value must be a hash reference and the key must contain all Multi Numeric field names. Otherwise, an Exception will be raised. The value of the hash reference is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Is converted to a value.
   </p>
 <pre>
-# SPVM Subroutine definition
+# SPVM Method definition
 package Foo {
   sub call_complex_float : void ($z: SPVM::Complex_2f);
   sub call_complex_double : void ($z: SPVM::Complex_2d);
@@ -925,10 +925,10 @@ Foo->call_complex_double({re => 2.3, im => 5.6});
   
   <h5>Numeric Reference Type</h5>
   <p>
-    If the argument type in the SPVM Subroutine definition was a Numeric Reference Type, the argument value must be a scalar reference. Otherwise, an Exception will be raised.
+    If the argument type in the SPVM Method definition was a Numeric Reference Type, the argument value must be a scalar reference. Otherwise, an Exception will be raised.
   </p>
 <pre>
-# SPVM Subroutine definition
+# SPVM Method definition
 package Foo {
   sub call_byte_ref : void ($num: byte&);
   sub call_short_ref : void ($num: short&);
@@ -958,43 +958,43 @@ my $num_double = 23;
 Foo->call_double_ref(\$num_double);
 </pre>
 <p>
-    If the argument type in the SPVM Subroutine definition was a Multi Numeric Reference Type, the argument value is a hash reference reference and the key contains all Multi Numeric field names. is needed. Otherwise, an Exception will be raised.
+    If the argument type in the SPVM Method definition was a Multi Numeric Reference Type, the argument value is a hash reference reference and the key contains all Multi Numeric field names. is needed. Otherwise, an Exception will be raised.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is a numeric array type, the Perl Array Reference is converted to the corresponding Perl SPVM::Data::Array object. The value of the element is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Will be converted to. The argument is a string,
+    If the argument type of the SPVM Method definition is a numeric array type, the Perl Array Reference is converted to the corresponding Perl SPVM::Data::Array object. The value of the element is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Will be converted to. The argument is a string,
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is a byte[] value, the Perl decoded string is encoded in UTF-8 and represents byte[] Perl's SPVM::Data: Converted to a: Array object.
+    If the argument type of the SPVM Method definition is a byte[] value, the Perl decoded string is encoded in UTF-8 and represents byte[] Perl's SPVM::Data: Converted to a: Array object.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is an object type and the value passed to the argument is an Undefined Value, it is converted to the SPVM Undefined Value.
+    If the argument type of the SPVM Method definition is an object type and the value passed to the argument is an Undefined Value, it is converted to the SPVM Undefined Value.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is a string compatible type and the value passed to the argument is a scalar value that is not a reference, it is encoded in UTF-8 and represents the SPVM byte[] value. Converts to a Perl SPVM::Data::Array object.
+    If the argument type of the SPVM Method definition is a string compatible type and the value passed to the argument is a scalar value that is not a reference, it is encoded in UTF-8 and represents the SPVM byte[] value. Converts to a Perl SPVM::Data::Array object.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is a string compatible array type and the value passed to the argument is Array Reference and the first element is a scalar value that is not a reference, SPVM byte[] Converted to a Perl SPVM::Data::Array object representing[]. If the element has an Undefined Value, it is converted to SPVM Undefined Value, otherwise it is encoded to UTF-8 and converted to SPVM byte[] value.
+    If the argument type of the SPVM Method definition is a string compatible array type and the value passed to the argument is Array Reference and the first element is a scalar value that is not a reference, SPVM byte[] Converted to a Perl SPVM::Data::Array object representing[]. If the element has an Undefined Value, it is converted to SPVM Undefined Value, otherwise it is encoded to UTF-8 and converted to SPVM byte[] value.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is a byte[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents byte[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
+    If the argument type of the SPVM Method definition is a byte[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents byte[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is a short[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents a short[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
+    If the argument type of the SPVM Method definition is a short[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents a short[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is int[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents int[] Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
+    If the argument type of the SPVM Method definition is int[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents int[] Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is a long[] type and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object representing long[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
+    If the argument type of the SPVM Method definition is a long[] type and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object representing long[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is float[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents float[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
+    If the argument type of the SPVM Method definition is float[] value and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents float[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is double[] type and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents double[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
+    If the argument type of the SPVM Method definition is double[] type and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents double[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl Scalar Data ​​to SPVM Numeric Value</a>.
   </p>
   <p>
-    If the argument type of the SPVM Subroutine definition is an object[] type and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents object[]. Will be done. If the element value is an Undefined Value, it is converted to SPVM undefined, and if it is a non-reference scalar value, it is encoded to UTF-8 and converted to SPVM byte[] value. If it is SPVM::Data object, it will not be converted. Otherwise, an Exception will be raised.
+    If the argument type of the SPVM Method definition is an object[] type and the value passed to the argument is Array Reference, convert it to a Perl SPVM::Data::Array object that represents object[]. Will be done. If the element value is an Undefined Value, it is converted to SPVM undefined, and if it is a non-reference scalar value, it is encoded to UTF-8 and converted to SPVM byte[] value. If it is SPVM::Data object, it will not be converted. Otherwise, an Exception will be raised.
   </p>
   
   <h4 id = "exchange-api-call-spvm-sub-convert-return-value">Return Value Type Conversion</h4>
@@ -1050,7 +1050,7 @@ my $count = SPVM::get_memory_blocks_count();
     The SPVM runtime reserves memory from the heap when creating Object and creating new week references. The memory reserved by a single memory retrieval operation is called a memory block.
   </p>
   <p>
-    SPVM has a reference count GC, and usually you don't need to be aware of memory storage and release, but when you write a Subroutine natively, you might want to make sure that there is no memory leak in your trial.
+    SPVM has a reference count GC, and usually you don't need to be aware of memory storage and release, but when you write a Method natively, you might want to make sure that there is no memory leak in your trial.
   </p>
 <pre>
 # First Memory Blocks Count

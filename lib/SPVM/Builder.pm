@@ -105,7 +105,7 @@ sub build_shared_lib_dist {
     quiet => 0,
   );
   
-  my $sub_names = $self->get_sub_names($package_name, $category);
+  my $method_names = $self->get_method_names($package_name, $category);
   $cc_native->build_shared_lib_dist($package_name);
 }
 
@@ -119,9 +119,9 @@ sub build_and_bind_shared_lib {
     quiet => 1,
   );
   
-  my $sub_names = $self->get_sub_names($package_name, $category);
+  my $method_names = $self->get_method_names($package_name, $category);
   
-  if (@$sub_names) {
+  if (@$method_names) {
     # Shared library which is already installed in distribution directory
     my $shared_lib_file = $self->get_shared_lib_file_dist($package_name, $category);
     
@@ -129,11 +129,11 @@ sub build_and_bind_shared_lib {
     unless (-f $shared_lib_file) {
       $shared_lib_file = $cc->build_shared_lib_runtime($package_name);
     }
-    $self->bind_subs($cc, $shared_lib_file, $package_name, $category);
+    $self->bind_methods($cc, $shared_lib_file, $package_name, $category);
   }
 }
 
-sub bind_subs {
+sub bind_methods {
   my ($self, $cc, $shared_lib_file, $package_name, $category) = @_;
   
   # m library is maybe not dynamic link library
@@ -157,33 +157,33 @@ sub bind_subs {
     }
   }
   
-  my $sub_names = $self->get_sub_names($package_name, $category);
-  my $sub_infos = [];
-  for my $sub_name (@$sub_names) {
-    my $sub_info = {};
-    $sub_info->{package_name} = $package_name;
-    $sub_info->{sub_name} = $sub_name;
-    push @$sub_infos, $sub_info;
+  my $method_names = $self->get_method_names($package_name, $category);
+  my $method_infos = [];
+  for my $method_name (@$method_names) {
+    my $method_info = {};
+    $method_info->{package_name} = $package_name;
+    $method_info->{method_name} = $method_name;
+    push @$method_infos, $method_info;
   }
   
   # Add anon package sub names if precompile
   if ($category eq 'precompile') {
     my $anon_package_names = $self->get_anon_package_names_by_parent_package_name($package_name);
     for my $anon_package_name (@$anon_package_names) {
-      my $sub_info = {};
-      $sub_info->{package_name} = $anon_package_name;
-      $sub_info->{sub_name} = "";
-      push @$sub_infos, $sub_info;
+      my $method_info = {};
+      $method_info->{package_name} = $anon_package_name;
+      $method_info->{method_name} = "";
+      push @$method_infos, $method_info;
     }
   }
   
-  for my $sub_info (@$sub_infos) {
-    my $package_name = $sub_info->{package_name};
-    my $sub_name = $sub_info->{sub_name};
+  for my $method_info (@$method_infos) {
+    my $package_name = $method_info->{package_name};
+    my $method_name = $method_info->{method_name};
     
-    my $sub_abs_name = "${package_name}::$sub_name";
+    my $method_abs_name = "${package_name}::$method_name";
 
-    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $sub_name, $category);
+    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $method_name, $category);
     my $cfunc_address;
     if ($shared_lib_file) {
       my $shared_lib_libref = DynaLoader::dl_load_file($shared_lib_file);
@@ -192,7 +192,7 @@ sub bind_subs {
         unless ($cfunc_address) {
           my $dl_error = DynaLoader::dl_error();
           my $error = <<"EOS";
-Can't find native function \"$cfunc_name\" corresponding to ${package_name}->$sub_name in \"$shared_lib_file\"
+Can't find native function \"$cfunc_name\" corresponding to ${package_name}->$method_name in \"$shared_lib_file\"
 
 You must write the following definition.
 --------------------------------------------------
@@ -218,7 +218,7 @@ EOS
       confess "DLL file is not specified";
     }
     
-    $self->bind_sub($package_name, $sub_name, $cfunc_address, $category);
+    $self->bind_method($package_name, $method_name, $cfunc_address, $category);
   }
 }
 
@@ -274,4 +274,4 @@ SPVM::Builder - Build SPVM program
 
 =head1 DESCRIPTION
 
-Build SPVM program. Compile SPVM source codes. Bind native and precompile subroutines. Generate Perl subrotuines correspoing to SPVM subroutines. After that, run SPVM program.
+Build SPVM program. Compile SPVM source codes. Bind native and precompile methods. Generate Perl subrotuines correspoing to SPVM methods. After that, run SPVM program.

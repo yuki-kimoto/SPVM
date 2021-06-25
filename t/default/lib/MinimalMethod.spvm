@@ -1,4 +1,4 @@
-package MinimalSub {
+package MinimalMethod {
   sub foo : void () {
     
   }

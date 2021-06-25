@@ -66,9 +66,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_API_call_begin_blocks(env);
 
   // Package
-  int32_t sub_id = SPVM_API_get_sub_id(env, package_name, "main", "int(string[])");
+  int32_t method_id = SPVM_API_get_method_id(env, package_name, "main", "int(string[])");
   
-  if (sub_id < 0) {
+  if (method_id < 0) {
     return -1;
   }
   
@@ -89,7 +89,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   stack[0].oval = cmd_args_obj;
   
   // Run
-  int32_t exception_flag = env->call_sub(env, sub_id, stack);
+  int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
   
   int32_t status;
   if (exception_flag) {

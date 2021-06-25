@@ -21,7 +21,7 @@ SPVM::StringUtil - String Utilities
     my $string_copy = SPVM::StringUtil->copy_string ($string);
   }
 
-  # Search substr
+  # Search methodstr
   {
     my $found_offset = SPVM::StringUtil->index("pppabcde", "bcd", 2);
   }
@@ -62,14 +62,14 @@ the hex string must be a valid expression which is represented by a regex "^([0-
 
 =head2 index
 
-  sub index : int ($string : string, $sub_string : string, $position : int)
+  sub index : int ($string : string, $method_string : string, $position : int)
 
 index function searches for one string within another.
-It returns the position of the first occurrence of $sub_string in $string at or after $position. If $position is omitted, starts
+It returns the position of the first occurrence of $method_string in $string at or after $position. If $position is omitted, starts
 searching from the beginning of the string. $position before the
 beginning of the string or after its end is treated as if it were
 the beginning or the end, respectively. $position and the return
-value are based at zero. If the substring is not found, "index"
+value are based at zero. If the methodstring is not found, "index"
 returns -1.
             
 =head2 is_alnum
@@ -180,7 +180,7 @@ Convert first chracter of string from uppercase to lowercase.
 
 =head2 rindex
 
-  sub rindex : int ($string : string, $sub_string : string, $offset : int)
+  sub rindex : int ($string : string, $method_string : string, $offset : int)
 
 Same as "index" function except that the search is the last of the string.
 

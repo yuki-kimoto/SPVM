@@ -370,7 +370,7 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
       </p>
 
 <pre>
-%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE ALLOW
+%token <opval> PACKAGE HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -383,18 +383,18 @@ weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub cb_obj opt_args args arg invocant has use require our string_length
-%type <opval> opt_descriptors descriptors sub_names opt_sub_names
+%type <opval> opt_descriptors descriptors method_names opt_method_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block switch_block if_require_statement
 %type <opval> unary_op binary_op num_comparison_op str_comparison_op isa logical_op
-%type <opval> call_sub opt_vaarg
+%type <opval> call_spvm_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> deref ref assign inc dec allow
 %type <opval> new array_init
 %type <opval> my_var var
 %type <opval> expression opt_expressions expressions opt_expression case_statements
-%type <opval> field_name sub_name
+%type <opval> field_name method_name
 %type <opval> type basic_type array_type array_type_with_length ref_type  type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -455,7 +455,7 @@ begin_block
     
 use
   : USE basic_type ';'
-  | USE basic_type '(' opt_sub_names ')' ';'
+  | USE basic_type '(' opt_method_names ')' ';'
 
 require
   : REQUIRE basic_type
@@ -479,8 +479,8 @@ enumeration_values
   | enumeration_value
   
 enumeration_value
-  : sub_name
-  | sub_name ASSIGN CONSTANT
+  : method_name
+  | method_name ASSIGN CONSTANT
 
 our
   : OUR PACKAGE_VAR_NAME ':' opt_descriptors type
@@ -489,12 +489,12 @@ has
   : HAS field_name ':' opt_descriptors type ';'
 
 sub
-  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
-  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
+  : opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' block
+  | opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
 
 cb_obj
-  : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
-  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+  : opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
+  | '[' args ']' opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
 
 opt_args
   :	/* Empty */
@@ -615,7 +615,7 @@ expression
   | package_var_access
   | CONSTANT
   | UNDEF
-  | call_sub
+  | call_spvm_method
   | field_access
   | array_access
   | convert
@@ -716,12 +716,12 @@ array_access
   | array_access '[' expression ']'
   | field_access '[' expression ']'
 
-call_sub
+call_spvm_method
   : NAME '(' opt_expressions  ')'
-  | basic_type ARROW sub_name '(' opt_expressions  ')'
-  | basic_type ARROW sub_name
-  | expression ARROW sub_name '(' opt_expressions ')'
-  | expression ARROW sub_name
+  | basic_type ARROW method_name '(' opt_expressions  ')'
+  | basic_type ARROW method_name
+  | expression ARROW method_name '(' opt_expressions ')'
+  | expression ARROW method_name
   | expression ARROW '(' opt_expressions ')'
 
 field_access
@@ -796,17 +796,17 @@ type_or_void
 field_name
   : NAME
 
-sub_name
+method_name
   : NAME
 
-opt_sub_names
+opt_method_names
   :	/* Empty */
-  |	sub_names
+  |	method_names
 
-sub_names
-  : sub_names ',' sub_name
-  | sub_names ','
-  | sub_name
+method_names
+  : method_names ',' method_name
+  | method_names ','
+  | method_name
 %%
 </pre>
       <p>
@@ -820,7 +820,7 @@ sub_names
           <td>PACKAGE</td><td>package</td>
         </tr>
         <tr>
-          <td>SUB</td><td>sub</td>
+          <td>METHOD</td><td>sub</td>
         </tr>
         <tr>
           <td>OUR</td><td>our</td>

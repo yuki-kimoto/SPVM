@@ -121,8 +121,8 @@ struct spvm_env {
   int32_t (*get_field_id)(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
   int32_t (*get_field_offset)(SPVM_ENV* env, int32_t field_id);
   int32_t (*get_package_var_id)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature);
-  int32_t (*get_sub_id)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature);
-  int32_t (*get_sub_id_by_object)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature);
+  int32_t (*get_method_id)(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature);
+  int32_t (*get_method_id_by_object)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
   void* (*new_object_raw)(SPVM_ENV* env, int32_t basic_type_id);
   void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
   void* (*new_byte_array_raw)(SPVM_ENV* env, int32_t length);
@@ -151,8 +151,8 @@ struct spvm_env {
   void* (*new_pointer)(SPVM_ENV* env, int32_t basic_type_id, void* pointer);
   void* (*concat_raw)(SPVM_ENV* env, void* string1, void* string2);
   void* (*concat)(SPVM_ENV* env, void* string1, void* string2);
-  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
-  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* sub_name, const char* file, int32_t line);
+  void* (*new_stack_trace_raw)(SPVM_ENV* env, void* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
+  void* (*new_stack_trace)(SPVM_ENV* env, void* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
   int32_t (*length)(SPVM_ENV* env, void* array);
   int8_t* (*get_elems_byte)(SPVM_ENV* env, void* array);
   int16_t* (*get_elems_short)(SPVM_ENV* env, void* array);
@@ -192,7 +192,7 @@ struct spvm_env {
   void (*set_package_var_object)(SPVM_ENV* env, int32_t pkgvar_id, void* value);
   void* (*get_pointer)(SPVM_ENV* env, void* pointer_object);
   void (*set_pointer)(SPVM_ENV* env, void* pointer_object, void* pointer);
-  int32_t (*call_sub)(SPVM_ENV* env, int32_t sub_id, SPVM_VALUE* args);
+  int32_t (*call_spvm_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
   void* (*get_exception)(SPVM_ENV* env);
   int32_t (*set_exception)(SPVM_ENV* env, void* exception);
   int32_t (*get_ref_count)(SPVM_ENV* env, void* object);
@@ -249,8 +249,8 @@ struct spvm_env {
   float (*get_package_var_float_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
   double (*get_package_var_double_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
   void* (*get_package_var_object_by_name)(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
-  int32_t (*call_sub_by_name)(SPVM_ENV* env, const char* package_name, const char* sub_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
-  int32_t (*call_poly_sub_by_name)(SPVM_ENV* env, void* object, const char* sub_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
+  int32_t (*call_spvm_method_by_name)(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
+  int32_t (*call_poly_method_by_name)(SPVM_ENV* env, void* object, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
   const char* (*get_field_string_chars_by_name)(SPVM_ENV* env, void* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
   void* any_object_basic_type_id;
   void* (*dump_raw)(SPVM_ENV* env, void* object);

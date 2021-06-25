@@ -153,8 +153,8 @@ sub create_precompile_csources {
   for my $package_name (@$package_names) {
     next if $package_name =~ /::anon/;
     
-    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
-    if (@$precompile_sub_names) {
+    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
+    if (@$precompile_method_names) {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
       $builder_c_precompile->create_precompile_csource(
@@ -191,8 +191,8 @@ sub compile_precompile_csources {
   for my $package_name (@$package_names) {
     next if $package_name =~ /::anon/;
     
-    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
-    if (@$precompile_sub_names) {
+    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
+    if (@$precompile_method_names) {
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
       
@@ -235,8 +235,8 @@ sub compile_native_csources {
   my $all_object_files = [];
   for my $package_name (@$package_names) {
     
-    my $native_sub_names = $builder->get_sub_names($package_name, 'native');
-    if (@$native_sub_names) {
+    my $native_method_names = $builder->get_method_names($package_name, 'native');
+    if (@$native_method_names) {
       my $native_module_file = $builder->get_module_file($package_name);
       my $native_dir = $native_module_file;
       
@@ -433,7 +433,7 @@ sub create_bootstrap_csource {
 #include "spvm_hash.h"
 #include "spvm_list.h"
 #include "spvm_package.h"
-#include "spvm_sub.h"
+#include "spvm_method.h"
 #include "spvm_basic_type.h"
 
 EOS
@@ -450,24 +450,24 @@ EOS
   my $package_names_including_anon = $self->builder->get_package_names_including_anon;
   $boot_csource .= "// precompile functions declaration\n";
   for my $package_name (@$package_names_including_anon) {
-    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
-    for my $sub_name (@$precompile_sub_names) {
+    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
+    for my $method_name (@$precompile_method_names) {
       my $package_cname = $package_name;
       $package_cname =~ s/::/__/g;
       $boot_csource .= <<"EOS";
-int32_t SPPRECOMPILE__${package_cname}__$sub_name(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPPRECOMPILE__${package_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
 
   $boot_csource .= "// native functions declaration\n";
   for my $package_cname (@$package_names) {
-    my $native_sub_names = $builder->get_sub_names($package_cname, 'native');
-    for my $sub_name (@$native_sub_names) {
+    my $native_method_names = $builder->get_method_names($package_cname, 'native');
+    for my $method_name (@$native_method_names) {
       my $package_cname = $package_cname;
       $package_cname =~ s/::/__/g;
       $boot_csource .= <<"EOS";
-int32_t SPNATIVE__${package_cname}__$sub_name(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPNATIVE__${package_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
@@ -522,20 +522,20 @@ EOS
     my $package_cname = $package_name;
     $package_cname =~ s/::/__/g;
     
-    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
+    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
     
-    for my $precompile_sub_name (@$precompile_sub_names) {
+    for my $precompile_method_name (@$precompile_method_names) {
       $boot_csource .= <<"EOS";
   { 
     const char* package_name = "$package_name";
-    const char* sub_name = "$precompile_sub_name";
+    const char* method_name = "$precompile_method_name";
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
     assert(basic_type);
     SPVM_PACKAGE* package = basic_type->package;
     assert(package);
-    SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-    assert(sub);
-    sub->precompile_address = SPPRECOMPILE__${package_cname}__$precompile_sub_name;
+    SPVM_METHOD* method = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
+    assert(method);
+    method->precompile_address = SPPRECOMPILE__${package_cname}__$precompile_method_name;
   }
 EOS
     }
@@ -545,20 +545,20 @@ EOS
     my $package_cname = $package_name;
     $package_cname =~ s/::/__/g;
     
-    my $native_sub_names = $builder->get_sub_names($package_name, 'native');
+    my $native_method_names = $builder->get_method_names($package_name, 'native');
     
-    for my $native_sub_name (@$native_sub_names) {
+    for my $native_method_name (@$native_method_names) {
       $boot_csource .= <<"EOS";
   { 
     const char* package_name = "$package_name";
-    const char* sub_name = "$native_sub_name";
+    const char* method_name = "$native_method_name";
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
     assert(basic_type);
     SPVM_PACKAGE* package = basic_type->package;
     assert(package);
-    SPVM_SUB* sub = SPVM_HASH_fetch(package->sub_symtable, sub_name, strlen(sub_name));
-    assert(sub);
-    sub->native_address = SPNATIVE__${package_cname}__$native_sub_name;
+    SPVM_METHOD* method = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
+    assert(method);
+    method->native_address = SPNATIVE__${package_cname}__$native_method_name;
   }
 EOS
     }
@@ -573,9 +573,9 @@ EOS
   SPVM_API_call_begin_blocks(env);
 
   // Package
-  int32_t sub_id = SPVM_API_get_sub_id(env, package_name, "main", "int(string[])");
+  int32_t method_id = SPVM_API_get_method_id(env, package_name, "main", "int(string[])");
   
-  if (sub_id < 0) {
+  if (method_id < 0) {
     return -1;
   }
   
@@ -596,7 +596,7 @@ EOS
   stack[0].oval = cmd_args_obj;
   
   // Run
-  int32_t exception_flag = env->call_sub(env, sub_id, stack);
+  int32_t exception_flag = env->call_spvm_method(env, method_id, stack);
   
   int32_t status;
   if (exception_flag) {
@@ -688,7 +688,7 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
   spvm_array_field_access.c
   spvm_basic_type.c
   spvm_block.c
-  spvm_call_sub.c
+  spvm_call_method.c
   spvm_case_info.c
   spvm_compiler_allocator.c
   spvm_compiler.c
@@ -712,7 +712,7 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
   spvm_package_var_access.c
   spvm_package_var.c
   spvm_string_buffer.c
-  spvm_sub.c
+  spvm_method.c
   spvm_switch_info.c
   spvm_toke.c
   spvm_type.c
@@ -852,8 +852,8 @@ sub link {
   for my $package_name (@$package_names) {
     next if $package_name =~ /::anon/;
     
-    my $precompile_sub_names = $builder->get_sub_names($package_name, 'precompile');
-    if (@$precompile_sub_names) {
+    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
+    if (@$precompile_method_names) {
       my $category = 'precompile';
       my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'o');
       my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);

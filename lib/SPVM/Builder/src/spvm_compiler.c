@@ -15,8 +15,8 @@
 #include "spvm_yacc_util.h"
 #include "spvm_list.h"
 #include "spvm_opcode_array.h"
-#include "spvm_sub.h"
-#include "spvm_sub.h"
+#include "spvm_method.h"
+#include "spvm_method.h"
 #include "spvm_field.h"
 #include "spvm_package_var.h"
 #include "spvm_native.h"
@@ -44,8 +44,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->op_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->subs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->sub_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->methods = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->method_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
@@ -405,44 +405,44 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   fprintf(stderr, "[CompileError]%s", message);
 }
 
-const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
   
   int32_t length = 0;
   
   // Calcurate signature length
   {
     // Return type basic type
-    length += strlen(sub->return_type->basic_type->name);
+    length += strlen(method->return_type->basic_type->name);
     
     // Return type dimension
-    length += sub->return_type->dimension * 2;
+    length += method->return_type->dimension * 2;
     
     // (
     length += 1;
     
     int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
-      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
+    for (arg_index = 0; arg_index < method->args->length; arg_index++) {
+      if (method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
         // self
         length += 4;
       }
       else {
-        SPVM_MY* arg_my_sub = SPVM_LIST_fetch(sub->args, arg_index);
-        SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, arg_my_sub->op_my);
+        SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
+        SPVM_TYPE* type_arg_method = SPVM_OP_get_type(compiler, arg_my_method->op_my);
         
         // Ref
-        if (SPVM_TYPE_is_ref_type(compiler, type_arg_sub->basic_type->id, type_arg_sub->dimension, type_arg_sub->flag)) {
+        if (SPVM_TYPE_is_ref_type(compiler, type_arg_method->basic_type->id, type_arg_method->dimension, type_arg_method->flag)) {
           length += 1;
         }
         
         // TYPE
-        length += strlen(type_arg_sub->basic_type->name);
+        length += strlen(type_arg_method->basic_type->name);
         
         // Dimension
-        length += type_arg_sub->dimension * 2;
+        length += type_arg_method->dimension * 2;
       }
       // ,
-      if (arg_index != sub->args->length - 1) {
+      if (arg_index != method->args->length - 1) {
         length += 1;
       }
     }
@@ -451,17 +451,17 @@ const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB
     length += 1;
   }
   
-  char* sub_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* method_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
   
   // Calcurate sub signature length
-  char* bufptr = sub_signature;
+  char* bufptr = method_signature;
   {
     // Return type
-    memcpy(bufptr, sub->return_type->basic_type->name, strlen(sub->return_type->basic_type->name));
-    bufptr += strlen(sub->return_type->basic_type->name);
+    memcpy(bufptr, method->return_type->basic_type->name, strlen(method->return_type->basic_type->name));
+    bufptr += strlen(method->return_type->basic_type->name);
     
     int32_t dim_index;
-    for (dim_index = 0; dim_index < sub->return_type->dimension; dim_index++) {
+    for (dim_index = 0; dim_index < method->return_type->dimension; dim_index++) {
       memcpy(bufptr, "[]", 2);
       bufptr += 2;
     }
@@ -471,35 +471,35 @@ const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB
     bufptr += 1;
     
     int32_t arg_index;
-    for (arg_index = 0; arg_index < sub->args->length; arg_index++) {
+    for (arg_index = 0; arg_index < method->args->length; arg_index++) {
       // self
-      if (sub->call_type_id == SPVM_SUB_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
+      if (method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_METHOD && arg_index == 0) {
         memcpy(bufptr, "self", 4);
         bufptr += 4;
       }
       else {
-        SPVM_MY* arg_my_sub = SPVM_LIST_fetch(sub->args, arg_index);
-        SPVM_TYPE* type_arg_sub = SPVM_OP_get_type(compiler, arg_my_sub->op_my);
+        SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
+        SPVM_TYPE* type_arg_method = SPVM_OP_get_type(compiler, arg_my_method->op_my);
         
         // Ref
-        if (SPVM_TYPE_is_ref_type(compiler, type_arg_sub->basic_type->id, type_arg_sub->dimension, type_arg_sub->flag)) {
+        if (SPVM_TYPE_is_ref_type(compiler, type_arg_method->basic_type->id, type_arg_method->dimension, type_arg_method->flag)) {
           *bufptr = '&';
           bufptr += 1;
         }
         
         // TYPE
-        memcpy(bufptr, type_arg_sub->basic_type->name, strlen(type_arg_sub->basic_type->name));
-        bufptr += strlen(type_arg_sub->basic_type->name);
+        memcpy(bufptr, type_arg_method->basic_type->name, strlen(type_arg_method->basic_type->name));
+        bufptr += strlen(type_arg_method->basic_type->name);
 
         int32_t dim_index;
-        for (dim_index = 0; dim_index < type_arg_sub->dimension; dim_index++) {
+        for (dim_index = 0; dim_index < type_arg_method->dimension; dim_index++) {
           memcpy(bufptr, "[]", 2);
           bufptr += 2;
         }
       }
 
       // ,
-      if (arg_index != sub->args->length - 1) {
+      if (arg_index != method->args->length - 1) {
         memcpy(bufptr, ",", 1);
         bufptr += 1;
       }
@@ -510,7 +510,7 @@ const char* SPVM_COMPILER_create_sub_signature(SPVM_COMPILER* compiler, SPVM_SUB
     bufptr += 1;
   }
 
-  return sub_signature;
+  return method_signature;
 }
 
 const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field) {

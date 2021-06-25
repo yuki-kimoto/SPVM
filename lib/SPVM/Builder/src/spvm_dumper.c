@@ -11,7 +11,7 @@
 #include "spvm_hash.h"
 #include "spvm_constant.h"
 #include "spvm_field.h"
-#include "spvm_sub.h"
+#include "spvm_method.h"
 #include "spvm_my.h"
 #include "spvm_var.h"
 #include "spvm_op.h"
@@ -127,8 +127,8 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SWITCH) {
         printf(" SWITCH");
       }
-      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_SUB) {
-        printf(" SUB");
+      else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_METHOD) {
+        printf(" METHOD");
       }
       else if (op_cur->uv.block->id == SPVM_BLOCK_C_ID_EVAL) {
         printf(" EVAL");
@@ -215,10 +215,10 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
       }
       {
         int32_t j;
-        for (j = 0; j < package->subs->length; j++) {
-          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, j);
+        for (j = 0; j < package->methods->length; j++) {
+          SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, j);
           printf("  sub[%" PRId32 "]\n", j);
-          SPVM_DUMPER_dump_sub(compiler, sub);
+          SPVM_DUMPER_dump_method(compiler, method);
         }
       }
     }
@@ -246,10 +246,10 @@ void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* 
       
       {
         int32_t j;
-        for (j = 0; j < package->subs->length; j++) {
-          SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, j);
+        for (j = 0; j < package->methods->length; j++) {
+          SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, j);
           printf("  sub[%" PRId32 "]\n", j);
-          SPVM_DUMPER_dump_sub_opcode_array(compiler, sub);
+          SPVM_DUMPER_dump_method_opcode_array(compiler, method);
         }
       }
     }
@@ -318,47 +318,47 @@ void SPVM_DUMPER_dump_constant(SPVM_COMPILER* compiler, SPVM_CONSTANT* constant)
   }
 }
 
-void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+void SPVM_DUMPER_dump_method(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
   (void)compiler;
   
-  if (sub) {
+  if (method) {
     
-    printf("      name => \"%s\"\n", sub->op_name->uv.name);
+    printf("      name => \"%s\"\n", method->op_name->uv.name);
     printf("      return_type => ");
-    printf("%s", SPVM_TYPE_new_type_name(compiler, sub->return_type->basic_type->id, sub->return_type->dimension, sub->return_type->flag));
+    printf("%s", SPVM_TYPE_new_type_name(compiler, method->return_type->basic_type->id, method->return_type->dimension, method->return_type->flag));
     printf("\n");
-    printf("      is_enum => %d\n", (sub->flag & SPVM_SUB_C_FLAG_ENUM) ? 1 : 0);
-    printf("      have_native_desc => %d\n", (sub->flag & SPVM_SUB_C_FLAG_NATIVE) ? 1 : 0);
-    printf("      var_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
-    printf("      arg_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
+    printf("      is_enum => %d\n", (method->flag & SPVM_METHOD_C_FLAG_ENUM) ? 1 : 0);
+    printf("      have_native_desc => %d\n", (method->flag & SPVM_METHOD_C_FLAG_NATIVE) ? 1 : 0);
+    printf("      var_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
+    printf("      arg_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
     
     printf("      args\n");
-    SPVM_LIST* args = sub->args;
+    SPVM_LIST* args = method->args;
     {
       int32_t i;
       for (i = 0; i < args->length; i++) {
-        SPVM_MY* my = SPVM_LIST_fetch(sub->args, i);
+        SPVM_MY* my = SPVM_LIST_fetch(method->args, i);
         printf("        [%" PRId32 "] ", i);
         SPVM_DUMPER_dump_my(compiler, my);
       }
     }
     
-    if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+    if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
       printf("      mys\n");
-      SPVM_LIST* mys = sub->mys;
+      SPVM_LIST* mys = method->mys;
       {
         int32_t i;
         for (i = 0; i < mys->length; i++) {
-          SPVM_MY* my = SPVM_LIST_fetch(sub->mys, i);
+          SPVM_MY* my = SPVM_LIST_fetch(method->mys, i);
           printf("        mys[%" PRId32 "] ", i);
           SPVM_DUMPER_dump_my(compiler, my);
         }
       }
       
-      printf("      call_sub_arg_stack_max => %" PRId32 "\n", sub->call_sub_arg_stack_max);
+      printf("      call_spvm_method_arg_stack_max => %" PRId32 "\n", method->call_spvm_method_arg_stack_max);
       
       printf("      AST\n");
-      SPVM_DUMPER_dump_ast(compiler, sub->op_block);
+      SPVM_DUMPER_dump_ast(compiler, method->op_block);
       printf("\n");
     }
   }
@@ -367,29 +367,29 @@ void SPVM_DUMPER_dump_sub(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
   }
 }
 
-void SPVM_DUMPER_dump_sub_opcode_array(SPVM_COMPILER* compiler, SPVM_SUB* sub) {
+void SPVM_DUMPER_dump_method_opcode_array(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
   (void)compiler;
   
-  if (sub) {
+  if (method) {
     
-    printf("      name => \"%s\"\n", sub->op_name->uv.name);
-    printf("      var_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
-    printf("      arg_alloc_length => %d\n", SPVM_SUB_get_var_alloc_length(compiler, sub));
+    printf("      name => \"%s\"\n", method->op_name->uv.name);
+    printf("      var_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
+    printf("      arg_alloc_length => %d\n", SPVM_METHOD_get_var_alloc_length(compiler, method));
     
-    if (!(sub->flag & SPVM_SUB_C_FLAG_NATIVE)) {
+    if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
       printf("      mys\n");
-      SPVM_LIST* mys = sub->mys;
+      SPVM_LIST* mys = method->mys;
       {
         int32_t i;
         for (i = 0; i < mys->length; i++) {
-          SPVM_MY* my = SPVM_LIST_fetch(sub->mys, i);
+          SPVM_MY* my = SPVM_LIST_fetch(method->mys, i);
           printf("        mys[%" PRId32 "] ", i);
           SPVM_DUMPER_dump_my(compiler, my);
         }
       }
       
       printf("      opcode_array\n");
-      SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, sub->opcodes_base, sub->opcodes_length);
+      SPVM_DUMPER_dump_opcode_array(compiler, compiler->opcode_array, method->opcodes_base, method->opcodes_length);
     }
   }
   else {

@@ -7,8 +7,8 @@ struct spvm_check_ast_info {
   // Package
   SPVM_PACKAGE* package;
   
-  // Subroutine
-  SPVM_SUB* sub;
+  // Method
+  SPVM_METHOD* method;
   
   // My stack
   SPVM_LIST* my_stack;

@@ -211,7 +211,7 @@ L<SPVM Exchange API|https://yuki-kimoto.github.io/spvmdoc-public/exchange-api.ht
 
 =head2 get_memory_blocks_count
 
-=head2 call_sub
+=head2 call_spvm_method
 
 =head2 new_string
 

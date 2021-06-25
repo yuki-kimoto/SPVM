@@ -416,7 +416,7 @@ cmp length isa ref
 The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bison. 
 
 <pre>
-%token <opval> PACKAGE HAS SUB OUR ENUM MY SELF USE REQUIRE ALLOW
+%token <opval> PACKAGE HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -429,18 +429,18 @@ The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bis
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub cb_obj opt_args args arg invocant has use require our
-%type <opval> opt_descriptors descriptors sub_names opt_sub_names
+%type <opval> opt_descriptors descriptors method_names opt_method_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block switch_block if_require_statement
 %type <opval> unary_op binary_op comparison_op isa logical_op  expression_or_logical_op
-%type <opval> call_sub opt_vaarg
+%type <opval> call_spvm_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow
 %type <opval> new array_init
 %type <opval> my_var var
 %type <opval> expression opt_expressions expressions opt_expression case_statements
-%type <opval> field_name sub_name
+%type <opval> field_name method_name
 %type <opval> type basic_type array_type array_type_with_length ref_type type_or_void
 
 %right <opval> ASSIGN SPECIAL_ASSIGN
@@ -501,7 +501,7 @@ begin_block
 
 use
   : USE basic_type ';'
-  | USE basic_type '(' opt_sub_names ')' ';'
+  | USE basic_type '(' opt_method_names ')' ';'
 
 require
   : REQUIRE basic_type
@@ -525,8 +525,8 @@ enumeration_values
   | enumeration_value
 
 enumeration_value
-  : sub_name
-  | sub_name ASSIGN CONSTANT
+  : method_name
+  | method_name ASSIGN CONSTANT
 
 our
   : OUR PACKAGE_VAR_NAME ':' opt_descriptors type
@@ -535,12 +535,12 @@ has
   : HAS field_name ':' opt_descriptors type ';'
 
 sub
-  : opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' block
-  | opt_descriptors SUB sub_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
+  : opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' block
+  | opt_descriptors METHOD method_name ':' type_or_void '(' opt_args opt_vaarg')' ';'
 
 cb_obj
-  : opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
-  | '[' args ']' opt_descriptors SUB ':' type_or_void '(' opt_args opt_vaarg')' block
+  : opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
+  | '[' args ']' opt_descriptors METHOD ':' type_or_void '(' opt_args opt_vaarg')' block
 
 opt_args
   : /* Empty */
@@ -665,7 +665,7 @@ expression
   | package_var_access
   | CONSTANT
   | UNDEF
-  | call_sub
+  | call_spvm_method
   | field_access
   | array_access
   | convert
@@ -767,12 +767,12 @@ array_access
   | array_access '[' expression ']'
   | field_access '[' expression ']'
 
-call_sub
+call_spvm_method
   : NAME '(' opt_expressions  ')'
-  | basic_type ARROW sub_name '(' opt_expressions  ')'
-  | basic_type ARROW sub_name
-  | expression ARROW sub_name '(' opt_expressions ')'
-  | expression ARROW sub_name
+  | basic_type ARROW method_name '(' opt_expressions  ')'
+  | basic_type ARROW method_name
+  | expression ARROW method_name '(' opt_expressions ')'
+  | expression ARROW method_name
   | expression ARROW '(' opt_expressions ')'
 
 field_access
@@ -839,17 +839,17 @@ type_or_void
 field_name
   : NAME
 
-sub_name
+method_name
   : NAME
 
-opt_sub_names
+opt_method_names
   : /* Empty */
-  | sub_names
+  | method_names
 
-sub_names
-  : sub_names ',' sub_name
-  | sub_names ','
-  | sub_name
+method_names
+  : method_names ',' method_name
+  | method_names ','
+  | method_name
 %%
 </pre>
 
@@ -863,7 +863,7 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>PACKAGE</td><td>package</td>
   </tr>
   <tr>
-    <td>SUB</td><td>sub</td>
+    <td>METHOD</td><td>sub</td>
   </tr>
   <tr>
     <td>OUR</td><td>our</td>
@@ -1316,7 +1316,7 @@ The descriptions of Package Descriptors.
       <b>precompile</b>
     </td>
     <td>
-      Do precompile all subroutines in this package, except for accessor, and enum. 
+      Do precompile all methods in this package, except for accessor, and enum. 
     </td>
   </tr>
 </table>
@@ -1842,10 +1842,10 @@ See <a href="#language-expression-set-field-multi-numeric-deref">Set Multi Numer
 "sub" Keyword defines Method.
 
 <pre>
-sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME () {
+sub METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
 
 }
-sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
+sub METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
 
 }
 </pre>
@@ -1871,10 +1871,10 @@ The defined Method can be called. See <a href="#language-expression-callsub">Met
 Method Definition can have <a href="#language-method-descriptor">Method Descriptor</a>.
 
 <pre>
-DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME () {
+DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN sub METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
 
 }
-DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
+DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN sub METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
 
 }
 </pre>
@@ -1885,7 +1885,7 @@ If "..." follows Type of Argument, the Argument becomes Variable Length Argument
 The Type must be <a href="#language-type-array">Array Type</a>.
 
 <pre>
-sub SUBROUTINE_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2...) {
+sub METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2...) {
 
 }
 </pre>
@@ -1946,11 +1946,11 @@ See <a href="/native-api.html">SPVM Native API</a> Native Method.
 
 <h3 id="language-method-precompiled">Precompiled Method</h3>
 
-If the Package has "precompile" descriptor, the subroutines of the package become Precompiled Method.
+If the Package has "precompile" descriptor, the methods of the package become Precompiled Method.
 
 Precompiled Method is translated into C99 Compliant source code and converted into machine code.
 
-The precompiled subroutines are C code, so you can get performance of C language.
+The precompiled methods are C code, so you can get performance of C language.
 
 Precompiled Method needs Build Directory described in <a href="/native-api.html">SPVM Native API</a>
 
@@ -1979,7 +1979,7 @@ sub foo : int () { return 5 + 3; }
 Method is Method that has <a href="#language-type-self">self Type</a> as its first argument.
 
 <pre>
-sub SUB_NAME : TYPE  ($self : self, ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
+sub METHOD_NAME : TYPE  ($self : self, ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
 
 }
 </pre>
@@ -2022,7 +2022,7 @@ Signature is not used in SPVM programs. Signature is used when calling the SPVM 
 
 <h3 id="language-method-stack">Method Callstack</h3>
 
-Method Callstack is memory area allocated in each subroutine call.
+Method Callstack is memory area allocated in each method call.
 
 
 <p>
@@ -3892,9 +3892,9 @@ my $key_values = {foo => 1, bar => "Hello"};
 
 <h3 id="language-expression-callsub">Method Call</h3>
 
-Methods defined by <a href="#language-method-definition">Method Definition</a> can be called from program. There are three types of subroutine calls. <b>Static Method Call</b> and <b>Method Call</b>.
+Methods defined by <a href="#language-method-definition">Method Definition</a> can be called from program. There are three types of method calls. <b>Static Method Call</b> and <b>Method Call</b>.
 
-Defined subroutine can be called by Static Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
+Defined method can be called by Static Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
 
 <pre>
 PackageName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
@@ -3944,7 +3944,7 @@ package Foo {
   Method Call can be done with the following syntax using the object created by <a href="#language-expression-new">Create Object</a>.
 </p>
 <pre>
-OBJECT_EXPRESSION->SUB_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 <p>
   Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
@@ -6663,7 +6663,7 @@ my $comparator : SPVM::Comparator = sub: int ($self: self, $x1: object, $x2: obj
 my $object: object;
 </pre>
 <p>
-  You can substitute the value of "Object Type" for Any Object Type.
+  You can methodstitute the value of "Object Type" for Any Object Type.
 </p>
 <pre>
 my $object: object = new Foo;
@@ -6839,7 +6839,7 @@ my $array : oarray = new object[3];
   If a value with a Type other than Object Type is assigned, Compile Error occurs
 </p>
 <p>
-  Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be substituted with an arbitrary Array Type value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Type cannot be assigned.
+  Note that "oarrayType" is a different Type than "object[] Type". While oarrayType is a Type that can be methodstituted with an arbitrary Array Type value that has an Object Type value as an element, "object[] Type" is a Type that represents an "Array that has an objectType value as an element". Therefore, the value of arbitrary Array Type cannot be assigned.
 </p>
 <p>
   Any Object Array Type is <a href="#language-type-array">Array Type</a>. <a href="#language-operator-array-length">Array Length Operator</a> to get length, <a href="#language-expression-set-array-element">Set Array Element You can use Value</a>, <a href="#language-expression-get-array-element">Get Array Element Value</a>.
@@ -7555,7 +7555,7 @@ eval {
 };
 </pre>
 <p>
-  When <a href="#language-exception">Exception</a> is caught by the eval Block, the program termination is stopped and <a href="#language-exception-occur">is added to <a href="#language-exception-var">Exception Variable</a>. The message specified in Exception is thrown</a> is substituted.
+  When <a href="#language-exception">Exception</a> is caught by the eval Block, the program termination is stopped and <a href="#language-exception-occur">is added to <a href="#language-exception-var">Exception Variable</a>. The message specified in Exception is thrown</a> is methodstituted.
 </p>
 
 <h3 id="language-exception-var">Exception Variable</h3>

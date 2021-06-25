@@ -51,14 +51,14 @@ sub import {
       my $added_package_names = $BUILDER->get_added_package_names;
 
       for my $added_package_name (@$added_package_names) {
-        # Build Precompile packages - Compile C source codes and link them to SPVM precompile subroutine
+        # Build Precompile packages - Compile C source codes and link them to SPVM precompile method
         $BUILDER->build_and_bind_shared_lib($added_package_name, 'precompile');
 
-        # Build native packages - Compile C source codes and link them to SPVM native subroutine
+        # Build native packages - Compile C source codes and link them to SPVM native method
         $BUILDER->build_and_bind_shared_lib($added_package_name, 'native');
       }
 
-      # Bind SPVM subroutine to Perl
+      # Bind SPVM method to Perl
       bind_to_perl($BUILDER, $added_package_names);
     }
   }
@@ -92,31 +92,31 @@ sub bind_to_perl {
       $package_name_h->{$package_name} = 1;
     }
 
-    my $sub_names = $builder->get_sub_names($package_name);
+    my $method_names = $builder->get_method_names($package_name);
 
-    for my $sub_name (@$sub_names) {
+    for my $method_name (@$method_names) {
       # Destrutor is skip
-      if ($sub_name eq 'DESTROY') {
+      if ($method_name eq 'DESTROY') {
         next;
       }
-      # Anon subroutine is skip
-      elsif (length $sub_name == 0) {
+      # Anon method is skip
+      elsif (length $method_name == 0) {
         next;
       }
 
-      my $sub_abs_name = "${package_name}::$sub_name";
+      my $method_abs_name = "${package_name}::$method_name";
 
-      # Define SPVM subroutine
+      # Define SPVM method
       no strict 'refs';
 
-      my ($package_name, $sub_name) = $sub_abs_name =~ /^(?:(.+)::)(.*)/;
+      my ($package_name, $method_name) = $method_abs_name =~ /^(?:(.+)::)(.*)/;
 
-      # Declare subroutine
-      *{"$sub_abs_name"} = sub {
+      # Declare method
+      *{"$method_abs_name"} = sub {
         SPVM::init() unless $SPVM_INITED;
 
         my $return_value;
-        eval { $return_value = SPVM::call_sub($package_name, $sub_name, @_) };
+        eval { $return_value = SPVM::call_spvm_method($package_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
@@ -280,9 +280,9 @@ sub get_memory_blocks_count {
   SPVM::ExchangeAPI::get_memory_blocks_count($BUILDER->{env}, @_);
 }
 
-sub call_sub {
+sub call_spvm_method {
   SPVM::init() unless $SPVM_INITED;
-  SPVM::ExchangeAPI::call_sub($BUILDER->{env}, @_);
+  SPVM::ExchangeAPI::call_spvm_method($BUILDER->{env}, @_);
 }
 
 1;
@@ -310,7 +310,7 @@ SPVM Module:
     }
   }
 
-Call SPVM subroutine from Perl
+Call SPVM method from Perl
 
   # spvm.pl
   use strict;
@@ -320,19 +320,19 @@ Call SPVM subroutine from Perl
 
   use SPVM 'MyMath';
 
-  # Call subroutine
+  # Call method
   my $total = MyMath->sum([3, 6, 8, 9]);
 
   print "Total: $total\n";
 
-  # Call subroutine with packed data
+  # Call method with packed data
   my $nums_packed = pack('l*', 3, 6, 8, 9);
   my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
   my $total_packed = MyMath->sum($sv_nums);
 
   print "Total Packed: $total_packed\n";
 
-Precompiled SPVM Subroutine. This code is converted to C language and then converted to a shared library.
+Precompiled SPVM Method. This code is converted to C language and then converted to a shared library.
 
   # lib/MyMath.spvm
   package MyMath : precompile {
@@ -357,7 +357,7 @@ SPVM is Static Perl Virtual Machine. SPVM is a programming language which has Pe
 
 =item * Fast culcuration, Fast array operation
 
-=item * Precompile Subroutine, Easy way to C/C++ binding, C99 math functions
+=item * Precompile Method, Easy way to C/C++ binding, C99 math functions
 
 =item * Perlish syntax, Static typing, Type inference
 
@@ -445,9 +445,9 @@ spvmcc is a compiler to compile SPVM source codes to a execution file. The execu
 
 =head2 SPVM_BUILD_DIR
 
-SPVM build directory for precompile and native subroutine.
+SPVM build directory for precompile and native method.
 
-If SPVM_BUILD_DIR environment variable is not set, SPVM can't compile precompile subroutine and native subroutine, and a exception occur. You see error message "SPVM_BUILD_DIR environment variable must be set ...".
+If SPVM_BUILD_DIR environment variable is not set, SPVM can't compile precompile method and native method, and a exception occur. You see error message "SPVM_BUILD_DIR environment variable must be set ...".
 
 In bash, you can set SPVM_BUILD_DIR to the following.
 

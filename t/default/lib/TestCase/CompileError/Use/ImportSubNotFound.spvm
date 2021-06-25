@@ -1,3 +1,0 @@
-package TestCase::CompileError::Use::ImportSubNotFound {
-  use SPVM::Byte(not_found);
-}

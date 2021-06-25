@@ -127,7 +127,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Native Exception
 {
   ok(TestCase::NativeAPI->native_use_strlen_test);
-  ok(TestCase::NativeAPI->call_void_sub_exception);
+  ok(TestCase::NativeAPI->call_void_method_exception);
 }
 
 # Check mortal API
@@ -136,16 +136,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(TestCase::NativeAPI->enter_scope_leave_scope);
 }
 
-# env->call_sub
+# env->call_spvm_method
 {
-  ok(TestCase::NativeAPI->native_call_sub);
+  ok(TestCase::NativeAPI->native_call_spvm_method);
 }
 
-# env->call_sub_by_name
+# env->call_spvm_method_by_name
 {
-  ok(TestCase::NativeAPI->native_call_sub);
+  ok(TestCase::NativeAPI->native_call_spvm_method);
   
-  eval { TestCase::NativeAPI->native_call_sub_exception };
+  eval { TestCase::NativeAPI->native_call_spvm_method_exception };
   ok($@);
 }
 

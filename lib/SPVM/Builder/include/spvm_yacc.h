@@ -41,7 +41,7 @@
    enum yytokentype {
      PACKAGE = 258,
      HAS = 259,
-     SUB = 260,
+     METHOD = 260,
      OUR = 261,
      ENUM = 262,
      MY = 263,
@@ -137,7 +137,7 @@
 /* Tokens.  */
 #define PACKAGE 258
 #define HAS 259
-#define SUB 260
+#define METHOD 260
 #define OUR 261
 #define ENUM 262
 #define MY 263

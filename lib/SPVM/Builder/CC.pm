@@ -42,7 +42,7 @@ sub build_shared_lib_runtime {
     mkpath $build_dir;
   }
   else {
-    confess "SPVM_BUILD_DIR environment variable must be set for build $category subroutine in runtime";
+    confess "SPVM_BUILD_DIR environment variable must be set for build $category method in runtime";
   }
   
   # Source directory
@@ -194,16 +194,16 @@ sub compile {
     $quiet = $self->quiet;
   }
   
-  # SPVM Subroutine source file
+  # SPVM Method source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category);
-  my $spvm_sub_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
+  my $spvm_method_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
   my $src_ext = $bconf->get_ext;
   unless (defined $src_ext) {
     confess "Source extension is not specified";
   }
-  my $spvm_sub_src_file = "$spvm_sub_src_file_no_ext.$src_ext";
-  unless (-f $spvm_sub_src_file) {
-    confess "Can't find source file $spvm_sub_src_file";
+  my $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
+  unless (-f $spvm_method_src_file) {
+    confess "Can't find source file $spvm_method_src_file";
   }
   
   # CBuilder configs
@@ -231,7 +231,7 @@ sub compile {
   # Compile source files
   my $object_files = [];
   my $is_native_src;
-  for my $src_file ($spvm_sub_src_file, @native_src_files) {
+  for my $src_file ($spvm_method_src_file, @native_src_files) {
     my $object_file;
     # Native object file name
     if ($is_native_src) {
@@ -247,7 +247,7 @@ sub compile {
       my $object_dir = dirname $object_file;
       mkpath $object_dir;
     }
-    # SPVM subroutine object file name
+    # SPVM method object file name
     else {
       my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'o');
       $object_file = "$object_dir/$object_rel_file";
@@ -413,9 +413,9 @@ EOS
   # dl_func_list
   # This option is needed Windows DLL file
   my $dl_func_list = [];
-  my $sub_names = $self->builder->get_sub_names($package_name, $category);
-  for my $sub_name (@$sub_names) {
-    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $sub_name, $category);
+  my $method_names = $self->builder->get_method_names($package_name, $category);
+  for my $method_name (@$method_names) {
+    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($package_name, $method_name, $category);
     push @$dl_func_list, $cfunc_name;
   }
   
@@ -423,8 +423,8 @@ EOS
     # Add anon package sub names to dl_func_list
     my $anon_package_names = $self->builder->get_anon_package_names_by_parent_package_name($package_name);
     for my $anon_package_name (@$anon_package_names) {
-      my $anon_sub_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_package_name, "", $category);
-      push @$dl_func_list, $anon_sub_cfunc_name;
+      my $anon_method_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_package_name, "", $category);
+      push @$dl_func_list, $anon_method_cfunc_name;
     }
   }
   
