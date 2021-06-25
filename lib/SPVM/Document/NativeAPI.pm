@@ -2158,9 +2158,9 @@ Example:
     output = stack[0].ival;
   }
 
-=head2 call_poly_method_by_name
+=head2 call_callback_method_by_name
 
-  int32_t (*call_poly_method_by_name)(SPVM_ENV* env, void* object,
+  int32_t (*call_callback_method_by_name)(SPVM_ENV* env, void* object,
     const char* method_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
 
@@ -2350,7 +2350,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   150 get_package_var_double_by_name
   151 get_package_var_object_by_name
   152 call_spvm_method_by_name
-  153 call_poly_method_by_name
+  153 call_callback_method_by_name
   154 get_field_string_chars_by_name
   155 any_object_basic_type_id
   156 dump_raw

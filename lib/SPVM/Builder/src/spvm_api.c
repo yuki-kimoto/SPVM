@@ -250,7 +250,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_package_var_double_by_name,
     SPVM_API_get_package_var_object_by_name,
     SPVM_API_call_spvm_method_by_name,
-    SPVM_API_call_poly_method_by_name,
+    SPVM_API_call_callback_method_by_name,
     SPVM_API_get_field_string_chars_by_name,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, // any_object_basic_type_id
     SPVM_API_dump_raw,
@@ -647,7 +647,7 @@ int32_t SPVM_API_call_spvm_method_by_name(SPVM_ENV* env, const char* package_nam
   return 0;
 }
 
-int32_t SPVM_API_call_poly_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
+int32_t SPVM_API_call_callback_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
 
   if (object == NULL) {
     env->die(env, "Object must not be NULL", file, line);
