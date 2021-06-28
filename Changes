@@ -1,3 +1,7 @@
+0.9008 2021-06-28
+  - SVPM support only 64bit System
+  - SVPM support only Windows 10+
+  
 0.9008 2021-06-25
   - Change The all internal subroutine word is changed to method
   - Change The all word of Subroutine is changed to Method

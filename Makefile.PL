@@ -22,6 +22,12 @@ use SPVM::Builder::Util;
     warn "SPVM don't support the Perl which \"ivsize\" is lower than 8\n";
     die "OS unsupported\n";
   }
+
+  # SVPM support only 64bit System
+  if ($Config{uname} =~ /\b(i386|i686|IA-32)\b/i) {
+    warn "SPVM support only 64bit System";
+    die "OS unsupported\n";
+  }
   
   # SVPM support only Windows 10+
   if ($Config{osname} eq 'MSWin32' && $Config{osvers} < 10) {
