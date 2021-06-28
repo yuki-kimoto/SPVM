@@ -54,11 +54,18 @@ use SPVM::Builder::Util;
   }
 
   # old OpenBSD don't support some C99 complex functions
+  # SPVM drop support solaris because I can't fix OpenBDS bugs by myself
   if ($Config{osname} eq 'openbsd' && $Config{osvers} < 6.8) {
     warn "SPVM don't support OpenBSD before version 6.8";
     die "OS unsupported\n";
   }
-  
+
+  # SPVM don't support OpenBSD because I can't fix OpenBSD bugs by myself
+  # http://matrix.cpantesters.org/?dist=SPVM%200.9006
+  if ($Config{osname} eq 'openbsd') {
+    warn "SPVM don't support OpenBSD before version 6.8";
+    die "OS unsupported\n";
+  }
 
   # SPVM don't support solaris because I can't fix make error by myself
   # http://www.cpantesters.org/cpan/report/6b54513a-c10b-11eb-bc66-57723b537541

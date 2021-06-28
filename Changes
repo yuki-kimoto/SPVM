@@ -1,4 +1,6 @@
 0.9009 2021-06-28
+  - SPVM drop support OpenBSD because I can't fix OpenBSD bugs by myself
+    http://matrix.cpantesters.org/?dist=SPVM%200.9006
   - SPVM drop support solaris because I can't fix make error by myself
     http://www.cpantesters.org/cpan/report/6b54513a-c10b-11eb-bc66-57723b537541
   - SPVM support only 64bit System
