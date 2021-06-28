@@ -58,6 +58,14 @@ use SPVM::Builder::Util;
     warn "SPVM don't support OpenBSD before version 6.8";
     die "OS unsupported\n";
   }
+  
+
+  # SPVM don't support solaris because I can't fix make error by myself
+  # http://www.cpantesters.org/cpan/report/6b54513a-c10b-11eb-bc66-57723b537541
+  if ($Config{osname} eq 'solaris') {
+    warn "SPVM don't support solaris";
+    die "OS unsupported\n";
+  }
 }
 
 my @defines;
