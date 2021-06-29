@@ -2157,7 +2157,7 @@ call_spvm_method(...)
     method_not_found = 1;
   }
   else {
-    method = SPVM_API_method(env, package, method_name);
+    method = SPVM_API_get_method(env, package, method_name);
     if (method == NULL) {
       method_not_found = 1;
     }

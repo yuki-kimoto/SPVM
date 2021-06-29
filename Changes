@@ -2,6 +2,7 @@
   - Native API get_basic_type_id performance become O(1)
   - Native API get_field_id performance become O(1)
   - Native API get_package_var_id performance become O(1)
+  - Native API get_method_id performance become O(1)
   
 0.9008 2021-06-28
   - SPVM drop support OpenBSD because I can't fix OpenBSD bugs by myself

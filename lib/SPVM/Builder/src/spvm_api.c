@@ -6439,19 +6439,9 @@ int32_t SPVM_API_get_package_var_id(SPVM_ENV* env, const char* package_name, con
   return package_var->id;
 }
 
-SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_PACKAGE* package, const char* method_name) {
-  // Find sub
-  int32_t methods_length = package->methods->length;
-  SPVM_METHOD* method = NULL;
-  for (int32_t i = 0; i < methods_length; i++) {
-    SPVM_METHOD* exists_method = SPVM_LIST_fetch(package->methods, i);
-    const char* exists_method_name = exists_method->name;
-    
-    if (strcmp(method_name, exists_method_name) == 0) {
-      method = exists_method;
-      break;
-    }
-  }
+SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_PACKAGE* package, const char* method_name) {
+
+  SPVM_METHOD* method = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
   
   return method;
 }
@@ -6485,7 +6475,7 @@ int32_t SPVM_API_get_method_id(SPVM_ENV* env, const char* package_name, const ch
     }
     else {
       // Method
-      SPVM_METHOD* method = SPVM_API_method(env, package, method_name);
+      SPVM_METHOD* method = SPVM_API_get_method(env, package, method_name);
       if (method == NULL) {
         method_id = -1;
       }
