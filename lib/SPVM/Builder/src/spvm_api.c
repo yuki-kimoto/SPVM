@@ -6366,22 +6366,11 @@ int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
   return field->offset;
 }
 
-SPVM_FIELD* SPVM_API_field(SPVM_ENV* env, SPVM_PACKAGE* package, const char* field_name) {
+SPVM_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_PACKAGE* package, const char* field_name) {
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
 
-  // Find field
-  int32_t fields_length = package->fields->length;
-  SPVM_FIELD* field = NULL;
-  for (int32_t i = 0; i < fields_length; i++) {
-    SPVM_FIELD* exists_field = SPVM_LIST_fetch(package->fields, i);
-    const char* exists_field_name = exists_field->name;
-    
-    if (strcmp(field_name, exists_field_name) == 0) {
-      field = exists_field;
-      break;
-    }
-  }
+  SPVM_FIELD* field = SPVM_HASH_fetch(package->field_symtable, field_name, strlen(field_name));
   
   return field;
 }
@@ -6403,7 +6392,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const cha
   SPVM_PACKAGE* package = basic_type->package;
   
   // Field
-  SPVM_FIELD* field = SPVM_API_field(env, package, field_name);
+  SPVM_FIELD* field = SPVM_API_get_field(env, package, field_name);
   if (!field) {
     return -1;
   }
