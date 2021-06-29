@@ -6426,7 +6426,7 @@ int32_t SPVM_API_get_package_var_id(SPVM_ENV* env, const char* package_name, con
   }
 
   // Package variable name
-  SPVM_PACKAGE_VAR* package_var = SPVM_API_package_var(env, package, package_var_name);
+  SPVM_PACKAGE_VAR* package_var = SPVM_API_get_package_var(env, package, package_var_name);
   if (!package_var) {
     return -1;
   }
@@ -6900,20 +6900,9 @@ void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPV
 
 
 // Private API
-SPVM_PACKAGE_VAR* SPVM_API_package_var(SPVM_ENV* env, SPVM_PACKAGE* package, const char* package_var_name) {
-  // Find package_var
-  int32_t package_vars_length = package->package_vars->length;
-  SPVM_PACKAGE_VAR* package_var = NULL;
-  for (int32_t i = 0; i < package_vars_length; i++) {
-    SPVM_PACKAGE_VAR* exists_package_var = SPVM_LIST_fetch(package->package_vars, i);
-    const char* exists_package_var_name = exists_package_var->name;
-    
-    if (strcmp(package_var_name, exists_package_var_name) == 0) {
-      package_var = exists_package_var;
-      break;
-    }
-  }
+SPVM_PACKAGE_VAR* SPVM_API_get_package_var(SPVM_ENV* env, SPVM_PACKAGE* package, const char* package_var_name) {
+
+  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
   
   return package_var;
 }
-
