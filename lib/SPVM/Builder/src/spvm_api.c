@@ -6390,7 +6390,7 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const cha
   (void)env;
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, package_name);
   if (!basic_type) {
     return -1;
   }
@@ -6422,7 +6422,7 @@ int32_t SPVM_API_get_package_var_id(SPVM_ENV* env, const char* package_name, con
   (void)env;
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_PACKAGE* package;
@@ -6474,7 +6474,7 @@ int32_t SPVM_API_get_method_id(SPVM_ENV* env, const char* package_name, const ch
   int32_t method_id;
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, package_name);
   
   // Package name
   SPVM_PACKAGE* package;
@@ -6558,22 +6558,11 @@ int32_t SPVM_API_get_method_id_by_object(SPVM_ENV* env, SPVM_OBJECT* object, con
   return method_id;
 }
 
-SPVM_BASIC_TYPE* SPVM_API_basic_type(SPVM_ENV* env,  const char* basic_type_name) {
+SPVM_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  const char* basic_type_name) {
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
 
-  // Find basic_type
-  int32_t basic_types_length = compiler->basic_types->length;
-  SPVM_BASIC_TYPE* basic_type = NULL;
-  for (int32_t i = 0; i < basic_types_length; i++) {
-    SPVM_BASIC_TYPE* exists_basic_type = SPVM_LIST_fetch(compiler->basic_types, i);
-    const char* exists_basic_type_name = exists_basic_type->name;
-    
-    if (strcmp(basic_type_name, exists_basic_type_name) == 0) {
-      basic_type = exists_basic_type;
-      break;
-    }
-  }
+  SPVM_BASIC_TYPE* basic_type = (SPVM_BASIC_TYPE*)SPVM_HASH_fetch(compiler->basic_type_symtable, basic_type_name, strlen(basic_type_name));
   
   return basic_type;
 }
@@ -6585,7 +6574,7 @@ int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* basic_type_name) {
     return -1;
   }
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   if (basic_type) {
     int32_t basic_type_id = basic_type->id;
     return basic_type_id;

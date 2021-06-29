@@ -1,11 +1,13 @@
-0.9009 2021-06-28
+0.9009 2021-06-29
+  - Native API get_basic_type_id performance become O(1)
+  
+0.9008 2021-06-28
   - SPVM drop support OpenBSD because I can't fix OpenBSD bugs by myself
     http://matrix.cpantesters.org/?dist=SPVM%200.9006
   - SPVM drop support solaris because I can't fix make error by myself
     http://www.cpantesters.org/cpan/report/6b54513a-c10b-11eb-bc66-57723b537541
   - SPVM support only 64bit System
   - SPVM support only Windows 10+
-0.9008 2021-06-25
   - Change The all internal subroutine word is changed to method
   - Change The all word of Subroutine is changed to Method
   - rename Native API call_sub to call_spvm_method

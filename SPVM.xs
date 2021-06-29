@@ -1615,7 +1615,7 @@ new_string_array_len(...)
   // Element type id
   const char* basic_type_name = "string";
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -1650,7 +1650,7 @@ new_object_array_len(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -1689,7 +1689,7 @@ _new_object_array(...)
   // Runtime
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -1758,7 +1758,7 @@ _new_muldim_array(...)
   // Element type id
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   assert(basic_type);
   
   // New array
@@ -1821,7 +1821,7 @@ _new_mulnum_array(...)
   // Runtime
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
     croak("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
@@ -1936,7 +1936,7 @@ _new_mulnum_array_from_bin(...)
   // Runtime
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, basic_type_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
     const char* basic_type_name = basic_type->name;
@@ -2145,7 +2145,7 @@ call_spvm_method(...)
   const char* method_name = SvPV_nolen(sv_method_name);
 
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, package_name);
   
   // Package
   SPVM_PACKAGE* package = basic_type->package;
