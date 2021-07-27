@@ -44,6 +44,18 @@ my $ULONG_MAX = 18446744073709551615;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Convert a scalar value to SPVM numeric object
+{
+  # SPVM::Byte->new
+  {
+    {
+      my $spvm_value = SPVM::Byte->new(-128);
+      is(ref $spvm_value, 'SPVM::Byte');
+      is($spvm_value->value, -128);
+    }
+  }
+}
+
 # ref SPVM array
 {
   my $nums = SPVM::new_float_array([1, 2, 3]);
