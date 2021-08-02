@@ -14,37 +14,37 @@ SPVM Exchange API is APIs to convert Perl data structures to/from SPVM data stru
 
   my $spvm_byte = SPVM::Byte->new(98);
 
-Convert a Perl scalar data to a L<SPVM::Byte> object. Return value is L<SPVM::BlessedObject::Package> object which wraps the SPVM object.
+Convert a Perl scalar data to a L<SPVM::Byte> object. Return value is B<SPVM::Byte> object which inherits L<SPVM::BlessedObject::Package>.
 
 =head2 SPVM::Short->new
 
   my $spvm_short = SPVM::Short->new(9800);
 
-Convert a Perl scalar data to a L<SPVM::Short> object. Return value is L<SPVM::BlessedObject::Package> object which wraps the SPVM object.
+Convert a Perl scalar data to a L<SPVM::Short> object. Return value is B<SPVM::Short> object which inherits L<SPVM::BlessedObject::Package>.
 
 =head2 SPVM::Int->new
 
   my $spvm_int = SPVM::Int->new(100000);
 
-Convert a Perl scalar data to a L<SPVM::Int> object. Return value is L<SPVM::BlessedObject::Package> object which wraps the SPVM object.
+Convert a Perl scalar data to a L<SPVM::Int> object. Return value is B<SPVM::Int> object which inherits L<SPVM::BlessedObject::Package>.
 
 =head2 SPVM::Long->new
 
   my $spvm_long = SPVM::Long->new(98);
 
-Convert a Perl scalar data to a L<SPVM::Long> object. Return value is L<SPVM::BlessedObject::Package> object which wraps the SPVM object.
+Convert a Perl scalar data to a L<SPVM::Long> object. Return value is B<SPVM::Long> object which inherits L<SPVM::BlessedObject::Package>.
 
 =head2 SPVM::Float->new
 
   my $spvm_float = SPVM::Float->new(2.5);Rule to Convert 
 
-Convert a Perl scalar data to a L<SPVM::Float> object. Return value is L<SPVM::BlessedObject::Package> object which wraps the SPVM object.
+Convert a Perl scalar data to a L<SPVM::Float> object. Return value is B<SPVM::Float> object which inherits L<SPVM::BlessedObject::Package>.
 
 =head2 SPVM::Double->new
 
   my $spvm_double = SPVM::Double->new(2.5);
 
-Convert a Perl scalar data to a L<SPVM::Double> object. Return value is L<SPVM::BlessedObject::Package> object which wraps the SPVM object.
+Convert a Perl scalar data to a L<SPVM::Double> object. Return value is B<SPVM::Double> object which inherits L<SPVM::BlessedObject::Package>.
 
 =head2 SPVM::new_byte_array
 
@@ -93,6 +93,15 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 Convert a Perl array reference to to a SPVM C<double[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
+
+=head2 SPVM::new_object_array
+
+  my $byte_array = SPVM::new_object_array(
+    "SPVM::Byte[]",
+    [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
+  );
+
+Convert a Perl array reference to to a SPVM object array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 =begin html
 
