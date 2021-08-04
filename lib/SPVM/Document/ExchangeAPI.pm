@@ -50,7 +50,7 @@ Convert a Perl scalar data to a L<SPVM::Double> object. Return value is B<SPVM::
 
   my $spvm_nums = SPVM::new_byte_array([1, 2, 3]);
 
-Convert a Perl array reference to to a SPVM C<byte[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a Perl array reference to a SPVM C<byte[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
@@ -58,7 +58,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
   my $spvm_nums = SPVM::new_short_array([1, 2, 3]);
 
-Convert a Perl array reference to to a SPVM C<short[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a Perl array reference to a SPVM C<short[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
@@ -66,7 +66,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
   my $spvm_nums = SPVM::new_int_array([1, 2, 3]);
 
-Convert a Perl array reference to to a SPVM C<int[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a Perl array reference to a SPVM C<int[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
@@ -74,7 +74,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
   my $spvm_nums = SPVM::new_long_array([1, 2, 3]);
 
-Convert a Perl array reference to to a SPVM C<long[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a Perl array reference to a SPVM C<long[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
@@ -82,7 +82,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
   my $spvm_nums = SPVM::new_float_array([1.2, 2.5, 3.3]);
 
-Convert a Perl array reference to to a SPVM C<float[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a Perl array reference to a SPVM C<float[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
 
@@ -90,9 +90,57 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
 
   my $spvm_nums = SPVM::new_double_array([1.2, 2.5, 3.3]);
 
-Convert a Perl array reference to to a SPVM C<double[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a Perl array reference to a SPVM C<double[]> array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 If the first argument is a C<undef> value, the return value is a C<undef> value.
+
+=head2 SPVM::new_byte_array_len
+
+  my $spvm_nums = SPVM::new_byte_array_len([1, 2, 3]);
+
+Create a new SPVM C<byte[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+
+The lenght must be more than or equals to zero, otherwise a exception occurs.
+
+=head2 SPVM::new_short_array_len
+
+  my $spvm_nums = SPVM::new_short_array_len($length);
+
+Create a new  a SPVM C<short[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+
+The lenght must be more than or equals to zero, otherwise a exception occurs.
+
+=head2 SPVM::new_int_array_len
+
+  my $spvm_nums = SPVM::new_int_array_len($length);
+
+Create a new  a SPVM C<int[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+
+The lenght must be more than or equals to zero, otherwise a exception occurs.
+
+=head2 SPVM::new_long_array_len
+
+  my $spvm_nums = SPVM::new_long_array_len($length);
+
+Create a new  a SPVM C<long[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+
+The lenght must be more than or equals to zero, otherwise a exception occurs.
+
+=head2 SPVM::new_float_array_len
+
+  my $spvm_nums = SPVM::new_float_array_len($length);
+
+Create a new  a SPVM C<float[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+
+The lenght must be more than or equals to zero, otherwise a exception occurs.
+
+=head2 SPVM::new_double_array_len
+
+  my $spvm_nums = SPVM::new_double_array_len($length);
+
+Create a new  a SPVM C<double[]> array with length. The values of elements is zeros. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+
+The lenght must be more than or equals to zero, otherwise a exception occurs.
 
 =head2 SPVM::new_object_array
 
@@ -101,7 +149,7 @@ If the first argument is a C<undef> value, the return value is a C<undef> value.
     [SPVM::Byte->new(1), SPVM::Byte>new(2), SPVM::Byte->new(3)]
   );
 
-Convert a Perl array reference to to a SPVM object array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a Perl array reference to a SPVM object array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 =begin html
 
