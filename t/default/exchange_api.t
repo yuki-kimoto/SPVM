@@ -274,6 +274,81 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
+# new_xxx_array_bin
+{
+  {
+    my $spvm_values = SPVM::new_byte_array_from_bin("abc");
+    ok(TestCase::ExchangeAPI->spvm_new_byte_array_bin($spvm_values));
+  }
+  {
+    my $binary = pack('c*', 97, 98, $BYTE_MAX);
+    my $spvm_values = SPVM::new_byte_array_from_bin($binary);
+    ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
+  }
+  {
+    my $binary = pack('c*', 97, 98, $BYTE_MAX);
+    my $spvm_values = SPVM::new_byte_array_from_bin($binary);
+    ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
+  }
+  {
+    my $spvm_values = SPVM::new_byte_array_from_bin(encode('UTF-8', "あ"));
+    ok(TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($spvm_values));
+  }
+  {
+    my $binary = pack('s*', 97, 98, $SHORT_MAX);
+    my $spvm_values = SPVM::new_short_array_from_bin($binary);
+    ok(TestCase::ExchangeAPI->spvm_new_short_array_binary_pack($spvm_values));
+  }
+  {
+    my $binary = pack('l*', 97, 98, $INT_MAX);
+    my $spvm_values = SPVM::new_int_array_from_bin($binary);
+    ok(TestCase::ExchangeAPI->spvm_new_int_array_binary_pack($spvm_values));
+  }
+  {
+    my $binary = pack('q*', 97, 98, $LONG_MAX);
+    my $spvm_values = SPVM::new_long_array_from_bin($binary);
+    ok(TestCase::ExchangeAPI->spvm_new_long_array_binary_pack($spvm_values));
+  }
+  {
+    my $binary = pack('f*', 97, 98, $FLOAT_PRECICE);
+    my $spvm_values = SPVM::new_float_array_from_bin($binary);
+    ok(TestCase::ExchangeAPI->spvm_new_float_array_binary_pack($spvm_values));
+  }
+  {
+    my $binary = pack('d*', 97, 98, $DOUBLE_PRECICE);
+    my $spvm_values = SPVM::new_double_array_from_bin($binary);
+    ok(TestCase::ExchangeAPI->spvm_new_double_array_binary_pack($spvm_values));
+  }
+}
+
+# new_string_from_bin
+{
+  # new_string_from_bin - Argument decoded string, to_string, "" overload
+  {
+    my $spvm_string = SPVM::new_string_from_bin("abc");
+    is($spvm_string->to_string, "abc");
+    is("$spvm_string", "abc");
+  }
+
+  # new_string_from_bin - Empty
+  {
+    my $spvm_string = SPVM::new_string_from_bin("");
+    is($spvm_string->to_string, "");
+  }
+
+  # new_string_from_bin - undef
+  {
+    eval { SPVM::new_string_from_bin(undef) };
+    like($@, qr/Argument must be defined/);
+  }
+
+  # new_string_from_bin - reference
+  {
+    eval { SPVM::new_string_from_bin([]) };
+    like($@, qr/Argument must not be reference/);
+  }
+}
+
 # ref SPVM array
 {
   my $nums = SPVM::new_float_array([1, 2, 3]);
@@ -537,34 +612,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
-# new_string_from_bin
-{
-  # new_string_from_bin - Argument decoded string, to_string, "" overload
-  {
-    my $spvm_string = SPVM::new_string_from_bin("abc");
-    is($spvm_string->to_string, "abc");
-    is("$spvm_string", "abc");
-  }
-
-  # new_string_from_bin - Empty
-  {
-    my $spvm_string = SPVM::new_string_from_bin("");
-    is($spvm_string->to_string, "");
-  }
-
-  # new_string_from_bin - undef
-  {
-    eval { SPVM::new_string_from_bin(undef) };
-    like($@, qr/Argument must be defined/);
-  }
-
-  # new_string_from_bin - reference
-  {
-    eval { SPVM::new_string_from_bin([]) };
-    like($@, qr/Argument must not be reference/);
-  }
-}
-
 # new_mulnum_array_from_bin
 {
   # new_mulnum_array_from_bin - byte
@@ -789,57 +836,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
-  # new_xxx_array_string
-  {
-    {
-      my $spvm_values = SPVM::new_byte_array_from_bin(encode('UTF-8', "あ"));
-      ok(TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($spvm_values));
-    }
-  }
-  
-  # new_xxx_array_bin
-  {
-    {
-      my $spvm_values = SPVM::new_byte_array_from_bin("abc");
-      ok(TestCase::ExchangeAPI->spvm_new_byte_array_bin($spvm_values));
-    }
-    {
-      my $binary = pack('c*', 97, 98, $BYTE_MAX);
-      my $spvm_values = SPVM::new_byte_array_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
-    }
-    {
-      my $binary = pack('c*', 97, 98, $BYTE_MAX);
-      my $spvm_values = SPVM::new_byte_array_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
-    }
-    {
-      my $binary = pack('s*', 97, 98, $SHORT_MAX);
-      my $spvm_values = SPVM::new_short_array_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_short_array_binary_pack($spvm_values));
-    }
-    {
-      my $binary = pack('l*', 97, 98, $INT_MAX);
-      my $spvm_values = SPVM::new_int_array_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_int_array_binary_pack($spvm_values));
-    }
-    {
-      my $binary = pack('q*', 97, 98, $LONG_MAX);
-      my $spvm_values = SPVM::new_long_array_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_long_array_binary_pack($spvm_values));
-    }
-    {
-      my $binary = pack('f*', 97, 98, $FLOAT_PRECICE);
-      my $spvm_values = SPVM::new_float_array_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_float_array_binary_pack($spvm_values));
-    }
-    {
-      my $binary = pack('d*', 97, 98, $DOUBLE_PRECICE);
-      my $spvm_values = SPVM::new_double_array_from_bin($binary);
-      ok(TestCase::ExchangeAPI->spvm_new_double_array_binary_pack($spvm_values));
-    }
-  }
-  
   # middle size array
   {
     my $length = 1_000_000;
