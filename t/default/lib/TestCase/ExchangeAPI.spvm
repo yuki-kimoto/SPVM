@@ -399,6 +399,19 @@ package TestCase::ExchangeAPI {
     return 0;
   }
 
+  sub new_byte_array_from_string : int ($bytes : byte[]) {
+    
+    unless ($bytes isa byte[]) {
+      return 0;
+    }
+    
+    unless ((string)$bytes eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   sub spvm_new_byte_array_binary_pack : int ($values : byte[]) {
     
     if ($values->[0] == 97) {

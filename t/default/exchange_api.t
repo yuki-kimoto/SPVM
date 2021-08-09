@@ -274,50 +274,74 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
-# new_xxx_array_bin
+# Convert a Perl binary data to a SPVM array
 {
+  # new_byte_array_from_bin
   {
-    my $spvm_values = SPVM::new_byte_array_from_bin("abc");
-    ok(TestCase::ExchangeAPI->spvm_new_byte_array_bin($spvm_values));
+    {
+      my $spvm_values = SPVM::new_byte_array_from_bin("abc");
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_bin($spvm_values));
+    }
+    {
+      my $binary = pack('c*', 97, 98, $BYTE_MAX);
+      my $spvm_values = SPVM::new_byte_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
+    }
+    {
+      my $binary = pack('c*', 97, 98, $BYTE_MAX);
+      my $spvm_values = SPVM::new_byte_array_from_bin($binary);
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
+    }
+    {
+      my $spvm_values = SPVM::new_byte_array_from_bin(encode('UTF-8', "あ"));
+      ok(TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($spvm_values));
+    }
   }
-  {
-    my $binary = pack('c*', 97, 98, $BYTE_MAX);
-    my $spvm_values = SPVM::new_byte_array_from_bin($binary);
-    ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
-  }
-  {
-    my $binary = pack('c*', 97, 98, $BYTE_MAX);
-    my $spvm_values = SPVM::new_byte_array_from_bin($binary);
-    ok(TestCase::ExchangeAPI->spvm_new_byte_array_binary_pack($spvm_values));
-  }
-  {
-    my $spvm_values = SPVM::new_byte_array_from_bin(encode('UTF-8', "あ"));
-    ok(TestCase::ExchangeAPI->spvm_new_byte_array_from_bin($spvm_values));
-  }
+  
+  # new_short_array_from_bin
   {
     my $binary = pack('s*', 97, 98, $SHORT_MAX);
     my $spvm_values = SPVM::new_short_array_from_bin($binary);
     ok(TestCase::ExchangeAPI->spvm_new_short_array_binary_pack($spvm_values));
   }
+
+  # new_int_array_from_bin
   {
     my $binary = pack('l*', 97, 98, $INT_MAX);
     my $spvm_values = SPVM::new_int_array_from_bin($binary);
     ok(TestCase::ExchangeAPI->spvm_new_int_array_binary_pack($spvm_values));
   }
+
+  # new_long_array_from_bin
   {
     my $binary = pack('q*', 97, 98, $LONG_MAX);
     my $spvm_values = SPVM::new_long_array_from_bin($binary);
     ok(TestCase::ExchangeAPI->spvm_new_long_array_binary_pack($spvm_values));
   }
+
+  # new_float_array_from_bin
   {
     my $binary = pack('f*', 97, 98, $FLOAT_PRECICE);
     my $spvm_values = SPVM::new_float_array_from_bin($binary);
     ok(TestCase::ExchangeAPI->spvm_new_float_array_binary_pack($spvm_values));
   }
+
+  # new_double_array_from_bin
   {
     my $binary = pack('d*', 97, 98, $DOUBLE_PRECICE);
     my $spvm_values = SPVM::new_double_array_from_bin($binary);
     ok(TestCase::ExchangeAPI->spvm_new_double_array_binary_pack($spvm_values));
+  }
+}
+
+# Convert a Perl string to a SPVM array
+{
+  # new_byte_array_from_string
+  {
+    {
+      my $spvm_values = SPVM::new_byte_array_from_string("あいう");
+      ok(TestCase::ExchangeAPI->new_byte_array_from_string($spvm_values));
+    }
   }
 }
 
@@ -346,6 +370,69 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     eval { SPVM::new_string_from_bin([]) };
     like($@, qr/Argument must not be reference/);
+  }
+}
+
+# new_mulnum_array_from_bin
+{
+  # new_mulnum_array_from_bin - byte
+  {
+    my $binary = pack('c9', ($BYTE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_byte($spvm_values));
+    my $out_bin = $spvm_values->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+
+  # new_mulnum_array_from_bin - short
+  {
+    my $binary = pack('s9', ($SHORT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_short($spvm_values));
+    my $out_bin = $spvm_values->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  
+  # new_mulnum_array_from_bin - int
+  {
+    my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_int($spvm_values));
+    my $out_bin = $spvm_values->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  # new_mulnum_array_from_bin - long
+  {
+    my $binary = pack('q9', ($LONG_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_long($spvm_values));
+    my $out_bin = $spvm_values->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  # new_mulnum_array_from_bin - float
+  {
+    my $binary = pack('f9', ($FLT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_float($spvm_values));
+    my $out_bin = $spvm_values->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+  # new_mulnum_array_from_bin - double
+  {
+    my $binary = pack('d9', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_double($spvm_values));
+    my $out_bin = $spvm_values->to_bin;
+    is_deeply($out_bin, $binary);
+  }
+
+  # new_mulnum_array_from_bin - double
+  {
+    my $binary = pack('d8', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7));
+    eval {
+      SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+    };
+    ok($@);
   }
 }
 
@@ -609,69 +696,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     eval { SPVM::new_string([]) };
     like($@, qr/Argument must not be reference/);
-  }
-}
-
-# new_mulnum_array_from_bin
-{
-  # new_mulnum_array_from_bin - byte
-  {
-    my $binary = pack('c9', ($BYTE_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_byte($spvm_values));
-    my $out_bin = $spvm_values->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-
-  # new_mulnum_array_from_bin - short
-  {
-    my $binary = pack('s9', ($SHORT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_short($spvm_values));
-    my $out_bin = $spvm_values->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  
-  # new_mulnum_array_from_bin - int
-  {
-    my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_int($spvm_values));
-    my $out_bin = $spvm_values->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  # new_mulnum_array_from_bin - long
-  {
-    my $binary = pack('q9', ($LONG_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_long($spvm_values));
-    my $out_bin = $spvm_values->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  # new_mulnum_array_from_bin - float
-  {
-    my $binary = pack('f9', ($FLT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_float($spvm_values));
-    my $out_bin = $spvm_values->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-  # new_mulnum_array_from_bin - double
-  {
-    my $binary = pack('d9', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_values = SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
-    ok(TestCase::ExchangeAPI->spvm_new_mulnum_array_binary_double($spvm_values));
-    my $out_bin = $spvm_values->to_bin;
-    is_deeply($out_bin, $binary);
-  }
-
-  # new_mulnum_array_from_bin - double
-  {
-    my $binary = pack('d8', ($DBL_MIN, 1, 2), (3, 4, 5), (6, 7));
-    eval {
-      SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
-    };
-    ok($@);
   }
 }
 

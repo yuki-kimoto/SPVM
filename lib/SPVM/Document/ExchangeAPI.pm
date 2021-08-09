@@ -250,93 +250,63 @@ Thg Perl binary data is doubleerpreted as 8-bit signed doubleegers. The created 
 
 If the first argument is C<undef>, C<undef> is returned.
 
-=begin html
+=head2 SPVM::new_mulnum_array_from_bin
 
-<h4 id="exchange-api-perl-binary-to-spvm-value-array">Convert Perl Binary Data to SPVM Multi Numeric Array - SPVM::new_mulnum_array_from_bin</h4>
-  <p>
-    To convert Perl Binary Data to SPVM Multi Numeric Array, use the SPVM::new_mulnum_array_from_bin function.
-  </p>
-<pre>
-my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[],"$binary);
-</pre>
-  <p>
-    The first argument specifies the Perl packed binaries. The length of the binary is multiplied by the number of multinumeric fields and the field width, which must be disdivided. Otherwise, an Exception is raised.
-  </p>
-  <p>
-    The second argument specifies the array type of the value of the SPVM.
-  </p>
-  <p>
-    The return value is an "SPVM::Data::Array" object that represents the array type of the Value of SPVM. The length of the returned array is the length of the binary, multiplied by the number of multinumeric fields and the field width, divided.
-  </p>
-  <p>
-    There are some samples.
-  </p>
-<pre>
-# new_mulnum_array_from_bin - byte
-{
-  my $binary = pack('c9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
-}
+  my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
+  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
 
-# new_mulnum_array_from_bin - short
-{
-  my $binary = pack('s9', (0, 1, 2), (3, 4, 5), (6, 7, 8);;
-  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3s[]",$binary);
-}
+Convert Perl a binary data to SPVM Multi Numeric Array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-# new_mulnum_array_from_bin - int
-{
-  my $binary = pack('l9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[],"$binary);
-}
+The first argument is a multi numeric array type of SPVM.
 
-# new_mulnum_array_from_bin - long
-{
-  my $binary = pack('q9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
-}
+The second argument is the Perl packed binary data. The length of the created array is calcurated automatically.
 
-# new_mulnum_array_from_bin - float
-{
-  my $binary = pack('f9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3f[],"$binary);
-}
-
-# new_mulnum_array_from_bin - double
-{
-  my $binary = pack('d9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[],"$binary);
-}
-</pre>
+B<Examples:>
   
-<p>
-    The first argument specifies the array type of the value of the SPVM.
-  </p>
-  <p>
-    The second argument is Array Reference with a hash reference on the element. The key of the hash reference must contain the values of all fields of multiNumeric Type. Otherwise, an Exception is raised.
-  </p>
+  # new_mulnum_array_from_bin - byte
+  {
+    my $binary = pack('c9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
+  }
 
-  <h4 id = "exchange-api-perl-string-to-spvm-byte-array">Convert Perl string to SPVM byte[] value - SPVM::new_byte_array_from_string</h4>
-  <p>
-    To convert Perl string to SPVM byte[] value, use SPVM::new_byte_array_from_string function. A Perl string here refers to a decoded string.
-  </p>
-<pre>
-use utf8;
-my $spvm_byte_array = SPVM::new_byte_array_from_string("aiueo");
-</pre>
-  <p>
-    It receives a Perl string as the first argument. A Perl string here refers to a decoded string.
-  </p>
-  <p>
-    The length is the length when counting the byte string as UTF-8.
-  </p>
-  <p>
-    The return value is a "SPVM::Data::Array" object that represents the "byte[]" type of SPVM.
-  </p>
-  <p>
-    If the first argument is an Undefined Value, the Undefined Value will be returned.
-  </p>
+  # new_mulnum_array_from_bin - short
+  {
+    my $binary = pack('s9', (0, 1, 2), (3, 4, 5), (6, 7, 8);;
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
+  }
+
+  # new_mulnum_array_from_bin - int
+  {
+    my $binary = pack('l9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+  }
+
+  # new_mulnum_array_from_bin - long
+  {
+    my $binary = pack('q9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
+  }
+
+  # new_mulnum_array_from_bin - float
+  {
+    my $binary = pack('f9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
+  }
+
+  # new_mulnum_array_from_bin - double
+  {
+    my $binary = pack('d9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+  }
+
+=head2 SPVM::new_byte_array_from_string
+
+  use utf8;
+  my $spvm_byte_array = SPVM::new_byte_array_from_string("あいう");
+
+Convert a Perl string to SPVM byte[] value,  Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+
+=begin html
 
   <h4 id= "exchange-api-perl-string-to-spvm-string">Perl Convert string to SPVM string - SPVM::new_string</h4>
   <p>
@@ -361,9 +331,6 @@ my $spvm_string = SPVM::new_string("Aiueo");
   <p>
     This function is actually an alias for <a href="#exchange-api-perl-string-to-spvm-byte-array">SPVM::new_byte_array_from_string</a>.
   </p>
-
-
-=begin html
 
 <h4 id="exchange-api-perl-array-ref-to-spvm-object-array">Convert Perl Array Reference to SPVM Array Object - SPVM::new_object_array</h4>
   <p>
