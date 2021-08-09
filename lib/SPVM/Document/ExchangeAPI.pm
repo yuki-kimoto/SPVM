@@ -306,31 +306,16 @@ B<Examples:>
 
 Convert a Perl string to SPVM byte[] value,  Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
-=begin html
+=head2 SPVM::new_string
 
-  <h4 id= "exchange-api-perl-string-to-spvm-string">Perl Convert string to SPVM string - SPVM::new_string</h4>
-  <p>
-    To convert perl strings to SPVM string types, use the SPVM::new_string function. Perl strings refer to decoded strings here.
-  </p>
-<pre>
-use utf8;
-my $spvm_string = SPVM::new_string("Aiueo");
-</pre>
-  <p>
-    The first argument takes a Perl string.
-  </p>
-  <p>
-    The length is utf-8, the length of the byte sequence counted.
-  </p>
-  <p>
-    The return value is the SPVM::Data::Array object that represents the "byte[] value" of SPVM. The string type of SPVM is treated as a byte[] value at run time.
-  </p>
-  <p>
-    If the first argument is an Undefined Value, an Undefined Value is returned.
-  </p>
-  <p>
-    This function is actually an alias for <a href="#exchange-api-perl-string-to-spvm-byte-array">SPVM::new_byte_array_from_string</a>.
-  </p>
+  use utf8;
+  my $spvm_string = SPVM::new_string("あいう");
+
+Convert a Perl string to a SPVM string.
+
+If the argument is C<undef>, C<undef> is returned.
+
+=begin html
 
 <h4 id="exchange-api-perl-array-ref-to-spvm-object-array">Convert Perl Array Reference to SPVM Array Object - SPVM::new_object_array</h4>
   <p>
