@@ -409,75 +409,41 @@ B<Examples:>
     my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
   }
 
+=head2 $spvm_array->length
+
+  my $length = $spvm_array->length;
+
+Get the length of SPVM array. $spvm_array means a  L<SPVM::BlessedObject::Array> object.
+
+=head2 $spvm_array->to_elems
+
+  my $perl_array_ref = $spvm_array->to_elems;
+
+Convert a SPVM array to Perl a array reference.
+
+If the SPVM array is numeric array type, the element of the Perl array is numeric value.
+
+If the SPVM array is object array type, the element of the Perl array is a object which inherits L<SPVM::BlessedObject> or C<undef>.
+
+If the SPVM array is multi numeric array type, the element of the Perl array is a hash reference.
+
+=head2 $spvm_array->to_bin
+
+  my $perl_binary = $spvm_array->to_bin;
+
+Convert a SPVM Array to Perl binary data.
+
+If the SPVM array is a numeric array type or a multi numeric type, the binary representation of SPVM is copied directly into a scalar variable.
+
+If the Array of SPVM is of any other type, an exception occurs.
+
+=head2 $spvm_data->to_string
+
+Convert a SPVM string or a SPVM byte[] array to a Perl string(a decoded string).
+
+If the type is other one, an exception occurs.
+
 =begin html
-
-<h3 id="exchange-api-spvm-value-to-perl-data">Convert SPVM Value to Perl Data</h3>
-  <ul class="toc">
-    <li><a href="#exchange-api-spvm-array-length">Get SPVM Array Length - length</a></li>
-    <li><a href="#exchange-api-spvm-array-to-perl-binary">Convert SPVM Array to Perl Binary Data - to_bin</a></li>
-    <li><a href="#exchange-api-spvm-string-to-perl-string">Convert SPVM strings to Perl strings - to_string</a></li>
-    <li><a href="#exchange-api-spvm-string-array-to-perl-string-string-array-ref">Convert SPVM string Array into perl string Array Reference - to_strings</a></li>
-  </ul>
-
-<h4 id="exchange-api-spvm-array-length">Get SPVM Array Length - length</h4>
-  <p>
-    Get SPVM Array Length
-  </p>
-
-<pre>
-my $length = $spvm_array->length;
-</pre>
-
-<h4 id="exchange-api-spvm-array-to-perl-array-ref">Convert SPVM Array to Perl Array Reference - to_elems</h4>
-  <p>
-    To convert SPVM Array to Perl Array Reference, use the SPVM::Data::Array to_elems method.
-  </p>
-<pre>
-my $perl_array_ref = $spvm_array->to_elems;
-</pre>
-  <p>
-    If the elements of the SPVM Array are Numeric Types, the <a href="#exchange-api-rule-spvm-numeric-to-perl-scalar">SPVM Numeric Value is converted by the</a> Rule that convert Numeric Types of Perl to Perl scalar datas.
-  </p>
-  <p>
-    If the element of the SPVM Array is an object type, the corresponding SPVM::Data or its subclass is created.
-  </p>
-  <p>
-    If the elements of the SPVM Array are multiNumeric Types, a hash reference is created with the key and value of the field. The value is converted by a rule that converts the Numeric Type of <a href="#exchange-api-rule-spvm-numeric-to-perl-scalar">SPVM to Perl scalar datas</a>.
-  </p>
-  <p>
-    If the elements of the SPVM Array are Undefined Values, they is converted to undefined Perl values.
-  </p>
-
-<h4 id="exchange-api-spvm-array-to-perl-binary">Convert SPVM Array to Perl Binary Data - to_bin</h4>
-  <p>
-    To convert SPVM Array to Perl Binary Data, use the SPVM::Data::Array to_bin method.
-  </p>
-<pre>
-my $perl_binary = $spvm_array->to_bin;
-</pre>
-  <p>
-    If the SPVM Array is a numeric array type or a value array type, the binary representation in SPVM is copied directly into the scalar variable.
-  </p>
-  <p>
-    If the Array of SPVM is of any other type, an Exception is raised.
-  </p>
-
-<h4 id="exchange-api-spvm-string-to-perl-string">Convert SPVM string to Perl string - to_string</h4>
-  <p>
-    To convert SPVM string to a Perl string, use the SPVM::Data::Array to_string method.
-  </p>
-<pre>
-my $perl_string = $spvm_string->to_string;
-</pre>
-  <p>
-    If the SPVM type is of byte[] or string type, it is converted to a string decoded by Perl UTF-8.
-  </p>
-  <p>
-    If the Data in SPVM is an Undefined Value, it is converted to an Undefined Value in Perl.
-  </p>
-  <p>
-    If the Data in SPVM is of a type other than the above, an Exception is raised.
-  </p>
 
 <h4 id="exchange-api-spvm-string-array-to-perl-string-string-string-array-ref">Convert SPVM string Array to Perl Array Reference that element is string - to_strings</h4>
   <p>
@@ -493,7 +459,7 @@ my $perl_array_ref = $spvm_string_array->to_strings;
     If an element of the SPVM Array type is an Undefined Value, it is converted to an Undefined Value in Perl.
   </p>
   <p>
-    If the Data in SPVM is of a type other than the above, an Exception is raised.
+    If the Data in SPVM is of a type other than the above, an exception occurs.
   </p>
 
 <h3 id="exchange-api-call-spvm-sub">Call SPVM Method</h3>
