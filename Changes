@@ -1,3 +1,12 @@
+Revision history for SPVM
+ 
+0.9010  2021-08-13
+        [CHANGES]
+        * improve SPVM::Document::ExchangeAPI
+        
+        [BUGFIXES]
+        * None
+        
 0.9009 2021-06-29
   - Native API get_basic_type_id performance become O(1)
   - Native API get_field_id performance become O(1)
