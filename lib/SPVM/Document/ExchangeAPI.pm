@@ -44,93 +44,59 @@ A default SPVM runtime is created the first time you call a method of SPVM modul
 
 =head1 CALL SPVM METHOD
 
+The method of SPVM module can be called from Perl directory.
+
+=head2 CALL STATIC METHOD
+
+Let's call SPVM static method from Perl.
+
+  use SPVM 'Foo';
+
+  my $total = Foo->sum(1, 2);
+
+The definition of C<Foo> module is the following.
+
+  # Foo.spvm
+  package Foo {
+    sub sum : int ($x1: int, $x2: int) {
+      return $x1 + $x2;
+    }
+  }
+
+If the number of arguments does not match the number of arguments of the SPVM method, an exception occurs.
+
+The Perl values of the arguments are converted to the SPVM values by the rule of argument convertion.
+
+If the type is non-conforming, an exception occurs.
+
+The SPVM return value is converted to a Perl return value by the rule of return value convertion.
+
+The SPVM exception is converted to a Perl exception.
+
+=head2 CALL INSTANCE METHOD
+
+Let's call SPVM instance method from Perl.
+
+  use SPVM 'Foo';
+
+  my $foo = Foo->new;
+
+  my $total = $foo->sum(1, 2);
+
+The definition of C<Foo> module is the following.
+
+  # Foo.spvm
+  package Foo {
+    sub new : Foo () {
+      return new Foo;
+    }
+
+    sub sum : int ($self: self, $x1: int, $x2: int) (
+      return $x1 + $x2;
+    }
+  }
+
 =begin html
-
-  <h4 id = "exchange-api-call-spvm-sub-sub-call">Call Method</h4>
-  <p>
-    In order to call a Method, the SPVM Module must be loaded by <a href="#exchange-api-call-spvm-sub-use-Module">Load SPVM Module</a>.
-  </p>
-
-  <p>
-    SPVM Method are wrapped in Perl Method and can be called using Perl class Call Method.
-  </p>
-
-<pre>
-# script.pl
-use SPVM 'Foo';
-
-my $total = Foo->sum(1, 2);
-</pre>
-  <p>
-    If the number of arguments does not match the number of arguments of the SPVM Method, an Exception will be thrown.
-  </p>
-  <p>
-    The Perl value passed as an argument is converted to the SPVM value by <a href="#exchange-api-call-spvm-sub-convert-argument">Argument Type Conversion</a>.
-  </p>
-  <p>
-    If the converted type does not match the argument type of the SPVM Method, an Exception is thrown.
-  </p>
-  <p>
-    The return value is transformed by the conversion on the return value.
-  </p>
-  <p>
-    SPVM Exception is converted to Perl Exception.
-  </p>
-
-  <h4 id = "exchange-api-call-spvm-sub-method-call">Call Method</h4>
-  <p>
-    In order to call the method, the SPVM Module must be loaded by <a href="#exchange-api-call-spvm-sub-use-Module">Load SPVM Module</a>.
-  </p>
-  
-<pre>
-# script.pl
-use SPVM 'Foo';
-</pre>
-
-  <p>
-    Suppose the following Foo.spvm is placed on the Module search path.
-  </p>
-
-<pre>
-# Foo.spvm
-package Foo {
-  sub new : Foo () {
-    return new Foo;
-  }
-
-  sub sum : int ($self: self, $x1: int, $x2: int) (
-    return $x1 + $x2;
-  }
-}
-</pre>
-
-  <p>
-    SPVM Method are wrapped in Perl Method and can be called using Perl Call Method.
-  </p>
-
-<pre>
-# script.pl
-use SPVM 'Foo';
-
-my $foo = Foo->new;
-
-my $total = $foo->sum(1, 2);
-</pre>
-  <p>
-    If the number of arguments does not match the number of arguments of the SPVM Method, an Exception will be thrown.
-  </p>
-  <p>
-    The Perl value passed as an argument is converted to the SPVM value by <a href="#exchange-api-call-spvm-sub-convert-argument">Argument Type Conversion</a>.
-  </p>
-  <p>
-    If the converted type does not match the argument type of the SPVM Method, an Exception is thrown.
-  </p>
-  <p>
-    The return value is transformed by the conversion on the return value.
-  </p>
-  <p>
-    SPVM Exception is converted to Perl Exception.
-  </p>
 
   <h4 id = "exchange-api-call-spvm-sub-convert-argument">Argument Type Conversion</h4>
 
