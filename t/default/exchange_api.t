@@ -21,6 +21,7 @@ use SPVM 'TestCase'; my $use_test_line = __LINE__;
 
 use SPVM 'TestCase::ExchangeAPI';
 use SPVM 'TestCase::Point_3i';
+use SPVM 'TestCase::Minimal';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;
@@ -889,6 +890,66 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is($spvm_values->length, $length);
     }
   }
+}
+
+# SPVM::BlessedObject::Array get and set
+{
+  {
+    my $sp_values = SPVM::new_byte_array([0, 0]);
+    $sp_values->set(1, $BYTE_MAX);
+    is_deeply($sp_values->to_elems, [0, $BYTE_MAX]);
+    my $value = $sp_values->get(1);
+    is($value, $BYTE_MAX);
+  }
+  {
+    my $sp_values = SPVM::new_short_array([0, 0]);
+    $sp_values->set(1, $SHORT_MAX);
+    is_deeply($sp_values->to_elems, [0, $SHORT_MAX]);
+    my $value = $sp_values->get(1);
+    is($value, $SHORT_MAX);
+  }
+  {
+    my $sp_values = SPVM::new_int_array([0, 0]);
+    $sp_values->set(1, $INT_MAX);
+    is_deeply($sp_values->to_elems, [0, $INT_MAX]);
+    my $value = $sp_values->get(1);
+    is($value, $INT_MAX);
+  }
+  {
+    my $sp_values = SPVM::new_long_array([0, 0]);
+    $sp_values->set(1, $LONG_MAX);
+    is_deeply($sp_values->to_elems, [0, $LONG_MAX]);
+    my $value = $sp_values->get(1);
+    is($value, $LONG_MAX);
+  }
+  {
+    my $sp_values = SPVM::new_float_array([0, 0]);
+    $sp_values->set(1, $FLOAT_PRECICE);
+    is_deeply($sp_values->to_elems, [0, $FLOAT_PRECICE]);
+    my $value = $sp_values->get(1);
+    is($value, $FLOAT_PRECICE);
+  }
+  {
+    my $sp_values = SPVM::new_double_array([0, 0]);
+    $sp_values->set(1, $DOUBLE_PRECICE);
+    is_deeply($sp_values->to_elems, [0, $DOUBLE_PRECICE]);
+    my $value = $sp_values->get(1);
+    is($value, $DOUBLE_PRECICE);
+  }
+}
+
+# ref SPVM object
+{
+  my $minimal = TestCase::Minimal->new;
+  
+  is(ref $minimal, 'TestCase::Minimal');
+}
+
+# stringify SPVM object
+{
+  my $minimal = TestCase::Minimal->new;
+  
+  like("$minimal", qr/TestCase::Minimal/);
 }
 
 # All object is freed
