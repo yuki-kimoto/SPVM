@@ -43,7 +43,7 @@ package TestCase::ExchangeAPI {
     return $minimal;
   }
 
-  sub return_byte_value : TestCase::Point_3b () {
+  sub return_byte_multi_numeric : TestCase::Point_3b () {
     my $point : TestCase::Point_3b;
     $point->{x} = 1;
     $point->{y} = 2;
@@ -52,7 +52,7 @@ package TestCase::ExchangeAPI {
     return $point;
   }
   
-  sub return_short_value : TestCase::Point_3s () {
+  sub return_short_multi_numeric : TestCase::Point_3s () {
     my $point : TestCase::Point_3s;
     $point->{x} = 1;
     $point->{y} = 2;
@@ -61,7 +61,7 @@ package TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_int_value : TestCase::Point_3i () {
+  sub return_int_multi_numeric : TestCase::Point_3i () {
     my $point : TestCase::Point_3i;
     $point->{x} = 1;
     $point->{y} = 2;
@@ -70,7 +70,7 @@ package TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_long_value : TestCase::Point_3l () {
+  sub return_long_multi_numeric : TestCase::Point_3l () {
     my $point : TestCase::Point_3l;
     $point->{x} = 1;
     $point->{y} = 2;
@@ -79,7 +79,7 @@ package TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_float_value : TestCase::Point_3f () {
+  sub return_float_multi_numeric : TestCase::Point_3f () {
     my $point : TestCase::Point_3f;
     $point->{x} = 1;
     $point->{y} = 2;
@@ -88,7 +88,7 @@ package TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_double_value : TestCase::Point_3d () {
+  sub return_double_multi_numeric : TestCase::Point_3d () {
     my $point : TestCase::Point_3d;
     $point->{x} = 1;
     $point->{y} = 2;

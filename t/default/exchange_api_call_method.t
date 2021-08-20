@@ -622,41 +622,41 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   }
 }
 
-# Return value
+# Return multi numeric
 {
-  # Return value - byte
+  # Return multi numeric - byte
   {
-    my $val = TestCase::ExchangeAPI->return_byte_value;
+    my $val = TestCase::ExchangeAPI->return_byte_multi_numeric;
     is_deeply($val, {x => 1, y => 2, z => $BYTE_MIN});
   }
   
-  # Return value - short
+  # Return multi numeric - short
   {
-    my $val = TestCase::ExchangeAPI->return_short_value;
+    my $val = TestCase::ExchangeAPI->return_short_multi_numeric;
     is_deeply($val, {x => 1, y => 2, z => $SHORT_MIN});
   }
   
-  # Return value - int
+  # Return multi numeric - int
   {
-    my $val = TestCase::ExchangeAPI->return_int_value;
+    my $val = TestCase::ExchangeAPI->return_int_multi_numeric;
     is_deeply($val, {x => 1, y => 2, z => $INT_MIN});
   }
   
-  # Return value - long
+  # Return multi numeric - long
   {
-    my $val = TestCase::ExchangeAPI->return_long_value;
+    my $val = TestCase::ExchangeAPI->return_long_multi_numeric;
     is_deeply($val, {x => 1, y => 2, z => $LONG_MIN});
   }
   
-  # Return value - float
+  # Return multi numeric - float
   {
-    my $val = TestCase::ExchangeAPI->return_float_value;
+    my $val = TestCase::ExchangeAPI->return_float_multi_numeric;
     is_deeply($val, {x => 1, y => 2, z => $FLT_MIN});
   }
   
-  # Return value - double
+  # Return multi numeric - double
   {
-    my $val = TestCase::ExchangeAPI->return_double_value;
+    my $val = TestCase::ExchangeAPI->return_double_multi_numeric;
     is_deeply($val, {x => 1, y => 2, z => $DBL_MIN});
   }
 }
