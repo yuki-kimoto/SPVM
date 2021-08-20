@@ -744,6 +744,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
+  # Return string
+  {
+    # Return string
+    {
+      my $value = TestCase::ExchangeAPI->return_string;
+      is(ref $value, 'SPVM::BlessedObject::String');
+      ok($value eq "あいう");
+    }
+  }
+
   # Return array
   {
     # Return array
