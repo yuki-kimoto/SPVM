@@ -674,11 +674,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Return array
   {
-    my $vals = TestCase::ExchangeAPI->return_array->to_elems;
-    is($vals->[0]->x, 1);
-    is($vals->[0]->y, 2);
-    is($vals->[1]->x, 3);
-    is($vals->[1]->y, 4);
+    my $blessed_array = TestCase::ExchangeAPI->return_array;
+    my $values = $blessed_array->to_elems;
+    is($values->[0]->x, 1);
+    is($values->[0]->y, 2);
+    is($values->[1]->x, 3);
+    is($values->[1]->y, 4);
   }
 }
 
@@ -686,11 +687,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Return oarray
   {
-    my $vals = TestCase::ExchangeAPI->return_oarray->to_elems;
-    is($vals->[0]->x, 1);
-    is($vals->[0]->y, 2);
-    is($vals->[1]->x, 3);
-    is($vals->[1]->y, 4);
+    my $values = TestCase::ExchangeAPI->return_oarray->to_elems;
+    is($values->[0]->x, 1);
+    is($values->[0]->y, 2);
+    is($values->[1]->x, 3);
+    is($values->[1]->y, 4);
   }
 }
 
