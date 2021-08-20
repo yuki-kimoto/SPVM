@@ -243,30 +243,34 @@ SPVM int value(same type as int32_t of C language) is converted to Perl scalar b
   int32_t spvm_int_value = VALUE;
   SV* perl_scalar = newSViv(spvm_int_value);
 
-=head3 Convert SPVM long value to Perl scalar data
+=head3 SPVM long value to Perl scalar
 
 SPVM long value(same type as int64_t of C language) is converted to Perl scalar by L<newSViv function of perlapi|https://perldoc.perl.org/perlapi#newSViv>.
 
   int64_t spvm_long_value = VALUE;
   SV* perl_scalar = newSViv(spvm_long_value);
 
-=head3 Convert SPVM float value to Perl scalar data
+=head3 SPVM float value to Perl scalar
 
 SPVM float value(same type as float of C language) is converted to Perl scalar by L<newSVnv function of perlapi|https://perldoc.perl.org/perlapi#newSVnv>.
 
-  float spvm_float_value;
+  float spvm_float_value = VALUE;
   SV* perl_scalar = newSVnv(spvm_float_value);
 
-=head3 SPVM double value to Perl scalar data
+=head3 SPVM double value to Perl scalar
 
 SPVM double value(same type as double of C language) is converted to Perl scalar by L<newSVnv function of perlapi|https://perldoc.perl.org/perlapi#newSVnv>.
 
-  double spvm_double_value;
+  double spvm_double_value = VALUE;
   SV* perl_scalar = newSVnv(spvm_double_value);
 
-=head3 SPVM multi numeric type to Perl hash reference
+=head3 SPVM string to Perl string
 
-If the return value is a SPVM Multi Numeric Type, it will be converted to a hash reference. The key is the SPVM Multi Numeric field name and the value is <a href="#exchange-api-rule-spvm-numeric-to-perl-scalar">SPVM Numeric Value is converted to Perl scalar data. The value is converted to a Perl scalar data by the rule</a>.
+SPVM string is converted to a Perl decoded string.
+
+=head3 SPVM multi numeric value to Perl hash reference
+
+SPVM multi numeric value is converted to Perl hash reference which keys is the field names of multi numeric type.
 
 =head3 SPVM undef to Perl undef
 
