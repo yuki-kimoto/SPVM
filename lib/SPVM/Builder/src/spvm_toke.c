@@ -1716,13 +1716,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             switch (keyword[0]) {
               // Keyword
-              case 'a' :
+              case 'a' : {
                 if (strcmp(keyword, "allow") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ALLOW);
                   return ALLOW;
                 }
                 break;
-              case 'b' :
+              }
+              case 'b' : {
                 if (strcmp(keyword, "break") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BREAK);
                   return BREAK;
@@ -1732,7 +1733,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return BYTE;
                 }
                 break;
-              case 'c' :
+              }
+              case 'c' : {
                 if (strcmp(keyword, "callback_t") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_CALLBACK_T, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
@@ -1748,7 +1750,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return STRING_CMP;
                 }
                 break;
-              case 'd' :
+              }
+              case 'd' : {
                 if (strcmp(keyword, "default") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_DEFAULT);
                   return DEFAULT;
@@ -1766,7 +1769,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DUMP;
                 }
                 break;
-              case 'e' :
+              }
+              case 'e' : {
                 if (strcmp(keyword, "elsif") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_ELSIF);
                   return ELSIF;
@@ -1788,7 +1792,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return EVAL;
                 }
                 break;
-              case 'f' :
+              }
+              case 'f' : {
                 if (strcmp(keyword, "for") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FOR);
                   return FOR;
@@ -1798,7 +1803,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return FLOAT;
                 }
                 break;
-              case 'g' :
+              }
+              case 'g' : {
                 if (strcmp(keyword, "gt") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_GT);
                   return STRGT;
@@ -1808,14 +1814,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return STRGE;
                 }
                 break;
-              case 'h' :
+              }
+              case 'h' : {
                 if (strcmp(keyword, "has") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FIELD);
                   compiler->expect_field_name = 1;
                   return HAS;
                 }
                 break;
-              case 'i' :
+              }
+              case 'i' : {
                 if (strcmp(keyword, "if") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_IF);
                   return IF;
@@ -1833,13 +1841,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return INT;
                 }
                 break;
-              case 'I' :
+              }
+              case 'I' : {
                 if (strcmp(keyword, "INIT") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_INIT);
                   return INIT;
                 }
                 break;
-              case 'l' :
+              }
+              case 'l' : {
                 if (strcmp(keyword, "last") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LAST);
                   return LAST;
@@ -1865,7 +1875,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return LONG;
                 }
                 break;
-              case 'm' :
+              }
+              case 'm' : {
                 if (strcmp(keyword, "my") == 0) {
                   SPVM_MY* my = SPVM_MY_new(compiler);
                   yylvalp->opval = SPVM_OP_new_op_my(compiler, my, compiler->cur_file, compiler->cur_line);
@@ -1877,7 +1888,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DESCRIPTOR;
                 }
                 break;
-              case 'n' :
+              }
+              case 'n' : {
                 if (strcmp(keyword, "native") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_NATIVE, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
@@ -1897,7 +1909,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return NEW;
                 }
                 break;
-              case 'o' :
+              }
+              case 'o' : {
                 if (strcmp(keyword, "our") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PACKAGE_VAR);
                   return OUR;
@@ -1907,7 +1920,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return OBJECT;
                 }
                 break;
-              case 'p' :
+              }
+              case 'p' : {
                 if (strcmp(keyword, "package") == 0) {
                   
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PACKAGE);
@@ -1943,7 +1957,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DESCRIPTOR;
                 }
                 break;
-              case 'r' :
+              }
+              case 'r' : {
                 if (strcmp(keyword, "ref") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_REFOP);
                   return REFOP;
@@ -1971,7 +1986,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DESCRIPTOR;
                 }
                 break;
-              case 's' :
+              }
+              case 's' : {
                 if (strcmp(keyword, "self") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SELF);
                   return SELF;
@@ -2002,7 +2018,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return SCALAR;
                 }
                 break;
-              case 'u' :
+              }
+              case 'u' : {
                 if (strcmp(keyword, "undef") == 0) {
                   yylvalp->opval = SPVM_OP_new_op_undef(compiler, compiler->cur_file, compiler->cur_line);
                   return UNDEF;
@@ -2020,13 +2037,15 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return USE;
                 }
                 break;
-              case 'v' :
+              }
+              case 'v' : {
                 if (strcmp(keyword, "void") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_VOID);
                   return VOID;
                 }
                 break;
-              case 'w' :
+              }
+              case 'w' : {
                 if (strcmp(keyword, "warn") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_WARN);
                   return WARN;
@@ -2045,7 +2064,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DESCRIPTOR;
                 }
                 break;
-              case '_':
+              }
+              case '_': {
                 if (strcmp(keyword, "__END__") == 0) {
                   *compiler->bufptr = '\0';
                   continue;
@@ -2065,6 +2085,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return CONSTANT;
                 }
                 break;
+              }
             }
           }
           
