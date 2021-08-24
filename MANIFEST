@@ -359,6 +359,8 @@ lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
 lib/SPVM/BlessedObject/Package.pm
 lib/SPVM/BlessedObject/String.pm
+lib/SPVM/Bool.pm
+lib/SPVM/Bool.spvm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
@@ -766,6 +768,7 @@ t/default/lib/TestCase/Inline.spvm
 t/default/lib/TestCase/Isa.spvm
 t/default/lib/TestCase/LexicalVar.spvm
 t/default/lib/TestCase/Lib/SPVM/ArrayUtil.spvm
+t/default/lib/TestCase/Lib/SPVM/Bool.spvm
 t/default/lib/TestCase/Lib/SPVM/Byte.spvm
 t/default/lib/TestCase/Lib/SPVM/ByteList.spvm
 t/default/lib/TestCase/Lib/SPVM/Double.spvm
@@ -885,6 +888,7 @@ t/default/return.t
 t/default/seqop.t
 t/default/special_assign.t
 t/default/SPVM_ArrayUtil.t
+t/default/SPVM_Bool.t
 t/default/SPVM_Build_Util.t
 t/default/SPVM_Byte.t
 t/default/SPVM_ByteList.t

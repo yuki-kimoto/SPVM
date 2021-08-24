@@ -1,0 +1,17 @@
+package SPVM::Bool {
+  INIT {
+    # Singleton true
+    $true = new SPVM::Bool;
+    $true->{value} = 1;
+    
+    # Singleton false
+    $false = new SPVM::Bool;
+    $false->{value} = 0;
+  }
+  
+  our $true : ro SPVM::Bool;
+  our $false : ro SPVM::Bool;
+  
+  has value : ro int;
+}
+
