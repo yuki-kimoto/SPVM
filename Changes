@@ -1,8 +1,10 @@
 Revision history for SPVM
  
-0.9010  2021-08-13
+0.9010  2021-08-25
         [CHANGES]
         * improve SPVM::Document::ExchangeAPI
+        * add SPVM::Bool module
+        * add SPVM::BlessedObject::Array overloding array dereference
         
         [BUGFIXES]
         * None

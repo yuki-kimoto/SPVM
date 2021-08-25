@@ -2,6 +2,14 @@ package SPVM::BlessedObject::Array;
 
 use base 'SPVM::BlessedObject';
 
+use overload '@{}' => sub {
+  my ($array) = @_;
+  
+  my $elements = $array->to_elems;
+  
+  return $elements;
+};
+
 use SPVM::ExchangeAPI;
 
 sub length {
@@ -101,3 +109,18 @@ Binary data is unpacked by C<unpack> function.
 An exmaple when array is int array:
 
   my @nums = unpack 'l*', $binary;
+
+=head1 OPERATORS
+
+L<SPVM::BlessedObject::Array> overloads the following operators.
+
+=head2 array dereference
+  
+Array dereference get the elements of the array.
+
+  # Get elements
+  my @elements = @$array;
+
+This is the same as the following.
+
+  my @elements = @{$array->to_elems};

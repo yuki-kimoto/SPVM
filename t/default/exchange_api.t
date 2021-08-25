@@ -952,6 +952,26 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   like("$minimal", qr/TestCase::Minimal/);
 }
 
+# Array dereference overload
+{
+  # list context
+  {
+    my $values = SPVM::new_int_array([1, 2, 3]);
+    my $copy_values = [];
+    for my $value (@$values) {
+      push @$copy_values, $value;
+    }
+    is_deeply($copy_values, [1, 2, 3]);
+  }
+  
+  # Scalar contenxt
+  {
+    my $values = SPVM::new_int_array([1, 2, 3]);
+    my $length = @$values;
+    is($length, 3);
+  }
+}
+
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
