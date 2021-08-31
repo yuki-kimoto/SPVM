@@ -744,6 +744,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
+  # Return void
+  {
+    # Return void
+    {
+      my $value = TestCase::ExchangeAPI->return_void;
+      ok(!defined $value);
+    }
+  }
+
   # Return string
   {
     # Return string

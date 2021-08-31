@@ -222,6 +222,10 @@ Convert Perl scalar data to SPVM double value
 
 a SPVM return value is converted to a Perl value by the following rules.
 
+=head3 SPVM void to Perl undef
+
+SPVM void return value is converted to Perl C<undef>. This is only for specification and has no meaning.
+
 =head3 SPVM byte value to Perl scalar
 
 SPVM byte value(same type as int8_t of C language) is converted to Perl scalar by L<newSViv function of perlapi|https://perldoc.perl.org/perlapi#newSViv>.

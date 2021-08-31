@@ -3319,6 +3319,52 @@ call_spvm_method(...)
   SV* sv_return_value = NULL;
   int32_t excetpion_flag = 0;
   switch (method->return_type_category) {
+    case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      break;
+    }
+    case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].bval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].sval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].ival));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSViv(stack[0].lval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
+      }
+      break;
+    }
+    case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
+      }
+      break;
+    }
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT:
@@ -3468,52 +3514,6 @@ call_spvm_method(...)
         else {
           sv_return_value = &PL_sv_undef;
         }
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].bval));
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].sval));
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].ival));
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].lval));
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
       }
       break;
     }
