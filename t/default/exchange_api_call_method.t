@@ -773,6 +773,21 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
         ok(!defined $blessed_array);
       }
     }
+
+    # Return mutil numeric array
+    {
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_multi_numeric_array;
+        my $values = $blessed_array->to_elems;
+        is_deeply($values, [{x => 1, y => 0, z => 0}, {x => 0, y => 0, z => 5}]);
+      }
+
+      # Return array undef
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_multi_numeric_array_undef;
+        ok(!defined $blessed_array);
+      }
+    }
   }
 
   # Return multi numeric
