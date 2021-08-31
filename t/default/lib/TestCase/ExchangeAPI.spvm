@@ -26,6 +26,20 @@ package TestCase::ExchangeAPI {
     return undef;
   }
 
+  sub return_any_object : object () {
+    
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x(1);
+    $minimal->set_y(2);
+    
+    return $minimal;
+  }
+
+  sub return_any_object_undef : object () {
+    
+    return undef;
+  }
+
   sub return_void : void () {
     
     return;

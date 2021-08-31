@@ -739,6 +739,24 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
+  # Return any object
+  {
+    # Return any object
+    {
+      my $value = TestCase::ExchangeAPI->return_any_object;
+      is(ref $value, 'TestCase::Minimal');
+      isa_ok($value, 'SPVM::BlessedObject::Package');
+      is($value->x, 1);
+      is($value->y, 2);
+    }
+
+    # Return any object undef
+    {
+      my $value = TestCase::ExchangeAPI->return_any_object_undef;
+      ok(!defined $value);
+    }
+  }
+
   # Return array
   {
     # Return numeric array

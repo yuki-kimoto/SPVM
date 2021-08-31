@@ -1,5 +1,11 @@
 Revision history for SPVM
- 
+0.9011  2021-08-31
+        [CHANGES]
+        * None
+        
+        [BUGFIXES]
+        * Fix excnahge API any object return value bug
+
 0.9010  2021-08-25
         [CHANGES]
         * improve SPVM::Document::ExchangeAPI
