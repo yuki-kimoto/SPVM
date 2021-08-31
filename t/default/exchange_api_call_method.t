@@ -792,6 +792,24 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       }
     }
 
+    # Return oarray
+    {
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_oarray;
+        my $values = $blessed_array->to_elems;
+        is($values->[0]->x, 1);
+        is($values->[0]->y, 2);
+        is($values->[1]->x, 3);
+        is($values->[1]->y, 4);
+      }
+
+      # Return array undef
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_oarray_undef;
+        ok(!defined $blessed_array);
+      }
+    }
+
     # Return mutil numeric array
     {
       {

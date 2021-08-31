@@ -85,6 +85,24 @@ package TestCase::ExchangeAPI {
     return undef;
   }
 
+  sub return_oarray : oarray () {
+    
+    my $minimal = new TestCase::Minimal[2];
+    $minimal->[0] = new TestCase::Minimal;
+    $minimal->[0]->set_x(1);
+    $minimal->[0]->set_y(2);
+    $minimal->[1] = new TestCase::Minimal;
+    $minimal->[1]->set_x(3);
+    $minimal->[1]->set_y(4);
+    
+    return $minimal;
+  }
+
+  sub return_oarray_undef : TestCase::Minimal[] () {
+    
+    return undef;
+  }
+
   sub return_multi_numeric_array : TestCase::Point_3i[] () {
     
     my $nums = new TestCase::Point_3i[2];
@@ -97,19 +115,6 @@ package TestCase::ExchangeAPI {
   sub return_multi_numeric_array_undef : TestCase::Point_3i[] () {
     
     return undef;
-  }
-
-  sub return_oarray : oarray () {
-    
-    my $minimal = new TestCase::Minimal[2];
-    $minimal->[0] = new TestCase::Minimal;
-    $minimal->[0]->set_x(1);
-    $minimal->[0]->set_y(2);
-    $minimal->[1] = new TestCase::Minimal;
-    $minimal->[1]->set_x(3);
-    $minimal->[1]->set_y(4);
-    
-    return $minimal;
   }
 
   sub return_byte_multi_numeric : TestCase::Point_3b () {
