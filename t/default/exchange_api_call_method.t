@@ -721,6 +721,24 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
+  # Return object
+  {
+    # Return object
+    {
+      my $value = TestCase::ExchangeAPI->return_object;
+      is(ref $value, 'TestCase::Minimal');
+      isa_ok($value, 'SPVM::BlessedObject::Package');
+      is($value->x, 1);
+      is($value->y, 2);
+    }
+
+    # Return object undef
+    {
+      my $value = TestCase::ExchangeAPI->return_object_undef;
+      ok(!defined $value);
+    }
+  }
+
   # Return multi numeric
   {
     # Return multi numeric - byte
@@ -757,15 +775,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $value = TestCase::ExchangeAPI->return_double_multi_numeric;
       is_deeply($value, {x => 1, y => 2, z => $DBL_MIN});
-    }
-  }
-
-  # Return undef
-  {
-    # Return undef
-    {
-      my $value = TestCase::ExchangeAPI->return_undef;
-      ok(!defined $value);
     }
   }
 

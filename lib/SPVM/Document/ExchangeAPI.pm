@@ -270,15 +270,15 @@ SPVM double value(same type as double of C language) is converted to Perl scalar
 
 =head3 SPVM string to Perl string
 
-SPVM string is converted to a Perl decoded string.
+SPVM string is converted to a Perl decoded string. If SPVM C<undef> is returned, it is converted to Perl C<undef>.
+
+=head3 SPVM object to Perl object
+
+SPVM object(not array or not any object) is converted to a Perl object which class name is same as SPVM class name and inherits L<SPVM::BlessedObject::Package>.
 
 =head3 SPVM multi numeric value to Perl hash reference
 
-SPVM multi numeric value is converted to Perl hash reference which keys is the field names of multi numeric type.
-
-=head3 SPVM undef to Perl undef
-
-SPVM C<undef> is conveted to Perl C<undef>
+SPVM multi numeric value is converted to Perl hash reference which keys is the field names of multi numeric type. The rules of number convertions of the field of multi numeric value is same as above the numeric convertions(byte, short, int, long, float, double).
 
 =head3 SPVM array to Perl array object
 
