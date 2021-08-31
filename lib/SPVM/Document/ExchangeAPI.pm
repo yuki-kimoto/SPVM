@@ -274,7 +274,7 @@ SPVM string is converted to a Perl decoded string. If SPVM C<undef> is returned,
 
 =head3 SPVM object to Perl object
 
-SPVM object(not array or not any object) is converted to a Perl object which class name is same as SPVM class name and inherits L<SPVM::BlessedObject::Package>.
+a SPVM object(not contain array) is converted to a Perl object which class name is same as SPVM class name and inherits L<SPVM::BlessedObject::Package>.
 
 =head3 SPVM multi numeric value to Perl hash reference
 
@@ -282,7 +282,7 @@ SPVM multi numeric value is converted to Perl hash reference which keys is the f
 
 =head3 SPVM array to Perl array object
 
-a SPVM array is converted to a Perl L<SPVM::BlessedObject::Array> object.
+a SPVM array is converted to a Perl L<SPVM::BlessedObject::Array> object. If SPVM return value is C<undef>, it is converted to Perl C<undef>.
 
 =head3 SPVM object to Perl object
 

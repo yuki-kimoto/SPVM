@@ -54,6 +54,11 @@ package TestCase::ExchangeAPI {
     return $minimal;
   }
 
+  sub return_array_undef : TestCase::Minimal[] () {
+    
+    return undef;
+  }
+
   sub return_oarray : oarray () {
     
     my $minimal = new TestCase::Minimal[2];

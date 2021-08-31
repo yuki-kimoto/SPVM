@@ -3403,6 +3403,25 @@ call_spvm_method(...)
       }
       break;
     }
+    case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
+    {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        void* return_value = stack[0].oval;
+        sv_return_value = NULL;
+        if (return_value != NULL) {
+          env->inc_ref_count(env, return_value);
+          
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
+        }
+        else {
+          sv_return_value = &PL_sv_undef;
+        }
+      }
+      break;
+    }
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT:
@@ -3457,25 +3476,6 @@ call_spvm_method(...)
         
         (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
         sv_return_value = sv_2mortal(newRV_inc((SV*)hv_value));
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
-    {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        void* return_value = stack[0].oval;
-        sv_return_value = NULL;
-        if (return_value != NULL) {
-          env->inc_ref_count(env, return_value);
-          
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
-        }
-        else {
-          sv_return_value = &PL_sv_undef;
-        }
       }
       break;
     }
