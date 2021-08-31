@@ -741,20 +741,37 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
   # Return array
   {
-    # Return array
+    # Return numeric array
     {
-      my $blessed_array = TestCase::ExchangeAPI->return_array;
-      my $values = $blessed_array->to_elems;
-      is($values->[0]->x, 1);
-      is($values->[0]->y, 2);
-      is($values->[1]->x, 3);
-      is($values->[1]->y, 4);
-    }
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_numeric_array;
+        my $values = $blessed_array->to_elems;
+        is_deeply($values, [1, 2, 3]);
+      }
 
-    # Return array undef
+      # Return array undef
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_numeric_array_undef;
+        ok(!defined $blessed_array);
+      }
+    }
+    
+    # Return object array
     {
-      my $blessed_array = TestCase::ExchangeAPI->return_array_undef;
-      ok(!defined $blessed_array);
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_object_array;
+        my $values = $blessed_array->to_elems;
+        is($values->[0]->x, 1);
+        is($values->[0]->y, 2);
+        is($values->[1]->x, 3);
+        is($values->[1]->y, 4);
+      }
+
+      # Return array undef
+      {
+        my $blessed_array = TestCase::ExchangeAPI->return_object_array_undef;
+        ok(!defined $blessed_array);
+      }
     }
   }
 

@@ -41,7 +41,19 @@ package TestCase::ExchangeAPI {
     return undef;
   }
 
-  sub return_array : TestCase::Minimal[] () {
+  sub return_numeric_array : int[] () {
+    
+    my $nums = [1, 2, 3];
+
+    return $nums;
+  }
+
+  sub return_numeric_array_undef : int[] () {
+    
+    return undef;
+  }
+
+  sub return_object_array : TestCase::Minimal[] () {
     
     my $minimal = new TestCase::Minimal[2];
     $minimal->[0] = new TestCase::Minimal;
@@ -54,7 +66,7 @@ package TestCase::ExchangeAPI {
     return $minimal;
   }
 
-  sub return_array_undef : TestCase::Minimal[] () {
+  sub return_object_array_undef : TestCase::Minimal[] () {
     
     return undef;
   }

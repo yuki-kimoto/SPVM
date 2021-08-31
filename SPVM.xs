@@ -3404,8 +3404,8 @@ call_spvm_method(...)
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
-    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
+    case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     {
       excetpion_flag = env->call_spvm_method(env, method->id, stack);
       if (!excetpion_flag) {
