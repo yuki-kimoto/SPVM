@@ -657,6 +657,15 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Return value conversion
 {
+  # Return void
+  {
+    # Return void
+    {
+      my $value = TestCase::ExchangeAPI->return_void;
+      ok(!defined $value);
+    }
+  }
+
   # Return numeric
   {
     # Return numeric - byte
@@ -693,6 +702,22 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $value = TestCase::ExchangeAPI->return_double;
       is($value, $DBL_MIN);
+    }
+  }
+
+  # Return string
+  {
+    # Return string
+    {
+      my $value = TestCase::ExchangeAPI->return_string;
+      is(ref $value, 'SPVM::BlessedObject::String');
+      ok($value eq "あいう");
+    }
+
+    # Return string undef
+    {
+      my $value = TestCase::ExchangeAPI->return_string_undef;
+      ok(!defined $value);
     }
   }
 
@@ -741,25 +766,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $value = TestCase::ExchangeAPI->return_undef;
       ok(!defined $value);
-    }
-  }
-
-  # Return void
-  {
-    # Return void
-    {
-      my $value = TestCase::ExchangeAPI->return_void;
-      ok(!defined $value);
-    }
-  }
-
-  # Return string
-  {
-    # Return string
-    {
-      my $value = TestCase::ExchangeAPI->return_string;
-      is(ref $value, 'SPVM::BlessedObject::String');
-      ok($value eq "あいう");
     }
   }
 

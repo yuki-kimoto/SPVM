@@ -3365,6 +3365,44 @@ call_spvm_method(...)
       }
       break;
     }
+    case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        void* return_value = stack[0].oval;
+        sv_return_value = NULL;
+        if (return_value != NULL) {
+          env->inc_ref_count(env, return_value);
+          
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::String");
+        }
+        else {
+          sv_return_value = &PL_sv_undef;
+        }
+      }
+      break;
+    }
+    case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+    {
+      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      if (!excetpion_flag) {
+        void* return_value = stack[0].oval;
+        sv_return_value = NULL;
+        if (return_value != NULL) {
+          env->inc_ref_count(env, return_value);
+          
+          SPVM_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, env->get_object_basic_type_id(env, return_value));
+          const char* basic_type_name = method_return_basic_type->name;
+
+          SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
+          
+          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_basic_type_name));
+        }
+        else {
+          sv_return_value = &PL_sv_undef;
+        }
+      }
+      break;
+    }
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT:
@@ -3422,28 +3460,6 @@ call_spvm_method(...)
       }
       break;
     }
-    case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
-    {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        void* return_value = stack[0].oval;
-        sv_return_value = NULL;
-        if (return_value != NULL) {
-          env->inc_ref_count(env, return_value);
-          
-          SPVM_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, env->get_object_basic_type_id(env, return_value));
-          const char* basic_type_name = method_return_basic_type->name;
-
-          SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-          
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_basic_type_name));
-        }
-        else {
-          sv_return_value = &PL_sv_undef;
-        }
-      }
-      break;
-    }
     case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -3456,22 +3472,6 @@ call_spvm_method(...)
           env->inc_ref_count(env, return_value);
           
           sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::Array");
-        }
-        else {
-          sv_return_value = &PL_sv_undef;
-        }
-      }
-      break;
-    }
-    case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
-      if (!excetpion_flag) {
-        void* return_value = stack[0].oval;
-        sv_return_value = NULL;
-        if (return_value != NULL) {
-          env->inc_ref_count(env, return_value);
-          
-          sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, "SPVM::BlessedObject::String");
         }
         else {
           sv_return_value = &PL_sv_undef;

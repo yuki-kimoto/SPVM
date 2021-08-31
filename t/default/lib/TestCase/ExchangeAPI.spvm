@@ -27,6 +27,11 @@ package TestCase::ExchangeAPI {
     return "あいう";
   }
 
+  sub return_string_undef : string () {
+    
+    return undef;
+  }
+
   sub return_array : TestCase::Minimal[] () {
     
     my $minimal = new TestCase::Minimal[2];
