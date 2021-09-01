@@ -58,48 +58,53 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Argument conversion
 {
-  # Argument Type
+  # Argument Perl scalar to SPVM number
   {
-    # byte
+    # Perl scalar to SPVM byte
     {
       my $total = TestCase->sum_byte(8, 3);
       is($total, 11);
     }
 
-    # short
+    # Perl scalar to SPVM short
     {
       my $total = TestCase->sum_short(8, 3);
       is($total, 11);
     }
 
-    # int
+    # Perl scalar to SPVM int
     {
       my $total = TestCase->sum_int(8, 3);
       is($total, 11);
     }
 
-    # long
+    # Perl scalar to SPVM long
     {
-      my $total = TestCase->sum_long(8, 3);
-      is($total, 11);
-    }
-    {
-      my $total = TestCase->sum_long(9223372036854775806, 1);
-      is($total, 9223372036854775807);
-    }
+      {
+        my $total = TestCase->sum_long(8, 3);
+        is($total, 11);
+      }
+      {
+        my $total = TestCase->sum_long(9223372036854775806, 1);
+        is($total, 9223372036854775807);
+      }
+    ]
 
-    # float
+    # Perl scalar to SPVM float
     {
       my $total = TestCase->sum_float(0.25, 0.25);
       cmp_ok($total, '==', 0.5);
     }
 
-    # double
+    # Perl scalar to SPVM double
     {
       my $total = TestCase->sum_double(0.25, 0.25);
       cmp_ok($total, '==', 0.5);
     }
+  }
 
+  # Argument string
+  {
     # String
     {
       {
@@ -107,10 +112,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
         is($values, "");
       }
     }
-  }
-
-  # Argument string
-  {
+    
     # Argument string - ascii
     {
       my $string = TestCase::ExchangeAPI->string_argments_and_return_value("ABC", "DE");

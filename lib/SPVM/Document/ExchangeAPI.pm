@@ -98,27 +98,43 @@ The definition of C<Foo> module is the following.
 
 =head2 ARGUMENT CONVERSION
 
-=head3 Perl Scalar to SPVM Number
+Perl arguments are converted to SPVM arguments in the following rules.
 
-If the argument type of the SPVM Method definition is a Numeric Type, the argument value is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Perl scalar data. It is converted</a> to SPVM number by the Rule to Convert to SPVM number types.
+=head3 Perl scalar to SPVM byte
 
-  # SPVM Method definition
-  package Foo {
-    sub call_byte : void ($num: byte);
-    sub call_short : void ($num: short);
-    sub call_int : void ($num: int);
-    sub call_long : void ($num: long);
-    sub call_float : void ($num: float);
-    sub call_double : void ($num: double);
-  }
+If the SPVM argument type is C<byte>, Perl scalar is converted to SPVM C<byte> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
 
-  # Call from Perl
-  Foo->call_byte(23);
-  Foo->call_short(23);
-  Foo->call_int(23);
-  Foo->call_long(23);
-  Foo->call_float(2.3);
-  Foo->call_double(2.3);
+  (int8_t)SvIV(perl_scalar)
+
+=head3 Perl scalar to SPVM short
+
+If the SPVM argument type is C<short>, Perl scalar is converted to SPVM C<short> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+  
+  (int16_t)SvIV(perl_scalar)
+
+=head3 Perl scalar to SPVM int
+
+If the SPVM argument type is C<int>, Perl scalar is converted to SPVM C<int> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+
+  (int32_t)SvIV(perl_scalar)
+
+=head3 Perl scalar to SPVM long
+
+If the SPVM argument type is C<long>, Perl scalar is converted to SPVM C<long> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+
+  (int64_t)SvIV(perl_scalar)
+
+=head3 Perl scalar to SPVM float
+
+If the SPVM argument type is C<float>, Perl scalar is converted to SPVM C<float> value using L<SvNV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+
+  (float)SvNV(perl_scalar)
+
+=head3 Perl scalar to SPVM double
+
+If the SPVM argument type is C<double>, Perl scalar is converted to SPVM C<double> value using L<SvNV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+
+  (double)SvNV(perl_scalar)
 
 =head3 Perl Hash reference to SPVM Multi Numeric Type
 
@@ -193,30 +209,6 @@ If the argument type of the SPVM Method definition is double[] type and the valu
 
 If the argument type of the SPVM Method definition is an object[] type and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents object[]. Will be done. If the element value is an Undefined Value, it is converted to SPVM undefined, and if it is a non-reference scalar value, it is encoded to UTF-8 and converted to SPVM byte[] value. If it is SPVM::Data object, it will not be converted. Otherwise, an Exception will be raised.
 
-=head3 Convert Perl scalar data to SPVM byte value
-  
-
-  (int8_t)SvIV(perl_scalar_data)
-
-=head3 Convert Perl scalar data to SPVM short value
-
-  (int16_t)SvIV(perl_scalar_data)
-
-=head3 Convert Perl scalar data to SPVM int value
-
-  (int32_t)SvIV(perl_scalar_data)
-
-=head3 Convert Perl scalar data to SPVM long value
-
-  (int64_t)SvIV(perl_scalar_data)
-
-=head3 Convert Perl scalar data to SPVM float value
-
-  (float)SvNV(perl_scalar_data)
-
-Convert Perl scalar data to SPVM double value
-
-  (double)SvNV(perl_scalar_data)
   
 =head2 RETURN VALUE CONVERSION
 
