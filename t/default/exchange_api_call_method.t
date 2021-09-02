@@ -128,6 +128,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       my $ok = TestCase::ExchangeAPI->argument_string_string_object(SPVM::new_string("あいう"));
       ok($ok);
     }
+    
+    # Argument string - exception invalid type
+    {
+      eval { TestCase::ExchangeAPI->argument_string_ascii({}) };
+      ok($@);
+    }
   }
 
   # Argument Exception

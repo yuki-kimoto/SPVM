@@ -1,4 +1,11 @@
 Revision history for SPVM
+0.9012  2021-09-02
+        [CHANGES]
+        * Exchange API call method string arugment copy count is reduced
+        
+        [BUGFIXES]
+        * None
+
 0.9011  2021-08-31
         [CHANGES]
         * None
