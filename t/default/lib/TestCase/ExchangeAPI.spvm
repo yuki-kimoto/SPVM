@@ -230,10 +230,42 @@ package TestCase::ExchangeAPI {
     return $bytes;
   }
   
-  sub string_argments_and_return_value : string ($string1 : string, $string2 : string) {
-    return $string1 . $string2;
+  sub argument_string_ascii : string ($string : string) {
+    
+    unless ($string eq "ABC") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub argument_string_decoded_string : string ($string : string) {
+    
+    unless ($string eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub argument_string_number : string ($string : string) {
+    
+    unless ($string eq "4.12") {
+      return 0;
+    }
+    
+    return 1;
   }
 
+  sub argument_string_string_object : string ($string : string) {
+    
+    unless ($string eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
   sub call_spvm_method_value_arg_byte : TestCase::Point_3b ($point : TestCase::Point_3b) {
     return $point;
   }

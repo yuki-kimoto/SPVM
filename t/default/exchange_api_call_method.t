@@ -88,7 +88,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
         my $total = TestCase->sum_long(9223372036854775806, 1);
         is($total, 9223372036854775807);
       }
-    ]
+    }
 
     # Perl scalar to SPVM float
     {
@@ -105,74 +105,28 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
   # Argument string
   {
-    # String
-    {
-      {
-        my $values = TestCase->string_empty();
-        is($values, "");
-      }
-    }
-    
     # Argument string - ascii
     {
-      my $string = TestCase::ExchangeAPI->string_argments_and_return_value("ABC", "DE");
-      is("$string", "ABCDE");
+      my $ok = TestCase::ExchangeAPI->argument_string_ascii("ABC");
+      ok($ok);
     }
 
     # Argument string - UTF-8
     {
-      my $string = TestCase::ExchangeAPI->string_argments_and_return_value("あいう", "えお");
-      is("$string", "あいうえお");
-    }
-
-    # Argument string - ascii and utf8
-    {
-      my $string = TestCase::ExchangeAPI->string_argments_and_return_value("あいう", "DE");
-      is("$string", "あいうDE");
+      my $ok = TestCase::ExchangeAPI->argument_string_decoded_string("あいう");
+      ok($ok);
     }
 
     # Argument string - numerci
     {
-      my $string = TestCase::ExchangeAPI->string_argments_and_return_value(3, 4.12);
-      is("$string", "34.12");
+      my $ok = TestCase::ExchangeAPI->argument_string_number(4.12);
+      ok($ok);
     }
 
     # Argument string - SPVM::BlessedObject::String
     {
-      my $string = TestCase::ExchangeAPI->string_argments_and_return_value(SPVM::new_string("あいう"), SPVM::new_string_from_bin("abc"));
-      is(ref $string, 'SPVM::BlessedObject::String');
-      is("$string", "あいうabc");
-    }
-  }
-
-  # Stringfy
-  {
-    # Stringfy - stringify overload
-    {
-      my $string1 = "あいう";
-      my $string2 = "";
-      my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
-      is(ref $string3, 'SPVM::BlessedObject::String');
-      is("$string3", "あいう");
-    }
-  }
-
-  # Argument string and return value
-  {
-    # String - UTF-8 string
-    {
-      my $string1 = "あいう";
-      my $string2 = "えお";
-      my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
-      is($string3, "あいうえお");
-    }
-
-    # String - ascii string
-    {
-      my $string1 = "abc";
-      my $string2 = "de";
-      my $string3 = TestCase::ExchangeAPI->string_argments_and_return_value($string1, $string2);
-      is($string3, "abcde");
+      my $ok = TestCase::ExchangeAPI->argument_string_string_object(SPVM::new_string("あいう"));
+      ok($ok);
     }
   }
 
@@ -720,6 +674,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $value = TestCase::ExchangeAPI->return_string_undef;
       ok(!defined $value);
+    }
+
+    # Return string empty
+    {
+      my $values = TestCase->string_empty();
+      is($values, "");
     }
   }
 

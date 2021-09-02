@@ -136,6 +136,24 @@ If the SPVM argument type is C<double>, Perl scalar is converted to SPVM C<doubl
 
   (double)SvNV(perl_scalar)
 
+=head3 Perl value to SPVM string
+
+=head4 Perl scalar to SPVM string
+
+If the SPVM argument type is C<string>, the Perl scalar is converted to SPVM C<string> value.
+
+The scalar value must be non-ref scalar, otherwise a exception occurs.
+
+The scalar value is assumed to a Perl decoded string, and is converted to a SPVM C<string>.
+
+=head4 string object to SPVM string
+
+A string object which package name is L<SPVM::BlessedObject::String> is converted to a SPVM C<string>.
+
+=head4 other to SPVM string
+
+If the Perl value is not the avobe things, a exception occurs.
+
 =head3 Perl Hash reference to SPVM Multi Numeric Type
 
 If the argument type in the SPVM Method definition was a Multi Numeric Type, the argument value must be a hash reference and the key must contain all Multi Numeric field names. Otherwise, an Exception will be raised. The value of the hash reference is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Is converted to a value.
@@ -185,15 +203,7 @@ If the argument type in the SPVM Method definition was a Numeric Reference Type,
 
 If the argument type in the SPVM Method definition was a Multi Numeric Reference Type, the argument value is a hash reference reference and the key contains all Multi Numeric field names. is needed. Otherwise, an Exception will be raised.
 
-If the argument type of the SPVM Method definition is a numeric array type, the Perl Array Reference is converted to the corresponding Perl L<SPVM::BlessedObject::Array> object. The value of the element is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Will be converted to. The argument is a string,
-
-If the argument type of the SPVM Method definition is a byte[] value, the Perl decoded string is encoded in UTF-8 and represents byte[] Perl's SPVM::Data: Converted to a: Array object.
-
 If the argument type of the SPVM Method definition is an object type and the value passed to the argument is an Undefined Value, it is converted to the SPVM Undefined Value.
-
-If the argument type of the SPVM Method definition is a string compatible type and the value passed to the argument is a scalar value that is not a reference, it is encoded in UTF-8 and represents the SPVM byte[] value. Converts to a Perl L<SPVM::BlessedObject::Array> object.
-
-If the argument type of the SPVM Method definition is a string compatible array type and the value passed to the argument is Array Reference and the first element is a scalar value that is not a reference, SPVM byte[] Converted to a Perl L<SPVM::BlessedObject::Array> object representing[]. If the element has an Undefined Value, it is converted to SPVM Undefined Value, otherwise it is encoded to UTF-8 and converted to SPVM byte[] value.
 
 If the argument type of the SPVM Method definition is a byte[] value and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents byte[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl scalar data ​​to SPVM Numeric Value</a>.
 

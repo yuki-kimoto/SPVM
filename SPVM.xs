@@ -2254,7 +2254,7 @@ call_spvm_method(...)
           stack[arg_values_offset].oval = NULL;
         }
         else {
-          // If Perl value is non ref scalar, the value is converted to string object
+          // If Perl value is non ref scalar, the value is converted to SPVM::BlessedObject::String object
           if (!SvROK(sv_value)) {
           
             // Copy
@@ -2274,7 +2274,7 @@ call_spvm_method(...)
           }
           
           // Check type
-          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
             if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
