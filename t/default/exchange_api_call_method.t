@@ -146,33 +146,33 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
     # Argument array reference - new_short_array
     {
-      my $spvm_values = [1, $SHORT_MAX, $SHORT_MIN];
-      my $values = TestCase::ExchangeAPI->return_short_array_only($spvm_values)->to_elems;
-      is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
+      my $perl_array_ref = [1, $SHORT_MAX, $SHORT_MIN];
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_short_array($perl_array_ref);
+      ok($ok);
     }
     # Argument array reference - new_int_array
     {
-      my $spvm_values = [1, $INT_MAX, $INT_MIN];
-      my $values = TestCase::ExchangeAPI->return_int_array_only($spvm_values)->to_elems;
-      is_deeply($values, [1, $INT_MAX, $INT_MIN]);
+      my $perl_array_ref = [1, $INT_MAX, $INT_MIN];
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_int_array($perl_array_ref);
+      ok($ok);
     }
     # Argument array reference - new_long_array
     {
-      my $spvm_values = [1, $LONG_MAX, $LONG_MIN];
-      my $values = TestCase::ExchangeAPI->return_long_array_only($spvm_values)->to_elems;
-      is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
+      my $perl_array_ref = [1, $LONG_MAX, $LONG_MIN];
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_long_array($perl_array_ref);
+      ok($ok);
     }
     # Argument array reference - new_float_array
     {
-      my $spvm_values = [0.5, $FLT_MAX, $FLT_MIN];
-      my $values = TestCase::ExchangeAPI->return_float_array_only($spvm_values)->to_elems;
-      is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
+      my $perl_array_ref = [0.5, $FLT_MAX, $FLT_MIN];
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_float_array($perl_array_ref);
+      ok($ok);
     }
     # Argument array reference - new_double_array
     {
-      my $spvm_values = [0.5, $DBL_MAX, $DBL_MIN];
-      my $values = TestCase::ExchangeAPI->return_double_array_only($spvm_values)->to_elems;
-      is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
+      my $perl_array_ref = [0.5, $DBL_MAX, $DBL_MIN];
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_double_array($perl_array_ref);
+      ok($ok);
     }
 
     # Argument array reference - new string array and to_strings
