@@ -136,32 +136,13 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
-  # Argument Exception
+  # Argument Perl array reference to SPVM array
   {
-    # Argument Exception - too few arguments
+    # Argument Perl array reference to SPVM byte array
     {
-      eval {
-        SPVM::Int->new;
-      };
-      like($@, qr/too few arguments/i);
-    }
-    
-    # Argument Exception - too many arguments
-    {
-      eval {
-        SPVM::Int->new(1, 2);
-      };
-      like($@, qr/too many arguments/i);
-    }
-  }
-
-  # Argument array reference
-  {
-    # Argument array reference - new_byte_array
-    {
-      my $spvm_values = [1, $BYTE_MAX, $BYTE_MIN];
-      my $values = TestCase::ExchangeAPI->return_byte_array_only($spvm_values)->to_elems;
-      is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+      my $perl_array_ref = [1, $BYTE_MAX, $BYTE_MIN];
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_byte_array($perl_array_ref);
+      ok($ok);
     }
     # Argument array reference - new_short_array
     {
@@ -199,6 +180,25 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       my $spvm_values = SPVM::new_string_array(["あいう", "えお", "ab", undef]);
       my $values = TestCase::ExchangeAPI->return_string_array_only($spvm_values)->to_elems;
       is_deeply($values, ["あいう", "えお", "ab", undef]);
+    }
+  }
+
+  # Argument Exception
+  {
+    # Argument Exception - too few arguments
+    {
+      eval {
+        SPVM::Int->new;
+      };
+      like($@, qr/too few arguments/i);
+    }
+    
+    # Argument Exception - too many arguments
+    {
+      eval {
+        SPVM::Int->new(1, 2);
+      };
+      like($@, qr/too many arguments/i);
     }
   }
 

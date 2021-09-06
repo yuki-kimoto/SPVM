@@ -154,6 +154,16 @@ A string object which package name is L<SPVM::BlessedObject::String> is converte
 
 If the Perl value is not the avobe things, a exception occurs.
 
+=head3 Perl array reference to SPVM array
+
+A Perl array reference is converted to a SPVM array by the following rules.
+
+=head4 Perl array reference to SPVM byte array
+
+If the SPVM argument type is C<byte[]>, the Perl array reference is converted to SPVM array which type is C<byte[]>. Each element is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte">. If the Perl C<undef> is coverted to SPVM C<undef>.
+
+
+
 =head3 Perl Hash reference to SPVM Multi Numeric Type
 
 If the argument type in the SPVM Method definition was a Multi Numeric Type, the argument value must be a hash reference and the key must contain all Multi Numeric field names. Otherwise, an Exception will be raised. The value of the hash reference is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Is converted to a value.

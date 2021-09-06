@@ -2303,6 +2303,7 @@ call_spvm_method(...)
             
             int32_t length = av_len(av_elems) + 1;
             
+            # 1 dimention array or oarray
             if (arg_type_dimension == 1 || arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
               switch (arg_basic_type_id) {
                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
