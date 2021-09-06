@@ -2507,7 +2507,7 @@ call_spvm_method(...)
             }
           }
           
-          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
+          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Array")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
             if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
@@ -2524,7 +2524,7 @@ call_spvm_method(...)
             stack[arg_values_offset].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject::Array at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
           }
         }
         
