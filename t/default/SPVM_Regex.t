@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::Regex';
+use SPVM 'SPVM::TestCase::Lib::SPVM::Regex';
 
 
 
@@ -15,31 +15,31 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::Regex
 {
-  ok(TestCase::Lib::SPVM::Regex->replace_all_cb);
-  ok(TestCase::Lib::SPVM::Regex->replace_all);
-  ok(TestCase::Lib::SPVM::Regex->replace);
-  ok(TestCase::Lib::SPVM::Regex->replace_cb);
-  ok(TestCase::Lib::SPVM::Regex->match_start_and_end);
-  ok(TestCase::Lib::SPVM::Regex->match_capture);
-  ok(TestCase::Lib::SPVM::Regex->match_char_class_range);
-  ok(TestCase::Lib::SPVM::Regex->match_char_class);
-  ok(TestCase::Lib::SPVM::Regex->match_char_class_negate);
-  ok(TestCase::Lib::SPVM::Regex->match_not_space);
-  ok(TestCase::Lib::SPVM::Regex->match_space);
-  ok(TestCase::Lib::SPVM::Regex->match_not_word);
-  ok(TestCase::Lib::SPVM::Regex->match_word);
-  ok(TestCase::Lib::SPVM::Regex->match_number);
-  ok(TestCase::Lib::SPVM::Regex->match_not_number);
-  ok(TestCase::Lib::SPVM::Regex->invalid_regex);
-  ok(TestCase::Lib::SPVM::Regex->match_end);
-  ok(TestCase::Lib::SPVM::Regex->match_start);
-  ok(TestCase::Lib::SPVM::Regex->match_quantifier);
-  ok(TestCase::Lib::SPVM::Regex->match_one_or_zero);
-  ok(TestCase::Lib::SPVM::Regex->match_zero_more);
-  ok(TestCase::Lib::SPVM::Regex->match_one_more);
-  ok(TestCase::Lib::SPVM::Regex->match_offset);
-  ok(TestCase::Lib::SPVM::Regex->match);
-  ok(TestCase::Lib::SPVM::Regex->compile);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->replace_all_cb);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->replace_all);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->replace);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->replace_cb);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_start_and_end);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_capture);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_char_class_range);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_char_class);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_char_class_negate);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_not_space);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_space);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_not_word);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_word);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_number);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_not_number);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->invalid_regex);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_end);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_start);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_quantifier);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_one_or_zero);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_zero_more);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_one_more);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match_offset);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->match);
+  ok(SPVM::TestCase::Lib::SPVM::Regex->compile);
 }
 
 # All object is freed

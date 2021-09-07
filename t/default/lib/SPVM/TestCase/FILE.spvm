@@ -1,0 +1,10 @@
+package SPVM::TestCase::FILE {
+  sub file_name : int () {
+    my $file_name = __FILE__;
+    
+    unless ($file_name eq "SPVM/TestCase/FILE.spvm") {
+      return 0;
+    }
+    return 1;
+  }
+}

@@ -1,0 +1,9 @@
+package SPVM::TestCase::CompileError::Convert::ConvertToCallback {
+  use SPVM::TestCase::Minimal;
+  use SPVM::TestCase::Callback::Callback;
+  use SPVM::TestCase::Callback::ImplementCallback1;
+
+  sub main : int () {
+    (SPVM::TestCase::Callback::Callback)new SPVM::TestCase::Callback::ImplementCallback1;
+  }
+}

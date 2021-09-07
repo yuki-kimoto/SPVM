@@ -1,0 +1,5 @@
+package SPVM::TestCase::CompileError::CallMethod::NotFound {
+  sub main : int () {
+    NOT_FOUND_METHOD();
+  }
+}

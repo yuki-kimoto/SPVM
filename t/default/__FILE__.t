@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::FILE';
+use SPVM 'SPVM::TestCase::FILE';
 
 
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-ok(TestCase::FILE->file_name);
+ok(SPVM::TestCase::FILE->file_name);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

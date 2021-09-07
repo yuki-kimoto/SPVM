@@ -1,0 +1,125 @@
+package SPVM::TestCase::Lib::SPVM::Unicode {
+  use SPVM::Unicode;
+
+  sub uchar : int () {
+    
+    {
+      my $str = "あaい";
+      
+      my $pos = 0;
+      
+      # あ
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+
+        unless ($uchar == 0x3042) {
+          return 0;
+        }
+        
+        unless ($pos == 3) {
+          return 0;
+        }
+      }
+
+      # a
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+
+        unless ($uchar == 'a') {
+          return 0;
+        }
+        
+        unless ($pos == 4) {
+          return 0;
+        }
+      }
+
+      # い
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+
+        unless ($uchar == 0x3044) {
+          return 0;
+        }
+        
+        unless ($pos == 7) {
+          return 0;
+        }
+      }
+      
+      # End
+      {
+        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+      
+        unless ($uchar == -1) {
+          return 0;
+        }
+      }
+    }
+
+    {
+      my $str = "あaい";
+      my $code_points = [0x3042, 'a', 0x3044];
+      
+      my $pos = 0;
+      my $i = 0;
+      while ((my $uchar = SPVM::Unicode->uchar($str, \$pos)) >= 0) {
+        
+        unless ($uchar == $code_points->[$i]) {
+          return 0;
+        }
+        
+        $i++;
+      }
+    }
+      
+    return 1;
+  }
+
+  sub uchar_to_utf8 : int () {
+    
+    {
+      my $pos = 0;
+      
+      # あ
+      {
+        my $uchar = 0x3042;
+        my $utf8_bytes = SPVM::Unicode->uchar_to_utf8($uchar);
+        my $len = length $utf8_bytes;
+        unless ($len == 3) {
+          return 0;
+        }
+        unless ($utf8_bytes eq "あ") {
+          return 0;
+        }
+      }
+
+      # a
+      {
+        my $uchar = 'a';
+        my $utf8_bytes = SPVM::Unicode->uchar_to_utf8($uchar);
+        my $len = length $utf8_bytes;
+        unless ($len == 1) {
+          return 0;
+        }
+        unless ($utf8_bytes eq "a") {
+          return 0;
+        }
+      }
+
+      # い
+      {
+        my $uchar = 0x3044;
+        my $utf8_bytes = SPVM::Unicode->uchar_to_utf8($uchar);
+        my $len = length $utf8_bytes;
+        unless ($len == 3) {
+          return 0;
+        }
+        unless ($utf8_bytes eq "い") {
+          return 0;
+        }
+      }
+    }
+    return 1;
+  }
+}

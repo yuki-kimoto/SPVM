@@ -1,0 +1,6 @@
+package SPVM::TestCase::CompileError::Assign::BoxingDifferentType {
+
+  sub main : int () {
+    my $num : SPVM::Long = 3;
+  }
+}

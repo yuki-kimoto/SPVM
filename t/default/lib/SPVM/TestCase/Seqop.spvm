@@ -1,0 +1,21 @@
+package SPVM::TestCase::Seqop {
+  sub seqop : int () {
+    {
+      my $ret = (1, 2, 3);
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+
+    {
+      my $x = 1;
+      my $y = 2;
+    
+      my $ret = ($x += 2, $x + $y);
+      unless ($x == 3 && $y == 2 && $ret == 5) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+}

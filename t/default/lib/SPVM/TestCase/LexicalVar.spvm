@@ -1,0 +1,59 @@
+package SPVM::TestCase::LexicalVar {
+  
+  our $VAR_PREC : int;
+  
+  INIT {
+    $VAR_PREC = 11;
+  }
+  
+  sub var_brace : int () {
+    
+    my ${var} = 5;
+    
+    unless (${var} == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub lexical_var_upper_case : int () {
+    
+    my $VAR1 = 1;
+    
+    unless ($VAR1 == 1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub lexical_var_high_precidence_than_package_var : int () {
+    
+    my $VAR_PREC = 3;
+    
+    unless ($VAR_PREC == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub lexical_var_high_precidence_than_capture_var : int () {
+    
+    my $var = 13;
+    my $cb = [$var : int] sub : int ($self : self) {
+      
+      my $var = 5;
+      
+      return $var;
+    };
+    
+    unless ($cb->() == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+}

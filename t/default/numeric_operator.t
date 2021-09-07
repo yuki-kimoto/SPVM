@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::NumericOperator';
+use SPVM 'SPVM::TestCase::NumericOperator';
 
 
 
@@ -15,17 +15,17 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Remainder
 {
-  ok(TestCase::NumericOperator->remainder());
+  ok(SPVM::TestCase::NumericOperator->remainder());
 }
 
 # Plus
 {
-  ok(TestCase::NumericOperator->plus());
+  ok(SPVM::TestCase::NumericOperator->plus());
 }
 
 # Negate
 {
-  ok(TestCase::NumericOperator->negate());
+  ok(SPVM::TestCase::NumericOperator->negate());
 }
 
 # All object is freed

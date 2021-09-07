@@ -1,0 +1,9 @@
+package SPVM::TestCase::CompileError::Switch::NoLastBreak {
+  sub main : int () {
+    switch (1) {
+      case 1 : {
+        1;
+      }
+    }
+  }
+}

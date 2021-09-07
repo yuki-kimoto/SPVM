@@ -1,7 +1,0 @@
-package TestCase::CompileError::Assign::NotNumericToNumeric {
-  use TestCase::Minimal;
-
-  sub main : int () {
-    my $num : int = new TestCase::Minimal;
-  }
-}

@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase::Divide';
+use SPVM 'SPVM::TestCase::Divide';
 
 
 
@@ -21,31 +21,31 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Divide - Operation
   {
-    ok(TestCase::Divide->divide_byte_byte);
-    ok(TestCase::Divide->divide_short_short);
-    ok(TestCase::Divide->divide_int_byte);
-    ok(TestCase::Divide->divide_int_short);
-    ok(TestCase::Divide->divide_byte_int);
-    ok(TestCase::Divide->divide_short_int);
-    ok(TestCase::Divide->divide_int_int);
-    ok(TestCase::Divide->divide_long_long);
-    ok(TestCase::Divide->divide_int_float);
-    ok(TestCase::Divide->divide_int_double);
-    ok(TestCase::Divide->divide_float_float);
-    ok(TestCase::Divide->divide_double_double);
-    ok(TestCase::Divide->divide_double_double_big);
+    ok(SPVM::TestCase::Divide->divide_byte_byte);
+    ok(SPVM::TestCase::Divide->divide_short_short);
+    ok(SPVM::TestCase::Divide->divide_int_byte);
+    ok(SPVM::TestCase::Divide->divide_int_short);
+    ok(SPVM::TestCase::Divide->divide_byte_int);
+    ok(SPVM::TestCase::Divide->divide_short_int);
+    ok(SPVM::TestCase::Divide->divide_int_int);
+    ok(SPVM::TestCase::Divide->divide_long_long);
+    ok(SPVM::TestCase::Divide->divide_int_float);
+    ok(SPVM::TestCase::Divide->divide_int_double);
+    ok(SPVM::TestCase::Divide->divide_float_float);
+    ok(SPVM::TestCase::Divide->divide_double_double);
+    ok(SPVM::TestCase::Divide->divide_double_double_big);
   }
 
   # Divide - Compile Error
   {
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Divide::LeftIsNotNumeric', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::Divide::LeftIsNotNumeric', __LINE__, __FILE__);
       ok($success == 0);
     }
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Divide::RightIsNotNumeric', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::Divide::RightIsNotNumeric', __LINE__, __FILE__);
       ok($success == 0);
     }
   }
@@ -53,7 +53,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Optional tests
 {
-  ok(TestCase::Divide->divide());
+  ok(SPVM::TestCase::Divide->divide());
 }
 
 # All object is freed

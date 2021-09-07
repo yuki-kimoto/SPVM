@@ -1,0 +1,6 @@
+package SPVM::MyExe::Foo::Bar {
+  
+  sub main : int ($args : string[]) {
+    print "SPVM::MyExe::Foo::Bar\n";
+  }
+}

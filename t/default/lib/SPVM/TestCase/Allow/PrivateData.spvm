@@ -1,0 +1,10 @@
+package SPVM::TestCase::Allow::PrivateData {
+  allow SPVM::TestCase::Allow;
+  
+  our $X : int;
+  has x : int;
+  
+  private sub foo : int () {
+    return 3;
+  }
+}

@@ -1,0 +1,18 @@
+package SPVM::TestCase::Matrix4_16b : mulnum_t {
+  has x11 : byte;
+  has x21 : byte;
+  has x31 : byte;
+  has x41 : byte;
+  has x12 : byte;
+  has x22 : byte;
+  has x32 : byte;
+  has x42 : byte;
+  has x13 : byte;
+  has x23 : byte;
+  has x33 : byte;
+  has x43 : byte;
+  has x14 : byte;
+  has x24 : byte;
+  has x34 : byte;
+  has x44 : byte;
+}

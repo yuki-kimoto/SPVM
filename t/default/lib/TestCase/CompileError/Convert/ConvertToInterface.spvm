@@ -1,9 +1,0 @@
-package TestCase::CompileError::Convert::ConvertToCallback {
-  use TestCase::Minimal;
-  use TestCase::Callback::Callback;
-  use TestCase::Callback::ImplementCallback1;
-
-  sub main : int () {
-    (TestCase::Callback::Callback)new TestCase::Callback::ImplementCallback1;
-  }
-}

@@ -1,0 +1,33 @@
+package SPVM::TestCase::Inline {
+  
+  # Inline expansion
+  sub constant_method_return_double : double () {
+    return 0.25;
+  }
+  
+  # Array store undef
+  sub constant_method : int () {
+    unless (constant_method_return_double() == 0.25) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  # Inline expansion
+  sub new : SPVM::TestCase::Inline () {
+    return new SPVM::TestCase::Inline;
+  }
+  
+  # Array store undef
+  sub new_inline : int () {
+    my $self = SPVM::TestCase::Inline->new;
+    
+    unless ($self isa SPVM::TestCase::Inline) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+}

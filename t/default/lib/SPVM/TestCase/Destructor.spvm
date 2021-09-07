@@ -1,0 +1,13 @@
+package SPVM::TestCase::Destructor {
+  use SPVM::TestCase::Minimal;
+  
+  has minimal : public SPVM::TestCase::Minimal;
+  
+  sub new : SPVM::TestCase::Destructor () {
+    return new SPVM::TestCase::Destructor;
+  }
+  
+  sub DESTROY : void ($self : self) {
+    $self->{minimal}->{x} = 3;
+  }
+}

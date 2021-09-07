@@ -1,5 +1,0 @@
-package TestCase::Callback2 : callback_t {
-  use TestCase::Minimal;
-
-  sub : TestCase::Minimal ($self : self, $var1 : TestCase::Minimal, $var2 : object);
-}

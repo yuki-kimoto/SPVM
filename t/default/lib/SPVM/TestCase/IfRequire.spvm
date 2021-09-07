@@ -1,0 +1,61 @@
+package SPVM::TestCase::IfRequire {
+  
+  sub if_require : int () {
+    
+    # if require success
+    {
+      my $foo = 0;
+      if (require SPVM::NumberUtil) {
+        $foo = 1;
+      }
+      unless ($foo == 1) {
+        return 0;
+      }
+    }
+
+    # if require not success
+    {
+      my $foo = 0;
+      
+      if (require SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) {
+        new SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
+        $foo = 1;
+      }
+      
+      unless ($foo == 0) {
+        return 0;
+      }
+    }
+
+    # if require else success
+    {
+      my $foo = 0;
+      if (require SPVM::NumberUtil) {
+        $foo = 1;
+      }
+      else {
+        $foo = 2;
+      }
+      unless ($foo == 1) {
+        return 0;
+      }
+    }
+ 
+     # if require else not success
+    {
+      my $foo = 0;
+      if (require SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) {
+        new SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
+        $foo = 1;
+      }
+      else {
+        $foo = 2;
+      }
+      unless ($foo == 2) {
+        return 0;
+      }
+    }
+   
+    return 1;
+  }
+}

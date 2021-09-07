@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::String';
+use SPVM 'SPVM::TestCase::String';
 
 
 
@@ -15,9 +15,9 @@ use SPVM 'TestCase::String';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
-  ok(TestCase::String->string_access);
-  ok(TestCase::String->string_length);
-  ok(TestCase::String->basic);
+  ok(SPVM::TestCase::String->string_access);
+  ok(SPVM::TestCase::String->string_length);
+  ok(SPVM::TestCase::String->basic);
 }
 
 # All object is freed

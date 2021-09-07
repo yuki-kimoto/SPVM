@@ -1,9 +1,0 @@
-package TestCase::CompileError::Concat::LeftIsNotString {
-  use TestCase::Minimal;
-  
-  sub main : int () {
-    my $minimal : TestCase::Minimal;
-    
-    $minimal . "abc";
-  }
-}

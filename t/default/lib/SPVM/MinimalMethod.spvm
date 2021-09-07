@@ -1,0 +1,5 @@
+package SPVM::MinimalMethod {
+  sub foo : void () {
+    
+  }
+}

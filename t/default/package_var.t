@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
+use SPVM 'SPVM::TestCase';
 
 
 
@@ -16,7 +16,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Package variable relative name
 {
   my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-  ok(TestCase->package_var_rel_name());
+  ok(SPVM::TestCase->package_var_rel_name());
   my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($start_memory_blocks_count, $end_memory_blocks_count);
 }
@@ -24,8 +24,8 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Package variable
 {
   my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-  ok(TestCase->package_var());
-  ok(TestCase->package_var_other_package());
+  ok(SPVM::TestCase->package_var());
+  ok(SPVM::TestCase->package_var_other_package());
   my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($start_memory_blocks_count, $end_memory_blocks_count);
 }

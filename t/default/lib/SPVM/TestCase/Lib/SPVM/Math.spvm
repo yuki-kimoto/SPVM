@@ -1,0 +1,3541 @@
+package SPVM::TestCase::Lib::SPVM::Math {
+  use SPVM::Math (
+    complexf,
+    complex,
+    caddf,
+    cadd,
+    csubf,
+    csub,
+    cmulf,
+    cmul,
+    cscamulf,
+    cscamul,
+    cdivf,
+    cdiv,
+    E,
+    PI,
+  );
+  use SPVM::StringUtil(index);
+  use SPVM::NumberUtil(INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+
+  sub test_E : int () {
+    unless (E() == 2.7182818284590452354) {
+      return 0;
+    }
+    unless (E() == 0x1.5bf0a8b145769p+1) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_PI : int () {
+    unless (PI() == 3.14159265358979323846) {
+      return 0;
+    }
+
+    unless (PI() == 0x1.921fb54442d18p+1) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  #
+  # Integral type overflow is not defined in C99
+  #
+  sub unary_minus_int_overflow : int () {
+    my $value = -INT32_MIN();
+
+    unless ($value isa int) {
+      return 0;
+    }
+
+    unless ($value == INT32_MIN()) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub unary_minus_long_overflow : int () {
+    my $value = -INT64_MIN();
+
+    unless ($value isa long) {
+      return 0;
+    }
+
+    unless ($value == INT64_MIN()) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  #
+  # Nan, Inf, sign operation is not defined in C99
+  #
+  sub unary_minus_float_inf : int () {
+    {
+      my $value = -SPVM::Math->INFINITYF();
+
+      unless ($value isa float) {
+        return 0;
+      }
+
+      unless ($value == -SPVM::Math->INFINITYF()) {
+        return 0;
+      }
+
+      unless (-$value == SPVM::Math->INFINITYF()) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub unary_minus_float_zero : int () {
+    my $zero_plus = 0.0f;
+
+    if (SPVM::Math->signbitf($zero_plus)) {
+      return 0;
+    }
+
+    my $zero_minus = -$zero_plus;
+
+    unless ($zero_minus isa float) {
+      return 0;
+    }
+
+
+    unless ($zero_minus == 0.0f) {
+      return 0;
+    }
+
+    unless ($zero_minus == -0.0f) {
+      return 0;
+    }
+
+    unless(SPVM::Math->signbitf($zero_minus)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub unary_minus_float_nan : int () {
+    my $value = -SPVM::Math->NANF();
+
+    unless ($value isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isnanf($value)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub unary_minus_double_inf : int () {
+    my $value = -SPVM::Math->INFINITY();
+
+    unless ($value isa double) {
+      return 0;
+    }
+
+    unless ($value == -SPVM::Math->INFINITY()) {
+      return 0;
+    }
+
+    unless (-$value == SPVM::Math->INFINITY()) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub unary_minus_double_zero : int () {
+    my $zero_plus = 0.0;
+
+    if (SPVM::Math->signbit($zero_plus)) {
+      return 0;
+    }
+
+    my $zero_minus = -$zero_plus;
+
+    unless ($zero_minus isa double) {
+      return 0;
+    }
+
+    unless ($zero_minus == 0.0) {
+      return 0;
+    }
+
+    unless ($zero_minus == -0.0) {
+      return 0;
+    }
+
+    unless(SPVM::Math->signbit($zero_minus)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub unary_minus_double_nan : int () {
+    my $value = -SPVM::Math->NAN();
+
+    unless ($value isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isnan($value)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_long_underflow : long () {
+    return (long)-9223372036854775808L - (long)1;
+  }
+
+  #
+  # Integral type overflow is not defined in C99
+  #
+  sub subtract_double_over_min : int () {
+    my $total = -DBL_MAX() - +DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+  sub subtract_overflow : int () {
+    my $total = -2147483648 - 1;
+
+    unless ($total == 2147483647) {
+      return 0;
+    }
+
+    unless ($total isa int) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  #
+  # Nan, Inf, sign operation is not defined in C99
+  #
+  sub subtract_float_nan_left : int () {
+    my $total = SPVM::Math->NANF() - 3.0f;
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_float_nan_right : int () {
+    my $total = 3.0f - SPVM::Math->NANF();
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_double_nan_left : int () {
+    my $total = SPVM::Math->NAN() - 3.0;
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_double_nan_right : int () {
+    my $total = 3.0 - SPVM::Math->NAN();
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_float_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITYF() - SPVM::Math->INFINITYF();
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_double_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITY() - SPVM::Math->INFINITY();
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_float_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITYF() - 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_double_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITY() - 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_float_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITYF() - 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_double_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITY() - 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_float_plus_zero_minus_zero : int () {
+    my $total = 0.0f - (0.0f);
+
+    unless($total == 0f) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_double_plus_zero_minus_zero : int () {
+    my $total = 0.0 - (0.0);
+
+    unless($total == 0) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_float_over_max : int () {
+    my $total = FLT_MAX() - (-FLT_MAX());
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_double_over_max : int () {
+    my $total = DBL_MAX() - (-DBL_MAX());
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub subtract_float_over_min : int () {
+    my $total = -FLT_MAX() - +FLT_MAX();
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  #
+  # Integral type overflow is not defined in C99
+  #
+  sub add_long_overflow : long () {
+    return (long)9223372036854775807L + (long)1;
+  }
+  sub add_overflow : int () {
+    my $total = 2147483647 + 1;
+
+    unless ($total == -2147483648) {
+      return 0;
+    }
+
+    unless ($total isa int) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  #
+  # Nan, Inf, sign operation is not defined in C99
+  #
+  sub add_double_same_sign_zero : int () {
+    {
+      my $total = 0.0 + 0.0;
+
+      unless ($total == 0) {
+        return 0;
+      }
+
+      if (SPVM::Math->signbit($total)) {
+        return 0;
+      }
+    }
+    {
+      my $total = -0.0 + -0.0;
+
+      unless($total == 0) {
+        return 0;
+      }
+
+      unless (SPVM::Math->signbit($total)) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub add_float_plus_zero_minus_zero : int () {
+    my $total = 0.0f + (-0.0f);
+
+    unless($total == 0f) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_double_plus_zero_minus_zero : int () {
+    my $total = 0.0 + (-0.0);
+
+    unless($total == 0) {
+      return 0;
+    }
+
+    if (SPVM::Math->signbit($total)) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_float_same_sign_zero : int () {
+    {
+      my $total = 0.0f + 0.0f;
+
+      unless ($total == 0f) {
+        return 0;
+      }
+
+      if (SPVM::Math->signbitf($total)) {
+        return 0;
+      }
+    }
+    {
+      my $total = -0.0f + -0.0f;
+
+      unless($total == 0f) {
+        return 0;
+      }
+
+      unless (SPVM::Math->signbitf($total)) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+
+  sub add_float_over_max : int () {
+    my $total = FLT_MAX() + FLT_MAX();
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+  sub add_double_over_max : int () {
+    my $total = DBL_MAX() + DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total > 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+  sub add_float_over_min : int () {
+    my $total = -FLT_MAX() + -FLT_MAX();
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinff($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+  sub add_double_over_min : int () {
+    my $total = -DBL_MAX() + -DBL_MAX();
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    unless (SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless ($total < 0) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_float_nan_left : int () {
+    my $total = SPVM::Math->NANF() + 3.0f;
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_float_nan_right : int () {
+    my $total = 3.0f + SPVM::Math->NANF();
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_double_nan_left : int () {
+    my $total = SPVM::Math->NAN() + 3.0;
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_double_nan_right : int () {
+    my $total = 3.0 + SPVM::Math->NAN();
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_float_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITYF() + (-SPVM::Math->INFINITYF());
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_double_plus_inf_minus_inf : int () {
+    my $total = SPVM::Math->INFINITY() + (-SPVM::Math->INFINITY());
+
+    unless(SPVM::Math->isnan($total)) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_float_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITYF() + 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_double_inf_plus_value : int () {
+    my $total = SPVM::Math->INFINITY() + 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total > 0) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_float_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITYF() + 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+
+    unless($total isa float) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub add_double_minus_inf_minus_value : int () {
+    my $total = -SPVM::Math->INFINITY() + 1;
+
+    unless(SPVM::Math->isinf($total)) {
+      return 0;
+    }
+
+    unless($total < 0) {
+      return 0;
+    }
+
+    unless($total isa double) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_isinff: int () {
+    if (SPVM::Math->isinff(SPVM::Math->INFINITYF())) {
+      if (!SPVM::Math->isinff(SPVM::Math->NANF())) {
+        if (!SPVM::Math->isinff(0.1f)) {
+          return 1;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_isfinitef: int () {
+    if (!SPVM::Math->isfinitef(SPVM::Math->INFINITYF())) {
+      if (!SPVM::Math->isfinitef(SPVM::Math->NANF())) {
+        if (SPVM::Math->isfinitef(0.1f)) {
+          return 1;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_isnanf: int () {
+    if (!SPVM::Math->isnanf(SPVM::Math->INFINITYF())) {
+      if (SPVM::Math->isnanf(SPVM::Math->NANF())) {
+        if (!SPVM::Math->isnanf(0.1f)) {
+          return 1;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_float_pass_positive_infinity : int ($value : float) {
+    if ($value == SPVM::Math->INFINITYF()) {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  sub test_float_pass_nan : int ($value : float) {
+    if (SPVM::Math->isnanf($value)) {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  sub test_isinf : int () {
+    if (SPVM::Math->isinf(SPVM::Math->INFINITY())) {
+      if (!SPVM::Math->isinf(SPVM::Math->NAN())) {
+        if (!SPVM::Math->isinf(0.1)) {
+          return 1;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_isfinite : int () {
+    if (!SPVM::Math->isfinite(SPVM::Math->INFINITY())) {
+      if (!SPVM::Math->isfinite(SPVM::Math->NAN())) {
+        if (SPVM::Math->isfinite(0.1)) {
+          return 1;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_isnan : int () {
+    if (!SPVM::Math->isnan(SPVM::Math->INFINITY())) {
+      if (SPVM::Math->isnan(SPVM::Math->NAN())) {
+        if (!SPVM::Math->isnan(0.1)) {
+          return 1;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_double_pass_nan : int ($value : double) {
+    if (SPVM::Math->isnan($value)) {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  sub test_double_pass_positive_infinity : int ($value : double) {
+    if ($value == SPVM::Math->INFINITY()) {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  # Trigonometric functions
+  sub test_cos : int () {
+    my $value = SPVM::Math->cos(PI() / 2.0);
+
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_cosf : int () {
+    my $value = SPVM::Math->cosf((float)(PI() / 2.0));
+
+    if ($value < 0.0001f && $value > -0.0001f) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_sin : int () {
+    my $value = SPVM::Math->sin(PI());
+
+    if ($value < 0.000001 && $value > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_sinf : int () {
+    my $value = SPVM::Math->sinf((float)PI());
+
+    if ($value < 0.0001f && $value > -0.0001f) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_tan : int () {
+    my $value = SPVM::Math->tan(PI() / 4.0);
+
+    if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_tanf : int () {
+    my $value = SPVM::Math->tanf((float)(PI() / 4.0));
+
+    if ($value - 1.0 < 0.0001f && $value - 1.0 > -0.0001f) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub test_acos : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->acos(0.866025403784438646763723170752936183471402626905190314027);
+    my $expected = PI() / 6;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_acosf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->acosf(0.866025403784438646763723170752936183471402626905190314027f);
+    my $expected = (float)(PI() / 6);
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_asin : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->asin(0.5);
+    my $expected = PI() / 6;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_asinf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->asinf(0.5f);
+    my $expected = (float)(PI() / 6);
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_atan : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->atan(0.577350269189625764509148780501957455647601751270126876018);
+    my $expected = PI() / 6;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_atanf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->atanf(0.577350269189625764509148780501957455647601751270126876018f);
+    my $expected = (float)(PI() / 6);
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  # Hyperbolic functions
+  sub test_cosh : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->cosh(0.5);
+    my $expected = 1.127625965206380785226225161402672012547847118098667483628;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_coshf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->coshf(0.5f);
+    my $expected = 1.127625965206380785226225161402672012547847118098667483628f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_sinh : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->sinh(0.5);
+    my $expected = 0.521095305493747361622425626411491559105928982611480527946;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_sinhf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->sinhf(0.5f);
+    my $expected = 0.521095305493747361622425626411491559105928982611480527946f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_tanh : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->tanh(0.5);
+    my $expected = 0.462117157260009758502318483643672548730289280330113038552;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_tanhf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->tanhf(0.5f);
+    my $expected = 0.462117157260009758502318483643672548730289280330113038552f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_acosh : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->acosh(PI() / 2);
+    my $expected = 1.023227478547550579317495677949303852301405666414862096802;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_acoshf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->acoshf((float)(PI() / 2));
+    my $expected = 1.023227478547550579317495677949303852301405666414862096802f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_asinh : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->asinh(PI());
+    my $expected = 1.862295743310848219888361325182620574902674184961554765612;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_asinhf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->asinhf((float)PI());
+    my $expected = 1.862295743310848219888361325182620574902674184961554765612f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_atanh : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->atanh(0.5);
+    my $expected = 0.549306144334054845697622618461262852323745278911374725867;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_atanhf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->atanhf(0.5f);
+    my $expected = 0.549306144334054845697622618461262852323745278911374725867f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_exp : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->exp(1);
+    my $expected = 2.718281828459045235360287471352662497757247093699959574966;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_expf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->expf(1f);
+    my $expected = 2.718281828459045235360287471352662497757247093699959574966f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_exp2 : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->exp2(PI());
+    my $expected = 8.824977827076287623856429604208001581704410815271484926668;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_exp2f : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->exp2f((float)PI());
+    my $expected = 8.824977827076287623856429604208001581704410815271484926668f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_expm1 : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->expm1(1);
+    my $expected = 1.718281828459045235360287471352662497757247093699959574966;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_expm1f : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->expm1f(1f);
+    my $expected = 1.718281828459045235360287471352662497757247093699959574966f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_frexp : int () {
+    my $eps          = 0.000000001;
+    my $got_exp : int;
+    my $got          = SPVM::Math->frexp(PI(), \$got_exp);
+    my $expected_exp = 2;
+    my $expected     = 0.78539816339744827900;
+    unless ($got_exp == $expected_exp) {
+      return 0;
+    }
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_frexpf : int () {
+    my $eps          = 0.0001f;
+    my $got_exp : int;
+    my $got          = SPVM::Math->frexpf((float)PI(), \$got_exp);
+    my $expected_exp = 2;
+    my $expected     = 0.78539816339744827900f;
+    unless ($got_exp == $expected_exp) {
+      return 0;
+    }
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_ilogb : int () {
+    my $got = SPVM::Math->ilogb(1024.1111111111111111111111);
+    my $expected = 10;
+    unless ($got == $expected) {
+      return 0;
+    }
+    unless (SPVM::Math->ilogb(0) == SPVM::Math->FP_ILOGB0) {
+      return 0;
+    }
+    unless (SPVM::Math->ilogb(SPVM::Math->NAN) == SPVM::Math->FP_ILOGBNAN) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_ilogbf : int () {
+    my $got = SPVM::Math->ilogbf(1024.111111111111111111111f);
+    my $expected = 10;
+    unless ($got == $expected) {
+      return 0;
+    }
+    unless (SPVM::Math->ilogbf(0) == SPVM::Math->FP_ILOGB0) {
+      return 0;
+    }
+    unless (SPVM::Math->ilogbf(SPVM::Math->NANF) == SPVM::Math->FP_ILOGBNAN) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_ldexp : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->ldexp(PI(), 3);
+    my $expected = 25.13274122871834590770114706623602307357735519500084656779;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_ldexpf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->ldexpf((float)PI(), 3);
+    my $expected = 25.13274122871834590770114706623602307357735519500084656779f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_log : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->log(PI());
+    my $expected = 1.144729885849400174143427351353058711647294812915311571513;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_logf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->logf((float)PI());
+    my $expected = 1.144729885849400174143427351353058711647294812915311571513f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_log10 : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->log10(PI());
+    my $expected = 0.497149872694133854351268288290898873651678324380442446134;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_log10f : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->log10f((float)PI());
+    my $expected = 0.497149872694133854351268288290898873651678324380442446134f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_log1p : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->log1p(PI());
+    my $expected = 1.421080412794292633053772196333719458985758681678943714407;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_log1pf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->log1pf((float)PI());
+    my $expected = 1.421080412794292633053772196333719458985758681678943714407f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_log2 : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->log2(PI());
+    my $expected = 1.651496129472318798043279295108007335018476926763041529406;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_log2f : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->log2f((float)PI());
+    my $expected = 1.651496129472318798043279295108007335018476926763041529406f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_logb : int () {
+    my $got      = SPVM::Math->logb(PI());
+    my $expected = 1;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_logbf : int () {
+    my $got      = SPVM::Math->logbf((float)PI());
+    my $expected = 1f;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_modf : int () {
+    my $eps          = 0.000000001;
+    my $got_intpart : double;
+    my $got          = SPVM::Math->modf(PI(), \$got_intpart);
+    my $expected_intpart = 3.0;
+    my $expected     = PI() - 3.0;
+    unless ($got_intpart == $expected_intpart) {
+      return 0;
+    }
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_modff : int () {
+    my $eps          = 0.0001f;
+    my $got_intpart : float;
+    my $got          = SPVM::Math->modff((float)PI(), \$got_intpart);
+    my $expected_intpart = 3.0f;
+    my $expected     = (float)(PI() - 3.0);
+    unless ($got_intpart == $expected_intpart) {
+      return 0;
+    }
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_scalbn : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->scalbn(PI(), 10);
+    my $expected = 3216.990877275948150781914591789246;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_scalbnf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->scalbnf((float)PI(), 10);
+    my $expected = 3216.990877275948150781914591789246f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_scalbln : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->scalbln(PI(), (long)10);
+    my $expected = 3216.990877275948150781914591789246;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_scalblnf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->scalblnf((float)PI(), (long)10);
+    my $expected = 3216.990877275948150781914591789246f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_cbrt : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->cbrt(PI());
+    my $expected = 1.464591887561523263020142527263790391738596855627937174357;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_cbrtf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->cbrtf((float)PI());
+    my $expected = 1.464591887561523263020142527263790391738596855627937174357f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_abs : int () {
+    # Positive value
+    {
+      my $num      = 2147483647;
+      my $abs      = SPVM::Math->abs($num);
+      unless ($abs == 2147483647) {
+        return 0;
+      }
+    }
+
+    # Negative value
+    {
+      my $num      = -2147483647;
+      my $abs      = SPVM::Math->abs($num);
+      unless ($abs == 2147483647) {
+        return 0;
+      }
+    }
+    # 0
+    {
+      my $num      = 0;
+      my $abs      = SPVM::Math->abs($num);
+      unless ($abs == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  sub test_labs : int () {
+    # Positive value
+    {
+      my $num      = 9223372036854775807L;
+      my $labs      = SPVM::Math->labs($num);
+      unless ($labs == 9223372036854775807L) {
+        return 0;
+      }
+    }
+
+    # Negative value
+    {
+      my $num      = -9223372036854775807L;
+      my $labs      = SPVM::Math->labs($num);
+      unless ($labs == 9223372036854775807L) {
+        return 0;
+      }
+    }
+    # 0
+    {
+      my $num      = 0;
+      my $labs      = SPVM::Math->labs($num);
+      unless ($labs == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub test_fabs : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->fabs(-PI());
+    my $expected = PI();
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fabsf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->fabsf((float)(-PI()));
+    my $expected = (float)PI();
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_hypot : int () {
+    my $eps      = 0.000000001;
+    my $e        = 2.718281828459045235360287471352662497757247093699959574966;
+    my $got      = SPVM::Math->hypot(PI(), $e);
+    my $expected = 4.154354402313313572948121466679053097883112964956925650570;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_hypotf : int () {
+    my $eps      = 0.0001f;
+    my $e        = 2.718281828459045235360287471352662497757247093699959574966f;
+    my $got      = SPVM::Math->hypotf((float)PI(), $e);
+    my $expected = 4.154354402313313572948121466679053097883112964956925650570f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_pow : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->pow(PI(), PI());
+    my $expected = 36.46215960720791177099082602269212366636550840222881873870;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_powf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->powf((float)PI(), (float)PI());
+    my $expected = 36.46215960720791177099082602269212366636550840222881873870f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_sqrt : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->sqrt(PI());
+    my $expected = 1.772453850905516027298167483341145182797549456122387128213;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_sqrtf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->sqrtf((float)PI());
+    my $expected = 1.772453850905516027298167483341145182797549456122387128213f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_erf : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->erf(PI());
+    my $expected = 0.999991123853632358394731620781202944712382081512876599047;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_erff : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->erff((float)PI());
+    my $expected = 0.999991123853632358394731620781202944712382081512876599047f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_erfc : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->erfc(PI());
+    my $expected = 0.0000088761463676416052683792187970552876179184871234009524;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_erfcf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->erfc(1.11111111111111111111);
+    my $expected = 0.116101743980548643691465409255702973167155793605751332090f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_lgamma : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->lgamma(PI());
+    my $expected = 0.827694592323437101529578558452359951153501734120737316791;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_lgammaf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->lgammaf((float)PI());
+    my $expected = 0.827694592323437101529578558452359951153501734120737316791f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_tgamma : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->tgamma(PI());
+    my $expected = 2.288037795340032417959588909060233922889688153356222441199;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_tgammaf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->tgammaf((float)PI());
+    my $expected = 2.288037795340032417959588909060233922889688153356222441199f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_ceil : int () {
+    my $got      = SPVM::Math->ceil(PI());
+    my $expected = 4;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_ceilf : int () {
+    my $got      = SPVM::Math->ceilf((float)PI());
+    my $expected = 4;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_floor : int () {
+    my $got      = SPVM::Math->floor(PI());
+    my $expected = 3;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_floorf : int () {
+    my $got      = SPVM::Math->floorf((float)PI());
+    my $expected = 3;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_nearbyint : int () {
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_DOWNWARD)) {
+        die "failed to set fesetround(FE_DOWNWARD)";
+      }
+      {
+        my $got = SPVM::Math->nearbyint(PI());
+        my $expected = 3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyint(-PI());
+        my $expected = -4;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_TONEAREST)) {
+        die "failed to set fesetround(FE_TONEAREST)";
+      }
+      {
+        my $got = SPVM::Math->nearbyint(PI());
+        my $expected = 3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyint(PI() * 4);
+        my $expected = 13;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_TOWARDZERO)) {
+        die "failed to set fesetround(FE_TOWARDZERO)";
+      }
+      {
+        my $got = SPVM::Math->nearbyint(PI());
+        my $expected = 3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyint(-PI());
+        my $expected = -3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_UPWARD)) {
+        die "failed to set fesetround(FE_UPWARD)";
+      }
+      {
+        my $got = SPVM::Math->nearbyint(PI());
+        my $expected = 4;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyint(-PI());
+        my $expected = -3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    return 1;
+  }
+
+  sub test_nearbyintf : int () {
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_DOWNWARD)) {
+        die "failed to set fesetround(FE_DOWNWARD)";
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)PI());
+        my $expected = 3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)(-PI()));
+        my $expected = -4;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_TONEAREST)) {
+        die "failed to set fesetround(FE_TONEAREST)";
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)PI());
+        my $expected = 3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)PI() * 4);
+        my $expected = 13;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_TOWARDZERO)) {
+        die "failed to set fesetround(FE_TOWARDZERO)";
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)PI());
+        my $expected = 3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)(-PI()));
+        my $expected = -3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    {
+      if (SPVM::Math->fesetround(SPVM::Math->FE_UPWARD)) {
+        die "failed to set fesetround(FE_UPWARD)";
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)PI());
+        my $expected = 4;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+      {
+        my $got = SPVM::Math->nearbyintf((float)(-PI()));
+        my $expected = -3;
+        unless ($got == $expected) {
+          return 0;
+        }
+      }
+    }
+    return 1;
+  }
+
+  sub test_round : int () {
+    my $got      = SPVM::Math->round(PI());
+    my $expected = 3;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_roundf : int () {
+    my $got      = SPVM::Math->roundf((float)PI());
+    my $expected = 3;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_lround : int () {
+    my $got      = SPVM::Math->lround(PI() * 1000000000);
+    my $expected = 3141592654L;
+    
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_lroundf : int () {
+    my $got      = SPVM::Math->lroundf((float)(PI() * 100000));
+    my $expected = 314159L;
+    unless ($got == $expected) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_trunc : int () {
+    {
+      my $got = SPVM::Math->trunc(PI() * 4);
+      my $expected = 12;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    {
+      my $got = SPVM::Math->trunc(-PI() * 4);
+      my $expected = -12;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_truncf : int () {
+    {
+      my $got = SPVM::Math->truncf((float)(PI() * 4));
+      my $expected = 12;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    {
+      my $got = SPVM::Math->truncf((float)(-PI() * 4));
+      my $expected = -12;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_fmod : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->fmod(PI(), 2.1);
+    my $expected = 1.0415926535897932384626433832795028841971693993751058;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fmodf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->fmodf((float)PI(), 2.1f);
+    my $expected = 1.0415926535897932384626433832795028841971693993751058f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_remainder : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->remainder(PI(), 2.0);
+    my $expected = -0.85840734641020688400;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_remainderf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->remainderf((float)PI(), 2.0f);
+    my $expected = -0.85840734641020688400f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_remquo : int () {
+    my $eps           = 0.000000001;
+    my $got_quo : int;
+    my $got           = SPVM::Math->remquo(PI(), 2.0, \$got_quo);
+    my $expected      = -0.85840734641020688400;
+    my $expected_quo  = 2;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    unless ($got_quo == $expected_quo) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_remquof : int () {
+    my $eps           = 0.0001f;
+    my $got_quo : int;
+    my $got           = SPVM::Math->remquof((float)PI(), 2.0f, \$got_quo);
+    my $expected      = -0.85840734641020688400f;
+    my $expected_quo  = 2;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    unless ($got_quo == $expected_quo) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_copysign : int () {
+    {
+      my $eps = 0.000000001;
+      my $got = SPVM::Math->copysign(PI(), PI());
+      my $expected = PI();
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    {
+      my $eps = 0.000000001;
+      my $got = SPVM::Math->copysign(-PI(), PI());
+      my $expected = PI();
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    {
+      my $eps = 0.000000001;
+      my $got = SPVM::Math->copysign(PI(), -PI());
+      my $expected = -PI();
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    {
+      my $eps = 0.000000001;
+      my $got = SPVM::Math->copysign(-PI(), -PI());
+      my $expected = -PI();
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_copysignf : int () {
+    {
+      my $eps = 0.0001f;
+      my $got = SPVM::Math->copysignf((float)(-PI()), (float)PI());
+      my $expected = (float)PI();
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    {
+      my $eps = 0.0001f;
+      my $got = SPVM::Math->copysignf((float)(-PI()), (float)PI());
+      my $expected = (float)PI();
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    {
+      my $eps = 0.0001f;
+      my $got = SPVM::Math->copysignf((float)(-PI()), (float)(-PI()));
+      my $expected = (float)(-PI());
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    {
+      my $eps = 0.0001f;
+      my $got = SPVM::Math->copysignf((float)(-PI()), (float)(-PI()));
+      my $expected = (float)(-PI());
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_nan : int () {
+    unless (SPVM::Math->isnan(SPVM::Math->nan("test"))) {
+      return 0;
+    }
+    eval {
+      SPVM::Math->nan(undef);
+    };
+    unless ($@ && index($@, "String must be defined", 0) > -1) {
+      return 0;
+    }
+    $@ = undef;
+    return 1;
+  }
+
+  sub test_nanf : int () {
+    unless (SPVM::Math->isnan(SPVM::Math->nanf("test"))) {
+      return 0;
+    }
+    eval {
+      SPVM::Math->nanf(undef);
+    };
+    unless ($@ && index($@, "String must be defined", 0) > -1) {
+      return 0;
+    }
+    $@ = undef;
+    return 1;
+  }
+  sub test_nextafter : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->nextafter(PI(), 10.0);
+    my $expected = 3.141592653589793560087173318606801331043243408203125;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_nextafterf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->nextafterf((float)PI(), 10.0f);
+    my $expected = 3.141592653589793560087173318606801331043243408203125f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+  sub test_nexttoward : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->nexttoward(PI(), 10.0);
+    my $expected = 3.141592653589793560087173318606801331043243408203125;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_nexttowardf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->nexttowardf((float)PI(), 10.0f);
+    my $expected = 3.141592653589793560087173318606801331043243408203125f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fdim : int () {
+    {
+      my $eps = 0.000000001;
+      my $got = SPVM::Math->fdim(PI(), PI() / 2);
+      my $expected = 1.5707963267948965579989817342720925807952880859375;
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+    }
+    {
+      my $got = SPVM::Math->fdim(PI() / 2, PI());
+      my $expected = 0;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_fdimf : int () {
+    {
+      my $eps      = 0.0001f;
+      my $got      = SPVM::Math->fdimf((float)PI(), (float)PI() / 2);
+      my $expected = 1.5707963267948965579989817342720925807952880859375f;
+      unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+        return 0;
+      }
+      return 1;
+    }
+    {
+      my $got      = SPVM::Math->fdimf((float)PI() / 2, (float)PI());
+      my $expected = 0;
+      unless ($got == $expected) {
+        return 0;
+      }
+      return 1;
+    }
+  }
+
+  sub test_fmax : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->fmax(PI(), PI() / 2);
+    my $expected = PI();
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fmaxf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->fmaxf((float)PI(), (float)PI() / 2);
+    my $expected = (float)PI();
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fmin : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->fmin(PI(), PI() / 2);
+    my $expected = PI() / 2;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fminf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->fminf((float)PI(), (float)PI() / 2);
+    my $expected = (float)PI() / 2f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fma : int () {
+    my $eps      = 0.000000001;
+    my $got      = SPVM::Math->fma(PI(), PI() / 2, PI() / 3);
+    my $expected = 5.98199975174127640542565131909213960170745849609375;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fmaf : int () {
+    my $eps      = 0.0001f;
+    my $got      = SPVM::Math->fmaf((float)PI(), (float)PI() / 2, (float)PI() / 3);
+    my $expected = 5.98199975174127640542565131909213960170745849609375f;
+    unless ($expected - $eps <= $got && $got <= $expected + $eps) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_fpclassify : int () {
+    {
+      my $got = SPVM::Math->fpclassify(SPVM::Math->INFINITY);
+      my $expected = SPVM::Math->FP_INFINITE;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    {
+      my $got = SPVM::Math->fpclassify(SPVM::Math->NAN);
+      my $expected = SPVM::Math->FP_NAN;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    {
+      my $got = SPVM::Math->fpclassify(-0.0);
+      my $expected = SPVM::Math->FP_ZERO;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_fpclassifyf : int () {
+    {
+      my $got = SPVM::Math->fpclassifyf(SPVM::Math->INFINITYF);
+      my $expected = SPVM::Math->FP_INFINITE;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    {
+      my $got = SPVM::Math->fpclassifyf(SPVM::Math->NANF);
+      my $expected = SPVM::Math->FP_NAN;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    {
+      my $got = SPVM::Math->fpclassifyf(-0.0f);
+      my $expected = SPVM::Math->FP_ZERO;
+      unless ($got == $expected) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_signbit : int () {
+    unless (SPVM::Math->signbit(-1.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->signbit(-0.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->signbit(-SPVM::Math->NAN)) {
+      return 0;
+    }
+    if (SPVM::Math->signbit(1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->signbit(0.0)) {
+      return 0;
+    }
+    if (SPVM::Math->signbit(SPVM::Math->NAN)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_signbitf : int () {
+    unless (SPVM::Math->signbitf(-1.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->signbitf(-0.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->signbitf(-SPVM::Math->NANF)) {
+      return 0;
+    }
+    if (SPVM::Math->signbitf(1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->signbitf(0.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->signbitf(SPVM::Math->NANF)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_isgreater : int () {
+    unless (SPVM::Math->isgreater(2.0, 1.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreater(SPVM::Math->INFINITY, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(1.0, 2.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(2.0, 2.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(0.0, -0.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(1.0, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(SPVM::Math->INFINITY, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(SPVM::Math->NAN, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(1.0, SPVM::Math->NAN)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreater(SPVM::Math->NAN, SPVM::Math->NAN)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_isgreaterf : int () {
+    unless (SPVM::Math->isgreaterf(2.0f, 1.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterf(SPVM::Math->INFINITYF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(1.0f, 2.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(2.0f, 2.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(0.0f, -0.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(1.0f, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(SPVM::Math->INFINITYF, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(SPVM::Math->NANF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(1.0f, SPVM::Math->NANF)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterf(SPVM::Math->NANF, SPVM::Math->NANF)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_isgreaterequal : int () {
+    unless (SPVM::Math->isgreaterequal(2.0, 1.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequal(2.0, 2.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequal(0.0, -0.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequal(SPVM::Math->INFINITY, 1.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequal(SPVM::Math->INFINITY, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequal(1.0, 2.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequal(1.0, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequal(SPVM::Math->NAN, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequal(1.0, SPVM::Math->NAN)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequal(SPVM::Math->NAN, SPVM::Math->NAN)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_isgreaterequalf : int () {
+    unless (SPVM::Math->isgreaterequalf(2.0f, 1.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequalf(2.0f, 2.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequalf(0.0f, -0.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequalf(SPVM::Math->INFINITYF, 1.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->isgreaterequalf(SPVM::Math->INFINITYF, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequalf(1.0f, 2.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequalf(1.0f, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequalf(SPVM::Math->NANF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequalf(1.0f, SPVM::Math->NANF)) {
+      return 0;
+    }
+    if (SPVM::Math->isgreaterequalf(SPVM::Math->NANF, SPVM::Math->NANF)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_isless : int () {
+    unless (SPVM::Math->isless(1.0, 2.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->isless(1.0, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(2.0, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(2.0, 2.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(0.0, -0.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(SPVM::Math->INFINITY, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(SPVM::Math->INFINITY, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(SPVM::Math->NAN, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(1.0, SPVM::Math->NAN)) {
+      return 0;
+    }
+    if (SPVM::Math->isless(SPVM::Math->NAN, SPVM::Math->NAN)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_islessf : int () {
+    unless (SPVM::Math->islessf(1.0f, 2.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessf(1.0f, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(2.0f, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(2.0f, 2.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(0.0f, -0.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(SPVM::Math->INFINITYF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(SPVM::Math->INFINITYF, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(SPVM::Math->NANF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(1.0f, SPVM::Math->NANF)) {
+      return 0;
+    }
+    if (SPVM::Math->islessf(SPVM::Math->NANF, SPVM::Math->NANF)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_islessequal : int () {
+    unless (SPVM::Math->islessequal(1.0, 2.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequal(2.0, 2.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequal(0.0, -0.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequal(1.0, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequal(SPVM::Math->INFINITY, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequal(2.0, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequal(SPVM::Math->INFINITY, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequal(SPVM::Math->NAN, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequal(1.0, SPVM::Math->NAN)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequal(SPVM::Math->NAN, SPVM::Math->NAN)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_islessequalf : int () {
+    unless (SPVM::Math->islessequalf(1.0f, 2.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequalf(2.0f, 2.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequalf(0.0f, -0.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequalf(1.0f, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessequalf(SPVM::Math->INFINITYF, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequalf(2.0f, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequalf(SPVM::Math->INFINITYF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequalf(SPVM::Math->NANF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequalf(1.0f, SPVM::Math->NANF)) {
+      return 0;
+    }
+    if (SPVM::Math->islessequalf(SPVM::Math->NANF, SPVM::Math->NANF)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_islessgreater : int () {
+    unless (SPVM::Math->islessgreater(1.0, 2.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessgreater(2.0, 1.0)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessgreater(1.0, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessgreater(SPVM::Math->INFINITY, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreater(2.0, 2.0)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreater(0.0, -0.0)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreater(SPVM::Math->INFINITY, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreater(SPVM::Math->NAN, 1.0)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreater(1.0, SPVM::Math->NAN)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreater(SPVM::Math->NAN, SPVM::Math->NAN)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_islessgreaterf : int () {
+    unless (SPVM::Math->islessgreaterf(1.0f, 2.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessgreaterf(2.0f, 1.0f)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessgreaterf(1.0f, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    unless (SPVM::Math->islessgreaterf(SPVM::Math->INFINITYF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreaterf(2.0f, 2.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreaterf(0.0f, -0.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreaterf(SPVM::Math->INFINITYF, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreaterf(SPVM::Math->NANF, 1.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreaterf(1.0f, SPVM::Math->NANF)) {
+      return 0;
+    }
+    if (SPVM::Math->islessgreaterf(SPVM::Math->NANF, SPVM::Math->NANF)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_isunordered : int () {
+    unless (SPVM::Math->isunordered(1.0, SPVM::Math->NAN)) {
+      return 0;
+    }
+    if (SPVM::Math->isunordered(1.0, 2.0)) {
+      return 0;
+    }
+    if (SPVM::Math->isunordered(1.0, SPVM::Math->INFINITY)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_isunorderedf : int () {
+    unless (SPVM::Math->isunorderedf(1.0f, SPVM::Math->NANF)) {
+      return 0;
+    }
+    if (SPVM::Math->isunorderedf(1.0f, 2.0f)) {
+      return 0;
+    }
+    if (SPVM::Math->isunorderedf(1.0f, SPVM::Math->INFINITYF)) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub test_complexf : int () {
+    my $z1 = complex(0.5f, 0.25f);
+
+    unless ($z1->{re} == 0.5f && $z1->{im} == 0.25f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+
+  sub test_complex : int () {
+    my $z1 = complex(0.00000000005, 0.000000000025);
+
+    unless ($z1->{re} == 0.00000000005 && $z1->{im} == 0.000000000025) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_caddf : int () {
+    my $z1 : SPVM::Complex_2f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
+
+    my $z2 : SPVM::Complex_2f;
+    $z2->{re} = 0.125f;
+    $z2->{im} = 0.0625f;
+
+    my $z3 = caddf($z1, $z2);
+
+    unless ($z3->{re} == 0.625 && $z3->{im} == 0.3125) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cadd : int () {
+    my $z1 : SPVM::Complex_2d;
+    $z1->{re} = 0.00000000005;
+    $z1->{im} = 0.000000000025;
+
+    my $z2 : SPVM::Complex_2d;
+    $z2->{re} = 0.0000000000125;
+    $z2->{im} = 0.00000000000625;
+
+    my $z3 = cadd($z1, $z2);
+
+    unless ($z3->{re} == 0.0000000000625 && $z3->{im} == 0.00000000003125) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csubf : int () {
+    my $z1 : SPVM::Complex_2f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
+
+    my $z2 : SPVM::Complex_2f;
+    $z2->{re} = 0.125f;
+    $z2->{im} = 0.0625f;
+
+    my $z3 = csubf($z1, $z2);
+
+    unless ($z3->{re} == 0.5f - 0.125f && $z3->{im} == 0.25f - 0.0625f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csub : int () {
+    my $z1 : SPVM::Complex_2d;
+    $z1->{re} = 0.5;
+    $z1->{im} = 0.25;
+
+    my $z2 : SPVM::Complex_2d;
+    $z2->{re} = 0.125;
+    $z2->{im} = 0.625;
+
+    my $z3 = csub($z1, $z2);
+
+    unless ($z3->{re} == 0.5 - 0.125 && $z3->{im} == 0.25 - 0.625) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmulf : int () {
+    my $eps = 0.001f;
+
+    my $z1 : SPVM::Complex_2f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
+
+    my $z2 : SPVM::Complex_2f;
+    $z2->{re} = 0.125f;
+    $z2->{im} = 0.0625f;
+
+    my $z3 = cmulf($z1, $z2);
+
+    unless ($z3->{re} == 0.046875 && $z3->{im} == 0.0625) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cmul : int () {
+    my $eps = 0.1;
+
+    my $z1 : SPVM::Complex_2d;
+    $z1->{re} = 0.5;
+    $z1->{im} = 0.25;
+
+    my $z2 : SPVM::Complex_2d;
+    $z2->{re} = 0.125;
+    $z2->{im} = 0.0625;
+
+    my $z3 = cmul($z1, $z2);
+
+    unless ($z3->{re} == 0.046875 && $z3->{im} == 0.0625) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamulf : int () {
+    my $z1 = -0.5f;
+
+    my $z2 : SPVM::Complex_2f;
+    $z2->{re} = -0.1f;
+    $z2->{im} = 0.05f;
+
+    my $z3 = cscamulf($z1, $z2);
+    
+    unless ($z3->{re} == 0.05f) {
+      return 0;
+    }
+    
+    unless ($z3->{im} == -0.025f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cscamul : int () {
+    my $z1 = 0.001;
+
+    my $z2 : SPVM::Complex_2d;
+    $z2->{re} = -1.0;
+    $z2->{im} = 3.0;
+
+    my $z3 = cscamul($z1, $z2);
+
+    unless ($z3->{re} == -0.001) {
+      return 0;
+    }
+    
+    unless ($z3->{im} == 0.003) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdivf : int () {
+    my $z1 : SPVM::Complex_2f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
+
+    my $z2 : SPVM::Complex_2f;
+    $z2->{re} = 2f;
+    $z2->{im} = -2f;
+
+    my $z3 = cdivf($z1, $z2);
+    
+    unless ($z3->{re} == 0.0625 && $z3->{im} == 0.1875) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cdiv : int () {
+    my $z1 : SPVM::Complex_2d;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
+
+    my $z2 : SPVM::Complex_2d;
+    $z2->{re} = 2f;
+    $z2->{im} = -2f;
+
+    my $z3 = cdiv($z1, $z2);
+
+    unless ($z3->{re} == 0.0625 && $z3->{im} == 0.1875) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacos : int () {
+    my $z1 : SPVM::Complex_2d;
+    $z1->{re} = 0.5;
+    $z1->{im} = 0.25;
+
+    my $z_out = SPVM::Math->cacos($z1);
+    
+    unless ($z_out->{re} > 1.06918 && $z_out->{re} < 1.06919) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > -0.281397 && $z_out->{im} < -0.281396) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacosf : int () {
+    my $z1 : SPVM::Complex_2f;
+    $z1->{re} = 0.5f;
+    $z1->{im} = 0.25f;
+
+    my $z_out = SPVM::Math->cacosf($z1);
+    
+    unless ($z_out->{re} > 1.06918f && $z_out->{re} < 1.06919f) {
+      return 0;
+    }
+
+    unless ($z_out->{im} > -0.28140f && $z_out->{im} < -0.28139f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_casin : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->casin($z1);
+    
+    unless ($z_out->{re} > 0.5016088532755 && $z_out->{re} < 0.5016088532756) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2813960562452 && $z_out->{im} < 0.2813960562453) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_casinf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->casinf($z1);
+    
+    unless ($z_out->{re} > 0.5016 && $z_out->{re} < 0.5017) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2813 && $z_out->{im} < 0.2814) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_catan : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->catan($z1);
+    
+    unless ($z_out->{re} > 0.4842544903299 && $z_out->{re} < 0.4842544903300) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2005866181312 && $z_out->{im} < 0.2005866181313) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_catanf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->catanf($z1);
+    
+    unless ($z_out->{re} > 0.4842 && $z_out->{re} < 0.4843) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2005 && $z_out->{im} < 0.2006) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccos : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ccos($z1);
+    
+    unless ($z_out->{re} > 0.9051501505596 && $z_out->{re} < 0.9051501505597) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > -0.1211087960439 && $z_out->{im} < -0.1211087960438) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccosf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ccosf($z1);
+    
+    unless ($z_out->{re} > 0.905 && $z_out->{re} < 0.906) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > -0.1212 && $z_out->{im} < -0.1211) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csin : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->csin($z1);
+    
+    unless ($z_out->{re} > 0.4944857809331 && $z_out->{re} < 0.4944857809332) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2216881641495 && $z_out->{im} < 0.2216881641496) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csinf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->csinf($z1);
+    
+    unless ($z_out->{re} > 0.4944 && $z_out->{re} < 0.4945) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2216 && $z_out->{im} < 0.2217) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctan : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ctan($z1);
+    
+    unless ($z_out->{re} > 0.5045007026985 && $z_out->{re} < 0.5045007026986) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.3124206925025 && $z_out->{im} < 0.3124206925026) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctanf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ctanf($z1);
+    
+    unless ($z_out->{re} > 0.5045 && $z_out->{re} < 0.5046) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.3124 && $z_out->{im} < 0.3125) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacosh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cacosh($z1);
+    
+    unless ($z_out->{re} > 0.2813960562452 && $z_out->{re} < 0.2813960562453) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 1.06918747351 && $z_out->{im} < 1.06918747352) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cacoshf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cacoshf($z1);
+    
+    unless ($z_out->{re} > 0.2813 && $z_out->{re} < 0.2814) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 1.0691 && $z_out->{im} < 1.0692) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_casinh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->casinh($z1);
+    
+    unless ($z_out->{re} > 0.4926756834207 && $z_out->{re} < 0.4926756834208) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2243284526346 && $z_out->{im} < 0.2243284526347) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_casinhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->casinhf($z1);
+    
+    unless ($z_out->{re} > 0.4926 && $z_out->{re} < 0.4927) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2243 && $z_out->{im} < 0.2244) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_catanh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->catanh($z1);
+    
+    unless ($z_out->{re} > 0.5003700000525 && $z_out->{re} < 0.5003700000526) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.3143981432077 && $z_out->{im} < 0.3143981432078) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_catanhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->catanhf($z1);
+    
+    unless ($z_out->{re} > 0.5003 && $z_out->{re} < 0.5004) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.3143 && $z_out->{im} < 0.3144) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccosh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ccosh($z1);
+    
+    unless ($z_out->{re} > 1.092570804731 && $z_out->{re} < 1.092570804732) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.1289210417280 && $z_out->{im} < 0.1289210417281) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ccoshf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ccoshf($z1);
+    
+    unless ($z_out->{re} > 1.092 && $z_out->{re} < 1.093) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.1289 && $z_out->{im} < 0.1290) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csinh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->csinh($z1);
+    
+    unless ($z_out->{re} > 0.5048957143879 && $z_out->{re} < 0.5048957143880) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2789791283502 && $z_out->{im} < 0.2789791283503) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csinhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->csinhf($z1);
+    
+    unless ($z_out->{re} > 0.5048 && $z_out->{re} < 0.5049) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.2789 && $z_out->{im} < 0.2790) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctanh : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->ctanh($z1);
+    
+    unless ($z_out->{re} > 0.4854872810241 && $z_out->{re} < 0.4854872810242) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.198055449951 && $z_out->{im} < 0.198055449952) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_ctanhf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->ctanhf($z1);
+    
+    unless ($z_out->{re} > 0.4854 && $z_out->{re} < 0.4855) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.1980 && $z_out->{im} < 0.1981) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_clog : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->clog($z1);
+    
+    unless ($z_out->{re} > -0.581575404903 && $z_out->{re} < -0.581575404902) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.4636476090008 && $z_out->{im} < 0.4636476090009) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_clogf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->clogf($z1);
+    
+    unless ($z_out->{re} > -0.5816 && $z_out->{re} < -0.5815) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.4636 && $z_out->{im} < 0.4637) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabs : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cabs($z1);
+    
+    unless ($z_out > 0.5590169943749 && $z_out < 0.5590169943750) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cabsf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cabsf($z1);
+    
+    unless ($z_out > 0.5590 && $z_out < 0.5591) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_carg : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->carg($z1);
+    
+    unless ($z_out > 0.463647609000 && $z_out < 0.463647609001) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cargf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cargf($z1);
+    
+    unless ($z_out > 0.4636 && $z_out < 0.4637) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_conj : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->conj($z1);
+    
+    unless ($z_out->{re} == 0.5) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} == -0.25) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_conjf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->conjf($z1);
+    
+    unless ($z_out->{re} == 0.5f) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} == -0.25f) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+
+  sub test_csqrt : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->csqrt($z1);
+    
+    unless ($z_out->{re} > 0.72767334511267 && $z_out->{re} < 0.72767334511268) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.17178037486 && $z_out->{im} < 0.17178037487) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_csqrtf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->csqrtf($z1);
+    
+    unless ($z_out->{re} > 0.7276 && $z_out->{re} < 0.7277) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.1717 && $z_out->{im} < 0.1718) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cpow : int () {
+    my $z1 = complex(0.5, 0.25);
+    my $z2 = complex(1.5, 1.25);
+
+    my $z_out = SPVM::Math->cpow($z1, $z2);
+    
+    unless ($z_out->{re} > 0.2340036050149 && $z_out->{re} < 0.2340036050150) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > -0.007373047187613 && $z_out->{im} < -0.007373047187612) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cpowf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+    my $z2 = complexf(1.5f, 1.25f);
+
+    my $z_out = SPVM::Math->cpowf($z1, $z2);
+    
+    unless ($z_out->{re} > 0.2340 && $z_out->{re} < 0.2341) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > -0.0074 && $z_out->{im} < -0.0073) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cexp : int () {
+    my $z1 = complex(0.5, 0.25);
+
+    my $z_out = SPVM::Math->cexp($z1);
+    unless ($z_out->{re} > 1.5974665191199 && $z_out->{re} < 1.5974665191200) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.407900170078 && $z_out->{im} < 0.407900170079) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_cexpf : int () {
+    my $z1 = complexf(0.5f, 0.25f);
+
+    my $z_out = SPVM::Math->cexpf($z1);
+    
+    unless ($z_out->{re} > 1.5974 && $z_out->{re} < 1.5975) {
+      return 0;
+    }
+    
+    unless ($z_out->{im} > 0.4079 && $z_out->{im} < 0.4080) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+}

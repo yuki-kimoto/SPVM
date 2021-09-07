@@ -1,0 +1,97 @@
+package SPVM::TestCase::Concat {
+  sub concat_empty_string : int () {
+    {
+      my $text = "abc" . "";
+      unless ($text eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $text = "" . "abc";
+      unless ($text eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $text = "" . "";
+      unless ($text eq "") {
+        return 0;
+      }
+    }
+    {
+      my $text = "";
+      $text .= "";
+      unless ($text eq "") {
+        return 0;
+      }
+    }
+    {
+      my $text = "";
+      $text . "";
+    }
+    return 1;
+  }
+  
+  sub concat_string : int () {
+    
+    my $string = "abc" . "def";
+    
+    if ($string eq "abcdef") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub concat_left_is_number : int () {
+    
+    my $string = 13 . "abc";
+    
+    if ($string eq "13abc") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub concat_right_is_number : int () {
+    
+    my $string = "abc" . 0.25;
+    
+    if ($string eq "abc0.25") {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub concat_left_is_undef : int () {
+    
+    eval {
+      my $string : string = undef;
+      $string . "abc";
+    };
+    
+    if ($@) {
+      $@ = undef;
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub concat_right_is_undef : int () {
+    
+    eval {
+      my $string : string = undef;
+      "abc" . $string;
+    };
+    
+    if ($@) {
+      $@ = undef;
+      return 1;
+    }
+    
+    return 0;
+  }
+}

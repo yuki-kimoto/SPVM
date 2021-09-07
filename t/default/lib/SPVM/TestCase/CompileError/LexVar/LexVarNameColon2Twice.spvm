@@ -1,0 +1,5 @@
+package SPVM::TestCase::CompileError::LexVar::LexVarNameEndColon2 {
+  sub foo : void () {
+    my $FOO::::BAR = 0;
+  }
+}

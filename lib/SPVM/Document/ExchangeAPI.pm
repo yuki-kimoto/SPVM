@@ -649,7 +649,7 @@ Convert a Perl array references to SPVM multi numeric array.
     {x => 3, y => 4, z => 5},
     {x => 6, y => 7, z => 8},
   ];
-  my $spvm_mulnum_array = SPVM::new_mulnum_array("TestCase::Point_3i[]", $perl_values);
+  my $spvm_mulnum_array = SPVM::new_mulnum_array("SPVM::TestCase::Point_3i[]", $perl_values);
 
 The first argument is a SPVM array type name. If the type is non-existent, an exception occurs.
 
@@ -666,7 +666,7 @@ B<Examples:>
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = SPVM::new_mulnum_array("TestCase::Point_3b[]", $values);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array("SPVM::TestCase::Point_3b[]", $values);
   }
 
   # new_mulnum_array - short
@@ -676,7 +676,7 @@ B<Examples:>
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = SPVM::new_mulnum_array("TestCase::Point_3s[]",$values);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array("SPVM::TestCase::Point_3s[]",$values);
   }
 
   # new_mulnum_array - int
@@ -686,7 +686,7 @@ B<Examples:>
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = SPVM::new_mulnum_array("TestCase::Point_3i[],$values);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array("SPVM::TestCase::Point_3i[],$values);
   }
 
   # new_mulnum_array - long
@@ -696,7 +696,7 @@ B<Examples:>
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = SPVM::new_mulnum_array("TestCase::Point_3l[]", $values);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array("SPVM::TestCase::Point_3l[]", $values);
   }
 
   # new_mulnum_array - float
@@ -706,7 +706,7 @@ B<Examples:>
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = SPVM::new_mulnum_array("TestCase::Point_3f[]",$values);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array("SPVM::TestCase::Point_3f[]",$values);
   }
 
   # new_mulnum_array - double
@@ -716,8 +716,8 @@ B<Examples:>
       {x => 3, y => 4, z => 5},
       {x => 6, y => 7, z => 8},
     ];
-    my $spvm_mulnum_array = SPVM::new_mulnum_array("TestCase::Point_3d[],"$values);
-    ok(TestCase::ExchangeAPI-spvm_new_mulnum_array_double($spvm_mulnum_array));
+    my $spvm_mulnum_array = SPVM::new_mulnum_array("SPVM::TestCase::Point_3d[],"$values);
+    ok(SPVM::TestCase::ExchangeAPI-spvm_new_mulnum_array_double($spvm_mulnum_array));
     my $out_values = $spvm_mulnum_array->to_elems;
     is_deeply($out_values, $values);
   }
@@ -725,7 +725,7 @@ B<Examples:>
 =head2 SPVM::new_mulnum_array_from_bin
 
   my $binary = pack('l9', ($INT_MIN, 1, 2), (3, 4, 5), (6, 7, 8));
-  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+  my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("SPVM::TestCase::Point_3i[]", $binary);
 
 Convert Perl a binary data to SPVM Multi Numeric Array. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
@@ -738,37 +738,37 @@ B<Examples:>
   # new_mulnum_array_from_bin - byte
   {
     my $binary = pack('c9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3b[]", $binary);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("SPVM::TestCase::Point_3b[]", $binary);
   }
 
   # new_mulnum_array_from_bin - short
   {
     my $binary = pack('s9', (0, 1, 2), (3, 4, 5), (6, 7, 8);;
-    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3s[]", $binary);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("SPVM::TestCase::Point_3s[]", $binary);
   }
 
   # new_mulnum_array_from_bin - int
   {
     my $binary = pack('l9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3i[]", $binary);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("SPVM::TestCase::Point_3i[]", $binary);
   }
 
   # new_mulnum_array_from_bin - long
   {
     my $binary = pack('q9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3l[]", $binary);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("SPVM::TestCase::Point_3l[]", $binary);
   }
 
   # new_mulnum_array_from_bin - float
   {
     my $binary = pack('f9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3f[]", $binary);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("SPVM::TestCase::Point_3f[]", $binary);
   }
 
   # new_mulnum_array_from_bin - double
   {
     my $binary = pack('d9', (0, 1, 2), (3, 4, 5), (6, 7, 8));
-    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("TestCase::Point_3d[]", $binary);
+    my $spvm_mulnum_array = SPVM::new_mulnum_array_from_bin("SPVM::TestCase::Point_3d[]", $binary);
   }
 
 =head2 $spvm_array->length

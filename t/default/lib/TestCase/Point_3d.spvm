@@ -1,5 +1,0 @@
-package TestCase::Point_3d : mulnum_t {
-  has x : double;
-  has y : double;
-  has z : double;
-}

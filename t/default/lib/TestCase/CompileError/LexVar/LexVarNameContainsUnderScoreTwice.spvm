@@ -1,5 +1,0 @@
-package TestCase::CompileError::LexVar::LexVarNameContainsUnderScoreTwice {
-  sub foo : void () {
-    my $Foo__Bar = 0;
-  }
-}

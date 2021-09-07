@@ -152,19 +152,19 @@ SPVM::ArrayUtil - Array Utilities
   });
 
   # Sort object array itself by asc order
-  my $minimals = new TestCase::Minimal[3];
-  $minimals->[0] = TestCase::Minimal->new;
+  my $minimals = new SPVM::TestCase::Minimal[3];
+  $minimals->[0] = SPVM::TestCase::Minimal->new;
   $minimals->[0]{x} = 3;
   $minimals->[0]{y} = 5;
-  $minimals->[1] = TestCase::Minimal->new;
+  $minimals->[1] = SPVM::TestCase::Minimal->new;
   $minimals->[1]{x} = 3;
   $minimals->[1]{y} = 7;
-  $minimals->[2] = TestCase::Minimal->new;
+  $minimals->[2] = SPVM::TestCase::Minimal->new;
   $minimals->[2]{x} = 2;
   $minimals->[2]{y} = 9;
   SPVM::Sort->sort_object$minimals, 0, scalar @$minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
-    my $minimal1 = (TestCase::Minimal)$object1;
-    my $minimal2 = (TestCase::Minimal)$object2;
+    my $minimal1 = (SPVM::TestCase::Minimal)$object1;
+    my $minimal2 = (SPVM::TestCase::Minimal)$object2;
     
     return $minimal1->{x} <=> $minimal2->{x} || $minimal1->{y} <=> $minimal2->{y};
   };

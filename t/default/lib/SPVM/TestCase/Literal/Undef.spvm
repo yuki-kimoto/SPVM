@@ -1,0 +1,22 @@
+package SPVM::TestCase::Literal::Undef {
+  use SPVM::TestCase::Minimal;
+  
+  sub undef_test : int () {
+    my $minimal = SPVM::TestCase::Minimal->new;
+    my $minimal_undef : SPVM::TestCase::Minimal;
+    
+    unless ($minimal != undef) {
+      return 0;
+    }
+    
+    unless ($minimal_undef == undef) {
+      return 0;
+    }
+    
+    unless (!undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

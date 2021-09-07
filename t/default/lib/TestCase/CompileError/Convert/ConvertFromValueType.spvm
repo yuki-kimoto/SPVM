@@ -1,9 +1,0 @@
-package TestCase::CompileError::Convert::ConvertFromValueType {
-  use TestCase::Minimal;
-  use SPVM::Complex_d2;
-
-  sub main : int () {
-    my $z : SPVM::Complex_d2;
-    (TestCase::Minimal)$z;
-  }
-}

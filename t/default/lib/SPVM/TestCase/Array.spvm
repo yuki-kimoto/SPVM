@@ -1,0 +1,611 @@
+package SPVM::TestCase::Array {
+  use SPVM::TestCase::Minimal;
+  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  
+  our $BIG_INDEX : int;
+  INIT {
+    $BIG_INDEX = 200_000_000;
+  }
+
+  # Array init {}
+  sub array_init_key_values_empty : int () {
+    my $objects = {};
+    unless (@$objects == 0) {
+      return 0;
+    }
+
+    unless ($objects isa object[]) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  # Array init {} with string
+  sub array_init_key_values : int () {
+    {
+      my $objects = {foo => 1, bar => 2};
+      unless (@$objects == 4) {
+        return 0;
+      }
+
+      unless ($objects isa object[]) {
+        return 0;
+      }
+      
+      my $key1 = (string)$objects->[0];
+      my $value1 = (SPVM::Int)$objects->[1];
+      my $key2 = (string)$objects->[2];
+      my $value2 = (SPVM::Int)$objects->[3];
+      
+      unless ($key1 eq "foo") {
+        return 0;
+      }
+      
+      unless ($value1->value == 1) {
+        return 0;
+      }
+      
+      unless ($key2 eq "bar") {
+        return 0;
+      }
+      
+      unless ($value2->value == 2) {
+        return 0;
+      }
+    }
+    {
+      my $objects = {foo => 1, bar => 2};
+      unless (@$objects == 4) {
+        return 0;
+      }
+
+      unless ($objects isa object[]) {
+        return 0;
+      }
+      
+      my $key1 = (string)$objects->[0];
+      my $value1 = (SPVM::Int)$objects->[1];
+      my $key2 = (string)$objects->[2];
+      my $value2 = (SPVM::Int)$objects->[3];
+      
+      unless ($key1 eq "foo") {
+        return 0;
+      }
+      
+      unless ($value1->value == 1) {
+        return 0;
+      }
+      
+      unless ($key2 eq "bar") {
+        return 0;
+      }
+      
+      unless ($value2->value == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $objects = {foo => SPVM::Int->new(5)};
+      
+      my $num = (int)$objects->[1];
+      
+      unless ($num == 5) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  # Array store undef
+  sub array_init_empty : int () {
+    my $objects = [];
+    unless (@$objects == 0) {
+      return 0;
+    }
+
+    unless ($objects isa object[]) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub array_init_fatcamma : int () {
+    my $pair = [(object)"x" => 1, "y" => 2];
+    
+    unless ((string)$pair->[0] eq "x") {
+      return 0;
+    }
+    
+    unless ((int)$pair->[1] == 1) {
+      return 0;
+    }
+
+    unless ((string)$pair->[2] eq "y") {
+      return 0;
+    }
+    
+    unless ((int)$pair->[3] == 2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub array_store_undef : int () {
+    my $minimals = new SPVM::TestCase::Minimal[3];
+    $minimals->[0] = SPVM::TestCase::Minimal->new;
+    $minimals->[0] = undef;
+    
+    if ($minimals->[0] == undef) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  # Array length - @ mark
+  sub array_length_atmark : int () {
+    
+    my $nums = new int[3];
+    my $len = @$nums;
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  # Array length - @ mark with brace
+  sub array_length_atmark_brace : int () {
+    
+    my $nums = new int[3];
+    my $len = @{$nums};
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  # Array length - scalar @ mark
+  sub array_length_scalar_atmark : int () {
+    
+    my $nums = new int[3];
+    my $len = scalar @$nums;
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  # Array length - @ mark with brace
+  sub array_length_scalar_atmark_brace : int () {
+    
+    my $nums = new int[3];
+    my $len = scalar @{$nums};
+    if ($len == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub array_length_undef : int () {
+    
+    my $nums : int[] = undef;
+
+    eval {
+      @$nums;
+    };
+    
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub array : int () {
+    {
+      my $nums : int[][] = new int[][3];
+    }
+    
+    my $nums = new int[(byte)3];
+    $nums->[2] = 4;
+    if ($nums->[(byte)2] == 4) {
+      return 1;
+    }
+  }
+  sub array_set_and_get_array_element_first : int () {
+    
+    my $nums = new int[3];
+    $nums->[0] = 345;
+
+    return $nums->[0];
+  }
+
+  sub array_set_and_get_array_element_last : int () {
+    
+    my $nums = new int[3];
+    $nums->[2] = 298;
+
+    return $nums->[2];
+  }
+
+  sub array_culcurate_sum_by_for : int () {
+    
+    my $nums = new int[3];
+    $nums->[0] = 1;
+    $nums->[1] = 2;
+    $nums->[2] = 3;
+    
+    my $total = 0;
+    for (my $i = 0; $i < @$nums; $i++) {
+      $total = $total + $nums->[$i];
+    }
+
+    return $total;
+  }
+
+  sub array_init_byte : int () {
+    my $nums = [(byte)1, (byte)2, INT8_MAX()];
+    
+    if ($nums->[0] == 1) {
+      if ($nums->[1] == 2) {
+        if ($nums->[2] == INT8_MAX()) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_short : int () {
+    my $nums = [(short)1, (short)2, (short)3];
+    
+    if ((int)$nums->[0] == (int)(short)1) {
+      if ((int)$nums->[1] == (int)(short)2) {
+        if ((int)$nums->[2] == (int)(short)3) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_int  : int () {
+    my $nums = [1, 2, 3];
+    my $nums2 : int[];
+    $nums2 = [4, 5, 6];
+
+    my $num3 = [
+      [1, 2, 3],
+      [4, 5, 6]
+    ];
+    
+    if ($nums->[0] == 1) {
+      if ($nums->[1] == 2) {
+        if ($nums->[2] == 3) {
+          if ($nums2->[0] == 4) {
+            if ($nums2->[1] == 5) {
+              if ($nums2->[2] == 6) {
+                # if ($num3->[1][2] == 6) {
+                  return 1;
+                # }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  sub array_init_long : int () {
+    my $nums = [1L, 2L, 3L];
+    
+    if ($nums->[0] == 1L) {
+      if ($nums->[1] == 2L) {
+        if ($nums->[2] == 3L) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_float : int () {
+    my $nums = [1f, 2f, 3f];
+    
+    if ($nums->[0] == 1f) {
+      if ($nums->[1] == 2f) {
+        if ($nums->[2] == 3f) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_init_double : int () {
+    my $nums = [1d, 2d, 3d];
+    
+    if ($nums->[0] == 1d) {
+      if ($nums->[1] == 2d) {
+        if ($nums->[2] == 3d) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  sub array_default_zero_not_memory_pool : int () {
+    my $values_byte = new byte[1000000];
+    my $values_short = new short[1000000];
+    my $values_int = new int[1000000];
+    my $values_long = new long[1000000];
+    my $values_float = new float[1000000];
+    my $values_double = new double[1000000];
+    my $values_object = new SPVM::TestCase::Minimal[1000000];
+    if ($values_byte->[0] == 0) {
+      if ($values_byte->[999999] == 0) {
+        if ($values_short->[0] == 0) {
+          if ($values_short->[999999] == 0) {
+            if ($values_int->[0] == 0) {
+              if ($values_int->[999999] == 0) {
+                if ($values_long->[0] == 0L) {
+                  if ($values_long->[999999] == 0L) {
+                    if ($values_float->[0] == 0f) {
+                      if ($values_float->[999999] == 0f) {
+                        if ($values_double->[0] == 0.0) {
+                          if ($values_double->[999999] == 0.0) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub array_default_zero_memory_pool : int () {
+    my $values_byte = new byte[10];
+    my $values_short = new short[10];
+    my $values_int = new int[10];
+    my $values_long = new long[10];
+    my $values_float = new float[10];
+    my $values_double = new double[10];
+    my $values_object = new SPVM::TestCase::Minimal[10];
+    if ($values_byte->[0] == 0) {
+      if ($values_byte->[9] == 0) {
+        if ($values_short->[0] == 0) {
+          if ($values_short->[9] == 0) {
+            if ($values_int->[0] == 0) {
+              if ($values_int->[9] == 0) {
+                if ($values_long->[0] == 0L) {
+                  if ($values_long->[9] == 0L) {
+                    if ($values_float->[0] == 0f) {
+                      if ($values_float->[9] == 0f) {
+                        if ($values_double->[0] == 0.0) {
+                          if ($values_double->[9] == 0.0) {
+                            return 1;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub array_init_object : int () {
+    my $objects = [(object)SPVM::TestCase::Minimal->new, SPVM::TestCase::Minimal->new];
+    
+    if ($objects isa object[]) {
+      return 1;
+    }
+    else {
+      return 0;
+    }
+    
+    return 0;
+  }
+
+
+  sub array_max_index_byte : int () {
+    my $nums = new byte[INT32_MAX()];
+    
+    $nums->[0] = 1;
+    $nums->[INT32_MAX() - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[INT32_MAX() - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[INT32_MAX()];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    # Additional use memory
+    my $nums1 = new byte[INT32_MAX()];
+    my $nums2 = new byte[INT32_MAX()];
+    my $nums3 = new byte[INT32_MAX()];
+    
+    return 1;
+  }
+
+  sub array_big_index_byte : int () {
+    my $index = $BIG_INDEX;
+    my $nums = new byte[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_short : int () {
+    my $index = $BIG_INDEX;
+    my $nums = new short[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_int : int () {
+    my $index = $BIG_INDEX;
+    my $nums = new int[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_long : int () {
+    my $index = $BIG_INDEX;
+    my $nums = new long[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_float : int () {
+    my $index = $BIG_INDEX;
+    my $nums = new float[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub array_big_index_double : int () {
+    my $index = $BIG_INDEX;
+    my $nums = new double[$index];
+    
+    $nums->[0] = 1;
+    $nums->[$index - 1] = 2;
+    
+    unless ($nums->[0] == 1) {
+      return 0;
+    }
+    
+    unless ($nums->[$index - 1] == 2) {
+      return 0;
+    }
+    
+    eval {
+      $nums->[$index];
+    };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+}

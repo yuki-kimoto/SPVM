@@ -1,5 +1,0 @@
-package TestCase::EnumC {
-  enum {
-  
-  }
-}

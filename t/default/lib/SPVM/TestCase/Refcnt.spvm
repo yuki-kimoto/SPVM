@@ -1,0 +1,87 @@
+package SPVM::TestCase::Refcnt {
+  use SPVM::TestCase::Minimal;
+  use SPVM::TestCase::Simple;
+  
+  sub refcnt_test : int () {
+    # Basic
+    {
+      my $minimal = new SPVM::TestCase::Minimal;
+      
+      unless (refcnt $minimal == 1) {
+        return 0;
+      }
+      
+      my $minimal2 = $minimal;
+      unless (refcnt $minimal == 2) {
+        return 0;
+      }
+    }
+
+    # Repeat
+    {
+      my $minimal = new SPVM::TestCase::Minimal;
+      
+      unless (refcnt $minimal == 1) {
+        return 0;
+      }
+      
+      unless (refcnt $minimal == 1) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      my $minimal2 : SPVM::TestCase::Minimal;
+
+      unless (refcnt $minimal2 == 0) {
+        return 0;
+      }
+    }
+    
+    # Operation which use tmp var
+    {
+      my $nums = [1, 2, 3];
+      
+      unless (refcnt $nums == 1) {
+        return 0;
+      }
+    }
+    
+    # Field
+    {
+      my $simple = new SPVM::TestCase::Simple;
+      
+      $simple->{object_value} = new SPVM::TestCase::Minimal;
+      
+      func($simple->{object_value});
+      func($simple->{object_value});
+      
+      my $minimal = $simple->{object_value};
+      
+      unless (refcnt $minimal == 2) {
+        return 0;
+      }
+    }
+
+    # If condition
+    {
+      my $simple = new SPVM::TestCase::Simple;
+      
+      $simple->{object_value} = new SPVM::TestCase::Minimal;
+      
+      if ($simple->{object_value}) {
+        my $minimal = $simple->{object_value};
+        unless (refcnt $minimal == 2) {
+          return 0;
+        }
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub func :void ($object : SPVM::TestCase::Minimal) {
+    return;
+  }
+}

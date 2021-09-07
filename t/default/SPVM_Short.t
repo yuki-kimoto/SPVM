@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::Short';
+use SPVM 'SPVM::TestCase::Lib::SPVM::Short';
 
 
 
@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::Short
 {
-  ok(TestCase::Lib::SPVM::Short->basic());
+  ok(SPVM::TestCase::Lib::SPVM::Short->basic());
 }
 
 

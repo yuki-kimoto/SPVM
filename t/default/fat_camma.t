@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase::FatCamma';
+use SPVM 'SPVM::TestCase::FatCamma';
 
 
 
@@ -21,7 +21,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Add - Operation
   {
-    ok(TestCase::FatCamma->fat_camma);
+    ok(SPVM::TestCase::FatCamma->fat_camma);
   }
 }
 

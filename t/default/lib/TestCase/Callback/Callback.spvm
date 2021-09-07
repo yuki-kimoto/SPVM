@@ -1,3 +1,0 @@
-package TestCase::Callback::Callback : callback_t {
-  sub : int ($self : self, $var1 : int, $var2 : long);
-}

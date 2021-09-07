@@ -1,6 +1,0 @@
-package TestCase::EnumA {
-  enum {
-    ONE,
-    TWO,
-  }
-}

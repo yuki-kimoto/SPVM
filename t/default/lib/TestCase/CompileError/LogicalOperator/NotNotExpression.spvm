@@ -1,5 +1,0 @@
-package TestCase::CompileError::LogicalOperator::NotNotExpression {
-  sub main : void () {
-    !1;
-  }
-}

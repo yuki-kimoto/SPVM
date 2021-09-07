@@ -1,6 +1,0 @@
-package TestCase::CompileError::UnaryPlus::NotNumeric {
-  use TestCase::Minimal;
-  sub main : int () {
-    +TestCase::Minimal->new;
-  }
-}

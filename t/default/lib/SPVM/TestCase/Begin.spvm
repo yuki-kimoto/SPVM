@@ -1,0 +1,18 @@
+package SPVM::TestCase::Begin {
+  
+  our $FOO : int;
+  
+  INIT {
+    $FOO = 1;
+  }
+  
+  # Array store undef
+  sub init_package_var : int () {
+    
+    unless ($FOO == 1) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

@@ -1,0 +1,230 @@
+package SPVM::TestCase::For {
+  use SPVM::TestCase::Minimal;
+
+  sub omit_init_inc : int () {
+    
+    my $i = 0;
+    my $total = 0;
+    for (; $i < 11;) {
+      $total += $i;
+      $i++;
+    }
+    
+    unless ($total == 55) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub nested_last_with_switch : int () {
+    my $num1 = 0;
+    for (my $i = 0; 1;$i++) {
+      
+      if ($i == 2) {
+        $num1++;
+        last;
+      }
+      
+      switch ($i) {
+        case 1: {
+          break;
+        }
+        default: {
+          $num1++;
+        }
+      }
+      $num1++;
+    }
+    
+    unless ($num1 == 4) {
+      return 0;
+    }
+    
+    return 1;
+    
+  }
+
+  sub nested_next : int () {
+    
+    my $total1 = 0;
+    my $total2 = 0;
+    for (my $i = 0; $i < 3; $i++) {
+      if ($i == 2) {
+        if (0) {
+          next;
+        }
+        next;
+        if (0) {
+          next;
+        }
+      }
+      for (my $j = 0; $j < 3;$j++) {
+        if ($j == 2) {
+          next;
+        }
+        $total2++;
+      }
+      $total1++;
+    }
+    
+    unless ($total1 == 2) {
+      return 0;
+    }
+    
+    unless ($total2 == 4) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub nested_last : int () {
+    my $ret = 0;
+    for (my $i = 0; 1;$i++) {
+      if ($i == 2) {
+        if (0) {
+          last;
+        }
+        $ret = 1;
+        last;
+        
+        if (0) {
+          last;
+        }
+      }
+      for (my $j=0; 1;$j++) {
+        if ($j == 2) {
+          last;
+        }
+      }
+    }
+    
+    return $ret;
+  }
+  
+  # For
+  sub basic : int () {
+  
+    my $success_basic = 0;
+    {
+      my $total = 0;
+      for (my $i = 1; $i <= 3; $i++) {
+        $total = $total + $i;
+      }
+      
+      if ($total == 6) {
+        $success_basic = 1;
+      }
+    }
+    
+    my $success_last = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        if ($i == 5) {
+          last;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 10) {
+        $success_last = 1;
+      }
+    }
+
+    my $success_next = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        if ($i == 5) {
+          next;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 40) {
+        $success_next = 1;
+      }
+    }
+
+    # Check also object count
+    my $success_last_object = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        my $minimal = SPVM::TestCase::Minimal->new();
+        if ($i == 5) {
+          last;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 10) {
+        $success_last_object = 1;
+      }
+    }
+
+    # Check also object count
+    my $success_next_object = 0;
+    {
+      my $total = 0;
+      for (my $i = 0; $i < 10; $i++) {
+        my $minimal = SPVM::TestCase::Minimal->new();
+        if ($i == 5) {
+          next;
+        }
+        $total = $total + $i;
+      }
+      
+      if ($total == 40) {
+        $success_next_object = 1;
+      }
+    }
+    
+    if ($success_basic) {
+      if ($success_last) {
+        if ($success_next) {
+          if ($success_last_object) {
+            if ($success_next_object) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub next_statement : int () {
+    my $total = 0;
+    for (my $i = 0; $i < 5; $i++) {
+      if ($i == 1) {
+        next;
+      }
+      if ($i == 3) {
+        next;
+      }
+      $total += $i;
+    }
+    if ($total == 6) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub condition_my : int () {
+    
+    my $num = 5;
+    for (;my $num = 3;) {
+      if ($num == 3) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    return 0;
+  }
+}

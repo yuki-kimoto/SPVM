@@ -1,0 +1,10 @@
+package SPVM::TestCase::CompileError::ComparisonOperator::GeNotNumeric {
+  use SPVM::TestCase::Minimal;
+  
+  sub main : int () {
+    my $minimal = new SPVM::TestCase::Minimal;
+    if ($minimal >= $minimal) {
+      
+    }
+  }
+}

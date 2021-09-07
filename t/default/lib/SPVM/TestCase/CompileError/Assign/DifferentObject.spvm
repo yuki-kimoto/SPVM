@@ -1,0 +1,8 @@
+package SPVM::TestCase::CompileError::Assign::DifferentObject {
+  use SPVM::TestCase::Minimal;
+  use SPVM::TestCase::Simple;
+
+  sub main : int () {
+    my $minimal : SPVM::TestCase::Minimal = new SPVM::TestCase::Simple;
+  }
+}

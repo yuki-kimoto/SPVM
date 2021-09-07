@@ -1,0 +1,17 @@
+package SPVM::TestCase::NativeAPI2 {
+  sub spvm_extension2 : int () {
+    my $total = mul(5, 3);
+    
+    if ($total == 15) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub mul : int ($num1 : int, $num2 : int);
+
+  native sub src_foo : int ();
+
+  native sub src_bar : int ();
+}

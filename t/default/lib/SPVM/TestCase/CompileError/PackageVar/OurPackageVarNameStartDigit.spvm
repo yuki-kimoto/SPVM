@@ -1,0 +1,3 @@
+package SPVM::TestCase::CompileError::PackageVar::OurPackageVarNameStartDigit {
+  our $3foo : int;
+}

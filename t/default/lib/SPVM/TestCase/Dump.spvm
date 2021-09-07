@@ -1,0 +1,203 @@
+package SPVM::TestCase::Dump {
+  use SPVM::TestCase::DumpTest1;
+  use SPVM::StringUtil;
+  use SPVM::TestCase::Point_3b;
+  use SPVM::TestCase::Point_3s;
+  use SPVM::TestCase::Point_3i;
+  use SPVM::TestCase::Point_3l;
+  use SPVM::TestCase::Point_3f;
+  use SPVM::TestCase::Point_3d;
+
+  sub dump_string : string () {
+    # dump string
+    my $string = "Hello";
+    
+    my $dump = dump $string;
+    
+    return $dump;
+  }
+
+  sub dump_undef : string () {
+    # dump undef
+    my $string = (string)undef;
+    my $dump = dump $string;
+    
+    return $dump;
+  }
+
+  sub dump_byte_array : string () {
+    # dump byte array
+    my $array = [(byte)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_short_array : string () {
+    # dump short array
+    my $array = [(short)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_int_array : string () {
+    # dump int array
+    my $array = [(int)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_long_array : string () {
+    # dump long array
+    my $array = [(long)1, 2];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_float_array : string () {
+    # dump float array
+    my $array = [(float)1.2f, 2.4f];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_double_array : string () {
+    # dump double array
+    my $array = [(double)1.2, 2.4];
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_byte_array : string () {
+    # dump numeric byte array
+    my $array = new SPVM::TestCase::Point_3b[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_short_array : string () {
+    # dump numeric short array
+    my $array = new SPVM::TestCase::Point_3s[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_int_array : string () {
+    # dump numeric int array
+    my $array = new SPVM::TestCase::Point_3i[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_long_array : string () {
+    # dump numeric long array
+    my $array = new SPVM::TestCase::Point_3l[2];
+    $array->[0]{x} = 1;
+    $array->[0]{y} = 2;
+    $array->[0]{z} = 3;
+    $array->[1]{x} = 4;
+    $array->[1]{y} = 5;
+    $array->[1]{z} = 6;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_float_array : string () {
+    # dump numeric float array
+    my $array = new SPVM::TestCase::Point_3f[2];
+    $array->[0]{x} = 1.1f;
+    $array->[0]{y} = 2.1f;
+    $array->[0]{z} = 3.1f;
+    $array->[1]{x} = 4.1f;
+    $array->[1]{y} = 5.1f;
+    $array->[1]{z} = 6.1f;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_multi_numeric_double_array : string () {
+    # dump numeric double array
+    my $array = new SPVM::TestCase::Point_3d[2];
+    $array->[0]{x} = 1.1;
+    $array->[0]{y} = 2.1;
+    $array->[0]{z} = 3.1;
+    $array->[1]{x} = 4.1;
+    $array->[1]{y} = 5.1;
+    $array->[1]{z} = 6.1;
+    my $dump = dump $array;
+    
+    return $dump;
+  }
+
+  sub dump_string_array : string () {
+    # dump numeric double array
+    my $array = ["abc", "def", undef];
+    my $dump = dump $array;
+    return $dump;
+  }
+
+  sub dump_string_array_of_array : string () {
+    # dump numeric double array
+    my $array = [["abc", "def", undef], ["a", "b"]];
+    my $dump = dump $array;
+    return $dump;
+  }
+
+  sub dump_object : string () {
+    my $object = new SPVM::TestCase::DumpTest1;
+    $object->{byte_value} = 1;
+    $object->{short_value} = 2;
+    $object->{int_value} = 3;
+    $object->{long_value} = 4;
+    $object->{float_value} = 1.1f;
+    $object->{double_value} = 1.2;
+    $object->{string_value} = "a";
+    $object->{int_array} = [1, 2, 3];
+    $object->{object_value} = new SPVM::TestCase::DumpTest1;
+    
+    my $dump = dump $object;
+    
+    return $dump;
+  }
+
+  sub dump_object_reuse : string () {
+    my $object = new SPVM::TestCase::DumpTest1;
+    $object->{object_value} = $object;
+    
+    my $array = [(object)$object, $object, $object];
+    
+    my $dump = dump $array;
+    
+    $object->{object_value} = undef;
+    
+    return $dump;
+  }
+}

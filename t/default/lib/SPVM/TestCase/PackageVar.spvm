@@ -1,0 +1,14 @@
+package SPVM::TestCase::PackageVar {
+  our $lower_var : int;
+  
+  sub var_brace : int () {
+    
+    $lower_var = 1;
+    
+    unless ($lower_var == 1) {
+      return 0;
+    }
+
+    return 1;
+  }
+}

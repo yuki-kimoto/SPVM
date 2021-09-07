@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::Time';
+use SPVM 'SPVM::TestCase::Lib::SPVM::Time';
 
 
 
@@ -15,7 +15,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # time
 {
-  my $time = TestCase::Lib::SPVM::Time->test_time;
+  my $time = SPVM::TestCase::Lib::SPVM::Time->test_time;
   my $perl_time = time;
   if ($time > $perl_time - 2 && $time < $perl_time + 2) {
     pass();
@@ -30,7 +30,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   my $time = time;
   my @perl_localtime = localtime($time);
   
-  my $time_info = TestCase::Lib::SPVM::Time->test_localtime($time);
+  my $time_info = SPVM::TestCase::Lib::SPVM::Time->test_localtime($time);
   
   is($perl_localtime[0], $time_info->sec);
   is($perl_localtime[1], $time_info->min);
@@ -48,7 +48,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   my $time = time;
   my @perl_gmtime = gmtime($time);
   
-  my $time_info = TestCase::Lib::SPVM::Time->test_gmtime($time);
+  my $time_info = SPVM::TestCase::Lib::SPVM::Time->test_gmtime($time);
   
   is($perl_gmtime[0], $time_info->sec);
   is($perl_gmtime[1], $time_info->min);
@@ -63,12 +63,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # timelocal
 {
-  ok(TestCase::Lib::SPVM::Time->test_timelocal);
+  ok(SPVM::TestCase::Lib::SPVM::Time->test_timelocal);
 }
 
 # timegm
 {
-  ok(TestCase::Lib::SPVM::Time->test_timegm);
+  ok(SPVM::TestCase::Lib::SPVM::Time->test_timegm);
 }
 
 # All object is freed

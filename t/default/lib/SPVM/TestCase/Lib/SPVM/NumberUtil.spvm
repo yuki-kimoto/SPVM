@@ -1,0 +1,162 @@
+package SPVM::TestCase::Lib::SPVM::NumberUtil {
+  use SPVM::Unicode (uchar);
+  use SPVM::TestCase::Minimal;
+  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use SPVM::TestCase::Minimal;
+  use SPVM::Time (time);
+  use SPVM::EqualityChecker;
+  use SPVM::NumberUtil;
+  use SPVM::EqualityChecker::SameObject;
+  use SPVM::ArrayUtil(equals_array_byte, equals_array_short, equals_array_int, equals_array_long, equals_array_float, equals_array_double, equals_array_string);
+  
+  use SPVM::StringUtil;
+  use SPVM::NumberUtil (
+    crand,
+    srand,
+  );
+
+  sub test_crand : int () {
+    
+    my $founds_plus = new int[10];
+    my $founds_minus = new int[10];
+    my $rand = 0;
+    for (my $i = 0; $i < 100000; $i++) {
+      $rand = crand();
+
+      my $dig0 = $rand % 10;
+      $founds_plus->[$dig0] = 1;
+    }
+    
+    unless (equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_rand : int () {
+    
+    # 0 <= random_number < 1
+    {
+      my $rand = 0.0;
+      my $invalid_range = 0;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = SPVM::NumberUtil->rand();
+        
+        unless ($rand >= 0 && $rand < 1) {
+          $invalid_range = 1;
+          last;
+        }
+      }
+      
+      if ($invalid_range) {
+        return 0;
+      }
+    }
+    
+    # Apper random numbers
+    {
+      my $founds_plus = new int[10];
+      my $founds_minus = new int[10];
+      my $rand = 0.0;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = SPVM::NumberUtil->rand();
+        
+        # 0-9
+        my $dig0 = (int)($rand * 10);
+        $founds_plus->[$dig0] = 1;
+      }
+      
+      unless (equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_RAND_MAX : int () {
+    
+    unless (SPVM::NumberUtil->RAND_MAX > 0) {
+      return 1;
+    }
+
+    return 1;
+  }
+
+  sub test_srand : int () {
+    
+    srand(10);
+    
+    my $rand1 = crand();
+    my $rand2 = crand();
+    my $rand3 = crand();
+    
+    srand(10);
+    
+    unless (crand() == $rand1) {
+      return 0;
+    }
+    
+    unless (crand() == $rand2) {
+      return 0;
+    }
+    
+    unless (crand() == $rand3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_byte_constant : int () {
+    if ((int)INT8_MIN() == (int)(byte)-128) {
+      if ((int)INT8_MAX() == (int)(byte)127) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_short_constant : int () {
+    if ((int)INT16_MIN() == (int)(short)-32768) {
+      if ((int)INT16_MAX() == (int)(short)32767) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_int_constant : int () {
+    if (INT32_MIN() == -2147483648) {
+      if (INT32_MAX() == 2147483647) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_long_constant : int () {
+    if (INT64_MIN() == -9223372036854775808L) {
+      if (INT64_MAX() == 9223372036854775807L) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_copy_str : int () {
+    my $string = "abc";
+    my $string_out = SPVM::StringUtil->copy_string($string);
+
+    unless ($string_out eq "abc") {
+      return 0;
+    }
+
+    return 1;
+  }
+}

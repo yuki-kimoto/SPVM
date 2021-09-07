@@ -1,0 +1,184 @@
+package SPVM::TestCase::Literal::Character {
+  sub character : int () {
+    my $ch = 'a';
+    my $bytes = new byte[1];
+    $bytes->[0] = $ch;
+    unless ($ch == 97) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub escape : int () {
+    
+    # Escape sequence
+    my $ch_0 = '\0';
+    my $ch_a = '\a';
+    my $ch_b = '\b';
+    my $ch_t = '\t';
+    my $ch_n = '\n';
+    my $ch_f = '\f';
+    my $ch_r = '\r';
+    my $ch_dq = '\"';
+    my $ch_q = '\'';
+    my $ch_bsh = '\\';
+
+    unless ($ch_0 == 0) {
+      return 0;
+    }
+
+    unless ($ch_a == 7) {
+      return 0;
+    }
+    
+    unless ($ch_b == 8) {
+      return 0;
+    }
+    
+    unless ($ch_t == 9) {
+      return 0;
+    }
+    
+    unless ($ch_n == 10) {
+      return 0;
+    }
+    
+    unless ($ch_f == 12) {
+      return 0;
+    }
+
+    unless ($ch_r == 13) {
+      return 0;
+    }
+    
+    unless ($ch_dq == 34) {
+      return 0;
+    }
+    
+    unless ($ch_q == 39) {
+      return 0;
+    }
+    
+    unless ($ch_bsh == 92) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub escape_ascii : int () {
+    my $ch00 = '\x00';
+    my $ch11 = '\x11';
+    my $ch22 = '\x22';
+    my $ch33 = '\x33';
+    my $ch44 = '\x44';
+    my $ch55 = '\x55';
+    my $ch66 = '\x66';
+    my $ch77 = '\x77';
+    my $ch78 = '\x78';
+    my $ch79 = '\x79';
+    my $ch7a = '\x7a';
+    my $ch7b = '\x7b';
+    my $ch7c = '\x7c';
+    my $ch7d = '\x7d';
+    my $ch7e = '\x7e';
+    my $ch7f = '\x7f';
+    my $ch7A = '\x7A';
+    my $ch7B = '\x7B';
+    my $ch7C = '\x7C';
+    my $ch7D = '\x7D';
+    my $ch7E = '\x7E';
+    my $ch7F = '\x7F';
+    
+    unless ($ch00 == 0) {
+      return 0;
+    }
+    
+    unless ($ch11 == 17) {
+      return 0;
+    }
+    
+    unless ($ch22 == 34) {
+      return 0;
+    }
+    
+    unless ($ch33 == 51) {
+      return 0;
+    }
+
+    unless ($ch44 == 68) {
+      return 0;
+    }
+
+    unless ($ch55 == 85) {
+      return 0;
+    }
+    
+    unless ($ch66 == 102) {
+      return 0;
+    }
+    
+    unless ($ch77 == 119) {
+      return 0;
+    }
+
+    unless ($ch78 == 120) {
+      return 0;
+    }
+
+    unless ($ch79 == 121) {
+      return 0;
+    }
+
+    unless ($ch7a == 122) {
+      return 0;
+    }
+
+    unless ($ch7b == 123) {
+      return 0;
+    }
+
+    unless ($ch7c == 124) {
+      return 0;
+    }
+
+    unless ($ch7d == 125) {
+      return 0;
+    }
+
+    unless ($ch7e == 126) {
+      return 0;
+    }
+
+    unless ($ch7f == 127) {
+      return 0;
+    }
+
+    unless ($ch7A == 122) {
+      return 0;
+    }
+
+    unless ($ch7B == 123) {
+      return 0;
+    }
+
+    unless ($ch7C == 124) {
+      return 0;
+    }
+
+    unless ($ch7D == 125) {
+      return 0;
+    }
+
+    unless ($ch7E == 126) {
+      return 0;
+    }
+
+    unless ($ch7F == 127) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

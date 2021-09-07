@@ -1,0 +1,573 @@
+package SPVM::TestCase::Ref {
+  use SPVM::TestCase::Point_3b;
+  use SPVM::TestCase::Point_3s;
+  use SPVM::TestCase::Point_3i;
+  use SPVM::TestCase::Point_3l;
+  use SPVM::TestCase::Point_3f;
+  use SPVM::TestCase::Point_3d;
+  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+
+  sub numeric_ref_deref_byte : int () {
+    my $num1 = (byte)INT8_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (byte)(INT8_MIN() + 1);
+    
+    if ($num2 == INT8_MIN() && $num1 == INT8_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub numeric_ref_deref_short : int () {
+    my $num1 = (short)INT16_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (short)(INT16_MIN() + 1);
+    
+    if ($num2 == INT16_MIN() && $num1 == INT16_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub numeric_ref_deref_int : int () {
+    my $num1 = 4;
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = 5;
+    
+    if ($num2 == 4 && $num1 == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub numeric_ref_deref_long : int () {
+    my $num1 = (long)INT64_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (long)(INT64_MIN() + 1);
+    
+    if ($num2 == INT64_MIN() && $num1 == INT64_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub numeric_ref_deref_float : int () {
+    my $num1 = (float)FLT_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (float)(FLT_MIN() + 1);
+    
+    if ($num2 == FLT_MIN() && $num1 == FLT_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub numeric_ref_deref_double : int () {
+    my $num1 = (double)DBL_MIN();
+    
+    my $num1_ref = \$num1;
+    
+    my $num2 = $$num1_ref;
+    
+    $$num1_ref = (double)(DBL_MIN() + 1);
+    
+    if ($num2 == DBL_MIN() && $num1 == DBL_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub value_ref_deref_byte : int () {
+    my $point1 : SPVM::TestCase::Point_3b;
+    
+    $point1->{x} = INT8_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == INT8_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub value_ref_deref_get_field_byte : int () {
+    my $point : SPVM::TestCase::Point_3b;
+    
+    $point->{x} = INT8_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    my $point_ref = \$point;
+    
+    my $point_x = $point_ref->{x};
+    my $point_y = $point_ref->{y};
+    my $point_z = $point_ref->{z};
+    
+    if ($point_x == INT8_MIN() && $point_y == 1 && $point_z == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub value_ref_deref_set_field_byte : int () {
+    my $point : SPVM::TestCase::Point_3b;
+
+    my $point_ref = \$point;
+    
+    $point->{x} = INT8_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    if ($point->{x} == INT8_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_pass_value_ref_byte : int () {
+    my $point_out : SPVM::TestCase::Point_3b;
+    
+    my $point1 : SPVM::TestCase::Point_3b;
+    $point1->{x} = INT8_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+
+    my $point2 : SPVM::TestCase::Point_3b;
+    $point2->{x} = 3;
+    $point2->{y} = 4;
+    $point2->{z} = 5;
+    
+    pass_value_ref_byte($point1, $point2, \$point_out);
+    
+    if ($point_out->{x} == INT8_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub pass_value_ref_byte : void ($x_in1 : SPVM::TestCase::Point_3b, $x_in2 : SPVM::TestCase::Point_3b, $x_out : SPVM::TestCase::Point_3b&) {
+    $x_out->{x} = (byte)($x_in1->{x} + $x_in2->{x});
+    $x_out->{y} = (byte)($x_in1->{y} + $x_in2->{y});
+    $x_out->{z} = (byte)($x_in1->{z} + $x_in2->{z});
+  }
+
+  sub value_ref_deref_short : int () {
+    my $point1 : SPVM::TestCase::Point_3s;
+    
+    $point1->{x} = INT16_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == INT16_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub value_ref_deref_get_field_short : int () {
+    my $point : SPVM::TestCase::Point_3s;
+    
+    $point->{x} = INT16_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    my $point_ref = \$point;
+    
+    my $point_x = $point_ref->{x};
+    my $point_y = $point_ref->{y};
+    my $point_z = $point_ref->{z};
+    
+    if ($point_x == INT16_MIN() && $point_y == 1 && $point_z == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub value_ref_deref_set_field_short : int () {
+    my $point : SPVM::TestCase::Point_3s;
+
+    my $point_ref = \$point;
+    
+    $point->{x} = INT16_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    if ($point->{x} == INT16_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_pass_value_ref_short : int () {
+    my $point_out : SPVM::TestCase::Point_3s;
+    
+    my $point1 : SPVM::TestCase::Point_3s;
+    $point1->{x} = INT16_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+
+    my $point2 : SPVM::TestCase::Point_3s;
+    $point2->{x} = 3;
+    $point2->{y} = 4;
+    $point2->{z} = 5;
+    
+    pass_value_ref_short($point1, $point2, \$point_out);
+    
+    if ($point_out->{x} == INT16_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub pass_value_ref_short : void ($x_in1 : SPVM::TestCase::Point_3s, $x_in2 : SPVM::TestCase::Point_3s, $x_out : SPVM::TestCase::Point_3s&) {
+    $x_out->{x} = (short)($x_in1->{x} + $x_in2->{x});
+    $x_out->{y} = (short)($x_in1->{y} + $x_in2->{y});
+    $x_out->{z} = (short)($x_in1->{z} + $x_in2->{z});
+  }
+
+  sub value_ref_deref_double : int () {
+    my $point1 : SPVM::TestCase::Point_3d;
+    
+    $point1->{x} = DBL_MIN();
+    $point1->{y} = 0.5;
+    $point1->{z} = 0.125;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == DBL_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub value_ref_deref_int : int () {
+    my $point1 : SPVM::TestCase::Point_3i;
+    
+    $point1->{x} = INT32_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == INT32_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub value_ref_deref_get_field_int : int () {
+    my $point : SPVM::TestCase::Point_3i;
+    
+    $point->{x} = INT32_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    my $point_ref = \$point;
+    
+    my $point_x = $point_ref->{x};
+    my $point_y = $point_ref->{y};
+    my $point_z = $point_ref->{z};
+    
+    if ($point_x == INT32_MIN() && $point_y == 1 && $point_z == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub value_ref_deref_set_field_int : int () {
+    my $point : SPVM::TestCase::Point_3i;
+
+    my $point_ref = \$point;
+    
+    $point->{x} = INT32_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    if ($point->{x} == INT32_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_pass_value_ref_int : int () {
+    my $point_out : SPVM::TestCase::Point_3i;
+    
+    my $point1 : SPVM::TestCase::Point_3i;
+    $point1->{x} = INT32_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+
+    my $point2 : SPVM::TestCase::Point_3i;
+    $point2->{x} = 3;
+    $point2->{y} = 4;
+    $point2->{z} = 5;
+    
+    pass_value_ref_int($point1, $point2, \$point_out);
+    
+    if ($point_out->{x} == INT32_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub pass_value_ref_int : void ($x_in1 : SPVM::TestCase::Point_3i, $x_in2 : SPVM::TestCase::Point_3i, $x_out : SPVM::TestCase::Point_3i&) {
+    $x_out->{x} = (int)($x_in1->{x} + $x_in2->{x});
+    $x_out->{y} = (int)($x_in1->{y} + $x_in2->{y});
+    $x_out->{z} = (int)($x_in1->{z} + $x_in2->{z});
+  }
+
+  sub value_ref_deref_long : int () {
+    my $point1 : SPVM::TestCase::Point_3l;
+    
+    $point1->{x} = INT64_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == INT64_MIN() && $point2->{y} == 1 && $point2->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub value_ref_deref_get_field_long : int () {
+    my $point : SPVM::TestCase::Point_3l;
+    
+    $point->{x} = INT64_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    my $point_ref = \$point;
+    
+    my $point_x = $point_ref->{x};
+    my $point_y = $point_ref->{y};
+    my $point_z = $point_ref->{z};
+    
+    if ($point_x == INT64_MIN() && $point_y == 1 && $point_z == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub value_ref_deref_set_field_long : int () {
+    my $point : SPVM::TestCase::Point_3l;
+
+    my $point_ref = \$point;
+    
+    $point->{x} = INT64_MIN();
+    $point->{y} = 1;
+    $point->{z} = 2;
+    
+    if ($point->{x} == INT64_MIN() && $point->{y} == 1 && $point->{z} == 2) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_pass_value_ref_long : int () {
+    my $point_out : SPVM::TestCase::Point_3l;
+    
+    my $point1 : SPVM::TestCase::Point_3l;
+    $point1->{x} = INT64_MIN();
+    $point1->{y} = 1;
+    $point1->{z} = 2;
+
+    my $point2 : SPVM::TestCase::Point_3l;
+    $point2->{x} = 3;
+    $point2->{y} = 4;
+    $point2->{z} = 5;
+    
+    pass_value_ref_long($point1, $point2, \$point_out);
+    
+    if ($point_out->{x} == INT64_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub pass_value_ref_long : void ($x_in1 : SPVM::TestCase::Point_3l, $x_in2 : SPVM::TestCase::Point_3l, $x_out : SPVM::TestCase::Point_3l&) {
+    $x_out->{x} = (long)($x_in1->{x} + $x_in2->{x});
+    $x_out->{y} = (long)($x_in1->{y} + $x_in2->{y});
+    $x_out->{z} = (long)($x_in1->{z} + $x_in2->{z});
+  }
+
+  sub value_ref_deref_float : int () {
+    my $point1 : SPVM::TestCase::Point_3f;
+    
+    $point1->{x} = FLT_MIN();
+    $point1->{y} = 0.5f;
+    $point1->{z} = 0.125f;
+    
+    my $point1_ref = \$point1;
+    
+    my $point2 = $$point1_ref;
+    
+    if ($point2->{x} == FLT_MIN() && $point2->{y} == 0.5 && $point2->{z} == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub value_ref_deref_get_field_float : int () {
+    my $point : SPVM::TestCase::Point_3f;
+    
+    $point->{x} = FLT_MIN();
+    $point->{y} = 0.5f;
+    $point->{z} = 0.125f;
+    
+    my $point_ref = \$point;
+    
+    my $point_x = $point_ref->{x};
+    my $point_y = $point_ref->{y};
+    my $point_z = $point_ref->{z};
+    
+    if ($point_x == FLT_MIN() && $point_y == 0.5 && $point_z == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub value_ref_deref_set_field_float : int () {
+    my $point : SPVM::TestCase::Point_3f;
+
+    my $point_ref = \$point;
+    
+    $point_ref->{x} = FLT_MIN();
+    $point_ref->{y} = 0.5f;
+    $point_ref->{z} = 0.125f;
+    
+    if ($point->{x} == FLT_MIN() && $point->{y} == 0.5 && $point->{z} == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_pass_value_ref_float : int () {
+    my $point_out : SPVM::TestCase::Point_3f;
+    
+    my $point1 : SPVM::TestCase::Point_3f;
+    $point1->{x} = 0.25f;
+    $point1->{y} = 0.5f;
+    $point1->{z} = 0.125f;
+
+    my $point2 : SPVM::TestCase::Point_3f;
+    $point2->{x} = 0.25f;
+    $point2->{y} = 0.5f;
+    $point2->{z} = 0.125f;
+    
+    pass_value_ref_float($point1, $point2, \$point_out);
+    
+    if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub pass_value_ref_float : void ($x_in1 : SPVM::TestCase::Point_3f, $x_in2 : SPVM::TestCase::Point_3f, $x_out : SPVM::TestCase::Point_3f&) {
+    $x_out->{x} = $x_in1->{x} + $x_in2->{x};
+    $x_out->{y} = $x_in1->{y} + $x_in2->{y};
+    $x_out->{z} = $x_in1->{z} + $x_in2->{z};
+  }
+
+  sub value_ref_deref_get_field_double : int () {
+    my $point : SPVM::TestCase::Point_3d;
+    
+    $point->{x} = DBL_MIN();
+    $point->{y} = 0.5;
+    $point->{z} = 0.125;
+    
+    my $point_ref = \$point;
+    
+    my $point_x = $point_ref->{x};
+    my $point_y = $point_ref->{y};
+    my $point_z = $point_ref->{z};
+    
+    if ($point_x == DBL_MIN() && $point_y == 0.5 && $point_z == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub value_ref_deref_set_field_double : int () {
+    my $point : SPVM::TestCase::Point_3d;
+
+    my $point_ref = \$point;
+    
+    $point_ref->{x} = DBL_MIN();
+    $point_ref->{y} = 0.5;
+    $point_ref->{z} = 0.125;
+    
+    if ($point->{x} == DBL_MIN() && $point->{y} == 0.5 && $point->{z} == 0.125) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub test_pass_value_ref_double : int () {
+    my $point_out : SPVM::TestCase::Point_3d;
+    
+    my $point1 : SPVM::TestCase::Point_3d;
+    $point1->{x} = 0.25;
+    $point1->{y} = 0.5;
+    $point1->{z} = 0.125;
+
+    my $point2 : SPVM::TestCase::Point_3d;
+    $point2->{x} = 0.25;
+    $point2->{y} = 0.5;
+    $point2->{z} = 0.125;
+    
+    pass_value_ref_double($point1, $point2, \$point_out);
+    
+    if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
+      return 1;
+    }
+    return 0;
+  }
+  
+  sub pass_value_ref_double : void ($x_in1 : SPVM::TestCase::Point_3d, $x_in2 : SPVM::TestCase::Point_3d, $x_out : SPVM::TestCase::Point_3d&) {
+    $x_out->{x} = $x_in1->{x} + $x_in2->{x};
+    $x_out->{y} = $x_in1->{y} + $x_in2->{y};
+    $x_out->{z} = $x_in1->{z} + $x_in2->{z};
+  }
+}

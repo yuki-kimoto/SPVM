@@ -1,0 +1,9 @@
+package SPVM::TestCase::CompileError::Concat::RightIsNotString {
+  use SPVM::TestCase::Minimal;
+  
+  sub main : int () {
+    my $minimal : SPVM::TestCase::Minimal;
+    
+    "abc" . $minimal;
+  }
+}

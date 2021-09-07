@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::LexicalVar';
+use SPVM 'SPVM::TestCase::LexicalVar';
 
 
 
@@ -15,10 +15,10 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Array
 {
-  ok(TestCase::LexicalVar->var_brace);
-  ok(TestCase::LexicalVar->lexical_var_upper_case);
-  ok(TestCase::LexicalVar->lexical_var_high_precidence_than_package_var);
-  ok(TestCase::LexicalVar->lexical_var_high_precidence_than_capture_var);
+  ok(SPVM::TestCase::LexicalVar->var_brace);
+  ok(SPVM::TestCase::LexicalVar->lexical_var_upper_case);
+  ok(SPVM::TestCase::LexicalVar->lexical_var_high_precidence_than_package_var);
+  ok(SPVM::TestCase::LexicalVar->lexical_var_high_precidence_than_capture_var);
 }
 
 # All object is freed

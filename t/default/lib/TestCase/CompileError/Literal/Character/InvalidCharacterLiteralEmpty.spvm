@@ -1,5 +1,0 @@
-package TestCase::CompileError::Literal::InvalidCharacterLiteral {
-  sub main : int () {
-    '';
-  }
-}

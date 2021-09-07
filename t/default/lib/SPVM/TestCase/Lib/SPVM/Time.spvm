@@ -1,0 +1,60 @@
+package SPVM::TestCase::Lib::SPVM::Time {
+  use SPVM::Time;
+  
+  sub test_time : long () {
+    my $time = SPVM::Time->time;
+    
+    return $time;
+  }
+
+  sub test_localtime : SPVM::Time::Info ($time : long) {
+    my $time_info = SPVM::Time->localtime($time);
+    
+    return $time_info;
+  }
+
+  sub test_gmtime : SPVM::Time::Info ($time : long) {
+    my $time_info = SPVM::Time->gmtime($time);
+    
+    return $time_info;
+  }
+
+  sub test_timelocal : int () {
+    {
+      my $time = SPVM::Time->time();
+      
+      my $time_info = SPVM::Time->localtime($time);
+      
+      my $time_ret = SPVM::Time->timelocal($time_info);
+      
+      unless ($time_ret isa long) {
+        return 0;
+      }
+      unless ($time == $time_ret) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_timegm : int () {
+    {
+      my $time = SPVM::Time->time();
+      
+      my $time_info = SPVM::Time->gmtime($time);
+      
+      my $time_ret = SPVM::Time->timegm($time_info);
+
+      unless ($time_ret isa long) {
+        return 0;
+      }
+      unless ($time == $time_ret) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+}

@@ -1,0 +1,49 @@
+package SPVM::TestCase::Refop {
+  use SPVM::TestCase::Minimal;
+  use SPVM::TestCase::Simple;
+  
+  sub refop : int () {
+    {
+      my $minimal = SPVM::TestCase::Minimal->new;
+      
+      unless (ref $minimal eq "SPVM::TestCase::Minimal") {
+        return 0;
+      }
+    }
+    {
+      my $minimal = SPVM::TestCase::Minimal->new;
+      my $type_name = ref $minimal;
+      
+      unless ($type_name eq "SPVM::TestCase::Minimal") {
+        return 0;
+      }
+    }
+    {
+      my $obj = new SPVM::TestCase::Minimal[3];
+      my $type_name = ref $obj;
+      
+      unless ($type_name eq "SPVM::TestCase::Minimal[]") {
+        return 0;
+      }
+    }
+    {
+      my $obj = new SPVM::TestCase::Minimal[][3];
+      my $type_name = ref $obj;
+      
+      unless ($type_name eq "SPVM::TestCase::Minimal[][]") {
+        return 0;
+      }
+    }
+
+    {
+      my $obj : object = undef;
+      my $type_name = ref $obj;
+      
+      unless ($type_name == undef) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

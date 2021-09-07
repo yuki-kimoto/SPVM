@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Literal::Character';
+use SPVM 'SPVM::TestCase::Literal::Character';
 
 
 
@@ -15,9 +15,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Character literal
 {
-  ok(TestCase::Literal::Character->character());
-  ok(TestCase::Literal::Character->escape());
-  ok(TestCase::Literal::Character->escape_ascii());
+  ok(SPVM::TestCase::Literal::Character->character());
+  ok(SPVM::TestCase::Literal::Character->escape());
+  ok(SPVM::TestCase::Literal::Character->escape_ascii());
 }
 
 # All object is freed

@@ -1,0 +1,6 @@
+package SPVM::TestCase::Enum::Data1 {
+  enum {
+    ONE,
+    TWO,
+  }
+}

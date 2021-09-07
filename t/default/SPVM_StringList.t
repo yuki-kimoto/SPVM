@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::StringList';
+use SPVM 'SPVM::TestCase::Lib::SPVM::StringList';
 
 
 
@@ -15,19 +15,19 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::StringList
 {
-  ok(TestCase::Lib::SPVM::StringList->push);
-  ok(TestCase::Lib::SPVM::StringList->pop);
-  ok(TestCase::Lib::SPVM::StringList->new);
-  ok(TestCase::Lib::SPVM::StringList->new_len);
-  ok(TestCase::Lib::SPVM::StringList->unshift);
-  ok(TestCase::Lib::SPVM::StringList->shift);
-  ok(TestCase::Lib::SPVM::StringList->length);
-  ok(TestCase::Lib::SPVM::StringList->get);
-  ok(TestCase::Lib::SPVM::StringList->set);
-  ok(TestCase::Lib::SPVM::StringList->set_array);
-  ok(TestCase::Lib::SPVM::StringList->to_array);
-  ok(TestCase::Lib::SPVM::StringList->insert);
-  ok(TestCase::Lib::SPVM::StringList->remove);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->push);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->pop);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->new);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->new_len);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->unshift);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->shift);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->length);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->get);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->set);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->set_array);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->to_array);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->insert);
+  ok(SPVM::TestCase::Lib::SPVM::StringList->remove);
 }
 
 # All object is freed

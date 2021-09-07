@@ -6,19 +6,19 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Switch';
+use SPVM 'SPVM::TestCase::Switch';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Switch
 {
-  ok(TestCase::Switch->switch_return);
-  ok(TestCase::Switch->switch_nest);
-  ok(TestCase::Switch->switch_lookup_switch);
-  ok(TestCase::Switch->switch_table_switch);
-  ok(TestCase::Switch->switch_constant_byte);
-  ok(TestCase::Switch->switch_no_default);
+  ok(SPVM::TestCase::Switch->switch_return);
+  ok(SPVM::TestCase::Switch->switch_nest);
+  ok(SPVM::TestCase::Switch->switch_lookup_switch);
+  ok(SPVM::TestCase::Switch->switch_table_switch);
+  ok(SPVM::TestCase::Switch->switch_constant_byte);
+  ok(SPVM::TestCase::Switch->switch_no_default);
 }
 
 

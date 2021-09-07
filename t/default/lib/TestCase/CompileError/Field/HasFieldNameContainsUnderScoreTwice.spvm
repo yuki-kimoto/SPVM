@@ -1,3 +1,0 @@
-package TestCase::CompileError::Field::HasFieldNameContainsUnderScoreTwice {
-  has Foo__Bar : int;
-}

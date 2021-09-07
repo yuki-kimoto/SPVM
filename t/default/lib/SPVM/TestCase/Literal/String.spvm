@@ -1,0 +1,437 @@
+package SPVM::TestCase::Literal::String {
+  use SPVM::TestCase::Minimal;
+  
+  our $VAR_EXPANSION1 : int;
+
+  sub raw_escape : int () {
+    
+    # Raw escape - Character and number
+    {
+      my $string = "\w\W\s\S\d\D\p\P\X\g\k\K\v\V\h\H\R\b\B\A\Z\z\G\N\1\2\3\4\5\6\7\8\9";
+      
+      unless ($string->[0] == '\\') { return 0; }
+      unless ($string->[1] == 'w') { return 0; }
+      unless ($string->[2] == '\\') { return 0; }
+      unless ($string->[3] == 'W') { return 0; }
+      unless ($string->[4] == '\\') { return 0; }
+      unless ($string->[5] == 's') { return 0; }
+      unless ($string->[6] == '\\') { return 0; }
+      unless ($string->[7] == 'S') { return 0; }
+      unless ($string->[8] == '\\') { return 0; }
+      unless ($string->[9] == 'd') { return 0; }
+      unless ($string->[10] == '\\') { return 0; }
+      unless ($string->[11] == 'D') { return 0; }
+      unless ($string->[12] == '\\') { return 0; }
+      unless ($string->[13] == 'p') { return 0; }
+      unless ($string->[14] == '\\') { return 0; }
+      unless ($string->[15] == 'P') { return 0; }
+      unless ($string->[16] == '\\') { return 0; }
+      unless ($string->[17] == 'X') { return 0; }
+      unless ($string->[18] == '\\') { return 0; }
+      unless ($string->[19] == 'g') { return 0; }
+      unless ($string->[20] == '\\') { return 0; }
+      unless ($string->[21] == 'k') { return 0; }
+      unless ($string->[22] == '\\') { return 0; }
+      unless ($string->[23] == 'K') { return 0; }
+      unless ($string->[24] == '\\') { return 0; }
+      unless ($string->[25] == 'v') { return 0; }
+      unless ($string->[26] == '\\') { return 0; }
+      unless ($string->[27] == 'V') { return 0; }
+      unless ($string->[28] == '\\') { return 0; }
+      unless ($string->[29] == 'h') { return 0; }
+      unless ($string->[30] == '\\') { return 0; }
+      unless ($string->[31] == 'H') { return 0; }
+      unless ($string->[32] == '\\') { return 0; }
+      unless ($string->[33] == 'R') { return 0; }
+      unless ($string->[34] == '\\') { return 0; }
+      unless ($string->[35] == 'b') { return 0; }
+      unless ($string->[36] == '\\') { return 0; }
+      unless ($string->[37] == 'B') { return 0; }
+      unless ($string->[38] == '\\') { return 0; }
+      unless ($string->[39] == 'A') { return 0; }
+      unless ($string->[40] == '\\') { return 0; }
+      unless ($string->[41] == 'Z') { return 0; }
+      unless ($string->[42] == '\\') { return 0; }
+      unless ($string->[43] == 'z') { return 0; }
+      unless ($string->[44] == '\\') { return 0; }
+      unless ($string->[45] == 'G') { return 0; }
+      unless ($string->[46] == '\\') { return 0; }
+      unless ($string->[47] == 'N') { return 0; }
+      unless ($string->[48] == '\\') { return 0; }
+      unless ($string->[49] == '1') { return 0; }
+      unless ($string->[50] == '\\') { return 0; }
+      unless ($string->[51] == '2') { return 0; }
+      unless ($string->[52] == '\\') { return 0; }
+      unless ($string->[53] == '3') { return 0; }
+      unless ($string->[54] == '\\') { return 0; }
+      unless ($string->[55] == '4') { return 0; }
+      unless ($string->[56] == '\\') { return 0; }
+      unless ($string->[57] == '5') { return 0; }
+      unless ($string->[58] == '\\') { return 0; }
+      unless ($string->[59] == '6') { return 0; }
+      unless ($string->[60] == '\\') { return 0; }
+      unless ($string->[61] == '7') { return 0; }
+      unless ($string->[62] == '\\') { return 0; }
+      unless ($string->[63] == '8') { return 0; }
+      unless ($string->[64] == '\\') { return 0; }
+      unless ($string->[65] == '9') { return 0; }
+    }
+
+    # Raw escape - punct characters
+    {
+      my $string = "\!\#\@\%\&\(\)\*\+\,\-\.\/\:\;\<\=\>\?\[\]\^\_\`\{\|\}\~";
+      unless ($string->[0] == '\\') { return 0; }
+      unless ($string->[1] == '!') { return 0; }
+      unless ($string->[2] == '\\') { return 0; }
+      unless ($string->[3] == '#') { return 0; }
+      unless ($string->[4] == '\\') { return 0; }
+      unless ($string->[5] == '@') { return 0; }
+      unless ($string->[6] == '\\') { return 0; }
+      unless ($string->[7] == '%') { return 0; }
+      unless ($string->[8] == '\\') { return 0; }
+      unless ($string->[9] == '&') { return 0; }
+      unless ($string->[10] == '\\') { return 0; }
+      unless ($string->[11] == '(') { return 0; }
+      unless ($string->[12] == '\\') { return 0; }
+      unless ($string->[13] == ')') { return 0; }
+      unless ($string->[14] == '\\') { return 0; }
+      unless ($string->[15] == '*') { return 0; }
+      unless ($string->[16] == '\\') { return 0; }
+      unless ($string->[17] == '+') { return 0; }
+      unless ($string->[18] == '\\') { return 0; }
+      unless ($string->[19] == ',') { return 0; }
+      unless ($string->[20] == '\\') { return 0; }
+      unless ($string->[21] == '-') { return 0; }
+      unless ($string->[22] == '\\') { return 0; }
+      unless ($string->[23] == '.') { return 0; }
+      unless ($string->[24] == '\\') { return 0; }
+      unless ($string->[25] == '/') { return 0; }
+      unless ($string->[26] == '\\') { return 0; }
+      unless ($string->[27] == ':') { return 0; }
+      unless ($string->[28] == '\\') { return 0; }
+      unless ($string->[29] == ';') { return 0; }
+      unless ($string->[30] == '\\') { return 0; }
+      unless ($string->[31] == '<') { return 0; }
+      unless ($string->[32] == '\\') { return 0; }
+      unless ($string->[33] == '=') { return 0; }
+      unless ($string->[34] == '\\') { return 0; }
+      unless ($string->[35] == '>') { return 0; }
+      unless ($string->[36] == '\\') { return 0; }
+      unless ($string->[37] == '?') { return 0; }
+      unless ($string->[38] == '\\') { return 0; }
+      unless ($string->[39] == '[') { return 0; }
+      unless ($string->[40] == '\\') { return 0; }
+      unless ($string->[41] == ']') { return 0; }
+      unless ($string->[42] == '\\') { return 0; }
+      unless ($string->[43] == '^') { return 0; }
+      unless ($string->[44] == '\\') { return 0; }
+      unless ($string->[45] == '_') { return 0; }
+      unless ($string->[46] == '\\') { return 0; }
+      unless ($string->[47] == '`') { return 0; }
+      unless ($string->[48] == '\\') { return 0; }
+      unless ($string->[49] == '{') { return 0; }
+      unless ($string->[50] == '\\') { return 0; }
+      unless ($string->[51] == '|') { return 0; }
+      unless ($string->[52] == '\\') { return 0; }
+      unless ($string->[53] == '}') { return 0; }
+    }
+    
+    return 1;
+  }
+  
+  sub edge_case : int () {
+
+    # String literal last character is \\
+    {
+      my $str = "aaaa\\";
+      
+      unless ($str->[4] == '\\') {
+        return 0;
+      }
+    }
+
+    # String literal last allow $
+    {
+      my $str = "aaaa$";
+      
+      unless ($str->[4] == '$') {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  sub characters : int () {
+    
+    # Characters
+    {
+      my $string = "abc";
+      
+      unless (length $string == 3) {
+        return 0;
+      }
+      
+      unless ($string->[0] == 'a' && $string->[1] == 'b' && $string->[2] == 'c') {
+        return 0;
+      }
+    }
+
+    # Multi lines
+    {
+      my $foo = 5;
+      my $str = 
+"ab
+cd
+$foo
+ef"
+;
+      unless ($str eq "ab\ncd\n5\nef") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub escape : int () {
+    
+    # Escape sequence
+    my $string = "a\0\a \t\n\f\r\"\'\\z";
+    
+    # \0
+    unless ($string->[1] == 0) {
+      return 0;
+    }
+    
+    # \a
+    unless ($string->[2] == 7) {
+      return 0;
+    }
+    
+    # \t
+    unless ($string->[4] == 9) {
+      return 0;
+    }
+    
+    # \n
+    unless ($string->[5] == 10) {
+      return 0;
+    }
+    
+    # \f
+    unless ($string->[6] == 12) {
+      return 0;
+    }
+    
+    # \r
+    unless ($string->[7] == 13) {
+      return 0;
+    }
+    
+    # \"
+    unless ($string->[8] == 34) {
+      return 0;
+    }
+    
+    # \'
+    unless ($string->[9] == 39) {
+      return 0;
+    }
+    
+    # \\
+    unless ($string->[10] == 92) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub escape_ascii : int () {
+    my $string = "\x00\x11\x22\x33\x44\x55\x66\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f\x7A\x7B\x7C\x7D\x7E\x7Fa";
+    
+    unless ($string->[0] == 0) {
+      return 0;
+    }
+    
+    unless ($string->[1] == 17) {
+      return 0;
+    }
+    
+    unless ($string->[2] == 34) {
+      return 0;
+    }
+    
+    unless ($string->[3] == 51) {
+      return 0;
+    }
+
+    unless ($string->[4] == 68) {
+      return 0;
+    }
+
+    unless ($string->[5] == 85) {
+      return 0;
+    }
+    
+    unless ($string->[6] == 102) {
+      return 0;
+    }
+    
+    unless ($string->[7] == 119) {
+      return 0;
+    }
+
+    unless ($string->[8] == 120) {
+      return 0;
+    }
+
+    unless ($string->[9] == 121) {
+      return 0;
+    }
+
+    unless ($string->[10] == 122) {
+      return 0;
+    }
+
+    unless ($string->[11] == 123) {
+      return 0;
+    }
+
+    unless ($string->[12] == 124) {
+      return 0;
+    }
+
+    unless ($string->[13] == 125) {
+      return 0;
+    }
+
+    unless ($string->[14] == 126) {
+      return 0;
+    }
+
+    unless ($string->[15] == 127) {
+      return 0;
+    }
+
+    unless ($string->[16] == 122) {
+      return 0;
+    }
+
+    unless ($string->[17] == 123) {
+      return 0;
+    }
+
+    unless ($string->[18] == 124) {
+      return 0;
+    }
+
+    unless ($string->[19] == 125) {
+      return 0;
+    }
+
+    unless ($string->[20] == 126) {
+      return 0;
+    }
+
+    unless ($string->[21] == 127) {
+      return 0;
+    }
+
+    unless ($string->[22] == 'a') {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub escape_unicode : int () {
+    my $string = "\N{U+3042}\N{U+3044}\N{U+3046}";
+    
+    unless ($string eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub var_expansion : int () {
+    
+    # Variable access
+    {
+      my $var1 = 1;
+      my $var2 = 2;
+      
+      my $string = "a $var1 b ${var2}c ${var1}->2";
+      
+      unless ($string eq "a 1 b 2c 1->2") {
+        return 0;
+      }
+    }
+    
+    # Exception variable
+    {
+      $@ = "Error";
+      
+      my $string = "a $@b ${@}c";
+      
+      unless ($string eq "a Errorb Errorc") {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Dereference variable
+    {
+      my $num = 5;
+      my $num_ref = \$num;
+      
+      my $string = "a $$num_ref b $${num_ref}c";
+      
+      unless ($string eq "a 5 b 5c") {
+        return 0;
+      }
+    }
+    
+    # Package variable
+    {
+      $VAR_EXPANSION1 = 6;
+      
+      my $string = "a $SPVM::TestCase::Literal::String::VAR_EXPANSION1 b";
+      
+      unless ($string eq "a 6 b") {
+        return 0;
+      }
+    }
+
+    # Field and hash access
+    {
+      my $nums = [1, 2, 3];
+      my $minimal = SPVM::TestCase::Minimal->new;
+      $minimal->{x} = 5;
+      
+      my $string = "a $nums->[1]b $minimal->{x}c";
+      
+      unless ($string eq "a 2b 5c") {
+        return 0;
+      }
+    }
+
+    # Multiple field and array access
+    {
+      my $minimals = new SPVM::TestCase::Minimal[11];
+      $minimals->[1] = new SPVM::TestCase::Minimal;
+      $minimals->[1]{x} = 5;
+
+      $minimals->[10] = new SPVM::TestCase::Minimal;
+      $minimals->[10]{x} = 11;
+      
+      my $string = "a $minimals->[1]{x}b $minimals->[1_0]{x} c";
+      
+      unless ($string eq "a 5b 11 c") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+}

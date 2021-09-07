@@ -1675,7 +1675,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  void* minimal = env->new_object_by_name(env, "TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* minimal = env->new_object_by_name(env, "SPVM::TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 new_pointer_by_name
@@ -1687,7 +1687,7 @@ This is same as C<new_pointer> function, but you can specify package name direct
 If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
 
   int32_t e;
-  void* minimal = env->new_pointer_by_name(env, "TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
+  void* minimal = env->new_pointer_by_name(env, "SPVM::TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_byte_by_name
@@ -1703,7 +1703,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_byte_by_name(env, object, "TestCase::Simple", "byte_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_byte_by_name(env, object, "SPVM::TestCase::Simple", "byte_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_short_by_name
@@ -1719,7 +1719,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_short_by_name(env, object, "TestCase::Simple", "short_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_short_by_name(env, object, "SPVM::TestCase::Simple", "short_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_int_by_name
@@ -1735,7 +1735,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_int_by_name(env, object, "TestCase::Simple", "int_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_int_by_name(env, object, "SPVM::TestCase::Simple", "int_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_long_by_name
@@ -1751,7 +1751,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_long_by_name(env, object, "TestCase::Simple", "long_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_long_by_name(env, object, "SPVM::TestCase::Simple", "long_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_float_by_name
@@ -1767,7 +1767,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_float_by_name(env, object, "TestCase::Simple", "float_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_float_by_name(env, object, "SPVM::TestCase::Simple", "float_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_double_by_name
@@ -1783,7 +1783,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_double_by_name(env, object, "TestCase::Simple", "double_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_double_by_name(env, object, "SPVM::TestCase::Simple", "double_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_object_by_name
@@ -1799,7 +1799,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_object_by_name(env, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", object_minimal, &e, __FILE__, __LINE__);
+  env->set_field_object_by_name(env, object_simple, "SPVM::TestCase::Simple", "object_value", "SPVM::TestCase::Minimal", object_minimal, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_byte_by_name
@@ -1815,7 +1815,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t byte_value = env->get_field_byte_by_name(env, object, "TestCase::Simple", "byte_value", &e, __FILE__, __LINE__);
+  int8_t byte_value = env->get_field_byte_by_name(env, object, "SPVM::TestCase::Simple", "byte_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_short_by_name
@@ -1831,7 +1831,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t short_value = env->get_field_short_by_name(env, object, "TestCase::Simple", "short_value", &e, __FILE__, __LINE__);
+  int8_t short_value = env->get_field_short_by_name(env, object, "SPVM::TestCase::Simple", "short_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_int_by_name
@@ -1847,7 +1847,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t int_value = env->get_field_int_by_name(env, object, "TestCase::Simple", "int_value", &e, __FILE__, __LINE__);
+  int8_t int_value = env->get_field_int_by_name(env, object, "SPVM::TestCase::Simple", "int_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_long_by_name
@@ -1863,7 +1863,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t long_value = env->get_field_long_by_name(env, object, "TestCase::Simple", "long_value", &e, __FILE__, __LINE__);
+  int8_t long_value = env->get_field_long_by_name(env, object, "SPVM::TestCase::Simple", "long_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_float_by_name
@@ -1879,7 +1879,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t float_value = env->get_field_float_by_name(env, object, "TestCase::Simple", "float_value", &e, __FILE__, __LINE__);
+  int8_t float_value = env->get_field_float_by_name(env, object, "SPVM::TestCase::Simple", "float_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_double_by_name
@@ -1895,7 +1895,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t double_value = env->get_field_double_by_name(env, object, "TestCase::Simple", "double_value", &e, __FILE__, __LINE__);
+  int8_t double_value = env->get_field_double_by_name(env, object, "SPVM::TestCase::Simple", "double_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_object_by_name
@@ -1911,7 +1911,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  void* object_minimal = env->get_field_object_by_name(env, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* object_minimal = env->get_field_object_by_name(env, object_simple, "SPVM::TestCase::Simple", "object_value", "SPVM::TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_byte_by_name
@@ -1927,7 +1927,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_byte_by_name(env, "SPVM::TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_short_by_name
@@ -1943,7 +1943,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_short_by_name(env, "SPVM::TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_int_by_name
@@ -1959,7 +1959,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_int_by_name(env, "SPVM::TestCase::NativeAPI", "$INT_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_long_by_name
@@ -1975,7 +1975,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_long_by_name(env, "SPVM::TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_float_by_name
@@ -1991,7 +1991,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_float_by_name(env, "SPVM::TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_double_by_name
@@ -2007,7 +2007,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_double_by_name(env, "SPVM::TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_object_by_name
@@ -2023,7 +2023,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, __FILE__, __LINE__);
+  env->set_package_var_object_by_name(env, "SPVM::TestCase::NativeAPI", "$MINIMAL_VALUE", "SPVM::TestCase::Minimal", minimal, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_byte_by_name
@@ -2039,7 +2039,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
+  int8_t value = env->get_package_var_byte_by_name(env, "SPVM::TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_short_by_name
@@ -2055,7 +2055,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int16_t value = env->get_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", &e, __FILE__, __LINE__);
+  int16_t value = env->get_package_var_short_by_name(env, "SPVM::TestCase::NativeAPI", "$SHORT_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_int_by_name
@@ -2071,7 +2071,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
+  int8_t value = env->get_package_var_byte_by_name(env, "SPVM::TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_long_by_name
@@ -2087,7 +2087,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int64_t value = env->get_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", &e, __FILE__, __LINE__);
+  int64_t value = env->get_package_var_long_by_name(env, "SPVM::TestCase::NativeAPI", "$LONG_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_float_by_name
@@ -2103,7 +2103,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  float value = env->get_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, __FILE__, __LINE__);
+  float value = env->get_package_var_float_by_name(env, "SPVM::TestCase::NativeAPI", "$FLOAT_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_double_by_name
@@ -2119,7 +2119,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  double value = env->get_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __FILE__, __LINE__);
+  double value = env->get_package_var_double_by_name(env, "SPVM::TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_object_by_name
@@ -2135,7 +2135,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
   
   int32_t e;
-  void* value = env->get_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* value = env->get_package_var_object_by_name(env, "SPVM::TestCase::NativeAPI", "$MINIMAL_VALUE", "SPVM::TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 call_spvm_method_by_name
@@ -2151,7 +2151,7 @@ Example:
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_spvm_method_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
+    int32_t exception_flag = env->call_spvm_method_by_name(env, "SPVM::TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
     if (exception_flag) {
       return exception_flag;
     }

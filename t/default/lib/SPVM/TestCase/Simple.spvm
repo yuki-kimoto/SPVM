@@ -1,0 +1,36 @@
+package SPVM::TestCase::Simple : public {
+  use SPVM::TestCase::Minimal;
+  
+  has x : rw public int;
+  has y : rw public int;
+  
+  has byte_value : rw public byte;
+  has short_value : rw public short;
+  has int_value : rw public int;
+  has long_value : rw public long;
+  has float_value : rw public float;
+  has double_value : rw public double;
+  has object_value : rw public SPVM::TestCase::Minimal;
+  has string_value : rw public string;
+
+  has minimal : rw public SPVM::TestCase::Minimal;
+  
+  our $FOO : public rw int;
+  our $VAR_PRIVATE : private int;
+
+  sub get_x : int ($self : self) {
+    return $self->{x};
+  }
+
+  sub new : SPVM::TestCase::Simple () {
+    return new SPVM::TestCase::Simple;
+  }
+  
+  sub import_method1 : int () {
+    return 1;
+  }
+
+  sub import_method2 : int () {
+    return 2;
+  }
+}

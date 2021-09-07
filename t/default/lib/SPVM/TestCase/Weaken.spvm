@@ -1,0 +1,306 @@
+package SPVM::TestCase::Weaken {
+  use SPVM::TestCase::Data::Weaken;
+  
+  has x_int : int;
+  has x_self : SPVM::TestCase::Weaken;
+  has x_weaken : SPVM::TestCase::Data::Weaken;
+  has weaken1 : SPVM::TestCase::Data::Weaken;
+  has weaken2 : SPVM::TestCase::Data::Weaken;
+  has weaken3 : SPVM::TestCase::Data::Weaken;
+  has weaken4 : SPVM::TestCase::Data::Weaken;
+
+  sub weaken_field_cross_reference_weaken_both : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken both
+    weaken $weaken2->{data_weaken};
+    
+    return 0;
+  }
+
+  sub weaken_field_cross_reference : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    
+    # Exists object
+    if ($weaken1->{x} == 1) {
+      if ($weaken2->{x} == 2) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+
+  sub weaken_field_cross_reference_weaken_twice : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken twice
+    weaken $weaken1->{data_weaken};
+    weaken $weaken1->{data_weaken};
+
+    # Exists object
+    if ($weaken1->{x} == 1) {
+      if ($weaken2->{x} == 2) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_self_reference : int () {
+    my $self = new SPVM::TestCase::Weaken;
+    $self->{x_int} = 5;
+    
+    # Self reference
+    $self->{x_self} = $self;
+    
+    # Weaken
+    weaken $self->{x_self};
+    
+    # Exists object
+    if ($self->{x_int} == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_weaken_ref_count1_object : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # object reference count become 1.
+    $weaken1 = undef;
+    
+    # Weaken(data_weaken is freed because data_weaken reference count is 1);
+    weaken $weaken2->{data_weaken};
+    
+    if ($weaken2->{data_weaken} == undef) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_circular_reference : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new SPVM::TestCase::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_circular_reference_weaken_twice : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new SPVM::TestCase::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    weaken $weaken2->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_circular_reference_weaken_triple : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} =1;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    my $weaken3 = new SPVM::TestCase::Data::Weaken;
+    $weaken3->{x} = 3;
+    
+    # Circular reference
+    $weaken3->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken3;
+    
+    # Weaken
+    weaken $weaken3->{data_weaken};
+    weaken $weaken2->{data_weaken};
+    weaken $weaken1->{data_weaken};
+    
+    if ($weaken1->{x} == 1 && $weaken2->{x} == 2 && $weaken3->{x} == 3) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_assign_undef_to_weakened_field : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken2->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    
+    weaken $weaken2->{data_weaken};
+    $weaken2->{data_weaken} = undef;
+    
+    if ($weaken2->{data_weaken} == undef) {
+      if ($weaken2->{x} == 2) {
+        return 1;
+      }
+    }
+    return 0;
+  }
+  
+  sub weaken_field_assign_undef_to_assinged_object : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+
+    $weaken2->{data_weaken} = $weaken1;
+    $weaken1->{data_weaken} = $weaken2;
+    
+    weaken $weaken2->{data_weaken};
+    $weaken1 = undef;
+    
+    if ($weaken2->{data_weaken} == undef) {
+      return 1;
+    }
+    return 0;
+  }
+
+  sub weaken_field_undef : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    weaken $weaken1->{data_weaken};
+    
+    unless ($weaken1->{data_weaken}) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub weaken_field_cross_reference_assign_var : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    
+    # Assign var($var isn't weak reference)
+    my $var = $weaken1->{data_weaken};
+    
+    return 1;
+  }
+
+  sub isweak_test : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    
+    unless (isweak $weaken1->{data_weaken}) {
+      return 0;
+    }
+
+    if (isweak $weaken2->{data_weaken}) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub unweaken_test : int () {
+    my $weaken1 = new SPVM::TestCase::Data::Weaken;
+    $weaken1->{x} = 1;
+    
+    my $weaken2 = new SPVM::TestCase::Data::Weaken;
+    $weaken2->{x} = 2;
+    
+    # Cross reference
+    $weaken1->{data_weaken} = $weaken2;
+    $weaken2->{data_weaken} = $weaken1;
+    
+    # Weaken
+    weaken $weaken1->{data_weaken};
+    unweaken $weaken1->{data_weaken};
+    
+    if (isweak $weaken1->{data_weaken}) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

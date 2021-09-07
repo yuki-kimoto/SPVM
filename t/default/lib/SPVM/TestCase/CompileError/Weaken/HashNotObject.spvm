@@ -1,0 +1,8 @@
+package SPVM::TestCase::CompileError::Weaken::HashNotObject {
+  use SPVM::TestCase::Minimal;
+  
+  sub main : int () {
+    my $num = new SPVM::TestCase::Minimal;
+    weaken $num->{x};
+  }
+}

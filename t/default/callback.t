@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Callback';
+use SPVM 'SPVM::TestCase::Callback';
 
 
 
@@ -14,10 +14,10 @@ use SPVM 'TestCase::Callback';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
-  ok(TestCase::Callback->basic);
-  ok(TestCase::Callback->comparator);
-  ok(TestCase::Callback->capture);
-  ok(TestCase::Callback->capture_var_high_precidence_than_package_var);
+  ok(SPVM::TestCase::Callback->basic);
+  ok(SPVM::TestCase::Callback->comparator);
+  ok(SPVM::TestCase::Callback->capture);
+  ok(SPVM::TestCase::Callback->capture_var_high_precidence_than_package_var);
 }
 
 # All object is freed

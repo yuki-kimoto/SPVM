@@ -1,4 +1,0 @@
-package TestCase::Complex_2d : mulnum_t {
-  has re : double;
-  has im : double;
-}

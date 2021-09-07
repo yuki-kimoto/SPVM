@@ -1,8 +1,0 @@
-package TestCase::CompileError::Weaken::HashNotObject {
-  use TestCase::Minimal;
-  
-  sub main : int () {
-    my $num = new TestCase::Minimal;
-    weaken $num->{x};
-  }
-}

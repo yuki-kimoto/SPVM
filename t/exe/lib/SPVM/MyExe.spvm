@@ -1,0 +1,14 @@
+package SPVM::MyExe {
+  use SPVM::MyExe::Precompile;
+  use SPVM::TestCase::NativeAPI2;
+  
+  sub main : int ($args : string[]) {
+    my $sum = SPVM::MyExe::Precompile->sum(1, 2);
+    my $ret1 = SPVM::TestCase::NativeAPI2->src_foo;
+    my $ret2 = SPVM::TestCase::NativeAPI2->src_bar;
+    
+    my $ret3 = SPVM::MyExe::Precompile->anon_method_sum;
+    
+    print "AAA $sum $ret1 $ret2 $ret3\n";
+  }
+}

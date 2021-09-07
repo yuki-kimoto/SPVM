@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::ComparisonOperator';
+use SPVM 'SPVM::TestCase::ComparisonOperator';
 
 
 
@@ -18,174 +18,174 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Bool
   {
-    ok(TestCase::ComparisonOperator->bool_true_byte);
-    ok(TestCase::ComparisonOperator->bool_true_short);
-    ok(TestCase::ComparisonOperator->bool_true_int);
-    ok(TestCase::ComparisonOperator->bool_true_long);
-    ok(TestCase::ComparisonOperator->bool_true_float);
-    ok(TestCase::ComparisonOperator->bool_true_double);
-    ok(TestCase::ComparisonOperator->bool_true_object);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_byte);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_short);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_int);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_long);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_float);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_double);
+    ok(SPVM::TestCase::ComparisonOperator->bool_true_object);
 
-    ok(TestCase::ComparisonOperator->bool_false_byte);
-    ok(TestCase::ComparisonOperator->bool_false_short);
-    ok(TestCase::ComparisonOperator->bool_false_int);
-    ok(TestCase::ComparisonOperator->bool_false_long);
-    ok(TestCase::ComparisonOperator->bool_false_float);
-    ok(TestCase::ComparisonOperator->bool_false_double);
-    ok(TestCase::ComparisonOperator->bool_false_object);
+    ok(SPVM::TestCase::ComparisonOperator->bool_false_byte);
+    ok(SPVM::TestCase::ComparisonOperator->bool_false_short);
+    ok(SPVM::TestCase::ComparisonOperator->bool_false_int);
+    ok(SPVM::TestCase::ComparisonOperator->bool_false_long);
+    ok(SPVM::TestCase::ComparisonOperator->bool_false_float);
+    ok(SPVM::TestCase::ComparisonOperator->bool_false_double);
+    ok(SPVM::TestCase::ComparisonOperator->bool_false_object);
 
-    ok(TestCase::ComparisonOperator->bool_else);
-    ok(TestCase::ComparisonOperator->bool_elsif);
-    ok(TestCase::ComparisonOperator->bool_elsbool_2);
-    ok(TestCase::ComparisonOperator->bool_duplicate);
+    ok(SPVM::TestCase::ComparisonOperator->bool_else);
+    ok(SPVM::TestCase::ComparisonOperator->bool_elsif);
+    ok(SPVM::TestCase::ComparisonOperator->bool_elsbool_2);
+    ok(SPVM::TestCase::ComparisonOperator->bool_duplicate);
   }
 
   # a > b
   {
-    ok(TestCase::ComparisonOperator->numeric_gt_byte_left_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_byte_same);
-    ok(TestCase::ComparisonOperator->numeric_gt_byte_right_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_short_left_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_short_same);
-    ok(TestCase::ComparisonOperator->numeric_gt_short_right_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_int_left_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_int_same);
-    ok(TestCase::ComparisonOperator->numeric_gt_int_right_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_long_left_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_long_same);
-    ok(TestCase::ComparisonOperator->numeric_gt_long_right_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_float_left_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_float_same);
-    ok(TestCase::ComparisonOperator->numeric_gt_float_right_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_double_left_big);
-    ok(TestCase::ComparisonOperator->numeric_gt_double_same);
-    ok(TestCase::ComparisonOperator->numeric_gt_double_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_byte_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_byte_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_byte_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_short_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_short_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_short_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_int_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_int_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_int_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_long_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_long_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_long_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_float_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_float_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_float_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_double_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_double_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_gt_double_right_big);
   }
 
   # a >= b
   {
-    ok(TestCase::ComparisonOperator->numeric_ge_byte_left_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_byte_same);
-    ok(TestCase::ComparisonOperator->numeric_ge_byte_right_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_short_left_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_short_same);
-    ok(TestCase::ComparisonOperator->numeric_ge_short_right_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_int_left_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_int_same);
-    ok(TestCase::ComparisonOperator->numeric_ge_int_right_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_long_left_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_long_same);
-    ok(TestCase::ComparisonOperator->numeric_ge_long_right_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_float_left_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_float_same);
-    ok(TestCase::ComparisonOperator->numeric_ge_float_right_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_double_left_big);
-    ok(TestCase::ComparisonOperator->numeric_ge_double_same);
-    ok(TestCase::ComparisonOperator->numeric_ge_double_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_byte_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_byte_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_byte_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_short_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_short_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_short_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_int_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_int_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_int_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_long_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_long_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_long_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_float_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_float_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_float_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_double_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_double_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ge_double_right_big);
   }
 
   # a < b
   {
-    ok(TestCase::ComparisonOperator->numeric_lt_byte_left_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_byte_same);
-    ok(TestCase::ComparisonOperator->numeric_lt_byte_right_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_short_left_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_short_same);
-    ok(TestCase::ComparisonOperator->numeric_lt_short_right_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_int_left_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_int_same);
-    ok(TestCase::ComparisonOperator->numeric_lt_int_right_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_long_left_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_long_same);
-    ok(TestCase::ComparisonOperator->numeric_lt_long_right_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_float_left_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_float_same);
-    ok(TestCase::ComparisonOperator->numeric_lt_float_right_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_double_left_big);
-    ok(TestCase::ComparisonOperator->numeric_lt_double_same);
-    ok(TestCase::ComparisonOperator->numeric_lt_double_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_byte_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_byte_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_byte_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_short_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_short_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_short_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_int_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_int_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_int_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_long_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_long_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_long_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_float_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_float_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_float_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_double_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_double_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_lt_double_right_big);
   }
 
   # a <= b
   {
-    ok(TestCase::ComparisonOperator->numeric_le_byte_left_big);
-    ok(TestCase::ComparisonOperator->numeric_le_byte_same);
-    ok(TestCase::ComparisonOperator->numeric_le_byte_right_big);
-    ok(TestCase::ComparisonOperator->numeric_le_short_left_big);
-    ok(TestCase::ComparisonOperator->numeric_le_short_same);
-    ok(TestCase::ComparisonOperator->numeric_le_short_right_big);
-    ok(TestCase::ComparisonOperator->numeric_le_int_left_big);
-    ok(TestCase::ComparisonOperator->numeric_le_int_same);
-    ok(TestCase::ComparisonOperator->numeric_le_int_right_big);
-    ok(TestCase::ComparisonOperator->numeric_le_long_left_big);
-    ok(TestCase::ComparisonOperator->numeric_le_long_same);
-    ok(TestCase::ComparisonOperator->numeric_le_long_right_big);
-    ok(TestCase::ComparisonOperator->numeric_le_float_left_big);
-    ok(TestCase::ComparisonOperator->numeric_le_float_same);
-    ok(TestCase::ComparisonOperator->numeric_le_float_right_big);
-    ok(TestCase::ComparisonOperator->numeric_le_double_left_big);
-    ok(TestCase::ComparisonOperator->numeric_le_double_same);
-    ok(TestCase::ComparisonOperator->numeric_le_double_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_byte_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_byte_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_byte_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_short_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_short_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_short_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_int_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_int_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_int_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_long_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_long_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_long_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_float_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_float_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_float_right_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_double_left_big);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_double_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_le_double_right_big);
   }
 
   # a == b
   {
-    ok(TestCase::ComparisonOperator->numeric_eq_byte_same);
-    ok(TestCase::ComparisonOperator->numeric_eq_byte_different);
-    ok(TestCase::ComparisonOperator->numeric_eq_short_same);
-    ok(TestCase::ComparisonOperator->numeric_eq_short_different);
-    ok(TestCase::ComparisonOperator->numeric_eq_int_same);
-    ok(TestCase::ComparisonOperator->numeric_eq_int_different);
-    ok(TestCase::ComparisonOperator->numeric_eq_long_same);
-    ok(TestCase::ComparisonOperator->numeric_eq_long_different);
-    ok(TestCase::ComparisonOperator->numeric_eq_float_same);
-    ok(TestCase::ComparisonOperator->numeric_eq_float_different);
-    ok(TestCase::ComparisonOperator->numeric_eq_double_same);
-    ok(TestCase::ComparisonOperator->numeric_eq_double_different);
-    ok(TestCase::ComparisonOperator->numeric_eq_object_same);
-    ok(TestCase::ComparisonOperator->numeric_eq_object_different);
-    ok(TestCase::ComparisonOperator->numeric_eq_undef);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_byte_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_byte_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_short_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_short_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_int_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_int_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_long_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_long_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_float_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_float_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_double_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_double_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_object_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_object_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_eq_undef);
   }
 
   # a != b
   {
-    ok(TestCase::ComparisonOperator->numeric_ne_byte_same);
-    ok(TestCase::ComparisonOperator->numeric_ne_byte_different);
-    ok(TestCase::ComparisonOperator->numeric_ne_short_same);
-    ok(TestCase::ComparisonOperator->numeric_ne_short_different);
-    ok(TestCase::ComparisonOperator->numeric_ne_int_same);
-    ok(TestCase::ComparisonOperator->numeric_ne_int_different);
-    ok(TestCase::ComparisonOperator->numeric_ne_long_same);
-    ok(TestCase::ComparisonOperator->numeric_ne_long_different);
-    ok(TestCase::ComparisonOperator->numeric_ne_float_same);
-    ok(TestCase::ComparisonOperator->numeric_ne_float_different);
-    ok(TestCase::ComparisonOperator->numeric_ne_double_same);
-    ok(TestCase::ComparisonOperator->numeric_ne_double_different);
-    ok(TestCase::ComparisonOperator->numeric_ne_object_same);
-    ok(TestCase::ComparisonOperator->numeric_ne_object_different);
-    ok(TestCase::ComparisonOperator->numeric_ne_undef);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_byte_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_byte_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_short_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_short_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_int_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_int_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_long_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_long_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_float_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_float_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_double_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_double_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_object_same);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_object_different);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_ne_undef);
   }
 
   # a <=> b
   {
-    ok(TestCase::ComparisonOperator->numeric_cmp_byte);
-    ok(TestCase::ComparisonOperator->numeric_cmp_short);
-    ok(TestCase::ComparisonOperator->numeric_cmp_int);
-    ok(TestCase::ComparisonOperator->numeric_cmp_long);
-    ok(TestCase::ComparisonOperator->numeric_cmp_float);
-    ok(TestCase::ComparisonOperator->numeric_cmp_double);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_cmp_byte);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_cmp_short);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_cmp_int);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_cmp_long);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_cmp_float);
+    ok(SPVM::TestCase::ComparisonOperator->numeric_cmp_double);
   }
 
   # String comparison operator
   {
     {
-      ok(TestCase::ComparisonOperator->string_eq);
-      ok(TestCase::ComparisonOperator->string_ne);
-      ok(TestCase::ComparisonOperator->string_gt);
-      ok(TestCase::ComparisonOperator->string_ge);
-      ok(TestCase::ComparisonOperator->string_lt);
-      ok(TestCase::ComparisonOperator->string_le);
-      ok(TestCase::ComparisonOperator->string_cmp);
+      ok(SPVM::TestCase::ComparisonOperator->string_eq);
+      ok(SPVM::TestCase::ComparisonOperator->string_ne);
+      ok(SPVM::TestCase::ComparisonOperator->string_gt);
+      ok(SPVM::TestCase::ComparisonOperator->string_ge);
+      ok(SPVM::TestCase::ComparisonOperator->string_lt);
+      ok(SPVM::TestCase::ComparisonOperator->string_le);
+      ok(SPVM::TestCase::ComparisonOperator->string_cmp);
     }
   }
 }

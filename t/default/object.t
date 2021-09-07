@@ -6,8 +6,8 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase';
-use SPVM 'TestCase::Object';
+use SPVM 'SPVM::TestCase';
+use SPVM 'SPVM::TestCase::Object';
 
 
 
@@ -29,7 +29,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Check object count at least 1 to check object count system itself
   {
-    my $object = TestCase->new();
+    my $object = SPVM::TestCase->new();
     my $memory_blocks_count = SPVM::get_memory_blocks_count();
     ok($memory_blocks_count > 0);
   }
@@ -37,25 +37,25 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Field
 {
-  ok(TestCase::Object->get_field_chain);
-  ok(TestCase::Object->core_func_name_field_name());
-  ok(TestCase::Object->reserved_word_field_name());
-  ok(TestCase::Object->object_field_set_and_get());
+  ok(SPVM::TestCase::Object->get_field_chain);
+  ok(SPVM::TestCase::Object->core_func_name_field_name());
+  ok(SPVM::TestCase::Object->reserved_word_field_name());
+  ok(SPVM::TestCase::Object->object_field_set_and_get());
 }
 
 # Field
 {
-  ok(TestCase::Object->object_field_set_and_get());
-  ok(TestCase::Object->object_field_set_and_get_again());
+  ok(SPVM::TestCase::Object->object_field_set_and_get());
+  ok(SPVM::TestCase::Object->object_field_set_and_get_again());
 }
 
 {
-  ok(TestCase::Object->object_field_initialized_zero());
+  ok(SPVM::TestCase::Object->object_field_initialized_zero());
 }
 
 # Destructor
 {
-  ok(TestCase::Object->destructor());
+  ok(SPVM::TestCase::Object->destructor());
 }
 
 # All object is freed

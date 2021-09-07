@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase::Refop';
+use SPVM 'SPVM::TestCase::Refop';
 
 
 
@@ -21,7 +21,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Add - Operation
   {
-    ok(TestCase::Refop->refop);
+    ok(SPVM::TestCase::Refop->refop);
   }
 }
 

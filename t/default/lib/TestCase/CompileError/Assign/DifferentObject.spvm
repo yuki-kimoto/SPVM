@@ -1,8 +1,0 @@
-package TestCase::CompileError::Assign::DifferentObject {
-  use TestCase::Minimal;
-  use TestCase::Simple;
-
-  sub main : int () {
-    my $minimal : TestCase::Minimal = new TestCase::Simple;
-  }
-}

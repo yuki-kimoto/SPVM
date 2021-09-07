@@ -1,5 +1,0 @@
-package MinimalMethod {
-  sub foo : void () {
-    
-  }
-}

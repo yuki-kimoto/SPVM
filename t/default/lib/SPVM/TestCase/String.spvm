@@ -1,0 +1,70 @@
+package SPVM::TestCase::String {
+  sub string_access : int () {
+    my $string = "abc";
+    
+    unless ($string->[0] == 'a') {
+      return 0;
+    }
+    
+    unless ($string->[1] == 'b') {
+      return 0;
+    }
+    
+    unless ($string->[2] == 'c') {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub string_length : int () {
+    # String length
+    {
+      my $string_length = length "abc";
+      
+      unless ($string_length == 3) {
+        return 0;
+      }
+      
+      return 1;
+    }
+  }
+  sub basic : int () {
+    
+    # Assign byte array to string
+    {
+      my $bytes = [(byte)'a', 'b', 'c'];
+      my $string : string = (string)$bytes;
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+      
+      unless ($string != $bytes) {
+        return 0;
+      }
+    }
+
+    # Cast byte array to string
+    {
+      my $bytes = [(byte)'a', 'b', 'c'];
+      my $string = (string)$bytes;
+      
+      unless ($string eq "abc") {
+        return 0;
+      }
+      
+      unless ($string != $bytes) {
+        return 0;
+      }
+    }
+
+    # Concat string
+    {
+      my $error = "First";
+      (string)$error . "\n";
+    }
+
+    return 1;
+  }
+}

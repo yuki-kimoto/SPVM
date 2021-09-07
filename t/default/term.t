@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase::Term';
+use SPVM 'SPVM::TestCase::Term';
 
 
 
@@ -19,7 +19,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Spec tests
 {
-  ok(TestCase::Term->evaluate_left_to_right);
+  ok(SPVM::TestCase::Term->evaluate_left_to_right);
 }
 
 # All object is freed

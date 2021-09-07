@@ -1,0 +1,11 @@
+package SPVM::TestCase::Callback::ImplementCallback2 {
+  use SPVM::TestCase::Minimal;
+
+  sub new : SPVM::TestCase::Callback::ImplementCallback2 () {
+    return new SPVM::TestCase::Callback::ImplementCallback2;
+  }
+  
+  sub : int ($self : self, $var1 : int, $var2 : long) {
+    return 2;
+  }
+}

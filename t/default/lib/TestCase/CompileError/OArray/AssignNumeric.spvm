@@ -1,5 +1,0 @@
-package TestCase::CompileError::OArray::AssignNumeric {
-  sub error : void () {
-    my $obj_elems : oarray = 1;
-  }
-}

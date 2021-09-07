@@ -24,7 +24,7 @@ use FindBin;
   my $exe_dir = 't/.spvm_build/work/exe';
   mkpath $exe_dir;
   
-  my $target_package_name = 'MyExe';
+  my $target_package_name = 'SPVM::MyExe';
   my $build_dir = 't/exe/.spvm_build';
   my $module_dirs = ['t/exe/lib', @INC];
   my $output_file = "$build_dir/work/myexe";
@@ -44,7 +44,7 @@ use FindBin;
   my $exe_dir = 't/.spvm_build/work/exe';
   mkpath $exe_dir;
   
-  my $target_package_name = 'MyExe::Foo::Bar';
+  my $target_package_name = 'SPVM::MyExe::Foo::Bar';
   my $build_dir = 't/exe/.spvm_build';
   my $module_dirs = ['t/exe/lib', @INC];
   my $output_file = "$build_dir/work/myexe";

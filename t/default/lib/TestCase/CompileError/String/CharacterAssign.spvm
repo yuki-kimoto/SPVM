@@ -1,7 +1,0 @@
-package TestCase::CompileError::String::CharacterAssign {
-  sub main : int () {
-    my $string = "abc";
-    
-    $string->[0] = 'd';
-  }
-}

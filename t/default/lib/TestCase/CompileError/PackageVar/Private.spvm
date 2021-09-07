@@ -1,7 +1,0 @@
-package TestCase::CompileError::PackageVar::Private {
-  use TestCase::Simple;
-  
-  sub main : int () {
-    $TestCase::Simple::VAR_PRIVATE;
-  }
-}

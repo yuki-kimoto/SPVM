@@ -1,0 +1,7 @@
+package SPVM::TestCase::CompileError::Add::RightIsNotNumeric {
+  use SPVM::TestCase::Minimal;
+  sub main : int () {
+    my $minimal = SPVM::TestCase::Minimal->new;
+    1 + $minimal;
+  }
+}

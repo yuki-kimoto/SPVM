@@ -1,5 +1,0 @@
-package TestCase::CompileError::LexVar::LexVarNameStartDigit {
-  sub foo : void () {
-    my $3foo = 0;
-  }
-}

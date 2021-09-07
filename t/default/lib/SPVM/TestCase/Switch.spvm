@@ -1,0 +1,250 @@
+package SPVM::TestCase::Switch {
+
+  sub switch_return : int () {
+    my $ret = switch_return_method();
+    
+    unless ($ret == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub switch_return_method : int () {
+    my $i = 2;
+    switch ($i) {
+      case 1: {
+        return 3;
+      }
+      case 2: {
+        return 5;
+      }
+    }
+  }
+  
+  sub switch_no_default : int () {
+    my $i = 0;
+    switch ($i) {
+      case 1: {
+        1;
+        break;
+      }
+    }
+    my $p = 5;
+    
+    unless ($p == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub switch_constant_byte : int () {
+    {
+      my $char = (int)'[';
+      
+      my $success = 0;
+      switch ($char) {
+        case 3: {
+          break;
+        }
+        case ']': {
+          break;
+        }
+        case '[': {
+          $success = 1;
+          break;
+        }
+      }
+      
+      unless ($success) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  # Switch - nest
+  sub switch_nest : int () {
+    my $success1 : int;
+    switch (3) {
+      case 1: {
+        $success1 = 0;
+        break;
+      }
+      case 3: {
+        switch (5) {
+          case 2: {
+            $success1 = 0;
+            break;
+          }
+          case 5: {
+            $success1 = 1;
+            break;
+          }
+          case 6: {
+            $success1 = 0;
+            break;
+          }
+          default: {
+            $success1 = 0;
+            break;
+          }
+        }
+        break;
+      }
+      case 10000: {
+        $success1 = 0;
+        break;
+      }
+      default:
+    }
+    
+    return $success1;
+  }
+  
+  # Switch - lookup switch
+  sub switch_lookup_switch : int () {
+    my $success1 : int;
+    switch (1) {
+      case 1: {
+        $success1 = 1;
+        break;
+      }
+      case 3: {
+        $success1 = 0;
+        break;
+      }
+      case 10000: {
+        $success1 = 0;
+        break;
+      }
+      default:
+    }
+    my $success2 : int;
+    switch (3) {
+      case 1: {
+        $success2 = 0;
+        break;
+      }
+      case 3: {
+        $success2 = 1;
+        break;
+      }
+      case 10000: {
+        $success2 = 0;
+        break;
+      }
+      default:
+    }
+    my $success3 : int;
+    switch (10000) {
+      case 3: {
+        $success3 = 0;
+        break;
+      }
+      case 1: {
+        $success3 = 0;
+        break;
+      }
+      case 10000: {
+        $success3 = 1;
+        break;
+      }
+      default:
+    }
+    my $success4 : int;
+    switch (2) {
+      case 1: {
+        break;
+      }
+      case 3: {
+        break;
+      }
+      case 10000: {
+        break;
+      }
+      default: {
+        $success4 = 1;
+      }
+    }
+    
+    if ($success1) {
+      if ($success2) {
+        if ($success3) {
+          if ($success4) {
+            return 1;
+          }
+        }
+      }
+    }
+    return 0;
+  }
+  
+  # Switch - table switch
+  sub switch_table_switch : int () {
+    my $success1 : int;
+    
+    switch(3) {
+      case 3: {
+        $success1 = 1;
+        break;
+      }
+      case 4: {
+        $success1 = 0;
+        break;
+      }
+      case 5: {
+        $success1 = 0;
+        break;
+      }
+      default:
+    }
+
+    my $success2 : int;
+    switch(4) {
+      case 3: {
+        $success2 = 0;
+        break;
+      }
+      case 4: {
+        $success2 = 1;
+        break;
+      }
+      case 5: {
+        $success2 = 0;
+        break;
+      }
+      default:
+    }
+    my $success3 : int;
+    switch(10) {
+      case 3: {
+        $success3 = 0;
+        break;
+      }
+      case 4: {
+        $success3 = 0;
+        break;
+      }
+      case 5: {
+        $success3 = 0;
+        break;
+      }
+      default: {
+        $success3 = 1;
+      }
+    }
+    
+    if ($success1) {
+      if ($success2) {
+        if ($success3) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+}

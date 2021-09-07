@@ -9,7 +9,7 @@ use File::Path 'mkpath';
 use Test::More 'no_plan';
 
 use TestFile;
-use SPVM 'TestCase::Warn';
+use SPVM 'SPVM::TestCase::Warn';
 
 
 
@@ -31,7 +31,7 @@ use strict;
 use warnings;
 use FindBin;
 
-use SPVM 'TestCase::Warn';
+use SPVM 'SPVM::TestCase::Warn';
 
 
 
@@ -68,16 +68,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     # test_warn
     {
-      my $func_call = 'TestCase::Warn->test_warn';
+      my $func_call = 'SPVM::TestCase::Warn->test_warn';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Hello at .*TestCase/Warn.spvm line 4|);
+      like($output, qr|Hello at .*SPVM/TestCase/Warn.spvm line 4|);
     }
 
     # test_warn_newline
     {
-      my $func_call = 'TestCase::Warn->test_warn_newline';
+      my $func_call = 'SPVM::TestCase::Warn->test_warn_newline';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
@@ -87,7 +87,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     
     # test_warn_long_lines
     {
-      my $func_call = 'TestCase::Warn->test_warn_long_lines';
+      my $func_call = 'SPVM::TestCase::Warn->test_warn_long_lines';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
@@ -96,20 +96,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
     # test_warn_empty
     {
-      my $func_call = 'TestCase::Warn->test_warn_empty';
+      my $func_call = 'SPVM::TestCase::Warn->test_warn_empty';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Warning: something's wrong at .*TestCase/Warn.spvm line 21|);
+      like($output, qr|Warning: something's wrong at .*SPVM/TestCase/Warn.spvm line 21|);
     }
 
     # test_warn_long_lines
     {
-      my $func_call = 'TestCase::Warn->test_warn_undef';
+      my $func_call = 'SPVM::TestCase::Warn->test_warn_undef';
       write_script_file($script_file, $func_call);
       system("$^X -Mblib $script_file 2> $output_file");
       my $output = slurp_binmode($output_file);
-      like($output, qr|Warning: something's wrong at .*TestCase/Warn.spvm line 27|);
+      like($output, qr|Warning: something's wrong at .*SPVM/TestCase/Warn.spvm line 27|);
     }
   }
 }

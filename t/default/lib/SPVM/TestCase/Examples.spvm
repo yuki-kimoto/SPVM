@@ -1,0 +1,8 @@
+package SPVM::TestCase::Examples {
+  use SPVM::TestCase::OnlyField;
+  
+  sub new_only_field_object : SPVM::TestCase::OnlyField () {
+    my $object = new SPVM::TestCase::OnlyField;
+    return $object;
+  }
+}

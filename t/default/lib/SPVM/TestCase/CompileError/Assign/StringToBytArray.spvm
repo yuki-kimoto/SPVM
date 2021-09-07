@@ -1,0 +1,6 @@
+package SPVM::TestCase::CompileError::Assign::StringToBytArray {
+
+  sub main : int () {
+    my $str : byte[] = "abc";
+  }
+}

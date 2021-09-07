@@ -1,5 +1,0 @@
-package TestCase::CompileError::LexVar::LexVarNameInvalidColon {
-  sub foo : void () {
-    my $FOO:BAR = 0;
-  }
-}

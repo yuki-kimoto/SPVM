@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase::Remainder';
+use SPVM 'SPVM::TestCase::Remainder';
 
 
 
@@ -21,26 +21,26 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Remainder - Operation
   {
-    ok(TestCase::Remainder->remainder_byte_byte);
-    ok(TestCase::Remainder->remainder_short_short);
-    ok(TestCase::Remainder->remainder_int_byte);
-    ok(TestCase::Remainder->remainder_int_short);
-    ok(TestCase::Remainder->remainder_byte_int);
-    ok(TestCase::Remainder->remainder_short_int);
-    ok(TestCase::Remainder->remainder_int_int);
-    ok(TestCase::Remainder->remainder_long_long);
+    ok(SPVM::TestCase::Remainder->remainder_byte_byte);
+    ok(SPVM::TestCase::Remainder->remainder_short_short);
+    ok(SPVM::TestCase::Remainder->remainder_int_byte);
+    ok(SPVM::TestCase::Remainder->remainder_int_short);
+    ok(SPVM::TestCase::Remainder->remainder_byte_int);
+    ok(SPVM::TestCase::Remainder->remainder_short_int);
+    ok(SPVM::TestCase::Remainder->remainder_int_int);
+    ok(SPVM::TestCase::Remainder->remainder_long_long);
   }
 
   # Remainder - Compile Error
   {
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Remainder::LeftIsNotIntegral', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::Remainder::LeftIsNotIntegral', __LINE__, __FILE__);
       ok($success == 0);
     }
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::Remainder::RightIsNotIntegral', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::Remainder::RightIsNotIntegral', __LINE__, __FILE__);
       ok($success == 0);
     }
   }
@@ -48,7 +48,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Optional tests
 {
-  ok(TestCase::Remainder->remainder());
+  ok(SPVM::TestCase::Remainder->remainder());
 }
 
 # All object is freed

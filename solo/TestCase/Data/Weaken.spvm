@@ -1,4 +1,0 @@
-package TestCase::Data::Weaken {
-  has data_weaken : public TestCase::Data::Weaken;
-  has x : int;
-}

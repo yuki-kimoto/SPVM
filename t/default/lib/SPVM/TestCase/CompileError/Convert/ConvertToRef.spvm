@@ -1,0 +1,7 @@
+package SPVM::TestCase::CompileError::Convert::ConvertToRef {
+  use SPVM::TestCase::Minimal;
+
+  sub main : int () {
+    (&int)new SPVM::TestCase::Minimal;
+  }
+}

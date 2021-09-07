@@ -7538,8 +7538,8 @@ die EXPRESSION;
 </p>
 <pre>
 Error
-from TestCase::Minimal->sum2 at TestCase/Minimal.spvm line 1640
-from TestCase->main at TestCase.spvm line 1198
+from SPVM::TestCase::Minimal->sum2 at SPVM::TestCase/Minimal.spvm line 1640
+from SPVM::TestCase->main at SPVM::TestCase.spvm line 1198
 </pre>
 
 <h3 id="language-exception-occur">Catch Exception</h3>

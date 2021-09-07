@@ -1,5 +1,0 @@
-package TestCase::CompileError::Assign::NarrwoingConvertionLongToInt {
-  sub main : int () {
-    my $num : int = 2147483648L;
-  }
-}

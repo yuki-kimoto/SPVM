@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Lib::SPVM::Unicode';
+use SPVM 'SPVM::TestCase::Lib::SPVM::Unicode';
 
 
 
@@ -14,8 +14,8 @@ use SPVM 'TestCase::Lib::SPVM::Unicode';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
-  ok(TestCase::Lib::SPVM::Unicode->uchar);
-  ok(TestCase::Lib::SPVM::Unicode->uchar_to_utf8);
+  ok(SPVM::TestCase::Lib::SPVM::Unicode->uchar);
+  ok(SPVM::TestCase::Lib::SPVM::Unicode->uchar_to_utf8);
 }
 
 # All object is freed

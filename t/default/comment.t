@@ -6,9 +6,9 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::Comment::LF';
-use SPVM 'TestCase::Comment::CR';
-use SPVM 'TestCase::Comment::CRLF';
+use SPVM 'SPVM::TestCase::Comment::LF';
+use SPVM 'SPVM::TestCase::Comment::CR';
+use SPVM 'SPVM::TestCase::Comment::CRLF';
 
 
 
@@ -16,9 +16,9 @@ use SPVM 'TestCase::Comment::CRLF';
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 {
-  ok(TestCase::Comment::LF->comment);
-  ok(TestCase::Comment::CR->comment);
-  ok(TestCase::Comment::CRLF->comment);
+  ok(SPVM::TestCase::Comment::LF->comment);
+  ok(SPVM::TestCase::Comment::CR->comment);
+  ok(SPVM::TestCase::Comment::CRLF->comment);
 }
 
 # All object is freed

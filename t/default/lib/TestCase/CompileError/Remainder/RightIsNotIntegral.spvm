@@ -1,5 +1,0 @@
-package TestCase::CompileError::Remainder::RightIsNotIntegral {
-  sub main : int () {
-    1 % 0.5;
-  }
-}

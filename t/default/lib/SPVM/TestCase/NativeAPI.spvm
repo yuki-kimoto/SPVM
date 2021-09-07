@@ -1,0 +1,1142 @@
+package SPVM::TestCase::NativeAPI {
+  use SPVM::TestCase;
+  use SPVM::TestCase::Simple;
+  use SPVM::TestCase::Minimal;
+  use SPVM::TestCase::Pointer;
+  use SPVM::TestCase::Callback::Callback;
+  use SPVM::TestCase::Callback::ImplementCallback1;
+  use SPVM::TestCase::Callback::ImplementCallback2;
+  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  
+  our $BYTE_VALUE : byte;
+  our $SHORT_VALUE : short;
+  our $INT_VALUE : int;
+  our $LONG_VALUE : long;
+  our $FLOAT_VALUE : float;
+  our $DOUBLE_VALUE : double;
+  our $MINIMAL_VALUE : SPVM::TestCase::Minimal;
+  
+  sub new : SPVM::TestCase::NativeAPI () {
+    return new SPVM::TestCase::NativeAPI;
+  }
+
+  native sub check_native_api_indexes : int ();
+
+  sub get_package_var_byte_by_name : int () {
+
+    $BYTE_VALUE = INT8_MIN();
+    
+    my $value = get_package_var_byte_by_name_test();
+    
+    unless ($value == INT8_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub get_package_var_byte_by_name_test : byte ();
+  
+  sub get_package_var_byte_by_name_exception : int () {
+    
+    eval { get_package_var_byte_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_byte_by_name_test_exception : byte ();
+
+  sub get_package_var_short_by_name : int () {
+
+    $SHORT_VALUE = INT16_MIN();
+    
+    my $value = get_package_var_short_by_name_test();
+    
+    unless ($value == INT16_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub get_package_var_short_by_name_test : short ();
+  
+  sub get_package_var_short_by_name_exception : int () {
+    
+    eval { get_package_var_short_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_short_by_name_test_exception : short ();
+
+  sub get_package_var_int_by_name : int () {
+
+    $INT_VALUE = INT32_MIN();
+    
+    my $value = get_package_var_int_by_name_test();
+    
+    unless ($value == INT32_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub get_package_var_int_by_name_test : int ();
+  
+  sub get_package_var_int_by_name_exception : int () {
+    
+    eval { get_package_var_int_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_int_by_name_test_exception : int ();
+
+  sub get_package_var_long_by_name : long () {
+
+    $LONG_VALUE = INT64_MIN();
+    
+    my $value = get_package_var_long_by_name_test();
+    
+    unless ($value == INT64_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub get_package_var_long_by_name_test : long ();
+  
+  sub get_package_var_long_by_name_exception : long () {
+    
+    eval { get_package_var_long_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_long_by_name_test_exception : long ();
+
+  sub get_package_var_float_by_name : int () {
+
+    $FLOAT_VALUE = FLT_MIN();
+    
+    my $value = get_package_var_float_by_name_test();
+    
+    unless ($value == FLT_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub get_package_var_float_by_name_test : float ();
+  
+  sub get_package_var_float_by_name_exception : int () {
+    
+    eval { get_package_var_float_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_float_by_name_test_exception : float ();
+
+  sub get_package_var_double_by_name : int () {
+
+    $DOUBLE_VALUE = DBL_MIN();
+    
+    my $value = get_package_var_double_by_name_test();
+    
+    unless ($value == DBL_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub get_package_var_double_by_name_test : double ();
+  
+  sub get_package_var_double_by_name_exception : int () {
+    
+    eval { get_package_var_double_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_double_by_name_test_exception : double ();
+
+  sub get_package_var_object_by_name : int () {
+    
+    $MINIMAL_VALUE = SPVM::TestCase::Minimal->new;
+    
+    my $value = get_package_var_object_test();
+    
+    unless ($value isa SPVM::TestCase::Minimal) {
+      $MINIMAL_VALUE = undef;
+      return 0;
+    }
+    
+    $MINIMAL_VALUE = undef;
+    
+    return 1;
+  }
+  native sub get_package_var_object_test : SPVM::TestCase::Minimal ();
+
+  sub get_package_var_object_by_name_exception : int () {
+    
+    eval { get_package_var_object_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub get_package_var_object_by_name_test_exception : object ();
+  
+  sub set_package_var_byte_by_name : int () {
+    
+    set_package_var_byte_by_name_test();
+    
+    if ($BYTE_VALUE == INT8_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_package_var_byte_by_name_test : void ();
+
+  sub set_package_var_byte_by_name_exception : int () {
+    
+    eval { set_package_var_byte_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_byte_by_name_test_exception : byte ();
+
+  sub set_package_var_short_by_name : int () {
+    
+    set_package_var_short_by_name_test();
+    
+    if ($SHORT_VALUE == INT16_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_package_var_short_by_name_test : void ();
+
+  sub set_package_var_short_by_name_exception : int () {
+    
+    eval { set_package_var_short_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_short_by_name_test_exception : short ();
+
+  sub set_package_var_int_by_name : int () {
+    
+    set_package_var_int_by_name_test();
+    
+    if ($INT_VALUE == INT32_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_package_var_int_by_name_test : void ();
+
+  sub set_package_var_int_by_name_exception : int () {
+    
+    eval { set_package_var_int_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_int_by_name_test_exception : int ();
+
+  sub set_package_var_long_by_name : int () {
+    
+    set_package_var_long_by_name_test();
+    
+    if ($LONG_VALUE == INT64_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_package_var_long_by_name_test : void ();
+
+  sub set_package_var_long_by_name_exception : int () {
+    
+    eval { set_package_var_long_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_long_by_name_test_exception : long ();
+
+  sub set_package_var_float_by_name : int () {
+    set_package_var_float_by_name_test();
+    
+    if ($FLOAT_VALUE == FLT_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_package_var_float_by_name_test : void ();
+
+  sub set_package_var_float_by_name_exception : int () {
+    
+    eval { set_package_var_float_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_float_by_name_test_exception : float ();
+
+  sub set_package_var_double_by_name : int () {
+    set_package_var_double_by_name_test();
+    
+    if ($DOUBLE_VALUE == DBL_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_package_var_double_by_name_test : void ();
+
+  sub set_package_var_double_by_name_exception : int () {
+    
+    eval { set_package_var_double_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_double_by_name_test_exception : double ();
+
+  sub set_package_var_object_by_name : int () {
+    
+    set_package_var_object_by_name_test();
+    
+    if ($MINIMAL_VALUE isa SPVM::TestCase::Minimal) {
+      $MINIMAL_VALUE = undef;
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub set_package_var_object_by_name_test : void ();
+
+  sub set_package_var_object_by_name_exception : int () {
+    
+    eval { set_package_var_object_by_name_test_exception(); };
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub set_package_var_object_by_name_test_exception : object ();
+
+  native sub has_callback_test : int ($object : object);
+  sub has_callback : int () {
+    my $impl1 = SPVM::TestCase::Callback::ImplementCallback1->new;
+    my $impl1s = new SPVM::TestCase::Callback::ImplementCallback1[3];
+    my $minimal = SPVM::TestCase::Minimal->new;
+
+    unless (has_callback_test($impl1)) {
+      return 0;
+    }
+    
+    unless (!has_callback_test($impl1s)) {
+      return 0;
+    }
+    
+    unless (!has_callback_test($minimal)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  native sub is_type_test_minimals : int ($object : object);
+  sub is_type : int () {
+    my $minimals = new SPVM::TestCase::Minimal[3];
+    my $minimal = SPVM::TestCase::Minimal->new;
+    my $simples = new SPVM::TestCase::Simple[3];
+
+    unless (is_type_test_minimals($minimals)) {
+      return 0;
+    }
+    
+    unless (!is_type_test_minimals($minimal)) {
+      return 0;
+    }
+    
+    unless (!is_type_test_minimals($simples)) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  native sub ref_byte_sum : byte ($x_in : byte, $x_in2 : byte, $x_out : byte&);
+  sub ref_byte : int () {
+    my $out : byte;
+    my $out_ref = \$out;
+    
+    ref_byte_sum(1, INT8_MIN(), $out_ref);
+    
+    if ($$out_ref == INT8_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub ref_short_sum : short ($x_in : short, $x_in2 : short, $x_out : short&);
+  sub ref_short : int () {
+    my $out : short;
+    my $out_ref = \$out;
+    
+    ref_short_sum(1, INT16_MIN(), $out_ref);
+    
+    if ($$out_ref == INT16_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub ref_int_sum : int ($x_in : int, $x_in2 : int, $x_out : int&);
+  sub ref_int : int () {
+    my $out : int;
+    my $out_ref = \$out;
+    
+    ref_int_sum(1, INT32_MIN(), $out_ref);
+    
+    if ($$out_ref == INT32_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub ref_long_sum : long ($x_in : long, $x_in2 : long, $x_out : long&);
+  sub ref_long : int () {
+    my $out : long;
+    my $out_ref = \$out;
+    
+    ref_long_sum(1, INT64_MIN(), $out_ref);
+    
+    if ($$out_ref == INT64_MIN() + 1) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  native sub ref_float_sum : float ($x_in : float, $x_in2 : float, $x_out : float&);
+  sub ref_float : int () {
+    my $out : float;
+    my $out_ref = \$out;
+    
+    ref_float_sum(0.25f, FLT_MIN(), $out_ref);
+    
+    if ($$out_ref == FLT_MIN() + 0.25f) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub ref_double_sum : double ($x_in : double, $x_in2 : double, $x_out : double&);
+  sub ref_double : int () {
+    my $out : double;
+    my $out_ref = \$out;
+    
+    ref_double_sum(0.25, DBL_MIN(), $out_ref);
+    
+    if ($$out_ref == DBL_MIN() + 0.25) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub set_field_byte_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    native_set_field_byte_by_name($simple);
+    
+    unless ($simple->{byte_value} == INT8_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_set_field_byte_by_name : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_byte_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    eval { native_set_field_byte_by_name_exception($simple); };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = 0;
+    
+    return 1;
+  }
+  native sub native_set_field_byte_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_short_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    native_set_field_short_by_name($simple);
+    
+    if ($simple->{short_value} == INT16_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_field_short_by_name : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_short_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    eval { native_set_field_short_by_name_exception($simple); };
+    
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_set_field_short_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_int_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    native_set_field_int_by_name($simple);
+    
+    unless ($simple->{int_value} == INT32_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_set_field_int_by_name : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_int_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    eval { native_set_field_int_by_name_exception($simple); };
+    
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_set_field_int_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_long_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    native_set_field_long_by_name($simple);
+    
+    if ($simple->{long_value} == INT64_MIN()) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  native sub native_set_field_long_by_name : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_long_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    eval { native_set_field_long_by_name_exception($simple); };
+    
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_set_field_long_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_float_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    native_set_field_float_by_name($simple);
+    
+    unless ($simple->{float_value} == FLT_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_set_field_float_by_name : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_float_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    eval { native_set_field_float_by_name_exception($simple); };
+    
+    unless ($@) {
+      return 0;
+    }
+
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_set_field_float_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_double_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    native_set_field_double_by_name($simple);
+    
+    unless ($simple->{double_value} == DBL_MIN()) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_set_field_double_by_name : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_double_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    eval { native_set_field_double_by_name_exception($simple); };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_set_field_double_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_object_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    native_set_field_object_by_name($simple);
+    
+    unless ($simple->{object_value}{x} == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_set_field_object_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub set_field_object_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    
+    eval { native_set_field_object_by_name_exception($simple); };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub native_set_field_object_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_byte_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{byte_value} = INT8_MIN();
+    
+    my $success = native_get_field_byte_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_byte_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_byte_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{byte_value} = INT8_MIN();
+    
+    eval { native_get_field_byte_by_name_exception($simple); };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_get_field_byte_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_short_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{short_value} = INT16_MIN();
+    
+    my $success = native_get_field_short_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_short_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_short_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{short_value} = INT16_MIN();
+    
+    eval { native_get_field_short_by_name_exception($simple); };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_get_field_short_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_int_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{int_value} = INT32_MIN();
+    
+    my $success = native_get_field_int_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_int_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_int_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{int_value} = INT32_MIN();
+    
+    eval { native_get_field_int_by_name_exception($simple); };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_get_field_int_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_long_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{long_value} = INT64_MIN();
+    
+    my $success = native_get_field_long_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_long_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_long_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{long_value} = INT64_MIN();
+    
+    eval { native_get_field_long_by_name_exception($simple) ; };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_get_field_long_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_float_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{float_value} = FLT_MIN();
+    
+    my $success = native_get_field_float_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_float_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_float_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{float_value} = FLT_MIN();
+    
+    eval { native_get_field_float_by_name_exception($simple); };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_get_field_float_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_double_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{double_value} = DBL_MIN();
+    
+    my $success = native_get_field_double_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_double_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_double_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{double_value} = DBL_MIN();
+    
+    eval { native_get_field_double_by_name_exception($simple); };
+    unless ($@) {
+      return 0;
+    }
+    $@ = undef;
+    
+    return 1;
+  }
+  native sub native_get_field_double_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_object_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{object_value} = SPVM::TestCase::Minimal->new;
+    $simple->{object_value}{x} = 5;
+    
+    my $success = native_get_field_object_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_object_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_object_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{object_value} = SPVM::TestCase::Minimal->new;
+    $simple->{object_value}{x} = 5;
+    
+    eval { native_get_field_object_by_name_exception($simple); };
+    unless ($@) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_get_field_object_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_string_chars_by_name : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{string_value} = "abc";
+    
+    my $success = native_get_field_string_chars_by_name($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_string_chars_by_name : int ($simple : SPVM::TestCase::Simple);
+
+  sub get_field_string_chars_by_name_exception : int () {
+    my $simple = SPVM::TestCase::Simple->new;
+    $simple->{string_value} = "abc";
+    
+    my $success = native_get_field_string_chars_by_name_exception($simple);
+    
+    return $success;
+  }
+  native sub native_get_field_string_chars_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+
+  sub spvm_extension_add_int_array : int () {
+    my $nums1 = [1, 2, 3];
+    my $nums2 = [4, 5, 6];
+    
+    my $nums3 = add_int_array($nums1, $nums2);
+    
+    if ($nums3->[0] == 5) {
+      if ($nums3->[1] == 7) {
+        if ($nums3->[2] == 9) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_extension : int () {
+    my $total = sum(2, 3);
+    
+    if ($total == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub native_use_strlen_test : int () {
+    my $string = "abcde";
+    my $length = native_use_strlen($string);
+    if ($length == 5) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  native sub native_use_strlen : int ($string : string);
+
+  native sub native_env_get_field_byte : byte ($test_case : SPVM::TestCase);
+  native sub native_env_get_field_short : short ($test_case : SPVM::TestCase);
+  native sub native_env_get_field_int : int ($test_case : SPVM::TestCase);
+  native sub native_env_get_field_long : long ($test_case : SPVM::TestCase);
+  native sub native_env_get_field_float : float ($test_case : SPVM::TestCase);
+  native sub native_env_get_field_double : double ($test_case : SPVM::TestCase);
+  native sub native_env_get_field_object : SPVM::TestCase::Minimal ($test_case : SPVM::TestCase);
+  
+  sub native_env_set_field : int () {
+    
+    my $test_case = SPVM::TestCase->new();
+    
+    $test_case->{x_byte} = (byte)1;
+    $test_case->{x_short} = (short)2;
+    $test_case->{x_int} = 3;
+    $test_case->{x_long} = 4L;
+    $test_case->{x_float} = 0.5f;
+    $test_case->{x_double} = 0.025;
+    my $minimal1 = SPVM::TestCase::Minimal->new();
+    $test_case->{minimal} = $minimal1;
+    
+    my $x_byte1 = native_env_get_field_byte($test_case);
+    my $x_short1 = native_env_get_field_short($test_case);
+    my $x_int1 = native_env_get_field_int($test_case);
+    my $x_long1 = native_env_get_field_long($test_case);
+    my $x_float1 = native_env_get_field_float($test_case);
+    my $x_double1 = native_env_get_field_double($test_case);
+    my $minimal2 = native_env_get_field_object($test_case);
+    
+    if ((int)$x_byte1 == (int)(byte)1) {
+      if ((int)$x_short1 == (int)(short)2) {
+        if ($x_int1 == 3) {
+          if ($x_long1 == 4L) {
+            if ($x_float1 == 0.5f) {
+              if ($x_double1 == 0.025) {
+                if ($minimal1 == $minimal2) {
+                  return 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  native sub sum : int ($num1 : int, $num2 : int);
+  
+  native sub add_int_array : int[] ($nums1 : int[], $nums2 : int[]);
+
+  sub call_void_method_exception : int () {
+    eval {
+      call_void_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_byte_method_exception : int () {
+    eval {
+      call_byte_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_short_method_exception : int () {
+    eval {
+      call_short_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_int_method_exception : int () {
+    eval {
+      call_int_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_long_method_exception : int () {
+    eval {
+      call_long_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_float_method_exception : int () {
+    eval {
+      call_float_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+
+  sub call_double_method_exception : int () {
+    eval {
+      call_double_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  sub call_object_method_exception : int () {
+    eval {
+      call_object_method_exception_native();
+    };
+    
+    if ($@) {
+      return 1;
+    }
+    
+    return 0;
+  }
+  
+  native sub call_void_method_exception_native : void ();
+  native sub call_byte_method_exception_native : byte ();
+  native sub call_short_method_exception_native : short ();
+  native sub call_int_method_exception_native : int ();
+  native sub call_long_method_exception_native : long ();
+  native sub call_float_method_exception_native : float ();
+  native sub call_double_method_exception_native : double ();
+  native sub call_object_method_exception_native : double ();
+  
+  native sub mortal_api : int ();
+  native sub enter_scope_leave_scope : int ();
+  native sub push_mortal_multi : int ();
+  
+  sub my_value : int ($value : int) { return $value; }
+  
+  native sub native_call_spvm_method : int ();
+  native sub native_call_spvm_method_by_name : int ();
+  native sub native_call_spvm_method_by_name_exception : int ();
+
+  sub new_object_by_name : int () {
+    my $minimal = native_new_object_by_name();
+    unless ($minimal isa SPVM::TestCase::Minimal) {
+      return 0;
+    }
+    
+    unless ($minimal isa SPVM::TestCase::Minimal) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_new_object_by_name : SPVM::TestCase::Minimal ();
+
+  sub new_object_by_name_exception : int () {
+    my $minimal : SPVM::TestCase::Minimal;
+    eval { $minimal = native_new_object_by_name_exception(); };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    if ($minimal) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub native_new_object_by_name_exception : SPVM::TestCase::Minimal ();
+
+
+  
+  sub new_pointer_by_name : int () {
+    my $pointer = native_new_pointer_by_name();
+    unless ($pointer isa SPVM::TestCase::Pointer) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native sub native_new_pointer_by_name : SPVM::TestCase::Pointer ();
+
+  sub new_pointer_by_name_exception : int () {
+    my $pointer : SPVM::TestCase::Pointer;
+    eval { $pointer = native_new_pointer_by_name_exception(); };
+    
+    unless ($@) {
+      return 0;
+    }
+    
+    $@ = undef;
+    return 1;
+  }
+  native sub native_new_pointer_by_name_exception : SPVM::TestCase::Pointer ();
+
+}

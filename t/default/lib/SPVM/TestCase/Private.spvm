@@ -1,0 +1,5 @@
+package SPVM::TestCase::Private : private {
+  sub new : SPVM::TestCase::Private () {
+    new SPVM::TestCase::Private;
+  }
+}

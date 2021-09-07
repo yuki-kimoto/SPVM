@@ -1,0 +1,1303 @@
+package SPVM::TestCase::ExchangeAPI {
+  use SPVM::TestCase::Point_3b;
+  use SPVM::TestCase::Point_3s;
+  use SPVM::TestCase::Point_3i;
+  use SPVM::TestCase::Point_3l;
+  use SPVM::TestCase::Point_3f;
+  use SPVM::TestCase::Point_3d;
+  use SPVM::TestCase::Minimal;
+  use SPVM::Complex_2d;
+  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  
+  sub FLOAT_PRECICE : float () { return 16384.5f; }
+  sub DOUBLE_PRECICE : double () { return 65536.5; }
+  use SPVM::ArrayUtil;
+
+  sub return_object : SPVM::TestCase::Minimal () {
+    
+    my $minimal = SPVM::TestCase::Minimal->new;
+    $minimal->set_x(1);
+    $minimal->set_y(2);
+    
+    return $minimal;
+  }
+
+  sub return_object_undef : SPVM::TestCase::Minimal () {
+    
+    return undef;
+  }
+
+  sub return_any_object : object () {
+    
+    my $minimal = SPVM::TestCase::Minimal->new;
+    $minimal->set_x(1);
+    $minimal->set_y(2);
+    
+    return $minimal;
+  }
+
+  sub return_any_object_undef : object () {
+    
+    return undef;
+  }
+
+  sub return_void : void () {
+    
+    return;
+  }
+
+  sub return_string : string () {
+    
+    return "あいう";
+  }
+
+  sub return_string_undef : string () {
+    
+    return undef;
+  }
+
+  sub return_numeric_array : int[] () {
+    
+    my $nums = [1, 2, 3];
+
+    return $nums;
+  }
+
+  sub return_numeric_array_undef : int[] () {
+    
+    return undef;
+  }
+
+  sub return_object_array : SPVM::TestCase::Minimal[] () {
+    
+    my $minimal = new SPVM::TestCase::Minimal[2];
+    $minimal->[0] = new SPVM::TestCase::Minimal;
+    $minimal->[0]->set_x(1);
+    $minimal->[0]->set_y(2);
+    $minimal->[1] = new SPVM::TestCase::Minimal;
+    $minimal->[1]->set_x(3);
+    $minimal->[1]->set_y(4);
+    
+    return $minimal;
+  }
+
+  sub return_object_array_undef : SPVM::TestCase::Minimal[] () {
+    
+    return undef;
+  }
+
+  sub return_oarray : oarray () {
+    
+    my $minimal = new SPVM::TestCase::Minimal[2];
+    $minimal->[0] = new SPVM::TestCase::Minimal;
+    $minimal->[0]->set_x(1);
+    $minimal->[0]->set_y(2);
+    $minimal->[1] = new SPVM::TestCase::Minimal;
+    $minimal->[1]->set_x(3);
+    $minimal->[1]->set_y(4);
+    
+    return $minimal;
+  }
+
+  sub return_oarray_undef : SPVM::TestCase::Minimal[] () {
+    
+    return undef;
+  }
+
+  sub return_multi_numeric_array : SPVM::TestCase::Point_3i[] () {
+    
+    my $nums = new SPVM::TestCase::Point_3i[2];
+    $nums->[0]{x} = 1;
+    $nums->[1]{z} = 5;
+
+    return $nums;
+  }
+
+  sub return_multi_numeric_array_undef : SPVM::TestCase::Point_3i[] () {
+    
+    return undef;
+  }
+
+  sub return_byte_multi_numeric : SPVM::TestCase::Point_3b () {
+    my $point : SPVM::TestCase::Point_3b;
+    $point->{x} = 1;
+    $point->{y} = 2;
+    $point->{z} = INT8_MIN();
+    
+    return $point;
+  }
+  
+  sub return_short_multi_numeric : SPVM::TestCase::Point_3s () {
+    my $point : SPVM::TestCase::Point_3s;
+    $point->{x} = 1;
+    $point->{y} = 2;
+    $point->{z} = INT16_MIN();
+    
+    return $point;
+  }
+
+  sub return_int_multi_numeric : SPVM::TestCase::Point_3i () {
+    my $point : SPVM::TestCase::Point_3i;
+    $point->{x} = 1;
+    $point->{y} = 2;
+    $point->{z} = INT32_MIN();
+    
+    return $point;
+  }
+
+  sub return_long_multi_numeric : SPVM::TestCase::Point_3l () {
+    my $point : SPVM::TestCase::Point_3l;
+    $point->{x} = 1;
+    $point->{y} = 2;
+    $point->{z} = INT64_MIN();
+    
+    return $point;
+  }
+
+  sub return_float_multi_numeric : SPVM::TestCase::Point_3f () {
+    my $point : SPVM::TestCase::Point_3f;
+    $point->{x} = 1;
+    $point->{y} = 2;
+    $point->{z} = FLT_MIN();
+    
+    return $point;
+  }
+
+  sub return_double_multi_numeric : SPVM::TestCase::Point_3d () {
+    my $point : SPVM::TestCase::Point_3d;
+    $point->{x} = 1;
+    $point->{y} = 2;
+    $point->{z} = DBL_MIN();
+    
+    return $point;
+  }
+
+  sub return_byte : byte () {
+    
+    return INT8_MIN();
+  }
+  
+  sub return_short : short () {
+    
+    return INT16_MIN();
+  }
+
+  sub return_int : int () {
+    
+    return INT32_MIN();
+  }
+
+  sub return_long : long () {
+    
+    return INT64_MIN();
+  }
+
+  sub return_float : float () {
+    
+    return FLT_MIN();
+  }
+
+  sub return_double : double () {
+    
+    return DBL_MIN();
+  }
+
+  sub set_exception : int () {
+    my $exception = $@;
+    
+    unless ($exception eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub set_exception_undef : int () {
+    my $exception = $@;
+    
+    unless ($exception == undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub any_object_array : oarray ($oarray : oarray) {
+    
+    my $bytes = (SPVM::Byte[])$oarray;
+    
+    $bytes->[2] = SPVM::Byte->new(5);
+    
+    return $bytes;
+  }
+  
+  sub argument_string_ascii : string ($string : string) {
+    
+    unless ($string eq "ABC") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub argument_string_decoded_string : string ($string : string) {
+    
+    unless ($string eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub argument_string_number : string ($string : string) {
+    
+    unless ($string eq "4.12") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_string_string_object : string ($string : string) {
+    
+    unless ($string eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub call_spvm_method_value_arg_byte : SPVM::TestCase::Point_3b ($point : SPVM::TestCase::Point_3b) {
+    return $point;
+  }
+
+  sub call_spvm_method_value_arg_short : SPVM::TestCase::Point_3s ($point : SPVM::TestCase::Point_3s) {
+    return $point;
+  }
+
+  sub call_spvm_method_value_arg_int : SPVM::TestCase::Point_3i ($point : SPVM::TestCase::Point_3i) {
+    return $point;
+  }
+
+  sub call_spvm_method_value_arg_long : SPVM::TestCase::Point_3l ($point : SPVM::TestCase::Point_3l) {
+    return $point;
+  }
+
+  sub call_spvm_method_value_arg_float : SPVM::TestCase::Point_3f ($point : SPVM::TestCase::Point_3f) {
+    return $point;
+  }
+
+  sub call_spvm_method_value_arg_double : SPVM::TestCase::Point_3d ($point : SPVM::TestCase::Point_3d) {
+    return $point;
+  }
+  
+  sub call_spvm_method_value_ref_numeric_ref_mixed_arg : void ($point1 : SPVM::TestCase::Point_3i&, $value1 : int&, $point2 : SPVM::TestCase::Point_3i&, $value2 : int&) {
+    $point1->{x} = (int)($point1->{x} + 1);
+    $point1->{y} = (int)($point1->{y} + 1);
+    $point1->{z} = (int)($point1->{z} + 1);
+
+    $$value1 = $$value1 + 1;
+
+    $point2->{x} = (int)($point2->{x} + 1);
+    $point2->{y} = (int)($point2->{y} + 1);
+    $point2->{z} = (int)($point2->{z} + 1);
+
+    $$value2 = $$value2 + 1;
+  }
+
+  sub call_spvm_method_value_ref_arg_byte : int ($point : SPVM::TestCase::Point_3b&) {
+    $point->{x} = (byte)($point->{x} + 1);
+    $point->{y} = (byte)($point->{y} + 1);
+    $point->{z} = (byte)($point->{z} + 1);
+  }
+
+  sub call_spvm_method_value_ref_arg_short : int ($point : SPVM::TestCase::Point_3s&) {
+    $point->{x} = (short)($point->{x} + 1);
+    $point->{y} = (short)($point->{y} + 1);
+    $point->{z} = (short)($point->{z} + 1);
+  }
+
+  sub call_spvm_method_value_ref_arg_int : int ($point : SPVM::TestCase::Point_3i&) {
+    $point->{x} = (int)($point->{x} + 1);
+    $point->{y} = (int)($point->{y} + 1);
+    $point->{z} = (int)($point->{z} + 1);
+  }
+
+  sub call_spvm_method_value_ref_arg_long : int ($point : SPVM::TestCase::Point_3l&) {
+    $point->{x} = (long)($point->{x} + 1);
+    $point->{y} = (long)($point->{y} + 1);
+    $point->{z} = (long)($point->{z} + 1);
+  }
+
+  sub call_spvm_method_value_ref_arg_float : int ($point : SPVM::TestCase::Point_3f&) {
+    $point->{x} = (float)($point->{x} + 1);
+    $point->{y} = (float)($point->{y} + 1);
+    $point->{z} = (float)($point->{z} + 1);
+  }
+
+  sub call_spvm_method_value_ref_arg_double : int ($point : SPVM::TestCase::Point_3d&) {
+    $point->{x} = (double)($point->{x} + 1);
+    $point->{y} = (double)($point->{y} + 1);
+    $point->{z} = (double)($point->{z} + 1);
+  }
+  
+  sub call_spvm_method_numeric_ref_arg_byte : int ($byte_val : byte&) {
+    $$byte_val = (byte)($$byte_val + 1);
+  }
+  
+  sub call_spvm_method_numeric_ref_arg_short : int ($short_val : short&) {
+    $$short_val = (short)($$short_val + 1);
+  }
+  
+  sub call_spvm_method_numeric_ref_arg_int : int ($int_val : int&) {
+    $$int_val = $$int_val + 1;
+  }
+
+  sub call_spvm_method_numeric_ref_arg_long : int ($long_val : long&) {
+    $$long_val = $$long_val + 1;
+  }
+
+  sub call_spvm_method_numeric_ref_arg_float : int ($float_val : float&) {
+    $$float_val = $$float_val + 1;
+  }
+
+  sub call_spvm_method_numeric_ref_arg_double : int ($double_val : double&) {
+    $$double_val = $$double_val + 1;
+  }
+  
+  sub spvm_object_set_object : int ($obj : SPVM::TestCase) {
+    my $nums = $obj->{x_int_array};
+    my $values = ($obj->{x_byte_array});
+    
+    
+    # [INT32_MAX, INT32_MAX]
+    if (@$nums == 2) {
+      if ($nums->[0] == 2147483647) {
+        if ($nums->[1] == 2147483647) {
+          # abc
+          if ($values->[0] == 97) {
+            if ($values->[1] == 98) {
+              if ($values->[2] == 99) {
+                if (@$values == 3) {
+                  return 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_object_set : int ($obj : SPVM::TestCase) {
+    if ($obj->{x_byte} == 127) {
+      if ($obj->{x_short} == 32767) {
+        if ($obj->{x_int} == 2147483647) {
+          if ($obj->{x_long} == 9223372036854775807L) {
+            if ($obj->{x_float} == FLOAT_PRECICE()) {
+              if ($obj->{x_double} == DOUBLE_PRECICE()) {
+                if ($obj->{minimal}->{x} == 3) {
+                  return 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub return_byte_object_only : SPVM::Byte ($values : SPVM::Byte) {
+    
+    return $values;
+  }
+
+  sub return_short_object_only : SPVM::Short ($values : SPVM::Short) {
+    
+    return $values;
+  }
+
+  sub return_int_object_only : SPVM::Int ($values : SPVM::Int) {
+    
+    return $values;
+  }
+
+  sub return_long_object_only : SPVM::Long ($values : SPVM::Long) {
+    
+    return $values;
+  }
+
+  sub return_float_object_only : SPVM::Float ($values : SPVM::Float) {
+    
+    return $values;
+  }
+
+  sub return_double_object_only : SPVM::Double ($values : SPVM::Double) {
+    
+    return $values;
+  }
+  
+  sub return_any_object_only : object ($values : object) {
+    
+    return $values;
+  }
+
+  sub argument_perl_array_ref_to_spvm_string_array : int ($values : string[], $undef : string[]) {
+    
+    unless (@$values == 4) {
+      return 0;
+    }
+    
+    unless ($values->[0] eq "あいう") {
+      return 0;
+    }
+    
+    unless ($values->[1] eq "えお") {
+      return 0;
+    }
+    
+    unless ($values->[2] eq "ab") {
+      return 0;
+    }
+
+    unless ($values->[3] == undef) {
+      return 0;
+    }
+    
+    unless ($undef == undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_string_array_to_spvm_string_array : int ($values : string[], $undef : string[]) {
+    
+    unless (@$values == 4) {
+      return 0;
+    }
+    
+    unless ($values->[0] eq "あいう") {
+      return 0;
+    }
+    
+    unless ($values->[1] eq "えお") {
+      return 0;
+    }
+    
+    unless ($values->[2] eq "ab") {
+      return 0;
+    }
+
+    unless ($values->[3] == undef) {
+      return 0;
+    }
+    
+    unless ($undef == undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub argument_perl_array_ref_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_byte($values, [(byte)1, INT8_MAX(), INT8_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_perl_array_ref_to_spvm_short_array : int ($values : short[], $undef : short[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_short($values, [(short)1, INT16_MAX(), INT16_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_perl_array_ref_to_spvm_int_array : int ($values : int[], $undef : int[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_int($values, [(int)1, INT32_MAX(), INT32_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_perl_array_ref_to_spvm_long_array : int ($values : long[], $undef : long[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_long($values, [(long)1, INT64_MAX(), INT64_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_perl_array_ref_to_spvm_float_array : int ($values : float[], $undef : float[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_float($values, [(float)0.5, FLT_MAX(), FLT_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_perl_array_ref_to_spvm_double_array : int ($values : double[], $undef : double[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_double($values, [(double)0.5, DBL_MAX(), DBL_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_byte($values, [(byte)1, INT8_MAX(), INT8_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_short_array : int ($values : short[], $undef : short[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_short($values, [(short)1, INT16_MAX(), INT16_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_int_array : int ($values : int[], $undef : int[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_int($values, [(int)1, INT32_MAX(), INT32_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_long_array : int ($values : long[], $undef : long[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_long($values, [(long)1, INT64_MAX(), INT64_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_float_array : int ($values : float[], $undef : float[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_float($values, [(float)0.5, FLT_MAX(), FLT_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_double_array : int ($values : double[], $undef : double[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_double($values, [(double)0.5, DBL_MAX(), DBL_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  # SPVM Functions
+  sub spvm_new_byte_array_from_bin : int ($values : byte[]) {
+    
+    unless ((string)$values eq "あ") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub spvm_new_byte_array_bin : int ($values : byte[]) {
+    
+    if ($values->[0] == 97) {
+      if ($values->[1] == 98) {
+        if ($values->[2] == 99) {
+           if (@$values == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub new_byte_array_from_string : int ($bytes : byte[]) {
+    
+    unless ($bytes isa byte[]) {
+      return 0;
+    }
+    
+    unless ((string)$bytes eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub spvm_new_byte_array_binary_pack : int ($values : byte[]) {
+    
+    if ($values->[0] == 97) {
+      if ($values->[1] == 98) {
+        if ($values->[2] == INT8_MAX()) {
+           if (@$values == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_short_array_binary_pack : int ($values : short[]) {
+    
+    if ((int)$values->[0] == (int)(short)97) {
+      if ((int)$values->[1] == (int)(short)98) {
+        if ((int)$values->[2] == (int)(short)INT16_MAX()) {
+           if (@$values == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub spvm_new_int_array_binary_pack : int ($values : int[]) {
+    
+    if ($values->[0] == (int)97) {
+      if ($values->[1] == (int)98) {
+        if ($values->[2] == (int)INT32_MAX()) {
+           if (@$values == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_long_array_binary_pack : int ($values : long[]) {
+    
+    if ($values->[0] == (long)97) {
+      if ($values->[1] == (long)98) {
+        if ($values->[2] == (long)INT64_MAX()) {
+           if (@$values == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_float_array_binary_pack : int ($values : float[]) {
+    
+    if ($values->[0] == (float)97) {
+      if ($values->[1] == (float)98) {
+        if ($values->[2] == (float)FLOAT_PRECICE()) {
+           if (@$values == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+  sub spvm_new_double_array_binary_pack : int ($values : double[]) {
+    
+    if ($values->[0] == (double)97) {
+      if ($values->[1] == (double)98) {
+        if ($values->[2] == (double)DOUBLE_PRECICE()) {
+           if (@$values == 3) {
+             return 1;
+           }
+        }
+      }
+    }
+    
+    return 0;
+  }
+  
+
+  sub spvm_new_object_array_len_element_oarray : int ($nums : SPVM::TestCase[]) {
+    if ($nums->[0]{x_int} == 1) {
+      if ($nums->[1]{x_int} == 2) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_object_array_len_element_byte_array : int ($nums : byte[][]) {
+    
+    if ($nums->[0][0] == 1) {
+      if ($nums->[0][1] == 2) {
+        if ($nums->[0][2] == 3) {
+          if ($nums->[1][0] == 4) {
+            if ($nums->[1][1] == 5) {
+              if ($nums->[1][2] == 6) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_object_array_len_element_short_array : int ($nums : short[][]) {
+    if ((int)$nums->[0][0] == (int)(short)1) {
+      if ((int)$nums->[0][1] == (int)(short)2) {
+        if ((int)$nums->[0][2] == (int)(short)3) {
+          if ((int)$nums->[1][0] == (int)(short)4) {
+            if ((int)$nums->[1][1] == (int)(short)5) {
+              if ((int)$nums->[1][2] == (int)(short)6) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_object_array_len_element_int_array : int ($nums : int[][]) {
+    if ($nums->[0][0] == 1) {
+      if ($nums->[0][1] == 2) {
+        if ($nums->[0][2] == 3) {
+          if ($nums->[1][0] == 4) {
+            if ($nums->[1][1] == 5) {
+              if ($nums->[1][2] == 6) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_object_array_len_element_long_array : int ($nums : long[][]) {
+    if ($nums->[0][0] == (long)1) {
+      if ($nums->[0][1] == (long)2) {
+        if ($nums->[0][2] == (long)3) {
+          if ($nums->[1][0] == (long)4) {
+            if ($nums->[1][1] == (long)5) {
+              if ($nums->[1][2] == (long)6) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_object_array_len_element_float_array : int ($nums : float[][]) {
+    if ($nums->[0][0] == (float)1) {
+      if ($nums->[0][1] == (float)2) {
+        if ($nums->[0][2] == (float)3) {
+          if ($nums->[1][0] == (float)4) {
+            if ($nums->[1][1] == (float)5) {
+              if ($nums->[1][2] == (float)6) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_object_array_len_element_double_array : int ($nums : double[][]) {
+    if ($nums->[0][0] == (double)1) {
+      if ($nums->[0][1] == (double)2) {
+        if ($nums->[0][2] == (double)3) {
+          if ($nums->[1][0] == (double)4) {
+            if ($nums->[1][1] == (double)5) {
+              if ($nums->[1][2] == (double)6) {
+                return 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  # SPVM set and get
+  sub spvm_set_and_get_byte : int ($nums : byte[]) {
+    
+    if ($nums->[0] == 0) {
+      if ($nums->[1] == INT8_MAX()) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_short : int ($nums : short[]) {
+    
+    if ($nums->[0] == 0) {
+      if ($nums->[1] == INT16_MAX()) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_int : int ($nums : int[]) {
+    
+    if ($nums->[0] == 0) {
+      if ($nums->[1] == INT32_MAX()) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_long : int ($nums : long[]) {
+    
+    if ($nums->[0] == 0L) {
+      if ($nums->[1] == INT64_MAX()) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_float : int ($nums : float[]) {
+    
+    if ($nums->[0] == 0.0f) {
+      if ($nums->[1] == FLOAT_PRECICE()) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+  sub spvm_set_and_get_double : int ($nums : double[]) {
+    
+    if ($nums->[0] == 0.0) {
+      if ($nums->[1] == DOUBLE_PRECICE()) {
+        return 1;
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_set_and_get_mulnum_t_int : int ($points : SPVM::TestCase::Point_3i[]) {
+    
+    if ($points->[1]{x} == INT32_MIN()) {
+      if ($points->[1]{y} == 1) {
+        if ($points->[1]{z} == 2) {
+          return 1;
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_byte : int ($points : SPVM::TestCase::Point_3b[]) {
+    
+    if ($points->[0]{x} == INT8_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_short : int ($points : SPVM::TestCase::Point_3s[]) {
+    
+    if ($points->[0]{x} == INT16_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_int : int ($points : SPVM::TestCase::Point_3i[]) {
+    
+    if ($points->[0]{x} == INT32_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_long : int ($points : SPVM::TestCase::Point_3l[]) {
+    
+    if ($points->[0]{x} == INT64_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_float : int ($points : SPVM::TestCase::Point_3f[]) {
+    
+    if ($points->[0]{x} == FLT_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_double : int ($points : SPVM::TestCase::Point_3d[]) {
+    
+    if ($points->[0]{x} == DBL_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_binary_byte : int ($points : SPVM::TestCase::Point_3b[]) {
+    if ($points->[0]{x} == INT8_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_binary_short : int ($points : SPVM::TestCase::Point_3s[]) {
+    if ($points->[0]{x} == INT16_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_binary_int : int ($points : SPVM::TestCase::Point_3i[]) {
+    if ($points->[0]{x} == INT32_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_binary_long : int ($points : SPVM::TestCase::Point_3l[]) {
+    if ($points->[0]{x} == INT64_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_binary_float : int ($points : SPVM::TestCase::Point_3f[]) {
+    if ($points->[0]{x} == FLT_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+
+  sub spvm_new_mulnum_array_binary_double : int ($points : SPVM::TestCase::Point_3d[]) {
+    if ($points->[0]{x} == DBL_MIN()) {
+      if ($points->[0]{y} == 1) {
+        if ($points->[0]{z} == 2) {
+          if ($points->[1]{x} == 3) {
+            if ($points->[1]{y} == 4) {
+              if ($points->[1]{z} == 5) {
+                if ($points->[2]{x} == 6) {
+                  if ($points->[2]{y} == 7) {
+                    if ($points->[2]{z} == 8) {
+                      if (@$points == 3) {
+                        return 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
+  }
+}

@@ -1,0 +1,6 @@
+package SPVM::TestCase::CompileError::Enum::PrivateAccess {
+  use SPVM::TestCase::Enum;
+  sub main : int () {
+    SPVM::TestCase::Enum->PRIVATE_VALUE;
+  }
+}

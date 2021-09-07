@@ -1,0 +1,8 @@
+package SPVM::TestCase::CompileError::Field::Private {
+  use SPVM::TestCase;
+  
+  sub main : int () {
+    my $test_case = new SPVM::TestCase;
+    $test_case->{private_field};
+  }
+}

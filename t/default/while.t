@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::While';
+use SPVM 'SPVM::TestCase::While';
 
 
 
@@ -15,11 +15,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # while
 {
-  ok(TestCase::While->basic);
-  ok(TestCase::While->next);
-  ok(TestCase::While->last);
-  ok(TestCase::While->condition_my);
-  ok(TestCase::While->condition_my_var_mem_id);
+  ok(SPVM::TestCase::While->basic);
+  ok(SPVM::TestCase::While->next);
+  ok(SPVM::TestCase::While->last);
+  ok(SPVM::TestCase::While->condition_my);
+  ok(SPVM::TestCase::While->condition_my_var_mem_id);
 }
 
 

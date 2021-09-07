@@ -1,3 +1,0 @@
-package TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice {
-  sub Foo__Bar : int () {}
-}

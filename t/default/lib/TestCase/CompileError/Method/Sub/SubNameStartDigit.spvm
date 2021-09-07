@@ -1,3 +1,0 @@
-package TestCase::CompileError::Method::MethodNameStartDigit {
-  sub 3foo : int () { }
-}

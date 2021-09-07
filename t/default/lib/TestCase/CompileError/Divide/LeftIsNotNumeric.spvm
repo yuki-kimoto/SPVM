@@ -1,7 +1,0 @@
-package TestCase::CompileError::Divide::LeftIsNotNumeric {
-  use TestCase::Minimal;
-  sub main : int () {
-    my $minimal = TestCase::Minimal->new;
-    $minimal / 1;
-  }
-}

@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase::UnaryPlus';
+use SPVM 'SPVM::TestCase::UnaryPlus';
 
 
 
@@ -21,19 +21,19 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Unary plus - Operation
   {
-    ok(TestCase::UnaryPlus->unary_plus_byte);
-    ok(TestCase::UnaryPlus->unary_plus_short);
-    ok(TestCase::UnaryPlus->unary_plus_int);
-    ok(TestCase::UnaryPlus->unary_plus_long);
-    ok(TestCase::UnaryPlus->unary_plus_float);
-    ok(TestCase::UnaryPlus->unary_plus_double);
+    ok(SPVM::TestCase::UnaryPlus->unary_plus_byte);
+    ok(SPVM::TestCase::UnaryPlus->unary_plus_short);
+    ok(SPVM::TestCase::UnaryPlus->unary_plus_int);
+    ok(SPVM::TestCase::UnaryPlus->unary_plus_long);
+    ok(SPVM::TestCase::UnaryPlus->unary_plus_float);
+    ok(SPVM::TestCase::UnaryPlus->unary_plus_double);
   }
 
   # Unary plus - Compile Error
   {
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::UnaryPlus::NotNumeric', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::UnaryPlus::NotNumeric', __LINE__, __FILE__);
       ok($success == 0);
     }
   }

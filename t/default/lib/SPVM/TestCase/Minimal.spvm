@@ -1,0 +1,27 @@
+package SPVM::TestCase::Minimal : public {
+  has x : rw public int;
+  has y : rw public int;
+
+  sub get_x : int ($self : self) {
+    return $self->{x};
+  }
+
+  sub new : SPVM::TestCase::Minimal () {
+    return new SPVM::TestCase::Minimal;
+  }
+  
+  sub newp : SPVM::TestCase::Minimal ($x : int, $y : int) {
+    
+    my $minimal = new SPVM::TestCase::Minimal;
+    $minimal->{x} = $x;
+    $minimal->{y} = $y;
+    
+    return $minimal;
+  }
+  
+  sub to_string : string ($self : self) {
+    my $str = "(" . $self->{x} . "," . $self->{y} . ")";
+    
+    return $str;
+  }
+}

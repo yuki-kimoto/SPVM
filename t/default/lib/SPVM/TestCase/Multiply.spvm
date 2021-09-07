@@ -1,0 +1,311 @@
+package SPVM::TestCase::Multiply {
+
+  #
+  # Spec tests
+  #
+  sub multiply_byte_byte : int () {
+    my $total = (byte)2 * (byte)3;
+    
+    unless ($total == 6) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_short_short : int () {
+    my $total = (short)2 * (short)5;
+    
+    unless ($total == 10) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_int_byte : int () {
+    my $total = 4 * (byte)3;
+    
+    unless ($total == 12) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_int_short : int () {
+    my $total = 7 * (short)3;
+    
+    unless ($total == 21) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_byte_int : int () {
+    my $total = (byte)3 * -6;
+    
+    unless ($total == -18) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_short_int : int () {
+    my $total = (short)3 * -1;
+    
+    unless ($total == -3) {
+      return 0;
+    }
+    
+    unless ($total isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_int_int : int () {
+    my $total1 = 1000000000 * 2;
+    
+    unless ($total1 == 2000000000) {
+      return 0;
+    }
+    
+    unless ($total1 isa int) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  sub multiply_long_long : int () {
+    my $total1 = 2000000000L * 2L;
+    
+    unless ($total1 == 4000000000L) {
+      return 0;
+    }
+    
+    unless ($total1 isa long) {
+      return 0;
+    }
+    return 1;
+  }
+
+  sub multiply_int_float : int () {
+    my $total = 2 * 0.25f;
+    
+    unless ($total == 0.5f) {
+      return 0;
+    }
+    
+    unless ($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_int_double : int () {
+    my $total = 2 * 0.25;
+    
+    unless ($total == 0.5) {
+      return 0;
+    }
+    
+    unless ($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_float_float : int () {
+    my $total = 2.0f * 0.25f;
+    
+    unless ($total == 0.5f) {
+      return 0;
+    }
+    
+    unless ($total isa float) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  sub multiply_double_double : int () {
+    my $total = 2.0 * 0.25;
+    
+    unless ($total == 0.5) {
+      return 0;
+    }
+    
+    unless ($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub multiply_double_double_big : int () {
+    my $total = 1000000000.5 * 0.5;
+    
+    unless ($total == 500000000.25) {
+      return 0;
+    }
+    
+    unless ($total isa double) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  
+  #
+  # Optional tests
+  #
+  sub multiply : int () {
+    # int
+    my $int_success = 0;
+    {
+      my $value1 : int = -2 * 2;
+      my $value2 : int = (byte)-2 * 3;
+      my $value3 : int = -2 * (byte)4;
+      my $value4 : int = (short)-2 * 5;
+      my $value5 : int = -2 * (short)6;
+      my $value6 : int = (byte)-2 * (byte)7;
+      my $value7 : int = (short)-2 * (short)8;
+      my $value8 : int = (byte)-2 * (short)9;
+      if ($value1 == -4) {
+        if ($value2 == -6) {
+          if ($value3 == -8) {
+            if ($value4 == -10) {
+              if ($value5 == -12) {
+                if ($value6 == -14) {
+                  if ($value7 == -16) {
+                    if ($value8 == -18) {
+                      $int_success = 1;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    # float
+    my $float_success = 0;
+    {
+      my $value1 : float = 0.25f * 0.5f;
+      my $value2 : float = (byte)2 * 0.5f;
+      my $value3 : float = 0.5f * (byte)2;
+      my $value4 : float = (short)2 * 0.5f;
+      my $value5 : float = 0.5f * (short)2;
+      my $value6 : float = 2 * 0.5f;
+      my $value7 : float = 0.5f * 2;
+      if ($value1 == 0.125f) {
+        if ($value2 == 1.0f) {
+          if ($value3 == 1.0f) {
+            if ($value4 == 1.0f) {
+              if ($value5 == 1.0f) {
+                if ($value6 == 1.0f) {
+                  if ($value7 == 1.0f) {
+                    $float_success = 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    # double
+    my $double_success = 0;
+    {
+      my $value1 : double = (byte)2 * 0.5;
+      my $value2 : double = 0.5 * (byte)2;
+      my $value3 : double = (short)2 * 0.5;
+      my $value4 : double = 0.5 * (short)2;
+      my $value5 : double = 2 * 0.5;
+      my $value6 : double = 0.5 * 2;
+      my $value7 : double = 0.5 * 0.25;
+      my $value8 : double = 0.5 * 0.25f;
+      my $value9 : double = 0.25f * 0.5;
+      if ($value1 == 1.0) {
+        if ($value2 == 1.0) {
+          if ($value3 == 1.0) {
+            if ($value4 == 1.0) {
+              if ($value5 == 1.0) {
+                if ($value6 == 1.0) {
+                  if ($value7 == 0.125) {
+                    if ($value8 == 0.125) {
+                      if ($value9 == 0.125) {
+                        $double_success = 1;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    if ($int_success && $float_success && $double_success) {
+      return 1;
+    }
+
+    return 0;
+  }
+  
+  # Multiply
+  sub multiply_int_plus : int () {
+    return (int)536870912 * (int)2;
+  }
+  
+  sub multiply_int_minus : int () {
+    return (int)536870912 * (int)-2;
+  }
+  
+  sub multiply_int_overflow : int () {
+    return (int)1073741824 * (int)2;
+  }
+  
+  sub multiply_long_plus : long () {
+    return (long)2305843009213693952L * (long)2L;
+  }
+  
+  sub multiply_long_minus : long () {
+    return (long)2305843009213693952L * (long)-2L;
+  }
+  
+  sub multiply_long_overflow : long () {
+    return (long)4611686018427387904L * (long)2L;
+  }
+}

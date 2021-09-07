@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'TestCase::UnaryMinus';
+use SPVM 'SPVM::TestCase::UnaryMinus';
 
 
 
@@ -21,19 +21,19 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   # Unary minus - Operation
   {
-    ok(TestCase::UnaryMinus->unary_minus_byte);
-    ok(TestCase::UnaryMinus->unary_minus_short);
-    ok(TestCase::UnaryMinus->unary_minus_int);
-    ok(TestCase::UnaryMinus->unary_minus_long);
-    ok(TestCase::UnaryMinus->unary_minus_float);
-    ok(TestCase::UnaryMinus->unary_minus_double);
+    ok(SPVM::TestCase::UnaryMinus->unary_minus_byte);
+    ok(SPVM::TestCase::UnaryMinus->unary_minus_short);
+    ok(SPVM::TestCase::UnaryMinus->unary_minus_int);
+    ok(SPVM::TestCase::UnaryMinus->unary_minus_long);
+    ok(SPVM::TestCase::UnaryMinus->unary_minus_float);
+    ok(SPVM::TestCase::UnaryMinus->unary_minus_double);
   }
 
   # Unary minus - Compile Error
   {
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('TestCase::CompileError::UnaryMinus::NotNumeric', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::UnaryMinus::NotNumeric', __LINE__, __FILE__);
       ok($success == 0);
     }
   }
