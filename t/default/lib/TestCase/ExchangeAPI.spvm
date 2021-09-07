@@ -446,9 +446,62 @@ package TestCase::ExchangeAPI {
     return $values;
   }
 
-  sub return_string_array_only : string[] ($values : string[]) {
+  sub argument_perl_array_ref_to_spvm_string_array : int ($values : string[], $undef : string[]) {
     
-    return $values;
+    unless (@$values == 4) {
+      return 0;
+    }
+    
+    unless ($values->[0] eq "あいう") {
+      return 0;
+    }
+    
+    unless ($values->[1] eq "えお") {
+      return 0;
+    }
+    
+    unless ($values->[2] eq "ab") {
+      return 0;
+    }
+
+    unless ($values->[3] == undef) {
+      return 0;
+    }
+    
+    unless ($undef == undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_string_array_to_spvm_string_array : int ($values : string[], $undef : string[]) {
+    
+    unless (@$values == 4) {
+      return 0;
+    }
+    
+    unless ($values->[0] eq "あいう") {
+      return 0;
+    }
+    
+    unless ($values->[1] eq "えお") {
+      return 0;
+    }
+    
+    unless ($values->[2] eq "ab") {
+      return 0;
+    }
+
+    unless ($values->[3] == undef) {
+      return 0;
+    }
+    
+    unless ($undef == undef) {
+      return 0;
+    }
+    
+    return 1;
   }
   
   sub argument_perl_array_ref_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {

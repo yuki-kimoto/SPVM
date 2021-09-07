@@ -182,6 +182,10 @@ If the SPVM argument type is C<float[]>, the Perl array reference is converted t
 
 If the SPVM argument type is C<double[]>, the Perl array reference is converted to SPVM array which type is C<double[]>. Each element is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double">. Perl C<undef> is coverted to SPVM C<undef>.
 
+=head4 Perl array reference to SPVM string array
+
+If the SPVM argument type is C<string[]>, the Perl array reference is converted to SPVM array which type is C<string[]>. Each element is converted to C<string> value by L<the rule of Perl scalar to SPVM string|"Perl scalar to SPVM string">. Perl C<undef> is coverted to SPVM C<undef>.
+
 =head3 Perl Hash reference to SPVM Multi Numeric Type
 
 If the argument type in the SPVM Method definition was a Multi Numeric Type, the argument value must be a hash reference and the key must contain all Multi Numeric field names. Otherwise, an Exception will be raised. The value of the hash reference is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Is converted to a value.

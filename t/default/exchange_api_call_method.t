@@ -175,11 +175,18 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       ok($ok);
     }
 
+    # Argument SPVM string array to SPVM string array
+    {
+      my $spvm_string_array = SPVM::new_string_array(["あいう", "えお", "ab", undef]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_string_array_to_spvm_string_array($spvm_string_array, undef);
+      ok($ok);
+    }
+
     # Argument Perl array reference to SPVM string array
     {
-      my $spvm_values = SPVM::new_string_array(["あいう", "えお", "ab", undef]);
-      my $values = TestCase::ExchangeAPI->return_string_array_only($spvm_values)->to_elems;
-      is_deeply($values, ["あいう", "えお", "ab", undef]);
+      my $perl_array_ref = ["あいう", "えお", "ab", undef];
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_string_array($perl_array_ref, undef);
+      ok($ok);
     }
   }
 
