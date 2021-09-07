@@ -2409,30 +2409,30 @@ call_spvm_method(...)
                   void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
                   
                   for (int32_t i = 0; i < length; i++) {
-                    SV** sv_element_ptr = av_fetch(av_elems, i, 0);
-                    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+                    SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
+                    SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
 
                     // Perl value is undef
-                    if (!SvOK(sv_element)) {
+                    if (!SvOK(sv_elem)) {
                       env->set_elem_object(env, array, i, NULL);
                     }
                     else {
                       // If Perl value is non ref scalar, the value is converted to string object
-                      if (!SvROK(sv_element)) {
+                      if (!SvROK(sv_elem)) {
 
-                        const char* chars = SvPV_nolen(sv_element);
-                        int32_t length = SvCUR(sv_element);
+                        const char* chars = SvPV_nolen(sv_elem);
+                        int32_t length = SvCUR(sv_elem);
                         
                         void* string = env->new_string(env, chars, length);
                         
                         SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
                         
-                        sv_element = sv_string;
+                        sv_elem = sv_string;
                       }
                       
                       // Check type
-                      if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::String")) {
-                        SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
+                      if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject::String")) {
+                        SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_elem);
                         env->set_elem_object(env, array, i, object);
                       }
                       else {

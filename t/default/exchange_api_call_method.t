@@ -141,41 +141,41 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     # Argument Perl array reference to SPVM byte array
     {
       my $perl_array_ref = [1, $BYTE_MAX, $BYTE_MIN];
-      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_byte_array($perl_array_ref);
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_byte_array($perl_array_ref, undef);
       ok($ok);
     }
-    # Argument array reference - new_short_array
+    # Argument Perl array reference to SPVM short array
     {
       my $perl_array_ref = [1, $SHORT_MAX, $SHORT_MIN];
-      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_short_array($perl_array_ref);
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_short_array($perl_array_ref, undef);
       ok($ok);
     }
-    # Argument array reference - new_int_array
+    # Argument Perl array reference to SPVM int array
     {
       my $perl_array_ref = [1, $INT_MAX, $INT_MIN];
-      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_int_array($perl_array_ref);
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_int_array($perl_array_ref, undef);
       ok($ok);
     }
-    # Argument array reference - new_long_array
+    # Argument Perl array reference to SPVM long array
     {
       my $perl_array_ref = [1, $LONG_MAX, $LONG_MIN];
-      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_long_array($perl_array_ref);
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_long_array($perl_array_ref, undef);
       ok($ok);
     }
-    # Argument array reference - new_float_array
+    # Argument Perl array reference to SPVM float array
     {
       my $perl_array_ref = [0.5, $FLT_MAX, $FLT_MIN];
-      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_float_array($perl_array_ref);
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_float_array($perl_array_ref, undef);
       ok($ok);
     }
-    # Argument array reference - new_double_array
+    # Argument Perl array reference to SPVM double array
     {
       my $perl_array_ref = [0.5, $DBL_MAX, $DBL_MIN];
-      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_double_array($perl_array_ref);
+      my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_double_array($perl_array_ref, undef);
       ok($ok);
     }
 
-    # Argument array reference - new string array and to_strings
+    # Argument Perl array reference to SPVM string array
     {
       my $spvm_values = SPVM::new_string_array(["あいう", "えお", "ab", undef]);
       my $values = TestCase::ExchangeAPI->return_string_array_only($spvm_values)->to_elems;
