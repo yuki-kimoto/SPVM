@@ -582,6 +582,84 @@ package TestCase::ExchangeAPI {
     return 1;
   }
 
+  sub argument_spvm_array_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_byte($values, [(byte)1, INT8_MAX(), INT8_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_short_array : int ($values : short[], $undef : short[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_short($values, [(short)1, INT16_MAX(), INT16_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_int_array : int ($values : int[], $undef : int[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_int($values, [(int)1, INT32_MAX(), INT32_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_long_array : int ($values : long[], $undef : long[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_long($values, [(long)1, INT64_MAX(), INT64_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_float_array : int ($values : float[], $undef : float[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_float($values, [(float)0.5, FLT_MAX(), FLT_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub argument_spvm_array_to_spvm_double_array : int ($values : double[], $undef : double[]) {
+    
+    unless (SPVM::ArrayUtil->equals_array_double($values, [(double)0.5, DBL_MAX(), DBL_MIN()])) {
+      return 0;
+    }
+    
+    if ($undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   # SPVM Functions
   sub spvm_new_byte_array_from_bin : int ($values : byte[]) {
     

@@ -175,17 +175,56 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       ok($ok);
     }
 
-    # Argument SPVM string array to SPVM string array
-    {
-      my $spvm_string_array = SPVM::new_string_array(["あいう", "えお", "ab", undef]);
-      my $ok = TestCase::ExchangeAPI->argument_spvm_string_array_to_spvm_string_array($spvm_string_array, undef);
-      ok($ok);
-    }
-
     # Argument Perl array reference to SPVM string array
     {
       my $perl_array_ref = ["あいう", "えお", "ab", undef];
       my $ok = TestCase::ExchangeAPI->argument_perl_array_ref_to_spvm_string_array($perl_array_ref, undef);
+      ok($ok);
+    }
+  }
+
+  # Argument SPVM array to SPVM array
+  {
+    # Argument SPVM array to SPVM byte array
+    {
+      my $spvm_array = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_array_to_spvm_byte_array($spvm_array, undef);
+      ok($ok);
+    }
+    # Argument SPVM array to SPVM short array
+    {
+      my $spvm_array = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_array_to_spvm_short_array($spvm_array, undef);
+      ok($ok);
+    }
+    # Argument SPVM array to SPVM int array
+    {
+      my $spvm_array = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_array_to_spvm_int_array($spvm_array, undef);
+      ok($ok);
+    }
+    # Argument SPVM array to SPVM long array
+    {
+      my $spvm_array = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_array_to_spvm_long_array($spvm_array, undef);
+      ok($ok);
+    }
+    # Argument SPVM array to SPVM float array
+    {
+      my $spvm_array = SPVM::new_float_array([0.5, $FLT_MAX, $FLT_MIN]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_array_to_spvm_float_array($spvm_array, undef);
+      ok($ok);
+    }
+    # Argument SPVM array to SPVM double array
+    {
+      my $spvm_array = SPVM::new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_array_to_spvm_double_array($spvm_array, undef);
+      ok($ok);
+    }
+    # Argument SPVM array to SPVM string array
+    {
+      my $spvm_string_array = SPVM::new_string_array(["あいう", "えお", "ab", undef]);
+      my $ok = TestCase::ExchangeAPI->argument_spvm_string_array_to_spvm_string_array($spvm_string_array, undef);
       ok($ok);
     }
   }
