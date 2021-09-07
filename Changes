@@ -2,7 +2,8 @@ Revision history for SPVM
 0.9012  2021-09-02
         [CHANGES]
         * Exchange API call method string arugment copy count is reduced
-        * remove SPVM::Unicode UTF-16 related methods because I concentrate UTF-8 and Unicode
+        * Remove SPVM::Unicode UTF-16 related methods because I concentrate UTF-8 and Unicode
+        * The name of SPVM module must start SPVM::, otherwise a compile error occurs.
         
         [BUGFIXES]
         * None

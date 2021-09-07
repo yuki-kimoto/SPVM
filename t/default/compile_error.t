@@ -14,6 +14,15 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# Pakcage name must start SPVM::
+{
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('PackageNameCompileError', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+}
+
 # use
 {
   {

@@ -1644,9 +1644,9 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   
   if (!package->is_anon) {
     // If package name start with lower case, compile error occur.
-    // (Invalid example) foo::Bar
-    if (islower(package_name[0])) {
-      SPVM_COMPILER_error(compiler, "Package name \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
+    // (Invalid example) Foo
+    if (strncmp(package_name, "SPVM::", 6) != 0) {
+      SPVM_COMPILER_error(compiler, "Package name \"%s\" must start with SPVM:: at %s line %d\n", package_name, op_package->file, op_package->line);
     }
     
     // If package part name start with lower case, compiler error occur.
