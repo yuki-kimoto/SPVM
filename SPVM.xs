@@ -2409,35 +2409,30 @@ call_spvm_method(...)
                   void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
                   
                   for (int32_t i = 0; i < length; i++) {
-                    SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-                    SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+                    SV** sv_element_ptr = av_fetch(av_elems, i, 0);
+                    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
 
                     // Perl value is undef
-                    if (!SvOK(sv_value)) {
+                    if (!SvOK(sv_element)) {
                       env->set_elem_object(env, array, i, NULL);
                     }
                     else {
                       // If Perl value is non ref scalar, the value is converted to string object
-                      if (!SvROK(sv_value)) {
+                      if (!SvROK(sv_element)) {
 
-                        const char* chars = SvPV_nolen(sv_value);
-                        int32_t length = SvCUR(sv_value);
+                        const char* chars = SvPV_nolen(sv_element);
+                        int32_t length = SvCUR(sv_element);
                         
                         void* string = env->new_string(env, chars, length);
                         
                         SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
                         
-                        sv_value = sv_string;
+                        sv_element = sv_string;
                       }
                       
                       // Check type
-                      if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
-                        SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-                        
-                        if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                          croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, package_name, method_name, MFILE, __LINE__);
-                        }
-                        
+                      if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::String")) {
+                        SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
                         env->set_elem_object(env, array, i, object);
                       }
                       else {
