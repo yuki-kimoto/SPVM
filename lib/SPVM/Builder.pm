@@ -16,6 +16,8 @@ use SPVM();
 sub build_dir { shift->{build_dir} }
 sub module_dirs { shift->{module_dirs} }
 
+sub get_added_class_names { shift->get_added_package_names(@_) }
+
 sub compile_spvm {
   my ($self, $package_name, $file, $line) = @_;
   

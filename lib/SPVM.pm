@@ -31,7 +31,7 @@ XSLoader::load('SPVM', $VERSION);
 my $loaded_spvm_modules = {};
 
 sub import {
-  my ($class, $package_name) = @_;
+  my ($class, $class_name) = @_;
 
   unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
@@ -39,31 +39,32 @@ sub import {
   }
 
   # Add package informations
-  if (defined $package_name) {
-    unless ($package_name =~ /^SPVM::/) {
-      $package_name = "SPVM::$package_name";
-    }
+  if (defined $class_name) {
+    $class_name =~ s/^SPVM:://;
+    my $perl_package_name = "SPVM::$class_name";
     
     my ($file, $line) = (caller)[1, 2];
 
     # Compile SPVM source code and create runtime env
-    my $compile_success = $BUILDER->compile_spvm($package_name, $file, $line);
+    my $compile_success = $BUILDER->compile_spvm($class_name, $file, $line);
     unless ($compile_success) {
       exit(255);
     }
     if ($compile_success) {
-      my $added_package_names = $BUILDER->get_added_package_names;
-
-      for my $added_package_name (@$added_package_names) {
+      my $added_class_names = $BUILDER->get_added_class_names;
+      for my $added_class_name (@$added_class_names) {
+        $added_class_name =~ s/^SPVM:://;
+        my $added_perl_package_name = "SPVM::$added_class_name";
+        
         # Build Precompile packages - Compile C source codes and link them to SPVM precompile method
-        $BUILDER->build_and_bind_shared_lib($added_package_name, 'precompile');
+        $BUILDER->build_and_bind_shared_lib($added_perl_package_name, 'precompile');
 
         # Build native packages - Compile C source codes and link them to SPVM native method
-        $BUILDER->build_and_bind_shared_lib($added_package_name, 'native');
+        $BUILDER->build_and_bind_shared_lib($added_perl_package_name, 'native');
       }
 
       # Bind SPVM method to Perl
-      bind_to_perl($BUILDER, $added_package_names);
+      bind_to_perl($BUILDER, $added_class_names);
     }
   }
 }
