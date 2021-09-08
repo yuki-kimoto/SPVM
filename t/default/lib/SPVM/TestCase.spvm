@@ -1,15 +1,15 @@
-package SPVM::TestCase {
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Simple;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase {
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
   our $PACKAGE_VAR_INT : int;
   our $PACKAGE_VAR_LONG : long;
-  our $PACKAGE_VAR_MINIMAL : SPVM::TestCase::Minimal;
+  our $PACKAGE_VAR_MINIMAL : TestCase::Minimal;
 
   our $PACKAGE_VAR_INT2 : int;
   our $PACKAGE_VAR_LONG2 : long;
-  our $PACKAGE_VAR_MINIMAL2 : SPVM::TestCase::Minimal;
+  our $PACKAGE_VAR_MINIMAL2 : TestCase::Minimal;
 
   has x_byte : rw public byte;
   has x_short : rw public short;
@@ -19,8 +19,8 @@ package SPVM::TestCase {
   has x_double : rw public double;
   has x_int_array : rw public int[];
   has x_byte_array : rw public byte[];
-  has x_test_case : rw public SPVM::TestCase;
-  has minimal : rw public SPVM::TestCase::Minimal;
+  has x_test_case : rw public TestCase;
+  has minimal : rw public TestCase::Minimal;
   has private_field : private int;
   
   sub INT : int () { return 127; }
@@ -77,28 +77,28 @@ package SPVM::TestCase {
     }
   }
   
-  sub new : SPVM::TestCase () {
-    return new SPVM::TestCase;
+  sub new : TestCase () {
+    return new TestCase;
   }
   
   sub my_var_in_loop_free : int () {
     for (my $i = 0; $i < 5; $i++) {
-      my $minimal = SPVM::TestCase::Minimal->new;
+      my $minimal = TestCase::Minimal->new;
     }
   }
   
   sub package_var : int () {
-    if ($SPVM::TestCase::PACKAGE_VAR_INT == 0) {
-      $SPVM::TestCase::PACKAGE_VAR_INT = INT32_MAX();
-      if ($SPVM::TestCase::PACKAGE_VAR_INT == INT32_MAX()) {
-        $SPVM::TestCase::PACKAGE_VAR_LONG = INT64_MAX();
-        if ($SPVM::TestCase::PACKAGE_VAR_LONG == INT64_MAX()) {
-          $SPVM::TestCase::PACKAGE_VAR_MINIMAL = SPVM::TestCase::Minimal->new();
+    if ($TestCase::PACKAGE_VAR_INT == 0) {
+      $TestCase::PACKAGE_VAR_INT = INT32_MAX();
+      if ($TestCase::PACKAGE_VAR_INT == INT32_MAX()) {
+        $TestCase::PACKAGE_VAR_LONG = INT64_MAX();
+        if ($TestCase::PACKAGE_VAR_LONG == INT64_MAX()) {
+          $TestCase::PACKAGE_VAR_MINIMAL = TestCase::Minimal->new();
           
-          $SPVM::TestCase::PACKAGE_VAR_MINIMAL->set_x(4);
+          $TestCase::PACKAGE_VAR_MINIMAL->set_x(4);
           
-          if ($SPVM::TestCase::PACKAGE_VAR_MINIMAL->set_x(4)) {
-            $SPVM::TestCase::PACKAGE_VAR_MINIMAL = undef;
+          if ($TestCase::PACKAGE_VAR_MINIMAL->set_x(4)) {
+            $TestCase::PACKAGE_VAR_MINIMAL = undef;
             return 1;
           }
         }
@@ -111,7 +111,7 @@ package SPVM::TestCase {
     $PACKAGE_VAR_INT = 2;
     
     if ($PACKAGE_VAR_INT == 2) {
-      if ($SPVM::TestCase::PACKAGE_VAR_INT == 2) {
+      if ($TestCase::PACKAGE_VAR_INT == 2) {
         $PACKAGE_VAR_INT = 0;
         return 1;
       }
@@ -121,31 +121,31 @@ package SPVM::TestCase {
   }
 
   sub package_var_other_package : int () {
-    if ($SPVM::TestCase::Simple::FOO == 0) {
-      $SPVM::TestCase::Simple::FOO = 1;
-      if ($SPVM::TestCase::Simple::FOO == 1) {
+    if ($TestCase::Simple::FOO == 0) {
+      $TestCase::Simple::FOO = 1;
+      if ($TestCase::Simple::FOO == 1) {
         return 1;
       }
     }
     return 0;
   }
   
-  sub get_minimal : SPVM::TestCase::Minimal ($self : self) {
+  sub get_minimal : TestCase::Minimal ($self : self) {
     return $self->{minimal};
   }
 
   # Resorved word
-  sub int : int ($obj : SPVM::TestCase) {
+  sub int : int ($obj : TestCase) {
     
     return 5;
   }
   
   sub use_reserved_word : int () {
     
-    my $test_case = new SPVM::TestCase;
+    my $test_case = new TestCase;
     
-    if (SPVM::TestCase->int($test_case) == 5) {
-      if (SPVM::TestCase->int($test_case) == 5) {
+    if (TestCase->int($test_case) == 5) {
+      if (TestCase->int($test_case) == 5) {
         return 1;
       }
     }
@@ -225,7 +225,7 @@ package SPVM::TestCase {
   # My variable is initialized zero
   sub my_var_initialized_zero : int () {
     my $var1 : int;
-    my $var2 : SPVM::TestCase;
+    my $var2 : TestCase;
     
     if ($var1 == 0) {
       if ($var2 == undef) {

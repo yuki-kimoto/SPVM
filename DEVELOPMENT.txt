@@ -74,10 +74,14 @@ DEVELOPERS NOTE
     See core dump
 
       If you use Debug run, you can see core dump and back trace by gdb command
-
-        gdb spvm core.*
+        
+        gdb solo/main core.*
         
         bt
+      
+      If core file is not output, set the following.
+      
+        ulimit -c unlimited
   
   EXE TESTS
     

@@ -350,6 +350,29 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
 
 SPVM_OP* SPVM_OP_new_op_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_name) {
   
+  const char* package_var_name = op_package_var_name->uv.name;
+  
+  // If the package variable access contains :: and start with upper case, and the package_var_name is not start "SPVM::", add "SPVM::" to the package variable access
+  
+  if (strstr(package_var_name, "::")) {
+    if (isupper(package_var_name[1])) {
+      if (strncmp(package_var_name + 1, "SPVM::", 6) != 0) {
+        // create new package_var_name
+        int32_t package_var_name_length = strlen(package_var_name);
+        int32_t new_package_var_name_length = package_var_name_length + 6;
+        char* new_package_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, new_package_var_name_length + 1);
+        new_package_var_name[0] = '$';
+        memcpy(new_package_var_name + 1, "SPVM::", 6);
+        memcpy(new_package_var_name + 1 + 6, package_var_name + 1, package_var_name_length - 1);
+
+        // create new package_var_name op
+        SPVM_OP* op_package_var_name_new = SPVM_OP_new_op_name(compiler, new_package_var_name, op_package_var_name->file, op_package_var_name->line);
+        op_package_var_name = op_package_var_name_new;
+        package_var_name = new_package_var_name;
+      }
+    }
+  }
+
   SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, op_package_var_name->file, op_package_var_name->line);
 
   SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_PACKAGE_VAR_ACCESS_new(compiler);

@@ -7,6 +7,8 @@ Revision history for SPVM
           For this, Many documents of tutorial, examples, etc are changed. Sorry.
         * If the name is package name which start with upper case and the name is not start "SPVM::",
           add "SPVM::" to the package name
+        * If a packag variable access contains :: and start with $ + upper case, and the name is not start "$SPVM::",
+          insert "SPVM::" to the package name after $
         [BUGFIXES]
         * None
 

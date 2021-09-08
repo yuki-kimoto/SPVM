@@ -17,7 +17,7 @@
 int32_t main(int32_t argc, const char *argv[]) {
   
   // Package name
-  const char* package_name = "Main";
+  const char* package_name = "SPVM::Main";
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
