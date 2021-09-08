@@ -86,7 +86,7 @@ sub bind_to_perl {
   for my $class_name (@$added_class_names) {
     $class_name =~ s/^SPVM:://;
     my $perl_package_name = "SPVM::$class_name";
-
+    
     unless ($class_name_h->{$class_name}) {
     
       my $code = "package $perl_package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
@@ -98,7 +98,7 @@ sub bind_to_perl {
       $class_name_h->{$class_name} = 1;
     }
 
-    my $method_names = $builder->get_method_names($perl_package_name);
+    my $method_names = $builder->get_method_names($class_name);
 
     for my $method_name (@$method_names) {
       # Destrutor is skip
@@ -118,7 +118,7 @@ sub bind_to_perl {
         SPVM::init() unless $SPVM_INITED;
 
         my $return_value;
-        eval { $return_value = SPVM::call_spvm_method($perl_package_name, $method_name, @_) };
+        eval { $return_value = SPVM::call_spvm_method($class_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
