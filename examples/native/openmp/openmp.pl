@@ -4,9 +4,9 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'MyOpenMP';
+use SPVM 'SPVM::MyOpenMP';
 
 # Initialize SPVM
 
 
-MyOpenMP->test;
+SPVM::MyOpenMP->test;

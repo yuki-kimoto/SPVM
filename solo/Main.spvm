@@ -1,6 +1,0 @@
-package Main {
-  use SPVM::TestCase;
-  sub main : int ($args : string[]) {
-    SPVM::TestCase->main($args);
-  }
-}

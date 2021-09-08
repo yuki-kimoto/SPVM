@@ -297,8 +297,8 @@ SPVM - Static Perl Virtual Machine. Fast Calculation, Fast Array Operation, and 
 
 SPVM Module:
 
-  # lib/MyMath.spvm
-  package MyMath {
+  # lib/SPVM/MyMath.spvm
+  package SPVM::MyMath {
     sub sum : int ($nums : int[]) {
 
       my $total = 0;
@@ -318,24 +318,24 @@ Call SPVM method from Perl
   use FindBin;
   use lib "$FindBin::Bin/lib";
 
-  use SPVM 'MyMath';
+  use SPVM 'SPVM::MyMath';
 
   # Call method
-  my $total = MyMath->sum([3, 6, 8, 9]);
+  my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 
   print "Total: $total\n";
 
   # Call method with packed data
   my $nums_packed = pack('l*', 3, 6, 8, 9);
   my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-  my $total_packed = MyMath->sum($sv_nums);
+  my $total_packed = SPVM::MyMath->sum($sv_nums);
 
   print "Total Packed: $total_packed\n";
 
 Precompiled SPVM Method. This code is converted to C language and then converted to a shared library.
 
-  # lib/MyMath.spvm
-  package MyMath : precompile {
+  # lib/SPVM/MyMath.spvm
+  package SPVM::MyMath : precompile {
     sub sum : int ($nums : int[]) {
 
       my $total = 0;

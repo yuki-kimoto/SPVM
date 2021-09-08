@@ -4,7 +4,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 use Benchmark qw/timethese cmpthese/;
 
-use SPVM 'MyMath';
+use SPVM 'SPVM::MyMath';
 
 # Initialize SPVM
 
@@ -14,9 +14,9 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 use Benchmark qw/timethese cmpthese/;
 
-use SPVM 'MyMath';
-use SPVM 'MyMathPrecompile';
-use SPVM 'MyMathNative';
+use SPVM 'SPVM::MyMath';
+use SPVM 'SPVM::MyMathPrecompile';
+use SPVM 'SPVM::MyMathNative';
 
 my $bench_count = 10000;
 my $loop_count = 100000;
@@ -25,13 +25,13 @@ my $result = timethese($bench_count, {
     perl_sum($loop_count);
   },
   spvm_sum => sub {
-    MyMath->spvm_sum($loop_count);
+    SPVM::MyMath->spvm_sum($loop_count);
   },
   spvm_sum_precompile => sub {
-    MyMathPrecompile->spvm_sum($loop_count);
+    SPVM::MyMathPrecompile->spvm_sum($loop_count);
   },
   spvm_sum => sub {
-    MyMathNative->spvm_sum($loop_count);
+    SPVM::MyMathNative->spvm_sum($loop_count);
   },
 });
 

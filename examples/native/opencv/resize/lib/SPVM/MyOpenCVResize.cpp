@@ -6,7 +6,7 @@
 
 extern "C" {
 
-int32_t SPNATIVE__MyOpenCVResize__resize(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__MyOpenCVResize__resize(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   using namespace cv;
 

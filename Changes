@@ -4,7 +4,8 @@ Revision history for SPVM
         * Exchange API call method string arugment copy count is reduced
         * Remove SPVM::Unicode UTF-16 related methods because I concentrate UTF-8 and Unicode
         * The name of SPVM module must start SPVM::, otherwise a compile error occurs.
-        
+          For this, Many documents of tutorial, examples, etc are changed. Sorry.
+          
         [BUGFIXES]
         * None
 

@@ -1,9 +1,9 @@
 benchmark/benchmark-synopsys.pl
-benchmark/lib/MyMath.spvm
-benchmark/lib/MyMathNative.c
-benchmark/lib/MyMathNative.config
-benchmark/lib/MyMathNative.spvm
-benchmark/lib/MyMathPrecompile.spvm
+benchmark/lib/SPVM/MyMath.spvm
+benchmark/lib/SPVM/MyMathNative.c
+benchmark/lib/SPVM/MyMathNative.config
+benchmark/lib/SPVM/MyMathNative.spvm
+benchmark/lib/SPVM/MyMathPrecompile.spvm
 Changes
 ctest/ctest_Makefile.PL
 ctest/README.txt
@@ -636,6 +636,7 @@ t/default/increment.t
 t/default/inline.t
 t/default/isa.t
 t/default/lexical_var.t
+t/default/lib/PackageNameCompileError.spvm
 t/default/lib/SPVM/4foo.spvm
 t/default/lib/SPVM/EmptyPackage.spvm
 t/default/lib/SPVM/foo.spvm
@@ -718,7 +719,6 @@ t/default/lib/SPVM/TestCase/CompileError/Multiply/RightIsNotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/New/Private.spvm
 t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/OArray/AssignNumericArray.spvm
-t/default/lib/SPVM/TestCase/CompileError/Package/PackageNameDifferntFromModuleName.spvm
 t/default/lib/SPVM/TestCase/CompileError/Package/packagePartNameStartWithUpperCase.spvm
 t/default/lib/SPVM/TestCase/CompileError/PackageVar/OurPackageVarNameColon2Twice.spvm
 t/default/lib/SPVM/TestCase/CompileError/PackageVar/OurPackageVarNameContainsUnderScoreTwice.spvm

@@ -1,4 +1,4 @@
-package MyApp : precompile {
+package SPVM::MyApp : precompile {
   sub main : int ($args : string[]) {
     my $total = 0;
     for (my $i = 0; $i < 100000; $i++) {

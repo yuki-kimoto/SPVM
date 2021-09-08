@@ -18,13 +18,13 @@ You can call all methods declaraed in the package.
 
 =head1 SYNOPSYS
 
-  # lib/Point.spvm
-  package Point {
+  # lib/SPVM/Point.spvm
+  package SPVM::Point {
     haz x : int;
     haz y : int;
     
-    sub new : Point ($x : int, $y : int) {
-      my $self = new Point;
+    sub new : SPVM::Point ($x : int, $y : int) {
+      my $self = new SPVM::Point;
       
       $self->{x} = $x;
       $self->{y} = $y;
@@ -49,9 +49,9 @@ You can call all methods declaraed in the package.
   # main.pl
   use FindBin;
   use lib "$FindBin::lib";
-  use SPVM 'Point';
+  use SPVM 'SPVM::Point';
   
-  my $point = Point->new;
+  my $point = SPVM::Point->new;
   $point->set_x(4);
   my $x = $point->x;
   $point->clear;

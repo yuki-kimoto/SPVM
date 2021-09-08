@@ -12,25 +12,25 @@ SPVM Exchange API is APIs to convert Perl data structures to/from SPVM data stru
 
 If you load SVPM module from Perl, use the following syntax.
 
-  use SPVM 'Foo';
+  use SPVM 'SPVM::Foo';
 
-Suppose the following C<Foo.spvm> is placed on a module search path.
+Suppose the following C<SPVM/Foo.spvm> is placed on a module search path.
 
-  # Foo.spvm
-  package Foo {
+  # SPVM/Foo.spvm
+  package SPVM::Foo {
     sub sum : int ($x1: int, $x2: int) {
       return $x1 + $x2;
     }
   }
 
-If you load C<Foo::Bar> module, do the following.
+If you load C<SPVM::Foo::Bar> module, do the following.
 
-  use SPVM 'Foo::Bar';
+  use SPVM 'SPVM::Foo::Bar';
 
-Suppose the following C<Foo/Bar.spvm> is placed on a module search path.
+Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a module search path.
 
-  # Foo/Bar.spvm
-  package Foo::Bar {
+  # SPVM/Foo/Bar.spvm
+  package SPVM::Foo::Bar {
     sub sum : int ($x1: int, $x2: int) {
       return $x1 + $x2;
     }
@@ -50,14 +50,14 @@ The method of SPVM module can be called from Perl directory.
 
 Let's call SPVM static method from Perl.
 
-  use SPVM 'Foo';
+  use SPVM 'SPVM::Foo';
 
-  my $total = Foo->sum(1, 2);
+  my $total = SPVM::Foo->sum(1, 2);
 
-The definition of C<Foo> module is the following.
+The definition of C<SPVM::Foo> module is the following.
 
-  # Foo.spvm
-  package Foo {
+  # SPVM/Foo.spvm
+  package SPVM::Foo {
     sub sum : int ($x1: int, $x2: int) {
       return $x1 + $x2;
     }
@@ -77,18 +77,18 @@ The SPVM exception is converted to a Perl exception.
 
 Let's call SPVM instance method from Perl.
 
-  use SPVM 'Foo';
+  use SPVM 'SPVM::Foo';
 
-  my $foo = Foo->new;
+  my $foo = SPVM::Foo->new;
 
   my $total = $foo->sum(1, 2);
 
-The definition of C<Foo> module is the following.
+The definition of C<SPVM::Foo> module is the following.
 
-  # Foo.spvm
-  package Foo {
-    sub new : Foo () {
-      return new Foo;
+  # SPVM/Foo.spvm
+  package SPVM::Foo {
+    sub new : SPVM::Foo () {
+      return new SPVM::Foo;
     }
 
     sub sum : int ($self: self, $x1: int, $x2: int) (
@@ -237,21 +237,21 @@ If the type is invalid, a exception occurs.
 If the argument type in the SPVM Method definition was a Multi Numeric Type, the argument value must be a hash reference and the key must contain all Multi Numeric field names. Otherwise, an Exception will be raised. The value of the hash reference is <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">The rule that converts the scalar value of Perl to the Numeric Type of SPVM</a> Is converted to a value.
 
   # SPVM Method definition
-  package Foo {
+  package SPVM::Foo {
     sub call_complex_float : void ($z: SPVM::Complex_2f);
     sub call_complex_double : void ($z: SPVM::Complex_2d);
   }
 
   # Call from Perl
-  Foo->call_complex_float({re => 2.3, im => 5.6});
-  Foo->call_complex_double({re => 2.3, im => 5.6});
+  SPVM::Foo->call_complex_float({re => 2.3, im => 5.6});
+  SPVM::Foo->call_complex_double({re => 2.3, im => 5.6});
   
 =head3 Perl Refernce to SPVM Numeric Reference Type
 
 If the argument type in the SPVM Method definition was a Numeric Reference Type, the argument value must be a scalar reference. Otherwise, an Exception will be raised.
 
   # SPVM Method definition
-  package Foo {
+  package SPVM::Foo {
     sub call_byte_ref : void ($num: byte&);
     sub call_short_ref : void ($num: short&);
     sub call_int_ref : void ($num: int&);
@@ -262,22 +262,22 @@ If the argument type in the SPVM Method definition was a Numeric Reference Type,
 
   # Call from Perl
   my $num_byte = 23;
-  Foo->call_byte_ref(\$num_byte);
+  SPVM::Foo->call_byte_ref(\$num_byte);
 
   my $num_short = 23;
-  Foo->call_short_ref(\$num_short);
+  SPVM::Foo->call_short_ref(\$num_short);
 
   my $num_int = 23;
-  Foo->call_int_ref(\$num_int);
+  SPVM::Foo->call_int_ref(\$num_int);
 
   my $num_long = 23;
-  Foo->call_long_ref(\$num_long);
+  SPVM::Foo->call_long_ref(\$num_long);
 
   my $num_float = 23;
-  Foo->call_float_ref(\$num_float);
+  SPVM::Foo->call_float_ref(\$num_float);
 
   my $num_double = 23;
-  Foo->call_double_ref(\$num_double);
+  SPVM::Foo->call_double_ref(\$num_double);
 
 If the argument type in the SPVM Method definition was a Multi Numeric Reference Type, the argument value is a hash reference reference and the key contains all Multi Numeric field names. is needed. Otherwise, an Exception will be raised.
 

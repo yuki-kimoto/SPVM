@@ -7,12 +7,12 @@ use lib "../../../lib";
 
 die unless -d "../../../lib";
 
-use SPVM 'MyGSL';
+use SPVM 'SPVM::MyGSL';
 
 # Initialize SPVM
 
 
-MyGSL->stat;
+SPVM::MyGSL->stat;
 
 =head2 GSL Installation from source
   

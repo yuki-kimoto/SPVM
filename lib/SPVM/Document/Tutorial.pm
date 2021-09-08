@@ -46,13 +46,13 @@ Let's take SPVM for the first time. This is a first simple example. Let's calcur
 
 <h4>Create SPVM module</h4>
 
-Create SPVM module. The extension is "spvm". In this example, the name of SPVM module is "MyMath.spvm".
+Create SPVM module. The extension is "spvm". In this example, the name of SPVM module is "SPVM/MyMath.spvm".
 
-Create "MyMath.spvm" in the "lib" directory, and you write the following code.
+Create "SPVM/MyMath.spvm" in the "lib" directory, and you write the following code.
 
 <pre>
-# lib/MyMath.spvm
-package MyMath {
+# lib/SPVM/MyMath.spvm
+package SPVM::MyMath {
   sub sum : int ($nums : int[]) {
     
     my $total = 0;
@@ -71,7 +71,7 @@ Write <b>Package Definition</b> by <b>package</b> keyword. Unlike Perl, SPVM alw
 
 <pre>
 # Package Definition
-package MyMath {
+package SPVM::MyMath {
 
 }
 </pre>
@@ -83,7 +83,7 @@ See also <a href="/language.html#language-package">Package - SPVM Language Speci
 Write <b>Method Definition</b> by <b>sub</b> keyword. Unlike Perl, SPVM Method Definition have return type and argument types.
   
 <pre>
-package MyMath {
+package SPVM::MyMath {
   # Method Definition
   sub sum : int ($nums : int[]) {
     
@@ -332,17 +332,17 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'MyMath';
+use SPVM 'SPVM::MyMath';
 
 # Call method
-my $total = MyMath->sum([3, 6, 8, 9]);
+my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 
 print "Total: $total\n";
 
 # Call method with packed data
 my $nums_packed = pack('l*', 3, 6, 8, 9);
 my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-my $total_packed = MyMath->sum($sv_nums);
+my $total_packed = SPVM::MyMath->sum($sv_nums);
 
 print "Total Packed: $total_packed\n";
 </pre>
@@ -362,7 +362,7 @@ use lib "$FindBin::Bin/lib";
 use SPVM module.
 
 <pre>
-use SPVM 'MyMath';
+use SPVM 'SPVM::MyMath';
 </pre>
 
 In this place, compilation is not done. Collect SPVM modules.
@@ -373,7 +373,7 @@ Call SPVM Method. It's amazing that SPVM method can be called as Perl method.
 
 <pre>
 # Call method
-my $total = MyMath->sum([3, 6, 8, 9]);
+my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 </pre>
 
 Perl array reference is converted to SPVM int array.
@@ -392,7 +392,7 @@ you can pass packed binary data. SPVM::new_int_array_from_bin create SPVM int ar
 # Call method with packed data
 my $nums_packed = pack('l*', 3, 6, 8, 9);
 my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-my $total_packed = MyMath->sum($sv_nums);
+my $total_packed = SPVM::MyMath->sum($sv_nums);
 </pre>
 
 See <a href="/exchange-api.html">SPVM Exchange API</a> about SPVM Exchange API like SPVM::new_int_array_from_bin.
@@ -413,8 +413,8 @@ If you're searching SPVM for performance reasons, here's what you really want to
 SPVM Module:
 
 <pre>
-# lib/MyMath.spvm
-package MyMath {
+# lib/SPVM/MyMath.spvm
+package SPVM::MyMath {
   sub sum : int ($nums : int[]) {
     
     my $total = 0;
@@ -436,17 +436,17 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'MyMath';
+use SPVM 'SPVM::MyMath';
 
 # Call method
-my $total = MyMath->sum([3, 6, 8, 9]);
+my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
 
 print "Total: $total\n";
 
 # Call method with packed data
 my $nums_packed = pack('l*', 3, 6, 8, 9);
 my $sv_nums = SPVM::new_int_array_from_bin($nums_packed);
-my $total_packed = MyMath->sum($sv_nums);
+my $total_packed = SPVM::MyMath->sum($sv_nums);
 
 print "Total Packed: $total_packed\n";
 </pre>
@@ -454,8 +454,8 @@ print "Total Packed: $total_packed\n";
 Precompiled SPVM Method. This means SPVM code is converted to Machine Code:
 
 <pre>
-# lib/MyMath.spvm
-package MyMath : precompile {
+# lib/SPVM/MyMath.spvm
+package SPVM::MyMath : precompile {
   sub sum_precompile : int ($nums : int[]) {
     
     my $total = 0;
@@ -477,10 +477,10 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'MyMath';
+use SPVM 'SPVM::MyMath';
 
 # Call precompile method
-my $total_precompile = MyMath->sum_precompile([3, 6, 8, 9]);
+my $total_precompile = SPVM::MyMath->sum_precompile([3, 6, 8, 9]);
 
 print "Total Precompile: $total_precompile\n";
 </pre>
@@ -488,15 +488,15 @@ print "Total Precompile: $total_precompile\n";
 SPVM Native Method. This means SPVM method call C/C++ native method:
 
 <pre>
-# lib/MyMath.spvm
-package MyMath {
+# lib/SPVM/MyMath.spvm
+package SPVM::MyMath {
   native sub sum_native : int ($nums : int[]);
 }
 
-// lib/MyMath.c
+// lib/SPVM/MyMath.c
 #include "spvm_native.h"
 
-int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_nums = stack[0].oval;
   
@@ -514,7 +514,7 @@ int32_t SPNATIVE__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-# lib/MyMath.config
+# lib/SPVM/MyMath.config
 
 use strict;
 use warnings;
@@ -534,10 +534,10 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'MyMath';
+use SPVM 'SPVM::MyMath';
 
 # Call native method
-my $total_native = MyMath->sum_native([3, 6, 8, 9]);
+my $total_native = SPVM::MyMath->sum_native([3, 6, 8, 9]);
 
 print "Total Native: $total_native\n";
 </pre>
@@ -581,9 +581,9 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'BindCLib';
+use SPVM 'SPVM::BindCLib';
 
-my $total = BindCLib->sum([1, 2, 3, 4]);
+my $total = SPVM::BindCLib->sum([1, 2, 3, 4]);
 
 print "Total: $total\n";
 </pre>
@@ -591,8 +591,8 @@ print "Total: $total\n";
 SPVM Method Definition.
 
 <pre>
-# lib/BindCLib.spvm
-package BindCLib {
+# lib/SPVM/BindCLib.spvm
+package SPVM::BindCLib {
   native sub sum : int ($nums : int[]);
 }
 </pre>
@@ -600,7 +600,7 @@ package BindCLib {
 Native Config.
 
 <pre>
-# lib/BindCLib.config
+# lib/SPVM/BindCLib.config
 use strict;
 use warnings;
 
@@ -613,12 +613,12 @@ $bconf;
 Call C library from C program.
 
 <pre>
-// lib/BindCLib.c
+// lib/SPVM/BindCLib.c
 #include "spvm_native.h"
 
 #include "bind_clib.h"
 
-int32_t SPNATIVE__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_nums = stack[0].oval;
   
@@ -640,7 +640,7 @@ Notice the line reading the header.
 #include "bind_clib.h"
 </pre>
 
-This header is included from "lib/BindCLib.native/include/bind_clib.h". This is pure C header file.
+This header is included from "lib/SPVM/BindCLib.native/include/bind_clib.h". This is pure C header file.
 
 <pre>
 #include <inttypes.h>
@@ -648,9 +648,9 @@ This header is included from "lib/BindCLib.native/include/bind_clib.h". This is 
 int32_t bind_clib_sum(int32_t* nums, int32_t length);
 </pre>
 
-SPVM sets the include directory("BindCLib.native/include") as the default header file read path.
+SPVM sets the include directory("SPVM/BindCLib.native/include") as the default header file read path.
 
-C library source file is "lib/BindCLib.native/src/bind_clib.c". This is pure C source file.
+C library source file is "lib/SPVM/BindCLib.native/src/bind_clib.c". This is pure C source file.
 
 <pre>
 #include "bind_clib.h"
@@ -666,7 +666,7 @@ int32_t bind_clib_sum(int32_t* nums, int32_t length) {
 }
 </pre>
 
-SPVM compiles all source files in the source directory("BindCLib.native/src"). It can contain multiple source files.
+SPVM compiles all source files in the source directory("SPVM/BindCLib.native/src"). It can contain multiple source files.
 
 <h3>How to bind other C Library to SPVM</h3>
 

@@ -1,4 +1,4 @@
-package MyComplex {
+package SPVM::MyComplex {
   use SPVM::Complex_2f;
   use SPVM::Complex_2d;
   use SPVM::Math (complexf);

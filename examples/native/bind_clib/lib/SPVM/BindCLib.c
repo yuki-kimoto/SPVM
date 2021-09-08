@@ -1,9 +1,9 @@
-// lib/BindCLib.c
+// lib/SPVM/BindCLib.c
 #include "spvm_native.h"
 
 #include "bind_clib.h"
 
-int32_t SPNATIVE__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__SPVM__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_nums = stack[0].oval;
   

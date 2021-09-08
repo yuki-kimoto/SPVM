@@ -1,4 +1,4 @@
-package Eigen {
+package SPVM::MyEigen {
   native sub add3d : double[] ($nums1 : double[], $nums2 : double[]);
   
   sub test : int () {

@@ -20,8 +20,8 @@ Static Perl Virtual Machine. Fast calculation, fast array operation, and easy C/
 ```
 SPVM Module:
 
-  # lib/MyMath.spvm
-  package MyMath {
+  # lib/SPVM/MyMath.spvm
+  package SPVM::MyMath {
     sub sum : int ($nums : int[]) {
       
       my $total = 0;
@@ -40,10 +40,10 @@ Use SPVM Module from Perl
   use FindBin;
   use lib "$FindBin::Bin/lib";
   
-  use SPVM 'MyMath';
+  use SPVM 'SPVM::MyMath';
   
   # Call method
-  my $total = MyMath->sum([3, 6, 8, 9]);
+  my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
   
   print $total . "\n";
 ```

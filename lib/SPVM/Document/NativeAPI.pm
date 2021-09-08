@@ -15,7 +15,7 @@ Native method can be written by C language or C++, If the code is compatible wit
 Native Method Declaration is written using Method Descriptor "native" in SPVM module file. SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
 
   # Foo/Bar.spvm
-  package Foo::Bar {
+  package SPVM::Foo::Bar {
     native sub sum : int ($num1 : int, $num2 : int);
   }
 
@@ -23,8 +23,8 @@ Native Method Declaration is written using Method Descriptor "native" in SPVM mo
 
 SPVM Native Config File must be created for SPVM Native Method. The base name without the extension of native config file must be same as SPVM module file and the extension must be ".config".
 
-  # Native configuration file for Foo::Bar module
-  Foo/Bar.config
+  # Native configuration file for SPVM::Foo::Bar module
+  SPVM/Foo/Bar.config
 
 If native configuration file does not exist, an exception occurs.
 
@@ -130,7 +130,7 @@ Native Config File is Perl source code. Native Config File must return properly 
 
 Native Method Definition is written in native source file. Native source file is basically C language source file which extension is ".c". This extension can be changed to ".cpp" for C++ source file, or ".cu" for CUDA source file, etc.
 
-  # Native source file for Foo::Bar module
+  # Native source file for SPVM::Foo::Bar module
   Foo/Bar.c
 
 The following is natvie source file example written by C language.
@@ -172,7 +172,7 @@ Native Method Definition is a simple C language function such as
 
 The function name starts with "SPNATIVE__".
 
-Followed by package name "Foo__Bar", which is replaced "::" in Foo::Bar.
+Followed by package name "Foo__Bar", which is replaced "::" in SPVM::Foo::Bar.
 
 Followed by "__".
 
@@ -492,11 +492,11 @@ There is a type called pointer type in SPVM, but I will explain how to use it.
 
 The pointer type definition specifies the pointer_t descriptor in the SPVM package definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
 
-  # MyTimeInfo.spvm
-  package MyTimeInfo : pointer_t {
+  # SPVM::MyTimeInfo.spvm
+  package SPVM::MyTimeInfo : pointer_t {
 
     # Constructor
-    native sub new : MyTimeInfo ();
+    native sub new : SPVM::MyTimeInfo ();
 
     # Get second
     native sub sec : int ($self : self);
@@ -509,22 +509,22 @@ It defines a new constructor, a method that takes seconds information called sec
 
 Next is the definition on the C language side.
 
-  # MyTimeInfo.c
+  # SPVM::MyTimeInfo.c
 
-  int32_t SPNATIVE__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPNATIVE__SPVM__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     // Alloc strcut tm
     void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
 
     // Create strcut tm instance
-    void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
+    void* tm_obj = env->new_pointer(env, "SPVM::MyTimeInfo", tm_ptr);
 
     stack[0].oval = tm_obj;
 
     return 0;
   }
 
-  int32_t SPNATIVE__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPNATIVE__SPVM__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
     void* tm_obj = stack[0].oval;
 
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
@@ -534,7 +534,7 @@ Next is the definition on the C language side.
     return 0;
   }
 
-  int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPNATIVE__SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     void* tm_obj = stack[0].oval;
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
@@ -549,10 +549,10 @@ In the constructor new, the memory of "struct tm" is first allocated by the allo
   // Alloc strcut tm
   void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
 
-Next, use the new_pointer function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
+Next, use the new_pointer function to create a new pointer type object with SPVM::MyTimeInfo associated with it in the allocated memory.
 
   // Create strcut tm instance
-  void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
+  void* tm_obj = env->new_pointer(env, "SPVM::MyTimeInfo", tm_ptr);
 
 If you return this as a return value, the constructor is complete.
 
@@ -570,7 +570,7 @@ Next, let's get the value of tm_sec. sec method. The get_pointer function can be
 
 The last is the destructor. Be sure to define a destructor, as the allocated memory will not be released automatically.
 
-  int32_t SPNATIVE__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPNATIVE__SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     void* tm_obj = stack[0].oval;
 
