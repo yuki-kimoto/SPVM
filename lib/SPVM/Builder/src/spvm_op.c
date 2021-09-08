@@ -1643,12 +1643,6 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
   
   if (!package->is_anon) {
-    // If package name start with lower case, compile error occur.
-    // (Invalid example) Foo
-    if (strncmp(package_name, "SPVM::", 6) != 0) {
-      SPVM_COMPILER_error(compiler, "Package name \"%s\" must start with SPVM:: at %s line %d\n", package_name, op_package->file, op_package->line);
-    }
-    
     // If package part name start with lower case, compiler error occur.
     // (Invalid example) Foo::bar
     int32_t package_part_name_is_invalid = 0;
@@ -3020,6 +3014,23 @@ SPVM_OP* SPVM_OP_build_print(SPVM_COMPILER* compiler, SPVM_OP* op_print, SPVM_OP
 SPVM_OP* SPVM_OP_build_basic_type(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   
   const char* name = op_name->uv.name;
+  
+  // If the name is package name which start with upper case, and the name is not start "SPVM::", add "SPVM::" to the package name
+  if (isupper(name[0])) {
+    if (strncmp(name, "SPVM::", 6) != 0) {
+      // create new name
+      int32_t name_length = strlen(name);
+      int32_t new_name_length = name_length + 6;
+      char* new_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, new_name_length + 1);
+      memcpy(new_name, "SPVM::", 6);
+      memcpy(new_name + 6, name, name_length);
+
+      // create new name op
+      SPVM_OP* op_name_new = SPVM_OP_new_op_name(compiler, new_name, op_name->file, op_name->line);
+      op_name = op_name_new;
+      name = new_name;
+    }
+  }
   
   // Type op
   SPVM_TYPE* type = SPVM_TYPE_new(compiler);
