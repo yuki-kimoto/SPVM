@@ -1,4 +1,4 @@
-package SPVM::TestCase::Warn {
+package TestCase::Warn {
 
   sub test_warn : int () {
     warn "Hello";

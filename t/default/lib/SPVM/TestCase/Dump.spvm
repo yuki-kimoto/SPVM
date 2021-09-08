@@ -1,12 +1,12 @@
-package SPVM::TestCase::Dump {
-  use SPVM::TestCase::DumpTest1;
-  use SPVM::StringUtil;
-  use SPVM::TestCase::Point_3b;
-  use SPVM::TestCase::Point_3s;
-  use SPVM::TestCase::Point_3i;
-  use SPVM::TestCase::Point_3l;
-  use SPVM::TestCase::Point_3f;
-  use SPVM::TestCase::Point_3d;
+package TestCase::Dump {
+  use TestCase::DumpTest1;
+  use StringUtil;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
 
   sub dump_string : string () {
     # dump string
@@ -75,7 +75,7 @@ package SPVM::TestCase::Dump {
 
   sub dump_multi_numeric_byte_array : string () {
     # dump numeric byte array
-    my $array = new SPVM::TestCase::Point_3b[2];
+    my $array = new TestCase::Point_3b[2];
     $array->[0]{x} = 1;
     $array->[0]{y} = 2;
     $array->[0]{z} = 3;
@@ -89,7 +89,7 @@ package SPVM::TestCase::Dump {
 
   sub dump_multi_numeric_short_array : string () {
     # dump numeric short array
-    my $array = new SPVM::TestCase::Point_3s[2];
+    my $array = new TestCase::Point_3s[2];
     $array->[0]{x} = 1;
     $array->[0]{y} = 2;
     $array->[0]{z} = 3;
@@ -103,7 +103,7 @@ package SPVM::TestCase::Dump {
 
   sub dump_multi_numeric_int_array : string () {
     # dump numeric int array
-    my $array = new SPVM::TestCase::Point_3i[2];
+    my $array = new TestCase::Point_3i[2];
     $array->[0]{x} = 1;
     $array->[0]{y} = 2;
     $array->[0]{z} = 3;
@@ -117,7 +117,7 @@ package SPVM::TestCase::Dump {
 
   sub dump_multi_numeric_long_array : string () {
     # dump numeric long array
-    my $array = new SPVM::TestCase::Point_3l[2];
+    my $array = new TestCase::Point_3l[2];
     $array->[0]{x} = 1;
     $array->[0]{y} = 2;
     $array->[0]{z} = 3;
@@ -131,7 +131,7 @@ package SPVM::TestCase::Dump {
 
   sub dump_multi_numeric_float_array : string () {
     # dump numeric float array
-    my $array = new SPVM::TestCase::Point_3f[2];
+    my $array = new TestCase::Point_3f[2];
     $array->[0]{x} = 1.1f;
     $array->[0]{y} = 2.1f;
     $array->[0]{z} = 3.1f;
@@ -145,7 +145,7 @@ package SPVM::TestCase::Dump {
 
   sub dump_multi_numeric_double_array : string () {
     # dump numeric double array
-    my $array = new SPVM::TestCase::Point_3d[2];
+    my $array = new TestCase::Point_3d[2];
     $array->[0]{x} = 1.1;
     $array->[0]{y} = 2.1;
     $array->[0]{z} = 3.1;
@@ -172,7 +172,7 @@ package SPVM::TestCase::Dump {
   }
 
   sub dump_object : string () {
-    my $object = new SPVM::TestCase::DumpTest1;
+    my $object = new TestCase::DumpTest1;
     $object->{byte_value} = 1;
     $object->{short_value} = 2;
     $object->{int_value} = 3;
@@ -181,7 +181,7 @@ package SPVM::TestCase::Dump {
     $object->{double_value} = 1.2;
     $object->{string_value} = "a";
     $object->{int_array} = [1, 2, 3];
-    $object->{object_value} = new SPVM::TestCase::DumpTest1;
+    $object->{object_value} = new TestCase::DumpTest1;
     
     my $dump = dump $object;
     
@@ -189,7 +189,7 @@ package SPVM::TestCase::Dump {
   }
 
   sub dump_object_reuse : string () {
-    my $object = new SPVM::TestCase::DumpTest1;
+    my $object = new TestCase::DumpTest1;
     $object->{object_value} = $object;
     
     my $array = [(object)$object, $object, $object];

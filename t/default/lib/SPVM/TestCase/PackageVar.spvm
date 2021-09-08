@@ -1,4 +1,4 @@
-package SPVM::TestCase::PackageVar {
+package TestCase::PackageVar {
   our $lower_var : int;
   
   sub var_brace : int () {

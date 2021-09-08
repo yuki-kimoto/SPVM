@@ -1,22 +1,22 @@
-package SPVM::Hash : precompile {
-  use SPVM::Hash::Entry;
-  use SPVM::NumberUtil (INT32_MAX);
+package Hash : precompile {
+  use Hash::Entry;
+  use NumberUtil (INT32_MAX);
 
   has bucket_count : int;
   has count : ro int;
-  has entries : SPVM::Hash::Entry[];
+  has entries : Hash::Entry[];
 
   private enum {
     _DEFALUT_HASH_TABLE_LENGTH = 16,
   }
   private sub _MAX_LOAD_FACTOR : double () { return 0.75; }
 
-  sub new : SPVM::Hash ($key_values : oarray) {
-    my $self = new SPVM::Hash;
+  sub new : Hash ($key_values : oarray) {
+    my $self = new Hash;
     
     my $default_capacity = 32;
     $self->{bucket_count} = _DEFALUT_HASH_TABLE_LENGTH();
-    $self->{entries} = new SPVM::Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
+    $self->{entries} = new Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
     
     my $length : int;
@@ -97,7 +97,7 @@ package SPVM::Hash : precompile {
   sub delete : object ($self : self, $key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
-    my $prev : SPVM::Hash::Entry = undef;
+    my $prev : Hash::Entry = undef;
     unless ($ref) {
       return undef;
     }
@@ -149,8 +149,8 @@ package SPVM::Hash : precompile {
     return $retval;
   }
 
-  sub copy : SPVM::Hash ($self : self) {
-    my $ret = SPVM::Hash->new({});
+  sub copy : Hash ($self : self) {
+    my $ret = Hash->new({});
     my $keys = $self->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
       $ret->set($keys->[$i], $self->get($keys->[$i]));
@@ -161,25 +161,25 @@ package SPVM::Hash : precompile {
   native sub _murmur_hash : long ($string : string, $seed : int);
 
   sub set_byte : void ($self : self, $name : string, $value : byte) {
-    $self->set($name => SPVM::Byte->new($value));
+    $self->set($name => Byte->new($value));
   }
   sub set_short : void ($self : self, $name : string, $value : short) {
-    $self->set($name => SPVM::Short->new($value));
+    $self->set($name => Short->new($value));
   }
   sub set_int : void ($self : self, $name : string, $value : int) {
-    $self->set($name => SPVM::Int->new($value));
+    $self->set($name => Int->new($value));
   }
   sub set_string : void ($self : self, $name : string, $value : string) {
     $self->set($name => $value);
   }
   sub set_long : void ($self : self, $name : string, $value : long) {
-    $self->set($name => SPVM::Long->new($value));
+    $self->set($name => Long->new($value));
   }
   sub set_float : void ($self : self, $name : string, $value : float) {
-    $self->set($name => SPVM::Float->new($value));
+    $self->set($name => Float->new($value));
   }
   sub set_double : void ($self : self, $name : string, $value : double) {
-    $self->set($name => SPVM::Double->new($value));
+    $self->set($name => Double->new($value));
   }
 
   sub get_byte : byte ($self : self, $name : string) {
@@ -208,7 +208,7 @@ package SPVM::Hash : precompile {
     return $self->{bucket_count};
   }
 
-  sub _entries : SPVM::Hash::Entry [] ($self : self) {
+  sub _entries : Hash::Entry [] ($self : self) {
     return $self->{entries};
   }
 
@@ -217,12 +217,12 @@ package SPVM::Hash : precompile {
     return (int)(_murmur_hash($key, $default_seed) % $bucket_count);
   }
 
-  sub _set_to_container : void ($entries : SPVM::Hash::Entry[], $bucket_count : int, $count_ref : int&,
+  sub _set_to_container : void ($entries : Hash::Entry[], $bucket_count : int, $count_ref : int&,
     $key : string, $val : object) {
     my $index = _index_by_key($key, $bucket_count);
     my $ref = $entries->[$index];
     unless ($ref) {
-      $entries->[$index] = new SPVM::Hash::Entry;
+      $entries->[$index] = new Hash::Entry;
       $entries->[$index]->{key} = $key;
       $entries->[$index]->{val} = $val;
       $entries->[$index]->{next_entry} = undef;
@@ -235,7 +235,7 @@ package SPVM::Hash : precompile {
         return;
       }
       unless ($ref->{next_entry}) {
-        $ref->{next_entry} = new SPVM::Hash::Entry;
+        $ref->{next_entry} = new Hash::Entry;
         $ref->{next_entry}->{key} = $key;
         $ref->{next_entry}->{val} = $val;
         $ref->{next_entry}->{next_entry} = undef;
@@ -249,7 +249,7 @@ package SPVM::Hash : precompile {
   sub _rehash : void ($self : self) {
     my $new_bucket_count : int;
     $new_bucket_count = $self->{bucket_count} * 2;
-    my $new_entries = new SPVM::Hash::Entry [$new_bucket_count];
+    my $new_entries = new Hash::Entry [$new_bucket_count];
     my $new_count = 0;
     # iterate entries
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {

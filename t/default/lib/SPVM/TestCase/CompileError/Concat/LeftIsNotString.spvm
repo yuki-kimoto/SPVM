@@ -1,8 +1,8 @@
-package SPVM::TestCase::CompileError::Concat::LeftIsNotString {
-  use SPVM::TestCase::Minimal;
+package TestCase::CompileError::Concat::LeftIsNotString {
+  use TestCase::Minimal;
   
   sub main : int () {
-    my $minimal : SPVM::TestCase::Minimal;
+    my $minimal : TestCase::Minimal;
     
     $minimal . "abc";
   }

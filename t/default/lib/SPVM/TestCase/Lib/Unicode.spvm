@@ -1,5 +1,5 @@
-package SPVM::TestCase::Lib::SPVM::Unicode {
-  use SPVM::Unicode;
+package TestCase::Lib::Unicode {
+  use Unicode;
 
   sub uchar : int () {
     
@@ -10,7 +10,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
       
       # あ
       {
-        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+        my $uchar = Unicode->uchar($str, \$pos);
 
         unless ($uchar == 0x3042) {
           return 0;
@@ -23,7 +23,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
 
       # a
       {
-        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+        my $uchar = Unicode->uchar($str, \$pos);
 
         unless ($uchar == 'a') {
           return 0;
@@ -36,7 +36,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
 
       # い
       {
-        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+        my $uchar = Unicode->uchar($str, \$pos);
 
         unless ($uchar == 0x3044) {
           return 0;
@@ -49,7 +49,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
       
       # End
       {
-        my $uchar = SPVM::Unicode->uchar($str, \$pos);
+        my $uchar = Unicode->uchar($str, \$pos);
       
         unless ($uchar == -1) {
           return 0;
@@ -63,7 +63,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
       
       my $pos = 0;
       my $i = 0;
-      while ((my $uchar = SPVM::Unicode->uchar($str, \$pos)) >= 0) {
+      while ((my $uchar = Unicode->uchar($str, \$pos)) >= 0) {
         
         unless ($uchar == $code_points->[$i]) {
           return 0;
@@ -84,7 +84,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
       # あ
       {
         my $uchar = 0x3042;
-        my $utf8_bytes = SPVM::Unicode->uchar_to_utf8($uchar);
+        my $utf8_bytes = Unicode->uchar_to_utf8($uchar);
         my $len = length $utf8_bytes;
         unless ($len == 3) {
           return 0;
@@ -97,7 +97,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
       # a
       {
         my $uchar = 'a';
-        my $utf8_bytes = SPVM::Unicode->uchar_to_utf8($uchar);
+        my $utf8_bytes = Unicode->uchar_to_utf8($uchar);
         my $len = length $utf8_bytes;
         unless ($len == 1) {
           return 0;
@@ -110,7 +110,7 @@ package SPVM::TestCase::Lib::SPVM::Unicode {
       # い
       {
         my $uchar = 0x3044;
-        my $utf8_bytes = SPVM::Unicode->uchar_to_utf8($uchar);
+        my $utf8_bytes = Unicode->uchar_to_utf8($uchar);
         my $len = length $utf8_bytes;
         unless ($len == 3) {
           return 0;

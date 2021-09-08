@@ -1,18 +1,18 @@
-package SPVM::TestCase::NativeAPI2 {
+package TestCase::NativeAPI2 {
 
-  use SPVM::Hash;
-  use SPVM::StringList;
+  use Hash;
+  use StringList;
 
-  has first : rw SPVM::TestCase::NativeAPI2;
-  has last : rw SPVM::TestCase::NativeAPI2;
-  has sibparent : rw SPVM::TestCase::NativeAPI2;
+  has first : rw TestCase::NativeAPI2;
+  has last : rw TestCase::NativeAPI2;
+  has sibparent : rw TestCase::NativeAPI2;
   has moresib : rw byte;
   has tag : rw string;
   has id : rw string;
-  has style : rw SPVM::Hash;
+  has style : rw Hash;
   has classes : rw string[];
   has text : rw string;
-  has calcurated_style : rw SPVM::Hash;
+  has calcurated_style : rw Hash;
   has color : rw int;
   has background_color : rw int;
   has draw_left : rw int;
@@ -22,8 +22,8 @@ package SPVM::TestCase::NativeAPI2 {
   has execution_order_before_z_index_sort : rw int;
   has z_index : rw int;
   
-  sub new : SPVM::TestCase::NativeAPI2 () {
-    return new SPVM::TestCase::NativeAPI2;
+  sub new : TestCase::NativeAPI2 () {
+    return new TestCase::NativeAPI2;
   }
   
   sub spvm_extension2 : int () {
@@ -43,7 +43,7 @@ package SPVM::TestCase::NativeAPI2 {
   native sub src_bar : int ();
   
   sub get_string_field : int () {
-    my $na = new SPVM::TestCase::NativeAPI2;
+    my $na = new TestCase::NativeAPI2;
 
     $na->set_text("Hello");
 

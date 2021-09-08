@@ -1,6 +1,6 @@
-package SPVM::EqualityChecker::SameObject {
-  sub new : SPVM::EqualityChecker::SameObject () {
-    return new SPVM::EqualityChecker::SameObject;
+package EqualityChecker::SameObject {
+  sub new : EqualityChecker::SameObject () {
+    return new EqualityChecker::SameObject;
   }
   
   sub : int ($self : self, $object1 : object, $object2 : object) {

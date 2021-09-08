@@ -1,3 +1,3 @@
-package SPVM::TestCase::CompileError::Package::packagePartNameStartWithUpperCase {
+package TestCase::CompileError::Package::packagePartNameStartWithUpperCase {
   
 }

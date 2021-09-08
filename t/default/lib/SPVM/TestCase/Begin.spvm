@@ -1,4 +1,4 @@
-package SPVM::TestCase::Begin {
+package TestCase::Begin {
   
   our $FOO : int;
   

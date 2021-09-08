@@ -1,4 +1,4 @@
-package SPVM::TestCase::ArrayMiddleSize {
+package TestCase::ArrayMiddleSize {
   
   our $MIDDLE_INDEX : int;
   INIT {

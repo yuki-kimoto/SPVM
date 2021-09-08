@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::LogicalOperator::NotNotExpression {
+package TestCase::CompileError::LogicalOperator::NotNotExpression {
   sub main : void () {
     !1;
   }

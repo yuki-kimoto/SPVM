@@ -1,22 +1,22 @@
-package SPVM::TestCase::ValueArray {
-  use SPVM::TestCase::Point_3b;
-  use SPVM::TestCase::Point_3s;
-  use SPVM::TestCase::Point_3i;
-  use SPVM::TestCase::Point_3l;
-  use SPVM::TestCase::Point_3f;
-  use SPVM::TestCase::Point_3d;
+package TestCase::ValueArray {
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
   
-  use SPVM::TestCase::Matrix4_16b;
-  use SPVM::TestCase::Matrix4_16s;
-  use SPVM::TestCase::Matrix4_16i;
-  use SPVM::TestCase::Matrix4_16l;
-  use SPVM::TestCase::Matrix4_16f;
-  use SPVM::TestCase::Matrix4_16d;
+  use TestCase::Matrix4_16b;
+  use TestCase::Matrix4_16s;
+  use TestCase::Matrix4_16i;
+  use TestCase::Matrix4_16l;
+  use TestCase::Matrix4_16f;
+  use TestCase::Matrix4_16d;
   
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   sub value_array_max_fields_byte : int () {
-    my $mat = new SPVM::TestCase::Matrix4_16b[3];
+    my $mat = new TestCase::Matrix4_16b[3];
     
     $mat->[0]{x11} = INT8_MIN();
     $mat->[0]{x21} = 21;
@@ -131,7 +131,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub value_array_max_fields_short : int () {
-    my $mat = new SPVM::TestCase::Matrix4_16s[3];
+    my $mat = new TestCase::Matrix4_16s[3];
     
     $mat->[0]{x11} = INT16_MIN();
     $mat->[0]{x21} = 21;
@@ -247,7 +247,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub value_array_max_fields_int : int () {
-    my $mat = new SPVM::TestCase::Matrix4_16i[3];
+    my $mat = new TestCase::Matrix4_16i[3];
     
     $mat->[0]{x11} = INT32_MIN();
     $mat->[0]{x21} = 21;
@@ -363,7 +363,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub value_array_max_fields_long : int () {
-    my $mat = new SPVM::TestCase::Matrix4_16l[3];
+    my $mat = new TestCase::Matrix4_16l[3];
     
     $mat->[0]{x11} = INT64_MIN();
     $mat->[0]{x21} = 21;
@@ -479,7 +479,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub value_array_max_fields_float : int () {
-    my $mat = new SPVM::TestCase::Matrix4_16f[3];
+    my $mat = new TestCase::Matrix4_16f[3];
     
     $mat->[0]{x11} = FLT_MIN();
     $mat->[0]{x21} = 21;
@@ -595,7 +595,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub value_array_max_fields_double : int () {
-    my $mat = new SPVM::TestCase::Matrix4_16d[3];
+    my $mat = new TestCase::Matrix4_16d[3];
     
     $mat->[0]{x11} = DBL_MIN();
     $mat->[0]{x21} = 21;
@@ -711,12 +711,12 @@ package SPVM::TestCase::ValueArray {
   }
   
   sub array_byte : int () {
-    my $nums1 = new SPVM::TestCase::Point_3b[10];
+    my $nums1 = new TestCase::Point_3b[10];
     $nums1->[9]{x} = (byte)INT8_MIN();
     $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
     $nums1->[9]{z} = (byte)(INT8_MIN() + 2);
     
-    my $nums2 = new SPVM::TestCase::Point_3b[10];
+    my $nums2 = new TestCase::Point_3b[10];
     $nums2->[3] = $nums1->[9];
     
     my $x = $nums2->[3]{x};
@@ -732,12 +732,12 @@ package SPVM::TestCase::ValueArray {
 
   sub array_short : int () {
     
-    my $nums1 = new SPVM::TestCase::Point_3s[10];
+    my $nums1 = new TestCase::Point_3s[10];
     $nums1->[9]{x} = (short)INT16_MIN();
     $nums1->[9]{y} = (short)(INT16_MIN() + 1);
     $nums1->[9]{z} = (short)(INT16_MIN() + 2);
     
-    my $nums2 = new SPVM::TestCase::Point_3s[10];
+    my $nums2 = new TestCase::Point_3s[10];
     $nums2->[3] = $nums1->[9];
     
     my $x = $nums2->[3]{x};
@@ -752,12 +752,12 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub array_int : int () {
-    my $nums1 = new SPVM::TestCase::Point_3i[10];
+    my $nums1 = new TestCase::Point_3i[10];
     $nums1->[9]{x} = INT32_MIN();
     $nums1->[9]{y} = INT32_MIN() + 1;
     $nums1->[9]{z} = INT32_MIN() + 2;
     
-    my $nums2 = new SPVM::TestCase::Point_3i[10];
+    my $nums2 = new TestCase::Point_3i[10];
     $nums2->[3] = $nums1->[9];
     
     my $x = $nums2->[3]{x};
@@ -772,12 +772,12 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub array_long : int () {
-    my $nums1 = new SPVM::TestCase::Point_3l[10];
+    my $nums1 = new TestCase::Point_3l[10];
     $nums1->[9]{x} = INT64_MIN();
     $nums1->[9]{y} = INT64_MIN() + 1;
     $nums1->[9]{z} = INT64_MIN() + 2;
     
-    my $nums2 = new SPVM::TestCase::Point_3l[10];
+    my $nums2 = new TestCase::Point_3l[10];
     $nums2->[3] = $nums1->[9];
 
     my $x = $nums2->[3]{x};
@@ -792,12 +792,12 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub array_float : int () {
-    my $nums1 = new SPVM::TestCase::Point_3f[10];
+    my $nums1 = new TestCase::Point_3f[10];
     $nums1->[9]{x} = FLT_MIN();
     $nums1->[9]{y} = FLT_MIN() + 0.25f;
     $nums1->[9]{z} = FLT_MIN() + 0.5f;
     
-    my $nums2 = new SPVM::TestCase::Point_3f[10];
+    my $nums2 = new TestCase::Point_3f[10];
     $nums2->[3] = $nums1->[9];
 
     my $x = $nums2->[3]{x};
@@ -812,12 +812,12 @@ package SPVM::TestCase::ValueArray {
   }
   
   sub array_double : int () {
-    my $nums1 = new SPVM::TestCase::Point_3d[10];
+    my $nums1 = new TestCase::Point_3d[10];
     $nums1->[9]{x} = DBL_MIN();
     $nums1->[9]{y} = DBL_MIN() + 0.25;
     $nums1->[9]{z} = DBL_MIN() + 0.5;
     
-    my $nums2 = new SPVM::TestCase::Point_3d[10];
+    my $nums2 = new TestCase::Point_3d[10];
     $nums2->[3] = $nums1->[9];
 
     my $x = $nums2->[3]{x};
@@ -832,7 +832,7 @@ package SPVM::TestCase::ValueArray {
   }
   
   sub array_field_byte : int () {
-    my $nums = new SPVM::TestCase::Point_3b[10];
+    my $nums = new TestCase::Point_3b[10];
     $nums->[9]{x} = (byte)INT8_MIN();
     $nums->[9]{y} = (byte)(INT8_MIN() + 1);
     $nums->[9]{z} = (byte)(INT8_MIN() + 2);
@@ -850,7 +850,7 @@ package SPVM::TestCase::ValueArray {
 
   sub array_field_short : int () {
     
-    my $nums = new SPVM::TestCase::Point_3s[10];
+    my $nums = new TestCase::Point_3s[10];
     $nums->[9]{x} = (short)INT16_MIN();
     $nums->[9]{y} = (short)(INT16_MIN() + 1);
     $nums->[9]{z} = (short)(INT16_MIN() + 2);
@@ -867,7 +867,7 @@ package SPVM::TestCase::ValueArray {
   }
   
   sub array_field_int : int () {
-    my $nums = new SPVM::TestCase::Point_3i[10];
+    my $nums = new TestCase::Point_3i[10];
     $nums->[9]{x} = INT32_MIN();
     $nums->[9]{y} = INT32_MIN() + 1;
     $nums->[9]{z} = INT32_MIN() + 2;
@@ -884,7 +884,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub array_field_long : int () {
-    my $nums = new SPVM::TestCase::Point_3l[10];
+    my $nums = new TestCase::Point_3l[10];
     $nums->[9]{x} = INT64_MIN();
     $nums->[9]{y} = INT64_MIN() + 1;
     $nums->[9]{z} = INT64_MIN() + 2;
@@ -901,7 +901,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub array_field_float : int () {
-    my $nums = new SPVM::TestCase::Point_3f[10];
+    my $nums = new TestCase::Point_3f[10];
     $nums->[9]{x} = FLT_MIN();
     $nums->[9]{y} = FLT_MIN() + 0.25f;
     $nums->[9]{z} = FLT_MIN() + 0.5f;
@@ -918,7 +918,7 @@ package SPVM::TestCase::ValueArray {
   }
   
   sub array_field_double : int () {
-    my $nums = new SPVM::TestCase::Point_3d[10];
+    my $nums = new TestCase::Point_3d[10];
     $nums->[9]{x} = DBL_MIN();
     $nums->[9]{y} = DBL_MIN() + 0.25;
     $nums->[9]{z} = DBL_MIN() + 0.5;
@@ -935,7 +935,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub move_byte : int () {
-    my $nums1 = new SPVM::TestCase::Point_3b[10];
+    my $nums1 = new TestCase::Point_3b[10];
     $nums1->[9]{x} = (byte)INT8_MIN();
     $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
     $nums1->[9]{z} = (byte)(INT8_MIN() + 2);
@@ -955,7 +955,7 @@ package SPVM::TestCase::ValueArray {
 
   sub move_short : int () {
     
-    my $nums1 = new SPVM::TestCase::Point_3s[10];
+    my $nums1 = new TestCase::Point_3s[10];
     $nums1->[9]{x} = (short)INT16_MIN();
     $nums1->[9]{y} = (short)(INT16_MIN() + 1);
     $nums1->[9]{z} = (short)(INT16_MIN() + 2);
@@ -974,7 +974,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub move_int : int () {
-    my $nums1 = new SPVM::TestCase::Point_3i[10];
+    my $nums1 = new TestCase::Point_3i[10];
     $nums1->[9]{x} = INT32_MIN();
     $nums1->[9]{y} = INT32_MIN() + 1;
     $nums1->[9]{z} = INT32_MIN() + 2;
@@ -993,7 +993,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub move_long : int () {
-    my $nums1 = new SPVM::TestCase::Point_3l[10];
+    my $nums1 = new TestCase::Point_3l[10];
     $nums1->[9]{x} = INT64_MIN();
     $nums1->[9]{y} = INT64_MIN() + 1;
     $nums1->[9]{z} = INT64_MIN() + 2;
@@ -1012,7 +1012,7 @@ package SPVM::TestCase::ValueArray {
   }
 
   sub move_float : int () {
-    my $nums1 = new SPVM::TestCase::Point_3f[10];
+    my $nums1 = new TestCase::Point_3f[10];
     $nums1->[9]{x} = FLT_MIN();
     $nums1->[9]{y} = FLT_MIN() + 0.25f;
     $nums1->[9]{z} = FLT_MIN() + 0.5f;
@@ -1031,7 +1031,7 @@ package SPVM::TestCase::ValueArray {
   }
   
   sub move_double : int () {
-    my $nums1 = new SPVM::TestCase::Point_3d[10];
+    my $nums1 = new TestCase::Point_3d[10];
     $nums1->[9]{x} = DBL_MIN();
     $nums1->[9]{y} = DBL_MIN() + 0.25;
     $nums1->[9]{z} = DBL_MIN() + 0.5;

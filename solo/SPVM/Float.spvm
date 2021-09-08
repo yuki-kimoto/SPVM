@@ -1,8 +1,8 @@
-package SPVM::Float {
+package Float {
   has val : ro float;
   
-  sub new : SPVM::Float ($value : float) {
-    my $self = new SPVM::Float;
+  sub new : Float ($value : float) {
+    my $self = new Float;
     
     $self->{val} = $value;
     

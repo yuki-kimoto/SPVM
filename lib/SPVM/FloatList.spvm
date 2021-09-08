@@ -1,5 +1,5 @@
-package SPVM::FloatList : precompile {
-  use SPVM::ArrayUtil (memcpy_float, memmove_float);
+package FloatList : precompile {
+  use ArrayUtil (memcpy_float, memmove_float);
   
   has values   : float[];
   has capacity : int;
@@ -9,8 +9,8 @@ package SPVM::FloatList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : SPVM::FloatList ($array : float[]) {
-    my $self = new SPVM::FloatList;
+  sub new : FloatList ($array : float[]) {
+    my $self = new FloatList;
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -39,8 +39,8 @@ package SPVM::FloatList : precompile {
     return $self;
   }
 
-  sub new_len : SPVM::FloatList ($length : int) {
-    my $self = new SPVM::FloatList;
+  sub new_len : FloatList ($length : int) {
+    my $self = new FloatList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
@@ -217,7 +217,7 @@ package SPVM::FloatList : precompile {
     }
     
     
-    SPVM::ArrayUtil->memcpy_float($self->{values}, 0, $array, 0, $cur_length);
+    ArrayUtil->memcpy_float($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : float ($self : self, $index : int) {

@@ -1,5 +1,5 @@
-package SPVM::ByteList : precompile {
-  use SPVM::ArrayUtil (memcpy_byte, memmove_byte);
+package ByteList : precompile {
+  use ArrayUtil (memcpy_byte, memmove_byte);
   
   has values   : byte[];
   has capacity : int;
@@ -9,8 +9,8 @@ package SPVM::ByteList : precompile {
     DEFAULT_CAPACITY = 16,
   }
   
-  sub new : SPVM::ByteList ($array : byte[]) {
-    my $self = new SPVM::ByteList;
+  sub new : ByteList ($array : byte[]) {
+    my $self = new ByteList;
     
     my $length : int;
     if ($array) {
@@ -41,8 +41,8 @@ package SPVM::ByteList : precompile {
     return $self;
   }
   
-  sub new_len : SPVM::ByteList ($length : int) {
-    my $self = new SPVM::ByteList;
+  sub new_len : ByteList ($length : int) {
+    my $self = new ByteList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
@@ -219,7 +219,7 @@ package SPVM::ByteList : precompile {
     }
     
     
-    SPVM::ArrayUtil->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
+    ArrayUtil->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : byte ($self : self, $index : int) {

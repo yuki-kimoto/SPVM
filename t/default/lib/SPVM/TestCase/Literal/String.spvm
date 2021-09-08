@@ -1,5 +1,5 @@
-package SPVM::TestCase::Literal::String {
-  use SPVM::TestCase::Minimal;
+package TestCase::Literal::String {
+  use TestCase::Minimal;
   
   our $VAR_EXPANSION1 : int;
 
@@ -396,7 +396,7 @@ ef"
     {
       $VAR_EXPANSION1 = 6;
       
-      my $string = "a $SPVM::TestCase::Literal::String::VAR_EXPANSION1 b";
+      my $string = "a $TestCase::Literal::String::VAR_EXPANSION1 b";
       
       unless ($string eq "a 6 b") {
         return 0;
@@ -406,7 +406,7 @@ ef"
     # Field and hash access
     {
       my $nums = [1, 2, 3];
-      my $minimal = SPVM::TestCase::Minimal->new;
+      my $minimal = TestCase::Minimal->new;
       $minimal->{x} = 5;
       
       my $string = "a $nums->[1]b $minimal->{x}c";
@@ -418,11 +418,11 @@ ef"
 
     # Multiple field and array access
     {
-      my $minimals = new SPVM::TestCase::Minimal[11];
-      $minimals->[1] = new SPVM::TestCase::Minimal;
+      my $minimals = new TestCase::Minimal[11];
+      $minimals->[1] = new TestCase::Minimal;
       $minimals->[1]{x} = 5;
 
-      $minimals->[10] = new SPVM::TestCase::Minimal;
+      $minimals->[10] = new TestCase::Minimal;
       $minimals->[10]{x} = 11;
       
       my $string = "a $minimals->[1]{x}b $minimals->[1_0]{x} c";

@@ -1,16 +1,16 @@
-package SPVM::TestCase::Value {
-  use SPVM::TestCase::Matrix4_16b;
-  use SPVM::TestCase::Matrix4_16s;
-  use SPVM::TestCase::Matrix4_16i;
-  use SPVM::TestCase::Matrix4_16l;
-  use SPVM::TestCase::Matrix4_16f;
-  use SPVM::TestCase::Matrix4_16d;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::Value {
+  use TestCase::Matrix4_16b;
+  use TestCase::Matrix4_16s;
+  use TestCase::Matrix4_16i;
+  use TestCase::Matrix4_16l;
+  use TestCase::Matrix4_16f;
+  use TestCase::Matrix4_16d;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
   sub value_max_fields_byte : int () {
-    my $mat1 : SPVM::TestCase::Matrix4_16b;
-    my $mat2 : SPVM::TestCase::Matrix4_16b;
-    my $mat3 : SPVM::TestCase::Matrix4_16b;
+    my $mat1 : TestCase::Matrix4_16b;
+    my $mat2 : TestCase::Matrix4_16b;
+    my $mat3 : TestCase::Matrix4_16b;
     
     $mat1->{x11} = INT8_MIN();
     $mat1->{x21} = 21;
@@ -125,9 +125,9 @@ package SPVM::TestCase::Value {
   }
 
   sub value_max_fields_short : int () {
-    my $mat1 : SPVM::TestCase::Matrix4_16s;
-    my $mat2 : SPVM::TestCase::Matrix4_16s;
-    my $mat3 : SPVM::TestCase::Matrix4_16s;
+    my $mat1 : TestCase::Matrix4_16s;
+    my $mat2 : TestCase::Matrix4_16s;
+    my $mat3 : TestCase::Matrix4_16s;
     
     $mat1->{x11} = INT16_MIN();
     $mat1->{x21} = 21;
@@ -242,9 +242,9 @@ package SPVM::TestCase::Value {
   }
 
   sub value_max_fields_int : int () {
-    my $mat1 : SPVM::TestCase::Matrix4_16i;
-    my $mat2 : SPVM::TestCase::Matrix4_16i;
-    my $mat3 : SPVM::TestCase::Matrix4_16i;
+    my $mat1 : TestCase::Matrix4_16i;
+    my $mat2 : TestCase::Matrix4_16i;
+    my $mat3 : TestCase::Matrix4_16i;
     
     $mat1->{x11} = INT32_MIN();
     $mat1->{x21} = 21;
@@ -359,9 +359,9 @@ package SPVM::TestCase::Value {
   }
 
   sub value_max_fields_long : int () {
-    my $mat1 : SPVM::TestCase::Matrix4_16l;
-    my $mat2 : SPVM::TestCase::Matrix4_16l;
-    my $mat3 : SPVM::TestCase::Matrix4_16l;
+    my $mat1 : TestCase::Matrix4_16l;
+    my $mat2 : TestCase::Matrix4_16l;
+    my $mat3 : TestCase::Matrix4_16l;
     
     $mat1->{x11} = INT64_MIN();
     $mat1->{x21} = 21;
@@ -476,9 +476,9 @@ package SPVM::TestCase::Value {
   }
 
   sub value_max_fields_float : int () {
-    my $mat1 : SPVM::TestCase::Matrix4_16f;
-    my $mat2 : SPVM::TestCase::Matrix4_16f;
-    my $mat3 : SPVM::TestCase::Matrix4_16f;
+    my $mat1 : TestCase::Matrix4_16f;
+    my $mat2 : TestCase::Matrix4_16f;
+    my $mat3 : TestCase::Matrix4_16f;
     
     $mat1->{x11} = FLT_MIN();
     $mat1->{x21} = 21;
@@ -593,9 +593,9 @@ package SPVM::TestCase::Value {
   }
   
   sub value_max_fields_double : int () {
-    my $mat1 : SPVM::TestCase::Matrix4_16d;
-    my $mat2 : SPVM::TestCase::Matrix4_16d;
-    my $mat3 : SPVM::TestCase::Matrix4_16d;
+    my $mat1 : TestCase::Matrix4_16d;
+    my $mat2 : TestCase::Matrix4_16d;
+    my $mat3 : TestCase::Matrix4_16d;
     
     $mat1->{x11} = DBL_MIN();
     $mat1->{x21} = 21;

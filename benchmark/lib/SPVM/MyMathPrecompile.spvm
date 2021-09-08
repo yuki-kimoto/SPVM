@@ -1,4 +1,4 @@
-package SPVM::MyMathPrecompile : precompile {
+package MyMathPrecompile : precompile {
   sub spvm_sum : int ($loop_count : int) {
     
     my $total = 0;

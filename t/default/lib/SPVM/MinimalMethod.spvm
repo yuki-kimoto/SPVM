@@ -1,4 +1,4 @@
-package SPVM::MinimalMethod {
+package MinimalMethod {
   sub foo : void () {
     
   }

@@ -1,7 +1,7 @@
-package SPVM::Hash::Entry {
-  allow SPVM::Hash;
+package Hash::Entry {
+  allow Hash;
 
   has key : string;
   has val : object;
-  has next_entry : SPVM::Hash::Entry;
+  has next_entry : Hash::Entry;
 }

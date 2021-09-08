@@ -1,9 +1,9 @@
-package SPVM::TestCase::Isa {
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Simple;
-  use SPVM::Comparator::Object;
-  use SPVM::Complex_2d;
-  use SPVM::Complex_2f;
+package TestCase::Isa {
+  use TestCase::Minimal;
+  use TestCase::Simple;
+  use Comparator::Object;
+  use Complex_2d;
+  use Complex_2f;
 
   sub isa_any_object_type : int () {
     my $num : object;
@@ -30,13 +30,13 @@ package SPVM::TestCase::Isa {
   }
 
   sub isa_multi_numeric_type : int () {
-    my $num : SPVM::Complex_2d;
+    my $num : Complex_2d;
     
-    unless ($num isa SPVM::Complex_2d) {
+    unless ($num isa Complex_2d) {
       return 0;
     }
     
-    if ($num isa SPVM::Complex_2f) {
+    if ($num isa Complex_2f) {
       return 0;
     }
     
@@ -44,10 +44,10 @@ package SPVM::TestCase::Isa {
   }
   
   sub isa_match_class : int () {
-    my $minimal = SPVM::TestCase::Minimal->new;
-    if ($minimal isa SPVM::TestCase::Minimal) {
+    my $minimal = TestCase::Minimal->new;
+    if ($minimal isa TestCase::Minimal) {
       my $object : object = $minimal;
-      if ($object isa SPVM::TestCase::Minimal) {
+      if ($object isa TestCase::Minimal) {
         return 1;
       }
     }
@@ -56,10 +56,10 @@ package SPVM::TestCase::Isa {
   }
 
   sub isa_match_array : int () {
-    my $minimals = new SPVM::TestCase::Minimal[3];
+    my $minimals = new TestCase::Minimal[3];
     my $nums = new int[3];
     
-    if ($minimals isa SPVM::TestCase::Minimal[]) {
+    if ($minimals isa TestCase::Minimal[]) {
       if ($nums isa int[]) {
         return 1;
       }
@@ -69,8 +69,8 @@ package SPVM::TestCase::Isa {
   }
 
   sub isa_not_match_class : int () {
-    my $minimal = SPVM::TestCase::Minimal->new;
-    if (!($minimal isa SPVM::TestCase::Simple)) {
+    my $minimal = TestCase::Minimal->new;
+    if (!($minimal isa TestCase::Simple)) {
       return 1;
     }
     
@@ -78,9 +78,9 @@ package SPVM::TestCase::Isa {
   }
 
   sub isa_not_match_class_undef : int () {
-    my $minimal : SPVM::TestCase::Minimal = undef;
+    my $minimal : TestCase::Minimal = undef;
     
-    if (!($minimal isa SPVM::TestCase::Minimal)) {
+    if (!($minimal isa TestCase::Minimal)) {
       return 1;
     }
     
@@ -92,9 +92,9 @@ package SPVM::TestCase::Isa {
     my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
       
     };
-    if ($comparator isa SPVM::Comparator::Object) {
+    if ($comparator isa Comparator::Object) {
       my $object : object = $comparator;
-      if ($object isa SPVM::Comparator::Object) {
+      if ($object isa Comparator::Object) {
         return 1;
       }
     }
@@ -103,9 +103,9 @@ package SPVM::TestCase::Isa {
   }
 
   sub isa_not_match_callback_undef : int () {
-    my $comparator : SPVM::Comparator::Object;
+    my $comparator : Comparator::Object;
     
-    if (!($comparator isa SPVM::Comparator::Object)) {
+    if (!($comparator isa Comparator::Object)) {
       return 1;
     }
     
@@ -113,8 +113,8 @@ package SPVM::TestCase::Isa {
   }
 
   sub isa_not_match_callback : int () {
-    my $minimal : SPVM::TestCase::Minimal = SPVM::TestCase::Minimal->new;
-    if (!($minimal isa SPVM::Comparator::Object)) {
+    my $minimal : TestCase::Minimal = TestCase::Minimal->new;
+    if (!($minimal isa Comparator::Object)) {
       return 1;
     }
     

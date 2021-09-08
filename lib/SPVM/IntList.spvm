@@ -1,5 +1,5 @@
-package SPVM::IntList : precompile {
-  use SPVM::ArrayUtil (memcpy_int, memmove_int);
+package IntList : precompile {
+  use ArrayUtil (memcpy_int, memmove_int);
   
   has values   : int[];
   has capacity : int;
@@ -9,8 +9,8 @@ package SPVM::IntList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : SPVM::IntList ($array : int[]) {
-    my $self = new SPVM::IntList;
+  sub new : IntList ($array : int[]) {
+    my $self = new IntList;
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -40,8 +40,8 @@ package SPVM::IntList : precompile {
     return $self;
   }
 
-  sub new_len : SPVM::IntList ($length : int) {
-    my $self = new SPVM::IntList;
+  sub new_len : IntList ($length : int) {
+    my $self = new IntList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
@@ -218,7 +218,7 @@ package SPVM::IntList : precompile {
     }
     
     
-    SPVM::ArrayUtil->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
+    ArrayUtil->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : int ($self : self, $index : int) {

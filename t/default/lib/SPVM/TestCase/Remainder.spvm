@@ -1,4 +1,4 @@
-package SPVM::TestCase::Remainder {
+package TestCase::Remainder {
 
   #
   # Spec tests

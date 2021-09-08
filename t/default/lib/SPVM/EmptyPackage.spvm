@@ -1,2 +1,2 @@
-package SPVM::EmptyPackage {
+package EmptyPackage {
 }

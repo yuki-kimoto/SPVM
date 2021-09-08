@@ -1,11 +1,11 @@
-package SPVM::StringBuffer : precompile {
-  use SPVM::ArrayUtil (copy_array_range_byte);
+package StringBuffer : precompile {
+  use ArrayUtil (copy_array_range_byte);
 
   has value : byte[];
   has length : ro int;
   
-  sub new : SPVM::StringBuffer () {
-    my $self = new SPVM::StringBuffer;
+  sub new : StringBuffer () {
+    my $self = new StringBuffer;
     my $default_capacity = DEFAULT_CAPACITY();
     $self->{value} = new byte [$default_capacity];
     $self->{length} = 0;

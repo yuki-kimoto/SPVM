@@ -1,4 +1,4 @@
-package SPVM::TestCase::LINERN {
+package TestCase::LINERN {
   sub line : int () {
     my $line : int = __LINE__;
     

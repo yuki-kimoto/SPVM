@@ -1,3 +1,3 @@
-package SPVM::TestCase::CompileError::PackageVar::OurPackageVarEndColon2 {
+package TestCase::CompileError::PackageVar::OurPackageVarEndColon2 {
   our $FOO::::BAR : int;
 }

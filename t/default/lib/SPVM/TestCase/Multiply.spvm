@@ -1,4 +1,4 @@
-package SPVM::TestCase::Multiply {
+package TestCase::Multiply {
 
   #
   # Spec tests

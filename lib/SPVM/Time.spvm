@@ -1,13 +1,13 @@
-package SPVM::Time {
-  use SPVM::Time::Info;
-  use SPVM::Math (pow, labs);
+package Time {
+  use Time::Info;
+  use Math (pow, labs);
   
   native sub time : long ();
-  native sub localtime : SPVM::Time::Info ($time : long);
-  native sub gmtime : SPVM::Time::Info ($time : long);
+  native sub localtime : Time::Info ($time : long);
+  native sub gmtime : Time::Info ($time : long);
   
-  native sub timelocal : long ($time_info : SPVM::Time::Info);
-  sub timegm : long ($time_info : SPVM::Time::Info) {
+  native sub timelocal : long ($time_info : Time::Info);
+  sub timegm : long ($time_info : Time::Info) {
       
     my $sec = $time_info->sec;
     my $min = $time_info->min;

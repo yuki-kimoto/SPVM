@@ -1,16 +1,16 @@
-package SPVM::TestCase::Lib::SPVM::NumberUtil {
-  use SPVM::Unicode (uchar);
-  use SPVM::TestCase::Minimal;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
-  use SPVM::TestCase::Minimal;
-  use SPVM::Time (time);
-  use SPVM::EqualityChecker;
-  use SPVM::NumberUtil;
-  use SPVM::EqualityChecker::SameObject;
-  use SPVM::ArrayUtil(equals_array_byte, equals_array_short, equals_array_int, equals_array_long, equals_array_float, equals_array_double, equals_array_string);
+package TestCase::Lib::NumberUtil {
+  use Unicode (uchar);
+  use TestCase::Minimal;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use TestCase::Minimal;
+  use Time (time);
+  use EqualityChecker;
+  use NumberUtil;
+  use EqualityChecker::SameObject;
+  use ArrayUtil(equals_array_byte, equals_array_short, equals_array_int, equals_array_long, equals_array_float, equals_array_double, equals_array_string);
   
-  use SPVM::StringUtil;
-  use SPVM::NumberUtil (
+  use StringUtil;
+  use NumberUtil (
     crand,
     srand,
   );
@@ -41,7 +41,7 @@ package SPVM::TestCase::Lib::SPVM::NumberUtil {
       my $rand = 0.0;
       my $invalid_range = 0;
       for (my $i = 0; $i < 100000; $i++) {
-        $rand = SPVM::NumberUtil->rand();
+        $rand = NumberUtil->rand();
         
         unless ($rand >= 0 && $rand < 1) {
           $invalid_range = 1;
@@ -60,7 +60,7 @@ package SPVM::TestCase::Lib::SPVM::NumberUtil {
       my $founds_minus = new int[10];
       my $rand = 0.0;
       for (my $i = 0; $i < 100000; $i++) {
-        $rand = SPVM::NumberUtil->rand();
+        $rand = NumberUtil->rand();
         
         # 0-9
         my $dig0 = (int)($rand * 10);
@@ -77,7 +77,7 @@ package SPVM::TestCase::Lib::SPVM::NumberUtil {
 
   sub test_RAND_MAX : int () {
     
-    unless (SPVM::NumberUtil->RAND_MAX > 0) {
+    unless (NumberUtil->RAND_MAX > 0) {
       return 1;
     }
 
@@ -151,7 +151,7 @@ package SPVM::TestCase::Lib::SPVM::NumberUtil {
 
   sub test_copy_str : int () {
     my $string = "abc";
-    my $string_out = SPVM::StringUtil->copy_string($string);
+    my $string_out = StringUtil->copy_string($string);
 
     unless ($string_out eq "abc") {
       return 0;

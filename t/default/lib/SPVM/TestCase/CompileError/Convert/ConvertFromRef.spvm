@@ -1,9 +1,9 @@
-package SPVM::TestCase::CompileError::Convert::ConvertFromRef {
-  use SPVM::TestCase::Minimal;
+package TestCase::CompileError::Convert::ConvertFromRef {
+  use TestCase::Minimal;
 
   sub main : int () {
     my $num_int = 1;
     my $num_int_ref = \$num_int;
-    (SPVM::TestCase::Minimal)$num_int_ref;
+    (TestCase::Minimal)$num_int_ref;
   }
 }

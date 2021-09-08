@@ -1,4 +1,4 @@
-package SPVM::TestCase::Precedence {
+package TestCase::Precedence {
   sub basic : int () {
     {
       my $i = 0;

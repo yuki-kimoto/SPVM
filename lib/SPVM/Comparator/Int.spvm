@@ -1,3 +1,3 @@
-package SPVM::Comparator::Int : callback_t {
+package Comparator::Int : callback_t {
   sub : int ($self : self, $a : int, $b : int);
 }

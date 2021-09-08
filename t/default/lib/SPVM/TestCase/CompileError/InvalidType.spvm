@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::InvalidType {
+package TestCase::CompileError::InvalidType {
   sub main : int () {
     my $num : aaa;
   }

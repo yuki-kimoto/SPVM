@@ -1,12 +1,12 @@
-package SPVM::TestCase::Lib::SPVM::StringUtil {
-  use SPVM::Unicode (uchar);
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Minimal;
-  use SPVM::EqualityChecker;
-  use SPVM::EqualityChecker::SameObject;
-  use SPVM::ArrayUtil(equals_array_byte, equals_array_short, equals_array_int, equals_array_long, equals_array_float, equals_array_double, equals_array_string);
+package TestCase::Lib::StringUtil {
+  use Unicode (uchar);
+  use TestCase::Minimal;
+  use TestCase::Minimal;
+  use EqualityChecker;
+  use EqualityChecker::SameObject;
+  use ArrayUtil(equals_array_byte, equals_array_short, equals_array_int, equals_array_long, equals_array_float, equals_array_double, equals_array_string);
 
-  use SPVM::StringUtil (
+  use StringUtil (
     chompr,
     copy_string,
     is_perl_space,
@@ -46,7 +46,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
     # 0
     {
       my $hex_string = (string)"0";
-      my $hex_num = SPVM::StringUtil->hex($hex_string);
+      my $hex_num = StringUtil->hex($hex_string);
       unless ($hex_num isa int) {
         return 0;
       }
@@ -57,51 +57,51 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
 
     # 1-9
     {
-      unless (SPVM::StringUtil->hex("1") == 1) { return 0; }
-      unless (SPVM::StringUtil->hex("2") == 2) { return 0; }
-      unless (SPVM::StringUtil->hex("3") == 3) { return 0; }
-      unless (SPVM::StringUtil->hex("4") == 4) { return 0; }
-      unless (SPVM::StringUtil->hex("5") == 5) { return 0; }
-      unless (SPVM::StringUtil->hex("6") == 6) { return 0; }
-      unless (SPVM::StringUtil->hex("7") == 7) { return 0; }
-      unless (SPVM::StringUtil->hex("8") == 8) { return 0; }
-      unless (SPVM::StringUtil->hex("9") == 9) { return 0; }
+      unless (StringUtil->hex("1") == 1) { return 0; }
+      unless (StringUtil->hex("2") == 2) { return 0; }
+      unless (StringUtil->hex("3") == 3) { return 0; }
+      unless (StringUtil->hex("4") == 4) { return 0; }
+      unless (StringUtil->hex("5") == 5) { return 0; }
+      unless (StringUtil->hex("6") == 6) { return 0; }
+      unless (StringUtil->hex("7") == 7) { return 0; }
+      unless (StringUtil->hex("8") == 8) { return 0; }
+      unless (StringUtil->hex("9") == 9) { return 0; }
     }
 
     # a-z
     {
-      unless (SPVM::StringUtil->hex("a") == 10) { return 0; }
-      unless (SPVM::StringUtil->hex("b") == 11) { return 0; }
-      unless (SPVM::StringUtil->hex("c") == 12) { return 0; }
-      unless (SPVM::StringUtil->hex("d") == 13) { return 0; }
-      unless (SPVM::StringUtil->hex("e") == 14) { return 0; }
-      unless (SPVM::StringUtil->hex("f") == 15) { return 0; }
+      unless (StringUtil->hex("a") == 10) { return 0; }
+      unless (StringUtil->hex("b") == 11) { return 0; }
+      unless (StringUtil->hex("c") == 12) { return 0; }
+      unless (StringUtil->hex("d") == 13) { return 0; }
+      unless (StringUtil->hex("e") == 14) { return 0; }
+      unless (StringUtil->hex("f") == 15) { return 0; }
     }
 
     # A-Z
     {
-      unless (SPVM::StringUtil->hex("A") == 10) { return 0; }
-      unless (SPVM::StringUtil->hex("B") == 11) { return 0; }
-      unless (SPVM::StringUtil->hex("C") == 12) { return 0; }
-      unless (SPVM::StringUtil->hex("D") == 13) { return 0; }
-      unless (SPVM::StringUtil->hex("E") == 14) { return 0; }
-      unless (SPVM::StringUtil->hex("F") == 15) { return 0; }
+      unless (StringUtil->hex("A") == 10) { return 0; }
+      unless (StringUtil->hex("B") == 11) { return 0; }
+      unless (StringUtil->hex("C") == 12) { return 0; }
+      unless (StringUtil->hex("D") == 13) { return 0; }
+      unless (StringUtil->hex("E") == 14) { return 0; }
+      unless (StringUtil->hex("F") == 15) { return 0; }
     }
 
     # 19afAF25
     {
-      unless (SPVM::StringUtil->hex("19afAF25") == 430944037) { return 0; }
-      unless (SPVM::StringUtil->hex("19afAF25") == 430944037) { return 0; }
+      unless (StringUtil->hex("19afAF25") == 430944037) { return 0; }
+      unless (StringUtil->hex("19afAF25") == 430944037) { return 0; }
     }
 
     # FFFFFFFF
     {
-      unless (SPVM::StringUtil->hex("FFFFFFFF") == 0xFFFFFFFF) { return 0; }
+      unless (StringUtil->hex("FFFFFFFF") == 0xFFFFFFFF) { return 0; }
     }
     
     # Exception - undef
     {
-      eval { SPVM::StringUtil->hex(undef); };
+      eval { StringUtil->hex(undef); };
       unless ($@) {
         return 0;
       }
@@ -109,7 +109,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
 
     # Exception - Empty String
     {
-      eval { SPVM::StringUtil->hex(""); };
+      eval { StringUtil->hex(""); };
       unless ($@) {
         return 0;
       }
@@ -117,7 +117,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
 
     # Exception - Invalid hex string
     {
-      eval { SPVM::StringUtil->hex("g"); };
+      eval { StringUtil->hex("g"); };
       unless ($@) {
         return 0;
       }
@@ -125,7 +125,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
 
     # Exception - Too long
     {
-      eval { SPVM::StringUtil->hex("111111111"); };
+      eval { StringUtil->hex("111111111"); };
       unless ($@) {
         return 0;
       }
@@ -140,7 +140,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
     # undef
     {
       my $string = (string)undef;
-      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      my $trimed_string = StringUtil->trim_ascii_space($string);
       unless ($trimed_string == undef) {
         return 0;
       }
@@ -149,7 +149,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
     # no left and right spaces
     {
       my $string = (string)"ab  c";
-      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      my $trimed_string = StringUtil->trim_ascii_space($string);
       unless ($trimed_string eq "ab  c") {
         return 0;
       }
@@ -158,7 +158,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
     # left spaces
     {
       my $string = (string)"  \t  \nab  c";
-      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      my $trimed_string = StringUtil->trim_ascii_space($string);
       unless ($trimed_string eq "ab  c") {
         return 0;
       }
@@ -167,7 +167,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
     # right spaces
     {
       my $string = (string)"ab  c  \t  \n";
-      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      my $trimed_string = StringUtil->trim_ascii_space($string);
       unless ($trimed_string eq "ab  c") {
         return 0;
       }
@@ -176,7 +176,7 @@ package SPVM::TestCase::Lib::SPVM::StringUtil {
     # left and right spaces
     {
       my $string = (string)"  \t  \nab  c  \t  \n";
-      my $trimed_string = SPVM::StringUtil->trim_ascii_space($string);
+      my $trimed_string = StringUtil->trim_ascii_space($string);
       unless ($trimed_string eq "ab  c") {
         return 0;
       }

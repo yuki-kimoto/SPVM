@@ -1,4 +1,4 @@
-package SPVM::TestCase::Minimal : public {
+package TestCase::Minimal : public {
   has x : rw public int;
   has y : rw public int;
 
@@ -6,13 +6,13 @@ package SPVM::TestCase::Minimal : public {
     return $self->{x};
   }
 
-  sub new : SPVM::TestCase::Minimal () {
-    return new SPVM::TestCase::Minimal;
+  sub new : TestCase::Minimal () {
+    return new TestCase::Minimal;
   }
   
-  sub newp : SPVM::TestCase::Minimal ($x : int, $y : int) {
+  sub newp : TestCase::Minimal ($x : int, $y : int) {
     
-    my $minimal = new SPVM::TestCase::Minimal;
+    my $minimal = new TestCase::Minimal;
     $minimal->{x} = $x;
     $minimal->{y} = $y;
     

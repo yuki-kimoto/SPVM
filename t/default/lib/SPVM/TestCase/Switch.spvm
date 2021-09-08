@@ -1,4 +1,4 @@
-package SPVM::TestCase::Switch {
+package TestCase::Switch {
 
   sub switch_return : int () {
     my $ret = switch_return_method();

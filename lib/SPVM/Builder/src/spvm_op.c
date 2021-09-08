@@ -1685,7 +1685,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     if (strcmp(package_name, compiler->cur_rel_file_package_name) != 0) {
       // If package fail load by if (require xxx) syntax, that is ok
       if (!op_type->uv.type->basic_type->fail_load) {
-        SPVM_COMPILER_error(compiler, "Package name \"%s\" is different from the package name corresponding to the module file at %s line %d\n", package_name, op_package->file, op_package->line);
+        SPVM_COMPILER_error(compiler, "Package name \"%s\" is different from the package name corresponding to the module file \"%s\" at %s line %d\n", package_name, compiler->cur_rel_file_package_name, op_package->file, op_package->line);
       }
     }
   }

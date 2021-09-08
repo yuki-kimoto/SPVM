@@ -1,6 +1,6 @@
-package SPVM::Math {
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
+package Math {
+  use Complex_2f;
+  use Complex_2d;
   
   sub abs : int ($x : int) {
     if ($x < 0) {
@@ -24,53 +24,53 @@ package SPVM::Math {
   native sub atanf : float ($x : float);
   native sub atanh : double ($x : double);
   native sub atanhf : float ($x : float);
-  native sub cabs : double ($z : SPVM::Complex_2d);
-  native sub cabsf : float ($z : SPVM::Complex_2f);
-  native sub cacos : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub cacosf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub cacosh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub cacoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub cabs : double ($z : Complex_2d);
+  native sub cabsf : float ($z : Complex_2f);
+  native sub cacos : Complex_2d ($z : Complex_2d);
+  native sub cacosf : Complex_2f ($z : Complex_2f);
+  native sub cacosh : Complex_2d ($z : Complex_2d);
+  native sub cacoshf : Complex_2f ($z : Complex_2f);
   
-  sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
+  sub cadd : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) {
+    my $z_out : Complex_2d;
     $z_out->{re} = $z1->{re} + $z2->{re};
     $z_out->{im} = $z1->{im} + $z2->{im};
     return $z_out;
   }
   
-  sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
+  sub caddf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f) {
+    my $z_out : Complex_2f;
     $z_out->{re} = $z1->{re} + $z2->{re};
     $z_out->{im} = $z1->{im} + $z2->{im};
     return $z_out;
   }
   
-  native sub carg : double ($z : SPVM::Complex_2d);
-  native sub cargf : float ($z : SPVM::Complex_2f);
-  native sub casin : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub casinf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub casinh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub casinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub catan : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub catanf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub catanh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub catanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub carg : double ($z : Complex_2d);
+  native sub cargf : float ($z : Complex_2f);
+  native sub casin : Complex_2d ($z : Complex_2d);
+  native sub casinf : Complex_2f ($z : Complex_2f);
+  native sub casinh : Complex_2d ($z : Complex_2d);
+  native sub casinhf : Complex_2f ($z : Complex_2f);
+  native sub catan : Complex_2d ($z : Complex_2d);
+  native sub catanf : Complex_2f ($z : Complex_2f);
+  native sub catanh : Complex_2d ($z : Complex_2d);
+  native sub catanhf : Complex_2f ($z : Complex_2f);
   native sub cbrt : double ($x : double);
   native sub cbrtf : float ($x : float);
-  native sub ccos : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ccosf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub ccosh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ccoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub ccos : Complex_2d ($z : Complex_2d);
+  native sub ccosf : Complex_2f ($z : Complex_2f);
+  native sub ccosh : Complex_2d ($z : Complex_2d);
+  native sub ccoshf : Complex_2f ($z : Complex_2f);
   
-  sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
+  sub cdiv : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) {
+    my $z_out : Complex_2d;
     $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
     $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
     return $z_out;
   }
   
-  sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
+  sub cdivf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f) {
+    my $z_out : Complex_2f;
     $z_out->{re} = ($z1->{re} * $z2->{re} + $z1->{im} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
     $z_out->{im} = ($z1->{im} * $z2->{re} - $z1->{re} * $z2->{im}) / ($z2->{re} * $z2->{re} + $z2->{im} * $z2->{im});
     return $z_out;
@@ -78,89 +78,89 @@ package SPVM::Math {
   
   native sub ceil : double ($x : double);
   native sub ceilf : float ($x : float);
-  native sub cexp : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub cexpf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub clog : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub clogf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub cexp : Complex_2d ($z : Complex_2d);
+  native sub cexpf : Complex_2f ($z : Complex_2f);
+  native sub clog : Complex_2d ($z : Complex_2d);
+  native sub clogf : Complex_2f ($z : Complex_2f);
   
-  sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
+  sub cmul : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) {
+    my $z_out : Complex_2d;
     $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
     $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
     return $z_out;
   }
   
-  sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
+  sub cmulf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f) {
+    my $z_out : Complex_2f;
     $z_out->{re} = $z1->{re} * $z2->{re} - $z1->{im} * $z2->{im};
     $z_out->{im} = $z1->{re} * $z2->{im} + $z1->{im} * $z2->{re};
     return $z_out;
   }
   
-  sub complex : SPVM::Complex_2d ($x : double, $y : double) {
-    my $z_out : SPVM::Complex_2d;
+  sub complex : Complex_2d ($x : double, $y : double) {
+    my $z_out : Complex_2d;
     $z_out->{re} = $x;
     $z_out->{im} = $y;
     return $z_out;
   }
   
-  sub complexf : SPVM::Complex_2f ($x : float, $y : float) {
-    my $z_out : SPVM::Complex_2f;
+  sub complexf : Complex_2f ($x : float, $y : float) {
+    my $z_out : Complex_2f;
     $z_out->{re} = $x;
     $z_out->{im} = $y;
     return $z_out;
   }
   
-  native sub conj : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub conjf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub conj : Complex_2d ($z : Complex_2d);
+  native sub conjf : Complex_2f ($z : Complex_2f);
   native sub copysign : double ($x1 : double, $x2 : double);
   native sub copysignf : float ($x1 : float, $x2 : float);
   native sub cos : double ($x : double);
   native sub cosf : float ($x : float);
   native sub cosh : double ($x : double);
   native sub coshf : float ($x : float);
-  native sub cpow : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d);
-  native sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f);
+  native sub cpow : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d);
+  native sub cpowf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f);
   
-  sub cscamul : SPVM::Complex_2d ($c : double, $z : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
+  sub cscamul : Complex_2d ($c : double, $z : Complex_2d) {
+    my $z_out : Complex_2d;
     $z_out->{re} = $c * $z->{re};
     $z_out->{im} = $c * $z->{im};
     return $z_out;
   }
   
-  sub cscamulf : SPVM::Complex_2f ($c : float, $z : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
+  sub cscamulf : Complex_2f ($c : float, $z : Complex_2f) {
+    my $z_out : Complex_2f;
     $z_out->{re} = $c * $z->{re};
     $z_out->{im} = $c * $z->{im};
     return $z_out;
   }
   
-  native sub csin : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub csinf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub csinh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub csinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub csqrt : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub csqrtf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub csin : Complex_2d ($z : Complex_2d);
+  native sub csinf : Complex_2f ($z : Complex_2f);
+  native sub csinh : Complex_2d ($z : Complex_2d);
+  native sub csinhf : Complex_2f ($z : Complex_2f);
+  native sub csqrt : Complex_2d ($z : Complex_2d);
+  native sub csqrtf : Complex_2f ($z : Complex_2f);
   
-  sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
-    my $z_out : SPVM::Complex_2d;
+  sub csub : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) {
+    my $z_out : Complex_2d;
     $z_out->{re} = $z1->{re} - $z2->{re};
     $z_out->{im} = $z1->{im} - $z2->{im};
     return $z_out;
   }
   
-  sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f) {
-    my $z_out : SPVM::Complex_2f;
+  sub csubf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f) {
+    my $z_out : Complex_2f;
     $z_out->{re} = $z1->{re} - $z2->{re};
     $z_out->{im} = $z1->{im} - $z2->{im};
     return $z_out;
   }
   
-  native sub ctan : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ctanf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
-  native sub ctanh : SPVM::Complex_2d ($z : SPVM::Complex_2d);
-  native sub ctanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f);
+  native sub ctan : Complex_2d ($z : Complex_2d);
+  native sub ctanf : Complex_2f ($z : Complex_2f);
+  native sub ctanh : Complex_2d ($z : Complex_2d);
+  native sub ctanhf : Complex_2f ($z : Complex_2f);
   sub E : double () { return 0x1.5bf0a8b145769p+1; }
   native sub erf : double ($x : double);
   native sub erfc : double ($x : double);

@@ -1,4 +1,4 @@
-package SPVM::TestCase::Matrix4_16b : mulnum_t {
+package TestCase::Matrix4_16b : mulnum_t {
   has x11 : byte;
   has x21 : byte;
   has x31 : byte;

@@ -1,1 +1,1 @@
-package SPVM::TestCase::Comment::CR {  sub comment : int () {    # Comment    my $foo = 1; # Comment# Comment    unless ($foo == 1) {      return 0;    }        unless (__LINE__ == 12) {      return 0;    }        return 1;  }}# Comment
+package TestCase::Comment::CR {  sub comment : int () {    # Comment    my $foo = 1; # Comment# Comment    unless ($foo == 1) {      return 0;    }        unless (__LINE__ == 12) {      return 0;    }        return 1;  }}# Comment

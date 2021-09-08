@@ -1,4 +1,4 @@
-package SPVM::TestCase::Enum::Data1 {
+package TestCase::Enum::Data1 {
   enum {
     ONE,
     TWO,

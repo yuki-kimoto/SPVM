@@ -1,5 +1,5 @@
-package SPVM::TestCase::Simple : public {
-  use SPVM::TestCase::Minimal;
+package TestCase::Simple : public {
+  use TestCase::Minimal;
   
   has x : rw public int;
   has y : rw public int;
@@ -10,10 +10,10 @@ package SPVM::TestCase::Simple : public {
   has long_value : rw public long;
   has float_value : rw public float;
   has double_value : rw public double;
-  has object_value : rw public SPVM::TestCase::Minimal;
+  has object_value : rw public TestCase::Minimal;
   has string_value : rw public string;
 
-  has minimal : rw public SPVM::TestCase::Minimal;
+  has minimal : rw public TestCase::Minimal;
   
   our $FOO : public rw int;
   our $VAR_PRIVATE : private int;
@@ -22,8 +22,8 @@ package SPVM::TestCase::Simple : public {
     return $self->{x};
   }
 
-  sub new : SPVM::TestCase::Simple () {
-    return new SPVM::TestCase::Simple;
+  sub new : TestCase::Simple () {
+    return new TestCase::Simple;
   }
   
   sub import_method1 : int () {

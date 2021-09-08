@@ -1,6 +1,6 @@
-package SPVM::TestCase::ArrayBigSize {
-  use SPVM::TestCase::Minimal;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::ArrayBigSize {
+  use TestCase::Minimal;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   our $BIG_INDEX : int;
   INIT {

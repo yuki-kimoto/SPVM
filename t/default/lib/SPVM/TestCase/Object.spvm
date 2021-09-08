@@ -1,16 +1,16 @@
-package SPVM::TestCase::Object {
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Simple;
+package TestCase::Object {
+  use TestCase::Minimal;
+  use TestCase::Simple;
   
-  use SPVM::TestCase::Destructor;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use TestCase::Destructor;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   has INT32_MAX : int;
   has next : int;
   
   sub get_field_chain : int () {
-    my $simple = SPVM::TestCase::Simple->new;
-    my $minimal = SPVM::TestCase::Minimal->new;
+    my $simple = TestCase::Simple->new;
+    my $minimal = TestCase::Minimal->new;
     $minimal->set_x(5);
     $simple->set_minimal($minimal);
     
@@ -23,7 +23,7 @@ package SPVM::TestCase::Object {
     return 1;
   }
   sub core_func_name_field_name : int () {
-    my $self = new SPVM::TestCase::Object;
+    my $self = new TestCase::Object;
     $self->{INT32_MAX} = 1;
     
     unless ($self->{INT32_MAX} == 1) {
@@ -34,7 +34,7 @@ package SPVM::TestCase::Object {
   }
 
   sub reserved_word_field_name : int () {
-    my $self = new SPVM::TestCase::Object;
+    my $self = new TestCase::Object;
     $self->{next} = 1;
     
     unless ($self->{next} == 1) {
@@ -48,9 +48,9 @@ package SPVM::TestCase::Object {
   sub DOUBLE_PRECICE : double () { return 65536.5; }
 
   sub isa_basic : int () {
-    my $minimal = SPVM::TestCase::Minimal->new;
-    if ($minimal isa SPVM::TestCase::Minimal) {
-      if (!($minimal isa SPVM::TestCase)) {
+    my $minimal = TestCase::Minimal->new;
+    if ($minimal isa TestCase::Minimal) {
+      if (!($minimal isa TestCase)) {
         return 1;
       }
     }
@@ -59,7 +59,7 @@ package SPVM::TestCase::Object {
   }
 
   sub destructor : int () {
-    my $minimal = SPVM::TestCase::Minimal->new();
+    my $minimal = TestCase::Minimal->new();
     destructor_call($minimal);
     
     if ($minimal->{x} == 3) {
@@ -68,14 +68,14 @@ package SPVM::TestCase::Object {
     return 0;
   }
   
-  sub destructor_call : int ($minimal: SPVM::TestCase::Minimal) {
-    my $dest = SPVM::TestCase::Destructor->new();
+  sub destructor_call : int ($minimal: TestCase::Minimal) {
+    my $dest = TestCase::Destructor->new();
     $dest->{minimal} = $minimal;
   }
   
   # object field is initialized zero
   sub object_field_initialized_zero : int () {
-    my $obj =SPVM::TestCase->new;
+    my $obj =TestCase->new;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
         if ($obj->{x_byte_array} == undef) {
@@ -88,15 +88,15 @@ package SPVM::TestCase::Object {
 
   # object field set and get
   sub object_field_set_and_get : int () {
-    my $test_case =SPVM::TestCase->new;
+    my $test_case =TestCase->new;
     
     $test_case->{x_byte} = INT8_MAX();
     $test_case->{x_short} = INT16_MAX();
     $test_case->{x_int} = INT32_MAX();
     $test_case->{x_long} = INT64_MAX();
-    $test_case->{x_float} = SPVM::TestCase->FLOAT_PRECICE();
-    $test_case->{x_double} = SPVM::TestCase->DOUBLE_PRECICE();
-    my $minimal = SPVM::TestCase::Minimal->new();
+    $test_case->{x_float} = TestCase->FLOAT_PRECICE();
+    $test_case->{x_double} = TestCase->DOUBLE_PRECICE();
+    my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
     
@@ -104,8 +104,8 @@ package SPVM::TestCase::Object {
       if ((int)$test_case->{x_short} == (int)INT16_MAX()) {
         if ($test_case->{x_int} == INT32_MAX()) {
           if ($test_case->{x_long} == INT64_MAX()) {
-            if ($test_case->{x_float} == SPVM::TestCase->FLOAT_PRECICE()) {
-              if ($test_case->{x_double} == SPVM::TestCase->DOUBLE_PRECICE()) {
+            if ($test_case->{x_float} == TestCase->FLOAT_PRECICE()) {
+              if ($test_case->{x_double} == TestCase->DOUBLE_PRECICE()) {
                 if ($test_case->{minimal}->{x} == 3) {
                   return 1;
                 }
@@ -120,7 +120,7 @@ package SPVM::TestCase::Object {
 
   # object field set and get
   sub object_field_set_and_get_again : int () {
-    my $test_case =SPVM::TestCase->new;
+    my $test_case =TestCase->new;
     
     $test_case->{x_byte} = INT8_MAX();
     $test_case->{x_short} = INT16_MAX();
@@ -128,7 +128,7 @@ package SPVM::TestCase::Object {
     $test_case->{x_long} = INT64_MAX();
     $test_case->{x_float} = FLOAT_PRECICE();
     $test_case->{x_double} = DOUBLE_PRECICE();
-    my $minimal = SPVM::TestCase::Minimal->new();
+    my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
 

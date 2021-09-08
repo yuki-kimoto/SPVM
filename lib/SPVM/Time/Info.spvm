@@ -1,4 +1,4 @@
-package SPVM::Time::Info {
+package Time::Info {
   
   has sec : rw int;
   has min : rw int;
@@ -10,7 +10,7 @@ package SPVM::Time::Info {
   has yday : rw int;
   has isdst : rw int;
 
-  sub new : SPVM::Time::Info () {
-    return new SPVM::Time::Info;
+  sub new : Time::Info () {
+    return new Time::Info;
   }
 }

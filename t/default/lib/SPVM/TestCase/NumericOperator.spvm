@@ -1,4 +1,4 @@
-package SPVM::TestCase::NumericOperator {
+package TestCase::NumericOperator {
   # Negate
   sub negate : int () {
     my $num_byte = (byte)1;

@@ -1,6 +1,6 @@
-package SPVM::TestCase::CompileError::Assign::UnboxingDifferentType {
+package TestCase::CompileError::Assign::UnboxingDifferentType {
 
   sub main : int () {
-    my $num : long = SPVM::Int->new(3);
+    my $num : long = Int->new(3);
   }
 }

@@ -1,17 +1,17 @@
-package SPVM::TestCase::Refop {
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Simple;
+package TestCase::Refop {
+  use TestCase::Minimal;
+  use TestCase::Simple;
   
   sub refop : int () {
     {
-      my $minimal = SPVM::TestCase::Minimal->new;
+      my $minimal = TestCase::Minimal->new;
       
       unless (ref $minimal eq "SPVM::TestCase::Minimal") {
         return 0;
       }
     }
     {
-      my $minimal = SPVM::TestCase::Minimal->new;
+      my $minimal = TestCase::Minimal->new;
       my $type_name = ref $minimal;
       
       unless ($type_name eq "SPVM::TestCase::Minimal") {
@@ -19,7 +19,7 @@ package SPVM::TestCase::Refop {
       }
     }
     {
-      my $obj = new SPVM::TestCase::Minimal[3];
+      my $obj = new TestCase::Minimal[3];
       my $type_name = ref $obj;
       
       unless ($type_name eq "SPVM::TestCase::Minimal[]") {
@@ -27,7 +27,7 @@ package SPVM::TestCase::Refop {
       }
     }
     {
-      my $obj = new SPVM::TestCase::Minimal[][3];
+      my $obj = new TestCase::Minimal[][3];
       my $type_name = ref $obj;
       
       unless ($type_name eq "SPVM::TestCase::Minimal[][]") {

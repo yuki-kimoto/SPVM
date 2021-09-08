@@ -1,14 +1,14 @@
-package SPVM::MyComplex {
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
-  use SPVM::Math (complexf);
-  use SPVM::Math (complex);
-  use SPVM::Math (caddf, csubf, cmulf, cscamulf, cdivf);
-  use SPVM::Math (cadd, csub, cmul, cscamul, cdiv);
+package MyComplex {
+  use Complex_2f;
+  use Complex_2d;
+  use Math (complexf);
+  use Math (complex);
+  use Math (caddf, csubf, cmulf, cscamulf, cdivf);
+  use Math (cadd, csub, cmul, cscamul, cdiv);
   
   sub new_float_complex : void () {
     
-    my $z : SPVM::Complex_2f;
+    my $z : Complex_2f;
     $z->{re} = 1.5f;
     $z->{im} = 1.7f;
   }
@@ -18,7 +18,7 @@ package SPVM::MyComplex {
   }
   
   sub new_double_complex : void () {
-    my $z : SPVM::Complex_2d;
+    my $z : Complex_2d;
     $z->{re} = 1.5;
     $z->{im} = 1.7;
   }
@@ -70,7 +70,7 @@ package SPVM::MyComplex {
   }
 
   sub complex_float_array : void () {
-    my $zs = new SPVM::Complex_2f[100];
+    my $zs = new Complex_2f[100];
 
     for (my $i = 0; $i < @$zs; $i++) {
       my $z = $zs->[$i];
@@ -80,7 +80,7 @@ package SPVM::MyComplex {
   }
   
   sub complex_double_array : void () {
-    my $zs = new SPVM::Complex_2d[100];
+    my $zs = new Complex_2d[100];
 
     for (my $i = 0; $i < @$zs; $i++) {
       my $z = $zs->[$i];
@@ -89,7 +89,7 @@ package SPVM::MyComplex {
     }
   }
 
-  sub complex_call_from_perl : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d) {
+  sub complex_call_from_perl : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) {
     
     my $z_ret = cadd($z1, $z2);
     

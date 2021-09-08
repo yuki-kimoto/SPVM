@@ -1,8 +1,8 @@
-package SPVM::TestCase::CompileError::Isa::LeftIsNotObject {
-  use SPVM::TestCase::Minimal;
+package TestCase::CompileError::Isa::LeftIsNotObject {
+  use TestCase::Minimal;
   sub main : int () {
     my $num = 3;
-    if ($num isa SPVM::TestCase::Minimal) {
+    if ($num isa TestCase::Minimal) {
       
     }
   }

@@ -1,5 +1,5 @@
-package SPVM::Regex::Pattern {
-  allow SPVM::Regex;
+package Regex::Pattern {
+  allow Regex;
   
   enum {
     RE_START,

@@ -1,8 +1,8 @@
-package SPVM::Short {
+package Short {
   has val : ro short;
   
-  sub new : SPVM::Short ($value : short) {
-    my $self = new SPVM::Short;
+  sub new : Short ($value : short) {
+    my $self = new Short;
     
     $self->{val} = $value;
     

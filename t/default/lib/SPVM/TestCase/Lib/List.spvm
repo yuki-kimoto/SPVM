@@ -1,19 +1,19 @@
-package SPVM::TestCase::Lib::SPVM::List {
-  use SPVM::Int;
-  use SPVM::List;
-  use SPVM::ArrayUtil (equals_array_object);
-  use SPVM::EqualityChecker::SameObject;
+package TestCase::Lib::List {
+  use Int;
+  use List;
+  use ArrayUtil (equals_array_object);
+  use EqualityChecker::SameObject;
   
   sub new : int () {
     # new with undef
     {
-      my $list = SPVM::List->new(undef);
+      my $list = List->new(undef);
       
       unless ($list->length == 0) {
         return 0;
       }
       
-      $list->push(SPVM::Int->new(1));
+      $list->push(Int->new(1));
       unless ((int)$list->get(0) == 1) {
         return 0;
       }
@@ -30,9 +30,9 @@ package SPVM::TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
+      my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
-      unless (equals_array_object($list->to_array, [$x4, $x1, $x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x4, $x1, $x2, $x3], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -44,9 +44,9 @@ package SPVM::TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
+      my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(2 => $x4);
-      unless (equals_array_object($list->to_array, [$x1, $x2, $x4, $x3], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x2, $x4, $x3], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -58,9 +58,9 @@ package SPVM::TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
+      my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(3 => $x4);
-      unless (equals_array_object($list->to_array, [$x1, $x2, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x2, $x3, $x4], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -72,13 +72,13 @@ package SPVM::TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
 
-      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
+      my $list = List->new([(object)$x1, $x2, $x3]);
       $list->insert(0 => $x4);
     }
     
     # Exception - insert to -1
     eval {
-      my $list = SPVM::List->new([(object)"1", "2", "3"]);
+      my $list = List->new([(object)"1", "2", "3"]);
       $list->insert(-1 => "2");
     };
     unless ($@) {
@@ -88,7 +88,7 @@ package SPVM::TestCase::Lib::SPVM::List {
 
     # Exception - insert to length + 1
     eval {
-      my $list = SPVM::List->new([(object)"1", "2", "3"]);
+      my $list = List->new([(object)"1", "2", "3"]);
       $list->insert(4 => "2");
     };
     unless ($@) {
@@ -107,9 +107,9 @@ package SPVM::TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->new([(object)$x1, $x2, $x3, $x4]);
+      my $list = List->new([(object)$x1, $x2, $x3, $x4]);
       my $value = $list->remove(1);
-      unless (equals_array_object($list->to_array, [$x1, $x3, $x4], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x3, $x4], EqualityChecker::SameObject->new)) {
         return 0;
       }
       unless ($value == $x2) {
@@ -124,9 +124,9 @@ package SPVM::TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
       
-      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
+      my $list = List->new([(object)$x1, $x2, $x3]);
       $list->remove(2);
-      unless (equals_array_object($list->to_array, [$x1, $x2], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x1, $x2], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -138,16 +138,16 @@ package SPVM::TestCase::Lib::SPVM::List {
       my $x3 = "3";
       my $x4 = "4";
 
-      my $list = SPVM::List->new([(object)$x1, $x2, $x3]);
+      my $list = List->new([(object)$x1, $x2, $x3]);
       $list->remove(0);
-      unless (equals_array_object($list->to_array, [$x2, $x3], SPVM::EqualityChecker::SameObject->new)) {
+      unless (equals_array_object($list->to_array, [$x2, $x3], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
 
     # Exception - remove to -1
     eval {
-      my $list = SPVM::List->new([(object)"1", "2", "3"]);
+      my $list = List->new([(object)"1", "2", "3"]);
       $list->remove(-1);
     };
     unless ($@) {
@@ -157,7 +157,7 @@ package SPVM::TestCase::Lib::SPVM::List {
 
     # Exception - remove to length
     eval {
-      my $list = SPVM::List->new([(object)"1", "2", "3"]);
+      my $list = List->new([(object)"1", "2", "3"]);
       $list->remove(3);
     };
     unless ($@) {
@@ -168,7 +168,7 @@ package SPVM::TestCase::Lib::SPVM::List {
     return 1;
   }
 
-  sub equals_list_deeply : int ($got : SPVM::List, $expected : SPVM::List) {
+  sub equals_list_deeply : int ($got : List, $expected : List) {
     my $all_match = 1;
     for (my $i = 0; $i < $expected->length; $i++) {
       unless ($got->get($i) == $expected->get($i)) {
@@ -199,40 +199,40 @@ package SPVM::TestCase::Lib::SPVM::List {
   }
 
   sub length : int () {
-    if (SPVM::List->new_len([], 0)->length != 0) {
+    if (List->new_len([], 0)->length != 0) {
       return 0;
     }
-    if (SPVM::List->new([SPVM::Int->new(1)])->length != 1) {
+    if (List->new([Int->new(1)])->length != 1) {
       return 0;
     }
     return 1;
   }
 
   sub push : int () {
-    my $list = SPVM::List->new_len(new SPVM::Int[0], 0);
+    my $list = List->new_len(new Int[0], 0);
 
-    my $v1 = SPVM::Int->new(1);
+    my $v1 = Int->new(1);
     $list->push($v1);
-    unless (equals_list_deeply($list, SPVM::List->new([$v1]))) {
+    unless (equals_list_deeply($list, List->new([$v1]))) {
       return 0;
     }
     
-    my $v2 = SPVM::Int->new(2);
+    my $v2 = Int->new(2);
     $list->push($v2);
-    unless (equals_list_deeply($list, SPVM::List->new([$v1, $v2]))) {
+    unless (equals_list_deeply($list, List->new([$v1, $v2]))) {
       return 0;
     }
 
-    my $v3 = SPVM::Int->new(3);
+    my $v3 = Int->new(3);
     $list->push($v3);
-    unless (equals_list_deeply($list, SPVM::List->new([$v1, $v2, $v3]))) {
+    unless (equals_list_deeply($list, List->new([$v1, $v2, $v3]))) {
       return 0;
     }
 
     # no reallocation
-    my $v4 = SPVM::Int->new(3);
+    my $v4 = Int->new(3);
     $list->push($v4);
-    unless (equals_list_deeply($list, SPVM::List->new([$v1, $v2, $v3, $v4]))) {
+    unless (equals_list_deeply($list, List->new([$v1, $v2, $v3, $v4]))) {
       return 0;
     }
 
@@ -240,17 +240,17 @@ package SPVM::TestCase::Lib::SPVM::List {
   }
 
   sub pop : int () {
-    my $list = SPVM::List->new([SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
-    unless (((SPVM::Int)$list->pop)->value == 2) {
+    my $list = List->new([Int->new(1), undef, Int->new(2)]);
+    unless (((Int)$list->pop)->value == 2) {
       return 0;
     }
     unless ($list->pop == undef) {
       return 0;
     }
-    unless (((SPVM::Int)$list->pop)->value == 1) {
+    unless (((Int)$list->pop)->value == 1) {
       return 0;
     }
-    unless (equals_list_deeply($list, SPVM::List->new_len([], 0))) {
+    unless (equals_list_deeply($list, List->new_len([], 0))) {
       return 0;
     }
     eval {
@@ -265,24 +265,24 @@ package SPVM::TestCase::Lib::SPVM::List {
   }
 
   sub unshift : int () {
-    my $list = SPVM::List->new_len(new SPVM::Int[0], 1);
+    my $list = List->new_len(new Int[0], 1);
 
-    my $v1 = SPVM::Int->new(1);
+    my $v1 = Int->new(1);
     $list->unshift($v1);
 
-    my $v2 = SPVM::Int->new(2);
+    my $v2 = Int->new(2);
     $list->unshift($v2);
 
-    my $v3 = SPVM::Int->new(3);
+    my $v3 = Int->new(3);
     $list->unshift($v3);
 
-    my $v4 = SPVM::Int->new(4);
+    my $v4 = Int->new(4);
     $list->unshift($v4);
 
-    my $v5 = SPVM::Int->new(5);
+    my $v5 = Int->new(5);
     $list->unshift($v5);
 
-    unless (equals_list_deeply($list, SPVM::List->new([$v5, $v4, $v3, $v2, $v1]))) {
+    unless (equals_list_deeply($list, List->new([$v5, $v4, $v3, $v2, $v1]))) {
       return 0;
     }
 
@@ -290,14 +290,14 @@ package SPVM::TestCase::Lib::SPVM::List {
   }
 
   sub shift : int () {
-    my $list = SPVM::List->new([SPVM::Int->new(1), undef, SPVM::Int->new(2)]);
-    unless (((SPVM::Int)$list->shift)->value == 1) {
+    my $list = List->new([Int->new(1), undef, Int->new(2)]);
+    unless (((Int)$list->shift)->value == 1) {
       return 0;
     }
     unless ($list->shift == undef) {
       return 0;
     }
-    unless (((SPVM::Int)$list->shift)->value == 2) {
+    unless (((Int)$list->shift)->value == 2) {
       return 0;
     }
     eval {
@@ -308,14 +308,14 @@ package SPVM::TestCase::Lib::SPVM::List {
     }
     $@ = undef;
     
-    unless (equals_list_deeply($list, SPVM::List->new(new object[0]))) {
+    unless (equals_list_deeply($list, List->new(new object[0]))) {
       return 0;
     }
     return 1;
   }
 
   sub offset_by_alternate_push_and_shift : int () {
-    my $list = SPVM::List->new_len(new SPVM::Int[0], 4);
+    my $list = List->new_len(new Int[0], 4);
     for (my $i = 0; $i < 16; $i++) {
       $list->push(1);
       $list->shift;
@@ -324,7 +324,7 @@ package SPVM::TestCase::Lib::SPVM::List {
   }
 
   sub offset_by_alternate_unshift_and_pop : int () {
-    my $list = SPVM::List->new_len(new SPVM::Int[0], 4);
+    my $list = List->new_len(new Int[0], 4);
     for (my $i = 0; $i < 16; $i++) {
       $list->unshift(1);
       $list->pop;
@@ -333,18 +333,18 @@ package SPVM::TestCase::Lib::SPVM::List {
   }
 
   sub set : int () {
-    my $list = SPVM::List->new([SPVM::Int->new(1), undef]);
+    my $list = List->new([Int->new(1), undef]);
 
-    my $v1 = SPVM::Int->new(2);
+    my $v1 = Int->new(2);
     $list->set(0, undef);
     $list->set(1, $v1);
-    my $expected = new SPVM::Int[2];
+    my $expected = new Int[2];
     $expected->[1] = $v1;
-    unless (equals_list_deeply($list, SPVM::List->new($expected))) {
+    unless (equals_list_deeply($list, List->new($expected))) {
       return 0;
     }
     
-    eval { $list->set(0, SPVM::Long->new(1)); };
+    eval { $list->set(0, Long->new(1)); };
     unless ($@) {
       return 0;
     }
@@ -356,16 +356,16 @@ package SPVM::TestCase::Lib::SPVM::List {
   sub set_array : int () {
     # Set array
     {
-      my $list = SPVM::List->new(["1", "2", "3"]);
+      my $list = List->new(["1", "2", "3"]);
       $list->set_array(["3", "4", "5"]);
-      unless (SPVM::ArrayUtil->equals_array_string((string[])$list->to_array, ["3", "4", "5"])) {
+      unless (ArrayUtil->equals_array_string((string[])$list->to_array, ["3", "4", "5"])) {
         return 0;
       }
     }
     
     # Exception - Array must be defined
     {
-      my $list = SPVM::List->new(["1", "2", "3"]);
+      my $list = List->new(["1", "2", "3"]);
       eval { $list->set_array(undef); };
       unless ($@) {
         return 0;
@@ -374,7 +374,7 @@ package SPVM::TestCase::Lib::SPVM::List {
 
     # Exception - The length of argument array must be same as the length of current list array
     {
-      my $list = SPVM::List->new(["1", "2", "3"]);
+      my $list = List->new(["1", "2", "3"]);
       eval { $list->set_array(["1", "2", "3", "4"]); };
       unless ($@) {
         return 0;
@@ -387,8 +387,8 @@ package SPVM::TestCase::Lib::SPVM::List {
   }
 
   sub get : int () {
-    my $list = SPVM::List->new([SPVM::Int->new(1), undef]);
-    unless (((SPVM::Int)$list->get(0))->value == 1) {
+    my $list = List->new([Int->new(1), undef]);
+    unless (((Int)$list->get(0))->value == 1) {
       return 0;
     }
     unless ($list->get(1) == undef) {
@@ -399,7 +399,7 @@ package SPVM::TestCase::Lib::SPVM::List {
 
   sub to_array : int () {
     {
-      my $list = SPVM::List->new([(object)"abc", 1, 3.14]);
+      my $list = List->new([(object)"abc", 1, 3.14]);
       my $objects = $list->to_array;
 
       unless ($objects isa object[]) {
@@ -407,17 +407,17 @@ package SPVM::TestCase::Lib::SPVM::List {
       }
 
       unless ((string)($objects->[0]) eq "abc" &&
-          ((SPVM::Int)$objects->[1])->value == 1 &&
-          ((SPVM::Double)$objects->[2])->value == 3.14) {
+          ((Int)$objects->[1])->value == 1 &&
+          ((Double)$objects->[2])->value == 3.14) {
         return 0;
       }
     }
 
     {
-      my $list = SPVM::List->new([SPVM::Int->new(1), SPVM::Int->new(2)]);
-      my $objects = (SPVM::Int[])$list->to_array;
+      my $list = List->new([Int->new(1), Int->new(2)]);
+      my $objects = (Int[])$list->to_array;
 
-      unless ($objects isa SPVM::Int[]) {
+      unless ($objects isa Int[]) {
         return 0;
       }
 
@@ -425,7 +425,7 @@ package SPVM::TestCase::Lib::SPVM::List {
         return 0;
       }
 
-      eval { (SPVM::Long[])$list->to_array; };
+      eval { (Long[])$list->to_array; };
       unless ($@) {
         return 0;
       }
@@ -443,7 +443,7 @@ package SPVM::TestCase::Lib::SPVM::List {
 
     # 3 to 3
     {
-      my $list = SPVM::List->new([]);
+      my $list = List->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -458,7 +458,7 @@ package SPVM::TestCase::Lib::SPVM::List {
     
     # 3 to 0
     {
-      my $list = SPVM::List->new([]);
+      my $list = List->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -471,7 +471,7 @@ package SPVM::TestCase::Lib::SPVM::List {
     
     # 3 to 4
     {
-      my $list = SPVM::List->new([]);
+      my $list = List->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -486,7 +486,7 @@ package SPVM::TestCase::Lib::SPVM::List {
     
     # 3 to 32(over capacity)
     {
-      my $list = SPVM::List->new([]);
+      my $list = List->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -501,7 +501,7 @@ package SPVM::TestCase::Lib::SPVM::List {
 
     # 3 to 2, 2 to 3 again
     {
-      my $list = SPVM::List->new([]);
+      my $list = List->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);
@@ -520,7 +520,7 @@ package SPVM::TestCase::Lib::SPVM::List {
     
     # Exception - New length must be more than or equals to 0
     {
-      my $list = SPVM::List->new([]);
+      my $list = List->new([]);
       $list->push($a);
       $list->push($b);
       $list->push($c);

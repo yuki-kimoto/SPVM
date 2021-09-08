@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::Assign::NarrwoingConvertionLongToShort {
+package TestCase::CompileError::Assign::NarrwoingConvertionLongToShort {
   sub main : int () {
     my $num : short = 32768L;
   }

@@ -1,4 +1,4 @@
-package SPVM::TestCase::Literal::FloatingPoint {
+package TestCase::Literal::FloatingPoint {
 
   # decimal
   sub decimal_all_numbers : int () {

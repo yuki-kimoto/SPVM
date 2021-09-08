@@ -1,5 +1,5 @@
-package SPVM::TestCase::LogicalOperator {
-  use SPVM::TestCase::Minimal;
+package TestCase::LogicalOperator {
+  use TestCase::Minimal;
 
   sub logical_and_nagate : int () {
     if (!(1 && 1)) {
@@ -10,14 +10,14 @@ package SPVM::TestCase::LogicalOperator {
   }
   
   sub logical_and_push_mortal_leave_scope : int () {
-    my $minimals = new SPVM::TestCase::Minimal[4];
-    $minimals->[0] = SPVM::TestCase::Minimal->new;
+    my $minimals = new TestCase::Minimal[4];
+    $minimals->[0] = TestCase::Minimal->new;
     $minimals->[0]{x} = 1;
-    $minimals->[1] = SPVM::TestCase::Minimal->new;
+    $minimals->[1] = TestCase::Minimal->new;
     $minimals->[1]{x} = 2;
-    $minimals->[2] = SPVM::TestCase::Minimal->new;
+    $minimals->[2] = TestCase::Minimal->new;
     $minimals->[2]{x} = 3;
-    $minimals->[3] = SPVM::TestCase::Minimal->new;
+    $minimals->[3] = TestCase::Minimal->new;
     $minimals->[3]{x} = 4;
     
     

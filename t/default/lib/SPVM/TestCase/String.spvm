@@ -1,4 +1,4 @@
-package SPVM::TestCase::String {
+package TestCase::String {
   sub string_access : int () {
     my $string = "abc";
     

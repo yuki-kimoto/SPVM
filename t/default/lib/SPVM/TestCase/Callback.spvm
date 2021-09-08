@@ -1,9 +1,9 @@
-package SPVM::TestCase::Callback {
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Callback::Callback;
-  use SPVM::TestCase::Callback::ImplementCallback1;
-  use SPVM::TestCase::Callback::ImplementCallback2;
-  use SPVM::Comparator::Object;
+package TestCase::Callback {
+  use TestCase::Minimal;
+  use TestCase::Callback::Callback;
+  use TestCase::Callback::ImplementCallback1;
+  use TestCase::Callback::ImplementCallback2;
+  use Comparator::Object;
   
   our $var_prec : int;
   INIT {
@@ -44,7 +44,7 @@ package SPVM::TestCase::Callback {
     return 1;
   }
   
-  sub sort_objectect : void ($values : oarray, $comparator : SPVM::Comparator::Object) {
+  sub sort_objectect : void ($values : oarray, $comparator : Comparator::Object) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
@@ -63,8 +63,8 @@ package SPVM::TestCase::Callback {
   
   sub comparator : int () {
       my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
-        my $minimal1 = (SPVM::TestCase::Minimal)$object1;
-        my $minimal2 = (SPVM::TestCase::Minimal)$object2;
+        my $minimal1 = (TestCase::Minimal)$object1;
+        my $minimal2 = (TestCase::Minimal)$object2;
         
         my $x1 = $minimal1->{x};
         my $x2 = $minimal2->{x};
@@ -80,12 +80,12 @@ package SPVM::TestCase::Callback {
         }
       };
       
-      my $minimals = new SPVM::TestCase::Minimal[3];
-      $minimals->[0] = SPVM::TestCase::Minimal->new;
+      my $minimals = new TestCase::Minimal[3];
+      $minimals->[0] = TestCase::Minimal->new;
       $minimals->[0]{x} = 3;
-      $minimals->[1] = SPVM::TestCase::Minimal->new;
+      $minimals->[1] = TestCase::Minimal->new;
       $minimals->[1]{x} = 1;
-      $minimals->[2] = SPVM::TestCase::Minimal->new;
+      $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
       sort_objectect($minimals, $comparator);
@@ -98,14 +98,14 @@ package SPVM::TestCase::Callback {
   }
 
   sub basic : int () {
-    my $object : object = SPVM::TestCase::Minimal->new;
-    my $implement_callback1 : SPVM::TestCase::Callback::Callback = SPVM::TestCase::Callback::ImplementCallback1->new;
-    my $implement_callback2 : SPVM::TestCase::Callback::Callback = SPVM::TestCase::Callback::ImplementCallback2->new;
+    my $object : object = TestCase::Minimal->new;
+    my $implement_callback1 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback1->new;
+    my $implement_callback2 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback2->new;
     
     my $num1 = $implement_callback1->(0, 0);
     my $num2 = $implement_callback2->(0, 0);
 
-    my $minimal = (SPVM::TestCase::Minimal)$object;
+    my $minimal = (TestCase::Minimal)$object;
     $minimal->{x} = 4;
     
     if ($num1 == 1) {

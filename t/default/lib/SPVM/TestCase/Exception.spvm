@@ -1,10 +1,10 @@
-package SPVM::TestCase::Exception {
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase;
+package TestCase::Exception {
+  use TestCase::Minimal;
+  use TestCase;
   
   sub exception_get_field_object_undef : int () {
     
-    my $test_case : SPVM::TestCase = undef;
+    my $test_case : TestCase = undef;
     
     eval {
       $test_case->{x_byte};
@@ -61,7 +61,7 @@ package SPVM::TestCase::Exception {
   
   sub exception_set_field_object_undef : int () {
     
-    my $test_case : SPVM::TestCase = undef;
+    my $test_case : TestCase = undef;
     
     eval {
       $test_case->{x_byte} = (byte)1;
@@ -154,7 +154,7 @@ package SPVM::TestCase::Exception {
     die "Error";
   }
   
-  sub exception_die_return_object : SPVM::TestCase::Minimal () {
+  sub exception_die_return_object : TestCase::Minimal () {
     die "Error";
   }
   

@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::LexVar::LexVarNameInvalidColon {
+package TestCase::CompileError::LexVar::LexVarNameInvalidColon {
   sub foo : void () {
     my $FOO:BAR = 0;
   }

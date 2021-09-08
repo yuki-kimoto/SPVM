@@ -1,4 +1,4 @@
-package SPVM::MyMath {
+package MyMath {
   sub spvm_sum : int ($loop_count : int) {
     
     my $total = 0;

@@ -1,11 +1,11 @@
-package SPVM::TestCase::IfRequire {
+package TestCase::IfRequire {
   
   sub if_require : int () {
     
     # if require success
     {
       my $foo = 0;
-      if (require SPVM::NumberUtil) {
+      if (require NumberUtil) {
         $foo = 1;
       }
       unless ($foo == 1) {
@@ -17,8 +17,8 @@ package SPVM::TestCase::IfRequire {
     {
       my $foo = 0;
       
-      if (require SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) {
-        new SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
+      if (require NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) {
+        new NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
         $foo = 1;
       }
       
@@ -30,7 +30,7 @@ package SPVM::TestCase::IfRequire {
     # if require else success
     {
       my $foo = 0;
-      if (require SPVM::NumberUtil) {
+      if (require NumberUtil) {
         $foo = 1;
       }
       else {
@@ -44,8 +44,8 @@ package SPVM::TestCase::IfRequire {
      # if require else not success
     {
       my $foo = 0;
-      if (require SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) {
-        new SPVM::NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
+      if (require NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) {
+        new NotExistsXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
         $foo = 1;
       }
       else {

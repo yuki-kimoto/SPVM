@@ -1,4 +1,4 @@
-package SPVM::StringList : precompile {
+package StringList : precompile {
   has values   : string[];
   has capacity : int;
   has length   : ro int;
@@ -7,8 +7,8 @@ package SPVM::StringList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : SPVM::StringList ($array : string[]) {
-    my $self = new SPVM::StringList;
+  sub new : StringList ($array : string[]) {
+    my $self = new StringList;
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -38,8 +38,8 @@ package SPVM::StringList : precompile {
     return $self;
   }
 
-  sub new_len : SPVM::StringList ($length : int) {
-    my $self = new SPVM::StringList;
+  sub new_len : StringList ($length : int) {
+    my $self = new StringList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }

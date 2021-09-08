@@ -1,5 +1,5 @@
-package SPVM::TestCase::While {
-  use SPVM::TestCase::Minimal;
+package TestCase::While {
+  use TestCase::Minimal;
 
   sub condition_my_var_mem_id : int () {
     while (my $uchar = 5) {

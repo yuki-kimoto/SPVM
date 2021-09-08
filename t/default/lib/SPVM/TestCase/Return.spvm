@@ -1,4 +1,4 @@
-package SPVM::TestCase::Return {
+package TestCase::Return {
 
   sub return_implicite_convertion : int () {
     my $str = return_implicite_convertion_stub();
@@ -10,7 +10,7 @@ package SPVM::TestCase::Return {
   }
   
   sub return_implicite_convertion_stub : string () {
-    my $int = SPVM::Int->new(1);
+    my $int = Int->new(1);
     return $int->value;
   }
 }

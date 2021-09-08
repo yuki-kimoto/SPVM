@@ -1,3 +1,3 @@
-package SPVM::TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice {
+package TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice {
   sub Foo__Bar : int () {}
 }

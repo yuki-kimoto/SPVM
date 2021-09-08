@@ -1,5 +1,5 @@
-package SPVM::TestCase::Allow::PrivateData {
-  allow SPVM::TestCase::Allow;
+package TestCase::Allow::PrivateData {
+  allow TestCase::Allow;
   
   our $X : int;
   has x : int;

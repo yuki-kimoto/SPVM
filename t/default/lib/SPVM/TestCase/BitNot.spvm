@@ -1,4 +1,4 @@
-package SPVM::TestCase::BitNot {
+package TestCase::BitNot {
 
   sub bit_not_byte : int () {
     my $value = ~(byte)0xFF;

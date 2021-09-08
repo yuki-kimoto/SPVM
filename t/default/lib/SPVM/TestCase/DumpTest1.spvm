@@ -1,4 +1,4 @@
-package SPVM::TestCase::DumpTest1 : public {
+package TestCase::DumpTest1 : public {
   has byte_value : public byte;
   has short_value : public short;
   has int_value : public int;
@@ -7,5 +7,5 @@ package SPVM::TestCase::DumpTest1 : public {
   has double_value : public double;
   has string_value : public string;
   has int_array : public int[];
-  has object_value : public SPVM::TestCase::DumpTest1;
+  has object_value : public TestCase::DumpTest1;
 }

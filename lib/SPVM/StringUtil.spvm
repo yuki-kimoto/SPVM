@@ -1,13 +1,13 @@
-package SPVM::StringUtil : precompile {
-  use SPVM::Stringer;
-  use SPVM::Cloner;
-  use SPVM::EqualityChecker;
-  use SPVM::StringBuffer;
-  use SPVM::StringList;
-  use SPVM::Unicode (uchar_to_utf8);
-  use SPVM::ArrayUtil;
-  use SPVM::Regex;
-  use SPVM::Math;
+package StringUtil : precompile {
+  use Stringer;
+  use Cloner;
+  use EqualityChecker;
+  use StringBuffer;
+  use StringList;
+  use Unicode (uchar_to_utf8);
+  use ArrayUtil;
+  use Regex;
+  use Math;
   
   sub hex : int ($hex_string : string) {
     
@@ -15,7 +15,7 @@ package SPVM::StringUtil : precompile {
       die "the hex string must be defined";
     }
     
-    my $re = SPVM::Regex->new("^([0-9a-fA-F]{1,8})$");
+    my $re = Regex->new("^([0-9a-fA-F]{1,8})$");
     
     my $hex_value = 0;
     my $digit = 0;
@@ -35,7 +35,7 @@ package SPVM::StringUtil : precompile {
         elsif ($ascii_code >= 'A' && $ascii_code <= 'F') {
           $digit_value = $ascii_code - 55;
         }
-        $value += $digit_value * (int)SPVM::Math->pow(16, $digit);
+        $value += $digit_value * (int)Math->pow(16, $digit);
         
         $digit += 1;
       }
@@ -110,7 +110,7 @@ package SPVM::StringUtil : precompile {
     }
     else {
       if ($string->[$length - 1] == '\n') {
-        $new_string = (string)SPVM::ArrayUtil->copy_array_range_byte((byte[])$string, 0, $length - 1);
+        $new_string = (string)ArrayUtil->copy_array_range_byte((byte[])$string, 0, $length - 1);
       }
       else {
         $new_string = copy_string($string);
@@ -431,7 +431,7 @@ package SPVM::StringUtil : precompile {
       die "Separator must not be empty string";
     }
 
-    my $separated_strings_list = SPVM::StringList->new_len(0);
+    my $separated_strings_list = StringList->new_len(0);
 
     my $match_start = 0;
     my $string_base = 0;
@@ -479,7 +479,7 @@ package SPVM::StringUtil : precompile {
     my $format_length = length $format;
     my $index = 0;
 
-    my $buffer = SPVM::StringBuffer->new;
+    my $buffer = StringBuffer->new;
     my $arg_count = 0;
     my $constant_string_length = 0;
 
@@ -496,7 +496,7 @@ package SPVM::StringUtil : precompile {
 
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = SPVM::StringUtil->methodstr($format, $index, $constant_string_length);
+          my $format_part = StringUtil->methodstr($format, $index, $constant_string_length);
           
           $buffer->push($format_part);
           $index += $constant_string_length;
@@ -512,7 +512,7 @@ package SPVM::StringUtil : precompile {
       else {
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = SPVM::StringUtil->methodstr($format, $index, $constant_string_length);
+          my $format_part = StringUtil->methodstr($format, $index, $constant_string_length);
           $buffer->push($format_part);
           $index += $constant_string_length;
           $constant_string_length = 0;
@@ -591,7 +591,7 @@ package SPVM::StringUtil : precompile {
         my $specifier_char = $format->[$index];
         if ($specifier_char == 'c') {
           ++$index;
-          my $arg = ((SPVM::Byte)$args->[$arg_count])->value;
+          my $arg = ((Byte)$args->[$arg_count])->value;
 
           if ($left_justified) {
             $buffer->push_char($arg);
@@ -632,7 +632,7 @@ package SPVM::StringUtil : precompile {
         }
         elsif ($specifier_char == 'd') {
           ++$index;
-          my $arg = ((SPVM::Int)$args->[$arg_count])->value;
+          my $arg = ((Int)$args->[$arg_count])->value;
           my $digits = new byte[11]; # -2147483648 has 11 digits
           my $digit_count = 0;
           while ($arg > 0) {
@@ -692,7 +692,7 @@ package SPVM::StringUtil : precompile {
         }
         elsif ($specifier_char == 'u') {
           ++$index;
-          my $arg = ((SPVM::Int)$args->[$arg_count])->value & 0xFFFFFFFFL;
+          my $arg = ((Int)$args->[$arg_count])->value & 0xFFFFFFFFL;
           my $digits = new byte[10]; # 4294967295 has 10 digits
           my $digit_count = 0;
           while ($arg > 0) {
@@ -759,7 +759,7 @@ package SPVM::StringUtil : precompile {
           my $is_signed_format = $format->[$index + 1] == 'd';
           $index += 2;
 
-          my $arg = ((SPVM::Long)$args->[$arg_count])->value;
+          my $arg = ((Long)$args->[$arg_count])->value;
           my $digits = new byte[20]; # -9223372036854775808[18446744073709551615] has 20 digits
           my $digit_count = 0;
 
@@ -825,14 +825,14 @@ package SPVM::StringUtil : precompile {
         }
         elsif ($specifier_char == 'f' || $specifier_char == 'g') {
           ++$index;
-          my $arg = (SPVM::Double)$args->[$arg_count];
+          my $arg = (Double)$args->[$arg_count];
           my $specifier_str = methodstr($format, $specifier_base_index, $index - $specifier_base_index);
           my $string = _snsprintf_double($specifier_str, $arg->value);
           $buffer->push($string);
         }
         elsif ($specifier_char == 'U') {
           ++$index;
-          my $arg = (SPVM::Int)$args->[$arg_count];
+          my $arg = (Int)$args->[$arg_count];
           my $utf8 = uchar_to_utf8($arg->value);
           $buffer->push($utf8);
         }
@@ -847,7 +847,7 @@ package SPVM::StringUtil : precompile {
 
     # Add constant string
     if ($constant_string_length > 0) {
-      my $format_part = SPVM::StringUtil->methodstr($format, $index, $constant_string_length);
+      my $format_part = StringUtil->methodstr($format, $index, $constant_string_length);
       $buffer->push($format_part);
       $index += $constant_string_length;
       $constant_string_length = 0;

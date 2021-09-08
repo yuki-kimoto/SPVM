@@ -1,4 +1,4 @@
-package SPVM::TestCase::ModuleContainsMultiPackage::FloatMatrix : public {
+package TestCase::ModuleContainsMultiPackage::FloatMatrix : public {
   has rows_length : public int;
   has columns_length : public int;
   has values : public float[];

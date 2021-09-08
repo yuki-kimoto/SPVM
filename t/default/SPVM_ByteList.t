@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Lib::SPVM::ByteList';
+use SPVM 'SPVM::TestCase::Lib::ByteList';
 
 
 
@@ -15,20 +15,20 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # SPVM::ByteList
 {
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->push);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->pop);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->new);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->new_len);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->unshift);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->shift);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->length);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->get);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->set);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->set_array);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->to_array);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->insert);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->remove);
-  ok(SPVM::TestCase::Lib::SPVM::ByteList->resize);
+  ok(SPVM::TestCase::Lib::ByteList->push);
+  ok(SPVM::TestCase::Lib::ByteList->pop);
+  ok(SPVM::TestCase::Lib::ByteList->new);
+  ok(SPVM::TestCase::Lib::ByteList->new_len);
+  ok(SPVM::TestCase::Lib::ByteList->unshift);
+  ok(SPVM::TestCase::Lib::ByteList->shift);
+  ok(SPVM::TestCase::Lib::ByteList->length);
+  ok(SPVM::TestCase::Lib::ByteList->get);
+  ok(SPVM::TestCase::Lib::ByteList->set);
+  ok(SPVM::TestCase::Lib::ByteList->set_array);
+  ok(SPVM::TestCase::Lib::ByteList->to_array);
+  ok(SPVM::TestCase::Lib::ByteList->insert);
+  ok(SPVM::TestCase::Lib::ByteList->remove);
+  ok(SPVM::TestCase::Lib::ByteList->resize);
 }
 
 # All object is freed

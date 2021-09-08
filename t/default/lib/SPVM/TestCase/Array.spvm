@@ -1,6 +1,6 @@
-package SPVM::TestCase::Array {
-  use SPVM::TestCase::Minimal;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::Array {
+  use TestCase::Minimal;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   our $BIG_INDEX : int;
   INIT {
@@ -34,9 +34,9 @@ package SPVM::TestCase::Array {
       }
       
       my $key1 = (string)$objects->[0];
-      my $value1 = (SPVM::Int)$objects->[1];
+      my $value1 = (Int)$objects->[1];
       my $key2 = (string)$objects->[2];
-      my $value2 = (SPVM::Int)$objects->[3];
+      my $value2 = (Int)$objects->[3];
       
       unless ($key1 eq "foo") {
         return 0;
@@ -65,9 +65,9 @@ package SPVM::TestCase::Array {
       }
       
       my $key1 = (string)$objects->[0];
-      my $value1 = (SPVM::Int)$objects->[1];
+      my $value1 = (Int)$objects->[1];
       my $key2 = (string)$objects->[2];
-      my $value2 = (SPVM::Int)$objects->[3];
+      my $value2 = (Int)$objects->[3];
       
       unless ($key1 eq "foo") {
         return 0;
@@ -87,7 +87,7 @@ package SPVM::TestCase::Array {
     }
 
     {
-      my $objects = {foo => SPVM::Int->new(5)};
+      my $objects = {foo => Int->new(5)};
       
       my $num = (int)$objects->[1];
       
@@ -136,8 +136,8 @@ package SPVM::TestCase::Array {
   }
   
   sub array_store_undef : int () {
-    my $minimals = new SPVM::TestCase::Minimal[3];
-    $minimals->[0] = SPVM::TestCase::Minimal->new;
+    my $minimals = new TestCase::Minimal[3];
+    $minimals->[0] = TestCase::Minimal->new;
     $minimals->[0] = undef;
     
     if ($minimals->[0] == undef) {
@@ -347,7 +347,7 @@ package SPVM::TestCase::Array {
     my $values_long = new long[1000000];
     my $values_float = new float[1000000];
     my $values_double = new double[1000000];
-    my $values_object = new SPVM::TestCase::Minimal[1000000];
+    my $values_object = new TestCase::Minimal[1000000];
     if ($values_byte->[0] == 0) {
       if ($values_byte->[999999] == 0) {
         if ($values_short->[0] == 0) {
@@ -384,7 +384,7 @@ package SPVM::TestCase::Array {
     my $values_long = new long[10];
     my $values_float = new float[10];
     my $values_double = new double[10];
-    my $values_object = new SPVM::TestCase::Minimal[10];
+    my $values_object = new TestCase::Minimal[10];
     if ($values_byte->[0] == 0) {
       if ($values_byte->[9] == 0) {
         if ($values_short->[0] == 0) {
@@ -416,7 +416,7 @@ package SPVM::TestCase::Array {
   }
 
   sub array_init_object : int () {
-    my $objects = [(object)SPVM::TestCase::Minimal->new, SPVM::TestCase::Minimal->new];
+    my $objects = [(object)TestCase::Minimal->new, TestCase::Minimal->new];
     
     if ($objects isa object[]) {
       return 1;

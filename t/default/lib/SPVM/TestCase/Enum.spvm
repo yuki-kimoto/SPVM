@@ -1,5 +1,5 @@
-package SPVM::TestCase::Enum {
-  use SPVM::TestCase::Enum::Data1;
+package TestCase::Enum {
+  use TestCase::Enum::Data1;
   
   enum {
     INT_ZERO,
@@ -25,37 +25,37 @@ package SPVM::TestCase::Enum {
     
     # Enum value
     {
-      unless (SPVM::TestCase::Enum->INT_ZERO == 0) {
+      unless (TestCase::Enum->INT_ZERO == 0) {
         return 0;
       }
       
-      unless (SPVM::TestCase::Enum->INT_ONE == 1) {
+      unless (TestCase::Enum->INT_ONE == 1) {
         return 0;
       }
       
-      unless (SPVM::TestCase::Enum->INT_THREE == 3) {
+      unless (TestCase::Enum->INT_THREE == 3) {
         return 0;
       }
       
-      unless (SPVM::TestCase::Enum->INT_FOUR == 4) {
+      unless (TestCase::Enum->INT_FOUR == 4) {
         return 0;
       }
       
-      unless (SPVM::TestCase::Enum->INT_SIX == 6) {
+      unless (TestCase::Enum->INT_SIX == 6) {
         return 0;
       }
       
-      unless (SPVM::TestCase::Enum->INT_MINUS_MAX == -2147483648) {
+      unless (TestCase::Enum->INT_MINUS_MAX == -2147483648) {
         return 0;
       }
     }
     
     # Outer enum test
     {
-      unless (SPVM::TestCase::Enum::Data1->ONE == 0) {
+      unless (TestCase::Enum::Data1->ONE == 0) {
         return 0;
       }
-      unless (SPVM::TestCase::Enum::Data1->TWO == 1) {
+      unless (TestCase::Enum::Data1->TWO == 1) {
         return 0;
       }
     }

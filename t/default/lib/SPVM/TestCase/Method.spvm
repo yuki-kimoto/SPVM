@@ -1,14 +1,14 @@
-package SPVM::TestCase::Method {
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Point_3b;
-  use SPVM::TestCase::Point_3s;
-  use SPVM::TestCase::Point_3i;
-  use SPVM::TestCase::Point_3l;
-  use SPVM::TestCase::Point_3f;
-  use SPVM::TestCase::Point_3d;
-  use SPVM::Comparator::Object;
-  use SPVM::TestCase::Simple (import_method1, import_method2);
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::Method {
+  use TestCase::Minimal;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
+  use Comparator::Object;
+  use TestCase::Simple (import_method1, import_method2);
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   sub test_import_method : int () {
     unless (import_method1() == 1) {
@@ -217,7 +217,7 @@ package SPVM::TestCase::Method {
       return $x1_num + $x2_num;
     };
     
-    my $comparator : SPVM::Comparator::Object = $cb_obj;
+    my $comparator : Comparator::Object = $cb_obj;
     
     my $total = $comparator->(2, 3);
     
@@ -228,8 +228,8 @@ package SPVM::TestCase::Method {
     return 1;
   }
   
-  sub return_value_byte_method : SPVM::TestCase::Point_3b () {
-    my $value : SPVM::TestCase::Point_3b;
+  sub return_value_byte_method : TestCase::Point_3b () {
+    my $value : TestCase::Point_3b;
     $value->{x} = INT8_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
@@ -238,7 +238,7 @@ package SPVM::TestCase::Method {
   }
   
   sub return_value_byte : int () {
-    my $value : SPVM::TestCase::Point_3b = return_value_byte_method();
+    my $value : TestCase::Point_3b = return_value_byte_method();
     
     if ($value->{x} == INT8_MIN()) {
       if ($value->{y} == 1) {
@@ -251,8 +251,8 @@ package SPVM::TestCase::Method {
     return 0;
   }
   
-  sub return_value_short_method : SPVM::TestCase::Point_3s () {
-    my $value : SPVM::TestCase::Point_3s;
+  sub return_value_short_method : TestCase::Point_3s () {
+    my $value : TestCase::Point_3s;
     $value->{x} = INT16_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
@@ -261,7 +261,7 @@ package SPVM::TestCase::Method {
   }
   
   sub return_value_short : int () {
-    my $value : SPVM::TestCase::Point_3s = return_value_short_method();
+    my $value : TestCase::Point_3s = return_value_short_method();
     
     if ($value->{x} == INT16_MIN()) {
       if ($value->{y} == 1) {
@@ -274,8 +274,8 @@ package SPVM::TestCase::Method {
     return 0;
   }
   
-  sub return_value_int_method : SPVM::TestCase::Point_3i () {
-    my $value : SPVM::TestCase::Point_3i;
+  sub return_value_int_method : TestCase::Point_3i () {
+    my $value : TestCase::Point_3i;
     $value->{x} = INT32_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
@@ -284,7 +284,7 @@ package SPVM::TestCase::Method {
   }
   
   sub return_value_int : int () {
-    my $value : SPVM::TestCase::Point_3i = return_value_int_method();
+    my $value : TestCase::Point_3i = return_value_int_method();
     
     if ($value->{x} == INT32_MIN()) {
       if ($value->{y} == 1) {
@@ -297,8 +297,8 @@ package SPVM::TestCase::Method {
     return 0;
   }
   
-  sub return_value_long_method : SPVM::TestCase::Point_3l () {
-    my $value : SPVM::TestCase::Point_3l;
+  sub return_value_long_method : TestCase::Point_3l () {
+    my $value : TestCase::Point_3l;
     $value->{x} = INT64_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
@@ -307,7 +307,7 @@ package SPVM::TestCase::Method {
   }
   
   sub return_value_long : int () {
-    my $value : SPVM::TestCase::Point_3l = return_value_long_method();
+    my $value : TestCase::Point_3l = return_value_long_method();
     
     if ($value->{x} == INT64_MIN()) {
       if ($value->{y} == 1) {
@@ -320,8 +320,8 @@ package SPVM::TestCase::Method {
     return 0;
   }
   
-  sub return_value_float_method : SPVM::TestCase::Point_3f () {
-    my $value : SPVM::TestCase::Point_3f;
+  sub return_value_float_method : TestCase::Point_3f () {
+    my $value : TestCase::Point_3f;
     $value->{x} = FLT_MIN();
     $value->{y} = 0.25f;
     $value->{z} = 0.5f;
@@ -330,7 +330,7 @@ package SPVM::TestCase::Method {
   }
   
   sub return_value_float : int () {
-    my $value : SPVM::TestCase::Point_3f = return_value_float_method();
+    my $value : TestCase::Point_3f = return_value_float_method();
     
     if ($value->{x} == FLT_MIN()) {
       if ($value->{y} == 0.25f) {
@@ -343,8 +343,8 @@ package SPVM::TestCase::Method {
     return 0;
   }
   
-  sub return_value_double_method : SPVM::TestCase::Point_3d () {
-    my $value : SPVM::TestCase::Point_3d;
+  sub return_value_double_method : TestCase::Point_3d () {
+    my $value : TestCase::Point_3d;
     $value->{x} = DBL_MIN();
     $value->{y} = 0.25;
     $value->{z} = 0.5;
@@ -353,7 +353,7 @@ package SPVM::TestCase::Method {
   }
   
   sub return_value_double : int () {
-    my $value : SPVM::TestCase::Point_3d = return_value_double_method();
+    my $value : TestCase::Point_3d = return_value_double_method();
     
     if ($value->{x} == DBL_MIN()) {
       if ($value->{y} == 0.25) {
@@ -366,7 +366,7 @@ package SPVM::TestCase::Method {
     return 0;
   }
   
-  sub method_push_arg_undef : SPVM::TestCase::Minimal ($minimal : SPVM::TestCase::Minimal) {
+  sub method_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
     return $minimal;
   }
 
@@ -488,10 +488,10 @@ package SPVM::TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_object_method : SPVM::TestCase::Minimal () {
+  sub default_return_value_object_method : TestCase::Minimal () {
     1;
   }
-  sub default_return_value_object_method_empty : SPVM::TestCase::Minimal () {
+  sub default_return_value_object_method_empty : TestCase::Minimal () {
     
   }
   
@@ -809,11 +809,11 @@ package SPVM::TestCase::Method {
     return 0;
   }
   sub call_spvm_method_assign : int () {
-    my $m = SPVM::TestCase::Minimal->new();
-    $m = SPVM::TestCase::Minimal->new();
+    my $m = TestCase::Minimal->new();
+    $m = TestCase::Minimal->new();
   }
   
-  sub call_spvm_method_undef : int ($value : SPVM::TestCase::Minimal) {
+  sub call_spvm_method_undef : int ($value : TestCase::Minimal) {
     
     if ($value == undef) {
       return 1;

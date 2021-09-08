@@ -1,6 +1,6 @@
-package SPVM::TestCase::CompileError::UnaryMinus::NotNumeric {
-  use SPVM::TestCase::Minimal;
+package TestCase::CompileError::UnaryMinus::NotNumeric {
+  use TestCase::Minimal;
   sub main : int () {
-    -SPVM::TestCase::Minimal->new;
+    -TestCase::Minimal->new;
   }
 }

@@ -1,4 +1,4 @@
-package SPVM::TestCase::Print {
+package TestCase::Print {
 
   sub test_print : int () {
     print "Hello";

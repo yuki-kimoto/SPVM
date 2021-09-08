@@ -1,4 +1,4 @@
-package SPVM::TestCase::FILE {
+package TestCase::FILE {
   sub file_name : int () {
     my $file_name = __FILE__;
     

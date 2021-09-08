@@ -1,4 +1,4 @@
-package SPVM::TestCase::Add {
+package TestCase::Add {
 
   sub add_int_max_plus_one_2s_complement : int () {
     {

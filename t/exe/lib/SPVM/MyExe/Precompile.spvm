@@ -1,4 +1,4 @@
-package SPVM::MyExe::Precompile : precompile {
+package MyExe::Precompile : precompile {
   sub sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }

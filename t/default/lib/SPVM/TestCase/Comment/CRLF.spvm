@@ -1,4 +1,4 @@
-package SPVM::TestCase::Comment::CRLF {
+package TestCase::Comment::CRLF {
 
   sub comment : int () {
     # Comment

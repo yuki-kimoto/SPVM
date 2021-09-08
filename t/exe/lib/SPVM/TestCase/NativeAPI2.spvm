@@ -1,4 +1,4 @@
-package SPVM::TestCase::NativeAPI2 {
+package TestCase::NativeAPI2 {
   sub spvm_extension2 : int () {
     my $total = mul(5, 3);
     

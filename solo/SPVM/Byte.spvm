@@ -1,8 +1,8 @@
-package SPVM::Byte {
+package Byte {
   has val : ro byte;
   
-  sub new : SPVM::Byte ($value : byte) {
-    my $self = new SPVM::Byte;
+  sub new : Byte ($value : byte) {
+    my $self = new Byte;
     
     $self->{val} = $value;
     

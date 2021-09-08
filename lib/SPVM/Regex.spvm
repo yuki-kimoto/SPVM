@@ -1,16 +1,16 @@
-package SPVM::Regex : precompile {
-  use SPVM::Unicode (uchar);
-  use SPVM::List;
-  use SPVM::IntList;
-  use SPVM::Hash;
-  use SPVM::StringBuffer;
-  use SPVM::Regex::Replacer;
-  use SPVM::Regex::Pattern;
-  use SPVM::StringUtil (is_perl_word, is_digit, to_int_with_base, methodstr, copy_string);
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
-  use SPVM::ArrayUtil (copy_array_range_byte);
-  use SPVM::Hash;
-  has patterns : SPVM::List;
+package Regex : precompile {
+  use Unicode (uchar);
+  use List;
+  use IntList;
+  use Hash;
+  use StringBuffer;
+  use Regex::Replacer;
+  use Regex::Pattern;
+  use StringUtil (is_perl_word, is_digit, to_int_with_base, methodstr, copy_string);
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use ArrayUtil (copy_array_range_byte);
+  use Hash;
+  has patterns : List;
   has string_start : byte;
   has string_end : byte;
   has single_line_mode : byte;
@@ -31,7 +31,7 @@ package SPVM::Regex : precompile {
     STATUS_CHAR_CLASS,
   }
   
-  sub new : SPVM::Regex ($re_str : string) {
+  sub new : Regex ($re_str : string) {
     
     my $self = _new_without_compile();
     
@@ -40,11 +40,11 @@ package SPVM::Regex : precompile {
     return $self;
   }
 
-  sub new_with_options : SPVM::Regex ($re_str : string, $option_chars : string) {
+  sub new_with_options : Regex ($re_str : string, $option_chars : string) {
     my $self = _new_without_compile();
     
     if ($option_chars) {
-      my $options_h = SPVM::Hash->new({});
+      my $options_h = Hash->new({});
       
       my $option_chars_length = length $option_chars;
       for (my $i = 0; $i < $option_chars_length; $i++) {
@@ -73,10 +73,10 @@ package SPVM::Regex : precompile {
     return $self;
   }
   
-  private sub _new_without_compile : SPVM::Regex () {
-    my $self = new SPVM::Regex;
+  private sub _new_without_compile : Regex () {
+    my $self = new Regex;
     
-    $self->{patterns} = SPVM::List->new_len(new SPVM::Regex::Pattern[0], 0);
+    $self->{patterns} = List->new_len(new Regex::Pattern[0], 0);
 
     $self->{captures} = new string[256];
     
@@ -104,7 +104,7 @@ package SPVM::Regex : precompile {
     
     my $status = STATUS_START();
     
-    my $char_class_uchar_min_maxs_list : SPVM::IntList;
+    my $char_class_uchar_min_maxs_list : IntList;
     my $char_class_negate = 0;
     
     my $before_is_char_class_range = 0;
@@ -229,7 +229,7 @@ package SPVM::Regex : precompile {
                 }
               }
               
-              $char_class_uchar_min_maxs_list = SPVM::IntList->new_len(0);
+              $char_class_uchar_min_maxs_list = IntList->new_len(0);
               $cur_is_char = 1;
               $cur_negate = $char_class_negate;
             }
@@ -308,7 +308,7 @@ package SPVM::Regex : precompile {
               case ')': {
                 if ($is_capture) {
                   $is_capture = 0;
-                  my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                  my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                   $before_pattern->{capture_end} = 1;
                 }
                 else {
@@ -318,7 +318,7 @@ package SPVM::Regex : precompile {
               }
               case '[': {
                 $status = STATUS_CHAR_CLASS();
-                $char_class_uchar_min_maxs_list = SPVM::IntList->new_len(0);
+                $char_class_uchar_min_maxs_list = IntList->new_len(0);
                 $before_is_char_class_range = 0;
                 break;
               }
@@ -330,7 +330,7 @@ package SPVM::Regex : precompile {
                 unless ($before_is_charset) {
                   die "Regex compile error";
                 }
-                my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 0;
                 $before_pattern->{max_repeat} = INT32_MAX();
                 $before_is_charset = 0;
@@ -340,7 +340,7 @@ package SPVM::Regex : precompile {
                 unless ($before_is_charset) {
                   die "Regex compile error";
                 }
-                my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 1;
                 $before_pattern->{max_repeat} = INT32_MAX();
                 $before_is_charset = 0;
@@ -350,7 +350,7 @@ package SPVM::Regex : precompile {
                 unless ($before_is_charset) {
                   die "Regex compile error";
                 }
-                my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 0;
                 $before_pattern->{max_repeat} = 1;
                 $before_is_charset = 0;
@@ -369,7 +369,7 @@ package SPVM::Regex : precompile {
                   die "Regex compile error";
                 }
                 my $quantifier_max = to_int_with_base($quantifier_max_str, 10);
-                my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $last_pattern->{max_repeat} = $quantifier_max;
                 
                 $status = STATUS_CONTINUE();
@@ -384,7 +384,7 @@ package SPVM::Regex : precompile {
                   }
                   elsif ($uchar == ',') {
                     my $quantifier_min = to_int_with_base($quantifier_min_str, 10);
-                    my $last_pattern = (SPVM::Regex::Pattern)$patterns->get($patterns->length - 1);
+                    my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                     $last_pattern->{min_repeat} = $quantifier_min;
                     
                     $status = STATUS_QUANTIFIER_MAX();
@@ -413,8 +413,8 @@ package SPVM::Regex : precompile {
       }
 
       if ($cur_is_char) {
-        my $pattern = new SPVM::Regex::Pattern;
-        $pattern->{type} = SPVM::Regex::Pattern->PATTERN;
+        my $pattern = new Regex::Pattern;
+        $pattern->{type} = Regex::Pattern->PATTERN;
         $pattern->{negate} = (byte)$cur_negate;
         $pattern->{uchar_min_maxs} = $cur_uchar_min_maxs;
         $pattern->{max_repeat} = 1;
@@ -438,8 +438,8 @@ package SPVM::Regex : precompile {
       }
       
       my $before_is_variable_quantifier = 0;
-      my $before_pattern =(SPVM::Regex::Pattern)$patterns->get($pattern_index - 1);
-      my $cur_pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
+      my $before_pattern =(Regex::Pattern)$patterns->get($pattern_index - 1);
+      my $cur_pattern = (Regex::Pattern)$patterns->get($pattern_index);
       
       # Check duplicatation charset
       if ($before_pattern->{min_repeat} != $before_pattern->{max_repeat}) {
@@ -453,10 +453,10 @@ package SPVM::Regex : precompile {
       }
       
       # 0 width regular expression is forbidden
-      my $no_zero_quantifier_pattern : SPVM::Regex::Pattern;
+      my $no_zero_quantifier_pattern : Regex::Pattern;
       my $find_zere_quantifier = 0;
       for (my $before_pattern_index = $pattern_index - 1; $before_pattern_index >= 0; $before_pattern_index--) {
-        my $before_pattern = (SPVM::Regex::Pattern)$patterns->get($before_pattern_index);
+        my $before_pattern = (Regex::Pattern)$patterns->get($before_pattern_index);
         if ($before_pattern->{min_repeat} == 0) {
           $find_zere_quantifier = 1;
         }
@@ -500,7 +500,7 @@ package SPVM::Regex : precompile {
       my $capture_start_index = -1;
       my $capture_count = 0;
       while (1) {
-        my $pattern = (SPVM::Regex::Pattern)$patterns->get($pattern_index);
+        my $pattern = (Regex::Pattern)$patterns->get($pattern_index);
         my $max_repeat = $pattern->{max_repeat};
         my $min_repeat = $pattern->{min_repeat};
         my $uchar_min_maxs = $pattern->{uchar_min_maxs};
@@ -523,7 +523,7 @@ package SPVM::Regex : precompile {
         my $repeat_count = 0;
         my $repeat_before_target_index = $target_before_index;
         
-        if ($type == SPVM::Regex::Pattern->PATTERN) {
+        if ($type == Regex::Pattern->PATTERN) {
           # Match uchar repeat
           for (my $repeat_index = 0; $repeat_index < $max_repeat; $repeat_index++) {
             # Match uchar
@@ -633,30 +633,30 @@ package SPVM::Regex : precompile {
   }
   
   sub replace  : string ($self : self, $target : string, $target_offset : int, $replace : string) {
-    my $opt = SPVM::Hash->new({});
+    my $opt = Hash->new({});
     $opt->set_int(replace_all => 0);
     return $self->replace_opt($target, $target_offset, $replace, $opt);
   }
 
-  sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
-    my $opt = SPVM::Hash->new({});
+  sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : Regex::Replacer) {
+    my $opt = Hash->new({});
     $opt->set_int(replace_all => 0);
     return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
   }
 
   sub replace_all  : string ($self : self, $target : string, $target_offset : int, $replace : string) {
-    my $opt = SPVM::Hash->new({});
+    my $opt = Hash->new({});
     $opt->set_int(replace_all => 1);
     return $self->replace_opt($target, $target_offset, $replace, $opt);
   }
 
-  sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer) {
-    my $opt = SPVM::Hash->new({});
+  sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : Regex::Replacer) {
+    my $opt = Hash->new({});
     $opt->set_int(replace_all => 1);
     return $self->replace_opt($target, $target_offset, $replace_cb, $opt);
   }
   
-  private sub replace_opt  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object, $opt : SPVM::Hash) {
+  private sub replace_opt  : string ($self : self, $target : string, $target_base_index : int, $replace_object : object, $opt : Hash) {
     
     my $original_target_base_index = $target_base_index;
     
@@ -672,7 +672,7 @@ package SPVM::Regex : precompile {
     
     my $result : byte[];
     my $replace_count = 0;
-    my $result_buffer = SPVM::StringBuffer->new;
+    my $result_buffer = StringBuffer->new;
     my $tarlength = length $target;
     
     if ($target_base_index > 0) {
@@ -692,14 +692,14 @@ package SPVM::Regex : precompile {
       elsif ($replace_object isa object[]) {
         my $replace_objects = (object[])$replace_object;
         
-        my $replace_buffer = SPVM::StringBuffer->new;
+        my $replace_buffer = StringBuffer->new;
         for (my $i = 0; $i < @$replace_objects; $i++) {
           my $replace_elem_object = $replace_objects->[$i];
           
           if ($replace_elem_object isa string) {
             $replace_buffer->push((string)$replace_elem_object);
           }
-          elsif ($replace_elem_object isa SPVM::Int) {
+          elsif ($replace_elem_object isa Int) {
             my $capture = $self->captures->[(int)$replace_elem_object];
             $replace_buffer->push($capture);
           }
@@ -710,9 +710,9 @@ package SPVM::Regex : precompile {
         
         $replace = $replace_buffer->to_string;
       }
-      elsif ($replace_object isa SPVM::Regex::Replacer) {
-        my $replace_buffer = SPVM::StringBuffer->new;
-        my $replacer = (SPVM::Regex::Replacer)$replace_object;
+      elsif ($replace_object isa Regex::Replacer) {
+        my $replace_buffer = StringBuffer->new;
+        my $replacer = (Regex::Replacer)$replace_object;
         my $cb_result = $replacer->($self);
         $replace_buffer->push($cb_result);
         $replace = $replace_buffer->to_string;
@@ -760,7 +760,7 @@ package SPVM::Regex : precompile {
     return (string)$result;
   }
 
-  private sub duplicate : int ($self : self, $pattern1 : SPVM::Regex::Pattern, $pattern2 : SPVM::Regex::Pattern) {
+  private sub duplicate : int ($self : self, $pattern1 : Regex::Pattern, $pattern2 : Regex::Pattern) {
     my $uchar_min_maxs1 = $pattern1->{uchar_min_maxs};
     my $uchar_min_maxs2 = $pattern2->{uchar_min_maxs};
     

@@ -1,18 +1,18 @@
-package SPVM::TestCase::Lib::SPVM::Bool {
-  use SPVM::Bool;
+package TestCase::Lib::Bool {
+  use Bool;
   
   sub basic : int () {
     # true
     {
-      my $true = SPVM::Bool->true;
+      my $true = Bool->true;
       
-      # SPVM::Bool type
-      unless ($true isa SPVM::Bool) {
+      # Bool type
+      unless ($true isa Bool) {
         return 0;
       }
       
       # Singleton
-      unless ($true == SPVM::Bool->true) {
+      unless ($true == Bool->true) {
         return 0;
       }
       
@@ -26,15 +26,15 @@ package SPVM::TestCase::Lib::SPVM::Bool {
 
     # false
     {
-      my $false = SPVM::Bool->false;
+      my $false = Bool->false;
       
-      # SPVM::Bool type
-      unless ($false isa SPVM::Bool) {
+      # Bool type
+      unless ($false isa Bool) {
         return 0;
       }
       
       # Singleton
-      unless ($false == SPVM::Bool->false) {
+      unless ($false == Bool->false) {
         return 0;
       }
       

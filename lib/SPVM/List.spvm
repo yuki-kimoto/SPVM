@@ -1,5 +1,5 @@
-package SPVM::List : precompile {
-  use SPVM::ArrayUtil(new_array_proto);
+package List : precompile {
+  use ArrayUtil(new_array_proto);
   
   has values   : oarray;
   has capacity : int;
@@ -8,8 +8,8 @@ package SPVM::List : precompile {
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-  sub new : SPVM::List ($objects : oarray) {
-    my $self = new SPVM::List;
+  sub new : List ($objects : oarray) {
+    my $self = new List;
     
     my $length : int;
     if ($objects) {
@@ -43,12 +43,12 @@ package SPVM::List : precompile {
     return $self;
   }
 
-  sub new_len : SPVM::List ($proto_array : oarray, $length : int) {
+  sub new_len : List ($proto_array : oarray, $length : int) {
     unless ($proto_array) {
       die "First argument must not be undef";
     }
     
-    my $self = new SPVM::List;
+    my $self = new List;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }

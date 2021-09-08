@@ -1,2 +1,2 @@
-package SPVM::TestCase::CompileError::Value::FieldsZero : mulnum_t {
+package TestCase::CompileError::Value::FieldsZero : mulnum_t {
 }

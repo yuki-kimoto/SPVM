@@ -1,5 +1,5 @@
-package SPVM::ShortList : precompile {
-  use SPVM::ArrayUtil (memcpy_short, memmove_short);
+package ShortList : precompile {
+  use ArrayUtil (memcpy_short, memmove_short);
   
   has values   : short[];
   has capacity : int;
@@ -9,8 +9,8 @@ package SPVM::ShortList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : SPVM::ShortList ($array : short[]) {
-    my $self = new SPVM::ShortList;
+  sub new : ShortList ($array : short[]) {
+    my $self = new ShortList;
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -40,8 +40,8 @@ package SPVM::ShortList : precompile {
     return $self;
   }
   
-  sub new_len : SPVM::ShortList ($length : int) {
-    my $self = new SPVM::ShortList;
+  sub new_len : ShortList ($length : int) {
+    my $self = new ShortList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
@@ -217,7 +217,7 @@ package SPVM::ShortList : precompile {
     }
     
     
-    SPVM::ArrayUtil->memcpy_short($self->{values}, 0, $array, 0, $cur_length);
+    ArrayUtil->memcpy_short($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub shift : short ($self : self) {

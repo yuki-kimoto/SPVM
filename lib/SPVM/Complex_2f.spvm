@@ -1,4 +1,4 @@
-package SPVM::Complex_2f : mulnum_t {
+package Complex_2f : mulnum_t {
   has re : float;
   has im : float;
 }

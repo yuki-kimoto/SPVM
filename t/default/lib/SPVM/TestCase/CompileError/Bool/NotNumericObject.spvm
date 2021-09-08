@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::Bool::NotNumericObject {
+package TestCase::CompileError::Bool::NotNumericObject {
 
   sub main : int () {
     my $num = 1;

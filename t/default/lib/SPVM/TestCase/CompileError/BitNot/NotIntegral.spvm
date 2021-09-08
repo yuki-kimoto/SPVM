@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::BitNot::NotIntegral {
+package TestCase::CompileError::BitNot::NotIntegral {
   sub main : int () {
     ~0.5;
   }

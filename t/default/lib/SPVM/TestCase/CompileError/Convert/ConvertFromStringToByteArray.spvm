@@ -1,5 +1,5 @@
-package SPVM::TestCase::CompileError::Convert::ConvertFromStringToByteArray {
-  use SPVM::TestCase::Minimal;
+package TestCase::CompileError::Convert::ConvertFromStringToByteArray {
+  use TestCase::Minimal;
 
   sub main : int () {
     my $nums : byte[] = "abc";

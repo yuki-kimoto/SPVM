@@ -1,5 +1,5 @@
-package SPVM::LongList : precompile {
-  use SPVM::ArrayUtil (memcpy_long, memmove_long);
+package LongList : precompile {
+  use ArrayUtil (memcpy_long, memmove_long);
   
   has values   : long[];
   has capacity : int;
@@ -9,8 +9,8 @@ package SPVM::LongList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : SPVM::LongList ($array : long[]) {
-    my $self = new SPVM::LongList;
+  sub new : LongList ($array : long[]) {
+    my $self = new LongList;
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -40,8 +40,8 @@ package SPVM::LongList : precompile {
     return $self;
   }
 
-  sub new_len : SPVM::LongList ($length : int) {
-    my $self = new SPVM::LongList;
+  sub new_len : LongList ($length : int) {
+    my $self = new LongList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
@@ -217,7 +217,7 @@ package SPVM::LongList : precompile {
       die "The length of argument array must be same as the length of current list array";
     }
     
-    SPVM::ArrayUtil->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
+    ArrayUtil->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : long ($self : self, $index : int) {

@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::LogicalOperator::OrNotExpression {
+package TestCase::CompileError::LogicalOperator::OrNotExpression {
   sub main : void () {
     1 && 1;
   }

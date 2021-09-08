@@ -1,0 +1,60 @@
+package TestCase::Lib::Time {
+  use Time;
+  
+  sub test_time : long () {
+    my $time = Time->time;
+    
+    return $time;
+  }
+
+  sub test_localtime : Time::Info ($time : long) {
+    my $time_info = Time->localtime($time);
+    
+    return $time_info;
+  }
+
+  sub test_gmtime : Time::Info ($time : long) {
+    my $time_info = Time->gmtime($time);
+    
+    return $time_info;
+  }
+
+  sub test_timelocal : int () {
+    {
+      my $time = Time->time();
+      
+      my $time_info = Time->localtime($time);
+      
+      my $time_ret = Time->timelocal($time_info);
+      
+      unless ($time_ret isa long) {
+        return 0;
+      }
+      unless ($time == $time_ret) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_timegm : int () {
+    {
+      my $time = Time->time();
+      
+      my $time_info = Time->gmtime($time);
+      
+      my $time_ret = Time->timegm($time_info);
+
+      unless ($time_ret isa long) {
+        return 0;
+      }
+      unless ($time == $time_ret) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+}

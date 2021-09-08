@@ -1,8 +1,8 @@
-package SPVM::TestCase::ModuleContainsMultiPackage {
-  use SPVM::TestCase::ModuleContainsMultiPackage::FloatMatrix;
-  sub mat_new_zero : SPVM::TestCase::ModuleContainsMultiPackage::FloatMatrix ($rows_length : int, $columns_length : int) {
+package TestCase::ModuleContainsMultiPackage {
+  use TestCase::ModuleContainsMultiPackage::FloatMatrix;
+  sub mat_new_zero : TestCase::ModuleContainsMultiPackage::FloatMatrix ($rows_length : int, $columns_length : int) {
     my $values_length = $rows_length * $columns_length;
-    my $mat = new SPVM::TestCase::ModuleContainsMultiPackage::FloatMatrix;
+    my $mat = new TestCase::ModuleContainsMultiPackage::FloatMatrix;
     $mat->{rows_length} = $rows_length;
     $mat->{columns_length} = $columns_length;
     $mat->{values} = new float[$values_length];

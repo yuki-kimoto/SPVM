@@ -1,12 +1,12 @@
-package SPVM::TestCase::NativeAPI {
-  use SPVM::TestCase;
-  use SPVM::TestCase::Simple;
-  use SPVM::TestCase::Minimal;
-  use SPVM::TestCase::Pointer;
-  use SPVM::TestCase::Callback::Callback;
-  use SPVM::TestCase::Callback::ImplementCallback1;
-  use SPVM::TestCase::Callback::ImplementCallback2;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::NativeAPI {
+  use TestCase;
+  use TestCase::Simple;
+  use TestCase::Minimal;
+  use TestCase::Pointer;
+  use TestCase::Callback::Callback;
+  use TestCase::Callback::ImplementCallback1;
+  use TestCase::Callback::ImplementCallback2;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;
@@ -14,10 +14,10 @@ package SPVM::TestCase::NativeAPI {
   our $LONG_VALUE : long;
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
-  our $MINIMAL_VALUE : SPVM::TestCase::Minimal;
+  our $MINIMAL_VALUE : TestCase::Minimal;
   
-  sub new : SPVM::TestCase::NativeAPI () {
-    return new SPVM::TestCase::NativeAPI;
+  sub new : TestCase::NativeAPI () {
+    return new TestCase::NativeAPI;
   }
 
   native sub check_native_api_indexes : int ();
@@ -180,11 +180,11 @@ package SPVM::TestCase::NativeAPI {
 
   sub get_package_var_object_by_name : int () {
     
-    $MINIMAL_VALUE = SPVM::TestCase::Minimal->new;
+    $MINIMAL_VALUE = TestCase::Minimal->new;
     
     my $value = get_package_var_object_test();
     
-    unless ($value isa SPVM::TestCase::Minimal) {
+    unless ($value isa TestCase::Minimal) {
       $MINIMAL_VALUE = undef;
       return 0;
     }
@@ -193,7 +193,7 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub get_package_var_object_test : SPVM::TestCase::Minimal ();
+  native sub get_package_var_object_test : TestCase::Minimal ();
 
   sub get_package_var_object_by_name_exception : int () {
     
@@ -353,7 +353,7 @@ package SPVM::TestCase::NativeAPI {
     
     set_package_var_object_by_name_test();
     
-    if ($MINIMAL_VALUE isa SPVM::TestCase::Minimal) {
+    if ($MINIMAL_VALUE isa TestCase::Minimal) {
       $MINIMAL_VALUE = undef;
       return 1;
     }
@@ -376,9 +376,9 @@ package SPVM::TestCase::NativeAPI {
 
   native sub has_callback_test : int ($object : object);
   sub has_callback : int () {
-    my $impl1 = SPVM::TestCase::Callback::ImplementCallback1->new;
-    my $impl1s = new SPVM::TestCase::Callback::ImplementCallback1[3];
-    my $minimal = SPVM::TestCase::Minimal->new;
+    my $impl1 = TestCase::Callback::ImplementCallback1->new;
+    my $impl1s = new TestCase::Callback::ImplementCallback1[3];
+    my $minimal = TestCase::Minimal->new;
 
     unless (has_callback_test($impl1)) {
       return 0;
@@ -397,9 +397,9 @@ package SPVM::TestCase::NativeAPI {
 
   native sub is_type_test_minimals : int ($object : object);
   sub is_type : int () {
-    my $minimals = new SPVM::TestCase::Minimal[3];
-    my $minimal = SPVM::TestCase::Minimal->new;
-    my $simples = new SPVM::TestCase::Simple[3];
+    my $minimals = new TestCase::Minimal[3];
+    my $minimal = TestCase::Minimal->new;
+    my $simples = new TestCase::Simple[3];
 
     unless (is_type_test_minimals($minimals)) {
       return 0;
@@ -501,7 +501,7 @@ package SPVM::TestCase::NativeAPI {
   }
 
   sub set_field_byte_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     native_set_field_byte_by_name($simple);
     
@@ -511,10 +511,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_byte_by_name : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_byte_by_name : void ($simple : TestCase::Simple);
 
   sub set_field_byte_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     eval { native_set_field_byte_by_name_exception($simple); };
     
@@ -526,10 +526,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_byte_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_byte_by_name_exception : void ($simple : TestCase::Simple);
 
   sub set_field_short_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     native_set_field_short_by_name($simple);
     
@@ -539,10 +539,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 0;
   }
-  native sub native_set_field_short_by_name : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_short_by_name : void ($simple : TestCase::Simple);
 
   sub set_field_short_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     eval { native_set_field_short_by_name_exception($simple); };
     
@@ -553,10 +553,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_short_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_short_by_name_exception : void ($simple : TestCase::Simple);
 
   sub set_field_int_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     native_set_field_int_by_name($simple);
     
@@ -566,10 +566,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_int_by_name : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_int_by_name : void ($simple : TestCase::Simple);
 
   sub set_field_int_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     eval { native_set_field_int_by_name_exception($simple); };
     
@@ -580,10 +580,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_int_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_int_by_name_exception : void ($simple : TestCase::Simple);
 
   sub set_field_long_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     native_set_field_long_by_name($simple);
     
@@ -593,10 +593,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 0;
   }
-  native sub native_set_field_long_by_name : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_long_by_name : void ($simple : TestCase::Simple);
 
   sub set_field_long_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     eval { native_set_field_long_by_name_exception($simple); };
     
@@ -607,10 +607,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_long_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_long_by_name_exception : void ($simple : TestCase::Simple);
 
   sub set_field_float_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     native_set_field_float_by_name($simple);
     
@@ -620,10 +620,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_float_by_name : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_float_by_name : void ($simple : TestCase::Simple);
 
   sub set_field_float_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     eval { native_set_field_float_by_name_exception($simple); };
     
@@ -635,10 +635,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_float_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_float_by_name_exception : void ($simple : TestCase::Simple);
 
   sub set_field_double_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     native_set_field_double_by_name($simple);
     
@@ -648,10 +648,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_double_by_name : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_double_by_name : void ($simple : TestCase::Simple);
 
   sub set_field_double_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     eval { native_set_field_double_by_name_exception($simple); };
     
@@ -661,10 +661,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_double_by_name_exception : void ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_double_by_name_exception : void ($simple : TestCase::Simple);
 
   sub set_field_object_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     native_set_field_object_by_name($simple);
     
@@ -674,10 +674,10 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_set_field_object_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_object_by_name : int ($simple : TestCase::Simple);
 
   sub set_field_object_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     eval { native_set_field_object_by_name_exception($simple); };
     
@@ -688,20 +688,20 @@ package SPVM::TestCase::NativeAPI {
     $@ = undef;
     return 1;
   }
-  native sub native_set_field_object_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_set_field_object_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_byte_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{byte_value} = INT8_MIN();
     
     my $success = native_get_field_byte_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_byte_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_byte_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_byte_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{byte_value} = INT8_MIN();
     
     eval { native_get_field_byte_by_name_exception($simple); };
@@ -712,20 +712,20 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_get_field_byte_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_byte_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_short_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{short_value} = INT16_MIN();
     
     my $success = native_get_field_short_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_short_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_short_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_short_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{short_value} = INT16_MIN();
     
     eval { native_get_field_short_by_name_exception($simple); };
@@ -736,20 +736,20 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_get_field_short_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_short_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_int_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{int_value} = INT32_MIN();
     
     my $success = native_get_field_int_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_int_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_int_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_int_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{int_value} = INT32_MIN();
     
     eval { native_get_field_int_by_name_exception($simple); };
@@ -760,20 +760,20 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_get_field_int_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_int_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_long_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{long_value} = INT64_MIN();
     
     my $success = native_get_field_long_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_long_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_long_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_long_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{long_value} = INT64_MIN();
     
     eval { native_get_field_long_by_name_exception($simple) ; };
@@ -784,20 +784,20 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_get_field_long_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_long_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_float_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{float_value} = FLT_MIN();
     
     my $success = native_get_field_float_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_float_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_float_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_float_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{float_value} = FLT_MIN();
     
     eval { native_get_field_float_by_name_exception($simple); };
@@ -808,20 +808,20 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_get_field_float_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_float_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_double_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{double_value} = DBL_MIN();
     
     my $success = native_get_field_double_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_double_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_double_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_double_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{double_value} = DBL_MIN();
     
     eval { native_get_field_double_by_name_exception($simple); };
@@ -832,22 +832,22 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_get_field_double_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_double_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_object_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
-    $simple->{object_value} = SPVM::TestCase::Minimal->new;
+    my $simple = TestCase::Simple->new;
+    $simple->{object_value} = TestCase::Minimal->new;
     $simple->{object_value}{x} = 5;
     
     my $success = native_get_field_object_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_object_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_object_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_object_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
-    $simple->{object_value} = SPVM::TestCase::Minimal->new;
+    my $simple = TestCase::Simple->new;
+    $simple->{object_value} = TestCase::Minimal->new;
     $simple->{object_value}{x} = 5;
     
     eval { native_get_field_object_by_name_exception($simple); };
@@ -857,27 +857,27 @@ package SPVM::TestCase::NativeAPI {
     
     return 1;
   }
-  native sub native_get_field_object_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_object_by_name_exception : int ($simple : TestCase::Simple);
 
   sub get_field_string_chars_by_name : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{string_value} = "abc";
     
     my $success = native_get_field_string_chars_by_name($simple);
     
     return $success;
   }
-  native sub native_get_field_string_chars_by_name : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_string_chars_by_name : int ($simple : TestCase::Simple);
 
   sub get_field_string_chars_by_name_exception : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     $simple->{string_value} = "abc";
     
     my $success = native_get_field_string_chars_by_name_exception($simple);
     
     return $success;
   }
-  native sub native_get_field_string_chars_by_name_exception : int ($simple : SPVM::TestCase::Simple);
+  native sub native_get_field_string_chars_by_name_exception : int ($simple : TestCase::Simple);
 
   sub spvm_extension_add_int_array : int () {
     my $nums1 = [1, 2, 3];
@@ -918,17 +918,17 @@ package SPVM::TestCase::NativeAPI {
 
   native sub native_use_strlen : int ($string : string);
 
-  native sub native_env_get_field_byte : byte ($test_case : SPVM::TestCase);
-  native sub native_env_get_field_short : short ($test_case : SPVM::TestCase);
-  native sub native_env_get_field_int : int ($test_case : SPVM::TestCase);
-  native sub native_env_get_field_long : long ($test_case : SPVM::TestCase);
-  native sub native_env_get_field_float : float ($test_case : SPVM::TestCase);
-  native sub native_env_get_field_double : double ($test_case : SPVM::TestCase);
-  native sub native_env_get_field_object : SPVM::TestCase::Minimal ($test_case : SPVM::TestCase);
+  native sub native_env_get_field_byte : byte ($test_case : TestCase);
+  native sub native_env_get_field_short : short ($test_case : TestCase);
+  native sub native_env_get_field_int : int ($test_case : TestCase);
+  native sub native_env_get_field_long : long ($test_case : TestCase);
+  native sub native_env_get_field_float : float ($test_case : TestCase);
+  native sub native_env_get_field_double : double ($test_case : TestCase);
+  native sub native_env_get_field_object : TestCase::Minimal ($test_case : TestCase);
   
   sub native_env_set_field : int () {
     
-    my $test_case = SPVM::TestCase->new();
+    my $test_case = TestCase->new();
     
     $test_case->{x_byte} = (byte)1;
     $test_case->{x_short} = (short)2;
@@ -936,7 +936,7 @@ package SPVM::TestCase::NativeAPI {
     $test_case->{x_long} = 4L;
     $test_case->{x_float} = 0.5f;
     $test_case->{x_double} = 0.025;
-    my $minimal1 = SPVM::TestCase::Minimal->new();
+    my $minimal1 = TestCase::Minimal->new();
     $test_case->{minimal} = $minimal1;
     
     my $x_byte1 = native_env_get_field_byte($test_case);
@@ -1085,20 +1085,20 @@ package SPVM::TestCase::NativeAPI {
 
   sub new_object_by_name : int () {
     my $minimal = native_new_object_by_name();
-    unless ($minimal isa SPVM::TestCase::Minimal) {
+    unless ($minimal isa TestCase::Minimal) {
       return 0;
     }
     
-    unless ($minimal isa SPVM::TestCase::Minimal) {
+    unless ($minimal isa TestCase::Minimal) {
       return 0;
     }
     
     return 1;
   }
-  native sub native_new_object_by_name : SPVM::TestCase::Minimal ();
+  native sub native_new_object_by_name : TestCase::Minimal ();
 
   sub new_object_by_name_exception : int () {
-    my $minimal : SPVM::TestCase::Minimal;
+    my $minimal : TestCase::Minimal;
     eval { $minimal = native_new_object_by_name_exception(); };
     
     unless ($@) {
@@ -1112,22 +1112,22 @@ package SPVM::TestCase::NativeAPI {
     $@ = undef;
     return 1;
   }
-  native sub native_new_object_by_name_exception : SPVM::TestCase::Minimal ();
+  native sub native_new_object_by_name_exception : TestCase::Minimal ();
 
 
   
   sub new_pointer_by_name : int () {
     my $pointer = native_new_pointer_by_name();
-    unless ($pointer isa SPVM::TestCase::Pointer) {
+    unless ($pointer isa TestCase::Pointer) {
       return 0;
     }
     
     return 1;
   }
-  native sub native_new_pointer_by_name : SPVM::TestCase::Pointer ();
+  native sub native_new_pointer_by_name : TestCase::Pointer ();
 
   sub new_pointer_by_name_exception : int () {
-    my $pointer : SPVM::TestCase::Pointer;
+    my $pointer : TestCase::Pointer;
     eval { $pointer = native_new_pointer_by_name_exception(); };
     
     unless ($@) {
@@ -1137,6 +1137,6 @@ package SPVM::TestCase::NativeAPI {
     $@ = undef;
     return 1;
   }
-  native sub native_new_pointer_by_name_exception : SPVM::TestCase::Pointer ();
+  native sub native_new_pointer_by_name_exception : TestCase::Pointer ();
 
 }

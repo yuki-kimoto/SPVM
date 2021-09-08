@@ -1,5 +1,5 @@
-package SPVM::TestCase::CompileError::Weaken::ArrayNotObject {
-  use SPVM::TestCase::Minimal;
+package TestCase::CompileError::Weaken::ArrayNotObject {
+  use TestCase::Minimal;
   
   sub main : int () {
     my $nums = new int[1];

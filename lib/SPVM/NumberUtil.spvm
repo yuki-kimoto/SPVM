@@ -1,5 +1,5 @@
-package SPVM::NumberUtil : precompile {
-  use SPVM::Time (time);
+package NumberUtil : precompile {
+  use Time (time);
   
   INIT {
     srand(time());

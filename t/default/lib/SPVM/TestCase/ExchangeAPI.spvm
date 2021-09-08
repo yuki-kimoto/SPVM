@@ -1,35 +1,35 @@
-package SPVM::TestCase::ExchangeAPI {
-  use SPVM::TestCase::Point_3b;
-  use SPVM::TestCase::Point_3s;
-  use SPVM::TestCase::Point_3i;
-  use SPVM::TestCase::Point_3l;
-  use SPVM::TestCase::Point_3f;
-  use SPVM::TestCase::Point_3d;
-  use SPVM::TestCase::Minimal;
-  use SPVM::Complex_2d;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::ExchangeAPI {
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
+  use TestCase::Minimal;
+  use Complex_2d;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   sub FLOAT_PRECICE : float () { return 16384.5f; }
   sub DOUBLE_PRECICE : double () { return 65536.5; }
-  use SPVM::ArrayUtil;
+  use ArrayUtil;
 
-  sub return_object : SPVM::TestCase::Minimal () {
+  sub return_object : TestCase::Minimal () {
     
-    my $minimal = SPVM::TestCase::Minimal->new;
+    my $minimal = TestCase::Minimal->new;
     $minimal->set_x(1);
     $minimal->set_y(2);
     
     return $minimal;
   }
 
-  sub return_object_undef : SPVM::TestCase::Minimal () {
+  sub return_object_undef : TestCase::Minimal () {
     
     return undef;
   }
 
   sub return_any_object : object () {
     
-    my $minimal = SPVM::TestCase::Minimal->new;
+    my $minimal = TestCase::Minimal->new;
     $minimal->set_x(1);
     $minimal->set_y(2);
     
@@ -68,58 +68,58 @@ package SPVM::TestCase::ExchangeAPI {
     return undef;
   }
 
-  sub return_object_array : SPVM::TestCase::Minimal[] () {
+  sub return_object_array : TestCase::Minimal[] () {
     
-    my $minimal = new SPVM::TestCase::Minimal[2];
-    $minimal->[0] = new SPVM::TestCase::Minimal;
+    my $minimal = new TestCase::Minimal[2];
+    $minimal->[0] = new TestCase::Minimal;
     $minimal->[0]->set_x(1);
     $minimal->[0]->set_y(2);
-    $minimal->[1] = new SPVM::TestCase::Minimal;
+    $minimal->[1] = new TestCase::Minimal;
     $minimal->[1]->set_x(3);
     $minimal->[1]->set_y(4);
     
     return $minimal;
   }
 
-  sub return_object_array_undef : SPVM::TestCase::Minimal[] () {
+  sub return_object_array_undef : TestCase::Minimal[] () {
     
     return undef;
   }
 
   sub return_oarray : oarray () {
     
-    my $minimal = new SPVM::TestCase::Minimal[2];
-    $minimal->[0] = new SPVM::TestCase::Minimal;
+    my $minimal = new TestCase::Minimal[2];
+    $minimal->[0] = new TestCase::Minimal;
     $minimal->[0]->set_x(1);
     $minimal->[0]->set_y(2);
-    $minimal->[1] = new SPVM::TestCase::Minimal;
+    $minimal->[1] = new TestCase::Minimal;
     $minimal->[1]->set_x(3);
     $minimal->[1]->set_y(4);
     
     return $minimal;
   }
 
-  sub return_oarray_undef : SPVM::TestCase::Minimal[] () {
+  sub return_oarray_undef : TestCase::Minimal[] () {
     
     return undef;
   }
 
-  sub return_multi_numeric_array : SPVM::TestCase::Point_3i[] () {
+  sub return_multi_numeric_array : TestCase::Point_3i[] () {
     
-    my $nums = new SPVM::TestCase::Point_3i[2];
+    my $nums = new TestCase::Point_3i[2];
     $nums->[0]{x} = 1;
     $nums->[1]{z} = 5;
 
     return $nums;
   }
 
-  sub return_multi_numeric_array_undef : SPVM::TestCase::Point_3i[] () {
+  sub return_multi_numeric_array_undef : TestCase::Point_3i[] () {
     
     return undef;
   }
 
-  sub return_byte_multi_numeric : SPVM::TestCase::Point_3b () {
-    my $point : SPVM::TestCase::Point_3b;
+  sub return_byte_multi_numeric : TestCase::Point_3b () {
+    my $point : TestCase::Point_3b;
     $point->{x} = 1;
     $point->{y} = 2;
     $point->{z} = INT8_MIN();
@@ -127,8 +127,8 @@ package SPVM::TestCase::ExchangeAPI {
     return $point;
   }
   
-  sub return_short_multi_numeric : SPVM::TestCase::Point_3s () {
-    my $point : SPVM::TestCase::Point_3s;
+  sub return_short_multi_numeric : TestCase::Point_3s () {
+    my $point : TestCase::Point_3s;
     $point->{x} = 1;
     $point->{y} = 2;
     $point->{z} = INT16_MIN();
@@ -136,8 +136,8 @@ package SPVM::TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_int_multi_numeric : SPVM::TestCase::Point_3i () {
-    my $point : SPVM::TestCase::Point_3i;
+  sub return_int_multi_numeric : TestCase::Point_3i () {
+    my $point : TestCase::Point_3i;
     $point->{x} = 1;
     $point->{y} = 2;
     $point->{z} = INT32_MIN();
@@ -145,8 +145,8 @@ package SPVM::TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_long_multi_numeric : SPVM::TestCase::Point_3l () {
-    my $point : SPVM::TestCase::Point_3l;
+  sub return_long_multi_numeric : TestCase::Point_3l () {
+    my $point : TestCase::Point_3l;
     $point->{x} = 1;
     $point->{y} = 2;
     $point->{z} = INT64_MIN();
@@ -154,8 +154,8 @@ package SPVM::TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_float_multi_numeric : SPVM::TestCase::Point_3f () {
-    my $point : SPVM::TestCase::Point_3f;
+  sub return_float_multi_numeric : TestCase::Point_3f () {
+    my $point : TestCase::Point_3f;
     $point->{x} = 1;
     $point->{y} = 2;
     $point->{z} = FLT_MIN();
@@ -163,8 +163,8 @@ package SPVM::TestCase::ExchangeAPI {
     return $point;
   }
 
-  sub return_double_multi_numeric : SPVM::TestCase::Point_3d () {
-    my $point : SPVM::TestCase::Point_3d;
+  sub return_double_multi_numeric : TestCase::Point_3d () {
+    my $point : TestCase::Point_3d;
     $point->{x} = 1;
     $point->{y} = 2;
     $point->{z} = DBL_MIN();
@@ -224,9 +224,9 @@ package SPVM::TestCase::ExchangeAPI {
   
   sub any_object_array : oarray ($oarray : oarray) {
     
-    my $bytes = (SPVM::Byte[])$oarray;
+    my $bytes = (Byte[])$oarray;
     
-    $bytes->[2] = SPVM::Byte->new(5);
+    $bytes->[2] = Byte->new(5);
     
     return $bytes;
   }
@@ -267,31 +267,31 @@ package SPVM::TestCase::ExchangeAPI {
     return 1;
   }
   
-  sub call_spvm_method_value_arg_byte : SPVM::TestCase::Point_3b ($point : SPVM::TestCase::Point_3b) {
+  sub call_spvm_method_value_arg_byte : TestCase::Point_3b ($point : TestCase::Point_3b) {
     return $point;
   }
 
-  sub call_spvm_method_value_arg_short : SPVM::TestCase::Point_3s ($point : SPVM::TestCase::Point_3s) {
+  sub call_spvm_method_value_arg_short : TestCase::Point_3s ($point : TestCase::Point_3s) {
     return $point;
   }
 
-  sub call_spvm_method_value_arg_int : SPVM::TestCase::Point_3i ($point : SPVM::TestCase::Point_3i) {
+  sub call_spvm_method_value_arg_int : TestCase::Point_3i ($point : TestCase::Point_3i) {
     return $point;
   }
 
-  sub call_spvm_method_value_arg_long : SPVM::TestCase::Point_3l ($point : SPVM::TestCase::Point_3l) {
+  sub call_spvm_method_value_arg_long : TestCase::Point_3l ($point : TestCase::Point_3l) {
     return $point;
   }
 
-  sub call_spvm_method_value_arg_float : SPVM::TestCase::Point_3f ($point : SPVM::TestCase::Point_3f) {
+  sub call_spvm_method_value_arg_float : TestCase::Point_3f ($point : TestCase::Point_3f) {
     return $point;
   }
 
-  sub call_spvm_method_value_arg_double : SPVM::TestCase::Point_3d ($point : SPVM::TestCase::Point_3d) {
+  sub call_spvm_method_value_arg_double : TestCase::Point_3d ($point : TestCase::Point_3d) {
     return $point;
   }
   
-  sub call_spvm_method_value_ref_numeric_ref_mixed_arg : void ($point1 : SPVM::TestCase::Point_3i&, $value1 : int&, $point2 : SPVM::TestCase::Point_3i&, $value2 : int&) {
+  sub call_spvm_method_value_ref_numeric_ref_mixed_arg : void ($point1 : TestCase::Point_3i&, $value1 : int&, $point2 : TestCase::Point_3i&, $value2 : int&) {
     $point1->{x} = (int)($point1->{x} + 1);
     $point1->{y} = (int)($point1->{y} + 1);
     $point1->{z} = (int)($point1->{z} + 1);
@@ -305,37 +305,37 @@ package SPVM::TestCase::ExchangeAPI {
     $$value2 = $$value2 + 1;
   }
 
-  sub call_spvm_method_value_ref_arg_byte : int ($point : SPVM::TestCase::Point_3b&) {
+  sub call_spvm_method_value_ref_arg_byte : int ($point : TestCase::Point_3b&) {
     $point->{x} = (byte)($point->{x} + 1);
     $point->{y} = (byte)($point->{y} + 1);
     $point->{z} = (byte)($point->{z} + 1);
   }
 
-  sub call_spvm_method_value_ref_arg_short : int ($point : SPVM::TestCase::Point_3s&) {
+  sub call_spvm_method_value_ref_arg_short : int ($point : TestCase::Point_3s&) {
     $point->{x} = (short)($point->{x} + 1);
     $point->{y} = (short)($point->{y} + 1);
     $point->{z} = (short)($point->{z} + 1);
   }
 
-  sub call_spvm_method_value_ref_arg_int : int ($point : SPVM::TestCase::Point_3i&) {
+  sub call_spvm_method_value_ref_arg_int : int ($point : TestCase::Point_3i&) {
     $point->{x} = (int)($point->{x} + 1);
     $point->{y} = (int)($point->{y} + 1);
     $point->{z} = (int)($point->{z} + 1);
   }
 
-  sub call_spvm_method_value_ref_arg_long : int ($point : SPVM::TestCase::Point_3l&) {
+  sub call_spvm_method_value_ref_arg_long : int ($point : TestCase::Point_3l&) {
     $point->{x} = (long)($point->{x} + 1);
     $point->{y} = (long)($point->{y} + 1);
     $point->{z} = (long)($point->{z} + 1);
   }
 
-  sub call_spvm_method_value_ref_arg_float : int ($point : SPVM::TestCase::Point_3f&) {
+  sub call_spvm_method_value_ref_arg_float : int ($point : TestCase::Point_3f&) {
     $point->{x} = (float)($point->{x} + 1);
     $point->{y} = (float)($point->{y} + 1);
     $point->{z} = (float)($point->{z} + 1);
   }
 
-  sub call_spvm_method_value_ref_arg_double : int ($point : SPVM::TestCase::Point_3d&) {
+  sub call_spvm_method_value_ref_arg_double : int ($point : TestCase::Point_3d&) {
     $point->{x} = (double)($point->{x} + 1);
     $point->{y} = (double)($point->{y} + 1);
     $point->{z} = (double)($point->{z} + 1);
@@ -365,7 +365,7 @@ package SPVM::TestCase::ExchangeAPI {
     $$double_val = $$double_val + 1;
   }
   
-  sub spvm_object_set_object : int ($obj : SPVM::TestCase) {
+  sub spvm_object_set_object : int ($obj : TestCase) {
     my $nums = $obj->{x_int_array};
     my $values = ($obj->{x_byte_array});
     
@@ -391,7 +391,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_object_set : int ($obj : SPVM::TestCase) {
+  sub spvm_object_set : int ($obj : TestCase) {
     if ($obj->{x_byte} == 127) {
       if ($obj->{x_short} == 32767) {
         if ($obj->{x_int} == 2147483647) {
@@ -411,32 +411,32 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub return_byte_object_only : SPVM::Byte ($values : SPVM::Byte) {
+  sub return_byte_object_only : Byte ($values : Byte) {
     
     return $values;
   }
 
-  sub return_short_object_only : SPVM::Short ($values : SPVM::Short) {
+  sub return_short_object_only : Short ($values : Short) {
     
     return $values;
   }
 
-  sub return_int_object_only : SPVM::Int ($values : SPVM::Int) {
+  sub return_int_object_only : Int ($values : Int) {
     
     return $values;
   }
 
-  sub return_long_object_only : SPVM::Long ($values : SPVM::Long) {
+  sub return_long_object_only : Long ($values : Long) {
     
     return $values;
   }
 
-  sub return_float_object_only : SPVM::Float ($values : SPVM::Float) {
+  sub return_float_object_only : Float ($values : Float) {
     
     return $values;
   }
 
-  sub return_double_object_only : SPVM::Double ($values : SPVM::Double) {
+  sub return_double_object_only : Double ($values : Double) {
     
     return $values;
   }
@@ -506,7 +506,7 @@ package SPVM::TestCase::ExchangeAPI {
   
   sub argument_perl_array_ref_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_byte($values, [(byte)1, INT8_MAX(), INT8_MIN()])) {
+    unless (ArrayUtil->equals_array_byte($values, [(byte)1, INT8_MAX(), INT8_MIN()])) {
       return 0;
     }
     
@@ -519,7 +519,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_perl_array_ref_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_short($values, [(short)1, INT16_MAX(), INT16_MIN()])) {
+    unless (ArrayUtil->equals_array_short($values, [(short)1, INT16_MAX(), INT16_MIN()])) {
       return 0;
     }
     
@@ -532,7 +532,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_perl_array_ref_to_spvm_int_array : int ($values : int[], $undef : int[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_int($values, [(int)1, INT32_MAX(), INT32_MIN()])) {
+    unless (ArrayUtil->equals_array_int($values, [(int)1, INT32_MAX(), INT32_MIN()])) {
       return 0;
     }
     
@@ -545,7 +545,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_perl_array_ref_to_spvm_long_array : int ($values : long[], $undef : long[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_long($values, [(long)1, INT64_MAX(), INT64_MIN()])) {
+    unless (ArrayUtil->equals_array_long($values, [(long)1, INT64_MAX(), INT64_MIN()])) {
       return 0;
     }
     
@@ -558,7 +558,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_perl_array_ref_to_spvm_float_array : int ($values : float[], $undef : float[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_float($values, [(float)0.5, FLT_MAX(), FLT_MIN()])) {
+    unless (ArrayUtil->equals_array_float($values, [(float)0.5, FLT_MAX(), FLT_MIN()])) {
       return 0;
     }
     
@@ -571,7 +571,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_perl_array_ref_to_spvm_double_array : int ($values : double[], $undef : double[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_double($values, [(double)0.5, DBL_MAX(), DBL_MIN()])) {
+    unless (ArrayUtil->equals_array_double($values, [(double)0.5, DBL_MAX(), DBL_MIN()])) {
       return 0;
     }
     
@@ -584,7 +584,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_spvm_array_to_spvm_byte_array : int ($values : byte[], $undef : byte[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_byte($values, [(byte)1, INT8_MAX(), INT8_MIN()])) {
+    unless (ArrayUtil->equals_array_byte($values, [(byte)1, INT8_MAX(), INT8_MIN()])) {
       return 0;
     }
     
@@ -597,7 +597,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_spvm_array_to_spvm_short_array : int ($values : short[], $undef : short[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_short($values, [(short)1, INT16_MAX(), INT16_MIN()])) {
+    unless (ArrayUtil->equals_array_short($values, [(short)1, INT16_MAX(), INT16_MIN()])) {
       return 0;
     }
     
@@ -610,7 +610,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_spvm_array_to_spvm_int_array : int ($values : int[], $undef : int[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_int($values, [(int)1, INT32_MAX(), INT32_MIN()])) {
+    unless (ArrayUtil->equals_array_int($values, [(int)1, INT32_MAX(), INT32_MIN()])) {
       return 0;
     }
     
@@ -623,7 +623,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_spvm_array_to_spvm_long_array : int ($values : long[], $undef : long[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_long($values, [(long)1, INT64_MAX(), INT64_MIN()])) {
+    unless (ArrayUtil->equals_array_long($values, [(long)1, INT64_MAX(), INT64_MIN()])) {
       return 0;
     }
     
@@ -636,7 +636,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_spvm_array_to_spvm_float_array : int ($values : float[], $undef : float[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_float($values, [(float)0.5, FLT_MAX(), FLT_MIN()])) {
+    unless (ArrayUtil->equals_array_float($values, [(float)0.5, FLT_MAX(), FLT_MIN()])) {
       return 0;
     }
     
@@ -649,7 +649,7 @@ package SPVM::TestCase::ExchangeAPI {
 
   sub argument_spvm_array_to_spvm_double_array : int ($values : double[], $undef : double[]) {
     
-    unless (SPVM::ArrayUtil->equals_array_double($values, [(double)0.5, DBL_MAX(), DBL_MIN()])) {
+    unless (ArrayUtil->equals_array_double($values, [(double)0.5, DBL_MAX(), DBL_MIN()])) {
       return 0;
     }
     
@@ -789,7 +789,7 @@ package SPVM::TestCase::ExchangeAPI {
   }
   
 
-  sub spvm_new_object_array_len_element_oarray : int ($nums : SPVM::TestCase[]) {
+  sub spvm_new_object_array_len_element_oarray : int ($nums : TestCase[]) {
     if ($nums->[0]{x_int} == 1) {
       if ($nums->[1]{x_int} == 2) {
         return 1;
@@ -970,7 +970,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_set_and_get_mulnum_t_int : int ($points : SPVM::TestCase::Point_3i[]) {
+  sub spvm_set_and_get_mulnum_t_int : int ($points : TestCase::Point_3i[]) {
     
     if ($points->[1]{x} == INT32_MIN()) {
       if ($points->[1]{y} == 1) {
@@ -983,7 +983,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_byte : int ($points : SPVM::TestCase::Point_3b[]) {
+  sub spvm_new_mulnum_array_byte : int ($points : TestCase::Point_3b[]) {
     
     if ($points->[0]{x} == INT8_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -1010,7 +1010,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_short : int ($points : SPVM::TestCase::Point_3s[]) {
+  sub spvm_new_mulnum_array_short : int ($points : TestCase::Point_3s[]) {
     
     if ($points->[0]{x} == INT16_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -1037,7 +1037,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_int : int ($points : SPVM::TestCase::Point_3i[]) {
+  sub spvm_new_mulnum_array_int : int ($points : TestCase::Point_3i[]) {
     
     if ($points->[0]{x} == INT32_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -1064,7 +1064,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_long : int ($points : SPVM::TestCase::Point_3l[]) {
+  sub spvm_new_mulnum_array_long : int ($points : TestCase::Point_3l[]) {
     
     if ($points->[0]{x} == INT64_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -1091,7 +1091,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_float : int ($points : SPVM::TestCase::Point_3f[]) {
+  sub spvm_new_mulnum_array_float : int ($points : TestCase::Point_3f[]) {
     
     if ($points->[0]{x} == FLT_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -1118,7 +1118,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_double : int ($points : SPVM::TestCase::Point_3d[]) {
+  sub spvm_new_mulnum_array_double : int ($points : TestCase::Point_3d[]) {
     
     if ($points->[0]{x} == DBL_MIN()) {
       if ($points->[0]{y} == 1) {
@@ -1145,7 +1145,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_binary_byte : int ($points : SPVM::TestCase::Point_3b[]) {
+  sub spvm_new_mulnum_array_binary_byte : int ($points : TestCase::Point_3b[]) {
     if ($points->[0]{x} == INT8_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -1171,7 +1171,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_binary_short : int ($points : SPVM::TestCase::Point_3s[]) {
+  sub spvm_new_mulnum_array_binary_short : int ($points : TestCase::Point_3s[]) {
     if ($points->[0]{x} == INT16_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -1197,7 +1197,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_binary_int : int ($points : SPVM::TestCase::Point_3i[]) {
+  sub spvm_new_mulnum_array_binary_int : int ($points : TestCase::Point_3i[]) {
     if ($points->[0]{x} == INT32_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -1223,7 +1223,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_binary_long : int ($points : SPVM::TestCase::Point_3l[]) {
+  sub spvm_new_mulnum_array_binary_long : int ($points : TestCase::Point_3l[]) {
     if ($points->[0]{x} == INT64_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -1249,7 +1249,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_binary_float : int ($points : SPVM::TestCase::Point_3f[]) {
+  sub spvm_new_mulnum_array_binary_float : int ($points : TestCase::Point_3f[]) {
     if ($points->[0]{x} == FLT_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {
@@ -1275,7 +1275,7 @@ package SPVM::TestCase::ExchangeAPI {
     return 0;
   }
 
-  sub spvm_new_mulnum_array_binary_double : int ($points : SPVM::TestCase::Point_3d[]) {
+  sub spvm_new_mulnum_array_binary_double : int ($points : TestCase::Point_3d[]) {
     if ($points->[0]{x} == DBL_MIN()) {
       if ($points->[0]{y} == 1) {
         if ($points->[0]{z} == 2) {

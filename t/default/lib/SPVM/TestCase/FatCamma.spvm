@@ -1,4 +1,4 @@
-package SPVM::TestCase::FatCamma {
+package TestCase::FatCamma {
 
   sub fat_camma : int () {
     my $kv = [(object)foo => 1, "bar" => 2];

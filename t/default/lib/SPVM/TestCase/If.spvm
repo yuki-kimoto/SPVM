@@ -1,4 +1,4 @@
-package SPVM::TestCase::If {
+package TestCase::If {
   
   sub if_bool : int () {
     

@@ -1,5 +1,5 @@
-package SPVM::DoubleList : precompile {
-  use SPVM::ArrayUtil (memcpy_double, memmove_double);
+package DoubleList : precompile {
+  use ArrayUtil (memcpy_double, memmove_double);
   
   has values   : double[];
   has capacity : int;
@@ -9,8 +9,8 @@ package SPVM::DoubleList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : SPVM::DoubleList ($array : double[]) {
-    my $self = new SPVM::DoubleList;
+  sub new : DoubleList ($array : double[]) {
+    my $self = new DoubleList;
     my $length : int;
     if ($array) {
       $length = @$array;
@@ -40,8 +40,8 @@ package SPVM::DoubleList : precompile {
     return $self;
   }
 
-  sub new_len : SPVM::DoubleList ($length : int) {
-    my $self = new SPVM::DoubleList;
+  sub new_len : DoubleList ($length : int) {
+    my $self = new DoubleList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
     }
@@ -218,7 +218,7 @@ package SPVM::DoubleList : precompile {
     }
     
     
-    SPVM::ArrayUtil->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
+    ArrayUtil->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : double ($self : self, $index : int) {

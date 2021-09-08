@@ -1,4 +1,4 @@
-package SPVM::TestCase::Seqop {
+package TestCase::Seqop {
   sub seqop : int () {
     {
       my $ret = (1, 2, 3);

@@ -1,8 +1,8 @@
-package SPVM::Int {
+package Int {
   has val : ro int;
   
-  sub new : SPVM::Int ($value : int) {
-    my $self = new SPVM::Int;
+  sub new : Int ($value : int) {
+    my $self = new Int;
     
     $self->{val} = $value;
     

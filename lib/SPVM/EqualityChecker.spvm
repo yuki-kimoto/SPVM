@@ -1,3 +1,3 @@
-package SPVM::EqualityChecker : callback_t {
+package EqualityChecker : callback_t {
   sub : int ($self : self, $object1 : object, $object2 : object);
 }

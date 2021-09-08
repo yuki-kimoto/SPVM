@@ -1,16 +1,16 @@
-package SPVM::TestCase::Lib::SPVM::ArrayUtil {
-  use SPVM::ArrayUtil(copy_array_object, equals_array_object);
+package TestCase::Lib::ArrayUtil {
+  use ArrayUtil(copy_array_object, equals_array_object);
   
-  use SPVM::NumberUtil;
-  use SPVM::Unicode (uchar);
-  use SPVM::TestCase::Minimal;
-  use SPVM::ArrayUtil (equals_array_string);
-  use SPVM::TestCase::Minimal;
-  use SPVM::EqualityChecker;
-  use SPVM::ArrayUtil;
-  use SPVM::EqualityChecker::SameObject;
+  use NumberUtil;
+  use Unicode (uchar);
+  use TestCase::Minimal;
+  use ArrayUtil (equals_array_string);
+  use TestCase::Minimal;
+  use EqualityChecker;
+  use ArrayUtil;
+  use EqualityChecker::SameObject;
 
-  use SPVM::ArrayUtil (
+  use ArrayUtil (
     copy_array_byte,
     copy_array_short,
     copy_array_int,
@@ -55,7 +55,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_byte : int () {
     # Copy array
     {
-      my $nums = [(byte)1, 2, SPVM::NumberUtil->INT8_MIN()];
+      my $nums = [(byte)1, 2, NumberUtil->INT8_MIN()];
       my $nums_out = copy_array_byte($nums);
 
       unless ($nums->[0] == 1) {
@@ -66,7 +66,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
 
-      unless ($nums->[2] == SPVM::NumberUtil->INT8_MIN()) {
+      unless ($nums->[2] == NumberUtil->INT8_MIN()) {
         return 0;
       }
 
@@ -89,7 +89,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_short : int () {
     # Copy array
     {
-      my $nums = [(short)1, 2, SPVM::NumberUtil->INT16_MIN()];
+      my $nums = [(short)1, 2, NumberUtil->INT16_MIN()];
       my $nums_out = copy_array_short($nums);
 
       unless ($nums->[0] == 1) {
@@ -100,7 +100,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
 
-      unless ($nums->[2] == SPVM::NumberUtil->INT16_MIN()) {
+      unless ($nums->[2] == NumberUtil->INT16_MIN()) {
         return 0;
       }
 
@@ -123,7 +123,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_int : int () {
     # Copy array
     {
-      my $nums = [(int)1, 2, SPVM::NumberUtil->INT32_MIN()];
+      my $nums = [(int)1, 2, NumberUtil->INT32_MIN()];
       my $nums_out = copy_array_int($nums);
 
       unless ($nums->[0] == 1) {
@@ -134,7 +134,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
 
-      unless ($nums->[2] == SPVM::NumberUtil->INT32_MIN()) {
+      unless ($nums->[2] == NumberUtil->INT32_MIN()) {
         return 0;
       }
 
@@ -157,7 +157,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_long : int () {
     # Copy array
     {
-      my $nums = [(long)1, 2, SPVM::NumberUtil->INT64_MIN()];
+      my $nums = [(long)1, 2, NumberUtil->INT64_MIN()];
       my $nums_out = copy_array_long($nums);
 
       unless ($nums->[0] == 1) {
@@ -168,7 +168,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
 
-      unless ($nums->[2] == SPVM::NumberUtil->INT64_MIN()) {
+      unless ($nums->[2] == NumberUtil->INT64_MIN()) {
         return 0;
       }
 
@@ -191,7 +191,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_float : int () {
     # Copy array
     {
-      my $nums = [(float)0.5f, 0.25f, SPVM::NumberUtil->FLT_MIN()];
+      my $nums = [(float)0.5f, 0.25f, NumberUtil->FLT_MIN()];
       my $nums_out = copy_array_float($nums);
 
       unless ($nums->[0] == 0.5) {
@@ -202,7 +202,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
 
-      unless ($nums->[2] == SPVM::NumberUtil->FLT_MIN()) {
+      unless ($nums->[2] == NumberUtil->FLT_MIN()) {
         return 0;
       }
 
@@ -225,7 +225,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_double : int () {
     # Copy array
     {
-      my $nums = [(double)0.5, 0.25, SPVM::NumberUtil->DBL_MIN()];
+      my $nums = [(double)0.5, 0.25, NumberUtil->DBL_MIN()];
       my $nums_out = copy_array_double($nums);
 
       unless ($nums->[0] == 0.5) {
@@ -236,7 +236,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
 
-      unless ($nums->[2] == SPVM::NumberUtil->DBL_MIN()) {
+      unless ($nums->[2] == NumberUtil->DBL_MIN()) {
         return 0;
       }
 
@@ -303,10 +303,10 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_object : int () {
     # Copy array
     {
-      my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(SPVM::NumberUtil->INT32_MIN())];
+      my $objects = [(object)Int->new(1), Int->new(2), Int->new(NumberUtil->INT32_MIN())];
       my $objects_out = copy_array_object($objects, sub : object ($self : self, $obj : object) {
-        my $int_obj = (SPVM::Int)$obj;
-        my $new_int_obj = SPVM::Int->new($int_obj->value);
+        my $int_obj = (Int)$obj;
+        my $new_int_obj = Int->new($int_obj->value);
         return $new_int_obj;
       });
 
@@ -330,7 +330,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
         return 0;
       }
 
-      unless ((int)$objects_out->[2] == SPVM::NumberUtil->INT32_MIN()) {
+      unless ((int)$objects_out->[2] == NumberUtil->INT32_MIN()) {
         return 0;
       }
 
@@ -347,8 +347,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
 
   sub test_equals_array_byte : int () {
-    my $nums1 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
-    my $nums2 = [(byte)0, 1, SPVM::NumberUtil->INT8_MIN()];
+    my $nums1 = [(byte)0, 1, NumberUtil->INT8_MIN()];
+    my $nums2 = [(byte)0, 1, NumberUtil->INT8_MIN()];
     my $nums3 = [(byte)0, 1];
     my $nums4 = [(byte)0, 1, 2];
     {
@@ -395,8 +395,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
 
   sub test_equals_array_short : int () {
-    my $nums1 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
-    my $nums2 = [(short)0, 1, SPVM::NumberUtil->INT16_MIN()];
+    my $nums1 = [(short)0, 1, NumberUtil->INT16_MIN()];
+    my $nums2 = [(short)0, 1, NumberUtil->INT16_MIN()];
     my $nums3 = [(short)0, 1];
     my $nums4 = [(short)0, 1, 2];
 
@@ -446,8 +446,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
 
   sub test_equals_array_int : int () {
-    my $nums1 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
-    my $nums2 = [(int)0, 1, SPVM::NumberUtil->INT32_MIN()];
+    my $nums1 = [(int)0, 1, NumberUtil->INT32_MIN()];
+    my $nums2 = [(int)0, 1, NumberUtil->INT32_MIN()];
     my $nums3 = [(int)0, 1];
     my $nums4 = [(int)0, 1, 2];
 
@@ -495,8 +495,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
 
   sub test_equals_array_long : int () {
-    my $nums1 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
-    my $nums2 = [(long)0, 1, SPVM::NumberUtil->INT64_MIN()];
+    my $nums1 = [(long)0, 1, NumberUtil->INT64_MIN()];
+    my $nums2 = [(long)0, 1, NumberUtil->INT64_MIN()];
     my $nums3 = [(long)0, 1];
     my $nums4 = [(long)0, 1, 2];
 
@@ -544,8 +544,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
 
   sub test_equals_array_float : int () {
-    my $nums1 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
-    my $nums2 = [0.0f, 1.5f, SPVM::NumberUtil->FLT_MIN()];
+    my $nums1 = [0.0f, 1.5f, NumberUtil->FLT_MIN()];
+    my $nums2 = [0.0f, 1.5f, NumberUtil->FLT_MIN()];
     my $nums3 = [0.0f, 1.5f];
     my $nums4 = [(float)0.0f, 1.5f, 0.5f];
 
@@ -593,8 +593,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
 
   sub test_equals_array_double : int () {
-    my $nums1 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
-    my $nums2 = [0.0, 1.5, SPVM::NumberUtil->DBL_MIN()];
+    my $nums1 = [0.0, 1.5, NumberUtil->DBL_MIN()];
+    my $nums2 = [0.0, 1.5, NumberUtil->DBL_MIN()];
     my $nums3 = [0.0, 1.5];
     my $nums4 = [(double)0.0, 1.5, 0.5];
 
@@ -690,10 +690,10 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
   sub test_equals_array_object : int () {
-    my $minimal1 = SPVM::TestCase::Minimal->new;
-    my $minimal2 = SPVM::TestCase::Minimal->new;
-    my $minimal3 = SPVM::TestCase::Minimal->new;
-    my $minimal4 = SPVM::TestCase::Minimal->new;
+    my $minimal1 = TestCase::Minimal->new;
+    my $minimal2 = TestCase::Minimal->new;
+    my $minimal3 = TestCase::Minimal->new;
+    my $minimal4 = TestCase::Minimal->new;
     my $nums1 = [$minimal1, $minimal2, $minimal3];
     my $nums2 = [$minimal1, $minimal2, $minimal3];
     my $nums3 = [$minimal1, $minimal2];
@@ -701,8 +701,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     my $nums5 = [(object)$minimal1, $minimal2, $minimal3];
 
     my $equality_checker = sub : int ($self : self, $object1 : object, $object2 : object) {
-      my $minimal1 = (SPVM::TestCase::Minimal)$object1;
-      my $minimal2 = (SPVM::TestCase::Minimal)$object2;
+      my $minimal1 = (TestCase::Minimal)$object1;
+      my $minimal2 = (TestCase::Minimal)$object2;
 
       if ($minimal1 == $minimal2) {
         return 1;
@@ -747,7 +747,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
       memcpy_byte($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -757,7 +757,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
       memcpy_byte($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -767,7 +767,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5, 9];
       memcpy_byte($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -777,7 +777,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
       memcpy_byte($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -843,7 +843,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
       memcpy_short($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -853,7 +853,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
       memcpy_short($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -863,7 +863,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5, 9];
       memcpy_short($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -873,7 +873,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
       memcpy_short($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -938,7 +938,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
       memcpy_int($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -948,7 +948,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
       memcpy_int($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -958,7 +958,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5, 9];
       memcpy_int($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -968,7 +968,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
       memcpy_int($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1033,7 +1033,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
       memcpy_long($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1043,7 +1043,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
       memcpy_long($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1053,7 +1053,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5, 9];
       memcpy_long($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1063,7 +1063,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
       memcpy_long($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1128,7 +1128,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
       memcpy_float($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1138,7 +1138,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
       memcpy_float($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1148,7 +1148,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5, 9];
       memcpy_float($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1158,7 +1158,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
       memcpy_float($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1223,7 +1223,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
       memcpy_double($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1233,7 +1233,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
       memcpy_double($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1243,7 +1243,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5, 9];
       memcpy_double($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1253,7 +1253,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
       memcpy_double($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1318,7 +1318,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
       memmove_byte($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1328,7 +1328,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
       memmove_byte($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1338,7 +1338,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5, 9];
       memmove_byte($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1348,7 +1348,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
       memmove_byte($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1357,7 +1357,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $dest = [(byte)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       memmove_byte($dest, 0, $dest, 1, 9);
-      unless (SPVM::ArrayUtil->equals_array_byte($dest, [(byte)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+      unless (ArrayUtil->equals_array_byte($dest, [(byte)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
     }
@@ -1422,7 +1422,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
       memmove_short($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1432,7 +1432,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
       memmove_short($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1442,7 +1442,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5, 9];
       memmove_short($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1452,7 +1452,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
       memmove_short($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1461,7 +1461,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $dest = [(short)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       memmove_short($dest, 0, $dest, 1, 9);
-      unless (SPVM::ArrayUtil->equals_array_short($dest, [(short)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+      unless (ArrayUtil->equals_array_short($dest, [(short)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
     }
@@ -1526,7 +1526,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
       memmove_int($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1536,7 +1536,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
       memmove_int($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1546,7 +1546,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5, 9];
       memmove_int($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1556,7 +1556,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
       memmove_int($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1565,7 +1565,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $dest = [(int)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       memmove_int($dest, 0, $dest, 1, 9);
-      unless (SPVM::ArrayUtil->equals_array_int($dest, [(int)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+      unless (ArrayUtil->equals_array_int($dest, [(int)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
     }
@@ -1630,7 +1630,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
       memmove_long($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1640,7 +1640,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
       memmove_long($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1650,7 +1650,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5, 9];
       memmove_long($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1660,7 +1660,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
       memmove_long($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1669,7 +1669,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $dest = [(long)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       memmove_long($dest, 0, $dest, 1, 9);
-      unless (SPVM::ArrayUtil->equals_array_long($dest, [(long)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+      unless (ArrayUtil->equals_array_long($dest, [(long)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
     }
@@ -1734,7 +1734,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
       memmove_float($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1744,7 +1744,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
       memmove_float($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1754,7 +1754,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5, 9];
       memmove_float($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1764,7 +1764,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
       memmove_float($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1773,7 +1773,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $dest = [(float)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       memmove_float($dest, 0, $dest, 1, 9);
-      unless (SPVM::ArrayUtil->equals_array_float($dest, [(float)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+      unless (ArrayUtil->equals_array_float($dest, [(float)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
     }
@@ -1838,7 +1838,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
       memmove_double($dest, 0, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)1, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)1, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1848,7 +1848,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
       memmove_double($dest, 1, $source, 0, 3);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 1, 3, 5])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)0, 1, 3, 5])) {
         return 0;
       }
     }
@@ -1858,7 +1858,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5, 9];
       memmove_double($dest, 1, $source, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 3, 5, 0])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)0, 3, 5, 0])) {
         return 0;
       }
     }
@@ -1868,7 +1868,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
       memmove_double($dest, 0, $source, 0, 0);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)0, 0, 0, 0])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)0, 0, 0, 0])) {
         return 0;
       }
     }
@@ -1877,7 +1877,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $dest = [(double)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
       memmove_double($dest, 0, $dest, 1, 9);
-      unless (SPVM::ArrayUtil->equals_array_double($dest, [(double)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+      unless (ArrayUtil->equals_array_double($dest, [(double)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
     }
@@ -1938,7 +1938,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_array_byte : int () {
     # Dump array
     {
-      my $nums = [(byte)1, 2, SPVM::NumberUtil->INT8_MIN()];
+      my $nums = [(byte)1, 2, NumberUtil->INT8_MIN()];
 
       my $dump = dump_array_byte($nums);
       
@@ -1962,7 +1962,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_array_short : int () {
     # Dump array
     {
-      my $nums = [(short)1, 2, SPVM::NumberUtil->INT16_MIN()];
+      my $nums = [(short)1, 2, NumberUtil->INT16_MIN()];
 
       my $dump = dump_array_short($nums);
 
@@ -1986,7 +1986,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_array_int : int () {
     # Dump array
     {
-      my $nums = [(int)1, 2, SPVM::NumberUtil->INT32_MIN()];
+      my $nums = [(int)1, 2, NumberUtil->INT32_MIN()];
 
       my $dump = dump_array_int($nums);
 
@@ -2011,7 +2011,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_array_long : int () {
     # Dump array
     {
-      my $nums = [(long)1, 2, SPVM::NumberUtil->INT64_MIN()];
+      my $nums = [(long)1, 2, NumberUtil->INT64_MIN()];
 
       my $dump = dump_array_long($nums);
 
@@ -2084,9 +2084,9 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_unsigned_array_byte : int () {
     # Dump array
     {
-      my $nums = [(byte)1, 2, -1, SPVM::NumberUtil->UINT8_MAX];
+      my $nums = [(byte)1, 2, -1, NumberUtil->UINT8_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_byte($nums);
+      my $dump = ArrayUtil->dump_array_unsigned_byte($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  255,\n  255\n]") {
         return 0;
@@ -2095,7 +2095,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_byte(undef);
+      my $dump = ArrayUtil->dump_array_unsigned_byte(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -2108,9 +2108,9 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_unsigned_array_short : int () {
     # Dump array
     {
-      my $nums = [(short)1, 2, -1, SPVM::NumberUtil->UINT16_MAX];
+      my $nums = [(short)1, 2, -1, NumberUtil->UINT16_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_short($nums);
+      my $dump = ArrayUtil->dump_array_unsigned_short($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  65535,\n  65535\n]") {
         return 0;
@@ -2119,7 +2119,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_short(undef);
+      my $dump = ArrayUtil->dump_array_unsigned_short(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -2132,9 +2132,9 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_unsigned_array_int : int () {
     # Dump array
     {
-      my $nums = [(int)1, 2, -1, SPVM::NumberUtil->UINT32_MAX];
+      my $nums = [(int)1, 2, -1, NumberUtil->UINT32_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_int($nums);
+      my $dump = ArrayUtil->dump_array_unsigned_int($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  4294967295,\n  4294967295\n]") {
         return 0;
@@ -2143,7 +2143,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_int(undef);
+      my $dump = ArrayUtil->dump_array_unsigned_int(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -2156,9 +2156,9 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_dump_unsigned_array_long : long () {
     # Dump array
     {
-      my $nums = [(long)1, 2, -1, SPVM::NumberUtil->UINT64_MAX];
+      my $nums = [(long)1, 2, -1, NumberUtil->UINT64_MAX];
       
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_long($nums);
+      my $dump = ArrayUtil->dump_array_unsigned_long($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n]") {
         return 0;
@@ -2167,7 +2167,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_array_unsigned_long(undef);
+      my $dump = ArrayUtil->dump_array_unsigned_long(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -2182,7 +2182,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = ["abc", "def", "ghi"];
 
-      my $dump = SPVM::ArrayUtil->dump_array_string($strings);
+      my $dump = ArrayUtil->dump_array_string($strings);
 
       unless ($dump eq "[\n  abc,\n  def,\n  ghi\n]") {
         return 0;
@@ -2191,7 +2191,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_array_string(undef);
+      my $dump = ArrayUtil->dump_array_string(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -2205,13 +2205,13 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     
     {
       my $minimals = [
-        SPVM::TestCase::Minimal->newp(1, 2),
-        SPVM::TestCase::Minimal->newp(3, 4),
-        SPVM::TestCase::Minimal->newp(5, 6)
+        TestCase::Minimal->newp(1, 2),
+        TestCase::Minimal->newp(3, 4),
+        TestCase::Minimal->newp(5, 6)
       ];
 
-      my $dump = SPVM::ArrayUtil->dump_array_object($minimals, sub : string ($self : self, $obj : object) {
-        my $minimal = (SPVM::TestCase::Minimal)$obj;
+      my $dump = ArrayUtil->dump_array_object($minimals, sub : string ($self : self, $obj : object) {
+        my $minimal = (TestCase::Minimal)$obj;
         my $x = $minimal->x;
         my $y = $minimal->y;
         my $str = "($x,$y)";
@@ -2225,7 +2225,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
     # Dump undef
     {
-      my $dump = SPVM::ArrayUtil->dump_array_object(undef, undef);
+      my $dump = ArrayUtil->dump_array_object(undef, undef);
       
       unless ($dump == undef) {
         return 0;
@@ -2237,13 +2237,13 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
 
   sub test_new_array_proto : int () {
-    my $minimals = new SPVM::TestCase::Minimal[1];
+    my $minimals = new TestCase::Minimal[1];
 
     my $new_array_object = new_array_proto($minimals, 2);
-    unless ($new_array_object isa SPVM::TestCase::Minimal[]) {
+    unless ($new_array_object isa TestCase::Minimal[]) {
       return 0;
     }
-    my $new_minimals = (SPVM::TestCase::Minimal[])$new_array_object;
+    my $new_minimals = (TestCase::Minimal[])$new_array_object;
     unless (@$new_minimals == 2) {
       return 0;
     }
@@ -2252,17 +2252,17 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
   sub test_copy_array_range_byte : int () {
     {
-      my $nums = [(byte)5, -7, 9, SPVM::NumberUtil->INT8_MIN(), 127, 15, 19];
+      my $nums = [(byte)5, -7, 9, NumberUtil->INT8_MIN(), 127, 15, 19];
       my $range = copy_array_range_byte($nums, 0, 7);
-      unless (equals_array_byte($range, [(byte)5, -7, 9, SPVM::NumberUtil->INT8_MIN(), 127, 15, 19])) {
+      unless (equals_array_byte($range, [(byte)5, -7, 9, NumberUtil->INT8_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
 
     {
-      my $nums = [(byte)5, -7, 9, SPVM::NumberUtil->INT8_MIN(), 127, 15, 19];
+      my $nums = [(byte)5, -7, 9, NumberUtil->INT8_MIN(), 127, 15, 19];
       my $range = copy_array_range_byte($nums, 1, 3);
-      unless (equals_array_byte($range, [(byte)-7, 9, SPVM::NumberUtil->INT8_MIN()])) {
+      unless (equals_array_byte($range, [(byte)-7, 9, NumberUtil->INT8_MIN()])) {
         return 0;
       }
     }
@@ -2305,16 +2305,16 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
   sub test_copy_array_range_short : int () {
     {
-      my $nums = [(short)5, -7, 9, SPVM::NumberUtil->INT16_MIN(), 127, 15, 19];
+      my $nums = [(short)5, -7, 9, NumberUtil->INT16_MIN(), 127, 15, 19];
       my $range = copy_array_range_short($nums, 0, 7);
-      unless (equals_array_short($range, [(short)5, -7, 9, SPVM::NumberUtil->INT16_MIN(), 127, 15, 19])) {
+      unless (equals_array_short($range, [(short)5, -7, 9, NumberUtil->INT16_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
-      my $nums = [(short)5, -7, 9, SPVM::NumberUtil->INT16_MIN(), 127, 15, 19];
+      my $nums = [(short)5, -7, 9, NumberUtil->INT16_MIN(), 127, 15, 19];
       my $range = copy_array_range_short($nums, 1, 3);
-      unless (equals_array_short($range, [(short)-7, 9, SPVM::NumberUtil->INT16_MIN()])) {
+      unless (equals_array_short($range, [(short)-7, 9, NumberUtil->INT16_MIN()])) {
         return 0;
       }
     }
@@ -2357,16 +2357,16 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
   sub test_copy_array_range_int : int () {
     {
-      my $nums = [(int)5, -7, 9, SPVM::NumberUtil->INT32_MIN(), 127, 15, 19];
+      my $nums = [(int)5, -7, 9, NumberUtil->INT32_MIN(), 127, 15, 19];
       my $range = copy_array_range_int($nums, 0, 7);
-      unless (equals_array_int($range, [(int)5, -7, 9, SPVM::NumberUtil->INT32_MIN(), 127, 15, 19])) {
+      unless (equals_array_int($range, [(int)5, -7, 9, NumberUtil->INT32_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
-      my $nums = [(int)5, -7, 9, SPVM::NumberUtil->INT32_MIN(), 127, 15, 19];
+      my $nums = [(int)5, -7, 9, NumberUtil->INT32_MIN(), 127, 15, 19];
       my $range = copy_array_range_int($nums, 1, 3);
-      unless (equals_array_int($range, [(int)-7, 9, SPVM::NumberUtil->INT32_MIN()])) {
+      unless (equals_array_int($range, [(int)-7, 9, NumberUtil->INT32_MIN()])) {
         return 0;
       }
     }
@@ -2409,16 +2409,16 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
   sub test_copy_array_range_long : int () {
     {
-      my $nums = [(long)5, -7, 9, SPVM::NumberUtil->INT64_MIN(), 127, 15, 19];
+      my $nums = [(long)5, -7, 9, NumberUtil->INT64_MIN(), 127, 15, 19];
       my $range = copy_array_range_long($nums, 0, 7);
-      unless (equals_array_long($range, [(long)5, -7, 9, SPVM::NumberUtil->INT64_MIN(), 127, 15, 19])) {
+      unless (equals_array_long($range, [(long)5, -7, 9, NumberUtil->INT64_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
-      my $nums = [(long)5, -7, 9, SPVM::NumberUtil->INT64_MIN(), 127, 15, 19];
+      my $nums = [(long)5, -7, 9, NumberUtil->INT64_MIN(), 127, 15, 19];
       my $range = copy_array_range_long($nums, 1, 3);
-      unless (equals_array_long($range, [(long)-7, 9, SPVM::NumberUtil->INT64_MIN()])) {
+      unless (equals_array_long($range, [(long)-7, 9, NumberUtil->INT64_MIN()])) {
         return 0;
       }
     }
@@ -2461,16 +2461,16 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   }
   sub test_copy_array_range_float : int () {
     {
-      my $nums = [(float)5, -7, 9, SPVM::NumberUtil->FLT_MIN(), 127, 15, 19];
+      my $nums = [(float)5, -7, 9, NumberUtil->FLT_MIN(), 127, 15, 19];
       my $range = copy_array_range_float($nums, 0, 7);
-      unless (equals_array_float($range, [(float)5, -7, 9, SPVM::NumberUtil->FLT_MIN(), 127, 15, 19])) {
+      unless (equals_array_float($range, [(float)5, -7, 9, NumberUtil->FLT_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
-      my $nums = [(float)5, -7, 9, SPVM::NumberUtil->FLT_MIN(), 127, 15, 19];
+      my $nums = [(float)5, -7, 9, NumberUtil->FLT_MIN(), 127, 15, 19];
       my $range = copy_array_range_float($nums, 1, 3);
-      unless (equals_array_float($range, [(float)-7, 9, SPVM::NumberUtil->FLT_MIN()])) {
+      unless (equals_array_float($range, [(float)-7, 9, NumberUtil->FLT_MIN()])) {
         return 0;
       }
     }
@@ -2514,16 +2514,16 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   
   sub test_copy_array_range_double : int () {
     {
-      my $nums = [(double)5, -7, 9, SPVM::NumberUtil->DBL_MIN(), 127, 15, 19];
+      my $nums = [(double)5, -7, 9, NumberUtil->DBL_MIN(), 127, 15, 19];
       my $range = copy_array_range_double($nums, 0, 7);
-      unless (equals_array_double($range, [(double)5, -7, 9, SPVM::NumberUtil->DBL_MIN(), 127, 15, 19])) {
+      unless (equals_array_double($range, [(double)5, -7, 9, NumberUtil->DBL_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
-      my $nums = [(double)5, -7, 9, SPVM::NumberUtil->DBL_MIN(), 127, 15, 19];
+      my $nums = [(double)5, -7, 9, NumberUtil->DBL_MIN(), 127, 15, 19];
       my $range = copy_array_range_double($nums, 1, 3);
-      unless (equals_array_double($range, [(double)-7, 9, SPVM::NumberUtil->DBL_MIN()])) {
+      unless (equals_array_double($range, [(double)-7, 9, NumberUtil->DBL_MIN()])) {
         return 0;
       }
     }
@@ -2568,14 +2568,14 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_range_string : int () {
     {
       my $strings = ["a", "b", "c", "d", "e", "f", "g"];
-      my $range = SPVM::ArrayUtil->copy_array_range_string($strings, 0, 7);
+      my $range = ArrayUtil->copy_array_range_string($strings, 0, 7);
       unless (equals_array_string($range, ["a", "b", "c", "d", "e", "f", "g"])) {
         return 0;
       }
     }
     {
       my $strings = ["a", "b", "c", "d", "e", "f", "g"];
-      my $range = SPVM::ArrayUtil->copy_array_range_string($strings, 1, 3);
+      my $range = ArrayUtil->copy_array_range_string($strings, 1, 3);
       unless (equals_array_string($range, ["b", "c", "d"])) {
         return 0;
       }
@@ -2583,7 +2583,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
 
     # Exception - The argument array must be defined
     {
-      eval { SPVM::ArrayUtil->copy_array_range_string(undef, 0, 7); };
+      eval { ArrayUtil->copy_array_range_string(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -2592,13 +2592,13 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { SPVM::ArrayUtil->copy_array_range_string([(string)5, -7, 9], -1, 1); };
+	      eval { ArrayUtil->copy_array_range_string([(string)5, -7, 9], -1, 1); };
 	      unless ($@) {
 	        return 0;
 	      }
 	    }
       {
-	      eval { SPVM::ArrayUtil->copy_array_range_string([(string)5, -7, 9], 3, 1); };
+	      eval { ArrayUtil->copy_array_range_string([(string)5, -7, 9], 3, 1); };
 	      unless ($@) {
 	        return 0;
 	      }
@@ -2608,7 +2608,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { SPVM::ArrayUtil->copy_array_range_string([(string)5, -7, 9], 1, 3); };
+	      eval { ArrayUtil->copy_array_range_string([(string)5, -7, 9], 1, 3); };
 	      unless ($@) {
 	        return 0;
 	      }
@@ -2621,26 +2621,26 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
   sub test_copy_array_range_object : int () {
 
     {
-      my $minimal1 = SPVM::TestCase::Minimal->new;
-      my $minimal2 = SPVM::TestCase::Minimal->new;
-      my $minimal3 = SPVM::TestCase::Minimal->new;
-      my $minimal4 = SPVM::TestCase::Minimal->new;
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $range = (SPVM::TestCase::Minimal[])copy_array_range_object($elems, 0, 4);
-      unless (SPVM::ArrayUtil->equals_array_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], SPVM::EqualityChecker::SameObject->new)) {
+      my $range = (TestCase::Minimal[])copy_array_range_object($elems, 0, 4);
+      unless (ArrayUtil->equals_array_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
     {
-      my $minimal1 = SPVM::TestCase::Minimal->new;
-      my $minimal2 = SPVM::TestCase::Minimal->new;
-      my $minimal3 = SPVM::TestCase::Minimal->new;
-      my $minimal4 = SPVM::TestCase::Minimal->new;
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $range = (SPVM::TestCase::Minimal[])copy_array_range_object($elems, 1, 2);
-      unless (SPVM::ArrayUtil->equals_array_object($range, [$minimal2, $minimal3], SPVM::EqualityChecker::SameObject->new)) {
+      my $range = (TestCase::Minimal[])copy_array_range_object($elems, 1, 2);
+      unless (ArrayUtil->equals_array_object($range, [$minimal2, $minimal3], EqualityChecker::SameObject->new)) {
         return 0;
       }
     }
@@ -2655,9 +2655,9 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     
     # Exception - Offset must be in the array range
     {
-      my $minimal1 = SPVM::TestCase::Minimal->new;
-      my $minimal2 = SPVM::TestCase::Minimal->new;
-      my $minimal3 = SPVM::TestCase::Minimal->new;
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
       {
 	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], -1, 1); };
 	      unless ($@) {
@@ -2675,9 +2675,9 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     # Exception - Offset + length must be in the array range
     {
       {
-	      my $minimal1 = SPVM::TestCase::Minimal->new;
-	      my $minimal2 = SPVM::TestCase::Minimal->new;
-	      my $minimal3 = SPVM::TestCase::Minimal->new;
+	      my $minimal1 = TestCase::Minimal->new;
+	      my $minimal2 = TestCase::Minimal->new;
+	      my $minimal3 = TestCase::Minimal->new;
 	      
 	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], 1, 3); };
 	      unless ($@) {
@@ -2694,11 +2694,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_byte($nums, [(byte)1, 2, 3])) {
+      unless (ArrayUtil->equals_array_byte($nums, [(byte)1, 2, 3])) {
         return 0;
       }
     }
@@ -2707,11 +2707,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      SPVM::ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_byte($nums, [(byte)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_byte($nums, [(byte)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -2720,11 +2720,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      SPVM::ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_byte($nums, [(byte)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_byte($nums, [(byte)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -2733,11 +2733,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
         return $b <=> $a;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_byte($nums, [(byte)3, 2, 1])) {
+      unless (ArrayUtil->equals_array_byte($nums, [(byte)3, 2, 1])) {
         return 0;
       }
     }
@@ -2746,11 +2746,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_byte($nums, 0, 0, sub : int ($self : self, $a : byte, $b : byte) {
+      ArrayUtil->sort_byte($nums, 0, 0, sub : int ($self : self, $a : byte, $b : byte) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_byte($nums, [(byte)2, 3, 1])) {
+      unless (ArrayUtil->equals_array_byte($nums, [(byte)2, 3, 1])) {
         return 0;
       }
     }
@@ -2759,11 +2759,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
-      SPVM::ArrayUtil->sort_byte($nums, 1, 3, sub : int ($self : self, $a : byte, $b : byte) {
+      ArrayUtil->sort_byte($nums, 1, 3, sub : int ($self : self, $a : byte, $b : byte) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_byte($nums, [(byte)5, 1, 2, 3, -10])) {
+      unless (ArrayUtil->equals_array_byte($nums, [(byte)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -2773,7 +2773,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(byte)2, 3, 1];
       
       eval {
-        SPVM::ArrayUtil->sort_byte(undef, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+        ArrayUtil->sort_byte(undef, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -2787,7 +2787,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_byte($nums, -1, 3, sub : int ($self : self, $a : byte, $b : byte) {
+        ArrayUtil->sort_byte($nums, -1, 3, sub : int ($self : self, $a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -2801,7 +2801,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_byte($nums, 1, -1, sub : int ($self : self, $a : byte, $b : byte) {
+        ArrayUtil->sort_byte($nums, 1, -1, sub : int ($self : self, $a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -2815,7 +2815,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_byte($nums, 3, 3, sub : int ($self : self, $a : byte, $b : byte) {
+        ArrayUtil->sort_byte($nums, 3, 3, sub : int ($self : self, $a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -2834,11 +2834,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_short($nums, [(short)1, 2, 3])) {
+      unless (ArrayUtil->equals_array_short($nums, [(short)1, 2, 3])) {
         return 0;
       }
     }
@@ -2847,11 +2847,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      SPVM::ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_short($nums, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_short($nums, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -2860,11 +2860,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      SPVM::ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_short($nums, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_short($nums, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -2873,11 +2873,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
         return $b <=> $a;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_short($nums, [(short)3, 2, 1])) {
+      unless (ArrayUtil->equals_array_short($nums, [(short)3, 2, 1])) {
         return 0;
       }
     }
@@ -2886,11 +2886,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_short($nums, 0, 0, sub : int ($self : self, $a : short, $b : short) {
+      ArrayUtil->sort_short($nums, 0, 0, sub : int ($self : self, $a : short, $b : short) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_short($nums, [(short)2, 3, 1])) {
+      unless (ArrayUtil->equals_array_short($nums, [(short)2, 3, 1])) {
         return 0;
       }
     }
@@ -2899,11 +2899,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(short)5, 2, 3, 1, -10];
       
-      SPVM::ArrayUtil->sort_short($nums, 1, 3, sub : int ($self : self, $a : short, $b : short) {
+      ArrayUtil->sort_short($nums, 1, 3, sub : int ($self : self, $a : short, $b : short) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_short($nums, [(short)5, 1, 2, 3, -10])) {
+      unless (ArrayUtil->equals_array_short($nums, [(short)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -2913,7 +2913,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(short)2, 3, 1];
       
       eval {
-        SPVM::ArrayUtil->sort_short(undef, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+        ArrayUtil->sort_short(undef, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -2927,7 +2927,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(short)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_short($nums, -1, 3, sub : int ($self : self, $a : short, $b : short) {
+        ArrayUtil->sort_short($nums, -1, 3, sub : int ($self : self, $a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -2941,7 +2941,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(short)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_short($nums, 1, -1, sub : int ($self : self, $a : short, $b : short) {
+        ArrayUtil->sort_short($nums, 1, -1, sub : int ($self : self, $a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -2955,7 +2955,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(short)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_short($nums, 3, 3, sub : int ($self : self, $a : short, $b : short) {
+        ArrayUtil->sort_short($nums, 3, 3, sub : int ($self : self, $a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -2974,11 +2974,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_int($nums, [(int)1, 2, 3])) {
+      unless (ArrayUtil->equals_array_int($nums, [(int)1, 2, 3])) {
         return 0;
       }
     }
@@ -2987,11 +2987,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      SPVM::ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_int($nums, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_int($nums, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3000,11 +3000,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      SPVM::ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_int($nums, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_int($nums, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3013,11 +3013,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
         return $b <=> $a;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_int($nums, [(int)3, 2, 1])) {
+      unless (ArrayUtil->equals_array_int($nums, [(int)3, 2, 1])) {
         return 0;
       }
     }
@@ -3026,11 +3026,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_int($nums, 0, 0, sub : int ($self : self, $a : int, $b : int) {
+      ArrayUtil->sort_int($nums, 0, 0, sub : int ($self : self, $a : int, $b : int) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_int($nums, [(int)2, 3, 1])) {
+      unless (ArrayUtil->equals_array_int($nums, [(int)2, 3, 1])) {
         return 0;
       }
     }
@@ -3039,11 +3039,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(int)5, 2, 3, 1, -10];
       
-      SPVM::ArrayUtil->sort_int($nums, 1, 3, sub : int ($self : self, $a : int, $b : int) {
+      ArrayUtil->sort_int($nums, 1, 3, sub : int ($self : self, $a : int, $b : int) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_int($nums, [(int)5, 1, 2, 3, -10])) {
+      unless (ArrayUtil->equals_array_int($nums, [(int)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -3053,7 +3053,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(int)2, 3, 1];
       
       eval {
-        SPVM::ArrayUtil->sort_int(undef, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+        ArrayUtil->sort_int(undef, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -3067,7 +3067,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(int)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_int($nums, -1, 3, sub : int ($self : self, $a : int, $b : int) {
+        ArrayUtil->sort_int($nums, -1, 3, sub : int ($self : self, $a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -3081,7 +3081,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(int)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_int($nums, 1, -1, sub : int ($self : self, $a : int, $b : int) {
+        ArrayUtil->sort_int($nums, 1, -1, sub : int ($self : self, $a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -3095,7 +3095,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(int)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_int($nums, 3, 3, sub : int ($self : self, $a : int, $b : int) {
+        ArrayUtil->sort_int($nums, 3, 3, sub : int ($self : self, $a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -3114,11 +3114,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_long($nums, [(long)1, 2, 3])) {
+      unless (ArrayUtil->equals_array_long($nums, [(long)1, 2, 3])) {
         return 0;
       }
     }
@@ -3127,11 +3127,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      SPVM::ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_long($nums, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_long($nums, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3140,11 +3140,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      SPVM::ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_long($nums, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_long($nums, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3153,11 +3153,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
         return $b <=> $a;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_long($nums, [(long)3, 2, 1])) {
+      unless (ArrayUtil->equals_array_long($nums, [(long)3, 2, 1])) {
         return 0;
       }
     }
@@ -3166,11 +3166,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_long($nums, 0, 0, sub : int ($self : self, $a : long, $b : long) {
+      ArrayUtil->sort_long($nums, 0, 0, sub : int ($self : self, $a : long, $b : long) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_long($nums, [(long)2, 3, 1])) {
+      unless (ArrayUtil->equals_array_long($nums, [(long)2, 3, 1])) {
         return 0;
       }
     }
@@ -3179,11 +3179,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(long)5, 2, 3, 1, -10];
       
-      SPVM::ArrayUtil->sort_long($nums, 1, 3, sub : int ($self : self, $a : long, $b : long) {
+      ArrayUtil->sort_long($nums, 1, 3, sub : int ($self : self, $a : long, $b : long) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_long($nums, [(long)5, 1, 2, 3, -10])) {
+      unless (ArrayUtil->equals_array_long($nums, [(long)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -3193,7 +3193,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(long)2, 3, 1];
       
       eval {
-        SPVM::ArrayUtil->sort_long(undef, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+        ArrayUtil->sort_long(undef, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -3207,7 +3207,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(long)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_long($nums, -1, 3, sub : int ($self : self, $a : long, $b : long) {
+        ArrayUtil->sort_long($nums, -1, 3, sub : int ($self : self, $a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -3221,7 +3221,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(long)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_long($nums, 1, -1, sub : int ($self : self, $a : long, $b : long) {
+        ArrayUtil->sort_long($nums, 1, -1, sub : int ($self : self, $a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -3235,7 +3235,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(long)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_long($nums, 3, 3, sub : int ($self : self, $a : long, $b : long) {
+        ArrayUtil->sort_long($nums, 3, 3, sub : int ($self : self, $a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -3254,11 +3254,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(float)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_float($nums, [(float)1, 2, 3])) {
+      unless (ArrayUtil->equals_array_float($nums, [(float)1, 2, 3])) {
         return 0;
       }
     }
@@ -3267,11 +3267,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(float)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      SPVM::ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_float($nums, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_float($nums, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3280,11 +3280,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(float)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      SPVM::ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_float($nums, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_float($nums, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3293,11 +3293,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(float)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
         return $b <=> $a;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_float($nums, [(float)3, 2, 1])) {
+      unless (ArrayUtil->equals_array_float($nums, [(float)3, 2, 1])) {
         return 0;
       }
     }
@@ -3306,11 +3306,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(float)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_float($nums, 0, 0, sub : int ($self : self, $a : float, $b : float) {
+      ArrayUtil->sort_float($nums, 0, 0, sub : int ($self : self, $a : float, $b : float) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_float($nums, [(float)2, 3, 1])) {
+      unless (ArrayUtil->equals_array_float($nums, [(float)2, 3, 1])) {
         return 0;
       }
     }
@@ -3319,11 +3319,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(float)5, 2, 3, 1, -10];
       
-      SPVM::ArrayUtil->sort_float($nums, 1, 3, sub : int ($self : self, $a : float, $b : float) {
+      ArrayUtil->sort_float($nums, 1, 3, sub : int ($self : self, $a : float, $b : float) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_float($nums, [(float)5, 1, 2, 3, -10])) {
+      unless (ArrayUtil->equals_array_float($nums, [(float)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -3333,7 +3333,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(float)2, 3, 1];
       
       eval {
-        SPVM::ArrayUtil->sort_float(undef, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+        ArrayUtil->sort_float(undef, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -3347,7 +3347,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(float)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_float($nums, -1, 3, sub : int ($self : self, $a : float, $b : float) {
+        ArrayUtil->sort_float($nums, -1, 3, sub : int ($self : self, $a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -3361,7 +3361,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(float)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_float($nums, 1, -1, sub : int ($self : self, $a : float, $b : float) {
+        ArrayUtil->sort_float($nums, 1, -1, sub : int ($self : self, $a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -3375,7 +3375,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(float)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_float($nums, 3, 3, sub : int ($self : self, $a : float, $b : float) {
+        ArrayUtil->sort_float($nums, 3, 3, sub : int ($self : self, $a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -3394,11 +3394,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(double)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_double($nums, [(double)1, 2, 3])) {
+      unless (ArrayUtil->equals_array_double($nums, [(double)1, 2, 3])) {
         return 0;
       }
     }
@@ -3407,11 +3407,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(double)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      SPVM::ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_double($nums, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_double($nums, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3420,11 +3420,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(double)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      SPVM::ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_double($nums, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_double($nums, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3433,11 +3433,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(double)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
         return $b <=> $a;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_double($nums, [(double)3, 2, 1])) {
+      unless (ArrayUtil->equals_array_double($nums, [(double)3, 2, 1])) {
         return 0;
       }
     }
@@ -3446,11 +3446,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(double)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_double($nums, 0, 0, sub : int ($self : self, $a : double, $b : double) {
+      ArrayUtil->sort_double($nums, 0, 0, sub : int ($self : self, $a : double, $b : double) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_double($nums, [(double)2, 3, 1])) {
+      unless (ArrayUtil->equals_array_double($nums, [(double)2, 3, 1])) {
         return 0;
       }
     }
@@ -3459,11 +3459,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $nums = [(double)5, 2, 3, 1, -10];
       
-      SPVM::ArrayUtil->sort_double($nums, 1, 3, sub : int ($self : self, $a : double, $b : double) {
+      ArrayUtil->sort_double($nums, 1, 3, sub : int ($self : self, $a : double, $b : double) {
         return $a <=> $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_double($nums, [(double)5, 1, 2, 3, -10])) {
+      unless (ArrayUtil->equals_array_double($nums, [(double)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -3473,7 +3473,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(double)2, 3, 1];
       
       eval {
-        SPVM::ArrayUtil->sort_double(undef, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+        ArrayUtil->sort_double(undef, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -3487,7 +3487,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(double)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_double($nums, -1, 3, sub : int ($self : self, $a : double, $b : double) {
+        ArrayUtil->sort_double($nums, -1, 3, sub : int ($self : self, $a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -3501,7 +3501,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(double)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_double($nums, 1, -1, sub : int ($self : self, $a : double, $b : double) {
+        ArrayUtil->sort_double($nums, 1, -1, sub : int ($self : self, $a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -3515,7 +3515,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $nums = [(double)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_double($nums, 3, 3, sub : int ($self : self, $a : double, $b : double) {
+        ArrayUtil->sort_double($nums, 3, 3, sub : int ($self : self, $a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -3534,11 +3534,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = [(string)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
         return $a cmp $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)1, 2, 3])) {
+      unless (ArrayUtil->equals_array_string($strings, [(string)1, 2, 3])) {
         return 0;
       }
     }
@@ -3547,11 +3547,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = [(string)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
         return $a cmp $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_string($strings, [(string)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3560,11 +3560,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = [(string)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
         return $a cmp $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+      unless (ArrayUtil->equals_array_string($strings, [(string)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
         return 0;
       }
     }
@@ -3573,11 +3573,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = [(string)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
         return $b cmp $a;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)3, 2, 1])) {
+      unless (ArrayUtil->equals_array_string($strings, [(string)3, 2, 1])) {
         return 0;
       }
     }
@@ -3586,11 +3586,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = [(string)2, 3, 1];
       
-      SPVM::ArrayUtil->sort_string($strings, 0, 0, sub : int ($self : self, $a : string, $b : string) {
+      ArrayUtil->sort_string($strings, 0, 0, sub : int ($self : self, $a : string, $b : string) {
         return $a cmp $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)2, 3, 1])) {
+      unless (ArrayUtil->equals_array_string($strings, [(string)2, 3, 1])) {
         return 0;
       }
     }
@@ -3599,11 +3599,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = [(string)5, 2, 3, 1, -10];
       
-      SPVM::ArrayUtil->sort_string($strings, 1, 3, sub : int ($self : self, $a : string, $b : string) {
+      ArrayUtil->sort_string($strings, 1, 3, sub : int ($self : self, $a : string, $b : string) {
         return $a cmp $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)5, 1, 2, 3, -10])) {
+      unless (ArrayUtil->equals_array_string($strings, [(string)5, 1, 2, 3, -10])) {
         return 0;
       }
     }
@@ -3612,11 +3612,11 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $strings = ["11", "1", "2", undef, ""];
       
-      SPVM::ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      ArrayUtil->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
         return $a cmp $b;
       });
       
-      unless (SPVM::ArrayUtil->equals_array_string($strings, [(string)undef, "", "1", "11", "2"])) {
+      unless (ArrayUtil->equals_array_string($strings, [(string)undef, "", "1", "11", "2"])) {
         return 0;
       }
     }
@@ -3626,7 +3626,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $strings = [(string)2, 3, 1];
       
       eval {
-        SPVM::ArrayUtil->sort_string(undef, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        ArrayUtil->sort_string(undef, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -3640,7 +3640,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $strings = [(string)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_string($strings, -1, 3, sub : int ($self : self, $a : string, $b : string) {
+        ArrayUtil->sort_string($strings, -1, 3, sub : int ($self : self, $a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -3654,7 +3654,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $strings = [(string)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_string($strings, 1, -1, sub : int ($self : self, $a : string, $b : string) {
+        ArrayUtil->sort_string($strings, 1, -1, sub : int ($self : self, $a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -3668,7 +3668,7 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $strings = [(string)5, 2, 3, 1, -10];
       
       eval {
-        SPVM::ArrayUtil->sort_string($strings, 3, 3, sub : int ($self : self, $a : string, $b : string) {
+        ArrayUtil->sort_string($strings, 3, 3, sub : int ($self : self, $a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -3682,8 +3682,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     return 1;
   }
 
-  sub new_minimal : SPVM::TestCase::Minimal ($x : int, $y : int) {
-    my $minimal = SPVM::TestCase::Minimal->new;
+  sub new_minimal : TestCase::Minimal ($x : int, $y : int) {
+    my $minimal = TestCase::Minimal->new;
     $minimal->set_x($x);
     $minimal->set_y($y);
     
@@ -3696,12 +3696,12 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
-      SPVM::ArrayUtil->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
-        return ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+      ArrayUtil->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
-      my $is_equals = SPVM::ArrayUtil->equals_array_object($objs, [new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0)], sub : int ($self : self, $a : object, $b : object) {
-        return ((SPVM::TestCase::Minimal)$a)->x == ((SPVM::TestCase::Minimal)$b)->x;
+      my $is_equals = ArrayUtil->equals_array_object($objs, [new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       
       unless ($is_equals) {
@@ -3713,25 +3713,25 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $objs = [new_minimal(2, 1), new_minimal(2, 2), new_minimal(1, 3)];
 
-      SPVM::ArrayUtil->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
-        my $a_x = ((SPVM::TestCase::Minimal)$a)->x;
-        my $a_y = ((SPVM::TestCase::Minimal)$a)->y;
-        my $b_x = ((SPVM::TestCase::Minimal)$b)->x;
-        my $b_y = ((SPVM::TestCase::Minimal)$b)->y;
+      ArrayUtil->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        my $a_x = ((TestCase::Minimal)$a)->x;
+        my $a_y = ((TestCase::Minimal)$a)->y;
+        my $b_x = ((TestCase::Minimal)$b)->x;
+        my $b_y = ((TestCase::Minimal)$b)->y;
         
-        my $cmp = ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+        my $cmp = ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         if ($cmp != 0) {
           return $cmp;
         }
         else {
-          $cmp = ((SPVM::TestCase::Minimal)$a)->y <=> ((SPVM::TestCase::Minimal)$b)->y;
+          $cmp = ((TestCase::Minimal)$a)->y <=> ((TestCase::Minimal)$b)->y;
         }
         
         return $cmp;
       });
 
-      my $is_equals = SPVM::ArrayUtil->equals_array_object($objs, [new_minimal(1, 3), new_minimal(2, 1), new_minimal(2, 2)], sub : int ($self : self, $a : object, $b : object) {
-        if (((SPVM::TestCase::Minimal)$a)->x == ((SPVM::TestCase::Minimal)$b)->x && ((SPVM::TestCase::Minimal)$a)->y == ((SPVM::TestCase::Minimal)$b)->y) {
+      my $is_equals = ArrayUtil->equals_array_object($objs, [new_minimal(1, 3), new_minimal(2, 1), new_minimal(2, 2)], sub : int ($self : self, $a : object, $b : object) {
+        if (((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x && ((TestCase::Minimal)$a)->y == ((TestCase::Minimal)$b)->y) {
           return 1;
         }
         else {
@@ -3748,12 +3748,12 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
-      SPVM::ArrayUtil->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
-        return ((SPVM::TestCase::Minimal)$b)->x <=> ((SPVM::TestCase::Minimal)$a)->x;
+      ArrayUtil->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$b)->x <=> ((TestCase::Minimal)$a)->x;
       });
       
-      my $is_equals = SPVM::ArrayUtil->equals_array_object($objs, [new_minimal(3, 0), new_minimal(2, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
-        return ((SPVM::TestCase::Minimal)$a)->x == ((SPVM::TestCase::Minimal)$b)->x;
+      my $is_equals = ArrayUtil->equals_array_object($objs, [new_minimal(3, 0), new_minimal(2, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       
       unless ($is_equals) {
@@ -3765,12 +3765,12 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
-      SPVM::ArrayUtil->sort_object($objs, 0, 0, sub : int ($self : self, $a : object, $b : object) {
-        return ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+      ArrayUtil->sort_object($objs, 0, 0, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
-      my $is_equals = SPVM::ArrayUtil->equals_array_object($objs, [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
-        return ((SPVM::TestCase::Minimal)$a)->x == ((SPVM::TestCase::Minimal)$b)->x;
+      my $is_equals = ArrayUtil->equals_array_object($objs, [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       unless ($is_equals) {
         return 0;
@@ -3781,15 +3781,15 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
     {
       my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
       
-      SPVM::ArrayUtil->sort_object($objs, 1, 3, sub : int ($self : self, $a : object, $b : object) {
-        return ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+      ArrayUtil->sort_object($objs, 1, 3, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
-      my $is_equals = SPVM::ArrayUtil->equals_array_object(
+      my $is_equals = ArrayUtil->equals_array_object(
         $objs,
         [new_minimal(5, 0), new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(-10, 0)],
         sub : int ($self : self, $a : object, $b : object) {
-          return ((SPVM::TestCase::Minimal)$a)->x == ((SPVM::TestCase::Minimal)$b)->x;
+          return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
         }
       );
       unless ($is_equals) {
@@ -3802,8 +3802,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
       eval {
-        SPVM::ArrayUtil->sort_object(undef, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
-          return ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+        ArrayUtil->sort_object(undef, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };
       unless ($@) {
@@ -3816,8 +3816,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
       eval {
-        SPVM::ArrayUtil->sort_object($objs, -1, 3, sub : int ($self : self, $a : object, $b : object) {
-          return ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+        ArrayUtil->sort_object($objs, -1, 3, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };
       unless ($@) {
@@ -3830,8 +3830,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
       
       eval {
-        SPVM::ArrayUtil->sort_object($objs, 1, -1, sub : int ($self : self, $a : object, $b : object) {
-          return ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+        ArrayUtil->sort_object($objs, 1, -1, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };
       unless ($@) {
@@ -3844,8 +3844,8 @@ package SPVM::TestCase::Lib::SPVM::ArrayUtil {
       my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
       
       eval {
-        SPVM::ArrayUtil->sort_object($objs, 3, 3, sub : int ($self : self, $a : object, $b : object) {
-          return ((SPVM::TestCase::Minimal)$a)->x <=> ((SPVM::TestCase::Minimal)$b)->x;
+        ArrayUtil->sort_object($objs, 3, 3, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };
       unless ($@) {

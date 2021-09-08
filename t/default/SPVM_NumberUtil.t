@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Lib::SPVM::NumberUtil';
+use SPVM 'SPVM::TestCase::Lib::NumberUtil';
 use SPVM 'SPVM::NumberUtil';
 use POSIX();
 use TestFile;
@@ -32,17 +32,17 @@ my $NaN = 9**9**9 / 9**9**9;
 
 my $nan_re = qr/(nan|ind)/i;
 
-use SPVM 'SPVM::TestCase::Lib::SPVM::NumberUtil';
+use SPVM 'SPVM::TestCase::Lib::NumberUtil';
 use SPVM 'SPVM::NumberUtil';
 
 # crand
 {
-  ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_crand);
+  ok(SPVM::TestCase::Lib::NumberUtil->test_crand);
 }
 
 # rand
 {
-  ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_rand);
+  ok(SPVM::TestCase::Lib::NumberUtil->test_rand);
 }
 
 # srand
@@ -52,19 +52,19 @@ SKIP: {
   }
   
   {
-    ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_srand);
+    ok(SPVM::TestCase::Lib::NumberUtil->test_srand);
   }
 }
 
 # RAND_MAX
 {
-  ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_RAND_MAX);
+  ok(SPVM::TestCase::Lib::NumberUtil->test_RAND_MAX);
 }
 
 # Copy
 {
   # copy_string
-  ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_copy_str);
+  ok(SPVM::TestCase::Lib::NumberUtil->test_copy_str);
 }
 
 # Constant integral functions
@@ -92,9 +92,9 @@ SKIP: {
 }
 
 {
-  ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_byte_constant);
-  ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_short_constant);
-  ok(SPVM::TestCase::Lib::SPVM::NumberUtil->test_int_constant);
+  ok(SPVM::TestCase::Lib::NumberUtil->test_byte_constant);
+  ok(SPVM::TestCase::Lib::NumberUtil->test_short_constant);
+  ok(SPVM::TestCase::Lib::NumberUtil->test_int_constant);
 }
 
 {

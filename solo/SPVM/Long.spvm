@@ -1,8 +1,8 @@
-package SPVM::Long {
+package Long {
   has val : ro long;
   
-  sub new : SPVM::Long ($value : long) {
-    my $self = new SPVM::Long;
+  sub new : Long ($value : long) {
+    my $self = new Long;
     
     $self->{val} = $value;
     

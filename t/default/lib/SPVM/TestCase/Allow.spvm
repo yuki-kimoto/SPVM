@@ -1,16 +1,16 @@
-package SPVM::TestCase::Allow {
-  use SPVM::TestCase::Allow::PrivateData;
+package TestCase::Allow {
+  use TestCase::Allow::PrivateData;
   
   sub allow_test : int () {
-    my $pdata = new SPVM::TestCase::Allow::PrivateData;
+    my $pdata = new TestCase::Allow::PrivateData;
     
     $pdata->{x} = 2;
     unless ($pdata->{x} == 2) {
       return 0;
     }
     
-    $SPVM::TestCase::Allow::PrivateData::X = 3;
-    unless ($SPVM::TestCase::Allow::PrivateData::X == 3) {
+    $TestCase::Allow::PrivateData::X = 3;
+    unless ($TestCase::Allow::PrivateData::X == 3) {
       return 0;
     }
     

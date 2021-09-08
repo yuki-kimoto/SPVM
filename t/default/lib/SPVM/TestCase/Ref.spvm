@@ -1,11 +1,11 @@
-package SPVM::TestCase::Ref {
-  use SPVM::TestCase::Point_3b;
-  use SPVM::TestCase::Point_3s;
-  use SPVM::TestCase::Point_3i;
-  use SPVM::TestCase::Point_3l;
-  use SPVM::TestCase::Point_3f;
-  use SPVM::TestCase::Point_3d;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::Ref {
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
   sub numeric_ref_deref_byte : int () {
     my $num1 = (byte)INT8_MIN();
@@ -104,7 +104,7 @@ package SPVM::TestCase::Ref {
   }
   
   sub value_ref_deref_byte : int () {
-    my $point1 : SPVM::TestCase::Point_3b;
+    my $point1 : TestCase::Point_3b;
     
     $point1->{x} = INT8_MIN();
     $point1->{y} = 1;
@@ -121,7 +121,7 @@ package SPVM::TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_byte : int () {
-    my $point : SPVM::TestCase::Point_3b;
+    my $point : TestCase::Point_3b;
     
     $point->{x} = INT8_MIN();
     $point->{y} = 1;
@@ -140,7 +140,7 @@ package SPVM::TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_byte : int () {
-    my $point : SPVM::TestCase::Point_3b;
+    my $point : TestCase::Point_3b;
 
     my $point_ref = \$point;
     
@@ -155,14 +155,14 @@ package SPVM::TestCase::Ref {
   }
   
   sub test_pass_value_ref_byte : int () {
-    my $point_out : SPVM::TestCase::Point_3b;
+    my $point_out : TestCase::Point_3b;
     
-    my $point1 : SPVM::TestCase::Point_3b;
+    my $point1 : TestCase::Point_3b;
     $point1->{x} = INT8_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : SPVM::TestCase::Point_3b;
+    my $point2 : TestCase::Point_3b;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -175,14 +175,14 @@ package SPVM::TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_byte : void ($x_in1 : SPVM::TestCase::Point_3b, $x_in2 : SPVM::TestCase::Point_3b, $x_out : SPVM::TestCase::Point_3b&) {
+  sub pass_value_ref_byte : void ($x_in1 : TestCase::Point_3b, $x_in2 : TestCase::Point_3b, $x_out : TestCase::Point_3b&) {
     $x_out->{x} = (byte)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (byte)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (byte)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_short : int () {
-    my $point1 : SPVM::TestCase::Point_3s;
+    my $point1 : TestCase::Point_3s;
     
     $point1->{x} = INT16_MIN();
     $point1->{y} = 1;
@@ -199,7 +199,7 @@ package SPVM::TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_short : int () {
-    my $point : SPVM::TestCase::Point_3s;
+    my $point : TestCase::Point_3s;
     
     $point->{x} = INT16_MIN();
     $point->{y} = 1;
@@ -218,7 +218,7 @@ package SPVM::TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_short : int () {
-    my $point : SPVM::TestCase::Point_3s;
+    my $point : TestCase::Point_3s;
 
     my $point_ref = \$point;
     
@@ -233,14 +233,14 @@ package SPVM::TestCase::Ref {
   }
   
   sub test_pass_value_ref_short : int () {
-    my $point_out : SPVM::TestCase::Point_3s;
+    my $point_out : TestCase::Point_3s;
     
-    my $point1 : SPVM::TestCase::Point_3s;
+    my $point1 : TestCase::Point_3s;
     $point1->{x} = INT16_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : SPVM::TestCase::Point_3s;
+    my $point2 : TestCase::Point_3s;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -253,14 +253,14 @@ package SPVM::TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_short : void ($x_in1 : SPVM::TestCase::Point_3s, $x_in2 : SPVM::TestCase::Point_3s, $x_out : SPVM::TestCase::Point_3s&) {
+  sub pass_value_ref_short : void ($x_in1 : TestCase::Point_3s, $x_in2 : TestCase::Point_3s, $x_out : TestCase::Point_3s&) {
     $x_out->{x} = (short)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (short)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (short)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_double : int () {
-    my $point1 : SPVM::TestCase::Point_3d;
+    my $point1 : TestCase::Point_3d;
     
     $point1->{x} = DBL_MIN();
     $point1->{y} = 0.5;
@@ -277,7 +277,7 @@ package SPVM::TestCase::Ref {
   }
 
   sub value_ref_deref_int : int () {
-    my $point1 : SPVM::TestCase::Point_3i;
+    my $point1 : TestCase::Point_3i;
     
     $point1->{x} = INT32_MIN();
     $point1->{y} = 1;
@@ -294,7 +294,7 @@ package SPVM::TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_int : int () {
-    my $point : SPVM::TestCase::Point_3i;
+    my $point : TestCase::Point_3i;
     
     $point->{x} = INT32_MIN();
     $point->{y} = 1;
@@ -313,7 +313,7 @@ package SPVM::TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_int : int () {
-    my $point : SPVM::TestCase::Point_3i;
+    my $point : TestCase::Point_3i;
 
     my $point_ref = \$point;
     
@@ -328,14 +328,14 @@ package SPVM::TestCase::Ref {
   }
   
   sub test_pass_value_ref_int : int () {
-    my $point_out : SPVM::TestCase::Point_3i;
+    my $point_out : TestCase::Point_3i;
     
-    my $point1 : SPVM::TestCase::Point_3i;
+    my $point1 : TestCase::Point_3i;
     $point1->{x} = INT32_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : SPVM::TestCase::Point_3i;
+    my $point2 : TestCase::Point_3i;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -348,14 +348,14 @@ package SPVM::TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_int : void ($x_in1 : SPVM::TestCase::Point_3i, $x_in2 : SPVM::TestCase::Point_3i, $x_out : SPVM::TestCase::Point_3i&) {
+  sub pass_value_ref_int : void ($x_in1 : TestCase::Point_3i, $x_in2 : TestCase::Point_3i, $x_out : TestCase::Point_3i&) {
     $x_out->{x} = (int)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (int)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (int)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_long : int () {
-    my $point1 : SPVM::TestCase::Point_3l;
+    my $point1 : TestCase::Point_3l;
     
     $point1->{x} = INT64_MIN();
     $point1->{y} = 1;
@@ -372,7 +372,7 @@ package SPVM::TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_long : int () {
-    my $point : SPVM::TestCase::Point_3l;
+    my $point : TestCase::Point_3l;
     
     $point->{x} = INT64_MIN();
     $point->{y} = 1;
@@ -391,7 +391,7 @@ package SPVM::TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_long : int () {
-    my $point : SPVM::TestCase::Point_3l;
+    my $point : TestCase::Point_3l;
 
     my $point_ref = \$point;
     
@@ -406,14 +406,14 @@ package SPVM::TestCase::Ref {
   }
   
   sub test_pass_value_ref_long : int () {
-    my $point_out : SPVM::TestCase::Point_3l;
+    my $point_out : TestCase::Point_3l;
     
-    my $point1 : SPVM::TestCase::Point_3l;
+    my $point1 : TestCase::Point_3l;
     $point1->{x} = INT64_MIN();
     $point1->{y} = 1;
     $point1->{z} = 2;
 
-    my $point2 : SPVM::TestCase::Point_3l;
+    my $point2 : TestCase::Point_3l;
     $point2->{x} = 3;
     $point2->{y} = 4;
     $point2->{z} = 5;
@@ -426,14 +426,14 @@ package SPVM::TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_long : void ($x_in1 : SPVM::TestCase::Point_3l, $x_in2 : SPVM::TestCase::Point_3l, $x_out : SPVM::TestCase::Point_3l&) {
+  sub pass_value_ref_long : void ($x_in1 : TestCase::Point_3l, $x_in2 : TestCase::Point_3l, $x_out : TestCase::Point_3l&) {
     $x_out->{x} = (long)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (long)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (long)($x_in1->{z} + $x_in2->{z});
   }
 
   sub value_ref_deref_float : int () {
-    my $point1 : SPVM::TestCase::Point_3f;
+    my $point1 : TestCase::Point_3f;
     
     $point1->{x} = FLT_MIN();
     $point1->{y} = 0.5f;
@@ -450,7 +450,7 @@ package SPVM::TestCase::Ref {
   }
 
   sub value_ref_deref_get_field_float : int () {
-    my $point : SPVM::TestCase::Point_3f;
+    my $point : TestCase::Point_3f;
     
     $point->{x} = FLT_MIN();
     $point->{y} = 0.5f;
@@ -469,7 +469,7 @@ package SPVM::TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_float : int () {
-    my $point : SPVM::TestCase::Point_3f;
+    my $point : TestCase::Point_3f;
 
     my $point_ref = \$point;
     
@@ -484,14 +484,14 @@ package SPVM::TestCase::Ref {
   }
   
   sub test_pass_value_ref_float : int () {
-    my $point_out : SPVM::TestCase::Point_3f;
+    my $point_out : TestCase::Point_3f;
     
-    my $point1 : SPVM::TestCase::Point_3f;
+    my $point1 : TestCase::Point_3f;
     $point1->{x} = 0.25f;
     $point1->{y} = 0.5f;
     $point1->{z} = 0.125f;
 
-    my $point2 : SPVM::TestCase::Point_3f;
+    my $point2 : TestCase::Point_3f;
     $point2->{x} = 0.25f;
     $point2->{y} = 0.5f;
     $point2->{z} = 0.125f;
@@ -504,14 +504,14 @@ package SPVM::TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_float : void ($x_in1 : SPVM::TestCase::Point_3f, $x_in2 : SPVM::TestCase::Point_3f, $x_out : SPVM::TestCase::Point_3f&) {
+  sub pass_value_ref_float : void ($x_in1 : TestCase::Point_3f, $x_in2 : TestCase::Point_3f, $x_out : TestCase::Point_3f&) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};
   }
 
   sub value_ref_deref_get_field_double : int () {
-    my $point : SPVM::TestCase::Point_3d;
+    my $point : TestCase::Point_3d;
     
     $point->{x} = DBL_MIN();
     $point->{y} = 0.5;
@@ -530,7 +530,7 @@ package SPVM::TestCase::Ref {
   }
   
   sub value_ref_deref_set_field_double : int () {
-    my $point : SPVM::TestCase::Point_3d;
+    my $point : TestCase::Point_3d;
 
     my $point_ref = \$point;
     
@@ -545,14 +545,14 @@ package SPVM::TestCase::Ref {
   }
   
   sub test_pass_value_ref_double : int () {
-    my $point_out : SPVM::TestCase::Point_3d;
+    my $point_out : TestCase::Point_3d;
     
-    my $point1 : SPVM::TestCase::Point_3d;
+    my $point1 : TestCase::Point_3d;
     $point1->{x} = 0.25;
     $point1->{y} = 0.5;
     $point1->{z} = 0.125;
 
-    my $point2 : SPVM::TestCase::Point_3d;
+    my $point2 : TestCase::Point_3d;
     $point2->{x} = 0.25;
     $point2->{y} = 0.5;
     $point2->{z} = 0.125;
@@ -565,7 +565,7 @@ package SPVM::TestCase::Ref {
     return 0;
   }
   
-  sub pass_value_ref_double : void ($x_in1 : SPVM::TestCase::Point_3d, $x_in2 : SPVM::TestCase::Point_3d, $x_out : SPVM::TestCase::Point_3d&) {
+  sub pass_value_ref_double : void ($x_in1 : TestCase::Point_3d, $x_in2 : TestCase::Point_3d, $x_out : TestCase::Point_3d&) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};

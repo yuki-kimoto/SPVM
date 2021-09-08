@@ -1,8 +1,8 @@
-package SPVM::TestCase::CompileError::ComparisonOperator::LtNotNumeric {
-  use SPVM::TestCase::Minimal;
+package TestCase::CompileError::ComparisonOperator::LtNotNumeric {
+  use TestCase::Minimal;
   
   sub main : int () {
-    my $minimal = new SPVM::TestCase::Minimal;
+    my $minimal = new TestCase::Minimal;
     if ($minimal < $minimal) {
       
     }

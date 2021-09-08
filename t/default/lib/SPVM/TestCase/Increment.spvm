@@ -1,12 +1,12 @@
-package SPVM::TestCase::Increment {
-  use SPVM::TestCase::Simple;
-  use SPVM::TestCase::Point_3b;
-  use SPVM::TestCase::Point_3s;
-  use SPVM::TestCase::Point_3i;
-  use SPVM::TestCase::Point_3l;
-  use SPVM::TestCase::Point_3f;
-  use SPVM::TestCase::Point_3d;
-  use SPVM::NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+package TestCase::Increment {
+  use TestCase::Simple;
+  use TestCase::Point_3b;
+  use TestCase::Point_3s;
+  use TestCase::Point_3i;
+  use TestCase::Point_3l;
+  use TestCase::Point_3f;
+  use TestCase::Point_3d;
+  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
   our $BYTE_VALUE : byte;
   our $SHORT_VALUE : short;
@@ -16,8 +16,8 @@ package SPVM::TestCase::Increment {
   our $DOUBLE_VALUE : double;
 
   sub post_dec_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Minimal[2];
-    $nums_of_nums->[1] = SPVM::TestCase::Minimal->new;
+    my $nums_of_nums = new TestCase::Minimal[2];
+    $nums_of_nums->[1] = TestCase::Minimal->new;
     
     my $ret2 = $nums_of_nums->[1]{x}--;
     
@@ -46,8 +46,8 @@ package SPVM::TestCase::Increment {
   }
 
   sub post_dec_array_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Point_3i[][2];
-    $nums_of_nums->[1] = new SPVM::TestCase::Point_3i[1];
+    my $nums_of_nums = new TestCase::Point_3i[][2];
+    $nums_of_nums->[1] = new TestCase::Point_3i[1];
     
     my $ret2 = $nums_of_nums->[1][0]{x}--;
     
@@ -61,12 +61,12 @@ package SPVM::TestCase::Increment {
   }
 
   sub post_dec_array_field_access_constant_index : int () {
-    my $values_point_byte = new SPVM::TestCase::Point_3b[1];
-    my $values_point_short = new SPVM::TestCase::Point_3s[1];
-    my $values_point_int = new SPVM::TestCase::Point_3i[1];
-    my $values_point_long = new SPVM::TestCase::Point_3l[1];
-    my $values_point_float = new SPVM::TestCase::Point_3f[1];
-    my $values_point_double = new SPVM::TestCase::Point_3d[1];
+    my $values_point_byte = new TestCase::Point_3b[1];
+    my $values_point_short = new TestCase::Point_3s[1];
+    my $values_point_int = new TestCase::Point_3i[1];
+    my $values_point_long = new TestCase::Point_3l[1];
+    my $values_point_float = new TestCase::Point_3f[1];
+    my $values_point_double = new TestCase::Point_3d[1];
     
     $values_point_byte->[0]{x} = (byte)INT8_MAX();
     $values_point_short->[0]{x} = (short)INT16_MAX();
@@ -201,7 +201,7 @@ package SPVM::TestCase::Increment {
   }
 
   sub post_dec_field_access : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MAX();
     $simple->{short_value} = (short)INT16_MAX();
@@ -386,8 +386,8 @@ package SPVM::TestCase::Increment {
   }
 
   sub post_inc_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Minimal[2];
-    $nums_of_nums->[1] = SPVM::TestCase::Minimal->new;
+    my $nums_of_nums = new TestCase::Minimal[2];
+    $nums_of_nums->[1] = TestCase::Minimal->new;
     
     my $ret2 = $nums_of_nums->[1]{x}++;
     
@@ -416,8 +416,8 @@ package SPVM::TestCase::Increment {
   }
 
   sub post_inc_array_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Point_3i[][2];
-    $nums_of_nums->[1] = new SPVM::TestCase::Point_3i[1];
+    my $nums_of_nums = new TestCase::Point_3i[][2];
+    $nums_of_nums->[1] = new TestCase::Point_3i[1];
     
     my $ret2 = $nums_of_nums->[1][0]{x}++;
     
@@ -431,12 +431,12 @@ package SPVM::TestCase::Increment {
   }
 
   sub post_inc_array_field_access_constant_index : int () {
-    my $values_point_byte = new SPVM::TestCase::Point_3b[1];
-    my $values_point_short = new SPVM::TestCase::Point_3s[1];
-    my $values_point_int = new SPVM::TestCase::Point_3i[1];
-    my $values_point_long = new SPVM::TestCase::Point_3l[1];
-    my $values_point_float = new SPVM::TestCase::Point_3f[1];
-    my $values_point_double = new SPVM::TestCase::Point_3d[1];
+    my $values_point_byte = new TestCase::Point_3b[1];
+    my $values_point_short = new TestCase::Point_3s[1];
+    my $values_point_int = new TestCase::Point_3i[1];
+    my $values_point_long = new TestCase::Point_3l[1];
+    my $values_point_float = new TestCase::Point_3f[1];
+    my $values_point_double = new TestCase::Point_3d[1];
     
     $values_point_byte->[0]{x} = (byte)INT8_MIN();
     $values_point_short->[0]{x} = (short)INT16_MIN();
@@ -571,7 +571,7 @@ package SPVM::TestCase::Increment {
   }
 
   sub post_inc_field_access : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MIN();
     $simple->{short_value} = (short)INT16_MIN();
@@ -756,8 +756,8 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_dec_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Minimal[2];
-    $nums_of_nums->[0] = SPVM::TestCase::Minimal->new;
+    my $nums_of_nums = new TestCase::Minimal[2];
+    $nums_of_nums->[0] = TestCase::Minimal->new;
     
     my $ret1 = --$nums_of_nums->[0]{x};
     
@@ -786,8 +786,8 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_dec_array_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Point_3i[][2];
-    $nums_of_nums->[0] = new SPVM::TestCase::Point_3i[1];
+    my $nums_of_nums = new TestCase::Point_3i[][2];
+    $nums_of_nums->[0] = new TestCase::Point_3i[1];
     
     my $ret1 = --$nums_of_nums->[0][0]{x};
     
@@ -801,12 +801,12 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_dec_array_field_access_constant_index : int () {
-    my $values_point_byte = new SPVM::TestCase::Point_3b[1];
-    my $values_point_short = new SPVM::TestCase::Point_3s[1];
-    my $values_point_int = new SPVM::TestCase::Point_3i[1];
-    my $values_point_long = new SPVM::TestCase::Point_3l[1];
-    my $values_point_float = new SPVM::TestCase::Point_3f[1];
-    my $values_point_double = new SPVM::TestCase::Point_3d[1];
+    my $values_point_byte = new TestCase::Point_3b[1];
+    my $values_point_short = new TestCase::Point_3s[1];
+    my $values_point_int = new TestCase::Point_3i[1];
+    my $values_point_long = new TestCase::Point_3l[1];
+    my $values_point_float = new TestCase::Point_3f[1];
+    my $values_point_double = new TestCase::Point_3d[1];
     
     $values_point_byte->[0]{x} = (byte)INT8_MAX();
     $values_point_short->[0]{x} = (short)INT16_MAX();
@@ -941,7 +941,7 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_dec_field_access : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MAX();
     $simple->{short_value} = (short)INT16_MAX();
@@ -1127,8 +1127,8 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_inc_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Minimal[2];
-    $nums_of_nums->[0] = SPVM::TestCase::Minimal->new;
+    my $nums_of_nums = new TestCase::Minimal[2];
+    $nums_of_nums->[0] = TestCase::Minimal->new;
     
     my $ret1 = ++$nums_of_nums->[0]{x};
     
@@ -1157,8 +1157,8 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_inc_array_field_access_invocant_not_var : int () {
-    my $nums_of_nums = new SPVM::TestCase::Point_3i[][2];
-    $nums_of_nums->[0] = new SPVM::TestCase::Point_3i[1];
+    my $nums_of_nums = new TestCase::Point_3i[][2];
+    $nums_of_nums->[0] = new TestCase::Point_3i[1];
     
     my $ret1 = ++$nums_of_nums->[0][0]{x};
     
@@ -1172,12 +1172,12 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_inc_array_field_access_constant_index : int () {
-    my $values_point_byte = new SPVM::TestCase::Point_3b[1];
-    my $values_point_short = new SPVM::TestCase::Point_3s[1];
-    my $values_point_int = new SPVM::TestCase::Point_3i[1];
-    my $values_point_long = new SPVM::TestCase::Point_3l[1];
-    my $values_point_float = new SPVM::TestCase::Point_3f[1];
-    my $values_point_double = new SPVM::TestCase::Point_3d[1];
+    my $values_point_byte = new TestCase::Point_3b[1];
+    my $values_point_short = new TestCase::Point_3s[1];
+    my $values_point_int = new TestCase::Point_3i[1];
+    my $values_point_long = new TestCase::Point_3l[1];
+    my $values_point_float = new TestCase::Point_3f[1];
+    my $values_point_double = new TestCase::Point_3d[1];
     
     $values_point_byte->[0]{x} = (byte)INT8_MIN();
     $values_point_short->[0]{x} = (short)INT16_MIN();
@@ -1312,7 +1312,7 @@ package SPVM::TestCase::Increment {
   }
 
   sub pre_inc_field_access : int () {
-    my $simple = SPVM::TestCase::Simple->new;
+    my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MIN();
     $simple->{short_value} = (short)INT16_MIN();

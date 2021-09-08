@@ -1,4 +1,4 @@
-package SPVM::TestCase::Term {
+package TestCase::Term {
   sub evaluate_left_to_right : int () {
     {
       my $i = 2;

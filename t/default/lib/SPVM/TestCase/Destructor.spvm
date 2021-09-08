@@ -1,10 +1,10 @@
-package SPVM::TestCase::Destructor {
-  use SPVM::TestCase::Minimal;
+package TestCase::Destructor {
+  use TestCase::Minimal;
   
-  has minimal : public SPVM::TestCase::Minimal;
+  has minimal : public TestCase::Minimal;
   
-  sub new : SPVM::TestCase::Destructor () {
-    return new SPVM::TestCase::Destructor;
+  sub new : TestCase::Destructor () {
+    return new TestCase::Destructor;
   }
   
   sub DESTROY : void ($self : self) {

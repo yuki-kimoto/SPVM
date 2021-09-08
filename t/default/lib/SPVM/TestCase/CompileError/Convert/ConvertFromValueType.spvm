@@ -1,9 +1,9 @@
-package SPVM::TestCase::CompileError::Convert::ConvertFromValueType {
-  use SPVM::TestCase::Minimal;
-  use SPVM::Complex_d2;
+package TestCase::CompileError::Convert::ConvertFromValueType {
+  use TestCase::Minimal;
+  use Complex_d2;
 
   sub main : int () {
-    my $z : SPVM::Complex_d2;
-    (SPVM::TestCase::Minimal)$z;
+    my $z : Complex_d2;
+    (TestCase::Minimal)$z;
   }
 }

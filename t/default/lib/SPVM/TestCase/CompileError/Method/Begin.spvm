@@ -1,4 +1,4 @@
-package SPVM::TestCase::CompileError::Method::Begin {
+package TestCase::CompileError::Method::Begin {
   sub INIT : int () {
     
   }

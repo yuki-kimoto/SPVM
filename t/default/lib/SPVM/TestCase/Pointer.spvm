@@ -1,12 +1,12 @@
-package SPVM::TestCase::Pointer : pointer_t {
-  native sub new : SPVM::TestCase::Pointer ($x : int);
+package TestCase::Pointer : pointer_t {
+  native sub new : TestCase::Pointer ($x : int);
   
   native sub get_x : int ($self : self);
   
   native sub DESTROY : void ($self : self);
   
   sub struct_test : int () {
-    my $struct = SPVM::TestCase::Pointer->new(3);
+    my $struct = TestCase::Pointer->new(3);
     my $x = $struct->get_x;
     
     if ($x == 3) {
