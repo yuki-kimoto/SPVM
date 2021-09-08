@@ -16,6 +16,12 @@ use SPVM();
 sub build_dir { shift->{build_dir} }
 sub module_dirs { shift->{module_dirs} }
 
+sub compile_spvm {
+  my ($self, $package_name, $file, $line) = @_;
+  
+  $self->compile_spvm_xs($package_name, $file, $line);
+}
+
 sub new {
   my $class = shift;
   
