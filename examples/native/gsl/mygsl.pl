@@ -7,7 +7,7 @@ use lib "../../../lib";
 
 die unless -d "../../../lib";
 
-use SPVM 'SPVM::MyGSL';
+use SPVM 'MyGSL';
 
 # Initialize SPVM
 

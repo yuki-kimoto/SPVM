@@ -49,7 +49,7 @@ You can call all methods declaraed in the package.
   # main.pl
   use FindBin;
   use lib "$FindBin::lib";
-  use SPVM 'SPVM::Point';
+  use SPVM 'Point';
   
   my $point = SPVM::Point->new;
   $point->set_x(4);

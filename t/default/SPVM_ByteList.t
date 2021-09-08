@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Lib::ByteList';
+use SPVM 'TestCase::Lib::ByteList';
 
 
 

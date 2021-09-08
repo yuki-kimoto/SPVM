@@ -8,9 +8,9 @@ use Test::More 'no_plan';
 
 use FindBin;
 
-use SPVM 'SPVM::TestCase::NativeAPI';
-use SPVM 'SPVM::TestCase::NativeAPI2';
-use SPVM 'SPVM::TestCase::Pointer';
+use SPVM 'TestCase::NativeAPI';
+use SPVM 'TestCase::NativeAPI2';
+use SPVM 'TestCase::Pointer';
 
 
 

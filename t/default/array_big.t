@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More;
 
-use SPVM 'SPVM::TestCase::Array';
+use SPVM 'TestCase::Array';
 
 if ($ENV{SPVM_TEST_PRIVATE}) {
   plan 'no_plan';

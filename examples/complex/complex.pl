@@ -4,7 +4,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::MyComplex';
+use SPVM 'MyComplex';
 
 SPVM::MyComplex->new_float_complex;
 

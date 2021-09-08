@@ -7,7 +7,7 @@ use utf8;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Seqop';
+use SPVM 'TestCase::Seqop';
 
 
 

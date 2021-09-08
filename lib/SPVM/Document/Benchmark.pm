@@ -55,7 +55,7 @@ Benchmark raw output
   use lib "$FindBin::Bin/lib";
   use Benchmark qw/timethese cmpthese/;
 
-  use SPVM 'SPVM::MyMath';
+  use SPVM 'MyMath';
 
   # Initialize SPVM
 
@@ -65,9 +65,9 @@ Benchmark raw output
   use lib "$FindBin::Bin/lib";
   use Benchmark qw/timethese cmpthese/;
 
-  use SPVM 'SPVM::MyMath';
-  use SPVM 'SPVM::MyMathPrecompile';
-  use SPVM 'SPVM::MyMathNative';
+  use SPVM 'MyMath';
+  use SPVM 'MyMathPrecompile';
+  use SPVM 'MyMathNative';
 
   my $bench_count = 10000;
   my $loop_count = 100000;

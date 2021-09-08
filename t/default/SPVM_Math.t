@@ -31,7 +31,7 @@ my $NaN = 9**9**9 / 9**9**9;
 
 my $nan_re = qr/(nan|ind)/i;
 
-use SPVM 'SPVM::TestCase::Lib::Math';
+use SPVM 'TestCase::Lib::Math';
 
 
 

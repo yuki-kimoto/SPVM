@@ -7,7 +7,7 @@ use lib "t/lib";
 use TestAuto;
 use TestFile;
 
-use SPVM 'SPVM::TestCase::Lib::StringUtil';
+use SPVM 'TestCase::Lib::StringUtil';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();

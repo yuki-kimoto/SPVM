@@ -6,9 +6,9 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::LINEN';
-use SPVM 'SPVM::TestCase::LINER';
-use SPVM 'SPVM::TestCase::LINERN';
+use SPVM 'TestCase::LINEN';
+use SPVM 'TestCase::LINER';
+use SPVM 'TestCase::LINERN';
 
 
 

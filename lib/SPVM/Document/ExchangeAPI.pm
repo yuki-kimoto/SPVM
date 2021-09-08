@@ -12,7 +12,7 @@ SPVM Exchange API is APIs to convert Perl data structures to/from SPVM data stru
 
 If you load SVPM module from Perl, use the following syntax.
 
-  use SPVM 'SPVM::Foo';
+  use SPVM 'Foo';
 
 Suppose the following C<SPVM/Foo.spvm> is placed on a module search path.
 
@@ -25,7 +25,7 @@ Suppose the following C<SPVM/Foo.spvm> is placed on a module search path.
 
 If you load C<SPVM::Foo::Bar> module, do the following.
 
-  use SPVM 'SPVM::Foo::Bar';
+  use SPVM 'Foo::Bar';
 
 Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a module search path.
 
@@ -50,7 +50,7 @@ The method of SPVM module can be called from Perl directory.
 
 Let's call SPVM static method from Perl.
 
-  use SPVM 'SPVM::Foo';
+  use SPVM 'Foo';
 
   my $total = SPVM::Foo->sum(1, 2);
 
@@ -77,7 +77,7 @@ The SPVM exception is converted to a Perl exception.
 
 Let's call SPVM instance method from Perl.
 
-  use SPVM 'SPVM::Foo';
+  use SPVM 'Foo';
 
   my $foo = SPVM::Foo->new;
 

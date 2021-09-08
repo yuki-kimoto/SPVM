@@ -17,22 +17,22 @@ my $file = basename $0;
 use FindBin;
 use Encode 'decode', 'encode';
 
-use SPVM 'SPVM::TestCase'; my $use_test_line = __LINE__;
+use SPVM 'TestCase'; my $use_test_line = __LINE__;
 
-use SPVM 'SPVM::TestCase::ExchangeAPI';
-use SPVM 'SPVM::TestCase::Point_3i';
+use SPVM 'TestCase::ExchangeAPI';
+use SPVM 'TestCase::Point_3i';
 
-use SPVM 'SPVM::Hash';
-use SPVM 'SPVM::List';
-use SPVM 'SPVM::ByteList';
-use SPVM 'SPVM::ShortList';
-use SPVM 'SPVM::IntList';
-use SPVM 'SPVM::LongList';
-use SPVM 'SPVM::FloatList';
-use SPVM 'SPVM::DoubleList';
-use SPVM 'SPVM::StringList';
+use SPVM 'Hash';
+use SPVM 'List';
+use SPVM 'ByteList';
+use SPVM 'ShortList';
+use SPVM 'IntList';
+use SPVM 'LongList';
+use SPVM 'FloatList';
+use SPVM 'DoubleList';
+use SPVM 'StringList';
 
-use SPVM 'SPVM::TestCase::Minimal';
+use SPVM 'TestCase::Minimal';
 
 my $BYTE_MAX = 127;
 my $BYTE_MIN = -128;

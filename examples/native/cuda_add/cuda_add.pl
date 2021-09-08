@@ -5,7 +5,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib";
 
 use List::Util;
-use SPVM 'SPVM::MyAdd';
+use SPVM 'MyAdd';
 
 # 30 is max gpu paralel
 my $length = 1_000_000;

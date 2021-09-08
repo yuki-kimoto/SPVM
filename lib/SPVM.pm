@@ -40,6 +40,10 @@ sub import {
 
   # Add package informations
   if (defined $package_name) {
+    unless ($package_name =~ /^SPVM::/) {
+      $package_name = "SPVM::$package_name";
+    }
+    
     my ($file, $line) = (caller)[1, 2];
 
     # Compile SPVM source code and create runtime env
@@ -318,7 +322,7 @@ Call SPVM method from Perl
   use FindBin;
   use lib "$FindBin::Bin/lib";
 
-  use SPVM 'SPVM::MyMath';
+  use SPVM 'MyMath';
 
   # Call method
   my $total = SPVM::MyMath->sum([3, 6, 8, 9]);

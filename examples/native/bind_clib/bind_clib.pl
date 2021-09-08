@@ -4,7 +4,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::BindCLib';
+use SPVM 'BindCLib';
 
 my $total = SPVM::BindCLib->sum([1, 2, 3, 4]);
 

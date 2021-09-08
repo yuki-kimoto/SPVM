@@ -6,9 +6,9 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Comment::LF';
-use SPVM 'SPVM::TestCase::Comment::CR';
-use SPVM 'SPVM::TestCase::Comment::CRLF';
+use SPVM 'TestCase::Comment::LF';
+use SPVM 'TestCase::Comment::CR';
+use SPVM 'TestCase::Comment::CRLF';
 
 
 

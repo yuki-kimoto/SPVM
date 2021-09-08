@@ -9,7 +9,7 @@ use File::Path 'mkpath';
 use Test::More 'no_plan';
 
 use TestFile;
-use SPVM 'SPVM::TestCase::Print';
+use SPVM 'TestCase::Print';
 
 
 
@@ -31,7 +31,7 @@ use strict;
 use warnings;
 use FindBin;
 
-use SPVM 'SPVM::TestCase::Print';
+use SPVM 'TestCase::Print';
 
 
 

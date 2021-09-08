@@ -6,8 +6,8 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Lib::ArrayUtil';
-use SPVM 'SPVM::ArrayUtil';
+use SPVM 'TestCase::Lib::ArrayUtil';
+use SPVM 'ArrayUtil';
 use POSIX();
 use TestFile;
 
@@ -32,8 +32,8 @@ my $NaN = 9**9**9 / 9**9**9;
 
 my $nan_re = qr/(nan|ind)/i;
 
-use SPVM 'SPVM::TestCase::Lib::ArrayUtil';
-use SPVM 'SPVM::ArrayUtil';
+use SPVM 'TestCase::Lib::ArrayUtil';
+use SPVM 'ArrayUtil';
 
 
 # Copy

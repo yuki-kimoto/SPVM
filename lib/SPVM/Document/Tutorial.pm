@@ -332,7 +332,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::MyMath';
+use SPVM 'MyMath';
 
 # Call method
 my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
@@ -362,7 +362,7 @@ use lib "$FindBin::Bin/lib";
 use SPVM module.
 
 <pre>
-use SPVM 'SPVM::MyMath';
+use SPVM 'MyMath';
 </pre>
 
 In this place, compilation is not done. Collect SPVM modules.
@@ -436,7 +436,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::MyMath';
+use SPVM 'MyMath';
 
 # Call method
 my $total = SPVM::MyMath->sum([3, 6, 8, 9]);
@@ -477,7 +477,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::MyMath';
+use SPVM 'MyMath';
 
 # Call precompile method
 my $total_precompile = SPVM::MyMath->sum_precompile([3, 6, 8, 9]);
@@ -534,7 +534,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::MyMath';
+use SPVM 'MyMath';
 
 # Call native method
 my $total_native = SPVM::MyMath->sum_native([3, 6, 8, 9]);
@@ -581,7 +581,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::BindCLib';
+use SPVM 'BindCLib';
 
 my $total = SPVM::BindCLib->sum([1, 2, 3, 4]);
 

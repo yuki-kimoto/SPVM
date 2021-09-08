@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Lib::Hash';
+use SPVM 'TestCase::Lib::Hash';
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();

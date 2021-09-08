@@ -10,6 +10,7 @@ Revision history for SPVM
         * If a packag variable access contains :: and start with $ + upper case, and the name is not start "$SPVM::",
           insert "SPVM::" to the package name after $
         * Improve error message when package name is different from the package name corresponding to the module file
+        * use SPVM MODULE_NAME add "SPVM::" to the top if the module name does't start with "SPVM::".
         
         [BUGFIXES]
         * None

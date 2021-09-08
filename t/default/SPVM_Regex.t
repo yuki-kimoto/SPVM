@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Lib::Regex';
+use SPVM 'TestCase::Lib::Regex';
 
 
 

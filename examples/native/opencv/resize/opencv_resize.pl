@@ -4,7 +4,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::MyOpenCVResize';
+use SPVM 'MyOpenCVResize';
 
 # Initialize SPVM
 

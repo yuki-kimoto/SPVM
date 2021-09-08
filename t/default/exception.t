@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Exception';
+use SPVM 'TestCase::Exception';
 
 
 

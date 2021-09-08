@@ -6,9 +6,9 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::TestCase::Examples';
+use SPVM 'TestCase::Examples';
 
-use SPVM 'SPVM::TestCase::ModuleContainsMultiPackage';
+use SPVM 'TestCase::ModuleContainsMultiPackage';
 
 use Devel::Peek;
 

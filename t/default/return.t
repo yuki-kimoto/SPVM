@@ -10,7 +10,7 @@ use Test::More 'no_plan';
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-use SPVM 'SPVM::TestCase::Return';
+use SPVM 'TestCase::Return';
 
 
 

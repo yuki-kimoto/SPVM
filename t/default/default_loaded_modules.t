@@ -6,12 +6,12 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'SPVM::Byte';
-use SPVM 'SPVM::Short';
-use SPVM 'SPVM::Int';
-use SPVM 'SPVM::Long';
-use SPVM 'SPVM::Float';
-use SPVM 'SPVM::Double';
+use SPVM 'Byte';
+use SPVM 'Short';
+use SPVM 'Int';
+use SPVM 'Long';
+use SPVM 'Float';
+use SPVM 'Double';
 
 
 use FindBin;
