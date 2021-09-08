@@ -78,29 +78,27 @@ sub init {
   }
 }
 
-my $package_name_h = {};
-my $binded_package_name_h = {};
+my $class_name_h = {};
+my $binded_class_name_h = {};
 sub bind_to_perl {
-  my ($builder, $added_package_names) = @_;
+  my ($builder, $added_class_names) = @_;
 
-  for my $package_name (@$added_package_names) {
+  for my $class_name (@$added_class_names) {
+    $class_name =~ s/^SPVM:://;
+    my $perl_package_name = "SPVM::$class_name";
 
-    unless ($package_name_h->{$package_name}) {
+    unless ($class_name_h->{$class_name}) {
     
-      unless ($package_name =~ /^SPVM::/) {
-        $package_name = "SPVM::$package_name";
-      }
-
-      my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
+      my $code = "package $perl_package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
       eval $code;
 
       if (my $error = $@) {
         confess $error;
       }
-      $package_name_h->{$package_name} = 1;
+      $class_name_h->{$class_name} = 1;
     }
 
-    my $method_names = $builder->get_method_names($package_name);
+    my $method_names = $builder->get_method_names($perl_package_name);
 
     for my $method_name (@$method_names) {
       # Destrutor is skip
@@ -112,19 +110,15 @@ sub bind_to_perl {
         next;
       }
 
-      my $method_abs_name = "${package_name}::$method_name";
-
-      # Define SPVM method
+      my $perl_method_abs_name = "${perl_package_name}::$method_name";
+      
+      # Define Perl method
       no strict 'refs';
-
-      my ($package_name, $method_name) = $method_abs_name =~ /^(?:(.+)::)(.*)/;
-
-      # Declare method
-      *{"$method_abs_name"} = sub {
+      *{"$perl_method_abs_name"} = sub {
         SPVM::init() unless $SPVM_INITED;
 
         my $return_value;
-        eval { $return_value = SPVM::call_spvm_method($package_name, $method_name, @_) };
+        eval { $return_value = SPVM::call_spvm_method($perl_package_name, $method_name, @_) };
         my $error = $@;
         if ($error) {
           confess $error;
