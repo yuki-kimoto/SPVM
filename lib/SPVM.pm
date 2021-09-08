@@ -41,7 +41,6 @@ sub import {
   # Add package informations
   if (defined $class_name) {
     $class_name =~ s/^SPVM:://;
-    my $perl_package_name = "SPVM::$class_name";
     
     my ($file, $line) = (caller)[1, 2];
 
@@ -53,14 +52,12 @@ sub import {
     if ($compile_success) {
       my $added_class_names = $BUILDER->get_added_class_names;
       for my $added_class_name (@$added_class_names) {
-        $added_class_name =~ s/^SPVM:://;
-        my $added_perl_package_name = "SPVM::$added_class_name";
         
         # Build Precompile packages - Compile C source codes and link them to SPVM precompile method
-        $BUILDER->build_and_bind_shared_lib($added_perl_package_name, 'precompile');
+        $BUILDER->build_and_bind_shared_lib($added_class_name, 'precompile');
 
         # Build native packages - Compile C source codes and link them to SPVM native method
-        $BUILDER->build_and_bind_shared_lib($added_perl_package_name, 'native');
+        $BUILDER->build_and_bind_shared_lib($added_class_name, 'native');
       }
 
       # Bind SPVM method to Perl

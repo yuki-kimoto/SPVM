@@ -119,7 +119,10 @@ sub build_shared_lib_dist {
 
 sub build_and_bind_shared_lib {
   my ($self, $package_name, $category) = @_;
-  
+
+  $package_name =~ s/^SPVM:://;
+  $package_name = "SPVM::$package_name";
+
   my $cc = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => $category,
