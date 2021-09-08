@@ -146,30 +146,30 @@ sub MY::postamble {
   
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::NumberUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::StringUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::ArrayUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Math');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Hash');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Time');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('SPVM::Unicode');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('NumberUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('StringUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('ArrayUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Math');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Hash');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Time');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Unicode');
     
     # Precompile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::NumberUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ArrayUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::List');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ByteList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::ShortList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::IntList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::LongList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::FloatList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::DoubleList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringList');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::StringBuffer');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Hash');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Unicode');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('SPVM::Regex');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('NumberUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('StringUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ArrayUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('List');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ByteList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ShortList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('IntList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('LongList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('FloatList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('DoubleList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('StringList');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('StringBuffer');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Hash');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Unicode');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Regex');
   }
   
   return $make_rule;

@@ -155,6 +155,10 @@ sub create_make_rule_precompile {
 
 sub create_package_make_rule {
   my ($package_name, $category) = @_;
+
+  unless ($package_name =~ /^SPVM::/) {
+    $package_name = "SPVM::$package_name";
+  }
   
   my $make_rule;
   
