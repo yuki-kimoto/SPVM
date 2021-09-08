@@ -86,6 +86,10 @@ sub bind_to_perl {
   for my $package_name (@$added_package_names) {
 
     unless ($package_name_h->{$package_name}) {
+    
+      unless ($package_name =~ /^SPVM::/) {
+        $package_name = "SPVM::$package_name";
+      }
 
       my $code = "package $package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
       eval $code;
