@@ -1,5 +1,5 @@
 package LongList : precompile {
-  use ArrayUtil (memcpy_long, memmove_long);
+  use Fn (memcpy_long, memmove_long);
   
   has values   : long[];
   has capacity : int;
@@ -217,7 +217,7 @@ package LongList : precompile {
       die "The length of argument array must be same as the length of current list array";
     }
     
-    ArrayUtil->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
+    Fn->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : long ($self : self, $index : int) {

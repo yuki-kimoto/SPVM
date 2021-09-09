@@ -1,5 +1,5 @@
 package FloatList : precompile {
-  use ArrayUtil (memcpy_float, memmove_float);
+  use Fn (memcpy_float, memmove_float);
   
   has values   : float[];
   has capacity : int;
@@ -217,7 +217,7 @@ package FloatList : precompile {
     }
     
     
-    ArrayUtil->memcpy_float($self->{values}, 0, $array, 0, $cur_length);
+    Fn->memcpy_float($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : float ($self : self, $index : int) {

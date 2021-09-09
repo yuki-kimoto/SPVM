@@ -1,6 +1,6 @@
 package Hash : precompile {
   use Hash::Entry;
-  use NumberUtil (INT32_MAX);
+  use Fn (INT32_MAX);
 
   has bucket_count : int;
   has count : ro int;

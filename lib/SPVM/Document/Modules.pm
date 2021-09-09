@@ -10,7 +10,7 @@ List of SPVM Core Modules
 
 =over 2
 
-=item * L<ArrayUtil|SPVM::ArrayUtil> - Array Utilities
+=item * L<Fn|SPVM::Fn> - Standard Functions
 
 =item * L<Byte|SPVM::Byte> - byte object
 
@@ -66,8 +66,6 @@ List of SPVM Core Modules
 
 =item * L<Math|SPVM::Math> - Math functions
 
-=item * L<NumberUtil|SPVM::NumberUtil> - Number Utilities
-
 =item * L<Regex|SPVM::Regex> - Regular expression
 
 =item * L<Regex::Pattern|SPVM::Regex::Pattern> - Regular expression pattern
@@ -83,8 +81,6 @@ List of SPVM Core Modules
 =item * L<Stringer|SPVM::Stringer> - a callback interface to stringify a object
 
 =item * L<StringList|SPVM::StringList> - Dynamic string array
-
-=item * L<StringUtil|SPVM::StringUtil> - String Utilities
 
 =item * L<Time|SPVM::Time> - Time manipulation
 

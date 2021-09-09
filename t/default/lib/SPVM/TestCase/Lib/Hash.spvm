@@ -3,8 +3,8 @@ package TestCase::Lib::Hash {
   use Hash;
   use Comparator::Object;
   use List;
-  use NumberUtil;
-  use ArrayUtil;
+  use Fn;
+  use Fn;
   use Comparator::Object;
   use Comparator::Int;
 
@@ -105,39 +105,39 @@ package TestCase::Lib::Hash {
 
     # set_byte, get_byte
     {
-      $hash->set_byte(foo => NumberUtil->INT8_MAX());
+      $hash->set_byte(foo => Fn->INT8_MAX());
       unless ($hash->get("foo") isa Byte) {
         return 0;
       }
       my $value = $hash->get_byte("foo");
 
-      unless ($value == NumberUtil->INT8_MAX()) {
+      unless ($value == Fn->INT8_MAX()) {
         return 0;
       }
     }
 
     # set_short, get_short
     {
-      $hash->set_short(foo => NumberUtil->INT16_MAX());
+      $hash->set_short(foo => Fn->INT16_MAX());
       unless ($hash->get("foo") isa Short) {
         return 0;
       }
       my $value = $hash->get_short("foo");
 
-      unless ($value == NumberUtil->INT16_MAX()) {
+      unless ($value == Fn->INT16_MAX()) {
         return 0;
       }
     }
 
     # set_int, get_int
     {
-      $hash->set_int(foo => NumberUtil->INT32_MAX());
+      $hash->set_int(foo => Fn->INT32_MAX());
       unless ($hash->get("foo") isa Int) {
         return 0;
       }
       my $value = $hash->get_int("foo");
 
-      unless ($value == NumberUtil->INT32_MAX()) {
+      unless ($value == Fn->INT32_MAX()) {
         return 0;
       }
     }
@@ -158,39 +158,39 @@ package TestCase::Lib::Hash {
 
     # set_long, get_long
     {
-      $hash->set_long(foo => NumberUtil->INT64_MAX());
+      $hash->set_long(foo => Fn->INT64_MAX());
       unless ($hash->get("foo") isa Long) {
         return 0;
       }
       my $value = $hash->get_long("foo");
 
-      unless ($value == NumberUtil->INT64_MAX()) {
+      unless ($value == Fn->INT64_MAX()) {
         return 0;
       }
     }
 
     # set_float, get_float
     {
-      $hash->set_float(foo => NumberUtil->FLT_MIN());
+      $hash->set_float(foo => Fn->FLT_MIN());
       unless ($hash->get("foo") isa Float) {
         return 0;
       }
       my $value = $hash->get_float("foo");
 
-      unless ($value == NumberUtil->FLT_MIN()) {
+      unless ($value == Fn->FLT_MIN()) {
         return 0;
       }
     }
 
     # set_double, get_double
     {
-      $hash->set_double(foo => NumberUtil->DBL_MIN());
+      $hash->set_double(foo => Fn->DBL_MIN());
       unless ($hash->get("foo") isa Double) {
         return 0;
       }
       my $value = $hash->get_double("foo");
 
-      unless ($value == NumberUtil->DBL_MIN()) {
+      unless ($value == Fn->DBL_MIN()) {
         return 0;
       }
     }
@@ -386,7 +386,7 @@ package TestCase::Lib::Hash {
       return 0;
     }
 
-    ArrayUtil->sort_object($keys, 0, scalar @$keys, sub : int ($self : self, $a : object, $b : object) {
+    Fn->sort_object($keys, 0, scalar @$keys, sub : int ($self : self, $a : object, $b : object) {
       return (string)$a cmp (string)$b;
     });
 
@@ -426,7 +426,7 @@ package TestCase::Lib::Hash {
     $int_values->[1] = (int)$values->[1];
     $int_values->[2] = (int)$values->[2];
 
-    ArrayUtil->sort_int($int_values, 0, scalar @$int_values, sub : int ($self : self, $a : int, $b : int) {
+    Fn->sort_int($int_values, 0, scalar @$int_values, sub : int ($self : self, $a : int, $b : int) {
       return $a <=> $b;
     });
 

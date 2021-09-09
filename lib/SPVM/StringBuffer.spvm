@@ -1,5 +1,5 @@
 package StringBuffer : precompile {
-  use ArrayUtil (copy_array_range_byte);
+  use Fn (copy_array_range_byte);
 
   has value : byte[];
   has length : ro int;

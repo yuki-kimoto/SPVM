@@ -1,6 +1,6 @@
 package TestCase::Dump {
   use TestCase::DumpTest1;
-  use StringUtil;
+  use Fn;
   use TestCase::Point_3b;
   use TestCase::Point_3s;
   use TestCase::Point_3i;

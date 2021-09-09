@@ -1,5 +1,5 @@
 package List : precompile {
-  use ArrayUtil(new_array_proto);
+  use Fn(new_array_proto);
   
   has values   : oarray;
   has capacity : int;

@@ -1,5 +1,5 @@
 package ByteList : precompile {
-  use ArrayUtil (memcpy_byte, memmove_byte);
+  use Fn (memcpy_byte, memmove_byte);
   
   has values   : byte[];
   has capacity : int;
@@ -219,7 +219,7 @@ package ByteList : precompile {
     }
     
     
-    ArrayUtil->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
+    Fn->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : byte ($self : self, $index : int) {

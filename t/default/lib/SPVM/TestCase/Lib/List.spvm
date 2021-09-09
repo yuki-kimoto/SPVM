@@ -1,7 +1,7 @@
 package TestCase::Lib::List {
   use Int;
   use List;
-  use ArrayUtil (equals_array_object);
+  use Fn (equals_array_object);
   use EqualityChecker::SameObject;
   
   sub new : int () {
@@ -358,7 +358,7 @@ package TestCase::Lib::List {
     {
       my $list = List->new(["1", "2", "3"]);
       $list->set_array(["3", "4", "5"]);
-      unless (ArrayUtil->equals_array_string((string[])$list->to_array, ["3", "4", "5"])) {
+      unless (Fn->equals_array_string((string[])$list->to_array, ["3", "4", "5"])) {
         return 0;
       }
     }

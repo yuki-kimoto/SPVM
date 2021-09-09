@@ -1,5 +1,5 @@
 package ShortList : precompile {
-  use ArrayUtil (memcpy_short, memmove_short);
+  use Fn (memcpy_short, memmove_short);
   
   has values   : short[];
   has capacity : int;
@@ -217,7 +217,7 @@ package ShortList : precompile {
     }
     
     
-    ArrayUtil->memcpy_short($self->{values}, 0, $array, 0, $cur_length);
+    Fn->memcpy_short($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub shift : short ($self : self) {

@@ -1,5 +1,5 @@
 package IntList : precompile {
-  use ArrayUtil (memcpy_int, memmove_int);
+  use Fn (memcpy_int, memmove_int);
   
   has values   : int[];
   has capacity : int;
@@ -218,7 +218,7 @@ package IntList : precompile {
     }
     
     
-    ArrayUtil->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
+    Fn->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : int ($self : self, $index : int) {

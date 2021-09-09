@@ -1,6 +1,6 @@
 package TestCase::Lib::StringList {
   use StringList;
-  use ArrayUtil (equals_array_string);
+  use Fn (equals_array_string);
 
   sub new : int () {
     # new with array
@@ -304,7 +304,7 @@ package TestCase::Lib::StringList {
     {
       my $list = StringList->new([(string)"1", "2", "3"]);
       $list->set_array([(string)3, 4, 5]);
-      unless (ArrayUtil->equals_array_string($list->to_array, [(string)3, 4, 5])) {
+      unless (Fn->equals_array_string($list->to_array, [(string)3, 4, 5])) {
         return 0;
       }
     }

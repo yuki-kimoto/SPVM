@@ -1,5 +1,5 @@
 package DoubleList : precompile {
-  use ArrayUtil (memcpy_double, memmove_double);
+  use Fn (memcpy_double, memmove_double);
   
   has values   : double[];
   has capacity : int;
@@ -218,7 +218,7 @@ package DoubleList : precompile {
     }
     
     
-    ArrayUtil->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
+    Fn->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
   }
 
   sub get : double ($self : self, $index : int) {

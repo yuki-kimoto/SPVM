@@ -1,7 +1,7 @@
 package TestCase::Lib::DoubleList {
   use DoubleList;
-  use ArrayUtil (equals_array_double);
-  use NumberUtil (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use Fn (equals_array_double);
+  use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
   sub new : int () {
     # new with array
@@ -288,7 +288,7 @@ package TestCase::Lib::DoubleList {
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
       $list->set_array([(double)3, 4, 5]);
-      unless (ArrayUtil->equals_array_double($list->to_array, [(double)3, 4, 5])) {
+      unless (Fn->equals_array_double($list->to_array, [(double)3, 4, 5])) {
         return 0;
       }
     }

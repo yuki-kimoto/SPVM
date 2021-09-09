@@ -5,7 +5,7 @@ package TestCase::IfRequire {
     # if require success
     {
       my $foo = 0;
-      if (require NumberUtil) {
+      if (require Fn) {
         $foo = 1;
       }
       unless ($foo == 1) {
@@ -30,7 +30,7 @@ package TestCase::IfRequire {
     # if require else success
     {
       my $foo = 0;
-      if (require NumberUtil) {
+      if (require Fn) {
         $foo = 1;
       }
       else {

@@ -146,9 +146,6 @@ sub MY::postamble {
   
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('NumberUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('StringUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('ArrayUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Fn');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Math');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Hash');
@@ -156,9 +153,6 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Unicode');
     
     # Precompile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('NumberUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('StringUtil');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ArrayUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Fn');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('List');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ByteList');
