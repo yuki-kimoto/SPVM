@@ -33,9 +33,12 @@ sub new {
 
 sub build_shared_lib_runtime {
   my ($self, $perl_package_name) = @_;
+
+  my $class_name = $perl_package_name;
+  $class_name =~ s/^SPVM:://;
   
   my $category = $self->category;
-
+  
   # Build directory
   my $build_dir = $self->builder->build_dir;
   if (defined $build_dir) {
@@ -59,7 +62,7 @@ sub build_shared_lib_runtime {
     );
   }
   elsif ($category eq 'native') {
-    my $module_file = $self->builder->get_module_file($perl_package_name);
+    my $module_file = $self->builder->get_module_file($class_name);
     $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $perl_package_name);
   }
   

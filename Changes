@@ -12,8 +12,9 @@ Revision history for SPVM
         * Improve error message when package name is different from the package name corresponding to the module file
         * use SPVM MODULE_NAME add "SPVM::" to the top of the module name if the module name does not t start with "SPVM::".
         * Perl package name "SPVM::Foo" become correspoinding to SPVM class name "Foo".
-          This is big change because all SPVM::Foo in SPVM program is rewrite to Foo. Sorry.
-                  
+          This is big change because all SPVM::Foo in SPVM program must be rewriten to Foo. Sorry.
+          However, short name is good. SPVM::Sort->foo becomes Sort->foo
+          
         [BUGFIXES]
         * None
 
