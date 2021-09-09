@@ -942,7 +942,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   my $minimal = SPVM::TestCase::Minimal->new;
   
-  is(ref $minimal, 'TestCase::Minimal');
+  is(ref $minimal, 'SPVM::TestCase::Minimal');
 }
 
 # stringify SPVM object

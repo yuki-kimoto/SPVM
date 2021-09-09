@@ -3357,6 +3357,7 @@ call_spvm_method(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     {
       excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      
       if (!excetpion_flag) {
         SPVM_OBJECT* return_value = (SPVM_OBJECT*)stack[0].oval;
         sv_return_value = NULL;
@@ -3376,9 +3377,9 @@ call_spvm_method(...)
             // Object
             else {
               SPVM_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, return_value->basic_type_id);
-              const char* basic_type_name = method_return_basic_type->name;
-              SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-              sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_basic_type_name));
+              SV* sv_perl_package_name = sv_2mortal(newSVpv("SPVM::", 0));
+              sv_catpv(sv_perl_package_name, method_return_basic_type->name);
+              sv_return_value = SPVM_XS_UTIL_new_sv_object(env, return_value, SvPV_nolen(sv_perl_package_name));
             }
           }
         }
@@ -3449,7 +3450,7 @@ call_spvm_method(...)
     default:
       assert(0);
   }
-
+  
   // Restore reference value
   if (args_contain_ref) {
     for (int32_t arg_index = 0; arg_index < method->args->length; arg_index++) {
@@ -3586,7 +3587,7 @@ call_spvm_method(...)
       }
     }
   }
-
+  
   // Exception
   if (excetpion_flag) {
     void* exception = env->get_exception(env);
@@ -3744,9 +3745,9 @@ array_to_elems(...)
               sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::BlessedObject::Array");
             }
             else {
-              const char* basic_type_name = basic_type->name;
-              SV* sv_basic_type_name = sv_2mortal(newSVpv(basic_type_name, 0));
-              sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
+              SV* sv_perl_package_name = sv_2mortal(newSVpv("SPVM::", 0));
+              sv_catpv(sv_perl_package_name, basic_type->name);
+              sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_package_name));
             }
             av_push(av_values, SvREFCNT_inc(sv_value));
           }
@@ -3833,7 +3834,7 @@ array_to_bin(...)
   // Runtime
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
 
-  // Array must be SPVM::BlessedObject::Array object or SPVM::BlessedObject::Sgtring
+  // Array must be SPVM::BlessedObject::Array object or SPVM::BlessedObject::String
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
     croak("Data must be SPVM::BlessedObject::Array at %s line %d\n", MFILE, __LINE__);
   }
@@ -4241,10 +4242,9 @@ array_get(...)
     }
     
     if (element_dimension == 0) {
-      SV* sv_basic_type_name = sv_2mortal(newSVpv("SPVM::", 0));
-      sv_catpv(sv_basic_type_name, basic_type->name);
-      
-      sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_basic_type_name));
+      SV* sv_perl_package_name = sv_2mortal(newSVpv("SPVM::", 0));
+      sv_catpv(sv_perl_package_name, basic_type->name);
+      sv_value = SPVM_XS_UTIL_new_sv_object(env, value, SvPV_nolen(sv_perl_package_name));
     }
     else if (element_dimension > 0) {
       sv_value = SPVM_XS_UTIL_new_sv_object(env, value, "SPVM::Data::Array");
