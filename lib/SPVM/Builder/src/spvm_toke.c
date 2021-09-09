@@ -158,6 +158,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
           
           const char* package_name = op_use->uv.use->op_type->uv.type->basic_type->name;
+
+          if (strncmp(package_name, "SPVM::", 6) == 0) {
+            package_name += 6;
+            op_use->uv.use->op_type->uv.type->basic_type->name = package_name;
+          }
           
           SPVM_PACKAGE* found_package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
           
@@ -193,12 +198,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
             // SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double is already registered in module source symtable
             if (
-              strcmp(package_name, "SPVM::Byte") == 0 ||
-              strcmp(package_name, "SPVM::Short") == 0 ||
-              strcmp(package_name, "SPVM::Int") == 0 ||
-              strcmp(package_name, "SPVM::Long") == 0 ||
-              strcmp(package_name, "SPVM::Float") == 0 ||
-              strcmp(package_name, "SPVM::Double") == 0
+              strcmp(package_name, "Byte") == 0 ||
+              strcmp(package_name, "Short") == 0 ||
+              strcmp(package_name, "Int") == 0 ||
+              strcmp(package_name, "Long") == 0 ||
+              strcmp(package_name, "Float") == 0 ||
+              strcmp(package_name, "Double") == 0
             )
             {
               do_directry_module_search = 0;
@@ -307,6 +312,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               memcpy(compiler->cur_src, original_src, file_size + 1);
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_package_name = package_name;
+              
                   
               // If we get current module file path, set it, otherwise set module relative file path
               if (cur_file) {

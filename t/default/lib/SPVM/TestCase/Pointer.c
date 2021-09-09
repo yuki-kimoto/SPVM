@@ -18,7 +18,7 @@ int32_t SPNATIVE__SPVM__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* args) 
   
   pointer->x = x;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::TestCase::Pointer");
+  int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Pointer");
   
   void* struct_object = env->new_pointer_raw(env, basic_type_id, pointer);
   

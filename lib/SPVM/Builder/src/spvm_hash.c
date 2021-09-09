@@ -38,11 +38,6 @@ SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
 
 void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value) {
   
-  if (key && strncmp(key, "SPVM::", 6) == 0) {
-    key = key + 6;
-    length -= 6;
-  }
-  
   assert(hash);
   assert(key);
   assert(length >= 0);
@@ -58,22 +53,12 @@ void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* va
 }
 
 void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length) {
-  if (key && strncmp(key, "SPVM::", 6) == 0) {
-    key = key + 6;
-    length -= 6;
-  }
-
   int32_t exists = 0;
   return SPVM_HASH_fetch_with_exists(hash, key, length, &exists);
 }
 
 void* SPVM_HASH_fetch_with_exists(SPVM_HASH* hash, const char* key, int32_t length, int32_t* exists) {
 
-  if (key && strncmp(key, "SPVM::", 6) == 0) {
-     key = key + 6;
-    length -= 6;
-  }
-  
   assert(hash);
   assert(length >= 0);
   

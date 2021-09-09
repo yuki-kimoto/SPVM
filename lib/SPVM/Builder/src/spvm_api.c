@@ -5084,7 +5084,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             byte_vars[opcode->operand0] = *(int8_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Byte to byte.");
+            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from Byte to byte.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -5106,7 +5106,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             short_vars[opcode->operand0] = *(int16_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Short to short.");
+            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from Short to short.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -5128,7 +5128,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             int_vars[opcode->operand0] = *(int32_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Int to int.");
+            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from Int to int.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -5150,7 +5150,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             long_vars[opcode->operand0] = *(int64_t*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Long to long.");
+            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from Long to long.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -5172,7 +5172,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             float_vars[opcode->operand0] = *(float*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Float to float.");
+            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from Float to float.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }
@@ -5195,7 +5195,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
             double_vars[opcode->operand0] = *(double*)&fields[0];
           }
           else {
-            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from SPVM::Double to double.");
+            void* exception = env->new_string_nolen_raw(env, "Can't convert imcompatible object type from Double to double.");
             env->set_exception(env, exception);
             exception_flag = 1;
           }

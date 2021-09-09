@@ -46,6 +46,7 @@ sub import {
 
     # Compile SPVM source code and create runtime env
     my $compile_success = $BUILDER->compile_spvm($class_name, $file, $line);
+    
     unless ($compile_success) {
       exit(255);
     }

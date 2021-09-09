@@ -127,7 +127,7 @@ create_compiler(...)
 }
 
 SV*
-compile_spvm_xs(...)
+compile_spvm(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3586,7 +3586,7 @@ call_spvm_method(...)
       }
     }
   }
-  
+
   // Exception
   if (excetpion_flag) {
     void* exception = env->get_exception(env);
@@ -3605,7 +3605,7 @@ call_spvm_method(...)
       XPUSHs(sv_return_value);
       return_count = 1;
     }
-    
+  
     XSRETURN(return_count);
   }
 }
@@ -3837,7 +3837,7 @@ array_to_bin(...)
   if (!(SvROK(sv_array) && sv_derived_from(sv_array, "SPVM::BlessedObject::Array"))) {
     croak("Data must be SPVM::BlessedObject::Array at %s line %d\n", MFILE, __LINE__);
   }
-  
+
   // Get object
   SPVM_OBJECT* array = SPVM_XS_UTIL_get_object(sv_array);
   

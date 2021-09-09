@@ -65,7 +65,7 @@ int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__get_string_field_native(SPVM_ENV* 
   
   int32_t e = 0;
   
-  void* sv_text = env->get_field_object_by_name(env, sv_self, "SPVM::TestCase::NativeAPI2", "text", "string", &e, __FILE__, __LINE__);
+  void* sv_text = env->get_field_object_by_name(env, sv_self, "TestCase::NativeAPI2", "text", "string", &e, __FILE__, __LINE__);
   if (e) {
     stack[0].ival = 0;
     return 0;
