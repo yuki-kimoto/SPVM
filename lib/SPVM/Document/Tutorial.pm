@@ -496,7 +496,7 @@ class MyMath {
 // lib/SPVM/MyMath.c
 #include "spvm_native.h"
 
-int32_t SPNATIVE__SPVM__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__SPVM__MyMath__sum_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_nums = stack[0].oval;
   
@@ -618,7 +618,7 @@ Call C library from C program.
 
 #include "bind_clib.h"
 
-int32_t SPNATIVE__SPVM__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__SPVM__BindCLib__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_nums = stack[0].oval;
   

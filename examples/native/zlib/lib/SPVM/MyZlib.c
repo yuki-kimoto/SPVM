@@ -3,7 +3,7 @@
 
 #include "zlib.h"
 
-int32_t SPNATIVE__MyZlib__test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__MyZlib__test(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   void* obj_out_file = stack[0].oval;
   if (!obj_out_file){ return env->die(env, "File name must be specified", "MyZlib.c", __LINE__); }

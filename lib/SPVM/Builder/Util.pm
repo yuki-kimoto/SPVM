@@ -16,7 +16,13 @@ use File::Basename 'dirname';
 sub create_cfunc_name {
   my ($class_name, $method_name, $category) = @_;
   
-  my $prefix = 'SP' . uc($category) . '__';
+  my $prefix;
+  if ($category eq 'native') {
+    $prefix = 'SPVM__';
+  }
+  elsif ($category eq 'precompile') {
+    $prefix = 'SPVMPRECOMPILE__'
+  }
   
   # Precompile Method names
   my $method_abs_name_under_score = "${class_name}::$method_name";

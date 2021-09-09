@@ -8,7 +8,7 @@
 
 static const char* MFILE = "SPVM/Time.c";
 
-int32_t SPNATIVE__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
@@ -19,7 +19,7 @@ int32_t SPNATIVE__Time__time(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e;
   
@@ -44,7 +44,7 @@ int32_t SPNATIVE__Time__localtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int32_t e;
 
@@ -69,7 +69,7 @@ int32_t SPNATIVE__Time__gmtime(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__Time__timelocal(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Time__timelocal(SPVM_ENV* env, SPVM_VALUE* stack) {
   int32_t e;
   
   void* obj_time_info = stack[0].oval;

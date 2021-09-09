@@ -7,7 +7,7 @@ struct TestCase__Pointer {
   int32_t x;
 };
 
-int32_t SPNATIVE__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -27,7 +27,7 @@ int32_t SPNATIVE__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* args) {
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__Pointer__get_x(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Pointer__get_x(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -41,7 +41,7 @@ int32_t SPNATIVE__TestCase__Pointer__get_x(SPVM_ENV* env, SPVM_VALUE* args) {
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__Pointer__DESTROY(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPVM__TestCase__Pointer__DESTROY(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   

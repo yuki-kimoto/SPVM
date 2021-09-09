@@ -10,7 +10,7 @@ using namespace std;
 
 extern "C" {
   
-int32_t SPNATIVE__MyEigen__add3d(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__MyEigen__add3d(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   void* obj_nums1 = stack[0].oval;
@@ -34,7 +34,7 @@ int32_t SPNATIVE__MyEigen__add3d(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__MyEigen__compile_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__MyEigen__compile_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   env->die(env, "Error %d", 1);

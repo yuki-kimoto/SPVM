@@ -20,6 +20,8 @@ Revision history for SPVM
         * Static method concept is changed to Class method
         * Lexical Variable concept is changed to Local Variable for other language users.
         * Lexical Analysis concept is changed to Tokenizing
+        * Native function prefix is changed to SPVM__ from SPNATIVE__. Sorry.
+        * Precompile function prefix is changed to SPVMPRECOMPILE__ from SPPRECOMPILE.
         
         [BUGFIXES]
         * None

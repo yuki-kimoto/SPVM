@@ -469,7 +469,7 @@ EOS
       my $class_cname = $class_name;
       $class_cname =~ s/::/__/g;
       $boot_csource .= <<"EOS";
-int32_t SPPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
@@ -481,7 +481,7 @@ EOS
       my $class_cname = $class_cname;
       $class_cname =~ s/::/__/g;
       $boot_csource .= <<"EOS";
-int32_t SPNATIVE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
+int32_t SPVM__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
@@ -549,7 +549,7 @@ EOS
     assert(class);
     SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
     assert(method);
-    method->precompile_address = SPPRECOMPILE__${class_cname}__$precompile_method_name;
+    method->precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
   }
 EOS
     }
@@ -572,7 +572,7 @@ EOS
     assert(class);
     SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
     assert(method);
-    method->native_address = SPNATIVE__${class_cname}__$native_method_name;
+    method->native_address = SPVM__${class_cname}__$native_method_name;
   }
 EOS
     }

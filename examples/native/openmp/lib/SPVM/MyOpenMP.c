@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-int32_t SPNATIVE__MyOpenMP__sum_vec_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__MyOpenMP__sum_vec_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   void* obj_nums1 = stack[0].oval;
   if (obj_nums1 == NULL) {
     return env->die(env, "First argument must be not null", "SPVM/MyOpenMP.c", __LINE__);

@@ -137,7 +137,7 @@ The following is natvie source file example written by C language.
 
   #include "spvm_native.h"
 
-  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     int32_t num1 = stack[0].ival;
     int32_t num2 = stakc[1].ival;
@@ -168,9 +168,9 @@ The return type is "int32_t" type. If the method raises an exception, "1" is ret
 
 Native Method Definition is a simple C language function such as
 
-  SPNATIVE__Foo__Bar__sum
+  SPVM__Foo__Bar__sum
 
-The function name starts with "SPNATIVE__".
+The function name starts with "SPVM__".
 
 Followed by class name "Foo__Bar", which is replaced "::" in Foo::Bar.
 
@@ -182,7 +182,7 @@ If Native Method Name is invalid, a compile error will occur.
 
 There are two arguments, the first argument is "SPVM_ENV* env" which has the information of the execution environment, and the second argument is "SPVM_VALUE* stack" which is used for the argument and return value.
 
-  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   }
 
@@ -190,7 +190,7 @@ In the above sample, it takes two int type arguments of SPVM, calculates the sum
 
   #include "spvm_native.h"
 
-  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     int32_t num1 = stack[0].ival;
     int32_t num2 = stakc[1].ival;
@@ -230,7 +230,7 @@ The generated shared libraries exists under "work/lib" under the build directory
 
 The stack is the second argument of the definition of the Native Method. This is called stack. Stack is used getting arguments and return the value.
 
-  int32_t SPNATIVE__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
 
   }
 
@@ -511,7 +511,7 @@ Next is the definition on the C language side.
 
   # SPVM/MyTimeInfo.c
 
-  int32_t SPNATIVE__SPVM__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__SPVM__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     // Alloc strcut tm
     void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
@@ -524,7 +524,7 @@ Next is the definition on the C language side.
     return 0;
   }
 
-  int32_t SPNATIVE__SPVM__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__SPVM__MyTimeInfo__sec(SPVM_ENV* env, SPVM_VALUE* stack) {
     void* tm_obj = stack[0].oval;
 
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
@@ -534,7 +534,7 @@ Next is the definition on the C language side.
     return 0;
   }
 
-  int32_t SPNATIVE__SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     void* tm_obj = stack[0].oval;
     strcut tm* tm_ptr = (struct tm*) env->get_pointer(env, tm_obj);
@@ -570,7 +570,7 @@ Next, let's get the value of tm_sec. sec method. The get_pointer function can be
 
 The last is the destructor. Be sure to define a destructor, as the allocated memory will not be released automatically.
 
-  int32_t SPNATIVE__SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__SPVM__MyTimeInfo__DESTROY(SPVM_ENV* env, SPVM_VALUE* stack) {
 
     void* tm_obj = stack[0].oval;
 

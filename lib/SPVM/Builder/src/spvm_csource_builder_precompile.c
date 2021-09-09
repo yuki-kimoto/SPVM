@@ -1232,7 +1232,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_declaration(SPVM_COMPILER* com
   SPVM_STRING_BUFFER_add(string_buffer, "int32_t ");
         
   // Method name. Replace : to _
-  SPVM_STRING_BUFFER_add(string_buffer, "SPPRECOMPILE__");
+  SPVM_STRING_BUFFER_add(string_buffer, "SPVMPRECOMPILE__");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)class_name);
   SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
   SPVM_STRING_BUFFER_add(string_buffer, (char*)method_name);
@@ -4038,7 +4038,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         // Method inline expantion in same class
         if (decl_method->class->id == method->class->id && decl_method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPPRECOMPILE__");
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = SPVMPRECOMPILE__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
           SPVM_STRING_BUFFER_add(string_buffer, (char*)"__");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
