@@ -18,11 +18,11 @@
 #include "spvm_enumeration_value.h"
 #include "spvm_type.h"
 #include "spvm_enumeration.h"
-#include "spvm_package.h"
+#include "spvm_class.h"
 #include "spvm_type.h"
 #include "spvm_opcode.h"
-#include "spvm_package_var.h"
-#include "spvm_package_var_access.h"
+#include "spvm_class_var.h"
+#include "spvm_class_var_access.h"
 #include "spvm_opcode_array.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
@@ -74,10 +74,10 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         break;
       }
     }
-    else if (id == SPVM_OP_C_ID_PACKAGE_VAR) {
-      SPVM_PACKAGE_VAR* package_var = op_cur->uv.package_var;
-      printf(" \"%s\"", package_var->name);
-      printf(" (id :%d)", package_var->id);
+    else if (id == SPVM_OP_C_ID_CLASS_VAR) {
+      SPVM_CLASS_VAR* class_var = op_cur->uv.class_var;
+      printf(" \"%s\"", class_var->name);
+      printf(" (id :%d)", class_var->id);
     }
     else if (id == SPVM_OP_C_ID_VAR) {
       SPVM_VAR* var = op_cur->uv.var;
@@ -89,10 +89,10 @@ void SPVM_DUMPER_dump_ast(SPVM_COMPILER* compiler, SPVM_OP* op_base) {
         printf(" (my->id:not yet resolved)");
       }
     }
-    else if (id == SPVM_OP_C_ID_PACKAGE_VAR_ACCESS) {
-      SPVM_PACKAGE_VAR_ACCESS* package_var_access = op_cur->uv.package_var_access;
-      printf(" \"%s\"", package_var_access->op_name->uv.name);
-      printf(" (id :%d)", package_var_access->package_var->id);
+    else if (id == SPVM_OP_C_ID_CLASS_VAR_ACCESS) {
+      SPVM_CLASS_VAR_ACCESS* class_var_access = op_cur->uv.class_var_access;
+      printf(" \"%s\"", class_var_access->op_name->uv.name);
+      printf(" (id :%d)", class_var_access->class_var->id);
     }
     else if (id == SPVM_OP_C_ID_FIELD_ACCESS) {
       SPVM_FIELD_ACCESS* field_access = op_cur->uv.field_access;
@@ -183,28 +183,28 @@ void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants
   }
 }
 
-void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
+void SPVM_DUMPER_dump_classs(SPVM_COMPILER* compiler, SPVM_LIST* classs) {
   {
     int32_t i;
-    for (i = 0; i < packages->length; i++) {
-      printf("package[%" PRId32 "]\n", i);
-      SPVM_PACKAGE* package = SPVM_LIST_fetch(packages, i);
+    for (i = 0; i < classs->length; i++) {
+      printf("class[%" PRId32 "]\n", i);
+      SPVM_CLASS* class = SPVM_LIST_fetch(classs, i);
       
-      if (package->op_name) {
-        printf("  name => \"%s\"\n", package->op_name->uv.name);
+      if (class->op_name) {
+        printf("  name => \"%s\"\n", class->op_name->uv.name);
       }
       else {
         printf("  name => \"ANON\"\n");
       }
 
-      if (strncmp(package->name, "SPVM", 4) == 0) {
+      if (strncmp(class->name, "SPVM", 4) == 0) {
         printf("  (omit)\n");
         continue;
       }
       
       // Field information
       printf("  fields\n");
-      SPVM_LIST* fields = package->fields;
+      SPVM_LIST* fields = class->fields;
       {
         int32_t j;
         for (j = 0; j < fields->length; j++) {
@@ -215,8 +215,8 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
       }
       {
         int32_t j;
-        for (j = 0; j < package->methods->length; j++) {
-          SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, j);
+        for (j = 0; j < class->methods->length; j++) {
+          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, j);
           printf("  sub[%" PRId32 "]\n", j);
           SPVM_DUMPER_dump_method(compiler, method);
         }
@@ -225,29 +225,29 @@ void SPVM_DUMPER_dump_packages(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
   }
 }
 
-void SPVM_DUMPER_dump_packages_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* packages) {
+void SPVM_DUMPER_dump_classs_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* classs) {
   {
     int32_t i;
-    for (i = 0; i < packages->length; i++) {
-      printf("package[%" PRId32 "]\n", i);
-      SPVM_PACKAGE* package = SPVM_LIST_fetch(packages, i);
+    for (i = 0; i < classs->length; i++) {
+      printf("class[%" PRId32 "]\n", i);
+      SPVM_CLASS* class = SPVM_LIST_fetch(classs, i);
       
-      if (package->op_name) {
-        printf("  name => \"%s\"\n", package->op_name->uv.name);
+      if (class->op_name) {
+        printf("  name => \"%s\"\n", class->op_name->uv.name);
       }
       else {
         printf("  name => \"ANON\"\n");
       }
       
-      if (strncmp(package->name, "SPVM", 4) == 0) {
+      if (strncmp(class->name, "SPVM", 4) == 0) {
         printf("  (omit)\n");
         continue;
       }
       
       {
         int32_t j;
-        for (j = 0; j < package->methods->length; j++) {
-          SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, j);
+        for (j = 0; j < class->methods->length; j++) {
+          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, j);
           printf("  sub[%" PRId32 "]\n", j);
           SPVM_DUMPER_dump_method_opcode_array(compiler, method);
         }
@@ -479,9 +479,9 @@ void SPVM_DUMPER_dump_my(SPVM_COMPILER* compiler, SPVM_MY* my) {
       printf("ref");
     }
     else if (SPVM_TYPE_is_multi_numeric_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
-      SPVM_PACKAGE* value_package =  type->basic_type->package;
+      SPVM_CLASS* value_class =  type->basic_type->class;
       
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+      SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
       assert(first_field);
       
       SPVM_TYPE* field_type = SPVM_OP_get_type(compiler, first_field->op_field);

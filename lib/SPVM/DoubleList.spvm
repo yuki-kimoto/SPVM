@@ -1,4 +1,4 @@
-package DoubleList : precompile {
+class DoubleList : precompile {
   use Fn (memcpy_double, memmove_double);
   
   has values   : double[];

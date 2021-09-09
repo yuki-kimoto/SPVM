@@ -1,4 +1,4 @@
-package TestCase::SpecialAssign {
+class TestCase::SpecialAssign {
   use TestCase::Minimal;
   use TestCase::Simple;
   use TestCase::Point_3b;
@@ -446,7 +446,7 @@ package TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_package_var_access : int () {
+  sub special_assign_add_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MIN();
     $SHORT_VALUE = (short)INT16_MIN();
     $INT_VALUE = INT32_MIN();

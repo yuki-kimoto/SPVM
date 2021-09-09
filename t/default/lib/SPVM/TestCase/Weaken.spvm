@@ -1,4 +1,4 @@
-package TestCase::Weaken {
+class TestCase::Weaken {
   use TestCase::Data::Weaken;
   
   has x_int : int;

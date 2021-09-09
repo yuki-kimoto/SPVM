@@ -1,4 +1,4 @@
-package TestCase::Object {
+class TestCase::Object {
   use TestCase::Minimal;
   use TestCase::Simple;
   

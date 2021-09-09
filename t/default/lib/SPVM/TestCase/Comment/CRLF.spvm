@@ -1,4 +1,4 @@
-package TestCase::Comment::CRLF {
+class TestCase::Comment::CRLF {
 
   sub comment : int () {
     # Comment

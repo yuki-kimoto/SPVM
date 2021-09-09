@@ -1,4 +1,4 @@
-package TestCase::Allow {
+class TestCase::Allow {
   use TestCase::Allow::PrivateData;
   
   sub allow_test : int () {

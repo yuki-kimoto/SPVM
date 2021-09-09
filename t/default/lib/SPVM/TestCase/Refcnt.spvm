@@ -1,4 +1,4 @@
-package TestCase::Refcnt {
+class TestCase::Refcnt {
   use TestCase::Minimal;
   use TestCase::Simple;
   

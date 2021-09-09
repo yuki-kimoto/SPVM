@@ -1,1 +1,1 @@
-package TestCase::LINER {  sub line : int () {    my $line : int = __LINE__;        unless ($line == 3) {      return 0;    }    return 1;  }}
+class TestCase::LINER {  sub line : int () {    my $line : int = __LINE__;        unless ($line == 3) {      return 0;    }    return 1;  }}

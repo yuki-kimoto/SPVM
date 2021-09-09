@@ -1,4 +1,4 @@
-package TestCase::Matrix4_16l : mulnum_t {
+class TestCase::Matrix4_16l : mulnum_t {
   has x11 : long;
   has x21 : long;
   has x31 : long;

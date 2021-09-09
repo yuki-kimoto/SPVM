@@ -1,4 +1,4 @@
-package TestCase::Data::Weaken : public {
+class TestCase::Data::Weaken : public {
   use TestCase::Weaken;
 
   has data_weaken : public TestCase::Data::Weaken;

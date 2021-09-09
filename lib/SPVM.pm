@@ -9,7 +9,7 @@ use File::Basename 'basename', 'dirname';
 
 use SPVM::BlessedObject;
 use SPVM::BlessedObject::Array;
-use SPVM::BlessedObject::Package;
+use SPVM::BlessedObject::Class;
 use SPVM::BlessedObject::String;
 use FindBin;
 
@@ -38,7 +38,7 @@ sub import {
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
   }
 
-  # Add package informations
+  # Add class informations
   if (defined $class_name) {
     $class_name =~ s/^SPVM:://;
     
@@ -54,10 +54,10 @@ sub import {
       my $added_class_names = $BUILDER->get_added_class_names;
       for my $added_class_name (@$added_class_names) {
         
-        # Build Precompile packages - Compile C source codes and link them to SPVM precompile method
+        # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
         $BUILDER->build_and_bind_shared_lib($added_class_name, 'precompile');
 
-        # Build native packages - Compile C source codes and link them to SPVM native method
+        # Build native classs - Compile C source codes and link them to SPVM native method
         $BUILDER->build_and_bind_shared_lib($added_class_name, 'native');
       }
 
@@ -84,11 +84,11 @@ sub bind_to_perl {
 
   for my $class_name (@$added_class_names) {
     $class_name =~ s/^SPVM:://;
-    my $perl_package_name = "SPVM::$class_name";
+    my $perl_class_name = "SPVM::$class_name";
     
     unless ($class_name_h->{$class_name}) {
     
-      my $code = "package $perl_package_name; our \@ISA = ('SPVM::BlessedObject::Package');";
+      my $code = "package $perl_class_name; our \@ISA = ('SPVM::BlessedObject::Class');";
       eval $code;
 
       if (my $error = $@) {
@@ -110,7 +110,7 @@ sub bind_to_perl {
       }
 
 
-      my $perl_method_abs_name = "${perl_package_name}::$method_name";
+      my $perl_method_abs_name = "${perl_class_name}::$method_name";
 
       # Define Perl method
       no strict 'refs';
@@ -300,7 +300,7 @@ SPVM - Static Perl Virtual Machine. Fast Calculation, Fast Array Operation, and 
 SPVM Module:
 
   # lib/SPVM/MyMath.spvm
-  package MyMath {
+  class MyMath {
     sub sum : int ($nums : int[]) {
 
       my $total = 0;
@@ -337,7 +337,7 @@ Call SPVM method from Perl
 Precompiled SPVM Method. This code is converted to C language and then converted to a shared library.
 
   # lib/SPVM/MyMath.spvm
-  package MyMath : precompile {
+  class MyMath : precompile {
     sub sum : int ($nums : int[]) {
 
       my $total = 0;

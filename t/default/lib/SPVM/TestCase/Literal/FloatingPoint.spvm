@@ -1,4 +1,4 @@
-package TestCase::Literal::FloatingPoint {
+class TestCase::Literal::FloatingPoint {
 
   # decimal
   sub decimal_all_numbers : int () {

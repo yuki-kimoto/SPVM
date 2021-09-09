@@ -1,4 +1,4 @@
-package TestCase::IfRequire {
+class TestCase::IfRequire {
   
   sub if_require : int () {
     

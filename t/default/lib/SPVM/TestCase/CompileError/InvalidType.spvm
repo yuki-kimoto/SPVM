@@ -1,4 +1,4 @@
-package TestCase::CompileError::InvalidType {
+class TestCase::CompileError::InvalidType {
   sub main : int () {
     my $num : aaa;
   }

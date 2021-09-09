@@ -1,4 +1,4 @@
-package TestCase::CompileError::Assign::NarrwoingConvertionIntToShort {
+class TestCase::CompileError::Assign::NarrwoingConvertionIntToShort {
   sub main : int () {
     my $num : short = 32768;
   }

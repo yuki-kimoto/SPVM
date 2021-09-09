@@ -1,4 +1,4 @@
-package TestCase::Precedence {
+class TestCase::Precedence {
   sub basic : int () {
     {
       my $i = 0;

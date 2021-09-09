@@ -1,4 +1,4 @@
-package TestCase::Warn {
+class TestCase::Warn {
 
   sub test_warn : int () {
     warn "Hello";

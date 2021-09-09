@@ -1,4 +1,4 @@
-package TestCase::CompileError::Multiply::RightIsNotNumeric {
+class TestCase::CompileError::Multiply::RightIsNotNumeric {
   use TestCase::Minimal;
   sub main : int () {
     my $minimal = TestCase::Minimal->new;

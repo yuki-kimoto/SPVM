@@ -1,4 +1,4 @@
-package TestCase::Lib::List {
+class TestCase::Lib::List {
   use Int;
   use List;
   use Fn (equals_array_object);

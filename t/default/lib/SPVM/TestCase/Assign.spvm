@@ -1,4 +1,4 @@
-package TestCase::Assign {
+class TestCase::Assign {
   use TestCase::Minimal;
   use TestCase::Simple;
   use Complex_2f;

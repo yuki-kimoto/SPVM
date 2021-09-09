@@ -1,4 +1,4 @@
-package TestCase::LINEN {
+class TestCase::LINEN {
   sub line : int () {
     my $line : int = __LINE__;
     

@@ -1,3 +1,0 @@
-package TestCase::CompileError::PackageVar::OurPackageVarNameInvalidColon {
-  our $FOO:BAR : int;
-}

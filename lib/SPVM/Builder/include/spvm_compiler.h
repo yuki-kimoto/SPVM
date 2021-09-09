@@ -22,8 +22,8 @@ struct spvm_compiler {
   // Current parsed file relative name
   const char* cur_rel_file;
 
-  // Current parsed package name
-  const char* cur_rel_file_package_name;
+  // Current parsed class name
+  const char* cur_rel_file_class_name;
 
   // Current parsed source
   char* cur_src;
@@ -61,8 +61,8 @@ struct spvm_compiler {
   // Current enum value
   int32_t current_enum_value;
 
-  // Current package base;
-  int32_t cur_package_base;
+  // Current class base;
+  int32_t cur_class_base;
   
   // AST grammar
   SPVM_OP* op_grammar;
@@ -88,14 +88,14 @@ struct spvm_compiler {
   // Types
   SPVM_LIST* op_types;
 
-  // Packages
-  SPVM_LIST* packages;
+  // Classs
+  SPVM_LIST* classs;
 
-  // added_package_names tmp
-  SPVM_LIST* tmp_added_package_names;
+  // added_class_names tmp
+  SPVM_LIST* tmp_added_class_names;
   
-  // added_packages
-  SPVM_LIST* added_packages;
+  // added_classs
+  SPVM_LIST* added_classs;
 
   // module file symtable
   SPVM_HASH* loaded_module_file_symtable;
@@ -103,8 +103,8 @@ struct spvm_compiler {
   // module source symtable
   SPVM_HASH* module_source_symtable;
   
-  // OP package symtable
-  SPVM_HASH* package_symtable;
+  // OP class symtable
+  SPVM_HASH* class_symtable;
   
   // Single types
   SPVM_LIST* basic_types;
@@ -113,7 +113,7 @@ struct spvm_compiler {
   SPVM_HASH* basic_type_symtable;
 
   // OP our symtable
-  SPVM_LIST* package_vars;
+  SPVM_LIST* class_vars;
 
   // Method ops
   SPVM_LIST* methods;
@@ -139,6 +139,6 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message, ...);
 
 const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_METHOD* method);
 const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_FIELD* field);
-const char* SPVM_COMPILER_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_PACKAGE_VAR* package_var);
+const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SPVM_CLASS_VAR* class_var);
 
 #endif

@@ -1,4 +1,4 @@
-package TestCase::Enum {
+class TestCase::Enum {
   use TestCase::Enum::Data1;
   
   enum {

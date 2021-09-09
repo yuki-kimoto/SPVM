@@ -42,7 +42,7 @@ do {\
   *(void**)(dist_address) = tmp_object;\
 } while (0)\
 
-void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line);
+void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* class_name, int32_t* exception_flag, const char* file, int32_t line);
 
 int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...);
 
@@ -61,10 +61,10 @@ void SPVM_API_call_begin_blocks(SPVM_ENV* env);
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension);
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);
 
-SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_PACKAGE* package, const char* method_name);
+SPVM_METHOD* SPVM_API_method(SPVM_ENV* env, SPVM_CLASS* class, const char* method_name);
 
 SPVM_BASIC_TYPE* SPVM_API_get_basic_type(SPVM_ENV* env,  const char* basic_type_name);
-SPVM_PACKAGE_VAR* SPVM_API_package_var(SPVM_ENV* env, SPVM_PACKAGE* package, const char* package_var_name);
+SPVM_CLASS_VAR* SPVM_API_class_var(SPVM_ENV* env, SPVM_CLASS* class, const char* class_var_name);
 
 // Get
 int32_t SPVM_API_object_header_byte_size(SPVM_ENV* env);
@@ -118,15 +118,15 @@ SPVM_OBJECT* SPVM_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* s
 
 // ID
 int32_t SPVM_API_get_basic_type_id(SPVM_ENV* env, const char* name);
-int32_t SPVM_API_get_method_id(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature);
+int32_t SPVM_API_get_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
 int32_t SPVM_API_get_method_id_by_object(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature);
-int32_t SPVM_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature);
-int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature);
+int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature);
+int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature);
 int32_t SPVM_API_get_field_index(SPVM_ENV* env, int32_t field_id);
 int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id);
 
 // New
-SPVM_OBJECT* SPVM_API_new_object(SPVM_ENV* env, int32_t package_id);
+SPVM_OBJECT* SPVM_API_new_object(SPVM_ENV* env, int32_t class_id);
 SPVM_OBJECT* SPVM_API_new_pointer(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
 SPVM_OBJECT* SPVM_API_new_byte_array(SPVM_ENV* env, int32_t length);
 SPVM_OBJECT* SPVM_API_new_short_array(SPVM_ENV* env, int32_t length);
@@ -141,7 +141,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, const char* bytes);
 SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length);
 
 // New raw
-SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t package_id);
+SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t class_id);
 SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void* ptr);
 SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, int32_t length);
 SPVM_OBJECT* SPVM_API_new_short_array_raw(SPVM_ENV* env, int32_t length);
@@ -158,8 +158,8 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t l
 // Exception
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);
 SPVM_OBJECT* SPVM_API_exception(SPVM_ENV* env);
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
-SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* method_name, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line);
 
 // Reference count
 void SPVM_API_inc_ref_count(SPVM_ENV* env, SPVM_OBJECT* object);
@@ -197,21 +197,21 @@ SPVM_OBJECT* SPVM_API_f_to_string(SPVM_ENV* env, float value);
 SPVM_OBJECT* SPVM_API_d_to_string_raw(SPVM_ENV* env, double value);
 SPVM_OBJECT* SPVM_API_d_to_string(SPVM_ENV* env, double value);
 
-// Package variable access
-int8_t SPVM_API_get_package_var_byte(SPVM_ENV* env, int32_t package_var_id);
-int16_t SPVM_API_get_package_var_short(SPVM_ENV* env, int32_t package_var_id);
-int32_t SPVM_API_get_package_var_int(SPVM_ENV* env, int32_t package_var_id);
-int64_t SPVM_API_get_package_var_long(SPVM_ENV* env, int32_t package_var_id);
-float SPVM_API_get_package_var_float(SPVM_ENV* env, int32_t package_var_id);
-double SPVM_API_get_package_var_double(SPVM_ENV* env, int32_t package_var_id);
-SPVM_OBJECT* SPVM_API_get_package_var_object(SPVM_ENV* env, int32_t package_var_id);
-void SPVM_API_set_package_var_byte(SPVM_ENV* env, int32_t package_var_id, int8_t value);
-void SPVM_API_set_package_var_short(SPVM_ENV* env, int32_t package_var_id, int16_t value);
-void SPVM_API_set_package_var_int(SPVM_ENV* env, int32_t package_var_id, int32_t value);
-void SPVM_API_set_package_var_long(SPVM_ENV* env, int32_t package_var_id, int64_t value);
-void SPVM_API_set_package_var_float(SPVM_ENV* env, int32_t package_var_id, float value);
-void SPVM_API_set_package_var_double(SPVM_ENV* env, int32_t package_var_id, double value);
-void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t package_var_id, SPVM_OBJECT* value);
+// Class variable access
+int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, int32_t class_var_id);
+int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, int32_t class_var_id);
+int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, int32_t class_var_id);
+int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, int32_t class_var_id);
+float SPVM_API_get_class_var_float(SPVM_ENV* env, int32_t class_var_id);
+double SPVM_API_get_class_var_double(SPVM_ENV* env, int32_t class_var_id);
+SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, int32_t class_var_id);
+void SPVM_API_set_class_var_byte(SPVM_ENV* env, int32_t class_var_id, int8_t value);
+void SPVM_API_set_class_var_short(SPVM_ENV* env, int32_t class_var_id, int16_t value);
+void SPVM_API_set_class_var_int(SPVM_ENV* env, int32_t class_var_id, int32_t value);
+void SPVM_API_set_class_var_long(SPVM_ENV* env, int32_t class_var_id, int64_t value);
+void SPVM_API_set_class_var_float(SPVM_ENV* env, int32_t class_var_id, float value);
+void SPVM_API_set_class_var_double(SPVM_ENV* env, int32_t class_var_id, double value);
+void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t class_var_id, SPVM_OBJECT* value);
 
 SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_API_get_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
@@ -221,47 +221,47 @@ int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 
 const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_OBJECT* string);
 
-SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, const char* package_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, float value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, double value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line);
-int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
-int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
-int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
-int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
-float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
-double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
-SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, const char* class_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, float value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, double value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line);
+int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
+int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
+int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
+int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
+float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
+double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line);
 
-// Package Variable access by name
-void SPVM_API_set_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, float value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, double value, int32_t* exception_flag, const char* file, int32_t line);
-void SPVM_API_set_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line);
-int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
-int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
-int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
-int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
-float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
-double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line);
-SPVM_OBJECT* SPVM_API_get_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature, int32_t* exception_flag, const char* file, int32_t line);
+// Class Variable access by name
+void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, float value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, double value, int32_t* exception_flag, const char* file, int32_t line);
+void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line);
+int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line);
+int16_t SPVM_API_get_class_var_short_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line);
+int32_t SPVM_API_get_class_var_int_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line);
+int64_t SPVM_API_get_class_var_long_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line);
+float SPVM_API_get_class_var_float_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line);
+double SPVM_API_get_class_var_double_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line);
+SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature, int32_t* exception_flag, const char* file, int32_t line);
 
-int32_t SPVM_API_call_spvm_method_by_name(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
+int32_t SPVM_API_call_spvm_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
 int32_t SPVM_API_call_callback_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line);
-const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
+const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line);
 
 SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object);
 SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object);
 void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth, SPVM_STRING_BUFFER* string_buffer, SPVM_HASH* address_symtable);
 
-SPVM_PACKAGE_VAR* SPVM_API_get_package_var(SPVM_ENV* env, SPVM_PACKAGE* package, const char* package_var_name);
-SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_PACKAGE* package, const char* method_name);
+SPVM_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_CLASS* class, const char* class_var_name);
+SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_CLASS* class, const char* method_name);
 
 #endif

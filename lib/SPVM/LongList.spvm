@@ -1,4 +1,4 @@
-package LongList : precompile {
+class LongList : precompile {
   use Fn (memcpy_long, memmove_long);
   
   has values   : long[];

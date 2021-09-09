@@ -1,4 +1,4 @@
-package Long {
+class Long {
   has val : ro long;
   
   sub new : Long ($value : long) {

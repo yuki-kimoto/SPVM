@@ -1,4 +1,4 @@
-package TestCase::CompileError::Concat::RightIsNotString {
+class TestCase::CompileError::Concat::RightIsNotString {
   use TestCase::Minimal;
   
   sub main : int () {

@@ -1,4 +1,4 @@
-package TestCase::Allow::PrivateData {
+class TestCase::Allow::PrivateData {
   allow TestCase::Allow;
   
   our $X : int;

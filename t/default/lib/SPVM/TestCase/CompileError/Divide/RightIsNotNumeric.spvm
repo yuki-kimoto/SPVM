@@ -1,4 +1,4 @@
-package TestCase::CompileError::Divide::RightIsNotNumeric {
+class TestCase::CompileError::Divide::RightIsNotNumeric {
   use TestCase::Minimal;
   sub main : int () {
     my $minimal = TestCase::Minimal->new;

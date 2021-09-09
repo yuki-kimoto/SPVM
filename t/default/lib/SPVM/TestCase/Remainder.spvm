@@ -1,4 +1,4 @@
-package TestCase::Remainder {
+class TestCase::Remainder {
 
   #
   # Spec tests

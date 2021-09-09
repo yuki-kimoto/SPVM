@@ -1,4 +1,4 @@
-package TestCase::Refop {
+class TestCase::Refop {
   use TestCase::Minimal;
   use TestCase::Simple;
   

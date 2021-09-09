@@ -1,4 +1,4 @@
-package TestCase::CompileError::LogicalOperator::AndNotExpression {
+class TestCase::CompileError::LogicalOperator::AndNotExpression {
   sub main : void () {
     1 && 1;
   }

@@ -45,7 +45,7 @@ extern int SPVM_yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    PACKAGE = 258,
+    CLASS = 258,
     HAS = 259,
     METHOD = 260,
     OUR = 261,
@@ -95,7 +95,7 @@ extern int SPVM_yydebug;
     DIE = 305,
     WARN = 306,
     PRINT = 307,
-    CURRENT_PACKAGE = 308,
+    CURRENT_CLASS = 308,
     UNWEAKEN = 309,
     ASSIGN = 310,
     SPECIAL_ASSIGN = 311,

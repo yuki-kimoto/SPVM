@@ -1,4 +1,4 @@
-package TestCase::CompileError::Assign::UnboxingDifferentType {
+class TestCase::CompileError::Assign::UnboxingDifferentType {
 
   sub main : int () {
     my $num : long = Int->new(3);

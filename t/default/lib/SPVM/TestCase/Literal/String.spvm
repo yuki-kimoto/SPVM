@@ -1,4 +1,4 @@
-package TestCase::Literal::String {
+class TestCase::Literal::String {
   use TestCase::Minimal;
   
   our $VAR_EXPANSION1 : int;
@@ -392,7 +392,7 @@ ef"
       }
     }
     
-    # Package variable
+    # Class variable
     {
       $VAR_EXPANSION1 = 6;
       

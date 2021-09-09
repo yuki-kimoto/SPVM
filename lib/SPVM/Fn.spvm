@@ -1,4 +1,4 @@
-package Fn : precompile {
+class Fn : precompile {
   use Time (time);
   use Cloner;
   use EqualityChecker;

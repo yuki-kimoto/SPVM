@@ -13,19 +13,19 @@ use SPVM 'TestCase';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-# Package variable relative name
+# Class variable relative name
 {
   my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-  ok(SPVM::TestCase->package_var_rel_name());
+  ok(SPVM::TestCase->class_var_rel_name());
   my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($start_memory_blocks_count, $end_memory_blocks_count);
 }
 
-# Package variable
+# Class variable
 {
   my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
-  ok(SPVM::TestCase->package_var());
-  ok(SPVM::TestCase->package_var_other_package());
+  ok(SPVM::TestCase->class_var());
+  ok(SPVM::TestCase->class_var_other_class());
   my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
   is($start_memory_blocks_count, $end_memory_blocks_count);
 }

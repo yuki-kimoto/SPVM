@@ -1,4 +1,4 @@
-package TestCase::Lib::Time {
+class TestCase::Lib::Time {
   use Time;
   
   sub test_time : long () {

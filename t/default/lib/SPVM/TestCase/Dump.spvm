@@ -1,4 +1,4 @@
-package TestCase::Dump {
+class TestCase::Dump {
   use TestCase::DumpTest1;
   use Fn;
   use TestCase::Point_3b;

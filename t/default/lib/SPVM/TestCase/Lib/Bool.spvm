@@ -1,4 +1,4 @@
-package TestCase::Lib::Bool {
+class TestCase::Lib::Bool {
   use Bool;
   
   sub basic : int () {

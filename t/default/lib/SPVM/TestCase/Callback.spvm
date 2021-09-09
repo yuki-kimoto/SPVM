@@ -1,4 +1,4 @@
-package TestCase::Callback {
+class TestCase::Callback {
   use TestCase::Minimal;
   use TestCase::Callback::Callback;
   use TestCase::Callback::ImplementCallback1;
@@ -28,7 +28,7 @@ package TestCase::Callback {
     return 1;
   }
 
-  sub capture_var_high_precidence_than_package_var : int () {
+  sub capture_var_high_precidence_than_class_var : int () {
   
     my $var_prec = 13;
   

@@ -86,7 +86,7 @@ Index QuickSplit(VectorV &row, VectorI &ind, Index ncut)
   *              Numerical Linear Algebra with Applications, 1(4), pp 387-402, 1994.
   * 
   * NOTE : The following implementation is derived from the ILUT implementation
-  * in the SPARSKIT package, Copyright (C) 2005, the Regents of the University of Minnesota 
+  * in the SPARSKIT class, Copyright (C) 2005, the Regents of the University of Minnesota 
   *  released under the terms of the GNU LGPL: 
   *    http://www-users.cs.umn.edu/~saad/software/SPARSKIT/README
   * However, Yousef Saad gave us permission to relicense his ILUT code to MPL2.

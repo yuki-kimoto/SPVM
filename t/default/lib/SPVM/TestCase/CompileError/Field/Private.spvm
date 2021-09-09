@@ -1,4 +1,4 @@
-package TestCase::CompileError::Field::Private {
+class TestCase::CompileError::Field::Private {
   use TestCase;
   
   sub main : int () {

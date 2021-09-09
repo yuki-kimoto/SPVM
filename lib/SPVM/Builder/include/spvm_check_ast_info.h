@@ -4,8 +4,8 @@
 #include "spvm_typedecl.h"
 
 struct spvm_check_ast_info {
-  // Package
-  SPVM_PACKAGE* package;
+  // Class
+  SPVM_CLASS* class;
   
   // Method
   SPVM_METHOD* method;

@@ -1,4 +1,4 @@
-package TestCase::ArrayMiddleSize {
+class TestCase::ArrayMiddleSize {
   
   our $MIDDLE_INDEX : int;
   INIT {

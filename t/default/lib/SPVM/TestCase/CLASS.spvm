@@ -1,0 +1,10 @@
+class TestCase::CLASS {
+  sub class_name : int () {
+    my $class_name = __CLASS__;
+    
+    unless ($class_name eq "TestCase::CLASS") {
+      return 0;
+    }
+    return 1;
+  }
+}

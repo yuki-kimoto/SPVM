@@ -1,4 +1,4 @@
-package TestCase::String {
+class TestCase::String {
   sub string_access : int () {
     my $string = "abc";
     

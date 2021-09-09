@@ -17,7 +17,7 @@
 #include "spvm_enumeration_value.h"
 #include "spvm_type.h"
 #include "spvm_enumeration.h"
-#include "spvm_package.h"
+#include "spvm_class.h"
 #include "spvm_field_access.h"
 #include "spvm_call_method.h"
 #include "spvm_type.h"
@@ -28,8 +28,8 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_limit.h"
 #include "spvm_use.h"
-#include "spvm_package_var.h"
-#include "spvm_package_var_access.h"
+#include "spvm_class_var.h"
+#include "spvm_class_var_access.h"
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_block.h"
 #include "spvm_basic_type.h"
@@ -58,7 +58,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "PUSHMARK",
     "GRAMMAR",
     "NAME",
-    "PACKAGE",
+    "CLASS",
     "MY",
     "FIELD",
     "METHOD",
@@ -137,8 +137,8 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "CONCAT",
     "SET",
     "GET",
-    "PACKAGE_VAR",
-    "PACKAGE_VAR_ACCESS",
+    "CLASS_VAR",
+    "CLASS_VAR_ACCESS",
     "ARRAY_INIT",
     "BOOL",
     "LOOP_INCREMENT",
@@ -173,7 +173,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "INIT",
     "REQUIRE",
     "IF_REQUIRE",
-    "CURRENT_PACKAGE",
+    "CURRENT_CLASS",
     "FREE_TMP",
     "REFCNT",
     "ALLOW",
@@ -187,16 +187,16 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
   return id_names;
 }
 
-int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current, SPVM_OP* op_package_dist) {
+int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_class_current, SPVM_OP* op_class_dist) {
   (void)compiler;
   
-  SPVM_LIST* op_allows = op_package_dist->uv.package->op_allows;
+  SPVM_LIST* op_allows = op_class_dist->uv.class->op_allows;
   
-  const char* current_package_name = op_package_current->uv.package->name;
-  const char* dist_package_name = op_package_dist->uv.package->name;
+  const char* current_class_name = op_class_current->uv.class->name;
+  const char* dist_class_name = op_class_dist->uv.class->name;
   
   int32_t is_allowed = 0;
-  if (strcmp(current_package_name, dist_package_name) == 0) {
+  if (strcmp(current_class_name, dist_class_name) == 0) {
     is_allowed = 1;
   }
   else {
@@ -205,7 +205,7 @@ int32_t SPVM_OP_is_allowed(SPVM_COMPILER* compiler, SPVM_OP* op_package_current,
       SPVM_ALLOW* allow = op_allow->uv.allow;
       SPVM_OP* op_type = allow->op_type;
       const char* allow_basic_type_name = op_type->uv.type->basic_type->name;
-      if (strcmp(current_package_name, allow_basic_type_name) == 0) {
+      if (strcmp(current_class_name, allow_basic_type_name) == 0) {
         is_allowed = 1;
         break;
       }
@@ -251,7 +251,7 @@ int32_t SPVM_OP_is_mutable(SPVM_COMPILER* compiler, SPVM_OP* op) {
   
   switch (op->id) {
     case SPVM_OP_C_ID_VAR:
-    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
+    case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
     case SPVM_OP_C_ID_ARRAY_ACCESS:
     case SPVM_OP_C_ID_FIELD_ACCESS:
     case SPVM_OP_C_ID_DEREF:
@@ -295,12 +295,12 @@ SPVM_OP* SPVM_OP_build_var(SPVM_COMPILER* compiler, SPVM_OP* op_var_name) {
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_name) {
+SPVM_OP* SPVM_OP_build_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_name) {
       
-  // Package var op
-  SPVM_OP* op_package_var_access = SPVM_OP_new_op_package_var_access(compiler, op_package_var_name);
+  // Class var op
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op_class_var_access(compiler, op_class_var_name);
   
-  return op_package_var_access;
+  return op_class_var_access;
 }
 
 SPVM_OP* SPVM_OP_new_op_descriptor(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
@@ -348,17 +348,17 @@ SPVM_OP* SPVM_OP_new_op_var(SPVM_COMPILER* compiler, SPVM_OP* op_name) {
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_new_op_package_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_package_var_name) {
+SPVM_OP* SPVM_OP_new_op_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_name) {
   
-  const char* package_var_name = op_package_var_name->uv.name;
+  const char* class_var_name = op_class_var_name->uv.name;
   
-  SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, op_package_var_name->file, op_package_var_name->line);
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_ACCESS, op_class_var_name->file, op_class_var_name->line);
 
-  SPVM_PACKAGE_VAR_ACCESS* package_var_access = SPVM_PACKAGE_VAR_ACCESS_new(compiler);
-  package_var_access->op_name = op_package_var_name;
-  op_package_var_access->uv.package_var_access = package_var_access;
+  SPVM_CLASS_VAR_ACCESS* class_var_access = SPVM_CLASS_VAR_ACCESS_new(compiler);
+  class_var_access->op_name = op_class_var_name;
+  op_class_var_access->uv.class_var_access = class_var_access;
   
-  return op_package_var_access;
+  return op_class_var_access;
 }
 
 SPVM_OP* SPVM_OP_new_op_var_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_var, const char* file, int32_t line) {
@@ -442,14 +442,14 @@ SPVM_OP* SPVM_OP_new_op_array_field_access_clone(SPVM_COMPILER* compiler, SPVM_O
   return op_array_field_access;
 }
 
-SPVM_OP* SPVM_OP_new_op_package_var_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_package_var_access) {
+SPVM_OP* SPVM_OP_new_op_class_var_access_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_class_var_access) {
   (void)compiler;
   
-  SPVM_OP* op_package_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE_VAR_ACCESS, original_op_package_var_access->file, original_op_package_var_access->line);
+  SPVM_OP* op_class_var_access = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_VAR_ACCESS, original_op_class_var_access->file, original_op_class_var_access->line);
   
-  op_package_var_access->uv.package_var_access = original_op_package_var_access->uv.package_var_access;
+  op_class_var_access->uv.class_var_access = original_op_class_var_access->uv.class_var_access;
   
-  return op_package_var_access;
+  return op_class_var_access;
 }
 
 SPVM_OP* SPVM_OP_new_op_deref_clone(SPVM_COMPILER* compiler, SPVM_OP* original_op_deref) {
@@ -471,8 +471,8 @@ SPVM_OP* SPVM_OP_new_op_term_mutable_clone(SPVM_COMPILER* compiler, SPVM_OP* ori
     case SPVM_OP_C_ID_VAR:
       op_term_mutable = SPVM_OP_new_op_var_clone(compiler, original_op_term_mutable, original_op_term_mutable->file, original_op_term_mutable->line);
       break;
-    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS:
-      op_term_mutable = SPVM_OP_new_op_package_var_access_clone(compiler, original_op_term_mutable);
+    case SPVM_OP_C_ID_CLASS_VAR_ACCESS:
+      op_term_mutable = SPVM_OP_new_op_class_var_access_clone(compiler, original_op_term_mutable);
       break;
     case SPVM_OP_C_ID_ARRAY_ACCESS:
       op_term_mutable = SPVM_OP_new_op_array_access_clone(compiler, original_op_term_mutable);
@@ -1251,9 +1251,9 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = op_type->uv.type;
       break;
     }
-    case SPVM_OP_C_ID_PACKAGE: {
-      SPVM_PACKAGE* package = op->uv.package;
-      type = package->op_type->uv.type;
+    case SPVM_OP_C_ID_CLASS: {
+      SPVM_CLASS* class = op->uv.class;
+      type = class->op_type->uv.type;
       break;
     }
     case SPVM_OP_C_ID_NUMERIC_EQ:
@@ -1372,17 +1372,17 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       type = var->my->type;
       break;
     }
-    case SPVM_OP_C_ID_PACKAGE_VAR_ACCESS: {
-      SPVM_PACKAGE_VAR* package_var = op->uv.package_var_access->package_var;
-      if (package_var->type) {
-        type = package_var->type;
+    case SPVM_OP_C_ID_CLASS_VAR_ACCESS: {
+      SPVM_CLASS_VAR* class_var = op->uv.class_var_access->class_var;
+      if (class_var->type) {
+        type = class_var->type;
       }
       break;
     }
-    case SPVM_OP_C_ID_PACKAGE_VAR: {
-      SPVM_PACKAGE_VAR* package_var = op->uv.package_var;
-      if (package_var->type) {
-        type = package_var->type;
+    case SPVM_OP_C_ID_CLASS_VAR: {
+      SPVM_CLASS_VAR* class_var = op->uv.class_var;
+      if (class_var->type) {
+        type = class_var->type;
       }
       break;
     }
@@ -1404,8 +1404,8 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
     case SPVM_OP_C_ID_CALL_METHOD: {
       SPVM_CALL_METHOD* call_spvm_method = op->uv.call_spvm_method;
       const char* call_spvm_method_method_name = call_spvm_method->method->name;
-      SPVM_PACKAGE* call_spvm_method_method_package = call_spvm_method->method->package;
-      SPVM_METHOD* method = SPVM_HASH_fetch(call_spvm_method_method_package->method_symtable, call_spvm_method_method_name, strlen(call_spvm_method_method_name));
+      SPVM_CLASS* call_spvm_method_method_class = call_spvm_method->method->class;
+      SPVM_METHOD* method = SPVM_HASH_fetch(call_spvm_method_method_class->method_symtable, call_spvm_method_method_name, strlen(call_spvm_method_method_name));
       type = method->return_type;
       break;
     }
@@ -1591,29 +1591,29 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
   return op_convert;
 }
 
-SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_packages) {
+SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_classs) {
   
   if (!compiler->op_grammar) {
-    compiler->op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_packages->file, op_packages->line);
+    compiler->op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_classs->file, op_classs->line);
   }
   
   SPVM_OP* op_grammar = compiler->op_grammar;
-  SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_packages);
+  SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_classs);
 
   return op_grammar;
 }
 
-SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
+SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP* op_type, SPVM_OP* op_block, SPVM_OP* op_list_descriptors) {
   
-  // Package
-  SPVM_PACKAGE* package = SPVM_PACKAGE_new(compiler);
+  // Class
+  SPVM_CLASS* class = SPVM_CLASS_new(compiler);
   
-  package->module_file = compiler->cur_file;
-  package->module_rel_file = compiler->cur_rel_file;
+  class->module_file = compiler->cur_file;
+  class->module_rel_file = compiler->cur_rel_file;
   
   if (!op_type) {
-    // Package is anon
-    package->is_anon = 1;
+    // Class is anon
+    class->is_anon = 1;
     
     SPVM_OP* op_method = op_block->first->last;
     assert(op_method);
@@ -1622,81 +1622,81 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // int32_t max length is 10(2147483647)
     int32_t int32_max_length = 10;
     
-    // Create anon sub package name
-    // If Foo::Bar anon sub is defined line 123, sub keyword start pos 32, the anon sub package name become Foo::Bar::anon::123::32. This is uniqe in whole program.
-    const char* anon_method_defined_rel_file_package_name = compiler->cur_rel_file_package_name;
+    // Create anon sub class name
+    // If Foo::Bar anon sub is defined line 123, sub keyword start pos 32, the anon sub class name become Foo::Bar::anon::123::32. This is uniqe in whole program.
+    const char* anon_method_defined_rel_file_class_name = compiler->cur_rel_file_class_name;
     int32_t anon_method_defined_line = op_method->line;
     int32_t anon_method_defined_keyword_start_pos = op_method->keyword_start_pos;
-    int32_t anon_method_package_name_length = 6 + strlen(anon_method_defined_rel_file_package_name) + 2 + int32_max_length + 2 + int32_max_length;
+    int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
     
-    // Anon package name
-    char* name_package = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, anon_method_package_name_length + 1);
-    sprintf(name_package, "%s::anon::%d::%d", anon_method_defined_rel_file_package_name, anon_method_defined_line, anon_method_defined_keyword_start_pos);
-    SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, name_package, op_package->file, op_package->line);
-    op_type = SPVM_OP_build_basic_type(compiler, op_name_package);
+    // Anon class name
+    char* name_class = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, anon_method_class_name_length + 1);
+    sprintf(name_class, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_keyword_start_pos);
+    SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
+    op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
     
-    op_method->uv.method->anon_method_defined_package_name = anon_method_defined_rel_file_package_name;
+    op_method->uv.method->anon_method_defined_class_name = anon_method_defined_rel_file_class_name;
   }
   
-  const char* package_name = op_type->uv.type->basic_type->name;
-  package->op_type = op_type;
+  const char* class_name = op_type->uv.type->basic_type->name;
+  class->op_type = op_type;
   
-  // Add addede package names in this compile
-  SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
+  // Add addede class names in this compile
+  SPVM_LIST_push(compiler->tmp_added_class_names, (void*)class_name);
   
-  if (!package->is_anon) {
+  if (!class->is_anon) {
 
-    // Package name must start with upper case, otherwise compiler error occur.
+    // Class name must start with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
-    if (islower(package_name[0])) {
-      SPVM_COMPILER_error(compiler, "package name \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
+    if (islower(class_name[0])) {
+      SPVM_COMPILER_error(compiler, "class name \"%s\" must start with upper case at %s line %d\n", class_name, op_class->file, op_class->line);
     }
     else {
       
-      // If package part name start with lower case, compiler error occur.
+      // If class part name start with lower case, compiler error occur.
       // (Invalid example) Foo::bar
-      int32_t package_part_name_is_invalid = 0;
-      int32_t package_name_length = strlen(package_name);
-      for (int32_t i = 0; i < package_name_length; i++) {
+      int32_t class_part_name_is_invalid = 0;
+      int32_t class_name_length = strlen(class_name);
+      for (int32_t i = 0; i < class_name_length; i++) {
         if (i > 1) {
-          if (package_name[i - 2] == ':' && package_name[i - 1] == ':') {
-            if (islower(package_name[i])) {
-              SPVM_COMPILER_error(compiler, "Part name of package \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
+          if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
+            if (islower(class_name[i])) {
+              SPVM_COMPILER_error(compiler, "Part name of class \"%s\" must start with upper case at %s line %d\n", class_name, op_class->file, op_class->line);
               break;
             }
           }
         }
       }
       
-      // If package name is different from the package name corresponding to the module file, compile error occur.
-      if (strcmp(package_name, compiler->cur_rel_file_package_name) != 0) {
-        // If package fail load by if (require xxx) syntax, that is ok
+      // If class name is different from the class name corresponding to the module file, compile error occur.
+      if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
+        // If class fail load by if (require xxx) syntax, that is ok
         if (!op_type->uv.type->basic_type->fail_load) {
-          SPVM_COMPILER_error(compiler, "Package name \"%s\" is different from the package name corresponding to the module file \"%s\" at %s line %d\n", package_name, compiler->cur_rel_file_package_name, op_package->file, op_package->line);
+          SPVM_COMPILER_error(compiler, "Class name \"%s\" is different from the class name corresponding to the module file \"%s\" at %s line %d\n", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
         }
       }
     }
   }
   
-  SPVM_HASH* package_symtable = compiler->package_symtable;
+  SPVM_HASH* class_symtable = compiler->class_symtable;
 
-  // Redeclaration package error
-  SPVM_PACKAGE* found_package = SPVM_HASH_fetch(package_symtable, package_name, strlen(package_name));
-  if (found_package) {
-    SPVM_COMPILER_error(compiler, "Redeclaration of package \"%s\" at %s line %d\n", package_name, op_package->file, op_package->line);
+  // Redeclaration class error
+  SPVM_CLASS* found_class = SPVM_HASH_fetch(class_symtable, class_name, strlen(class_name));
+  if (found_class) {
+    SPVM_COMPILER_error(compiler, "Redeclaration of class \"%s\" at %s line %d\n", class_name, op_class->file, op_class->line);
   }
   else {
-    // Add package
-    SPVM_LIST_push(compiler->packages, package);
-    SPVM_HASH_insert(compiler->package_symtable, package_name, strlen(package_name), package);
+    // Add class
+    SPVM_LIST_push(compiler->classs, class);
+    SPVM_HASH_insert(compiler->class_symtable, class_name, strlen(class_name), class);
   }
   
-  SPVM_OP* op_name_package = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
-  package->op_name = op_name_package;
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, op_type->uv.type->basic_type->name, op_type->file, op_type->line);
+  class->op_name = op_name_class;
   
-  package->name = op_name_package->uv.name;
+  class->name = op_name_class->uv.name;
 
-  // Package is callback
+  // Class is callback
   int32_t category_descriptors_count = 0;
   int32_t access_control_descriptors_count = 0;
   if (op_list_descriptors) {
@@ -1705,16 +1705,16 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       switch (descriptor->id) {
         case SPVM_DESCRIPTOR_C_ID_CALLBACK_T:
-          package->category = SPVM_PACKAGE_C_CATEGORY_CALLBACK;
+          class->category = SPVM_CLASS_C_CATEGORY_CALLBACK;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_POINTER_T:
-          package->category = SPVM_PACKAGE_C_CATEGORY_CLASS;
-          package->flag |= SPVM_PACKAGE_C_FLAG_POINTER;
+          class->category = SPVM_CLASS_C_CATEGORY_CLASS;
+          class->flag |= SPVM_CLASS_C_FLAG_POINTER;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_MULNUM_T:
-          package->category = SPVM_PACKAGE_C_CATEGORY_VALUE;
+          class->category = SPVM_CLASS_C_CATEGORY_VALUE;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:
@@ -1722,14 +1722,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
-          package->flag |= SPVM_PACKAGE_C_FLAG_PUBLIC;
+          class->flag |= SPVM_CLASS_C_FLAG_PUBLIC;
           access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRECOMPILE:
-          package->has_precompile_descriptor = 1;
+          class->has_precompile_descriptor = 1;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid package descriptor %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_package->file, op_package->line);
+          SPVM_COMPILER_error(compiler, "Invalid class descriptor %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_class->file, op_class->line);
       }
     }
     if (category_descriptors_count > 1) {
@@ -1747,7 +1747,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     while ((op_decl = SPVM_OP_sibling(compiler, op_decl))) {
       // use declarations
       if (op_decl->id == SPVM_OP_C_ID_USE) {
-        SPVM_LIST_push(package->op_uses, op_decl);
+        SPVM_LIST_push(class->op_uses, op_decl);
         
         SPVM_LIST* method_names = op_decl->uv.use->method_names;
         
@@ -1755,42 +1755,42 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           for (int32_t i = 0; i < method_names->length; i++) {
             const char* method_name = SPVM_LIST_fetch(method_names, i);
             
-            const char* found_method_name = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
+            const char* found_method_name = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
             if (found_method_name) {
               SPVM_COMPILER_error(compiler, "Redeclaration of sub in use statement \"%s\" at %s line %d\n", method_name, op_decl->file, op_decl->line);
             }
             // Unknown sub
             else {
-              SPVM_HASH_insert(package->method_symtable, method_name, strlen(method_name), (void*)method_name);
+              SPVM_HASH_insert(class->method_symtable, method_name, strlen(method_name), (void*)method_name);
             }
           }
         }
       }
       // allow declarations
       else if (op_decl->id == SPVM_OP_C_ID_ALLOW) {
-        SPVM_LIST_push(package->op_allows, op_decl);
+        SPVM_LIST_push(class->op_allows, op_decl);
       }
-      // Package var declarations
-      else if (op_decl->id == SPVM_OP_C_ID_PACKAGE_VAR) {
-        SPVM_PACKAGE_VAR* package_var = op_decl->uv.package_var;
+      // Class var declarations
+      else if (op_decl->id == SPVM_OP_C_ID_CLASS_VAR) {
+        SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
 
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback package can't have package variable at %s line %d\n", op_decl->file, op_decl->line);
+        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+          SPVM_COMPILER_error(compiler, "Callback class can't have class variable at %s line %d\n", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(package->package_vars, op_decl->uv.package_var);
+        SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
 
         // Getter
-        if (package_var->has_getter) {
+        if (class_var->has_getter) {
           // sub FOO : int () {
           //   return $FOO;
           // }
 
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, package_var->name + 1, op_decl->file, op_decl->line);
+          SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, class_var->name + 1, op_decl->file, op_decl->line);
           SPVM_TYPE* return_type = SPVM_TYPE_new(compiler);
-          return_type->basic_type =  package_var->type->basic_type;
-          return_type->dimension =  package_var->type->dimension;
-          return_type->flag =  package_var->type->flag;
+          return_type->basic_type =  class_var->type->basic_type;
+          return_type->dimension =  class_var->type->dimension;
+          return_type->flag =  class_var->type->flag;
           SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           
@@ -1798,42 +1798,42 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_return = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_RETURN, op_decl->file, op_decl->line);
 
-          SPVM_OP* op_name_package_var_access = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_name_package_var_access);
+          SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_name_class_var_access);
           
-          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_package_var_access);
+          SPVM_OP_insert_child(compiler, op_return, op_return->last, op_class_var_access);
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_return);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
           int32_t can_precompile = 0;
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
 
-          op_method->uv.method->is_package_var_getter = 1;
-          op_method->uv.method->accessor_original_name = package_var->name;
+          op_method->uv.method->is_class_var_getter = 1;
+          op_method->uv.method->accessor_original_name = class_var->name;
           
-          SPVM_LIST_push(package->methods, op_method->uv.method);
+          SPVM_LIST_push(class->methods, op_method->uv.method);
         }
 
         // Setter
-        if (package_var->has_setter) {
+        if (class_var->has_setter) {
           
           // sub SET_FOO : void ($foo : int) {
           //   $FOO = $foo;
           // }
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 4 + strlen(package_var->name) - 1 + 1);
+          char* method_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 4 + strlen(class_var->name) - 1 + 1);
           memcpy(method_name, "SET_", 4);
-          memcpy(method_name + 4, package_var->name + 1, strlen(package_var->name) - 1);
+          memcpy(method_name + 4, class_var->name + 1, strlen(class_var->name) - 1);
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
           SPVM_OP* op_return_type = SPVM_OP_new_op_void_type(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
 
           SPVM_TYPE* arg_multi_numeric_type = SPVM_TYPE_new(compiler);
-          arg_multi_numeric_type->basic_type = package_var->type->basic_type;
-          arg_multi_numeric_type->dimension = package_var->type->dimension;
-          arg_multi_numeric_type->flag = package_var->type->flag;
+          arg_multi_numeric_type->basic_type = class_var->type->basic_type;
+          arg_multi_numeric_type->dimension = class_var->type->dimension;
+          arg_multi_numeric_type->flag = class_var->type->flag;
           SPVM_OP* op_type_value = SPVM_OP_new_op_type(compiler, arg_multi_numeric_type, op_decl->file, op_decl->line);
-          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_value = SPVM_OP_new_op_var(compiler, op_var_value_name);
           SPVM_OP* op_arg_value = SPVM_OP_build_arg(compiler, op_var_value, op_type_value);
 
@@ -1842,14 +1842,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
 
-          SPVM_OP* op_name_package_var_access = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
-          SPVM_OP* op_package_var_access = SPVM_OP_build_package_var_access(compiler, op_name_package_var_access);
+          SPVM_OP* op_name_class_var_access = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_name_class_var_access);
 
-          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, package_var->name, op_decl->file, op_decl->line);
+          SPVM_OP* op_var_assign_value_name = SPVM_OP_new_op_name(compiler, class_var->name, op_decl->file, op_decl->line);
           SPVM_OP* op_var_assign_value = SPVM_OP_new_op_var(compiler, op_var_assign_value_name);
           
           SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_decl->file, op_decl->line);
-          SPVM_OP_build_assign(compiler, op_assign, op_package_var_access, op_var_assign_value);
+          SPVM_OP_build_assign(compiler, op_assign, op_class_var_access, op_var_assign_value);
           
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
@@ -1857,20 +1857,20 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           int32_t can_precompile = 0;
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
           
-          op_method->uv.method->is_package_var_setter = 1;
-          op_method->uv.method->accessor_original_name = package_var->name;
+          op_method->uv.method->is_class_var_setter = 1;
+          op_method->uv.method->accessor_original_name = class_var->name;
           
-          SPVM_LIST_push(package->methods, op_method->uv.method);
+          SPVM_LIST_push(class->methods, op_method->uv.method);
         }
       }
       // Field declarations
       else if (op_decl->id == SPVM_OP_C_ID_FIELD) {
         SPVM_FIELD* field = op_decl->uv.field;
         
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback package can't have field at %s line %d\n", op_decl->file, op_decl->line);
+        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+          SPVM_COMPILER_error(compiler, "Callback class can't have field at %s line %d\n", op_decl->file, op_decl->line);
         }
-        SPVM_LIST_push(package->fields, field);
+        SPVM_LIST_push(class->fields, field);
         
         // Getter
         if (field->has_getter) {
@@ -1913,7 +1913,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           op_method->uv.method->is_field_getter = 1;
           op_method->uv.method->accessor_original_name = field->name;
           
-          SPVM_LIST_push(package->methods, op_method->uv.method);
+          SPVM_LIST_push(class->methods, op_method->uv.method);
         }
 
         // Setter
@@ -1971,7 +1971,7 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           op_method->uv.method->is_field_setter = 1;
           op_method->uv.method->accessor_original_name = field->name;
           
-          SPVM_LIST_push(package->methods, op_method->uv.method);
+          SPVM_LIST_push(class->methods, op_method->uv.method);
         }
       }
       // Enum declarations
@@ -1980,12 +1980,12 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
         SPVM_OP* op_enumeration_values = op_enum_block->first;
         SPVM_OP* op_method = op_enumeration_values->first;
         while ((op_method = SPVM_OP_sibling(compiler, op_method))) {
-          SPVM_LIST_push(package->methods, op_method->uv.method);
+          SPVM_LIST_push(class->methods, op_method->uv.method);
         }
       }
       // Method declarations
       else if (op_decl->id == SPVM_OP_C_ID_METHOD) {
-        SPVM_LIST_push(package->methods, op_decl->uv.method);
+        SPVM_LIST_push(class->methods, op_decl->uv.method);
         
         // Captures is added to field
         SPVM_LIST* captures = op_decl->uv.method->captures;
@@ -1996,13 +1996,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_OP* op_name_field = SPVM_OP_new_op_name(compiler, capture_my->op_name->uv.name + 1, capture_my->op_my->file, capture_my->op_my->line);
           
           SPVM_OP_build_has(compiler, op_field, op_name_field, NULL, capture_my->type->op_type);
-          SPVM_LIST_push(package->fields, op_field->uv.field);
+          SPVM_LIST_push(class->fields, op_field->uv.field);
           op_field->uv.field->is_captured = 1;
         }
         
         // Begin block
         if (op_decl->uv.method->is_begin) {
-          package->op_begin_method = op_decl;
+          class->op_begin_method = op_decl;
         }
       }
       else {
@@ -2011,51 +2011,51 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     }
     
     // Field declarations
-    for (int32_t i = 0; i < package->fields->length; i++) {
-      SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, i);
+    for (int32_t i = 0; i < class->fields->length; i++) {
+      SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
 
-      if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
-        SPVM_COMPILER_error(compiler, "package which has pointer_t descriptor can't have fields at %s line %d\n", field->op_field->file, field->op_field->line);
+      if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
+        SPVM_COMPILER_error(compiler, "class which has pointer_t descriptor can't have fields at %s line %d\n", field->op_field->file, field->op_field->line);
         continue;
       }
 
       field->index = i;
       const char* field_name = field->op_name->uv.name;
 
-      SPVM_FIELD* found_field = SPVM_HASH_fetch(package->field_symtable, field_name, strlen(field_name));
+      SPVM_FIELD* found_field = SPVM_HASH_fetch(class->field_symtable, field_name, strlen(field_name));
       
       if (found_field) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->%s\" at %s line %d\n", package_name, field_name, field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->%s\" at %s line %d\n", class_name, field_name, field->op_field->file, field->op_field->line);
       }
       else {
         field->id = compiler->fields->length;
         SPVM_LIST_push(compiler->fields, field);
-        SPVM_HASH_insert(package->field_symtable, field_name, strlen(field_name), field);
+        SPVM_HASH_insert(class->field_symtable, field_name, strlen(field_name), field);
         
-        // Add op package
-        field->package = package;
+        // Add op class
+        field->class = class;
       }
     }
 
-    // Package variable declarations
+    // Class variable declarations
     {
       int32_t i;
-      for (i = 0; i < package->package_vars->length; i++) {
-        SPVM_PACKAGE_VAR* package_var = SPVM_LIST_fetch(package->package_vars, i);
-        const char* package_var_name = package_var->name;
+      for (i = 0; i < class->class_vars->length; i++) {
+        SPVM_CLASS_VAR* class_var = SPVM_LIST_fetch(class->class_vars, i);
+        const char* class_var_name = class_var->name;
 
-        SPVM_PACKAGE_VAR* found_package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
+        SPVM_CLASS_VAR* found_class_var = SPVM_HASH_fetch(class->class_var_symtable, class_var_name, strlen(class_var_name));
         
-        if (found_package_var) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of package variable \"%s::%s\" at %s line %d\n", package_name, package_var_name, package_var->op_package_var->file, package_var->op_package_var->line);
+        if (found_class_var) {
+          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"%s::%s\" at %s line %d\n", class_name, class_var_name, class_var->op_class_var->file, class_var->op_class_var->line);
         }
         else {
-          package_var->id = compiler->package_vars->length;
-          SPVM_LIST_push(compiler->package_vars, package_var);
-          SPVM_HASH_insert(package->package_var_symtable, package_var_name, strlen(package_var_name), package_var);
+          class_var->id = compiler->class_vars->length;
+          SPVM_LIST_push(compiler->class_vars, class_var);
+          SPVM_HASH_insert(class->class_var_symtable, class_var_name, strlen(class_var_name), class_var);
           
-          // Add op package
-          package_var->package = package;
+          // Add op class
+          class_var->class = class;
         }
       }
     }
@@ -2063,13 +2063,13 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
     // Method declarations
     {
       int32_t i;
-      for (i = 0; i < package->methods->length; i++) {
-        SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, i);
+      for (i = 0; i < class->methods->length; i++) {
+        SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
         
         if (method->flag & SPVM_METHOD_C_FLAG_ANON) {
-          package->flag |= SPVM_PACKAGE_C_FLAG_ANON_METHOD_PACKAGE;
-          assert(package->methods->length == 1);
-          assert(package->is_anon);
+          class->flag |= SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS;
+          assert(class->methods->length == 1);
+          assert(class->is_anon);
         }
 
         method->rel_id = i;
@@ -2096,14 +2096,14 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
         }
         
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
           // Method having callback_t descriptor must be method
           if (method->call_type_id != SPVM_METHOD_C_CALL_TYPE_ID_METHOD) {
-            SPVM_COMPILER_error(compiler, "The method belonging to the package with a callback_t descriptor must be a method at %s line %d\n", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor must be a method at %s line %d\n", method->op_method->file, method->op_method->line);
           }
           // Method having callback_t descriptor must be anon
           if (strlen(method_name) != 0) {
-            SPVM_COMPILER_error(compiler, "The method belonging to the package with a callback_t descriptor can't have the name at %s line %d\n", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor can't have the name at %s line %d\n", method->op_method->file, method->op_method->line);
           }
         }
         
@@ -2112,24 +2112,24 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           SPVM_COMPILER_error(compiler, "Anon method must be method at %s line %d\n", method->op_method->file, method->op_method->line);
         }
 
-        // If package is callback, sub must not be native
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
+        // If class is callback, sub must not be native
+        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
           SPVM_COMPILER_error(compiler, "Method of callback can't have native descriptor at %s line %d\n", method->op_method->file, method->op_method->line);
         }
 
-        // If package is callback, sub must not be precompile
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
+        // If class is callback, sub must not be precompile
+        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
           SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d\n", method->op_method->file, method->op_method->line);
         }
 
-        // If package is callback, sub must not be precompile
-        if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
+        // If class is callback, sub must not be precompile
+        if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
           SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d\n", method->op_method->file, method->op_method->line);
         }
 
-        // If package is callback, sub must not be precompile
+        // If class is callback, sub must not be precompile
         if (!method->op_block) {
-          if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+          if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
             // OK
           }
           else if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
@@ -2140,23 +2140,23 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
           }
         }
         
-        SPVM_METHOD* found_method = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
+        SPVM_METHOD* found_method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
         
         if (found_method) {
           SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", method_name, method->op_method->file, method->op_method->line);
         }
         // Unknown sub
         else {
-          const char* found_method_name = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
+          const char* found_method_name = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
           if (found_method_name) {
             SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", method_name, method->op_method->file, method->op_method->line);
           }
           else {
             // Bind standard functions
-            method->package = package;
+            method->class = class;
             
             if (method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
-              package->method_destructor = method;
+              class->method_destructor = method;
             }
             
             assert(method->op_method->file);
@@ -2164,26 +2164,26 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
             method->id = compiler->methods->length;
             
             SPVM_LIST_push(compiler->methods, method);
-            SPVM_HASH_insert(package->method_symtable, method->op_name->uv.name, strlen(method->op_name->uv.name), method);
+            SPVM_HASH_insert(class->method_symtable, method->op_name->uv.name, strlen(method->op_name->uv.name), method);
           }
         }
       }
     }
     
     // Callback must have only one method
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
-      if (package->methods->length != 1) {
-        SPVM_COMPILER_error(compiler, "Callback must have only one method at %s line %d\n", op_package->file, op_package->line);
+    if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
+      if (class->methods->length != 1) {
+        SPVM_COMPILER_error(compiler, "Callback must have only one method at %s line %d\n", op_class->file, op_class->line);
       }
     }
     
-    // Set package
-    op_package->uv.package = package;
+    // Set class
+    op_class->uv.class = class;
     
-    package->op_package = op_package;
+    class->op_class = op_class;
   }
 
-  return op_package;
+  return op_class;
 }
 
 SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op_type, SPVM_OP* op_method_names, int32_t is_require) {
@@ -2224,12 +2224,12 @@ SPVM_OP* SPVM_OP_build_allow(SPVM_COMPILER* compiler, SPVM_OP* op_allow, SPVM_OP
   return op_allow;
 }
 
-SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPVM_OP* op_name, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
+SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_OP* op_name, SPVM_OP* op_descriptors, SPVM_OP* op_type) {
   
-  SPVM_PACKAGE_VAR* package_var = SPVM_PACKAGE_VAR_new(compiler);
+  SPVM_CLASS_VAR* class_var = SPVM_CLASS_VAR_new(compiler);
   
   const char* name = op_name->uv.name;;
-  package_var->name = op_name->uv.name;
+  class_var->name = op_name->uv.name;
   
   int32_t invalid_name = 0;
   if (strchr(name, ':')) {
@@ -2237,14 +2237,14 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
   }
   
   if (invalid_name) {
-    SPVM_COMPILER_error(compiler, "Invalid package variable name %s at %s line %d\n", name, op_name->file, op_name->line);
+    SPVM_COMPILER_error(compiler, "Invalid class variable name %s at %s line %d\n", name, op_name->file, op_name->line);
   }
   
-  package_var->op_name = op_name;
-  package_var->type = op_type->uv.type;
-  package_var->op_package_var = op_package_var;
+  class_var->op_name = op_name;
+  class_var->type = op_type->uv.type;
+  class_var->op_class_var = op_class_var;
 
-  op_package_var->uv.package_var = package_var;
+  op_class_var->uv.class_var = class_var;
 
   // Check descriptors
   if (op_descriptors) {
@@ -2260,35 +2260,35 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_package_var, SPV
           access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PUBLIC:
-          package_var->flag |= SPVM_PACKAGE_VAR_C_FLAG_PUBLIC;
+          class_var->flag |= SPVM_CLASS_VAR_C_FLAG_PUBLIC;
           access_control_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_RW:
-          package_var->has_setter = 1;
-          package_var->has_getter = 1;
+          class_var->has_setter = 1;
+          class_var->has_getter = 1;
           accessor_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_RO:
-          package_var->has_getter = 1;
+          class_var->has_getter = 1;
           accessor_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_WO:
-          package_var->has_setter = 1;
+          class_var->has_setter = 1;
           accessor_descriptors_count++;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid package variable descriptor in package variable declaration %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid class variable descriptor in class variable declaration %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
       if (accessor_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in package variable  declaration at %s line %d\n", op_package_var->file, op_package_var->line);
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in class variable  declaration at %s line %d\n", op_class_var->file, op_class_var->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "private, public can be specifed only one in package variable declaration at %s line %d\n", op_package_var->file, op_package_var->line);
+        SPVM_COMPILER_error(compiler, "private, public can be specifed only one in class variable declaration at %s line %d\n", op_class_var->file, op_class_var->line);
       }
     }
   }
   
-  return op_package_var;
+  return op_class_var;
 }
 
 SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* op_name_field, SPVM_OP* op_descriptors, SPVM_OP* op_type) {

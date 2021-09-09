@@ -1,4 +1,4 @@
-package Hash : precompile {
+class Hash : precompile {
   use Hash::Entry;
   use Fn (INT32_MAX);
 

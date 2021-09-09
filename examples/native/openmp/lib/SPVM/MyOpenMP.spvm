@@ -1,4 +1,4 @@
-package MyOpenMP {
+class MyOpenMP {
   native sub sum_vec_int : int[] ($nums1 : int[], $nums2 : int[]);
   
   sub test : void () {

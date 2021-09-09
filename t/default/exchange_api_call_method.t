@@ -741,7 +741,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $value = SPVM::TestCase::ExchangeAPI->return_object;
       is(ref $value, 'SPVM::TestCase::Minimal');
-      isa_ok($value, 'SPVM::BlessedObject::Package');
+      isa_ok($value, 'SPVM::BlessedObject::Class');
       is($value->x, 1);
       is($value->y, 2);
     }
@@ -759,7 +759,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $value = SPVM::TestCase::ExchangeAPI->return_any_object;
       is(ref $value, 'SPVM::TestCase::Minimal');
-      isa_ok($value, 'SPVM::BlessedObject::Package');
+      isa_ok($value, 'SPVM::BlessedObject::Class');
       is($value->x, 1);
       is($value->y, 2);
     }

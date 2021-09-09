@@ -1,4 +1,4 @@
-package TestCase::CompileError::Convert::ConvertFromValueType {
+class TestCase::CompileError::Convert::ConvertFromValueType {
   use TestCase::Minimal;
   use Complex_d2;
 

@@ -1,4 +1,4 @@
-package TestCase::Comment::LF {
+class TestCase::Comment::LF {
 
   sub comment : int () {
     # Comment

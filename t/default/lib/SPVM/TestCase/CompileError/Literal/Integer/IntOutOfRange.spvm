@@ -1,4 +1,4 @@
-package TestCase::CompileError::Literal::Integer::IntOutOfRange {
+class TestCase::CompileError::Literal::Integer::IntOutOfRange {
   sub main : int () {
     my $value : long = 8232624535311216194;
   }

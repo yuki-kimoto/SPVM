@@ -1,4 +1,4 @@
-package TestCase::CompileError::Weaken::HashNotObject {
+class TestCase::CompileError::Weaken::HashNotObject {
   use TestCase::Minimal;
   
   sub main : int () {

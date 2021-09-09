@@ -1,4 +1,4 @@
-package Byte {
+class Byte {
   has val : ro byte;
   
   sub new : Byte ($value : byte) {

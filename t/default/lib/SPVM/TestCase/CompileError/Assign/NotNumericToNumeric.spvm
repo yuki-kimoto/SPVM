@@ -1,4 +1,4 @@
-package TestCase::CompileError::Assign::NotNumericToNumeric {
+class TestCase::CompileError::Assign::NotNumericToNumeric {
   use TestCase::Minimal;
 
   sub main : int () {

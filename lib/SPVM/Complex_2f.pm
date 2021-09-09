@@ -14,7 +14,7 @@ Complex_2f is float complex type.
 
 This module is multi numeric type.
 
-  package Complex_2f : mulnum_t {
+  class Complex_2f : mulnum_t {
     has re : float;
     has im : float;
   }

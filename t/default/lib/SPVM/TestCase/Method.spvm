@@ -1,4 +1,4 @@
-package TestCase::Method {
+class TestCase::Method {
   use TestCase::Minimal;
   use TestCase::Point_3b;
   use TestCase::Point_3s;

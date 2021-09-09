@@ -81,7 +81,7 @@
   #include "spvm_type.h"
   #include "spvm_block.h"
   #include "spvm_list.h"
-  #include "spvm_package.h"
+  #include "spvm_class.h"
 
 #line 87 "spvm_yacc.tab.c" /* yacc.c:339  */
 
@@ -118,7 +118,7 @@ extern int SPVM_yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    PACKAGE = 258,
+    CLASS = 258,
     HAS = 259,
     METHOD = 260,
     OUR = 261,
@@ -168,7 +168,7 @@ extern int SPVM_yydebug;
     DIE = 305,
     WARN = 306,
     PRINT = 307,
-    CURRENT_PACKAGE = 308,
+    CURRENT_CLASS = 308,
     UNWEAKEN = 309,
     ASSIGN = 310,
     SPECIAL_ASSIGN = 311,
@@ -563,14 +563,14 @@ static const yytype_uint16 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "PACKAGE", "HAS", "METHOD", "OUR",
+  "$end", "error", "$undefined", "CLASS", "HAS", "METHOD", "OUR",
   "ENUM", "MY", "SELF", "USE", "REQUIRE", "ALLOW", "DESCRIPTOR", "IF",
   "UNLESS", "ELSIF", "ELSE", "FOR", "WHILE", "LAST", "NEXT", "SWITCH",
   "CASE", "DEFAULT", "BREAK", "EVAL", "NAME", "VAR_NAME", "CONSTANT",
   "EXCEPTION_VAR", "UNDEF", "VOID", "BYTE", "SHORT", "INT", "LONG",
   "FLOAT", "DOUBLE", "STRING", "OBJECT", "DOT3", "FATCAMMA", "RW", "RO",
   "WO", "INIT", "NEW", "RETURN", "WEAKEN", "DIE", "WARN", "PRINT",
-  "CURRENT_PACKAGE", "UNWEAKEN", "'['", "'{'", "'('", "ASSIGN",
+  "CURRENT_CLASS", "UNWEAKEN", "'['", "'{'", "'('", "ASSIGN",
   "SPECIAL_ASSIGN", "LOGICAL_OR", "LOGICAL_AND", "BIT_OR", "BIT_XOR",
   "'&'", "NUMEQ", "NUMNE", "STREQ", "STRNE", "NUMGT", "NUMGE", "NUMLT",
   "NUMLE", "STRGT", "STRGE", "STRLT", "STRLE", "ISA", "NUMERIC_CMP",
@@ -578,8 +578,8 @@ static const char *const yytname[] =
   "REMAINDER", "LOGICAL_NOT", "BIT_NOT", "'@'", "CREATE_REF", "DEREF",
   "PLUS", "MINUS", "CONVERT", "SCALAR", "STRING_LENGTH", "ISWEAK",
   "REFCNT", "REFOP", "DUMP", "INC", "DEC", "ARROW", "':'", "';'", "'}'",
-  "')'", "','", "']'", "$accept", "grammar", "opt_packages", "packages",
-  "package", "package_block", "opt_declarations", "declarations",
+  "')'", "','", "']'", "$accept", "grammar", "opt_classs", "classs",
+  "class", "class_block", "opt_declarations", "declarations",
   "declaration", "init_block", "use", "require", "allow", "enumeration",
   "enumeration_block", "opt_enumeration_values", "enumeration_values",
   "enumeration_value", "our", "has", "method", "anon_method", "opt_args",
@@ -2235,7 +2235,7 @@ yyreduce:
   case 7:
 #line 106 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_package(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
+      (yyval.opval) = SPVM_OP_build_class(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval), (yyvsp[0].opval), NULL);
     }
 #line 2241 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -2243,7 +2243,7 @@ yyreduce:
   case 8:
 #line 110 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_package(compiler, (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[0].opval), (yyvsp[-1].opval));
+      (yyval.opval) = SPVM_OP_build_class(compiler, (yyvsp[-4].opval), (yyvsp[-3].opval), (yyvsp[0].opval), (yyvsp[-1].opval));
     }
 #line 2249 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -2251,7 +2251,7 @@ yyreduce:
   case 9:
 #line 114 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_package(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval), NULL, NULL);
+      (yyval.opval) = SPVM_OP_build_class(compiler, (yyvsp[-2].opval), (yyvsp[-1].opval), NULL, NULL);
     }
 #line 2257 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -2259,7 +2259,7 @@ yyreduce:
   case 10:
 #line 118 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      (yyval.opval) = SPVM_OP_build_package(compiler, (yyvsp[-4].opval), (yyvsp[-3].opval), NULL, (yyvsp[-1].opval));
+      (yyval.opval) = SPVM_OP_build_class(compiler, (yyvsp[-4].opval), (yyvsp[-3].opval), NULL, (yyvsp[-1].opval));
     }
 #line 2265 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -3436,8 +3436,8 @@ yyreduce:
       // Method
       SPVM_OP* op_method = (yyvsp[0].opval);
       
-      // Package
-      SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_method->file, op_method->line);
+      // Class
+      SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
       
       // Create class block
       SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
@@ -3445,11 +3445,11 @@ yyreduce:
       SPVM_OP_insert_child(compiler, op_list_declarations, op_list_declarations->last, op_method);
       SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_declarations);
       
-      // Build package
-      SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
+      // Build class
+      SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL);
 
       // Type
-      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, op_method->file, op_method->line);
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_class->uv.class->op_type->uv.type, op_method->file, op_method->line);
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);

@@ -1,4 +1,4 @@
-package TestCase::Lib::StringBuffer {
+class TestCase::Lib::StringBuffer {
   use StringBuffer;
 
   sub test_new : int () {

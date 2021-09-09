@@ -1,4 +1,4 @@
-package TestCase::Isa {
+class TestCase::Isa {
   use TestCase::Minimal;
   use TestCase::Simple;
   use Comparator::Object;

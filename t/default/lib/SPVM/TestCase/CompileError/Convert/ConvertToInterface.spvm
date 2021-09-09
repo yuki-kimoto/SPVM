@@ -1,4 +1,4 @@
-package TestCase::CompileError::Convert::ConvertToCallback {
+class TestCase::CompileError::Convert::ConvertToCallback {
   use TestCase::Minimal;
   use TestCase::Callback::Callback;
   use TestCase::Callback::ImplementCallback1;

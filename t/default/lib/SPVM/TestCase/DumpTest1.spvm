@@ -1,4 +1,4 @@
-package TestCase::DumpTest1 : public {
+class TestCase::DumpTest1 : public {
   has byte_value : public byte;
   has short_value : public short;
   has int_value : public int;

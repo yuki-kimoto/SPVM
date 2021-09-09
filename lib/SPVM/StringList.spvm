@@ -1,4 +1,4 @@
-package StringList : precompile {
+class StringList : precompile {
   has values   : string[];
   has capacity : int;
   has length   : ro int;

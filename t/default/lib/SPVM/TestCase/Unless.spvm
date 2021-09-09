@@ -1,4 +1,4 @@
-package TestCase::Unless {
+class TestCase::Unless {
   sub unless_ok : int () {
     unless(0) {
       return 1;

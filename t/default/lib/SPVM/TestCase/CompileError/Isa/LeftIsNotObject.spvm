@@ -1,4 +1,4 @@
-package TestCase::CompileError::Isa::LeftIsNotObject {
+class TestCase::CompileError::Isa::LeftIsNotObject {
   use TestCase::Minimal;
   sub main : int () {
     my $num = 3;

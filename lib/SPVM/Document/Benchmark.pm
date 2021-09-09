@@ -101,7 +101,7 @@ Benchmark raw output
 
 B<SPVM/MyMath.spvm>
 
-  package MyMath {
+  class MyMath {
     sub spvm_sum : int ($loop_count : int) {
       
       my $total = 0;
@@ -115,7 +115,7 @@ B<SPVM/MyMath.spvm>
 
 B<SPVM/MyMathPrecompile.spvm>
 
-  package MyMathPrecompile : precompile {
+  class MyMathPrecompile : precompile {
     sub spvm_sum : int ($loop_count : int) {
       
       my $total = 0;
@@ -129,7 +129,7 @@ B<SPVM/MyMathPrecompile.spvm>
 
 B<SPVM/MyMathNative.spvm>
 
-  package MyMathNative {
+  class MyMathNative {
     native sub spvm_sum : int ($loop_count : int);
   }
 

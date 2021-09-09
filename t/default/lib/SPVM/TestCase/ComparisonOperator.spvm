@@ -1,4 +1,4 @@
-package TestCase::ComparisonOperator {
+class TestCase::ComparisonOperator {
   use TestCase::Minimal;
   
   sub string_eq : int () {

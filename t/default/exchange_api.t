@@ -52,7 +52,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $spvm_value = SPVM::Byte->new(-128);
       is(ref $spvm_value, 'SPVM::Byte');
-      ok($spvm_value->isa('SPVM::BlessedObject::Package'));
+      ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -128);
     }
   }
@@ -62,7 +62,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $spvm_value = SPVM::Short->new(-32768);
       is(ref $spvm_value, 'SPVM::Short');
-      ok($spvm_value->isa('SPVM::BlessedObject::Package'));
+      ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -32768);
     }
   }
@@ -72,7 +72,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $spvm_value = SPVM::Int->new(-2147483648);
       is(ref $spvm_value, 'SPVM::Int');
-      ok($spvm_value->isa('SPVM::BlessedObject::Package'));
+      ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -2147483648);
     }
   }
@@ -81,7 +81,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $spvm_value = SPVM::Long->new(-9223372036854775808);
       is(ref $spvm_value, 'SPVM::Long');
-      ok($spvm_value->isa('SPVM::BlessedObject::Package'));
+      ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, -9223372036854775808);
     }
   }
@@ -91,7 +91,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $spvm_value = SPVM::Float->new($FLT_MAX);
       is(ref $spvm_value, 'SPVM::Float');
-      ok($spvm_value->isa('SPVM::BlessedObject::Package'));
+      ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, $FLT_MAX);
     }
   }
@@ -101,7 +101,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     {
       my $spvm_value = SPVM::Double->new($DBL_MAX);
       is(ref $spvm_value, 'SPVM::Double');
-      ok($spvm_value->isa('SPVM::BlessedObject::Package'));
+      ok($spvm_value->isa('SPVM::BlessedObject::Class'));
       is($spvm_value->value, $DBL_MAX);
     }
   }

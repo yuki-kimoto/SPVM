@@ -1,4 +1,4 @@
-package Time::Info {
+class Time::Info {
   
   has sec : rw int;
   has min : rw int;

@@ -1,4 +1,4 @@
-package TestCase::Inline {
+class TestCase::Inline {
   
   # Inline expansion
   sub constant_method_return_double : double () {

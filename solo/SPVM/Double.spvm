@@ -1,4 +1,4 @@
-package Double {
+class Double {
   has val : ro double;
   
   sub new : Double ($value : double) {

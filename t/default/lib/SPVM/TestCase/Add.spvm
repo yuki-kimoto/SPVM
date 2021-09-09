@@ -1,4 +1,4 @@
-package TestCase::Add {
+class TestCase::Add {
 
   sub add_int_max_plus_one_2s_complement : int () {
     {

@@ -1,4 +1,4 @@
-package MyExe {
+class MyExe {
   use MyExe::Precompile;
   use TestCase::NativeAPI2;
   

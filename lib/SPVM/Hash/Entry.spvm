@@ -1,4 +1,4 @@
-package Hash::Entry {
+class Hash::Entry {
   allow Hash;
 
   has key : string;

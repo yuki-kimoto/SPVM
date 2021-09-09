@@ -1,4 +1,4 @@
-package Regex : precompile {
+class Regex : precompile {
   use Unicode (uchar);
   use List;
   use IntList;

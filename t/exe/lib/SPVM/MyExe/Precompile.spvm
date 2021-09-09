@@ -1,4 +1,4 @@
-package MyExe::Precompile : precompile {
+class MyExe::Precompile : precompile {
   sub sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }

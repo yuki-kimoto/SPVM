@@ -1,4 +1,4 @@
-package TestCase::Lib::StringList {
+class TestCase::Lib::StringList {
   use StringList;
   use Fn (equals_array_string);
 

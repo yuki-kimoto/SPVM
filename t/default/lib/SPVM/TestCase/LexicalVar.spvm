@@ -1,4 +1,4 @@
-package TestCase::LexicalVar {
+class TestCase::LexicalVar {
   
   our $VAR_PREC : int;
   
@@ -28,7 +28,7 @@ package TestCase::LexicalVar {
     return 1;
   }
 
-  sub lexical_var_high_precidence_than_package_var : int () {
+  sub lexical_var_high_precidence_than_class_var : int () {
     
     my $VAR_PREC = 3;
     

@@ -1,4 +1,4 @@
-package TestCase::Examples {
+class TestCase::Examples {
   use TestCase::OnlyField;
   
   sub new_only_field_object : TestCase::OnlyField () {

@@ -1,4 +1,4 @@
-package TestCase::Increment {
+class TestCase::Increment {
   use TestCase::Simple;
   use TestCase::Point_3b;
   use TestCase::Point_3s;
@@ -109,7 +109,7 @@ package TestCase::Increment {
     }
   }
 
-  sub post_dec_package_var_access : int () {
+  sub post_dec_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MAX();
     $SHORT_VALUE = (short)INT16_MAX();
     $INT_VALUE = INT32_MAX();
@@ -479,7 +479,7 @@ package TestCase::Increment {
     }
   }
 
-  sub post_inc_package_var_access : int () {
+  sub post_inc_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MIN();
     $SHORT_VALUE = (short)INT16_MIN();
     $INT_VALUE = INT32_MIN();
@@ -849,7 +849,7 @@ package TestCase::Increment {
     }
   }
 
-  sub pre_dec_package_var_access : int () {
+  sub pre_dec_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MAX();
     $SHORT_VALUE = (short)INT16_MAX();
     $INT_VALUE = INT32_MAX();
@@ -1220,7 +1220,7 @@ package TestCase::Increment {
     }
   }
 
-  sub pre_inc_package_var_access : int () {
+  sub pre_inc_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MIN();
     $SHORT_VALUE = (short)INT16_MIN();
     $INT_VALUE = INT32_MIN();

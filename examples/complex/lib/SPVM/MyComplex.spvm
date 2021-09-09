@@ -1,4 +1,4 @@
-package MyComplex {
+class MyComplex {
   use Complex_2f;
   use Complex_2d;
   use Math (complexf);

@@ -1,4 +1,4 @@
-package TestCase::Lib::Unicode {
+class TestCase::Lib::Unicode {
   use Unicode;
 
   sub uchar : int () {

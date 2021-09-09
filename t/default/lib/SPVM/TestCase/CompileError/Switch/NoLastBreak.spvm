@@ -1,4 +1,4 @@
-package TestCase::CompileError::Switch::NoLastBreak {
+class TestCase::CompileError::Switch::NoLastBreak {
   sub main : int () {
     switch (1) {
       case 1 : {

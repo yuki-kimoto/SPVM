@@ -1,0 +1,3 @@
+class TestCase::CompileError::ClassVar::OurClassVarNameStartDigit {
+  our $3foo : int;
+}

@@ -32,9 +32,9 @@ sub new {
 }
 
 sub build_shared_lib_runtime {
-  my ($self, $perl_package_name) = @_;
+  my ($self, $perl_class_name) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
   
   my $category = $self->category;
@@ -55,7 +55,7 @@ sub build_shared_lib_runtime {
     mkpath $src_dir;
     
     $self->create_precompile_csource(
-      $perl_package_name,
+      $perl_class_name,
       {
         src_dir => $src_dir,
       }
@@ -63,7 +63,7 @@ sub build_shared_lib_runtime {
   }
   elsif ($category eq 'native') {
     my $module_file = $self->builder->get_module_file($class_name);
-    $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $perl_package_name);
+    $src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $perl_class_name);
   }
   
   # Object directory
@@ -75,7 +75,7 @@ sub build_shared_lib_runtime {
   mkpath $lib_dir;
   
   my $build_shared_lib_file = $self->build_shared_lib(
-    $perl_package_name,
+    $perl_class_name,
     {
       src_dir => $src_dir,
       object_dir => $object_dir,
@@ -87,7 +87,7 @@ sub build_shared_lib_runtime {
 }
 
 sub build_shared_lib_dist {
-  my ($self, $perl_package_name) = @_;
+  my ($self, $perl_class_name) = @_;
   
   my $category = $self->category;
   
@@ -97,7 +97,7 @@ sub build_shared_lib_dist {
     mkpath $src_dir;
 
     $self->create_precompile_csource(
-      $perl_package_name,
+      $perl_class_name,
       {
         src_dir => $src_dir,
       }
@@ -114,7 +114,7 @@ sub build_shared_lib_dist {
   
   
   $self->build_shared_lib(
-    $perl_package_name,
+    $perl_class_name,
     {
       src_dir => $src_dir,
       object_dir => $object_dir,
@@ -124,14 +124,14 @@ sub build_shared_lib_dist {
 }
 
 sub build_shared_lib {
-  my ($self, $perl_package_name, $opt) = @_;
+  my ($self, $perl_class_name, $opt) = @_;
   
   # Compile source file and create object files
-  my $object_files = $self->compile($perl_package_name, $opt);
+  my $object_files = $self->compile($perl_class_name, $opt);
   
   # Link object files and create shared library
   my $build_shared_lib_file = $self->link(
-    $perl_package_name,
+    $perl_class_name,
     $object_files,
     $opt
   );
@@ -140,11 +140,11 @@ sub build_shared_lib {
 }
 
 sub compile {
-  my ($self, $perl_package_name, $opt) = @_;
+  my ($self, $perl_class_name, $opt) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
-  $perl_package_name = "SPVM::$class_name";
+  $perl_class_name = "SPVM::$class_name";
   
   # Category
   my $category = $self->category;
@@ -168,7 +168,7 @@ sub compile {
   }
   
   # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($perl_package_name, $category, 'config');
+  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($perl_class_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
   # Native Directory
@@ -203,7 +203,7 @@ sub compile {
   }
   
   # SPVM Method source file
-  my $src_rel_file_no_ext = SPVM::Builder::Util::convert_package_name_to_category_rel_file($perl_package_name, $category);
+  my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($perl_class_name, $category);
   my $spvm_method_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
   my $src_ext = $bconf->get_ext;
   unless (defined $src_ext) {
@@ -244,7 +244,7 @@ sub compile {
     my $object_file;
     # Native object file name
     if ($is_native_src) {
-      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($perl_package_name, $category, 'native');
+      my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($perl_class_name, $category, 'native');
       
       my $object_file_base = $src_file;
       $object_file_base =~ s/^\Q$native_src_dir//;
@@ -258,7 +258,7 @@ sub compile {
     }
     # SPVM method object file name
     else {
-      my $object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($perl_package_name, $category, 'o');
+      my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($perl_class_name, $category, 'o');
       $object_file = "$object_dir/$object_rel_file";
     }
     
@@ -302,8 +302,8 @@ sub compile {
     }
     
     if ($do_compile) {
-      my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($perl_package_name);
-      my $work_object_dir = "$object_dir/$package_rel_dir";
+      my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($perl_class_name);
+      my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
   
       eval {
@@ -333,11 +333,11 @@ sub compile {
 }
 
 sub link {
-  my ($self, $perl_package_name, $object_files, $opt) = @_;
+  my ($self, $perl_class_name, $object_files, $opt) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
-  $perl_package_name = "SPVM::$class_name";
+  $perl_class_name = "SPVM::$class_name";
   
   # Category
   my $category = $self->category;
@@ -364,11 +364,11 @@ sub link {
   }
 
   # Shared library file
-  my $shared_lib_rel_file = SPVM::Builder::Util::convert_package_name_to_shared_lib_rel_file($perl_package_name, $self->category);
+  my $shared_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_shared_lib_rel_file($perl_class_name, $self->category);
   my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
 
   # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($perl_package_name, $category, 'config');
+  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($perl_class_name, $category, 'config');
   my $src_dir = $opt->{src_dir};
   my $config_file = "$src_dir/$config_rel_file";
 
@@ -433,8 +433,8 @@ EOS
   }
   
   if ($category eq 'precompile') {
-    # Add anon package sub names to dl_func_list
-    my $anon_perl_class_names = $self->builder->get_anon_package_names_by_parent_package_name($class_name);
+    # Add anon class sub names to dl_func_list
+    my $anon_perl_class_names = $self->builder->get_anon_class_names_by_parent_class_name($class_name);
     
     for my $anon_perl_class_name (@$anon_perl_class_names) {
       my $anon_method_cfunc_name = SPVM::Builder::Util::create_cfunc_name($anon_perl_class_name, "", $category);
@@ -468,7 +468,7 @@ EOS
   eval {
     $tmp_shared_lib_file = $cbuilder->link(
       objects => $object_files,
-      module_name => $perl_package_name,
+      module_name => $perl_class_name,
       dl_func_list => $dl_func_list,
       extra_linker_flags => $extra_linker_flags,
     );
@@ -486,40 +486,40 @@ EOS
 }
 
 sub create_precompile_csource {
-  my ($self, $perl_package_name, $opt) = @_;
+  my ($self, $perl_class_name, $opt) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
-  $perl_package_name = "SPVM::$class_name";
+  $perl_class_name = "SPVM::$class_name";
   
   my $src_dir = $opt->{src_dir};
   mkpath $src_dir;
   
   my $category = 'precompile';
   
-  my $package_rel_file_without_ext = SPVM::Builder::Util::convert_package_name_to_rel_file($perl_package_name);
-  my $package_rel_dir = SPVM::Builder::Util::convert_package_name_to_rel_dir($perl_package_name);
-  my $source_file = "$src_dir/$package_rel_file_without_ext.$category.c";
+  my $class_rel_file_without_ext = SPVM::Builder::Util::convert_class_name_to_rel_file($perl_class_name);
+  my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($perl_class_name);
+  my $source_file = "$src_dir/$class_rel_file_without_ext.$category.c";
   
-  my $source_dir = "$src_dir/$package_rel_dir";
+  my $source_dir = "$src_dir/$class_rel_dir";
   mkpath $source_dir;
   
-  my $package_csource = $self->build_package_csource_precompile($class_name);
+  my $class_csource = $self->build_class_csource_precompile($class_name);
   
   my $is_create_csource_file;
 
   # Get old csource source
-  my $old_package_csource;
+  my $old_class_csource;
   if (-f $source_file) {
     open my $fh, '<', $source_file
       or die "Can't open $source_file";
-    $old_package_csource = do { local $/; <$fh> };
+    $old_class_csource = do { local $/; <$fh> };
   }
   else {
-    $old_package_csource = '';
+    $old_class_csource = '';
   }
   
-  if ($package_csource ne $old_package_csource) {
+  if ($class_csource ne $old_class_csource) {
     $is_create_csource_file = 1;
   }
   else {
@@ -530,7 +530,7 @@ sub create_precompile_csource {
   if ($is_create_csource_file) {
     open my $fh, '>', $source_file
       or die "Can't create $source_file";
-    print $fh $package_csource;
+    print $fh $class_csource;
     close $fh;
   }
 }

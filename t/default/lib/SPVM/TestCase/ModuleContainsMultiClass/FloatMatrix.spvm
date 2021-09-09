@@ -1,4 +1,4 @@
-package TestCase::ModuleContainsMultiPackage::FloatMatrix : public {
+class TestCase::ModuleContainsMultiClass::FloatMatrix : public {
   has rows_length : public int;
   has columns_length : public int;
   has values : public float[];

@@ -1,4 +1,4 @@
-package TestCase::CompileError::CallMethod::NotFound {
+class TestCase::CompileError::CallMethod::NotFound {
   sub main : int () {
     NOT_FOUND_METHOD();
   }

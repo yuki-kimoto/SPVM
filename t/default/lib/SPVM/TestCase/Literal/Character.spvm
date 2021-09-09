@@ -1,4 +1,4 @@
-package TestCase::Literal::Character {
+class TestCase::Literal::Character {
   sub character : int () {
     my $ch = 'a';
     my $bytes = new byte[1];

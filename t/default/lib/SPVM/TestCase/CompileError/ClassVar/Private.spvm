@@ -1,4 +1,4 @@
-package TestCase::CompileError::PackageVar::Private {
+class TestCase::CompileError::ClassVar::Private {
   use TestCase::Simple;
   
   sub main : int () {

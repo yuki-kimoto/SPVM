@@ -1773,7 +1773,7 @@ mro_isa_changed_in|||
 mro_meta_dup|||
 mro_meta_init|||
 mro_method_changed_in||5.009005|
-mro_package_moved|||
+mro_class_moved|||
 mro_register||5.010001|
 mro_set_mro||5.010001|
 mro_set_private_data||5.010001|
@@ -1966,8 +1966,8 @@ pTHX|5.006000||p
 packWARN|5.007003||p
 pack_cat||5.007003|
 pack_rec|||
-package_version|||
-package|||
+class_version|||
+class|||
 packlist||5.008001|
 pad_add_anon|||
 pad_add_name_sv|||
@@ -2088,7 +2088,7 @@ reg_node|||
 reg_numbered_buff_fetch|||
 reg_numbered_buff_length|||
 reg_numbered_buff_store|||
-reg_qr_package|||
+reg_qr_class|||
 reg_recode|||
 reg_scan_name|||
 reg_skipcomment|||

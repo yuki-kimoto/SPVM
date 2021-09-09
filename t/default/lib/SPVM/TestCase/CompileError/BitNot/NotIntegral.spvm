@@ -1,4 +1,4 @@
-package TestCase::CompileError::BitNot::NotIntegral {
+class TestCase::CompileError::BitNot::NotIntegral {
   sub main : int () {
     ~0.5;
   }

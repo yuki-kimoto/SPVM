@@ -6,14 +6,14 @@ use warnings;
 
 use Test::More 'no_plan';
 
-use SPVM 'TestCase::PACKAGE';
+use SPVM 'TestCase::CLASS';
 
 
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
-ok(SPVM::TestCase::PACKAGE->package_name);
+ok(SPVM::TestCase::CLASS->class_name);
 
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();

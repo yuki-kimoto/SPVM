@@ -1,4 +1,4 @@
-package IntList : precompile {
+class IntList : precompile {
   use Fn (memcpy_int, memmove_int);
   
   has values   : int[];

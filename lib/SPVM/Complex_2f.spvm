@@ -1,4 +1,4 @@
-package Complex_2f : mulnum_t {
+class Complex_2f : mulnum_t {
   has re : float;
   has im : float;
 }

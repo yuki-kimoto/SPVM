@@ -1,4 +1,4 @@
-package ByteList : precompile {
+class ByteList : precompile {
   use Fn (memcpy_byte, memmove_byte);
   
   has values   : byte[];

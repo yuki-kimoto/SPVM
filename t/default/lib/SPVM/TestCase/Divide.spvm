@@ -1,4 +1,4 @@
-package TestCase::Divide {
+class TestCase::Divide {
 
   #
   # Spec tests

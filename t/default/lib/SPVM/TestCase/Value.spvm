@@ -1,4 +1,4 @@
-package TestCase::Value {
+class TestCase::Value {
   use TestCase::Matrix4_16b;
   use TestCase::Matrix4_16s;
   use TestCase::Matrix4_16i;

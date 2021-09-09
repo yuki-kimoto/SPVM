@@ -1,4 +1,4 @@
-package TestCase::For {
+class TestCase::For {
   use TestCase::Minimal;
 
   sub omit_init_inc : int () {

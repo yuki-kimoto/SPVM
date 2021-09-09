@@ -1,4 +1,4 @@
-package TestCase::CompileError::Assign::DifferentObject {
+class TestCase::CompileError::Assign::DifferentObject {
   use TestCase::Minimal;
   use TestCase::Simple;
 

@@ -24,7 +24,7 @@ enum {
   SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT,
   SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE,
   SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT,
-  SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE,
+  SPVM_TYPE_C_TYPE_CATEGORY_CLASS,
   SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY,
   SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY,
   SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY,
@@ -57,7 +57,7 @@ SPVM_TYPE* SPVM_TYPE_new(SPVM_COMPILER* compiler);
 
 int32_t SPVM_TYPE_has_callback(
   SPVM_COMPILER* compiler,
-  int32_t package_basic_type_id, int32_t package_type_dimension, int32_t package_type_flag,
+  int32_t class_basic_type_id, int32_t class_type_dimension, int32_t class_type_flag,
   int32_t callback_basic_type_id, int32_t callback_type_dimension, int32_t callback_type_flag
 );
 
@@ -115,7 +115,7 @@ int32_t SPVM_TYPE_is_numeric_object(SPVM_COMPILER* compiler, int32_t basic_type_
 int32_t SPVM_TYPE_is_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_numeric_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_string_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_TYPE_is_package_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_undef_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
@@ -127,7 +127,7 @@ int32_t SPVM_TYPE_is_byte_array_type(SPVM_COMPILER* compiler, int32_t basic_type
 
 int32_t SPVM_TYPE_is_oarray_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
-int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+int32_t SPVM_TYPE_is_module_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 int32_t SPVM_TYPE_is_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);

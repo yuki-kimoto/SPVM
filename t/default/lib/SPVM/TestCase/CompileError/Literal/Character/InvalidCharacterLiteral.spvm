@@ -1,4 +1,4 @@
-package TestCase::CompileError::Literal::InvalidCharacterLiteral {
+class TestCase::CompileError::Literal::InvalidCharacterLiteral {
   sub main : int () {
     '\A';
   }

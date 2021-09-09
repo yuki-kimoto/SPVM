@@ -1,4 +1,4 @@
-package FloatList : precompile {
+class FloatList : precompile {
   use Fn (memcpy_float, memmove_float);
   
   has values   : float[];

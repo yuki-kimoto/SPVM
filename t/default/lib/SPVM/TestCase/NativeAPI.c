@@ -15,7 +15,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, S
   
   void** env_array = (void**)env;
   
-  if ((void*)&env->package_vars_heap != &env_array[0]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->class_vars_heap != &env_array[0]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_header_byte_size != &env_array[1]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_weaken_backref_head_offset != &env_array[2]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->object_ref_count_offset != &env_array[3]) { stack[0].ival = 0; return 0; }
@@ -38,7 +38,7 @@ int32_t SPNATIVE__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, S
   if ((void*)&env->get_basic_type_id != &env_array[20]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_id != &env_array[21]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_offset != &env_array[22]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_id != &env_array[23]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_id != &env_array[23]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_method_id != &env_array[24]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_method_id_by_object != &env_array[25]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_object_raw != &env_array[26]) { stack[0].ival = 0; return 0; }
@@ -94,20 +94,20 @@ int32_t SPNATIVE__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, S
   if ((void*)&env->set_field_float != &env_array[76]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_field_double != &env_array[77]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_field_object != &env_array[78]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_byte != &env_array[79]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_short != &env_array[80]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_int != &env_array[81]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_long != &env_array[82]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_float != &env_array[83]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_double != &env_array[84]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_object != &env_array[85]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_byte != &env_array[86]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_short != &env_array[87]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_int != &env_array[88]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_long != &env_array[89]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_float != &env_array[90]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_double != &env_array[91]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_object != &env_array[92]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_byte != &env_array[79]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_short != &env_array[80]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_int != &env_array[81]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_long != &env_array[82]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_float != &env_array[83]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_double != &env_array[84]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_object != &env_array[85]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_byte != &env_array[86]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_short != &env_array[87]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_int != &env_array[88]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_long != &env_array[89]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_float != &env_array[90]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_double != &env_array[91]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_object != &env_array[92]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_pointer != &env_array[93]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->set_pointer != &env_array[94]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_spvm_method != &env_array[95]) { stack[0].ival = 0; return 0; }
@@ -153,20 +153,20 @@ int32_t SPNATIVE__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, S
   if ((void*)&env->get_field_float_by_name != &env_array[135]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_double_by_name != &env_array[136]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_object_by_name != &env_array[137]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_byte_by_name != &env_array[138]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_short_by_name != &env_array[139]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_int_by_name != &env_array[140]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_long_by_name != &env_array[141]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_float_by_name != &env_array[142]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_double_by_name != &env_array[143]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->set_package_var_object_by_name != &env_array[144]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_byte_by_name != &env_array[145]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_short_by_name != &env_array[146]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_int_by_name != &env_array[147]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_long_by_name != &env_array[148]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_float_by_name != &env_array[149]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_double_by_name != &env_array[150]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_package_var_object_by_name != &env_array[151]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_byte_by_name != &env_array[138]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_short_by_name != &env_array[139]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_int_by_name != &env_array[140]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_long_by_name != &env_array[141]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_float_by_name != &env_array[142]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_double_by_name != &env_array[143]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->set_class_var_object_by_name != &env_array[144]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_byte_by_name != &env_array[145]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_short_by_name != &env_array[146]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_int_by_name != &env_array[147]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_long_by_name != &env_array[148]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_float_by_name != &env_array[149]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_double_by_name != &env_array[150]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_var_object_by_name != &env_array[151]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_spvm_method_by_name != &env_array[152]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->call_callback_method_by_name != &env_array[153]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_string_chars_by_name != &env_array[154]) { stack[0].ival = 0; return 0; }
@@ -179,13 +179,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, S
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, MFILE, __LINE__);
+  int8_t value = env->get_class_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].bval = value;
@@ -193,13 +193,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_byte_by_name_test(SPVM_EN
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_byte_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_byte_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  int8_t value = env->get_class_var_byte_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].bval = value;
@@ -207,13 +207,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_byte_by_name_test_excepti
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_short_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int16_t value = env->get_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", &e, MFILE, __LINE__);
+  int16_t value = env->get_class_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", &e, MFILE, __LINE__);
   if (e) { return e; }
 
   stack[0].sval = value;
@@ -221,13 +221,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_by_name_test(SPVM_E
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_short_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int16_t value = env->get_package_var_short_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  int16_t value = env->get_class_var_short_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].sval = value;
@@ -235,13 +235,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_short_by_name_test_except
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_int_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int32_t value = env->get_package_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", &e, MFILE, __LINE__);
+  int32_t value = env->get_class_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].ival = value;
@@ -249,13 +249,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_by_name_test(SPVM_ENV
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_int_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int32_t value = env->get_package_var_int_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  int32_t value = env->get_class_var_int_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].ival = value;
@@ -263,13 +263,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_int_by_name_test_exceptio
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_long_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int64_t value = env->get_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", &e, MFILE, __LINE__);
+  int64_t value = env->get_class_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].lval = value;
@@ -277,13 +277,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_by_name_test(SPVM_EN
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_long_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  int64_t value = env->get_package_var_long_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  int64_t value = env->get_class_var_long_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].lval = value;
@@ -291,13 +291,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_long_by_name_test_excepti
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_float_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  float value = env->get_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, MFILE, __LINE__);
+  float value = env->get_class_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].fval = value;
@@ -305,13 +305,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_by_name_test(SPVM_E
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_float_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  float value = env->get_package_var_float_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  float value = env->get_class_var_float_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].fval = value;
@@ -319,13 +319,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_float_by_name_test_except
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_double_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  double value = env->get_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, MFILE, __LINE__);
+  double value = env->get_class_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].dval = value;
@@ -333,13 +333,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_by_name_test(SPVM_
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_double_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  double value = env->get_package_var_double_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
+  double value = env->get_class_var_double_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].dval = value;
@@ -347,13 +347,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_double_by_name_test_excep
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_object_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
 
   int32_t e;
 
-  void* value = env->get_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &e, MFILE, __LINE__);
+  void* value = env->get_class_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = value;
@@ -361,13 +361,13 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_object_test(SPVM_ENV* env
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_object_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__get_class_var_object_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   
-  void* value = env->get_package_var_object_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", "TestCase::Minimal", &e, MFILE, __LINE__);
+  void* value = env->get_class_var_object_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", "TestCase::Minimal", &e, MFILE, __LINE__);
   if (e) { return e; }
   
   stack[0].oval = value;
@@ -375,139 +375,139 @@ int32_t SPNATIVE__TestCase__NativeAPI__get_package_var_object_by_name_test_excep
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_byte_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", INT8_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", INT8_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_byte_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_byte_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_byte_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT8_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_byte_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT8_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_short_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_short_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", INT16_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", INT16_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_short_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_short_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_short_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT16_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_short_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT16_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_int_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_int_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", INT32_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", INT32_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_int_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_int_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_int_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT32_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_int_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT32_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_long_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_long_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
   
-  env->set_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", INT64_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", INT64_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_long_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_long_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
   
-  env->set_package_var_long_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT64_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_long_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", INT64_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_float_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_float_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", FLT_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", FLT_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_float_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_float_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_float_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", FLT_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_float_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", FLT_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_double_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_double_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", DBL_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", DBL_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_double_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_double_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
 
-  env->set_package_var_double_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", DBL_MIN, &e, MFILE, __LINE__);
+  env->set_class_var_double_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", DBL_MIN, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_object_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_object_by_name_test(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   int32_t e;
@@ -515,19 +515,19 @@ int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_object_by_name_test(SPVM_
   void* minimal = env->new_object_by_name(env, "TestCase::Minimal", &e, MFILE, __LINE__);
   if (e) { return e; }
   
-  env->set_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, MFILE, __LINE__);
+  env->set_class_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, MFILE, __LINE__);
   
   return 0;
 }
 
-int32_t SPNATIVE__TestCase__NativeAPI__set_package_var_object_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__TestCase__NativeAPI__set_class_var_object_by_name_test_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
   int32_t e;
   void* minimal = env->new_object_by_name(env, "TestCase::Minimal", &e, MFILE, __LINE__);
   
-  env->set_package_var_object_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", "TestCase::Minimal", minimal, &e, MFILE, __LINE__);
+  env->set_class_var_object_by_name(env, "TestCase::NativeAPI", "$NOT_FOUND", "TestCase::Minimal", minimal, &e, MFILE, __LINE__);
   if (e) { return e; }
   
   return 0;

@@ -1,15 +1,15 @@
-package TestCase {
+class TestCase {
   use TestCase::Minimal;
   use TestCase::Simple;
   use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
-  our $PACKAGE_VAR_INT : int;
-  our $PACKAGE_VAR_LONG : long;
-  our $PACKAGE_VAR_MINIMAL : TestCase::Minimal;
+  our $CLASS_VAR_INT : int;
+  our $CLASS_VAR_LONG : long;
+  our $CLASS_VAR_MINIMAL : TestCase::Minimal;
 
-  our $PACKAGE_VAR_INT2 : int;
-  our $PACKAGE_VAR_LONG2 : long;
-  our $PACKAGE_VAR_MINIMAL2 : TestCase::Minimal;
+  our $CLASS_VAR_INT2 : int;
+  our $CLASS_VAR_LONG2 : long;
+  our $CLASS_VAR_MINIMAL2 : TestCase::Minimal;
 
   has x_byte : rw public byte;
   has x_short : rw public short;
@@ -87,18 +87,18 @@ package TestCase {
     }
   }
   
-  sub package_var : int () {
-    if ($TestCase::PACKAGE_VAR_INT == 0) {
-      $TestCase::PACKAGE_VAR_INT = INT32_MAX();
-      if ($TestCase::PACKAGE_VAR_INT == INT32_MAX()) {
-        $TestCase::PACKAGE_VAR_LONG = INT64_MAX();
-        if ($TestCase::PACKAGE_VAR_LONG == INT64_MAX()) {
-          $TestCase::PACKAGE_VAR_MINIMAL = TestCase::Minimal->new();
+  sub class_var : int () {
+    if ($TestCase::CLASS_VAR_INT == 0) {
+      $TestCase::CLASS_VAR_INT = INT32_MAX();
+      if ($TestCase::CLASS_VAR_INT == INT32_MAX()) {
+        $TestCase::CLASS_VAR_LONG = INT64_MAX();
+        if ($TestCase::CLASS_VAR_LONG == INT64_MAX()) {
+          $TestCase::CLASS_VAR_MINIMAL = TestCase::Minimal->new();
           
-          $TestCase::PACKAGE_VAR_MINIMAL->set_x(4);
+          $TestCase::CLASS_VAR_MINIMAL->set_x(4);
           
-          if ($TestCase::PACKAGE_VAR_MINIMAL->set_x(4)) {
-            $TestCase::PACKAGE_VAR_MINIMAL = undef;
+          if ($TestCase::CLASS_VAR_MINIMAL->set_x(4)) {
+            $TestCase::CLASS_VAR_MINIMAL = undef;
             return 1;
           }
         }
@@ -107,12 +107,12 @@ package TestCase {
     return 0;
   }
 
-  sub package_var_rel_name : int () {
-    $PACKAGE_VAR_INT = 2;
+  sub class_var_rel_name : int () {
+    $CLASS_VAR_INT = 2;
     
-    if ($PACKAGE_VAR_INT == 2) {
-      if ($TestCase::PACKAGE_VAR_INT == 2) {
-        $PACKAGE_VAR_INT = 0;
+    if ($CLASS_VAR_INT == 2) {
+      if ($TestCase::CLASS_VAR_INT == 2) {
+        $CLASS_VAR_INT = 0;
         return 1;
       }
     }
@@ -120,7 +120,7 @@ package TestCase {
     return 0;
   }
 
-  sub package_var_other_package : int () {
+  sub class_var_other_class : int () {
     if ($TestCase::Simple::FOO == 0) {
       $TestCase::Simple::FOO = 1;
       if ($TestCase::Simple::FOO == 1) {

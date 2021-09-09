@@ -1,4 +1,4 @@
-package TestCase::If {
+class TestCase::If {
   
   sub if_bool : int () {
     

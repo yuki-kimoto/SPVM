@@ -1,4 +1,4 @@
-package TestCase::CompileError::Assign::NarrwoingConvertionLongToByte {
+class TestCase::CompileError::Assign::NarrwoingConvertionLongToByte {
   sub main : int () {
     my $num : byte = 128L;
   }

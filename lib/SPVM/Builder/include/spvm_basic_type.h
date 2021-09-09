@@ -33,7 +33,7 @@ enum {
 
 struct spvm_basic_type {
   const char* name;
-  SPVM_PACKAGE* package;
+  SPVM_CLASS* class;
   int32_t id;
   int32_t fail_load;
 };

@@ -1,4 +1,4 @@
-package ShortList : precompile {
+class ShortList : precompile {
   use Fn (memcpy_short, memmove_short);
   
   has values   : short[];

@@ -16,18 +16,18 @@
 
 int32_t main(int32_t argc, const char *argv[]) {
   
-  // Package name
-  const char* package_name = "Main";
+  // Class name
+  const char* class_name = "Main";
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
   // compiler->debug = 1;
   
-  // Create use op for entry point package
-  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
+  // Create use op for entry point class
+  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, class_name, class_name, 0);
   SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);
-  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, package_name, 0);
+  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, class_name, 0);
   SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_start);
   
@@ -70,8 +70,8 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Call begin blocks
   SPVM_API_call_begin_blocks(env);
 
-  // Package
-  int32_t method_id = SPVM_API_get_method_id(env, package_name, "main", "int(string[])");
+  // Class
+  int32_t method_id = SPVM_API_get_method_id(env, class_name, "main", "int(string[])");
   
   if (method_id < 0) {
     return -1;

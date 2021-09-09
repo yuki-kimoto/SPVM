@@ -1,4 +1,4 @@
-package TestCase::Seqop {
+class TestCase::Seqop {
   sub seqop : int () {
     {
       my $ret = (1, 2, 3);

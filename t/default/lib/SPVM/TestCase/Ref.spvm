@@ -1,4 +1,4 @@
-package TestCase::Ref {
+class TestCase::Ref {
   use TestCase::Point_3b;
   use TestCase::Point_3s;
   use TestCase::Point_3i;

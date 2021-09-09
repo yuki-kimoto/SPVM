@@ -1,4 +1,4 @@
-package TestCase::PackageVar {
+class TestCase::ClassVar {
   our $lower_var : int;
   
   sub var_brace : int () {

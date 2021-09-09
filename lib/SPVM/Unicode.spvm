@@ -1,4 +1,4 @@
-package Unicode : precompile {
+class Unicode : precompile {
   native sub uchar : int ($str : string, $offset_ref : int&);
   native sub uchar_to_utf8 : string ($uchar : int);
 }

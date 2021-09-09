@@ -1,4 +1,4 @@
-package TestCase::Exception {
+class TestCase::Exception {
   use TestCase::Minimal;
   use TestCase;
   

@@ -18,9 +18,9 @@ SPVM Language Specification.
   <li><a href="#language-parsing">Syntax Parsing</a></li>
   <li><a href="#language-comment">Comment</a></li>
   <li><a href="#language-pod">POD</a></li>
-  <li><a href="#language-package">Package</a></li>
+  <li><a href="#language-class">Class</a></li>
   <li><a href="#language-module">Module</a></li>
-  <li><a href="#language-package-var">Package Variable</a></li>
+  <li><a href="#language-class-var">Class Variable</a></li>
   <li><a href="#language-field">Field</a></li>
   <li><a href="#language-method">Method</a></li>
   <li><a href="#language-enum">Enumeration</a></li>
@@ -168,7 +168,7 @@ the following SPVM Types are exactly same as the following C99 Types:
         For example, if SPVM <a href="#language-Type-multi-numeric">multiple Numeric Type</a>
       </p>
       <p>
-        <b>package Point_2i: mulnum_t {has x: int; has y: int;}</b>
+        <b>class Point_2i: mulnum_t {has x: int; has y: int;}</b>
       </p>
       <p>
         matches the Type declared in C99
@@ -223,23 +223,23 @@ Space Character has no meaning in the program execution.
 
 <h3 id="language-lex-identifier">Identifiers</h3><!-- 2019/2/27 maybe ok-->
 
-Identifiers in SPVM are <a href="#language-lex-identifier-package-name">Package Name</a>, <a href="#language-lex-identifier-sub-name">Method Name</a>, <a href="#language-lex-identifier-field-name">Field Name</a>, <a href="#language-lex-identifier-package-var-name">Package Variable Name</a>, and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a>.
+Identifiers in SPVM are <a href="#language-lex-identifier-class-name">Class Name</a>, <a href="#language-lex-identifier-sub-name">Method Name</a>, <a href="#language-lex-identifier-field-name">Field Name</a>, <a href="#language-lex-identifier-class-var-name">Class Variable Name</a>, and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a>.
 
-<h3 id="language-lex-identifier-package-name">Package Name</h3><!-- 2021-02-08 updated -->
+<h3 id="language-lex-identifier-class-name">Class Name</h3><!-- 2021-02-08 updated -->
 
-Package Name is one or more alphabet(a-zA-Z), number(0-9), underscore(_) or "::" of ASCII Code.
+Class Name is one or more alphabet(a-zA-Z), number(0-9), underscore(_) or "::" of ASCII Code.
 
-The part name of Package name must start uppercase letter. Part name of Package name means "Foo", "Bar", "Baz" in Package Name "Foo:Bar::Baz".
+The part name of Class name must start uppercase letter. Part name of Class name means "Foo", "Bar", "Baz" in Class Name "Foo:Bar::Baz".
 
 "::" cannot be continued twice. Last characters cannot end with "::".
 
 Underscore "_" cannot be continued twice.
 
-Package Name must be corresponding to the relative name of module file. If Package Name is "Foo::Bar::Baz", the relative name of module file must be "SPVM/Foo/Bar/Baz.spvm".
+Class Name must be corresponding to the relative name of module file. If Class Name is "Foo::Bar::Baz", the relative name of module file must be "SPVM/Foo/Bar/Baz.spvm".
 
-If Package Name is invalid, Compile Error occurs.
+If Class Name is invalid, Compile Error occurs.
 
-<b>Valid Package Name Examples</b>
+<b>Valid Class Name Examples</b>
 
 <pre>
 Foo
@@ -249,7 +249,7 @@ Foo::bar
 Foo_Bar::Baz_Baz
 </pre>
 
-<b>Invalid Package Name Examples</b>
+<b>Invalid Class Name Examples</b>
 
 <pre>
 Foo
@@ -302,9 +302,9 @@ _foo_bar_
 foo__bar
 </pre>
 
-<h3 id="language-lex-identifier-package-var-name">Package Variable Name</h3><!-- 2019/2/27 maybe ok-->
+<h3 id="language-lex-identifier-class-var-name">Class Variable Name</h3><!-- 2019/2/27 maybe ok-->
 
-Package Variable Name starts with "$", followed more alphabet(a-zA-Z), number(0-9), underscore(_) or "::" of ASCII Code.
+Class Variable Name starts with "$", followed more alphabet(a-zA-Z), number(0-9), underscore(_) or "::" of ASCII Code.
 
 Followed character must not start with number.
 
@@ -313,14 +313,14 @@ Followed character must not start with number.
 Underscore cannot be continued twice.
 
 <pre>
-# Valid Package Variable Name
+# Valid Class Variable Name
 $FOO::BAR
 $Foo::Bar3
 $FOO
 $FOO_BAR
 $foo
 
-# Invalid Package Variable Name
+# Invalid Class Variable Name
 $FOO__BAR
 $3FOO
 </pre>
@@ -352,10 +352,10 @@ Keywords in SPVM are the followings.
 <pre>
 allow byte INIT case die warn print default double elsif else enum eq
 eval for float gt ge has if callback_t isa int last break length
-lt le long my native ne next new our object package private
+lt le long my native ne next new our object class private
 public precompile pointer_t return require rw ro self switch
 sub string short scalar undef unless use void mulnum_t while
-weaken wo __END__ __PACKAGE__ __FILE__ __LINE__
+weaken wo __END__ __CLASS__ __FILE__ __LINE__
 </pre>
 
 <h3 id="language-lex-separator">Separators</h3><!-- 2019/2/27 almost ok-->
@@ -385,7 +385,7 @@ Fat Comma is an alias for Comma "<b>,</b>". Wherever you can use "<b>,</b>" you 
 </pre>
 
 
-Identifiers other than <a href="#language-lex-identifier-package-var-name">Package Variable Name</a> and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a> placed on the Left of Fat Comma are treated as <a href="#language-literal-string">String Literal</a>.
+Identifiers other than <a href="#language-lex-identifier-class-var-name">Class Variable Name</a> and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a> placed on the Left of Fat Comma are treated as <a href="#language-literal-string">String Literal</a>.
 
 <pre>
 # Identifiers placed on the Left of Fat Comma are treated as String Literal
@@ -413,16 +413,16 @@ cmp length isa ref
 The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bison. 
 
 <pre>
-%token <opval> PACKAGE HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
+%token <opval> CLASS HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
-%token <opval> RETURN WEAKEN DIE WARN CURRENT_PACKAGE UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE WARN CURRENT_CLASS UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_packages packages package package_block
+%type <opval> opt_classs classs class class_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub cb_obj opt_args args arg invocant has use require our
@@ -457,23 +457,23 @@ The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bis
 %%
 
 grammar
-  : opt_packages
+  : opt_classs
 
-opt_packages
+opt_classs
   : /* Empty */
-  | packages
+  | classs
 
-packages
-  : packages package
-  | package
+classs
+  : classs class
+  | class
 
-package
-  : PACKAGE basic_type package_block
-  | PACKAGE basic_type ':' opt_descriptors package_block
-  | PACKAGE basic_type ';'
-  | PACKAGE basic_type ':' opt_descriptors ';'
+class
+  : CLASS basic_type class_block
+  | CLASS basic_type ':' opt_descriptors class_block
+  | CLASS basic_type ';'
+  | CLASS basic_type ':' opt_descriptors ';'
 
-package_block
+class_block
   : '{' opt_declarations '}'
 
 opt_declarations
@@ -526,7 +526,7 @@ enumeration_value
   | method_name ASSIGN CONSTANT
 
 our
-  : OUR PACKAGE_VAR_NAME ':' opt_descriptors type
+  : OUR CLASS_VAR_NAME ':' opt_descriptors type
 
 has
   : HAS field_name ':' opt_descriptors type ';'
@@ -659,7 +659,7 @@ expression_or_logical_op
 expression
   : var
   | EXCEPTION_VAR
-  | package_var_access
+  | class_var_access
   | CONSTANT
   | UNDEF
   | call_spvm_method
@@ -676,7 +676,7 @@ expression
   | inc
   | dec
   | '(' expressions ')'
-  | CURRENT_PACKAGE
+  | CURRENT_CLASS
   | isweak_field
   | comparison_op
   | isa
@@ -799,8 +799,8 @@ my_var
 var
   : VAR_NAME
 
-package_var_access
-  : PACKAGE_VAR_NAME
+class_var_access
+  : CLASS_VAR_NAME
 
 type
   : basic_type
@@ -857,7 +857,7 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <th>Tokens in yacc/bison</th><th>Keywords and Operators in SPVM</th>
   </tr>
   <tr>
-    <td>PACKAGE</td><td>package</td>
+    <td>CLASS</td><td>class</td>
   </tr>
   <tr>
     <td>METHOD</td><td>sub</td>
@@ -935,7 +935,7 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>CONSTANT</td><td>Literal</td>
   </tr>
   <tr>
-    <td>PACKAGE_VAR_NAME</td><td>Package Variable Name</td>
+    <td>CLASS_VAR_NAME</td><td>Class Variable Name</td>
   </tr>
   <tr>
     <td>EXCEPTION_VAR</td><td>$@</td>
@@ -1007,7 +1007,7 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>PRINT</td><td>print</td>
   </tr>
   <tr>
-    <td>CURRENT_PACKAGE</td><td>__PACKAGE__</td>
+    <td>CURRENT_CLASS</td><td>__CLASS__</td>
   </tr>
   <tr>
     <td>UNWEAKEN</td><td>unweaken</td>
@@ -1179,62 +1179,62 @@ POD ends from the line beginning with "=cut", and ending with <a href="#language
 
 POD has no meaning in the program execution.
 
-<h2 id="language-package">Package</h2>
+<h2 id="language-class">Class</h2>
 <ul>
-  <li><a href="#language-package-definition">Package Definition</a></li>
-  <li><a href="#language-package-descriptor">Package Descriptor</a></li>
-  <li><a href="#language-package-destructor">Destructor</a></li>
-  <li><a href="#language-package-allow-package-access">Allow Package Access</a></li>
+  <li><a href="#language-class-definition">Class Definition</a></li>
+  <li><a href="#language-class-descriptor">Class Descriptor</a></li>
+  <li><a href="#language-class-destructor">Destructor</a></li>
+  <li><a href="#language-class-allow-class-access">Allow Class Access</a></li>
 </ul>
 
-<h3 id="language-package-definition">Package Definition</h3>
+<h3 id="language-class-definition">Class Definition</h3>
 
-<b>Package Definition</b> is the following syntax.
+<b>Class Definition</b> is the following syntax.
 
 <pre>
-package PACAKGE_NAME {
+class PACAKGE_NAME {
 
 }
 </pre>
 
-PACAKGE_NAME must follow the rule for <a href="#language-lex-identifier-package-name">Package Name</a>.
+PACAKGE_NAME must follow the rule for <a href="#language-lex-identifier-class-name">Class Name</a>.
 
-<a href="#language-package-descriptor">Package Descriptor</a> can be specified by the following syntax.
+<a href="#language-class-descriptor">Class Descriptor</a> can be specified by the following syntax.
 
 <pre>
-package PACAKGE_NAME : PACAKGE_DESCRIPTOR {
+class PACAKGE_NAME : PACAKGE_DESCRIPTOR {
 
 }
 
-package PACAKGE_NAME : PACAKGE_DESCRIPTOR1 PACAKGE_DESCRIPTOR2 PACAKGE_DESCRIPTORN {
-
-}
-</pre>
-
-<b>Package Definition Example:</b>
-
-<pre>
-# Package Name
-package Point {
+class PACAKGE_NAME : PACAKGE_DESCRIPTOR1 PACAKGE_DESCRIPTOR2 PACAKGE_DESCRIPTORN {
 
 }
 </pre>
 
+<b>Class Definition Example:</b>
+
 <pre>
-# Package Name and Package Descriptor
-package Point : public {
+# Class Name
+class Point {
 
 }
 </pre>
 
-In direct children of the package block, <a href="#language-module-use">use</a>, <a href="#language-package-var-definition">our</a>, <a href="#language-field-definition">has</a>, <a href="#language-enum-definition">enum</a>, <a href="#language-method-definition">sub</a> can be defined.
+<pre>
+# Class Name and Class Descriptor
+class Point : public {
+
+}
+</pre>
+
+In direct children of the class block, <a href="#language-module-use">use</a>, <a href="#language-class-var-definition">our</a>, <a href="#language-field-definition">has</a>, <a href="#language-enum-definition">enum</a>, <a href="#language-method-definition">sub</a> can be defined.
 
 <pre>
-package Foo {
+class Foo {
   # use
   use Point;
 
-  # Package Variable Definition
+  # Class Variable Definition
   our $VAR int;
 
   # Field Defintion
@@ -1253,11 +1253,11 @@ package Foo {
 }
 </pre>
 
-If more than one package with the same name is defined, Compile Error occurs.
+If more than one class with the same name is defined, Compile Error occurs.
 
-<h3 id="language-package-descriptor">Package Descriptor</h3>
+<h3 id="language-class-descriptor">Class Descriptor</h3>
 
-The descriptions of Package Descriptors.
+The descriptions of Class Descriptors.
 
 <table>
   <tr>
@@ -1273,7 +1273,7 @@ The descriptions of Package Descriptors.
       <b>public</b>
     </td>
     <td>
-      This package is public. Other packages can <a href="#language-expression-new">new</a> this package.
+      This class is public. Other classs can <a href="#language-expression-new">new</a> this class.
     </td>
   </tr>
   <tr>
@@ -1281,7 +1281,7 @@ The descriptions of Package Descriptors.
       <b>private</b>
     </td>
     <td>
-      This package is private. Other packages can't <a href="#language-expression-new">new</a> this package. This is default setting.
+      This class is private. Other classs can't <a href="#language-expression-new">new</a> this class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -1289,7 +1289,7 @@ The descriptions of Package Descriptors.
       <b>callback_t</b>
     </td>
     <td>
-      This package is <a href="#language-type-callback">Callback Type</a>.
+      This class is <a href="#language-type-callback">Callback Type</a>.
     </td>
   </tr>
   <tr>
@@ -1297,7 +1297,7 @@ The descriptions of Package Descriptors.
       <b>mulnum_t</b>
     </td>
     <td>
-      This package is <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
+      This class is <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
     </td>
   </tr>
   <tr>
@@ -1305,7 +1305,7 @@ The descriptions of Package Descriptors.
       <b>pointer_t</b>
     </td>
     <td>
-      This package is <a href="#language-type-pointer">Pointer Type</a>.
+      This class is <a href="#language-type-pointer">Pointer Type</a>.
     </td>
   </tr>
   <tr>
@@ -1313,7 +1313,7 @@ The descriptions of Package Descriptors.
       <b>precompile</b>
     </td>
     <td>
-      Do precompile all methods in this package, except for accessor, and enum. 
+      Do precompile all methods in this class, except for accessor, and enum. 
     </td>
   </tr>
 </table>
@@ -1322,9 +1322,9 @@ If both "public" and "private" are specifed, Compile Error occurs.
 
 If more than one of "callback_t", "mulnum_t", "pointer_t" are specified, Compile Error occurs.
 
-<h3 id="language-package-destructor">Destructor</h3>
+<h3 id="language-class-destructor">Destructor</h3>
 
-If the package is <a href="#language-type-class">Class Type</a>, the package defined a destructor.
+If the class is <a href="#language-type-class">Class Type</a>, the class defined a destructor.
 
 Destructor is a special <a href="#language-method">Method</a> called when the object of this class is freed.
 
@@ -1345,7 +1345,7 @@ If a <a href="#language-exception-occur">Exception</a> occurs in Destructor, the
 <b>Destructor Example:</b>
 
 <pre>
-package Foo {
+class Foo {
   sub new : Foo {
     return new Foo;
   }
@@ -1356,27 +1356,27 @@ package Foo {
 }
 </pre>
 
-<h3 id="language-package-allow-package-access">Allow Package Access</h3>
+<h3 id="language-class-allow-class-access">Allow Class Access</h3>
 
-By default, private Methods, Fields, and Package Variables cannot be accessed from outside the Package.
+By default, private Methods, Fields, and Class Variables cannot be accessed from outside the Class.
 
-Also, Private Package cannot <a href="#language-expression-new">Create Object</a> from outside of Package.
+Also, Private Class cannot <a href="#language-expression-new">Create Object</a> from outside of Class.
 
-If the package allow other package, the other package can access private Methods, Fields, and Package Variables, and can <a href="#language-expression-new">Create Object</a> of the package.
+If the class allow other class, the other class can access private Methods, Fields, and Class Variables, and can <a href="#language-expression-new">Create Object</a> of the class.
 
 <pre>
-allow PACKAGE_NAME;
+allow CLASS_NAME;
 </pre>
 
-allow must be defined directory under <a href="#language-package-definition">Package Definition</a>.
+allow must be defined directory under <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-package Foo {
+class Foo {
   allow Bar;
 }
 </pre>
 
-In this example, Bar can access the private Method, Field, and Package Variable of Foo can be accessed and can Create Object of Foo.
+In this example, Bar can access the private Method, Field, and Class Variable of Foo can be accessed and can Create Object of Foo.
 
 Specifying the module of <b>allow</b> also loads the module by <a href="#language-module-use">use</a> at the same time.
 
@@ -1396,21 +1396,21 @@ Module is a single file that can be read as SPVM source code.
 
 <pre>
 # lib/path/SPVM/Foo/Bar.spvm
-package Foo::Bar {
+class Foo::Bar {
 
 }
 </pre>
 
 
-Module can contain multiple Packages.
+Module can contain multiple Classs.
 
 <pre>
 # lib/path/SPVM/Foo/Bar.spvm
-package Foo::Bar {
+class Foo::Bar {
 
 }
 
-package Foo::Bar::Baz {
+class Foo::Bar::Baz {
 
 }
 </pre>
@@ -1440,10 +1440,10 @@ Modules are loaded at compile-time.
 
 If the Module does not exist, Compile Error will occur.
 
-use Keyword must be defined directly under <a href="#language-package-definition">Package Definition</a>.
+use Keyword must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-package Foo {
+class Foo {
   use Foo;
 }
 </pre>
@@ -1512,42 +1512,42 @@ use Foo(method1, method2);
 
 This function is called by <a href="language-expression-callsub-function-call">Function Call</a>
 
-<h2 id="language-package-var">Package Variable</h2>
+<h2 id="language-class-var">Class Variable</h2>
 <ul>
-  <li><a href="#language-package-var-definition">Package Variable Definition</a></li>
-  <li><a href="#language-package-var-descriptor">Package Variable Descriptor</a></li>
-  <li><a href="#language-package-var-initial-value">Package Variable Initial Value</a></li>
-  <li><a href="#language-package-var-access">Package Variable Access</a></li>
+  <li><a href="#language-class-var-definition">Class Variable Definition</a></li>
+  <li><a href="#language-class-var-descriptor">Class Variable Descriptor</a></li>
+  <li><a href="#language-class-var-initial-value">Class Variable Initial Value</a></li>
+  <li><a href="#language-class-var-access">Class Variable Access</a></li>
 </ul>
 
-<h3 id="language-package-var-definition">Package Variable Definition</h3>
+<h3 id="language-class-var-definition">Class Variable Definition</h3>
 
-<b>Package Variable</b> is a global variable that belongs to <a href="#language-package">Package</a> and exists from the start to the end of the program execution.
+<b>Class Variable</b> is a global variable that belongs to <a href="#language-class">Class</a> and exists from the start to the end of the program execution.
 
-"our" Keyword defines a Package Variable.
-
-<pre>
-our PACKAGE_VARIABLE_NAME : TYPE;
-</pre>
-
-Package Variable must be defined directly under <a href="#language-package-definition">Package Definition</a>.
-
-Package Variable Definition must specify <a href="#language-type">Type</a>. The Type must be <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-object">Object Type</a>.
-
-Package Variable Name must follows the rule specified in <a href="#language-lex-identifier-package-var-name">Package Variable Name</a>, and must not contain "::", otherwise Compile Error occurs.
-
-If more than one Package Variable with the same name is defined, Compile Error occurs.
-
-Package Variable Descriptor can be specified together in Package Variable definition.
+"our" Keyword defines a Class Variable.
 
 <pre>
-our PACKAGE_VARIABLE_NAME : DESCRIPTOR TYPE;
-our PACKAGE_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE;
+our CLASS_VARIABLE_NAME : TYPE;
 </pre>
 
-<h3 id="language-package-var-descriptor">Package Variable Descriptor</h3>
+Class Variable must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
-List of Package Variable Descriptors.
+Class Variable Definition must specify <a href="#language-type">Type</a>. The Type must be <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-object">Object Type</a>.
+
+Class Variable Name must follows the rule specified in <a href="#language-lex-identifier-class-var-name">Class Variable Name</a>, and must not contain "::", otherwise Compile Error occurs.
+
+If more than one Class Variable with the same name is defined, Compile Error occurs.
+
+Class Variable Descriptor can be specified together in Class Variable definition.
+
+<pre>
+our CLASS_VARIABLE_NAME : DESCRIPTOR TYPE;
+our CLASS_VARIABLE_NAME : DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN TYPE;
+</pre>
+
+<h3 id="language-class-var-descriptor">Class Variable Descriptor</h3>
+
+List of Class Variable Descriptors.
 
 <table>
   <tr>
@@ -1563,7 +1563,7 @@ List of Package Variable Descriptors.
       <b>public</b>
     </td>
     <td>
-      This Package Variable is public. This Package Variable can be accessed from other package.
+      This Class Variable is public. This Class Variable can be accessed from other class.
     </td>
   </tr>
   <tr>
@@ -1571,7 +1571,7 @@ List of Package Variable Descriptors.
       <b>private</b>
     </td>
     <td>
-      This Package Variable is private. This Package Variable can't be accessed from other package. This is default setting of Package Variable.
+      This Class Variable is private. This Class Variable can't be accessed from other class. This is default setting of Class Variable.
     </td>
   </tr>
   <tr>
@@ -1579,7 +1579,7 @@ List of Package Variable Descriptors.
       <b>ro</b>
     </td>
     <td>
-      This Package Variable has Read Accessor. Read Accessor name is the same as Package Variable Name except removing "$". For example, If the Package Variable Name is "$FOO", Read Accessor name is "FOO".
+      This Class Variable has Read Accessor. Read Accessor name is the same as Class Variable Name except removing "$". For example, If the Class Variable Name is "$FOO", Read Accessor name is "FOO".
     </td>
   </tr>
   <tr>
@@ -1587,7 +1587,7 @@ List of Package Variable Descriptors.
       <b>wo</b>
     </td>
     <td>
-      This Package Variable has Write Accessor. Write Accessor name is the same as Package Variable Name except removing "$" and adding "SET_" to top. For example, If the Package Variable Name is "$FOO", Read Accessor name is "SET_FOO".
+      This Class Variable has Write Accessor. Write Accessor name is the same as Class Variable Name except removing "$" and adding "SET_" to top. For example, If the Class Variable Name is "$FOO", Read Accessor name is "SET_FOO".
     </td>
   </tr>
   <tr>
@@ -1595,7 +1595,7 @@ List of Package Variable Descriptors.
       <b>rw</b>
     </td>
     <td>
-      This Package Variable has Read accessor and Write Accessor.
+      This Class Variable has Read accessor and Write Accessor.
     </td>
   </tr>
 </table>
@@ -1604,16 +1604,16 @@ If both "public" and "private" Descriptors are specified, Compile Error occurs.
 
 If more than one of "ro", "wo", and "rw" are specified at the same time, Compile Error occurs
 
-Read Accessor of Package Variable has no arguments and the return type is same as the type of Package Variable.
+Read Accessor of Class Variable has no arguments and the return type is same as the type of Class Variable.
 
-Write Acessor of Package Variable has one argument and the type is same as the type of Package Variable. The type of return value is <a href="#language-type-void">void Type</a>.
+Write Acessor of Class Variable has one argument and the type is same as the type of Class Variable. The type of return value is <a href="#language-type-void">void Type</a>.
 
-Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Package Variable Accessors.
+Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Class Variable Accessors.
 
-<b>Package Variable Definition Example:</b>
+<b>Class Variable Definition Example:</b>
 
 <pre>
-package Foo {
+class Foo {
   our $NUM1 : byte;
   our $NUM2 : short;
   our $NUM3 : int;
@@ -1628,14 +1628,14 @@ package Foo {
 }
 </pre>
 
-<h3 id="language-package-var-initial-value">Package Variable Initial Value</h3>
+<h3 id="language-class-var-initial-value">Class Variable Initial Value</h3>
 
-Package Variable is initialized with <a href="#language-type-initial-value">Type Initial Value</a> after compilation and before execution.
+Class Variable is initialized with <a href="#language-type-initial-value">Type Initial Value</a> after compilation and before execution.
 
 This initial value can be changed by using <a href="#language-begin-block">INIT Block</a>.
 
 <pre>
-package Foo {
+class Foo {
   our $VAR : int;
 
   INIT {
@@ -1644,13 +1644,13 @@ package Foo {
 }
 </pre>
 
-<h3 id="language-package-var-access">Package Variable Access</h3>
+<h3 id="language-class-var-access">Class Variable Access</h3>
 
-Package Variable Access is an operation to access Package Variable to get or set a value.
+Class Variable Access is an operation to access Class Variable to get or set a value.
 
-See <a href="#language-expression-get-package-var">Get Package Variable Value</a> for how to get the value of Package Variable.
+See <a href="#language-expression-get-class-var">Get Class Variable Value</a> for how to get the value of Class Variable.
 
-See <a href="#language-expression-set-package-var">Set Package Variable Value</a> for the setting of the value of Package Variable.
+See <a href="#language-expression-set-class-var">Set Class Variable Value</a> for the setting of the value of Class Variable.
 
 <h2 id="language-field">Field</h2>
 <ul>
@@ -1668,7 +1668,7 @@ Field is a data area in a <a href="#language-expression-new">object created usin
 has FIELD_NAME : TYPE;
 </pre>
 
-Field must be defined directly under <a href="#language-package-definition">Package Definition</a>.
+Field must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
 Field Definition must be specify <a href="#language-type">Type</a>. The Type must be <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-object">Object Type</a>.
 
@@ -1705,7 +1705,7 @@ List of Field Descriptors.
       <b>public</b>
     </td>
     <td>
-      This field is public. This field can be accessed from other package.
+      This field is public. This field can be accessed from other class.
     </td>
   </tr>
   <tr>
@@ -1713,7 +1713,7 @@ List of Field Descriptors.
       <b>private</b>
     </td>
     <td>
-      This field is private. This field can't be accessed from other package. This is default setting.
+      This field is private. This field can't be accessed from other class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -1748,14 +1748,14 @@ If more than one of "ro", "wo", and "rw" are specified at the same time, Compile
 
 Read Accessor of Field has one argument that is <a href="#language-type-self">self Type</a> and the Return Type is same as the type of Field.
 
-Write Acessor of Package Variable has two arguments. First argument is <a href="#language-type-self">self Type</a> and second argument is same as the type of Field. The type of return value is <a href="#language-type-void">void Type</a>.
+Write Acessor of Class Variable has two arguments. First argument is <a href="#language-type-self">self Type</a> and second argument is same as the type of Field. The type of return value is <a href="#language-type-void">void Type</a>.
 
 Inline Expansion optimization is performed to Read Accessor and Write Accessor. You don't have to worry about the performance penalty of using Field Accessors.
 
 <b>Field Definition Example:</b>
 
 <pre>
-package Foo {
+class Foo {
   has num1 : byte;
   has num2 : short;
   has num3 : int;
@@ -1847,7 +1847,7 @@ sub METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, 
 }
 </pre>
 
-Method must be defined directly under <a href="#language-package-definition">Package Definition</a>.
+Method must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
 Method name must be follow the rule of <a href="#language-lex-identifier-sub-name">Method Name</a>.
 
@@ -1943,7 +1943,7 @@ See <a href="/native-api.html">SPVM Native API</a> Native Method.
 
 <h3 id="language-method-precompiled">Precompiled Method</h3>
 
-If the Package has "precompile" descriptor, the methods of the package become Precompiled Method.
+If the Class has "precompile" descriptor, the methods of the class become Precompiled Method.
 
 Precompiled Method is translated into C99 Compliant source code and converted into machine code.
 
@@ -2059,10 +2059,10 @@ enum {
 }
 </pre>
 
-Enumeration must be defined directly under <a href="#language-package-definition">Package Definition</a>.
+Enumeration must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-package Foo {
+class Foo {
   enum {
     FLAG1,
     FLAG2,
@@ -2134,7 +2134,7 @@ List of Enumeration Descriptor
       <b>public</b>
     </td>
     <td>
-      This Enumeration is public. This Enumeration can be accessed from other Package. This is default setting.
+      This Enumeration is public. This Enumeration can be accessed from other Class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -2142,7 +2142,7 @@ List of Enumeration Descriptor
       <b>private</b>
     </td>
     <td>
-      This Enumeration is private. This Enumeration can not be accessed from other Package.
+      This Enumeration is private. This Enumeration can not be accessed from other Class.
     </td>
   </tr>
 </table>
@@ -2195,10 +2195,10 @@ INIT {
 }
 </pre>
 
-INIT Block must be defined directly under <a href="#language-package-definition">Package Definition</a>.
+INIT Block must be defined directly under <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
-package Foo {
+class Foo {
   INIT {
 
   }
@@ -2220,12 +2220,12 @@ Internally, INIT Block is a <a href="#language-method">Method</a> that Return Ty
 
 You can define multiple INIT Blocks.
 
-The execution order of INIT Block is not guaranteed. If ohter INIT Block is defined in ohter Package, do not assume that INIT Block of the current package will be executed first.
+The execution order of INIT Block is not guaranteed. If ohter INIT Block is defined in ohter Class, do not assume that INIT Block of the current class will be executed first.
 
-A common use of INIT Block is to initialize <a href="#language-package-var">Package Variable</a>.
+A common use of INIT Block is to initialize <a href="#language-class-var">Class Variable</a>.
 
 <pre>
-package Foo {
+class Foo {
   use Point;
   
   our $NUM : int;
@@ -2335,7 +2335,7 @@ See <a href="#language-expression-get-lex-var">Get Lexical Variable Value</a> to
 
 <a href="#language-expression-set-lex-var">Set Lexical Variable Value</a> to get Lexical Variable value.
 
-If <a href="#language-package-var">Package Variable</a> with the same name as the Lexical Variable exists, Program uses the variable as Lexical Variable, not <a href="#language-package-var">Package Variable</a>.
+If <a href="#language-class-var">Class Variable</a> with the same name as the Lexical Variable exists, Program uses the variable as Lexical Variable, not <a href="#language-class-var">Class Variable</a>.
 
 <h2 id="language-scope">Scope</h2>
 <ul>
@@ -2947,7 +2947,7 @@ If the espape characters which is not included avobe is used, a compiler error o
 
 <h3 id="language-literal-string-variable-expansion">Variable Expansion</h3>
 
-<b>Variable Expansion</b> applys <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-package-var">Package Variable</a>, <a href="#language-ref-deref">Dereference</a>, <a href="#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-exception-var">Exception Variable</a> in String Literal.
+<b>Variable Expansion</b> applys <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href="#language-ref-deref">Dereference</a>, <a href="#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-exception-var">Exception Variable</a> in String Literal.
 
 <pre>
 "AAA $foo BBB"
@@ -3097,18 +3097,18 @@ See <a href="#language-expression-set-array-element">Set Array Element Value</a>
 
 Multi Numeric type represents continuous numeric values. For example, there are three consecutive 32-bit signed integers, two consecutive double-precision floating point numbers. It isplaned to use 3D points, complex numbers, quaternions, etc.
 
-Multi Numeric Type is defined by specifying mulnum_t <a href="#language-package-descriptor">Package Descriptor</a> in <a href="#language-package-definition">Package Definition</a>.
+Multi Numeric Type is defined by specifying mulnum_t <a href="#language-class-descriptor">Class Descriptor</a> in <a href="#language-class-definition">Class Definition</a>.
 
 <pre>
 # Three consecutive 32bit signed integers
-package Point_3i : mulnum_t {
+class Point_3i : mulnum_t {
   has x : int;
   has y : int;
   has z : int;
 }
 
 # Tow consecutive 64bit floating point numbers
-package Complex_2d : mulnum_t {
+class Complex_2d : mulnum_t {
   x : double;
   y : double;
 }
@@ -3355,8 +3355,8 @@ $point_ref->{x} = 1;
   <li><a href="#language-expression-undef">Undefined Value</a></li>
   <li><a href="#language-expression-get-lex-var">Get Lexical Variable Value</a></li>
   <li><a href="#language-expression-set-lex-var">Set Lexical Variable Value</a></li>
-  <li><a href="#language-expression-set-package-var">Get Package Variable Value</a></li>
-  <li><a href="#language-expression-get-package-var">Set Package Variable Value</a></li>
+  <li><a href="#language-expression-set-class-var">Get Class Variable Value</a></li>
+  <li><a href="#language-expression-get-class-var">Set Class Variable Value</a></li>
   <li><a href="#language-expression-get-exception-var">Get Exception Variable Value</a></li>
   <li><a href="#language-expression-set-exception-var">Set Exception Variable Value</a></li>
   <li><a href="#language-expression-get-field">Get Field Value</a></li>
@@ -3374,7 +3374,7 @@ $point_ref->{x} = 1;
   <li><a href="#language-expression-callsub-static-method-call">Static Method Call</a></li>
   <li><a href="#language-expression-callsub-method-call">Method Call</a></li>
   <li><a href="#language-expression-callsub-function-call">Function Call</a></li>
-  <li><a href="#language-expression-current-package">Get Current Package Name</a></li>
+  <li><a href="#language-expression-current-class">Get Current Class Name</a></li>
   <li><a href="#language-expression-current-file">Get Current File Name</a></li>
   <li><a href="#language-expression-current-line">Get Current Line Number</a></li>
   <li><a href="#language-expression-typecast">Type Cast</a></li>
@@ -3424,28 +3424,28 @@ If an object has already been assigned to $var before the assignment, the Refere
 
 See <a href="#language-scope">Scope</a> to know Garbage Collection of Lexical Variable.
 
-<h3 id="language-expression-get-package-var">Get Package Variable Value</h3>
+<h3 id="language-expression-get-class-var">Get Class Variable Value</h3>
 
-<b>Get Package Variable Value Expression</b> is a Expression to get <a href="#language-package-var">Package Variable</a> Value.
+<b>Get Class Variable Value Expression</b> is a Expression to get <a href="#language-class-var">Class Variable</a> Value.
 
 <pre>
-$PACKAGE_NAME::PACKAGE_VARIABLE_NAME
+$CLASS_NAME::CLASS_VARIABLE_NAME
 </pre>
 
-"PACKAGE_NAME::" can be omitted when the Package Variable belongs to own <a href="#language-package">Package</a>.
+"CLASS_NAME::" can be omitted when the Class Variable belongs to own <a href="#language-class">Class</a>.
 
 <pre>
-$PACKAGE_VARIABLE_NAME
+$CLASS_VARIABLE_NAME
 </pre>
 
-If you try to get the value of a Package Variable that is not defined, Compile Error occurs.
+If you try to get the value of a Class Variable that is not defined, Compile Error occurs.
 
-If you try to access a private Package Variable from outside the Package, Compile Error occurs.
+If you try to access a private Class Variable from outside the Class, Compile Error occurs.
 
-<b>Get Package Variable Value Example:</b>
+<b>Get Class Variable Value Example:</b>
 
 <pre>
-package Foo {
+class Foo {
   our $VAR : int;
 
   sub bar : int () {
@@ -3455,37 +3455,37 @@ package Foo {
 }
 </pre>
 
-<h3 id="language-expression-set-package-var">Set Package Variable Value</h3>
+<h3 id="language-expression-set-class-var">Set Class Variable Value</h3>
 
-<b>Set Package Variable Value Expression</b> is a Expression to set <a href="#language-package-var">Package Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
+<b>Set Class Variable Value Expression</b> is a Expression to set <a href="#language-class-var">Class Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
 .
 
 <pre>
-$PACKAGE_NAME::PACKAGE_VARIABLE_NAME = RIGHT_EXPRESSION
+$CLASS_NAME::CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
 </pre>
 
-"PACKAGE_NAME::" can be omitted when the Package Variable belongs to own <a href="#language-package">Package</a>.
+"CLASS_NAME::" can be omitted when the Class Variable belongs to own <a href="#language-class">Class</a>.
 
 <pre>
-$PACKAGE_VARIABLE_NAME = RIGHT_EXPRESSION
+$CLASS_VARIABLE_NAME = RIGHT_EXPRESSION
 </pre>
 
 If the assignment does not satisfy <a href="#language-type-compatible">Type Compatibility</a>, Compile Error occurs.
 
-Set Package Variable Value Expression returns the value after setting.
+Set Class Variable Value Expression returns the value after setting.
 
-If you try to get the value of a Package Variable that is not defined, Compile Error occurs.
+If you try to get the value of a Class Variable that is not defined, Compile Error occurs.
 
-If you try to access a private Package Variable from outside the Package, Compile Error occurs.
+If you try to access a private Class Variable from outside the Class, Compile Error occurs.
 
 If Right Expression is <a href="#language-type-object">Object Type</a>, Reference Count of the object is incremented by 1.
 
-If an object has already been assigned to Package Variable before the assignment, the Reference Count of that object is decremented by 1.
+If an object has already been assigned to Class Variable before the assignment, the Reference Count of that object is decremented by 1.
 
-<b>Set Package Variable Value Example:</b>
+<b>Set Class Variable Value Example:</b>
 
 <pre>
-package Foo {
+class Foo {
   our $VAR : int;
 
   sub bar : int () {
@@ -3549,7 +3549,7 @@ INVOCANT_EXPRESSION->{FIELD_NAME}
 
 Invocant Expression is <a href="#language-type-class">Class Type</a>. If Expression is <a href="#language-type-multi-numeric">Multi Numeric Type</a> Value, The Field Access is <a href="#language-expression-get-field-multi-numeric">Get Multi Numeric Field Value</a>. If Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a> Value, The Field Access is ,<a href="#language-expression-get-field-multi-numeric-deref">, otherwise Compile Error occurs.
 
-If the Field Name does not found in the <a href="#language-package">Package</a>, Compile Error occurs
+If the Field Name does not found in the <a href="#language-class">Class</a>, Compile Error occurs
 
 Get Field Value Expression returns the value of the Field stored in the object.
 
@@ -3574,7 +3574,7 @@ Invocant Expression is <a href="#language-type-class">Class Type</a>. If Invocan
 
 If the assignment does not satisfy <a href="#language-type-compatible">Type Compatibility</a> of the Type of Field, Compile Error occurs.
 
-If the Field Name does not found in the <a href="#language-package">Package</a>, Compile Error occurs.
+If the Field Name does not found in the <a href="#language-class">Class</a>, Compile Error occurs.
 
 Set Field Value Expression returns the value of Field after setting. 
 
@@ -3601,7 +3601,7 @@ INVOCANT_EXPRESSION->{FIELD_NAME}
 <p>
   Invocant Expression is <a href="#language-type-class">Multi Numeric Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, the Field Access is <a href="#language-expression-get-field">. If Invocant Expression <a href="#language-type-ref-multi-numeric">is Multi Numeric Reference Type</a>, the Field Access is <a href="#language-expression-get-field-multi-numeric-deref">Get Multi Numeric Field Value via Dereference</a>, otherwise Compile Error occurs.
   
-If the Field Name does not found in the <a href="#language-package">Package</a>, Compile Error occurs
+If the Field Name does not found in the <a href="#language-class">Class</a>, Compile Error occurs
 
 Get Multi Numeric Field Value Expression returns the field value in the Multi Numeric Value.
 
@@ -3625,7 +3625,7 @@ INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
 
 Invocant Expression is <a href="#language-type-class">Multi Numeric Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, the Field Access is <a href="#language-expression-set-field">Set Field Value</a>. Invocant Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a>, <a href="#language-expression-set-field-multi-numeric-deref">Set Multi Numeric Field Value via Dereference</a>, otherwise Compile Error occurs.
 
-If the Field Name does not found in the <a href="#language-package">Package</a>, Compile Error occurs.
+If the Field Name does not found in the <a href="#language-class">Class</a>, Compile Error occurs.
 
 Set Multi Numeric Field Value Expression returns the value of Field after setting. 
 
@@ -3650,7 +3650,7 @@ INVOCANT_EXPRESSION->{FIELD_NAME}
 
 Invocant Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, the Field Access is , <a href="#language-expression-get-field">Get Field Value</a>. If Invocant Expression is <a href="#language-type-multi-numeric">Multi Numeric Type</a>, the Field Access is <a href="#language-expression-get-field-multi-numeric">Get Multi Numeric Field Value</a>, otherwise Compile Error occurs.
 
-If the Field Name does not found in the <a href="#language-package">Package</a>, Compile Error occurs
+If the Field Name does not found in the <a href="#language-class">Class</a>, Compile Error occurs
 
 Get Multi Numeric Field Value via Dereference Expression returns the field value in the Multi Numeric Value.
 
@@ -3674,7 +3674,7 @@ INVOCANT_EXPRESSION->{FIELD_NAME} = RIGHT_EXPRESSION
 
 Invocant Expression is <a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a>. If Invocant Expression is <a href="#language-type-class">Class Type</a>, <a href="#language-expression-set-field">Set Field Value</a>. If Invocant Expression is <a href="#language-type-multi-numeric">Multi Numeric Type</a>, <a href="#language-expression-set-field-multi-numeric">Set Multi Numeric Field Value</a>, otherwise Compile Error occurs.
 
-If the Field Name does not found in the <a href="#language-package">Package</a>, Compile Error occurs
+If the Field Name does not found in the <a href="#language-class">Class</a>, Compile Error occurs
 
 Set Multi Numeric Field Value via Dereference Expression returns the value of Field after setting.
 
@@ -3763,10 +3763,10 @@ $objects->[2] = Point->new(3, 5);
 <b>Create Object Expression</b> is a Expression to create Object using <b>new</b> keyword.
 
 <pre>
-my $object = new PACKAGE_NAME;
+my $object = new CLASS_NAME;
 </pre>
 
-<a href="#language-package">Package</a> that is specified by <a href="#language-lex-identifier-package-name">Package Name</a> must be <a href="#language-type-class">Class Type</a>.
+<a href="#language-class">Class</a> that is specified by <a href="#language-lex-identifier-class-name">Class Name</a> must be <a href="#language-type-class">Class Type</a>.
 
 Fields of the Object are initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
 
@@ -3894,7 +3894,7 @@ Methods defined by <a href="#language-method-definition">Method Definition</a> c
 Defined method can be called by Static Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
 
 <pre>
-PackageName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
+ClassName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 
 The arguments max count is 255.
@@ -3924,7 +3924,7 @@ Function Call is <a href="#language-expression">Expression</a>.
 <b>Function Call Example</b>
 
 <pre>
-package Foo {
+class Foo {
   use Math(sin);
   
   sub test : void () {
@@ -4038,27 +4038,27 @@ my $z2 : Complex_2d;
 $$z_ref = $z2;
 </pre>
 
-<h3 id="language-expression-current-package">Get Current Package Name</h3>
+<h3 id="language-expression-current-class">Get Current Class Name</h3>
 
-<b>Get Current Package Name</b> is a Expression to get the current package name by __PACKAGE__ <a href="#language-lex-keyword">Keyword</a>.
+<b>Get Current Class Name</b> is a Expression to get the current class name by __CLASS__ <a href="#language-lex-keyword">Keyword</a>.
 
 <pre>
-__PACKAGE__
+__CLASS__
 </pre>
 
 <p>
-  <b>Get Current Package Name Example:</b>
+  <b>Get Current Class Name Example:</b>
 </p>
 <pre>
-package Foo::Bar {
+class Foo::Bar {
   sub baz : void () {
     # Foo::Bar
-    my $package_name == __PACKAGE__;
+    my $class_name == __CLASS__;
   }
 }
 </pre>
 
-<h3 id="language-expression-current-package">Get Current File Name</h3>
+<h3 id="language-expression-current-class">Get Current File Name</h3>
 
 <b>Get Current File Name</b> is a Expression to get the current file name by __LINE__ <a href="#language-lex-keyword">Keyword</a>.
 
@@ -4072,13 +4072,13 @@ Current File Name means the relative path from the base path of the module file.
 
 <pre>
 # SPVM/Foo/Bar.spvm
-package Foo::Bar {
+class Foo::Bar {
   sub baz : void () {
     # SPVM/Foo/Bar.spvm
     my $file_name == __FILE__;
   }
 }
-package Foo::Bar2 {
+class Foo::Bar2 {
   sub baz : void () {
     # SPVM/Foo/Bar.spvm
     my $file_name == __FILE__;
@@ -4086,7 +4086,7 @@ package Foo::Bar2 {
 }
 </pre>
 
-<h3 id="language-expression-current-package">Get Current Line Number</h3>
+<h3 id="language-expression-current-class">Get Current Line Number</h3>
 
 <b>Get Current Line Number</b> is a Expression to get the current line number of the current file by __LINE__ <a href="#language-lex-keyword">Keyword</a>.
 
@@ -4098,7 +4098,7 @@ __LINE__
   <b>Get Current Line Number Example:</b>
 </p>
 <pre>
-package Foo::Bar {
+class Foo::Bar {
   sub baz : void () {
     # 4
     my $line = __LINE__;
@@ -4388,20 +4388,20 @@ Remainder Operator throw <a href="#language-exception">Exception</a> if Right Ex
 <pre>
 # Pre Increment Operator
 ++LEXICAL_VARIABLE
-++PACKAGE_VARIABLE
+++CLASS_VARIABLE
 ++FIELD_ACCESS
 ++ARRAY_ACCESS
 ++DEREFERENCE
 
 # Post Increment Operator
 LEXICAL_VARIABLE++
-PACKAGE_VARIABLE++
+CLASS_VARIABLE++
 FIELD_ACCESS++
 ARRAY_ACCESS++
 DEREFERENCE++
 </pre>
 <p>
-  The operand of Increment Operator must <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-package-var">Package Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
+  The operand of Increment Operator must <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
 </p>
 <p>
   The Type of operand of Increment Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
@@ -4455,20 +4455,20 @@ DEREFERENCE++
 <pre>
 # Pre Decrement Operator
 --LEXICAL_VARIABLE
---PACKAGE_VARIABLE
+--CLASS_VARIABLE
 --FIELD_ACCESS
 --ARRAY_ACCESS
 --DEREFERENCE
 
 # Post Decrement Operator
 LEXICAL_VARIABLE--
-PACKAGE_VARIABLE--
+CLASS_VARIABLE--
 FIELD_ACCESS--
 ARRAY_ACCESS--
 DEREFERENCE--
 </pre>
 <p>
-  The operand of Decrement Operator must <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-package-var">Package Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
+  The operand of Decrement Operator must <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
 </p>
 <p>
   The Type of operand of Decrement Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
@@ -6161,7 +6161,7 @@ my $num = 1 + 2;
   <li><a href="#language-type-floating-point">Floating Point Type</a></li>
   <li><a href="#language-type-float">float Type</a></li>
   <li><a href="#language-type-double">double Type</a></li>
-  <li><a href="#language-type-package">Package Type</a></li>
+  <li><a href="#language-type-class">Class Type</a></li>
   <li><a href="#language-type-object">Object Type</a></li>
   <li><a href="#language-type-numeric-object">Numeric Object Type</a></li>
   <li><a href="#language-type-undef">Undefined Type</a></li>
@@ -6187,14 +6187,14 @@ my $num = 1 + 2;
 SPVM is a static type language. All data has a static type.
 
 <p>
-  <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-package-var-definition">Package Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
+  <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-class-var-definition">Class Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
 </p>
 
 In <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-type-inference">Type Inference</a> can be used.
 
 <h3 id="language-type-initial-value">Type Initial Value</h3>
 <p>
-  Lexical Variable Initial Value,<a href="#language-package-var-initial-value">Package Variable Initial Value</a>,Create ObjectにおけるFieldの初期値は,Type Initial Valueによって決まります。
+  Lexical Variable Initial Value,<a href="#language-class-var-initial-value">Class Variable Initial Value</a>,Create ObjectにおけるFieldの初期値は,Type Initial Valueによって決まります。
 </p>
 <p>
   A list of Type Initial Value. All Bit columns in the data are set to 0.
@@ -6419,40 +6419,40 @@ See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating
   <b>double Type</b> represents a double precision floating point (64bit) <a href="#language-type-floating-point">Floating Point Type</a> It is the same Type as <a href="#language-type-double">double Type</a> of C99.
 </p>
 
-<h3 id = "language-type-package">Package Type</h3>
+<h3 id = "language-type-class">Class Type</h3>
 <p>
-  Package Type is the Type defined by <a href="#language-package-definition">Package Definition</a>.
+  Class Type is the Type defined by <a href="#language-class-definition">Class Definition</a>.
 </p>
 <pre>
-package Foo {
+class Foo {
 
 }
 </pre>
 <p>
-  Package Type is <a href="#language-type-class">Class Type</a> <a href="#language-type-callback">Callback Type</a> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Type</a>.
+  Class Type is <a href="#language-type-class">Class Type</a> <a href="#language-type-callback">Callback Type</a> <a href = "#language-type It consists of -multi-numeric ">Multi Numeric Type</a>.
 </p>
 <pre>
 # Class Type
-package Foo {
+class Foo {
 
 }
 
 # Callback Type
-package Foo: callback_t {
+class Foo: callback_t {
 
 }
 
 # Multi Numeric Type
-package Foo: mulnum_t {
+class Foo: mulnum_t {
 
 }
 </pre>
 <p>
-  <a href="#language-type-pointer">Pointer Type</a> is also Class Type, so Pointer Type will also be Package Type.
+  <a href="#language-type-pointer">Pointer Type</a> is also Class Type, so Pointer Type will also be Class Type.
 </p>
 <pre>
 # Pointer Type
-package Foo: pointer_t {
+class Foo: pointer_t {
 
 }
 </pre>
@@ -6550,7 +6550,7 @@ The value of Undefined Type can be assigned to Object Type.If you assign to anot
 
 <h3 id = "language-type-class">Class Type</h3>
 <p>
-Class Type is the Type defined by <a href="#language-package-definition">Package Definition</a> and is not "Multi Numeric Type" "Callback Type".
+Class Type is the Type defined by <a href="#language-class-definition">Class Definition</a> and is not "Multi Numeric Type" "Callback Type".
 </p>
 <pre>
 packag Foo {
@@ -6567,7 +6567,7 @@ my $foo = new Foo;
   Class Type is a <a href="#language-type-object">Object Type</a>.
 </p>
 <p>
-  Class Type is a <a href="#language-type-package">Package Type</a>.
+  Class Type is a <a href="#language-type-class">Class Type</a>.
 </p>
 <p>
   <a href="#language-type-pointer">Pointer Type</a> is the Class Type.
@@ -6575,10 +6575,10 @@ my $foo = new Foo;
 
 <h3 id = "language-type-pointer">Pointer Type</h3>
 <p>
-  Pointer Type is the one that "pointer_t Descriptor" is specified in <a href="#language-package-definition">Package Definition</a>.
+  Pointer Type is the one that "pointer_t Descriptor" is specified in <a href="#language-class-definition">Class Definition</a>.
 </p>
 <pre>
-package Foo: pointer_t {
+class Foo: pointer_t {
 
 }
 </pre>
@@ -6594,10 +6594,10 @@ package Foo: pointer_t {
 
 <h3 id = "language-type-callback">Callback Type</h3>
 
-Callback Type is a <a href="#language-type-package">Package Type</a> with <a href="#language-package-descriptor">Package Descriptor</a> "callback_t".
+Callback Type is a <a href="#language-type-class">Class Type</a> with <a href="#language-class-descriptor">Class Descriptor</a> "callback_t".
 
 <pre>
-package Comparator: callback_t {
+class Comparator: callback_t {
   sub: int ($self: self, $x1: object, $x2: object);
 }
 </pre>
@@ -6608,7 +6608,7 @@ Callback Type must have only one <a href="#language-method-definition">Method De
 
 Method Name of Callback Type must be anonymouse.
 
-Callback Type must not have any <a href="#language-field-definition">Field Definition</a> and <a href="#language-package-var-definition">Package Variable Definition</a>.
+Callback Type must not have any <a href="#language-field-definition">Field Definition</a> and <a href="#language-class-var-definition">Class Variable Definition</a>.
 
 Callback Type is a <a href="#language-type-object">Object Type</a>.
 
@@ -6620,12 +6620,12 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
 
 <pre>
 # Callback Type Definition
-package Comparator: callback_t {
+class Comparator: callback_t {
   sub: int ($self: self, $x1: object, $x2: object);
 }
 
 # Class Definition
-package SomeComparator {
+class SomeComparator {
   sub new: int () {
     return new SomeComparator;
   }
@@ -6643,7 +6643,7 @@ my $comparator: Comparator = SomeComparator->new;
 
 <pre>
 Definition of #Callback Type
-package Comparator: callback_t {
+class Comparator: callback_t {
   sub: int ($self: self, $x1: object, $x2: object);
 }
 
@@ -6670,7 +6670,7 @@ my $object: object = new Foo [3];
 
 <h3 id = "language-type-self">self Type</h3>
 <p>
-  self Type represents the Package Type to which it belongs, and indicates that the argument is Invocant.
+  self Type represents the Class Type to which it belongs, and indicates that the argument is Invocant.
 </p>
 
 <pre>
@@ -6691,7 +6691,7 @@ void
 
 <h3 id = "language-type-basic">Basic Type</h3>
 <p>
-  A Type that does not have dimensions is called a Basic Type. <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-package">Package Type </ a>, <a href = "#language-type- any-object ">Any Object Type</a>, <a href="#language-type-string">String Type</a> is a Basic Type.
+  A Type that does not have dimensions is called a Basic Type. <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-class">Class Type </ a>, <a href = "#language-type- any-object ">Any Object Type</a>, <a href="#language-type-string">String Type</a> is a Basic Type.
 </p>
 
 <h3 id = "language-type-array">Array Type</h3>
@@ -6925,10 +6925,10 @@ $bytes->[1] = 'd';
   Multi Numeric Type is a type that can represent continuous numerical values.
 </p>
 <p>
-  Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in <a href="#language-package-definition">Package Definition</a>.
+  Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in <a href="#language-class-definition">Class Definition</a>.
 </p>
 <pre>
-package Point_3i : mulnum_t {
+class Point_3i : mulnum_t {
   has x : int;
   has y : int;
   has z : int;
@@ -6965,10 +6965,10 @@ my $point_ref : Point_3i& = \$point;
   Reference Type cannot be used as Return Value Type in <a href="#language-method-definition">Method Definition</a>.
 </p>
 <p>
-  Reference Type cannot be used as the Type of Field in <a href="#language-package-definition">Package Definition</a>.
+  Reference Type cannot be used as the Type of Field in <a href="#language-class-definition">Class Definition</a>.
 </p>
 <p>
-  Reference Type cannot be used as the Type of Package Variable in <a href="#language-package-definition">Package Definition</a>.
+  Reference Type cannot be used as the Type of Class Variable in <a href="#language-class-definition">Class Definition</a>.
 </p>
 <p>
   If the Reference Type is used at an Invalid location, Compile Error occurs
@@ -7531,7 +7531,7 @@ die EXPRESSION;
   Expression must be <a href="#language-type-string">String Type</a>.
 </p>
 <p>
-  When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes Package Name, Method Name, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
+  When the die statement is executed, the stack trace and the String specified by Expression are displayed, and the program ends. The stack trace includes Class Name, Method Name, File Name and line number. File Name is a relative File Name from the path where Module is loaded.
 </p>
 <pre>
 Error
@@ -7592,13 +7592,13 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
 </ul>
 
 <p>
-  Callback Type in SPVM is a Package Type in which only one unnamed Method with no implementation is defined. If callback_tDescriptor is specified in <a href="#language-package-definition">Package Definition</a>, it becomes Callback Type.
+  Callback Type in SPVM is a Class Type in which only one unnamed Method with no implementation is defined. If callback_tDescriptor is specified in <a href="#language-class-definition">Class Definition</a>, it becomes Callback Type.
 </p>
 <p>
   The purpose of Callback Type is to provide a Type that can be assigned to different objects when they have the same MethodDefinition. Consider that the function corresponding to the C function pointer is realized in SPVM.
 </p>
 <pre>
-package Foo1 {
+class Foo1 {
   sub new : Foo1 () {
     new Foo1;
   }
@@ -7607,7 +7607,7 @@ package Foo1 {
   }
 }
 
-package Foo2 {
+class Foo2 {
   sub new : Foo2 () {
     new Foo2;
   }
@@ -7616,7 +7616,7 @@ package Foo2 {
   }
 }
 
-package FooCallback : callback_t {
+class FooCallback : callback_t {
 sub : int ($self : self, $num : int);
 }
 </pre>
@@ -7663,7 +7663,7 @@ sub : TYPE_NAME  ($self : self, ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
 </pre>
 
 <p>
-  When Create Callback Object is performed, <a href="#language-package-definition">Package Definition</a> is performed internally, an object based on that Package is generated, and <a href = " Returned as # language-expression ">Expression</a>. It is possible to assign to a variable like the following.
+  When Create Callback Object is performed, <a href="#language-class-definition">Class Definition</a> is performed internally, an object based on that Class is generated, and <a href = " Returned as # language-expression ">Expression</a>. It is possible to assign to a variable like the following.
 </p>
 
 <pre>
@@ -7723,14 +7723,14 @@ my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object
   If <a href="#language-lex-var">Lexical Variable</a> with the same name as the Capture variable exists in the Scope, access the Lexical Variable.
 </p>
 <p>
-  If there is a <a href="#language-package-var">Package Variable</a> with the same name as the Capture variable, access the Capture variable.
+  If there is a <a href="#language-class-var">Class Variable</a> with the same name as the Capture variable, access the Capture variable.
 </p>
 <p>
   If you write Create Callback Object and Capture without using syntax sugar, it will be as follows.
 </p>
 
 <pre>
-package ComapartorImpl {
+class ComapartorImpl {
   has foo : int;
   has bar : long;
 

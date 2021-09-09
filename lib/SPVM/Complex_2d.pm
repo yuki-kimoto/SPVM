@@ -14,7 +14,7 @@ Complex_2d is double complex type.
 
 This module is multi numeric type.
 
-  package Complex_2d : mulnum_t {
+  class Complex_2d : mulnum_t {
     has re : double;
     has im : double;
   }

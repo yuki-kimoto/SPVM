@@ -1,4 +1,4 @@
-package TestCase::CompileError::Value::Fields17 : mulnum_t {
+class TestCase::CompileError::Value::Fields17 : mulnum_t {
   has x1 : int;
   has x2 : int;
   has x3 : int;

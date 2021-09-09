@@ -45,37 +45,37 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->get_field_string_chars_by_name_exception);
 }
 
-# package variable access
+# class variable access
 {
-  ok(SPVM::TestCase::NativeAPI->get_package_var_byte_by_name);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_byte_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_short_by_name);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_short_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_int_by_name);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_int_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_long_by_name);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_long_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_float_by_name);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_float_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_double_by_name);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_double_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_object_by_name);
-  ok(SPVM::TestCase::NativeAPI->get_package_var_object_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_byte_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_byte_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_short_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_short_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_int_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_int_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_long_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_long_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_float_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_float_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_double_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_double_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_object_by_name);
+  ok(SPVM::TestCase::NativeAPI->get_class_var_object_by_name_exception);
 
-  ok(SPVM::TestCase::NativeAPI->set_package_var_byte_by_name);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_byte_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_short_by_name);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_short_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_int_by_name);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_int_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_long_by_name);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_long_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_float_by_name);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_float_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_double_by_name);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_double_by_name_exception);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_object_by_name);
-  ok(SPVM::TestCase::NativeAPI->set_package_var_object_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_byte_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_byte_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_short_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_short_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_int_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_int_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_long_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_long_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_float_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_float_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_double_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_double_by_name_exception);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_object_by_name);
+  ok(SPVM::TestCase::NativeAPI->set_class_var_object_by_name_exception);
   
 
   ok(SPVM::TestCase::NativeAPI->push_mortal_multi);

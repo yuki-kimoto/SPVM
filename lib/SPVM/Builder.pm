@@ -16,8 +16,6 @@ use SPVM();
 sub build_dir { shift->{build_dir} }
 sub module_dirs { shift->{module_dirs} }
 
-sub get_added_class_names { shift->get_added_package_names(@_) }
-
 sub new {
   my $class = shift;
   
@@ -82,11 +80,11 @@ sub create_build_lib_path {
 }
 
 sub get_shared_lib_file_dist {
-  my ($self, $perl_package_name, $category) = @_;
+  my ($self, $perl_class_name, $category) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
-  $perl_package_name = "SPVM::$class_name";
+  $perl_class_name = "SPVM::$class_name";
   
   my $module_module_file = $self->get_module_file($class_name);
   
@@ -96,11 +94,11 @@ sub get_shared_lib_file_dist {
 }
 
 sub build_shared_lib_dist {
-  my ($self, $perl_package_name, $category) = @_;
+  my ($self, $perl_class_name, $category) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
-  $perl_package_name = "SPVM::$class_name";
+  $perl_class_name = "SPVM::$class_name";
 
   my $compile_success = $self->compile_spvm($class_name, '(build_shared_lib_dist)', 0);
   unless ($compile_success) {
@@ -115,15 +113,15 @@ sub build_shared_lib_dist {
   );
   
   my $method_names = $self->get_method_names($class_name, $category);
-  $cc_native->build_shared_lib_dist($perl_package_name);
+  $cc_native->build_shared_lib_dist($perl_class_name);
 }
 
 sub build_and_bind_shared_lib {
-  my ($self, $perl_package_name, $category) = @_;
+  my ($self, $perl_class_name, $category) = @_;
   
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
-  $perl_package_name = "SPVM::$class_name";
+  $perl_class_name = "SPVM::$class_name";
 
   my $cc = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
@@ -136,30 +134,30 @@ sub build_and_bind_shared_lib {
   
   if (@$method_names) {
     # Shared library which is already installed in distribution directory
-    my $shared_lib_file = $self->get_shared_lib_file_dist($perl_package_name, $category);
+    my $shared_lib_file = $self->get_shared_lib_file_dist($perl_class_name, $category);
 
     
     # Try runtime compile if shared library is not found
     unless (-f $shared_lib_file) {
-      $shared_lib_file = $cc->build_shared_lib_runtime($perl_package_name);
+      $shared_lib_file = $cc->build_shared_lib_runtime($perl_class_name);
     }
-    $self->bind_methods($cc, $shared_lib_file, $perl_package_name, $category);
+    $self->bind_methods($cc, $shared_lib_file, $perl_class_name, $category);
   }
   
 }
 
 sub bind_methods {
-  my ($self, $cc, $shared_lib_file, $perl_package_name, $category) = @_;
+  my ($self, $cc, $shared_lib_file, $perl_class_name, $category) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^SPVM:://;
-  $perl_package_name = "SPVM::$class_name";
+  $perl_class_name = "SPVM::$class_name";
   
   # m library is maybe not dynamic link library
   my %must_not_load_libs = map { $_ => 1 } ('m');
 
   # Load pre-required dynamic library
-  my $bconf = $self->get_config($perl_package_name, $category);
+  my $bconf = $self->get_config($perl_class_name, $category);
   my $lib_dirs = $bconf->get_lib_dirs;
   {
     local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
@@ -180,32 +178,32 @@ sub bind_methods {
   my $method_infos = [];
   for my $method_name (@$method_names) {
     my $method_info = {};
-    $method_info->{package_name} = $perl_package_name;
+    $method_info->{class_name} = $perl_class_name;
     $method_info->{method_name} = $method_name;
     push @$method_infos, $method_info;
   }
   
   
-  # Add anon package sub names if precompile
+  # Add anon class sub names if precompile
   if ($category eq 'precompile') {
-    my $anon_package_names = $self->get_anon_package_names_by_parent_package_name($class_name);
-    for my $anon_package_name (@$anon_package_names) {
+    my $anon_class_names = $self->get_anon_class_names_by_parent_class_name($class_name);
+    for my $anon_class_name (@$anon_class_names) {
       my $method_info = {};
-      $method_info->{package_name} = $anon_package_name;
+      $method_info->{class_name} = $anon_class_name;
       $method_info->{method_name} = "";
       push @$method_infos, $method_info;
     }
   }
 
   for my $method_info (@$method_infos) {
-    my $perl_package_name = $method_info->{package_name};
+    my $perl_class_name = $method_info->{class_name};
     my $method_name = $method_info->{method_name};
 
-    my $class_name = $perl_package_name;
+    my $class_name = $perl_class_name;
     $class_name =~ s/^SPVM:://;
-    $perl_package_name = "SPVM::$class_name";
+    $perl_class_name = "SPVM::$class_name";
     
-    my $method_abs_name = "${perl_package_name}::$method_name";
+    my $method_abs_name = "${perl_class_name}::$method_name";
     
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
 
@@ -251,16 +249,16 @@ EOS
 }
 
 sub get_config {
-  my ($self, $perl_package_name, $category) = @_;
+  my ($self, $perl_class_name, $category) = @_;
 
-  my $class_name = $perl_package_name;
+  my $class_name = $perl_class_name;
   $class_name =~ s/^(SPVM::)+//;
   
   my $module_file = $self->get_module_file($class_name);
-  my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($module_file, $perl_package_name);
+  my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $perl_class_name);
   
   # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($perl_package_name, $category, 'config');
+  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($perl_class_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
   # Config

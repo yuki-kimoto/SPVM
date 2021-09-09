@@ -1,4 +1,4 @@
-package TestCase::Switch {
+class TestCase::Switch {
 
   sub switch_return : int () {
     my $ret = switch_return_method();

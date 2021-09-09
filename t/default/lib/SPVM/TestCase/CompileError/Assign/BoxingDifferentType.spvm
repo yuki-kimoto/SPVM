@@ -1,4 +1,4 @@
-package TestCase::CompileError::Assign::BoxingDifferentType {
+class TestCase::CompileError::Assign::BoxingDifferentType {
 
   sub main : int () {
     my $num : Long = 3;

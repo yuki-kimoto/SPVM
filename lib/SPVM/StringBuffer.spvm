@@ -1,4 +1,4 @@
-package StringBuffer : precompile {
+class StringBuffer : precompile {
   use Fn (copy_array_range_byte);
 
   has value : byte[];

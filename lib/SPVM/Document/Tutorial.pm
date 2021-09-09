@@ -52,7 +52,7 @@ Create "SPVM/MyMath.spvm" in the "lib" directory, and you write the following co
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package MyMath {
+class MyMath {
   sub sum : int ($nums : int[]) {
     
     my $total = 0;
@@ -65,25 +65,25 @@ package MyMath {
 }
 </pre>
 
-<h4>Package Definition</h4>
+<h4>Class Definition</h4>
 
-Write <b>Package Definition</b> by <b>package</b> keyword. Unlike Perl, SPVM always need package. The whole SPVM grammar is a set of packages.
+Write <b>Class Definition</b> by <b>class</b> keyword. Unlike Perl, SPVM always need class. The whole SPVM grammar is a set of classs.
 
 <pre>
-# Package Definition
-package MyMath {
+# Class Definition
+class MyMath {
 
 }
 </pre>
 
-See also <a href="/language.html#language-package">Package - SPVM Language Specification</a> about Package.
+See also <a href="/language.html#language-class">Class - SPVM Language Specification</a> about Class.
 
 <h4>Method Definition</h4>
 
 Write <b>Method Definition</b> by <b>sub</b> keyword. Unlike Perl, SPVM Method Definition have return type and argument types.
   
 <pre>
-package MyMath {
+class MyMath {
   # Method Definition
   sub sum : int ($nums : int[]) {
     
@@ -414,7 +414,7 @@ SPVM Module:
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package MyMath {
+class MyMath {
   sub sum : int ($nums : int[]) {
     
     my $total = 0;
@@ -455,7 +455,7 @@ Precompiled SPVM Method. This means SPVM code is converted to Machine Code:
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package MyMath : precompile {
+class MyMath : precompile {
   sub sum_precompile : int ($nums : int[]) {
     
     my $total = 0;
@@ -489,7 +489,7 @@ SPVM Native Method. This means SPVM method call C/C++ native method:
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package MyMath {
+class MyMath {
   native sub sum_native : int ($nums : int[]);
 }
 
@@ -592,7 +592,7 @@ SPVM Method Definition.
 
 <pre>
 # lib/SPVM/BindCLib.spvm
-package BindCLib {
+class BindCLib {
   native sub sum : int ($nums : int[]);
 }
 </pre>

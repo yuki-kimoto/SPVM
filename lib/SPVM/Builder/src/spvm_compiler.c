@@ -5,7 +5,7 @@
 
 #include "spvm_compiler.h"
 #include "spvm_type.h"
-#include "spvm_package.h"
+#include "spvm_class.h"
 #include "spvm_type.h"
 #include "spvm_op.h"
 #include "spvm_hash.h"
@@ -18,7 +18,7 @@
 #include "spvm_method.h"
 #include "spvm_method.h"
 #include "spvm_field.h"
-#include "spvm_package_var.h"
+#include "spvm_class_var.h"
 #include "spvm_native.h"
 #include "spvm_opcode.h"
 #include "spvm_basic_type.h"
@@ -47,41 +47,41 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->methods = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->method_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->packages = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->package_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->package_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->classs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->class_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->class_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->module_dirs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->loaded_module_file_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->module_source_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->added_packages = SPVM_LIST_new(0);
+  compiler->added_classs = SPVM_LIST_new(0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
   
   // Add Byte source
-  const char* spvm_byte_module_source = "package Byte {\n  has value : ro byte;\n  sub new : Byte ($value : byte) {\n    my $self = new Byte;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_byte_module_source = "class Byte {\n  has value : ro byte;\n  sub new : Byte ($value : byte) {\n    my $self = new Byte;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Byte", strlen("Byte"), (void*)spvm_byte_module_source);
 
   // Add Short source
-  const char* spvm_short_module_source = "package Short {\n  has value : ro short;\n  sub new : Short ($value : short) {\n    my $self = new Short;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_short_module_source = "class Short {\n  has value : ro short;\n  sub new : Short ($value : short) {\n    my $self = new Short;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Short", strlen("Short"), (void*)spvm_short_module_source);
 
   // Add Int source
-  const char* spvm_int_module_source = "package Int {\n  has value : ro int;\n  sub new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_int_module_source = "class Int {\n  has value : ro int;\n  sub new : Int ($value : int) {\n    my $self = new Int;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Int", strlen("Int"), (void*)spvm_int_module_source);
 
   // Add Long source
-  const char* spvm_long_module_source = "package Long {\n  has value : ro long;\n  sub new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_long_module_source = "class Long {\n  has value : ro long;\n  sub new : Long ($value : long) {\n    my $self = new Long;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Long", strlen("Long"), (void*)spvm_long_module_source);
 
   // Add Float source
-  const char* spvm_float_module_source = "package Float {\n  has value : ro float;\n  sub new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_float_module_source = "class Float {\n  has value : ro float;\n  sub new : Float ($value : float) {\n    my $self = new Float;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Float", strlen("Float"), (void*)spvm_float_module_source);
 
   // Add Double source
-  const char* spvm_double_module_source = "package Double {\n  has value : ro double;\n  sub new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  const char* spvm_double_module_source = "class Double {\n  has value : ro double;\n  sub new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Double", strlen("Double"), (void*)spvm_double_module_source);
 
   // use Byte module
@@ -313,11 +313,11 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   SPVM_yydebug = 0;
 #endif
   
-  // Initialize added package names
-  if (compiler->tmp_added_package_names) {
-    SPVM_LIST_free(compiler->tmp_added_package_names);
+  // Initialize added class names
+  if (compiler->tmp_added_class_names) {
+    SPVM_LIST_free(compiler->tmp_added_class_names);
   }
-  compiler->tmp_added_package_names = SPVM_LIST_new(0);
+  compiler->tmp_added_class_names = SPVM_LIST_new(0);
 
   /* Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
@@ -340,13 +340,13 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     return;
   }
   
-  // Add added package names if compile is success
-  SPVM_LIST_free(compiler->added_packages);
-  compiler->added_packages = SPVM_LIST_new(0);
-  for (int32_t i = 0; i < compiler->tmp_added_package_names->length; i++) {
-    const char* package_name = (const char*)SPVM_LIST_fetch(compiler->tmp_added_package_names, i);
-    SPVM_PACKAGE* pakcage = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
-    SPVM_LIST_push(compiler->added_packages, pakcage);
+  // Add added class names if compile is success
+  SPVM_LIST_free(compiler->added_classs);
+  compiler->added_classs = SPVM_LIST_new(0);
+  for (int32_t i = 0; i < compiler->tmp_added_class_names->length; i++) {
+    const char* class_name = (const char*)SPVM_LIST_fetch(compiler->tmp_added_class_names, i);
+    SPVM_CLASS* pakcage = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+    SPVM_LIST_push(compiler->added_classs, pakcage);
   }
 }
 
@@ -546,37 +546,37 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
   return field_signature;
 }
 
-const char* SPVM_COMPILER_create_package_var_signature(SPVM_COMPILER* compiler, SPVM_PACKAGE_VAR* package_var) {
+const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SPVM_CLASS_VAR* class_var) {
   
   int32_t length = 0;
   
   // Calcurate signature length
   {
     // Basic type
-    length += strlen(package_var->type->basic_type->name);
+    length += strlen(class_var->type->basic_type->name);
     
     // Type dimension
-    length += package_var->type->dimension * 2;
+    length += class_var->type->dimension * 2;
   }
   
-  char* package_var_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* class_var_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
   
-  // Calcurate package_var signature length
-  char* bufptr = package_var_signature;
+  // Calcurate class_var signature length
+  char* bufptr = class_var_signature;
   {
     // Basic type
-    memcpy(bufptr, package_var->type->basic_type->name, strlen(package_var->type->basic_type->name));
-    bufptr += strlen(package_var->type->basic_type->name);
+    memcpy(bufptr, class_var->type->basic_type->name, strlen(class_var->type->basic_type->name));
+    bufptr += strlen(class_var->type->basic_type->name);
     
     // Type dimension
     int32_t dim_index;
-    for (dim_index = 0; dim_index < package_var->type->dimension; dim_index++) {
+    for (dim_index = 0; dim_index < class_var->type->dimension; dim_index++) {
       memcpy(bufptr, "[]", 2);
       bufptr += 2;
     }
   }
 
-  return package_var_signature;
+  return class_var_signature;
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {

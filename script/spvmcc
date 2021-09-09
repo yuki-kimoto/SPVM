@@ -20,14 +20,14 @@ SPVM::Builder::Util::getopt
   '-f|force' => \my $force,
 ;
 
-die SPVM::Builder::Util::extract_usage if $help || !(my $target_package_name = shift);
+die SPVM::Builder::Util::extract_usage if $help || !(my $target_class_name = shift);
 
 push @module_dirs, @INC;
 
 my $build_exe = SPVM::Builder::Exe->new(
   module_dirs => \@module_dirs,
   output_file => $output_file,
-  target_package_name => $target_package_name,
+  target_class_name => $target_class_name,
   quiet => $quiet,
   optimize => $optimize,
   extra_compiler_flags => $extra_compiler_flags,

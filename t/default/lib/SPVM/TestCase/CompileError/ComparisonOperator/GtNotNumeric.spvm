@@ -1,4 +1,4 @@
-package TestCase::CompileError::ComparisonOperator::GtNotNumeric {
+class TestCase::CompileError::ComparisonOperator::GtNotNumeric {
   use TestCase::Minimal;
   
   sub main : int () {

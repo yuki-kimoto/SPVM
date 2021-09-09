@@ -17,7 +17,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Callback->basic);
   ok(SPVM::TestCase::Callback->comparator);
   ok(SPVM::TestCase::Callback->capture);
-  ok(SPVM::TestCase::Callback->capture_var_high_precidence_than_package_var);
+  ok(SPVM::TestCase::Callback->capture_var_high_precidence_than_class_var);
 }
 
 # All object is freed

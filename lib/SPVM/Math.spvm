@@ -1,4 +1,4 @@
-package Math {
+class Math {
   use Complex_2f;
   use Complex_2d;
   

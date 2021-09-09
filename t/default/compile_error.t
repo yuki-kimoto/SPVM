@@ -14,16 +14,16 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
-# Package
+# Class
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Package::PackageNameDifferntFromModuleName', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Class::ClassNameDifferntFromModuleName', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Package::packagePartNameStartWithUpperCase', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Class::classPartNameStartWithUpperCase', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
@@ -42,7 +42,7 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('PackageNameCompileError', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('ClassNameCompileError', __FILE__, __LINE__);
     ok($success == 0);
   }
 }
@@ -143,36 +143,36 @@ use lib "$FindBin::Bin/lib";
   }
 }
 
-# Package Variable
+# Class Variable
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::PackageVar::Private', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::ClassVar::Private', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::PackageVar::OurPackageVarNameStartDigit', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::ClassVar::OurClassVarNameStartDigit', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::PackageVar::OurPackageVarNameInvalidColon', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::ClassVar::OurClassVarNameInvalidColon', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::PackageVar::OurPackageVarNameEndColon2', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::ClassVar::OurClassVarNameEndColon2', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::PackageVar::OurPackageVarNameContainsUnderScoreTwice', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::ClassVar::OurClassVarNameContainsUnderScoreTwice', __FILE__, __LINE__);
     ok($success == 0);
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::PackageVar::OurPackageVarNameColon2Twice', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::ClassVar::OurClassVarNameColon2Twice', __FILE__, __LINE__);
     ok($success == 0);
   }
 }

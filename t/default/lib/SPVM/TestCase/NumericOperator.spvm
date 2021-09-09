@@ -1,4 +1,4 @@
-package TestCase::NumericOperator {
+class TestCase::NumericOperator {
   # Negate
   sub negate : int () {
     my $num_byte = (byte)1;

@@ -1,4 +1,4 @@
-package TestCase::CompileError::TypeCantBeDetectedUndefDefault {
+class TestCase::CompileError::TypeCantBeDetectedUndefDefault {
   sub main : int () {
     my $value;
   }

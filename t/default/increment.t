@@ -20,7 +20,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Increment->pre_inc_array_access_var_index);
   ok(SPVM::TestCase::Increment->pre_inc_field_access);
   ok(SPVM::TestCase::Increment->pre_inc_deref);
-  ok(SPVM::TestCase::Increment->pre_inc_package_var_access);
+  ok(SPVM::TestCase::Increment->pre_inc_class_var_access);
   ok(SPVM::TestCase::Increment->pre_inc_array_field_access_constant_index);
   
   ok(SPVM::TestCase::Increment->pre_inc_array_access_invocant_not_var);
@@ -35,7 +35,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Increment->pre_dec_array_access_var_index);
   ok(SPVM::TestCase::Increment->pre_dec_field_access);
   ok(SPVM::TestCase::Increment->pre_dec_deref);
-  ok(SPVM::TestCase::Increment->pre_dec_package_var_access);
+  ok(SPVM::TestCase::Increment->pre_dec_class_var_access);
   ok(SPVM::TestCase::Increment->pre_dec_array_field_access_constant_index);
 
   ok(SPVM::TestCase::Increment->pre_dec_array_access_invocant_not_var);
@@ -50,7 +50,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Increment->post_inc_array_access_var_index);
   ok(SPVM::TestCase::Increment->post_inc_field_access);
   ok(SPVM::TestCase::Increment->post_inc_deref);
-  ok(SPVM::TestCase::Increment->post_inc_package_var_access);
+  ok(SPVM::TestCase::Increment->post_inc_class_var_access);
   ok(SPVM::TestCase::Increment->post_inc_array_field_access_constant_index);
 
   ok(SPVM::TestCase::Increment->post_inc_array_access_invocant_not_var);
@@ -65,7 +65,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::Increment->post_dec_array_access_var_index);
   ok(SPVM::TestCase::Increment->post_dec_field_access);
   ok(SPVM::TestCase::Increment->post_dec_deref);
-  ok(SPVM::TestCase::Increment->post_dec_package_var_access);
+  ok(SPVM::TestCase::Increment->post_dec_class_var_access);
   ok(SPVM::TestCase::Increment->post_dec_array_field_access_constant_index);
 
   ok(SPVM::TestCase::Increment->post_dec_array_access_invocant_not_var);

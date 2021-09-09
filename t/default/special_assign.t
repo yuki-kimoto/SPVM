@@ -20,7 +20,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::SpecialAssign->special_assign_add_array_access_var_index);
   ok(SPVM::TestCase::SpecialAssign->special_assign_add_field_access);
   ok(SPVM::TestCase::SpecialAssign->special_assign_add_deref);
-  ok(SPVM::TestCase::SpecialAssign->special_assign_add_package_var_access);
+  ok(SPVM::TestCase::SpecialAssign->special_assign_add_class_var_access);
   ok(SPVM::TestCase::SpecialAssign->special_assign_add_array_field_access_constant_index);
   
   ok(SPVM::TestCase::SpecialAssign->special_assign_add_array_access_invocant_not_var);

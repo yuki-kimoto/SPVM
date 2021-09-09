@@ -1,4 +1,4 @@
-package TestCase::CompileError::Assign::ConstToNoConst {
+class TestCase::CompileError::Assign::ConstToNoConst {
 
   sub main : int () {
     {

@@ -1,4 +1,4 @@
-package TestCase::BitOperator {
+class TestCase::BitOperator {
   # Complement
   sub complement : int () {
     my $num_byte = (byte)0xF0;

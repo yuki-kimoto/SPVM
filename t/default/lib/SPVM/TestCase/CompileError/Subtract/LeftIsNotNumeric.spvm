@@ -1,4 +1,4 @@
-package TestCase::CompileError::Subtract::LeftIsNotNumeric {
+class TestCase::CompileError::Subtract::LeftIsNotNumeric {
   use TestCase::Minimal;
   sub main : int () {
     my $minimal = TestCase::Minimal->new;

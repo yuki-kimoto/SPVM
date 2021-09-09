@@ -1,4 +1,4 @@
-package List : precompile {
+class List : precompile {
   use Fn(new_array_proto);
   
   has values   : oarray;

@@ -17,14 +17,14 @@ sub import {
     find(
       {
         wanted => sub {
-          my $package_name = $File::Find::name;
-          if ($package_name =~ /\.spvm$/) {
-            $package_name =~ s|$test_precompile_dir_re||;
-            $package_name =~ s|^/SPVM/||;
-            $package_name =~ s|/|::|g;
-            $package_name =~ s|\.spvm$||;
+          my $class_name = $File::Find::name;
+          if ($class_name =~ /\.spvm$/) {
+            $class_name =~ s|$test_precompile_dir_re||;
+            $class_name =~ s|^/SPVM/||;
+            $class_name =~ s|/|::|g;
+            $class_name =~ s|\.spvm$||;
             
-            SPVM::Precompile->import($package_name);
+            SPVM::Precompile->import($class_name);
           }
         },
         no_chdir => 1,

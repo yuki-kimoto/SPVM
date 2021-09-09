@@ -9,7 +9,7 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_hash.h"
 #include "spvm_yacc_util.h"
-#include "spvm_package.h"
+#include "spvm_class.h"
 #include "spvm_field.h"
 #include "spvm_limit.h"
 #include "spvm_basic_type.h"
@@ -32,7 +32,7 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
     "MULNUM_FLOAT",
     "MULNUM_DOUBLE",
     "ANY_OBJECT",
-    "PACKAGE",
+    "CLASS",
     "NUMERIC_ARRAY",
     "MULNUM_ARRAY",
     "OBJECT_ARRAY",
@@ -95,9 +95,9 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
   }
   else if (SPVM_TYPE_is_multi_numeric_type(compiler, basic_type_id, dimension, flag)) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-    SPVM_PACKAGE* value_package = basic_type->package;
+    SPVM_CLASS* value_class = basic_type->class;
     
-    SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+    SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
     
     SPVM_TYPE* field_type = first_field->type;
 
@@ -138,8 +138,8 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
     else if (SPVM_TYPE_is_any_object_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT;
     }
-    else if (SPVM_TYPE_is_package_type(compiler, basic_type_id, dimension, flag)) {
-      type_category = SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE;
+    else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
+      type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
     }
     else if (SPVM_TYPE_is_numeric_array_type(compiler, basic_type_id, dimension, flag)) {
       type_category = SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY;
@@ -182,9 +182,9 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
       }
       default: {
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-        SPVM_PACKAGE* value_package = basic_type->package;
+        SPVM_CLASS* value_class = basic_type->class;
         
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(value_package->fields, 0);
+        SPVM_FIELD* first_field = SPVM_LIST_fetch(value_class->fields, 0);
         
         SPVM_TYPE* field_type = first_field->type;
 
@@ -233,28 +233,28 @@ int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_
 
 int32_t SPVM_TYPE_has_callback(
   SPVM_COMPILER* compiler,
-  int32_t package_basic_type_id, int32_t package_type_dimension, int32_t package_type_flag,
+  int32_t class_basic_type_id, int32_t class_type_dimension, int32_t class_type_flag,
   int32_t callback_basic_type_id, int32_t callback_type_dimension, int32_t callback_type_flag)
 {
   (void)compiler;
 
   assert(
-    SPVM_TYPE_is_class_type(compiler, package_basic_type_id, package_type_dimension, package_type_flag)
+    SPVM_TYPE_is_module_type(compiler, class_basic_type_id, class_type_dimension, class_type_flag)
     || SPVM_TYPE_is_callback_type(compiler, callback_basic_type_id, callback_type_dimension, callback_type_flag)
   );
 
-  SPVM_BASIC_TYPE* package_basic_type = SPVM_LIST_fetch(compiler->basic_types, package_basic_type_id);
+  SPVM_BASIC_TYPE* class_basic_type = SPVM_LIST_fetch(compiler->basic_types, class_basic_type_id);
   SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
   
-  SPVM_PACKAGE* package = package_basic_type->package;
-  SPVM_PACKAGE* callback = callback_basic_type->package;
+  SPVM_CLASS* class = class_basic_type->class;
+  SPVM_CLASS* callback = callback_basic_type->class;
   
-  // Package which have only anon sub
-  if (package->flag & SPVM_PACKAGE_C_FLAG_ANON_METHOD_PACKAGE) {
-    assert(package->methods->length == 1);
+  // Class which have only anon sub
+  if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+    assert(class->methods->length == 1);
     assert(callback->methods->length == 1);
     SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback->methods, 0);
-    SPVM_METHOD* found_method = SPVM_LIST_fetch(package->methods, 0);
+    SPVM_METHOD* found_method = SPVM_LIST_fetch(class->methods, 0);
     
     if (strcmp(method_callback->signature, found_method->signature) == 0) {
       return 1;
@@ -263,12 +263,12 @@ int32_t SPVM_TYPE_has_callback(
       return 0;
     }
   }
-  // Normal package
+  // Normal class
   else {
     assert(callback->methods->length == 1);
     SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback->methods, 0);
     
-    SPVM_METHOD* found_method = SPVM_HASH_fetch(package->method_symtable, method_callback->name, strlen(method_callback->name));
+    SPVM_METHOD* found_method = SPVM_HASH_fetch(class->method_symtable, method_callback->name, strlen(method_callback->name));
     if (!found_method) {
       return 0;
     }
@@ -836,7 +836,7 @@ int32_t SPVM_TYPE_is_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id,
   else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
-  else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
+  else if (SPVM_TYPE_is_module_type(compiler, basic_type_id, dimension, flag)) {
     return 1;
   }
   else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, dimension, flag)) {
@@ -871,7 +871,7 @@ int32_t SPVM_TYPE_is_object_array_type(SPVM_COMPILER* compiler, int32_t basic_ty
       else if (SPVM_TYPE_is_string_type(compiler, basic_type_id, element_dimension, flag)) {
         return 1;
       }
-      else if (SPVM_TYPE_is_class_type(compiler, basic_type_id, element_dimension, flag)) {
+      else if (SPVM_TYPE_is_module_type(compiler, basic_type_id, element_dimension, flag)) {
         return 1;
       }
       else if (SPVM_TYPE_is_callback_type(compiler, basic_type_id, element_dimension, flag)) {
@@ -896,38 +896,38 @@ int32_t SPVM_TYPE_is_any_object_type(SPVM_COMPILER* compiler, int32_t basic_type
   return dimension == 0 && basic_type_id == SPVM_BASIC_TYPE_C_ID_ANY_OBJECT && !(flag & SPVM_TYPE_C_FLAG_REF);
 }
 
-int32_t SPVM_TYPE_is_package_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   (void)compiler;
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   
-  int32_t is_package_type;
+  int32_t is_class_type;
   if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = basic_type->name;
-    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    // Package
-    if (package) {
-      is_package_type = 1;
+    SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    // Class
+    if (class) {
+      is_class_type = 1;
     }
     // Numeric type
     else {
-      is_package_type = 0;
+      is_class_type = 0;
     }
   }
   // Array
   else {
-    is_package_type = 0;
+    is_class_type = 0;
   }
   
-  return is_package_type;
+  return is_class_type;
 }
 
-int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  if (SPVM_TYPE_is_package_type(compiler, basic_type_id, dimension, flag)) {
+int32_t SPVM_TYPE_is_module_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
+  if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
-    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_CLASS) {
+    SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    if (class->category == SPVM_CLASS_C_CATEGORY_CLASS) {
       return 1;
     }
     else {
@@ -940,11 +940,11 @@ int32_t SPVM_TYPE_is_class_type(SPVM_COMPILER* compiler, int32_t basic_type_id, 
 }
 
 int32_t SPVM_TYPE_is_callback_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
-  if (SPVM_TYPE_is_package_type(compiler, basic_type_id, dimension, flag)) {
+  if (SPVM_TYPE_is_class_type(compiler, basic_type_id, dimension, flag)) {
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     const char* basic_type_name = basic_type->name;
-    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_CALLBACK) {
+    SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
       return 1;
     }
     else {
@@ -1021,10 +1021,10 @@ int32_t SPVM_TYPE_is_multi_numeric_type(SPVM_COMPILER* compiler, int32_t basic_t
   int32_t is_mulnum_t;
   if (dimension == 0 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = basic_type->name;
-    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    // Package
-    if (package) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+    SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    // Class
+    if (class) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
         is_mulnum_t = 1;
       }
       else {
@@ -1052,10 +1052,10 @@ int32_t SPVM_TYPE_is_value_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_
   int32_t is_value_ref_type;
   if (dimension == 0 && (flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = basic_type->name;
-    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    // Package
-    if (package) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+    SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    // Class
+    if (class) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
         is_value_ref_type = 1;
       }
       else {
@@ -1083,10 +1083,10 @@ int32_t SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, int32_t basic_typ
   int32_t is_value_array_type;
   if (dimension == 1 && !(flag & SPVM_TYPE_C_FLAG_REF)) {
     const char* basic_type_name = basic_type->name;
-    SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
-    // Package
-    if (package) {
-      if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+    SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+    // Class
+    if (class) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
         is_value_array_type = 1;
       }
       else {
@@ -1114,11 +1114,11 @@ int32_t SPVM_TYPE_basic_type_is_multi_numeric_type(SPVM_COMPILER* compiler, int3
   
   int32_t is_basic_type_mulnum_t;
   const char* basic_type_name = basic_type->name;
-  SPVM_PACKAGE* package = SPVM_HASH_fetch(compiler->package_symtable, basic_type_name, strlen(basic_type_name));
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
   
-  // Package
-  if (package) {
-    if (package->category == SPVM_PACKAGE_C_CATEGORY_VALUE) {
+  // Class
+  if (class) {
+    if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
       is_basic_type_mulnum_t = 1;
     }
     else {
@@ -1143,11 +1143,11 @@ int32_t SPVM_TYPE_get_width(SPVM_COMPILER* compiler, int32_t basic_type_id, int3
     SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
     assert(basic_type);
     
-    SPVM_PACKAGE* package = basic_type->package;
+    SPVM_CLASS* class = basic_type->class;
     
-    assert(package);
+    assert(class);
     
-    width = package->fields->length;
+    width = class->fields->length;
   }
   else {
     width = 1;

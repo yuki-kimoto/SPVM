@@ -1,3 +1,3 @@
-package TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice {
+class TestCase::CompileError::Method::MethodNameContainsUnderScoreTwice {
   sub Foo__Bar : int () {}
 }

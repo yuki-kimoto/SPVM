@@ -1,4 +1,4 @@
-package TestCase::Lib::Hash {
+class TestCase::Lib::Hash {
   use Int;
   use Hash;
   use Comparator::Object;

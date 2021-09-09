@@ -1,32 +1,32 @@
-#ifndef SPVM_PACKAGE_H
-#define SPVM_PACKAGE_H
+#ifndef SPVM_CLASS_H
+#define SPVM_CLASS_H
 
 #include "spvm_typedecl.h"
 
 enum {
-  SPVM_PACKAGE_C_CATEGORY_CLASS,
-  SPVM_PACKAGE_C_CATEGORY_CALLBACK,
-  SPVM_PACKAGE_C_CATEGORY_VALUE,
+  SPVM_CLASS_C_CATEGORY_CLASS,
+  SPVM_CLASS_C_CATEGORY_CALLBACK,
+  SPVM_CLASS_C_CATEGORY_VALUE,
 };
 
 enum {
-  SPVM_PACKAGE_C_FLAG_POINTER = 1,
-  SPVM_PACKAGE_C_FLAG_ANON_METHOD_PACKAGE = 2,
-  SPVM_PACKAGE_C_FLAG_PUBLIC = 4,
+  SPVM_CLASS_C_FLAG_POINTER = 1,
+  SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS = 2,
+  SPVM_CLASS_C_FLAG_PUBLIC = 4,
 };
 
-struct spvm_package {
-  SPVM_OP* op_package;
+struct spvm_class {
+  SPVM_OP* op_class;
   SPVM_OP* op_name;
-  SPVM_LIST* package_vars;
-  SPVM_HASH* package_var_symtable;
+  SPVM_LIST* class_vars;
+  SPVM_HASH* class_var_symtable;
   SPVM_LIST* methods;
   SPVM_HASH* method_symtable;
   SPVM_LIST* fields;
   SPVM_HASH* field_symtable;
   SPVM_METHOD* method_destructor;
-  SPVM_LIST* info_package_var_ids;
-  SPVM_HASH* info_package_var_id_symtable;
+  SPVM_LIST* info_class_var_ids;
+  SPVM_HASH* info_class_var_id_symtable;
   SPVM_LIST* info_method_ids;
   SPVM_HASH* info_method_id_symtable;
   SPVM_LIST* info_field_ids;
@@ -54,7 +54,7 @@ struct spvm_package {
   int8_t is_anon;
 };
 
-SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
-const char* const* SPVM_PACKAGE_C_CATEGORY_NAMES(void);
+SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler);
+const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void);
 
 #endif

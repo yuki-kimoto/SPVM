@@ -1,4 +1,4 @@
-package TestCase::Constant {
+class TestCase::Constant {
   use Complex_2d;
   use Math (csub);
   

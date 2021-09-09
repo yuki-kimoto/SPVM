@@ -1,4 +1,4 @@
-package TestCase::Term {
+class TestCase::Term {
   sub evaluate_left_to_right : int () {
     {
       my $i = 2;

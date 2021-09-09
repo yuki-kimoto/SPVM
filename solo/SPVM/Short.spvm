@@ -1,4 +1,4 @@
-package Short {
+class Short {
   has val : ro short;
   
   sub new : Short ($value : short) {

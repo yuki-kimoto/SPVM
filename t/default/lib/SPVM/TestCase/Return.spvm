@@ -1,4 +1,4 @@
-package TestCase::Return {
+class TestCase::Return {
 
   sub return_implicite_convertion : int () {
     my $str = return_implicite_convertion_stub();

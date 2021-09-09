@@ -45,7 +45,7 @@ find(
         
         my $content = do { local $/; <$fh> };
         
-        $content =~ s/package\s+([\w:]+)\s*\{/package $1 : precompile {/g;
+        $content =~ s/class\s+([\w:]+)\s*\{/class $1 : precompile {/g;
         
         mkpath $to_dir;
         

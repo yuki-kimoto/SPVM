@@ -1,4 +1,4 @@
-package TestCase::CompileError::Weaken::ArrayNotObject {
+class TestCase::CompileError::Weaken::ArrayNotObject {
   use TestCase::Minimal;
   
   sub main : int () {

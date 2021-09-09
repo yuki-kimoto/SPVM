@@ -34,7 +34,7 @@
 //   Permission is hereby granted to use, copy, modify, and/or distribute
 //   this program, provided that the Copyright, this License, and the
 //   Availability of the original version is retained on all copies and made
-//   accessible to the end-user of any code or package that includes COLAMD
+//   accessible to the end-user of any code or class that includes COLAMD
 //   or any modified version of COLAMD. 
 // 
 //     Availability:

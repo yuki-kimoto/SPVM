@@ -1,4 +1,4 @@
-package TestCase::While {
+class TestCase::While {
   use TestCase::Minimal;
 
   sub condition_my_var_mem_id : int () {

@@ -1,4 +1,4 @@
-package TestCase::CompileError::Convert::ConvertFromRef {
+class TestCase::CompileError::Convert::ConvertFromRef {
   use TestCase::Minimal;
 
   sub main : int () {

@@ -30,7 +30,7 @@ use FindBin;
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
-    target_package_name => $target_class_name,
+    target_class_name => $target_class_name,
     output_file => $output_file,
     build_dir => $build_dir,
     module_dirs => $module_dirs,
@@ -50,7 +50,7 @@ use FindBin;
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
-    target_package_name => $target_class_name,
+    target_class_name => $target_class_name,
     output_file => $output_file,
     build_dir => $build_dir,
     module_dirs => $module_dirs,

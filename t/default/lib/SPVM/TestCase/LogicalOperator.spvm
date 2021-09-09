@@ -1,4 +1,4 @@
-package TestCase::LogicalOperator {
+class TestCase::LogicalOperator {
   use TestCase::Minimal;
 
   sub logical_and_nagate : int () {

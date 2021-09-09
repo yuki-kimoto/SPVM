@@ -1,4 +1,4 @@
-package TestCase::OArray {
+class TestCase::OArray {
   sub basic : int () {
     
     # oarray - assign numeric object

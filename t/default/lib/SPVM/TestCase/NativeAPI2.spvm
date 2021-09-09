@@ -1,4 +1,4 @@
-package TestCase::NativeAPI2 {
+class TestCase::NativeAPI2 {
 
   use Hash;
   use StringList;

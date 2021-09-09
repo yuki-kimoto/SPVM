@@ -1,4 +1,4 @@
-package TestCase::Lib::Math {
+class TestCase::Lib::Math {
   use Math (
     complexf,
     complex,

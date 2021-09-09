@@ -1,4 +1,4 @@
-package TestCase::Pointer : pointer_t {
+class TestCase::Pointer : pointer_t {
   native sub new : TestCase::Pointer ($x : int);
   
   native sub get_x : int ($self : self);

@@ -24,7 +24,7 @@
 #include "spvm_my.h"
 #include "spvm_string_buffer.h"
 #include "spvm_method.h"
-#include "spvm_package.h"
+#include "spvm_class.h"
 
 SPVM_OP* SPVM_TOKE_newOP(SPVM_COMPILER* compiler, int32_t type) {
   
@@ -157,18 +157,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (op_use_stack->length > 0) {
           SPVM_OP* op_use = SPVM_LIST_shift(op_use_stack);
           
-          const char* package_name = op_use->uv.use->op_type->uv.type->basic_type->name;
+          const char* class_name = op_use->uv.use->op_type->uv.type->basic_type->name;
 
-          SPVM_PACKAGE* found_package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
+          SPVM_CLASS* found_class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
           
-          if (found_package) {
+          if (found_class) {
             continue;
           }
           else {
-            // Create moudle relative file name from package name by changing :: to / and add ".spvm"
-            int32_t cur_rel_file_length = (int32_t)(strlen(package_name) + 6);
+            // Create moudle relative file name from class name by changing :: to / and add ".spvm"
+            int32_t cur_rel_file_length = (int32_t)(strlen(class_name) + 6);
             char* cur_rel_file = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, cur_rel_file_length + 1);
-            const char* bufptr_orig = package_name;
+            const char* bufptr_orig = class_name;
             char* bufptr_to = cur_rel_file;
             while (*bufptr_orig) {
               if (*bufptr_orig == ':' && *(bufptr_orig + 1) == ':') {
@@ -193,12 +193,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
             // Byte, Short, Int, Long, Float, Double is already registered in module source symtable
             if (
-              strcmp(package_name, "Byte") == 0 ||
-              strcmp(package_name, "Short") == 0 ||
-              strcmp(package_name, "Int") == 0 ||
-              strcmp(package_name, "Long") == 0 ||
-              strcmp(package_name, "Float") == 0 ||
-              strcmp(package_name, "Double") == 0
+              strcmp(class_name, "Byte") == 0 ||
+              strcmp(class_name, "Short") == 0 ||
+              strcmp(class_name, "Int") == 0 ||
+              strcmp(class_name, "Long") == 0 ||
+              strcmp(class_name, "Float") == 0 ||
+              strcmp(class_name, "Double") == 0
             )
             {
               do_directry_module_search = 0;
@@ -228,7 +228,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
 
                 // Add module file symtable
-                SPVM_HASH_insert(compiler->loaded_module_file_symtable, package_name, strlen(package_name), (void*)cur_file);
+                SPVM_HASH_insert(compiler->loaded_module_file_symtable, class_name, strlen(class_name), (void*)cur_file);
                 
                 // Open source file
                 fh = fopen(cur_file, "rb");
@@ -270,12 +270,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 original_src[file_size] = '\0';
                 
                 // Save module source
-                SPVM_HASH_insert(compiler->module_source_symtable, package_name, strlen(package_name), original_src);
+                SPVM_HASH_insert(compiler->module_source_symtable, class_name, strlen(class_name), original_src);
               }
             }
             
             // Search module source
-            char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, package_name, strlen(package_name));
+            char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
             char* original_src = NULL;
             int32_t file_size = 0;
             int32_t module_not_found = 0;
@@ -290,13 +290,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // If module not found and that is if (requre Foo) syntax, syntax is ok.
             if (module_not_found && op_use->uv.use->is_require) {
               op_use->uv.use->load_fail = 1;
-              SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_use->file, op_use->line);
+              SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_use->file, op_use->line);
               SPVM_TYPE* type = SPVM_TYPE_new(compiler);
               type->basic_type = op_use->uv.use->op_type->uv.type->basic_type;
               SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, op_use->file, op_use->line);
               type->basic_type->fail_load = 1;
               
-              SPVM_OP_build_package(compiler, op_package, op_type, NULL, NULL);
+              SPVM_OP_build_class(compiler, op_class, op_type, NULL, NULL);
               
               continue;
             }
@@ -306,7 +306,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
               memcpy(compiler->cur_src, original_src, file_size + 1);
               compiler->cur_rel_file = cur_rel_file;
-              compiler->cur_rel_file_package_name = package_name;
+              compiler->cur_rel_file_class_name = class_name;
               
                   
               // If we get current module file path, set it, otherwise set module relative file path
@@ -1308,7 +1308,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             yylvalp->opval = op_exception_var;
             return EXCEPTION_VAR;
           }
-          // Lexical variable or Package variable
+          // Lexical variable or Class variable
           else {
             compiler->bufptr++;
 
@@ -1378,7 +1378,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not end with \"::\" at %s line %d\n", var_name, compiler->cur_file, compiler->cur_line);
             }
             
-            // Package variable
+            // Class variable
             return VAR_NAME;
           }
         }
@@ -1750,6 +1750,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING_CMP);
                   return STRING_CMP;
                 }
+                else if (strcmp(keyword, "class") == 0) {
+                  
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS);
+                  
+                  return CLASS;
+                }
                 break;
               }
               case 'd' : {
@@ -1913,7 +1919,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               }
               case 'o' : {
                 if (strcmp(keyword, "our") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PACKAGE_VAR);
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS_VAR);
                   return OUR;
                 }
                 else if (strcmp(keyword, "object") == 0) {
@@ -1923,13 +1929,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 'p' : {
-                if (strcmp(keyword, "package") == 0) {
-                  
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PACKAGE);
-                  
-                  return PACKAGE;
-                }
-                else if (strcmp(keyword, "print") == 0) {
+                if (strcmp(keyword, "print") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_PRINT);
                   return PRINT;
                 }
@@ -2071,9 +2071,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   *compiler->bufptr = '\0';
                   continue;
                 }
-                else if (strcmp(keyword, "__PACKAGE__") == 0) {
-                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_PACKAGE, compiler->cur_file, compiler->cur_line);
-                  return CURRENT_PACKAGE;
+                else if (strcmp(keyword, "__CLASS__") == 0) {
+                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS, compiler->cur_file, compiler->cur_line);
+                  return CURRENT_CLASS;
                 }
                 else if (strcmp(keyword, "__FILE__") == 0) {
                   SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->cur_rel_file, strlen(compiler->cur_rel_file), compiler->cur_file, compiler->cur_line);

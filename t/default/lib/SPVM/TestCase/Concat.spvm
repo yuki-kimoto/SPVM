@@ -1,4 +1,4 @@
-package TestCase::Concat {
+class TestCase::Concat {
   sub concat_empty_string : int () {
     {
       my $text = "abc" . "";

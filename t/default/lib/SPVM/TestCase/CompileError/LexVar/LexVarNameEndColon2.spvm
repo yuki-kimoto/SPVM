@@ -1,4 +1,4 @@
-package TestCase::CompileError::LexVar::LexVarNameEndColon2 {
+class TestCase::CompileError::LexVar::LexVarNameEndColon2 {
   sub foo : void () {
     my $FOO:: = 0;
   }

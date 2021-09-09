@@ -1,4 +1,4 @@
-package Bool {
+class Bool {
   INIT {
     # Singleton true
     $true = new Bool;

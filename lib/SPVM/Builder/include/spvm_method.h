@@ -42,7 +42,7 @@ struct spvm_method {
   SPVM_LIST* args;
   const char* name;
   const char* signature;
-  SPVM_PACKAGE* package;
+  SPVM_CLASS* class;
   int32_t flag;
   int32_t args_alloc_length;
   int32_t vars_alloc_length;
@@ -56,8 +56,8 @@ struct spvm_method {
   int32_t ref_vars_alloc_length;
   int32_t return_type_category;
   int8_t have_vaarg;
-  int8_t is_package_var_setter;
-  int8_t is_package_var_getter;
+  int8_t is_class_var_setter;
+  int8_t is_class_var_getter;
   int8_t is_field_setter;
   int8_t is_field_getter;
   int8_t is_simple_constructor;
@@ -68,7 +68,7 @@ struct spvm_method {
   int32_t tmp_vars_length;
   SPVM_OP* op_my_condition_flag;
   int32_t can_precompile;
-  const char* anon_method_defined_package_name;
+  const char* anon_method_defined_class_name;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);

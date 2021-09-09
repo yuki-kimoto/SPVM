@@ -1,4 +1,4 @@
-package EqualityChecker::SameObject {
+class EqualityChecker::SameObject {
   sub new : EqualityChecker::SameObject () {
     return new EqualityChecker::SameObject;
   }

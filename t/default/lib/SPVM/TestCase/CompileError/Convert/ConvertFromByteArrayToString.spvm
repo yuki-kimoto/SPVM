@@ -1,4 +1,4 @@
-package TestCase::CompileError::Convert::ConvertFromByteArrayToString {
+class TestCase::CompileError::Convert::ConvertFromByteArrayToString {
   use TestCase::Minimal;
 
   sub main : int () {

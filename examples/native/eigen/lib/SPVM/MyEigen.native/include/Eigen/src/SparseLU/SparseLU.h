@@ -24,7 +24,7 @@ template <typename MatrixLType, typename MatrixUType> struct SparseLUMatrixURetu
   * \brief Sparse supernodal LU factorization for general matrices
   * 
   * This class implements the supernodal LU factorization for general matrices.
-  * It uses the main techniques from the sequential SuperLU package 
+  * It uses the main techniques from the sequential SuperLU class 
   * (http://crd-legacy.lbl.gov/~xiaoye/SuperLU/). It handles transparently real 
   * and complex arithmetics with single and double precision, depending on the 
   * scalar type of your input matrix. 

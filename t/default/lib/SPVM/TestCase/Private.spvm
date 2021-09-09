@@ -1,4 +1,4 @@
-package TestCase::Private : private {
+class TestCase::Private : private {
   sub new : TestCase::Private () {
     new TestCase::Private;
   }

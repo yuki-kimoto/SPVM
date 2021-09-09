@@ -1,4 +1,4 @@
-package TestCase::Lib::Regex {
+class TestCase::Lib::Regex {
   use Regex;
   
   sub compile : int () {
@@ -310,7 +310,7 @@ package TestCase::Lib::Regex {
       }
     }
 
-    # Capture char class and quantifier
+    # Capture char class-and quantifier
     {
       my $re = Regex->new_with_options("\-(\w+)\-", "a");
       my $target = "-abc89-";
@@ -385,7 +385,7 @@ package TestCase::Lib::Regex {
   }
   
   sub match_char_class_range : int ()  {
-    # Match char class range
+    # Match char class-range
     {
       my $re = Regex->new("[0-9]+");
       my $target = "z09az";
@@ -397,7 +397,7 @@ package TestCase::Lib::Regex {
       }
     }
 
-    # Not Match char class range
+    # Not Match char class-range
     {
       my $re = Regex->new("[0-9a-c]+");
       my $target = "zz";
@@ -446,7 +446,7 @@ package TestCase::Lib::Regex {
 
   sub match_char_class_negate : int () {
 
-    # Match char class negate
+    # Match char class-negate
     {
       my $re = Regex->new("[^0-9]+");
       my $target = "zabcz";
@@ -458,7 +458,7 @@ package TestCase::Lib::Regex {
       }
     }
 
-    # Not match char class negate
+    # Not match char class-negate
     {
       my $re = Regex->new("[^0-9]+");
       my $target = "012";
@@ -470,7 +470,7 @@ package TestCase::Lib::Regex {
       }
     }
 
-    # Match char class negate UTF-8
+    # Match char class-negate UTF-8
     {
       my $re = Regex->new("[^あ]+");
       my $target = "いうえ";
@@ -482,7 +482,7 @@ package TestCase::Lib::Regex {
       }
     }
 
-    # Don't Match char class negate UTF-8
+    # Don't Match char class-negate UTF-8
     {
       my $re = Regex->new("[^あ]+");
       my $target = "あああ";
@@ -511,7 +511,7 @@ package TestCase::Lib::Regex {
       }
     }
 
-    # Match char class \d
+    # Match char class-\d
     {
       my $re = Regex->new_with_options("[\da]+", "a");
       my $target = "z01az";

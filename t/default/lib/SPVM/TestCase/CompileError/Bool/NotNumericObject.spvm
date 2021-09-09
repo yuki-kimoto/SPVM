@@ -1,4 +1,4 @@
-package TestCase::CompileError::Bool::NotNumericObject {
+class TestCase::CompileError::Bool::NotNumericObject {
 
   sub main : int () {
     my $num = 1;

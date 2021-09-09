@@ -15,9 +15,9 @@
 
 #include "spvm_opcode_array.h"
 #include "spvm_opcode.h"
-#include "spvm_package.h"
+#include "spvm_class.h"
 #include "spvm_basic_type.h"
-#include "spvm_package_var.h"
+#include "spvm_class_var.h"
 #include "spvm_field.h"
 #include "spvm_method.h"
 #include "spvm_type.h"
@@ -97,7 +97,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
 
   // Native APIs. If a element is added, must increment env_length variable.
   void* env_init[]  = {
-    NULL, // package_vars_heap
+    NULL, // class_vars_heap
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
     (void*)(intptr_t)offsetof(SPVM_OBJECT, weaken_backref_head), // weaken_backref_head
     (void*)(intptr_t)offsetof(SPVM_OBJECT, ref_count), // object_ref_count_offset
@@ -120,7 +120,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_basic_type_id,
     SPVM_API_get_field_id,
     SPVM_API_get_field_offset,
-    SPVM_API_get_package_var_id,
+    SPVM_API_get_class_var_id,
     SPVM_API_get_method_id,
     SPVM_API_get_method_id_by_object,
     SPVM_API_new_object_raw,
@@ -176,20 +176,20 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_set_field_float,
     SPVM_API_set_field_double,
     SPVM_API_set_field_object,
-    SPVM_API_get_package_var_byte,
-    SPVM_API_get_package_var_short,
-    SPVM_API_get_package_var_int,
-    SPVM_API_get_package_var_long,
-    SPVM_API_get_package_var_float,
-    SPVM_API_get_package_var_double,
-    SPVM_API_get_package_var_object,
-    SPVM_API_set_package_var_byte,
-    SPVM_API_set_package_var_short,
-    SPVM_API_set_package_var_int,
-    SPVM_API_set_package_var_long,
-    SPVM_API_set_package_var_float,
-    SPVM_API_set_package_var_double,
-    SPVM_API_set_package_var_object,
+    SPVM_API_get_class_var_byte,
+    SPVM_API_get_class_var_short,
+    SPVM_API_get_class_var_int,
+    SPVM_API_get_class_var_long,
+    SPVM_API_get_class_var_float,
+    SPVM_API_get_class_var_double,
+    SPVM_API_get_class_var_object,
+    SPVM_API_set_class_var_byte,
+    SPVM_API_set_class_var_short,
+    SPVM_API_set_class_var_int,
+    SPVM_API_set_class_var_long,
+    SPVM_API_set_class_var_float,
+    SPVM_API_set_class_var_double,
+    SPVM_API_set_class_var_object,
     SPVM_API_pointer,
     SPVM_API_set_pointer,
     SPVM_API_call_spvm_method,
@@ -235,20 +235,20 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_field_float_by_name,
     SPVM_API_get_field_double_by_name,
     SPVM_API_get_field_object_by_name,
-    SPVM_API_set_package_var_byte_by_name,
-    SPVM_API_set_package_var_short_by_name,
-    SPVM_API_set_package_var_int_by_name,
-    SPVM_API_set_package_var_long_by_name,
-    SPVM_API_set_package_var_float_by_name,
-    SPVM_API_set_package_var_double_by_name,
-    SPVM_API_set_package_var_object_by_name,
-    SPVM_API_get_package_var_byte_by_name,
-    SPVM_API_get_package_var_short_by_name,
-    SPVM_API_get_package_var_int_by_name,
-    SPVM_API_get_package_var_long_by_name,
-    SPVM_API_get_package_var_float_by_name,
-    SPVM_API_get_package_var_double_by_name,
-    SPVM_API_get_package_var_object_by_name,
+    SPVM_API_set_class_var_byte_by_name,
+    SPVM_API_set_class_var_short_by_name,
+    SPVM_API_set_class_var_int_by_name,
+    SPVM_API_set_class_var_long_by_name,
+    SPVM_API_set_class_var_float_by_name,
+    SPVM_API_set_class_var_double_by_name,
+    SPVM_API_set_class_var_object_by_name,
+    SPVM_API_get_class_var_byte_by_name,
+    SPVM_API_get_class_var_short_by_name,
+    SPVM_API_get_class_var_int_by_name,
+    SPVM_API_get_class_var_long_by_name,
+    SPVM_API_get_class_var_float_by_name,
+    SPVM_API_get_class_var_double_by_name,
+    SPVM_API_get_class_var_object_by_name,
     SPVM_API_call_spvm_method_by_name,
     SPVM_API_call_callback_method_by_name,
     SPVM_API_get_field_string_chars_by_name,
@@ -270,15 +270,15 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     return NULL;
   }
 
-  // Initialize Package Variables
-  void* package_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->package_vars->length + 1));
-  if (package_vars_heap == NULL) {
+  // Initialize Class Variables
+  void* class_vars_heap = SPVM_API_alloc_memory_block_zero(env, sizeof(SPVM_VALUE) * ((int64_t)compiler->class_vars->length + 1));
+  if (class_vars_heap == NULL) {
     return NULL;
   }
   
   env->native_mortal_stack_capacity = (void*)(intptr_t)native_mortal_stack_capacity;
   env->native_mortal_stack = native_mortal_stack;
-  env->package_vars_heap = package_vars_heap;
+  env->class_vars_heap = class_vars_heap;
 
   // Adjust alignment SPVM_VALUE
   int32_t object_header_byte_size = sizeof(SPVM_OBJECT);
@@ -355,16 +355,16 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
           SPVM_STRING_BUFFER_add(string_buffer, "{\n");
 
           SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-          SPVM_PACKAGE* package = basic_type->package;
-          SPVM_FIELD* first_field = SPVM_LIST_fetch(package->fields, 0);
-          int32_t fields_length = package->fields->length;
+          SPVM_CLASS* class = basic_type->class;
+          SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+          int32_t fields_length = class->fields->length;
           
           for (int32_t field_index = 0; field_index < fields_length; field_index++) {
             for (int32_t depth_index = 0; depth_index < *depth + 2; depth_index++) {
               SPVM_STRING_BUFFER_add(string_buffer, "  ");
             }
             
-            SPVM_FIELD* field = SPVM_LIST_fetch(package->fields, field_index);
+            SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
             int32_t field_basic_type_id = field->type->basic_type->id;
 
             const char* field_name = field->name;
@@ -499,7 +499,7 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
       SPVM_STRING_BUFFER_add_len(string_buffer, (char*)chars, chars_length);
       SPVM_STRING_BUFFER_add(string_buffer, "\"");
     }
-    else if(SPVM_TYPE_is_class_type(compiler, basic_type_id, 0, 0)) {
+    else if(SPVM_TYPE_is_module_type(compiler, basic_type_id, 0, 0)) {
 
       sprintf(tmp_buffer, "%p", object);
       int32_t exists = (int32_t)(intptr_t)SPVM_HASH_fetch(address_symtable, tmp_buffer, strlen(tmp_buffer));
@@ -511,13 +511,13 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
         SPVM_HASH_insert(address_symtable, tmp_buffer, strlen(tmp_buffer), (void*)(intptr_t)1);
         
         SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
-        SPVM_PACKAGE* package = basic_type->package;
-        assert(package);
+        SPVM_CLASS* class = basic_type->class;
+        assert(class);
 
         SPVM_STRING_BUFFER_add(string_buffer, "{\n");
         
         // Free object fields
-        SPVM_LIST* fields = package->fields;
+        SPVM_LIST* fields = class->fields;
         int32_t fields_length = fields->length;
         for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           for (int32_t depth_index = 0; depth_index < *depth + 1; depth_index++) {
@@ -611,13 +611,13 @@ void SPVM_API_dump_recursive(SPVM_ENV* env, SPVM_OBJECT* object, int32_t* depth,
   }
 }
 
-const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* obj, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
 
-  int32_t id = env->get_field_id(env, package_name, field_name, "string");
+  int32_t id = env->get_field_id(env, class_name, field_name, "string");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, type:string", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, type:string", class_name, field_name, file, line);
     return NULL;
   };
   SPVM_OBJECT* value = env->get_field_object(env, obj, id);
@@ -630,11 +630,11 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* 
   }
 }
 
-int32_t SPVM_API_call_spvm_method_by_name(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
+int32_t SPVM_API_call_spvm_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
   
-  int32_t method_id = env->get_method_id(env, package_name, method_name, signature);
+  int32_t method_id = env->get_method_id(env, class_name, method_name, signature);
   if (method_id < 0) {
-    env->die(env, "Method not found, package name:%s, sub name:%s, signature:%s", package_name, method_name, signature, file, line);
+    env->die(env, "Method not found, class name:%s, sub name:%s, signature:%s", class_name, method_name, signature, file, line);
     return 1;
   }
   int32_t e = env->call_spvm_method(env, method_id, stack);
@@ -670,12 +670,12 @@ int32_t SPVM_API_call_callback_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object
   return 0;
 }
 
-void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* package_name, int32_t* exception_flag, const char* file, int32_t line) {
+void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* class_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_basic_type_id(env, package_name);
+  int32_t id = env->get_basic_type_id(env, class_name);
   if (id < 0) {
-    env->die(env, "Package \"%s\" not found", package_name, file, line);
+    env->die(env, "Class \"%s\" not found", class_name, file, line);
     *exception_flag = 1;
     return NULL;
   };
@@ -685,366 +685,366 @@ void* SPVM_API_new_object_by_name(SPVM_ENV* env, const char* package_name, int32
   return object;
 }
 
-SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, const char* package_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_pointer_by_name(SPVM_ENV* env, const char* class_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_basic_type_id(env, package_name);
+  int32_t id = env->get_basic_type_id(env, class_name);
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "package \"%s\" not found", package_name, file, line);
+    env->die(env, "class \"%s\" not found", class_name, file, line);
     return NULL;
   };
   SPVM_OBJECT* object = env->new_pointer(env, id, pointer);
   return object;
 }
 
-void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "byte");
+  int32_t id = env->get_field_id(env, class_name, field_name, "byte");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:byte", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:byte", class_name, field_name, file, line);
     return;
   }
   env->set_field_byte(env, object, id, value);
 }
 
-void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "short");
+  int32_t id = env->get_field_id(env, class_name, field_name, "short");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:short", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:short", class_name, field_name, file, line);
     return;
   };
   env->set_field_short(env, object, id, value);
 }
 
-void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "int");
+  int32_t id = env->get_field_id(env, class_name, field_name, "int");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:int", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:int", class_name, field_name, file, line);
     return;
   };
   env->set_field_int(env, object, id, value);
 }
 
-void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "long");
+  int32_t id = env->get_field_id(env, class_name, field_name, "long");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:long", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:long", class_name, field_name, file, line);
     return;
   };
   env->set_field_long(env, object, id, value);
 }
 
-void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, float value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, float value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "float");
+  int32_t id = env->get_field_id(env, class_name, field_name, "float");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:float", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:float", class_name, field_name, file, line);
     return;
   };
   env->set_field_float(env, object, id, value);
 }
 
-void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, double value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, double value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "double");
+  int32_t id = env->get_field_id(env, class_name, field_name, "double");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:double", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:double", class_name, field_name, file, line);
     return;
   };
   env->set_field_double(env, object, id, value);
 }
 
-void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, const char* signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, signature);
+  int32_t id = env->get_field_id(env, class_name, field_name, signature);
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:%s", package_name, field_name, signature, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:%s", class_name, field_name, signature, file, line);
     return;
   };
   env->set_field_object(env, object, id, value);
 }
 
-int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int8_t SPVM_API_get_field_byte_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "byte");
+  int32_t id = env->get_field_id(env, class_name, field_name, "byte");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:byte", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:byte", class_name, field_name, file, line);
     return 0;
   };
   int8_t value = env->get_field_byte(env, object, id);
   return value;
 }
 
-int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int16_t SPVM_API_get_field_short_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "short");
+  int32_t id = env->get_field_id(env, class_name, field_name, "short");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:short", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:short", class_name, field_name, file, line);
     return 0;
   };
   int16_t value = env->get_field_short(env, object, id);
   return value;
 }
 
-int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int32_t SPVM_API_get_field_int_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "int");
+  int32_t id = env->get_field_id(env, class_name, field_name, "int");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:int", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:int", class_name, field_name, file, line);
     return 0;
   };
   int32_t value = env->get_field_int(env, object, id);
   return value;
 }
 
-int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+int64_t SPVM_API_get_field_long_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "long");
+  int32_t id = env->get_field_id(env, class_name, field_name, "long");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:long", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:long", class_name, field_name, file, line);
     return 0;
   };
   int64_t value = env->get_field_long(env, object, id);
   return value;
 }
 
-float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+float SPVM_API_get_field_float_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "float");
+  int32_t id = env->get_field_id(env, class_name, field_name, "float");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:float", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:float", class_name, field_name, file, line);
     return 0;
   };
   float value = env->get_field_float(env, object, id);
   return value;
 }
 
-double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
+double SPVM_API_get_field_double_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, "double");
+  int32_t id = env->get_field_id(env, class_name, field_name, "double");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:double", package_name, field_name, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:double", class_name, field_name, file, line);
     return 0;
   };
   double value = env->get_field_double(env, object, id);
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* package_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_get_field_object_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* class_name, const char* field_name, const char* signature, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_field_id(env, package_name, field_name, signature);
+  int32_t id = env->get_field_id(env, class_name, field_name, signature);
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "field not found, package name:%s, field name:%s, signature:%s", package_name, field_name, signature, file, line);
+    env->die(env, "field not found, class name:%s, field name:%s, signature:%s", class_name, field_name, signature, file, line);
     return NULL;
   };
   SPVM_OBJECT* value = env->get_field_object(env, object, id);
   return value;
 }
 
-void SPVM_API_set_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_class_var_byte_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int8_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "byte");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "byte");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:byte", class_name, class_var_name, file, line);
     return;
   };
-  env->set_package_var_byte(env, id, value);
+  env->set_class_var_byte(env, id, value);
 }
 
-void SPVM_API_set_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_class_var_short_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int16_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "short");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "short");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:byte", class_name, class_var_name, file, line);
     return;
   };
-  env->set_package_var_short(env, id, value);
+  env->set_class_var_short(env, id, value);
 }
 
-void SPVM_API_set_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_class_var_int_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "int");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "int");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:byte", class_name, class_var_name, file, line);
     return;
   };
-  env->set_package_var_int(env, id, value);
+  env->set_class_var_int(env, id, value);
 }
 
-void SPVM_API_set_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_class_var_long_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int64_t value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "long");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "long");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:long", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:long", class_name, class_var_name, file, line);
     return;
   };
-  env->set_package_var_long(env, id, value);
+  env->set_class_var_long(env, id, value);
 }
 
-void SPVM_API_set_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, float value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_class_var_float_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, float value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "float");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "float");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:float", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:float", class_name, class_var_name, file, line);
     return;
   };
-  env->set_package_var_float(env, id, value);
+  env->set_class_var_float(env, id, value);
 }
 
-void SPVM_API_set_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, double value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_class_var_double_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, double value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "double");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "double");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:double", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:double", class_name, class_var_name, file, line);
     return;
   };
-  env->set_package_var_double(env, id, value);
+  env->set_class_var_double(env, id, value);
 }
 
-void SPVM_API_set_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
+void SPVM_API_set_class_var_object_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature, SPVM_OBJECT* value, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, type_signature);
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, type_signature);
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:%s", package_name, package_var_name, type_signature, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:%s", class_name, class_var_name, type_signature, file, line);
     return;
   };
-  env->set_package_var_object(env, id, value);
+  env->set_class_var_object(env, id, value);
 }
 
-int8_t SPVM_API_get_package_var_byte_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
+int8_t SPVM_API_get_class_var_byte_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "byte");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "byte");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:byte", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:byte", class_name, class_var_name, file, line);
     return 0;
   };
-  int8_t value = env->get_package_var_byte(env, id);
+  int8_t value = env->get_class_var_byte(env, id);
   return value;
 }
 
-int16_t SPVM_API_get_package_var_short_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
+int16_t SPVM_API_get_class_var_short_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "short");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "short");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:short", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:short", class_name, class_var_name, file, line);
     return 0;
   };
-  int16_t value = env->get_package_var_short(env, id);
+  int16_t value = env->get_class_var_short(env, id);
   return value;
 }
 
-int32_t SPVM_API_get_package_var_int_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
+int32_t SPVM_API_get_class_var_int_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "int");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "int");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:int", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:int", class_name, class_var_name, file, line);
     return 0;
   };
-  int32_t value = env->get_package_var_int(env, id);
+  int32_t value = env->get_class_var_int(env, id);
   return value;
 }
 
-int64_t SPVM_API_get_package_var_long_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
+int64_t SPVM_API_get_class_var_long_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "long");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "long");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:long", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:long", class_name, class_var_name, file, line);
     return 0;
   };
-  int64_t value = env->get_package_var_long(env, id);
+  int64_t value = env->get_class_var_long(env, id);
   return value;
 }
 
-float SPVM_API_get_package_var_float_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
+float SPVM_API_get_class_var_float_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "float");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "float");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:float", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:float", class_name, class_var_name, file, line);
     return 0;
   };
-  float value = env->get_package_var_float(env, id);
+  float value = env->get_class_var_float(env, id);
   return value;
 }
 
-double SPVM_API_get_package_var_double_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, int32_t* exception_flag, const char* file, int32_t line) {
+double SPVM_API_get_class_var_double_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, "double");
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, "double");
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:double", package_name, package_var_name, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:double", class_name, class_var_name, file, line);
     return 0;
   };
-  double value = env->get_package_var_double(env, id);
+  double value = env->get_class_var_double(env, id);
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_package_var_object_by_name(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* type_signature, int32_t* exception_flag, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_get_class_var_object_by_name(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* type_signature, int32_t* exception_flag, const char* file, int32_t line) {
   *exception_flag = 0;
   
-  int32_t id = env->get_package_var_id(env, package_name, package_var_name, type_signature);
+  int32_t id = env->get_class_var_id(env, class_name, class_var_name, type_signature);
   if (id < 0) {
     *exception_flag = 1;
-    env->die(env, "Package variable not defined. Package name:%s, Variable name:%s, Type:%s", package_name, package_var_name, type_signature, file, line);
+    env->die(env, "Class variable not defined. Class name:%s, Variable name:%s, Type:%s", class_name, class_var_name, type_signature, file, line);
     return NULL;
   };
-  SPVM_OBJECT* value = env->get_package_var_object(env, id);
+  SPVM_OBJECT* value = env->get_class_var_object(env, id);
   return value;
 }
 
@@ -1110,8 +1110,8 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   // Free exception
   SPVM_API_set_exception(env, NULL);
 
-  // Free package variables heap
-  SPVM_API_free_memory_block(env, env->package_vars_heap);
+  // Free class variables heap
+  SPVM_API_free_memory_block(env, env->class_vars_heap);
   
   // Free mortal stack
   SPVM_API_free_memory_block(env, env->native_mortal_stack);
@@ -1126,14 +1126,14 @@ void SPVM_API_call_begin_blocks(SPVM_ENV* env) {
   SPVM_COMPILER* compiler = env->compiler;
   
   // Call INIT blocks
-  int32_t packages_length = compiler->packages->length;
+  int32_t classs_length = compiler->classs->length;
   SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  for (int32_t package_id = 0; package_id < packages_length; package_id++) {
+  for (int32_t class_id = 0; class_id < classs_length; class_id++) {
     
-    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_id);
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_id);
     
-    if (package->op_begin_method) {
-      SPVM_METHOD* begin_method = package->op_begin_method->uv.method;
+    if (class->op_begin_method) {
+      SPVM_METHOD* begin_method = class->op_begin_method->uv.method;
       env->call_spvm_method(env, begin_method->id, stack);
     }
   }
@@ -1164,7 +1164,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     if (!exception_flag) {
       switch (method->return_type_category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -1184,7 +1184,7 @@ int32_t SPVM_API_call_spvm_method(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* 
     if (!exception_flag) {
       switch (method->return_type_category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -1228,8 +1228,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   // Runtime method
   SPVM_METHOD* method = SPVM_LIST_fetch(compiler->methods, method_id);
   
-  // Runtime package
-  SPVM_PACKAGE* package = method->package;
+  // Runtime class
+  SPVM_CLASS* class = method->class;
 
   // Operation codes
   SPVM_OPCODE* opcodes = compiler->opcode_array->values;
@@ -1433,7 +1433,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-        case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+        case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
         case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
         case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -2202,7 +2202,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_LONG: {
         int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
         long_vars[opcode->operand0] = constant->value.lval;
         break;
       }
@@ -2214,7 +2214,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_MOVE_CONSTANT_DOUBLE: {
         int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
         double_vars[opcode->operand0] = constant->value.dval;
         break;
       }
@@ -3641,7 +3641,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_NEW_STRING: {
         int32_t constant_id = opcode->operand1;
-        SPVM_CONSTANT* constant = package->info_constants->values[constant_id];
+        SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
         const char* string_value = constant->value.oval;
         
         void* string = env->new_string_raw(env, string_value, constant->string_length);
@@ -4236,16 +4236,16 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         if (exception_flag) {
           exception_flag = 0;
           
-          SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, opcode->operand1);
+          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
-          SPVM_PACKAGE* method_package = method->package;
-          const char* package_name = method_package->name;
-          const char* file = method->package->module_file;
+          SPVM_CLASS* method_class = method->class;
+          const char* class_name = method_class->name;
+          const char* file = method->class->module_file;
           
           // Exception stack trace
-          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), package_name, method_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -4253,16 +4253,16 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_RETURN: {
         if (exception_flag) {
-          SPVM_METHOD* method = SPVM_LIST_fetch(package->methods, opcode->operand1);
+          SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, opcode->operand1);
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
-          SPVM_PACKAGE* method_package = SPVM_LIST_fetch(compiler->packages, method->package->id);
-          const char* package_name = method_package->name;
-          const char* file = package->module_file;
+          SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classs, method->class->id);
+          const char* class_name = method_class->name;
+          const char* file = class->module_file;
 
           // Exception stack trace
-          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), package_name, method_name, file, line));
+          env->set_exception(env, env->new_stack_trace_raw(env, env->get_exception(env), class_name, method_name, file, line));
           opcode_rel_index = opcode->operand0;
           continue;
         }
@@ -4288,8 +4288,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        SPVM_PACKAGE* method_package = SPVM_LIST_fetch(compiler->packages, method->package->id);
-        const char* file = package->module_file;
+        SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classs, method->class->id);
+        const char* file = class->module_file;
         
         void* object = object_vars[opcode->operand0];
         
@@ -4450,7 +4450,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         
         int32_t switch_id = opcode->operand1;
         
-        SPVM_SWITCH_INFO* switch_info = package->info_switch_infos->values[switch_id];
+        SPVM_SWITCH_INFO* switch_info = class->info_switch_infos->values[switch_id];
 
         // Default branch
         int32_t default_opcode_rel_index = switch_info->default_opcode_rel_index;
@@ -4882,109 +4882,109 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         *(double*)*(void**)&ref_vars[opcode->operand0] = double_vars[opcode->operand1];
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_BYTE: {
-        int32_t package_var_id = opcode->operand1;
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_BYTE: {
+        int32_t class_var_id = opcode->operand1;
         
-        byte_vars[opcode->operand0] = *(int8_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_SHORT: {
-        int32_t package_var_id = opcode->operand1;
-        
-        short_vars[opcode->operand0] = *(int16_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
+        byte_vars[opcode->operand0] = *(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_INT: {
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_SHORT: {
+        int32_t class_var_id = opcode->operand1;
         
-        int32_t package_var_id = opcode->operand1;
-        
-        int_vars[opcode->operand0] = *(int32_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_LONG: {
-        int32_t package_var_id = opcode->operand1;
-        
-        long_vars[opcode->operand0] = *(int64_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
+        short_vars[opcode->operand0] = *(int16_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_FLOAT: {
-        int32_t package_var_id = opcode->operand1;
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_INT: {
         
-        float_vars[opcode->operand0] = *(float*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
+        int32_t class_var_id = opcode->operand1;
         
-        break;
-      }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_DOUBLE: {
-        int32_t package_var_id = opcode->operand1;
-        
-        double_vars[opcode->operand0] = *(double*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id];
+        int_vars[opcode->operand0] = *(int32_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_GET_PACKAGE_VAR_OBJECT: {
-        int32_t package_var_id = opcode->operand1;
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_LONG: {
+        int32_t class_var_id = opcode->operand1;
         
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id]);
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_BYTE: {
-        int32_t package_var_id = opcode->operand0;
-        
-        *(int8_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = byte_vars[opcode->operand1];
+        long_vars[opcode->operand0] = *(int64_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_SHORT: {
-        int32_t package_var_id = opcode->operand0;
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_FLOAT: {
+        int32_t class_var_id = opcode->operand1;
         
-        *(int16_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = short_vars[opcode->operand1];
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_INT: {
-        int32_t package_var_id = opcode->operand0;
-        
-        *(int32_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = int_vars[opcode->operand1];
+        float_vars[opcode->operand0] = *(float*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_LONG: {
-        int32_t package_var_id = opcode->operand0;
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_DOUBLE: {
+        int32_t class_var_id = opcode->operand1;
         
-        *(int64_t*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = long_vars[opcode->operand1];
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_FLOAT: {
-        int32_t package_var_id = opcode->operand0;
-        
-        *(float*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = float_vars[opcode->operand1];
+        double_vars[opcode->operand0] = *(double*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id];
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_DOUBLE: {
-        int32_t package_var_id = opcode->operand0;
+      case SPVM_OPCODE_C_ID_GET_CLASS_VAR_OBJECT: {
+        int32_t class_var_id = opcode->operand1;
         
-        *(double*)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id] = double_vars[opcode->operand1];
-        
-        break;
-      }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_OBJECT: {
-        int32_t package_var_id = opcode->operand0;
-        
-        SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id], *(void**)&object_vars[opcode->operand1]);
+        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id]);
         
         break;
       }
-      case SPVM_OPCODE_C_ID_SET_PACKAGE_VAR_UNDEF: {
-        int32_t package_var_id = opcode->operand0;
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_BYTE: {
+        int32_t class_var_id = opcode->operand0;
         
-        SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->package_vars_heap)[package_var_id], NULL);
+        *(int8_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = byte_vars[opcode->operand1];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_SHORT: {
+        int32_t class_var_id = opcode->operand0;
+        
+        *(int16_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = short_vars[opcode->operand1];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_INT: {
+        int32_t class_var_id = opcode->operand0;
+        
+        *(int32_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = int_vars[opcode->operand1];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_LONG: {
+        int32_t class_var_id = opcode->operand0;
+        
+        *(int64_t*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = long_vars[opcode->operand1];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_FLOAT: {
+        int32_t class_var_id = opcode->operand0;
+        
+        *(float*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = float_vars[opcode->operand1];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_DOUBLE: {
+        int32_t class_var_id = opcode->operand0;
+        
+        *(double*)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id] = double_vars[opcode->operand1];
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_OBJECT: {
+        int32_t class_var_id = opcode->operand0;
+        
+        SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], *(void**)&object_vars[opcode->operand1]);
+        
+        break;
+      }
+      case SPVM_OPCODE_C_ID_SET_CLASS_VAR_UNDEF: {
+        int32_t class_var_id = opcode->operand0;
+        
+        SPVM_API_OBJECT_ASSIGN((void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var_id], NULL);
         
         break;
       }
@@ -5213,7 +5213,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   if (!exception_flag) {
     switch (method->return_type_category) {
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
-      case SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE:
+      case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
@@ -5263,16 +5263,16 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(compiler->basic_types, object_basic_type_id);
     SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
 
-    SPVM_PACKAGE* object_package = SPVM_LIST_fetch(compiler->packages, object_basic_type->package->id);
-    SPVM_PACKAGE* callback_package = SPVM_LIST_fetch(compiler->packages, callback_basic_type->package->id);
+    SPVM_CLASS* object_class = SPVM_LIST_fetch(compiler->classs, object_basic_type->class->id);
+    SPVM_CLASS* callback_class = SPVM_LIST_fetch(compiler->classs, callback_basic_type->class->id);
     
-    SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback_package->methods, 0);
+    SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback_class->methods, 0);
     
     const char* method_callback_signature = method_callback->signature;
-    if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_METHOD_PACKAGE) {
-      SPVM_METHOD* object_package_method = SPVM_LIST_fetch(object_package->methods, 0);
+    if (object_class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+      SPVM_METHOD* object_class_method = SPVM_LIST_fetch(object_class->methods, 0);
       
-      if (strcmp(method_callback_signature, object_package_method->signature) == 0) {
+      if (strcmp(method_callback_signature, object_class_method->signature) == 0) {
         has_callback = 1;
       }
       else {
@@ -5280,9 +5280,9 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
       }
     }
     else {
-      const char* object_package_name = object_package->name;
+      const char* object_class_name = object_class->name;
       const char* method_callback_name = method_callback->name;
-      int32_t method_id = SPVM_API_get_method_id(env, object_package_name, method_callback_name, method_callback_signature);
+      int32_t method_id = SPVM_API_get_method_id(env, object_class_name, method_callback_name, method_callback_signature);
       if (method_id >= 0) {
         has_callback = 1;
       }
@@ -5405,7 +5405,7 @@ void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top) {
   env->native_mortal_stack_top = (void*)(intptr_t)original_mortal_stack_top;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* method_name, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line) {
   
   // stack trace symbols
   const char* new_line_part = "\n ";
@@ -5420,7 +5420,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   int32_t total_length = 0;
   total_length += exception_length;
   total_length += strlen(new_line_part);
-  total_length += strlen(package_name);
+  total_length += strlen(class_name);
   total_length += strlen(arrow_part);
   total_length += strlen(method_name);
   total_length += strlen(at_part);
@@ -5447,7 +5447,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
     (char*)new_exception_bytes + exception_length,
     "%s%s%s%s%s%s%s%" PRId32,
     new_line_part,
-    package_name,
+    class_name,
     arrow_part,
     method_name,
     at_part,
@@ -5459,10 +5459,10 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   return new_exception;
 }
 
-SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* package_name, const char* method_name, const char* file, int32_t line) {
+SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line) {
   (void)env;
   
-  SPVM_OBJECT* str = SPVM_API_new_stack_trace_raw(env, exception, package_name, method_name, file, line);
+  SPVM_OBJECT* str = SPVM_API_new_stack_trace_raw(env, exception, class_name, method_name, file, line);
   
   SPVM_API_push_mortal(env, str);
   
@@ -6022,10 +6022,10 @@ SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id,
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   const char* basic_type_name = basic_type->name;
   
-  // Package
-  SPVM_PACKAGE* package = basic_type->package;
-  int32_t fields_length = package->fields->length;
-  SPVM_FIELD* field_first = SPVM_LIST_fetch(package->fields, 0);
+  // Class
+  SPVM_CLASS* class = basic_type->class;
+  int32_t fields_length = class->fields->length;
+  SPVM_FIELD* field_first = SPVM_LIST_fetch(class->fields, 0);
   int32_t field_basic_type_id = field_first->type->basic_type->id;
 
   int32_t unit_size;
@@ -6077,19 +6077,19 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
   
-  SPVM_PACKAGE* package;
-  if (!basic_type->package) {
-    package = NULL;
+  SPVM_CLASS* class;
+  if (!basic_type->class) {
+    class = NULL;
   }
   else {
-    package = basic_type->package;
+    class = basic_type->class;
   }
-  if (!package) {
+  if (!class) {
     return NULL;
   }
 
   // Alloc body length + 1
-  int32_t fields_length = package->fields->length;
+  int32_t fields_length = class->fields->length;
 
   int64_t alloc_byte_size = (intptr_t)env->object_header_byte_size + sizeof(SPVM_VALUE) * ((int64_t)fields_length + 1);
   
@@ -6105,10 +6105,10 @@ SPVM_OBJECT* SPVM_API_new_object_raw(SPVM_ENV* env, int32_t basic_type_id) {
   object->length = fields_length;
 
   // Object type id
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
   
   // Has destructor
-  if (package->method_destructor) {
+  if (class->method_destructor) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -6122,14 +6122,14 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   
   SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, basic_type_id);
 
-  SPVM_PACKAGE* package;
-  if (!basic_type->package) {
-    package = NULL;
+  SPVM_CLASS* class;
+  if (!basic_type->class) {
+    class = NULL;
   }
   else {
-    package = basic_type->package;
+    class = basic_type->class;
   }
-  if (!package) {
+  if (!class) {
     return NULL;
   }
 
@@ -6149,10 +6149,10 @@ SPVM_OBJECT* SPVM_API_new_pointer_raw(SPVM_ENV* env, int32_t basic_type_id, void
   object->length = 0;
 
   // Object type id
-  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_CLASS;
   
   // Has destructor
-  if (package->method_destructor) {
+  if (class->method_destructor) {
     object->flag |= SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR;
   }
   
@@ -6267,23 +6267,23 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
         }
       }
     }
-    // Free package object
-    else if (object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_PACKAGE) {
+    // Free class object
+    else if (object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_CLASS) {
 
-      // Package
+      // Class
       SPVM_COMPILER* compiler = env->compiler;
       SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-      SPVM_PACKAGE* package;
-      if (!basic_type->package) {
-        package = NULL;
+      SPVM_CLASS* class;
+      if (!basic_type->class) {
+        class = NULL;
       }
       else {
-        package = basic_type->package;
+        class = basic_type->class;
       }
       
       int32_t is_pointer = 0;
-      if (package) {
-        if (package->flag & SPVM_PACKAGE_C_FLAG_POINTER) {
+      if (class) {
+        if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
           is_pointer = 1;
         }
       }
@@ -6292,7 +6292,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       if (object->flag & SPVM_OBJECT_C_FLAG_HAS_DESTRUCTOR) {
         SPVM_VALUE args[1];
         args[0].oval = object;
-        int32_t exception_flag = SPVM_API_call_spvm_method(env, package->method_destructor->id, args);
+        int32_t exception_flag = SPVM_API_call_spvm_method(env, class->method_destructor->id, args);
         
         // Exception in destructor is changed to warning
         if (exception_flag) {
@@ -6305,8 +6305,8 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
       
       // Free object fields
-      int32_t object_fields_offset = package->object_fields_offset;
-      int32_t object_fields_length = package->object_fields_length;
+      int32_t object_fields_offset = class->object_fields_offset;
+      int32_t object_fields_length = class->object_fields_length;
       for (int32_t index = 0; index < object_fields_length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
         if (*get_field_object_address != NULL) {
@@ -6366,33 +6366,33 @@ int32_t SPVM_API_get_field_offset(SPVM_ENV* env, int32_t field_id) {
   return field->offset;
 }
 
-SPVM_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_PACKAGE* package, const char* field_name) {
+SPVM_FIELD* SPVM_API_get_field(SPVM_ENV* env, SPVM_CLASS* class, const char* field_name) {
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
 
-  SPVM_FIELD* field = SPVM_HASH_fetch(package->field_symtable, field_name, strlen(field_name));
+  SPVM_FIELD* field = SPVM_HASH_fetch(class->field_symtable, field_name, strlen(field_name));
   
   return field;
 }
 
-int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const char* field_name, const char* signature) {
+int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* class_name, const char* field_name, const char* signature) {
   (void)env;
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
   if (!basic_type) {
     return -1;
   }
   
-  if (!basic_type->package) {
+  if (!basic_type->class) {
     return -1;
   }
   
-  // Package
-  SPVM_PACKAGE* package = basic_type->package;
+  // Class
+  SPVM_CLASS* class = basic_type->class;
   
   // Field
-  SPVM_FIELD* field = SPVM_API_get_field(env, package, field_name);
+  SPVM_FIELD* field = SPVM_API_get_field(env, class, field_name);
   if (!field) {
     return -1;
   }
@@ -6407,75 +6407,75 @@ int32_t SPVM_API_get_field_id(SPVM_ENV* env, const char* package_name, const cha
   return field_id;
 }
 
-int32_t SPVM_API_get_package_var_id(SPVM_ENV* env, const char* package_name, const char* package_var_name, const char* signature) {
+int32_t SPVM_API_get_class_var_id(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* signature) {
   (void)env;
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
   
-  // Package name
-  SPVM_PACKAGE* package;
+  // Class name
+  SPVM_CLASS* class;
   if (!basic_type) {
     return -1;
   }
-  else if (!basic_type->package) {
+  else if (!basic_type->class) {
     return -1;
   }
   else {
-    package = basic_type->package;
+    class = basic_type->class;
   }
 
-  // Package variable name
-  SPVM_PACKAGE_VAR* package_var = SPVM_API_get_package_var(env, package, package_var_name);
-  if (!package_var) {
+  // Class variable name
+  SPVM_CLASS_VAR* class_var = SPVM_API_get_class_var(env, class, class_var_name);
+  if (!class_var) {
     return -1;
   }
   
   // Signature
-  if (strcmp(signature, package_var->signature) != 0) {
+  if (strcmp(signature, class_var->signature) != 0) {
     return -1;
   }
  
-  return package_var->id;
+  return class_var->id;
 }
 
-SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_PACKAGE* package, const char* method_name) {
+SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_CLASS* class, const char* method_name) {
 
-  SPVM_METHOD* method = SPVM_HASH_fetch(package->method_symtable, method_name, strlen(method_name));
+  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
   
   return method;
 }
 
-int32_t SPVM_API_get_method_id(SPVM_ENV* env, const char* package_name, const char* method_name, const char* signature) {
+int32_t SPVM_API_get_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   
   // Method id
   int32_t method_id;
   
   // Basic type
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, package_name);
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
   
-  // Package name
-  SPVM_PACKAGE* package;
-  if (!basic_type->package) {
-    package = NULL;
+  // Class name
+  SPVM_CLASS* class;
+  if (!basic_type->class) {
+    class = NULL;
   }
   else {
-    package = basic_type->package;
+    class = basic_type->class;
   }
   
-  if (package == NULL) {
+  if (class == NULL) {
     method_id = -1;
   }
   else {
-    int32_t methods_length = package->methods->length;
+    int32_t methods_length = class->methods->length;
     
     if (methods_length == 0) {
       method_id = -1;
     }
     else {
       // Method
-      SPVM_METHOD* method = SPVM_API_get_method(env, package, method_name);
+      SPVM_METHOD* method = SPVM_API_get_method(env, class, method_name);
       if (method == NULL) {
         method_id = -1;
       }
@@ -6500,25 +6500,25 @@ int32_t SPVM_API_get_method_id_by_object(SPVM_ENV* env, SPVM_OBJECT* object, con
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
   
-  // Package name
+  // Class name
   SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-  SPVM_PACKAGE* object_package;
-  if (object_basic_type->package) {
-    object_package = object_basic_type->package;
+  SPVM_CLASS* object_class;
+  if (object_basic_type->class) {
+    object_class = object_basic_type->class;
   }
   else {
-    object_package = NULL;
+    object_class = NULL;
   }
   
-  if (object_package == NULL) {
+  if (object_class == NULL) {
     return 0;
   }
   
-  // Package which have only anon sub
+  // Class which have only anon sub
   int32_t method_id;
-  if (object_package->flag & SPVM_PACKAGE_C_FLAG_ANON_METHOD_PACKAGE) {
+  if (object_class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
     // Method name
-    SPVM_METHOD* method = SPVM_LIST_fetch(object_package->methods, 0);
+    SPVM_METHOD* method = SPVM_LIST_fetch(object_class->methods, 0);
      
     // Signature
     if (strcmp(signature, method->signature) == 0) {
@@ -6530,8 +6530,8 @@ int32_t SPVM_API_get_method_id_by_object(SPVM_ENV* env, SPVM_OBJECT* object, con
   }
   // Normal sub
   else {
-    const char* object_package_name = object_package->name;
-    method_id = SPVM_API_get_method_id(env, object_package_name, method_name, signature);
+    const char* object_class_name = object_class->name;
+    method_id = SPVM_API_get_method_id(env, object_class_name, method_name, signature);
   }
   
   return method_id;
@@ -6788,111 +6788,111 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
   }
 }
 
-int8_t SPVM_API_get_package_var_byte(SPVM_ENV* env, int32_t packagke_var_id) {
+int8_t SPVM_API_get_class_var_byte(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  int8_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].bval;
+  int8_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval;
 
   return value;
 }
 
-int16_t SPVM_API_get_package_var_short(SPVM_ENV* env, int32_t packagke_var_id) {
+int16_t SPVM_API_get_class_var_short(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  int16_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].sval;
+  int16_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval;
 
   return value;
 }
 
-int32_t SPVM_API_get_package_var_int(SPVM_ENV* env, int32_t packagke_var_id) {
+int32_t SPVM_API_get_class_var_int(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  int32_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].ival;
+  int32_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival;
 
   return value;
 }
 
-int64_t SPVM_API_get_package_var_long(SPVM_ENV* env, int32_t packagke_var_id) {
+int64_t SPVM_API_get_class_var_long(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  int64_t value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].lval;
+  int64_t value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval;
 
   return value;
 }
 
-float SPVM_API_get_package_var_float(SPVM_ENV* env, int32_t packagke_var_id) {
+float SPVM_API_get_class_var_float(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  float value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].fval;
+  float value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval;
 
   return value;
 }
 
-double SPVM_API_get_package_var_double(SPVM_ENV* env, int32_t packagke_var_id) {
+double SPVM_API_get_class_var_double(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  double value = ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].dval;
+  double value = ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval;
 
   return value;
 }
 
-SPVM_OBJECT* SPVM_API_get_package_var_object(SPVM_ENV* env, int32_t packagke_var_id) {
+SPVM_OBJECT* SPVM_API_get_class_var_object(SPVM_ENV* env, int32_t packagke_var_id) {
 
   // Get field value
-  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].oval;
+  SPVM_OBJECT* value_maybe_weaken = (SPVM_OBJECT*)((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
   SPVM_OBJECT* value = SPVM_API_GET_OBJECT_NO_WEAKEN_ADDRESS(value_maybe_weaken);
   
   return value;
 }
 
-void SPVM_API_set_package_var_byte(SPVM_ENV* env, int32_t packagke_var_id, int8_t value) {
+void SPVM_API_set_class_var_byte(SPVM_ENV* env, int32_t packagke_var_id, int8_t value) {
   
   // Get field value
-  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].bval = value;
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].bval = value;
 }
 
-void SPVM_API_set_package_var_short(SPVM_ENV* env, int32_t packagke_var_id, int16_t value) {
+void SPVM_API_set_class_var_short(SPVM_ENV* env, int32_t packagke_var_id, int16_t value) {
 
   // Get field value
-  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].sval = value;
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].sval = value;
 }
 
-void SPVM_API_set_package_var_int(SPVM_ENV* env, int32_t packagke_var_id, int32_t value) {
+void SPVM_API_set_class_var_int(SPVM_ENV* env, int32_t packagke_var_id, int32_t value) {
 
   // Get field value
-  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].ival = value;
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].ival = value;
 }
 
-void SPVM_API_set_package_var_long(SPVM_ENV* env, int32_t packagke_var_id, int64_t value) {
+void SPVM_API_set_class_var_long(SPVM_ENV* env, int32_t packagke_var_id, int64_t value) {
 
   // Get field value
-  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].lval = value;
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].lval = value;
 }
 
-void SPVM_API_set_package_var_float(SPVM_ENV* env, int32_t packagke_var_id, float value) {
+void SPVM_API_set_class_var_float(SPVM_ENV* env, int32_t packagke_var_id, float value) {
 
   // Get field value
-  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].fval = value;
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].fval = value;
 }
 
-void SPVM_API_set_package_var_double(SPVM_ENV* env, int32_t packagke_var_id, double value) {
+void SPVM_API_set_class_var_double(SPVM_ENV* env, int32_t packagke_var_id, double value) {
 
   // Get field value
-  ((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].dval = value;
+  ((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].dval = value;
 }
 
-void SPVM_API_set_package_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_OBJECT* value) {
+void SPVM_API_set_class_var_object(SPVM_ENV* env, int32_t packagke_var_id, SPVM_OBJECT* value) {
 
   // Get field value
-  void* get_field_object_address = &((SPVM_VALUE*)(env->package_vars_heap))[packagke_var_id].oval;
+  void* get_field_object_address = &((SPVM_VALUE*)(env->class_vars_heap))[packagke_var_id].oval;
   SPVM_API_OBJECT_ASSIGN(get_field_object_address, value);
 }
 
 
 // Private API
-SPVM_PACKAGE_VAR* SPVM_API_get_package_var(SPVM_ENV* env, SPVM_PACKAGE* package, const char* package_var_name) {
+SPVM_CLASS_VAR* SPVM_API_get_class_var(SPVM_ENV* env, SPVM_CLASS* class, const char* class_var_name) {
 
-  SPVM_PACKAGE_VAR* package_var = SPVM_HASH_fetch(package->package_var_symtable, package_var_name, strlen(package_var_name));
+  SPVM_CLASS_VAR* class_var = SPVM_HASH_fetch(class->class_var_symtable, class_var_name, strlen(class_var_name));
   
-  return package_var;
+  return class_var;
 }
