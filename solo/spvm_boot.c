@@ -32,6 +32,8 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_LIST_push(compiler->op_use_stack, op_use_start);
   
   // Get script directory
+  char* cur_script_dir = "solo/SPVM";
+  /*
   const char* cur_script_name = argv[0];
   int32_t cur_script_name_length = (int32_t)strlen(argv[0]);
   char* cur_script_dir = malloc(cur_script_name_length + 1);
@@ -49,8 +51,11 @@ int32_t main(int32_t argc, const char *argv[]) {
     cur_script_dir[0] = '.';
     cur_script_dir[1] = '\0';
   }
+  */
   
   // Add include path
+  warn("AAAAAA %s", cur_script_dir);
+  
   SPVM_LIST_push(compiler->module_dirs, cur_script_dir);
   
   SPVM_COMPILER_compile(compiler);
