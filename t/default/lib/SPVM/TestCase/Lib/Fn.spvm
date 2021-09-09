@@ -1,0 +1,5621 @@
+package TestCase::Lib::Fn {
+  use Unicode (uchar);
+  use TestCase::Minimal;
+  use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use TestCase::Minimal;
+  use Time (time);
+  use EqualityChecker;
+  use EqualityChecker::SameObject;
+  use Fn(copy_array_object, equals_array_object, equals_array_string);
+  use TestCase::Minimal;
+  use TestCase::Minimal;
+  use EqualityChecker;
+  use EqualityChecker::SameObject;
+
+  use Fn (
+    copy_array_byte,
+    copy_array_short,
+    copy_array_int,
+    copy_array_long,
+    copy_array_float,
+    copy_array_double,
+    copy_array_string,
+    equals_array_byte,
+    equals_array_short,
+    equals_array_int,
+    equals_array_long,
+    equals_array_float,
+    equals_array_double,
+    dump_array_byte,
+    dump_array_short,
+    dump_array_int,
+    dump_array_long,
+    dump_array_float,
+    dump_array_double,
+    copy_array_range_byte,
+    copy_array_range_short,
+    copy_array_range_int,
+    copy_array_range_long,
+    copy_array_range_float,
+    copy_array_range_double,
+    copy_array_range_object,
+    memcpy_byte,
+    memcpy_short,
+    memcpy_int,
+    memcpy_long,
+    memcpy_float,
+    memcpy_double,
+    memmove_byte,
+    memmove_short,
+    memmove_int,
+    memmove_long,
+    memmove_float,
+    memmove_double,
+    new_array_proto,
+  );
+  
+  use Fn;
+  use Fn (
+    crand,
+    srand,
+  );
+
+  use TestCase::Minimal;
+  use EqualityChecker;
+  use EqualityChecker::SameObject;
+
+  use Fn (
+    chompr,
+    copy_string,
+    is_perl_space,
+    is_perl_word,
+    is_alnum,
+    is_alpha,
+    is_blank,
+    is_cntrl,
+    is_digit,
+    is_graph,
+    is_lower,
+    is_print,
+    is_punct,
+    is_space,
+    is_upper,
+    is_xdigit,
+    join,
+    lc,
+    lcfirst,
+    uc,
+    ucfirst,
+    rindex,
+    to_double,
+    to_float,
+    to_int,
+    to_int_with_base,
+    to_long,
+    to_long_with_base,
+    index,
+    split,
+    sprintf,
+    to_lower,
+    to_upper,
+  );
+
+  sub test_crand : int () {
+    
+    my $founds_plus = new int[10];
+    my $founds_minus = new int[10];
+    my $rand = 0;
+    for (my $i = 0; $i < 100000; $i++) {
+      $rand = crand();
+
+      my $dig0 = $rand % 10;
+      $founds_plus->[$dig0] = 1;
+    }
+    
+    unless (equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_rand : int () {
+    
+    # 0 <= random_number < 1
+    {
+      my $rand = 0.0;
+      my $invalid_range = 0;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = Fn->rand();
+        
+        unless ($rand >= 0 && $rand < 1) {
+          $invalid_range = 1;
+          last;
+        }
+      }
+      
+      if ($invalid_range) {
+        return 0;
+      }
+    }
+    
+    # Apper random numbers
+    {
+      my $founds_plus = new int[10];
+      my $founds_minus = new int[10];
+      my $rand = 0.0;
+      for (my $i = 0; $i < 100000; $i++) {
+        $rand = Fn->rand();
+        
+        # 0-9
+        my $dig0 = (int)($rand * 10);
+        $founds_plus->[$dig0] = 1;
+      }
+      
+      unless (equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_RAND_MAX : int () {
+    
+    unless (Fn->RAND_MAX > 0) {
+      return 1;
+    }
+
+    return 1;
+  }
+
+  sub test_srand : int () {
+    
+    srand(10);
+    
+    my $rand1 = crand();
+    my $rand2 = crand();
+    my $rand3 = crand();
+    
+    srand(10);
+    
+    unless (crand() == $rand1) {
+      return 0;
+    }
+    
+    unless (crand() == $rand2) {
+      return 0;
+    }
+    
+    unless (crand() == $rand3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  sub test_byte_constant : int () {
+    if ((int)INT8_MIN() == (int)(byte)-128) {
+      if ((int)INT8_MAX() == (int)(byte)127) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_short_constant : int () {
+    if ((int)INT16_MIN() == (int)(short)-32768) {
+      if ((int)INT16_MAX() == (int)(short)32767) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_int_constant : int () {
+    if (INT32_MIN() == -2147483648) {
+      if (INT32_MAX() == 2147483647) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_long_constant : int () {
+    if (INT64_MIN() == -9223372036854775808L) {
+      if (INT64_MAX() == 9223372036854775807L) {
+        return 1;
+      }
+    }
+
+    return 0;
+  }
+
+  sub test_copy_str : int () {
+    my $string = "abc";
+    my $string_out = Fn->copy_string($string);
+
+    unless ($string_out eq "abc") {
+      return 0;
+    }
+
+    return 1;
+  }
+  
+  sub test_hex : int () {
+    # 0
+    {
+      my $hex_string = (string)"0";
+      my $hex_num = Fn->hex($hex_string);
+      unless ($hex_num isa int) {
+        return 0;
+      }
+      unless ($hex_num == 0) {
+        return 0;
+      }
+    }
+
+    # 1-9
+    {
+      unless (Fn->hex("1") == 1) { return 0; }
+      unless (Fn->hex("2") == 2) { return 0; }
+      unless (Fn->hex("3") == 3) { return 0; }
+      unless (Fn->hex("4") == 4) { return 0; }
+      unless (Fn->hex("5") == 5) { return 0; }
+      unless (Fn->hex("6") == 6) { return 0; }
+      unless (Fn->hex("7") == 7) { return 0; }
+      unless (Fn->hex("8") == 8) { return 0; }
+      unless (Fn->hex("9") == 9) { return 0; }
+    }
+
+    # a-z
+    {
+      unless (Fn->hex("a") == 10) { return 0; }
+      unless (Fn->hex("b") == 11) { return 0; }
+      unless (Fn->hex("c") == 12) { return 0; }
+      unless (Fn->hex("d") == 13) { return 0; }
+      unless (Fn->hex("e") == 14) { return 0; }
+      unless (Fn->hex("f") == 15) { return 0; }
+    }
+
+    # A-Z
+    {
+      unless (Fn->hex("A") == 10) { return 0; }
+      unless (Fn->hex("B") == 11) { return 0; }
+      unless (Fn->hex("C") == 12) { return 0; }
+      unless (Fn->hex("D") == 13) { return 0; }
+      unless (Fn->hex("E") == 14) { return 0; }
+      unless (Fn->hex("F") == 15) { return 0; }
+    }
+
+    # 19afAF25
+    {
+      unless (Fn->hex("19afAF25") == 430944037) { return 0; }
+      unless (Fn->hex("19afAF25") == 430944037) { return 0; }
+    }
+
+    # FFFFFFFF
+    {
+      unless (Fn->hex("FFFFFFFF") == 0xFFFFFFFF) { return 0; }
+    }
+    
+    # Exception - undef
+    {
+      eval { Fn->hex(undef); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Empty String
+    {
+      eval { Fn->hex(""); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Invalid hex string
+    {
+      eval { Fn->hex("g"); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Too long
+    {
+      eval { Fn->hex("111111111"); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+  
+  sub test_trim_ascii_space : int () {
+    # undef
+    {
+      my $string = (string)undef;
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string == undef) {
+        return 0;
+      }
+    }
+    
+    # no left and right spaces
+    {
+      my $string = (string)"ab  c";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # left spaces
+    {
+      my $string = (string)"  \t  \nab  c";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # right spaces
+    {
+      my $string = (string)"ab  c  \t  \n";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+
+    # left and right spaces
+    {
+      my $string = (string)"  \t  \nab  c  \t  \n";
+      my $trimed_string = Fn->trim_ascii_space($string);
+      unless ($trimed_string eq "ab  c") {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub test_split : int () {
+    {
+      my $string = "foo,bar,baz";
+      my $split_strs = split(",", $string);
+      unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo,bar,";
+      my $split_strs = split(",", $string);
+      unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = ",foo,,bar,,";
+      my $split_strs = split(",", $string);
+      unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo : bar : baz";
+      my $split_strs = split(" : ", $string);
+      unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $string = "foo : bar : ";
+      my $split_strs = split(" : ", $string);
+      unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $string = " : foo :  : bar :  : ";
+      my $split_strs = split(" : ", $string);
+      unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo---bar---baz";
+      my $split_strs = split("---", $string);
+      unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
+        return 0;
+      }
+    }
+    {
+      my $string = "foo---bar---";
+      my $split_strs = split("---", $string);
+      unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
+        return 0;
+      }
+    }
+    {
+      my $string = "---foo------bar------";
+      my $split_strs = split("---", $string);
+      unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "foo--!bar---baz";
+      my $split_strs = split("---", $string);
+      unless (equals_array_string($split_strs, ["foo--!bar", "baz"])) {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_sprintf_d : int () {
+    my $tests = [
+        [ sprintf("abc%d", 123),          "abc123" ],
+        [ sprintf("%dabc", 123),          "123abc" ],
+        [ sprintf("%dabc%d", 1, 10),      "1abc10" ],
+        [ sprintf("%d%d%d", 1, 10, 100),  "110100" ],
+        [ sprintf("%d%d%d", 1, 10, 100),  "110100" ],
+        [ sprintf("%05d", 123),           "00123"  ],
+        [ sprintf("%+5d", 123),           " +123"  ],
+        [ sprintf("%-5d", 123),           "123  "  ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%d", "str");
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_u : int () {
+    my $tests = [
+        [ sprintf("abc%u", 123),          "abc123" ],
+        [ sprintf("%uabc", 123),          "123abc" ],
+        [ sprintf("%uabc%u", 1, 10),      "1abc10" ],
+        [ sprintf("%u%u%u", 1, 10, 100),  "110100" ],
+        [ sprintf("%05u", 123),           "00123"  ],
+        [ sprintf("%+5u", 123),           " +123"  ],
+        [ sprintf("%-5u", 123),           "123  "  ],
+        [ sprintf("%-5u", 123),           "123  "  ],
+        [ sprintf("%u", -1),              "4294967295" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%d", "str");
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_ld : int () {
+    my $tests = [
+        [ sprintf("abc%ld", 10000000000L),                                "abc10000000000"                    ],
+        [ sprintf("%ldabc", 10000000000L),                                "10000000000abc"                    ],
+        [ sprintf("%ldabc%ld", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
+        [ sprintf("%ld%ld%ld", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
+        [ sprintf("%013ld", 12345678901L),                                "0012345678901"                     ],
+        [ sprintf("%+13ld", 12345678901L),                                " +12345678901"                     ],
+        [ sprintf("%-13ld", 12345678901L),                                "12345678901  "                     ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%ld", "str");
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      eval {
+        sprintf("%l", 1L);
+      };
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_lu : int () {
+    my $tests = [
+        [ sprintf("abc%lu", 10000000000L),                                "abc10000000000"                    ],
+        [ sprintf("%luabc", 10000000000L),                                "10000000000abc"                    ],
+        [ sprintf("%luabc%lu", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
+        [ sprintf("%lu%ld%lu", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
+        [ sprintf("%013lu", 12345678901L),                                "0012345678901"                     ],
+        [ sprintf("%+13lu", 12345678901L),                                " +12345678901"                     ],
+        [ sprintf("%-13lu", 12345678901L),                                "12345678901  "                     ],
+        [ sprintf("%lu", -1L),                                            "18446744073709551615"              ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%ld", "str");
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      eval {
+        sprintf("%l", 1L);
+      };
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_f : int () {
+    my $tests = [
+        [ sprintf("abc%.2f", 3.14),                  "abc3.14"      ],
+        [ sprintf("%.2fabc", 3.14),                  "3.14abc"      ],
+        [ sprintf("%.2fabc%.2f", 3.14, 2.71),        "3.14abc2.71"  ],
+        [ sprintf("%.2f%.2f%.2f", 3.14, 2.71, 2.67), "3.142.712.67" ],
+        [ sprintf("%.10f", 3.14),                    "3.1400000000" ],
+        [ sprintf("%012.6f", 3.14),                  "00003.140000" ],
+        [ sprintf("%+12.6f", 3.14),                  "   +3.140000" ],
+        [ sprintf("%-12.6f", 3.14),                  "3.140000    " ],
+        [ sprintf("%+-12.6f", 3.14),                 "+3.140000   " ],
+        [ sprintf("%g", 3.14),                       "3.14"         ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%f", "str");
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_c : int () {
+    my $tests = [
+        [ sprintf("abc%c", 'x'),            "abcx"  ],
+        [ sprintf("%cabc", 'x'),            "xabc"  ],
+        [ sprintf("%cabc%c", 'x', 'y'),     "xabcy" ],
+        [ sprintf("%c%c%c", 'x', 'y', 'z'), "xyz"   ],
+        [ sprintf("%05c", 'x'),             "0000x" ],
+        [ sprintf("%-5c", 'x'),             "x    " ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%c", "str");
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_s : int () {
+    my $tests = [
+        [ sprintf("abc%s", "ABC"),                "abcABC"    ],
+        [ sprintf("%sabc", "ABC"),                "ABCabc"    ],
+        [ sprintf("%sabc%s", "ABC", "XYZ"),       "ABCabcXYZ" ],
+        [ sprintf("%s%s%s", "ABC", "XYZ", "123"), "ABCXYZ123" ],
+        [ sprintf("%05s", "str"),                 "00str"     ],
+        [ sprintf("%-5s", "str"),                 "str  "     ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%s", 1);
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  private sub _first_uchar : int ($string : string) {
+    my $uchar_pos = 0;
+    return uchar($string, \$uchar_pos);
+  }
+
+  sub test_sprintf_U : int () {
+    my $tests = [
+        [ sprintf("abc%U", _first_uchar("あ")), "abcあ" ],
+        [ sprintf("%Uabc", _first_uchar("あ")), "あabc" ],
+        [ sprintf("%Uabc%U", _first_uchar("あ"), _first_uchar("い")), "あabcい" ],
+        [ sprintf("%U%U%U", _first_uchar("あ"), _first_uchar("い"), _first_uchar("う")), "あいう" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    {
+      eval {
+        sprintf("%U", "str");
+      };
+      unless ($@ && index($@, "Can't cast", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    return 1;
+  }
+
+  sub test_sprintf_percent : int () {
+    my $tests = [
+        [ sprintf("%d%%",    1), "1%"    ],
+        [ sprintf("%%%d",    1), "%1"    ],
+        [ sprintf("%d%%str", 1), "1%str" ],
+    ];
+    for (my $i = 0; $i < @$tests; ++$i) {
+      unless ($tests->[$i][0] eq $tests->[$i][1]) {
+        warn("got: '" . $tests->[$i][0] . "', expected: '" . $tests->[$i][1] . "'");
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_sprintf_all : int () {
+    {
+      # Invalid conversion (end of string)
+      eval {
+        sprintf("%d%", 1);
+      };
+      unless ($@ && index($@, "Invalid conversion in sprintf: end of string", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Invalid conversion (unknown specifier)
+      eval {
+        sprintf("%d%k", 1, 2);
+      };
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%k\"", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Invalid conversion (no type)
+      eval {
+        sprintf("%012.3", 3.14);
+      };
+      unless ($@ && index($@, "Invalid conversion in sprintf: \"%012.3\"", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      # Missing argument
+      eval {
+        sprintf("%d%d", 1);
+      };
+      unless ($@ && index($@, "Missing argument in sprintf", 0) > -1) {
+        warn("got error: $@");
+        return 0;
+      }
+      $@ = undef;
+    }
+    {
+      my $string = "abc\n";
+      my $ret = chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "abc";
+      my $ret = chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "";
+      my $ret = chompr($string);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_chompr : int () {
+    {
+      my $string = "abc\n";
+      my $ret = chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "abc";
+      my $ret = chompr($string);
+      unless ($ret eq "abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "";
+      my $ret = chompr($string);
+      unless ($ret eq "") {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  
+  sub test_is_alnum : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
+        my $ret = is_alnum($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_alnum($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_alpha : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
+        my $ret = is_alpha($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_alpha($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_blank : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= ' ' ||  $char <= '\t') {
+        my $ret = is_blank($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_blank($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_cntrl : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
+        my $ret = is_cntrl($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_cntrl($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_digit : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= '0' && $char <= '9') {
+        my $ret = is_digit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_digit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_graph : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 0x21 && $char <= 0x7e) {
+        my $ret = is_graph($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_graph($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_lower : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = is_lower($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_lower($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_print : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 0x20 && $char <= 0x7e) {
+        my $ret = is_print($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_print($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_punct : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
+        my $ret = is_punct($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_punct($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_space : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
+        my $ret = is_space($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_space($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_upper : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = is_upper($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_upper($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_xdigit : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
+        my $ret = is_xdigit($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_xdigit($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_to_lower : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'A' && $char <= 'Z') {
+        my $ret = to_lower($char);
+        unless ($ret == $char + 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = to_lower($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_to_upper : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+    if ($char >= 'a' && $char <= 'z') {
+        my $ret = to_upper($char);
+        unless ($ret == $char - 0x20) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = to_upper($char);
+        unless ($ret == $char) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_perl_space : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
+        my $ret = is_perl_space($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_space($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_is_perl_word : int () {
+
+    my $ok = 1;
+    for (my $i = 0; $i < 128; $i++) {
+      my $char = $i;
+
+      if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
+        my $ret = is_perl_word($char);
+        unless ($ret == 1) {
+          $ok = 0;
+        }
+      }
+      else {
+        my $ret = is_perl_word($char);
+        unless ($ret == 0) {
+          $ok = 0;
+        }
+      }
+    }
+
+    unless ($ok) {
+      return 0;
+    }
+
+    return 1;
+  }
+
+  sub test_to_int : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-2147483648";
+      my $num = to_int($string);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == -2147483648) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_to_int_with_base : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-2147483648";
+      my $num = to_int_with_base($string, 10);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == -2147483648) {
+        return 0;
+      }
+    }
+
+    # 10 digit max
+    {
+      my $string = "2147483647";
+      my $num = to_int_with_base($string, 10);
+      unless ($num isa int) {
+        return 0;
+      }
+
+      unless ($num == 2147483647) {
+        return 0;
+      }
+    }
+
+    # 2 digit
+    {
+      my $string = "11";
+      my $num = to_int_with_base($string, 2);
+
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # 8 digit
+    {
+      my $string = "11";
+      my $num = to_int_with_base($string, 8);
+
+      unless ($num == 9) {
+        return 0;
+      }
+    }
+
+    # 16 digit
+    {
+      my $string = "FF";
+      my $num = to_int_with_base($string, 16);
+
+      unless ($num == 255) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10oppp";
+      eval {
+        to_int_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Invalid digit
+    {
+      my $string = "10";
+      eval {
+        to_int_with_base($string, 100);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range max + 1
+    {
+      my $string = "2147483648";
+      eval {
+        to_int_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-2147483649";
+      eval {
+        to_int_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_to_long : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-9223372036854775808";
+      my $num = to_long($string);
+      unless ($num isa long) {
+        return 0;
+      }
+
+      unless ($num == -9223372036854775808L) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  sub test_to_long_with_base : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "-9223372036854775808";
+      my $num = to_long_with_base($string, 10);
+      unless ($num isa long) {
+        return 0;
+      }
+
+      unless ($num == -9223372036854775808L) {
+        return 0;
+      }
+    }
+
+    # 10 digit max
+    {
+      my $string = "9223372036854775807";
+      my $num = to_long_with_base($string, 10);
+
+      unless ($num == 9223372036854775807L) {
+        return 0;
+      }
+    }
+
+    # 2 digit
+    {
+      my $string = "11";
+      my $num = to_long_with_base($string, 2);
+
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # 8 digit
+    {
+      my $string = "11";
+      my $num = to_long_with_base($string, 8);
+
+      unless ($num == 9) {
+        return 0;
+      }
+    }
+
+    # 16 digit
+    {
+      my $string = "FF";
+      my $num = to_long_with_base($string, 16);
+
+      unless ($num == 255) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10oppp";
+      eval {
+        to_long_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Invalid digit
+    {
+      my $string = "10";
+      eval {
+        to_long_with_base($string, 100);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range max + 1
+    {
+      my $string = "9223372036854775808";
+      eval {
+        to_long_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    # Out of range min - 1
+    {
+      my $string = "-9223372036854775809";
+      eval {
+        to_long_with_base($string, 10);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_to_float : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = to_float($string);
+      unless ($num isa float) {
+        return 0;
+      }
+
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        to_float($string);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_to_double : int () {
+    # 10 digit minimal and return type is int
+    {
+      my $string = "1.25";
+      my $num = to_double($string);
+      unless ($num isa double) {
+        return 0;
+      }
+
+      unless ($num == 1.25) {
+        return 0;
+      }
+    }
+
+    # Invalid string format
+    {
+      my $string = "10.5oppp";
+      eval {
+        to_double($string);
+      };
+      unless ($@) {
+        return 0;
+      }
+      $@ = undef;
+    }
+
+    return 1;
+  }
+
+  sub test_ucfirst : int () {
+    {
+      my $string = "@abc";
+      my $result_str = ucfirst($string);
+      unless ($result_str eq "@abc") {
+        return 0;
+      }
+    }
+    {
+      my $string = "[abc";
+      my $result_str = ucfirst($string);
+      unless ($result_str eq "[abc") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "aabc";
+      my $result_str = ucfirst($string);
+      unless ($result_str eq "Aabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "pabc";
+      my $result_str = ucfirst($string);
+      unless ($result_str eq "Pabc") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "zabc";
+      my $result_str = ucfirst($string);
+      unless ($result_str eq "Zabc") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_uc : int () {
+    {
+      my $string = "@[apz[";
+      my $result_str = uc($string);
+      unless ($result_str eq "@[APZ[") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_lc : int () {
+    {
+      my $string = "@[APZ[";
+      my $result_str = lc($string);
+      unless ($result_str eq "@[apz[") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_lcfirst : int () {
+    {
+      my $string = "@ABC";
+      my $result_str = lcfirst($string);
+      unless ($result_str eq "@ABC") {
+        return 0;
+      }
+    }
+    {
+      my $string = "[ABC";
+      my $result_str = lcfirst($string);
+      unless ($result_str eq "[ABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "AABC";
+      my $result_str = lcfirst($string);
+      unless ($result_str eq "aABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "PABC";
+      my $result_str = lcfirst($string);
+      unless ($result_str eq "pABC") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = "ZABC";
+      my $result_str = lcfirst($string);
+      unless ($result_str eq "zABC") {
+        return 0;
+      }
+    }
+    return 1;
+  }
+
+  sub test_index : int () {
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = index($target, $search, 0);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = index($target, $search, 1);
+      unless ($pos == 1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "bcd";
+      my $pos = index($target, $search, 2);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abcde";
+      my $search = "pq";
+      my $pos = index($target, $search, 2);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  sub test_rindex : int () {
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 3);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 2);
+      unless ($pos == 2) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 1);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "ab";
+      my $pos = rindex($target, $search, 0);
+      unless ($pos == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $target = "abab";
+      my $search = "pq";
+      my $pos = rindex($target, $search, 2);
+      unless ($pos == -1) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_join : int () {
+    my $strings = ["abc", "def", "hij"];
+
+    my $dump = join(",", $strings);
+
+    if ($dump eq "abc,def,hij") {
+      return 1;
+    }
+
+    return 0;
+  }
+
+  sub test_copy_string : int () {
+    # copy string
+    {
+      my $string = "abc";
+      my $string_out = copy_string($string);
+      
+      # Equals the value
+      unless ($string_out eq "abc") {
+        return 0;
+      }
+      
+      # Not equals address
+      if ($string == $string_out) {
+        return 0;
+      }
+    }
+    
+    # undef
+    {
+      my $string_out = copy_string(undef);
+      
+      # Equals the value
+      unless ($string_out == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_byte : int () {
+    # Copy array
+    {
+      my $nums = [(byte)1, 2, Fn->INT8_MIN()];
+      my $nums_out = copy_array_byte($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == Fn->INT8_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+    
+    # Array is undef
+    {
+      my $output = copy_array_byte(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_short : int () {
+    # Copy array
+    {
+      my $nums = [(short)1, 2, Fn->INT16_MIN()];
+      my $nums_out = copy_array_short($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == Fn->INT16_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+    
+    # Array is undef
+    {
+      my $output = copy_array_short(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_int : int () {
+    # Copy array
+    {
+      my $nums = [(int)1, 2, Fn->INT32_MIN()];
+      my $nums_out = copy_array_int($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == Fn->INT32_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_int(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_long : int () {
+    # Copy array
+    {
+      my $nums = [(long)1, 2, Fn->INT64_MIN()];
+      my $nums_out = copy_array_long($nums);
+
+      unless ($nums->[0] == 1) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 2) {
+        return 0;
+      }
+
+      unless ($nums->[2] == Fn->INT64_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_long(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_float : int () {
+    # Copy array
+    {
+      my $nums = [(float)0.5f, 0.25f, Fn->FLT_MIN()];
+      my $nums_out = copy_array_float($nums);
+
+      unless ($nums->[0] == 0.5) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 0.25) {
+        return 0;
+      }
+
+      unless ($nums->[2] == Fn->FLT_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_float(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_double : int () {
+    # Copy array
+    {
+      my $nums = [(double)0.5, 0.25, Fn->DBL_MIN()];
+      my $nums_out = copy_array_double($nums);
+
+      unless ($nums->[0] == 0.5) {
+        return 0;
+      }
+
+      unless ($nums->[1] == 0.25) {
+        return 0;
+      }
+
+      unless ($nums->[2] == Fn->DBL_MIN()) {
+        return 0;
+      }
+
+      unless (@$nums_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_double(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_string : int () {
+    # Copy array
+    {
+      my $strings = ["abc", "def", "hij"];
+      my $strings_out = copy_array_string($strings);
+
+      unless ($strings->[0] eq $strings_out->[0]) {
+        return 0;
+      }
+      unless ($strings->[1] eq $strings_out->[1]) {
+        return 0;
+      }
+      unless ($strings->[2] eq $strings_out->[2]) {
+        return 0;
+      }
+
+      unless ($strings->[0] != $strings_out->[0]) {
+        return 0;
+      }
+
+      unless ($strings->[1] != $strings_out->[1]) {
+        return 0;
+      }
+
+      unless ($strings->[2] != $strings_out->[2]) {
+        return 0;
+      }
+
+      unless (@$strings_out == 3) {
+        return 0;
+      }
+    }
+
+    # Array is undef
+    {
+      my $output = copy_array_string(undef);
+      unless ($output == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_object : int () {
+    # Copy array
+    {
+      my $objects = [(object)Int->new(1), Int->new(2), Int->new(Fn->INT32_MIN())];
+      my $objects_out = copy_array_object($objects, sub : object ($self : self, $obj : object) {
+        my $int_obj = (Int)$obj;
+        my $new_int_obj = Int->new($int_obj->value);
+        return $new_int_obj;
+      });
+
+      if ($objects->[0] == $objects_out->[0]) {
+        return 0;
+      }
+
+      if ($objects->[1] == $objects_out->[1]) {
+        return 0;
+      }
+
+      if ($objects->[2] == $objects_out->[2]) {
+        return 0;
+      }
+
+      unless ((int)$objects_out->[0] == 1) {
+        return 0;
+      }
+
+      unless ((int)$objects_out->[1] == 2) {
+        return 0;
+      }
+
+      unless ((int)$objects_out->[2] == Fn->INT32_MIN()) {
+        return 0;
+      }
+
+      unless (@$objects_out == 3) {
+        return 0;
+      }
+
+      unless ($objects != $objects_out) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_byte : int () {
+    my $nums1 = [(byte)0, 1, Fn->INT8_MIN()];
+    my $nums2 = [(byte)0, 1, Fn->INT8_MIN()];
+    my $nums3 = [(byte)0, 1];
+    my $nums4 = [(byte)0, 1, 2];
+    {
+      my $is_equals = equals_array_byte($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_byte($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_byte($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_byte(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_byte($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_byte(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_short : int () {
+    my $nums1 = [(short)0, 1, Fn->INT16_MIN()];
+    my $nums2 = [(short)0, 1, Fn->INT16_MIN()];
+    my $nums3 = [(short)0, 1];
+    my $nums4 = [(short)0, 1, 2];
+
+    {
+      my $is_equals = equals_array_short($nums1, $nums2);
+
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_short($nums1, $nums3);
+
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_short($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_short(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_short($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_short(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_int : int () {
+    my $nums1 = [(int)0, 1, Fn->INT32_MIN()];
+    my $nums2 = [(int)0, 1, Fn->INT32_MIN()];
+    my $nums3 = [(int)0, 1];
+    my $nums4 = [(int)0, 1, 2];
+
+    {
+      my $is_equals = equals_array_int($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_int($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_int($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_int(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_int($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_int(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_long : int () {
+    my $nums1 = [(long)0, 1, Fn->INT64_MIN()];
+    my $nums2 = [(long)0, 1, Fn->INT64_MIN()];
+    my $nums3 = [(long)0, 1];
+    my $nums4 = [(long)0, 1, 2];
+
+    {
+      my $is_equals = equals_array_long($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_long($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_long($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_long(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_long($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_long(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_float : int () {
+    my $nums1 = [0.0f, 1.5f, Fn->FLT_MIN()];
+    my $nums2 = [0.0f, 1.5f, Fn->FLT_MIN()];
+    my $nums3 = [0.0f, 1.5f];
+    my $nums4 = [(float)0.0f, 1.5f, 0.5f];
+
+    {
+      my $is_equals = equals_array_float($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_float($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_float($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_float(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_float($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_float(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_double : int () {
+    my $nums1 = [0.0, 1.5, Fn->DBL_MIN()];
+    my $nums2 = [0.0, 1.5, Fn->DBL_MIN()];
+    my $nums3 = [0.0, 1.5];
+    my $nums4 = [(double)0.0, 1.5, 0.5];
+
+    {
+      my $is_equals = equals_array_double($nums1, $nums2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_double($nums1, $nums3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_double($nums1, $nums4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_double(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_double($nums1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_double(undef, $nums1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_equals_array_string : int () {
+    my $strings1 = ["abc", "def", "ghi"];
+    my $strings2 = ["abc", "def", "ghi"];
+    my $strings3 = ["abc", "def"];
+    my $strings4 = ["abc", "def", "xxx"];
+
+    {
+      my $is_equals = equals_array_string($strings1, $strings2);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_string($strings1, $strings3);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_string($strings1, $strings4);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    {
+      my $is_equals = equals_array_string(undef, undef);
+      if ($is_equals) {
+        return 1;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_string($strings1, undef);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    
+    {
+      my $is_equals = equals_array_string(undef, $strings1);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+  sub test_equals_array_object : int () {
+    my $minimal1 = TestCase::Minimal->new;
+    my $minimal2 = TestCase::Minimal->new;
+    my $minimal3 = TestCase::Minimal->new;
+    my $minimal4 = TestCase::Minimal->new;
+    my $nums1 = [$minimal1, $minimal2, $minimal3];
+    my $nums2 = [$minimal1, $minimal2, $minimal3];
+    my $nums3 = [$minimal1, $minimal2];
+    my $nums4 = [$minimal1, $minimal2, $minimal4];
+    my $nums5 = [(object)$minimal1, $minimal2, $minimal3];
+
+    my $equality_checker = sub : int ($self : self, $object1 : object, $object2 : object) {
+      my $minimal1 = (TestCase::Minimal)$object1;
+      my $minimal2 = (TestCase::Minimal)$object2;
+
+      if ($minimal1 == $minimal2) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    };
+
+    {
+      my $is_equals = equals_array_object($nums1, $nums2, $equality_checker);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_object($nums1, $nums3, $equality_checker);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_object($nums1, $nums4, $equality_checker);
+      if ($is_equals) {
+        return 0;
+      }
+    }
+    {
+      my $is_equals = equals_array_object($nums1, $nums5, $equality_checker);
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_memcpy_byte : int () {
+    
+    # Copy
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memcpy_byte($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memcpy_byte($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5, 9];
+      memcpy_byte($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memcpy_byte($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(byte)1, 3, 5];
+      eval { memcpy_byte(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new byte[4];
+      eval { memcpy_byte($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      eval { memcpy_byte($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      eval { memcpy_byte($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      eval { memcpy_byte($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+
+  sub test_memcpy_short : int () {
+    
+    # Copy
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memcpy_short($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_short($dest, [(short)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memcpy_short($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_short($dest, [(short)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5, 9];
+      memcpy_short($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_short($dest, [(short)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memcpy_short($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_short($dest, [(short)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new short[4];
+      eval { memcpy_short($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memcpy_short($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_int : int () {
+    
+    # Copy
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memcpy_int($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_int($dest, [(int)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memcpy_int($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_int($dest, [(int)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5, 9];
+      memcpy_int($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_int($dest, [(int)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memcpy_int($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_int($dest, [(int)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new int[4];
+      eval { memcpy_int($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memcpy_int($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_long : int () {
+    
+    # Copy
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memcpy_long($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_long($dest, [(long)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memcpy_long($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_long($dest, [(long)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5, 9];
+      memcpy_long($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_long($dest, [(long)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memcpy_long($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_long($dest, [(long)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new long[4];
+      eval { memcpy_long($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memcpy_long($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_float : int () {
+    
+    # Copy
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memcpy_float($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_float($dest, [(float)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memcpy_float($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_float($dest, [(float)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5, 9];
+      memcpy_float($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_float($dest, [(float)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memcpy_float($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_float($dest, [(float)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new float[4];
+      eval { memcpy_float($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memcpy_float($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memcpy_double : int () {
+    
+    # Copy
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memcpy_double($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_double($dest, [(double)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memcpy_double($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_double($dest, [(double)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5, 9];
+      memcpy_double($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_double($dest, [(double)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memcpy_double($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_double($dest, [(double)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new double[4];
+      eval { memcpy_double($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memcpy_double($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memmove_byte : int () {
+    
+    # Copy
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memmove_byte($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memmove_byte($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5, 9];
+      memmove_byte($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      memmove_byte($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(byte)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      memmove_byte($dest, 0, $dest, 1, 9);
+      unless (Fn->equals_array_byte($dest, [(byte)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(byte)1, 3, 5];
+      eval { memmove_byte(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new byte[4];
+      eval { memmove_byte($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      eval { memmove_byte($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      eval { memmove_byte($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new byte[4];
+      my $source = [(byte)1, 3, 5];
+      eval { memmove_byte($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memmove_short : int () {
+    
+    # Copy
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memmove_short($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_short($dest, [(short)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memmove_short($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_short($dest, [(short)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5, 9];
+      memmove_short($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_short($dest, [(short)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      memmove_short($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_short($dest, [(short)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(short)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      memmove_short($dest, 0, $dest, 1, 9);
+      unless (Fn->equals_array_short($dest, [(short)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(short)1, 3, 5];
+      eval { memmove_short(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new short[4];
+      eval { memmove_short($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memmove_short($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memmove_short($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new short[4];
+      my $source = [(short)1, 3, 5];
+      eval { memmove_short($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memmove_int : int () {
+    
+    # Copy
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memmove_int($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_int($dest, [(int)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memmove_int($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_int($dest, [(int)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5, 9];
+      memmove_int($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_int($dest, [(int)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      memmove_int($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_int($dest, [(int)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(int)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      memmove_int($dest, 0, $dest, 1, 9);
+      unless (Fn->equals_array_int($dest, [(int)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(int)1, 3, 5];
+      eval { memmove_int(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new int[4];
+      eval { memmove_int($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memmove_int($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memmove_int($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new int[4];
+      my $source = [(int)1, 3, 5];
+      eval { memmove_int($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memmove_long : int () {
+    
+    # Copy
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memmove_long($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_long($dest, [(long)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memmove_long($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_long($dest, [(long)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5, 9];
+      memmove_long($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_long($dest, [(long)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      memmove_long($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_long($dest, [(long)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(long)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      memmove_long($dest, 0, $dest, 1, 9);
+      unless (Fn->equals_array_long($dest, [(long)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(long)1, 3, 5];
+      eval { memmove_long(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new long[4];
+      eval { memmove_long($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memmove_long($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memmove_long($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new long[4];
+      my $source = [(long)1, 3, 5];
+      eval { memmove_long($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memmove_float : int () {
+    
+    # Copy
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memmove_float($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_float($dest, [(float)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memmove_float($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_float($dest, [(float)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5, 9];
+      memmove_float($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_float($dest, [(float)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      memmove_float($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_float($dest, [(float)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(float)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      memmove_float($dest, 0, $dest, 1, 9);
+      unless (Fn->equals_array_float($dest, [(float)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(float)1, 3, 5];
+      eval { memmove_float(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new float[4];
+      eval { memmove_float($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memmove_float($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memmove_float($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new float[4];
+      my $source = [(float)1, 3, 5];
+      eval { memmove_float($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_memmove_double : int () {
+    
+    # Copy
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memmove_double($dest, 0, $source, 0, 3);
+      unless (Fn->equals_array_double($dest, [(double)1, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memmove_double($dest, 1, $source, 0, 3);
+      unless (Fn->equals_array_double($dest, [(double)0, 1, 3, 5])) {
+        return 0;
+      }
+    }
+
+    # Copy with offset and length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5, 9];
+      memmove_double($dest, 1, $source, 1, 2);
+      unless (Fn->equals_array_double($dest, [(double)0, 3, 5, 0])) {
+        return 0;
+      }
+    }
+
+    # Copy with 0 length
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      memmove_double($dest, 0, $source, 0, 0);
+      unless (Fn->equals_array_double($dest, [(double)0, 0, 0, 0])) {
+        return 0;
+      }
+    }
+    
+    # Copy overwrap
+    {
+      my $dest = [(double)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      memmove_double($dest, 0, $dest, 1, 9);
+      unless (Fn->equals_array_double($dest, [(double)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Destnation must be defined
+    {
+      my $source = [(double)1, 3, 5];
+      eval { memmove_double(undef, 0, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source must be defined
+    {
+      my $dest = new double[4];
+      eval { memmove_double($dest, 0, undef, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Length must be more than or equals to 0
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memmove_double($dest, 0, $source, 0, -1); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Destnation offset + length must be within the range of the destnation array
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memmove_double($dest, 2, $source, 0, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Source offset + length must be within the range of the source array
+    {
+      my $dest = new double[4];
+      my $source = [(double)1, 3, 5];
+      eval { memmove_double($dest, 0, $source, 1, 3); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+
+  sub test_dump_array_byte : int () {
+    # Dump array
+    {
+      my $nums = [(byte)1, 2, Fn->INT8_MIN()];
+
+      my $dump = dump_array_byte($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  -128\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = dump_array_byte(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_array_short : int () {
+    # Dump array
+    {
+      my $nums = [(short)1, 2, Fn->INT16_MIN()];
+
+      my $dump = dump_array_short($nums);
+
+      unless ($dump eq "[\n  1,\n  2,\n  -32768\n]") {
+        return 0;
+      }
+    }
+    
+    # Dump undef
+    {
+      my $dump = dump_array_short(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_array_int : int () {
+    # Dump array
+    {
+      my $nums = [(int)1, 2, Fn->INT32_MIN()];
+
+      my $dump = dump_array_int($nums);
+
+      unless ($dump eq "[\n  1,\n  2,\n  -2147483648\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = dump_array_int(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+
+    return 1;
+  }
+
+  sub test_dump_array_long : int () {
+    # Dump array
+    {
+      my $nums = [(long)1, 2, Fn->INT64_MIN()];
+
+      my $dump = dump_array_long($nums);
+
+      unless ($dump eq "[\n  1,\n  2,\n  -9223372036854775808\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = dump_array_long(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+
+    return 1;
+  }
+
+  sub test_dump_array_float : int () {
+    # Dump array
+    {
+      my $nums = [(float)1, 2, 2.45f];
+
+      my $dump = dump_array_float($nums);
+
+      unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = dump_array_float(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_array_double : int () {
+    # Dump array
+    {
+      my $nums = [(double)1, 2, 2.45];
+
+      my $dump = dump_array_double($nums);
+
+      unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = dump_array_double(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_array_byte : int () {
+    # Dump array
+    {
+      my $nums = [(byte)1, 2, -1, Fn->UINT8_MAX];
+      
+      my $dump = Fn->dump_array_unsigned_byte($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  255,\n  255\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Fn->dump_array_unsigned_byte(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_array_short : int () {
+    # Dump array
+    {
+      my $nums = [(short)1, 2, -1, Fn->UINT16_MAX];
+      
+      my $dump = Fn->dump_array_unsigned_short($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  65535,\n  65535\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Fn->dump_array_unsigned_short(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_array_int : int () {
+    # Dump array
+    {
+      my $nums = [(int)1, 2, -1, Fn->UINT32_MAX];
+      
+      my $dump = Fn->dump_array_unsigned_int($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  4294967295,\n  4294967295\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Fn->dump_array_unsigned_int(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_unsigned_array_long : long () {
+    # Dump array
+    {
+      my $nums = [(long)1, 2, -1, Fn->UINT64_MAX];
+      
+      my $dump = Fn->dump_array_unsigned_long($nums);
+      
+      unless ($dump eq "[\n  1,\n  2,\n  18446744073709551615,\n  18446744073709551615\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Fn->dump_array_unsigned_long(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_array_string : int () {
+    # Dump array
+    {
+      my $strings = ["abc", "def", "ghi"];
+
+      my $dump = Fn->dump_array_string($strings);
+
+      unless ($dump eq "[\n  abc,\n  def,\n  ghi\n]") {
+        return 0;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Fn->dump_array_string(undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+  sub test_dump_array_object : int () {
+    
+    {
+      my $minimals = [
+        TestCase::Minimal->newp(1, 2),
+        TestCase::Minimal->newp(3, 4),
+        TestCase::Minimal->newp(5, 6)
+      ];
+
+      my $dump = Fn->dump_array_object($minimals, sub : string ($self : self, $obj : object) {
+        my $minimal = (TestCase::Minimal)$obj;
+        my $x = $minimal->x;
+        my $y = $minimal->y;
+        my $str = "($x,$y)";
+        return $str;
+      });
+
+      if ($dump eq "[\n  (1,2),\n  (3,4),\n  (5,6)\n]") {
+        return 1;
+      }
+    }
+
+    # Dump undef
+    {
+      my $dump = Fn->dump_array_object(undef, undef);
+      
+      unless ($dump == undef) {
+        return 0;
+      }
+    }
+
+    return 1;
+  }
+
+
+  sub test_new_array_proto : int () {
+    my $minimals = new TestCase::Minimal[1];
+
+    my $new_array_object = new_array_proto($minimals, 2);
+    unless ($new_array_object isa TestCase::Minimal[]) {
+      return 0;
+    }
+    my $new_minimals = (TestCase::Minimal[])$new_array_object;
+    unless (@$new_minimals == 2) {
+      return 0;
+    }
+
+    return 1;
+  }
+  sub test_copy_array_range_byte : int () {
+    {
+      my $nums = [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19];
+      my $range = copy_array_range_byte($nums, 0, 7);
+      unless (equals_array_byte($range, [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+
+    {
+      my $nums = [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19];
+      my $range = copy_array_range_byte($nums, 1, 3);
+      unless (equals_array_byte($range, [(byte)-7, 9, Fn->INT8_MIN()])) {
+        return 0;
+      }
+    }
+    
+    # Exception - The argument array must be defined
+    {
+      eval { copy_array_range_byte(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+	      eval { copy_array_range_byte([(byte)5, -7, 9], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { copy_array_range_byte([(byte)5, -7, 9], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      eval { copy_array_range_byte([(byte)5, -7, 9], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+  sub test_copy_array_range_short : int () {
+    {
+      my $nums = [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19];
+      my $range = copy_array_range_short($nums, 0, 7);
+      unless (equals_array_short($range, [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    {
+      my $nums = [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19];
+      my $range = copy_array_range_short($nums, 1, 3);
+      unless (equals_array_short($range, [(short)-7, 9, Fn->INT16_MIN()])) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { copy_array_range_short(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+	      eval { copy_array_range_short([(short)5, -7, 9], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { copy_array_range_short([(short)5, -7, 9], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      eval { copy_array_range_short([(short)5, -7, 9], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+  sub test_copy_array_range_int : int () {
+    {
+      my $nums = [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19];
+      my $range = copy_array_range_int($nums, 0, 7);
+      unless (equals_array_int($range, [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    {
+      my $nums = [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19];
+      my $range = copy_array_range_int($nums, 1, 3);
+      unless (equals_array_int($range, [(int)-7, 9, Fn->INT32_MIN()])) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { copy_array_range_int(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+	      eval { copy_array_range_int([(int)5, -7, 9], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { copy_array_range_int([(int)5, -7, 9], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      eval { copy_array_range_int([(int)5, -7, 9], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+  sub test_copy_array_range_long : int () {
+    {
+      my $nums = [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19];
+      my $range = copy_array_range_long($nums, 0, 7);
+      unless (equals_array_long($range, [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    {
+      my $nums = [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19];
+      my $range = copy_array_range_long($nums, 1, 3);
+      unless (equals_array_long($range, [(long)-7, 9, Fn->INT64_MIN()])) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { copy_array_range_long(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+	      eval { copy_array_range_long([(long)5, -7, 9], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { copy_array_range_long([(long)5, -7, 9], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      eval { copy_array_range_long([(long)5, -7, 9], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+  sub test_copy_array_range_float : int () {
+    {
+      my $nums = [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19];
+      my $range = copy_array_range_float($nums, 0, 7);
+      unless (equals_array_float($range, [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    {
+      my $nums = [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19];
+      my $range = copy_array_range_float($nums, 1, 3);
+      unless (equals_array_float($range, [(float)-7, 9, Fn->FLT_MIN()])) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { copy_array_range_float(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+	      eval { copy_array_range_float([(float)5, -7, 9], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { copy_array_range_float([(float)5, -7, 9], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      eval { copy_array_range_float([(float)5, -7, 9], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+  
+  sub test_copy_array_range_double : int () {
+    {
+      my $nums = [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19];
+      my $range = copy_array_range_double($nums, 0, 7);
+      unless (equals_array_double($range, [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19])) {
+        return 0;
+      }
+    }
+    {
+      my $nums = [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19];
+      my $range = copy_array_range_double($nums, 1, 3);
+      unless (equals_array_double($range, [(double)-7, 9, Fn->DBL_MIN()])) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { copy_array_range_double(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+	      eval { copy_array_range_double([(double)5, -7, 9], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { copy_array_range_double([(double)5, -7, 9], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      eval { copy_array_range_double([(double)5, -7, 9], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_range_string : int () {
+    {
+      my $strings = ["a", "b", "c", "d", "e", "f", "g"];
+      my $range = Fn->copy_array_range_string($strings, 0, 7);
+      unless (equals_array_string($range, ["a", "b", "c", "d", "e", "f", "g"])) {
+        return 0;
+      }
+    }
+    {
+      my $strings = ["a", "b", "c", "d", "e", "f", "g"];
+      my $range = Fn->copy_array_range_string($strings, 1, 3);
+      unless (equals_array_string($range, ["b", "c", "d"])) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { Fn->copy_array_range_string(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      {
+	      eval { Fn->copy_array_range_string([(string)5, -7, 9], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { Fn->copy_array_range_string([(string)5, -7, 9], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      eval { Fn->copy_array_range_string([(string)5, -7, 9], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+
+  sub test_copy_array_range_object : int () {
+
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])copy_array_range_object($elems, 0, 4);
+      unless (Fn->equals_array_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::SameObject->new)) {
+        return 0;
+      }
+    }
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      my $minimal4 = TestCase::Minimal->new;
+
+      my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
+      my $range = (TestCase::Minimal[])copy_array_range_object($elems, 1, 2);
+      unless (Fn->equals_array_object($range, [$minimal2, $minimal3], EqualityChecker::SameObject->new)) {
+        return 0;
+      }
+    }
+
+    # Exception - The argument array must be defined
+    {
+      eval { copy_array_range_object(undef, 0, 7); };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be in the array range
+    {
+      my $minimal1 = TestCase::Minimal->new;
+      my $minimal2 = TestCase::Minimal->new;
+      my $minimal3 = TestCase::Minimal->new;
+      {
+	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], -1, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+      {
+	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], 3, 1); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    # Exception - Offset + length must be in the array range
+    {
+      {
+	      my $minimal1 = TestCase::Minimal->new;
+	      my $minimal2 = TestCase::Minimal->new;
+	      my $minimal3 = TestCase::Minimal->new;
+	      
+	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], 1, 3); };
+	      unless ($@) {
+	        return 0;
+	      }
+	    }
+    }
+
+    return 1;
+  }
+
+  sub sort_byte : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(byte)2, 3, 1];
+      
+      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_byte($nums, [(byte)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $nums = [(byte)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_byte($nums, [(byte)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $nums = [(byte)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_byte($nums, [(byte)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort byte array by desc order
+    {
+      my $nums = [(byte)2, 3, 1];
+      
+      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+        return $b <=> $a;
+      });
+      
+      unless (Fn->equals_array_byte($nums, [(byte)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $nums = [(byte)2, 3, 1];
+      
+      Fn->sort_byte($nums, 0, 0, sub : int ($self : self, $a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_byte($nums, [(byte)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $nums = [(byte)5, 2, 3, 1, -10];
+      
+      Fn->sort_byte($nums, 1, 3, sub : int ($self : self, $a : byte, $b : byte) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_byte($nums, [(byte)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $nums = [(byte)2, 3, 1];
+      
+      eval {
+        Fn->sort_byte(undef, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $nums = [(byte)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_byte($nums, -1, 3, sub : int ($self : self, $a : byte, $b : byte) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $nums = [(byte)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_byte($nums, 1, -1, sub : int ($self : self, $a : byte, $b : byte) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $nums = [(byte)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_byte($nums, 3, 3, sub : int ($self : self, $a : byte, $b : byte) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub sort_short : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(short)2, 3, 1];
+      
+      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_short($nums, [(short)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $nums = [(short)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_short($nums, [(short)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $nums = [(short)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_short($nums, [(short)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort short array by desc order
+    {
+      my $nums = [(short)2, 3, 1];
+      
+      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+        return $b <=> $a;
+      });
+      
+      unless (Fn->equals_array_short($nums, [(short)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $nums = [(short)2, 3, 1];
+      
+      Fn->sort_short($nums, 0, 0, sub : int ($self : self, $a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_short($nums, [(short)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $nums = [(short)5, 2, 3, 1, -10];
+      
+      Fn->sort_short($nums, 1, 3, sub : int ($self : self, $a : short, $b : short) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_short($nums, [(short)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $nums = [(short)2, 3, 1];
+      
+      eval {
+        Fn->sort_short(undef, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $nums = [(short)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_short($nums, -1, 3, sub : int ($self : self, $a : short, $b : short) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $nums = [(short)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_short($nums, 1, -1, sub : int ($self : self, $a : short, $b : short) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $nums = [(short)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_short($nums, 3, 3, sub : int ($self : self, $a : short, $b : short) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub sort_int : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(int)2, 3, 1];
+      
+      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_int($nums, [(int)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $nums = [(int)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_int($nums, [(int)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $nums = [(int)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_int($nums, [(int)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort int array by desc order
+    {
+      my $nums = [(int)2, 3, 1];
+      
+      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+        return $b <=> $a;
+      });
+      
+      unless (Fn->equals_array_int($nums, [(int)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $nums = [(int)2, 3, 1];
+      
+      Fn->sort_int($nums, 0, 0, sub : int ($self : self, $a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_int($nums, [(int)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $nums = [(int)5, 2, 3, 1, -10];
+      
+      Fn->sort_int($nums, 1, 3, sub : int ($self : self, $a : int, $b : int) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_int($nums, [(int)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $nums = [(int)2, 3, 1];
+      
+      eval {
+        Fn->sort_int(undef, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $nums = [(int)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_int($nums, -1, 3, sub : int ($self : self, $a : int, $b : int) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $nums = [(int)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_int($nums, 1, -1, sub : int ($self : self, $a : int, $b : int) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $nums = [(int)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_int($nums, 3, 3, sub : int ($self : self, $a : int, $b : int) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub sort_long : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(long)2, 3, 1];
+      
+      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_long($nums, [(long)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $nums = [(long)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_long($nums, [(long)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $nums = [(long)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_long($nums, [(long)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort long array by desc order
+    {
+      my $nums = [(long)2, 3, 1];
+      
+      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+        return $b <=> $a;
+      });
+      
+      unless (Fn->equals_array_long($nums, [(long)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $nums = [(long)2, 3, 1];
+      
+      Fn->sort_long($nums, 0, 0, sub : int ($self : self, $a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_long($nums, [(long)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $nums = [(long)5, 2, 3, 1, -10];
+      
+      Fn->sort_long($nums, 1, 3, sub : int ($self : self, $a : long, $b : long) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_long($nums, [(long)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $nums = [(long)2, 3, 1];
+      
+      eval {
+        Fn->sort_long(undef, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $nums = [(long)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_long($nums, -1, 3, sub : int ($self : self, $a : long, $b : long) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $nums = [(long)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_long($nums, 1, -1, sub : int ($self : self, $a : long, $b : long) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $nums = [(long)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_long($nums, 3, 3, sub : int ($self : self, $a : long, $b : long) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub sort_float : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(float)2, 3, 1];
+      
+      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_float($nums, [(float)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $nums = [(float)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_float($nums, [(float)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $nums = [(float)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_float($nums, [(float)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort float array by desc order
+    {
+      my $nums = [(float)2, 3, 1];
+      
+      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+        return $b <=> $a;
+      });
+      
+      unless (Fn->equals_array_float($nums, [(float)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $nums = [(float)2, 3, 1];
+      
+      Fn->sort_float($nums, 0, 0, sub : int ($self : self, $a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_float($nums, [(float)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $nums = [(float)5, 2, 3, 1, -10];
+      
+      Fn->sort_float($nums, 1, 3, sub : int ($self : self, $a : float, $b : float) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_float($nums, [(float)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $nums = [(float)2, 3, 1];
+      
+      eval {
+        Fn->sort_float(undef, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $nums = [(float)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_float($nums, -1, 3, sub : int ($self : self, $a : float, $b : float) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $nums = [(float)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_float($nums, 1, -1, sub : int ($self : self, $a : float, $b : float) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $nums = [(float)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_float($nums, 3, 3, sub : int ($self : self, $a : float, $b : float) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub sort_double : int () {
+    # Sort array by asc order
+    {
+      my $nums = [(double)2, 3, 1];
+      
+      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_double($nums, [(double)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $nums = [(double)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_double($nums, [(double)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $nums = [(double)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_double($nums, [(double)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort double array by desc order
+    {
+      my $nums = [(double)2, 3, 1];
+      
+      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+        return $b <=> $a;
+      });
+      
+      unless (Fn->equals_array_double($nums, [(double)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $nums = [(double)2, 3, 1];
+      
+      Fn->sort_double($nums, 0, 0, sub : int ($self : self, $a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_double($nums, [(double)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $nums = [(double)5, 2, 3, 1, -10];
+      
+      Fn->sort_double($nums, 1, 3, sub : int ($self : self, $a : double, $b : double) {
+        return $a <=> $b;
+      });
+      
+      unless (Fn->equals_array_double($nums, [(double)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $nums = [(double)2, 3, 1];
+      
+      eval {
+        Fn->sort_double(undef, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $nums = [(double)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_double($nums, -1, 3, sub : int ($self : self, $a : double, $b : double) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $nums = [(double)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_double($nums, 1, -1, sub : int ($self : self, $a : double, $b : double) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $nums = [(double)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_double($nums, 3, 3, sub : int ($self : self, $a : double, $b : double) {
+          return $a <=> $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub sort_string : int () {
+    # Sort array by asc order
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Fn->equals_array_string($strings, [(string)1, 2, 3])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long
+    {
+      my $strings = [(string)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
+      
+      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Fn->equals_array_string($strings, [(string)0, 1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort array by asc order more long with same values
+    {
+      my $strings = [(string)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
+      
+      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Fn->equals_array_string($strings, [(string)0, 1, 2, 3, 3, 4, 5, 5, 6, 7, 8, 9])) {
+        return 0;
+      }
+    }
+
+    # Sort string array by desc order
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $b cmp $a;
+      });
+      
+      unless (Fn->equals_array_string($strings, [(string)3, 2, 1])) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      Fn->sort_string($strings, 0, 0, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Fn->equals_array_string($strings, [(string)2, 3, 1])) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      Fn->sort_string($strings, 1, 3, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Fn->equals_array_string($strings, [(string)5, 1, 2, 3, -10])) {
+        return 0;
+      }
+    }
+
+    # Sort length is differnt and contain empty string and undef
+    {
+      my $strings = ["11", "1", "2", undef, ""];
+      
+      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        return $a cmp $b;
+      });
+      
+      unless (Fn->equals_array_string($strings, [(string)undef, "", "1", "11", "2"])) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $strings = [(string)2, 3, 1];
+      
+      eval {
+        Fn->sort_string(undef, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_string($strings, -1, 3, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_string($strings, 1, -1, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $strings = [(string)5, 2, 3, 1, -10];
+      
+      eval {
+        Fn->sort_string($strings, 3, 3, sub : int ($self : self, $a : string, $b : string) {
+          return $a cmp $b;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+    
+    return 1;
+  }
+
+  sub new_minimal : TestCase::Minimal ($x : int, $y : int) {
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x($x);
+    $minimal->set_y($y);
+    
+    return $minimal;
+  }
+  
+  sub sort_object : int () {
+    
+    # Sort array by asc order
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      Fn->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+      });
+      
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+
+    # Sort array by multiple conditions
+    {
+      my $objs = [new_minimal(2, 1), new_minimal(2, 2), new_minimal(1, 3)];
+
+      Fn->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        my $a_x = ((TestCase::Minimal)$a)->x;
+        my $a_y = ((TestCase::Minimal)$a)->y;
+        my $b_x = ((TestCase::Minimal)$b)->x;
+        my $b_y = ((TestCase::Minimal)$b)->y;
+        
+        my $cmp = ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        if ($cmp != 0) {
+          return $cmp;
+        }
+        else {
+          $cmp = ((TestCase::Minimal)$a)->y <=> ((TestCase::Minimal)$b)->y;
+        }
+        
+        return $cmp;
+      });
+
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 3), new_minimal(2, 1), new_minimal(2, 2)], sub : int ($self : self, $a : object, $b : object) {
+        if (((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x && ((TestCase::Minimal)$a)->y == ((TestCase::Minimal)$b)->y) {
+          return 1;
+        }
+        else {
+          return 0;
+        }
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+
+    # Sort array by desc order
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      Fn->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$b)->x <=> ((TestCase::Minimal)$a)->x;
+      });
+      
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(3, 0), new_minimal(2, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+      });
+      
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+
+    # If length is 0, There is nothing to do
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      Fn->sort_object($objs, 0, 0, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+      });
+      
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+      });
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+    
+    # Sort partially
+    {
+      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      
+      Fn->sort_object($objs, 1, 3, sub : int ($self : self, $a : object, $b : object) {
+        return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+      });
+      
+      my $is_equals = Fn->equals_array_object(
+        $objs,
+        [new_minimal(5, 0), new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(-10, 0)],
+        sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
+        }
+      );
+      unless ($is_equals) {
+        return 0;
+      }
+    }
+
+    # Exception - Array must be not undef
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      eval {
+        Fn->sort_object(undef, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    # Exception - Offset must be more than or equals to 0
+    {
+      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      
+      eval {
+        Fn->sort_object($objs, -1, 3, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Length must be more than or equals to 0
+    {
+      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      
+      eval {
+        Fn->sort_object($objs, 1, -1, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+
+    # Exception - Offset + Length must be in the array range
+    {
+      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      
+      eval {
+        Fn->sort_object($objs, 3, 3, sub : int ($self : self, $a : object, $b : object) {
+          return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
+        });
+      };
+      unless ($@) {
+        return 0;
+      }
+    }
+    
+    $@ = undef;
+
+    return 1;
+  }
+}
