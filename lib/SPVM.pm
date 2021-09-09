@@ -300,7 +300,7 @@ SPVM - Static Perl Virtual Machine. Fast Calculation, Fast Array Operation, and 
 SPVM Module:
 
   # lib/SPVM/MyMath.spvm
-  package SPVM::MyMath {
+  package MyMath {
     sub sum : int ($nums : int[]) {
 
       my $total = 0;
@@ -337,7 +337,7 @@ Call SPVM method from Perl
 Precompiled SPVM Method. This code is converted to C language and then converted to a shared library.
 
   # lib/SPVM/MyMath.spvm
-  package SPVM::MyMath : precompile {
+  package MyMath : precompile {
     sub sum : int ($nums : int[]) {
 
       my $total = 0;
