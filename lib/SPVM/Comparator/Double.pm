@@ -18,7 +18,7 @@ SPVM::Comparator::Double - a callback interface for double comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator::Double> is a callback interface to compare two double values.
+L<Comparator::Double|SPVM::Comparator::Double> is a callback interface to compare two double values.
 
 =head1 CALLBACK METHOD INTERFACE
 

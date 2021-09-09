@@ -19,7 +19,7 @@ SPVM::Unicode - Unicode utilities.
   
 =head1 DESCRIPTION
 
-L<SPVM::Unicode> is Unicode utilities. This module privides the methods to convert UTF-8, UTF-16, UTF-32, Unicode codepoint each others.
+L<Unicode|SPVM::Unicode> is Unicode utilities. This module privides the methods to convert UTF-8, UTF-16, UTF-32, Unicode codepoint each others.
 
 =head1 STATIC METHODS
 

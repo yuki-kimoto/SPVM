@@ -48,7 +48,7 @@ SPVM::DoubleList - Dynamic double array
 
 =head1 DESCRIPTION
 
-L<SPVM::DoubleList> is dynamic double array.
+L<DoubleList|SPVM::DoubleList> is dynamic double array.
 
 =head1 STATIC METHODS
 
@@ -56,7 +56,7 @@ L<SPVM::DoubleList> is dynamic double array.
 
     sub new : SPVM::DoubleList ($array : double[])
 
-Create a new L<SPVM::DoubleList> object with specific C<double> array.
+Create a new L<DoubleList|SPVM::DoubleList> object with specific C<double> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -66,7 +66,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::DoubleList ($length : int)
 
-Create a new L<SPVM::DoubleList> object with array length.
+Create a new L<DoubleList|SPVM::DoubleList> object with array length.
 
 =head1 INSTANCE METHODS
 
@@ -136,7 +136,7 @@ If there are no elements in the list, exception occur.
 
   sub to_array : double[] ($self : self)
 
-Convert L<SPVM::DoubleList> to double array.
+Convert L<DoubleList|SPVM::DoubleList> to double array.
 
 =head2 pop
 

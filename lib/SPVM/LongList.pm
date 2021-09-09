@@ -48,7 +48,7 @@ SPVM::LongList - Dynamic long array
 
 =head1 DESCRIPTION
 
-L<SPVM::LongList> is dynamic long array.
+L<LongList|SPVM::LongList> is dynamic long array.
 
 =head1 STATIC METHODS
 
@@ -56,7 +56,7 @@ L<SPVM::LongList> is dynamic long array.
 
     sub new : SPVM::LongList ($array : long[])
 
-Create a new L<SPVM::LongList> object with specific C<long> array.
+Create a new L<LongList|SPVM::LongList> object with specific C<long> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -66,7 +66,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::LongList ($length : int)
 
-Create a new L<SPVM::LongList> object with array length.
+Create a new L<LongList|SPVM::LongList> object with array length.
 
 =head1 INSTANCE METHODS
 
@@ -143,7 +143,7 @@ If there are no elements in the list, exception occur.
 
   sub to_array : long[] ($self : self)
 
-Convert L<SPVM::LongList> to long array.
+Convert L<LongList|SPVM::LongList> to long array.
 
 =head2 unshift
 

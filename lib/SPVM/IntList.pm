@@ -48,7 +48,7 @@ SPVM::IntList - Dynamic int array
 
 =head1 DESCRIPTION
 
-L<SPVM::IntList> is dynamic int array.
+L<IntList|SPVM::IntList> is dynamic int array.
 
 =head1 STATIC METHODS
 
@@ -56,7 +56,7 @@ L<SPVM::IntList> is dynamic int array.
 
     sub new : SPVM::IntList ($array : int[])
 
-Create a new L<SPVM::IntList> object with specific C<int> array.
+Create a new L<IntList|SPVM::IntList> object with specific C<int> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -66,7 +66,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::IntList ($length : int)
 
-Create a new L<SPVM::IntList> object with array length.
+Create a new L<IntList|SPVM::IntList> object with array length.
 
 =head1 INSTANCE METHODS
 
@@ -143,7 +143,7 @@ If there are no elements in the list, exception occur.
 
   sub to_array : int[] ($self : self)
 
-Convert L<SPVM::IntList> to int array.
+Convert L<IntList|SPVM::IntList> to int array.
 
 =head2 unshift
 

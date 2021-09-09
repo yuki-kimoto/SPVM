@@ -88,11 +88,11 @@ SPVM::Regex - Regular expression
   
 =head1 DESCRIPTION
 
-L<SPVM::Regex> provides regular expression functions.
+L<Regex|SPVM::Regex> provides regular expression functions.
 
 =head1 REGULAR EXPRESSION SYNTAX
 
-L<SPVM::Regex> provides the methodset of Perl regular expression. The target string and regex string is interpretted as UTF-8 string.
+L<Regex|SPVM::Regex> provides the methodset of Perl regular expression. The target string and regex string is interpretted as UTF-8 string.
   
   # Quantifier
   +     more than or equals to 1 repeats
@@ -131,7 +131,7 @@ Regex options is used by C<new_with_options> method.
 
 B<Limitations:>
 
-L<SPVM::Regex> do not support the same set of characters after a quantifier.
+L<Regex|SPVM::Regex> do not support the same set of characters after a quantifier.
       
   # A exception occurs
   SPVM::Regex->new("a*a");
@@ -151,13 +151,13 @@ If 0 width quantifir is between two same set of characters after a quantifier, i
 
   my $re = SPVM::Regex->new("^ab+c");
 
-Create a new L<SPVM::Regex> object and compile the regex.
+Create a new L<Regex|SPVM::Regex> object and compile the regex.
 
 =head2 new_with_options
 
   my $re = SPVM::Regex->new("^ab+c", "s");
 
-Create a new L<SPVM::Regex> object and compile the regex with the options.
+Create a new L<Regex|SPVM::Regex> object and compile the regex with the options.
 
 =head1 INSTANCE METHODS
 
@@ -207,7 +207,7 @@ Replace the target string specified with the start byte offset with replace stri
 
   sub replace_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer)
 
-Replace the target string specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<SPVM::Regex::Replacer>.
+Replace the target string specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<Regex::Replacer|SPVM::Regex::Replacer>.
 
 =head2 replace_all
 
@@ -219,4 +219,4 @@ Replace all of the target strings specified with the start byte offset with repl
 
   sub replace_all_cb  : string ($self : self, $target : string, $target_offset : int, $replace_cb : SPVM::Regex::Replacer)
 
-Replace all of the target strings specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<SPVM::Regex::Replacer>.
+Replace all of the target strings specified with the start byte offset with replace callback. The callback must have "replace_to" method defined in L<Regex::Replacer|SPVM::Regex::Replacer>.

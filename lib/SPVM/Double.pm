@@ -15,11 +15,11 @@ SPVM::Double - Double object
 
 =head1 DESCRIPTION
 
-L<SPVM::Double> object stores a C<double> value.
+L<Double|SPVM::Double> object stores a C<double> value.
 
 This object is immutable and its value cannot be changed.
 
-L<SPVM::Double> is automatically loaded just after the program starts.
+L<Double|SPVM::Double> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -27,7 +27,7 @@ L<SPVM::Double> is automatically loaded just after the program starts.
 
   sub new : SPVM::Double ($value : double)
 
-Create a new L<SPVM::Double> object with a C<double> value.
+Create a new L<Double|SPVM::Double> object with a C<double> value.
 
 =head1 INSTANCE METHODS
 

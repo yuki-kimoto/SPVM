@@ -48,7 +48,7 @@ SPVM::ByteList - Dynamic Byte Array
 
 =head1 DESCRIPTION
 
-L<SPVM::ByteList> is Dynamic Byte Array.
+L<ByteList|SPVM::ByteList> is Dynamic Byte Array.
 
 =head1 STATIC METHODS
 
@@ -56,7 +56,7 @@ L<SPVM::ByteList> is Dynamic Byte Array.
 
     sub new : SPVM::ByteList ($array : byte[])
 
-Create a new L<SPVM::ByteList> object with byte array.
+Create a new L<ByteList|SPVM::ByteList> object with byte array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -66,7 +66,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::ByteList ($length : int)
 
-Create a new L<SPVM::ByteList> object with array length.
+Create a new L<ByteList|SPVM::ByteList> object with array length.
 
 =head1 INSTANCE METHODS
 
@@ -143,7 +143,7 @@ If there are no elements in the list, exception occur.
 
   sub to_array : byte[] ($self : self)
 
-Convert L<SPVM::ByteList> to byte array.
+Convert L<ByteList|SPVM::ByteList> to byte array.
 
 =head2 unshift
 

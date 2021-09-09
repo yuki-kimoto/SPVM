@@ -41,7 +41,7 @@ Convert to Perl decoded String
 
 =head1 OPERATORS
 
-L<SPVM::BlessedObject::String> overloads the following operators.
+L<BlessedObject::String|SPVM::BlessedObject::String> overloads the following operators.
 
 =head2 bool
 

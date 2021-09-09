@@ -15,11 +15,11 @@ SPVM::Long - Long object
 
 =head1 DESCRIPTION
 
-L<SPVM::Long> object stores a C<long> value.
+L<Long|SPVM::Long> object stores a C<long> value.
 
 This object is immutable and its value cannot be changed.
 
-L<SPVM::Long> is automatically loaded just after the program starts.
+L<Long|SPVM::Long> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -27,7 +27,7 @@ L<SPVM::Long> is automatically loaded just after the program starts.
 
   sub new : SPVM::Long ($value : long)
 
-Create a new L<SPVM::Long> object with a C<long> value.
+Create a new L<Long|SPVM::Long> object with a C<long> value.
 
 =head1 INSTANCE METHODS
 

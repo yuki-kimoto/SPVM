@@ -30,7 +30,7 @@ String buffer.
 
   sub new : SPVM::StringBuffer ()
 
-Create new L<SPVM::StringBuffer> object.
+Create new L<StringBuffer|SPVM::StringBuffer> object.
 
 =head1 INSTANCE METHODS
 

@@ -26,7 +26,7 @@ SPVM::Hash - Hash Data Structure
 
 =head1 DESCRIPTION
 
-L<SPVM::Hash> is Hash Data Structure. This is generally called associative array.
+L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative array.
 
 =head1 STATIC METHODS
 
@@ -34,7 +34,7 @@ L<SPVM::Hash> is Hash Data Structure. This is generally called associative array
 
     sub new : SPVM::Hash ($key_values : oarray)
 
-Create a new L<SPVM::Hash> object with key value pairs.
+Create a new L<Hash|SPVM::Hash> object with key value pairs.
 
   # Create hash
   my $book = SPVM::Hash->new({});
@@ -134,37 +134,37 @@ Set key value pair.
 
   set_byte : void ($self : self, $name : string, $value : byte)
 
-Set key and value pair. byte value is converted to L<SPVM::Byte> object.
+Set key and value pair. byte value is converted to L<Byte|SPVM::Byte> object.
 
 =head2 set_short
 
   set_short : void ($self : self, $name : string, $value : short)
 
-Set key and value pair. short value is converted to L<SPVM::Short> object.
+Set key and value pair. short value is converted to L<Short|SPVM::Short> object.
 
 =head2 set_int
 
   set_int : void ($self : self, $name : string, $value : int)
 
-Set key and value pair. int value is converted to L<SPVM::Int> object.
+Set key and value pair. int value is converted to L<Int|SPVM::Int> object.
 
 =head2 set_long
 
   set_long : void ($self : self, $name : string, $value : long)
 
-Set key and value pair. long value is converted to L<SPVM::Long> object.
+Set key and value pair. long value is converted to L<Long|SPVM::Long> object.
 
 =head2 set_float
 
   set_float : void ($self : self, $name : string, $value : float)
 
-Set key and value pair. float value is converted to L<SPVM::Float> object.
+Set key and value pair. float value is converted to L<Float|SPVM::Float> object.
 
 =head2 set_double
 
   set_double : void ($self : self, $name : string, $value : double)
 
-Set key and value pair. double value is converted to L<SPVM::Double> object.
+Set key and value pair. double value is converted to L<Double|SPVM::Double> object.
 
 =head2 set_string
 

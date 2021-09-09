@@ -12,4 +12,4 @@ SPVM::Hash::Entry - Hash entry
 
 =head1 DESCRIPTION
 
-L<SPVM::Hash::Entry> is used for L<SPVM::Hash> internally.
+L<Hash::Entry|SPVM::Hash::Entry> is used for L<Hash|SPVM::Hash> internally.

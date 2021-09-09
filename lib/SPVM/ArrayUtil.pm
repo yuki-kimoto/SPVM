@@ -235,7 +235,7 @@ If the array is undef, return undef.
 
   sub copy_array_object : object[] ($objects : object[], $cloner : SPVM::Cloner)
 
-Copy a object array with a L<SPVM::Cloner> callback implemetation.
+Copy a object array with a L<Cloner|SPVM::Cloner> callback implemetation.
 
 If the array is undef, return undef.
 
@@ -299,7 +299,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
   sub sub equals_array_object : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker)
 
-Check equality of two objects. You must sepecify a L<SPVM::EqualityChecker> object to check the equality of each element.
+Check equality of two objects. You must sepecify a L<EqualityChecker|SPVM::EqualityChecker> object to check the equality of each element.
 
 $objs1 and $objs2 and $equality_checker must be defined, otherwise a exception occur.
 
@@ -753,7 +753,7 @@ Offset + length must not be in the array range, othrewise a exception occurs.
 
     sub sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte)
 
-Sort byte array itself with a offset, a length, and a L<SPVM::Comparator::Byte> comparator.
+Sort byte array itself with a offset, a length, and a L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 
@@ -767,7 +767,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
     sub sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short)
 
-Sort short array itself with a offset, a length, and a L<SPVM::Comparator::Short> comparator.
+Sort short array itself with a offset, a length, and a L<Comparator::Short|SPVM::Comparator::Short> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 
@@ -781,7 +781,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
     sub sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int)
 
-Sort int array itself with a offset, a length, and a L<SPVM::Comparator::Int> comparator.
+Sort int array itself with a offset, a length, and a L<Comparator::Int|SPVM::Comparator::Int> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 
@@ -795,7 +795,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
     sub sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long)
 
-Sort long array itself with a offset, a length, and a L<SPVM::Comparator::Long> comparator.
+Sort long array itself with a offset, a length, and a L<Comparator::Long|SPVM::Comparator::Long> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 
@@ -809,7 +809,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
     sub sub sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float)
 
-Sort float array itself with a offset, a length, and a L<SPVM::Comparator::Float> comparator.
+Sort float array itself with a offset, a length, and a L<Comparator::Float|SPVM::Comparator::Float> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 
@@ -823,7 +823,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
     sub sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
 
-Sort double array itself with a offset, a length, and a L<SPVM::Comparator::Double> comparator.
+Sort double array itself with a offset, a length, and a L<Comparator::Double|SPVM::Comparator::Double> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 
@@ -837,7 +837,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
     sub sort_string : void ($nums : string[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
 
-Sort string array itself with a offset, a length, and a L<SPVM::Comparator::String> comparator.
+Sort string array itself with a offset, a length, and a L<Comparator::String|SPVM::Comparator::String> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 
@@ -851,7 +851,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
     sub sort_object : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object)
 
-Sort object array itself with a offset, a length, and a L<SPVM::Comparator::Object> comparator.
+Sort object array itself with a offset, a length, and a L<Comparator::Object|SPVM::Comparator::Object> comparator.
 
 Array must be not undef. Otherwise a exception occurs.
 

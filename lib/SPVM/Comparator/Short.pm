@@ -18,7 +18,7 @@ SPVM::Comparator::Short - a callback interface for short comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator::Short> is a callback interface to compare two short values.
+L<Comparator::Short|SPVM::Comparator::Short> is a callback interface to compare two short values.
 
 =head1 CALLBACK METHOD INTERFACE
 

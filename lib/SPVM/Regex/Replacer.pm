@@ -19,7 +19,7 @@ SPVM::Regex::Replacer - a callback interface for the regex replacement
 
 =head1 DESCRIPTION
 
-L<SPVM::Regex::Replacer> is a callback interface for the regex replacement.
+L<Regex::Replacer|SPVM::Regex::Replacer> is a callback interface for the regex replacement.
 
 =head1 CALLBACK METHOD INTERFACE
 

@@ -18,7 +18,7 @@ SPVM::Comparator::String - a callback interface for string comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator::String> is a callback interface to compare two strings.
+L<Comparator::String|SPVM::Comparator::String> is a callback interface to compare two strings.
 
 =head1 CALLBACK METHOD INTERFACE
 

@@ -19,10 +19,10 @@ SPVM::Time - Time manipulation
   # Get GMT time information
   my $time_info = SPVM::Time->gmtime(SPVM::Time->time);
   
-  # Convert L<SPVM::Time::Info> to which is local time zone to calender time as same as time method format.
+  # Convert L<Time::Info|SPVM::Time::Info> to which is local time zone to calender time as same as time method format.
   my $time = SPVM::Time->timelocal($time_info);
   
-  # Convert L<SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
+  # Convert L<Time::Info|SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
   my $time = SPVM::Time->timegm($time_info);
 
 =head1 DESCRIPTION
@@ -47,7 +47,7 @@ Example:
 
   sub localtime : SPVM::Time::Info ($time : long)
 
-Converts a time as returned by the time method to a L<SPVM::Time::Info> object
+Converts a time as returned by the time method to a L<Time::Info|SPVM::Time::Info> object
 with the time analyzed for the local time zone.
 
 Example:
@@ -92,7 +92,7 @@ time()).
 
   sub timelocal : long ($time_info : SPVM::Time::Info)
 
-timelocal method convert L<SPVM::Time::Info> which is local time zone to calender time as same as time method format.
+timelocal method convert L<Time::Info|SPVM::Time::Info> which is local time zone to calender time as same as time method format.
 
 wday and yday is ignored.
 
@@ -102,7 +102,7 @@ wday and yday is ignored.
 
   sub timegm : long ($time_info : SPVM::Time::Info)
 
-timegm method convert L<SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
+timegm method convert L<Time::Info|SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
 
 wday and yday is ignored.
 

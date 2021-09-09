@@ -48,7 +48,7 @@ SPVM::FloatList - Dynamic float array
 
 =head1 DESCRIPTION
 
-L<SPVM::FloatList> is dynamic float array.
+L<FloatList|SPVM::FloatList> is dynamic float array.
 
 =head1 STATIC METHODS
 
@@ -56,7 +56,7 @@ L<SPVM::FloatList> is dynamic float array.
 
     sub new : SPVM::FloatList ($array : float[])
 
-Create a new L<SPVM::FloatList> object with specific C<float> array.
+Create a new L<FloatList|SPVM::FloatList> object with specific C<float> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -66,7 +66,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::FloatList ($length : int)
 
-Create a new L<SPVM::FloatList> object with array length.
+Create a new L<FloatList|SPVM::FloatList> object with array length.
 
 =head1 INSTANCE METHODS
 
@@ -143,7 +143,7 @@ If there are no elements in the list, exception occur.
 
   sub to_array : float[] ($self : self)
 
-Convert L<SPVM::FloatList> to float array.
+Convert L<FloatList|SPVM::FloatList> to float array.
 
 =head2 unshift
 

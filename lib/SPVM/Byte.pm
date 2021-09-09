@@ -15,11 +15,11 @@ SPVM::Byte - Byte object
 
 =head1 DESCRIPTION
 
-L<SPVM::Byte> object holds a byte type value.
+L<Byte|SPVM::Byte> object holds a byte type value.
 
 This object is immutable and its value cannot be changed.
 
-L<SPVM::Byte> is automatically loaded just after the program starts.
+L<Byte|SPVM::Byte> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -27,7 +27,7 @@ L<SPVM::Byte> is automatically loaded just after the program starts.
 
   sub new : SPVM::Byte ($value : byte)
 
-Create a new L<SPVM::Byte> object with a C<byte> value.
+Create a new L<Byte|SPVM::Byte> object with a C<byte> value.
 
 =head1 INSTANCE METHODS
 

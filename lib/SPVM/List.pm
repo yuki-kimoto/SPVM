@@ -57,7 +57,7 @@ SPVM::List - Dynamic object array
 
 =head1 DESCRIPTION
 
-L<SPVM::List> is dynamic object array.
+L<List|SPVM::List> is dynamic object array.
 
 =head1 STATIC METHODS
 
@@ -65,7 +65,7 @@ L<SPVM::List> is dynamic object array.
 
     sub new : SPVM::List ($objects : oarray)
 
-Create a new L<SPVM::List> object with specific C<object> array.
+Create a new L<List|SPVM::List> object with specific C<object> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -75,7 +75,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::List ($proto_array : oarray, $length : int)
 
-Create a new L<SPVM::List> object with prototype array and array length. Prototype array is used to decide the array type of internal values.
+Create a new L<List|SPVM::List> object with prototype array and array length. Prototype array is used to decide the array type of internal values.
 
 =head1 INSTANCE METHODS
 
@@ -144,7 +144,7 @@ The length of argument array must be same as the length of current list array, o
 
   sub to_array : oarray ($self : self)
 
-Convert L<SPVM::List> to object array.
+Convert L<List|SPVM::List> to object array.
 
 =head2 shift
 

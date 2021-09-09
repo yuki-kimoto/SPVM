@@ -18,7 +18,7 @@ SPVM::Comparator::Byte - a callback interface for byte comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator::Byte> is a callback interface to compare two byte values.
+L<Comparator::Byte|SPVM::Comparator::Byte> is a callback interface to compare two byte values.
 
 =head1 CALLBACK METHOD INTERFACE
 

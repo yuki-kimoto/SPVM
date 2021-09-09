@@ -59,7 +59,7 @@ Time information
 
   sub new : SPVM::Time::Info ()
 
-Create a new L<SPVM::Time::Info> object.
+Create a new L<Time::Info|SPVM::Time::Info> object.
 
   my $time_info = SPVM::Time::Info->new;
 

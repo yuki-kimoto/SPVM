@@ -23,7 +23,7 @@ SPVM::Cloner - a callback interface to clone a object
 
 =head1 DESCRIPTION
 
-L<SPVM::Cloner> is a callback interface to clone a object.
+L<Cloner|SPVM::Cloner> is a callback interface to clone a object.
 
 =head1 CALLBACK METHOD INTERFACE
 

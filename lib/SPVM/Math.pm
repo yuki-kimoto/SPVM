@@ -14,7 +14,7 @@ SPVM::Math - Math functions
   
 =head1 DESCRIPTION
 
-L<SPVM::Math> defines mathmatical functions. 
+L<Math|SPVM::Math> defines mathmatical functions. 
 
 =head1 STATIC METHODS
 
@@ -310,13 +310,13 @@ float complex multiplication.
 
   sub complex : SPVM::Complex_2d ($x : double, $y : double)
 
-Create double complex value. This value is defined in L<SPVM::Complex_2d>.
+Create double complex value. This value is defined in L<Complex_2d|SPVM::Complex_2d>.
 
 =head2 complexf
 
   sub complexf : SPVM::Complex_2f ($x : float, $y : float)
 
-Create float complex value. This value is defined in L<SPVM::Complex_2f>.
+Create float complex value. This value is defined in L<Complex_2f|SPVM::Complex_2f>.
 
 =head2 conj
 

@@ -15,11 +15,11 @@ SPVM::Short - Short object
 
 =head1 DESCRIPTION
 
-L<SPVM::Short> object stores a C<short> value.
+L<Short|SPVM::Short> object stores a C<short> value.
 
 This object is immutable and its value cannot be changed.
 
-L<SPVM::Short> is automatically loaded just after the program starts.
+L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -27,7 +27,7 @@ L<SPVM::Short> is automatically loaded just after the program starts.
 
   sub new : SPVM::Short ($value : short)
 
-Create a new L<SPVM::Short> object with a C<short> value.
+Create a new L<Short|SPVM::Short> object with a C<short> value.
 
 =head1 INSTANCE METHODS
 

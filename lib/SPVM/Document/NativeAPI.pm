@@ -28,7 +28,7 @@ SPVM Native Config File must be created for SPVM Native Method. The base name wi
 
 If native configuration file does not exist, an exception occurs.
 
-Native Config File is Perl source code. Native Config File must return properly L<SPVM::Builder::Config> object, otherwise an exception occurs.
+Native Config File is Perl source code. Native Config File must return properly L<Builder::Config|SPVM::Builder::Config> object, otherwise an exception occurs.
 
 =head3 C99 Config File Example
 
@@ -332,12 +332,12 @@ If you get SPVM double Reference Type Argument, use "dref" field. it can be assi
 
 In a Native Method, multiple numeric type arguments are assigned to the coresponding multiple arguments.
 
-For example, In the case of the argument values of L<SPVM::Complex_2d> type, you can get them by the following way.
+For example, In the case of the argument values of L<Complex_2d|SPVM::Complex_2d> type, you can get them by the following way.
 
   double args_re = stack[0].dval;
   double args_im = stack[1].dval;
 
-Note that you cannot access the values by the field name of L<SPVM::Complex_2d>.
+Note that you cannot access the values by the field name of L<Complex_2d|SPVM::Complex_2d>.
 
 
 =head2 Return Value
@@ -395,7 +395,7 @@ Use C<oval> field of C<SPVM_VALUE> to set a return value which type of SPVM is o
 
 If you set multiple numeric return value in native method, set multiple return values.
 
-For example, in the case of L<SPVM::Complex_2d>, do the following.
+For example, in the case of L<Complex_2d|SPVM::Complex_2d>, do the following.
 
   double retval_x;
   double retval_y;

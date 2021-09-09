@@ -18,11 +18,11 @@ SPVM::Bool - Bool object
 
 =head1 DESCRIPTION
 
-L<SPVM::Bool> object stores a C<long> value.
+L<Bool|SPVM::Bool> object stores a C<long> value.
 
 This object is immutable and its value cannot be changed.
 
-L<SPVM::Bool> is automatically loaded just after the program starts.
+L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
 
 =head1 STATIC METHODS
 
@@ -46,6 +46,6 @@ false singleton. This is created by INIT block when the program start.
 
 Return a C<int> value.
 
-If L<SPVM::Bool> object express true, this method return C<1>.
+If L<Bool|SPVM::Bool> object express true, this method return C<1>.
 
-If L<SPVM::Bool> object express false, this method return C<1>.
+If L<Bool|SPVM::Bool> object express false, this method return C<1>.

@@ -48,7 +48,7 @@ SPVM::StringList - Dynamic string array
 
 =head1 DESCRIPTION
 
-L<SPVM::StringList> is dynamic string array.
+L<StringList|SPVM::StringList> is dynamic string array.
 
 =head1 STATIC METHODS
 
@@ -56,7 +56,7 @@ L<SPVM::StringList> is dynamic string array.
 
     sub new : SPVM::StringList ($array : string[])
 
-Create a new L<SPVM::StringList> object with specific C<string> array.
+Create a new L<StringList|SPVM::StringList> object with specific C<string> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -66,7 +66,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::StringList ($length : int)
 
-Create a new L<SPVM::StringList> object with array length.
+Create a new L<StringList|SPVM::StringList> object with array length.
 
 =head1 INSTANCE METHODS
 
@@ -142,7 +142,7 @@ If there are no elements in the list, exception occur.
 
   sub to_array : string[] ($self : self)
 
-Convert L<SPVM::StringList> to string array.
+Convert L<StringList|SPVM::StringList> to string array.
 
 =head2 unshift
 

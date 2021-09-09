@@ -48,7 +48,7 @@ SPVM::ShortList - Dynamic short array
 
 =head1 DESCRIPTION
 
-L<SPVM::ShortList> is dynamic  short array.
+L<ShortList|SPVM::ShortList> is dynamic  short array.
 
 =head1 STATIC METHODS
 
@@ -56,7 +56,7 @@ L<SPVM::ShortList> is dynamic  short array.
 
     sub new : SPVM::ShortList ($array : short[])
 
-Create a new L<SPVM::ShortList> object with specific C<short> array.
+Create a new L<ShortList|SPVM::ShortList> object with specific C<short> array.
 
 Internally, new array is created, and each element of argument array is copied to internal array.
 
@@ -66,7 +66,7 @@ If array is undef, 0-length internal array is created.
 
     sub new_len : SPVM::ShortList ($length : int)
 
-Create a new L<SPVM::ShortList> object with array length.
+Create a new L<ShortList|SPVM::ShortList> object with array length.
 
 =head1 INSTANCE METHODS
 
@@ -143,7 +143,7 @@ If there are no elements in the list, exception occur.
 
   sub to_array : short[] ($self : self)
 
-Convert L<SPVM::ShortList> to short array.
+Convert L<ShortList|SPVM::ShortList> to short array.
 
 =head2 unshift
 

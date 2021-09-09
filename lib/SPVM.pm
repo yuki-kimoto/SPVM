@@ -379,7 +379,7 @@ SPVM Tutorial.
 
 =over 2
 
-=item * L<SPVM::Document::Tutorial>
+=item * L<Document::Tutorial|SPVM::Document::Tutorial>
 
 =back
 
@@ -389,7 +389,7 @@ SPVM Language Specification.
 
 =over 2
 
-=item * L<SPVM::Document::LanguageSpecification>
+=item * L<Document::LanguageSpecification|SPVM::Document::LanguageSpecification>
 
 =back
 
@@ -399,7 +399,7 @@ SPVM Core Modules.
 
 =over 2
 
-=item * L<SPVM::Document::Modules>
+=item * L<Document::Modules|SPVM::Document::Modules>
 
 =back
 
@@ -409,7 +409,7 @@ SPVM Performance Benchmark.
 
 =over 2
 
-=item * L<SPVM::Document::Benchmark>
+=item * L<Document::Benchmark|SPVM::Document::Benchmark>
 
 =back
 
@@ -419,7 +419,7 @@ SPVM Exchange API is APIs which convert Perl data structures to SPVM data struct
 
 =over 2
 
-=item * L<SPVM::Document::ExchangeAPI>
+=item * L<Document::ExchangeAPI|SPVM::Document::ExchangeAPI>
 
 =back
 
@@ -429,7 +429,7 @@ SPVM Native APIs is C APIs used in SPVM native method.
 
 =over 2
 
-=item * L<SPVM::Document::NativeAPI>
+=item * L<Document::NativeAPI|SPVM::Document::NativeAPI>
 
 =back
 

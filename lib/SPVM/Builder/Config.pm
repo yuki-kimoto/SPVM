@@ -514,7 +514,7 @@ SPVM::Builder::Config - build config
 
 =head1 DESCRIPTION
 
-L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
+L<Builder::Config|SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 =head1 Methods
 
@@ -522,13 +522,13 @@ L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
   my $bconf = SPVM::Builder::Config->new;
   
-Create L<SPVM::Builder::Config> object.
+Create L<Builder::Config|SPVM::Builder::Config> object.
 
 =head2 new_c
   
   my $bconf = SPVM::Builder::Config->new_c;
 
-Create default build config with C settings. This is L<SPVM::Builder::Config> object.
+Create default build config with C settings. This is L<Builder::Config|SPVM::Builder::Config> object.
 
 If you want to use the specific C version, use C<set_std> method.
 
@@ -538,13 +538,13 @@ If you want to use the specific C version, use C<set_std> method.
   
   my $bconf = SPVM::Builder::Config->new_c99;
 
-Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
+Create default build config with C99 settings. This is L<Builder::Config|SPVM::Builder::Config> object.
 
 =head2 new_cpp
   
   my $bconf = SPVM::Builder::Config->new_cpp;
 
-Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
+Create default build config with C++ settings. This is L<Builder::Config|SPVM::Builder::Config> object.
 
 If you want to use the specific C++ version, use C<set_std> method.
 
@@ -554,7 +554,7 @@ If you want to use the specific C++ version, use C<set_std> method.
   
   my $bconf = SPVM::Builder::Config->new_cpp11;
 
-Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
+Create default build config with C++11 settings. This is L<Builder::Config|SPVM::Builder::Config> object.
 
 =head2 replace_all_config
 
@@ -797,7 +797,7 @@ See C<get_shrpenv> method about C<shrpenv> option.
 
 Get C<include_dirs> option. This option is array refernce.
 
-C<include_dirs> option is used by C<compile> method of L<SPVM::Builder::CC> to set -I<inculde_dir>.
+C<include_dirs> option is used by C<compile> method of L<Builder::CC|SPVM::Builder::CC> to set -I<inculde_dir>.
 
 Default is "SPVM/Builder/include" of one up of directory SPVM::Buidler::Config.pm loaded and the values of -I<include_dir> in $Config{ccflags}.
 
@@ -831,7 +831,7 @@ See C<get_lib_dirs> method about C<lib_dirs> option.
 
 Get C<lib_dirs> option. This option is array refernce.
 
-C<lib_dirs> option is used by C<compile> method of L<SPVM::Builder::CC> to set -L<lib_dir>.
+C<lib_dirs> option is used by C<compile> method of L<Builder::CC|SPVM::Builder::CC> to set -L<lib_dir>.
 
 Default is the values of -L<lib_dir> in $Config{lddlflags}.
 
@@ -865,7 +865,7 @@ See C<get_lib_dirs> method about C<lib_dirs> option.
 
 Get C<libs> option. This option is array refernce.
 
-C<libs> option is used by C<link> method of L<SPVM::Builder::CC> to set -l<lib>.
+C<libs> option is used by C<link> method of L<Builder::CC|SPVM::Builder::CC> to set -l<lib>.
 
 Don't add prefix '-l' or 'lib' before library name. 'gsl' is valid. 'libgsl', '-lgsl' is invalid.
 
@@ -901,7 +901,7 @@ See C<get_libs> method about C<libs> option.
 
 Get C<force_compile> option.
 
-C<force_compile> option is used by C<compile> method of L<SPVM::Builder::CC> to determine whether the method should force compilation of source codes without cache.
+C<force_compile> option is used by C<compile> method of L<Builder::CC|SPVM::Builder::CC> to determine whether the method should force compilation of source codes without cache.
 
 =head2 set_force_compile
 
@@ -917,7 +917,7 @@ See C<get_force_compile> method about C<force_compile> option.
 
 Get C<quiet> option.
 
-C<quiet> option is used by C<compile> method of L<SPVM::Builder::CC> to determine whether the method output compiler messages , default to C<1>.
+C<quiet> option is used by C<compile> method of L<Builder::CC|SPVM::Builder::CC> to determine whether the method output compiler messages , default to C<1>.
 
 =head2 set_quiet
 

@@ -18,7 +18,7 @@ SPVM::Comparator::Float - a callback interface for float comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator::Float> is a callback interface to compare two float values.
+L<Comparator::Float|SPVM::Comparator::Float> is a callback interface to compare two float values.
 
 =head1 CALLBACK METHOD INTERFACE
 

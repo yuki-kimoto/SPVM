@@ -18,7 +18,7 @@ SPVM::Comparator::Int - a callback interface for int comparation
 
 =head1 DESCRIPTION
 
-L<SPVM::Comparator::Int> is a callback interface to compare two int values.
+L<Comparator::Int|SPVM::Comparator::Int> is a callback interface to compare two int values.
 
 =head1 CALLBACK METHOD INTERFACE
 
