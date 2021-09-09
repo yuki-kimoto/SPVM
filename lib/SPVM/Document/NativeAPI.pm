@@ -14,8 +14,8 @@ Native method can be written by C language or C++, If the code is compatible wit
 
 Native Method Declaration is written using Method Descriptor "native" in SPVM module file. SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
 
-  # Foo/Bar.spvm
-  package SPVM::Foo::Bar {
+  # SPVM/Foo/Bar.spvm
+  package Foo::Bar {
     native sub sum : int ($num1 : int, $num2 : int);
   }
 
@@ -23,7 +23,7 @@ Native Method Declaration is written using Method Descriptor "native" in SPVM mo
 
 SPVM Native Config File must be created for SPVM Native Method. The base name without the extension of native config file must be same as SPVM module file and the extension must be ".config".
 
-  # Native configuration file for SPVM::Foo::Bar module
+  # Native configuration file for Foo::Bar module
   SPVM/Foo/Bar.config
 
 If native configuration file does not exist, an exception occurs.
@@ -130,8 +130,8 @@ Native Config File is Perl source code. Native Config File must return properly 
 
 Native Method Definition is written in native source file. Native source file is basically C language source file which extension is ".c". This extension can be changed to ".cpp" for C++ source file, or ".cu" for CUDA source file, etc.
 
-  # Native source file for SPVM::Foo::Bar module
-  Foo/Bar.c
+  # Native source file for Foo::Bar module
+  SPVM/Foo/Bar.c
 
 The following is natvie source file example written by C language.
 
@@ -172,7 +172,7 @@ Native Method Definition is a simple C language function such as
 
 The function name starts with "SPNATIVE__".
 
-Followed by package name "Foo__Bar", which is replaced "::" in SPVM::Foo::Bar.
+Followed by package name "Foo__Bar", which is replaced "::" in Foo::Bar.
 
 Followed by "__".
 
@@ -492,11 +492,11 @@ There is a type called pointer type in SPVM, but I will explain how to use it.
 
 The pointer type definition specifies the pointer_t descriptor in the SPVM package definition. Pointer types cannot have field definitions. This example describes how to use the C standard "struct tm" as a pointer type.
 
-  # SPVM::MyTimeInfo.spvm
-  package SPVM::MyTimeInfo : pointer_t {
+  # SPVM/MyTimeInfo.spvm
+  package MyTimeInfo : pointer_t {
 
     # Constructor
-    native sub new : SPVM::MyTimeInfo ();
+    native sub new : MyTimeInfo ();
 
     # Get second
     native sub sec : int ($self : self);
@@ -509,7 +509,7 @@ It defines a new constructor, a method that takes seconds information called sec
 
 Next is the definition on the C language side.
 
-  # SPVM::MyTimeInfo.c
+  # SPVM/MyTimeInfo.c
 
   int32_t SPNATIVE__SPVM__MyTimeInfo__new(SPVM_ENV* env, SPVM_VALUE* stack) {
 
@@ -517,7 +517,7 @@ Next is the definition on the C language side.
     void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
 
     // Create strcut tm instance
-    void* tm_obj = env->new_pointer(env, "SPVM::MyTimeInfo", tm_ptr);
+    void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
 
     stack[0].oval = tm_obj;
 
@@ -549,10 +549,10 @@ In the constructor new, the memory of "struct tm" is first allocated by the allo
   // Alloc strcut tm
   void* tm_ptr = env->alloc_memory_block_zero (sizeof (struct tm));
 
-Next, use the new_pointer function to create a new pointer type object with SPVM::MyTimeInfo associated with it in the allocated memory.
+Next, use the new_pointer function to create a new pointer type object with MyTimeInfo associated with it in the allocated memory.
 
   // Create strcut tm instance
-  void* tm_obj = env->new_pointer(env, "SPVM::MyTimeInfo", tm_ptr);
+  void* tm_obj = env->new_pointer(env, "MyTimeInfo", tm_ptr);
 
 If you return this as a return value, the constructor is complete.
 
@@ -587,7 +587,7 @@ Execute the free_memory_block function to free the memory. Be sure to free the m
 
 Native API can be called from "SPVM_ENV* env" passed as an argument. Note that you have to pass env as the first argument.
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
 
 =head1 List of Native APIs
 
@@ -649,37 +649,37 @@ The length offset in the object structure. This is used internally.
 
   void* byte_object_basic_type_id;
 
-Basic type ID of SPVM::Byte type. This is used internally.
+Basic type ID of L<Byte|SPVM::Byte> type. This is used internally.
 
 =head2 short_object_basic_type_id
 
   void* short_object_basic_type_id;
 
-ID of the base type of SPVM::Short type. This is used internally.
+ID of the base type of L<Short|SPVM::Short> type. This is used internally.
 
 =head2 int_object_basic_type_id
 
   void* int_object_basic_type_id;
 
-ID of the base type of SPVM::Int type. This is used internally.
+ID of the base type of L<Int|SPVM::Int> type. This is used internally.
 
 =head2 long_object_basic_type_id
 
   void* long_object_basic_type_id;
 
-ID of the base type of SPVM::Long type. This is used internally.
+ID of the base type of L<Long|SPVM::Long> type. This is used internally.
 
 =head2 float_object_basic_type_id
 
   void* float_object_basic_type_id;
 
-ID of the base type of SPVM::Float type. This is used internally.
+ID of the base type of L<Float|SPVM::Float> type. This is used internally.
 
 =head2 double_object_basic_type_id
 
   void* double_object_basic_type_id;
 
-ID of the base type of SPVM::Double type. This is used internally.
+ID of the base type of L<Double|SPVM::Double> type. This is used internally.
 
 =head2 compiler
 
@@ -719,7 +719,7 @@ Get the ID of the base type given the name of the base type. If it does not exis
 
 Example:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
 
 =head2 get_field_id
 
@@ -791,7 +791,7 @@ Do the same as C<new_object_raw>, and add the created object to the mortal stack
 
 Example:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object = env->new_object(env, basic_type_id);
 
 =head2 new_byte_array_raw
@@ -904,7 +904,7 @@ Do the same as C<new_object_array_raw>, and add the created array to the mortal 
 
 Example:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object_array = env->new_object_array(env, basic_type_id, 100);
 
 =head2 new_muldim_array_raw
@@ -921,8 +921,8 @@ Do the same as C<new_muldim_array_raw>, and add the created array to the mortal 
 
 Example:
 
-  // new SPVM::Int[][][100]
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
+  // new Int[][][100]
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* multi_array = env->new_muldim_array(env, basic_type_id, 2, 100);
 
 =head2 new_mulnum_array_raw
@@ -939,7 +939,7 @@ Do the same as C<new_mulnum_array_raw>, and add the created array to the mortal 
 
 Example:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Complex_2d");
+  int32_t basic_type_id = env->get_basic_type_id(env, "Complex_2d");
   void* value_array = env->new_mulnum_array(env, basic_type_id, 100);
 
 =head2 new_string_nolen_raw
@@ -988,7 +988,7 @@ Do the same as C<new_pointer_raw>, and add the created string object to the mort
 
 Example:
 
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::MyTime");
+  int32_t basic_type_id = env->get_basic_type_id(env, "MyTime");
   void* pointer = malloc(sizeof (struct tm));
   void* pointer_obj = env->new_pointer(env, basic_type_id, pointer);
 
@@ -1186,7 +1186,7 @@ Example:
 
 If you specify the object and field ID, the value of the object type field is returned as a void* type value in C language. The field ID must be a valid field ID obtained with the field_id function. If the field is a weak reference, it will be removed.
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x", "SPVM::Int");
+  int32_t field_id = env->get_field_id(env, "Foo", "x", "Int");
   void* field_value = env->get_field_object(env, object, field_id);
 
 =head2 set_field_byte
@@ -1269,8 +1269,8 @@ Object and field Specify the ID and the value of the field and set the value to 
 
 Example:
 
-  int32_t field_id = env->get_field_id(env, "Foo", "x", "SPVM::Int");
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
+  int32_t field_id = env->get_field_id(env, "Foo", "x", "Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object = env->new_object(env, basic_type_id);
   env->set_field_object(env, object, field_id, object);
 
@@ -1348,7 +1348,7 @@ When an object and a package variable ID are specified, the value of the object 
 
 Example:
 
-  int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "SPVM::Int");
+  int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "Int");
   void* pkgvar_value = env->get_package_var_byte(env, object, pkgvar_id);
 
 =head2 set_package_var_byte
@@ -1431,8 +1431,8 @@ Object and field Specify the ID and the value of the field and set the value to 
 
 Example:
 
-  int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "SPVM::Int");
-  int32_t basic_type_id = env->get_basic_type_id(env, "SPVM::Int");
+  int32_t pkgvar_id = env->get_package_var_id(env, "Foo", "$VAR", "Int");
+  int32_t basic_type_id = env->get_basic_type_id(env, "Int");
   void* object = env->new_object(env, basic_type_id);
   env->set_package_var_object(env, pkgvar_id, pkgvar_value);
 
@@ -1675,7 +1675,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  void* minimal = env->new_object_by_name(env, "SPVM::TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* minimal = env->new_object_by_name(env, "TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 new_pointer_by_name
@@ -1687,7 +1687,7 @@ This is same as C<new_pointer> function, but you can specify package name direct
 If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, C<exception_flag> is set to 1. 
 
   int32_t e;
-  void* minimal = env->new_pointer_by_name(env, "SPVM::TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
+  void* minimal = env->new_pointer_by_name(env, "TestCase::Pointer", pointer, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_byte_by_name
@@ -1703,7 +1703,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_byte_by_name(env, object, "SPVM::TestCase::Simple", "byte_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_byte_by_name(env, object, "TestCase::Simple", "byte_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_short_by_name
@@ -1719,7 +1719,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_short_by_name(env, object, "SPVM::TestCase::Simple", "short_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_short_by_name(env, object, "TestCase::Simple", "short_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_int_by_name
@@ -1735,7 +1735,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_int_by_name(env, object, "SPVM::TestCase::Simple", "int_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_int_by_name(env, object, "TestCase::Simple", "int_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_long_by_name
@@ -1751,7 +1751,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_long_by_name(env, object, "SPVM::TestCase::Simple", "long_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_long_by_name(env, object, "TestCase::Simple", "long_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_float_by_name
@@ -1767,7 +1767,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_float_by_name(env, object, "SPVM::TestCase::Simple", "float_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_float_by_name(env, object, "TestCase::Simple", "float_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_double_by_name
@@ -1783,7 +1783,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_double_by_name(env, object, "SPVM::TestCase::Simple", "double_value", 13, &e, __FILE__, __LINE__);
+  env->set_field_double_by_name(env, object, "TestCase::Simple", "double_value", 13, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_field_object_by_name
@@ -1799,7 +1799,7 @@ If function is succeeded, C<exception_flag> is set to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_field_object_by_name(env, object_simple, "SPVM::TestCase::Simple", "object_value", "SPVM::TestCase::Minimal", object_minimal, &e, __FILE__, __LINE__);
+  env->set_field_object_by_name(env, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", object_minimal, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_byte_by_name
@@ -1815,7 +1815,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t byte_value = env->get_field_byte_by_name(env, object, "SPVM::TestCase::Simple", "byte_value", &e, __FILE__, __LINE__);
+  int8_t byte_value = env->get_field_byte_by_name(env, object, "TestCase::Simple", "byte_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_short_by_name
@@ -1831,7 +1831,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t short_value = env->get_field_short_by_name(env, object, "SPVM::TestCase::Simple", "short_value", &e, __FILE__, __LINE__);
+  int8_t short_value = env->get_field_short_by_name(env, object, "TestCase::Simple", "short_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_int_by_name
@@ -1847,7 +1847,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t int_value = env->get_field_int_by_name(env, object, "SPVM::TestCase::Simple", "int_value", &e, __FILE__, __LINE__);
+  int8_t int_value = env->get_field_int_by_name(env, object, "TestCase::Simple", "int_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_long_by_name
@@ -1863,7 +1863,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t long_value = env->get_field_long_by_name(env, object, "SPVM::TestCase::Simple", "long_value", &e, __FILE__, __LINE__);
+  int8_t long_value = env->get_field_long_by_name(env, object, "TestCase::Simple", "long_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_float_by_name
@@ -1879,7 +1879,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t float_value = env->get_field_float_by_name(env, object, "SPVM::TestCase::Simple", "float_value", &e, __FILE__, __LINE__);
+  int8_t float_value = env->get_field_float_by_name(env, object, "TestCase::Simple", "float_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_double_by_name
@@ -1895,7 +1895,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t double_value = env->get_field_double_by_name(env, object, "SPVM::TestCase::Simple", "double_value", &e, __FILE__, __LINE__);
+  int8_t double_value = env->get_field_double_by_name(env, object, "TestCase::Simple", "double_value", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_field_object_by_name
@@ -1911,7 +1911,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  void* object_minimal = env->get_field_object_by_name(env, object_simple, "SPVM::TestCase::Simple", "object_value", "SPVM::TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* object_minimal = env->get_field_object_by_name(env, object_simple, "TestCase::Simple", "object_value", "TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_byte_by_name
@@ -1927,7 +1927,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_byte_by_name(env, "SPVM::TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_short_by_name
@@ -1943,7 +1943,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_short_by_name(env, "SPVM::TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_int_by_name
@@ -1959,7 +1959,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_int_by_name(env, "SPVM::TestCase::NativeAPI", "$INT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_int_by_name(env, "TestCase::NativeAPI", "$INT_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_long_by_name
@@ -1975,7 +1975,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_long_by_name(env, "SPVM::TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_float_by_name
@@ -1991,7 +1991,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_float_by_name(env, "SPVM::TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_double_by_name
@@ -2007,7 +2007,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_double_by_name(env, "SPVM::TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __FILE__, __LINE__);
+  env->set_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", 15, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 set_package_var_object_by_name
@@ -2023,7 +2023,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  env->set_package_var_object_by_name(env, "SPVM::TestCase::NativeAPI", "$MINIMAL_VALUE", "SPVM::TestCase::Minimal", minimal, &e, __FILE__, __LINE__);
+  env->set_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", minimal, &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_byte_by_name
@@ -2039,7 +2039,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t value = env->get_package_var_byte_by_name(env, "SPVM::TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
+  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_short_by_name
@@ -2055,7 +2055,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int16_t value = env->get_package_var_short_by_name(env, "SPVM::TestCase::NativeAPI", "$SHORT_VALUE", &e, __FILE__, __LINE__);
+  int16_t value = env->get_package_var_short_by_name(env, "TestCase::NativeAPI", "$SHORT_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_int_by_name
@@ -2071,7 +2071,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int8_t value = env->get_package_var_byte_by_name(env, "SPVM::TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
+  int8_t value = env->get_package_var_byte_by_name(env, "TestCase::NativeAPI", "$BYTE_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_long_by_name
@@ -2087,7 +2087,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  int64_t value = env->get_package_var_long_by_name(env, "SPVM::TestCase::NativeAPI", "$LONG_VALUE", &e, __FILE__, __LINE__);
+  int64_t value = env->get_package_var_long_by_name(env, "TestCase::NativeAPI", "$LONG_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_float_by_name
@@ -2103,7 +2103,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  float value = env->get_package_var_float_by_name(env, "SPVM::TestCase::NativeAPI", "$FLOAT_VALUE", &e, __FILE__, __LINE__);
+  float value = env->get_package_var_float_by_name(env, "TestCase::NativeAPI", "$FLOAT_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_double_by_name
@@ -2119,7 +2119,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
 
   int32_t e;
-  double value = env->get_package_var_double_by_name(env, "SPVM::TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __FILE__, __LINE__);
+  double value = env->get_package_var_double_by_name(env, "TestCase::NativeAPI", "$DOUBLE_VALUE", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 get_package_var_object_by_name
@@ -2135,7 +2135,7 @@ If function is succeeded, C<exception_flag> is get to 0. If a exception occurs, 
 Example:
   
   int32_t e;
-  void* value = env->get_package_var_object_by_name(env, "SPVM::TestCase::NativeAPI", "$MINIMAL_VALUE", "SPVM::TestCase::Minimal", &e, __FILE__, __LINE__);
+  void* value = env->get_package_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
 =head2 call_spvm_method_by_name
@@ -2151,7 +2151,7 @@ Example:
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_spvm_method_by_name(env, "SPVM::TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
+    int32_t exception_flag = env->call_spvm_method_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
     if (exception_flag) {
       return exception_flag;
     }

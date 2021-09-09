@@ -1,6 +1,6 @@
 Create Executable File
 
-  spvmcc -I . -o myapp SPVM::MyApp
+  spvmcc -I . -o myapp MyApp
 
 Execute Executable File
 

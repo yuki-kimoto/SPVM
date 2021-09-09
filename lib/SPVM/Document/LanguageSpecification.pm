@@ -168,7 +168,7 @@ the following SPVM Types are exactly same as the following C99 Types:
         For example, if SPVM <a href="#language-Type-multi-numeric">multiple Numeric Type</a>
       </p>
       <p>
-        <b>package SPVM::Point_2i: mulnum_t {has x: int; has y: int;}</b>
+        <b>package Point_2i: mulnum_t {has x: int; has y: int;}</b>
       </p>
       <p>
         matches the Type declared in C99
@@ -229,36 +229,34 @@ Identifiers in SPVM are <a href="#language-lex-identifier-package-name">Package 
 
 Package Name is one or more alphabet(a-zA-Z), number(0-9), underscore(_) or "::" of ASCII Code.
 
-Package Name must start "SPVM::".
-
-The part name of Package name must start uppercase letter. Part name of Package name means "SPVM::Foo", "Bar", "Baz" in Package Name "SPVM::Foo:Bar::Baz".
+The part name of Package name must start uppercase letter. Part name of Package name means "Foo", "Bar", "Baz" in Package Name "Foo:Bar::Baz".
 
 "::" cannot be continued twice. Last characters cannot end with "::".
 
 Underscore "_" cannot be continued twice.
 
-Package Name must be corresponding to the relative name of module file. If Package Name is "SPVM::Foo::Bar::Baz", the relative name of module file must be "SPVM/Foo/Bar/Baz.spvm".
+Package Name must be corresponding to the relative name of module file. If Package Name is "Foo::Bar::Baz", the relative name of module file must be "SPVM/Foo/Bar/Baz.spvm".
 
 If Package Name is invalid, Compile Error occurs.
 
 <b>Valid Package Name Examples</b>
 
 <pre>
-SPVM::Foo
-SPVM::Foo::Bar
-SPVM::Foo::Bar::Baz3
-SPVM::Foo::bar
-SPVM::Foo_Bar::Baz_Baz
+Foo
+Foo::Bar
+Foo::Bar::Baz3
+Foo::bar
+Foo_Bar::Baz_Baz
 </pre>
 
 <b>Invalid Package Name Examples</b>
 
 <pre>
 Foo
-SPVM::Foo::::Bar
-SPVM::Foo::Bar::
-SPVM::Foo__Bar
-SPVM::Foo::bar
+Foo::::Bar
+Foo::Bar::
+Foo__Bar
+Foo::bar
 </pre>
 
 <h3 id="language-lex-identifier-sub-name">Method Name</h3><!-- 2019/2/27 almost ok-->
@@ -317,7 +315,7 @@ Underscore cannot be continued twice.
 <pre>
 # Valid Package Variable Name
 $FOO::BAR
-$SPVM::Foo::Bar3
+$Foo::Bar3
 $FOO
 $FOO_BAR
 $foo
@@ -1217,14 +1215,14 @@ package PACAKGE_NAME : PACAKGE_DESCRIPTOR1 PACAKGE_DESCRIPTOR2 PACAKGE_DESCRIPTO
 
 <pre>
 # Package Name
-package SPVM::Point {
+package Point {
 
 }
 </pre>
 
 <pre>
 # Package Name and Package Descriptor
-package SPVM::Point : public {
+package Point : public {
 
 }
 </pre>
@@ -1232,9 +1230,9 @@ package SPVM::Point : public {
 In direct children of the package block, <a href="#language-module-use">use</a>, <a href="#language-package-var-definition">our</a>, <a href="#language-field-definition">has</a>, <a href="#language-enum-definition">enum</a>, <a href="#language-method-definition">sub</a> can be defined.
 
 <pre>
-package SPVM::Foo {
+package Foo {
   # use
-  use SPVM::Point;
+  use Point;
 
   # Package Variable Definition
   our $VAR int;
@@ -1347,9 +1345,9 @@ If a <a href="#language-exception-occur">Exception</a> occurs in Destructor, the
 <b>Destructor Example:</b>
 
 <pre>
-package SPVM::Foo {
-  sub new : SPVM::Foo {
-    return new SPVM::Foo;
+package Foo {
+  sub new : Foo {
+    return new Foo;
   }
 
   sub DESTROY : void ($self : self) {
@@ -1373,12 +1371,12 @@ allow PACKAGE_NAME;
 allow must be defined directory under <a href="#language-package-definition">Package Definition</a>.
 
 <pre>
-package SPVM::Foo {
+package Foo {
   allow Bar;
 }
 </pre>
 
-In this example, Bar can access the private Method, Field, and Package Variable of SPVM::Foo can be accessed and can Create Object of SPVM::Foo.
+In this example, Bar can access the private Method, Field, and Package Variable of Foo can be accessed and can Create Object of Foo.
 
 Specifying the module of <b>allow</b> also loads the module by <a href="#language-module-use">use</a> at the same time.
 
@@ -1398,7 +1396,7 @@ Module is a single file that can be read as SPVM source code.
 
 <pre>
 # lib/path/SPVM/Foo/Bar.spvm
-package SPVM::Foo::Bar {
+package Foo::Bar {
 
 }
 </pre>
@@ -1408,11 +1406,11 @@ Module can contain multiple Packages.
 
 <pre>
 # lib/path/SPVM/Foo/Bar.spvm
-package SPVM::Foo::Bar {
+package Foo::Bar {
 
 }
 
-package SPVM::Foo::Bar::Baz {
+package Foo::Bar::Baz {
 
 }
 </pre>
@@ -1434,8 +1432,8 @@ SPVM/Foo/Bar/Baz.spvm
 Use <b>use</b> keyword to load a Module.
 
 <pre>
-use SPVM::Foo;
-use SPVM::Foo::Bar;
+use Foo;
+use Foo::Bar;
 </pre>
 
 Modules are loaded at compile-time.
@@ -1445,8 +1443,8 @@ If the Module does not exist, Compile Error will occur.
 use Keyword must be defined directly under <a href="#language-package-definition">Package Definition</a>.
 
 <pre>
-package SPVM::Foo {
-  use SPVM::Foo;
+package Foo {
+  use Foo;
 }
 </pre>
 
@@ -1455,12 +1453,12 @@ package SPVM::Foo {
 The followings are Automatically Loaded Modules. They can be used without <a href="#language-module-use">use</a>.
 
 <ul>
-  <li>SPVM::Byte</li>
-  <li>SPVM::Short</li>
-  <li>SPVM::Int</li>
-  <li>SPVM::Long</li>
-  <li>SPVM::Float</li>
-  <li>SPVM::Double</li>
+  <li>Byte</li>
+  <li>Short</li>
+  <li>Int</li>
+  <li>Long</li>
+  <li>Float</li>
+  <li>Double</li>
 </ul>
 
 <h3 id="language-module-if-require">Load Module Selective</h3>
@@ -1470,7 +1468,7 @@ In SPVM, there is an if require Statement that loads a Module only if it exists 
 It was designed to implement a part of features of "#ifdef" in C language.
 
 <pre>
-if (require SPVM::Foo) {
+if (require Foo) {
 
 }
 </pre>
@@ -1478,7 +1476,7 @@ if (require SPVM::Foo) {
 if require Statement can be followed by else Statement. 
 
 <pre>
-if (require SPVM::Foo) {
+if (require Foo) {
 
 }
 else {
@@ -1488,19 +1486,19 @@ else {
 
 Note that elsif Statement cannot be followed.
 
-Let's look at an example. if SPVM::Foo does not exist, no Compile Error occurs and it is assumed that there is no if block
+Let's look at an example. if Foo does not exist, no Compile Error occurs and it is assumed that there is no if block
 
-Therefore, "$foo = new SPVM::Foo;" does not result in Compile Error because it is assumed that there is no if block.
+Therefore, "$foo = new Foo;" does not result in Compile Error because it is assumed that there is no if block.
 
 In the other hand, the else block exists, so a warning is issued.
 
 <pre>
 my $foo : object;
-if (require SPVM::Foo) {
-  $foo = new SPVM::Foo;
+if (require Foo) {
+  $foo = new Foo;
 }
 else {
-  warn "Warning: Can't load SPVM::Foo";
+  warn "Warning: Can't load Foo";
 }
 </pre>
 
@@ -1509,7 +1507,7 @@ else {
 The Method which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
 
 <pre>
-use SPVM::Foo(method1, method2);
+use Foo(method1, method2);
 </pre>
 
 This function is called by <a href="language-expression-callsub-function-call">Function Call</a>
@@ -1615,7 +1613,7 @@ Inline Expansion optimization is performed to Read Accessor and Write Accessor. 
 <b>Package Variable Definition Example:</b>
 
 <pre>
-package SPVM::Foo {
+package Foo {
   our $NUM1 : byte;
   our $NUM2 : short;
   our $NUM3 : int;
@@ -1637,7 +1635,7 @@ Package Variable is initialized with <a href="#language-type-initial-value">Type
 This initial value can be changed by using <a href="#language-begin-block">INIT Block</a>.
 
 <pre>
-package SPVM::Foo {
+package Foo {
   our $VAR : int;
 
   INIT {
@@ -1757,7 +1755,7 @@ Inline Expansion optimization is performed to Read Accessor and Write Accessor. 
 <b>Field Definition Example:</b>
 
 <pre>
-package SPVM::Foo {
+package Foo {
   has num1 : byte;
   has num2 : short;
   has num3 : int;
@@ -1787,7 +1785,7 @@ Field Access has three different meanings.
 Class Based Object Field Access is Field Access from object which is create by <a href="#language-expression-new">new</a> keyword.
 
 <pre>
-my $point = new SPVM::Point;
+my $point = new Point;
 $point->{x} = 1;
 </pre>
 
@@ -1800,7 +1798,7 @@ See <a href="#language-expression-set-field">Set Field Value</a> to set field of
 Multi Numeric Field Access is Field Access from the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>. The value of <a href="#language-type-multi-numeric">Multi Numeric Type</a> is allocated Callstack of Method.
 
 <pre>
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 $z->{x} = 1;
 $z->{y} = 3;
 </pre>
@@ -1814,7 +1812,7 @@ See <a href="#language-expression-set-field-multi-numeric">Set Multi Numeric Fie
 Dereference Multi Numeric Field is Field access from Reference of the value of <a href="#language-type-multi-numeric">Multi Numeric Type</a>.
 
 <pre>
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 my $z_ref = \$z;
 $z_ref->{x} = 1;
 $z_ref->{y} = 3;
@@ -2064,7 +2062,7 @@ enum {
 Enumeration must be defined directly under <a href="#language-package-definition">Package Definition</a>.
 
 <pre>
-package SPVM::Foo {
+package Foo {
   enum {
     FLAG1,
     FLAG2,
@@ -2156,9 +2154,9 @@ If both "public" and "private" Descriptors are specified, Compile Error occurs.
 Enumeration is an alias for <a href="#language-method-constant">Constant Method</a>, so it can be called in exactly the same way as Method call.
 
 <pre>
-my $flag1 = SPVM::Foo->FLAG1;
-my $flag2 = SPVM::Foo->FLAG2;
-my $flag3 = SPVM::Foo->FLAG3;
+my $flag1 = Foo->FLAG1;
+my $flag2 = Foo->FLAG2;
+my $flag3 = Foo->FLAG3;
 </pre>
 
 <p>
@@ -2167,15 +2165,15 @@ my $flag3 = SPVM::Foo->FLAG3;
 
 <pre>
 switch ($num) {
-  case SPVM::Foo->FLAG1: {
+  case Foo->FLAG1: {
 
     break;
   }
-  case SPVM::Foo->FLAG2: {
+  case Foo->FLAG2: {
 
     break:
   }
-  case SPVM::Foo->FLAG3: {
+  case Foo->FLAG3: {
 
     break:
   }
@@ -2200,7 +2198,7 @@ INIT {
 INIT Block must be defined directly under <a href="#language-package-definition">Package Definition</a>.
 
 <pre>
-package SPVM::Foo {
+package Foo {
   INIT {
 
   }
@@ -2227,14 +2225,14 @@ The execution order of INIT Block is not guaranteed. If ohter INIT Block is defi
 A common use of INIT Block is to initialize <a href="#language-package-var">Package Variable</a>.
 
 <pre>
-package SPVM::Foo {
-  use SPVM::Point;
+package Foo {
+  use Point;
   
   our $NUM : int;
-  our $POINT : SPVM::Point;
+  our $POINT : Point;
   INIT {
     $NUM = 3;
-    $POINT = SPVM::Point->new;
+    $POINT = Point->new;
   }
 }
 </pre>
@@ -2264,8 +2262,8 @@ Lexical variable name must be follow the rule of <a href="#language-lex-identifi
 <pre>
 # Lexical Variable Declaration Examples
 my $var : int;
-my $var : SPVM::Point;
-my $var : SPVM::Complex_2d;
+my $var : Point;
+my $var : Complex_2d;
 my $var : int&;
 </pre>
 
@@ -2279,10 +2277,10 @@ my $num : int;
 my $num : double;
 
 # Initialized by undef
-my $point : SPVM::Point;
+my $point : Point;
 
 # x is initialized by 0. y is initialized by 0.
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 </pre>
 
 
@@ -2295,8 +2293,8 @@ my $num : int = 1;
 # Initialized by 2.5
 my $num : double = 2.5;
 
-# Initialized by SPVM::Point object
-my $point : SPVM::Point = new SPVM::Point;
+# Initialized by Point object
+my $point : Point = new Point;
 </pre>
 
 Using <a href="#language-type-inference">Type Inference</a>, you omit <a href="#language-type">Type</a> in Lexical Variable Declaration.
@@ -2368,7 +2366,7 @@ If the object is not <a href="#language-undef">undef</a>, The Reference Count is
 <pre>
 {
   # $num become Mortal Variable in run-time
-  my $num = new SPVM::Foo;
+  my $num = new Foo;
 }
 </pre>
 
@@ -3103,14 +3101,14 @@ Multi Numeric Type is defined by specifying mulnum_t <a href="#language-package-
 
 <pre>
 # Three consecutive 32bit signed integers
-package SPVM::Point_3i : mulnum_t {
+package Point_3i : mulnum_t {
   has x : int;
   has y : int;
   has z : int;
 }
 
 # Tow consecutive 64bit floating point numbers
-package SPVM::Complex_2d : mulnum_t {
+package Complex_2d : mulnum_t {
   x : double;
   y : double;
 }
@@ -3133,13 +3131,13 @@ Multi Numeric Type can be used as <a href="#language-type">Type</a> of Return Va
 Multi Numeric Type can be used as <a href="#language-type-basic">Basic Type</a> of <a href="#language-type-array">Array Type</a> .
 
 <pre>
-my $points = new SPVM::Point_3i[5];
+my $points = new Point_3i[5];
 </pre>
 
 Reference can be created for Multi Numeric Type value.
 
 <pre>
-my $point : SPVM::Point_3i;
+my $point : Point_3i;
 my $point_ref = \$point;
 </pre>
 
@@ -3215,16 +3213,16 @@ List of Multi Numeric Type Suffix.
 To use Multi Numeric Type, load a Module using <a href="#language-module-use">use Statement</a>.
 
 <pre>
-use SPVM::Point_3i;
-use SPVM::Complex_2d;
+use Point_3i;
+use Complex_2d;
 </pre>
 
 
 Next is <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>. Lexical Variable Declaration create continuous area for fields of Multi Numeric Type Value on <a href="#language-method-stack">Method Callstack</a>. All fields of of Multi Numeric Type Value are initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
 
 <pre>
-my $point : SPVM::Point_3i;
-my $z : SPVM::Complex_2d;
+my $point : Point_3i;
+my $z : Complex_2d;
 </pre>
 
 Note that Multi Numeric Type value are not object, so cannot create a Object by <a href="#language-expression-new">new</a> syntax.
@@ -3252,16 +3250,16 @@ See <a href="#language-expression-set-field-multi-numeric">Set Multi Numeric Fie
 <a href="#language-mulnum">Multi Numeric Value</a> can be an element of <a href="#language-array">Array</a>.
 
 <pre>
-my $points = new SPVM::Point_3i[5];
+my $points = new Point_3i[5];
 
-my $zs = new SPVM::Complex_2d[5];
+my $zs = new Complex_2d[5];
 </pre>
 
 Multi Numeric Array has continuous Multi Numeric Values.
 
 The Element Type is <a href="#language-type-multi-numeric">Multi Numeric Type</a>, not <a href="#language-type-object">Object Type</a>.
 
-For example, SPVM::Point_3i[5] is continuous 15 (= 3 * 5) count <a href="#language-type-int">int Type</a> Value.
+For example, Point_3i[5] is continuous 15 (= 3 * 5) count <a href="#language-type-int">int Type</a> Value.
 
 <a href="#language-type">Type</a> of Multi Numeric Array is <a href="#language-type-array">Array Type</a>.
 
@@ -3298,8 +3296,8 @@ my $num : int;
 my $num_ref : int& = \$num;
 
 # Multi Numeric Type Reference
-my $point : SPVM::Point_3d;
-my $point_ref : SPVM::Point_3d& = \$point;
+my $point : Point_3d;
+my $point_ref : Point_3d& = \$point;
 </pre>
 
 Target of Reference Operator is Variable of <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. <a href="#language-type-object">Object Type</a> Variable or <a href="#language-literal">Literal</a> can't be target of Reference Operator.
@@ -3447,11 +3445,11 @@ If you try to access a private Package Variable from outside the Package, Compil
 <b>Get Package Variable Value Example:</b>
 
 <pre>
-package SPVM::Foo {
+package Foo {
   our $VAR : int;
 
   sub bar : int () {
-    my $var1 = $SPVM::Foo::VAR;
+    my $var1 = $Foo::VAR;
     my $var2 = $VAR;
   }
 }
@@ -3487,11 +3485,11 @@ If an object has already been assigned to Package Variable before the assignment
 <b>Set Package Variable Value Example:</b>
 
 <pre>
-package SPVM::Foo {
+package Foo {
   our $VAR : int;
 
   sub bar : int () {
-    $SPVM::Foo::VAR = 1;
+    $Foo::VAR = 1;
     $VAR = 3;
   }
 }
@@ -3560,7 +3558,7 @@ Retrun Type is The <a href="#language-type">Type</a> of the Field.
 <b>Get Field Value Example:</b>
 
 <pre>
-my $point = SPVM::Point->new;
+my $point = Point->new;
 my $x = $point->{x};
 </pre>
 
@@ -3589,7 +3587,7 @@ If an object has already been assigned to Field before the assignment, the Refer
 <b>Set Field Value Example:</b>
 
 <pre>
-my $point = SPVM::Point->new;
+my $point = Point->new;
 $point->{x} = 1;
 </pre>
 
@@ -3612,7 +3610,7 @@ Retrun Type is The <a href="#language-type">Type</a> of the Field.
 <b>Get Multi Numeric Field Value Example:</b>
 
 <pre>
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 my $re = $z->{x};
 </pre>
 
@@ -3638,7 +3636,7 @@ Return Value Type is the Type of Field.
 <b>Set Multi Numeric Field Value Example:</b>
 
 <pre>
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 $z->{x} = 2.5;
 </pre>
 
@@ -3661,7 +3659,7 @@ Retrun Type is The <a href="#language-type">Type</a> of the Field.
 <b>Get Multi Numeric Field Value via Dereference Example:</b>
 
 <pre>
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 my $z_ref = \$z;
 my $re = $z_ref->{x};
 </pre>
@@ -3687,7 +3685,7 @@ Return Value Type is the Type of Field.
 <b>Set Multi Numeric Field Value via Dereference Example:</b>
 
 <pre>
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 my $z_ref = \$z;
 $z_ref->{x} = 2.5;
 </pre>
@@ -3716,11 +3714,11 @@ If Index Expression is lower than 0 or more than the max index of the Array, a R
 my $nums = new int[3];
 my $num = $nums->[1];
 
-my $points = new SPVM::Point[3];
+my $points = new Point[3];
 my $point = $points->[1];
 
 my $objects : oarray = $points;
-my $object = (SPVM::Point)$objects->[1];
+my $object = (Point)$objects->[1];
 </pre>
 
 <h3 id="language-expression-set-array-element">Set Array Element Value</h3>
@@ -3753,11 +3751,11 @@ If an object has already been assigned to Field before the assignment, the Refer
 my $nums = new int[3];
 $nums->[1] = 3;
 
-my $points = new SPVM::Point[3];
-$points->[1] = SPVM::Point->new(1, 2);
+my $points = new Point[3];
+$points->[1] = Point->new(1, 2);
 
 my $objects : oarray = $points;
-$objects->[2] = SPVM::Point->new(3, 5);
+$objects->[2] = Point->new(3, 5);
 </pre>
 
 <h3 id="language-expression-new">Create Object</h3>
@@ -3777,7 +3775,7 @@ Created Object Reference count is 0 at first. If the Object is assigned to some 
 <b>Create Object Example:</b>
 
 <pre>
-my $object = new SPVM::Foo;
+my $object = new Foo;
 </pre>
 
 Create Object has the following information.
@@ -3815,7 +3813,7 @@ Array is <a href="#language-type-array">Array Type</a>. This is also <a href="#l
 
 <pre>
 my $nums = new int[3];
-my $objects = new SPVM::Foo[3];
+my $objects = new Foo[3];
 my $objects = new object[3];
 my $values = new Complex_2d[3]
 </pre>
@@ -3906,7 +3904,7 @@ If the number of arguments does not match the number of arguments defined in the
 <b>Static Method Call Example</b>
 
 <pre>
-my $ret = SPVM::Foo->bar(1, 2, 3);
+my $ret = Foo->bar(1, 2, 3);
 </pre>
 
 <h3 id="language-expression-callsub-function-call">Function Call</h3>
@@ -3914,7 +3912,7 @@ my $ret = SPVM::Foo->bar(1, 2, 3);
 Method which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
 
 <pre>
-use SPVM::Foo(MethodName);
+use Foo(MethodName);
 </pre>
 
 <pre>
@@ -3926,8 +3924,8 @@ Function Call is <a href="#language-expression">Expression</a>.
 <b>Function Call Example</b>
 
 <pre>
-package SPVM::Foo {
-  use SPVM::Math(sin);
+package Foo {
+  use Math(sin);
   
   sub test : void () {
     my $ret = sin(3.0);
@@ -3958,7 +3956,7 @@ OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
   <b>Method Call Example</b>
 </p>
 <pre>
-my $point = new SPVM::Point;
+my $point = new Point;
 $point->set_x(3);
 </pre>
 <p>
@@ -4003,9 +4001,9 @@ my $num : int;
 my $num_ref : int& = \$num;
 my $num_deref : int = $$num_ref;
 
-my $z : SPVM::Complex_2d;
-my $z_ref : SPVM::Complex_2d& = \$z;
-my $z_deref : SPVM::Complex_2d = $$z_ref;
+my $z : Complex_2d;
+my $z_ref : Complex_2d& = \$z;
+my $z_deref : Complex_2d = $$z_ref;
 </pre>
 
 <h3 id="language-operator-deref-set">Setting the value with Dereference</h3>
@@ -4032,10 +4030,10 @@ my $num : int;
 my $num_ref : int& = \$num;
 $$num_ref = 1;
 
-my $z : SPVM::Complex_2d;
-my $z_ref : SPVM::Complex_2d& = \$z;
+my $z : Complex_2d;
+my $z_ref : Complex_2d& = \$z;
 
-my $z2 : SPVM::Complex_2d;
+my $z2 : Complex_2d;
 
 $$z_ref = $z2;
 </pre>
@@ -4052,9 +4050,9 @@ __PACKAGE__
   <b>Get Current Package Name Example:</b>
 </p>
 <pre>
-package SPVM::Foo::Bar {
+package Foo::Bar {
   sub baz : void () {
-    # SPVM::Foo::Bar
+    # Foo::Bar
     my $package_name == __PACKAGE__;
   }
 }
@@ -4068,19 +4066,19 @@ package SPVM::Foo::Bar {
 __FILE__
 </pre>
 
-Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "SPVM::Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
+Current File Name means the relative path from the base path of the module file. For example, if the Module Loaded Path is "/mypath" and the Module name is "Foo::Bar", the absolute path is "/mypath/SPVM/Foo/Bar.spvm" and the relative path is "SPVM/Foo/Bar.spvm". "SPVM/Foo/Bar.spvm" is Current File Name.
 
 <b>Get Current File Name Example:</b>
 
 <pre>
 # SPVM/Foo/Bar.spvm
-package SPVM::Foo::Bar {
+package Foo::Bar {
   sub baz : void () {
     # SPVM/Foo/Bar.spvm
     my $file_name == __FILE__;
   }
 }
-package SPVM::Foo::Bar2 {
+package Foo::Bar2 {
   sub baz : void () {
     # SPVM/Foo/Bar.spvm
     my $file_name == __FILE__;
@@ -4100,7 +4098,7 @@ __LINE__
   <b>Get Current Line Number Example:</b>
 </p>
 <pre>
-package SPVM::Foo::Bar {
+package Foo::Bar {
   sub baz : void () {
     # 4
     my $line = __LINE__;
@@ -5222,8 +5220,8 @@ $x >>>= 1;
 my $num : int;
 my $num_ref : int& = \$num;
 
-my $z : SPVM::Complex_2d;
-my $z_ref : SPVM::Complex_2d& = \$z;
+my $z : Complex_2d;
+my $z_ref : Complex_2d& = \$z;
 </pre>
 <p>
   For a detailed description of Reference, see <a href="#language-ref">Reference</a>.
@@ -6000,7 +5998,7 @@ weaken VARIABLE->{FIELD_NAME};
 </p>
 <pre>
 # There are multiple back references
-my $foo = new SPVM::Foo;
+my $foo = new Foo;
 my $bar = new Bar;
 my $baz = new Baz;
 
@@ -6426,7 +6424,7 @@ See <a href="#language-operator-arithmetic">Arithmetic Operator</a> for floating
   Package Type is the Type defined by <a href="#language-package-definition">Package Definition</a>.
 </p>
 <pre>
-package SPVM::Foo {
+package Foo {
 
 }
 </pre>
@@ -6435,17 +6433,17 @@ package SPVM::Foo {
 </p>
 <pre>
 # Class Type
-package SPVM::Foo {
+package Foo {
 
 }
 
 # Callback Type
-package SPVM::Foo: callback_t {
+package Foo: callback_t {
 
 }
 
 # Multi Numeric Type
-package SPVM::Foo: mulnum_t {
+package Foo: mulnum_t {
 
 }
 </pre>
@@ -6454,7 +6452,7 @@ package SPVM::Foo: mulnum_t {
 </p>
 <pre>
 # Pointer Type
-package SPVM::Foo: pointer_t {
+package Foo: pointer_t {
 
 }
 </pre>
@@ -6466,8 +6464,8 @@ What is Object Type <a href="#language-type-class">Class Type</a> <a href="#lang
 The Object Type value can be assigned to "Any Object Type".
 </p>
 <pre>
-my $object: object = new SPVM::Foo;
-my $object: object = new SPVM::Foo [];
+my $object: object = new Foo;
+my $object: object = new Foo [];
 my $object: object = "abc";
 </pre>
 <p>
@@ -6489,7 +6487,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
   </tr>
   <tr>
     <td>
-      SPVM::Byte
+      Byte
     </td>
     <td>
       Numeric Object Type with <a href="#language-type-byte">byte Type</a> data
@@ -6497,7 +6495,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
   </tr>
   <tr>
     <td>
-      SPVM::Short
+      Short
     </td>
     <td>
       Numeric Object Type with <a href="#language-type-short">short Type</a> data
@@ -6505,7 +6503,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
   </tr>
   <tr>
     <td>
-      SPVM::Int
+      Int
     </td>
     <td>
       Numeric Object Type with <a href="#language-type-int"><a href="#language-type-int">int Type</a></a> data
@@ -6513,7 +6511,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
   </tr>
   <tr>
     <td>
-      SPVM::Long
+      Long
     </td>
     <td>
       Numeric Object Type with <a href="#language-type-long">long Type</a> data
@@ -6521,7 +6519,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
   </tr>
   <tr>
     <td>
-      SPVM::Float
+      Float
     </td>
     <td>
       Numeric Object Type with <a href="#language-type-float">float Type</a> data
@@ -6529,7 +6527,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
   </tr>
   <tr>
     <td>
-    SPVM::Double
+      Double
     </td>
     <td>
     Numeric Object Type with <a href="#language-type-double">double Type</a> data
@@ -6555,7 +6553,7 @@ The value of Undefined Type can be assigned to Object Type.If you assign to anot
 Class Type is the Type defined by <a href="#language-package-definition">Package Definition</a> and is not "Multi Numeric Type" "Callback Type".
 </p>
 <pre>
-packag SPVM::Foo {
+packag Foo {
 
 }
 </pre>
@@ -6563,7 +6561,7 @@ packag SPVM::Foo {
   Class Type can create objects by new Operator.
 </p>
 <pre>
-my $foo = new SPVM::Foo;
+my $foo = new Foo;
 </pre>
 <p>
   Class Type is a <a href="#language-type-object">Object Type</a>.
@@ -6580,7 +6578,7 @@ my $foo = new SPVM::Foo;
   Pointer Type is the one that "pointer_t Descriptor" is specified in <a href="#language-package-definition">Package Definition</a>.
 </p>
 <pre>
-package SPVM::Foo: pointer_t {
+package Foo: pointer_t {
 
 }
 </pre>
@@ -6599,7 +6597,7 @@ package SPVM::Foo: pointer_t {
 Callback Type is a <a href="#language-type-package">Package Type</a> with <a href="#language-package-descriptor">Package Descriptor</a> "callback_t".
 
 <pre>
-package SPVM::Comparator: callback_t {
+package Comparator: callback_t {
   sub: int ($self: self, $x1: object, $x2: object);
 }
 </pre>
@@ -6622,14 +6620,14 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
 
 <pre>
 # Callback Type Definition
-package SPVM::Comparator: callback_t {
+package Comparator: callback_t {
   sub: int ($self: self, $x1: object, $x2: object);
 }
 
 # Class Definition
-package SPVM::SomeComparator {
+package SomeComparator {
   sub new: int () {
-    return new SPVM::SomeComparator;
+    return new SomeComparator;
   }
 
   sub: int ($self: self, $x1: object, $x2: object) {
@@ -6638,19 +6636,19 @@ package SPVM::SomeComparator {
 }
 
 # The object can be assign to the variable of Callback Type
-my $comparator: SPVM::Comparator = SPVM::SomeComparator->new;
+my $comparator: Comparator = SomeComparator->new;
 </pre>
 
 2. Class Type object which is created by <a href="#language-method-new-callback-object">Create Callback Object</a> and the <a href="#language-method-signature">Signature</a> is same as Callback Type.
 
 <pre>
 Definition of #Callback Type
-package SPVM::Comparator: callback_t {
+package Comparator: callback_t {
   sub: int ($self: self, $x1: object, $x2: object);
 }
 
 # The object which is created by Create Callback Object can be assign to the variable of Callback Type
-my $comparator : SPVM::Comparator = sub: int ($self: self, $x1: object, $x2: object) {
+my $comparator : Comparator = sub: int ($self: self, $x1: object, $x2: object) {
 
 }
 </pre>
@@ -6665,9 +6663,9 @@ my $object: object;
   You can methodstitute the value of "Object Type" for Any Object Type.
 </p>
 <pre>
-my $object: object = new SPVM::Foo;
+my $object: object = new Foo;
 my $object: object = "abc";
-my $object: object = new SPVM::Foo [3];
+my $object: object = new Foo [3];
 </pre>
 
 <h3 id = "language-type-self">self Type</h3>
@@ -6703,7 +6701,7 @@ void
 <pre>
 int[]
 double[]
-SPVM::Point[]
+Point[]
 object[]
 string []
 </pre>
@@ -6785,10 +6783,10 @@ byte[]
 </p>
 <ul>
   <li>
-    SPVM::Foo[]
+    Foo[]
  </li>
   <li>
-    SPVM::Foo[][]
+    Foo[][]
  </li>
   <li>
     Comparable[]
@@ -6813,10 +6811,10 @@ byte[]
 </p>
 <ul>
   <li>
-    SPVM::Complex_2d[]
+    Complex_2d[]
  </li>
   <li>
-    SPVM::Complex_2f[]
+    Complex_2f[]
  </li>
 </ul>
 <p>
@@ -6831,7 +6829,7 @@ byte[]
   Any Object Array Type is an arbitrary <a href="#language-type- that has the value of <a href="#language-type-object">Object Type</a> expressed as an oarray as an element. A Type that can be assigned the value of array ">Array Type</a>. Any Array Type can be cast to void * Type and passed to the first argument of the C language qsort function, but Any Object Array Type is not designed to realize the function corresponding to this. It was
 </p>
 <pre>
-my $array : oarray = new SPVM::Point[3];
+my $array : oarray = new Point[3];
 my $array : oarray = new object[3];
 </pre>
 <p>
@@ -6844,16 +6842,16 @@ my $array : oarray = new object[3];
   Any Object Array Type is <a href="#language-type-array">Array Type</a>. <a href="#language-operator-array-length">Array Length Operator</a> to get length, <a href="#language-expression-set-array-element">Set Array Element You can use Value</a>, <a href="#language-expression-get-array-element">Get Array Element Value</a>.
 </p>
 <pre>
-my $array : oarray = new SPVM::Int[3];
+my $array : oarray = new Int[3];
 
 # Get the length of the element of Any Object Array Type
 my $length = @$array;
 
 # Get the value of any object array type element
-my $num = (SPVM::Int)$array->[0];
+my $num = (Int)$array->[0];
 
 # Setting the value of the element of Any Object Array Type
-$array->[0] = SPVM::Int->new(5);
+$array->[0] = Int->new(5);
 </pre>
 <p>
   When setting the value of the element of Any Object Array Type, a check is made at runtime whether the Type of the element is smaller than the Type Dimension of Array by 1. If the check fails, <a href="#language-exception">Exception</a> will occur. Any Object Array Type guarantees runtime Type safety.
@@ -6930,7 +6928,7 @@ $bytes->[1] = 'd';
   Multi Numeric Type can be defined by specifying "mulnum_t" Descriptor in <a href="#language-package-definition">Package Definition</a>.
 </p>
 <pre>
-package SPVM::Point_3i : mulnum_t {
+package Point_3i : mulnum_t {
   has x : int;
   has y : int;
   has z : int;
@@ -6948,8 +6946,8 @@ package SPVM::Point_3i : mulnum_t {
 my $num : int;
 my $num_ref : int& = \$num;
 
-my $point : SPVM::Point_3i;
-my $point_ref : SPVM::Point_3i& = \$point;
+my $point : Point_3i;
+my $point_ref : Point_3i& = \$point;
 </pre>
 <p>
   Only the address of the Lexical Variable acquired by <a href="#language-operator-ref">Reference Operator</a> can be assigned to the value of Reference Type.
@@ -7002,8 +7000,8 @@ my $num = 1;
 # double
 my $num = 1.0;
 
-# SPVM::Foo
-my $foo = new SPVM::Foo;
+# Foo
+my $foo = new Foo;
 </pre>
 <h2 id="language-type-compatible">Type Compatibility</h2>
 <p>
@@ -7038,7 +7036,7 @@ $str = $bytes;
   <b>When the source Type is Object Type and the destination Type is Any Object Type</b>
 </p>
 <pre>
-my $foo : SPVM::Foo = new SPVM::Foo;
+my $foo : Foo = new Foo;
 my $object : object;
 $object = $foo;
 </pre>
@@ -7161,7 +7159,7 @@ my $num : int = (int)4;
       <b>Numeric Type</b>
     </td>
     <td>
-      <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> is performed. Numeric Type represented by Numeric Type and Numeric Object Type must be the same. For example, if Numeric Type is int, Numeric Object Type must be SPVM::Int Type.
+      <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> is performed. Numeric Type represented by Numeric Type and Numeric Object Type must be the same. For example, if Numeric Type is int, Numeric Object Type must be Int Type.
     </td>
   </tr>
   <tr>
@@ -7183,7 +7181,7 @@ my $num : int = (int)4;
       <b>Numeric Object Type</b>
     </td>
     <td>
-      <a href="#language-type-convertion-unboxing">Unboxing Type Conversion</a> is performed. Numeric Type represented by Numeric Type and Numeric Object Type must be the same. For example, if Numeric Type is int, Numeric Object Type must be SPVM::Int Type.
+      <a href="#language-type-convertion-unboxing">Unboxing Type Conversion</a> is performed. Numeric Type represented by Numeric Type and Numeric Object Type must be the same. For example, if Numeric Type is int, Numeric Object Type must be Int Type.
     </td>
   </tr>
   <tr>
@@ -7242,7 +7240,7 @@ my $num : short = 134;
 </pre>
 
 <p>
-  If the source Type is Numeric Type and the destination Type is Any Object Type, <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> to the corresponding Numeric Object Type Is done. In the following case, the converted SPVM::Int Type object is assigned to the generic object.
+  If the source Type is Numeric Type and the destination Type is Any Object Type, <a href="#language-type-convertion-boxing">Boxing Type Conversion</a> to the corresponding Numeric Object Type Is done. In the following case, the converted Int Type object is assigned to the generic object.
 </p>
 
 <pre>
@@ -7256,11 +7254,11 @@ my $object : object = $num;
 <pre>
 # Implicit Boxing Type Conversion to object Type
 my $num = 123;
-my $object : SPVM::Int = $num;
+my $object : Int = $num;
 </pre>
 
 <p>
-  When the source Type is Any Object Type and the destination Type is Numeric Type, <a href="#language-type-convertion-unboxing">Unboxing Type Conversion</a> in the corresponding Numeric Type is displayed. Will be opened. In the following case, an attempt is made to convert the SPVM::Int Type object to <a href="#language-type-int">int Type</a>.
+  When the source Type is Any Object Type and the destination Type is Numeric Type, <a href="#language-type-convertion-unboxing">Unboxing Type Conversion</a> in the corresponding Numeric Type is displayed. Will be opened. In the following case, an attempt is made to convert the Int Type object to <a href="#language-type-int">int Type</a>.
 </p>
 
 <pre>
@@ -7275,7 +7273,7 @@ If the source Type is Numeric Object Type and the destination Type is the corres
 
 <pre>
 # Implicit Unboxing Type Conversion from Numeric Object Type
-my $num_obj = SPVM::Int->new(3);
+my $num_obj = Int->new(3);
 my $num : int = $num_obj;
 </pre>
 
@@ -7537,8 +7535,8 @@ die EXPRESSION;
 </p>
 <pre>
 Error
-from SPVM::TestCase::Minimal->sum2 at SPVM::TestCase/Minimal.spvm line 1640
-from SPVM::TestCase->main at SPVM::TestCase.spvm line 1198
+from TestCase::Minimal->sum2 at SPVM/TestCase/Minimal.spvm line 1640
+from TestCase->main at SPVM/TestCase.spvm line 1198
 </pre>
 
 <h3 id="language-exception-occur">Catch Exception</h3>
@@ -7600,40 +7598,40 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
   The purpose of Callback Type is to provide a Type that can be assigned to different objects when they have the same MethodDefinition. Consider that the function corresponding to the C function pointer is realized in SPVM.
 </p>
 <pre>
-package SPVM::SPVM::Foo1 {
-  sub new : SPVM::SPVM::Foo1 () {
-    new SPVM::SPVM::Foo1;
+package Foo1 {
+  sub new : Foo1 () {
+    new Foo1;
   }
   sub : int ($self : self, $num : int) {
     return 1 + $num;
   }
 }
 
-package SPVM::SPVM::Foo2 {
-  sub new : SPVM::SPVM::Foo2 () {
-    new SPVM::SPVM::Foo2;
+package Foo2 {
+  sub new : Foo2 () {
+    new Foo2;
   }
   sub : int ($self : self, $num : int) {
     return 2 + $num;
   }
 }
 
-package SPVM::SPVM::FooCallback : callback_t {
+package FooCallback : callback_t {
 sub : int ($self : self, $num : int);
 }
 </pre>
 
 <p>
-  SPVM::SPVM::Foo1 and SPVM::SPVM::Foo2 have the same MethodDefinition "sub: int ($self: self, $num: int)". Now suppose you want to selectively call the SPVM::SPVM::Foo1 or SPVM::SPVM::Foo2 Method.
+  Foo1 and Foo2 have the same MethodDefinition "sub: int ($self: self, $num: int)". Now suppose you want to selectively call the Foo1 or :Foo2 Method.
 </p>
 <p>
-  In this case, if you define a Callback TypeSPVM::FooCallback with the same MethodDefinition, you can assign either object to this Type. Then you can call Method from this object.
+  In this case, if you define a Callback Type FooCallback with the same MethodDefinition, you can assign either object to this Type. Then you can call Method from this object.
 </p>
 <pre>
-my $foo1 = SPVM::SPVM::Foo1->new;
-my $foo2 = SPVM::SPVM::Foo2->new;
+my $foo1 = Foo1->new;
+my $foo2 = Foo2->new;
 
-my $foo : SPVM::SPVM::FooCallback;
+my $foo : FooCallback;
 
 my $flag = 1;
 if ($flag) {
@@ -7646,7 +7644,7 @@ else {
 my $ret = $foo->(5);
 </pre>
 <p>
-  If $flag is 1, the anonymous Method of SPVM::SPVM::Foo1 is called, otherwise the anonymous Method of SPVM::SPVM::Foo2 is called.
+  If $flag is 1, the anonymous Method of Foo1 is called, otherwise the anonymous Method of Foo2 is called.
 </p>
 <p>
   For more information on Callback Type, see <a href="#language-type-callback">Callback Type</a>.
@@ -7732,7 +7730,7 @@ my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object
 </p>
 
 <pre>
-package SPVM::ComapartorImpl {
+package ComapartorImpl {
   has foo : int;
   has bar : long;
 
@@ -7767,7 +7765,7 @@ Capture is a syntax for writing such a long description short.
 </p>
 <pre>
 {
-  my $foo = new SPVM::Foo;
+  my $foo = new Foo;
   my $bar = new Bar;
 
   $foo->{bar} = $bar;
@@ -7785,7 +7783,7 @@ Capture is a syntax for writing such a long description short.
 </p>
 <pre>
 {
-  my $foo = new SPVM::Foo;
+  my $foo = new Foo;
   my $bar = new Bar;
 
   $foo->{bar} = $bar;
@@ -7811,7 +7809,7 @@ Capture is a syntax for writing such a long description short.
 </p>
 <pre>
 {
-  my $foo = new SPVM::Foo;
+  my $foo = new Foo;
   my $bar = new Bar;
   my $baz = new Baz;
 

@@ -52,7 +52,7 @@ Create "SPVM/MyMath.spvm" in the "lib" directory, and you write the following co
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package SPVM::MyMath {
+package MyMath {
   sub sum : int ($nums : int[]) {
     
     my $total = 0;
@@ -71,7 +71,7 @@ Write <b>Package Definition</b> by <b>package</b> keyword. Unlike Perl, SPVM alw
 
 <pre>
 # Package Definition
-package SPVM::MyMath {
+package MyMath {
 
 }
 </pre>
@@ -83,7 +83,7 @@ See also <a href="/language.html#language-package">Package - SPVM Language Speci
 Write <b>Method Definition</b> by <b>sub</b> keyword. Unlike Perl, SPVM Method Definition have return type and argument types.
   
 <pre>
-package SPVM::MyMath {
+package MyMath {
   # Method Definition
   sub sum : int ($nums : int[]) {
     
@@ -414,7 +414,7 @@ SPVM Module:
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package SPVM::MyMath {
+package MyMath {
   sub sum : int ($nums : int[]) {
     
     my $total = 0;
@@ -455,7 +455,7 @@ Precompiled SPVM Method. This means SPVM code is converted to Machine Code:
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package SPVM::MyMath : precompile {
+package MyMath : precompile {
   sub sum_precompile : int ($nums : int[]) {
     
     my $total = 0;
@@ -489,7 +489,7 @@ SPVM Native Method. This means SPVM method call C/C++ native method:
 
 <pre>
 # lib/SPVM/MyMath.spvm
-package SPVM::MyMath {
+package MyMath {
   native sub sum_native : int ($nums : int[]);
 }
 
@@ -592,7 +592,7 @@ SPVM Method Definition.
 
 <pre>
 # lib/SPVM/BindCLib.spvm
-package SPVM::BindCLib {
+package BindCLib {
   native sub sum : int ($nums : int[]);
 }
 </pre>
@@ -700,32 +700,32 @@ SPVM provides common arithmetic for complex numbers at the same level as C99.
 
 <h3>Complex Type</h3>
 
-Complex Type is SPVM::Complex_2f for complex float and SPVM::Complex_2d for complex double.
+Complex Type is Complex_2f for complex float and Complex_2d for complex double.
 
-SPVM::Complex_2f and SPVM::Complex_2d is <a href="/language.html#language-type-multi-numeric">Multi Numeric Type</a>. This is allocated on Method Call Stack.
+Complex_2f and Complex_2d is <a href="/language.html#language-type-multi-numeric">Multi Numeric Type</a>. This is allocated on Method Call Stack.
 
 This is not Object Type which is allocated on Heap Memory.
 
 See <a href="https://github.com/yuki-kimoto/SPVM/tree/master/examples/matrix">SPVM Complex Examples</a> at first.
 
-<h4>SPVM::Complex_2f</h4>
+<h4>Complex_2f</h4>
 
 <pre>
 # Complex float type
-use SPVM::Complex_2f;
+use Complex_2f;
 
-my $z : SPVM::Complex_2f;
+my $z : Complex_2f;
 $z->{re} = 1.5f;
 $z->{im} = 1.7f;
 </pre>
 
-<h4>SPVM::Complex_2d</h4>
+<h4>Complex_2d</h4>
 
 <pre>
 # Complex double type
-use SPVM::Complex_2d;
+use Complex_2d;
 
-my $z : SPVM::Complex_2d;
+my $z : Complex_2d;
 $z->{re} = 1.5;
 $z->{im} = 1.7;
 </pre>
@@ -735,12 +735,12 @@ $z->{im} = 1.7;
 New Complex functions
 
 <pre>
-use SPVM::Math (complexf, complex);
+use Math (complexf, complex);
 
-# SPVM::Complex_2f
+# Complex_2f
 my $z = complexf(1.5f, 1.7f);
 
-# SPVM::Complex_2d
+# Complex_2d
 my $z = complex(1.5, 1.7);
 </pre>
 
@@ -752,7 +752,7 @@ float Complex Addition, Subtract, Multiply, Scalar Multiply, Division.
 
 <pre>
 # float Addition, Subtract, Multiply, Scalar Multiply, Division functions
-use SPVM::Math(caddf, csubf, cmulf, cscamulf, cdivf);
+use Math(caddf, csubf, cmulf, cscamulf, cdivf);
 
 my $z1 = complexf(1.5f, 1.7f);
 my $z2 = complexf(2.5f, 2.7f);
@@ -777,7 +777,7 @@ my $z_div = cdivf($z1, $z2);
 
 <pre>
 # double Addition, Subtract, Multiply, Scalar Multiply, Division functions
-use SPVM::Math(cadd, csub, cmul, cscamul, cdiv);
+use Math(cadd, csub, cmul, cscamul, cdiv);
 
 my $z1 = complex(1.5, 1.7);
 my $z2 = complex(2.5, 2.7);
@@ -808,7 +808,7 @@ float Trigonometric functions.
 
 <pre>
 # float Trigonometric functions
-use SPVM::Math(csinf, ccosf, ctanf);
+use Math(csinf, ccosf, ctanf);
 
 my $z = complexf(1.5f, 1.7f);
 
@@ -828,7 +828,7 @@ double Trigonometric functions.
 
 <pre>
 # double Trigonometric functions
-use SPVM::Math(csin, ccos, ctan);
+use Math(csin, ccos, ctan);
 
 my $z = complex(1.5, 1.7);
 
@@ -842,19 +842,19 @@ my $z_cos = ccos($z);
 my $z_tan = ctan($z);
 </pre>
 
-See SPVM::Math for more complex functions
+See Math for more complex functions
 
 <h3>Complex Array</h3>
 
 SPVM Array of Complex has values arranged in contiguous memory areas.
 
-<h4>SPVM::Complex_2f[]</h4>
+<h4>Complex_2f[]</h4>
 
 <pre>
 # Complex float type
-use SPVM::Complex_2f;
+use Complex_2f;
 
-my $zs = new SPVM::Complex_2f[100];
+my $zs = new Complex_2f[100];
 
 for (my $i = 0; $i < @$zs; $i++) {
   my $z = $zs->[$i];
@@ -863,13 +863,13 @@ for (my $i = 0; $i < @$zs; $i++) {
 }
 </pre>
 
-<h4>SPVM::Complex_2d</h4>
+<h4>Complex_2d</h4>
 
 <pre>
 # Complex double type
-use SPVM::Complex_2d;
+use Complex_2d;
 
-my $zs = new SPVM::Complex_2d[100];
+my $zs = new Complex_2d[100];
 
 for (my $i = 0; $i < @$zs; $i++) {
   my $z = $zs->[$i];
