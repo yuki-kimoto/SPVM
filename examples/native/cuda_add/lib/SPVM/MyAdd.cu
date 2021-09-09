@@ -4,7 +4,7 @@
 
 extern "C" {
 
-int32_t SPNATIVE__SPVM__MyAdd__add_cuda(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__MyAdd__add_cuda(SPVM_ENV* env, SPVM_VALUE* stack) {
    
   void* sv_nums1 = stack[0].oval;
   void* sv_nums2 = stack[1].oval;

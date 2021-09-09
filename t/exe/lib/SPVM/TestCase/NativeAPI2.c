@@ -4,7 +4,7 @@
 #include "bar.h"
 #include "baz/baz.h"
 
-int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPNATIVE__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
 
@@ -15,7 +15,7 @@ int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__mul(SPVM_ENV* env, SPVM_VALUE* arg
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPNATIVE__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
   
@@ -29,7 +29,7 @@ int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__src_foo(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__src_bar(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPNATIVE__TestCase__NativeAPI2__src_bar(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
 
@@ -43,7 +43,7 @@ int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__src_bar(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__TestCase__NativeAPI2__src_baz(SPVM_ENV* env, SPVM_VALUE* args) {
+int32_t SPNATIVE__TestCase__NativeAPI2__src_baz(SPVM_ENV* env, SPVM_VALUE* args) {
   (void)env;
   (void)args;
 

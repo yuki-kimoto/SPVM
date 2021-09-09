@@ -1,7 +1,7 @@
 #include "spvm_native.h"
 
 // https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
-int32_t SPNATIVE__SPVM__Hash___murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__Hash___murmur_hash(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   void* object = stack[0].oval;

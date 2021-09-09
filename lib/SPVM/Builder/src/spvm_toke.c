@@ -196,7 +196,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Do directry module search
             int32_t do_directry_module_search;
 
-            // SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double is already registered in module source symtable
+            // Byte, Short, Int, Long, Float, Double is already registered in module source symtable
             if (
               strcmp(package_name, "Byte") == 0 ||
               strcmp(package_name, "Short") == 0 ||
@@ -307,7 +307,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             else {
               
-              // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
+              // Copy original source to current source because original source is used at other places(for example, Builder::Exe)
               compiler->cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
               memcpy(compiler->cur_src, original_src, file_size + 1);
               compiler->cur_rel_file = cur_rel_file;

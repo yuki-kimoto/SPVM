@@ -13,7 +13,7 @@
 
 static const char* MFILE = "SPVM/Util.c";
 
-int32_t SPNATIVE__SPVM__NumberUtil__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__NumberUtil__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -22,7 +22,7 @@ int32_t SPNATIVE__SPVM__NumberUtil__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__NumberUtil__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__NumberUtil__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -31,7 +31,7 @@ int32_t SPNATIVE__SPVM__NumberUtil__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__NumberUtil__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__NumberUtil__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -40,7 +40,7 @@ int32_t SPNATIVE__SPVM__NumberUtil__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__NumberUtil__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__NumberUtil__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -49,7 +49,7 @@ int32_t SPNATIVE__SPVM__NumberUtil__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__NumberUtil__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__NumberUtil__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int64_t seed = stack[0].lval;
   
@@ -58,14 +58,14 @@ int32_t SPNATIVE__SPVM__NumberUtil__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__NumberUtil__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__NumberUtil__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = rand();
 
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__NumberUtil__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__NumberUtil__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = RAND_MAX;
 

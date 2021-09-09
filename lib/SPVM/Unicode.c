@@ -4,7 +4,7 @@
 
 const char* MFILE = "SPVM/Unicode.c";
 
-int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   void* obj_str = stack[0].oval;
@@ -39,7 +39,7 @@ int32_t SPNATIVE__SPVM__Unicode__uchar(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__Unicode__uchar_to_utf8(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   int32_t uchar = stack[0].ival;

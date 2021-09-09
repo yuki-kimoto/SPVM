@@ -3,7 +3,7 @@
 
 static const char* MFILE = "SPVM/ArrayUtil.c";
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -45,7 +45,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack)
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -83,7 +83,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -121,7 +121,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -159,7 +159,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memmove_short(SPVM_ENV* env, SPVM_VALUE* stac
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -197,7 +197,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) 
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -235,7 +235,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack)
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -273,7 +273,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack)
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -311,7 +311,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -349,7 +349,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -388,7 +388,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memmove_float(SPVM_ENV* env, SPVM_VALUE* stac
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -427,7 +427,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stac
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -465,7 +465,7 @@ int32_t SPNATIVE__SPVM__ArrayUtil__memmove_double(SPVM_ENV* env, SPVM_VALUE* sta
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__ArrayUtil__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__ArrayUtil__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* oarray = stack[0].oval;
   int32_t length = stack[1].ival;

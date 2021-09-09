@@ -21,12 +21,12 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "string",
     "object",
     "oarray",
-    "SPVM::Byte",
-    "SPVM::Short",
-    "SPVM::Int",
-    "SPVM::Long",
-    "SPVM::Float",
-    "SPVM::Double",
+    "Byte",
+    "Short",
+    "Int",
+    "Long",
+    "Float",
+    "Double",
   };
   
   return id_names;

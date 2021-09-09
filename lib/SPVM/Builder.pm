@@ -208,12 +208,14 @@ sub bind_methods {
     my $cfunc_address;
     if ($shared_lib_file) {
       my $shared_lib_libref = DynaLoader::dl_load_file($shared_lib_file);
+      
       if ($shared_lib_libref) {
+
         $cfunc_address = DynaLoader::dl_find_symbol($shared_lib_libref, $cfunc_name);
         unless ($cfunc_address) {
           my $dl_error = DynaLoader::dl_error();
           my $error = <<"EOS";
-Can't find native function \"$cfunc_name\" corresponding to ${perl_package_name}->$method_name in \"$shared_lib_file\"
+Can't find native function \"$cfunc_name\" corresponding to ${class_name}->$method_name in \"$shared_lib_file\"
 
 You must write the following definition.
 --------------------------------------------------

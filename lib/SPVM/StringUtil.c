@@ -16,7 +16,7 @@ static const char* MFILE = "SPVM/StringUtil.c";
 #define SPRINTF_MAX_RESULT_LEN 256
 #define UINT64_MAX_LEN 20
 
-int32_t SPNATIVE__SPVM__StringUtil___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__StringUtil___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   void* obj_format = stack[0].oval;
@@ -35,7 +35,7 @@ int32_t SPNATIVE__SPVM__StringUtil___snsprintf_double(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__StringUtil___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   unsigned long long value = stack[0].lval;
@@ -51,7 +51,7 @@ int32_t SPNATIVE__SPVM__StringUtil___long_to_unsigned_digits(SPVM_ENV* env, SPVM
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__StringUtil__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -80,7 +80,7 @@ int32_t SPNATIVE__SPVM__StringUtil__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* 
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__StringUtil__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -109,7 +109,7 @@ int32_t SPNATIVE__SPVM__StringUtil__to_long_with_base(SPVM_ENV* env, SPVM_VALUE*
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__StringUtil__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -132,7 +132,7 @@ int32_t SPNATIVE__SPVM__StringUtil__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPNATIVE__SPVM__StringUtil__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPNATIVE__StringUtil__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {

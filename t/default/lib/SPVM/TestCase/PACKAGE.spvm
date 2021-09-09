@@ -2,7 +2,7 @@ package TestCase::PACKAGE {
   sub package_name : int () {
     my $package_name = __PACKAGE__;
     
-    unless ($package_name eq "SPVM::TestCase::PACKAGE") {
+    unless ($package_name eq "TestCase::PACKAGE") {
       return 0;
     }
     return 1;
