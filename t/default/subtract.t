@@ -38,12 +38,12 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   {
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::Subtract::LeftIsNotNumeric', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('TestCase::CompileError::Subtract::LeftIsNotNumeric', __LINE__, __FILE__);
       ok($success == 0);
     }
     {
       my $build = SPVM::Builder->new;
-      my $success = $build->compile_spvm('SPVM::TestCase::CompileError::Subtract::RightIsNotNumeric', __LINE__, __FILE__);
+      my $success = $build->compile_spvm('TestCase::CompileError::Subtract::RightIsNotNumeric', __LINE__, __FILE__);
       ok($success == 0);
     }
   }

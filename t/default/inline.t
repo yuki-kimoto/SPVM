@@ -23,7 +23,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(SPVM::TestCase::Inline->new_inline);
   ok(SPVM::TestCase::Inline->new);
-  is(ref SPVM::TestCase::Inline->new, "SPVM::TestCase::Inline");
+  is(ref SPVM::TestCase::Inline->new, "TestCase::Inline");
 }
 
 # All object is freed
