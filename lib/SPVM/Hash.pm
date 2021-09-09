@@ -28,7 +28,7 @@ SPVM::Hash - Hash in SPVM | Hash Data Structure
 
 L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative array.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

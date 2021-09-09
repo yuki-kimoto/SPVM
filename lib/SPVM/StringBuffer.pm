@@ -24,7 +24,7 @@ SPVM::StringBuffer - StringBuffer in SPVM | String buffer
 
 String buffer.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

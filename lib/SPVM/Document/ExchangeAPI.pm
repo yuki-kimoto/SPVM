@@ -46,9 +46,9 @@ A default SPVM runtime is created the first time you call a method of SPVM modul
 
 The method of SPVM module can be called from Perl directory.
 
-=head2 CALL STATIC METHOD
+=head2 CALL CLASS METHOD
 
-Let's call SPVM static method from Perl.
+Let's call SPVM class method from Perl.
 
   use SPVM 'Foo';
 

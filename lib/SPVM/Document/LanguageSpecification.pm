@@ -1504,7 +1504,7 @@ else {
 
 <h3 id="language-module-function-import">Function Import</h3>
 
-The Method which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
+The Method which is defined as Class Method is imported as Function using <a href="#language-module-use">use Statement</a>.
 
 <pre>
 use Foo(method1, method2);
@@ -3371,7 +3371,7 @@ $point_ref->{x} = 1;
   <li><a href="#language-expression-new-array">Create Array</a></li>
   <li><a href="#language-expression-array-init">Array Initialization</a></li>
   <li><a href="#language-expression-callsub">Method Call</a></li>
-  <li><a href="#language-expression-callsub-static-method-call">Static Method Call</a></li>
+  <li><a href="#language-expression-callsub-class-method-call">Class Method Call</a></li>
   <li><a href="#language-expression-callsub-method-call">Method Call</a></li>
   <li><a href="#language-expression-callsub-function-call">Function Call</a></li>
   <li><a href="#language-expression-current-class">Get Current Class Name</a></li>
@@ -3889,9 +3889,9 @@ my $key_values = {foo => 1, bar => "Hello"};
 
 <h3 id="language-expression-callsub">Method Call</h3>
 
-Methods defined by <a href="#language-method-definition">Method Definition</a> can be called from program. There are three types of method calls. <b>Static Method Call</b> and <b>Method Call</b>.
+Methods defined by <a href="#language-method-definition">Method Definition</a> can be called from program. There are three types of method calls. <b>Class Method Call</b> and <b>Instance Method Call</b>.
 
-Defined method can be called by Static Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
+Defined method can be called by Class Method Call except a case that the first argument is <a href="#language-type-self">self Type</a>.
 
 <pre>
 ClassName->MethodName(ARGS1, ARGS2, ARGS3, ..., ARGSn);
@@ -3901,7 +3901,7 @@ The arguments max count is 255.
 
 If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs.
 
-<b>Static Method Call Example</b>
+<b>Class Method Call Example</b>
 
 <pre>
 my $ret = Foo->bar(1, 2, 3);
@@ -3909,7 +3909,7 @@ my $ret = Foo->bar(1, 2, 3);
 
 <h3 id="language-expression-callsub-function-call">Function Call</h3>
 
-Method which is defined as Static Method is imported as Function using <a href="#language-module-use">use Statement</a>.
+Method which is defined as Class Method is imported as Function using <a href="#language-module-use">use Statement</a>.
 
 <pre>
 use Foo(MethodName);
@@ -3933,27 +3933,27 @@ class Foo {
 }
 </pre>
 
-<h3 id="language-expression-callsub-method">Method Call</h3>
+<h3 id="language-expression-callsub-method">Instance Method Call</h3>
 <p>
-  Method Call is a method to call Method which is <a href="#language-method-method">Method</a>. In <a href="#language-method-definition">Method Definition</a>, the first argument is <a href="#language-type-self">self Type</a> If the argument of> is specified, it becomes Method.
+  Instance Method Call is a method to call Method which is <a href="#language-method-method">Method</a>. In <a href="#language-method-definition">Method Definition</a>, the first argument is <a href="#language-type-self">self Type</a> If the argument of> is specified, it becomes Method.
 </p>
 <p>
-  Method Call can be done with the following syntax using the object created by <a href="#language-expression-new">Create Object</a>.
+  Instance Method Call can be done with the following syntax using the object created by <a href="#language-expression-new">Create Object</a>.
 </p>
 <pre>
 OBJECT_EXPRESSION->METHOD_NAME(ARGS1, ARGS2, ARGS3, ..., ARGSn);
 </pre>
 <p>
-  Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
+  Instance Method Call takes arguments. If the number of arguments does not match the number of arguments defined in the Method Definition, Compile Error occurs The Type of each argument and the type of the argument defined in Method Definition and <a href = "#language-type-compatible">Type Compatibility</a>, Compile Error occurs
 </p>
 <p>
-  Method Call returns Return Value if Return Value is other than <a href="#language-type-void">void Type</a>.
+  Instance Method Call returns Return Value if Return Value is other than <a href="#language-type-void">void Type</a>.
 </p>
 <p>
-  Method Call is <a href="#language-expression">Expression</a>.
+  Instance Method Call is <a href="#language-expression">Expression</a>.
 <p>
 <p>
-  <b>Method Call Example</b>
+  <b>Instance Method Call Example</b>
 </p>
 <pre>
 my $point = new Point;

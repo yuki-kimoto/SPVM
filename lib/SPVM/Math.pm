@@ -16,7 +16,7 @@ SPVM::Math - Math in SPVM | Math functions
 
 L<Math|Math> defines mathmatical functions. 
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 abs
 

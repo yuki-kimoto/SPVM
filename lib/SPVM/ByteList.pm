@@ -50,7 +50,7 @@ SPVM::ByteList - ByteList in SPVM | Dynamic Byte Array
 
 L<ByteList|SPVM::ByteList> is Dynamic Byte Array.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

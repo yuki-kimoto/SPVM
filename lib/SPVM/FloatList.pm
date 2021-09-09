@@ -50,7 +50,7 @@ SPVM::FloatList - FloatList in SPVM | Dynamic float array
 
 L<FloatList|SPVM::FloatList> is dynamic float array.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

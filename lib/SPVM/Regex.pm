@@ -145,7 +145,7 @@ If 0 width quantifir is between two same set of characters after a quantifier, i
   Regex->new("\d+\D*\d+");
   Regex->new("\d+\D?\d+");
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

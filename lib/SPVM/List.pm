@@ -59,7 +59,7 @@ SPVM::List - List in SPVM | Dynamic object array
 
 L<List|SPVM::List> is dynamic object array.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

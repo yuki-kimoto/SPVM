@@ -50,7 +50,7 @@ SPVM::ShortList - ShortList in SPVM | Dynamic short array
 
 L<ShortList|SPVM::ShortList> is dynamic  short array.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

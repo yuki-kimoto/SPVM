@@ -21,7 +21,7 @@ This object is immutable and its value cannot be changed.
 
 L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

@@ -53,7 +53,7 @@ SPVM::Time::Info - Time::Info in SPVM | Time information
 
 Time information
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

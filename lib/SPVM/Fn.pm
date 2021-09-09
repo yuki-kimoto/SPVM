@@ -299,7 +299,7 @@ Return the value of DBL_MAX macro defined in float.h C header.
 
 Get random number(0 <= rundom_number <= Fn->RAND_MAX). This is same as rand function of C language.
 
-The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> static method.
+The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> class method.
 
 This method is not thread safe because internaly this method use rand function of C language.
 
@@ -309,7 +309,7 @@ This method is not thread safe because internaly this method use rand function o
 
 Get random number(0 <= random_number < 1). This is same as rand function of Perl language.
 
-The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> static method.
+The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> class method.
 
 This method is not thread safe because internaly this method use rand function of C language.
 
@@ -317,7 +317,7 @@ This method is not thread safe because internaly this method use rand function o
 
   sub srand : void ($seed : long);
 
-Sets random number seed for the C<crand> or C<rand> static method.
+Sets random number seed for the C<crand> or C<rand> class method.
 
 =head2 chompr
 

@@ -4646,7 +4646,7 @@ void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* 
       );
     }
   }
-  // Static method call
+  // Class method call
   else {
     if (call_spvm_method->op_invocant) {
       const char* class_name = call_spvm_method->op_invocant->uv.type->basic_type->name;

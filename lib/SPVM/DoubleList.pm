@@ -50,7 +50,7 @@ SPVM::DoubleList - DoubleList in SPVM | Dynamic double array
 
 L<DoubleList|SPVM::DoubleList> is dynamic double array.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

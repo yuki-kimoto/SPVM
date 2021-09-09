@@ -2707,7 +2707,7 @@ SPVM_OP* SPVM_OP_build_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* op_inv
     
     SPVM_OP_insert_child(compiler, op_list_terms, op_list_terms->first, op_invocant);
   }
-  // Static method call
+  // Class method call
   else {
     call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
     call_spvm_method->op_invocant = op_invocant;

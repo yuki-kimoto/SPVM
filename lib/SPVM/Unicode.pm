@@ -21,7 +21,7 @@ SPVM::Unicode - Unicode in SPVM | Unicode utilities.
 
 L<Unicode|SPVM::Unicode> is Unicode utilities. This module privides the methods to convert UTF-8, UTF-16, UTF-32, Unicode codepoint each others.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 ERROR_INVALID_UTF8
 

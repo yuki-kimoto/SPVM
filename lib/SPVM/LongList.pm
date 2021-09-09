@@ -50,7 +50,7 @@ SPVM::LongList - LongList in SPVM | Dynamic long array
 
 L<LongList|SPVM::LongList> is dynamic long array.
 
-=head1 STATIC METHODS
+=head1 CLASS METHODS
 
 =head2 new
 

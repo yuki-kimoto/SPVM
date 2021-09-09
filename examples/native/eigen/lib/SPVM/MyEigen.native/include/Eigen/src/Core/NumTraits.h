@@ -50,7 +50,7 @@ struct default_digits10_impl<T,false,true> // Integer
   *
   * \tparam T the numeric type at hand
   *
-  * This class stores enums, typedefs and static methods giving information about a numeric type.
+  * This class stores enums, typedefs and class methods giving information about a numeric type.
   *
   * The provided data consists of:
   * \li A typedef \c Real, giving the "real part" type of \a T. If \a T is already real,
