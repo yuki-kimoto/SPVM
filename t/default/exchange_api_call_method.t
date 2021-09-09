@@ -499,7 +499,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
       is_deeply($point, {x => $DBL_MIN + 1, y => 2, z => 3});
     }
   }
-
+  
   # Argument value reference exception
   {
     # Argument value reference exception - byte, key not found
@@ -897,7 +897,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # Any object array
   {
     {
-      my $bytes = SPVM::new_object_array("SPVM::Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
+      my $bytes = SPVM::new_object_array("Byte[]", [SPVM::Byte->new(1), SPVM::Byte->new(2), SPVM::Byte->new(3)]);
       my $ret = SPVM::TestCase::ExchangeAPI->any_object_array($bytes);
       
       isa_ok($ret, 'SPVM::BlessedObject::Array');

@@ -109,8 +109,9 @@ sub bind_to_perl {
         next;
       }
 
+
       my $perl_method_abs_name = "${perl_package_name}::$method_name";
-      
+
       # Define Perl method
       no strict 'refs';
       *{"$perl_method_abs_name"} = sub {
