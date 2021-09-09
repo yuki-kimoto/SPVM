@@ -1645,26 +1645,35 @@ SPVM_OP* SPVM_OP_build_package(SPVM_COMPILER* compiler, SPVM_OP* op_package, SPV
   SPVM_LIST_push(compiler->tmp_added_package_names, (void*)package_name);
   
   if (!package->is_anon) {
-    // If package part name start with lower case, compiler error occur.
+
+    // Package name must start with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
-    int32_t package_part_name_is_invalid = 0;
-    int32_t package_name_length = strlen(package_name);
-    for (int32_t i = 0; i < package_name_length; i++) {
-      if (i > 1) {
-        if (package_name[i - 2] == ':' && package_name[i - 1] == ':') {
-          if (islower(package_name[i])) {
-            SPVM_COMPILER_error(compiler, "Part name of package \"%s\" must start with lower case at %s line %d\n", package_name, op_package->file, op_package->line);
-            break;
+    if (islower(package_name[0])) {
+      SPVM_COMPILER_error(compiler, "package name \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
+    }
+    else {
+      
+      // If package part name start with lower case, compiler error occur.
+      // (Invalid example) Foo::bar
+      int32_t package_part_name_is_invalid = 0;
+      int32_t package_name_length = strlen(package_name);
+      for (int32_t i = 0; i < package_name_length; i++) {
+        if (i > 1) {
+          if (package_name[i - 2] == ':' && package_name[i - 1] == ':') {
+            if (islower(package_name[i])) {
+              SPVM_COMPILER_error(compiler, "Part name of package \"%s\" must start with upper case at %s line %d\n", package_name, op_package->file, op_package->line);
+              break;
+            }
           }
         }
       }
-    }
-    
-    // If package name is different from the package name corresponding to the module file, compile error occur.
-    if (strcmp(package_name, compiler->cur_rel_file_package_name) != 0) {
-      // If package fail load by if (require xxx) syntax, that is ok
-      if (!op_type->uv.type->basic_type->fail_load) {
-        SPVM_COMPILER_error(compiler, "Package name \"%s\" is different from the package name corresponding to the module file \"%s\" at %s line %d\n", package_name, compiler->cur_rel_file_package_name, op_package->file, op_package->line);
+      
+      // If package name is different from the package name corresponding to the module file, compile error occur.
+      if (strcmp(package_name, compiler->cur_rel_file_package_name) != 0) {
+        // If package fail load by if (require xxx) syntax, that is ok
+        if (!op_type->uv.type->basic_type->fail_load) {
+          SPVM_COMPILER_error(compiler, "Package name \"%s\" is different from the package name corresponding to the module file \"%s\" at %s line %d\n", package_name, compiler->cur_rel_file_package_name, op_package->file, op_package->line);
+        }
       }
     }
   }
