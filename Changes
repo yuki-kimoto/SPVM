@@ -18,7 +18,7 @@ Revision history for SPVM
           However, short name is good. Fn->join(',', ["abc", "de"])
         * package keyword is renamed to class. And all of the part of the methods and things which contains "package" is replaced to "class". Sorry
         * Static method concept is changed to Class method
-        
+        * Lexical Variable concept is changed to Local Variable for other language users.
         [BUGFIXES]
         * None
 

@@ -177,9 +177,9 @@ In this point, unlike Perl where all value are assigned to the dynamic type SV, 
 
 See also <a href="http://59.106.185.196:3000/spvmdoc-public/language.html#language-type">Type - SPVM Language Specification</a> about Type.
 
-<h4>Lexical Variable Declaration</h4>
+<h4>Local Variable Declaration</h4>
 
-Write <b>Lexical Variable Declaration</b> by <b>my</b> keyword. You can initialize variables at the same time you declare variables.
+Write <b>Local Variable Declaration</b> by <b>my</b> keyword. You can initialize variables at the same time you declare variables.
 
 <pre>
 my $total = 0;
@@ -193,7 +193,7 @@ my $total : int = 0;
 
 0 on the right side is a signed 32-bit integer, so the type of the variable is automatically determined by type inference.
 
-See also <a href="/language.html#language-lex-var">Lexical Variabe - SPVM Language Specification</a> about Lexical Variabe Declaration.
+See also <a href="/language.html#language-local-var">Lexical Variabe - SPVM Language Specification</a> about Lexical Variabe Declaration.
 
 See also <a href="/language.html#language-type-inference">Type Inference - SPVM Language Specification</a> about Type Inference.
 

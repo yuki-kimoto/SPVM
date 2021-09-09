@@ -25,7 +25,7 @@ SPVM Language Specification.
   <li><a href="#language-method">Method</a></li>
   <li><a href="#language-enum">Enumeration</a></li>
   <li><a href="#language-begin-block">INIT Block</a></li>
-  <li><a href="#language-lex-var">Lexical Variable</a></li>
+  <li><a href="#language-local-var">Local Variable</a></li>
   <li><a href="#language-scope">Scope</a></li>
   <li><a href="#language-literal">Literal</a></li>
   <li><a href="#language-string">String</a></li>
@@ -223,7 +223,7 @@ Space Character has no meaning in the program execution.
 
 <h3 id="language-lex-identifier">Identifiers</h3><!-- 2019/2/27 maybe ok-->
 
-Identifiers in SPVM are <a href="#language-lex-identifier-class-name">Class Name</a>, <a href="#language-lex-identifier-sub-name">Method Name</a>, <a href="#language-lex-identifier-field-name">Field Name</a>, <a href="#language-lex-identifier-class-var-name">Class Variable Name</a>, and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a>.
+Identifiers in SPVM are <a href="#language-lex-identifier-class-name">Class Name</a>, <a href="#language-lex-identifier-sub-name">Method Name</a>, <a href="#language-lex-identifier-field-name">Field Name</a>, <a href="#language-lex-identifier-class-var-name">Class Variable Name</a>, and <a href="#language-lex-identifier-local-var-name">Local Variable Name</a>.
 
 <h3 id="language-lex-identifier-class-name">Class Name</h3><!-- 2021-02-08 updated -->
 
@@ -325,22 +325,22 @@ $FOO__BAR
 $3FOO
 </pre>
 
-<h3 id="language-lex-identifier-lex-var-name">Lexical Variable Name</h3><!-- 2019/2/27 maybe ok-->
+<h3 id="language-lex-identifier-local-var-name">Local Variable Name</h3><!-- 2019/2/27 maybe ok-->
 
-Lexical Variable Name starts with "$", followed more alphabet characters of ASCII Code.
+Local Variable Name starts with "$", followed more alphabet characters of ASCII Code.
 
 Followed character must not start with number.
 
 Underscore cannot be continued twice.
 
 <pre>
-# Valid Lexical Variable Name
+# Valid Local Variable Name
 $foo
 $foo_bar3
 $_foo
 $FOO
 
-# Invalid Lexical Variable Name
+# Invalid Local Variable Name
 $foo__bar
 $3foo
 </pre>
@@ -385,7 +385,7 @@ Fat Comma is an alias for Comma "<b>,</b>". Wherever you can use "<b>,</b>" you 
 </pre>
 
 
-Identifiers other than <a href="#language-lex-identifier-class-var-name">Class Variable Name</a> and <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a> placed on the Left of Fat Comma are treated as <a href="#language-literal-string">String Literal</a>.
+Identifiers other than <a href="#language-lex-identifier-class-var-name">Class Variable Name</a> and <a href="#language-lex-identifier-local-var-name">Local Variable Name</a> placed on the Left of Fat Comma are treated as <a href="#language-literal-string">String Literal</a>.
 
 <pre>
 # Identifiers placed on the Left of Fat Comma are treated as String Literal
@@ -1855,7 +1855,7 @@ Method Name is allowed as same as <a href="#language-lex-keyword">Keyword</a>.
 
 Type of Return Value must be <a href="#language-type-void">void Type</a>, <a href="#language-type-numeric">Numeric Type</a>, or <a href="#language-type-object">Object Type</a>, otherwise Compile Error occurs.
 
-Argument name must be follow the rule of <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a>.
+Argument name must be follow the rule of <a href="#language-lex-identifier-local-var-name">Local Variable Name</a>.
 
 Minimal Argument Count is 0. Max Argument Count is 255.
 
@@ -2026,10 +2026,10 @@ Method Callstack is memory area allocated in each method call.
   Method Callstack save the folloing information.
 </p>
 <p>
-  1. Memroy area for <a href="#language-lex-var">Lexical Variable</a>
+  1. Memroy area for <a href="#language-local-var">Local Variable</a>
 </p>
 <p>
-  2. The places of Mortal Lexical Variable
+  2. The places of Mortal Local Variable
 </p>
 
 <h2 id="language-enum">Enumeration</h2>
@@ -2237,37 +2237,37 @@ class Foo {
 }
 </pre>
 
-<h2 id="language-lex-var">Lexical Variable</h2>
+<h2 id="language-local-var">Local Variable</h2>
 
 <ul>
-  <li><a href="#language-lex-var-declaration">Lexical Variable Declaration</a></li>
-  <li><a href="#language-lex-var-initial-value">Lexical Variable Initial Value</a></li>
-  <li><a href="#language-lex-var-access">Lexical Variable Access</a></li>
+  <li><a href="#language-local-var-declaration">Local Variable Declaration</a></li>
+  <li><a href="#language-local-var-initial-value">Local Variable Initial Value</a></li>
+  <li><a href="#language-local-var-access">Local Variable Access</a></li>
 </ul>
 
-<h3 id="language-lex-var-declaration">Lexical Variable Declaration</h3>
+<h3 id="language-local-var-declaration">Local Variable Declaration</h3>
 
-<b>Lexical Variable</b> is a variable that is declared in <a href="#language-scope-scope-block">Scope Block</a>.  Lexical Variable has <a href="#language-scope">Scope</a>. This is same as Local Variable in C Language.
+<b>Local Variable</b> is a variable that is declared in <a href="#language-scope-scope-block">Scope Block</a>.  Local Variable has <a href="#language-scope">Scope</a>. This is same as Local Variable in C Language.
 
-Lexical Variable is declared using <b>my</b> <a href="#language-lex-keyword">Keyword</a>.
+Local Variable is declared using <b>my</b> <a href="#language-lex-keyword">Keyword</a>.
 
 <pre>
 my LEXICAL_VARIABLE_NAME : TYPE;
 </pre>
 
-Lexical variable name must be follow the rule of <a href="#language-lex-identifier-lex-var-name">Lexical Variable Name</a>.
+Lexical variable name must be follow the rule of <a href="#language-lex-identifier-local-var-name">Local Variable Name</a>.
 
 <a href="#language-type">Type</a> must be specified. Type must be <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-object">Object Type</a>, <a href="#language-type-multi-numeric">Multi Numeric Type</a>, or <a href="#language-type-ref">Reference Type</a>.
 
 <pre>
-# Lexical Variable Declaration Examples
+# Local Variable Declaration Examples
 my $var : int;
 my $var : Point;
 my $var : Complex_2d;
 my $var : int&;
 </pre>
 
-Lexical Variable is initialized by <a href="#language-lex-var-initial-value">Lexical Variable Initial Value</a>.
+Local Variable is initialized by <a href="#language-local-var-initial-value">Local Variable Initial Value</a>.
 
 <pre>
 # Initialized by 0
@@ -2284,7 +2284,7 @@ my $z : Complex_2d;
 </pre>
 
 
-Initialization can be done at the same time as Lexical Variable Declaration.
+Initialization can be done at the same time as Local Variable Declaration.
 
 <pre>
 # Initialized by 1
@@ -2297,7 +2297,7 @@ my $num : double = 2.5;
 my $point : Point = new Point;
 </pre>
 
-Using <a href="#language-type-inference">Type Inference</a>, you omit <a href="#language-type">Type</a> in Lexical Variable Declaration.
+Using <a href="#language-type-inference">Type Inference</a>, you omit <a href="#language-type">Type</a> in Local Variable Declaration.
 
 <pre>
 # int
@@ -2307,7 +2307,7 @@ my $num = 1;
 my $num = 1.0;
 </pre>
 
-Lexical Variable Declaration returns the value of Lexical Variable. This is a <a href="#language-expression">Expression</a>.
+Local Variable Declaration returns the value of Local Variable. This is a <a href="#language-expression">Expression</a>.
 
 <pre>
 my $ppp = my $bar = 4;
@@ -2321,21 +2321,21 @@ while (my $bar = 1) {
 }
 </pre>
 
-See <a href="#language-scope">Scope</a> about Lexical Variable Scope.
+See <a href="#language-scope">Scope</a> about Local Variable Scope.
 
-<h3 id="language-lex-var-initial-value">Lexical Variable Initial Value</h3>
+<h3 id="language-local-var-initial-value">Local Variable Initial Value</h3>
 
-Lexical Variable is initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
+Local Variable is initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
 
-<h3 id="language-lex-var-access">Lexical Variable Access</h3>
+<h3 id="language-local-var-access">Local Variable Access</h3>
 
-Lexical Variable Access is an operation to access Lexical Variable to get or set the value.
+Local Variable Access is an operation to access Local Variable to get or set the value.
 
-See <a href="#language-expression-get-lex-var">Get Lexical Variable Value</a> to get Lexical Variable value.
+See <a href="#language-expression-get-local-var">Get Local Variable Value</a> to get Local Variable value.
 
-<a href="#language-expression-set-lex-var">Set Lexical Variable Value</a> to get Lexical Variable value.
+<a href="#language-expression-set-local-var">Set Local Variable Value</a> to get Local Variable value.
 
-If <a href="#language-class-var">Class Variable</a> with the same name as the Lexical Variable exists, Program uses the variable as Lexical Variable, not <a href="#language-class-var">Class Variable</a>.
+If <a href="#language-class-var">Class Variable</a> with the same name as the Local Variable exists, Program uses the variable as Local Variable, not <a href="#language-class-var">Class Variable</a>.
 
 <h2 id="language-scope">Scope</h2>
 <ul>
@@ -2359,7 +2359,7 @@ If <a href="#language-class-var">Class Variable</a> with the same name as the Le
 }
 </pre>
 
-Lexical Variable Declaration registers the Lexical Variable that is <a href="#language-type-object">Object Type</a> with Mortal Variable in run-time. 
+Local Variable Declaration registers the Local Variable that is <a href="#language-type-object">Object Type</a> with Mortal Variable in run-time. 
 
 If the object is not <a href="#language-undef">undef</a>, The Reference Count is added by 1.
 
@@ -2947,7 +2947,7 @@ If the espape characters which is not included avobe is used, a compiler error o
 
 <h3 id="language-literal-string-variable-expansion">Variable Expansion</h3>
 
-<b>Variable Expansion</b> applys <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href="#language-ref-deref">Dereference</a>, <a href="#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-exception-var">Exception Variable</a> in String Literal.
+<b>Variable Expansion</b> applys <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href="#language-ref-deref">Dereference</a>, <a href="#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-exception-var">Exception Variable</a> in String Literal.
 
 <pre>
 "AAA $foo BBB"
@@ -3122,7 +3122,7 @@ All Fields must be the same <a href="#language-type-numeric">Numeric Type</a>.
 
 The maximum number of Fields is 255.
 
-Multi Numeric Type can be used as <a href="#language-type">Type</a> of <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>.
+Multi Numeric Type can be used as <a href="#language-type">Type</a> of <a href="#language-local-var-declaration">Local Variable Declaration</a>.
 
 Multi Numeric Type can be used as an argument <a href="#language-type">Type</a> in <a href="#language-method-definition">Method Definition</a> .
 
@@ -3218,7 +3218,7 @@ use Complex_2d;
 </pre>
 
 
-Next is <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>. Lexical Variable Declaration create continuous area for fields of Multi Numeric Type Value on <a href="#language-method-stack">Method Callstack</a>. All fields of of Multi Numeric Type Value are initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
+Next is <a href="#language-local-var-declaration">Local Variable Declaration</a>. Local Variable Declaration create continuous area for fields of Multi Numeric Type Value on <a href="#language-method-stack">Method Callstack</a>. All fields of of Multi Numeric Type Value are initialized by <a href="#language-type-initial-value">Type Initial Value</a>.
 
 <pre>
 my $point : Point_3i;
@@ -3283,9 +3283,9 @@ See <a href="#language-expression-set-array-element">Set Array Element Value</a>
 
 <h3 id="language-ref">Reference Summary</h3>
 
-Reference is data that indicates the location of <a href="#language-lex-var">Lexical Variable</a> in the memory. Reference is a feature corresponding to Pointer in C language.
+Reference is data that indicates the location of <a href="#language-local-var">Local Variable</a> in the memory. Reference is a feature corresponding to Pointer in C language.
 
-You can get Reference of Lexical Variable using <a href="#language-operator-ref">Reference Operator</a>.
+You can get Reference of Local Variable using <a href="#language-operator-ref">Reference Operator</a>.
 
 <a href="#language-type-ref">Reference Type</a> is represented by <a href="#language-type-numeric">Numeric Type</a> "&" or <a href="#language-type-multi-numeric ">Multi Numeric Type</a> followed by "&".
 Reference types are represented by appending an & after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric ">Multi Numeric Type</a>.
@@ -3353,8 +3353,8 @@ $point_ref->{x} = 1;
   <li><a href="#language-expression-operator">Operator</a></li>
   <li><a href="#language-expression-literal">Literal</a></li>
   <li><a href="#language-expression-undef">Undefined Value</a></li>
-  <li><a href="#language-expression-get-lex-var">Get Lexical Variable Value</a></li>
-  <li><a href="#language-expression-set-lex-var">Set Lexical Variable Value</a></li>
+  <li><a href="#language-expression-get-local-var">Get Local Variable Value</a></li>
+  <li><a href="#language-expression-set-local-var">Set Local Variable Value</a></li>
   <li><a href="#language-expression-set-class-var">Get Class Variable Value</a></li>
   <li><a href="#language-expression-get-class-var">Set Class Variable Value</a></li>
   <li><a href="#language-expression-get-exception-var">Get Exception Variable Value</a></li>
@@ -3398,17 +3398,17 @@ Expression is a syntax component that can be evaluated as a value.
 
 <a href="#language-literal">Literal</a> is a Expression.
 
-<h3 id="language-expression-get-lex-var">Get Lexical Variable Value</h3>
+<h3 id="language-expression-get-local-var">Get Local Variable Value</h3>
 
-<b>Get Lexical Variable Value</b> is a Expression to get <a href="#language-lex-var">Lexical Variable</a> Value.
+<b>Get Local Variable Value</b> is a Expression to get <a href="#language-local-var">Local Variable</a> Value.
 
 <pre>
 $var
 </pre>
 
-<h3 id="language-expression-set-lex-var">Set Lexical Variable Value</h3>
+<h3 id="language-expression-set-local-var">Set Local Variable Value</h3>
 
-<b>Set Lexical Variable Value Expression</b> is a Expression to set <a href="#language-lex-var">Lexical Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
+<b>Set Local Variable Value Expression</b> is a Expression to set <a href="#language-local-var">Local Variable</a> Value using <a href="#language-operator-assign">Assignment Operator</a>.
 
 <pre>
 $var = RIGHT_EXPRESSION
@@ -3416,13 +3416,13 @@ $var = RIGHT_EXPRESSION
 
 The Assignment must satisfy <a href="#language-type-compatible">Type Compatibility</a>.
 
-Set Lexical Variable Value Expression returns the value after setting.
+Set Local Variable Value Expression returns the value after setting.
 
 If Right Expression is <a href="#language-type-object">Object Type</a>, Reference Count of the object is incremented by 1.
 
 If an object has already been assigned to $var before the assignment, the Reference Count of that object is decremented by 1.
 
-See <a href="#language-scope">Scope</a> to know Garbage Collection of Lexical Variable.
+See <a href="#language-scope">Scope</a> to know Garbage Collection of Local Variable.
 
 <h3 id="language-expression-get-class-var">Get Class Variable Value</h3>
 
@@ -4401,7 +4401,7 @@ ARRAY_ACCESS++
 DEREFERENCE++
 </pre>
 <p>
-  The operand of Increment Operator must <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
+  The operand of Increment Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
 </p>
 <p>
   The Type of operand of Increment Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
@@ -4468,7 +4468,7 @@ ARRAY_ACCESS--
 DEREFERENCE--
 </pre>
 <p>
-  The operand of Decrement Operator must <a href="#language-lex-var">Lexical Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
+  The operand of Decrement Operator must <a href="#language-local-var">Local Variable</a>, <a href="#language-class-var">Class Variable</a>, <a href = "#language-field-access">Field Access</a>, <a href="#language-array-access">Array Access</a>, <a href="#language-deref">Dereference</a>, otherwise Compile Error occurs.
 </p>
 <p>
   The Type of operand of Decrement Operator must be <a href="#language-type-numeric">Numeric Type</a>, otherwise Compile Error will occur.
@@ -5099,7 +5099,7 @@ LEFT_EXPRESSION = RIGHTH_EXPRESSION
 </p>
 
 <ul>
-  <li><a href="#language-expression-set-lex-var">Set Lexical Variable Value</a></li>
+  <li><a href="#language-expression-set-local-var">Set Local Variable Value</a></li>
 </ul>
 
 <h3 id="language-operator-assign-special">Special Assignment Operator</h3>
@@ -6187,14 +6187,14 @@ my $num = 1 + 2;
 SPVM is a static type language. All data has a static type.
 
 <p>
-  <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-class-var-definition">Class Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
+  <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-field-definition">Field Definition</a>, <a href="#language-class-var-definition">Class Variable Definition</a>, and <b>Arguments</b> and <b>Return Value</b> of <a href="#language-method-definition">Method Definition</a> must specify <b>Type</b>.
 </p>
 
-In <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>, <a href="#language-type-inference">Type Inference</a> can be used.
+In <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a href="#language-type-inference">Type Inference</a> can be used.
 
 <h3 id="language-type-initial-value">Type Initial Value</h3>
 <p>
-  Lexical Variable Initial Value,<a href="#language-class-var-initial-value">Class Variable Initial Value</a>,Create ObjectにおけるFieldの初期値は,Type Initial Valueによって決まります。
+  Local Variable Initial Value,<a href="#language-class-var-initial-value">Class Variable Initial Value</a>,Create ObjectにおけるFieldの初期値は,Type Initial Valueによって決まります。
 </p>
 <p>
   A list of Type Initial Value. All Bit columns in the data are set to 0.
@@ -6950,13 +6950,13 @@ my $point : Point_3i;
 my $point_ref : Point_3i& = \$point;
 </pre>
 <p>
-  Only the address of the Lexical Variable acquired by <a href="#language-operator-ref">Reference Operator</a> can be assigned to the value of Reference Type.
+  Only the address of the Local Variable acquired by <a href="#language-operator-ref">Reference Operator</a> can be assigned to the value of Reference Type.
 </p>
 <p>
-  If only Lexical Variable Declaration of Reference Type is performed, Compile Error occurs
+  If only Local Variable Declaration of Reference Type is performed, Compile Error occurs
 </p>
 <p>
-  Reference Type can be used as Type of <a href="#language-lex-var-declaration">Lexical Variable Declaration</a>. The address of the Lexical Variable must be stored by the Reference Operator. In case of only Lexical Variable Declaration, Compile Error occurs
+  Reference Type can be used as Type of <a href="#language-local-var-declaration">Local Variable Declaration</a>. The address of the Local Variable must be stored by the Reference Operator. In case of only Local Variable Declaration, Compile Error occurs
 </p>
 <p>
   Reference Type can be used as Type of argument in <a href="#language-method-definition">Method Definition</a>.
@@ -6991,7 +6991,7 @@ my $point_ref : Point_3i& = \$point;
 
 <h2 id="language-type-inference">Type Inference</h2>
 <p>
-  Omitting <a href="#language-type">Type</a> when <a href="#language-lex-var-declaration">Lexical Variable Declaration</a> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
+  Omitting <a href="#language-type">Type</a> when <a href="#language-local-var-declaration">Local Variable Declaration</a> by Type Inference can. Type Inference is always performed by the Type on the Right side of Assignment Operator.
 </p>
 <pre>
 # int
@@ -7720,7 +7720,7 @@ my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object
   The Capture is actually defined as a Field of Class. Capture is a field definition and value setting syntax sugar.
 </p>
 <p>
-  If <a href="#language-lex-var">Lexical Variable</a> with the same name as the Capture variable exists in the Scope, access the Lexical Variable.
+  If <a href="#language-local-var">Local Variable</a> with the same name as the Capture variable exists in the Scope, access the Local Variable.
 </p>
 <p>
   If there is a <a href="#language-class-var">Class Variable</a> with the same name as the Capture variable, access the Capture variable.
