@@ -159,11 +159,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           const char* package_name = op_use->uv.use->op_type->uv.type->basic_type->name;
 
-          if (strncmp(package_name, "SPVM::", 6) == 0) {
-            package_name += 6;
-            op_use->uv.use->op_type->uv.type->basic_type->name = package_name;
-          }
-          
           SPVM_PACKAGE* found_package = SPVM_HASH_fetch(compiler->package_symtable, package_name, strlen(package_name));
           
           if (found_package) {
@@ -307,7 +302,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             else {
               
-              // Copy original source to current source because original source is used at other places(for example, Builder::Exe)
+              // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
               compiler->cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
               memcpy(compiler->cur_src, original_src, file_size + 1);
               compiler->cur_rel_file = cur_rel_file;
