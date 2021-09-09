@@ -14,7 +14,10 @@ Revision history for SPVM
         * Perl package name "SPVM::Foo" become correspoinding to SPVM class name "Foo".
           This is big change because all SPVM::Foo in SPVM program must be rewriten to Foo. Sorry.
           However, short name is good. SPVM::Sort->foo becomes Sort->foo
+        * create Fn module, remove NumberUtil, StringUtil, ArrayUtil modules. the funtions is moved to Fn module. Sorry.
+          However, short name is good. Fn->join(',', ["abc", "de"])
           
+        
         [BUGFIXES]
         * None
 

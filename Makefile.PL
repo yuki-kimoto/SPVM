@@ -149,6 +149,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('NumberUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('StringUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('ArrayUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Fn');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Math');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Time');
@@ -158,6 +159,7 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('NumberUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('StringUtil');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ArrayUtil');
+    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Fn');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('List');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ByteList');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('ShortList');
