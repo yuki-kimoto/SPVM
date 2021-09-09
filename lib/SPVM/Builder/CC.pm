@@ -206,6 +206,7 @@ sub compile {
   unless (defined $src_ext) {
     confess "Source extension is not specified";
   }
+  
   my $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
   unless (-f $spvm_method_src_file) {
     confess "Can't find source file $spvm_method_src_file";

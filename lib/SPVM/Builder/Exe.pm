@@ -45,6 +45,9 @@ sub new {
   unless (exists $self->{module_dirs}) {
     $self->{module_dirs} = [];
   }
+  
+  $self->{module_dirs} = [map { "$_/SPVM" } @{$self->{module_dirs}}];
+  $module_dirs = $self->{module_dirs};
 
   # Target package name
   my $target_package_name = $self->{target_package_name};
@@ -155,6 +158,7 @@ sub create_precompile_csources {
     
     my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
     if (@$precompile_method_names) {
+      
       my $src_dir = $self->builder->create_build_src_path;
       mkpath $src_dir;
       $builder_c_precompile->create_precompile_csource(
@@ -230,26 +234,29 @@ sub compile_native_csources {
     force => $self->force,
   );
   
-  my $package_names = $builder->get_package_names;
+  my $class_names = $builder->get_package_names;
   my $all_libs = [];
   my $all_object_files = [];
-  for my $package_name (@$package_names) {
+  for my $class_name (@$class_names) {
+
+    my $perl_package_name = "SPVM::$class_name";
     
-    my $native_method_names = $builder->get_method_names($package_name, 'native');
+    my $native_method_names = $builder->get_method_names($class_name, 'native');
     if (@$native_method_names) {
-      my $native_module_file = $builder->get_module_file($package_name);
+      my $native_module_file = $builder->get_module_file($class_name);
       my $native_dir = $native_module_file;
       
-      my $bconf = $builder->get_config($package_name, 'native');
+      my $bconf = $builder->get_config($class_name, 'native');
       push @$all_libs, $bconf->get_libs;
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
-      my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_file, $package_name);
+      my $src_dir = SPVM::Builder::Util::remove_package_part_from_file($native_module_file, $perl_package_name);
       my $object_dir = $self->builder->create_build_object_path;
       mkpath $object_dir;
+      
       my $object_files = $builder_c_native->compile(
-        $package_name,
+        $class_name,
         {
           src_dir => $src_dir,
           object_dir => $object_dir,
@@ -268,17 +275,20 @@ sub create_spvm_module_csources {
   my $builder = $self->builder;
   
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $class_names = $builder->get_package_names;
   
-  for my $package_name (@$package_names) {
-    # This source is UTF-8 binary
-    my $module_source = $builder->get_module_source($package_name);
+  for my $class_name (@$class_names) {
 
-    my $loaded_module_file = $builder->get_loaded_module_file($package_name);
+    my $perl_package_name = "SPVM::$class_name";
+
+    # This source is UTF-8 binary
+    my $module_source = $builder->get_module_source($class_name);
+
+    my $loaded_module_file = $builder->get_loaded_module_file($class_name);
 
     my $build_dir = $self->builder->build_dir;
     my $build_src_dir = $self->builder->create_build_src_path;
-    my $module_source_base = $package_name;
+    my $module_source_base = $perl_package_name;
     $module_source_base =~ s|::|/|g;
     my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
     
@@ -314,7 +324,7 @@ sub create_spvm_module_csources {
       $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
       
       # native package name
-      my $package_cname = $package_name;
+      my $package_cname = $class_name;
       $package_cname =~ s/::/__/g;
 
       my $get_module_source_csource = <<"EOS";
@@ -343,7 +353,7 @@ sub compile_spvm_module_csources {
   my $builder = $self->builder;
   
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $class_names = $builder->get_package_names;
   
   # Config
   my $bconf = SPVM::Builder::Config->new_c99;
@@ -360,19 +370,21 @@ sub compile_spvm_module_csources {
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
   
-  for my $package_name (@$package_names) {
+  for my $class_name (@$class_names) {
+
+    my $perl_package_name = "SPVM::$class_name";
     
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
     mkpath $build_src_dir;
     
-    my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-    my $module_source_csource_file = "$build_src_dir/$package_name_rel_file.modsrc.c";
+    my $class_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($perl_package_name);
+    my $module_source_csource_file = "$build_src_dir/$class_name_rel_file.modsrc.c";
     mkpath dirname $module_source_csource_file;
 
     my $build_object_dir = $self->builder->create_build_object_path;
     mkpath $build_object_dir;
-    my $module_source_object_file = "$build_object_dir/$package_name_rel_file.modsrc.o";
+    my $module_source_object_file = "$build_object_dir/$class_name_rel_file.modsrc.o";
     mkpath dirname $module_source_object_file;
     
     my $do_compile;
@@ -408,12 +420,14 @@ sub compile_spvm_module_csources {
 sub create_bootstrap_csource {
   my ($self) = @_;
   
-  my $target_package_name = $self->target_package_name;
+  my $target_class_name = $self->target_package_name;
+  
+  my $target_perl_package_name = "SPVM::$target_class_name";
 
   my $builder = $self->builder;
 
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $class_names = $builder->get_package_names;
 
   my $boot_csource = '';
   
@@ -439,20 +453,20 @@ sub create_bootstrap_csource {
 EOS
   
   $boot_csource .= "// module source get functions declaration\n";
-  for my $package_name (@$package_names) {
-    my $package_cname = $package_name;
+  for my $class_name (@$class_names) {
+    my $package_cname = $class_name;
     $package_cname =~ s/::/__/g;
     $boot_csource .= <<"EOS";
 const char* SPMODSRC__${package_cname}__get_module_source();
 EOS
   }
 
-  my $package_names_including_anon = $self->builder->get_package_names_including_anon;
+  my $class_names_including_anon = $self->builder->get_package_names_including_anon;
   $boot_csource .= "// precompile functions declaration\n";
-  for my $package_name (@$package_names_including_anon) {
-    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
+  for my $class_name (@$class_names_including_anon) {
+    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     for my $method_name (@$precompile_method_names) {
-      my $package_cname = $package_name;
+      my $package_cname = $class_name;
       $package_cname =~ s/::/__/g;
       $boot_csource .= <<"EOS";
 int32_t SPPRECOMPILE__${package_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
@@ -461,7 +475,7 @@ EOS
   }
 
   $boot_csource .= "// native functions declaration\n";
-  for my $package_cname (@$package_names) {
+  for my $package_cname (@$class_names) {
     my $native_method_names = $builder->get_method_names($package_cname, 'native');
     for my $method_name (@$native_method_names) {
       my $package_cname = $package_cname;
@@ -479,7 +493,7 @@ EOS
 
   $boot_csource .= <<"EOS";
   // Package name
-  const char* package_name = "$target_package_name";
+  const char* package_name = "$target_class_name";
 EOS
 
   $boot_csource .= <<'EOS';
@@ -498,13 +512,13 @@ EOS
   // Set module sources
 EOS
   
-  for my $package_name (@$package_names) {
-    my $package_cname = $package_name;
+  for my $class_name (@$class_names) {
+    my $package_cname = $class_name;
     $package_cname =~ s/::/__/g;
     
     $boot_csource .= "  {\n";
     $boot_csource .= "    const char* module_source = SPMODSRC__${package_cname}__get_module_source();\n";
-    $boot_csource .= qq(    SPVM_HASH_insert(compiler->module_source_symtable, "$package_name", strlen("$package_name"), (void*)module_source);\n);
+    $boot_csource .= qq(    SPVM_HASH_insert(compiler->module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
     $boot_csource .= "  }\n";
   }
   $boot_csource .= "\n";
@@ -518,16 +532,16 @@ EOS
   }
 EOS
   
-  for my $package_name (@$package_names_including_anon) {
-    my $package_cname = $package_name;
+  for my $class_name (@$class_names_including_anon) {
+    my $package_cname = $class_name;
     $package_cname =~ s/::/__/g;
     
-    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
+    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     
     for my $precompile_method_name (@$precompile_method_names) {
       $boot_csource .= <<"EOS";
   { 
-    const char* package_name = "$package_name";
+    const char* package_name = "$class_name";
     const char* method_name = "$precompile_method_name";
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
     assert(basic_type);
@@ -541,16 +555,16 @@ EOS
     }
   }
 
-  for my $package_name (@$package_names) {
-    my $package_cname = $package_name;
+  for my $class_name (@$class_names) {
+    my $package_cname = $class_name;
     $package_cname =~ s/::/__/g;
     
-    my $native_method_names = $builder->get_method_names($package_name, 'native');
+    my $native_method_names = $builder->get_method_names($class_name, 'native');
     
     for my $native_method_name (@$native_method_names) {
       $boot_csource .= <<"EOS";
   { 
-    const char* package_name = "$package_name";
+    const char* package_name = "$class_name";
     const char* method_name = "$native_method_name";
     SPVM_BASIC_TYPE* basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, package_name, strlen(package_name));
     assert(basic_type);
@@ -622,7 +636,7 @@ EOS
 
   my $build_dir = $self->builder->build_dir;
 
-  my $boot_base = $target_package_name;
+  my $boot_base = $target_perl_package_name;
   $boot_base =~ s|::|/|g;
 
   # Build source directory
@@ -630,7 +644,7 @@ EOS
   mkpath $build_src_dir;
   
   my $boot_csource_file = "$build_src_dir/$boot_base.boot.c";
-
+  
   mkpath dirname $boot_csource_file;
   
   open my $boot_csource_fh, '>', $boot_csource_file
@@ -643,7 +657,9 @@ sub compile_bootstrap_csource {
   my ($self) = @_;
   
   # Target package name
-  my $target_package_name = $self->target_package_name;
+  my $target_class_name = $self->target_package_name;
+  
+  my $target_perl_package_name = "SPVM::$target_class_name";
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -662,7 +678,7 @@ sub compile_bootstrap_csource {
   
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
-  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($target_package_name);
+  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($target_perl_package_name);
   my $object_file = $self->builder->create_build_object_path("$package_name_rel_file.boot.o");
   my $src_file = $self->builder->create_build_src_path("$package_name_rel_file.boot.c");
   
@@ -810,7 +826,9 @@ sub compile_spvm_compiler_and_runtime_csources {
 sub link {
   my ($self, $native_object_files) = @_;
   
-  my $target_package_name = $self->target_package_name;
+  my $target_class_name = $self->target_package_name;
+  
+  my $target_perl_package_name = "SPVM::$target_class_name";
   
   my $builder = $self->builder;
   
@@ -819,8 +837,8 @@ sub link {
   my $build_work_object_dir = $self->builder->create_build_object_path;
   
   my $object_files = [];
-  my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($target_package_name);
-  push @$object_files, glob "$build_work_object_dir/$package_name_rel_file.boot.o";
+  my $class_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($target_perl_package_name);
+  push @$object_files, glob "$build_work_object_dir/$class_name_rel_file.boot.o";
   
   my $bconf = SPVM::Builder::Config->new_c99;
   
@@ -838,24 +856,28 @@ sub link {
   push @$object_files, @spvm_compiler_and_runtime_object_files;
 
   # Compiled package names
-  my $package_names = $builder->get_package_names;
+  my $class_names = $builder->get_package_names;
   
   # SPVM module source object files
-  for my $package_name (@$package_names) {
-    my $package_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($package_name);
-    my $module_source_object_file = $self->builder->create_build_object_path("$package_name_rel_file.modsrc.o");
+  for my $class_name (@$class_names) {
+    my $perl_package_name = "SPVM::$class_name";
+    
+    my $class_name_rel_file = SPVM::Builder::Util::convert_package_name_to_rel_file($perl_package_name);
+    my $module_source_object_file = $self->builder->create_build_object_path("$class_name_rel_file.modsrc.o");
     push @$object_files, $module_source_object_file;
   }
   
   # SPVM precompile object files
   my $precompile_object_files = [];
-  for my $package_name (@$package_names) {
-    next if $package_name =~ /::anon/;
+  for my $class_name (@$class_names) {
+    next if $class_name =~ /::anon/;
+
+    my $perl_package_name = "SPVM::$class_name";
     
-    my $precompile_method_names = $builder->get_method_names($package_name, 'precompile');
+    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
       my $category = 'precompile';
-      my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($package_name, $category, 'o');
+      my $precompile_object_rel_file = SPVM::Builder::Util::convert_package_name_to_category_rel_file($perl_package_name, $category, 'o');
       my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);
       push @$precompile_object_files, $precompile_object_file;
     }
@@ -872,7 +894,7 @@ sub link {
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
   my $tmp_shared_lib_file = $cbuilder->link_executable(
     objects => $object_files,
-    module_name => $target_package_name,
+    module_name => $target_class_name,
     exe_file => $exe_file,
     extra_linker_flags => $self->extra_linker_flags,
   );
