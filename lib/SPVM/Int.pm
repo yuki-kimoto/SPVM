@@ -8,9 +8,9 @@ SPVM::Int - Int object
 
 =head1 SYNOPSYS
 
-  use SPVM::Int;
+  use Int;
 
-  my $int_object = SPVM::Int->new(5);
+  my $int_object = Int->new(5);
   my $int_value = $int_object->value;
 
 =head1 DESCRIPTION
@@ -25,7 +25,7 @@ L<Int|SPVM::Int> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : SPVM::Int ($value : int)
+  sub new : Int ($value : int)
 
 Create a new L<Int|SPVM::Int> object with a C<int> value.
 

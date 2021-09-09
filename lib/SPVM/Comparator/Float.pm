@@ -8,9 +8,9 @@ SPVM::Comparator::Float - a callback interface for float comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::Float;
+  use Comparator::Float;
   
-  my $comparator : SPVM::Comparator::Float = sub : int ($self : self, $a : float, $b : float); {
+  my $comparator : Comparator::Float = sub : int ($self : self, $a : float, $b : float); {
     return $a <=> $b;
   };
   

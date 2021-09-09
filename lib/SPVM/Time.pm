@@ -8,22 +8,22 @@ SPVM::Time - Time manipulation
 
 =head1 SYNOPSYS
   
-  use SPVM::Time;
+  use Time;
   
   # Get Current Epoch time
-  my $time = SPVM::Time->time;
+  my $time = Time->time;
   
   # Get Local time information
-  my $time_info = SPVM::Time->localtime(SPVM::Time->time);
+  my $time_info = Time->localtime(Time->time);
   
   # Get GMT time information
-  my $time_info = SPVM::Time->gmtime(SPVM::Time->time);
+  my $time_info = Time->gmtime(Time->time);
   
-  # Convert L<Time::Info|SPVM::Time::Info> to which is local time zone to calender time as same as time method format.
-  my $time = SPVM::Time->timelocal($time_info);
+  # Convert Time::Info to which is local time zone to calender time as same as time method format.
+  my $time = Time->timelocal($time_info);
   
-  # Convert L<Time::Info|SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
-  my $time = SPVM::Time->timegm($time_info);
+  # Convert Time::Info which is the standard Greenwich time zone to calender time as same as time method format.
+  my $time = Time->timegm($time_info);
 
 =head1 DESCRIPTION
 
@@ -41,18 +41,18 @@ On most systems the epoch is 00:00:00 UTC, January 1, 1970;
 
 Example:
 
-  my $time = SPVM::Time->time;
+  my $time = Time->time;
 
 =head2 localtime
 
-  sub localtime : SPVM::Time::Info ($time : long)
+  sub localtime : Time::Info ($time : long)
 
 Converts a time as returned by the time method to a L<Time::Info|SPVM::Time::Info> object
 with the time analyzed for the local time zone.
 
 Example:
 
-  my $time_info = SPVM::Time->localtime(SPVM::Time->time);
+  my $time_info = Time->localtime(Time->time);
 
 "mday" is the day of the month and "mon" the month in the range
 0..11, with 0 indicating January and 11 indicating December.
@@ -71,7 +71,7 @@ Time, false otherwise.
 
 If you get current time information, pass return value of "time" method.
 
-  my $time_info = SPVM::Time->localtime(SPVM::Time->time)
+  my $time_info = Time->localtime(Time->time)
 
 See also the "timelocal" method. (for converting seconds,
 minutes, hours, and such back to the integer value returned by
@@ -79,7 +79,7 @@ time()).
 
 =head2 gmtime
 
-  sub gmtime : SPVM::Time::Info ($time : long)
+  sub gmtime : Time::Info ($time : long)
 
 Works just like "localtime" but the returned values are localized
 for the standard Greenwich time zone.
@@ -90,21 +90,21 @@ time()).
 
 =head2 timelocal
 
-  sub timelocal : long ($time_info : SPVM::Time::Info)
+  sub timelocal : long ($time_info : Time::Info)
 
 timelocal method convert L<Time::Info|SPVM::Time::Info> which is local time zone to calender time as same as time method format.
 
 wday and yday is ignored.
 
-  my $time = SPVM::Time->timelocal($time_info);
+  my $time = Time->timelocal($time_info);
 
 =head2 timegm
 
-  sub timegm : long ($time_info : SPVM::Time::Info)
+  sub timegm : long ($time_info : Time::Info)
 
 timegm method convert L<Time::Info|SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
 
 wday and yday is ignored.
 
-  my $time = SPVM::Time->timegm($time_info);
+  my $time = Time->timegm($time_info);
 

@@ -8,13 +8,13 @@ SPVM::Regex::Replacer - a callback interface for the regex replacement
 
 =head1 SYNOPSYS
   
-  use SPVM::Regex::Replacer;
+  use Regex::Replacer;
   
-  my $replacer : SPVM::Regex::Replacer = sub : string ($self : self, $re : SPVM::Regex) {
+  my $replacer : Regex::Replacer = sub : string ($self : self, $re : Regex) {
     return "AB" . $re->captures->[0] . "C";
   });
   
-  my $re = SPVM::Regex->new("ab(c)");
+  my $re = Regex->new("ab(c)");
   my $string_for_replace = $replacer->($re);
 
 =head1 DESCRIPTION
@@ -23,7 +23,7 @@ L<Regex::Replacer|SPVM::Regex::Replacer> is a callback interface for the regex r
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : string ($self : self, $re : SPVM::Regex)
+  sub : string ($self : self, $re : Regex)
 
 This method return the string after the replacement.
 

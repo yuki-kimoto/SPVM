@@ -112,7 +112,7 @@ An exmaple when array is int array:
 
 =head1 OPERATORS
 
-L<BlessedObject::Array|SPVM::BlessedObject::Array> overloads the following operators.
+L<SPVM::BlessedObject::Array> overloads the following operators.
 
 =head2 array dereference
   

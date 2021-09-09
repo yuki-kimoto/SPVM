@@ -8,13 +8,13 @@ SPVM::Math - Math functions
 
 =head1 SYNOPSYS
 
-  use SPVM::Math;
+  use Math;
   
-  my $sin = SPVM::Math->sin(SPVM::Math->PI / 4);
+  my $sin = Math->sin(Math->PI / 4);
   
 =head1 DESCRIPTION
 
-L<Math|SPVM::Math> defines mathmatical functions. 
+L<Math|Math> defines mathmatical functions. 
 
 =head1 STATIC METHODS
 
@@ -104,109 +104,109 @@ atanhf function defined in C language math.h.
 
 =head2 cabs
 
-  sub cabs : double ($z : SPVM::Complex_2d)
+  sub cabs : double ($z : Complex_2d)
 
 cabs function defined in C language complex.h.
 
 =head2 cabsf
 
-  sub cabsf : float ($z : SPVM::Complex_2f)
+  sub cabsf : float ($z : Complex_2f)
 
 cabsf function defined in C language complex.h.
 
 =head2 cacos
 
-  sub cacos : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub cacos : Complex_2d ($z : Complex_2d)
 
 cacos function defined in C language complex.h.
 
 =head2 cacosf
 
-  sub cacosf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub cacosf : Complex_2f ($z : Complex_2f)
 
 cacosf function defined in C language complex.h.
 
 =head2 cacosh
 
-  sub cacosh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub cacosh : Complex_2d ($z : Complex_2d)
 
 cacosh function defined in C language complex.h.
 
 =head2 cacoshf
 
-  sub cacoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub cacoshf : Complex_2f ($z : Complex_2f)
 
 cacoshf function defined in C language complex.h.
 
 =head2 cadd
 
-  sub cadd : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
+  sub cadd : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d)
 
 cadd function defined in C language complex.h.
 
 =head2 caddf
 
-  sub caddf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+  sub caddf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f)
 
 caddf function defined in C language complex.h.
 
 =head2 carg
 
-  sub carg : double ($z : SPVM::Complex_2d)
+  sub carg : double ($z : Complex_2d)
 
 carg function defined in C language complex.h.
 
 =head2 cargf
 
-  sub cargf : float ($z : SPVM::Complex_2f)
+  sub cargf : float ($z : Complex_2f)
 
 cargf function defined in C language complex.h.
 
 =head2 casin
 
-  sub casin : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub casin : Complex_2d ($z : Complex_2d)
 
 casin function defined in C language complex.h.
 
 =head2 casinf
 
-  sub casinf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub casinf : Complex_2f ($z : Complex_2f)
 
 casinf function defined in C language complex.h.
 
 =head2 casinh
 
-  sub casinh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub casinh : Complex_2d ($z : Complex_2d)
 
 casinh function defined in C language complex.h.
 
 =head2 casinhf
 
-  sub casinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub casinhf : Complex_2f ($z : Complex_2f)
 
 casinhf function defined in C language complex.h.
 
 =head2 catan
 
-  sub catan : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub catan : Complex_2d ($z : Complex_2d)
 
 catan function defined in C language complex.h.
 
 =head2 catanf
 
-  sub catanf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub catanf : Complex_2f ($z : Complex_2f)
 
 catanf function defined in C language complex.h.
 
 =head2 catanh
 
-  sub catanh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub catanh : Complex_2d ($z : Complex_2d)
 
 catanh function defined in C language complex.h.
 
 =head2 catanhf
 
-  sub catanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub catanhf : Complex_2f ($z : Complex_2f)
 
 catanhf function defined in C language complex.h.
 
@@ -224,37 +224,37 @@ cbrtf function defined in C language math.h.
 
 =head2 ccos
 
-  sub ccos : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub ccos : Complex_2d ($z : Complex_2d)
 
 ccos function defined in C language complex.h.
 
 =head2 ccosf
 
-  sub ccosf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub ccosf : Complex_2f ($z : Complex_2f)
 
 ccosf function defined in C language complex.h.
 
 =head2 ccosh
 
-  sub ccosh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub ccosh : Complex_2d ($z : Complex_2d)
 
 ccosh function defined in C language complex.h.
 
 =head2 ccoshf
 
-  sub ccoshf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub ccoshf : Complex_2f ($z : Complex_2f)
 
 ccoshf function defined in C language complex.h.
 
 =head2 cdiv
 
-  sub cdiv : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
+  sub cdiv : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d)
 
 double complex division.
 
 =head2 cdivf
 
-  sub cdivf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+  sub cdivf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f)
 
 float complex division.
 
@@ -272,61 +272,61 @@ ceilf function defined in C language math.h.
 
 =head2 cexp
 
-  sub cexp : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub cexp : Complex_2d ($z : Complex_2d)
 
 cexp function defined in C language complex.h.
 
 =head2 cexpf
 
-  sub cexpf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub cexpf : Complex_2f ($z : Complex_2f)
 
 cexpf function defined in C language complex.h.
 
 =head2 clog
 
-  sub clog : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub clog : Complex_2d ($z : Complex_2d)
 
 clog function defined in C language complex.h.
 
 =head2 clogf
 
-  sub clogf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub clogf : Complex_2f ($z : Complex_2f)
 
 clogf function defined in C language complex.h.
 
 =head2 cmul
 
-  sub cmul : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
+  sub cmul : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d)
 
 double complex multiplication.
 
 =head2 cmulf
 
-  sub cmulf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+  sub cmulf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f)
 
 float complex multiplication.
 
 =head2 complex
 
-  sub complex : SPVM::Complex_2d ($x : double, $y : double)
+  sub complex : Complex_2d ($x : double, $y : double)
 
 Create double complex value. This value is defined in L<Complex_2d|SPVM::Complex_2d>.
 
 =head2 complexf
 
-  sub complexf : SPVM::Complex_2f ($x : float, $y : float)
+  sub complexf : Complex_2f ($x : float, $y : float)
 
 Create float complex value. This value is defined in L<Complex_2f|SPVM::Complex_2f>.
 
 =head2 conj
 
-  sub conj : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub conj : Complex_2d ($z : Complex_2d)
 
 conj function defined in C language complex.h.
 
 =head2 conjf
 
-  sub conjf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub conjf : Complex_2f ($z : Complex_2f)
 
 conjf function defined in C language complex.h.
 
@@ -368,97 +368,97 @@ coshf function defined in C language math.h.
 
 =head2 cpow
 
-  sub cpow : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
+  sub cpow : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d)
 
 cpow function defined in C language complex.h.
 
 =head2 cpowf
 
-  sub cpowf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+  sub cpowf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f)
 
 cpowf function defined in C language complex.h.
 
 =head2 cscamul
 
-  sub cscamul : SPVM::Complex_2d ($c : double, $z : SPVM::Complex_2d)
+  sub cscamul : Complex_2d ($c : double, $z : Complex_2d)
 
 double complex scalar multiplication.
 
 =head2 cscamulf
 
-  sub cscamulf : SPVM::Complex_2f ($c : float, $z : SPVM::Complex_2f)
+  sub cscamulf : Complex_2f ($c : float, $z : Complex_2f)
 
 float complex scalar multiplication.
 
 =head2 csin
 
-  sub csin : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub csin : Complex_2d ($z : Complex_2d)
 
 csin function defined in C language complex.h.
 
 =head2 csinf
 
-  sub csinf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub csinf : Complex_2f ($z : Complex_2f)
 
 csinf function defined in C language complex.h.
 
 =head2 csinh
 
-  sub csinh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub csinh : Complex_2d ($z : Complex_2d)
 
 csinh function defined in C language complex.h.
 
 =head2 csinhf
 
-  sub csinhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub csinhf : Complex_2f ($z : Complex_2f)
 
 csinhf function defined in C language complex.h.
 
 =head2 csqrt
 
-  sub csqrt : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub csqrt : Complex_2d ($z : Complex_2d)
 
 csqrt function defined in C language complex.h.
 
 =head2 csqrtf
 
-  sub csqrtf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub csqrtf : Complex_2f ($z : Complex_2f)
 
 csqrtf function defined in C language complex.h.
 
 =head2 csub
 
-  sub csub : SPVM::Complex_2d ($z1 : SPVM::Complex_2d, $z2 : SPVM::Complex_2d)
+  sub csub : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d)
 
 csub function defined in C language complex.h.
 
 =head2 csubf
 
-  sub csubf : SPVM::Complex_2f ($z1 : SPVM::Complex_2f, $z2 : SPVM::Complex_2f)
+  sub csubf : Complex_2f ($z1 : Complex_2f, $z2 : Complex_2f)
 
 csubf function defined in C language complex.h.
 
 =head2 ctan
 
-  sub ctan : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub ctan : Complex_2d ($z : Complex_2d)
 
 ctan function defined in C language complex.h.
 
 =head2 ctanf
 
-  sub ctanf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub ctanf : Complex_2f ($z : Complex_2f)
 
 ctanf function defined in C language complex.h.
 
 =head2 ctanh
 
-  sub ctanh : SPVM::Complex_2d ($z : SPVM::Complex_2d)
+  sub ctanh : Complex_2d ($z : Complex_2d)
 
 ctanh function defined in C language complex.h.
 
 =head2 ctanhf
 
-  sub ctanhf : SPVM::Complex_2f ($z : SPVM::Complex_2f)
+  sub ctanhf : Complex_2f ($z : Complex_2f)
 
 ctanhf function defined in C language complex.h.
 

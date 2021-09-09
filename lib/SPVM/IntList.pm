@@ -8,13 +8,13 @@ SPVM::IntList - Dynamic int array
 
 =head1 SYNOPSYS
   
-  use SPVM::IntList;
+  use IntList;
   
   # Create a int list with array length
-  my $int_list = SPVM::IntList->new_len(10);
+  my $int_list = IntList->new_len(10);
 
   # Create a int list with array
-  my $int_list = SPVM::IntList->new([1, 2, 3]);
+  my $int_list = IntList->new([1, 2, 3]);
   
   # Get list length
   my $length = $int_list->length;
@@ -43,7 +43,7 @@ SPVM::IntList - Dynamic int array
   # Remove int value
   my $int_value = $int_list->remove(1);
 
-  # Convert SPVM::IntList to int array.
+  # Convert IntList to int array.
   my $int_array = $int_list->to_array;
 
 =head1 DESCRIPTION
@@ -54,7 +54,7 @@ L<IntList|SPVM::IntList> is dynamic int array.
 
 =head2 new
 
-    sub new : SPVM::IntList ($array : int[])
+    sub new : IntList ($array : int[])
 
 Create a new L<IntList|SPVM::IntList> object with specific C<int> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : SPVM::IntList ($length : int)
+    sub new_len : IntList ($length : int)
 
 Create a new L<IntList|SPVM::IntList> object with array length.
 

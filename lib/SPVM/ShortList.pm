@@ -8,13 +8,13 @@ SPVM::ShortList - Dynamic short array
 
 =head1 SYNOPSYS
   
-  use SPVM::ShortList;
+  use ShortList;
   
   # Create a short list with array length
-  my $short_list = SPVM::ShortList->new_len(10);
+  my $short_list = ShortList->new_len(10);
 
   # Create a short list with array
-  my $short_list = SPVM::ShortList->new([(short)1, 2, 3]);
+  my $short_list = ShortList->new([(short)1, 2, 3]);
   
   # Get list length
   my $length = $short_list->length;
@@ -43,7 +43,7 @@ SPVM::ShortList - Dynamic short array
   # Remove byte value
   my $byte_value = $byte_list->remove(1);
 
-  # Convert SPVM::ShortList to short array.
+  # Convert ShortList to short array.
   my $short_array = $short_list->to_array;
 
 =head1 DESCRIPTION
@@ -54,7 +54,7 @@ L<ShortList|SPVM::ShortList> is dynamic  short array.
 
 =head2 new
 
-    sub new : SPVM::ShortList ($array : short[])
+    sub new : ShortList ($array : short[])
 
 Create a new L<ShortList|SPVM::ShortList> object with specific C<short> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : SPVM::ShortList ($length : int)
+    sub new_len : ShortList ($length : int)
 
 Create a new L<ShortList|SPVM::ShortList> object with array length.
 

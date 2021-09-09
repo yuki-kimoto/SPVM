@@ -8,7 +8,7 @@ SPVM::Hash::Entry - Hash entry
 
 =head1 SYNOPSYS
   
-  use SPVM::Hash::Entry;
+  use Hash::Entry;
 
 =head1 DESCRIPTION
 

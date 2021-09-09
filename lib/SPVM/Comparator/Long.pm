@@ -8,9 +8,9 @@ SPVM::Comparator::Long - a callback interface for long comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::Long;
+  use Comparator::Long;
   
-  my $comparator : SPVM::Comparator::Long = sub : int ($self : self, $a : long, $b : long); {
+  my $comparator : Comparator::Long = sub : int ($self : self, $a : long, $b : long); {
     return $a <=> $b;
   };
   

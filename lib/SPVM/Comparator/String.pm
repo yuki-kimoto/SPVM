@@ -8,9 +8,9 @@ SPVM::Comparator::String - a callback interface for string comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::String;
+  use Comparator::String;
   
-  my $comparator : SPVM::Comparator::String = sub : int ($self : self, $a : string, $b : string); {
+  my $comparator : Comparator::String = sub : int ($self : self, $a : string, $b : string); {
     return $a cmp $b;
   };
   

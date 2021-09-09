@@ -8,13 +8,13 @@ SPVM::DoubleList - Dynamic double array
 
 =head1 SYNOPSYS
   
-  use SPVM::DoubleList;
+  use DoubleList;
   
   # Create a double list
-  my $double_list = SPVM::DoubleList->new_len;
+  my $double_list = DoubleList->new_len;
 
   # Create a double list with array
-  my $double_list = SPVM::DoubleList->new([1.5, 2.5, 3.5]);
+  my $double_list = DoubleList->new([1.5, 2.5, 3.5]);
   
   # Get list length
   my $length = $double_list->length;
@@ -43,7 +43,7 @@ SPVM::DoubleList - Dynamic double array
   # Remove double value
   my $double_value = $double_list->remove(1);
 
-  # Convert SPVM::DoubleList to double array.
+  # Convert DoubleList to double array.
   my $double_array = $double_list->to_array;
 
 =head1 DESCRIPTION
@@ -54,7 +54,7 @@ L<DoubleList|SPVM::DoubleList> is dynamic double array.
 
 =head2 new
 
-    sub new : SPVM::DoubleList ($array : double[])
+    sub new : DoubleList ($array : double[])
 
 Create a new L<DoubleList|SPVM::DoubleList> object with specific C<double> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : SPVM::DoubleList ($length : int)
+    sub new_len : DoubleList ($length : int)
 
 Create a new L<DoubleList|SPVM::DoubleList> object with array length.
 

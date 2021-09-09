@@ -8,9 +8,9 @@ SPVM::Comparator::Int - a callback interface for int comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::Int;
+  use Comparator::Int;
   
-  my $comparator : SPVM::Comparator::Int = sub : int ($self : self, $a : int, $b : int); {
+  my $comparator : Comparator::Int = sub : int ($self : self, $a : int, $b : int); {
     return $a <=> $b;
   };
   

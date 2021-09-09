@@ -8,9 +8,9 @@ SPVM::Comparator::Byte - a callback interface for byte comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::Byte;
+  use Comparator::Byte;
   
-  my $comparator : SPVM::Comparator::Byte = sub : int ($self : self, $a : byte, $b : byte); {
+  my $comparator : Comparator::Byte = sub : int ($self : self, $a : byte, $b : byte); {
     return $a <=> $b;
   };
   

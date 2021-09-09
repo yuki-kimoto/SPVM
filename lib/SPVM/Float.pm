@@ -8,9 +8,9 @@ SPVM::Float - Float object
 
 =head1 SYNOPSYS
 
-  use SPVM::Float;
+  use Float;
 
-  my $float_object = SPVM::Float->new(0.25f);
+  my $float_object = Float->new(0.25f);
   my $float_value = $float_object->value;
 
 =head1 DESCRIPTION
@@ -25,7 +25,7 @@ L<Float|SPVM::Float> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : SPVM::Float ($value : float)
+  sub new : Float ($value : float)
 
 Create a new L<Float|SPVM::Float> object with a C<float> value.
 

@@ -8,9 +8,9 @@ SPVM::Long - Long object
 
 =head1 SYNOPSYS
 
-  use SPVM::Long;
+  use Long;
   
-  my $long_object = SPVM::Long->new(5L);
+  my $long_object = Long->new(5L);
   my $long_value = $long_object->value;
 
 =head1 DESCRIPTION
@@ -25,7 +25,7 @@ L<Long|SPVM::Long> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : SPVM::Long ($value : long)
+  sub new : Long ($value : long)
 
 Create a new L<Long|SPVM::Long> object with a C<long> value.
 

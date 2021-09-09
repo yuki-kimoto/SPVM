@@ -8,10 +8,10 @@ SPVM::Bool - Bool object
 
 =head1 SYNOPSYS
 
-  use SPVM::Bool;
+  use Bool;
   
-  my $true = SPVM::Bool->true;
-  my $false = SPVM::Bool->false;
+  my $true = Bool->true;
+  my $false = Bool->false;
   
   my $true_value = $true->value;
   my $false_value = $false->value;
@@ -28,13 +28,13 @@ L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
 
 =head2 true
 
-  sub true : SPVM::Bool ()
+  sub true : Bool ()
 
 true singleton. This is created by INIT block when the program start.
 
 =head2 false
 
-  sub false : SPVM::Bool ()
+  sub false : Bool ()
 
 false singleton. This is created by INIT block when the program start.
 

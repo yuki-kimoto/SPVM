@@ -8,13 +8,13 @@ SPVM::EqualityChecker::SameObject - a callback implementation of L<EqualityCheck
 
 =head1 SYNOPSYS
   
-  use SPVM::EqualityChecker::SameObject;
+  use EqualityChecker::SameObject;
   
-  my $equality_checker = SPVM::EqualityChecker::SameObject->new;
+  my $equality_checker = EqualityChecker::SameObject->new;
   
-  my $point1 = SPVM::Point->new(1, 2);
+  my $point1 = Point->new(1, 2);
   my $point2 = $point1;
-  my $point3 = SPVM::Point->new(1, 2);
+  my $point3 = Point->new(1, 2);
   
   # Equals
   my $is_equal = $equality_checker->($point1, $point2);
@@ -30,7 +30,7 @@ L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> is a callback i
 
 =head2 new
 
-  sub new : SPVM::EqualityChecker::SameObject ()
+  sub new : EqualityChecker::SameObject ()
 
 Create a new L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> object.
 

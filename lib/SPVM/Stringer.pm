@@ -8,10 +8,10 @@ SPVM::Stringer - a callback interface to stringify a object
 
 =head1 SYNOPSYS
   
-  use SPVM::Stringer;
+  use Stringer;
   
-  my $stringer : SPVM::Stringer = sub : string ($self : self, $object : object) {
-    my $point = (SPVM::Point)$object;
+  my $stringer : Stringer = sub : string ($self : self, $object : object) {
+    my $point = (Point)$object;
     my $x = $point->x;
     my $y = $point->y;
     
@@ -20,7 +20,7 @@ SPVM::Stringer - a callback interface to stringify a object
     return $string;
   };
   
-  my $point = SPVM::Point->new(1, 2);
+  my $point = Point->new(1, 2);
   my $string = $stringer->($point);
 
 =head1 DESCRIPTION

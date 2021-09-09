@@ -8,13 +8,13 @@ SPVM::ByteList - Dynamic Byte Array
 
 =head1 SYNOPSYS
   
-  use SPVM::ByteList;
+  use ByteList;
   
   # Create a byte list with array
-  my $byte_list = SPVM::ByteList->new([(byte)1, 2, 3]);
+  my $byte_list = ByteList->new([(byte)1, 2, 3]);
   
   # Create a byte list with array length
-  my $byte_list = SPVM::ByteList->new_len(10);
+  my $byte_list = ByteList->new_len(10);
 
   # Get list length
   my $length = $byte_list->length;
@@ -43,7 +43,7 @@ SPVM::ByteList - Dynamic Byte Array
   # Remove byte value
   my $byte_value = $byte_list->remove(1);
 
-  # Convert SPVM::ByteList to byte array.
+  # Convert ByteList to byte array.
   my $byte_array = $byte_list->to_array;
 
 =head1 DESCRIPTION
@@ -54,7 +54,7 @@ L<ByteList|SPVM::ByteList> is Dynamic Byte Array.
 
 =head2 new
 
-    sub new : SPVM::ByteList ($array : byte[])
+    sub new : ByteList ($array : byte[])
 
 Create a new L<ByteList|SPVM::ByteList> object with byte array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : SPVM::ByteList ($length : int)
+    sub new_len : ByteList ($length : int)
 
 Create a new L<ByteList|SPVM::ByteList> object with array length.
 

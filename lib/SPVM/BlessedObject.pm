@@ -10,4 +10,4 @@ SPVM::BlessedObject - Blessed object base class
 
 SPVM::BlessedObject is blessed object base class.
 
-Current subclasses is L<BlessedObject::Array|SPVM::BlessedObject::Array> and L<BlessedObject::Package|SPVM::BlessedObject::Package>.
+Current subclasses is L<SPVM::BlessedObject::Array> and L<SPVM::BlessedObject::Package>.

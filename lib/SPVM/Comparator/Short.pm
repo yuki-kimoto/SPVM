@@ -8,9 +8,9 @@ SPVM::Comparator::Short - a callback interface for short comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::Short;
+  use Comparator::Short;
   
-  my $comparator : SPVM::Comparator::Short = sub : int ($self : self, $a : short, $b : short); {
+  my $comparator : Comparator::Short = sub : int ($self : self, $a : short, $b : short); {
     return $a <=> $b;
   };
   

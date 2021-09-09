@@ -8,10 +8,10 @@ SPVM::StringBuffer - String buffer
 
 =head1 SYNOPSYS
   
-  use SPVM::StringBuffer;
+  use StringBuffer;
   
   # new
-  my $buffer = SPVM::StringBuffer->new;
+  my $buffer = StringBuffer->new;
   
   # push string
   $buffer->push("abc");
@@ -28,7 +28,7 @@ String buffer.
 
 =head2 new
 
-  sub new : SPVM::StringBuffer ()
+  sub new : StringBuffer ()
 
 Create new L<StringBuffer|SPVM::StringBuffer> object.
 

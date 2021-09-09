@@ -8,9 +8,9 @@ SPVM::Short - Short object
 
 =head1 SYNOPSYS
   
-  use SPVM::Short;
+  use Short;
   
-  my $short_object = SPVM::Short->new(5);
+  my $short_object = Short->new(5);
   my $short_value = $short_object->value;
 
 =head1 DESCRIPTION
@@ -25,7 +25,7 @@ L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : SPVM::Short ($value : short)
+  sub new : Short ($value : short)
 
 Create a new L<Short|SPVM::Short> object with a C<short> value.
 

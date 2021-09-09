@@ -8,13 +8,13 @@ SPVM::FloatList - Dynamic float array
 
 =head1 SYNOPSYS
   
-  use SPVM::FloatList;
+  use FloatList;
   
   # Create a float list
-  my $float_list = SPVM::FloatList->new_len(10);
+  my $float_list = FloatList->new_len(10);
 
   # Create a float list with array
-  my $float_list = SPVM::FloatList->new([1.5f, 2.5f, 3.5f]);
+  my $float_list = FloatList->new([1.5f, 2.5f, 3.5f]);
   
   # Get list length
   my $length = $float_list->length;
@@ -43,7 +43,7 @@ SPVM::FloatList - Dynamic float array
   # Remove float value
   my $float_value = $float_list->remove(1);
 
-  # Convert SPVM::FloatList to float array.
+  # Convert FloatList to float array.
   my $float_array = $float_list->to_array;
 
 =head1 DESCRIPTION
@@ -54,7 +54,7 @@ L<FloatList|SPVM::FloatList> is dynamic float array.
 
 =head2 new
 
-    sub new : SPVM::FloatList ($array : float[])
+    sub new : FloatList ($array : float[])
 
 Create a new L<FloatList|SPVM::FloatList> object with specific C<float> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : SPVM::FloatList ($length : int)
+    sub new_len : FloatList ($length : int)
 
 Create a new L<FloatList|SPVM::FloatList> object with array length.
 

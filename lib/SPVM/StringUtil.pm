@@ -8,27 +8,27 @@ SPVM::StringUtil - String Utilities
 
 =head1 SYNOPSYS
   
-  use SPVM::StringUtil;
+  use StringUtil;
 
   # Cut a newline LF
   {
-    my $ret = SPVM::StringUtil->chompr("abc\n");
+    my $ret = StringUtil->chompr("abc\n");
   }
   
   # Copy a string
   {
     my $string = "abc";
-    my $string_copy = SPVM::StringUtil->copy_string ($string);
+    my $string_copy = StringUtil->copy_string ($string);
   }
 
   # Search methodstr
   {
-    my $found_offset = SPVM::StringUtil->index("pppabcde", "bcd", 2);
+    my $found_offset = StringUtil->index("pppabcde", "bcd", 2);
   }
 
   # split a string by the specific separator
   my $string = "foo,bar,baz";
-  my $splited_strs = SPVM::StringUtil->split(",", $string);
+  my $splited_strs = StringUtil->split(",", $string);
 
 =head1 DESCRIPTION
 

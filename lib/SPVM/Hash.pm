@@ -8,10 +8,10 @@ SPVM::Hash - Hash Data Structure
 
 =head1 SYNOPSYS
   
-  use SPVM::Hash;
+  use Hash;
   
   # Create hash
-  my $book = SPVM::Hash->new({});
+  my $book = Hash->new({});
   
   $book->set_int(id => 4);
   $book->set_string(name => "Perl");
@@ -22,7 +22,7 @@ SPVM::Hash - Hash Data Structure
   my $price = (double)$book->get_double("price");
   
   # Create hash with key value pairs
-  my $book = SPVM::Hash->new({id => 4, name => "Perl", price => 3000.0});
+  my $book = Hash->new({id => 4, name => "Perl", price => 3000.0});
 
 =head1 DESCRIPTION
 
@@ -32,15 +32,15 @@ L<Hash|SPVM::Hash> is Hash Data Structure. This is generally called associative 
 
 =head2 new
 
-    sub new : SPVM::Hash ($key_values : oarray)
+    sub new : Hash ($key_values : oarray)
 
 Create a new L<Hash|SPVM::Hash> object with key value pairs.
 
   # Create hash
-  my $book = SPVM::Hash->new({});
+  my $book = Hash->new({});
 
   # Create hash with key value pairs
-  my $book = SPVM::Hash->new({id => 4, name => "Perl"});
+  my $book = Hash->new({id => 4, name => "Perl"});
 
 =head1 INSTANCE METHODS
 
@@ -52,7 +52,7 @@ Count keys.
 
 =head2 copy
 
-  copy : SPVM::Hash ($self : self)
+  copy : Hash ($self : self)
 
 Copy hash.
 

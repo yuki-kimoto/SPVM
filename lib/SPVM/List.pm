@@ -8,52 +8,52 @@ SPVM::List - Dynamic object array
 
 =head1 SYNOPSYS
   
-  use SPVM::List;
+  use List;
   
   # Create a object list
-  my $object_list = SPVM::List->new([(object)SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Long->new(3)]);
+  my $object_list = List->new([(object)Byte->new(1), Int->new(2), Long->new(3)]);
 
-  # Create a SPVM::Int list
-  my $object_list = SPVM::List->new([SPVM::Byte->new(1), SPVM::Int->new(2), SPVM::Int->new(3)]);
+  # Create a Int list
+  my $object_list = List->new([Byte->new(1), Int->new(2), Int->new(3)]);
   
   # Create a object list with length
-  my $object_list = SPVM::List->new_len([], 3);
+  my $object_list = List->new_len([], 3);
 
-  # Create a SPVM::Int list with length
-  my $object_list = SPVM::List->new_len(new SPVM::Int[0], 3);
+  # Create a Int list with length
+  my $object_list = List->new_len(new Int[0], 3);
 
   # Get list length
   my $length = $object_list->length;
   
   # Push object value
-  $object_list->push(SPVM::Int->new(3));
+  $object_list->push(Int->new(3));
 
   # Pop object value.
   my $object_value = $object_list->pop;
 
   # Unshift object value.
-  $object_list->unshift(SPVM::Int->new(3));
+  $object_list->unshift(Int->new(3));
   
   # Shift object value.
   my $object_value = $object_list->shift;
   
   # Set object value.
-  $object_list->set(2, SPVM::Int->new(3));
+  $object_list->set(2, Int->new(3));
   
   # Get object value.
   my $object_value = $object_list->get(2);
 
   # Insert object value
-  $object_list->insert(1, SPVM::Int->new(3));
+  $object_list->insert(1, Int->new(3));
 
   # Remove object value
   my $object_value = $object_list->remove(1);
 
-  # Convert SPVM::List to object array.
+  # Convert List to object array.
   my $int_array = $object_list->to_array;
 
-  # Convert SPVM::List to SPVM::Int array.
-  my $int_array = (SPVM::Int[])$object_list->to_array;
+  # Convert List to Int array.
+  my $int_array = (Int[])$object_list->to_array;
 
 =head1 DESCRIPTION
 
@@ -63,7 +63,7 @@ L<List|SPVM::List> is dynamic object array.
 
 =head2 new
 
-    sub new : SPVM::List ($objects : oarray)
+    sub new : List ($objects : oarray)
 
 Create a new L<List|SPVM::List> object with specific C<object> array.
 
@@ -73,7 +73,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : SPVM::List ($proto_array : oarray, $length : int)
+    sub new_len : List ($proto_array : oarray, $length : int)
 
 Create a new L<List|SPVM::List> object with prototype array and array length. Prototype array is used to decide the array type of internal values.
 

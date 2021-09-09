@@ -8,163 +8,163 @@ SPVM::ArrayUtil - Array Utilities
 
 =head1 SYNOPSYS
   
-  use SPVM::ArrayUtil;
+  use ArrayUtil;
 
   # Copy a byte array
   {
     my $nums = [(byte)1, 2, 3];
-    my $nums_copy = SPVM::ArrayUtil->copy_array_byte($nums);
+    my $nums_copy = ArrayUtil->copy_array_byte($nums);
   }
 
   # Copy a short array
   {
     my $nums = [(short)1, 2, 3];
-    my $nums_copy = SPVM::ArrayUtil->copy_array_short($nums);
+    my $nums_copy = ArrayUtil->copy_array_short($nums);
   }
 
   # Copy a int array
   {
     my $nums = [1, 2, 3];
-    my $nums_copy = SPVM::ArrayUtil->copy_array_int($nums);
+    my $nums_copy = ArrayUtil->copy_array_int($nums);
   }
 
   # Copy a long array
   {
     my $nums = [(long)1, 2, 3];
-    my $nums_copy = SPVM::ArrayUtil->copy_array_long($nums);
+    my $nums_copy = ArrayUtil->copy_array_long($nums);
   }
 
   # Copy a float array
   {
     my $nums = [1.5f, 2.5f, 3.5f];
-    my $nums_copy = SPVM::ArrayUtil->copy_array_float($nums);
+    my $nums_copy = ArrayUtil->copy_array_float($nums);
   }
 
   # Copy a double array
   {
     my $nums = [1.5, 2.5, 3.5];
-    my $nums_copy = SPVM::ArrayUtil->copy_array_double($nums);
+    my $nums_copy = ArrayUtil->copy_array_double($nums);
   }
   
   # Copy a string array
   {
     my $strs = ["abc", "def", "ghi"]
-    my $strs_copy = SPVM::ArrayUtil->copy_array_string($strs);
+    my $strs_copy = ArrayUtil->copy_array_string($strs);
   }
   
   # Check if the two byte arrays equal
   {
     my $nums1 = [(byte)1, 2];
     my $nums2 = [(byte)1, 2];
-    my $ret = SPVM::ArrayUtil->equals_array_byte($nums1, $nums2);
+    my $ret = ArrayUtil->equals_array_byte($nums1, $nums2);
   }
 
   # Check if the two short arrays equal
   {
     my $nums1 = [(short)1, 2];
     my $nums2 = [(short)1, 2];
-    my $ret = SPVM::ArrayUtil->equals_array_short($nums1, $nums2);
+    my $ret = ArrayUtil->equals_array_short($nums1, $nums2);
   }
 
   # Check if the two int arrays equal
   {
     my $nums1 = [(int)1, 2];
     my $nums2 = [(int)1, 2];
-    my $ret = SPVM::ArrayUtil->equals_array_int($nums1, $nums2);
+    my $ret = ArrayUtil->equals_array_int($nums1, $nums2);
   }
 
   # Check if the two long arrays equal
   {
     my $nums1 = [(long)1, 2];
     my $nums2 = [(long)1, 2];
-    my $ret = SPVM::ArrayUtil->equals_array_long($nums1, $nums2);
+    my $ret = ArrayUtil->equals_array_long($nums1, $nums2);
   }
 
   # Check if the two float arrays equal
   {
     my $nums1 = [(float)1, 2];
     my $nums2 = [(float)1, 2];
-    my $ret = SPVM::ArrayUtil->equals_array_float($nums1, $nums2);
+    my $ret = ArrayUtil->equals_array_float($nums1, $nums2);
   }
 
   # Check if the two double arrays equal
   {
     my $nums1 = [(double)1, 2];
     my $nums2 = [(double)1, 2];
-    my $ret = SPVM::ArrayUtil->equals_array_double($nums1, $nums2);
+    my $ret = ArrayUtil->equals_array_double($nums1, $nums2);
   }
 
   # Check if the two string arrays equal
   {
     my $strs1 = ["abc", "def"];
     my $strs2 = ["abc", "def"];
-    my $ret = SPVM::ArrayUtil->equals_array_string($strs1, $strs2);
+    my $ret = ArrayUtil->equals_array_string($strs1, $strs2);
   }
   
   # Copy object array
-  my $objects = [(object)SPVM::Int->new(1), SPVM::Int->new(2), SPVM::Int->new(3)];
-  my $objects_copy = SPVM::ArrayUtil->copy_array_object($objects, sub : object ($self : self, $obj : object) {
-    my $int_obj = (SPVM::Int)$obj;
-    my $new_int_obj = SPVM::Int->new($int_obj->value);
+  my $objects = [(object)Int->new(1), Int->new(2), Int->new(3)];
+  my $objects_copy = ArrayUtil->copy_array_object($objects, sub : object ($self : self, $obj : object) {
+    my $int_obj = (Int)$obj;
+    my $new_int_obj = Int->new($int_obj->value);
     return $new_int_obj;
   });
 
   # Sort byte array itself by asc order
   my $nums = [(byte)2, 3, 1];
-  SPVM::Sort->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+  ArrayUtil->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
     return $a <=> $b;
   });
 
   # Sort short array itself by asc order
   my $nums = [(short)2, 3, 1];
-  SPVM::Sort->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+  ArrayUtil->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
     return $a <=> $b;
   });
 
   # Sort int array itself by asc order
   my $nums = [2, 3, 1];
-  SPVM::Sort->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+  ArrayUtil->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
     return $a <=> $b;
   });
 
   # Sort long array itself by asc order
   my $nums = [(long)2, 3, 1];
-  SPVM::Sort->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+  ArrayUtil->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
     return $a <=> $b;
   });
 
   # Sort float array itself by asc order
   my $nums = [(float)2, 3, 1];
-  SPVM::Sort->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+  ArrayUtil->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
     return $a <=> $b;
   });
 
   # Sort double array itself by asc order
   my $nums = [(double)2, 3, 1];
-  SPVM::Sort->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+  ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
     return $a <=> $b;
   });
 
   # Sort string array itself by asc order
   my $nums = ["11", "1", "2", undef, ""];
-  SPVM::Sort->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+  ArrayUtil->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
     return $a <=> $b;
   });
 
   # Sort object array itself by asc order
-  my $minimals = new SPVM::TestCase::Minimal[3];
-  $minimals->[0] = SPVM::TestCase::Minimal->new;
+  my $minimals = new TestCase::Minimal[3];
+  $minimals->[0] = TestCase::Minimal->new;
   $minimals->[0]{x} = 3;
   $minimals->[0]{y} = 5;
-  $minimals->[1] = SPVM::TestCase::Minimal->new;
+  $minimals->[1] = TestCase::Minimal->new;
   $minimals->[1]{x} = 3;
   $minimals->[1]{y} = 7;
-  $minimals->[2] = SPVM::TestCase::Minimal->new;
+  $minimals->[2] = TestCase::Minimal->new;
   $minimals->[2]{x} = 2;
   $minimals->[2]{y} = 9;
-  SPVM::Sort->sort_object$minimals, 0, scalar @$minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
-    my $minimal1 = (SPVM::TestCase::Minimal)$object1;
-    my $minimal2 = (SPVM::TestCase::Minimal)$object2;
+  ArrayUtil->sort_object$minimals, 0, scalar @$minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
+    my $minimal1 = (TestCase::Minimal)$object1;
+    my $minimal2 = (TestCase::Minimal)$object2;
     
     return $minimal1->{x} <=> $minimal2->{x} || $minimal1->{y} <=> $minimal2->{y};
   };
@@ -233,7 +233,7 @@ If the array is undef, return undef.
 
 =head2 copy_array_object
 
-  sub copy_array_object : object[] ($objects : object[], $cloner : SPVM::Cloner)
+  sub copy_array_object : object[] ($objects : object[], $cloner : Cloner)
 
 Copy a object array with a L<Cloner|SPVM::Cloner> callback implemetation.
 
@@ -297,7 +297,7 @@ If at least one of the arrays is undef, a excetpion occurs.
 
 =head2 equals_array_object
 
-  sub sub equals_array_object : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : SPVM::EqualityChecker)
+  sub sub equals_array_object : int ($objs1 : oarray, $objs2 : oarray, $equality_checker : EqualityChecker)
 
 Check equality of two objects. You must sepecify a L<EqualityChecker|SPVM::EqualityChecker> object to check the equality of each element.
 
@@ -409,7 +409,7 @@ If string array is undef, return undef.
 
 =head2 dump_array_object
 
-  sub dump_array_object : string ($objects : oarray, $stringer : SPVM::Stringer)
+  sub dump_array_object : string ($objects : oarray, $stringer : Stringer)
   
 Convert the elements in the object array to string by a C<SPVM::Stringer> callback implementation and join them with "," and surround it with "[" and "]", and return it.
 
@@ -751,7 +751,7 @@ Offset + length must not be in the array range, othrewise a exception occurs.
 
 =head2 sort_byte
 
-    sub sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : SPVM::Comparator::Byte)
+    sub sort_byte : void ($nums : byte[], $offset : int, $length : int, $comparator : Comparator::Byte)
 
 Sort byte array itself with a offset, a length, and a L<Comparator::Byte|SPVM::Comparator::Byte> comparator.
 
@@ -765,7 +765,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sort_short
 
-    sub sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : SPVM::Comparator::Short)
+    sub sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : Comparator::Short)
 
 Sort short array itself with a offset, a length, and a L<Comparator::Short|SPVM::Comparator::Short> comparator.
 
@@ -779,7 +779,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sort_int
 
-    sub sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : SPVM::Comparator::Int)
+    sub sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : Comparator::Int)
 
 Sort int array itself with a offset, a length, and a L<Comparator::Int|SPVM::Comparator::Int> comparator.
 
@@ -793,7 +793,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sort_long
 
-    sub sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : SPVM::Comparator::Long)
+    sub sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : Comparator::Long)
 
 Sort long array itself with a offset, a length, and a L<Comparator::Long|SPVM::Comparator::Long> comparator.
 
@@ -807,7 +807,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sort_float
 
-    sub sub sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : SPVM::Comparator::Float)
+    sub sub sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : Comparator::Float)
 
 Sort float array itself with a offset, a length, and a L<Comparator::Float|SPVM::Comparator::Float> comparator.
 
@@ -821,7 +821,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sort_double
 
-    sub sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
+    sub sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : Comparator::Double)
 
 Sort double array itself with a offset, a length, and a L<Comparator::Double|SPVM::Comparator::Double> comparator.
 
@@ -835,7 +835,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sort_string
 
-    sub sort_string : void ($nums : string[], $offset : int, $length : int, $comparator : SPVM::Comparator::Double)
+    sub sort_string : void ($nums : string[], $offset : int, $length : int, $comparator : Comparator::Double)
 
 Sort string array itself with a offset, a length, and a L<Comparator::String|SPVM::Comparator::String> comparator.
 
@@ -849,7 +849,7 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 
 =head2 sort_object
 
-    sub sort_object : void ($objs : oarray, $offset : int, $length : int, $comparator : SPVM::Comparator::Object)
+    sub sort_object : void ($objs : oarray, $offset : int, $length : int, $comparator : Comparator::Object)
 
 Sort object array itself with a offset, a length, and a L<Comparator::Object|SPVM::Comparator::Object> comparator.
 

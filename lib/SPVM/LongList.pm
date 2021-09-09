@@ -8,13 +8,13 @@ SPVM::LongList - Dynamic long array
 
 =head1 SYNOPSYS
   
-  use SPVM::LongList;
+  use LongList;
   
   # Create a long list
-  my $long_list = SPVM::LongList->new_len(10);
+  my $long_list = LongList->new_len(10);
 
   # Create a long list with array
-  my $long_list = SPVM::LongList->new([(long)1, 2, 3]);
+  my $long_list = LongList->new([(long)1, 2, 3]);
   
   # Get list length
   my $length = $long_list->length;
@@ -43,7 +43,7 @@ SPVM::LongList - Dynamic long array
   # Remove long value
   my $long_value = $long_list->remove(1);
 
-  # Convert SPVM::LongList to long array.
+  # Convert LongList to long array.
   my $long_array = $long_list->to_array;
 
 =head1 DESCRIPTION
@@ -54,7 +54,7 @@ L<LongList|SPVM::LongList> is dynamic long array.
 
 =head2 new
 
-    sub new : SPVM::LongList ($array : long[])
+    sub new : LongList ($array : long[])
 
 Create a new L<LongList|SPVM::LongList> object with specific C<long> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : SPVM::LongList ($length : int)
+    sub new_len : LongList ($length : int)
 
 Create a new L<LongList|SPVM::LongList> object with array length.
 

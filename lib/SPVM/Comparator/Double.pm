@@ -8,9 +8,9 @@ SPVM::Comparator::Double - a callback interface for double comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::Double;
+  use Comparator::Double;
   
-  my $comparator : SPVM::Comparator::Double = sub : int ($self : self, $a : double, $b : double); {
+  my $comparator : Comparator::Double = sub : int ($self : self, $a : double, $b : double); {
     return $a <=> $b;
   };
   

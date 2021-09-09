@@ -8,14 +8,14 @@ SPVM::NumberUtil - Number Utilities
 
 =head1 SYNOPSYS
   
-  use SPVM::NumberUtil;
+  use NumberUtil;
   
-  my $int8_max = SPVM::NumberUtil->INT8_MAX();
-  my $int16_max = SPVM::NumberUtil->INT16_MAX();
-  my $int32_max = SPVM::NumberUtil->INT32_MAX();
-  my $int64_max = SPVM::NumberUtil->INT64_MAX();
+  my $int8_max = NumberUtil->INT8_MAX();
+  my $int16_max = NumberUtil->INT16_MAX();
+  my $int32_max = NumberUtil->INT32_MAX();
+  my $int64_max = NumberUtil->INT64_MAX();
   
-  my $rand = SPVM::NumberUtil->rand();
+  my $rand = NumberUtil->rand();
 
 =head1 DESCRIPTION
 
@@ -123,7 +123,7 @@ Return the value of DBL_MAX macro defined in float.h C header.
 
   sub crand : int ();
 
-Get random number(0 <= rundom_number <= SPVM::NumberUtil->RAND_MAX). This is same as rand function of C language.
+Get random number(0 <= rundom_number <= NumberUtil->RAND_MAX). This is same as rand function of C language.
 
 The first seed is initialized by epoch time automatically. If you set a seed manually, you can use <srand> static method.
 

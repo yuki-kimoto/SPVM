@@ -8,7 +8,7 @@ SPVM::Regex::Pattern - Regular expression pattern
 
 =head1 SYNOPSYS
   
-  use SPVM::Regex::Pattern;
+  use Regex::Pattern;
 
 =head1 DESCRIPTION
 

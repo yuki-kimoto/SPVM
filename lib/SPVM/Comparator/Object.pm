@@ -8,11 +8,11 @@ SPVM::Comparator::Object - a callback interface for comparation
 
 =head1 SYNOPSYS
   
-  use SPVM::Comparator::Object;
+  use Comparator::Object;
   
-  my $comparator : SPVM::Comparator::Object = sub : int ($self : self, $object1 : object, $object2 : object); {
-    my $point1 = (SPVM::Point)$object1;
-    my $point2 = (SPVM::Point)$object2;
+  my $comparator : Comparator::Object = sub : int ($self : self, $object1 : object, $object2 : object); {
+    my $point1 = (Point)$object1;
+    my $point2 = (Point)$object2;
     
     if ($point1->x > $point2->x) {
       return 1;
@@ -25,8 +25,8 @@ SPVM::Comparator::Object - a callback interface for comparation
     }
   };
   
-  my $point1 = SPVM::Point->new(1, 2);
-  my $point2 = SPVM::Point->new(5, 6);
+  my $point1 = Point->new(1, 2);
+  my $point2 = Point->new(5, 6);
   my $result = $comparator->($point1, $point2);
 
 =head1 DESCRIPTION
