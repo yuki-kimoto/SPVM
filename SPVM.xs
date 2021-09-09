@@ -31,7 +31,6 @@
 #include "spvm_opcode_builder.h"
 #include "spvm_csource_builder_precompile.h"
 #include "spvm_list.h"
-#include "spvm_csource_builder_precompile.h"
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_limit.h"

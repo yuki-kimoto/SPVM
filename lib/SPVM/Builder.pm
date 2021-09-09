@@ -200,11 +200,15 @@ sub bind_methods {
   for my $method_info (@$method_infos) {
     my $perl_package_name = $method_info->{package_name};
     my $method_name = $method_info->{method_name};
+
+    my $class_name = $perl_package_name;
+    $class_name =~ s/^SPVM:://;
+    $perl_package_name = "SPVM::$class_name";
     
     my $method_abs_name = "${perl_package_name}::$method_name";
-
-    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
     
+    my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
+
     my $cfunc_address;
     if ($shared_lib_file) {
       my $shared_lib_libref = DynaLoader::dl_load_file($shared_lib_file);
