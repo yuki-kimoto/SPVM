@@ -4,7 +4,7 @@ package SPVM::Float;
 
 =head1 NAME
 
-SPVM::Float - Float object
+SPVM::Float - Float in SPVM | Float object
 
 =head1 SYNOPSYS
 

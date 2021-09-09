@@ -4,7 +4,7 @@ package SPVM::Byte;
 
 =head1 NAME
 
-SPVM::Byte - Byte object
+SPVM::Byte - Byte in SPVM | Byte object
 
 =head1 SYNOPSYS
   

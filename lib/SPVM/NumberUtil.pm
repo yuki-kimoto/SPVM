@@ -4,7 +4,7 @@ package SPVM::NumberUtil;
 
 =head1 NAME
 
-SPVM::NumberUtil - Number Utilities
+SPVM::NumberUtil - NumberUtil in SPVM | Number Utilities
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::LongList;
 
 =head1 NAME
 
-SPVM::LongList - Dynamic long array
+SPVM::LongList - LongList in SPVM | Dynamic long array
 
 =head1 SYNOPSYS
   

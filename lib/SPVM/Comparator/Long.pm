@@ -4,7 +4,7 @@ package SPVM::Comparator::Long;
 
 =head1 NAME
 
-SPVM::Comparator::Long - a callback interface for long comparation
+SPVM::Comparator::Long - Comparator::Long in SPVM | a callback interface for long comparation
 
 =head1 SYNOPSYS
   

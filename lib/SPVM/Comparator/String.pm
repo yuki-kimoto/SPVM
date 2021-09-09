@@ -4,7 +4,7 @@ package SPVM::Comparator::String;
 
 =head1 NAME
 
-SPVM::Comparator::String - a callback interface for string comparation
+SPVM::Comparator::String - Comparator::String in SPVM | a callback interface for string comparation
 
 =head1 SYNOPSYS
   

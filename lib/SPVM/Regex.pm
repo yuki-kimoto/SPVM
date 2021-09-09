@@ -4,7 +4,7 @@ package SPVM::Regex;
 
 =head1 NAME
 
-SPVM::Regex - Regular expression
+SPVM::Regex - Regex in SPVM | Regular expression
 
 =head1 SYNOPSYS
   

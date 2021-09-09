@@ -4,7 +4,7 @@ package SPVM::Comparator::Short;
 
 =head1 NAME
 
-SPVM::Comparator::Short - a callback interface for short comparation
+SPVM::Comparator::Short - Comparator::Short in SPVM | a callback interface for short comparation
 
 =head1 SYNOPSYS
   

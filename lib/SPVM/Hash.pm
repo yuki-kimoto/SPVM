@@ -4,7 +4,7 @@ package SPVM::Hash;
 
 =head1 NAME
 
-SPVM::Hash - Hash Data Structure
+SPVM::Hash - Hash in SPVM | Hash Data Structure
 
 =head1 SYNOPSYS
   

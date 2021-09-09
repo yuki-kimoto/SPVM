@@ -4,7 +4,7 @@ package SPVM::Unicode;
 
 =head1 NAME
 
-SPVM::Unicode - Unicode utilities.
+SPVM::Unicode - Unicode in SPVM | Unicode utilities.
 
 =head1 SYNOPSYS
 

@@ -4,7 +4,7 @@ package SPVM::Int;
 
 =head1 NAME
 
-SPVM::Int - Int object
+SPVM::Int - Int in SPVM | Int object
 
 =head1 SYNOPSYS
 

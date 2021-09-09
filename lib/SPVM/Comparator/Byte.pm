@@ -4,7 +4,7 @@ package SPVM::Comparator::Byte;
 
 =head1 NAME
 
-SPVM::Comparator::Byte - a callback interface for byte comparation
+SPVM::Comparator::Byte - Comparator::Byte in SPVM | a callback interface for byte comparation
 
 =head1 SYNOPSYS
   

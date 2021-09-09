@@ -4,7 +4,7 @@ package SPVM::Long;
 
 =head1 NAME
 
-SPVM::Long - Long object
+SPVM::Long - Long in SPVM | Long object
 
 =head1 SYNOPSYS
 

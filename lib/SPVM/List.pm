@@ -4,7 +4,7 @@ package SPVM::List;
 
 =head1 NAME
 
-SPVM::List - Dynamic object array
+SPVM::List - List in SPVM | Dynamic object array
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::ArrayUtil;
 
 =head1 NAME
 
-SPVM::ArrayUtil - Array Utilities
+SPVM::ArrayUtil - ArrayUtil in SPVM | Array Utilities
 
 =head1 SYNOPSYS
   

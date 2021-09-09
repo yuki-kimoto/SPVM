@@ -4,7 +4,7 @@ package SPVM::StringBuffer;
 
 =head1 NAME
 
-SPVM::StringBuffer - String buffer
+SPVM::StringBuffer - StringBuffer in SPVM | String buffer
 
 =head1 SYNOPSYS
   

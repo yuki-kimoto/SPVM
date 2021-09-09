@@ -4,7 +4,7 @@ package SPVM::Bool;
 
 =head1 NAME
 
-SPVM::Bool - Bool object
+SPVM::Bool - Bool in SPVM | Bool object
 
 =head1 SYNOPSYS
 

@@ -4,7 +4,7 @@ package SPVM::EqualityChecker;
 
 =head1 NAME
 
-SPVM::EqualityChecker - a callback interface to check the object equality
+SPVM::EqualityChecker - EqualityChecker in SPVM | a callback interface to check the object equality
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::Comparator::Int;
 
 =head1 NAME
 
-SPVM::Comparator::Int - a callback interface for int comparation
+SPVM::Comparator::Int - Comparator::Int in SPVM | a callback interface for int comparation
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::IntList;
 
 =head1 NAME
 
-SPVM::IntList - Dynamic int array
+SPVM::IntList - IntList in SPVM | Dynamic int array
 
 =head1 SYNOPSYS
   

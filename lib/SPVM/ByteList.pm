@@ -4,7 +4,7 @@ package SPVM::ByteList;
 
 =head1 NAME
 
-SPVM::ByteList - Dynamic Byte Array
+SPVM::ByteList - ByteList in SPVM | Dynamic Byte Array
 
 =head1 SYNOPSYS
   

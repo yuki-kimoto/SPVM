@@ -4,7 +4,7 @@ package SPVM::FloatList;
 
 =head1 NAME
 
-SPVM::FloatList - Dynamic float array
+SPVM::FloatList - FloatList in SPVM | Dynamic float array
 
 =head1 SYNOPSYS
   

@@ -4,7 +4,7 @@ package SPVM::Time;
 
 =head1 NAME
 
-SPVM::Time - Time manipulation
+SPVM::Time - Time in SPVM | Time manipulation
 
 =head1 SYNOPSYS
   

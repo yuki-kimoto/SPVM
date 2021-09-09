@@ -4,7 +4,7 @@ package SPVM::StringList;
 
 =head1 NAME
 
-SPVM::StringList - Dynamic string array
+SPVM::StringList - StringList in SPVM | Dynamic string array
 
 =head1 SYNOPSYS
   

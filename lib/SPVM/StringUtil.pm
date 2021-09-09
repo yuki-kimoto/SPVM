@@ -4,7 +4,7 @@ package SPVM::StringUtil;
 
 =head1 NAME
 
-SPVM::StringUtil - String Utilities
+SPVM::StringUtil - StringUtil in SPVM | String Utilities
 
 =head1 SYNOPSYS
   
