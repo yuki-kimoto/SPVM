@@ -1895,10 +1895,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return DESCRIPTOR;
                 }
                 else if (strcmp(keyword, "method") == 0) {
-                  SPVM_OP* op_method = SPVM_OP_new_op_descriptor(compiler, SPVM_OP_C_ID_METHOD, compiler->cur_file, compiler->cur_line);
+                  SPVM_OP* op_method = SPVM_TOKE_newOP_with_keyword_start_pos(compiler, SPVM_OP_C_ID_METHOD, keyword_start_pos);
                   op_method->flag |= SPVM_OP_C_FLAG_METHOD_NOT_SUB;
                   yylvalp->opval = op_method;
-                  return DESCRIPTOR;
+
+                  compiler->expect_method_name = 1;
+
+                  return METHOD;
                 }
                 break;
               }
