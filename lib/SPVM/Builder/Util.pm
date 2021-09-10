@@ -96,7 +96,9 @@ sub convert_class_name_to_shared_lib_rel_file {
 sub convert_class_name_to_category_rel_file {
   my ($class_name, $category, $ext) = @_;
   
-  my $rel_file_with_ext = $class_name;
+  $class_name =~ s/^SPVM:://;
+  
+  my $rel_file_with_ext = "SPVM::$class_name";
   $rel_file_with_ext =~ s/::/\//g;
   $rel_file_with_ext .= $category eq 'native' ? "" : ".$category";
   if (defined $ext) {
@@ -108,24 +110,23 @@ sub convert_class_name_to_category_rel_file {
 
 sub convert_class_name_to_rel_dir {
   my ($class_name) = @_;
-  
+
+  $class_name =~ s/^SPVM:://;
+
   my $rel_dir;
-  if ($class_name =~ /::/) {
-    my $rel_file = $class_name;
-    $rel_file =~ s/::/\//g;
-    $rel_dir = dirname $rel_file;
-  }
-  else {
-    $rel_dir = '';
-  }
+  my $rel_file = "SPVM::$class_name";
+  $rel_file =~ s/::/\//g;
+  $rel_dir = dirname $rel_file;
   
   return $rel_dir;
 }
 
 sub convert_class_name_to_rel_file {
   my ($class_name, $ext) = @_;
+
+  $class_name =~ s/^SPVM:://;
   
-  my $rel_file_with_ext = $class_name;
+  my $rel_file_with_ext = "SPVM::$class_name";
   $rel_file_with_ext =~ s/::/\//g;
   
   if (defined $ext) {
@@ -137,9 +138,11 @@ sub convert_class_name_to_rel_file {
 
 sub remove_class_part_from_file {
   my ($file, $class_name) = @_;
+
+  $class_name =~ s/^SPVM:://;
   
   $file =~ s/\.spvm$//;
-  my $class_file = $class_name;
+  my $class_file = "SPVM::$class_name";
   $class_file =~ s/::/\//g;
   $file =~ s/$class_file$//;
   $file =~ s/[\\\/]$//;
@@ -162,9 +165,7 @@ sub create_make_rule_precompile {
 sub create_class_make_rule {
   my ($class_name, $category) = @_;
 
-  unless ($class_name =~ /^SPVM::/) {
-    $class_name = "SPVM::$class_name";
-  }
+  $class_name =~ s/^SPVM:://;
   
   my $make_rule;
   
