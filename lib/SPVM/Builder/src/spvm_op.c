@@ -2444,7 +2444,8 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
             method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
           }
           else {
-            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
+            method->is_class_method = 1;
+            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
           }
         }
       }
@@ -2610,7 +2611,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Method is constant
   op_method->uv.method->flag |= SPVM_METHOD_C_FLAG_ENUM;
-  op_method->uv.method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
+  op_method->uv.method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
   
   return op_method;
 }
@@ -2717,7 +2718,7 @@ SPVM_OP* SPVM_OP_build_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* op_inv
   }
   // Class method call
   else {
-    call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
+    call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
     call_spvm_method->op_invocant = op_invocant;
     call_spvm_method->op_name = op_name_method;
   }
