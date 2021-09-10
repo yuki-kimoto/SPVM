@@ -82,8 +82,6 @@ sub create_build_lib_path {
 sub get_shared_lib_file_dist {
   my ($self, $class_name, $category) = @_;
 
-  $class_name =~ s/^SPVM:://;
-  
   my $module_module_file = $self->get_module_file($class_name);
   
   my $shared_lib_file = SPVM::Builder::Util::convert_module_file_to_shared_lib_file($module_module_file, $category);
@@ -93,8 +91,6 @@ sub get_shared_lib_file_dist {
 
 sub build_shared_lib_dist {
   my ($self, $class_name, $category) = @_;
-
-  $class_name =~ s/^SPVM:://;
 
   my $compile_success = $self->compile_spvm($class_name, '(build_shared_lib_dist)', 0);
   unless ($compile_success) {
@@ -115,8 +111,6 @@ sub build_shared_lib_dist {
 sub build_and_bind_shared_lib {
   my ($self, $class_name, $category) = @_;
   
-  $class_name =~ s/^SPVM:://;
-
   my $cc = SPVM::Builder::CC->new(
     build_dir => $self->{build_dir},
     category => $category,
@@ -143,8 +137,6 @@ sub build_and_bind_shared_lib {
 sub bind_methods {
   my ($self, $cc, $shared_lib_file, $class_name, $category) = @_;
 
-  $class_name =~ s/^SPVM:://;
-  
   # m library is maybe not dynamic link library
   my %must_not_load_libs = map { $_ => 1 } ('m');
 
@@ -191,8 +183,6 @@ sub bind_methods {
     my $class_name = $method_info->{class_name};
     my $method_name = $method_info->{method_name};
 
-    $class_name =~ s/^SPVM:://;
-    
     my $method_abs_name = "${class_name}::$method_name";
     
     my $cfunc_name = SPVM::Builder::Util::create_cfunc_name($class_name, $method_name, $category);
@@ -241,8 +231,6 @@ EOS
 sub get_config {
   my ($self, $class_name, $category) = @_;
 
-  $class_name =~ s/^SPVM:://;
-  
   my $module_file = $self->get_module_file($class_name);
   my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $class_name);
   
