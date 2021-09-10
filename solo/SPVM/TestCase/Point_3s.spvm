@@ -1,0 +1,5 @@
+package TestCase::Point_3s : mulnum_t {
+  has x : short;
+  has y : short;
+  has z : short;
+}

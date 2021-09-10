@@ -1,0 +1,12 @@
+
+package TestCase::ImplementCallback1 {
+  use TestCase::Minimal;
+
+  sub new : TestCase::ImplementCallback1 () {
+    return new TestCase::ImplementCallback1;
+  }
+
+  sub : int ($self : self, $var1 : int, $var2 : long) {
+    return 1;
+  }
+}

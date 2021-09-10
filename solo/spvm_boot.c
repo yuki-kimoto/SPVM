@@ -53,9 +53,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   }
   */
   
-  // Add include path
-  warn("AAAAAA %s", cur_script_dir);
-  
   SPVM_LIST_push(compiler->module_dirs, cur_script_dir);
   
   SPVM_COMPILER_compile(compiler);
