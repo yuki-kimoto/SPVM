@@ -2394,19 +2394,27 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+        case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
           method->flag |= SPVM_METHOD_C_FLAG_PRIVATE;
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+        }
+        case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           // Default is public
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_NATIVE:
+        }
+        case SPVM_DESCRIPTOR_C_ID_NATIVE: {
           method->flag |= SPVM_METHOD_C_FLAG_NATIVE;
           break;
-        default:
+        }
+        case SPVM_DESCRIPTOR_C_ID_STATIC: {
+          method->is_class_method = 1;
+          break;
+        }
+        default: {
           SPVM_COMPILER_error(compiler, "invalid method descriptor %s", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+        }
       }
     }
     

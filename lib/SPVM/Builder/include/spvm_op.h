@@ -242,6 +242,10 @@ enum {
   SPVM_OP_C_FLAG_ARRAY_INIT_IS_KEY_VALUES = 1,
 };
 
+enum {
+  SPVM_OP_C_FLAG_METHOD_NOT_SUB = 1,
+};
+
 /* Binary operation */
 struct spvm_op {
   SPVM_OP* first;
