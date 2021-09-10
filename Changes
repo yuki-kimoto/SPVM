@@ -22,6 +22,7 @@ Revision history for SPVM
         * Lexical Analysis concept is changed to Tokenizing
         * Native function prefix is changed to SPVM__ from SPNATIVE__. Sorry.
         * Precompile function prefix is changed to SPVMPRECOMPILE__ from SPPRECOMPILE.
+        * SPVM::Builder::Exe target_class_name field is renamed to module_name
         
         [BUGFIXES]
         * None

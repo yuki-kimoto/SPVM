@@ -20,14 +20,14 @@ SPVM::Builder::Util::getopt
   '-f|force' => \my $force,
 ;
 
-die SPVM::Builder::Util::extract_usage if $help || !(my $target_class_name = shift);
+die SPVM::Builder::Util::extract_usage if $help || !(my $module_name = shift);
 
 push @module_dirs, @INC;
 
 my $build_exe = SPVM::Builder::Exe->new(
   module_dirs => \@module_dirs,
   output_file => $output_file,
-  target_class_name => $target_class_name,
+  module_name => $module_name,
   quiet => $quiet,
   optimize => $optimize,
   extra_compiler_flags => $extra_compiler_flags,
@@ -44,8 +44,9 @@ spvmcc - SPVM compiler to create exe file
 
 =head1 SYNOPSIS
 
-  Usage: spvmcc [OPTIONS] [PACKAGE]
-
+  Usage: spvmcc [OPTIONS] [MODULE_NAME]
+    
+    # lib/SPVM/Myapp.spvm
     spvmcc -I lib -o myapp Myapp
 
   Options:
@@ -59,8 +60,7 @@ spvmcc - SPVM compiler to create exe file
     --ccflags <options>            Additional compiler flags
     --lddlflags <options>          Additional linker flags
     -f, --force                    Force compile and link
-
+    
 =head1 DESCRIPTION
 
 spvmcc is SPVM compiler to create executable file.
-
