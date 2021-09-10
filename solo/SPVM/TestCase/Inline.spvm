@@ -1,4 +1,4 @@
-package TestCase::Native {
+class TestCase::Native {
   use TestCase::Native;
 
   native sub sum : int ($num1 : int, $num2 : int);

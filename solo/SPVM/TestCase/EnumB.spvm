@@ -1,4 +1,4 @@
-package TestCase::EnumB {
+class TestCase::EnumB {
   enum {
     ONE = 5
   }

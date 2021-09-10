@@ -1,4 +1,4 @@
-package TestCase::Minimal::XGetter {
+class TestCase::Minimal::XGetter {
   sub new : TestCase::Minimal::XGetter () {
     return new TestCase::Minimal::XGetter;
   }

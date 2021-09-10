@@ -1,5 +1,5 @@
 
-package TestCase::ImplementCallback1 {
+class TestCase::ImplementCallback1 {
   use TestCase::Minimal;
 
   sub new : TestCase::ImplementCallback1 () {

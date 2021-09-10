@@ -1,4 +1,4 @@
-package TestCase::List {
+class TestCase::List {
   
   has values : object[];
   has length : int;

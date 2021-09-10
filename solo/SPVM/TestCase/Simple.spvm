@@ -1,4 +1,4 @@
-package TestCase::Simple : public {
+class TestCase::Simple : public {
   use TestCase::EnumA;
   use TestCase::Minimal;
 

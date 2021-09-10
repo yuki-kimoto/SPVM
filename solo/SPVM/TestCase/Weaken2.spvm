@@ -1,6 +1,6 @@
 use TestCase::Weaken;
 
-package TestCase::Weaken2 {
+class TestCase::Weaken2 {
   has x1 : int;
   has test_case : TestCase;
   has weaken1 : TestCase::Weaken;

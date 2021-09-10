@@ -1,4 +1,4 @@
-package TestCase::Minimal : public {
+class TestCase::Minimal : public {
   has x : public rw int;
   has y : public rw int;
   has tests : public TestCase[];

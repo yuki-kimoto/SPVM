@@ -1,4 +1,4 @@
-package TestCase {
+class TestCase {
   use TestCase::EnumA;
   use TestCase::EnumB;
   use TestCase::EnumC;
@@ -22,8 +22,8 @@ package TestCase {
   use TestCase::Point_3f;
   use TestCase::Point_3d;
   use TestCase::DumpTest1;
-  use SPVM::Complex_2f;
-  use SPVM::Complex_2d;
+  use TestCase::Complex_2f;
+  use TestCase::Complex_2d;
 
 =pod
 
@@ -38,10 +38,10 @@ SPVM::Test - SPVM test module
 =cut
 
   
-  our $PACKAGE_VAR_INT : public int;
-  our $PACKAGE_VAR_TEST_CASE : public TestCase;
+  our $CLASS_VAR_INT : public int;
+  our $CLASS_VAR_TEST_CASE : public TestCase;
   
-  our $PACKAGE_VAR_RW : public rw int;
+  our $CLASS_VAR_RW : public rw int;
   
   our $BEGIN_INIT : int;
   
@@ -311,15 +311,15 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $z1 : SPVM::Complex_2d;
-      my $z2 : SPVM::Complex_2d;
+      my $z1 : TestCase::Complex_2d;
+      my $z2 : TestCase::Complex_2d;
       
       $z1->{re} = 1;
       $z1->{im} = 2;
       $z2->{re} = 3;
       $z2->{im} = 4;
       
-      my $z3 : SPVM::Complex_2d;
+      my $z3 : TestCase::Complex_2d;
       $z3->{re} = $z1->{re} + $z2->{re};
       $z3->{im} = $z1->{im} + $z2->{im};
       
@@ -390,7 +390,7 @@ SPVM::Test - SPVM test module
     print TestCase::Simple->file . "\n";
     print __FILE__ . "\n";
     print __LINE__ . "\n";
-    print __PACKAGE__ . "\n";
+    print __CLASS__ . "\n";
     
     {
       my $minimal = TestCase::Minimal->new;
@@ -414,10 +414,10 @@ SPVM::Test - SPVM test module
       print($BEGIN_INIT . "\n");
     }
     {
-      TestCase->SET_PACKAGE_VAR_RW(6);
+      TestCase->SET_CLASS_VAR_RW(6);
       
-      my $package_var_rw = TestCase->PACKAGE_VAR_RW;
-      print("$package_var_rw\n");
+      my $class_var_rw = TestCase->CLASS_VAR_RW;
+      print("$class_var_rw\n");
     }
     
     
@@ -581,7 +581,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $z : SPVM::Complex_2d;
+      my $z : TestCase::Complex_2d;
       
       $z->{re} = 0.25;
       $z->{im} = 0.5;
@@ -593,7 +593,7 @@ SPVM::Test - SPVM test module
       
       print($z_re . " " . $z_im . "\n");
       
-      my $out : SPVM::Complex_2d;
+      my $out : TestCase::Complex_2d;
       
       ref_sum_complex($z, $z, \$out);
       
@@ -601,7 +601,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $z1 : SPVM::Complex_2d;
+      my $z1 : TestCase::Complex_2d;
       $z1->{re} = 0.25;
       $z1->{im} = 0.5;
       
@@ -648,7 +648,7 @@ SPVM::Test - SPVM test module
       
     }
     {
-      my $nums1 = new SPVM::Complex_2d[10];
+      my $nums1 = new TestCase::Complex_2d[10];
       $nums1->[9]{re} = 5;
       $nums1->[9]{im} = 9;
       
@@ -668,11 +668,11 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $z1 : SPVM::Complex_2d;
+      my $z1 : TestCase::Complex_2d;
       $z1->{re} = 0.5;
       $z1->{im} = 0.25;
       
-      my $z2 : SPVM::Complex_2d;
+      my $z2 : TestCase::Complex_2d;
       $z2->{re} = 1.0;
       $z2->{im} = 0.5;
       
@@ -686,7 +686,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $z : SPVM::Complex_2d;
+      my $z : TestCase::Complex_2d;
       $z->{re} = 0.5;
       $z->{im} = 0.25;
       
@@ -754,7 +754,7 @@ SPVM::Test - SPVM test module
     
     # UNDEF
     {
-      $PACKAGE_VAR_TEST_CASE = undef;
+      $CLASS_VAR_TEST_CASE = undef;
       $@ = undef;
       {
         my $test_case = new TestCase;
@@ -901,7 +901,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      $TestCase::PACKAGE_VAR_TEST_CASE = undef;
+      $TestCase::CLASS_VAR_TEST_CASE = undef;
     }
 
     {
@@ -920,31 +920,31 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $var = $PACKAGE_VAR_INT;
+      my $var = $CLASS_VAR_INT;
       
-      $PACKAGE_VAR_INT = 1;
+      $CLASS_VAR_INT = 1;
       
-      if ($PACKAGE_VAR_INT == 0) {
-        $PACKAGE_VAR_INT = 1;
-        if ($PACKAGE_VAR_INT == 1) {
+      if ($CLASS_VAR_INT == 0) {
+        $CLASS_VAR_INT = 1;
+        if ($CLASS_VAR_INT == 1) {
           return 1;
         }
       }
-      my $str = "" . $PACKAGE_VAR_INT;
+      my $str = "" . $CLASS_VAR_INT;
     }
     
     {
-      my $var = $TestCase::PACKAGE_VAR_INT;
+      my $var = $TestCase::CLASS_VAR_INT;
       
-      $TestCase::PACKAGE_VAR_INT = 1;
+      $TestCase::CLASS_VAR_INT = 1;
       
-      if ($TestCase::PACKAGE_VAR_INT == 0) {
-        $TestCase::PACKAGE_VAR_INT = 1;
-        if ($TestCase::PACKAGE_VAR_INT == 1) {
+      if ($TestCase::CLASS_VAR_INT == 0) {
+        $TestCase::CLASS_VAR_INT = 1;
+        if ($TestCase::CLASS_VAR_INT == 1) {
           return 1;
         }
       }
-      my $str = "" . $TestCase::PACKAGE_VAR_INT;
+      my $str = "" . $TestCase::CLASS_VAR_INT;
     }
     
     
@@ -2054,7 +2054,7 @@ SPVM::Test - SPVM test module
     $$x_out = $x_in1 + $x_in2;
   }
   
-  sub ref_sum_complex : double ($x_in1 : SPVM::Complex_2d, $x_in2 : SPVM::Complex_2d, $x_out : SPVM::Complex_2d&) {
+  sub ref_sum_complex : double ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d&) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
   }

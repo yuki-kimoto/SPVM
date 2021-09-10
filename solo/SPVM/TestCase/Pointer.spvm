@@ -1,1 +1,1 @@
-package TestCase::Pointer : pointer_t;
+class TestCase::Pointer : pointer_t;

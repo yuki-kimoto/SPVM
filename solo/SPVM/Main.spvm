@@ -1,4 +1,4 @@
-package Main {
+class Main {
   use TestCase;
   sub main : int ($args : string[]) {
     TestCase->main($args);
