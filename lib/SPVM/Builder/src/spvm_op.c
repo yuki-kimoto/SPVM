@@ -2385,6 +2385,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   if (!is_begin && strcmp(method_name, "INIT") == 0) {
     SPVM_COMPILER_error(compiler, "\"INIT\" is reserved for INIT block at %s line %d\n", op_name_method->file, op_name_method->line);
   }
+
+  if (op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB) {
+    method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
+  }
   
   // Descriptors
   int32_t access_control_descriptors_count = 0;
@@ -2410,6 +2414,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
         }
         case SPVM_DESCRIPTOR_C_ID_STATIC: {
           method->is_class_method = 1;
+          method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
           break;
         }
         default: {
@@ -2452,6 +2457,19 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       SPVM_LIST_push(method->args, op_arg->uv.var->my);
       method_index++;
     }
+  }
+  else {
+    op_args = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
+  }
+  
+  if (!method->is_class_method && op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB) {
+    SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
+    SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
+    SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
+    self_type->is_self = 1;
+    SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
+    SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type);
+    SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
   }
 
   // Capture variables
