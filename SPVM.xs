@@ -2180,7 +2180,7 @@ call_spvm_method(...)
   int32_t spvm_args_base = 3;
 
   // If class method, first argument is ignored
-  if (method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD) {
+  if (method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD) {
     spvm_args_base++;
   }
   

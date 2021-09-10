@@ -4,7 +4,7 @@
 #include "spvm_typedecl.h"
 
 enum {
-  SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD,
+  SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD,
   SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD,
 };
 
@@ -63,6 +63,7 @@ struct spvm_method {
   int8_t is_simple_constructor;
   int8_t is_constant;
   int8_t is_begin;
+  int8_t is_class_method;
   const char* accessor_original_name;
   SPVM_OP* op_list_tmp_mys;
   int32_t tmp_vars_length;

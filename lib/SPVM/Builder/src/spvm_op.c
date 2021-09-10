@@ -2385,6 +2385,10 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   if (!is_begin && strcmp(method_name, "INIT") == 0) {
     SPVM_COMPILER_error(compiler, "\"INIT\" is reserved for INIT block at %s line %d\n", op_name_method->file, op_name_method->line);
   }
+
+  if (op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB) {
+    method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
+  }
   
   // Descriptors
   int32_t access_control_descriptors_count = 0;
@@ -2394,19 +2398,28 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
       
       switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_PRIVATE:
+        case SPVM_DESCRIPTOR_C_ID_PRIVATE: {
           method->flag |= SPVM_METHOD_C_FLAG_PRIVATE;
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_PUBLIC:
+        }
+        case SPVM_DESCRIPTOR_C_ID_PUBLIC: {
           // Default is public
           access_control_descriptors_count++;
           break;
-        case SPVM_DESCRIPTOR_C_ID_NATIVE:
+        }
+        case SPVM_DESCRIPTOR_C_ID_NATIVE: {
           method->flag |= SPVM_METHOD_C_FLAG_NATIVE;
           break;
-        default:
+        }
+        case SPVM_DESCRIPTOR_C_ID_STATIC: {
+          method->is_class_method = 1;
+          method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
+          break;
+        }
+        default: {
           SPVM_COMPILER_error(compiler, "invalid method descriptor %s", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+        }
       }
     }
     
@@ -2436,13 +2449,27 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
             method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
           }
           else {
-            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
+            method->is_class_method = 1;
+            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
           }
         }
       }
       SPVM_LIST_push(method->args, op_arg->uv.var->my);
       method_index++;
     }
+  }
+  else {
+    op_args = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
+  }
+  
+  if (!method->is_class_method && op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB) {
+    SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
+    SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
+    SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
+    self_type->is_self = 1;
+    SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
+    SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type);
+    SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
   }
 
   // Capture variables
@@ -2602,7 +2629,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Method is constant
   op_method->uv.method->flag |= SPVM_METHOD_C_FLAG_ENUM;
-  op_method->uv.method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
+  op_method->uv.method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
   
   return op_method;
 }
@@ -2681,7 +2708,7 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   return op_var;
 }
 
-SPVM_OP* SPVM_OP_build_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_terms) {
+SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_terms) {
   
   // Build OP_METHOD
   SPVM_OP* op_call_spvm_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_METHOD, op_name_method->file, op_name_method->line);
@@ -2709,7 +2736,7 @@ SPVM_OP* SPVM_OP_build_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* op_inv
   }
   // Class method call
   else {
-    call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
+    call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
     call_spvm_method->op_invocant = op_invocant;
     call_spvm_method->op_name = op_name_method;
   }
