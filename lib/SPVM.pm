@@ -20,7 +20,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.9011';
+our $VERSION = '0.9012';
 
 my $SPVM_INITED;
 my $BUILDER;
@@ -54,10 +54,10 @@ sub import {
       my $added_class_names = $BUILDER->get_added_class_names;
       for my $added_class_name (@$added_class_names) {
         
-        # Build Precompile classes - Compile C source codes and link them to SPVM precompile method
+        # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
         $BUILDER->build_and_bind_shared_lib($added_class_name, 'precompile');
 
-        # Build native classes - Compile C source codes and link them to SPVM native method
+        # Build native classs - Compile C source codes and link them to SPVM native method
         $BUILDER->build_and_bind_shared_lib($added_class_name, 'native');
       }
 
