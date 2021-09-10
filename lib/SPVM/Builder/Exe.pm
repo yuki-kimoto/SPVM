@@ -154,8 +154,6 @@ sub create_precompile_csources {
 
   my $class_names = $builder->get_class_names;
   for my $class_name (@$class_names) {
-    next if $class_name =~ /::anon/;
-    
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
       
@@ -193,8 +191,6 @@ sub compile_precompile_csources {
   
   my $class_names = $builder->get_class_names;
   for my $class_name (@$class_names) {
-    next if $class_name =~ /::anon/;
-    
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
       my $src_dir = $self->builder->create_build_src_path;
@@ -870,8 +866,6 @@ sub link {
   # SPVM precompile object files
   my $precompile_object_files = [];
   for my $class_name (@$class_names) {
-    next if $class_name =~ /::anon/;
-
     my $perl_class_name = "SPVM::$class_name";
     
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
