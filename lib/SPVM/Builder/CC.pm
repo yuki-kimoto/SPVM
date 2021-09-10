@@ -34,8 +34,6 @@ sub new {
 sub build_shared_lib_runtime {
   my ($self, $class_name) = @_;
 
-  $class_name =~ s/^SPVM:://;
-  
   my $category = $self->category;
   
   # Build directory
@@ -141,8 +139,6 @@ sub build_shared_lib {
 sub compile {
   my ($self, $class_name, $opt) = @_;
 
-  $class_name =~ s/^SPVM:://;
-  
   # Category
   my $category = $self->category;
 
@@ -332,8 +328,6 @@ sub compile {
 sub link {
   my ($self, $class_name, $object_files, $opt) = @_;
 
-  $class_name =~ s/^SPVM:://;
-  
   # Category
   my $category = $self->category;
 
@@ -483,8 +477,6 @@ EOS
 sub create_precompile_csource {
   my ($self, $class_name, $opt) = @_;
 
-  $class_name =~ s/^SPVM:://;
-  
   my $src_dir = $opt->{src_dir};
   mkpath $src_dir;
   
