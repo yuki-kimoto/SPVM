@@ -3385,8 +3385,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     return;
   }
   
-  // Resolve classs
-  SPVM_OP_CHECKER_resolve_classs(compiler);
+  // Resolve classes
+  SPVM_OP_CHECKER_resolve_classes(compiler);
   if (compiler->error_count > 0) {
     return;
   }
@@ -3394,8 +3394,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   // Check trees
   {
     int32_t class_index;
-    for (class_index = compiler->cur_class_base; class_index < compiler->classs->length; class_index++) {
-      SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_index);
+    for (class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+      SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
       SPVM_LIST* methods = class->methods;
       {
         int32_t method_index;
@@ -4247,8 +4247,8 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
     printf("\n[Basic types]\n");
     SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
     
-    printf("\n[Classs]\n");
-    SPVM_DUMPER_dump_classs(compiler, compiler->classs);
+    printf("\n[Classes]\n");
+    SPVM_DUMPER_dump_classes(compiler, compiler->classes);
   }
 #endif
 }
@@ -4859,16 +4859,16 @@ void SPVM_OP_CHECKER_resolve_field_offset(SPVM_COMPILER* compiler, SPVM_CLASS* c
   class->fields_byte_size = offset;
 }
 
-void SPVM_OP_CHECKER_resolve_classs(SPVM_COMPILER* compiler) {
+void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
   
   // Set class id
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classs->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_index);
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     class->id = class_index;
   }
   
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classs->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_index);
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     
     const char* class_name = class->op_name->uv.name;
     
@@ -5106,8 +5106,8 @@ void SPVM_OP_CHECKER_resolve_classs(SPVM_COMPILER* compiler) {
     }
   }
   
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classs->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_index);
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     // Check methods
     for (int32_t i = 0; i < class->methods->length; i++) {
       SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, i);
@@ -5119,8 +5119,8 @@ void SPVM_OP_CHECKER_resolve_classs(SPVM_COMPILER* compiler) {
   }
   
   // Check import method
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classs->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_index);
+  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
     const char* class_name = class->op_name->uv.name;
     SPVM_LIST* op_uses = class->op_uses;
     

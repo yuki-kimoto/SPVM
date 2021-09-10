@@ -422,7 +422,7 @@ The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bis
 %token <opval> RETURN WEAKEN DIE WARN CURRENT_CLASS UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_classs classs class class_block
+%type <opval> opt_classes classes class class_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> sub cb_obj opt_args args arg invocant has use require our
@@ -457,14 +457,14 @@ The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bis
 %%
 
 grammar
-  : opt_classs
+  : opt_classes
 
-opt_classs
+opt_classes
   : /* Empty */
-  | classs
+  | classes
 
-classs
-  : classs class
+classes
+  : classes class
   | class
 
 class
@@ -1273,7 +1273,7 @@ The descriptions of Class Descriptors.
       <b>public</b>
     </td>
     <td>
-      This class is public. Other classs can <a href="#language-expression-new">new</a> this class.
+      This class is public. Other classes can <a href="#language-expression-new">new</a> this class.
     </td>
   </tr>
   <tr>
@@ -1281,7 +1281,7 @@ The descriptions of Class Descriptors.
       <b>private</b>
     </td>
     <td>
-      This class is private. Other classs can't <a href="#language-expression-new">new</a> this class. This is default setting.
+      This class is private. Other classes can't <a href="#language-expression-new">new</a> this class. This is default setting.
     </td>
   </tr>
   <tr>
@@ -1402,7 +1402,7 @@ class Foo::Bar {
 </pre>
 
 
-Module can contain multiple Classs.
+Module can contain multiple Classes.
 
 <pre>
 # lib/path/SPVM/Foo/Bar.spvm

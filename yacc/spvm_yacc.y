@@ -26,7 +26,7 @@
 %token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_classs classs class class_block
+%type <opval> opt_classes classes class class_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> method anon_method opt_args args arg invocant has use require our
@@ -61,18 +61,18 @@
 %%
 
 grammar
-  : opt_classs
+  : opt_classes
     {
       $$ = SPVM_OP_build_grammar(compiler, $1);
       compiler->op_grammar = $$;
     }
 
-opt_classs
+opt_classes
   : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  | classs
+  | classes
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -84,8 +84,8 @@ opt_classs
       }
     }
   
-classs
-  : classs class
+classes
+  : classes class
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {

@@ -1591,14 +1591,14 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
   return op_convert;
 }
 
-SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_classs) {
+SPVM_OP* SPVM_OP_build_grammar(SPVM_COMPILER* compiler, SPVM_OP* op_classes) {
   
   if (!compiler->op_grammar) {
-    compiler->op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_classs->file, op_classs->line);
+    compiler->op_grammar = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_GRAMMAR, op_classes->file, op_classes->line);
   }
   
   SPVM_OP* op_grammar = compiler->op_grammar;
-  SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_classs);
+  SPVM_OP_insert_child(compiler, op_grammar, op_grammar->last, op_classes);
 
   return op_grammar;
 }
@@ -1687,7 +1687,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   }
   else {
     // Add class
-    SPVM_LIST_push(compiler->classs, class);
+    SPVM_LIST_push(compiler->classes, class);
     SPVM_HASH_insert(compiler->class_symtable, class_name, strlen(class_name), class);
   }
   

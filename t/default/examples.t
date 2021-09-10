@@ -21,7 +21,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(1);
 }
 
-# This test case is a module contains multi classs
+# This test case is a module contains multi classes
 {
   my $outputs_length = 4;
   my $inputs_length = 3;

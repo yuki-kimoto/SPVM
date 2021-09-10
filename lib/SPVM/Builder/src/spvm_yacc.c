@@ -578,7 +578,7 @@ static const char *const yytname[] =
   "REMAINDER", "LOGICAL_NOT", "BIT_NOT", "'@'", "CREATE_REF", "DEREF",
   "PLUS", "MINUS", "CONVERT", "SCALAR", "STRING_LENGTH", "ISWEAK",
   "REFCNT", "REFOP", "DUMP", "INC", "DEC", "ARROW", "':'", "';'", "'}'",
-  "')'", "','", "']'", "$accept", "grammar", "opt_classs", "classs",
+  "')'", "','", "']'", "$accept", "grammar", "opt_classes", "classes",
   "class", "class_block", "opt_declarations", "declarations",
   "declaration", "init_block", "use", "require", "allow", "enumeration",
   "enumeration_block", "opt_enumeration_values", "enumeration_values",

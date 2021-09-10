@@ -67,7 +67,7 @@ class MyMath {
 
 <h4>Class Definition</h4>
 
-Write <b>Class Definition</b> by <b>class</b> keyword. Unlike Perl, SPVM always need class. The whole SPVM grammar is a set of classs.
+Write <b>Class Definition</b> by <b>class</b> keyword. Unlike Perl, SPVM always need class. The whole SPVM grammar is a set of classes.
 
 <pre>
 # Class Definition

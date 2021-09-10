@@ -88,14 +88,14 @@ struct spvm_compiler {
   // Types
   SPVM_LIST* op_types;
 
-  // Classs
-  SPVM_LIST* classs;
+  // Classes
+  SPVM_LIST* classes;
 
   // added_class_names tmp
   SPVM_LIST* tmp_added_class_names;
   
-  // added_classs
-  SPVM_LIST* added_classs;
+  // added_classes
+  SPVM_LIST* added_classes;
 
   // module file symtable
   SPVM_HASH* loaded_module_file_symtable;

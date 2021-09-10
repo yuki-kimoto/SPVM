@@ -87,8 +87,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
   
   {
     int32_t class_index;
-    for (class_index = compiler->cur_class_base; class_index < compiler->classs->length; class_index++) {
-      SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_index);
+    for (class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
+      SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
       SPVM_LIST* methods = class->methods;
       {
         int32_t method_index;
@@ -4772,7 +4772,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
   printf("\n[OP codes]\n");
-  SPVM_DUMPER_dump_classs_opcode_array(compiler, compiler->classs);
+  SPVM_DUMPER_dump_classes_opcode_array(compiler, compiler->classes);
 #endif
 
     

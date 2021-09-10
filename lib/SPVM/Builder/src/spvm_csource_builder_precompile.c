@@ -4246,7 +4246,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         int32_t line = opcode->operand2;
         
         const char* method_name = method->name;
-        SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classs, method->class->id);
+        SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
         const char* class_name = method_class->name;
         const char* file = method->class->module_file;
         

@@ -183,12 +183,12 @@ void SPVM_DUMPER_dump_constants(SPVM_COMPILER* compiler, SPVM_LIST* op_constants
   }
 }
 
-void SPVM_DUMPER_dump_classs(SPVM_COMPILER* compiler, SPVM_LIST* classs) {
+void SPVM_DUMPER_dump_classes(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
   {
     int32_t i;
-    for (i = 0; i < classs->length; i++) {
+    for (i = 0; i < classes->length; i++) {
       printf("class[%" PRId32 "]\n", i);
-      SPVM_CLASS* class = SPVM_LIST_fetch(classs, i);
+      SPVM_CLASS* class = SPVM_LIST_fetch(classes, i);
       
       if (class->op_name) {
         printf("  name => \"%s\"\n", class->op_name->uv.name);
@@ -225,12 +225,12 @@ void SPVM_DUMPER_dump_classs(SPVM_COMPILER* compiler, SPVM_LIST* classs) {
   }
 }
 
-void SPVM_DUMPER_dump_classs_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* classs) {
+void SPVM_DUMPER_dump_classes_opcode_array(SPVM_COMPILER* compiler, SPVM_LIST* classes) {
   {
     int32_t i;
-    for (i = 0; i < classs->length; i++) {
+    for (i = 0; i < classes->length; i++) {
       printf("class[%" PRId32 "]\n", i);
-      SPVM_CLASS* class = SPVM_LIST_fetch(classs, i);
+      SPVM_CLASS* class = SPVM_LIST_fetch(classes, i);
       
       if (class->op_name) {
         printf("  name => \"%s\"\n", class->op_name->uv.name);

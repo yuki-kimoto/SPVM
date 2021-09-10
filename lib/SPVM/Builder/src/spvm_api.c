@@ -1126,11 +1126,11 @@ void SPVM_API_call_begin_blocks(SPVM_ENV* env) {
   SPVM_COMPILER* compiler = env->compiler;
   
   // Call INIT blocks
-  int32_t classs_length = compiler->classs->length;
+  int32_t classes_length = compiler->classes->length;
   SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  for (int32_t class_id = 0; class_id < classs_length; class_id++) {
+  for (int32_t class_id = 0; class_id < classes_length; class_id++) {
     
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classs, class_id);
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     
     if (class->op_begin_method) {
       SPVM_METHOD* begin_method = class->op_begin_method->uv.method;
@@ -4257,7 +4257,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           int32_t line = opcode->operand2;
           
           const char* method_name = method->name;
-          SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classs, method->class->id);
+          SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
           const char* class_name = method_class->name;
           const char* file = class->module_file;
 
@@ -4288,7 +4288,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_WARN: {
         int32_t line = opcode->operand1;
         
-        SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classs, method->class->id);
+        SPVM_CLASS* method_class = SPVM_LIST_fetch(compiler->classes, method->class->id);
         const char* file = class->module_file;
         
         void* object = object_vars[opcode->operand0];
@@ -5263,8 +5263,8 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(compiler->basic_types, object_basic_type_id);
     SPVM_BASIC_TYPE* callback_basic_type = SPVM_LIST_fetch(compiler->basic_types, callback_basic_type_id);
 
-    SPVM_CLASS* object_class = SPVM_LIST_fetch(compiler->classs, object_basic_type->class->id);
-    SPVM_CLASS* callback_class = SPVM_LIST_fetch(compiler->classs, callback_basic_type->class->id);
+    SPVM_CLASS* object_class = SPVM_LIST_fetch(compiler->classes, object_basic_type->class->id);
+    SPVM_CLASS* callback_class = SPVM_LIST_fetch(compiler->classes, callback_basic_type->class->id);
     
     SPVM_METHOD* method_callback = SPVM_LIST_fetch(callback_class->methods, 0);
     

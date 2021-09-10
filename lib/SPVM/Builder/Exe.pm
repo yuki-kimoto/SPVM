@@ -143,7 +143,7 @@ sub create_precompile_csources {
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
 
-  # Build precompile classs
+  # Build precompile classes
   my $builder_c_precompile = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     category => 'precompile',
@@ -178,7 +178,7 @@ sub compile_precompile_csources {
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
 
-  # Build precompile classs
+  # Build precompile classes
   my $builder_c_precompile = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     category => 'precompile',
@@ -219,7 +219,7 @@ sub compile_native_csources {
   my $build_dir = $self->builder->build_dir;
   mkpath $build_dir;
 
-  # Build native classs
+  # Build native classes
   my $builder_c_native = SPVM::Builder::CC->new(
     build_dir => $build_dir,
     category => 'native',

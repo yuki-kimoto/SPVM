@@ -54,10 +54,10 @@ sub import {
       my $added_class_names = $BUILDER->get_added_class_names;
       for my $added_class_name (@$added_class_names) {
         
-        # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
+        # Build Precompile classes - Compile C source codes and link them to SPVM precompile method
         $BUILDER->build_and_bind_shared_lib($added_class_name, 'precompile');
 
-        # Build native classs - Compile C source codes and link them to SPVM native method
+        # Build native classes - Compile C source codes and link them to SPVM native method
         $BUILDER->build_and_bind_shared_lib($added_class_name, 'native');
       }
 
