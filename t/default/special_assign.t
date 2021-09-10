@@ -30,7 +30,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
 # Special assign subtract
 {
-  ok(SPVM::TestCase::SpecialAssign->special_assign_methodtract_var);
+  ok(SPVM::TestCase::SpecialAssign->special_assign_subtract_var);
 }
 
 # Special assign multiply

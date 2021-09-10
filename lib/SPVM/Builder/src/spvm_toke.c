@@ -463,7 +463,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
           SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
-          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_METHODTRACT;
+          op_special_assign->flag = SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT;
           
           yylvalp->opval = op_special_assign;
           

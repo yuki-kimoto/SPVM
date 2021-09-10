@@ -79,7 +79,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "MINUS",
     "PLUS",
     "ADD",
-    "METHODTRACT",
+    "SUBTRACT",
     "MULTIPLY",
     "DIVIDE",
     "BIT_AND",
@@ -1308,7 +1308,7 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_ADD:
-    case SPVM_OP_C_ID_METHODTRACT:
+    case SPVM_OP_C_ID_SUBTRACT:
     case SPVM_OP_C_ID_MULTIPLY:
     case SPVM_OP_C_ID_DIVIDE:
     case SPVM_OP_C_ID_REMAINDER:

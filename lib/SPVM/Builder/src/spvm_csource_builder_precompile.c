@@ -284,7 +284,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_add(SPVM_COMPILER* compiler, SPVM_STRIN
   SPVM_STRING_BUFFER_add(string_buffer, ";\n");
 }
 
-void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_methodtract(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
+void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_subtract(SPVM_COMPILER* compiler, SPVM_STRING_BUFFER* string_buffer, int32_t ctype_id, int32_t out_index, int32_t in1_index, int32_t in2_index) {
   SPVM_STRING_BUFFER_add(string_buffer, "  ");
   SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, ctype_id, out_index);
   SPVM_STRING_BUFFER_add(string_buffer, " = ");
@@ -1968,17 +1968,17 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
       case SPVM_OPCODE_C_ID_ADD_DOUBLE:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_add(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_INT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_methodtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
+      case SPVM_OPCODE_C_ID_SUBTRACT_INT:
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_subtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_LONG:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_methodtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, opcode->operand2);
+      case SPVM_OPCODE_C_ID_SUBTRACT_LONG:
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_subtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_LONG, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_FLOAT:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_methodtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
+      case SPVM_OPCODE_C_ID_SUBTRACT_FLOAT:
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_subtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_DOUBLE:
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_methodtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
+      case SPVM_OPCODE_C_ID_SUBTRACT_DOUBLE:
+        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_subtract(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0, opcode->operand1, opcode->operand2);
         break;
       case SPVM_OPCODE_C_ID_MULTIPLY_INT:
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_multiply(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_INT, opcode->operand0, opcode->operand1, opcode->operand2);
