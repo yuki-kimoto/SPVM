@@ -2087,7 +2087,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             SPVM_TYPE* arg_invocant_type = SPVM_TYPE_clone_type(compiler, op_type->uv.type);
             op_arg_first_type = SPVM_OP_new_op_type(compiler, arg_invocant_type, method->op_method->file, method->op_method->line);
             arg_my_first->type = op_arg_first_type->uv.type;
-            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_METHOD;
+            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
             assert(arg_invocant_type->basic_type);
           }
           else {
@@ -2098,7 +2098,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
           // Method having callback_t descriptor must be method
-          if (method->call_type_id != SPVM_METHOD_C_CALL_TYPE_ID_METHOD) {
+          if (method->call_type_id != SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
             SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor must be a method at %s line %d\n", method->op_method->file, method->op_method->line);
           }
           // Method having callback_t descriptor must be anon
@@ -2108,7 +2108,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         // If Method is anon, sub must be method
-        if (strlen(method_name) == 0 && method->call_type_id != SPVM_METHOD_C_CALL_TYPE_ID_METHOD) {
+        if (strlen(method_name) == 0 && method->call_type_id != SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
           SPVM_COMPILER_error(compiler, "Anon method must be method at %s line %d\n", method->op_method->file, method->op_method->line);
         }
 
@@ -2433,7 +2433,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
         SPVM_TYPE* type = op_arg->uv.var->my->type;
         if (type) {
           if (type->is_self) {
-            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_METHOD;
+            method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
           }
           else {
             method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_STATIC_METHOD;
@@ -2697,7 +2697,7 @@ SPVM_OP* SPVM_OP_build_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* op_inv
   
   // Method call
   if (op_invocant && op_invocant->id != SPVM_OP_C_ID_TYPE) {
-    call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_METHOD;
+    call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
     call_spvm_method->op_invocant = op_invocant;
     call_spvm_method->op_name = op_name_method;
     

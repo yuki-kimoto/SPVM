@@ -2598,7 +2598,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   if (op_parent_list->id == SPVM_OP_C_ID_LIST) {
                     SPVM_OP* op_parent_call_spvm_method =  SPVM_OP_get_parent(compiler, op_parent_list);
                     if (op_parent_call_spvm_method->id == SPVM_OP_C_ID_CALL_METHOD) {
-                      if (op_parent_call_spvm_method->uv.call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_METHOD) {
+                      if (op_parent_call_spvm_method->uv.call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
                         op_parent_call_spvm_method->uv.call_spvm_method->op_invocant = op_field_access;
                       }
                     }
@@ -4621,7 +4621,7 @@ void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* 
   
   const char* method_name = call_spvm_method->op_name->uv.name;
   // Method call
-  if (call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_METHOD) {
+  if (call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_spvm_method->op_invocant);
     if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
