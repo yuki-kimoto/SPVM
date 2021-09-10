@@ -1,0 +1,3 @@
+class TestCase::Comparator : callback_t {
+  sub : int ($self : self, $x : object, $y : object);
+}

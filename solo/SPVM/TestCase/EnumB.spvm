@@ -1,0 +1,5 @@
+class TestCase::EnumB {
+  enum {
+    ONE = 5
+  }
+}

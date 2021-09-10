@@ -1,0 +1,1 @@
+class TestCase::Pointer : pointer_t;

@@ -1,0 +1,12 @@
+class TestCase::Destructor {
+  has x : int;
+  has y : int;
+  
+  sub new : TestCase::Destructor () {
+    return new TestCase::Destructor;
+  }
+
+  sub DESTROY : void ($self : TestCase::Destructor) {
+    print("DESTROY\n");
+  }
+}

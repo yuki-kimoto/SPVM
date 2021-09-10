@@ -1,0 +1,6 @@
+class TestCase::EnumA {
+  enum {
+    ONE,
+    TWO,
+  }
+}

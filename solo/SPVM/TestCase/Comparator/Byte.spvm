@@ -1,0 +1,3 @@
+class TestCase::Comparator::Byte : callback_t {
+  sub : int ($self : self, $a : byte, $b : byte);
+}

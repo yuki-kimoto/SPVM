@@ -1,0 +1,4 @@
+class TestCase::Complex_2f : mulnum_t {
+  has re : float;
+  has im : float;
+}

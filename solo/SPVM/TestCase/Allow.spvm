@@ -1,0 +1,19 @@
+class TestCase::Allow {
+  use TestCase::Allow::PrivateData;
+  
+  sub allow_test : int () {
+    my $pdata = new TestCase::AllowData;
+    
+    $pdata->{x} = 2;
+    unless ($pdata->{x} == 2) {
+      return 0;
+    }
+    
+    $TestCase::AllowData::X = 3;
+    unless ($TestCase::AllowData::X == 3) {
+      return 0;
+    }
+    
+    return 1;
+  }
+}

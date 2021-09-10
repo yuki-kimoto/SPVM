@@ -561,6 +561,7 @@ solo/SPVM/TestCase/Comparator.spvm
 solo/SPVM/TestCase/Comparator/Byte.spvm
 solo/SPVM/TestCase/ComparatorAnon.spvm
 solo/SPVM/TestCase/Complex_2d.spvm
+solo/SPVM/TestCase/Complex_2f.spvm
 solo/SPVM/TestCase/ComplexCalc.spvm
 solo/SPVM/TestCase/Data/Weaken.spvm
 solo/SPVM/TestCase/Destructor.spvm

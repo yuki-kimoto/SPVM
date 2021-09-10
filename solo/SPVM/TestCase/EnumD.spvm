@@ -1,0 +1,8 @@
+class TestCase::EnumD {
+  enum {
+    ONE,
+    TWO,
+    THREE = 3,
+    FORE
+  }
+}

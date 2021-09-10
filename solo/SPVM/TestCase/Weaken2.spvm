@@ -1,0 +1,13 @@
+use TestCase::Weaken;
+
+class TestCase::Weaken2 {
+  has x1 : int;
+  has test_case : TestCase;
+  has weaken1 : TestCase::Weaken;
+  
+  set test_case, x1;
+  
+  sub new : TestCase::Weaken2 () {
+    return new TestCase::Weaken2;
+  }
+}

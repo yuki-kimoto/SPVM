@@ -1,0 +1,62 @@
+class TestCase::Simple : public {
+  use TestCase::EnumA;
+  use TestCase::Minimal;
+
+  has x : public int;
+  has y : public int;
+  has values1 : public int[];
+  has values2 : public long[];
+  has message : public byte[];
+  # has c : TestCase::Simple;
+  # has d : TestCase::Simple[];
+  has private_field : int;
+  
+  has title : public int;
+  
+  has minimal : rw public TestCase::Minimal;
+  
+  sub new : TestCase::Simple () {
+    return new TestCase::Simple;
+  }
+
+  sub get2 : int () {
+    1;
+    my $var1 : int;
+    my $var2 : int;
+    
+    return 0;
+  }
+
+  sub get3 : int () { return 0; }
+  sub get4 : int ($foo : int) { return 0; }
+  sub get7 : int ($foo : int, $bar : int) { return 0; }
+
+  sub sum4 : int ($self : self) {
+    
+    my $title : int;
+   
+    # $title->();
+    # $title->(1);
+    # $title->(1, 2);
+
+    $self->{x};
+    $self->sum5();
+
+    $self->{x} = 3;
+
+    my $char : byte = 'a';
+    
+    return 0;
+  }
+  
+  sub sum5 : int ($self : self) {
+    $self->{x};
+    
+    return 0;
+  }
+  
+  sub file : string () {
+    my $file = __FILE__;
+    return $file;
+  }
+}
