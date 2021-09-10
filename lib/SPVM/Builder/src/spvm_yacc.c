@@ -3175,7 +3175,7 @@ yyreduce:
   case 152:
 #line 827 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHODTRACT, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, (yyvsp[-1].opval)->file, (yyvsp[-1].opval)->line);
       (yyval.opval) = SPVM_OP_build_binary_op(compiler, op, (yyvsp[-2].opval), (yyvsp[0].opval));
     }
 #line 3182 "spvm_yacc.tab.c" /* yacc.c:1646  */

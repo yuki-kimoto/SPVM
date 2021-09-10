@@ -1317,7 +1317,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // 
               // [after]
               // ASSIGN
-              //   METHODTRACT
+              //   SUBTRACT
               //     TERM_MUTABLE
               //     CONST 1
               //   TERM_MUTABLE_CLONE
@@ -1330,9 +1330,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_OP* op_term_mutable_clone = SPVM_OP_new_op_term_mutable_clone(compiler, op_term_mutable);
               
-              SPVM_OP* op_methodtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHODTRACT, op_cur->file, op_cur->line);
+              SPVM_OP* op_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, op_cur->file, op_cur->line);
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-              SPVM_OP_build_binary_op(compiler, op_methodtract, op_term_mutable, op_constant);
+              SPVM_OP_build_binary_op(compiler, op_subtract, op_term_mutable, op_constant);
               
               SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               
@@ -1342,11 +1342,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               {
                 SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_cur->file, op_cur->line);
                 SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
-                SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_methodtract);
+                SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_subtract);
                 SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_convert);
               }
               else {
-                SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_methodtract);
+                SPVM_OP_build_assign(compiler, op_assign, op_term_mutable_clone, op_subtract);
               }
               
               SPVM_OP_replace_op(compiler, op_stab, op_assign);
@@ -1460,7 +1460,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               //     TERM_MUTABLE
               //     VAR_TMP1
               //   ASSIGN_ADD
-              //     METHODTRACT
+              //     SUBTRACT
               //       VAR_TMP2
               //       CONST 1
               //     TERM_MUTABLE_CLONE
@@ -1484,10 +1484,10 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_assign_tmp = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               SPVM_OP_build_assign(compiler, op_assign_tmp, op_var_tmp1, op_term_mutable);
 
-              SPVM_OP* op_methodtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHODTRACT, op_cur->file, op_cur->line);
+              SPVM_OP* op_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, op_cur->file, op_cur->line);
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_int(compiler, 1, op_cur->file, op_cur->line);
-              SPVM_OP_build_binary_op(compiler, op_methodtract, op_var_tmp2, op_constant);
-              SPVM_OP* op_assign_methodtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
+              SPVM_OP_build_binary_op(compiler, op_subtract, op_var_tmp2, op_constant);
+              SPVM_OP* op_assign_subtract = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
               
               SPVM_OP* op_term_mutable_clone = SPVM_OP_new_op_term_mutable_clone(compiler, op_term_mutable);
               if (SPVM_TYPE_is_byte_type(compiler, term_mutable_type->basic_type->id, term_mutable_type->dimension, term_mutable_type->flag)
@@ -1495,16 +1495,16 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               {
                 SPVM_OP* op_convert = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CONVERT, op_cur->file, op_cur->line);
                 SPVM_OP* op_dist_type = SPVM_OP_new_op_type(compiler, term_mutable_type, op_cur->file, op_cur->line);
-                SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_methodtract);
-                SPVM_OP_build_assign(compiler, op_assign_methodtract, op_term_mutable_clone, op_convert);
+                SPVM_OP_build_convert(compiler, op_convert, op_dist_type, op_subtract);
+                SPVM_OP_build_assign(compiler, op_assign_subtract, op_term_mutable_clone, op_convert);
               }
               else {
-                SPVM_OP_build_assign(compiler, op_assign_methodtract, op_term_mutable_clone, op_methodtract);
+                SPVM_OP_build_assign(compiler, op_assign_subtract, op_term_mutable_clone, op_subtract);
               }
 
               SPVM_OP* op_var_tmp3 = SPVM_OP_new_op_var_clone(compiler, op_var_tmp1, op_cur->file, op_cur->line);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_tmp);
-              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_methodtract);
+              SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_assign_subtract);
               SPVM_OP_insert_child(compiler, op_sequence, op_sequence->last, op_var_tmp3);
               
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
@@ -1549,8 +1549,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD:
                   culc_op_id = SPVM_OP_C_ID_ADD;
                   break;
-                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_METHODTRACT:
-                  culc_op_id = SPVM_OP_C_ID_METHODTRACT;
+                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT:
+                  culc_op_id = SPVM_OP_C_ID_SUBTRACT;
                   break;
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY:
                   culc_op_id = SPVM_OP_C_ID_MULTIPLY;
@@ -1599,7 +1599,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               int32_t need_conversion = 0;
               switch (op_cur->flag) {
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_ADD:
-                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_METHODTRACT:
+                case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_SUBTRACT:
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_MULTIPLY:
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_DIVIDE:
                 case SPVM_OP_C_FLAG_SPECIAL_ASSIGN_REMAINDER:
@@ -1785,7 +1785,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                                               
               break;
             }
-            case SPVM_OP_C_ID_METHODTRACT: {
+            case SPVM_OP_C_ID_SUBTRACT: {
               SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
@@ -2598,7 +2598,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   if (op_parent_list->id == SPVM_OP_C_ID_LIST) {
                     SPVM_OP* op_parent_call_spvm_method =  SPVM_OP_get_parent(compiler, op_parent_list);
                     if (op_parent_call_spvm_method->id == SPVM_OP_C_ID_CALL_METHOD) {
-                      if (op_parent_call_spvm_method->uv.call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_METHOD) {
+                      if (op_parent_call_spvm_method->uv.call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
                         op_parent_call_spvm_method->uv.call_spvm_method->op_invocant = op_field_access;
                       }
                     }
@@ -3595,7 +3595,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_NEXT:
                         case SPVM_OP_C_ID_BREAK:
                         case SPVM_OP_C_ID_ADD:
-                        case SPVM_OP_C_ID_METHODTRACT:
+                        case SPVM_OP_C_ID_SUBTRACT:
                         case SPVM_OP_C_ID_MULTIPLY:
                         case SPVM_OP_C_ID_DIVIDE:
                         case SPVM_OP_C_ID_BIT_AND:
@@ -4621,7 +4621,7 @@ void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* 
   
   const char* method_name = call_spvm_method->op_name->uv.name;
   // Method call
-  if (call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_METHOD) {
+  if (call_spvm_method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_spvm_method->op_invocant);
     if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);

@@ -1835,16 +1835,16 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_ADD_DOUBLE:
         double_vars[opcode->operand0] = double_vars[opcode->operand1] + double_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_INT:
+      case SPVM_OPCODE_C_ID_SUBTRACT_INT:
         int_vars[opcode->operand0] = int_vars[opcode->operand1] - int_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_LONG:
+      case SPVM_OPCODE_C_ID_SUBTRACT_LONG:
         long_vars[opcode->operand0] = long_vars[opcode->operand1] - long_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_FLOAT:
+      case SPVM_OPCODE_C_ID_SUBTRACT_FLOAT:
         float_vars[opcode->operand0] = float_vars[opcode->operand1] - float_vars[opcode->operand2];
         break;
-      case SPVM_OPCODE_C_ID_METHODTRACT_DOUBLE:
+      case SPVM_OPCODE_C_ID_SUBTRACT_DOUBLE:
         double_vars[opcode->operand0] = double_vars[opcode->operand1] - double_vars[opcode->operand2];
         break;
       case SPVM_OPCODE_C_ID_MULTIPLY_INT:
