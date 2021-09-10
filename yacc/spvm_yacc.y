@@ -14,19 +14,19 @@
   #include "spvm_type.h"
   #include "spvm_block.h"
   #include "spvm_list.h"
-  #include "spvm_package.h"
+  #include "spvm_class.h"
 %}
 
-%token <opval> PACKAGE HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
+%token <opval> CLASS HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
-%token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_PACKAGE UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
-%type <opval> opt_packages packages package package_block
+%type <opval> opt_classs classs class class_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
 %type <opval> method anon_method opt_args args arg invocant has use require our
@@ -61,18 +61,18 @@
 %%
 
 grammar
-  : opt_packages
+  : opt_classs
     {
       $$ = SPVM_OP_build_grammar(compiler, $1);
       compiler->op_grammar = $$;
     }
 
-opt_packages
+opt_classs
   : /* Empty */
     {
       $$ = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
     }
-  | packages
+  | classs
     {
       if ($1->id == SPVM_OP_C_ID_LIST) {
         $$ = $1;
@@ -84,8 +84,8 @@ opt_packages
       }
     }
   
-packages
-  : packages package
+classs
+  : classs class
     {
       SPVM_OP* op_list;
       if ($1->id == SPVM_OP_C_ID_LIST) {
@@ -99,27 +99,27 @@ packages
       
       $$ = op_list;
     }
-  | package
+  | class
 
-package
-  : PACKAGE basic_type package_block
+class
+  : CLASS basic_type class_block
     {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, $3, NULL);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, $3, NULL);
     }
-  | PACKAGE basic_type ':' opt_descriptors package_block
+  | CLASS basic_type ':' opt_descriptors class_block
     {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, $5, $4);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, $5, $4);
     }
-  | PACKAGE basic_type ';'
+  | CLASS basic_type ';'
     {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, NULL, NULL);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, NULL);
     }
-  | PACKAGE basic_type ':' opt_descriptors ';'
+  | CLASS basic_type ':' opt_descriptors ';'
     {
-      $$ = SPVM_OP_build_package(compiler, $1, $2, NULL, $4);
+      $$ = SPVM_OP_build_class(compiler, $1, $2, NULL, $4);
     }
 
-package_block
+class_block
   : '{' opt_declarations '}'
     {
       SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, $1->file, $1->line);
@@ -724,7 +724,7 @@ expression
         $$ = $2;
       }
     }
-  | CURRENT_PACKAGE
+  | CURRENT_CLASS
   | isweak_field
   | comparison_op
   | isa
@@ -969,8 +969,8 @@ new
       // Method
       SPVM_OP* op_method = $1;
       
-      // Package
-      SPVM_OP* op_package = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_PACKAGE, op_method->file, op_method->line);
+      // Class
+      SPVM_OP* op_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS, op_method->file, op_method->line);
       
       // Create class block
       SPVM_OP* op_class_block = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CLASS_BLOCK, op_method->file, op_method->line);
@@ -978,11 +978,11 @@ new
       SPVM_OP_insert_child(compiler, op_list_declarations, op_list_declarations->last, op_method);
       SPVM_OP_insert_child(compiler, op_class_block, op_class_block->last, op_list_declarations);
       
-      // Build package
-      SPVM_OP_build_package(compiler, op_package, NULL, op_class_block, NULL);
+      // Build class
+      SPVM_OP_build_class(compiler, op_class, NULL, op_class_block, NULL);
 
       // Type
-      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_package->uv.package->op_type->uv.type, op_method->file, op_method->line);
+      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, op_class->uv.class->op_type->uv.type, op_method->file, op_method->line);
       
       // New
       SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_method->file, op_method->line);

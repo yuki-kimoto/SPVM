@@ -563,10 +563,10 @@ static const yytype_uint16 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "CLASS", "HAS", "METHOD", "OUR",
-  "ENUM", "MY", "SELF", "USE", "REQUIRE", "ALLOW", "DESCRIPTOR", "IF",
-  "UNLESS", "ELSIF", "ELSE", "FOR", "WHILE", "LAST", "NEXT", "SWITCH",
-  "CASE", "DEFAULT", "BREAK", "EVAL", "NAME", "VAR_NAME", "CONSTANT",
+  "$end", "error", "$undefined", "CLASS", "HAS", "METHOD", "OUR", "ENUM",
+  "MY", "SELF", "USE", "REQUIRE", "ALLOW", "DESCRIPTOR", "IF", "UNLESS",
+  "ELSIF", "ELSE", "FOR", "WHILE", "LAST", "NEXT", "SWITCH", "CASE",
+  "DEFAULT", "BREAK", "EVAL", "NAME", "VAR_NAME", "CONSTANT",
   "EXCEPTION_VAR", "UNDEF", "VOID", "BYTE", "SHORT", "INT", "LONG",
   "FLOAT", "DOUBLE", "STRING", "OBJECT", "DOT3", "FATCAMMA", "RW", "RO",
   "WO", "INIT", "NEW", "RETURN", "WEAKEN", "DIE", "WARN", "PRINT",
