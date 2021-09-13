@@ -15,7 +15,7 @@ class TestCase::Simple : public {
   
   has minimal : rw public TestCase::Minimal;
   
-  sub new : TestCase::Simple () {
+  static method new : TestCase::Simple () {
     return new TestCase::Simple;
   }
 
@@ -31,7 +31,7 @@ class TestCase::Simple : public {
   sub get4 : int ($foo : int) { return 0; }
   sub get7 : int ($foo : int, $bar : int) { return 0; }
 
-  sub sum4 : int ($self : self) {
+  method sum4 : int () {
     
     my $title : int;
    
