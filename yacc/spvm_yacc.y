@@ -17,7 +17,7 @@
   #include "spvm_class.h"
 %}
 
-%token <opval> CLASS HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
+%token <opval> CLASS HAS METHOD OUR ENUM MY USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -29,7 +29,7 @@
 %type <opval> opt_classes classes class class_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> method anon_method opt_args args arg invocant has use require our
+%type <opval> method anon_method opt_args args arg has use require our
 %type <opval> opt_descriptors descriptors method_names opt_method_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
@@ -338,31 +338,6 @@ opt_args
         $$ = op_list;
       }
     }
-  | invocant
-    {
-       // Add invocant to arguments
-       SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
-       SPVM_OP_insert_child(compiler, op_args, op_args->last, $1);
-       
-       $$ = op_args;
-    }
-  | invocant ',' args
-    {
-      // Add invocant to arguments
-      SPVM_OP* op_args;
-      if ($3->id == SPVM_OP_C_ID_LIST) {
-        op_args = $3;
-      }
-      else {
-        SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, $1->file, $1->line);
-        SPVM_OP_insert_child(compiler, op_list, op_list->last, $3);
-        op_args = op_list;
-      }
-      
-      SPVM_OP_insert_child(compiler, op_args, op_args->first, $1);
-       
-      $$ = op_args;
-    }
 
 args
   : args ',' arg
@@ -394,16 +369,6 @@ opt_vaarg
       $$ = NULL;
     }
   | DOT3
-
-invocant
-  : var ':' SELF
-    {
-      SPVM_TYPE* type = SPVM_TYPE_new(compiler);
-      type->is_self = 1;
-      SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, $3->file, $3->line);
-      
-      $$ = SPVM_OP_build_arg(compiler, $1, op_type);
-    }
 
 opt_descriptors
   : /* Empty */

@@ -1998,11 +1998,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 break;
               }
               case 's' : {
-                if (strcmp(keyword, "self") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SELF);
-                  return SELF;
-                }
-                else if (strcmp(keyword, "static") == 0) {
+                if (strcmp(keyword, "static") == 0) {
                   SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
                   yylvalp->opval = op_descriptor;
                   return DESCRIPTOR;
@@ -2010,12 +2006,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (strcmp(keyword, "switch") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SWITCH);
                   return SWITCH;
-                }
-                else if (strcmp(keyword, "sub") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP_with_keyword_start_pos(compiler, SPVM_OP_C_ID_METHOD, keyword_start_pos);
-                  compiler->expect_method_name = 1;
-                  
-                  return METHOD;
                 }
                 else if (strcmp(keyword, "string") == 0) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_STRING);
