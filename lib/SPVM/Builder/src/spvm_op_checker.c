@@ -2308,7 +2308,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     }
                   }
                   else {
-                    SPVM_COMPILER_error(compiler, "%s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Local variable %s is not declared at %s line %d\n", var->op_name->uv.name, op_cur->file, op_cur->line);
                     return;
                   }
                 }
