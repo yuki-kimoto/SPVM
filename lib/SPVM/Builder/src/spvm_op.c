@@ -2456,7 +2456,6 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           }
         }
       }
-      SPVM_LIST_push(method->args, op_arg->uv.var->my);
       method_index++;
     }
   }
@@ -2464,11 +2463,8 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     op_args = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
   }
   
-  // warn("BBBBBB %s %d %d", method_name, method->is_class_method, op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB);
-  
+  // Add $self : self before the first argument
   if (!method->is_class_method && op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB) {
-    // warn("AAAAAAAA");
-    
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
     SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
@@ -2476,9 +2472,16 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
     SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type);
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
-    
-    // SPVM_DUMPER_dump_ast(compiler, op_args);
-    
+  }
+
+  // Add method arguments
+  {
+    int32_t method_index = 0;
+    SPVM_OP* op_arg = op_args->first;
+    while ((op_arg = SPVM_OP_sibling(compiler, op_arg))) {
+      SPVM_LIST_push(method->args, op_arg->uv.var->my);
+      method_index++;
+    }
   }
 
   // Capture variables
@@ -2513,7 +2516,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
 
     SPVM_OP* op_list_statement = op_block->first;
 
-    // 2. Add variable declaration to first of block
+    // 1. Add variable declaration to first of block
     {
       int32_t i;
       for (i = method->args->length - 1; i >= 0; i--) {
@@ -2529,7 +2532,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
       }
     }
 
-    // 1. Add condition_flag variable to first of block
+    // 2. Add condition_flag variable to first of block
     {
       char* name = "@condition_flag";
       SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_list_statement->file, op_list_statement->last->line + 1);
