@@ -54,7 +54,7 @@ L<IntList|SPVM::IntList> is dynamic int array.
 
 =head2 new
 
-    sub new : IntList ($array : int[])
+    static method new : IntList ($array : int[])
 
 Create a new L<IntList|SPVM::IntList> object with specific C<int> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : IntList ($length : int)
+    static method new_len : IntList ($length : int)
 
 Create a new L<IntList|SPVM::IntList> object with array length.
 
@@ -72,44 +72,44 @@ Create a new L<IntList|SPVM::IntList> object with array length.
 
 =head2 get
 
-  sub get : int ($self : self, $index : int)
+  method get : int ($index : int)
 
 Get the value with index.
 
 =head2 insert
 
-  sub insert : void ($self : self, $index : int, $value : int)
+  method insert : void ($index : int, $value : int)
 
 Insert a element to the specific index.
 
 =head2 length
   
-  sub length : int ()
+  static method length : int ()
 
 Get list length.
 
 =head2 pop
 
-  sub pop : int ($self : self)
+  method pop : int ()
 
 Pops and returns the last value of the list, shortening the array by one element
 If there are no elements in the list, exception occur.
 
 =head2 push
   
-  sub push : void ($self : self, $value : int)
+  method push : void ($value : int)
 
 Appending the value to the end of list.
 
 =head2 remove
 
-  sub remove : int ($self : self, $index : int)
+  method remove : int ($index : int)
 
 Remove and return the element which is specified by the index.
 
 =head2 resize
 
-  sub resize : void ($self : self, $new_length : int)
+  method resize : void ($new_length : int)
 
 Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to 0.
 
@@ -117,13 +117,13 @@ New length must be more than or equals to 0, otherwise a exception occur.
 
 =head2 set
 
-  sub set : void ($self : self, $index : int, $value : int)
+  method set : void ($index : int, $value : int)
 
 Set the value with index.
 
 =head2 set_array
 
-  sub set_array : void ($self : self, $array : int[])
+  method set_array : void ($array : int[])
 
 Set a array. Each elements of the array is copied to the correspoinding index of the array this list has.
 
@@ -133,7 +133,7 @@ The length of argument array must be same as the length of current list array, o
 
 =head2 shift
 
-  sub shift : int ($self : self)
+  method shift : int ()
 
 Shifts the first value of the list off and returns it, shortening
 the array by 1 and moving everything down.
@@ -141,13 +141,13 @@ If there are no elements in the list, exception occur.
 
 =head2 to_array
 
-  sub to_array : int[] ($self : self)
+  method to_array : int[] ()
 
 Convert L<IntList|SPVM::IntList> to int array.
 
 =head2 unshift
 
-  sub unshift : void ($self : self, $value : int)
+  method unshift : void ($value : int)
 
 Appending the value to the top of list.
 

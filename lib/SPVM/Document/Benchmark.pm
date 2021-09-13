@@ -102,7 +102,7 @@ Benchmark raw output
 B<SPVM/MyMath.spvm>
 
   class MyMath {
-    sub spvm_sum : int ($loop_count : int) {
+    static method spvm_sum : int ($loop_count : int) {
       
       my $total = 0;
       for (my $i = 0; $i < $loop_count; $i++) {
@@ -116,7 +116,7 @@ B<SPVM/MyMath.spvm>
 B<SPVM/MyMathPrecompile.spvm>
 
   class MyMathPrecompile : precompile {
-    sub spvm_sum : int ($loop_count : int) {
+    static method spvm_sum : int ($loop_count : int) {
       
       my $total = 0;
       for (my $i = 0; $i < $loop_count; $i++) {
@@ -130,7 +130,7 @@ B<SPVM/MyMathPrecompile.spvm>
 B<SPVM/MyMathNative.spvm>
 
   class MyMathNative {
-    native sub spvm_sum : int ($loop_count : int);
+    native static method spvm_sum : int ($loop_count : int);
   }
 
 B<SPVM/MyMath.config>

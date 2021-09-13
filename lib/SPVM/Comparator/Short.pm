@@ -10,7 +10,7 @@ SPVM::Comparator::Short - Comparator::Short in SPVM | a callback interface for s
   
   use Comparator::Short;
   
-  my $comparator : Comparator::Short = sub : int ($self : self, $a : short, $b : short); {
+  my $comparator : Comparator::Short = method : int ($a : short, $b : short); {
     return $a <=> $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::Short|SPVM::Comparator::Short> is a callback interface to compare 
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $a : short, $b : short);
+  method : int ($a : short, $b : short);
 
 This method must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
 

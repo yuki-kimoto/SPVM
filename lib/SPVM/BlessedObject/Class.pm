@@ -23,7 +23,7 @@ You can call all methods declaraed in the class.
     haz x : int;
     haz y : int;
     
-    sub new : Point ($x : int, $y : int) {
+    static method new : Point ($x : int, $y : int) {
       my $self = new Point;
       
       $self->{x} = $x;
@@ -32,16 +32,16 @@ You can call all methods declaraed in the class.
       return $self;
     }
     
-    sub clear : void ($self : self) {
+    method clear : void () {
       $self->{x} = 0;
       $self->{y} = 0;
     }
     
-    sub set_x : void ($self : self, $value : int) {
+    method set_x : void ($value : int) {
       $self->{x} = $value;
     }
     
-    sub x ($self : self) {
+    method x () {
       return $self->{x};
     }
   }

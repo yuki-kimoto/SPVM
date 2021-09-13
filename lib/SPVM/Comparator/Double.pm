@@ -10,7 +10,7 @@ SPVM::Comparator::Double - Comparator::Double in SPVM | a callback interface for
   
   use Comparator::Double;
   
-  my $comparator : Comparator::Double = sub : int ($self : self, $a : double, $b : double); {
+  my $comparator : Comparator::Double = method : int ($a : double, $b : double); {
     return $a <=> $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::Double|SPVM::Comparator::Double> is a callback interface to compar
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $a : double, $b : double);
+  method : int ($a : double, $b : double);
 
 This method must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
 

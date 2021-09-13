@@ -28,7 +28,7 @@ String buffer.
 
 =head2 new
 
-  sub new : StringBuffer ()
+  static method new : StringBuffer ()
 
 Create new L<StringBuffer|SPVM::StringBuffer> object.
 
@@ -36,24 +36,24 @@ Create new L<StringBuffer|SPVM::StringBuffer> object.
 
 =head2 length
 
-  sub length : int ($self : self)
+  method length : int ()
 
 Get the string length.
 
 =head2 push
 
-  sub push  : void ($self : self, $string : string)
+  method push  : void ($string : string)
 
 Push a string to the string buffer.
 
 =head2 push_char
 
-  sub push_char : void ($self : self, $char : byte)
+  method push_char : void ($char : byte)
 
 Push a character to the string buffer.
 
 =head2 to_string
 
-  sub to_string : string ($self : self)
+  method to_string : string ()
 
 Convert the string buffer to a string.

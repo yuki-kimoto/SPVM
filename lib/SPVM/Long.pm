@@ -25,7 +25,7 @@ L<Long|SPVM::Long> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : Long ($value : long)
+  static method new : Long ($value : long)
 
 Create a new L<Long|SPVM::Long> object with a C<long> value.
 
@@ -33,6 +33,6 @@ Create a new L<Long|SPVM::Long> object with a C<long> value.
 
 =head2 value
 
-  sub value : long ($self : self)
+  method value : long ()
 
 Get a C<long> value.

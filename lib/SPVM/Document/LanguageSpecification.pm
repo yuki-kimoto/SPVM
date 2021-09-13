@@ -1247,7 +1247,7 @@ class Foo {
   }
 
   # Method Definition
-  sub foo : int ($num : int) {
+  static method foo : int ($num : int) {
 
   }
 }
@@ -1335,7 +1335,7 @@ Destructor Retrun Value must be <a href="#language-type-void">void Type</a>, oth
 Destructor arguments must be one and the type must be <a href="#language-type-self">self Type</a>, otherwise Compile Error occurs.
 
 <pre>
-sub DESTROY : void ($self : self) {
+method DESTROY : void () {
 
 }
 </pre>
@@ -1346,11 +1346,11 @@ If a <a href="#language-exception-occur">Exception</a> occurs in Destructor, the
 
 <pre>
 class Foo {
-  sub new : Foo {
+  static method new : Foo {
     return new Foo;
   }
 
-  sub DESTROY : void ($self : self) {
+  method DESTROY : void () {
     print "DESTROY";
   }
 }
@@ -1839,10 +1839,10 @@ See <a href="#language-expression-set-field-multi-numeric-deref">Set Multi Numer
 "sub" Keyword defines Method.
 
 <pre>
-sub METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
+static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
 
 }
-sub METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
+static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
 
 }
 </pre>
@@ -1868,10 +1868,10 @@ The defined Method can be called. See <a href="#language-expression-callsub">Met
 Method Definition can have <a href="#language-method-descriptor">Method Descriptor</a>.
 
 <pre>
-DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN sub METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
+DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME () {
 
 }
-DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN sub METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
+DESCRIPTOR1 DESCRIPTOR2 DESCRIPTORN static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2, ARGUMENT_NAMEN : ARGUMENT_TYPE_NAMEN) {
 
 }
 </pre>
@@ -1882,7 +1882,7 @@ If "..." follows Type of Argument, the Argument becomes Variable Length Argument
 The Type must be <a href="#language-type-array">Array Type</a>.
 
 <pre>
-sub METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2...) {
+static method METHOD_NAME : RETURN_VALUE_TYPE_NAME (ARGUMENT_NAME1 : ARGUMENT_TYPE_NAME1, ARGUMENT_NAME2 : ARGUMENT_TYPE_NAME2...) {
 
 }
 </pre>
@@ -1891,7 +1891,7 @@ Variable Length Argument can recieve multi values.
 
 <pre>
 # Variable Length Argument Definition
-sub sprintf : string ($format : string, $values : object[]...) {
+static method sprintf : string ($format : string, $values : object[]...) {
 
 }
 
@@ -1956,10 +1956,10 @@ Precompiled Method needs Build Directory described in <a href="/native-api.html"
 Constant Method is a Method that Return Type is <a href="#language-type-numeric">Numeric Type</a> and returns Constant Value.
 
 <pre>
-sub foo : int () { return 5; }
-sub foo : long () { return 5L; }
-sub foo : float () { return 5.0f; }
-sub foo : double () { return 5.0; }
+static method foo : int () { return 5; }
+static method foo : long () { return 5L; }
+static method foo : float () { return 5.0f; }
+static method foo : double () { return 5.0; }
 </pre>
 
 Inline Expansion optimization is performed to Constant Method.
@@ -1968,7 +1968,7 @@ Note that SPVM does not perform constant convolution optimization, so if a const
 
 <pre>
 # This is not Constant Method.  Inline Expansion is not performed
-sub foo : int () { return 5 + 3; }
+static method foo : int () { return 5 + 3; }
 </pre>
 
 <h3 id="language-method-method">Method</h3>
@@ -1976,7 +1976,7 @@ sub foo : int () { return 5 + 3; }
 Method is Method that has <a href="#language-type-self">self Type</a> as its first argument.
 
 <pre>
-sub METHOD_NAME : TYPE  ($self : self, ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
+method METHOD_NAME : TYPE  (ARGUMENT2 : TYPE2, ARGUMENT3 : TYPE3, ARGUMENTN : TYPEn) {
 
 }
 </pre>
@@ -2003,13 +2003,13 @@ Signature is a string that follow the following rule sequence of Method Retrun V
 
 <pre>
 # Method Definition
-sub foo : int ($num1 : double, $num2 : long[])
+static method foo : int ($num1 : double, $num2 : long[])
 
 # Signature
 int(double,long[])
 
 # Method Definition
-sub foo : void ()
+static method foo : void ()
 
 # Signature
 void()
@@ -2086,9 +2086,9 @@ enum {
 Enumeration is an alias for <a href="#language-method-constant">Constant Method</a> that Return Type is <a href="#language-type-int">int Type</a>. It is equivalent to the following Method Definition:
 
 <pre>
-sub FLAG1 : int () { return 0; }
-sub FLAG2 : int () { return 1; }
-sub FLAG3 : int () { return 2; }
+static method FLAG1 : int () { return 0; }
+static method FLAG2 : int () { return 1; }
+static method FLAG3 : int () { return 2; }
 </pre>
 
 The value of <a href="#language-type-int">int Type</a> can be set in the enum element.
@@ -2422,7 +2422,7 @@ Method Block is a scope block.
 
 <pre>
 # Method Block
-sub foo : int () {
+static method foo : int () {
 
 }
 </pre>
@@ -3306,7 +3306,7 @@ Target of Reference Operator is Variable of <a href="#language-type-numeric">Num
 
 <pre>
 # Method Definition
-sub sum : void ($out_ref : int&, $in1 : int, $in2 : int) {
+static method sum : void ($out_ref : int&, $in1 : int, $in2 : int) {
   $$out_ref = $in1 + $in2;
 }
 
@@ -3448,7 +3448,7 @@ If you try to access a private Class Variable from outside the Class, Compile Er
 class Foo {
   our $VAR : int;
 
-  sub bar : int () {
+  static method bar : int () {
     my $var1 = $Foo::VAR;
     my $var2 = $VAR;
   }
@@ -3488,7 +3488,7 @@ If an object has already been assigned to Class Variable before the assignment, 
 class Foo {
   our $VAR : int;
 
-  sub bar : int () {
+  static method bar : int () {
     $Foo::VAR = 1;
     $VAR = 3;
   }
@@ -3927,7 +3927,7 @@ Function Call is <a href="#language-expression">Expression</a>.
 class Foo {
   use Math(sin);
   
-  sub test : void () {
+  static method test : void () {
     my $ret = sin(3.0);
   }
 }
@@ -3973,7 +3973,7 @@ OBJECT_EXPRESSION->(ARGS1, ARGS2, ARGS3, ..., ARGSn);
   An Example that calls a Method from the object created by Create Callback Object.
 </p>
 <pre>
-my $cb_obj = sub : int ($self: self, $num1 : int, $num2 : int) {
+my $cb_obj = method : int ($num1 : int, $num2 : int) {
   return $num1 + $num2;
 };
 
@@ -4051,7 +4051,7 @@ __CLASS__
 </p>
 <pre>
 class Foo::Bar {
-  sub baz : void () {
+  static method baz : void () {
     # Foo::Bar
     my $class_name == __CLASS__;
   }
@@ -4073,13 +4073,13 @@ Current File Name means the relative path from the base path of the module file.
 <pre>
 # SPVM/Foo/Bar.spvm
 class Foo::Bar {
-  sub baz : void () {
+  static method baz : void () {
     # SPVM/Foo/Bar.spvm
     my $file_name == __FILE__;
   }
 }
 class Foo::Bar2 {
-  sub baz : void () {
+  static method baz : void () {
     # SPVM/Foo/Bar.spvm
     my $file_name == __FILE__;
   }
@@ -4099,7 +4099,7 @@ __LINE__
 </p>
 <pre>
 class Foo::Bar {
-  sub baz : void () {
+  static method baz : void () {
     # 4
     my $line = __LINE__;
   }
@@ -6598,7 +6598,7 @@ Callback Type is a <a href="#language-type-class">Class Type</a> with <a href="#
 
 <pre>
 class Comparator: callback_t {
-  sub: int ($self: self, $x1: object, $x2: object);
+  method: int ($x1: object, $x2: object);
 }
 </pre>
 
@@ -6621,16 +6621,16 @@ The variable of Callback Type can be assigned a <a href="#language-type-class">C
 <pre>
 # Callback Type Definition
 class Comparator: callback_t {
-  sub: int ($self: self, $x1: object, $x2: object);
+  method: int ($x1: object, $x2: object);
 }
 
 # Class Definition
 class SomeComparator {
-  sub new: int () {
+  static method new: int () {
     return new SomeComparator;
   }
 
-  sub: int ($self: self, $x1: object, $x2: object) {
+  method: int ($x1: object, $x2: object) {
 
   }
 }
@@ -6644,11 +6644,11 @@ my $comparator: Comparator = SomeComparator->new;
 <pre>
 Definition of #Callback Type
 class Comparator: callback_t {
-  sub: int ($self: self, $x1: object, $x2: object);
+  method: int ($x1: object, $x2: object);
 }
 
 # The object which is created by Create Callback Object can be assign to the variable of Callback Type
-my $comparator : Comparator = sub: int ($self: self, $x1: object, $x2: object) {
+my $comparator : Comparator = method: int ($x1: object, $x2: object) {
 
 }
 </pre>
@@ -7599,30 +7599,30 @@ See <a href="#language-expression-set-exception-var">Set Exception Variable Valu
 </p>
 <pre>
 class Foo1 {
-  sub new : Foo1 () {
+  static method new : Foo1 () {
     new Foo1;
   }
-  sub : int ($self : self, $num : int) {
+  method : int ($num : int) {
     return 1 + $num;
   }
 }
 
 class Foo2 {
-  sub new : Foo2 () {
+  static method new : Foo2 () {
     new Foo2;
   }
-  sub : int ($self : self, $num : int) {
+  method : int ($num : int) {
     return 2 + $num;
   }
 }
 
 class FooCallback : callback_t {
-sub : int ($self : self, $num : int);
+method : int ($num : int);
 }
 </pre>
 
 <p>
-  Foo1 and Foo2 have the same MethodDefinition "sub: int ($self: self, $num: int)". Now suppose you want to selectively call the Foo1 or :Foo2 Method.
+  Foo1 and Foo2 have the same MethodDefinition "method: int ($num: int)". Now suppose you want to selectively call the Foo1 or :Foo2 Method.
 </p>
 <p>
   In this case, if you define a Callback Type FooCallback with the same MethodDefinition, you can assign either object to this Type. Then you can call Method from this object.
@@ -7657,7 +7657,7 @@ my $ret = $foo->(5);
 </p>
 
 <pre>
-sub : TYPE_NAME  ($self : self, ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
+method : TYPE_NAME  (ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
 
 }
 </pre>
@@ -7667,7 +7667,7 @@ sub : TYPE_NAME  ($self : self, ARGS1 : TYPE1, ARGS2 : TYPE2, ARGSN : TYPEn) {
 </p>
 
 <pre>
-my $cb_obj = sub : TYPE ($self : self, ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
+my $cb_obj = method : TYPE (ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn : TYPEn) {
 
 };
 </pre>
@@ -7681,7 +7681,7 @@ my $cb_obj = sub : TYPE ($self : self, ARGS1 : TYPE1, ARGS2 : TYPE2, ..., ARGSn 
 </p>
 
 <pre>
-my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator = method : int ($x1 : object, $x2 : object) {
 
 }
 </pre>
@@ -7696,7 +7696,7 @@ my $comparator = sub : int ($self : self, $x1 : object, $x2 : object) {
 </p>
 <pre>
 # Capture
-[VariableName1 : Type1, VariableName2 : Type2] sub Method Name : int ($self : self, $x1 : object, $x2 : object) {
+[VariableName1 : Type1, VariableName2 : Type2] method Method Name : int ($x1 : object, $x2 : object) {
 
 };
 </pre>
@@ -7707,7 +7707,7 @@ Capture Example.
 my $foo = 1;
 my $bar = 5L;
 
-my $comparator = [$foo : int, $bar : long] sub : int ($self : self, $x1 : object, $x2 : object) {
+my $comparator = [$foo : int, $bar : long] method : int ($x1 : object, $x2 : object) {
 
   print "$foo\n";
   print "$bar\n";
@@ -7734,7 +7734,7 @@ class ComapartorImpl {
   has foo : int;
   has bar : long;
 
-  sub : int ($self : self, $x1 : object, $x2 : object) {
+  method : int ($x1 : object, $x2 : object) {
     print $self->{foo} . "\n";
     print $self->{bar} . "\n";
   }

@@ -25,7 +25,7 @@ L<Float|SPVM::Float> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : Float ($value : float)
+  static method new : Float ($value : float)
 
 Create a new L<Float|SPVM::Float> object with a C<float> value.
 
@@ -33,6 +33,6 @@ Create a new L<Float|SPVM::Float> object with a C<float> value.
 
 =head2 value
 
-  sub value : float ($self : self)
+  method value : float ()
 
 Get a C<float> value.

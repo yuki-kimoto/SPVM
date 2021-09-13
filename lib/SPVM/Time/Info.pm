@@ -57,7 +57,7 @@ Time information
 
 =head2 new
 
-  sub new : Time::Info ()
+  static method new : Time::Info ()
 
 Create a new L<Time::Info|SPVM::Time::Info> object.
 
@@ -67,7 +67,7 @@ Create a new L<Time::Info|SPVM::Time::Info> object.
 
 =head2 sec
 
-  sub sec : int ($self : self)
+  method sec : int ()
 
 Get second.
 
@@ -75,7 +75,7 @@ Get second.
 
 =head2 set_sec
 
-  sub set_sec : void ($self : self, $sec : int)
+  method set_sec : void ($sec : int)
 
 Set second.
 
@@ -83,7 +83,7 @@ Set second.
 
 =head2 min
   
-  sub min : int ($self : self)
+  method min : int ()
 
 Get minutes.
 
@@ -91,7 +91,7 @@ Get minutes.
 
 =head2 set_min
 
-  sub set_min : void ($self : self, $min : int)
+  method set_min : void ($min : int)
 
 Set minutes.
 
@@ -99,7 +99,7 @@ Set minutes.
 
 =head2 hour
 
-  sub min : int ($self : self)
+  method min : int ()
 
 Get hour.
 
@@ -107,7 +107,7 @@ Get hour.
 
 =head2 set_hour
 
-  sub set_min : void ($self : self, $min : int)
+  method set_min : void ($min : int)
 
 Set hour.
 
@@ -115,7 +115,7 @@ Set hour.
 
 =head2 mday
 
-  sub mday : int ($self : self)
+  method mday : int ()
 
 Get day of month.
 
@@ -123,7 +123,7 @@ Get day of month.
 
 =head2 set_mday
 
-  sub set_mday : void ($self : self, $mday : int)
+  method set_mday : void ($mday : int)
 
 Set day of month.
 
@@ -131,7 +131,7 @@ Set day of month.
 
 =head2 mon
 
-  sub mon : int ($self : self)
+  method mon : int ()
 
 Get month.
 
@@ -139,7 +139,7 @@ Get month.
 
 =head2 set_mon
 
-  sub set_mon : void ($self : self, $mon : int)
+  method set_mon : void ($mon : int)
 
 Set month.
 
@@ -147,7 +147,7 @@ Set month.
 
 =head2 year
 
-  sub year : int ($self : self)
+  method year : int ()
 
 Get year.
 
@@ -155,7 +155,7 @@ Get year.
 
 =head2 set_year
 
-  sub set_year : void ($self : self, $year : int)
+  method set_year : void ($year : int)
 
 Set year.
 
@@ -163,7 +163,7 @@ Set year.
 
 =head2 wday
 
-  sub wday : int ($self : self)
+  method wday : int ()
 
 Get weekday.
 
@@ -171,7 +171,7 @@ Get weekday.
 
 =head2 set_wday
 
-  sub set_wday : void ($self : self, $wday : int)
+  method set_wday : void ($wday : int)
 
 Set weekday.
 
@@ -179,7 +179,7 @@ Set weekday.
 
 =head2 yday
 
-  sub wday : int ($self : self)
+  method wday : int ()
 
 Get day of year.
 
@@ -187,7 +187,7 @@ Get day of year.
 
 =head2 set_yday
 
-  sub set_wday : void ($self : self, $wday : int)
+  method set_wday : void ($wday : int)
 
 Set day of year.
 
@@ -195,7 +195,7 @@ Set day of year.
 
 =head2 isdst
 
-  sub isdst : int ($self : self)
+  method isdst : int ()
 
 Set the value if the specified time occurs during Daylight Saving Time
 
@@ -203,7 +203,7 @@ Set the value if the specified time occurs during Daylight Saving Time
 
 =head2 set_isdst
 
-  sub set_isdst : void ($self : self, $isdst : int)
+  method set_isdst : void ($isdst : int)
 
 Get the value if the specified time occurs during Daylight Saving Time.
 

@@ -10,7 +10,7 @@ SPVM::Comparator::String - Comparator::String in SPVM | a callback interface for
   
   use Comparator::String;
   
-  my $comparator : Comparator::String = sub : int ($self : self, $a : string, $b : string); {
+  my $comparator : Comparator::String = method : int ($a : string, $b : string); {
     return $a cmp $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::String|SPVM::Comparator::String> is a callback interface to compar
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $a : string, $b : string);
+  method : int ($a : string, $b : string);
 
 This method must receive two strings and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
 

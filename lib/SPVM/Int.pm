@@ -25,7 +25,7 @@ L<Int|SPVM::Int> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : Int ($value : int)
+  static method new : Int ($value : int)
 
 Create a new L<Int|SPVM::Int> object with a C<int> value.
 
@@ -33,6 +33,6 @@ Create a new L<Int|SPVM::Int> object with a C<int> value.
 
 =head2 value
 
-  sub value : int ($self : self)
+  method value : int ()
 
 Get a C<int> value.

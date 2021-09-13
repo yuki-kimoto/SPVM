@@ -25,7 +25,7 @@ L<Byte|SPVM::Byte> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : Byte ($value : byte)
+  static method new : Byte ($value : byte)
 
 Create a new L<Byte|SPVM::Byte> object with a C<byte> value.
 
@@ -33,6 +33,6 @@ Create a new L<Byte|SPVM::Byte> object with a C<byte> value.
 
 =head2 value
 
-  sub value : byte ($self : self)
+  method value : byte ()
 
 Get a C<byte> value.

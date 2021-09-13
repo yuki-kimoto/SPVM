@@ -10,7 +10,7 @@ SPVM::Comparator::Long - Comparator::Long in SPVM | a callback interface for lon
   
   use Comparator::Long;
   
-  my $comparator : Comparator::Long = sub : int ($self : self, $a : long, $b : long); {
+  my $comparator : Comparator::Long = method : int ($a : long, $b : long); {
     return $a <=> $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::Long|SPVM::Comparator::Long> is a callback interface to compare tw
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $a : long, $b : long);
+  method : int ($a : long, $b : long);
 
 This method must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
 

@@ -251,7 +251,7 @@ Create native compile make rule.
 This is used in Makefile.PL of your distributed module.
   
   # Makefile.PL
-  sub MY::postamble {
+  static method MY::postamble {
 
     my $make_rule = '';
     
@@ -267,7 +267,7 @@ Create precompile make rule.
 
 This is used in Makefile.PL of your distributed module.
 
-  sub MY::postamble {
+  static method MY::postamble {
 
     my $make_rule = '';
     

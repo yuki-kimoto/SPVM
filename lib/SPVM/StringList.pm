@@ -54,7 +54,7 @@ L<StringList|SPVM::StringList> is dynamic string array.
 
 =head2 new
 
-    sub new : StringList ($array : string[])
+    static method new : StringList ($array : string[])
 
 Create a new L<StringList|SPVM::StringList> object with specific C<string> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : StringList ($length : int)
+    static method new_len : StringList ($length : int)
 
 Create a new L<StringList|SPVM::StringList> object with array length.
 
@@ -72,44 +72,44 @@ Create a new L<StringList|SPVM::StringList> object with array length.
 
 =head2 get
 
-  sub get : string ($self : self, $index : int)
+  method get : string ($index : int)
 
 Get the value with index.
 
 =head2 length
   
-  sub length : int ()
+  static method length : int ()
 
 Get list length.
 
 =head2 insert
 
-  sub insert : void ($self : self, $index : int, $value : string)
+  method insert : void ($index : int, $value : string)
 
 Insert a element to the specific index.
 
 =head2 pop
 
-  sub pop : string ($self : self)
+  method pop : string ()
 
 Pops and returns the last value of the list, shortening the array by one element
 If there are no elements in the list, exception occur.
 
 =head2 push
   
-  sub push : void ($self : self, $value : string)
+  method push : void ($value : string)
 
 Appending the value to the end of list.
 
 =head2 remove
 
-  sub remove : string ($self : self, $index : int)
+  method remove : string ($index : int)
 
 Remove and return the element which is specified by the index.
 
 =head2 resize
 
-  sub resize : void ($self : self, $new_length : int)
+  method resize : void ($new_length : int)
 
 Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to undef.
 
@@ -117,13 +117,13 @@ New length must be more than or equals to 0, otherwise a exception occur.
 
 =head2 set
 
-  sub set : void ($self : self, $index : int, $value : string)
+  method set : void ($index : int, $value : string)
 
 Set the value with index.
 
 =head2 set_array
 
-  sub set_array : void ($self : self, $array : string[])
+  method set_array : void ($array : string[])
 
 Set a array. Each elements of the array is copied to the correspoinding index of the array this list has. Note that this copy is address copy.
 Array must be defined, otherwise a exception occurs.
@@ -132,7 +132,7 @@ The length of argument array must be same as the length of current list array, o
 
 =head2 shift
 
-  sub shift : string ($self : self)
+  method shift : string ()
 
 Shifts the first value of the list off and returns it, shortening
 the array by 1 and moving everything down.
@@ -140,12 +140,12 @@ If there are no elements in the list, exception occur.
 
 =head2 to_array
 
-  sub to_array : string[] ($self : self)
+  method to_array : string[] ()
 
 Convert L<StringList|SPVM::StringList> to string array.
 
 =head2 unshift
 
-  sub unshift : void ($self : self, $value : string)
+  method unshift : void ($value : string)
 
 Appending the value to the top of list.

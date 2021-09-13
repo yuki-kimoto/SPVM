@@ -10,7 +10,7 @@ SPVM::Comparator::Int - Comparator::Int in SPVM | a callback interface for int c
   
   use Comparator::Int;
   
-  my $comparator : Comparator::Int = sub : int ($self : self, $a : int, $b : int); {
+  my $comparator : Comparator::Int = method : int ($a : int, $b : int); {
     return $a <=> $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::Int|SPVM::Comparator::Int> is a callback interface to compare two 
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $a : int, $b : int);
+  method : int ($a : int, $b : int);
 
 This method must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
 

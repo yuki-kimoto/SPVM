@@ -10,7 +10,7 @@ SPVM::Comparator::Object - Comparator::Object in SPVM | a callback interface for
   
   use Comparator::Object;
   
-  my $comparator : Comparator::Object = sub : int ($self : self, $object1 : object, $object2 : object); {
+  my $comparator : Comparator::Object = method : int ($object1 : object, $object2 : object); {
     my $point1 = (Point)$object1;
     my $point2 = (Point)$object2;
     
@@ -35,7 +35,7 @@ L<Comparator::Object|SPVM::Comparator::Object> is a callback interface to compar
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $object1 : object, $object2 : object);
+  method : int ($object1 : object, $object2 : object);
 
 This method must receive two objects and return 1 if $object1 is more than $object2, -1 if $x is less than $object2, 0 if $object1 equals $object2 in the implementation.
 

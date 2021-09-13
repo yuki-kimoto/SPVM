@@ -10,7 +10,7 @@ SPVM::Comparator::Byte - Comparator::Byte in SPVM | a callback interface for byt
   
   use Comparator::Byte;
   
-  my $comparator : Comparator::Byte = sub : int ($self : self, $a : byte, $b : byte); {
+  my $comparator : Comparator::Byte = method : int ($a : byte, $b : byte); {
     return $a <=> $b;
   };
   
@@ -22,7 +22,7 @@ L<Comparator::Byte|SPVM::Comparator::Byte> is a callback interface to compare tw
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : int ($self : self, $a : byte, $b : byte);
+  method : int ($a : byte, $b : byte);
 
 This method must receive two numbers and return 1 if $a is more than $b, -1 if $x is less than $b, 0 if $a equals $b in the implementation.
 

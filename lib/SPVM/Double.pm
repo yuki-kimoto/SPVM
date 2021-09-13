@@ -25,7 +25,7 @@ L<Double|SPVM::Double> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : Double ($value : double)
+  static method new : Double ($value : double)
 
 Create a new L<Double|SPVM::Double> object with a C<double> value.
 
@@ -33,6 +33,6 @@ Create a new L<Double|SPVM::Double> object with a C<double> value.
 
 =head2 value
 
-  sub value : double ($self : self)
+  method value : double ()
 
 Get a C<double> value.

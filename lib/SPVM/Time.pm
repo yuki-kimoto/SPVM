@@ -33,7 +33,7 @@ Time manipulation.
 
 =head2 time
 
-  sub time : long ();
+  static method time : long ();
 
 Returns the number of non-leap seconds since whatever time the system considers
 to be the epoch, suitable for feeding to "gmtime" and "localtime".
@@ -45,7 +45,7 @@ Example:
 
 =head2 localtime
 
-  sub localtime : Time::Info ($time : long)
+  static method localtime : Time::Info ($time : long)
 
 Converts a time as returned by the time method to a L<Time::Info|SPVM::Time::Info> object
 with the time analyzed for the local time zone.
@@ -79,7 +79,7 @@ time()).
 
 =head2 gmtime
 
-  sub gmtime : Time::Info ($time : long)
+  static method gmtime : Time::Info ($time : long)
 
 Works just like "localtime" but the returned values are localized
 for the standard Greenwich time zone.
@@ -90,7 +90,7 @@ time()).
 
 =head2 timelocal
 
-  sub timelocal : long ($time_info : Time::Info)
+  static method timelocal : long ($time_info : Time::Info)
 
 timelocal method convert L<Time::Info|SPVM::Time::Info> which is local time zone to calender time as same as time method format.
 
@@ -100,7 +100,7 @@ wday and yday is ignored.
 
 =head2 timegm
 
-  sub timegm : long ($time_info : Time::Info)
+  static method timegm : long ($time_info : Time::Info)
 
 timegm method convert L<Time::Info|SPVM::Time::Info> which is the standard Greenwich time zone to calender time as same as time method format.
 

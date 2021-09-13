@@ -300,7 +300,7 @@ SPVM Module:
 
   # lib/SPVM/MyMath.spvm
   class MyMath {
-    sub sum : int ($nums : int[]) {
+    static method sum : int ($nums : int[]) {
 
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {
@@ -337,7 +337,7 @@ Precompiled SPVM Method. This code is converted to C language and then converted
 
   # lib/SPVM/MyMath.spvm
   class MyMath : precompile {
-    sub sum : int ($nums : int[]) {
+    static method sum : int ($nums : int[]) {
 
       my $total = 0;
       for (my $i = 0; $i < @$nums; $i++) {

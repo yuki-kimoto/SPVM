@@ -25,7 +25,7 @@ L<Short|SPVM::Short> is automatically loaded just after the program starts.
 
 =head2 new
 
-  sub new : Short ($value : short)
+  static method new : Short ($value : short)
 
 Create a new L<Short|SPVM::Short> object with a C<short> value.
 
@@ -33,6 +33,6 @@ Create a new L<Short|SPVM::Short> object with a C<short> value.
 
 =head2 value
 
-  sub value : short ($self : self)
+  method value : short ()
 
 Get a C<short> value.

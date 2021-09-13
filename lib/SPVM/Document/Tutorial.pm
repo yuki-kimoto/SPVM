@@ -53,7 +53,7 @@ Create "SPVM/MyMath.spvm" in the "lib" directory, and you write the following co
 <pre>
 # lib/SPVM/MyMath.spvm
 class MyMath {
-  sub sum : int ($nums : int[]) {
+  static method sum : int ($nums : int[]) {
     
     my $total = 0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -85,7 +85,7 @@ Write <b>Method Definition</b> by <b>sub</b> keyword. Unlike Perl, SPVM Method D
 <pre>
 class MyMath {
   # Method Definition
-  sub sum : int ($nums : int[]) {
+  static method sum : int ($nums : int[]) {
     
   }
 }
@@ -415,7 +415,7 @@ SPVM Module:
 <pre>
 # lib/SPVM/MyMath.spvm
 class MyMath {
-  sub sum : int ($nums : int[]) {
+  static method sum : int ($nums : int[]) {
     
     my $total = 0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -456,7 +456,7 @@ Precompiled SPVM Method. This means SPVM code is converted to Machine Code:
 <pre>
 # lib/SPVM/MyMath.spvm
 class MyMath : precompile {
-  sub sum_precompile : int ($nums : int[]) {
+  static method sum_precompile : int ($nums : int[]) {
     
     my $total = 0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -490,7 +490,7 @@ SPVM Native Method. This means SPVM method call C/C++ native method:
 <pre>
 # lib/SPVM/MyMath.spvm
 class MyMath {
-  native sub sum_native : int ($nums : int[]);
+  native static method sum_native : int ($nums : int[]);
 }
 
 // lib/SPVM/MyMath.c
@@ -593,7 +593,7 @@ SPVM Method Definition.
 <pre>
 # lib/SPVM/BindCLib.spvm
 class BindCLib {
-  native sub sum : int ($nums : int[]);
+  native static method sum : int ($nums : int[]);
 }
 </pre>
 

@@ -54,7 +54,7 @@ L<DoubleList|SPVM::DoubleList> is dynamic double array.
 
 =head2 new
 
-    sub new : DoubleList ($array : double[])
+    static method new : DoubleList ($array : double[])
 
 Create a new L<DoubleList|SPVM::DoubleList> object with specific C<double> array.
 
@@ -64,7 +64,7 @@ If array is undef, 0-length internal array is created.
 
 =head2 new_len
 
-    sub new_len : DoubleList ($length : int)
+    static method new_len : DoubleList ($length : int)
 
 Create a new L<DoubleList|SPVM::DoubleList> object with array length.
 
@@ -72,37 +72,37 @@ Create a new L<DoubleList|SPVM::DoubleList> object with array length.
 
 =head2 unshift
 
-  sub unshift : void ($self : self, $value : double)
+  method unshift : void ($value : double)
 
 Appending the value to the top of list.
 
 =head2 get
 
-  sub get : double ($self : self, $index : int)
+  method get : double ($index : int)
 
 Get the value with index.
 
 =head2 insert
 
-  sub insert : void ($self : self, $index : int, $value : double)
+  method insert : void ($index : int, $value : double)
 
 Insert a element to the specific index.
 
 =head2 length
   
-  sub length : int ()
+  static method length : int ()
 
 Get list length.
 
 =head2 remove
 
-  sub remove : double ($self : self, $index : int)
+  method remove : double ($index : int)
 
 Remove and return the element which is specified by the index.
   
 =head2 resize
 
-  sub resize : void ($self : self, $new_length : int)
+  method resize : void ($new_length : int)
 
 Resize this list. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is shorter than the current length, the list is truncated to the new length. If the new length is same as the current length, there is nothing to do. If the new length is longer than the current length, the list grows to the new length, and the values of the added elements are set to 0.
 
@@ -110,13 +110,13 @@ New length must be more than or equals to 0, otherwise a exception occur.
 
 =head2 set
 
-  sub set : void ($self : self, $index : int, $value : double)
+  method set : void ($index : int, $value : double)
 
 Set the value with index.
 
 =head2 set_array
 
-  sub set_array : void ($self : self, $array : double[])
+  method set_array : void ($array : double[])
 
 Set a array. Each elements of the array is copied to the correspoinding index of the array this list has.
 
@@ -126,7 +126,7 @@ The length of argument array must be same as the length of current list array, o
 
 =head2 shift
 
-  sub shift : double ($self : self)
+  method shift : double ()
 
 Shifts the first value of the list off and returns it, shortening
 the array by 1 and moving everything down.
@@ -134,20 +134,20 @@ If there are no elements in the list, exception occur.
 
 =head2 to_array
 
-  sub to_array : double[] ($self : self)
+  method to_array : double[] ()
 
 Convert L<DoubleList|SPVM::DoubleList> to double array.
 
 =head2 pop
 
-  sub pop : double ($self : self)
+  method pop : double ()
 
 Pops and returns the last value of the list, shortening the array by one element
 If there are no elements in the list, exception occur.
 
 =head2 push
   
-  sub push : void ($self : self, $value : double)
+  method push : void ($value : double)
 
 Appending the value to the end of list.
 

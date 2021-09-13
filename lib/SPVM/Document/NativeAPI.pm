@@ -16,7 +16,7 @@ Native Method Declaration is written using Method Descriptor "native" in SPVM mo
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
-    native sub sum : int ($num1 : int, $num2 : int);
+    native static method sum : int ($num1 : int, $num2 : int);
   }
 
 =head2 SPVM Native Config File
@@ -496,13 +496,13 @@ The pointer type definition specifies the pointer_t descriptor in the SPVM class
   class MyTimeInfo : pointer_t {
 
     # Constructor
-    native sub new : MyTimeInfo ();
+    native static method new : MyTimeInfo ();
 
     # Get second
-    native sub sec : int ($self : self);
+    native method sec : int ();
 
     # Destructor
-    native sub DESTROY : ($self : self);
+    native method DESTROY : ();
   }
 
 It defines a new constructor, a method that takes seconds information called sec, and a destructor called DESTROY. These are Native Method.

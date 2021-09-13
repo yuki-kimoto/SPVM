@@ -10,7 +10,7 @@ SPVM::Stringer - Stringer in SPVM | a callback interface to stringify a object
   
   use Stringer;
   
-  my $stringer : Stringer = sub : string ($self : self, $object : object) {
+  my $stringer : Stringer = method : string ($object : object) {
     my $point = (Point)$object;
     my $x = $point->x;
     my $y = $point->y;
@@ -29,7 +29,7 @@ L<Stringer|SPVM::Stringer> is a callback interface to stringify a object.
 
 =head1 CALLBACK METHOD INTERFACE
 
-  sub : string ($self : self, $object : object)
+  method : string ($object : object)
 
 This method receives a object and return the string expression.
 

@@ -30,12 +30,12 @@ L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> is a callback i
 
 =head2 new
 
-  sub new : EqualityChecker::SameObject ()
+  static method new : EqualityChecker::SameObject ()
 
 Create a new L<EqualityChecker::SameObject|SPVM::EqualityChecker::SameObject> object.
 
 =head1 CALLBACK METHOD IMPLEMENTATION
 
-  sub : int ($self : self, $object1 : object, $object2 : object)
+  method : int ($object1 : object, $object2 : object)
 
 If the address of the two objects are equal, return 1, otherwise return 0.
