@@ -2449,7 +2449,9 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
             method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
           }
           else {
-            method->is_class_method = 1;
+            if (!(op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB)) {
+              method->is_class_method = 1;
+            }
             method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
           }
         }
@@ -2462,7 +2464,11 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     op_args = SPVM_OP_new_op_list(compiler, op_method->file, op_method->line);
   }
   
+  // warn("BBBBBB %s %d %d", method_name, method->is_class_method, op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB);
+  
   if (!method->is_class_method && op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB) {
+    // warn("AAAAAAAA");
+    
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
     SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
@@ -2470,6 +2476,9 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_method->file, op_method->line);
     SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_arg_var_self, op_self_type);
     SPVM_OP_insert_child(compiler, op_args, op_args->first, op_arg_self);
+    
+    // SPVM_DUMPER_dump_ast(compiler, op_args);
+    
   }
 
   // Capture variables
