@@ -3,12 +3,12 @@ Revision history for SPVM
         [CHANGES]
         * remove sub and self keyword and add method and static keyword. Sorry.
           [Before]
-          sub : void foo ($self : self) {}
-          sub : void bar () {}
+          sub foo : void  ($self : self) {}
+          sub bar: void  () {}
           
           [After]
-          method : void foo () {}
-          static method : void bar () {}
+          method foo : void  () {}
+          static method bar : void  () {}
         
         [BUGFIXES]
         * None
