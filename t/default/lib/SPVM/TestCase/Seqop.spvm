@@ -1,5 +1,5 @@
 class TestCase::Seqop {
-  sub seqop : int () {
+  static method seqop : int () {
     {
       my $ret = (1, 2, 3);
       unless ($ret == 3) {

@@ -1,3 +1,3 @@
 class MyGSL {
-  native sub stat : void ();
+  native static method stat : void ();
 }

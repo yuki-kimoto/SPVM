@@ -7,11 +7,11 @@ class TestCase::Data::Weaken : public {
   has weaken2 : public TestCase::Data::Weaken;
   has test_cases : public TestCase::Weaken[];
   
-  sub new : TestCase::Data::Weaken () {
+  static method new : TestCase::Data::Weaken () {
     return new TestCase::Data::Weaken;
   }
   
-  sub weaken_test_case : void ($self : self) {
+  method weaken_test_case : void () {
     weaken $self->{test_case};
   }
 }

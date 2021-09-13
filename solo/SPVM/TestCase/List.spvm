@@ -4,7 +4,7 @@ class TestCase::List {
   has length : int;
   has capacity : int;
   
-  sub test_list : int () {
+  static method test_list : int () {
     my $list = TestCase::List->new(5);
     $list->add(SPVM::Int->new(1));
     $list->add(SPVM::Int->new(2));
@@ -30,7 +30,7 @@ class TestCase::List {
     return $ok;
   }
   
-  sub new : TestCase::List ($capacity : int) {
+  static method new : TestCase::List ($capacity : int) {
     my $self = new TestCase::List;
     
     $self->{capacity} = $capacity;
@@ -40,7 +40,7 @@ class TestCase::List {
     return $self;
   }
   
-  sub add : void ($self : self, $object : object) {
+  method add : void ($object : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -55,7 +55,7 @@ class TestCase::List {
     $self->{length} = $self->{length} + 1;
   }
   
-  sub add_all : void ($self : self, $objects : object[]) {
+  method add_all : void ($objects : object[]) {
     for (my $i = 0; $i < @$objects; $i++) {
       if ($objects->[$i]) {
         $self->add($objects->[$i]);
@@ -66,11 +66,11 @@ class TestCase::List {
     }
   }
   
-  sub get : object ($self : self, $index : int) {
+  method get : object ($index : int) {
     return $self->{values}[$index];
   }
   
-  sub method_list : object[] ($self : self, $from : int, $to : int) {
+  method method_list : object[] ($from : int, $to : int) {
     my $length = $to - $from + 1;
     
     my $new_values = new object[$length];

@@ -1,19 +1,19 @@
 class TestCase::Lib::Regex {
   use Regex;
   
-  sub compile : int () {
+  static method compile : int () {
     my $re = Regex->new("abc");
     
     return 1;
   }
 
-  sub replace_all_cb : int () {
+  static method replace_all_cb : int () {
 
     # Replace all callback with capture
     {
       my $re = Regex->new("a(bc)");
       my $target = "ppzabczabcz";
-      my $result = $re->replace_all_cb($target, 0, sub : string ($self : self, $re : Regex) {
+      my $result = $re->replace_all_cb($target, 0, method : string ($re : Regex) {
         return "ABC" . $re->captures->[0] . "PQRS";
       });
       
@@ -29,7 +29,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub replace_all : int () {
+  static method replace_all : int () {
     # Replace all
     {
       my $re = Regex->new("abc");
@@ -93,7 +93,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub replace : int () {
+  static method replace : int () {
     # Replace
     {
       my $re = Regex->new("abc");
@@ -157,12 +157,12 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub replace_cb : int () {
+  static method replace_cb : int () {
     # Replace callback with capture
     {
       my $re = Regex->new("a(bc)");
       my $target = "ppzabcz";
-      my $result = $re->replace_cb($target, 0, sub : string ($self : self, $re : Regex) {
+      my $result = $re->replace_cb($target, 0, method : string ($re : Regex) {
         return "AB" . $re->captures->[0] . "C";
       });
       
@@ -177,7 +177,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub match_start_and_end : int () {
+  static method match_start_and_end : int () {
     # Match start and end
     {
       my $re = Regex->new("abc");
@@ -254,7 +254,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub match_capture : int ()  {
+  static method match_capture : int ()  {
     # Capture zero more only
     {
       my $re = Regex->new("(a*)");
@@ -384,7 +384,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub match_char_class_range : int ()  {
+  static method match_char_class_range : int ()  {
     # Match char class-range
     {
       my $re = Regex->new("[0-9]+");
@@ -444,7 +444,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_char_class_negate : int () {
+  static method match_char_class_negate : int () {
 
     # Match char class-negate
     {
@@ -497,7 +497,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub match_char_class : int () {
+  static method match_char_class : int () {
 
     # Match char class
     {
@@ -538,7 +538,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_not_space : int () {
+  static method match_not_space : int () {
 
     # Match not space
     {
@@ -566,7 +566,7 @@ class TestCase::Lib::Regex {
     
     return 1;
   }
-  sub match_space : int () {
+  static method match_space : int () {
 
     # Match space
     {
@@ -595,7 +595,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_not_word : int () {
+  static method match_not_word : int () {
 
     # Match not number
     {
@@ -660,7 +660,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_word : int () {
+  static method match_word : int () {
 
     # Match number
     {
@@ -725,7 +725,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_not_number : int () {
+  static method match_not_number : int () {
 
     # Match not number
     {
@@ -742,7 +742,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_number : int () {
+  static method match_number : int () {
 
     # Match number
     {
@@ -773,7 +773,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub invalid_regex : int () {
+  static method invalid_regex : int () {
     # Invalid - Charset after variable quantifier is duplicate
     {
       eval { Regex->new("a*a"); };
@@ -859,7 +859,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_end : int () {
+  static method match_end : int () {
     # Match $
     {
       # Match $ - "zabbc"
@@ -890,7 +890,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_start : int () {
+  static method match_start : int () {
     # Match ^
     {
       # Match ^ - "abbcz"
@@ -921,7 +921,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub match_quantifier : int () {
+  static method match_quantifier : int () {
     # Match {1,3}
     {
       # Match {1,3} - "zabcz"
@@ -1025,7 +1025,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_one_or_zero : int () {
+  static method match_one_or_zero : int () {
     # Match ?
     {
       # Match ? - "zabcz"
@@ -1068,7 +1068,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
   
-  sub match_one_more : int () {
+  static method match_one_more : int () {
     # Match +
     {
       # Match + - "zabcz"
@@ -1111,7 +1111,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_zero_more : int () {
+  static method match_zero_more : int () {
     # Match *
     {
       # Match * - "zabcz"
@@ -1166,7 +1166,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match_offset : int () {
+  static method match_offset : int () {
 
     # Not Match string
     {
@@ -1195,7 +1195,7 @@ class TestCase::Lib::Regex {
     return 1;
   }
 
-  sub match : int () {
+  static method match : int () {
 
     # Match string
     {

@@ -100,7 +100,7 @@ class TestCase::Lib::Fn {
     to_upper,
   );
 
-  sub test_crand : int () {
+  static method test_crand : int () {
     
     my $founds_plus = new int[10];
     my $founds_minus = new int[10];
@@ -119,7 +119,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_rand : int () {
+  static method test_rand : int () {
     
     # 0 <= random_number < 1
     {
@@ -160,7 +160,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_RAND_MAX : int () {
+  static method test_RAND_MAX : int () {
     
     unless (Fn->RAND_MAX > 0) {
       return 1;
@@ -169,7 +169,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_srand : int () {
+  static method test_srand : int () {
     
     srand(10);
     
@@ -194,7 +194,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_byte_constant : int () {
+  static method test_byte_constant : int () {
     if ((int)INT8_MIN() == (int)(byte)-128) {
       if ((int)INT8_MAX() == (int)(byte)127) {
         return 1;
@@ -204,7 +204,7 @@ class TestCase::Lib::Fn {
     return 0;
   }
 
-  sub test_short_constant : int () {
+  static method test_short_constant : int () {
     if ((int)INT16_MIN() == (int)(short)-32768) {
       if ((int)INT16_MAX() == (int)(short)32767) {
         return 1;
@@ -214,7 +214,7 @@ class TestCase::Lib::Fn {
     return 0;
   }
 
-  sub test_int_constant : int () {
+  static method test_int_constant : int () {
     if (INT32_MIN() == -2147483648) {
       if (INT32_MAX() == 2147483647) {
         return 1;
@@ -224,7 +224,7 @@ class TestCase::Lib::Fn {
     return 0;
   }
 
-  sub test_long_constant : int () {
+  static method test_long_constant : int () {
     if (INT64_MIN() == -9223372036854775808L) {
       if (INT64_MAX() == 9223372036854775807L) {
         return 1;
@@ -234,7 +234,7 @@ class TestCase::Lib::Fn {
     return 0;
   }
 
-  sub test_copy_str : int () {
+  static method test_copy_str : int () {
     my $string = "abc";
     my $string_out = Fn->copy_string($string);
 
@@ -245,7 +245,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
   
-  sub test_hex : int () {
+  static method test_hex : int () {
     # 0
     {
       my $hex_string = (string)"0";
@@ -339,7 +339,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
   
-  sub test_trim_ascii_space : int () {
+  static method test_trim_ascii_space : int () {
     # undef
     {
       my $string = (string)undef;
@@ -388,7 +388,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
   
-  sub test_split : int () {
+  static method test_split : int () {
     {
       my $string = "foo,bar,baz";
       my $split_strs = split(",", $string);
@@ -467,7 +467,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_d : int () {
+  static method test_sprintf_d : int () {
     my $tests = [
         [ sprintf("abc%d", 123),          "abc123" ],
         [ sprintf("%dabc", 123),          "123abc" ],
@@ -497,7 +497,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_u : int () {
+  static method test_sprintf_u : int () {
     my $tests = [
         [ sprintf("abc%u", 123),          "abc123" ],
         [ sprintf("%uabc", 123),          "123abc" ],
@@ -528,7 +528,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_ld : int () {
+  static method test_sprintf_ld : int () {
     my $tests = [
         [ sprintf("abc%ld", 10000000000L),                                "abc10000000000"                    ],
         [ sprintf("%ldabc", 10000000000L),                                "10000000000abc"                    ],
@@ -567,7 +567,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_lu : int () {
+  static method test_sprintf_lu : int () {
     my $tests = [
         [ sprintf("abc%lu", 10000000000L),                                "abc10000000000"                    ],
         [ sprintf("%luabc", 10000000000L),                                "10000000000abc"                    ],
@@ -607,7 +607,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_f : int () {
+  static method test_sprintf_f : int () {
     my $tests = [
         [ sprintf("abc%.2f", 3.14),                  "abc3.14"      ],
         [ sprintf("%.2fabc", 3.14),                  "3.14abc"      ],
@@ -639,7 +639,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_c : int () {
+  static method test_sprintf_c : int () {
     my $tests = [
         [ sprintf("abc%c", 'x'),            "abcx"  ],
         [ sprintf("%cabc", 'x'),            "xabc"  ],
@@ -667,7 +667,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_s : int () {
+  static method test_sprintf_s : int () {
     my $tests = [
         [ sprintf("abc%s", "ABC"),                "abcABC"    ],
         [ sprintf("%sabc", "ABC"),                "ABCabc"    ],
@@ -695,12 +695,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  private sub _first_uchar : int ($string : string) {
+  private static method _first_uchar : int ($string : string) {
     my $uchar_pos = 0;
     return uchar($string, \$uchar_pos);
   }
 
-  sub test_sprintf_U : int () {
+  static method test_sprintf_U : int () {
     my $tests = [
         [ sprintf("abc%U", _first_uchar("あ")), "abcあ" ],
         [ sprintf("%Uabc", _first_uchar("あ")), "あabc" ],
@@ -726,7 +726,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_percent : int () {
+  static method test_sprintf_percent : int () {
     my $tests = [
         [ sprintf("%d%%",    1), "1%"    ],
         [ sprintf("%%%d",    1), "%1"    ],
@@ -741,7 +741,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_sprintf_all : int () {
+  static method test_sprintf_all : int () {
     {
       # Invalid conversion (end of string)
       eval {
@@ -811,7 +811,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_chompr : int () {
+  static method test_chompr : int () {
     {
       my $string = "abc\n";
       my $ret = chompr($string);
@@ -837,7 +837,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
   
-  sub test_is_alnum : int () {
+  static method test_is_alnum : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -864,7 +864,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_alpha : int () {
+  static method test_is_alpha : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -891,7 +891,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_blank : int () {
+  static method test_is_blank : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -918,7 +918,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_cntrl : int () {
+  static method test_is_cntrl : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -945,7 +945,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_digit : int () {
+  static method test_is_digit : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -972,7 +972,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_graph : int () {
+  static method test_is_graph : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -999,7 +999,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_lower : int () {
+  static method test_is_lower : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1026,7 +1026,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_print : int () {
+  static method test_is_print : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1053,7 +1053,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_punct : int () {
+  static method test_is_punct : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1080,7 +1080,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_space : int () {
+  static method test_is_space : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1107,7 +1107,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_upper : int () {
+  static method test_is_upper : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1134,7 +1134,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_xdigit : int () {
+  static method test_is_xdigit : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1161,7 +1161,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_to_lower : int () {
+  static method test_to_lower : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1188,7 +1188,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_to_upper : int () {
+  static method test_to_upper : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1215,7 +1215,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_perl_space : int () {
+  static method test_is_perl_space : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1242,7 +1242,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_is_perl_word : int () {
+  static method test_is_perl_word : int () {
 
     my $ok = 1;
     for (my $i = 0; $i < 128; $i++) {
@@ -1269,7 +1269,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_to_int : int () {
+  static method test_to_int : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "-2147483648";
@@ -1286,7 +1286,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_to_int_with_base : int () {
+  static method test_to_int_with_base : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "-2147483648";
@@ -1394,7 +1394,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_to_long : int () {
+  static method test_to_long : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "-9223372036854775808";
@@ -1411,7 +1411,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
   
-  sub test_to_long_with_base : int () {
+  static method test_to_long_with_base : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "-9223372036854775808";
@@ -1516,7 +1516,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_to_float : int () {
+  static method test_to_float : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "1.25";
@@ -1545,7 +1545,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_to_double : int () {
+  static method test_to_double : int () {
     # 10 digit minimal and return type is int
     {
       my $string = "1.25";
@@ -1574,7 +1574,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_ucfirst : int () {
+  static method test_ucfirst : int () {
     {
       my $string = "@abc";
       my $result_str = ucfirst($string);
@@ -1616,7 +1616,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_uc : int () {
+  static method test_uc : int () {
     {
       my $string = "@[apz[";
       my $result_str = uc($string);
@@ -1627,7 +1627,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_lc : int () {
+  static method test_lc : int () {
     {
       my $string = "@[APZ[";
       my $result_str = lc($string);
@@ -1638,7 +1638,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_lcfirst : int () {
+  static method test_lcfirst : int () {
     {
       my $string = "@ABC";
       my $result_str = lcfirst($string);
@@ -1680,7 +1680,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_index : int () {
+  static method test_index : int () {
 
     {
       my $target = "abcde";
@@ -1721,7 +1721,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_rindex : int () {
+  static method test_rindex : int () {
 
     {
       my $target = "abab";
@@ -1771,7 +1771,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_join : int () {
+  static method test_join : int () {
     my $strings = ["abc", "def", "hij"];
 
     my $dump = join(",", $strings);
@@ -1783,7 +1783,7 @@ class TestCase::Lib::Fn {
     return 0;
   }
 
-  sub test_copy_string : int () {
+  static method test_copy_string : int () {
     # copy string
     {
       my $string = "abc";
@@ -1813,7 +1813,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_byte : int () {
+  static method test_copy_array_byte : int () {
     # Copy array
     {
       my $nums = [(byte)1, 2, Fn->INT8_MIN()];
@@ -1847,7 +1847,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_short : int () {
+  static method test_copy_array_short : int () {
     # Copy array
     {
       my $nums = [(short)1, 2, Fn->INT16_MIN()];
@@ -1881,7 +1881,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_int : int () {
+  static method test_copy_array_int : int () {
     # Copy array
     {
       my $nums = [(int)1, 2, Fn->INT32_MIN()];
@@ -1915,7 +1915,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_long : int () {
+  static method test_copy_array_long : int () {
     # Copy array
     {
       my $nums = [(long)1, 2, Fn->INT64_MIN()];
@@ -1949,7 +1949,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_float : int () {
+  static method test_copy_array_float : int () {
     # Copy array
     {
       my $nums = [(float)0.5f, 0.25f, Fn->FLT_MIN()];
@@ -1983,7 +1983,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_double : int () {
+  static method test_copy_array_double : int () {
     # Copy array
     {
       my $nums = [(double)0.5, 0.25, Fn->DBL_MIN()];
@@ -2017,7 +2017,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_string : int () {
+  static method test_copy_array_string : int () {
     # Copy array
     {
       my $strings = ["abc", "def", "hij"];
@@ -2061,11 +2061,11 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_object : int () {
+  static method test_copy_array_object : int () {
     # Copy array
     {
       my $objects = [(object)Int->new(1), Int->new(2), Int->new(Fn->INT32_MIN())];
-      my $objects_out = copy_array_object($objects, sub : object ($self : self, $obj : object) {
+      my $objects_out = copy_array_object($objects, method : object ($obj : object) {
         my $int_obj = (Int)$obj;
         my $new_int_obj = Int->new($int_obj->value);
         return $new_int_obj;
@@ -2107,7 +2107,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_equals_array_byte : int () {
+  static method test_equals_array_byte : int () {
     my $nums1 = [(byte)0, 1, Fn->INT8_MIN()];
     my $nums2 = [(byte)0, 1, Fn->INT8_MIN()];
     my $nums3 = [(byte)0, 1];
@@ -2155,7 +2155,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_equals_array_short : int () {
+  static method test_equals_array_short : int () {
     my $nums1 = [(short)0, 1, Fn->INT16_MIN()];
     my $nums2 = [(short)0, 1, Fn->INT16_MIN()];
     my $nums3 = [(short)0, 1];
@@ -2206,7 +2206,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_equals_array_int : int () {
+  static method test_equals_array_int : int () {
     my $nums1 = [(int)0, 1, Fn->INT32_MIN()];
     my $nums2 = [(int)0, 1, Fn->INT32_MIN()];
     my $nums3 = [(int)0, 1];
@@ -2255,7 +2255,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_equals_array_long : int () {
+  static method test_equals_array_long : int () {
     my $nums1 = [(long)0, 1, Fn->INT64_MIN()];
     my $nums2 = [(long)0, 1, Fn->INT64_MIN()];
     my $nums3 = [(long)0, 1];
@@ -2304,7 +2304,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_equals_array_float : int () {
+  static method test_equals_array_float : int () {
     my $nums1 = [0.0f, 1.5f, Fn->FLT_MIN()];
     my $nums2 = [0.0f, 1.5f, Fn->FLT_MIN()];
     my $nums3 = [0.0f, 1.5f];
@@ -2353,7 +2353,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_equals_array_double : int () {
+  static method test_equals_array_double : int () {
     my $nums1 = [0.0, 1.5, Fn->DBL_MIN()];
     my $nums2 = [0.0, 1.5, Fn->DBL_MIN()];
     my $nums3 = [0.0, 1.5];
@@ -2402,7 +2402,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_equals_array_string : int () {
+  static method test_equals_array_string : int () {
     my $strings1 = ["abc", "def", "ghi"];
     my $strings2 = ["abc", "def", "ghi"];
     my $strings3 = ["abc", "def"];
@@ -2450,7 +2450,7 @@ class TestCase::Lib::Fn {
 
     return 1;
   }
-  sub test_equals_array_object : int () {
+  static method test_equals_array_object : int () {
     my $minimal1 = TestCase::Minimal->new;
     my $minimal2 = TestCase::Minimal->new;
     my $minimal3 = TestCase::Minimal->new;
@@ -2461,7 +2461,7 @@ class TestCase::Lib::Fn {
     my $nums4 = [$minimal1, $minimal2, $minimal4];
     my $nums5 = [(object)$minimal1, $minimal2, $minimal3];
 
-    my $equality_checker = sub : int ($self : self, $object1 : object, $object2 : object) {
+    my $equality_checker = method : int ($object1 : object, $object2 : object) {
       my $minimal1 = (TestCase::Minimal)$object1;
       my $minimal2 = (TestCase::Minimal)$object2;
 
@@ -2501,7 +2501,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memcpy_byte : int () {
+  static method test_memcpy_byte : int () {
     
     # Copy
     {
@@ -2597,7 +2597,7 @@ class TestCase::Lib::Fn {
   }
 
 
-  sub test_memcpy_short : int () {
+  static method test_memcpy_short : int () {
     
     # Copy
     {
@@ -2692,7 +2692,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memcpy_int : int () {
+  static method test_memcpy_int : int () {
     
     # Copy
     {
@@ -2787,7 +2787,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memcpy_long : int () {
+  static method test_memcpy_long : int () {
     
     # Copy
     {
@@ -2882,7 +2882,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memcpy_float : int () {
+  static method test_memcpy_float : int () {
     
     # Copy
     {
@@ -2977,7 +2977,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memcpy_double : int () {
+  static method test_memcpy_double : int () {
     
     # Copy
     {
@@ -3072,7 +3072,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memmove_byte : int () {
+  static method test_memmove_byte : int () {
     
     # Copy
     {
@@ -3176,7 +3176,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memmove_short : int () {
+  static method test_memmove_short : int () {
     
     # Copy
     {
@@ -3280,7 +3280,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memmove_int : int () {
+  static method test_memmove_int : int () {
     
     # Copy
     {
@@ -3384,7 +3384,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memmove_long : int () {
+  static method test_memmove_long : int () {
     
     # Copy
     {
@@ -3488,7 +3488,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memmove_float : int () {
+  static method test_memmove_float : int () {
     
     # Copy
     {
@@ -3592,7 +3592,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_memmove_double : int () {
+  static method test_memmove_double : int () {
     
     # Copy
     {
@@ -3696,7 +3696,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_byte : int () {
+  static method test_dump_array_byte : int () {
     # Dump array
     {
       my $nums = [(byte)1, 2, Fn->INT8_MIN()];
@@ -3720,7 +3720,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_short : int () {
+  static method test_dump_array_short : int () {
     # Dump array
     {
       my $nums = [(short)1, 2, Fn->INT16_MIN()];
@@ -3744,7 +3744,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_int : int () {
+  static method test_dump_array_int : int () {
     # Dump array
     {
       my $nums = [(int)1, 2, Fn->INT32_MIN()];
@@ -3769,7 +3769,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_long : int () {
+  static method test_dump_array_long : int () {
     # Dump array
     {
       my $nums = [(long)1, 2, Fn->INT64_MIN()];
@@ -3794,7 +3794,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_float : int () {
+  static method test_dump_array_float : int () {
     # Dump array
     {
       my $nums = [(float)1, 2, 2.45f];
@@ -3818,7 +3818,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_double : int () {
+  static method test_dump_array_double : int () {
     # Dump array
     {
       my $nums = [(double)1, 2, 2.45];
@@ -3842,7 +3842,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_unsigned_array_byte : int () {
+  static method test_dump_unsigned_array_byte : int () {
     # Dump array
     {
       my $nums = [(byte)1, 2, -1, Fn->UINT8_MAX];
@@ -3866,7 +3866,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_unsigned_array_short : int () {
+  static method test_dump_unsigned_array_short : int () {
     # Dump array
     {
       my $nums = [(short)1, 2, -1, Fn->UINT16_MAX];
@@ -3890,7 +3890,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_unsigned_array_int : int () {
+  static method test_dump_unsigned_array_int : int () {
     # Dump array
     {
       my $nums = [(int)1, 2, -1, Fn->UINT32_MAX];
@@ -3914,7 +3914,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_unsigned_array_long : long () {
+  static method test_dump_unsigned_array_long : long () {
     # Dump array
     {
       my $nums = [(long)1, 2, -1, Fn->UINT64_MAX];
@@ -3938,7 +3938,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_string : int () {
+  static method test_dump_array_string : int () {
     # Dump array
     {
       my $strings = ["abc", "def", "ghi"];
@@ -3962,7 +3962,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_dump_array_object : int () {
+  static method test_dump_array_object : int () {
     
     {
       my $minimals = [
@@ -3971,7 +3971,7 @@ class TestCase::Lib::Fn {
         TestCase::Minimal->newp(5, 6)
       ];
 
-      my $dump = Fn->dump_array_object($minimals, sub : string ($self : self, $obj : object) {
+      my $dump = Fn->dump_array_object($minimals, method : string ($obj : object) {
         my $minimal = (TestCase::Minimal)$obj;
         my $x = $minimal->x;
         my $y = $minimal->y;
@@ -3997,7 +3997,7 @@ class TestCase::Lib::Fn {
   }
 
 
-  sub test_new_array_proto : int () {
+  static method test_new_array_proto : int () {
     my $minimals = new TestCase::Minimal[1];
 
     my $new_array_object = new_array_proto($minimals, 2);
@@ -4011,7 +4011,7 @@ class TestCase::Lib::Fn {
 
     return 1;
   }
-  sub test_copy_array_range_byte : int () {
+  static method test_copy_array_range_byte : int () {
     {
       my $nums = [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19];
       my $range = copy_array_range_byte($nums, 0, 7);
@@ -4064,7 +4064,7 @@ class TestCase::Lib::Fn {
 
     return 1;
   }
-  sub test_copy_array_range_short : int () {
+  static method test_copy_array_range_short : int () {
     {
       my $nums = [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19];
       my $range = copy_array_range_short($nums, 0, 7);
@@ -4116,7 +4116,7 @@ class TestCase::Lib::Fn {
 
     return 1;
   }
-  sub test_copy_array_range_int : int () {
+  static method test_copy_array_range_int : int () {
     {
       my $nums = [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19];
       my $range = copy_array_range_int($nums, 0, 7);
@@ -4168,7 +4168,7 @@ class TestCase::Lib::Fn {
 
     return 1;
   }
-  sub test_copy_array_range_long : int () {
+  static method test_copy_array_range_long : int () {
     {
       my $nums = [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19];
       my $range = copy_array_range_long($nums, 0, 7);
@@ -4220,7 +4220,7 @@ class TestCase::Lib::Fn {
 
     return 1;
   }
-  sub test_copy_array_range_float : int () {
+  static method test_copy_array_range_float : int () {
     {
       my $nums = [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19];
       my $range = copy_array_range_float($nums, 0, 7);
@@ -4273,7 +4273,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
   
-  sub test_copy_array_range_double : int () {
+  static method test_copy_array_range_double : int () {
     {
       my $nums = [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19];
       my $range = copy_array_range_double($nums, 0, 7);
@@ -4326,7 +4326,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_range_string : int () {
+  static method test_copy_array_range_string : int () {
     {
       my $strings = ["a", "b", "c", "d", "e", "f", "g"];
       my $range = Fn->copy_array_range_string($strings, 0, 7);
@@ -4379,7 +4379,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub test_copy_array_range_object : int () {
+  static method test_copy_array_range_object : int () {
 
     {
       my $minimal1 = TestCase::Minimal->new;
@@ -4450,12 +4450,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub sort_byte : int () {
+  static method sort_byte : int () {
     # Sort array by asc order
     {
       my $nums = [(byte)2, 3, 1];
       
-      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      Fn->sort_byte($nums, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
         return $a <=> $b;
       });
       
@@ -4468,7 +4468,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(byte)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      Fn->sort_byte($nums, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
         return $a <=> $b;
       });
       
@@ -4481,7 +4481,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(byte)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      Fn->sort_byte($nums, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
         return $a <=> $b;
       });
       
@@ -4494,7 +4494,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(byte)2, 3, 1];
       
-      Fn->sort_byte($nums, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+      Fn->sort_byte($nums, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
         return $b <=> $a;
       });
       
@@ -4507,7 +4507,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(byte)2, 3, 1];
       
-      Fn->sort_byte($nums, 0, 0, sub : int ($self : self, $a : byte, $b : byte) {
+      Fn->sort_byte($nums, 0, 0, method : int ($a : byte, $b : byte) {
         return $a <=> $b;
       });
       
@@ -4520,7 +4520,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
-      Fn->sort_byte($nums, 1, 3, sub : int ($self : self, $a : byte, $b : byte) {
+      Fn->sort_byte($nums, 1, 3, method : int ($a : byte, $b : byte) {
         return $a <=> $b;
       });
       
@@ -4534,7 +4534,7 @@ class TestCase::Lib::Fn {
       my $nums = [(byte)2, 3, 1];
       
       eval {
-        Fn->sort_byte(undef, 0, scalar @$nums, sub : int ($self : self, $a : byte, $b : byte) {
+        Fn->sort_byte(undef, 0, scalar @$nums, method : int ($a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -4548,7 +4548,7 @@ class TestCase::Lib::Fn {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_byte($nums, -1, 3, sub : int ($self : self, $a : byte, $b : byte) {
+        Fn->sort_byte($nums, -1, 3, method : int ($a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -4562,7 +4562,7 @@ class TestCase::Lib::Fn {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_byte($nums, 1, -1, sub : int ($self : self, $a : byte, $b : byte) {
+        Fn->sort_byte($nums, 1, -1, method : int ($a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -4576,7 +4576,7 @@ class TestCase::Lib::Fn {
       my $nums = [(byte)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_byte($nums, 3, 3, sub : int ($self : self, $a : byte, $b : byte) {
+        Fn->sort_byte($nums, 3, 3, method : int ($a : byte, $b : byte) {
           return $a <=> $b;
         });
       };
@@ -4590,12 +4590,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub sort_short : int () {
+  static method sort_short : int () {
     # Sort array by asc order
     {
       my $nums = [(short)2, 3, 1];
       
-      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      Fn->sort_short($nums, 0, scalar @$nums, method : int ($a : short, $b : short) {
         return $a <=> $b;
       });
       
@@ -4608,7 +4608,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(short)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      Fn->sort_short($nums, 0, scalar @$nums, method : int ($a : short, $b : short) {
         return $a <=> $b;
       });
       
@@ -4621,7 +4621,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(short)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      Fn->sort_short($nums, 0, scalar @$nums, method : int ($a : short, $b : short) {
         return $a <=> $b;
       });
       
@@ -4634,7 +4634,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(short)2, 3, 1];
       
-      Fn->sort_short($nums, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+      Fn->sort_short($nums, 0, scalar @$nums, method : int ($a : short, $b : short) {
         return $b <=> $a;
       });
       
@@ -4647,7 +4647,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(short)2, 3, 1];
       
-      Fn->sort_short($nums, 0, 0, sub : int ($self : self, $a : short, $b : short) {
+      Fn->sort_short($nums, 0, 0, method : int ($a : short, $b : short) {
         return $a <=> $b;
       });
       
@@ -4660,7 +4660,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(short)5, 2, 3, 1, -10];
       
-      Fn->sort_short($nums, 1, 3, sub : int ($self : self, $a : short, $b : short) {
+      Fn->sort_short($nums, 1, 3, method : int ($a : short, $b : short) {
         return $a <=> $b;
       });
       
@@ -4674,7 +4674,7 @@ class TestCase::Lib::Fn {
       my $nums = [(short)2, 3, 1];
       
       eval {
-        Fn->sort_short(undef, 0, scalar @$nums, sub : int ($self : self, $a : short, $b : short) {
+        Fn->sort_short(undef, 0, scalar @$nums, method : int ($a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -4688,7 +4688,7 @@ class TestCase::Lib::Fn {
       my $nums = [(short)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_short($nums, -1, 3, sub : int ($self : self, $a : short, $b : short) {
+        Fn->sort_short($nums, -1, 3, method : int ($a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -4702,7 +4702,7 @@ class TestCase::Lib::Fn {
       my $nums = [(short)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_short($nums, 1, -1, sub : int ($self : self, $a : short, $b : short) {
+        Fn->sort_short($nums, 1, -1, method : int ($a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -4716,7 +4716,7 @@ class TestCase::Lib::Fn {
       my $nums = [(short)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_short($nums, 3, 3, sub : int ($self : self, $a : short, $b : short) {
+        Fn->sort_short($nums, 3, 3, method : int ($a : short, $b : short) {
           return $a <=> $b;
         });
       };
@@ -4730,12 +4730,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub sort_int : int () {
+  static method sort_int : int () {
     # Sort array by asc order
     {
       my $nums = [(int)2, 3, 1];
       
-      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      Fn->sort_int($nums, 0, scalar @$nums, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -4748,7 +4748,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(int)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      Fn->sort_int($nums, 0, scalar @$nums, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -4761,7 +4761,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(int)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      Fn->sort_int($nums, 0, scalar @$nums, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -4774,7 +4774,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(int)2, 3, 1];
       
-      Fn->sort_int($nums, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+      Fn->sort_int($nums, 0, scalar @$nums, method : int ($a : int, $b : int) {
         return $b <=> $a;
       });
       
@@ -4787,7 +4787,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(int)2, 3, 1];
       
-      Fn->sort_int($nums, 0, 0, sub : int ($self : self, $a : int, $b : int) {
+      Fn->sort_int($nums, 0, 0, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -4800,7 +4800,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(int)5, 2, 3, 1, -10];
       
-      Fn->sort_int($nums, 1, 3, sub : int ($self : self, $a : int, $b : int) {
+      Fn->sort_int($nums, 1, 3, method : int ($a : int, $b : int) {
         return $a <=> $b;
       });
       
@@ -4814,7 +4814,7 @@ class TestCase::Lib::Fn {
       my $nums = [(int)2, 3, 1];
       
       eval {
-        Fn->sort_int(undef, 0, scalar @$nums, sub : int ($self : self, $a : int, $b : int) {
+        Fn->sort_int(undef, 0, scalar @$nums, method : int ($a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -4828,7 +4828,7 @@ class TestCase::Lib::Fn {
       my $nums = [(int)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_int($nums, -1, 3, sub : int ($self : self, $a : int, $b : int) {
+        Fn->sort_int($nums, -1, 3, method : int ($a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -4842,7 +4842,7 @@ class TestCase::Lib::Fn {
       my $nums = [(int)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_int($nums, 1, -1, sub : int ($self : self, $a : int, $b : int) {
+        Fn->sort_int($nums, 1, -1, method : int ($a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -4856,7 +4856,7 @@ class TestCase::Lib::Fn {
       my $nums = [(int)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_int($nums, 3, 3, sub : int ($self : self, $a : int, $b : int) {
+        Fn->sort_int($nums, 3, 3, method : int ($a : int, $b : int) {
           return $a <=> $b;
         });
       };
@@ -4870,12 +4870,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub sort_long : int () {
+  static method sort_long : int () {
     # Sort array by asc order
     {
       my $nums = [(long)2, 3, 1];
       
-      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      Fn->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
         return $a <=> $b;
       });
       
@@ -4888,7 +4888,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(long)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      Fn->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
         return $a <=> $b;
       });
       
@@ -4901,7 +4901,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(long)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      Fn->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
         return $a <=> $b;
       });
       
@@ -4914,7 +4914,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(long)2, 3, 1];
       
-      Fn->sort_long($nums, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+      Fn->sort_long($nums, 0, scalar @$nums, method : int ($a : long, $b : long) {
         return $b <=> $a;
       });
       
@@ -4927,7 +4927,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(long)2, 3, 1];
       
-      Fn->sort_long($nums, 0, 0, sub : int ($self : self, $a : long, $b : long) {
+      Fn->sort_long($nums, 0, 0, method : int ($a : long, $b : long) {
         return $a <=> $b;
       });
       
@@ -4940,7 +4940,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(long)5, 2, 3, 1, -10];
       
-      Fn->sort_long($nums, 1, 3, sub : int ($self : self, $a : long, $b : long) {
+      Fn->sort_long($nums, 1, 3, method : int ($a : long, $b : long) {
         return $a <=> $b;
       });
       
@@ -4954,7 +4954,7 @@ class TestCase::Lib::Fn {
       my $nums = [(long)2, 3, 1];
       
       eval {
-        Fn->sort_long(undef, 0, scalar @$nums, sub : int ($self : self, $a : long, $b : long) {
+        Fn->sort_long(undef, 0, scalar @$nums, method : int ($a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -4968,7 +4968,7 @@ class TestCase::Lib::Fn {
       my $nums = [(long)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_long($nums, -1, 3, sub : int ($self : self, $a : long, $b : long) {
+        Fn->sort_long($nums, -1, 3, method : int ($a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -4982,7 +4982,7 @@ class TestCase::Lib::Fn {
       my $nums = [(long)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_long($nums, 1, -1, sub : int ($self : self, $a : long, $b : long) {
+        Fn->sort_long($nums, 1, -1, method : int ($a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -4996,7 +4996,7 @@ class TestCase::Lib::Fn {
       my $nums = [(long)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_long($nums, 3, 3, sub : int ($self : self, $a : long, $b : long) {
+        Fn->sort_long($nums, 3, 3, method : int ($a : long, $b : long) {
           return $a <=> $b;
         });
       };
@@ -5010,12 +5010,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub sort_float : int () {
+  static method sort_float : int () {
     # Sort array by asc order
     {
       my $nums = [(float)2, 3, 1];
       
-      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      Fn->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
         return $a <=> $b;
       });
       
@@ -5028,7 +5028,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(float)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      Fn->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
         return $a <=> $b;
       });
       
@@ -5041,7 +5041,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(float)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      Fn->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
         return $a <=> $b;
       });
       
@@ -5054,7 +5054,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(float)2, 3, 1];
       
-      Fn->sort_float($nums, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+      Fn->sort_float($nums, 0, scalar @$nums, method : int ($a : float, $b : float) {
         return $b <=> $a;
       });
       
@@ -5067,7 +5067,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(float)2, 3, 1];
       
-      Fn->sort_float($nums, 0, 0, sub : int ($self : self, $a : float, $b : float) {
+      Fn->sort_float($nums, 0, 0, method : int ($a : float, $b : float) {
         return $a <=> $b;
       });
       
@@ -5080,7 +5080,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(float)5, 2, 3, 1, -10];
       
-      Fn->sort_float($nums, 1, 3, sub : int ($self : self, $a : float, $b : float) {
+      Fn->sort_float($nums, 1, 3, method : int ($a : float, $b : float) {
         return $a <=> $b;
       });
       
@@ -5094,7 +5094,7 @@ class TestCase::Lib::Fn {
       my $nums = [(float)2, 3, 1];
       
       eval {
-        Fn->sort_float(undef, 0, scalar @$nums, sub : int ($self : self, $a : float, $b : float) {
+        Fn->sort_float(undef, 0, scalar @$nums, method : int ($a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -5108,7 +5108,7 @@ class TestCase::Lib::Fn {
       my $nums = [(float)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_float($nums, -1, 3, sub : int ($self : self, $a : float, $b : float) {
+        Fn->sort_float($nums, -1, 3, method : int ($a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -5122,7 +5122,7 @@ class TestCase::Lib::Fn {
       my $nums = [(float)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_float($nums, 1, -1, sub : int ($self : self, $a : float, $b : float) {
+        Fn->sort_float($nums, 1, -1, method : int ($a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -5136,7 +5136,7 @@ class TestCase::Lib::Fn {
       my $nums = [(float)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_float($nums, 3, 3, sub : int ($self : self, $a : float, $b : float) {
+        Fn->sort_float($nums, 3, 3, method : int ($a : float, $b : float) {
           return $a <=> $b;
         });
       };
@@ -5150,12 +5150,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub sort_double : int () {
+  static method sort_double : int () {
     # Sort array by asc order
     {
       my $nums = [(double)2, 3, 1];
       
-      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      Fn->sort_double($nums, 0, scalar @$nums, method : int ($a : double, $b : double) {
         return $a <=> $b;
       });
       
@@ -5168,7 +5168,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(double)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      Fn->sort_double($nums, 0, scalar @$nums, method : int ($a : double, $b : double) {
         return $a <=> $b;
       });
       
@@ -5181,7 +5181,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(double)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      Fn->sort_double($nums, 0, scalar @$nums, method : int ($a : double, $b : double) {
         return $a <=> $b;
       });
       
@@ -5194,7 +5194,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(double)2, 3, 1];
       
-      Fn->sort_double($nums, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+      Fn->sort_double($nums, 0, scalar @$nums, method : int ($a : double, $b : double) {
         return $b <=> $a;
       });
       
@@ -5207,7 +5207,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(double)2, 3, 1];
       
-      Fn->sort_double($nums, 0, 0, sub : int ($self : self, $a : double, $b : double) {
+      Fn->sort_double($nums, 0, 0, method : int ($a : double, $b : double) {
         return $a <=> $b;
       });
       
@@ -5220,7 +5220,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(double)5, 2, 3, 1, -10];
       
-      Fn->sort_double($nums, 1, 3, sub : int ($self : self, $a : double, $b : double) {
+      Fn->sort_double($nums, 1, 3, method : int ($a : double, $b : double) {
         return $a <=> $b;
       });
       
@@ -5234,7 +5234,7 @@ class TestCase::Lib::Fn {
       my $nums = [(double)2, 3, 1];
       
       eval {
-        Fn->sort_double(undef, 0, scalar @$nums, sub : int ($self : self, $a : double, $b : double) {
+        Fn->sort_double(undef, 0, scalar @$nums, method : int ($a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -5248,7 +5248,7 @@ class TestCase::Lib::Fn {
       my $nums = [(double)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_double($nums, -1, 3, sub : int ($self : self, $a : double, $b : double) {
+        Fn->sort_double($nums, -1, 3, method : int ($a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -5262,7 +5262,7 @@ class TestCase::Lib::Fn {
       my $nums = [(double)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_double($nums, 1, -1, sub : int ($self : self, $a : double, $b : double) {
+        Fn->sort_double($nums, 1, -1, method : int ($a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -5276,7 +5276,7 @@ class TestCase::Lib::Fn {
       my $nums = [(double)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_double($nums, 3, 3, sub : int ($self : self, $a : double, $b : double) {
+        Fn->sort_double($nums, 3, 3, method : int ($a : double, $b : double) {
           return $a <=> $b;
         });
       };
@@ -5290,12 +5290,12 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub sort_string : int () {
+  static method sort_string : int () {
     # Sort array by asc order
     {
       my $strings = [(string)2, 3, 1];
       
-      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      Fn->sort_string($strings, 0, scalar @$strings, method : int ($a : string, $b : string) {
         return $a cmp $b;
       });
       
@@ -5308,7 +5308,7 @@ class TestCase::Lib::Fn {
     {
       my $strings = [(string)5, 7, 9, 2, 4, 8, 1, 3, 6, 0];
       
-      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      Fn->sort_string($strings, 0, scalar @$strings, method : int ($a : string, $b : string) {
         return $a cmp $b;
       });
       
@@ -5321,7 +5321,7 @@ class TestCase::Lib::Fn {
     {
       my $strings = [(string)5, 7, 9, 2, 5, 4, 8, 1, 3, 6, 3, 0];
       
-      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      Fn->sort_string($strings, 0, scalar @$strings, method : int ($a : string, $b : string) {
         return $a cmp $b;
       });
       
@@ -5334,7 +5334,7 @@ class TestCase::Lib::Fn {
     {
       my $strings = [(string)2, 3, 1];
       
-      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      Fn->sort_string($strings, 0, scalar @$strings, method : int ($a : string, $b : string) {
         return $b cmp $a;
       });
       
@@ -5347,7 +5347,7 @@ class TestCase::Lib::Fn {
     {
       my $strings = [(string)2, 3, 1];
       
-      Fn->sort_string($strings, 0, 0, sub : int ($self : self, $a : string, $b : string) {
+      Fn->sort_string($strings, 0, 0, method : int ($a : string, $b : string) {
         return $a cmp $b;
       });
       
@@ -5360,7 +5360,7 @@ class TestCase::Lib::Fn {
     {
       my $strings = [(string)5, 2, 3, 1, -10];
       
-      Fn->sort_string($strings, 1, 3, sub : int ($self : self, $a : string, $b : string) {
+      Fn->sort_string($strings, 1, 3, method : int ($a : string, $b : string) {
         return $a cmp $b;
       });
       
@@ -5373,7 +5373,7 @@ class TestCase::Lib::Fn {
     {
       my $strings = ["11", "1", "2", undef, ""];
       
-      Fn->sort_string($strings, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+      Fn->sort_string($strings, 0, scalar @$strings, method : int ($a : string, $b : string) {
         return $a cmp $b;
       });
       
@@ -5387,7 +5387,7 @@ class TestCase::Lib::Fn {
       my $strings = [(string)2, 3, 1];
       
       eval {
-        Fn->sort_string(undef, 0, scalar @$strings, sub : int ($self : self, $a : string, $b : string) {
+        Fn->sort_string(undef, 0, scalar @$strings, method : int ($a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -5401,7 +5401,7 @@ class TestCase::Lib::Fn {
       my $strings = [(string)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_string($strings, -1, 3, sub : int ($self : self, $a : string, $b : string) {
+        Fn->sort_string($strings, -1, 3, method : int ($a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -5415,7 +5415,7 @@ class TestCase::Lib::Fn {
       my $strings = [(string)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_string($strings, 1, -1, sub : int ($self : self, $a : string, $b : string) {
+        Fn->sort_string($strings, 1, -1, method : int ($a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -5429,7 +5429,7 @@ class TestCase::Lib::Fn {
       my $strings = [(string)5, 2, 3, 1, -10];
       
       eval {
-        Fn->sort_string($strings, 3, 3, sub : int ($self : self, $a : string, $b : string) {
+        Fn->sort_string($strings, 3, 3, method : int ($a : string, $b : string) {
           return $a cmp $b;
         });
       };
@@ -5443,7 +5443,7 @@ class TestCase::Lib::Fn {
     return 1;
   }
 
-  sub new_minimal : TestCase::Minimal ($x : int, $y : int) {
+  static method new_minimal : TestCase::Minimal ($x : int, $y : int) {
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x($x);
     $minimal->set_y($y);
@@ -5451,17 +5451,17 @@ class TestCase::Lib::Fn {
     return $minimal;
   }
   
-  sub sort_object : int () {
+  static method sort_object : int () {
     
     # Sort array by asc order
     {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
-      Fn->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+      Fn->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0)], sub : int ($self : self, $a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0)], method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       
@@ -5474,7 +5474,7 @@ class TestCase::Lib::Fn {
     {
       my $objs = [new_minimal(2, 1), new_minimal(2, 2), new_minimal(1, 3)];
 
-      Fn->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+      Fn->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
         my $a_x = ((TestCase::Minimal)$a)->x;
         my $a_y = ((TestCase::Minimal)$a)->y;
         my $b_x = ((TestCase::Minimal)$b)->x;
@@ -5491,7 +5491,7 @@ class TestCase::Lib::Fn {
         return $cmp;
       });
 
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 3), new_minimal(2, 1), new_minimal(2, 2)], sub : int ($self : self, $a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 3), new_minimal(2, 1), new_minimal(2, 2)], method : int ($a : object, $b : object) {
         if (((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x && ((TestCase::Minimal)$a)->y == ((TestCase::Minimal)$b)->y) {
           return 1;
         }
@@ -5509,11 +5509,11 @@ class TestCase::Lib::Fn {
     {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
-      Fn->sort_object($objs, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+      Fn->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$b)->x <=> ((TestCase::Minimal)$a)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(3, 0), new_minimal(2, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(3, 0), new_minimal(2, 0), new_minimal(1, 0)], method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       
@@ -5526,11 +5526,11 @@ class TestCase::Lib::Fn {
     {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
-      Fn->sort_object($objs, 0, 0, sub : int ($self : self, $a : object, $b : object) {
+      Fn->sort_object($objs, 0, 0, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)], sub : int ($self : self, $a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)], method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       unless ($is_equals) {
@@ -5542,14 +5542,14 @@ class TestCase::Lib::Fn {
     {
       my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
       
-      Fn->sort_object($objs, 1, 3, sub : int ($self : self, $a : object, $b : object) {
+      Fn->sort_object($objs, 1, 3, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
       my $is_equals = Fn->equals_array_object(
         $objs,
         [new_minimal(5, 0), new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(-10, 0)],
-        sub : int ($self : self, $a : object, $b : object) {
+        method : int ($a : object, $b : object) {
           return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
         }
       );
@@ -5563,7 +5563,7 @@ class TestCase::Lib::Fn {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
       eval {
-        Fn->sort_object(undef, 0, scalar @$objs, sub : int ($self : self, $a : object, $b : object) {
+        Fn->sort_object(undef, 0, scalar @$objs, method : int ($a : object, $b : object) {
           return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };
@@ -5577,7 +5577,7 @@ class TestCase::Lib::Fn {
       my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
       
       eval {
-        Fn->sort_object($objs, -1, 3, sub : int ($self : self, $a : object, $b : object) {
+        Fn->sort_object($objs, -1, 3, method : int ($a : object, $b : object) {
           return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };
@@ -5591,7 +5591,7 @@ class TestCase::Lib::Fn {
       my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
       
       eval {
-        Fn->sort_object($objs, 1, -1, sub : int ($self : self, $a : object, $b : object) {
+        Fn->sort_object($objs, 1, -1, method : int ($a : object, $b : object) {
           return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };
@@ -5605,7 +5605,7 @@ class TestCase::Lib::Fn {
       my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
       
       eval {
-        Fn->sort_object($objs, 3, 3, sub : int ($self : self, $a : object, $b : object) {
+        Fn->sort_object($objs, 3, 3, method : int ($a : object, $b : object) {
           return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
         });
       };

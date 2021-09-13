@@ -1,5 +1,5 @@
 class TestCase::Precedence {
-  sub basic : int () {
+  static method basic : int () {
     {
       my $i = 0;
       my $ret = (string)$i++;
@@ -18,7 +18,7 @@ class TestCase::Precedence {
     return 1;
   }
   
-  sub stab_sum : int ($num1 : int, $num2 : int) {
+  static method stab_sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
 }

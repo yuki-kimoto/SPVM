@@ -3,7 +3,7 @@ class TestCase::Minimal : public {
   has y : public rw int;
   has tests : public TestCase[];
   
-  sub new : TestCase::Minimal () {
+  static method new : TestCase::Minimal () {
     
     return new TestCase::Minimal;
   }

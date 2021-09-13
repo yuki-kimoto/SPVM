@@ -10,10 +10,10 @@ class TestCase::Callback {
     $var_prec = 5;
   }
 
-  sub capture : int () {
+  static method capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
-    my $cb_obj = [$capture1 : int, $capture2 : int] sub : int ($self : self) {
+    my $cb_obj = [$capture1 : int, $capture2 : int] method : int () {
       
       my $total = $capture1 + $capture2;
       
@@ -28,11 +28,11 @@ class TestCase::Callback {
     return 1;
   }
 
-  sub capture_var_high_precidence_than_class_var : int () {
+  static method capture_var_high_precidence_than_class_var : int () {
   
     my $var_prec = 13;
   
-    my $cb = [$var_prec : int] sub : int ($self : self) {
+    my $cb = [$var_prec : int] method : int () {
 
       return $var_prec;
     };
@@ -44,7 +44,7 @@ class TestCase::Callback {
     return 1;
   }
   
-  sub sort_objectect : void ($values : oarray, $comparator : Comparator::Object) {
+  static method sort_objectect : void ($values : oarray, $comparator : Comparator::Object) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
@@ -61,8 +61,8 @@ class TestCase::Callback {
     }
   }
   
-  sub comparator : int () {
-      my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
+  static method comparator : int () {
+      my $comparator = method : int ($object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         
@@ -97,7 +97,7 @@ class TestCase::Callback {
       return 0;
   }
 
-  sub basic : int () {
+  static method basic : int () {
     my $object : object = TestCase::Minimal->new;
     my $implement_callback1 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback1->new;
     my $implement_callback2 : TestCase::Callback::Callback = TestCase::Callback::ImplementCallback2->new;

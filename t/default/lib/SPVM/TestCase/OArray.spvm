@@ -1,5 +1,5 @@
 class TestCase::OArray {
-  sub basic : int () {
+  static method basic : int () {
     
     # oarray - assign numeric object
     {

@@ -1,5 +1,5 @@
 class TestCase::LINERN {
-  sub line : int () {
+  static method line : int () {
     my $line : int = __LINE__;
     
     unless ($line == 3) {

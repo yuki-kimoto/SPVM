@@ -10,7 +10,7 @@ class Time::Info {
   has yday : rw int;
   has isdst : rw int;
 
-  sub new : Time::Info () {
+  static method new : Time::Info () {
     return new Time::Info;
   }
 }

@@ -3,7 +3,7 @@ class TestCase::Multiply {
   #
   # Spec tests
   #
-  sub multiply_byte_byte : int () {
+  static method multiply_byte_byte : int () {
     my $total = (byte)2 * (byte)3;
     
     unless ($total == 6) {
@@ -17,7 +17,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_short_short : int () {
+  static method multiply_short_short : int () {
     my $total = (short)2 * (short)5;
     
     unless ($total == 10) {
@@ -31,7 +31,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_int_byte : int () {
+  static method multiply_int_byte : int () {
     my $total = 4 * (byte)3;
     
     unless ($total == 12) {
@@ -45,7 +45,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_int_short : int () {
+  static method multiply_int_short : int () {
     my $total = 7 * (short)3;
     
     unless ($total == 21) {
@@ -59,7 +59,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_byte_int : int () {
+  static method multiply_byte_int : int () {
     my $total = (byte)3 * -6;
     
     unless ($total == -18) {
@@ -73,7 +73,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_short_int : int () {
+  static method multiply_short_int : int () {
     my $total = (short)3 * -1;
     
     unless ($total == -3) {
@@ -87,7 +87,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_int_int : int () {
+  static method multiply_int_int : int () {
     my $total1 = 1000000000 * 2;
     
     unless ($total1 == 2000000000) {
@@ -101,7 +101,7 @@ class TestCase::Multiply {
     return 1;
   }
   
-  sub multiply_long_long : int () {
+  static method multiply_long_long : int () {
     my $total1 = 2000000000L * 2L;
     
     unless ($total1 == 4000000000L) {
@@ -114,7 +114,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_int_float : int () {
+  static method multiply_int_float : int () {
     my $total = 2 * 0.25f;
     
     unless ($total == 0.5f) {
@@ -128,7 +128,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_int_double : int () {
+  static method multiply_int_double : int () {
     my $total = 2 * 0.25;
     
     unless ($total == 0.5) {
@@ -142,7 +142,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_float_float : int () {
+  static method multiply_float_float : int () {
     my $total = 2.0f * 0.25f;
     
     unless ($total == 0.5f) {
@@ -155,7 +155,7 @@ class TestCase::Multiply {
     
     return 1;
   }
-  sub multiply_double_double : int () {
+  static method multiply_double_double : int () {
     my $total = 2.0 * 0.25;
     
     unless ($total == 0.5) {
@@ -169,7 +169,7 @@ class TestCase::Multiply {
     return 1;
   }
 
-  sub multiply_double_double_big : int () {
+  static method multiply_double_double_big : int () {
     my $total = 1000000000.5 * 0.5;
     
     unless ($total == 500000000.25) {
@@ -186,7 +186,7 @@ class TestCase::Multiply {
   #
   # Optional tests
   #
-  sub multiply : int () {
+  static method multiply : int () {
     # int
     my $int_success = 0;
     {
@@ -285,27 +285,27 @@ class TestCase::Multiply {
   }
   
   # Multiply
-  sub multiply_int_plus : int () {
+  static method multiply_int_plus : int () {
     return (int)536870912 * (int)2;
   }
   
-  sub multiply_int_minus : int () {
+  static method multiply_int_minus : int () {
     return (int)536870912 * (int)-2;
   }
   
-  sub multiply_int_overflow : int () {
+  static method multiply_int_overflow : int () {
     return (int)1073741824 * (int)2;
   }
   
-  sub multiply_long_plus : long () {
+  static method multiply_long_plus : long () {
     return (long)2305843009213693952L * (long)2L;
   }
   
-  sub multiply_long_minus : long () {
+  static method multiply_long_minus : long () {
     return (long)2305843009213693952L * (long)-2L;
   }
   
-  sub multiply_long_overflow : long () {
+  static method multiply_long_overflow : long () {
     return (long)4611686018427387904L * (long)2L;
   }
 }

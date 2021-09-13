@@ -6,28 +6,28 @@ class MyComplex {
   use Math (caddf, csubf, cmulf, cscamulf, cdivf);
   use Math (cadd, csub, cmul, cscamul, cdiv);
   
-  sub new_float_complex : void () {
+  static method new_float_complex : void () {
     
     my $z : Complex_2f;
     $z->{re} = 1.5f;
     $z->{im} = 1.7f;
   }
 
-  sub new_float_complex_func : void () {
+  static method new_float_complex_func : void () {
     my $z = complexf(1.5f, 1.7f);
   }
   
-  sub new_double_complex : void () {
+  static method new_double_complex : void () {
     my $z : Complex_2d;
     $z->{re} = 1.5;
     $z->{im} = 1.7;
   }
 
-  sub new_double_complex_func : void () {
+  static method new_double_complex_func : void () {
     my $z = complex(1.5, 1.7);
   }
 
-  sub complex_float_operations : void () {
+  static method complex_float_operations : void () {
 
     my $z1 = complexf(1.5f, 1.7f);
     my $z2 = complexf(2.5f, 2.7f);
@@ -48,7 +48,7 @@ class MyComplex {
     my $z_div = cdivf($z1, $z2);
   }
 
-  sub complex_double_operations : void () {
+  static method complex_double_operations : void () {
 
     my $z1 = complex(1.5, 1.7);
     my $z2 = complex(2.5, 2.7);
@@ -69,7 +69,7 @@ class MyComplex {
     my $z_div = cdiv($z1, $z2);
   }
 
-  sub complex_float_array : void () {
+  static method complex_float_array : void () {
     my $zs = new Complex_2f[100];
 
     for (my $i = 0; $i < @$zs; $i++) {
@@ -79,7 +79,7 @@ class MyComplex {
     }
   }
   
-  sub complex_double_array : void () {
+  static method complex_double_array : void () {
     my $zs = new Complex_2d[100];
 
     for (my $i = 0; $i < @$zs; $i++) {
@@ -89,7 +89,7 @@ class MyComplex {
     }
   }
 
-  sub complex_call_from_perl : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) {
+  static method complex_call_from_perl : Complex_2d ($z1 : Complex_2d, $z2 : Complex_2d) {
     
     my $z_ret = cadd($z1, $z2);
     

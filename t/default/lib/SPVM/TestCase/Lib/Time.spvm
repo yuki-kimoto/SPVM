@@ -1,25 +1,25 @@
 class TestCase::Lib::Time {
   use Time;
   
-  sub test_time : long () {
+  static method test_time : long () {
     my $time = Time->time;
     
     return $time;
   }
 
-  sub test_localtime : Time::Info ($time : long) {
+  static method test_localtime : Time::Info ($time : long) {
     my $time_info = Time->localtime($time);
     
     return $time_info;
   }
 
-  sub test_gmtime : Time::Info ($time : long) {
+  static method test_gmtime : Time::Info ($time : long) {
     my $time_info = Time->gmtime($time);
     
     return $time_info;
   }
 
-  sub test_timelocal : int () {
+  static method test_timelocal : int () {
     {
       my $time = Time->time();
       
@@ -38,7 +38,7 @@ class TestCase::Lib::Time {
     return 1;
   }
 
-  sub test_timegm : int () {
+  static method test_timegm : int () {
     {
       my $time = Time->time();
       

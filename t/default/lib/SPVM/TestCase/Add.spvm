@@ -1,6 +1,6 @@
 class TestCase::Add {
 
-  sub add_int_max_plus_one_2s_complement : int () {
+  static method add_int_max_plus_one_2s_complement : int () {
     {
       my $int_max_plus_one = 2147483647 + 1;
       
@@ -13,7 +13,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_byte_byte : int () {
+  static method add_byte_byte : int () {
     my $total = (byte)126 + (byte)127;
     
     unless ($total == 253) {
@@ -27,7 +27,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_short_short : int () {
+  static method add_short_short : int () {
     my $total = (short)32766 + (short)32767;
     
     unless ($total == 65533) {
@@ -41,7 +41,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_int_byte : int () {
+  static method add_int_byte : int () {
     my $total = 1 + (byte)3;
     
     unless ($total == 4) {
@@ -55,7 +55,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_int_short : int () {
+  static method add_int_short : int () {
     my $total = 1 + (short)3;
     
     unless ($total == 4) {
@@ -69,7 +69,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_byte_int : int () {
+  static method add_byte_int : int () {
     my $total = (byte)3 + 1;
     
     unless ($total == 4) {
@@ -83,7 +83,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_short_int : int () {
+  static method add_short_int : int () {
     my $total = (short)3 + 1;
     
     unless ($total == 4) {
@@ -97,7 +97,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_int_int : int () {
+  static method add_int_int : int () {
     my $total1 = 2147483646 + 1;
     
     unless ($total1 == 2147483647) {
@@ -117,7 +117,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_long_long : int () {
+  static method add_long_long : int () {
     my $total1 = 9223372036854775806L + 1L;
     
     unless ($total1 == 9223372036854775807L) {
@@ -137,7 +137,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_int_float : int () {
+  static method add_int_float : int () {
     my $total = 1 + 0.25f;
     
     unless ($total == 1.25f) {
@@ -151,7 +151,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_int_double : int () {
+  static method add_int_double : int () {
     my $total = 1 + 0.25;
     
     unless ($total == 1.25) {
@@ -165,7 +165,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_float_float : int () {
+  static method add_float_float : int () {
     my $total = 0.5f + 0.25f;
     
     unless ($total == 0.75f) {
@@ -178,7 +178,7 @@ class TestCase::Add {
     
     return 1;
   }
-  sub add_double_double : int () {
+  static method add_double_double : int () {
     my $total = 0.5 + 0.25;
     
     unless ($total == 0.75) {
@@ -192,7 +192,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_double_double_big : int () {
+  static method add_double_double_big : int () {
     my $total = 2147483647.5 + 0.25;
     
     unless ($total == 2147483647.75) {
@@ -206,7 +206,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_minus : int ()  {
+  static method add_minus : int ()  {
     my $total1 = 12 - 3;
     my $total2 = 12 + (-3);
 
@@ -217,7 +217,7 @@ class TestCase::Add {
     return 1;
   }
 
-  sub add_zero_minus : int ()  {
+  static method add_zero_minus : int ()  {
     my $total1 = 0 - 3;
     my $total2 = -3;
 
@@ -232,24 +232,24 @@ class TestCase::Add {
   # Optional Tests
   #
   
-  sub add_int_max : int () {
+  static method add_int_max : int () {
     return (int)2147483646 + (int)1;
   }
   
-  sub add_int_min : int () {
+  static method add_int_min : int () {
     return (int)-2147483648 + (int)1;
   }
   
-  sub add_long_max : long () {
+  static method add_long_max : long () {
     return (long)9223372036854775806L + (long)1;
   }
   
-  sub add_long_min : long () {
+  static method add_long_min : long () {
     return (long)-9223372036854775808L + (long)1;
   }
   
   # Add
-  sub add : int () {
+  static method add : int () {
     # int
     my $int_success = 0;
     {

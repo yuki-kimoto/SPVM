@@ -22,11 +22,11 @@ class TestCase::NativeAPI2 {
   has execution_order_before_z_index_sort : rw int;
   has z_index : rw int;
   
-  sub new : TestCase::NativeAPI2 () {
+  static method new : TestCase::NativeAPI2 () {
     return new TestCase::NativeAPI2;
   }
   
-  sub spvm_extension2 : int () {
+  static method spvm_extension2 : int () {
     my $total = mul(5, 3);
     
     if ($total == 15) {
@@ -36,13 +36,13 @@ class TestCase::NativeAPI2 {
     return 0;
   }
 
-  native sub mul : int ($num1 : int, $num2 : int);
+  native static method mul : int ($num1 : int, $num2 : int);
 
-  native sub src_foo : int ();
+  native static method src_foo : int ();
 
-  native sub src_bar : int ();
+  native static method src_bar : int ();
   
-  sub get_string_field : int () {
+  static method get_string_field : int () {
     my $na = new TestCase::NativeAPI2;
 
     $na->set_text("Hello");
@@ -57,5 +57,5 @@ class TestCase::NativeAPI2 {
     return $ret;
   }
   
-  native sub get_string_field_native : int ($self : self);
+  native method get_string_field_native : int ();
 }

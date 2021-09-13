@@ -18,19 +18,19 @@ class TestCase::Simple : public {
   our $FOO : public rw int;
   our $VAR_PRIVATE : private int;
 
-  sub get_x : int ($self : self) {
+  method get_x : int () {
     return $self->{x};
   }
 
-  sub new : TestCase::Simple () {
+  static method new : TestCase::Simple () {
     return new TestCase::Simple;
   }
   
-  sub import_method1 : int () {
+  static method import_method1 : int () {
     return 1;
   }
 
-  sub import_method2 : int () {
+  static method import_method2 : int () {
     return 2;
   }
 }

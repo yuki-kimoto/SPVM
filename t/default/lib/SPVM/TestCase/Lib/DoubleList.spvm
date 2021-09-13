@@ -3,7 +3,7 @@ class TestCase::Lib::DoubleList {
   use Fn (equals_array_double);
   use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
-  sub new : int () {
+  static method new : int () {
     # new with array
     {
       my $list = DoubleList->new([(double)3, 5, DBL_MIN()]);
@@ -38,7 +38,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub new_len : int () {
+  static method new_len : int () {
     {
       my $list = DoubleList->new_len(32);
       
@@ -50,7 +50,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub insert : int () {
+  static method insert : int () {
     # Insert to first
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
@@ -107,7 +107,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub remove : int () {
+  static method remove : int () {
     # Remove
     {
       my $list = DoubleList->new([(double)1, 2, 3, 4]);
@@ -162,7 +162,7 @@ class TestCase::Lib::DoubleList {
   }
 
 
-  sub to_array : int () {
+  static method to_array : int () {
     {
       my $list = DoubleList->new([(double)3, 5, DBL_MIN()]);
       
@@ -193,7 +193,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub get : int () {
+  static method get : int () {
     {
       my $list = DoubleList->new([(double)3, 5, DBL_MIN()]);
       
@@ -238,7 +238,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub set : int () {
+  static method set : int () {
     {
       my $list = DoubleList->new([(double)0, 0, 0]);
       
@@ -283,7 +283,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub set_array : int () {
+  static method set_array : int () {
     # Set array
     {
       my $list = DoubleList->new([(double)1, 2, 3]);
@@ -316,7 +316,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub push : int () {
+  static method push : int () {
     # push
     {
       my $list = DoubleList->new_len(0);
@@ -359,7 +359,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub pop : int () {
+  static method pop : int () {
     # pop
     {
       my $list = DoubleList->new_len(0);
@@ -401,7 +401,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub unshift : int () {
+  static method unshift : int () {
     # unshift
     {
       my $list = DoubleList->new_len(0);
@@ -443,7 +443,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub shift : int () {
+  static method shift : int () {
     # shift
     {
       my $list = DoubleList->new_len(0);
@@ -481,7 +481,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub length : int () {
+  static method length : int () {
     # length
     {
       my $list = DoubleList->new_len(0);
@@ -499,7 +499,7 @@ class TestCase::Lib::DoubleList {
     return 1;
   }
 
-  sub resize : int () {
+  static method resize : int () {
     my $a = (double)1;
     my $b = (double)2;
     my $c = (double)3;

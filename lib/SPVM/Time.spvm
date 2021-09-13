@@ -2,12 +2,12 @@ class Time {
   use Time::Info;
   use Math (pow, labs);
   
-  native sub time : long ();
-  native sub localtime : Time::Info ($time : long);
-  native sub gmtime : Time::Info ($time : long);
+  native static method time : long ();
+  native static method localtime : Time::Info ($time : long);
+  native static method gmtime : Time::Info ($time : long);
   
-  native sub timelocal : long ($time_info : Time::Info);
-  sub timegm : long ($time_info : Time::Info) {
+  native static method timelocal : long ($time_info : Time::Info);
+  static method timegm : long ($time_info : Time::Info) {
       
     my $sec = $time_info->sec;
     my $min = $time_info->min;
@@ -64,15 +64,15 @@ class Time {
         + ( SECS_PER_DAY() * $days );
   }
 
-  private sub SECS_PER_MINUTE : int () { return 60; }
-  private sub SECS_PER_HOUR : int () { return 3600; }
-  private sub SECS_PER_DAY : int () { return 86400; }
+  private static method SECS_PER_MINUTE : int () { return 60; }
+  private static method SECS_PER_HOUR : int () { return 3600; }
+  private static method SECS_PER_DAY : int () { return 86400; }
 
-  private sub _MonthDays : int[] () {
+  private static method _MonthDays : int[] () {
     return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   }
   
-  private sub _is_leap_year : int ($year : int) {
+  private static method _is_leap_year : int ($year : int) {
     if ($year % 4) {
       return 0;
     }
@@ -88,7 +88,7 @@ class Time {
     return 1;
   }
 
-  private sub _daygm : long ($mday : int, $month : int, $year : int) {
+  private static method _daygm : long ($mday : int, $month : int, $year : int) {
    
     my $shift : long;
     {

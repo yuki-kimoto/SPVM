@@ -8,7 +8,7 @@ class TestCase::Lib::Hash {
   use Comparator::Object;
   use Comparator::Int;
 
-  sub new : int () {
+  static method new : int () {
     # undef
     {
       my $hash = Hash->new(undef);
@@ -99,7 +99,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub set_get_numeric : int () {
+  static method set_get_numeric : int () {
 
     my $hash = Hash->new({});
 
@@ -198,7 +198,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub murmur_hash : int () {
+  static method murmur_hash : int () {
     my $seed = 123456789;
     # Testcase is created from https://github.com/gcc-mirror/gcc/blob/master/libstdc++-v3/libsupc++/hash_bytes.cc#L72-L112
     # Change size_t to uint32_t to use 32bit integer.
@@ -214,7 +214,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub set : int () {
+  static method set : int () {
     my $keys = ["alice", "bob", "carol", "1234567890-="];
     my $vals = [Int->new(1), Int->new(2), undef, Int->new(3)];
     my $hash = Hash->new({});
@@ -232,7 +232,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub set_do_not_refer_caller_key : int () {
+  static method set_do_not_refer_caller_key : int () {
     my $hash = Hash->new({});
     my $key = "a";
     $hash->set($key, Int->new(1));
@@ -246,7 +246,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub get : int () {
+  static method get : int () {
     my $hash = Hash->new({});
     $hash->set_int("a" => 1);
     $hash->set("b" => undef);
@@ -267,7 +267,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub exists : int () {
+  static method exists : int () {
     my $keys = ["alice", "bob"];
     my $vals = [Int->new(1), Int->new(2)];
     my $hash = Hash->new({});
@@ -285,7 +285,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub delete_with_no_hash_collision : int () {
+  static method delete_with_no_hash_collision : int () {
     my $hash = Hash->new({});
     $hash->set("alice", Int->new(1));
     $hash->set("bob", Int->new(2));
@@ -313,7 +313,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub delete_with_hash_collision : int () {
+  static method delete_with_hash_collision : int () {
     my $hash = Hash->new({});
     $hash->set("alice", Int->new(1));
     $hash->set("bob", Int->new(2));
@@ -348,7 +348,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub rehash : int () {
+  static method rehash : int () {
     my $initial_capacity = 16;
     my $hash = Hash->new({});
     for (my $i = 0; $i < 14; ++$i) {
@@ -370,7 +370,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub keys : int () {
+  static method keys : int () {
     my $hash = Hash->new({});
     my $key0 = "a";
     my $key1 = "b";
@@ -386,7 +386,7 @@ class TestCase::Lib::Hash {
       return 0;
     }
 
-    Fn->sort_object($keys, 0, scalar @$keys, sub : int ($self : self, $a : object, $b : object) {
+    Fn->sort_object($keys, 0, scalar @$keys, method : int ($a : object, $b : object) {
       return (string)$a cmp (string)$b;
     });
 
@@ -405,7 +405,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub values : int () {
+  static method values : int () {
     my $hash = Hash->new({});
     my $key0 = "a";
     my $key1 = "b";
@@ -426,7 +426,7 @@ class TestCase::Lib::Hash {
     $int_values->[1] = (int)$values->[1];
     $int_values->[2] = (int)$values->[2];
 
-    Fn->sort_int($int_values, 0, scalar @$int_values, sub : int ($self : self, $a : int, $b : int) {
+    Fn->sort_int($int_values, 0, scalar @$int_values, method : int ($a : int, $b : int) {
       return $a <=> $b;
     });
 
@@ -445,7 +445,7 @@ class TestCase::Lib::Hash {
     return 1;
   }
 
-  sub copy : int () {
+  static method copy : int () {
     my $hash = Hash->new({});
     for (my $i = 0; $i < 3; ++$i) {
       $hash->set("key$i", $i);

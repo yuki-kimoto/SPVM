@@ -4,7 +4,7 @@ class TestCase::Allow::PrivateData {
   our $X : int;
   has x : int;
   
-  private sub foo : int () {
+  private static method foo : int () {
     return 3;
   }
 }

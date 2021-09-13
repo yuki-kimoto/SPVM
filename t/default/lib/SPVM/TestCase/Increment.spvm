@@ -15,7 +15,7 @@ class TestCase::Increment {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
 
-  sub post_dec_field_access_invocant_not_var : int () {
+  static method post_dec_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Minimal[2];
     $nums_of_nums->[1] = TestCase::Minimal->new;
     
@@ -30,7 +30,7 @@ class TestCase::Increment {
     return 0;
   }
   
-  sub post_dec_array_access_invocant_not_var : int () {
+  static method post_dec_array_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[1] = new int[1];
     
@@ -45,7 +45,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub post_dec_array_field_access_invocant_not_var : int () {
+  static method post_dec_array_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Point_3i[][2];
     $nums_of_nums->[1] = new TestCase::Point_3i[1];
     
@@ -60,7 +60,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub post_dec_array_field_access_constant_index : int () {
+  static method post_dec_array_field_access_constant_index : int () {
     my $values_point_byte = new TestCase::Point_3b[1];
     my $values_point_short = new TestCase::Point_3s[1];
     my $values_point_int = new TestCase::Point_3i[1];
@@ -109,7 +109,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_dec_class_var_access : int () {
+  static method post_dec_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MAX();
     $SHORT_VALUE = (short)INT16_MAX();
     $INT_VALUE = INT32_MAX();
@@ -151,7 +151,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_dec_deref : int () {
+  static method post_dec_deref : int () {
     my $value_byte = (byte)INT8_MAX();
     my $value_short = (short)INT16_MAX();
     my $value_int = INT32_MAX();
@@ -200,7 +200,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_dec_field_access : int () {
+  static method post_dec_field_access : int () {
     my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MAX();
@@ -244,7 +244,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_dec_array_access_var_index : int () {
+  static method post_dec_array_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -294,7 +294,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_dec_array_access_constant_index : int () {
+  static method post_dec_array_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -343,7 +343,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_dec_var : int () {
+  static method post_dec_var : int () {
     my $value_byte = (byte)INT8_MAX();
     my $value_short = (short)INT16_MAX();
     my $value_int = INT32_MAX();
@@ -385,7 +385,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_inc_field_access_invocant_not_var : int () {
+  static method post_inc_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Minimal[2];
     $nums_of_nums->[1] = TestCase::Minimal->new;
     
@@ -400,7 +400,7 @@ class TestCase::Increment {
     return 0;
   }
   
-  sub post_inc_array_access_invocant_not_var : int () {
+  static method post_inc_array_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[1] = new int[1];
     
@@ -415,7 +415,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub post_inc_array_field_access_invocant_not_var : int () {
+  static method post_inc_array_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Point_3i[][2];
     $nums_of_nums->[1] = new TestCase::Point_3i[1];
     
@@ -430,7 +430,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub post_inc_array_field_access_constant_index : int () {
+  static method post_inc_array_field_access_constant_index : int () {
     my $values_point_byte = new TestCase::Point_3b[1];
     my $values_point_short = new TestCase::Point_3s[1];
     my $values_point_int = new TestCase::Point_3i[1];
@@ -479,7 +479,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_inc_class_var_access : int () {
+  static method post_inc_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MIN();
     $SHORT_VALUE = (short)INT16_MIN();
     $INT_VALUE = INT32_MIN();
@@ -521,7 +521,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_inc_deref : int () {
+  static method post_inc_deref : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -570,7 +570,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_inc_field_access : int () {
+  static method post_inc_field_access : int () {
     my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MIN();
@@ -614,7 +614,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_inc_array_access_var_index : int () {
+  static method post_inc_array_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -664,7 +664,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_inc_array_access_constant_index : int () {
+  static method post_inc_array_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -713,7 +713,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_inc_var : int () {
+  static method post_inc_var : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -755,7 +755,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_dec_field_access_invocant_not_var : int () {
+  static method pre_dec_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Minimal[2];
     $nums_of_nums->[0] = TestCase::Minimal->new;
     
@@ -770,7 +770,7 @@ class TestCase::Increment {
     return 0;
   }
   
-  sub pre_dec_array_access_invocant_not_var : int () {
+  static method pre_dec_array_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[0] = new int[1];
     
@@ -785,7 +785,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub pre_dec_array_field_access_invocant_not_var : int () {
+  static method pre_dec_array_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Point_3i[][2];
     $nums_of_nums->[0] = new TestCase::Point_3i[1];
     
@@ -800,7 +800,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub pre_dec_array_field_access_constant_index : int () {
+  static method pre_dec_array_field_access_constant_index : int () {
     my $values_point_byte = new TestCase::Point_3b[1];
     my $values_point_short = new TestCase::Point_3s[1];
     my $values_point_int = new TestCase::Point_3i[1];
@@ -849,7 +849,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_dec_class_var_access : int () {
+  static method pre_dec_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MAX();
     $SHORT_VALUE = (short)INT16_MAX();
     $INT_VALUE = INT32_MAX();
@@ -891,7 +891,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_dec_deref : int () {
+  static method pre_dec_deref : int () {
     my $value_byte = (byte)INT8_MAX();
     my $value_short = (short)INT16_MAX();
     my $value_int = INT32_MAX();
@@ -940,7 +940,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_dec_field_access : int () {
+  static method pre_dec_field_access : int () {
     my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MAX();
@@ -984,7 +984,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_dec_array_access_var_index : int () {
+  static method pre_dec_array_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -1034,7 +1034,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_dec_array_access_constant_index : int () {
+  static method pre_dec_array_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -1083,7 +1083,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_dec_var : int () {
+  static method pre_dec_var : int () {
     my $value_byte = (byte)INT8_MAX();
     my $value_short = (short)INT16_MAX();
     my $value_int = INT32_MAX();
@@ -1126,7 +1126,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_inc_field_access_invocant_not_var : int () {
+  static method pre_inc_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Minimal[2];
     $nums_of_nums->[0] = TestCase::Minimal->new;
     
@@ -1141,7 +1141,7 @@ class TestCase::Increment {
     return 0;
   }
   
-  sub pre_inc_array_access_invocant_not_var : int () {
+  static method pre_inc_array_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[0] = new int[1];
     
@@ -1156,7 +1156,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub pre_inc_array_field_access_invocant_not_var : int () {
+  static method pre_inc_array_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Point_3i[][2];
     $nums_of_nums->[0] = new TestCase::Point_3i[1];
     
@@ -1171,7 +1171,7 @@ class TestCase::Increment {
     return 0;
   }
 
-  sub pre_inc_array_field_access_constant_index : int () {
+  static method pre_inc_array_field_access_constant_index : int () {
     my $values_point_byte = new TestCase::Point_3b[1];
     my $values_point_short = new TestCase::Point_3s[1];
     my $values_point_int = new TestCase::Point_3i[1];
@@ -1220,7 +1220,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_inc_class_var_access : int () {
+  static method pre_inc_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MIN();
     $SHORT_VALUE = (short)INT16_MIN();
     $INT_VALUE = INT32_MIN();
@@ -1262,7 +1262,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_inc_deref : int () {
+  static method pre_inc_deref : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -1311,7 +1311,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_inc_field_access : int () {
+  static method pre_inc_field_access : int () {
     my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MIN();
@@ -1355,7 +1355,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_inc_array_access_var_index : int () {
+  static method pre_inc_array_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -1405,7 +1405,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_inc_array_access_constant_index : int () {
+  static method pre_inc_array_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -1454,7 +1454,7 @@ class TestCase::Increment {
     }
   }
 
-  sub pre_inc_var : int () {
+  static method pre_inc_var : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -1497,7 +1497,7 @@ class TestCase::Increment {
     }
   }
 
-  sub post_dec : int () {
+  static method post_dec : int () {
     my $value_byte = (byte)0;
     my $value_short = (short)0;
     my $value_int = 0;

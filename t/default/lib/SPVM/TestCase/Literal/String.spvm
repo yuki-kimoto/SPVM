@@ -3,7 +3,7 @@ class TestCase::Literal::String {
   
   our $VAR_EXPANSION1 : int;
 
-  sub raw_escape : int () {
+  static method raw_escape : int () {
     
     # Raw escape - Character and number
     {
@@ -139,7 +139,7 @@ class TestCase::Literal::String {
     return 1;
   }
   
-  sub edge_case : int () {
+  static method edge_case : int () {
 
     # String literal last character is \\
     {
@@ -161,7 +161,7 @@ class TestCase::Literal::String {
     
     return 1;
   }
-  sub characters : int () {
+  static method characters : int () {
     
     # Characters
     {
@@ -193,7 +193,7 @@ ef"
     return 1;
   }
   
-  sub escape : int () {
+  static method escape : int () {
     
     # Escape sequence
     my $string = "a\0\a \t\n\f\r\"\'\\z";
@@ -246,7 +246,7 @@ ef"
     return 1;
   }
   
-  sub escape_ascii : int () {
+  static method escape_ascii : int () {
     my $string = "\x00\x11\x22\x33\x44\x55\x66\x77\x78\x79\x7a\x7b\x7c\x7d\x7e\x7f\x7A\x7B\x7C\x7D\x7E\x7Fa";
     
     unless ($string->[0] == 0) {
@@ -344,7 +344,7 @@ ef"
     return 1;
   }
 
-  sub escape_unicode : int () {
+  static method escape_unicode : int () {
     my $string = "\N{U+3042}\N{U+3044}\N{U+3046}";
     
     unless ($string eq "あいう") {
@@ -354,7 +354,7 @@ ef"
     return 1;
   }
 
-  sub var_expansion : int () {
+  static method var_expansion : int () {
     
     # Variable access
     {

@@ -8,7 +8,7 @@ class TestCase::Array {
   }
 
   # Array init {}
-  sub array_init_key_values_empty : int () {
+  static method array_init_key_values_empty : int () {
     my $objects = {};
     unless (@$objects == 0) {
       return 0;
@@ -22,7 +22,7 @@ class TestCase::Array {
   }
 
   # Array init {} with string
-  sub array_init_key_values : int () {
+  static method array_init_key_values : int () {
     {
       my $objects = {foo => 1, bar => 2};
       unless (@$objects == 4) {
@@ -100,7 +100,7 @@ class TestCase::Array {
   }
   
   # Array store undef
-  sub array_init_empty : int () {
+  static method array_init_empty : int () {
     my $objects = [];
     unless (@$objects == 0) {
       return 0;
@@ -113,7 +113,7 @@ class TestCase::Array {
     return 1;
   }
   
-  sub array_init_fatcamma : int () {
+  static method array_init_fatcamma : int () {
     my $pair = [(object)"x" => 1, "y" => 2];
     
     unless ((string)$pair->[0] eq "x") {
@@ -135,7 +135,7 @@ class TestCase::Array {
     return 1;
   }
   
-  sub array_store_undef : int () {
+  static method array_store_undef : int () {
     my $minimals = new TestCase::Minimal[3];
     $minimals->[0] = TestCase::Minimal->new;
     $minimals->[0] = undef;
@@ -147,7 +147,7 @@ class TestCase::Array {
   }
   
   # Array length - @ mark
-  sub array_length_atmark : int () {
+  static method array_length_atmark : int () {
     
     my $nums = new int[3];
     my $len = @$nums;
@@ -159,7 +159,7 @@ class TestCase::Array {
   }
 
   # Array length - @ mark with brace
-  sub array_length_atmark_brace : int () {
+  static method array_length_atmark_brace : int () {
     
     my $nums = new int[3];
     my $len = @{$nums};
@@ -171,7 +171,7 @@ class TestCase::Array {
   }
   
   # Array length - scalar @ mark
-  sub array_length_scalar_atmark : int () {
+  static method array_length_scalar_atmark : int () {
     
     my $nums = new int[3];
     my $len = scalar @$nums;
@@ -183,7 +183,7 @@ class TestCase::Array {
   }
   
   # Array length - @ mark with brace
-  sub array_length_scalar_atmark_brace : int () {
+  static method array_length_scalar_atmark_brace : int () {
     
     my $nums = new int[3];
     my $len = scalar @{$nums};
@@ -194,7 +194,7 @@ class TestCase::Array {
     return 0;
   }
 
-  sub array_length_undef : int () {
+  static method array_length_undef : int () {
     
     my $nums : int[] = undef;
 
@@ -210,7 +210,7 @@ class TestCase::Array {
     return 0;
   }
 
-  sub array : int () {
+  static method array : int () {
     {
       my $nums : int[][] = new int[][3];
     }
@@ -221,7 +221,7 @@ class TestCase::Array {
       return 1;
     }
   }
-  sub array_set_and_get_array_element_first : int () {
+  static method array_set_and_get_array_element_first : int () {
     
     my $nums = new int[3];
     $nums->[0] = 345;
@@ -229,7 +229,7 @@ class TestCase::Array {
     return $nums->[0];
   }
 
-  sub array_set_and_get_array_element_last : int () {
+  static method array_set_and_get_array_element_last : int () {
     
     my $nums = new int[3];
     $nums->[2] = 298;
@@ -237,7 +237,7 @@ class TestCase::Array {
     return $nums->[2];
   }
 
-  sub array_culcurate_sum_by_for : int () {
+  static method array_culcurate_sum_by_for : int () {
     
     my $nums = new int[3];
     $nums->[0] = 1;
@@ -252,7 +252,7 @@ class TestCase::Array {
     return $total;
   }
 
-  sub array_init_byte : int () {
+  static method array_init_byte : int () {
     my $nums = [(byte)1, (byte)2, INT8_MAX()];
     
     if ($nums->[0] == 1) {
@@ -264,7 +264,7 @@ class TestCase::Array {
     }
     return 0;
   }
-  sub array_init_short : int () {
+  static method array_init_short : int () {
     my $nums = [(short)1, (short)2, (short)3];
     
     if ((int)$nums->[0] == (int)(short)1) {
@@ -276,7 +276,7 @@ class TestCase::Array {
     }
     return 0;
   }
-  sub array_init_int  : int () {
+  static method array_init_int  : int () {
     my $nums = [1, 2, 3];
     my $nums2 : int[];
     $nums2 = [4, 5, 6];
@@ -304,7 +304,7 @@ class TestCase::Array {
     
     return 0;
   }
-  sub array_init_long : int () {
+  static method array_init_long : int () {
     my $nums = [1L, 2L, 3L];
     
     if ($nums->[0] == 1L) {
@@ -316,7 +316,7 @@ class TestCase::Array {
     }
     return 0;
   }
-  sub array_init_float : int () {
+  static method array_init_float : int () {
     my $nums = [1f, 2f, 3f];
     
     if ($nums->[0] == 1f) {
@@ -328,7 +328,7 @@ class TestCase::Array {
     }
     return 0;
   }
-  sub array_init_double : int () {
+  static method array_init_double : int () {
     my $nums = [1d, 2d, 3d];
     
     if ($nums->[0] == 1d) {
@@ -340,7 +340,7 @@ class TestCase::Array {
     }
     return 0;
   }
-  sub array_default_zero_not_memory_pool : int () {
+  static method array_default_zero_not_memory_pool : int () {
     my $values_byte = new byte[1000000];
     my $values_short = new short[1000000];
     my $values_int = new int[1000000];
@@ -377,7 +377,7 @@ class TestCase::Array {
     
     return 0;
   }
-  sub array_default_zero_memory_pool : int () {
+  static method array_default_zero_memory_pool : int () {
     my $values_byte = new byte[10];
     my $values_short = new short[10];
     my $values_int = new int[10];
@@ -415,7 +415,7 @@ class TestCase::Array {
     return 0;
   }
 
-  sub array_init_object : int () {
+  static method array_init_object : int () {
     my $objects = [(object)TestCase::Minimal->new, TestCase::Minimal->new];
     
     if ($objects isa object[]) {
@@ -429,7 +429,7 @@ class TestCase::Array {
   }
 
 
-  sub array_max_index_byte : int () {
+  static method array_max_index_byte : int () {
     my $nums = new byte[INT32_MAX()];
     
     $nums->[0] = 1;
@@ -458,7 +458,7 @@ class TestCase::Array {
     return 1;
   }
 
-  sub array_big_index_byte : int () {
+  static method array_big_index_byte : int () {
     my $index = $BIG_INDEX;
     my $nums = new byte[$index];
     
@@ -483,7 +483,7 @@ class TestCase::Array {
     return 1;
   }
 
-  sub array_big_index_short : int () {
+  static method array_big_index_short : int () {
     my $index = $BIG_INDEX;
     my $nums = new short[$index];
     
@@ -508,7 +508,7 @@ class TestCase::Array {
     return 1;
   }
 
-  sub array_big_index_int : int () {
+  static method array_big_index_int : int () {
     my $index = $BIG_INDEX;
     my $nums = new int[$index];
     
@@ -533,7 +533,7 @@ class TestCase::Array {
     return 1;
   }
 
-  sub array_big_index_long : int () {
+  static method array_big_index_long : int () {
     my $index = $BIG_INDEX;
     my $nums = new long[$index];
     
@@ -558,7 +558,7 @@ class TestCase::Array {
     return 1;
   }
 
-  sub array_big_index_float : int () {
+  static method array_big_index_float : int () {
     my $index = $BIG_INDEX;
     my $nums = new float[$index];
     
@@ -583,7 +583,7 @@ class TestCase::Array {
     return 1;
   }
 
-  sub array_big_index_double : int () {
+  static method array_big_index_double : int () {
     my $index = $BIG_INDEX;
     my $nums = new double[$index];
     

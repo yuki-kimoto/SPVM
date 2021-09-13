@@ -8,7 +8,7 @@ class TestCase::Object {
   has INT32_MAX : int;
   has next : int;
   
-  sub get_field_chain : int () {
+  static method get_field_chain : int () {
     my $simple = TestCase::Simple->new;
     my $minimal = TestCase::Minimal->new;
     $minimal->set_x(5);
@@ -22,7 +22,7 @@ class TestCase::Object {
     
     return 1;
   }
-  sub core_func_name_field_name : int () {
+  static method core_func_name_field_name : int () {
     my $self = new TestCase::Object;
     $self->{INT32_MAX} = 1;
     
@@ -33,7 +33,7 @@ class TestCase::Object {
     return 1;
   }
 
-  sub reserved_word_field_name : int () {
+  static method reserved_word_field_name : int () {
     my $self = new TestCase::Object;
     $self->{next} = 1;
     
@@ -44,10 +44,10 @@ class TestCase::Object {
     return 1;
   }
   
-  sub FLOAT_PRECICE : float () { return 16384.5f; }
-  sub DOUBLE_PRECICE : double () { return 65536.5; }
+  static method FLOAT_PRECICE : float () { return 16384.5f; }
+  static method DOUBLE_PRECICE : double () { return 65536.5; }
 
-  sub isa_basic : int () {
+  static method isa_basic : int () {
     my $minimal = TestCase::Minimal->new;
     if ($minimal isa TestCase::Minimal) {
       if (!($minimal isa TestCase)) {
@@ -58,7 +58,7 @@ class TestCase::Object {
     return 0;
   }
 
-  sub destructor : int () {
+  static method destructor : int () {
     my $minimal = TestCase::Minimal->new();
     destructor_call($minimal);
     
@@ -68,13 +68,13 @@ class TestCase::Object {
     return 0;
   }
   
-  sub destructor_call : int ($minimal: TestCase::Minimal) {
+  static method destructor_call : int ($minimal: TestCase::Minimal) {
     my $dest = TestCase::Destructor->new();
     $dest->{minimal} = $minimal;
   }
   
   # object field is initialized zero
-  sub object_field_initialized_zero : int () {
+  static method object_field_initialized_zero : int () {
     my $obj =TestCase->new;
     if ($obj->{x_byte} == 0) {
       if ($obj->{x_int} == 0) {
@@ -87,7 +87,7 @@ class TestCase::Object {
   }
 
   # object field set and get
-  sub object_field_set_and_get : int () {
+  static method object_field_set_and_get : int () {
     my $test_case =TestCase->new;
     
     $test_case->{x_byte} = INT8_MAX();
@@ -119,7 +119,7 @@ class TestCase::Object {
   }
 
   # object field set and get
-  sub object_field_set_and_get_again : int () {
+  static method object_field_set_and_get_again : int () {
     my $test_case =TestCase->new;
     
     $test_case->{x_byte} = INT8_MAX();

@@ -2,7 +2,7 @@ class TestCase::Exception {
   use TestCase::Minimal;
   use TestCase;
   
-  sub exception_get_field_object_undef : int () {
+  static method exception_get_field_object_undef : int () {
     
     my $test_case : TestCase = undef;
     
@@ -59,7 +59,7 @@ class TestCase::Exception {
     return 0;
   }
   
-  sub exception_set_field_object_undef : int () {
+  static method exception_set_field_object_undef : int () {
     
     my $test_case : TestCase = undef;
     
@@ -114,7 +114,7 @@ class TestCase::Exception {
     
     return 0;
   }
-  sub exception_eval_call_spvm_method : int () {
+  static method exception_eval_call_spvm_method : int () {
     eval {
       exception_die_return_int();
     };
@@ -126,43 +126,43 @@ class TestCase::Exception {
     return 0;
   }
   
-  sub exception_call_stack : int () {
+  static method exception_call_stack : int () {
     exception_die_return_int();
   }
   
-  sub exception_die_return_byte : byte () {
+  static method exception_die_return_byte : byte () {
     die "Error";
   }
   
-  sub exception_die_return_short : short () {
+  static method exception_die_return_short : short () {
     die "Error";
   }
   
-  sub exception_die_return_int : int () {
+  static method exception_die_return_int : int () {
     die "Error";
   }
   
-  sub exception_die_return_long : long () {
+  static method exception_die_return_long : long () {
     die "Error";
   }
   
-  sub exception_die_return_float : float () {
+  static method exception_die_return_float : float () {
     die "Error";
   }
   
-  sub exception_die_return_double : double () {
+  static method exception_die_return_double : double () {
     die "Error";
   }
   
-  sub exception_die_return_object : TestCase::Minimal () {
+  static method exception_die_return_object : TestCase::Minimal () {
     die "Error";
   }
   
-  sub exception_die_return_void : void () {
+  static method exception_die_return_void : void () {
     die "Error";
   }
 
-  sub exception_die_return_int_eval_catch : int () {
+  static method exception_die_return_int_eval_catch : int () {
     eval {
       die "Error";
     };
@@ -175,7 +175,7 @@ class TestCase::Exception {
     return 0;
   }
   # Exception
-  sub exception_zero_divide_int : int () {
+  static method exception_zero_divide_int : int () {
     1 / 0;
   }
 }

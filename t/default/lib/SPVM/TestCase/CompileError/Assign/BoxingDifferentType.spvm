@@ -1,6 +1,6 @@
 class TestCase::CompileError::Assign::BoxingDifferentType {
 
-  sub main : int () {
+  static method main : int () {
     my $num : Long = 3;
   }
 }

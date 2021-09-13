@@ -1,7 +1,7 @@
 class TestCase::Lib::Bool {
   use Bool;
   
-  sub basic : int () {
+  static method basic : int () {
     # true
     {
       my $true = Bool->true;

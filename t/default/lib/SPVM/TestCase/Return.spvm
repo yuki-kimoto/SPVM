@@ -1,6 +1,6 @@
 class TestCase::Return {
 
-  sub return_implicite_convertion : int () {
+  static method return_implicite_convertion : int () {
     my $str = return_implicite_convertion_stub();
     unless ($str eq "1") {
       return 0;
@@ -9,7 +9,7 @@ class TestCase::Return {
     return 1;
   }
   
-  sub return_implicite_convertion_stub : string () {
+  static method return_implicite_convertion_stub : string () {
     my $int = Int->new(1);
     return $int->value;
   }

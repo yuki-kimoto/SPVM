@@ -14,14 +14,14 @@ class TestCase::Enum {
     PRIVATE_VALUE = 12
   }
   
-  sub enum_descriptor  : int () {
+  static method enum_descriptor  : int () {
     unless (PRIVATE_VALUE() == 12) {
       return 0;
     }
     
     return 1;
   }
-  sub enum_int  : int () {
+  static method enum_int  : int () {
     
     # Enum value
     {

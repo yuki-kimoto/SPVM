@@ -1,7 +1,7 @@
 class MyOpenMP {
-  native sub sum_vec_int : int[] ($nums1 : int[], $nums2 : int[]);
+  native static method sum_vec_int : int[] ($nums1 : int[], $nums2 : int[]);
   
-  sub test : void () {
+  static method test : void () {
     my $nums1 = [1, 2, 3];
     my $nums2 = [5, 6, 7];
     

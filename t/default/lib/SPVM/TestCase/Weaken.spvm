@@ -9,7 +9,7 @@ class TestCase::Weaken {
   has weaken3 : TestCase::Data::Weaken;
   has weaken4 : TestCase::Data::Weaken;
 
-  sub weaken_field_cross_reference_weaken_both : int () {
+  static method weaken_field_cross_reference_weaken_both : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
 
@@ -26,7 +26,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_cross_reference : int () {
+  static method weaken_field_cross_reference : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
     
@@ -49,7 +49,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_cross_reference_weaken_twice : int () {
+  static method weaken_field_cross_reference_weaken_twice : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
 
@@ -74,7 +74,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_self_reference : int () {
+  static method weaken_field_self_reference : int () {
     my $self = new TestCase::Weaken;
     $self->{x_int} = 5;
     
@@ -92,7 +92,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_weaken_ref_count1_object : int () {
+  static method weaken_field_weaken_ref_count1_object : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     my $weaken2 = new TestCase::Data::Weaken;
     
@@ -111,7 +111,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_circular_reference : int () {
+  static method weaken_field_circular_reference : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} =1;
     
@@ -136,7 +136,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_circular_reference_weaken_twice : int () {
+  static method weaken_field_circular_reference_weaken_twice : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} =1;
     
@@ -162,7 +162,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_circular_reference_weaken_triple : int () {
+  static method weaken_field_circular_reference_weaken_triple : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} =1;
     
@@ -189,7 +189,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_assign_undef_to_weakened_field : int () {
+  static method weaken_field_assign_undef_to_weakened_field : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     
     my $weaken2 = new TestCase::Data::Weaken;
@@ -210,7 +210,7 @@ class TestCase::Weaken {
     return 0;
   }
   
-  sub weaken_field_assign_undef_to_assinged_object : int () {
+  static method weaken_field_assign_undef_to_assinged_object : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     my $weaken2 = new TestCase::Data::Weaken;
 
@@ -226,7 +226,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_undef : int () {
+  static method weaken_field_undef : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     weaken $weaken1->{data_weaken};
     
@@ -237,7 +237,7 @@ class TestCase::Weaken {
     return 0;
   }
 
-  sub weaken_field_cross_reference_assign_var : int () {
+  static method weaken_field_cross_reference_assign_var : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
     
@@ -257,7 +257,7 @@ class TestCase::Weaken {
     return 1;
   }
 
-  sub isweak_test : int () {
+  static method isweak_test : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
     
@@ -282,7 +282,7 @@ class TestCase::Weaken {
     return 1;
   }
 
-  sub unweaken_test : int () {
+  static method unweaken_test : int () {
     my $weaken1 = new TestCase::Data::Weaken;
     $weaken1->{x} = 1;
     

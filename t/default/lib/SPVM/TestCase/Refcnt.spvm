@@ -2,7 +2,7 @@ class TestCase::Refcnt {
   use TestCase::Minimal;
   use TestCase::Simple;
   
-  sub refcnt_test : int () {
+  static method refcnt_test : int () {
     # Basic
     {
       my $minimal = new TestCase::Minimal;
@@ -81,7 +81,7 @@ class TestCase::Refcnt {
     return 1;
   }
   
-  sub func :void ($object : TestCase::Minimal) {
+  static method func :void ($object : TestCase::Minimal) {
     return;
   }
 }

@@ -1,5 +1,5 @@
 class TestCase::NativeAPI2 {
-  sub spvm_extension2 : int () {
+  static method spvm_extension2 : int () {
     my $total = mul(5, 3);
     
     if ($total == 15) {
@@ -9,9 +9,9 @@ class TestCase::NativeAPI2 {
     return 0;
   }
 
-  native sub mul : int ($num1 : int, $num2 : int);
+  native static method mul : int ($num1 : int, $num2 : int);
 
-  native sub src_foo : int ();
+  native static method src_foo : int ();
 
-  native sub src_bar : int ();
+  native static method src_bar : int ();
 }

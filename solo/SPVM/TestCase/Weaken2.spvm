@@ -7,7 +7,7 @@ class TestCase::Weaken2 {
   
   set test_case, x1;
   
-  sub new : TestCase::Weaken2 () {
+  static method new : TestCase::Weaken2 () {
     return new TestCase::Weaken2;
   }
 }

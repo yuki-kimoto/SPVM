@@ -1,6 +1,6 @@
 class TestCase::ModuleContainsMultiClass {
   use TestCase::ModuleContainsMultiClass::FloatMatrix;
-  sub mat_new_zero : TestCase::ModuleContainsMultiClass::FloatMatrix ($rows_length : int, $columns_length : int) {
+  static method mat_new_zero : TestCase::ModuleContainsMultiClass::FloatMatrix ($rows_length : int, $columns_length : int) {
     my $values_length = $rows_length * $columns_length;
     my $mat = new TestCase::ModuleContainsMultiClass::FloatMatrix;
     $mat->{rows_length} = $rows_length;

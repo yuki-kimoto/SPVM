@@ -1,5 +1,5 @@
 class TestCase::String {
-  sub string_access : int () {
+  static method string_access : int () {
     my $string = "abc";
     
     unless ($string->[0] == 'a') {
@@ -17,7 +17,7 @@ class TestCase::String {
     return 1;
   }
   
-  sub string_length : int () {
+  static method string_length : int () {
     # String length
     {
       my $string_length = length "abc";
@@ -29,7 +29,7 @@ class TestCase::String {
       return 1;
     }
   }
-  sub basic : int () {
+  static method basic : int () {
     
     # Assign byte array to string
     {

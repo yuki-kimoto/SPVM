@@ -1,7 +1,7 @@
 class TestCase::Examples {
   use TestCase::OnlyField;
   
-  sub new_only_field_object : TestCase::OnlyField () {
+  static method new_only_field_object : TestCase::OnlyField () {
     my $object = new TestCase::OnlyField;
     return $object;
   }

@@ -1,11 +1,11 @@
 class TestCase::Callback::ImplementCallback1 {
   use TestCase::Minimal;
 
-  sub new : TestCase::Callback::ImplementCallback1 () {
+  static method new : TestCase::Callback::ImplementCallback1 () {
     return new TestCase::Callback::ImplementCallback1;
   }
   
-  sub : int ($self : self, $var1 : int, $var2 : long) {
+  method : int ($var1 : int, $var2 : long) {
     return 1;
   }
 }

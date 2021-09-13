@@ -9,10 +9,10 @@ class TestCase::Weaken {
   set test_case, weaken2, x1;
   get test_case, weaken2, x1;
   
-  sub weaken_test_case : void ($self : TestCase::Weaken) {
+  method weaken_test_case : void ($self : TestCase::Weaken) {
     weaken $self->{test_case};
   }
-  sub new : TestCase::Weaken () {
+  static method new : TestCase::Weaken () {
     return new TestCase::Weaken;
   }
 }

@@ -9,7 +9,7 @@ class IntList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : IntList ($array : int[]) {
+  static method new : IntList ($array : int[]) {
     my $self = new IntList;
     my $length : int;
     if ($array) {
@@ -40,7 +40,7 @@ class IntList : precompile {
     return $self;
   }
 
-  sub new_len : IntList ($length : int) {
+  static method new_len : IntList ($length : int) {
     my $self = new IntList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
@@ -58,7 +58,7 @@ class IntList : precompile {
     return $self;
   }
   
-  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+  private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new int [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -69,7 +69,7 @@ class IntList : precompile {
     $self->{values} = $new_values;
   }
 
-  private sub _extend : void ($self : self) {
+  private method _extend : void () {
     my $capacity = $self->{capacity};
     my $length = $self->{length};
     my $values = $self->{values};
@@ -84,7 +84,7 @@ class IntList : precompile {
     $self->{capacity} = $new_capacity;
   }
 
-  sub insert : void ($self : self, $index : int, $value : int) {
+  method insert : void ($index : int, $value : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -107,7 +107,7 @@ class IntList : precompile {
     $self->{length}++;
   }
 
-  sub remove : int ($self : self, $index : int) {
+  method remove : int ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -128,7 +128,7 @@ class IntList : precompile {
     return $remove_value;
   }
   
-  sub push : void ($self : self, $value : int) {
+  method push : void ($value : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -141,7 +141,7 @@ class IntList : precompile {
     $self->{length}++;
   }
   
-  sub pop : int ($self : self) {
+  method pop : int () {
     my $length = $self->length;
     
     if ($length == 0) {
@@ -157,7 +157,7 @@ class IntList : precompile {
     return $value;
   }
   
-  sub unshift : void ($self : self, $value : int) {
+  method unshift : void ($value : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -173,7 +173,7 @@ class IntList : precompile {
     $self->{length}++;
   }
   
-  sub shift : int ($self : self) {
+  method shift : int () {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -194,7 +194,7 @@ class IntList : precompile {
     return $value;
   }
   
-  sub set : void ($self : self, $index : int, $value : int) {
+  method set : void ($index : int, $value : int) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -204,7 +204,7 @@ class IntList : precompile {
     $self->{values}[$index] = $value;
   }
 
-  sub set_array : void ($self : self, $array : int[]) {
+  method set_array : void ($array : int[]) {
     unless ($array) {
       die "Array must be defined";
     }
@@ -221,7 +221,7 @@ class IntList : precompile {
     Fn->memcpy_int($self->{values}, 0, $array, 0, $cur_length);
   }
 
-  sub get : int ($self : self, $index : int) {
+  method get : int ($index : int) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -233,7 +233,7 @@ class IntList : precompile {
     return $value;
   }
   
-  sub to_array : int[] ($self : self) {
+  method to_array : int[] () {
     my $length = $self->length;
     
     my $array = new int[$length];
@@ -245,7 +245,7 @@ class IntList : precompile {
     return $array;
   }
 
-  sub resize : void ($self : self, $new_length : int) {
+  method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be more than or equals to 0";
     }

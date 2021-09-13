@@ -1,5 +1,5 @@
 class TestCase::CompileError::TypeCantBeDetectedUndefDefault {
-  sub main : int () {
+  static method main : int () {
     my $value;
   }
 }

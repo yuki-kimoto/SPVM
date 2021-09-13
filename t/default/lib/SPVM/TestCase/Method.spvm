@@ -10,7 +10,7 @@ class TestCase::Method {
   use TestCase::Simple (import_method1, import_method2);
   use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
-  sub test_import_method : int () {
+  static method test_import_method : int () {
     unless (import_method1() == 1) {
       return 0;
     }
@@ -22,30 +22,30 @@ class TestCase::Method {
     return 1;
   }
   
-  sub already_exists_method_no_arg : int () {
+  static method already_exists_method_no_arg : int () {
     return 3;
   }
 
-  sub already_exists_method : int ($num1 : int, $num2 : int) {
+  static method already_exists_method : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
 
-  sub test_return_value_automatical_numeric_convertion_widening : double () {
+  static method test_return_value_automatical_numeric_convertion_widening : double () {
     
     return 2;
   }
 
-  sub test_return_value_automatical_numeric_convertion_narrowing_byte : byte () {
+  static method test_return_value_automatical_numeric_convertion_narrowing_byte : byte () {
     
     return 127;
   }
 
-  sub test_return_value_automatical_numeric_convertion_narrowing_short : short () {
+  static method test_return_value_automatical_numeric_convertion_narrowing_short : short () {
     
     return 32767;
   }
   
-  sub return_value_automatical_numeric_convertion : int () {
+  static method return_value_automatical_numeric_convertion : int () {
     {
       my $num : double = test_return_value_automatical_numeric_convertion_widening();
       unless ($num == 2.0) {
@@ -70,7 +70,7 @@ class TestCase::Method {
     return 1;
   }
   
-  sub test_vaarg_objects_pass_array : int ($string : string, $nums : object[]...) {
+  static method test_vaarg_objects_pass_array : int ($string : string, $nums : object[]...) {
     
     unless ($string eq "a") {
       return 0;
@@ -87,11 +87,11 @@ class TestCase::Method {
     return 1;
   }
   
-  sub vaarg_objects_pass_array : int () {
+  static method vaarg_objects_pass_array : int () {
     return test_vaarg_objects_pass_array("a", [(object)1, 2, 3]);
   }
 
-  sub test_vaarg_objects_pass_each_values : int ($string : string, $nums : object[]...) {
+  static method test_vaarg_objects_pass_each_values : int ($string : string, $nums : object[]...) {
     
     unless ($string eq "a") {
       return 0;
@@ -108,7 +108,7 @@ class TestCase::Method {
     return 1;
   }
 
-  sub test_vaarg_objects_pass_empty : int ($string : string, $nums : object[]...) {
+  static method test_vaarg_objects_pass_empty : int ($string : string, $nums : object[]...) {
     
     unless (@$nums == 0) {
       return 0;
@@ -117,15 +117,15 @@ class TestCase::Method {
     return 1;
   }
 
-  sub vaarg_objects_pass_each_values : int () {
+  static method vaarg_objects_pass_each_values : int () {
     return test_vaarg_objects_pass_each_values("a", 1, 2, 3);
   }
 
-  sub vaarg_objects_pass_empty : int () {
+  static method vaarg_objects_pass_empty : int () {
     return test_vaarg_objects_pass_empty("a");
   }
 
-  sub test_vaarg_pass_array : int ($string : string, $nums : int[]...) {
+  static method test_vaarg_pass_array : int ($string : string, $nums : int[]...) {
     
     unless ($string eq "a") {
       return 0;
@@ -142,11 +142,11 @@ class TestCase::Method {
     return 1;
   }
   
-  sub vaarg_pass_array : int () {
+  static method vaarg_pass_array : int () {
     return test_vaarg_pass_array("a", [1, 2, 3]);
   }
 
-  sub test_vaarg_pass_each_values : int ($string : string, $nums : int[]...) {
+  static method test_vaarg_pass_each_values : int ($string : string, $nums : int[]...) {
     
     unless ($string eq "a") {
       return 0;
@@ -163,14 +163,14 @@ class TestCase::Method {
     return 1;
   }
   
-  sub vaarg_pass_each_values : int () {
+  static method vaarg_pass_each_values : int () {
     return test_vaarg_pass_each_values("a", 1, 2, 3);
   }
   
-  sub cb_obj_capture : int () {
+  static method cb_obj_capture : int () {
     my $capture1 = 7;
     my $capture2 = 10;
-    my $cb_obj = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+    my $cb_obj = [$capture1 : int, $capture2 : int] method : int ($x1 : object, $x2 : object) {
       
       unless ($capture1 == 7) {
         return 0;
@@ -196,8 +196,8 @@ class TestCase::Method {
     return $cb_obj->(undef, undef);
   }
   
-  sub cb_obj_call_cb_obj : int () {
-    my $cb_obj = sub : int ($self : self, $x1 : int, $x2 : int) {
+  static method cb_obj_call_cb_obj : int () {
+    my $cb_obj = method : int ($x1 : int, $x2 : int) {
       return $x1 + $x2;
     };
     
@@ -210,8 +210,8 @@ class TestCase::Method {
     return 1;
   }
 
-  sub cb_obj_call_cb_obj_from_callback : int () {
-    my $cb_obj = sub : int ($self : self, $x1 : object, $x2 : object) {
+  static method cb_obj_call_cb_obj_from_callback : int () {
+    my $cb_obj = method : int ($x1 : object, $x2 : object) {
       my $x1_num = (int)$x1;
       my $x2_num = (int)$x2;
       return $x1_num + $x2_num;
@@ -228,7 +228,7 @@ class TestCase::Method {
     return 1;
   }
   
-  sub return_value_byte_method : TestCase::Point_3b () {
+  static method return_value_byte_method : TestCase::Point_3b () {
     my $value : TestCase::Point_3b;
     $value->{x} = INT8_MIN();
     $value->{y} = 1;
@@ -237,7 +237,7 @@ class TestCase::Method {
     return $value;
   }
   
-  sub return_value_byte : int () {
+  static method return_value_byte : int () {
     my $value : TestCase::Point_3b = return_value_byte_method();
     
     if ($value->{x} == INT8_MIN()) {
@@ -251,7 +251,7 @@ class TestCase::Method {
     return 0;
   }
   
-  sub return_value_short_method : TestCase::Point_3s () {
+  static method return_value_short_method : TestCase::Point_3s () {
     my $value : TestCase::Point_3s;
     $value->{x} = INT16_MIN();
     $value->{y} = 1;
@@ -260,7 +260,7 @@ class TestCase::Method {
     return $value;
   }
   
-  sub return_value_short : int () {
+  static method return_value_short : int () {
     my $value : TestCase::Point_3s = return_value_short_method();
     
     if ($value->{x} == INT16_MIN()) {
@@ -274,7 +274,7 @@ class TestCase::Method {
     return 0;
   }
   
-  sub return_value_int_method : TestCase::Point_3i () {
+  static method return_value_int_method : TestCase::Point_3i () {
     my $value : TestCase::Point_3i;
     $value->{x} = INT32_MIN();
     $value->{y} = 1;
@@ -283,7 +283,7 @@ class TestCase::Method {
     return $value;
   }
   
-  sub return_value_int : int () {
+  static method return_value_int : int () {
     my $value : TestCase::Point_3i = return_value_int_method();
     
     if ($value->{x} == INT32_MIN()) {
@@ -297,7 +297,7 @@ class TestCase::Method {
     return 0;
   }
   
-  sub return_value_long_method : TestCase::Point_3l () {
+  static method return_value_long_method : TestCase::Point_3l () {
     my $value : TestCase::Point_3l;
     $value->{x} = INT64_MIN();
     $value->{y} = 1;
@@ -306,7 +306,7 @@ class TestCase::Method {
     return $value;
   }
   
-  sub return_value_long : int () {
+  static method return_value_long : int () {
     my $value : TestCase::Point_3l = return_value_long_method();
     
     if ($value->{x} == INT64_MIN()) {
@@ -320,7 +320,7 @@ class TestCase::Method {
     return 0;
   }
   
-  sub return_value_float_method : TestCase::Point_3f () {
+  static method return_value_float_method : TestCase::Point_3f () {
     my $value : TestCase::Point_3f;
     $value->{x} = FLT_MIN();
     $value->{y} = 0.25f;
@@ -329,7 +329,7 @@ class TestCase::Method {
     return $value;
   }
   
-  sub return_value_float : int () {
+  static method return_value_float : int () {
     my $value : TestCase::Point_3f = return_value_float_method();
     
     if ($value->{x} == FLT_MIN()) {
@@ -343,7 +343,7 @@ class TestCase::Method {
     return 0;
   }
   
-  sub return_value_double_method : TestCase::Point_3d () {
+  static method return_value_double_method : TestCase::Point_3d () {
     my $value : TestCase::Point_3d;
     $value->{x} = DBL_MIN();
     $value->{y} = 0.25;
@@ -352,7 +352,7 @@ class TestCase::Method {
     return $value;
   }
   
-  sub return_value_double : int () {
+  static method return_value_double : int () {
     my $value : TestCase::Point_3d = return_value_double_method();
     
     if ($value->{x} == DBL_MIN()) {
@@ -366,11 +366,11 @@ class TestCase::Method {
     return 0;
   }
   
-  sub method_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
+  static method method_push_arg_undef : TestCase::Minimal ($minimal : TestCase::Minimal) {
     return $minimal;
   }
 
-  sub push_arg_undef : int () {
+  static method push_arg_undef : int () {
   
     my $minimal = method_push_arg_undef(undef);
     
@@ -382,7 +382,7 @@ class TestCase::Method {
   }
 
   # Default return value empty
-  sub default_return_value_byte : int () {
+  static method default_return_value_byte : int () {
     
     if (default_return_value_byte_method() == 0) {
       if (default_return_value_byte_method_empty() == 0) {
@@ -392,13 +392,13 @@ class TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_byte_method : byte () {
+  static method default_return_value_byte_method : byte () {
     1;
   }
-  sub default_return_value_byte_method_empty : byte () {
+  static method default_return_value_byte_method_empty : byte () {
     
   }
-  sub default_return_value_short : int () {
+  static method default_return_value_short : int () {
     
     if ((int)default_return_value_short_method() == (int)(short)0) {
       if ((int)default_return_value_short_method_empty() == (int)(short)0) {
@@ -408,13 +408,13 @@ class TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_short_method : short () {
+  static method default_return_value_short_method : short () {
     1;
   }
-  sub default_return_value_short_method_empty : short () {
+  static method default_return_value_short_method_empty : short () {
     
   }
-  sub default_return_value_int : int () {
+  static method default_return_value_int : int () {
     
     if (default_return_value_int_method() == (int)0) {
       if (default_return_value_int_method_empty() == (int)0) {
@@ -424,13 +424,13 @@ class TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_int_method : int () {
+  static method default_return_value_int_method : int () {
     1;
   }
-  sub default_return_value_int_method_empty : int () {
+  static method default_return_value_int_method_empty : int () {
     
   }
-  sub default_return_value_long : int () {
+  static method default_return_value_long : int () {
     
     if (default_return_value_long_method() == (long)0) {
       if (default_return_value_long_method_empty() == (long)0) {
@@ -440,13 +440,13 @@ class TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_long_method : long () {
+  static method default_return_value_long_method : long () {
     1;
   }
-  sub default_return_value_long_method_empty : long () {
+  static method default_return_value_long_method_empty : long () {
     
   }
-  sub default_return_value_float : int () {
+  static method default_return_value_float : int () {
     
     if (default_return_value_float_method() == (float)0) {
       if (default_return_value_float_method_empty() == (float)0) {
@@ -456,13 +456,13 @@ class TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_float_method : float () {
+  static method default_return_value_float_method : float () {
     1;
   }
-  sub default_return_value_float_method_empty : float () {
+  static method default_return_value_float_method_empty : float () {
     
   }
-  sub default_return_value_double : int () {
+  static method default_return_value_double : int () {
     
     if (default_return_value_double_method() == (double)0) {
       if (default_return_value_double_method_empty() == (double)0) {
@@ -472,13 +472,13 @@ class TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_double_method : double () {
+  static method default_return_value_double_method : double () {
     1;
   }
-  sub default_return_value_double_method_empty : double () {
+  static method default_return_value_double_method_empty : double () {
     
   }
-  sub default_return_value_object : int () {
+  static method default_return_value_object : int () {
     
     if (default_return_value_object_method() == undef) {
       if (default_return_value_object_method_empty() == undef) {
@@ -488,18 +488,18 @@ class TestCase::Method {
     
     return 0;
   }
-  sub default_return_value_object_method : TestCase::Minimal () {
+  static method default_return_value_object_method : TestCase::Minimal () {
     1;
   }
-  sub default_return_value_object_method_empty : TestCase::Minimal () {
+  static method default_return_value_object_method_empty : TestCase::Minimal () {
     
   }
   
   # Call void function
-  sub call_void_method : void ($nums : int[]) {
+  static method call_void_method : void ($nums : int[]) {
     $nums->[0] = 5;
   }
-  sub call_void : int () {
+  static method call_void : int () {
     my $nums = [1];
     
     call_void_method($nums);
@@ -510,7 +510,7 @@ class TestCase::Method {
     return 0;
   }
   
-  sub call_spvm_method_nest : int () {
+  static method call_spvm_method_nest : int () {
     my $total = call_spvm_method_nest_sum(call_spvm_method_nest_sum(1, 2), call_spvm_method_nest_sum(3, 4));
     
     if ($total == 10) {
@@ -519,14 +519,14 @@ class TestCase::Method {
     
     return 0;
   }
-  sub call_spvm_method_nest_sum : int ($num1 : int, $num2 : int) {
+  static method call_spvm_method_nest_sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
-  sub call_spvm_method_args_convertion_stab1 : double ($var1 : byte, $var2 : short, $var3 : int, $var4 : long, $var5 : float, $var6 : double) {
+  static method call_spvm_method_args_convertion_stab1 : double ($var1 : byte, $var2 : short, $var3 : int, $var4 : long, $var5 : float, $var6 : double) {
     return ($var1 + $var2 + $var3 + $var4 + $var5 + $var6);
   }
   
-  sub call_spvm_method_args_convertion : int () {
+  static method call_spvm_method_args_convertion : int () {
     # Constant assignment
     my $success_constant_narrow = 0;
     {
@@ -554,7 +554,7 @@ class TestCase::Method {
   }
 
   # call_spvm_method arguments
-  sub call_spvm_method_args_byte : int ($var1 : byte, $var2 : byte, $var3 : byte) {
+  static method call_spvm_method_args_byte : int ($var1 : byte, $var2 : byte, $var3 : byte) {
     if ($var1 == 0) {
       if ($var2 == 127) {
         if ($var3 == -128) {
@@ -565,7 +565,7 @@ class TestCase::Method {
     
     return 0;
   }
-  sub call_spvm_method_args_short : int ($var1 : short, $var2 : short, $var3 : short) {
+  static method call_spvm_method_args_short : int ($var1 : short, $var2 : short, $var3 : short) {
     if ((int)$var1 == (int)(short)0) {
       if ((int)$var2 == (int)(short)32767) {
         if ((int)$var3 == (int)(short)-32768) {
@@ -576,7 +576,7 @@ class TestCase::Method {
     
     return 0;
   }
-  sub call_spvm_method_args_int : int ($var1 : int, $var2 : int, $var3 : int) {
+  static method call_spvm_method_args_int : int ($var1 : int, $var2 : int, $var3 : int) {
     if ($var1 == 0) {
       if ($var2 == 2147483647) {
         if ($var3 == -2147483648) {
@@ -588,7 +588,7 @@ class TestCase::Method {
     return 0;
   }
   
-  sub call_spvm_method_args_long : int ($var1 : long, $var2 : long, $var3 : long) {
+  static method call_spvm_method_args_long : int ($var1 : long, $var2 : long, $var3 : long) {
     if ($var1 == 0L) {
       if ($var2 == 9223372036854775807L) {
         if ($var3 == -9223372036854775808L) {
@@ -600,7 +600,7 @@ class TestCase::Method {
     return 0;
   }
   # byte array argument
-  sub call_spvm_method_byte_array : byte ($nums : byte[]) {
+  static method call_spvm_method_byte_array : byte ($nums : byte[]) {
     
     my $total = (byte)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -611,7 +611,7 @@ class TestCase::Method {
   }
   
   # short array argument
-  sub call_spvm_method_short_array : short ($nums : short[]) {
+  static method call_spvm_method_short_array : short ($nums : short[]) {
     
     my $total = (short)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -622,7 +622,7 @@ class TestCase::Method {
   }
   
   # int array argument
-  sub call_spvm_method_int_array : int ($nums : int[]) {
+  static method call_spvm_method_int_array : int ($nums : int[]) {
     
     my $total = 0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -633,7 +633,7 @@ class TestCase::Method {
   }
 
   # long array argument
-  sub call_spvm_method_long_array : long ($nums : long[]) {
+  static method call_spvm_method_long_array : long ($nums : long[]) {
     
     my $total = (long)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -644,7 +644,7 @@ class TestCase::Method {
   }
 
   # float array argument
-  sub call_spvm_method_float_array : float ($nums : float[]) {
+  static method call_spvm_method_float_array : float ($nums : float[]) {
     
     my $total = (float)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -655,7 +655,7 @@ class TestCase::Method {
   }
 
   # double array argument
-  sub call_spvm_method_double_array : double ($nums : double[]) {
+  static method call_spvm_method_double_array : double ($nums : double[]) {
     
     my $total = (double)0;
     for (my $i = 0; $i < @$nums; $i++) {
@@ -665,7 +665,7 @@ class TestCase::Method {
     return $total;
   }
   # call_spvm_method return value
-  sub call_spvm_method_return_byte_array  : byte[] () {
+  static method call_spvm_method_return_byte_array  : byte[] () {
     my $nums = new byte[3];
     
     $nums->[0] = (byte)1;
@@ -674,7 +674,7 @@ class TestCase::Method {
     
     return $nums;
   }
-  sub call_spvm_method_return_byte_array_check : int ($nums : byte[]) {
+  static method call_spvm_method_return_byte_array_check : int ($nums : byte[]) {
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
@@ -689,7 +689,7 @@ class TestCase::Method {
     return 0;
   }
 
-  sub call_spvm_method_return_short_array : short[] () {
+  static method call_spvm_method_return_short_array : short[] () {
     my $nums = new short[3];
     
     $nums->[0] = (short)1;
@@ -698,7 +698,7 @@ class TestCase::Method {
     
     return $nums;
   }
-  sub call_spvm_method_return_short_array_check : int ($nums : short[]) {
+  static method call_spvm_method_return_short_array_check : int ($nums : short[]) {
     
     if ((int)$nums->[0] == (int)(short)1) {
       if ((int)$nums->[1] == (int)(short)2) {
@@ -713,7 +713,7 @@ class TestCase::Method {
     return 0;
   }
 
-  sub call_spvm_method_return_int_array : int[] () {
+  static method call_spvm_method_return_int_array : int[] () {
     my $nums = new int[3];
     
     $nums->[0] = (int)1;
@@ -722,7 +722,7 @@ class TestCase::Method {
     
     return $nums;
   }
-  sub call_spvm_method_return_int_array_check : int ($nums : int[]) {
+  static method call_spvm_method_return_int_array_check : int ($nums : int[]) {
     
     if ($nums->[0] == (int)1) {
       if ($nums->[1] == (int)2) {
@@ -737,7 +737,7 @@ class TestCase::Method {
     return 0;
   }
 
-  sub call_spvm_method_return_long_array : long[] () {
+  static method call_spvm_method_return_long_array : long[] () {
     my $nums = new long[3];
     
     $nums->[0] = (long)1;
@@ -746,7 +746,7 @@ class TestCase::Method {
     
     return $nums;
   }
-  sub call_spvm_method_return_long_array_check : int ($nums : long[]) {
+  static method call_spvm_method_return_long_array_check : int ($nums : long[]) {
     
     if ($nums->[0] == (long)1) {
       if ($nums->[1] == (long)2) {
@@ -761,7 +761,7 @@ class TestCase::Method {
     return 0;
   }
 
-  sub call_spvm_method_return_float_array : float[] () {
+  static method call_spvm_method_return_float_array : float[] () {
     my $nums = new float[3];
     
     $nums->[0] = (float)1;
@@ -770,7 +770,7 @@ class TestCase::Method {
     
     return $nums;
   }
-  sub call_spvm_method_return_float_array_check : int ($nums : float[]) {
+  static method call_spvm_method_return_float_array_check : int ($nums : float[]) {
     
     if ($nums->[0] == (float)1) {
       if ($nums->[1] == (float)2) {
@@ -785,7 +785,7 @@ class TestCase::Method {
     return 0;
   }
 
-  sub call_spvm_method_return_double_array : double[] () {
+  static method call_spvm_method_return_double_array : double[] () {
     my $nums = new double[3];
     
     $nums->[0] = (double)1;
@@ -794,7 +794,7 @@ class TestCase::Method {
     
     return $nums;
   }
-  sub call_spvm_method_return_double_array_check : int ($nums : double[]) {
+  static method call_spvm_method_return_double_array_check : int ($nums : double[]) {
     
     if ($nums->[0] == (double)1) {
       if ($nums->[1] == (double)2) {
@@ -808,12 +808,12 @@ class TestCase::Method {
     
     return 0;
   }
-  sub call_spvm_method_assign : int () {
+  static method call_spvm_method_assign : int () {
     my $m = TestCase::Minimal->new();
     $m = TestCase::Minimal->new();
   }
   
-  sub call_spvm_method_undef : int ($value : TestCase::Minimal) {
+  static method call_spvm_method_undef : int ($value : TestCase::Minimal) {
     
     if ($value == undef) {
       return 1;
@@ -822,7 +822,7 @@ class TestCase::Method {
     return 0;
   }
 
-  sub call_spvm_method_last_camma : int () {
+  static method call_spvm_method_last_camma : int () {
     
     my $total = sum_int(3, 4,);
     
@@ -832,7 +832,7 @@ class TestCase::Method {
     
     return 0;
   }
-  sub sum_int : int ($a : int, $b :int) {
+  static method sum_int : int ($a : int, $b :int) {
     
     my $total = $a + $b;
     

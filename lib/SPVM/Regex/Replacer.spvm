@@ -1,4 +1,4 @@
 class Regex::Replacer : callback_t {
   use Regex;
-  sub : string ($self : self, $re : Regex);
+  method : string ($re : Regex);
 }

@@ -5,7 +5,7 @@ class TestCase::Isa {
   use Complex_2d;
   use Complex_2f;
 
-  sub isa_any_object_type : int () {
+  static method isa_any_object_type : int () {
     my $num : object;
     
     unless ($num isa object) {
@@ -15,7 +15,7 @@ class TestCase::Isa {
     return 1;
   }
 
-  sub isa_numeric_type : int () {
+  static method isa_numeric_type : int () {
     my $num : int;
     
     unless ($num isa int) {
@@ -29,7 +29,7 @@ class TestCase::Isa {
     return 1;
   }
 
-  sub isa_multi_numeric_type : int () {
+  static method isa_multi_numeric_type : int () {
     my $num : Complex_2d;
     
     unless ($num isa Complex_2d) {
@@ -43,7 +43,7 @@ class TestCase::Isa {
     return 1;
   }
   
-  sub isa_match_class : int () {
+  static method isa_match_class : int () {
     my $minimal = TestCase::Minimal->new;
     if ($minimal isa TestCase::Minimal) {
       my $object : object = $minimal;
@@ -55,7 +55,7 @@ class TestCase::Isa {
     return 0;
   }
 
-  sub isa_match_array : int () {
+  static method isa_match_array : int () {
     my $minimals = new TestCase::Minimal[3];
     my $nums = new int[3];
     
@@ -68,7 +68,7 @@ class TestCase::Isa {
     return 0;
   }
 
-  sub isa_not_match_class : int () {
+  static method isa_not_match_class : int () {
     my $minimal = TestCase::Minimal->new;
     if (!($minimal isa TestCase::Simple)) {
       return 1;
@@ -77,7 +77,7 @@ class TestCase::Isa {
     return 0;
   }
 
-  sub isa_not_match_class_undef : int () {
+  static method isa_not_match_class_undef : int () {
     my $minimal : TestCase::Minimal = undef;
     
     if (!($minimal isa TestCase::Minimal)) {
@@ -87,9 +87,9 @@ class TestCase::Isa {
     return 0;
   }
 
-  sub isa_match_callback : int () {
+  static method isa_match_callback : int () {
     
-    my $comparator = sub : int ($self : self, $object1 : object, $object2 : object) {
+    my $comparator = method : int ($object1 : object, $object2 : object) {
       
     };
     if ($comparator isa Comparator::Object) {
@@ -102,7 +102,7 @@ class TestCase::Isa {
     return 0;
   }
 
-  sub isa_not_match_callback_undef : int () {
+  static method isa_not_match_callback_undef : int () {
     my $comparator : Comparator::Object;
     
     if (!($comparator isa Comparator::Object)) {
@@ -112,7 +112,7 @@ class TestCase::Isa {
     return 0;
   }
 
-  sub isa_not_match_callback : int () {
+  static method isa_not_match_callback : int () {
     my $minimal : TestCase::Minimal = TestCase::Minimal->new;
     if (!($minimal isa Comparator::Object)) {
       return 1;

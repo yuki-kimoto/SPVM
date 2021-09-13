@@ -61,18 +61,18 @@ SPVM::Test - SPVM test module
   
   has x_rw : public rw int;
   
-  sub BYTE_MAX : byte () { return (byte)127; }
-  sub BYTE_MIN : byte () { return (byte)-128; }
-  sub SHORT_MAX : short () { return (short)32767; }
-  sub SHORT_MIN : short () { return (short)-32768; }
-  sub INT_MAX : int () { return 2147483647; }
-  sub INT_MIN : int () { return -2147483648; }
-  sub LONG_MAX : long () { return 9223372036854775807L; }
-  sub LONG_MIN : long () { return -9223372036854775808L; }
-  sub FLOAT_PRECICE : float () { return 32767f; }
-  sub DOUBLE_PRECICE : double () { return 2147483647.0; }
+  static method BYTE_MAX : byte () { return (byte)127; }
+  static method BYTE_MIN : byte () { return (byte)-128; }
+  static method SHORT_MAX : short () { return (short)32767; }
+  static method SHORT_MIN : short () { return (short)-32768; }
+  static method INT_MAX : int () { return 2147483647; }
+  static method INT_MIN : int () { return -2147483648; }
+  static method LONG_MAX : long () { return 9223372036854775807L; }
+  static method LONG_MIN : long () { return -9223372036854775808L; }
+  static method FLOAT_PRECICE : float () { return 32767f; }
+  static method DOUBLE_PRECICE : double () { return 2147483647.0; }
 
-  sub main : int ($args : string[]) {
+  static method main : int ($args : string[]) {
     # dump
     {
       # string
@@ -327,7 +327,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $cb = sub : int ($self : self) {
+      my $cb = method : int () {
         return 386;
       };
       
@@ -455,7 +455,7 @@ SPVM::Test - SPVM test module
     {
       my $capture1 = 7;
       my $capture2 = 10;
-      my $cb_obj = [$capture1 : int, $capture2 : int] sub : int ($self : self, $x1 : object, $x2 : object) {
+      my $cb_obj = [$capture1 : int, $capture2 : int] method : int ($x1 : object, $x2 : object) {
         print($capture1 . "\n");
         print($capture2 . "\n");
 
@@ -470,7 +470,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $cb_obj = sub : int ($self : self, $x1 : object, $x2 : object) {
+      my $cb_obj = method : int ($x1 : object, $x2 : object) {
         return -1;
       };
       
@@ -630,7 +630,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      my $cb_obj = sub : long ($self : self, $x1 : long, $x2 : long) {
+      my $cb_obj = method : long ($x1 : long, $x2 : long) {
         return $x1 * $x2;
       };
       
@@ -803,7 +803,7 @@ SPVM::Test - SPVM test module
       $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
-      sort_objectect($minimals, sub : int ($self : self, $object1 : object, $object2 : object) {
+      sort_objectect($minimals, method : int ($object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         
@@ -1812,10 +1812,10 @@ SPVM::Test - SPVM test module
   }
 
   # Call void function
-  sub call_void_method : void ($nums : int[]) {
+  static method call_void_method : void ($nums : int[]) {
     $nums->[0] = 5;
   }
-  sub call_void : int () {
+  static method call_void : int () {
     my $nums = [1];
     
     call_void_method($nums);
@@ -1826,7 +1826,7 @@ SPVM::Test - SPVM test module
     return 0;
   }
   
-  sub test1 : int () {
+  static method test1 : int () {
     my $num0 = 1;
     my $num1 = 2;
     my $num2 = 3;
@@ -1836,11 +1836,11 @@ SPVM::Test - SPVM test module
     return 0;
   }
   
-  sub sum4 : long ($num1 : long, $num2 : long) {
+  static method sum4 : long ($num1 : long, $num2 : long) {
     return $num1 + $num2;
   }
   
-  sub sum3 : int ($simple : TestCase::Simple, $foo : long, $bar : float) {
+  static method sum3 : int ($simple : TestCase::Simple, $foo : long, $bar : float) {
     
     if (3) {
     
@@ -1881,14 +1881,14 @@ SPVM::Test - SPVM test module
     return 2;
   }
   
-  sub sum1 : long ($num1 : long, $num2 : long) {
+  static method sum1 : long ($num1 : long, $num2 : long) {
     return $num1 + $num2;
   }
-  sub sum0 : int ($num1 : int, $num2 : int) {
+  static method sum0 : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
   
-  sub sum2 : int ($num1 : int, $num2 : int) {
+  static method sum2 : int ($num1 : int, $num2 : int) {
     # die "Error";
     
     my $num3 = sum0($num1, $num2);
@@ -1896,12 +1896,12 @@ SPVM::Test - SPVM test module
     return $num3 + 3;
   }
 
-  sub increfcount : int ($test : TestCase::Minimal, $num : int) {
+  static method increfcount : int ($test : TestCase::Minimal, $num : int) {
     
     my $aaa = TestCase::Minimal->new();
   }
 
-  sub decinctest : int ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) {
+  static method decinctest : int ($num1 : TestCase::Minimal, $num2 : int, $num3 : TestCase::Minimal) {
     {
       my $num4 = TestCase::Minimal->new();
       my $num5 = TestCase::Minimal->new();
@@ -1909,7 +1909,7 @@ SPVM::Test - SPVM test module
     return 2;
   }
 
-  sub return_object : TestCase::Minimal () {
+  static method return_object : TestCase::Minimal () {
     my $obj0 = TestCase::Minimal->new();
     {
       my $object1 = TestCase::Minimal->new();
@@ -1922,7 +1922,7 @@ SPVM::Test - SPVM test module
     }
   }
 
-  sub eval_block : void () {
+  static method eval_block : void () {
     my $obj0 = TestCase::Minimal->new();
     
     eval {
@@ -1949,24 +1949,24 @@ SPVM::Test - SPVM test module
       die $obj_error2;
     }
   }
-  sub array_new : int () {
+  static method array_new : int () {
     
     my $nums = new int[3];
     
     return @$nums;
   }
-  sub check_freelist : int[] () {
+  static method check_freelist : int[] () {
     my $result = new int[63];
     my $true_result = new int[1];
     return $true_result;
   }
-  sub default_return_value_object_method : TestCase () {
+  static method default_return_value_object_method : TestCase () {
     1;
   }
-  sub default_return_value_object_method_empty : TestCase () {
+  static method default_return_value_object_method_empty : TestCase () {
     
   }
-  sub weaken_reference_count1_object : int (){
+  static method weaken_reference_count1_object : int (){
     my $minimal = TestCase::Minimal->new();
     my $test = new TestCase;
     
@@ -1981,15 +1981,15 @@ SPVM::Test - SPVM test module
     return 0;
   }
   
-  sub error : int () {
+  static method error : int () {
     die "ERROR";
   }
   
-  sub error_call_stack : int () {
+  static method error_call_stack : int () {
     error();
   }
 
-  sub error_eval : int () {
+  static method error_eval : int () {
     eval {
       die "ERROR";
     };
@@ -2002,7 +2002,7 @@ SPVM::Test - SPVM test module
     }
   }
 
-  sub error_eval_call : int () {
+  static method error_eval_call : int () {
     eval {
       error();
     };
@@ -2014,23 +2014,23 @@ SPVM::Test - SPVM test module
       return 0;
     }
   }
-  sub exception_die_return_object : TestCase::Minimal () {
+  static method exception_die_return_object : TestCase::Minimal () {
     die "Error";
   }
-  sub new : TestCase () {
+  static method new : TestCase () {
     return new TestCase;
   }
 
-  sub call_spvm_method_args_convertion_stab1 : double ($var6 : double) {
+  static method call_spvm_method_args_convertion_stab1 : double ($var6 : double) {
     return ($var6);
   }
   
-  sub call_spvm_method_args_convertion : int () {
+  static method call_spvm_method_args_convertion : int () {
     my $return_value1 = call_spvm_method_args_convertion_stab1(16);
     return 0;
   }
 
-  sub sort_objectect : void ($values : oarray, $comparator : TestCase::Comparator) {
+  static method sort_objectect : void ($values : oarray, $comparator : TestCase::Comparator) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
@@ -2047,36 +2047,36 @@ SPVM::Test - SPVM test module
     }
   }
 
-  sub receive_undef : void ($test_case : TestCase) {
+  static method receive_undef : void ($test_case : TestCase) {
     
   }
-  sub ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double&) {
+  static method ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double&) {
     $$x_out = $x_in1 + $x_in2;
   }
   
-  sub ref_sum_complex : double ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d&) {
+  static method ref_sum_complex : double ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d&) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
   }
 
-  sub vaarg : void ($flag : int, $nums : int[]...) {
+  static method vaarg : void ($flag : int, $nums : int[]...) {
     print($nums->[0] . "\n");
     print($nums->[1] . "\n");
   }
 
-  sub INT8_MIN : byte () { return -128; }
-  sub INT8_MAX : byte () { return 127; }
+  static method INT8_MIN : byte () { return -128; }
+  static method INT8_MAX : byte () { return 127; }
 
-  sub INT16_MIN : short () { return -32768; }
-  sub INT16_MAX : short () { return 32767; }
+  static method INT16_MIN : short () { return -32768; }
+  static method INT16_MAX : short () { return 32767; }
 
-  sub INT32_MIN : int () { return -2147483648; }
-  sub INT32_MAX : int () { return 2147483647; }
+  static method INT32_MIN : int () { return -2147483648; }
+  static method INT32_MAX : int () { return 2147483647; }
 
-  sub UINT32_MAX : long () { return 4294967295L; }
+  static method UINT32_MAX : long () { return 4294967295L; }
 
-  sub INT64_MIN : long () { return -9223372036854775808L; }
-  sub INT64_MAX : long () { return 9223372036854775807L; }
+  static method INT64_MIN : long () { return -9223372036854775808L; }
+  static method INT64_MAX : long () { return 9223372036854775807L; }
 }
 
 =head1 NAME

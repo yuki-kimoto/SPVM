@@ -2,7 +2,7 @@ class TestCase::CompileError::Assign::DifferentObject {
   use TestCase::Minimal;
   use TestCase::Simple;
 
-  sub main : int () {
+  static method main : int () {
     my $minimal : TestCase::Minimal = new TestCase::Simple;
   }
 }

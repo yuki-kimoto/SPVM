@@ -9,7 +9,7 @@ class FloatList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : FloatList ($array : float[]) {
+  static method new : FloatList ($array : float[]) {
     my $self = new FloatList;
     my $length : int;
     if ($array) {
@@ -39,7 +39,7 @@ class FloatList : precompile {
     return $self;
   }
 
-  sub new_len : FloatList ($length : int) {
+  static method new_len : FloatList ($length : int) {
     my $self = new FloatList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
@@ -57,7 +57,7 @@ class FloatList : precompile {
     return $self;
   }
   
-  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+  private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new float [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -68,7 +68,7 @@ class FloatList : precompile {
     $self->{values} = $new_values;
   }
 
-  private sub _extend : void ($self : self) {
+  private method _extend : void () {
     my $capacity = $self->{capacity};
     my $length = $self->{length};
     my $values = $self->{values};
@@ -83,7 +83,7 @@ class FloatList : precompile {
     $self->{capacity} = $new_capacity;
   }
   
-  sub insert : void ($self : self, $index : int, $value : float) {
+  method insert : void ($index : int, $value : float) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -106,7 +106,7 @@ class FloatList : precompile {
     $self->{length}++;
   }
 
-  sub remove : float ($self : self, $index : int) {
+  method remove : float ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -127,7 +127,7 @@ class FloatList : precompile {
     return $remove_value;
   }
 
-  sub push : void ($self : self, $value : float) {
+  method push : void ($value : float) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -140,7 +140,7 @@ class FloatList : precompile {
     $self->{length}++;
   }
   
-  sub pop : float ($self : self) {
+  method pop : float () {
     my $length = $self->length;
     
     if ($length == 0) {
@@ -156,7 +156,7 @@ class FloatList : precompile {
     return $value;
   }
   
-  sub unshift : void ($self : self, $value : float) {
+  method unshift : void ($value : float) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -172,7 +172,7 @@ class FloatList : precompile {
     $self->{length}++;
   }
   
-  sub shift : float ($self : self) {
+  method shift : float () {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -193,7 +193,7 @@ class FloatList : precompile {
     return $value;
   }
   
-  sub set : void ($self : self, $index : int, $value : float) {
+  method set : void ($index : int, $value : float) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -203,7 +203,7 @@ class FloatList : precompile {
     $self->{values}[$index] = $value;
   }
   
-  sub set_array : void ($self : self, $array : float[]) {
+  method set_array : void ($array : float[]) {
     unless ($array) {
       die "Array must be defined";
     }
@@ -220,7 +220,7 @@ class FloatList : precompile {
     Fn->memcpy_float($self->{values}, 0, $array, 0, $cur_length);
   }
 
-  sub get : float ($self : self, $index : int) {
+  method get : float ($index : int) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -232,7 +232,7 @@ class FloatList : precompile {
     return $value;
   }
   
-  sub to_array : float[] ($self : self) {
+  method to_array : float[] () {
     my $length = $self->length;
     
     my $array = new float[$length];
@@ -244,7 +244,7 @@ class FloatList : precompile {
     return $array;
   }
 
-  sub resize : void ($self : self, $new_length : int) {
+  method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be more than or equals to 0";
     }

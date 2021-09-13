@@ -15,7 +15,7 @@ class TestCase::ValueArray {
   
   use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
-  sub value_array_max_fields_byte : int () {
+  static method value_array_max_fields_byte : int () {
     my $mat = new TestCase::Matrix4_16b[3];
     
     $mat->[0]{x11} = INT8_MIN();
@@ -130,7 +130,7 @@ class TestCase::ValueArray {
     return 1;
   }
 
-  sub value_array_max_fields_short : int () {
+  static method value_array_max_fields_short : int () {
     my $mat = new TestCase::Matrix4_16s[3];
     
     $mat->[0]{x11} = INT16_MIN();
@@ -246,7 +246,7 @@ class TestCase::ValueArray {
     return 1;
   }
 
-  sub value_array_max_fields_int : int () {
+  static method value_array_max_fields_int : int () {
     my $mat = new TestCase::Matrix4_16i[3];
     
     $mat->[0]{x11} = INT32_MIN();
@@ -362,7 +362,7 @@ class TestCase::ValueArray {
     return 1;
   }
 
-  sub value_array_max_fields_long : int () {
+  static method value_array_max_fields_long : int () {
     my $mat = new TestCase::Matrix4_16l[3];
     
     $mat->[0]{x11} = INT64_MIN();
@@ -478,7 +478,7 @@ class TestCase::ValueArray {
     return 1;
   }
 
-  sub value_array_max_fields_float : int () {
+  static method value_array_max_fields_float : int () {
     my $mat = new TestCase::Matrix4_16f[3];
     
     $mat->[0]{x11} = FLT_MIN();
@@ -594,7 +594,7 @@ class TestCase::ValueArray {
     return 1;
   }
 
-  sub value_array_max_fields_double : int () {
+  static method value_array_max_fields_double : int () {
     my $mat = new TestCase::Matrix4_16d[3];
     
     $mat->[0]{x11} = DBL_MIN();
@@ -710,7 +710,7 @@ class TestCase::ValueArray {
     return 1;
   }
   
-  sub array_byte : int () {
+  static method array_byte : int () {
     my $nums1 = new TestCase::Point_3b[10];
     $nums1->[9]{x} = (byte)INT8_MIN();
     $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
@@ -730,7 +730,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub array_short : int () {
+  static method array_short : int () {
     
     my $nums1 = new TestCase::Point_3s[10];
     $nums1->[9]{x} = (short)INT16_MIN();
@@ -751,7 +751,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub array_int : int () {
+  static method array_int : int () {
     my $nums1 = new TestCase::Point_3i[10];
     $nums1->[9]{x} = INT32_MIN();
     $nums1->[9]{y} = INT32_MIN() + 1;
@@ -771,7 +771,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub array_long : int () {
+  static method array_long : int () {
     my $nums1 = new TestCase::Point_3l[10];
     $nums1->[9]{x} = INT64_MIN();
     $nums1->[9]{y} = INT64_MIN() + 1;
@@ -791,7 +791,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub array_float : int () {
+  static method array_float : int () {
     my $nums1 = new TestCase::Point_3f[10];
     $nums1->[9]{x} = FLT_MIN();
     $nums1->[9]{y} = FLT_MIN() + 0.25f;
@@ -811,7 +811,7 @@ class TestCase::ValueArray {
     return 0;
   }
   
-  sub array_double : int () {
+  static method array_double : int () {
     my $nums1 = new TestCase::Point_3d[10];
     $nums1->[9]{x} = DBL_MIN();
     $nums1->[9]{y} = DBL_MIN() + 0.25;
@@ -831,7 +831,7 @@ class TestCase::ValueArray {
     return 0;
   }
   
-  sub array_field_byte : int () {
+  static method array_field_byte : int () {
     my $nums = new TestCase::Point_3b[10];
     $nums->[9]{x} = (byte)INT8_MIN();
     $nums->[9]{y} = (byte)(INT8_MIN() + 1);
@@ -848,7 +848,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub array_field_short : int () {
+  static method array_field_short : int () {
     
     my $nums = new TestCase::Point_3s[10];
     $nums->[9]{x} = (short)INT16_MIN();
@@ -866,7 +866,7 @@ class TestCase::ValueArray {
     return 0;
   }
   
-  sub array_field_int : int () {
+  static method array_field_int : int () {
     my $nums = new TestCase::Point_3i[10];
     $nums->[9]{x} = INT32_MIN();
     $nums->[9]{y} = INT32_MIN() + 1;
@@ -883,7 +883,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub array_field_long : int () {
+  static method array_field_long : int () {
     my $nums = new TestCase::Point_3l[10];
     $nums->[9]{x} = INT64_MIN();
     $nums->[9]{y} = INT64_MIN() + 1;
@@ -900,7 +900,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub array_field_float : int () {
+  static method array_field_float : int () {
     my $nums = new TestCase::Point_3f[10];
     $nums->[9]{x} = FLT_MIN();
     $nums->[9]{y} = FLT_MIN() + 0.25f;
@@ -917,7 +917,7 @@ class TestCase::ValueArray {
     return 0;
   }
   
-  sub array_field_double : int () {
+  static method array_field_double : int () {
     my $nums = new TestCase::Point_3d[10];
     $nums->[9]{x} = DBL_MIN();
     $nums->[9]{y} = DBL_MIN() + 0.25;
@@ -934,7 +934,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub move_byte : int () {
+  static method move_byte : int () {
     my $nums1 = new TestCase::Point_3b[10];
     $nums1->[9]{x} = (byte)INT8_MIN();
     $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
@@ -953,7 +953,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub move_short : int () {
+  static method move_short : int () {
     
     my $nums1 = new TestCase::Point_3s[10];
     $nums1->[9]{x} = (short)INT16_MIN();
@@ -973,7 +973,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub move_int : int () {
+  static method move_int : int () {
     my $nums1 = new TestCase::Point_3i[10];
     $nums1->[9]{x} = INT32_MIN();
     $nums1->[9]{y} = INT32_MIN() + 1;
@@ -992,7 +992,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub move_long : int () {
+  static method move_long : int () {
     my $nums1 = new TestCase::Point_3l[10];
     $nums1->[9]{x} = INT64_MIN();
     $nums1->[9]{y} = INT64_MIN() + 1;
@@ -1011,7 +1011,7 @@ class TestCase::ValueArray {
     return 0;
   }
 
-  sub move_float : int () {
+  static method move_float : int () {
     my $nums1 = new TestCase::Point_3f[10];
     $nums1->[9]{x} = FLT_MIN();
     $nums1->[9]{y} = FLT_MIN() + 0.25f;
@@ -1030,7 +1030,7 @@ class TestCase::ValueArray {
     return 0;
   }
   
-  sub move_double : int () {
+  static method move_double : int () {
     my $nums1 = new TestCase::Point_3d[10];
     $nums1->[9]{x} = DBL_MIN();
     $nums1->[9]{y} = DBL_MIN() + 0.25;

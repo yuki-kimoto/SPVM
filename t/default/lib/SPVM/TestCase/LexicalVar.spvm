@@ -6,7 +6,7 @@ class TestCase::LexicalVar {
     $VAR_PREC = 11;
   }
   
-  sub var_brace : int () {
+  static method var_brace : int () {
     
     my ${var} = 5;
     
@@ -17,7 +17,7 @@ class TestCase::LexicalVar {
     return 1;
   }
 
-  sub local_var_upper_case : int () {
+  static method local_var_upper_case : int () {
     
     my $VAR1 = 1;
     
@@ -28,7 +28,7 @@ class TestCase::LexicalVar {
     return 1;
   }
 
-  sub local_var_high_precidence_than_class_var : int () {
+  static method local_var_high_precidence_than_class_var : int () {
     
     my $VAR_PREC = 3;
     
@@ -39,10 +39,10 @@ class TestCase::LexicalVar {
     return 1;
   }
 
-  sub local_var_high_precidence_than_capture_var : int () {
+  static method local_var_high_precidence_than_capture_var : int () {
     
     my $var = 13;
-    my $cb = [$var : int] sub : int ($self : self) {
+    my $cb = [$var : int] method : int () {
       
       my $var = 5;
       

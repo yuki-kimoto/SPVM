@@ -5,7 +5,7 @@ class TestCase::Assign {
   use Complex_2d;
   use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   
-  sub assign_ref : int () {
+  static method assign_ref : int () {
     my $num = 1;
     my $ref_num1 = \$num;
     my $ref_num2 = $ref_num1;
@@ -17,7 +17,7 @@ class TestCase::Assign {
     return 0;
   }
   
-  sub assign_return_value_multi_numeric_type : int () {
+  static method assign_return_value_multi_numeric_type : int () {
     my $z1 : Complex_2d;
     $z1->{re} = 1;
     $z1->{im} = 2;
@@ -34,7 +34,7 @@ class TestCase::Assign {
     return 0;
   }
   
-  sub assign_return_value_value_field : int () {
+  static method assign_return_value_value_field : int () {
     my $z : Complex_2d;
     $z->{im} = 1;
     my $im1 : double;
@@ -49,7 +49,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_ref : int () {
+  static method assign_return_value_ref : int () {
     my $num = 1;
     my $num_ref1 : int&;
     my $num_ref2 : int&;
@@ -63,7 +63,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_my_var : int () {
+  static method assign_return_value_my_var : int () {
     
     if (my $var = 1) {
       return 1;
@@ -72,7 +72,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_byte : int () {
+  static method assign_return_value_byte : int () {
     my $v1 : byte;
     my $v2 : byte;
     
@@ -84,7 +84,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_short : int () {
+  static method assign_return_value_short : int () {
     my $v1 : short;
     my $v2 : short;
     
@@ -96,7 +96,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_int : int () {
+  static method assign_return_value_int : int () {
     my $v1 : int;
     my $v2 : int;
     
@@ -108,7 +108,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_long : int () {
+  static method assign_return_value_long : int () {
     my $v1 : long;
     my $v2 : long;
     
@@ -120,7 +120,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_float : int () {
+  static method assign_return_value_float : int () {
     my $v1 : float;
     my $v2 : float;
     
@@ -132,7 +132,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_double : int () {
+  static method assign_return_value_double : int () {
     my $v1 : double;
     my $v2 : double;
     
@@ -144,7 +144,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_var : int () {
+  static method assign_return_value_var : int () {
       my $v1 : int;
       my $v2 : int;
       my $v3 : int;
@@ -158,7 +158,7 @@ class TestCase::Assign {
       return 0;
   }
   
-  sub assign_return_value_constant : int () {
+  static method assign_return_value_constant : int () {
       my $v1 : int;
       my $v2 : int;
       my $v3 : int;
@@ -171,7 +171,7 @@ class TestCase::Assign {
       return 0;
   }
 
-  sub assign_return_value_object : int () {
+  static method assign_return_value_object : int () {
     my $v1 : TestCase::Minimal;
     my $v2 : TestCase::Minimal;
     
@@ -183,7 +183,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_array_access_right_var : int () {
+  static method assign_return_value_array_access_right_var : int () {
     my $nums = new int[1];
     
     my $var1 = 1;
@@ -195,7 +195,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_array_access_right_not_var : int () {
+  static method assign_return_value_array_access_right_not_var : int () {
     my $nums = new int[1];
     
     my $var2 = $nums->[0] = 1;
@@ -206,7 +206,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_array_access_left_var : int () {
+  static method assign_return_value_array_access_left_var : int () {
     my $nums = new int[1];
     
     my $var1 : int;
@@ -219,7 +219,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_array_access_chain : int () {
+  static method assign_return_value_array_access_chain : int () {
     my $nums = new int[2];
     
     my $var2 = $nums->[0] = $nums->[1] = 1;
@@ -230,7 +230,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_return_value_field_access : int () {
+  static method assign_return_value_field_access : int () {
     my $v2 : int;
     
     my $minimal = TestCase::Minimal->new;
@@ -242,7 +242,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign : int () {
+  static method assign : int () {
     # Constant assignment
     my $success_constant_narrow = 0;
     {
@@ -307,7 +307,7 @@ class TestCase::Assign {
     return 0;
   }
   
-  sub assign_numeric_to_string : int () {
+  static method assign_numeric_to_string : int () {
     my $inum : string = 25;
     my $dnum : string = 0.25;
     
@@ -321,7 +321,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_byte_to_byte_object : int () {
+  static method assign_byte_to_byte_object : int () {
     my $byte : byte = INT8_MIN();
     my $byte_obj : Byte = $byte;
     
@@ -333,7 +333,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_short_to_short_object : int () {
+  static method assign_short_to_short_object : int () {
     my $short : short = INT16_MIN();
     my $short_obj : Short = $short;
     
@@ -345,7 +345,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_int_to_int_object : int () {
+  static method assign_int_to_int_object : int () {
     my $int : int = INT32_MIN();
     my $int_obj : Int = $int;
     
@@ -357,7 +357,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_long_to_long_object : int () {
+  static method assign_long_to_long_object : int () {
     my $long : long = INT64_MIN();
     my $long_obj : Long = $long;
     
@@ -369,7 +369,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_float_to_float_object : int () {
+  static method assign_float_to_float_object : int () {
     my $float : float = FLT_MIN();
     my $float_obj : Float = $float;
     
@@ -381,7 +381,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_double_to_double_object : int () {
+  static method assign_double_to_double_object : int () {
     my $double : double = DBL_MIN();
     my $double_obj : Double = $double;
     
@@ -393,7 +393,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_byte_to_any_object : int () {
+  static method assign_byte_to_any_object : int () {
     my $byte : byte = INT8_MIN();
     my $byte_obj : object = $byte;
     
@@ -406,7 +406,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_short_to_any_object : int () {
+  static method assign_short_to_any_object : int () {
     my $short : short = INT16_MIN();
     my $short_obj : object = $short;
     
@@ -419,7 +419,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_int_to_any_object : int () {
+  static method assign_int_to_any_object : int () {
     my $int : int = INT32_MIN();
     my $int_obj : object = $int;
     
@@ -432,7 +432,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_long_to_any_object : int () {
+  static method assign_long_to_any_object : int () {
     my $long : long = INT64_MIN();
     my $long_obj : object = $long;
     
@@ -445,7 +445,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_float_to_any_object : int () {
+  static method assign_float_to_any_object : int () {
     my $float : float = FLT_MIN();
     my $float_obj : object = $float;
     
@@ -458,7 +458,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_double_to_any_object : int () {
+  static method assign_double_to_any_object : int () {
     my $double : double = DBL_MIN();
     my $double_obj : object = $double;
     
@@ -471,7 +471,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_byte_object_to_byte : int () {
+  static method assign_byte_object_to_byte : int () {
     my $byte_obj = Byte->new(INT8_MIN());
     my $byte : byte = $byte_obj;
     
@@ -481,7 +481,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_short_object_to_short : int () {
+  static method assign_short_object_to_short : int () {
     my $short_obj = Short->new(INT16_MIN());
     my $short : short = $short_obj;
     
@@ -491,7 +491,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_int_object_to_int : int () {
+  static method assign_int_object_to_int : int () {
     my $int_obj = Int->new(INT32_MIN());
     my $int : int = $int_obj;
     
@@ -501,7 +501,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_long_object_to_long : int () {
+  static method assign_long_object_to_long : int () {
     my $long_obj = Long->new(INT64_MIN());
     my $long : long = $long_obj;
     
@@ -511,7 +511,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_float_object_to_float : int () {
+  static method assign_float_object_to_float : int () {
     my $float_obj = Float->new(FLT_MIN());
     my $float : float = $float_obj;
     
@@ -520,7 +520,7 @@ class TestCase::Assign {
     }
     return 0;
   }
-  sub assign_double_object_to_double : int () {
+  static method assign_double_object_to_double : int () {
     my $double_obj = Double->new(DBL_MIN());
     my $double : double = $double_obj;
     
@@ -530,7 +530,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_any_object_to_byte : int () {
+  static method assign_any_object_to_byte : int () {
     my $byte_obj = (object)Byte->new(INT8_MIN());
     my $byte : byte = $byte_obj;
     
@@ -540,7 +540,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_any_object_to_short : int () {
+  static method assign_any_object_to_short : int () {
     my $short_obj = (object)Short->new(INT16_MIN());
     my $short : short = $short_obj;
     
@@ -550,7 +550,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_any_object_to_int : int () {
+  static method assign_any_object_to_int : int () {
     my $int_obj = (object)Int->new(INT32_MIN());
     my $int : int = $int_obj;
     
@@ -560,7 +560,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_any_object_to_long : int () {
+  static method assign_any_object_to_long : int () {
     my $long_obj = (object)Long->new(INT64_MIN());
     my $long : long = $long_obj;
     
@@ -570,7 +570,7 @@ class TestCase::Assign {
     return 0;
   }
 
-  sub assign_any_object_to_float : int () {
+  static method assign_any_object_to_float : int () {
     my $float_obj = (object)Float->new(FLT_MIN());
     my $float : float = $float_obj;
     
@@ -579,7 +579,7 @@ class TestCase::Assign {
     }
     return 0;
   }
-  sub assign_any_object_to_double : int () {
+  static method assign_any_object_to_double : int () {
     my $double_obj = (object)Double->new(DBL_MIN());
     my $double : double = $double_obj;
     
@@ -588,7 +588,7 @@ class TestCase::Assign {
     }
     return 0;
   }
-  sub assign_undef_to_numeric_object : int () {
+  static method assign_undef_to_numeric_object : int () {
     my $int_obj = Int->new(1);
     $int_obj = undef;
     if ($int_obj == undef) {

@@ -1,6 +1,6 @@
 class Main {
   use TestCase;
-  sub main : int ($args : string[]) {
+  static method main : int ($args : string[]) {
     TestCase->main($args);
   }
 }

@@ -1,6 +1,6 @@
 class TestCase::CompileError::Assign::UnboxingDifferentType {
 
-  sub main : int () {
+  static method main : int () {
     my $num : long = Int->new(3);
   }
 }

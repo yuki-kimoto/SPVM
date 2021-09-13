@@ -1,6 +1,6 @@
 class TestCase::Comment::CRLF {
 
-  sub comment : int () {
+  static method comment : int () {
     # Comment
     my $foo = 1; # Comment
 # Comment

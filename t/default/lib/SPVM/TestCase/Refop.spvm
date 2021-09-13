@@ -2,7 +2,7 @@ class TestCase::Refop {
   use TestCase::Minimal;
   use TestCase::Simple;
   
-  sub refop : int () {
+  static method refop : int () {
     {
       my $minimal = TestCase::Minimal->new;
       

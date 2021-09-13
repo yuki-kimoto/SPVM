@@ -9,7 +9,7 @@ class ShortList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : ShortList ($array : short[]) {
+  static method new : ShortList ($array : short[]) {
     my $self = new ShortList;
     my $length : int;
     if ($array) {
@@ -40,7 +40,7 @@ class ShortList : precompile {
     return $self;
   }
   
-  sub new_len : ShortList ($length : int) {
+  static method new_len : ShortList ($length : int) {
     my $self = new ShortList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
@@ -58,7 +58,7 @@ class ShortList : precompile {
     return $self;
   }
 
-  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+  private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new short [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -69,7 +69,7 @@ class ShortList : precompile {
     $self->{values} = $new_values;
   }
 
-  private sub _extend : void ($self : self) {
+  private method _extend : void () {
     my $capacity = $self->{capacity};
     my $length = $self->{length};
     my $values = $self->{values};
@@ -84,7 +84,7 @@ class ShortList : precompile {
     $self->{capacity} = $new_capacity;
   }
 
-  sub get : short ($self : self, $index : int) {
+  method get : short ($index : int) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -96,7 +96,7 @@ class ShortList : precompile {
     return $value;
   }
   
-  sub insert : void ($self : self, $index : int, $value : short) {
+  method insert : void ($index : int, $value : short) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -119,7 +119,7 @@ class ShortList : precompile {
     $self->{length}++;
   }
 
-  sub push : void ($self : self, $value : short) {
+  method push : void ($value : short) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -132,7 +132,7 @@ class ShortList : precompile {
     $self->{length}++;
   }
   
-  sub pop : short ($self : self) {
+  method pop : short () {
     my $length = $self->length;
     
     if ($length == 0) {
@@ -148,7 +148,7 @@ class ShortList : precompile {
     return $value;
   }
   
-  sub remove : short ($self : self, $index : int) {
+  method remove : short ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -169,7 +169,7 @@ class ShortList : precompile {
     return $remove_value;
   }
   
-  sub resize : void ($self : self, $new_length : int) {
+  method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be more than or equals to 0";
     }
@@ -193,7 +193,7 @@ class ShortList : precompile {
     $self->{length} = $new_length;
   }
 
-  sub set : void ($self : self, $index : int, $value : short) {
+  method set : void ($index : int, $value : short) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -203,7 +203,7 @@ class ShortList : precompile {
     $self->{values}[$index] = $value;
   }
 
-  sub set_array : void ($self : self, $array : short[]) {
+  method set_array : void ($array : short[]) {
     unless ($array) {
       die "Array must be defined";
     }
@@ -220,7 +220,7 @@ class ShortList : precompile {
     Fn->memcpy_short($self->{values}, 0, $array, 0, $cur_length);
   }
 
-  sub shift : short ($self : self) {
+  method shift : short () {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -241,7 +241,7 @@ class ShortList : precompile {
     return $value;
   }
   
-  sub to_array : short[] ($self : self) {
+  method to_array : short[] () {
     my $length = $self->length;
     
     my $array = new short[$length];
@@ -253,7 +253,7 @@ class ShortList : precompile {
     return $array;
   }
 
-  sub unshift : void ($self : self, $value : short) {
+  method unshift : void ($value : short) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     

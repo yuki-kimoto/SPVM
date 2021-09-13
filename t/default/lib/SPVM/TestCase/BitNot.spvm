@@ -1,6 +1,6 @@
 class TestCase::BitNot {
 
-  sub bit_not_byte : int () {
+  static method bit_not_byte : int () {
     my $value = ~(byte)0xFF;
     
     unless ($value isa int) {
@@ -14,7 +14,7 @@ class TestCase::BitNot {
     return 1;
   }
 
-  sub bit_not_short : int () {
+  static method bit_not_short : int () {
     my $value = ~(short)0xFFFF;
     
     unless ($value isa int) {
@@ -28,7 +28,7 @@ class TestCase::BitNot {
     return 1;
   }
   
-  sub bit_not_int : int () {
+  static method bit_not_int : int () {
     my $value = ~0xFFFFFFFF;
     
     unless ($value isa int) {
@@ -42,7 +42,7 @@ class TestCase::BitNot {
     return 1;
   }
   
-  sub bit_not_int_theory : int () {
+  static method bit_not_int_theory : int () {
     my $num = 28475212;
     my $num_bit_not = ~$num;
     
@@ -53,7 +53,7 @@ class TestCase::BitNot {
     return 1;
   }
   
-  sub bit_not_long : int () {
+  static method bit_not_long : int () {
     my $value = ~0xFFFFFFFF_FFFFFFFFL;
     
     unless ($value isa long) {

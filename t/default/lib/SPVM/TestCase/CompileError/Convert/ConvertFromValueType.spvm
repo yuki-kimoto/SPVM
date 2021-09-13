@@ -2,7 +2,7 @@ class TestCase::CompileError::Convert::ConvertFromValueType {
   use TestCase::Minimal;
   use Complex_d2;
 
-  sub main : int () {
+  static method main : int () {
     my $z : Complex_d2;
     (TestCase::Minimal)$z;
   }

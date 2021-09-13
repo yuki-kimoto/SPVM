@@ -1,6 +1,6 @@
 class TestCase::If {
   
-  sub if_bool : int () {
+  static method if_bool : int () {
     
     # Bool - byte true
     {
@@ -90,7 +90,7 @@ class TestCase::If {
     return 1;
   }
   
-  sub if_true : int () {
+  static method if_true : int () {
     
     if (1) {
       return 1;
@@ -99,7 +99,7 @@ class TestCase::If {
     return 0;
   }
 
-  sub if_false : int () {
+  static method if_false : int () {
     
     if (0) {
       return 0;
@@ -108,7 +108,7 @@ class TestCase::If {
     return 1;
   }
   
-  sub elsif_match : int () {
+  static method elsif_match : int () {
     
     my $num = 2;
     if ($num == 1) {
@@ -126,7 +126,7 @@ class TestCase::If {
     return 0;
   }
 
-  sub else_match : int () {
+  static method else_match : int () {
     
     my $num = 4;
     if ($num == 1) {
@@ -144,7 +144,7 @@ class TestCase::If {
     return 0;
   }
 
-  sub condition_my : int () {
+  static method condition_my : int () {
     # Check my declaration in if condition part - if condition part is true
     {
       my $check1 = 0;

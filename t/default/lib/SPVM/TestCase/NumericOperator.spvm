@@ -1,6 +1,6 @@
 class TestCase::NumericOperator {
   # Negate
-  sub negate : int () {
+  static method negate : int () {
     my $num_byte = (byte)1;
     my $num_short = (short)1;
     my $num_int = 1;
@@ -33,7 +33,7 @@ class TestCase::NumericOperator {
   }
 
   # Negate
-  sub plus : int () {
+  static method plus : int () {
     my $num_byte = (byte)1;
     my $num_short = (short)1;
     my $num_int = 1;
@@ -64,7 +64,7 @@ class TestCase::NumericOperator {
     
     return 0;
   }
-  sub add : int () {
+  static method add : int () {
 
     # float
     my $float_success = 0;
@@ -134,7 +134,7 @@ class TestCase::NumericOperator {
   }
 
   # Multiply
-  sub multiply : int () {
+  static method multiply : int () {
     # int
     my $int_success = 0;
     {
@@ -233,31 +233,31 @@ class TestCase::NumericOperator {
   }
   
   # Multiply
-  sub multiply_int_plus : int () {
+  static method multiply_int_plus : int () {
     return (int)536870912 * (int)2;
   }
   
-  sub multiply_int_minus : int () {
+  static method multiply_int_minus : int () {
     return (int)536870912 * (int)-2;
   }
   
-  sub multiply_int_overflow : int () {
+  static method multiply_int_overflow : int () {
     return (int)1073741824 * (int)2;
   }
   
-  sub multiply_long_plus : long () {
+  static method multiply_long_plus : long () {
     return (long)2305843009213693952L * (long)2L;
   }
   
-  sub multiply_long_minus : long () {
+  static method multiply_long_minus : long () {
     return (long)2305843009213693952L * (long)-2L;
   }
   
-  sub multiply_long_overflow : long () {
+  static method multiply_long_overflow : long () {
     return (long)4611686018427387904L * (long)2L;
   }
   # Multiply
-  sub divide : int () {
+  static method divide : int () {
     # int
     my $int_success = 0;
     {
@@ -358,7 +358,7 @@ class TestCase::NumericOperator {
     return 0;
   }
   
-  sub remainder : int () {
+  static method remainder : int () {
     my $num1 = (byte)((byte)5 % (byte)3);
     my $num2 = (byte)((byte)-3 % (byte)5);
     my $num3 = (short)((int)(short)5 % (int)(short)3);

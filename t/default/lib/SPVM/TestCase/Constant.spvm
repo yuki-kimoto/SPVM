@@ -2,14 +2,14 @@ class TestCase::Constant {
   use Complex_2d;
   use Math (csub);
   
-  sub load_constant_long_middle : long () {
+  static method load_constant_long_middle : long () {
     return 4611686018427387904L;
   }
-  sub multiply_long_overflow : long () {
+  static method multiply_long_overflow : long () {
     return 4611686018427387904L;
   }
   
-  sub load_constant_char : int () {
+  static method load_constant_char : int () {
     {
       my $ch = 'a';
       unless ($ch == 97) {
@@ -21,210 +21,210 @@ class TestCase::Constant {
   }
 
   # constant int
-  sub load_constant_int_min : int () {
+  static method load_constant_int_min : int () {
    # LOAD_CONSTANT
     return -2147483648;
   }
-  sub load_constant_int_m32769 : int () {
+  static method load_constant_int_m32769 : int () {
     # LOAD_CONSTANT
     return -32769;
   }
-  sub load_constant_int_m32768 : int () {
+  static method load_constant_int_m32768 : int () {
     # PUSH_SHORT_TO_INT
     return -32768;
   }
-  sub load_constant_int_m129 : int () {
+  static method load_constant_int_m129 : int () {
     # PUSH_SHORT_TO_INT
     return -129;
   }
-  sub load_constant_int_m128 : int () {
+  static method load_constant_int_m128 : int () {
     # PUSH_BYTE_TO_INT
     return -128;
   }
-  sub load_constant_int_m2 : int () {
+  static method load_constant_int_m2 : int () {
     # PUSH_BYTE_TO_INT
     return -2;
   }
-  sub load_constant_int_m1 : int () {
+  static method load_constant_int_m1 : int () {
     # CONSTANT_INT_M1
     return -1;
   }
-  sub load_constant_int_0 : int () {
+  static method load_constant_int_0 : int () {
     # CONSTANT_INT_0
     return 0;
   }
-  sub load_constant_int_1 : int () {
+  static method load_constant_int_1 : int () {
     # CONSTANT_INT_1
     return 1;
   }
-  sub load_constant_int_2 : int () {
+  static method load_constant_int_2 : int () {
     # CONSTANT_INT_2
     return 2;
   }
-  sub load_constant_int_3 : int () {
+  static method load_constant_int_3 : int () {
     # CONSTANT_INT_3
     return 3;
   }
-  sub load_constant_int_4 : int () {
+  static method load_constant_int_4 : int () {
     # CONSTANT_INT_4
     return 4;
   }
-  sub load_constant_int_5 : int () {
+  static method load_constant_int_5 : int () {
     # CONSTANT_INT_5
     return 5;
   }
-  sub load_constant_int_6 : int () {
+  static method load_constant_int_6 : int () {
     # PUSH_BYTE_TO_INT
     return 6;
   }
-  sub load_constant_int_127 : int () {
+  static method load_constant_int_127 : int () {
     # PUSH_BYTE_TO_INT
     return 127;
   }
-  sub load_constant_int_128 : int () {
+  static method load_constant_int_128 : int () {
     # PUSH_SHORT_TO_INT
     return 128;
   }
-  sub load_constant_int_32767 : int () {
+  static method load_constant_int_32767 : int () {
     # PUSH_SHORT_TO_INT
     return 32767;
   }
-  sub load_constant_int_32768 : int () {
+  static method load_constant_int_32768 : int () {
     # LOAD_CONSTANT
     return 32768;
   }
-  sub load_constant_int_max : int () {
+  static method load_constant_int_max : int () {
     # LOAD_CONSTANT
     return 2147483647;
   }
 
   # constant long
-  sub load_constant_long_min : long () {
+  static method load_constant_long_min : long () {
    # LOAD_CONSTANT
     return -9223372036854775808L;
   }
-  sub load_constant_long_m32769 : long () {
+  static method load_constant_long_m32769 : long () {
     # LOAD_CONSTANT
     return -32769L;
   }
-  sub load_constant_long_m32768 : long () {
+  static method load_constant_long_m32768 : long () {
     # PUSH_SHORT_TO_LONG
     return -32768L;
   }
-  sub load_constant_long_m129 : long () {
+  static method load_constant_long_m129 : long () {
     # PUSH_SHORT_TO_LONG
     return -129L;
   }
-  sub load_constant_long_m128 : long () {
+  static method load_constant_long_m128 : long () {
     # PUSH_BYTE_TO_LONG
     return -128L;
   }
-  sub load_constant_long_m2 : long () {
+  static method load_constant_long_m2 : long () {
     # PUSH_BYTE_TO_LONG
     return -2L;
   }
-  sub load_constant_long_m1 : long () {
+  static method load_constant_long_m1 : long () {
     # CONSTANT_LONG_M1
     return -1L;
   }
-  sub load_constant_long_0 : long () {
+  static method load_constant_long_0 : long () {
     # CONSTANT_LONG_0
     return 0L;
   }
-  sub load_constant_long_1 : long () {
+  static method load_constant_long_1 : long () {
     # CONSTANT_LONG_1
     return 1L;
   }
-  sub load_constant_long_2 : long () {
+  static method load_constant_long_2 : long () {
     # CONSTANT_LONG_2
     return 2L;
   }
-  sub load_constant_long_3 : long () {
+  static method load_constant_long_3 : long () {
     # CONSTANT_LONG_3
     return 3L;
   }
-  sub load_constant_long_4 : long () {
+  static method load_constant_long_4 : long () {
     # CONSTANT_LONG_4
     return 4L;
   }
-  sub load_constant_long_5 : long () {
+  static method load_constant_long_5 : long () {
     # CONSTANT_LONG_5
     return 5L;
   }
-  sub load_constant_long_6 : long () {
+  static method load_constant_long_6 : long () {
     # PUSH_BYTE_TO_LONG
     return 6L;
   }
-  sub load_constant_long_127 : long () {
+  static method load_constant_long_127 : long () {
     # PUSH_BYTE_TO_LONG
     return 127L;
   }
-  sub load_constant_long_128 : long () {
+  static method load_constant_long_128 : long () {
     # PUSH_SHORT_TO_LONG
     return 128L;
   }
-  sub load_constant_long_32767 : long () {
+  static method load_constant_long_32767 : long () {
     # PUSH_SHORT_TO_LONG
     return 32767L;
   }
-  sub load_constant_long_32768 : long () {
+  static method load_constant_long_32768 : long () {
     # LOAD_CONSTANT2
     return 32768L;
   }
-  sub load_constant_long_max : long () {
+  static method load_constant_long_max : long () {
     # LOAD_CONSTANT2
     return 9223372036854775807L;
   }
   
   # constant float
-  sub load_constant_float_0 : float () {
+  static method load_constant_float_0 : float () {
     # CONSTANT_FLOAT_0
     return 0.0f;
   }
-  sub load_constant_float_1 : float () {
+  static method load_constant_float_1 : float () {
     # CONSTANT_FLOAT_1
     return 1.0f;
   }
-  sub load_constant_float_0_5 : float () {
+  static method load_constant_float_0_5 : float () {
     # LOAD_CONSTANT
     return 0.5f;
   }
-  sub load_constant_float_exponent_E_plus : float () {
+  static method load_constant_float_exponent_E_plus : float () {
     return 0.5E+3f;
   }
-  sub load_constant_float_exponent_e_plus : float () {
+  static method load_constant_float_exponent_e_plus : float () {
     return 0.5e3f;
   }
-  sub load_constant_float_exponent_E_minus : float () {
+  static method load_constant_float_exponent_E_minus : float () {
     return 62.5E-3f;
   }
-  sub load_constant_float_exponent_e_minus : float () {
+  static method load_constant_float_exponent_e_minus : float () {
     return 62.5e-3f;
   }
 
-  sub load_constant_double_exponent_E_plus : double () {
+  static method load_constant_double_exponent_E_plus : double () {
     return 0.5E+3;
   }
-  sub load_constant_double_exponent_e_plus : double () {
+  static method load_constant_double_exponent_e_plus : double () {
     return 0.5e3;
   }
-  sub load_constant_double_exponent_E_minus : double () {
+  static method load_constant_double_exponent_E_minus : double () {
     return 62.5E-3;
   }
-  sub load_constant_double_exponent_e_minus : double () {
+  static method load_constant_double_exponent_e_minus : double () {
     return 62.5e-3;
   }
   
   # constant double
-  sub load_constant_double_0 : double () {
+  static method load_constant_double_0 : double () {
     # CONSTANT_DOUBLE_0
     return 0.0;
   }
-  sub load_constant_double_1 : double () {
+  static method load_constant_double_1 : double () {
     # CONSTANT_DOUBLE_1
     return 1.0;
   }
-  sub load_constant_double_0_5 : double () {
+  static method load_constant_double_0_5 : double () {
     # LOAD_CONSTANT2
     return 0.5;
   }

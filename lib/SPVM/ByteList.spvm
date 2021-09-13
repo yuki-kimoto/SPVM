@@ -9,7 +9,7 @@ class ByteList : precompile {
     DEFAULT_CAPACITY = 16,
   }
   
-  sub new : ByteList ($array : byte[]) {
+  static method new : ByteList ($array : byte[]) {
     my $self = new ByteList;
     
     my $length : int;
@@ -41,7 +41,7 @@ class ByteList : precompile {
     return $self;
   }
   
-  sub new_len : ByteList ($length : int) {
+  static method new_len : ByteList ($length : int) {
     my $self = new ByteList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
@@ -59,7 +59,7 @@ class ByteList : precompile {
     return $self;
   }
   
-  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+  private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -70,7 +70,7 @@ class ByteList : precompile {
     $self->{values} = $new_values;
   }
 
-  private sub _extend : void ($self : self) {
+  private method _extend : void () {
     my $capacity = $self->{capacity};
     my $length = $self->{length};
     my $values = $self->{values};
@@ -85,7 +85,7 @@ class ByteList : precompile {
     $self->{capacity} = $new_capacity;
   }
   
-  sub insert : void ($self : self, $index : int, $value : byte) {
+  method insert : void ($index : int, $value : byte) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -108,7 +108,7 @@ class ByteList : precompile {
     $self->{length}++;
   }
 
-  sub remove : byte ($self : self, $index : int) {
+  method remove : byte ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -129,7 +129,7 @@ class ByteList : precompile {
     return $remove_value;
   }
 
-  sub push : void ($self : self, $value : byte) {
+  method push : void ($value : byte) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -142,7 +142,7 @@ class ByteList : precompile {
     $self->{length}++;
   }
   
-  sub pop : byte ($self : self) {
+  method pop : byte () {
     my $length = $self->length;
     
     if ($length == 0) {
@@ -158,7 +158,7 @@ class ByteList : precompile {
     return $value;
   }
   
-  sub unshift : void ($self : self, $value : byte) {
+  method unshift : void ($value : byte) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -174,7 +174,7 @@ class ByteList : precompile {
     $self->{length}++;
   }
   
-  sub shift : byte ($self : self) {
+  method shift : byte () {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -195,7 +195,7 @@ class ByteList : precompile {
     return $value;
   }
   
-  sub set : void ($self : self, $index : int, $value : byte) {
+  method set : void ($index : int, $value : byte) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -205,7 +205,7 @@ class ByteList : precompile {
     $self->{values}[$index] = $value;
   }
 
-  sub set_array : void ($self : self, $array : byte[]) {
+  method set_array : void ($array : byte[]) {
     unless ($array) {
       die "Array must be defined";
     }
@@ -222,7 +222,7 @@ class ByteList : precompile {
     Fn->memcpy_byte($self->{values}, 0, $array, 0, $cur_length);
   }
 
-  sub get : byte ($self : self, $index : int) {
+  method get : byte ($index : int) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -234,7 +234,7 @@ class ByteList : precompile {
     return $value;
   }
   
-  sub to_array : byte[] ($self : self) {
+  method to_array : byte[] () {
     my $length = $self->length;
     
     my $array = new byte[$length];
@@ -246,7 +246,7 @@ class ByteList : precompile {
     return $array;
   }
 
-  sub resize : void ($self : self, $new_length : int) {
+  method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be more than or equals to 0";
     }

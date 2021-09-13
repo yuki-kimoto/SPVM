@@ -1,9 +1,9 @@
 class EqualityChecker::SameObject {
-  sub new : EqualityChecker::SameObject () {
+  static method new : EqualityChecker::SameObject () {
     return new EqualityChecker::SameObject;
   }
   
-  sub : int ($self : self, $object1 : object, $object2 : object) {
+  method : int ($object1 : object, $object2 : object) {
     if ($object1 == $object2) {
       return 1;
     }

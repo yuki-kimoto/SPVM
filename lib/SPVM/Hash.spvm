@@ -9,9 +9,9 @@ class Hash : precompile {
   private enum {
     _DEFALUT_HASH_TABLE_LENGTH = 16,
   }
-  private sub _MAX_LOAD_FACTOR : double () { return 0.75; }
+  private static method _MAX_LOAD_FACTOR : double () { return 0.75; }
 
-  sub new : Hash ($key_values : oarray) {
+  static method new : Hash ($key_values : oarray) {
     my $self = new Hash;
     
     my $default_capacity = 32;
@@ -46,7 +46,7 @@ class Hash : precompile {
     return $self;
   }
 
-  sub set : void ($self : self, $key : string, $val : object) {
+  method set : void ($key : string, $val : object) {
     unless ($key) {
       die "key must not be undef";
     }
@@ -59,7 +59,7 @@ class Hash : precompile {
     $self->{count} = $count;
   }
 
-  sub get : object ($self : self, $key : string) {
+  method get : object ($key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {
@@ -76,7 +76,7 @@ class Hash : precompile {
     }
   }
 
-  sub exists : int ($self : self, $key : string) {
+  method exists : int ($key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
 
@@ -94,7 +94,7 @@ class Hash : precompile {
     }
   }
 
-  sub delete : object ($self : self, $key : string) {
+  method delete : object ($key : string) {
     my $index = _index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     my $prev : Hash::Entry = undef;
@@ -121,7 +121,7 @@ class Hash : precompile {
     }
   }
 
-  sub keys : string[] ($self : self) {
+  method keys : string[] () {
     my $retval = new string[$self->{count}];
     # iterate entries
     my $count = 0;
@@ -135,7 +135,7 @@ class Hash : precompile {
     return $retval;
   }
 
-  sub values : object[] ($self : self) {
+  method values : object[] () {
     my $retval = new object[$self->{count}];
     # iterate entries
     my $count = 0;
@@ -149,7 +149,7 @@ class Hash : precompile {
     return $retval;
   }
 
-  sub copy : Hash ($self : self) {
+  method copy : Hash () {
     my $ret = Hash->new({});
     my $keys = $self->keys;
     for (my $i = 0; $i < @$keys; ++$i) {
@@ -158,66 +158,66 @@ class Hash : precompile {
     return $ret;
   }
 
-  native sub _murmur_hash : long ($string : string, $seed : int);
+  native static method _murmur_hash : long ($string : string, $seed : int);
 
-  sub set_byte : void ($self : self, $name : string, $value : byte) {
+  method set_byte : void ($name : string, $value : byte) {
     $self->set($name => Byte->new($value));
   }
-  sub set_short : void ($self : self, $name : string, $value : short) {
+  method set_short : void ($name : string, $value : short) {
     $self->set($name => Short->new($value));
   }
-  sub set_int : void ($self : self, $name : string, $value : int) {
+  method set_int : void ($name : string, $value : int) {
     $self->set($name => Int->new($value));
   }
-  sub set_string : void ($self : self, $name : string, $value : string) {
+  method set_string : void ($name : string, $value : string) {
     $self->set($name => $value);
   }
-  sub set_long : void ($self : self, $name : string, $value : long) {
+  method set_long : void ($name : string, $value : long) {
     $self->set($name => Long->new($value));
   }
-  sub set_float : void ($self : self, $name : string, $value : float) {
+  method set_float : void ($name : string, $value : float) {
     $self->set($name => Float->new($value));
   }
-  sub set_double : void ($self : self, $name : string, $value : double) {
+  method set_double : void ($name : string, $value : double) {
     $self->set($name => Double->new($value));
   }
 
-  sub get_byte : byte ($self : self, $name : string) {
+  method get_byte : byte ($name : string) {
     return (byte)$self->get($name);
   }
-  sub get_short : short ($self : self, $name : string) {
+  method get_short : short ($name : string) {
     return (short)$self->get($name);
   }
-  sub get_int : int ($self : self, $name : string) {
+  method get_int : int ($name : string) {
     return (int)$self->get($name);
   }
-  sub get_string : string ($self : self, $name : string) {
+  method get_string : string ($name : string) {
     return (string)$self->get($name);
   }
-  sub get_long : long ($self : self, $name : string) {
+  method get_long : long ($name : string) {
     return (long)$self->get($name);
   }
-  sub get_float : float ($self : self, $name : string) {
+  method get_float : float ($name : string) {
     return (float)$self->get($name);
   }
-  sub get_double : double ($self : self, $name : string) {
+  method get_double : double ($name : string) {
     return (double)$self->get($name);
   }
 
-  sub _bucket_count : int ($self : self) {
+  method _bucket_count : int () {
     return $self->{bucket_count};
   }
 
-  sub _entries : Hash::Entry [] ($self : self) {
+  method _entries : Hash::Entry [] () {
     return $self->{entries};
   }
 
-  sub _index_by_key : int ($key : string, $bucket_count : int) {
+  static method _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = 123456789;
     return (int)(_murmur_hash($key, $default_seed) % $bucket_count);
   }
 
-  sub _set_to_container : void ($entries : Hash::Entry[], $bucket_count : int, $count_ref : int&,
+  static method _set_to_container : void ($entries : Hash::Entry[], $bucket_count : int, $count_ref : int&,
     $key : string, $val : object) {
     my $index = _index_by_key($key, $bucket_count);
     my $ref = $entries->[$index];
@@ -246,7 +246,7 @@ class Hash : precompile {
     }
   }
 
-  sub _rehash : void ($self : self) {
+  method _rehash : void () {
     my $new_bucket_count : int;
     $new_bucket_count = $self->{bucket_count} * 2;
     my $new_entries = new Hash::Entry [$new_bucket_count];

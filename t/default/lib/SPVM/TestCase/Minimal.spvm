@@ -2,15 +2,15 @@ class TestCase::Minimal : public {
   has x : rw public int;
   has y : rw public int;
 
-  sub get_x : int ($self : self) {
+  method get_x : int () {
     return $self->{x};
   }
 
-  sub new : TestCase::Minimal () {
+  static method new : TestCase::Minimal () {
     return new TestCase::Minimal;
   }
   
-  sub newp : TestCase::Minimal ($x : int, $y : int) {
+  static method newp : TestCase::Minimal ($x : int, $y : int) {
     
     my $minimal = new TestCase::Minimal;
     $minimal->{x} = $x;
@@ -19,7 +19,7 @@ class TestCase::Minimal : public {
     return $minimal;
   }
   
-  sub to_string : string ($self : self) {
+  method to_string : string () {
     my $str = "(" . $self->{x} . "," . $self->{y} . ")";
     
     return $str;

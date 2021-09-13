@@ -1,7 +1,7 @@
 class TestCase::While {
   use TestCase::Minimal;
 
-  sub condition_my_var_mem_id : int () {
+  static method condition_my_var_mem_id : int () {
     while (my $uchar = 5) {
       my $is_char = 10;
 
@@ -30,7 +30,7 @@ class TestCase::While {
     return 1;
   }
   
-  sub basic : int () {
+  static method basic : int () {
   
     my $success_while = 0;
     {
@@ -53,7 +53,7 @@ class TestCase::While {
     return 1;
   }
   
-  sub next : int () {
+  static method next : int () {
     
     my $i = 0;
     my $total = 0;
@@ -76,7 +76,7 @@ class TestCase::While {
     return 1;
   }
 
-  sub last : int () {
+  static method last : int () {
     
     my $i = 0;
     my $total = 0;
@@ -98,7 +98,7 @@ class TestCase::While {
     return 1;
   }
 
-  sub condition_my : int () {
+  static method condition_my : int () {
     
     my $num = 5;
     while (my $num = 3) {

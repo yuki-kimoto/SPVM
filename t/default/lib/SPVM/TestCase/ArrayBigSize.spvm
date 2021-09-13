@@ -7,7 +7,7 @@ class TestCase::ArrayBigSize {
     $BIG_INDEX = 200_000_000;
   }
   
-  sub array_max_index_byte : int () {
+  static method array_max_index_byte : int () {
     my $nums = new byte[INT32_MAX()];
     
     $nums->[0] = 1;
@@ -36,7 +36,7 @@ class TestCase::ArrayBigSize {
     return 1;
   }
 
-  sub array_big_index_byte : int () {
+  static method array_big_index_byte : int () {
     my $index = $BIG_INDEX;
     my $nums = new byte[$index];
     
@@ -61,7 +61,7 @@ class TestCase::ArrayBigSize {
     return 1;
   }
 
-  sub array_big_index_short : int () {
+  static method array_big_index_short : int () {
     my $index = $BIG_INDEX;
     my $nums = new short[$index];
     
@@ -86,7 +86,7 @@ class TestCase::ArrayBigSize {
     return 1;
   }
 
-  sub array_big_index_int : int () {
+  static method array_big_index_int : int () {
     my $index = $BIG_INDEX;
     my $nums = new int[$index];
     
@@ -111,7 +111,7 @@ class TestCase::ArrayBigSize {
     return 1;
   }
 
-  sub array_big_index_long : int () {
+  static method array_big_index_long : int () {
     my $index = $BIG_INDEX;
     my $nums = new long[$index];
     
@@ -136,7 +136,7 @@ class TestCase::ArrayBigSize {
     return 1;
   }
 
-  sub array_big_index_float : int () {
+  static method array_big_index_float : int () {
     my $index = $BIG_INDEX;
     my $nums = new float[$index];
     
@@ -161,7 +161,7 @@ class TestCase::ArrayBigSize {
     return 1;
   }
 
-  sub array_big_index_double : int () {
+  static method array_big_index_double : int () {
     my $index = $BIG_INDEX;
     my $nums = new double[$index];
     

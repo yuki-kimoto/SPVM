@@ -1,5 +1,5 @@
 class TestCase::Literal::Character {
-  sub character : int () {
+  static method character : int () {
     my $ch = 'a';
     my $bytes = new byte[1];
     $bytes->[0] = $ch;
@@ -10,7 +10,7 @@ class TestCase::Literal::Character {
     return 1;
   }
   
-  sub escape : int () {
+  static method escape : int () {
     
     # Escape sequence
     my $ch_0 = '\0';
@@ -67,7 +67,7 @@ class TestCase::Literal::Character {
     return 1;
   }
   
-  sub escape_ascii : int () {
+  static method escape_ascii : int () {
     my $ch00 = '\x00';
     my $ch11 = '\x11';
     my $ch22 = '\x22';

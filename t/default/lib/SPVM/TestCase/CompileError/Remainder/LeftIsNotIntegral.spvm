@@ -1,5 +1,5 @@
 class TestCase::CompileError::Remainder::LeftIsNotIntegral {
-  sub main : int () {
+  static method main : int () {
     0.5 % 2;
   }
 }

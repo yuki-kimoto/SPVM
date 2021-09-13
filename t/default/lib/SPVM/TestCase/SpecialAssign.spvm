@@ -16,7 +16,7 @@ class TestCase::SpecialAssign {
   our $FLOAT_VALUE : float;
   our $DOUBLE_VALUE : double;
 
-  sub special_assign_right_shift_unsigned_var : int () {
+  static method special_assign_right_shift_unsigned_var : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -46,7 +46,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_right_shift_var : int () {
+  static method special_assign_right_shift_var : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -76,7 +76,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_left_shift_var : int () {
+  static method special_assign_left_shift_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;
@@ -106,7 +106,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_bit_xor_var : int () {
+  static method special_assign_bit_xor_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;
@@ -136,7 +136,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_bit_or_var : int () {
+  static method special_assign_bit_or_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;
@@ -166,7 +166,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_bit_and_var : int () {
+  static method special_assign_bit_and_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;
@@ -194,7 +194,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_remainder_var : int () {
+  static method special_assign_remainder_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;
@@ -226,7 +226,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_divide_var : int () {
+  static method special_assign_divide_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;
@@ -268,7 +268,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_multiply_var : int () {
+  static method special_assign_multiply_var : int () {
     my $value_byte = (byte)6;
     my $value_short = (short)6;
     my $value_int = 6;
@@ -310,7 +310,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_subtract_var : int () {
+  static method special_assign_subtract_var : int () {
     my $value_byte = (byte)INT8_MAX();
     my $value_short = (short)INT16_MAX();
     my $value_int = INT32_MAX();
@@ -352,7 +352,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_field_access_invocant_not_var : int () {
+  static method special_assign_add_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Minimal[2];
     $nums_of_nums->[0] = TestCase::Minimal->new;
     
@@ -367,7 +367,7 @@ class TestCase::SpecialAssign {
     return 0;
   }
   
-  sub special_assign_add_array_access_invocant_not_var : int () {
+  static method special_assign_add_array_access_invocant_not_var : int () {
     my $nums_of_nums = new int[][2];
     $nums_of_nums->[0] = new int[1];
     
@@ -382,7 +382,7 @@ class TestCase::SpecialAssign {
     return 0;
   }
 
-  sub special_assign_add_array_field_access_invocant_not_var : int () {
+  static method special_assign_add_array_field_access_invocant_not_var : int () {
     my $nums_of_nums = new TestCase::Point_3i[][2];
     $nums_of_nums->[0] = new TestCase::Point_3i[1];
     
@@ -397,7 +397,7 @@ class TestCase::SpecialAssign {
     return 0;
   }
 
-  sub special_assign_add_array_field_access_constant_index : int () {
+  static method special_assign_add_array_field_access_constant_index : int () {
     my $values_point_byte = new TestCase::Point_3b[1];
     my $values_point_short = new TestCase::Point_3s[1];
     my $values_point_int = new TestCase::Point_3i[1];
@@ -446,7 +446,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_class_var_access : int () {
+  static method special_assign_add_class_var_access : int () {
     $BYTE_VALUE = (byte)INT8_MIN();
     $SHORT_VALUE = (short)INT16_MIN();
     $INT_VALUE = INT32_MIN();
@@ -488,7 +488,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_deref : int () {
+  static method special_assign_add_deref : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -537,7 +537,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_field_access : int () {
+  static method special_assign_add_field_access : int () {
     my $simple = TestCase::Simple->new;
     
     $simple->{byte_value} = (byte)INT8_MIN();
@@ -581,7 +581,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_array_access_var_index : int () {
+  static method special_assign_add_array_access_var_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -631,7 +631,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_array_access_constant_index : int () {
+  static method special_assign_add_array_access_constant_index : int () {
     my $values_byte = new byte[1];
     my $values_short = new short[1];
     my $values_int = new int[1];
@@ -680,7 +680,7 @@ class TestCase::SpecialAssign {
     }
   }
 
-  sub special_assign_add_var : int () {
+  static method special_assign_add_var : int () {
     my $value_byte = (byte)INT8_MIN();
     my $value_short = (short)INT16_MIN();
     my $value_int = INT32_MIN();
@@ -723,7 +723,7 @@ class TestCase::SpecialAssign {
   }
   
   # Concat
-  sub special_assign_concat : string () {
+  static method special_assign_concat : string () {
     
     my $value = "a";
     
@@ -732,7 +732,7 @@ class TestCase::SpecialAssign {
     return $value;
   }
   
-  sub special_assign : int () {
+  static method special_assign : int () {
     my $num1 = 1;
     $num1 += 4;
     if ($num1 == 5) {

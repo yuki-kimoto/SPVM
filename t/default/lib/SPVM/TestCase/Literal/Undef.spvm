@@ -1,7 +1,7 @@
 class TestCase::Literal::Undef {
   use TestCase::Minimal;
   
-  sub undef_test : int () {
+  static method undef_test : int () {
     my $minimal = TestCase::Minimal->new;
     my $minimal_undef : TestCase::Minimal;
     

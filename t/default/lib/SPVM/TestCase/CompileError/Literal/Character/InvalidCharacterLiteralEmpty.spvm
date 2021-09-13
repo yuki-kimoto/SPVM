@@ -1,5 +1,5 @@
 class TestCase::CompileError::Literal::InvalidCharacterLiteral {
-  sub main : int () {
+  static method main : int () {
     '';
   }
 }

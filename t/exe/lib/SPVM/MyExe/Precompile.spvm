@@ -1,25 +1,25 @@
 class MyExe::Precompile : precompile {
-  sub sum : int ($num1 : int, $num2 : int) {
+  static method sum : int ($num1 : int, $num2 : int) {
     return $num1 + $num2;
   }
   
-  sub anon_method_sum : int () {
+  static method anon_method_sum : int () {
     my $num1 = anon_method0();
     my $num2 = anon_method1();
     
     return $num1 + $num2;
   }
   
-  sub anon_method0 : int () {
+  static method anon_method0 : int () {
     
-    my $cb = sub : int ($self : self) { return 2; };
+    my $cb = method : int () { return 2; };
     
     return $cb->();
   }
   
-  sub anon_method1 : int () {
+  static method anon_method1 : int () {
     
-    my $cb = sub : int ($self : self) { return 5; };
+    my $cb = method : int () { return 5; };
     
     return $cb->();
   }

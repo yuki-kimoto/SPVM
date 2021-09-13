@@ -1,6 +1,6 @@
 class TestCase::BitOperator {
   # Complement
-  sub complement : int () {
+  static method complement : int () {
     my $num_byte = (byte)0xF0;
     my $num_short = (short)0xFFF0;
     my $num_int = 0xFFFFFFF0;
@@ -24,7 +24,7 @@ class TestCase::BitOperator {
     return 0;
   }
 
-  sub bit_shift_left_int_max : int () {
+  static method bit_shift_left_int_max : int () {
     
     # 01000000 00000000 00000000 00000000 << 1
     my $value = 0x40000000 << 1;
@@ -38,7 +38,7 @@ class TestCase::BitOperator {
     }
   }
   
-  sub bit_shift_left_int_overflow : int () {
+  static method bit_shift_left_int_overflow : int () {
     
     # 10000000 00000000 00000000 00000000 << 1
     my $value = 0x80000000 << 1;
@@ -52,7 +52,7 @@ class TestCase::BitOperator {
     }
   }
 
-  sub bit_shift_left_long : int () {
+  static method bit_shift_left_long : int () {
     
     # 00000011 00000000 00000000 00000000 00000000 00000000 00000000 00000000 << 2
     my $value = 0x3000000000000000L << 2;
@@ -66,7 +66,7 @@ class TestCase::BitOperator {
     }
   }
   
-  sub bit_shift_left_long_max : int () {
+  static method bit_shift_left_long_max : int () {
     
     # 01000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000  << 1
     my $value = 0x4000000000000000L << 1;
@@ -80,7 +80,7 @@ class TestCase::BitOperator {
     }
   }
   
-  sub bit_shift_left_long_overflow : int () {
+  static method bit_shift_left_long_overflow : int () {
     
     # 10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000  << 1
     my $value = 0x8000000000000000L << 1;
@@ -93,7 +93,7 @@ class TestCase::BitOperator {
       return 0;
     }
   }
-  sub bit_and : int () {
+  static method bit_and : int () {
     # byte
     my $byte_success = 0;
     {
@@ -145,7 +145,7 @@ class TestCase::BitOperator {
     return 1;
   }
 
-  sub bit_or : int () {
+  static method bit_or : int () {
     # byte
     my $byte_success = 0;
     {
@@ -189,7 +189,7 @@ class TestCase::BitOperator {
     return 0;
   }
 
-  sub bit_xor : int () {
+  static method bit_xor : int () {
     # byte
     my $byte_success = 0;
     {
@@ -233,7 +233,7 @@ class TestCase::BitOperator {
     return 0;
   }
 
-  sub bit_shift_right_logical_int : int () {
+  static method bit_shift_right_logical_int : int () {
     # 11000000 00000000 00000000 00000001 >>> 2
     my $value = 0xC0000001 >>> 2;
     
@@ -246,7 +246,7 @@ class TestCase::BitOperator {
     }
   }
   
-  sub bit_shift_right_logical_long : int () {
+  static method bit_shift_right_logical_long : int () {
     # 11000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 >>> 2
     my $value = 0xC000000000000001L >>> 2;
     
@@ -259,7 +259,7 @@ class TestCase::BitOperator {
     }
   }
 
-  sub bit_shift_right_int : int () {
+  static method bit_shift_right_int : int () {
     # 11000000 00000000 00000000 00000001 >> 2
     my $value = 0xC0000001 >> 2;
     
@@ -272,7 +272,7 @@ class TestCase::BitOperator {
     }
   }
   
-  sub bit_shift_right_long : int () {
+  static method bit_shift_right_long : int () {
     # 11000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001 >> 2
     my $value = 0xC000000000000001L >> 2;
     
@@ -286,7 +286,7 @@ class TestCase::BitOperator {
   }
   
   # Bit shift left
-  sub bit_shift_left_int : int () {
+  static method bit_shift_left_int : int () {
     
     # 00000011 00000000 00000000 00000000 << 2
     my $value = 0x30000000 << 2;

@@ -9,7 +9,7 @@ class LongList : precompile {
     DEFAULT_CAPACITY = 16,
   }
 
-  sub new : LongList ($array : long[]) {
+  static method new : LongList ($array : long[]) {
     my $self = new LongList;
     my $length : int;
     if ($array) {
@@ -40,7 +40,7 @@ class LongList : precompile {
     return $self;
   }
 
-  sub new_len : LongList ($length : int) {
+  static method new_len : LongList ($length : int) {
     my $self = new LongList;
     unless ($length >= 0) {
       die "length must be more than or equals to zero";
@@ -58,7 +58,7 @@ class LongList : precompile {
     return $self;
   }
   
-  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+  private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new long [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -69,7 +69,7 @@ class LongList : precompile {
     $self->{values} = $new_values;
   }
 
-  private sub _extend : void ($self : self) {
+  private method _extend : void () {
     my $capacity = $self->{capacity};
     my $length = $self->{length};
     my $values = $self->{values};
@@ -84,7 +84,7 @@ class LongList : precompile {
     $self->{capacity} = $new_capacity;
   }
 
-  sub insert : void ($self : self, $index : int, $value : long) {
+  method insert : void ($index : int, $value : long) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -107,7 +107,7 @@ class LongList : precompile {
     $self->{length}++;
   }
 
-  sub remove : long ($self : self, $index : int) {
+  method remove : long ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -128,7 +128,7 @@ class LongList : precompile {
     return $remove_value;
   }
   
-  sub push : void ($self : self, $value : long) {
+  method push : void ($value : long) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -141,7 +141,7 @@ class LongList : precompile {
     $self->{length}++;
   }
   
-  sub pop : long ($self : self) {
+  method pop : long () {
     my $length = $self->length;
     
     if ($length == 0) {
@@ -157,7 +157,7 @@ class LongList : precompile {
     return $value;
   }
   
-  sub unshift : void ($self : self, $value : long) {
+  method unshift : void ($value : long) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -173,7 +173,7 @@ class LongList : precompile {
     $self->{length}++;
   }
   
-  sub shift : long ($self : self) {
+  method shift : long () {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -194,7 +194,7 @@ class LongList : precompile {
     return $value;
   }
   
-  sub set : void ($self : self, $index : int, $value : long) {
+  method set : void ($index : int, $value : long) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -204,7 +204,7 @@ class LongList : precompile {
     $self->{values}[$index] = $value;
   }
   
-  sub set_array : void ($self : self, $array : long[]) {
+  method set_array : void ($array : long[]) {
     unless ($array) {
       die "Array must be defined";
     }
@@ -220,7 +220,7 @@ class LongList : precompile {
     Fn->memcpy_long($self->{values}, 0, $array, 0, $cur_length);
   }
 
-  sub get : long ($self : self, $index : int) {
+  method get : long ($index : int) {
     my $length = $self->length;
     
     if ($index < 0 || $index > $length - 1) {
@@ -232,7 +232,7 @@ class LongList : precompile {
     return $value;
   }
   
-  sub to_array : long[] ($self : self) {
+  method to_array : long[] () {
     my $length = $self->length;
     
     my $array = new long[$length];
@@ -244,7 +244,7 @@ class LongList : precompile {
     return $array;
   }
 
-  sub resize : void ($self : self, $new_length : int) {
+  method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be more than or equals to 0";
     }

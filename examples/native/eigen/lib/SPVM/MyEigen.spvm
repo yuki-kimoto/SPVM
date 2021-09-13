@@ -1,7 +1,7 @@
 class MyEigen {
-  native sub add3d : double[] ($nums1 : double[], $nums2 : double[]);
+  native static method add3d : double[] ($nums1 : double[], $nums2 : double[]);
   
-  sub test : int () {
+  static method test : int () {
     my $nums1 = [1d, 2, 3, 4, 5, 6, 7, 8, 9];
     my $nums2 = [1d, 2, 3, 4, 5, 6, 7, 8, 10];
     

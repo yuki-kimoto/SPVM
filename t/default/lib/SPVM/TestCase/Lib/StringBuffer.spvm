@@ -1,7 +1,7 @@
 class TestCase::Lib::StringBuffer {
   use StringBuffer;
 
-  sub test_new : int () {
+  static method test_new : int () {
     
     my $buffer = StringBuffer->new;
     
@@ -16,7 +16,7 @@ class TestCase::Lib::StringBuffer {
     return 1;
   }
 
-  sub test_length : int () {
+  static method test_length : int () {
     unless (StringBuffer->new->length == 0) {
       return 0;
     }
@@ -28,7 +28,7 @@ class TestCase::Lib::StringBuffer {
     return 1;
   }
 
-  sub test_push  : int () {
+  static method test_push  : int () {
     my $buffer = StringBuffer->new;
     $buffer->push ("abc");
     unless ($buffer->to_string eq "abc") {
@@ -48,7 +48,7 @@ class TestCase::Lib::StringBuffer {
     return 1;
   }
 
-  sub test_push_char  : int () {
+  static method test_push_char  : int () {
     my $buffer = StringBuffer->new;
     $buffer->push_char('a');
     unless ($buffer->to_string eq "a") {
@@ -68,12 +68,12 @@ class TestCase::Lib::StringBuffer {
     return 1;
   }
 
-  sub test_append_copy_on_write : int () {
+  static method test_append_copy_on_write : int () {
     warn("TODO: append copy-on-write test is not implemented yet");
     return 0;
   }
 
-  sub test_to_string : int () {
+  static method test_to_string : int () {
     {
       my $minimal_buf = StringBuffer->new;
       $minimal_buf->push ("a");

@@ -1,11 +1,11 @@
 class TestCase::Pointer : pointer_t {
-  native sub new : TestCase::Pointer ($x : int);
+  native static method new : TestCase::Pointer ($x : int);
   
-  native sub get_x : int ($self : self);
+  native method get_x : int ();
   
-  native sub DESTROY : void ($self : self);
+  native method DESTROY : void ();
   
-  sub struct_test : int () {
+  static method struct_test : int () {
     my $struct = TestCase::Pointer->new(3);
     my $x = $struct->get_x;
     

@@ -1,5 +1,5 @@
 class TestCase::Private : private {
-  sub new : TestCase::Private () {
+  static method new : TestCase::Private () {
     new TestCase::Private;
   }
 }

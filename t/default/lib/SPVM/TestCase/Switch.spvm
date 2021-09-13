@@ -1,6 +1,6 @@
 class TestCase::Switch {
 
-  sub switch_return : int () {
+  static method switch_return : int () {
     my $ret = switch_return_method();
     
     unless ($ret == 5) {
@@ -10,7 +10,7 @@ class TestCase::Switch {
     return 1;
   }
 
-  sub switch_return_method : int () {
+  static method switch_return_method : int () {
     my $i = 2;
     switch ($i) {
       case 1: {
@@ -22,7 +22,7 @@ class TestCase::Switch {
     }
   }
   
-  sub switch_no_default : int () {
+  static method switch_no_default : int () {
     my $i = 0;
     switch ($i) {
       case 1: {
@@ -39,7 +39,7 @@ class TestCase::Switch {
     return 1;
   }
 
-  sub switch_constant_byte : int () {
+  static method switch_constant_byte : int () {
     {
       my $char = (int)'[';
       
@@ -66,7 +66,7 @@ class TestCase::Switch {
   }
   
   # Switch - nest
-  sub switch_nest : int () {
+  static method switch_nest : int () {
     my $success1 : int;
     switch (3) {
       case 1: {
@@ -105,7 +105,7 @@ class TestCase::Switch {
   }
   
   # Switch - lookup switch
-  sub switch_lookup_switch : int () {
+  static method switch_lookup_switch : int () {
     my $success1 : int;
     switch (1) {
       case 1: {
@@ -183,7 +183,7 @@ class TestCase::Switch {
   }
   
   # Switch - table switch
-  sub switch_table_switch : int () {
+  static method switch_table_switch : int () {
     my $success1 : int;
     
     switch(3) {

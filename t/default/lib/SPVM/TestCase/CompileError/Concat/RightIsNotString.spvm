@@ -1,7 +1,7 @@
 class TestCase::CompileError::Concat::RightIsNotString {
   use TestCase::Minimal;
   
-  sub main : int () {
+  static method main : int () {
     my $minimal : TestCase::Minimal;
     
     "abc" . $minimal;

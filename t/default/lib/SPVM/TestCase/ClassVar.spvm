@@ -1,7 +1,7 @@
 class TestCase::ClassVar {
   our $lower_var : int;
   
-  sub var_brace : int () {
+  static method var_brace : int () {
     
     $lower_var = 1;
     

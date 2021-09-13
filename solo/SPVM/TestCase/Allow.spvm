@@ -1,7 +1,7 @@
 class TestCase::Allow {
   use TestCase::Allow::PrivateData;
   
-  sub allow_test : int () {
+  static method allow_test : int () {
     my $pdata = new TestCase::AllowData;
     
     $pdata->{x} = 2;

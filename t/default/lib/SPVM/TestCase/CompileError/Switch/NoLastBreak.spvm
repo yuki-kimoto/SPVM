@@ -1,5 +1,5 @@
 class TestCase::CompileError::Switch::NoLastBreak {
-  sub main : int () {
+  static method main : int () {
     switch (1) {
       case 1 : {
         1;

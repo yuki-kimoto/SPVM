@@ -7,7 +7,7 @@ class TestCase::Value {
   use TestCase::Matrix4_16d;
   use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
-  sub value_max_fields_byte : int () {
+  static method value_max_fields_byte : int () {
     my $mat1 : TestCase::Matrix4_16b;
     my $mat2 : TestCase::Matrix4_16b;
     my $mat3 : TestCase::Matrix4_16b;
@@ -124,7 +124,7 @@ class TestCase::Value {
     return 1;
   }
 
-  sub value_max_fields_short : int () {
+  static method value_max_fields_short : int () {
     my $mat1 : TestCase::Matrix4_16s;
     my $mat2 : TestCase::Matrix4_16s;
     my $mat3 : TestCase::Matrix4_16s;
@@ -241,7 +241,7 @@ class TestCase::Value {
     return 1;
   }
 
-  sub value_max_fields_int : int () {
+  static method value_max_fields_int : int () {
     my $mat1 : TestCase::Matrix4_16i;
     my $mat2 : TestCase::Matrix4_16i;
     my $mat3 : TestCase::Matrix4_16i;
@@ -358,7 +358,7 @@ class TestCase::Value {
     return 1;
   }
 
-  sub value_max_fields_long : int () {
+  static method value_max_fields_long : int () {
     my $mat1 : TestCase::Matrix4_16l;
     my $mat2 : TestCase::Matrix4_16l;
     my $mat3 : TestCase::Matrix4_16l;
@@ -475,7 +475,7 @@ class TestCase::Value {
     return 1;
   }
 
-  sub value_max_fields_float : int () {
+  static method value_max_fields_float : int () {
     my $mat1 : TestCase::Matrix4_16f;
     my $mat2 : TestCase::Matrix4_16f;
     my $mat3 : TestCase::Matrix4_16f;
@@ -592,7 +592,7 @@ class TestCase::Value {
     return 1;
   }
   
-  sub value_max_fields_double : int () {
+  static method value_max_fields_double : int () {
     my $mat1 : TestCase::Matrix4_16d;
     my $mat2 : TestCase::Matrix4_16d;
     my $mat3 : TestCase::Matrix4_16d;

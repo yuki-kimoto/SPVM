@@ -1,84 +1,84 @@
 class TestCase::Literal::FloatingPoint {
 
   # decimal
-  sub decimal_all_numbers : int () {
+  static method decimal_all_numbers : int () {
     my $all_numbers : double = 0.12345678912345;
     unless ($all_numbers == 0.12345678912345) {
       return 0;
     }
     return 1;
   }
-  sub decimal_minus : int () {
+  static method decimal_minus : int () {
     my $minus = -0.25;
     unless ($minus == -0.25) {
       return 0;
     }
     return 1;
   }
-  sub decimal_plus : int () {
+  static method decimal_plus : int () {
     my $plus = +0.25;
     unless ($plus == +0.25) {
       return 0;
     }
     return 1;
   }
-  sub decimal_prefix_f : int () {
+  static method decimal_prefix_f : int () {
     my $prefix_f : float = 0.25f;
     unless ($prefix_f == 0.25f) {
       return 0;
     }
     return 1;
   }
-  sub decimal_prefix_F : int () {
+  static method decimal_prefix_F : int () {
     my $prefix_F : float = 0.25F;
     unless ($prefix_F == 0.25F) {
       return 0;
     }
     return 1;
   }
-  sub decimal_prefix_d : int () {
+  static method decimal_prefix_d : int () {
     my $prefix_d : double = 0.12345678912345d;
     unless ($prefix_d == 0.12345678912345d) {
       return 0;
     }
     return 1;
   }
-  sub decimal_prefix_D : int () {
+  static method decimal_prefix_D : int () {
     my $prefix_D : double = 0.12345678912345D;
     unless ($prefix_D == 0.12345678912345d) {
       return 0;
     }
     return 1;
   }
-  sub decimal_under_line : int () {
+  static method decimal_under_line : int () {
     my $under_line = 0.12_34;
     unless ($under_line == 0.1234) {
       return 0;
     }
     return 1;
   }
-  sub decimal_exponant_e_plus : int () {
+  static method decimal_exponant_e_plus : int () {
     my $exponant_e_plus = 0.12e+7;
     unless ($exponant_e_plus == 0.12e+7) {
       return 0;
     }
     return 1;
   }
-  sub decimal_exponant_E_minus : int () {
+  static method decimal_exponant_E_minus : int () {
     my $exponant_E_minus = 0.12E-7;
     unless ($exponant_E_minus == 0.12E-7) {
       return 0;
     }
     return 1;
   }
-  sub decimal_exponant_e_nosign : int () {
+  static method decimal_exponant_e_nosign : int () {
     my $exponant_e_nosign = 0.12e7;
     unless ($exponant_e_nosign == 0.12e7) {
       return 0;
     }
     return 1;
   }
-  sub decimal_exponant_no_point : int () {
+  static method decimal_exponant_no_point : int () {
     my $exponant_no_point = 12e7;
     unless ($exponant_no_point == 12e7) {
       return 0;
@@ -87,7 +87,7 @@ class TestCase::Literal::FloatingPoint {
   }
 
   # hex
-  sub hex_all_numbers : int () {
+  static method hex_all_numbers : int () {
     my $all_numbers1 = 0x0.123456789p0;
     my $all_numbers2 = 0x0.abcdep0;
     my $all_numbers3 = 0x0.ABCDEFp0;
@@ -105,7 +105,7 @@ class TestCase::Literal::FloatingPoint {
     
     return 1;
   }
-  sub hex_suffix : int () {
+  static method hex_suffix : int () {
     my $hex_suffix_f : float = 0x0.FFp0f;
     unless ($hex_suffix_f == 0x0.FFp0f) {
       return 0;
@@ -118,7 +118,7 @@ class TestCase::Literal::FloatingPoint {
     
     return 1;
   }
-  sub hex_equals_decimal : int () {
+  static method hex_equals_decimal : int () {
     my $hex_equals_decimal = 0x0.Fp0;
     unless ($hex_equals_decimal == 0.9375) {
       return 0;
@@ -126,7 +126,7 @@ class TestCase::Literal::FloatingPoint {
     
     return 1;
   }
-  sub hex_exponent : int () {
+  static method hex_exponent : int () {
     my $hex_exponent_p = 0x0.Fp-4;
     unless ($hex_exponent_p == 0.05859375) {
       return 0;
@@ -143,7 +143,7 @@ class TestCase::Literal::FloatingPoint {
 
     return 1;
   }
-  sub hex_underline : int () {
+  static method hex_underline : int () {
     my $hex_underline = 0x0.F_Fp0;
     unless ($hex_underline == 0x0.FFp0) {
       return 0;

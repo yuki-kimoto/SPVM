@@ -5,7 +5,7 @@ class TestCase::ArrayMiddleSize {
     $MIDDLE_INDEX = 1_000_000;
   }
   
-  sub array_middle_index_byte : int () {
+  static method array_middle_index_byte : int () {
     my $index = $MIDDLE_INDEX;
     my $nums = new byte[$index];
     
@@ -32,7 +32,7 @@ class TestCase::ArrayMiddleSize {
     return 1;
   }
 
-  sub array_middle_index_short : int () {
+  static method array_middle_index_short : int () {
     my $index = $MIDDLE_INDEX;
     my $nums = new short[$index];
     
@@ -57,7 +57,7 @@ class TestCase::ArrayMiddleSize {
     return 1;
   }
 
-  sub array_middle_index_int : int () {
+  static method array_middle_index_int : int () {
     my $index = $MIDDLE_INDEX;
     my $nums = new int[$index];
     
@@ -82,7 +82,7 @@ class TestCase::ArrayMiddleSize {
     return 1;
   }
 
-  sub array_middle_index_long : int () {
+  static method array_middle_index_long : int () {
     my $index = $MIDDLE_INDEX;
     my $nums = new long[$index];
     
@@ -107,7 +107,7 @@ class TestCase::ArrayMiddleSize {
     return 1;
   }
 
-  sub array_middle_index_float : int () {
+  static method array_middle_index_float : int () {
     my $index = $MIDDLE_INDEX;
     my $nums = new float[$index];
     
@@ -132,7 +132,7 @@ class TestCase::ArrayMiddleSize {
     return 1;
   }
 
-  sub array_middle_index_double : int () {
+  static method array_middle_index_double : int () {
     my $index = $MIDDLE_INDEX;
     my $nums = new double[$index];
     

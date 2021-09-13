@@ -1,6 +1,6 @@
 class TestCase::IfRequire {
   
-  sub if_require : int () {
+  static method if_require : int () {
     
     # if require success
     {

@@ -1,7 +1,7 @@
 class TestCase::Lib::Unicode {
   use Unicode;
 
-  sub uchar : int () {
+  static method uchar : int () {
     
     {
       my $str = "あaい";
@@ -76,7 +76,7 @@ class TestCase::Lib::Unicode {
     return 1;
   }
 
-  sub uchar_to_utf8 : int () {
+  static method uchar_to_utf8 : int () {
     
     {
       my $pos = 0;

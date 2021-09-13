@@ -1,5 +1,5 @@
 class TestCase::Unless {
-  sub unless_ok : int () {
+  static method unless_ok : int () {
     unless(0) {
       return 1;
     }
@@ -7,7 +7,7 @@ class TestCase::Unless {
     return 0;
   }
 
-  sub unless_not_ok : int ()  {
+  static method unless_not_ok : int ()  {
     unless(1) {
       return 0;
     }
@@ -15,7 +15,7 @@ class TestCase::Unless {
     return 1;
   }
   
-  sub unless_else : int ()  {
+  static method unless_else : int ()  {
     unless (1) {
       return 0;
     }

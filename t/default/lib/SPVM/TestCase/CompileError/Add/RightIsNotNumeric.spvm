@@ -1,6 +1,6 @@
 class TestCase::CompileError::Add::RightIsNotNumeric {
   use TestCase::Minimal;
-  sub main : int () {
+  static method main : int () {
     my $minimal = TestCase::Minimal->new;
     1 + $minimal;
   }

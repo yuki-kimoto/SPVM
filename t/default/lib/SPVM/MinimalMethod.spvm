@@ -1,5 +1,5 @@
 class MinimalMethod {
-  sub foo : void () {
+  static method foo : void () {
     
   }
 }

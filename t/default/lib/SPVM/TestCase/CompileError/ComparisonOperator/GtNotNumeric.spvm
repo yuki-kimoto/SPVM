@@ -1,7 +1,7 @@
 class TestCase::CompileError::ComparisonOperator::GtNotNumeric {
   use TestCase::Minimal;
   
-  sub main : int () {
+  static method main : int () {
     my $minimal = new TestCase::Minimal;
     if ($minimal > $minimal) {
       

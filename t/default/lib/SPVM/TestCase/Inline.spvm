@@ -1,12 +1,12 @@
 class TestCase::Inline {
   
   # Inline expansion
-  sub constant_method_return_double : double () {
+  static method constant_method_return_double : double () {
     return 0.25;
   }
   
   # Array store undef
-  sub constant_method : int () {
+  static method constant_method : int () {
     unless (constant_method_return_double() == 0.25) {
       return 0;
     }
@@ -15,12 +15,12 @@ class TestCase::Inline {
   }
   
   # Inline expansion
-  sub new : TestCase::Inline () {
+  static method new : TestCase::Inline () {
     return new TestCase::Inline;
   }
   
   # Array store undef
-  sub new_inline : int () {
+  static method new_inline : int () {
     my $self = TestCase::Inline->new;
     
     unless ($self isa TestCase::Inline) {

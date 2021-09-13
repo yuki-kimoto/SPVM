@@ -18,7 +18,7 @@ class TestCase::Lib::Math {
   use Fn(index);
   use Fn(INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
 
-  sub test_E : int () {
+  static method test_E : int () {
     unless (E() == 2.7182818284590452354) {
       return 0;
     }
@@ -28,7 +28,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_PI : int () {
+  static method test_PI : int () {
     unless (PI() == 3.14159265358979323846) {
       return 0;
     }
@@ -43,7 +43,7 @@ class TestCase::Lib::Math {
   #
   # Integral type overflow is not defined in C99
   #
-  sub unary_minus_int_overflow : int () {
+  static method unary_minus_int_overflow : int () {
     my $value = -INT32_MIN();
 
     unless ($value isa int) {
@@ -57,7 +57,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub unary_minus_long_overflow : int () {
+  static method unary_minus_long_overflow : int () {
     my $value = -INT64_MIN();
 
     unless ($value isa long) {
@@ -74,7 +74,7 @@ class TestCase::Lib::Math {
   #
   # Nan, Inf, sign operation is not defined in C99
   #
-  sub unary_minus_float_inf : int () {
+  static method unary_minus_float_inf : int () {
     {
       my $value = -Math->INFINITYF();
 
@@ -93,7 +93,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub unary_minus_float_zero : int () {
+  static method unary_minus_float_zero : int () {
     my $zero_plus = 0.0f;
 
     if (Math->signbitf($zero_plus)) {
@@ -122,7 +122,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub unary_minus_float_nan : int () {
+  static method unary_minus_float_nan : int () {
     my $value = -Math->NANF();
 
     unless ($value isa float) {
@@ -136,7 +136,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub unary_minus_double_inf : int () {
+  static method unary_minus_double_inf : int () {
     my $value = -Math->INFINITY();
 
     unless ($value isa double) {
@@ -154,7 +154,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub unary_minus_double_zero : int () {
+  static method unary_minus_double_zero : int () {
     my $zero_plus = 0.0;
 
     if (Math->signbit($zero_plus)) {
@@ -182,7 +182,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub unary_minus_double_nan : int () {
+  static method unary_minus_double_nan : int () {
     my $value = -Math->NAN();
 
     unless ($value isa double) {
@@ -196,14 +196,14 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_long_underflow : long () {
+  static method subtract_long_underflow : long () {
     return (long)-9223372036854775808L - (long)1;
   }
 
   #
   # Integral type overflow is not defined in C99
   #
-  sub subtract_double_over_min : int () {
+  static method subtract_double_over_min : int () {
     my $total = -DBL_MAX() - +DBL_MAX();
 
     unless($total isa double) {
@@ -220,7 +220,7 @@ class TestCase::Lib::Math {
 
     return 1;
   }
-  sub subtract_overflow : int () {
+  static method subtract_overflow : int () {
     my $total = -2147483648 - 1;
 
     unless ($total == 2147483647) {
@@ -237,7 +237,7 @@ class TestCase::Lib::Math {
   #
   # Nan, Inf, sign operation is not defined in C99
   #
-  sub subtract_float_nan_left : int () {
+  static method subtract_float_nan_left : int () {
     my $total = Math->NANF() - 3.0f;
 
     unless(Math->isnan($total)) {
@@ -251,7 +251,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_float_nan_right : int () {
+  static method subtract_float_nan_right : int () {
     my $total = 3.0f - Math->NANF();
 
     unless(Math->isnan($total)) {
@@ -265,7 +265,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_double_nan_left : int () {
+  static method subtract_double_nan_left : int () {
     my $total = Math->NAN() - 3.0;
 
     unless(Math->isnan($total)) {
@@ -279,7 +279,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_double_nan_right : int () {
+  static method subtract_double_nan_right : int () {
     my $total = 3.0 - Math->NAN();
 
     unless(Math->isnan($total)) {
@@ -293,7 +293,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_float_plus_inf_minus_inf : int () {
+  static method subtract_float_plus_inf_minus_inf : int () {
     my $total = Math->INFINITYF() - Math->INFINITYF();
 
     unless(Math->isnan($total)) {
@@ -307,7 +307,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_double_plus_inf_minus_inf : int () {
+  static method subtract_double_plus_inf_minus_inf : int () {
     my $total = Math->INFINITY() - Math->INFINITY();
 
     unless(Math->isnan($total)) {
@@ -321,7 +321,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_float_inf_plus_value : int () {
+  static method subtract_float_inf_plus_value : int () {
     my $total = Math->INFINITYF() - 1;
 
     unless(Math->isinf($total)) {
@@ -339,7 +339,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_double_inf_plus_value : int () {
+  static method subtract_double_inf_plus_value : int () {
     my $total = Math->INFINITY() - 1;
 
     unless(Math->isinf($total)) {
@@ -357,7 +357,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_float_minus_inf_minus_value : int () {
+  static method subtract_float_minus_inf_minus_value : int () {
     my $total = -Math->INFINITYF() - 1;
 
     unless(Math->isinf($total)) {
@@ -375,7 +375,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_double_minus_inf_minus_value : int () {
+  static method subtract_double_minus_inf_minus_value : int () {
     my $total = -Math->INFINITY() - 1;
 
     unless(Math->isinf($total)) {
@@ -393,7 +393,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_float_plus_zero_minus_zero : int () {
+  static method subtract_float_plus_zero_minus_zero : int () {
     my $total = 0.0f - (0.0f);
 
     unless($total == 0f) {
@@ -407,7 +407,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_double_plus_zero_minus_zero : int () {
+  static method subtract_double_plus_zero_minus_zero : int () {
     my $total = 0.0 - (0.0);
 
     unless($total == 0) {
@@ -421,7 +421,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_float_over_max : int () {
+  static method subtract_float_over_max : int () {
     my $total = FLT_MAX() - (-FLT_MAX());
 
     unless($total isa float) {
@@ -439,7 +439,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_double_over_max : int () {
+  static method subtract_double_over_max : int () {
     my $total = DBL_MAX() - (-DBL_MAX());
 
     unless($total isa double) {
@@ -457,7 +457,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub subtract_float_over_min : int () {
+  static method subtract_float_over_min : int () {
     my $total = -FLT_MAX() - +FLT_MAX();
 
     unless($total isa float) {
@@ -478,10 +478,10 @@ class TestCase::Lib::Math {
   #
   # Integral type overflow is not defined in C99
   #
-  sub add_long_overflow : long () {
+  static method add_long_overflow : long () {
     return (long)9223372036854775807L + (long)1;
   }
-  sub add_overflow : int () {
+  static method add_overflow : int () {
     my $total = 2147483647 + 1;
 
     unless ($total == -2147483648) {
@@ -498,7 +498,7 @@ class TestCase::Lib::Math {
   #
   # Nan, Inf, sign operation is not defined in C99
   #
-  sub add_double_same_sign_zero : int () {
+  static method add_double_same_sign_zero : int () {
     {
       my $total = 0.0 + 0.0;
 
@@ -525,7 +525,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_float_plus_zero_minus_zero : int () {
+  static method add_float_plus_zero_minus_zero : int () {
     my $total = 0.0f + (-0.0f);
 
     unless($total == 0f) {
@@ -539,7 +539,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_double_plus_zero_minus_zero : int () {
+  static method add_double_plus_zero_minus_zero : int () {
     my $total = 0.0 + (-0.0);
 
     unless($total == 0) {
@@ -553,7 +553,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_float_same_sign_zero : int () {
+  static method add_float_same_sign_zero : int () {
     {
       my $total = 0.0f + 0.0f;
 
@@ -581,7 +581,7 @@ class TestCase::Lib::Math {
   }
 
 
-  sub add_float_over_max : int () {
+  static method add_float_over_max : int () {
     my $total = FLT_MAX() + FLT_MAX();
 
     unless($total isa float) {
@@ -598,7 +598,7 @@ class TestCase::Lib::Math {
 
     return 1;
   }
-  sub add_double_over_max : int () {
+  static method add_double_over_max : int () {
     my $total = DBL_MAX() + DBL_MAX();
 
     unless($total isa double) {
@@ -615,7 +615,7 @@ class TestCase::Lib::Math {
 
     return 1;
   }
-  sub add_float_over_min : int () {
+  static method add_float_over_min : int () {
     my $total = -FLT_MAX() + -FLT_MAX();
 
     unless($total isa float) {
@@ -632,7 +632,7 @@ class TestCase::Lib::Math {
 
     return 1;
   }
-  sub add_double_over_min : int () {
+  static method add_double_over_min : int () {
     my $total = -DBL_MAX() + -DBL_MAX();
 
     unless($total isa double) {
@@ -650,7 +650,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_float_nan_left : int () {
+  static method add_float_nan_left : int () {
     my $total = Math->NANF() + 3.0f;
 
     unless(Math->isnan($total)) {
@@ -664,7 +664,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_float_nan_right : int () {
+  static method add_float_nan_right : int () {
     my $total = 3.0f + Math->NANF();
 
     unless(Math->isnan($total)) {
@@ -678,7 +678,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_double_nan_left : int () {
+  static method add_double_nan_left : int () {
     my $total = Math->NAN() + 3.0;
 
     unless(Math->isnan($total)) {
@@ -692,7 +692,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_double_nan_right : int () {
+  static method add_double_nan_right : int () {
     my $total = 3.0 + Math->NAN();
 
     unless(Math->isnan($total)) {
@@ -706,7 +706,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_float_plus_inf_minus_inf : int () {
+  static method add_float_plus_inf_minus_inf : int () {
     my $total = Math->INFINITYF() + (-Math->INFINITYF());
 
     unless(Math->isnan($total)) {
@@ -720,7 +720,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_double_plus_inf_minus_inf : int () {
+  static method add_double_plus_inf_minus_inf : int () {
     my $total = Math->INFINITY() + (-Math->INFINITY());
 
     unless(Math->isnan($total)) {
@@ -734,7 +734,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_float_inf_plus_value : int () {
+  static method add_float_inf_plus_value : int () {
     my $total = Math->INFINITYF() + 1;
 
     unless(Math->isinf($total)) {
@@ -752,7 +752,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_double_inf_plus_value : int () {
+  static method add_double_inf_plus_value : int () {
     my $total = Math->INFINITY() + 1;
 
     unless(Math->isinf($total)) {
@@ -770,7 +770,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_float_minus_inf_minus_value : int () {
+  static method add_float_minus_inf_minus_value : int () {
     my $total = -Math->INFINITYF() + 1;
 
     unless(Math->isinf($total)) {
@@ -788,7 +788,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub add_double_minus_inf_minus_value : int () {
+  static method add_double_minus_inf_minus_value : int () {
     my $total = -Math->INFINITY() + 1;
 
     unless(Math->isinf($total)) {
@@ -806,7 +806,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isinff: int () {
+  static method test_isinff: int () {
     if (Math->isinff(Math->INFINITYF())) {
       if (!Math->isinff(Math->NANF())) {
         if (!Math->isinff(0.1f)) {
@@ -818,7 +818,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_isfinitef: int () {
+  static method test_isfinitef: int () {
     if (!Math->isfinitef(Math->INFINITYF())) {
       if (!Math->isfinitef(Math->NANF())) {
         if (Math->isfinitef(0.1f)) {
@@ -830,7 +830,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_isnanf: int () {
+  static method test_isnanf: int () {
     if (!Math->isnanf(Math->INFINITYF())) {
       if (Math->isnanf(Math->NANF())) {
         if (!Math->isnanf(0.1f)) {
@@ -842,7 +842,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_float_pass_positive_infinity : int ($value : float) {
+  static method test_float_pass_positive_infinity : int ($value : float) {
     if ($value == Math->INFINITYF()) {
       return 1;
     }
@@ -850,7 +850,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_float_pass_nan : int ($value : float) {
+  static method test_float_pass_nan : int ($value : float) {
     if (Math->isnanf($value)) {
       return 1;
     }
@@ -858,7 +858,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_isinf : int () {
+  static method test_isinf : int () {
     if (Math->isinf(Math->INFINITY())) {
       if (!Math->isinf(Math->NAN())) {
         if (!Math->isinf(0.1)) {
@@ -870,7 +870,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_isfinite : int () {
+  static method test_isfinite : int () {
     if (!Math->isfinite(Math->INFINITY())) {
       if (!Math->isfinite(Math->NAN())) {
         if (Math->isfinite(0.1)) {
@@ -882,7 +882,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_isnan : int () {
+  static method test_isnan : int () {
     if (!Math->isnan(Math->INFINITY())) {
       if (Math->isnan(Math->NAN())) {
         if (!Math->isnan(0.1)) {
@@ -894,7 +894,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_double_pass_nan : int ($value : double) {
+  static method test_double_pass_nan : int ($value : double) {
     if (Math->isnan($value)) {
       return 1;
     }
@@ -902,7 +902,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_double_pass_positive_infinity : int ($value : double) {
+  static method test_double_pass_positive_infinity : int ($value : double) {
     if ($value == Math->INFINITY()) {
       return 1;
     }
@@ -911,7 +911,7 @@ class TestCase::Lib::Math {
   }
 
   # Trigonometric functions
-  sub test_cos : int () {
+  static method test_cos : int () {
     my $value = Math->cos(PI() / 2.0);
 
     if ($value < 0.000001 && $value > -0.000001) {
@@ -920,7 +920,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_cosf : int () {
+  static method test_cosf : int () {
     my $value = Math->cosf((float)(PI() / 2.0));
 
     if ($value < 0.0001f && $value > -0.0001f) {
@@ -929,7 +929,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_sin : int () {
+  static method test_sin : int () {
     my $value = Math->sin(PI());
 
     if ($value < 0.000001 && $value > -0.000001) {
@@ -938,7 +938,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_sinf : int () {
+  static method test_sinf : int () {
     my $value = Math->sinf((float)PI());
 
     if ($value < 0.0001f && $value > -0.0001f) {
@@ -947,7 +947,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_tan : int () {
+  static method test_tan : int () {
     my $value = Math->tan(PI() / 4.0);
 
     if ($value - 1.0 < 0.000001 && $value - 1.0 > -0.000001) {
@@ -956,7 +956,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_tanf : int () {
+  static method test_tanf : int () {
     my $value = Math->tanf((float)(PI() / 4.0));
 
     if ($value - 1.0 < 0.0001f && $value - 1.0 > -0.0001f) {
@@ -965,7 +965,7 @@ class TestCase::Lib::Math {
     return 0;
   }
 
-  sub test_acos : int () {
+  static method test_acos : int () {
     my $eps      = 0.000000001;
     my $got      = Math->acos(0.866025403784438646763723170752936183471402626905190314027);
     my $expected = PI() / 6;
@@ -975,7 +975,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_acosf : int () {
+  static method test_acosf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->acosf(0.866025403784438646763723170752936183471402626905190314027f);
     my $expected = (float)(PI() / 6);
@@ -985,7 +985,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_asin : int () {
+  static method test_asin : int () {
     my $eps      = 0.000000001;
     my $got      = Math->asin(0.5);
     my $expected = PI() / 6;
@@ -995,7 +995,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_asinf : int () {
+  static method test_asinf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->asinf(0.5f);
     my $expected = (float)(PI() / 6);
@@ -1005,7 +1005,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_atan : int () {
+  static method test_atan : int () {
     my $eps      = 0.000000001;
     my $got      = Math->atan(0.577350269189625764509148780501957455647601751270126876018);
     my $expected = PI() / 6;
@@ -1015,7 +1015,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_atanf : int () {
+  static method test_atanf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->atanf(0.577350269189625764509148780501957455647601751270126876018f);
     my $expected = (float)(PI() / 6);
@@ -1026,7 +1026,7 @@ class TestCase::Lib::Math {
   }
 
   # Hyperbolic functions
-  sub test_cosh : int () {
+  static method test_cosh : int () {
     my $eps      = 0.000000001;
     my $got      = Math->cosh(0.5);
     my $expected = 1.127625965206380785226225161402672012547847118098667483628;
@@ -1036,7 +1036,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_coshf : int () {
+  static method test_coshf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->coshf(0.5f);
     my $expected = 1.127625965206380785226225161402672012547847118098667483628f;
@@ -1046,7 +1046,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_sinh : int () {
+  static method test_sinh : int () {
     my $eps      = 0.000000001;
     my $got      = Math->sinh(0.5);
     my $expected = 0.521095305493747361622425626411491559105928982611480527946;
@@ -1056,7 +1056,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_sinhf : int () {
+  static method test_sinhf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->sinhf(0.5f);
     my $expected = 0.521095305493747361622425626411491559105928982611480527946f;
@@ -1066,7 +1066,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_tanh : int () {
+  static method test_tanh : int () {
     my $eps      = 0.000000001;
     my $got      = Math->tanh(0.5);
     my $expected = 0.462117157260009758502318483643672548730289280330113038552;
@@ -1076,7 +1076,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_tanhf : int () {
+  static method test_tanhf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->tanhf(0.5f);
     my $expected = 0.462117157260009758502318483643672548730289280330113038552f;
@@ -1086,7 +1086,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_acosh : int () {
+  static method test_acosh : int () {
     my $eps      = 0.000000001;
     my $got      = Math->acosh(PI() / 2);
     my $expected = 1.023227478547550579317495677949303852301405666414862096802;
@@ -1096,7 +1096,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_acoshf : int () {
+  static method test_acoshf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->acoshf((float)(PI() / 2));
     my $expected = 1.023227478547550579317495677949303852301405666414862096802f;
@@ -1106,7 +1106,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_asinh : int () {
+  static method test_asinh : int () {
     my $eps      = 0.000000001;
     my $got      = Math->asinh(PI());
     my $expected = 1.862295743310848219888361325182620574902674184961554765612;
@@ -1116,7 +1116,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_asinhf : int () {
+  static method test_asinhf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->asinhf((float)PI());
     my $expected = 1.862295743310848219888361325182620574902674184961554765612f;
@@ -1126,7 +1126,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_atanh : int () {
+  static method test_atanh : int () {
     my $eps      = 0.000000001;
     my $got      = Math->atanh(0.5);
     my $expected = 0.549306144334054845697622618461262852323745278911374725867;
@@ -1136,7 +1136,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_atanhf : int () {
+  static method test_atanhf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->atanhf(0.5f);
     my $expected = 0.549306144334054845697622618461262852323745278911374725867f;
@@ -1146,7 +1146,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_exp : int () {
+  static method test_exp : int () {
     my $eps      = 0.000000001;
     my $got      = Math->exp(1);
     my $expected = 2.718281828459045235360287471352662497757247093699959574966;
@@ -1156,7 +1156,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_expf : int () {
+  static method test_expf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->expf(1f);
     my $expected = 2.718281828459045235360287471352662497757247093699959574966f;
@@ -1166,7 +1166,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_exp2 : int () {
+  static method test_exp2 : int () {
     my $eps      = 0.000000001;
     my $got      = Math->exp2(PI());
     my $expected = 8.824977827076287623856429604208001581704410815271484926668;
@@ -1176,7 +1176,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_exp2f : int () {
+  static method test_exp2f : int () {
     my $eps      = 0.0001f;
     my $got      = Math->exp2f((float)PI());
     my $expected = 8.824977827076287623856429604208001581704410815271484926668f;
@@ -1186,7 +1186,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_expm1 : int () {
+  static method test_expm1 : int () {
     my $eps      = 0.000000001;
     my $got      = Math->expm1(1);
     my $expected = 1.718281828459045235360287471352662497757247093699959574966;
@@ -1196,7 +1196,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_expm1f : int () {
+  static method test_expm1f : int () {
     my $eps      = 0.0001f;
     my $got      = Math->expm1f(1f);
     my $expected = 1.718281828459045235360287471352662497757247093699959574966f;
@@ -1206,7 +1206,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_frexp : int () {
+  static method test_frexp : int () {
     my $eps          = 0.000000001;
     my $got_exp : int;
     my $got          = Math->frexp(PI(), \$got_exp);
@@ -1221,7 +1221,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_frexpf : int () {
+  static method test_frexpf : int () {
     my $eps          = 0.0001f;
     my $got_exp : int;
     my $got          = Math->frexpf((float)PI(), \$got_exp);
@@ -1236,7 +1236,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ilogb : int () {
+  static method test_ilogb : int () {
     my $got = Math->ilogb(1024.1111111111111111111111);
     my $expected = 10;
     unless ($got == $expected) {
@@ -1251,7 +1251,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ilogbf : int () {
+  static method test_ilogbf : int () {
     my $got = Math->ilogbf(1024.111111111111111111111f);
     my $expected = 10;
     unless ($got == $expected) {
@@ -1266,7 +1266,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ldexp : int () {
+  static method test_ldexp : int () {
     my $eps      = 0.000000001;
     my $got      = Math->ldexp(PI(), 3);
     my $expected = 25.13274122871834590770114706623602307357735519500084656779;
@@ -1276,7 +1276,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ldexpf : int () {
+  static method test_ldexpf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->ldexpf((float)PI(), 3);
     my $expected = 25.13274122871834590770114706623602307357735519500084656779f;
@@ -1286,7 +1286,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_log : int () {
+  static method test_log : int () {
     my $eps      = 0.000000001;
     my $got      = Math->log(PI());
     my $expected = 1.144729885849400174143427351353058711647294812915311571513;
@@ -1296,7 +1296,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_logf : int () {
+  static method test_logf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->logf((float)PI());
     my $expected = 1.144729885849400174143427351353058711647294812915311571513f;
@@ -1306,7 +1306,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_log10 : int () {
+  static method test_log10 : int () {
     my $eps      = 0.000000001;
     my $got      = Math->log10(PI());
     my $expected = 0.497149872694133854351268288290898873651678324380442446134;
@@ -1316,7 +1316,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_log10f : int () {
+  static method test_log10f : int () {
     my $eps      = 0.0001f;
     my $got      = Math->log10f((float)PI());
     my $expected = 0.497149872694133854351268288290898873651678324380442446134f;
@@ -1326,7 +1326,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_log1p : int () {
+  static method test_log1p : int () {
     my $eps      = 0.000000001;
     my $got      = Math->log1p(PI());
     my $expected = 1.421080412794292633053772196333719458985758681678943714407;
@@ -1336,7 +1336,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_log1pf : int () {
+  static method test_log1pf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->log1pf((float)PI());
     my $expected = 1.421080412794292633053772196333719458985758681678943714407f;
@@ -1346,7 +1346,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_log2 : int () {
+  static method test_log2 : int () {
     my $eps      = 0.000000001;
     my $got      = Math->log2(PI());
     my $expected = 1.651496129472318798043279295108007335018476926763041529406;
@@ -1356,7 +1356,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_log2f : int () {
+  static method test_log2f : int () {
     my $eps      = 0.0001f;
     my $got      = Math->log2f((float)PI());
     my $expected = 1.651496129472318798043279295108007335018476926763041529406f;
@@ -1366,7 +1366,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_logb : int () {
+  static method test_logb : int () {
     my $got      = Math->logb(PI());
     my $expected = 1;
     unless ($got == $expected) {
@@ -1375,7 +1375,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_logbf : int () {
+  static method test_logbf : int () {
     my $got      = Math->logbf((float)PI());
     my $expected = 1f;
     unless ($got == $expected) {
@@ -1384,7 +1384,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_modf : int () {
+  static method test_modf : int () {
     my $eps          = 0.000000001;
     my $got_intpart : double;
     my $got          = Math->modf(PI(), \$got_intpart);
@@ -1399,7 +1399,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_modff : int () {
+  static method test_modff : int () {
     my $eps          = 0.0001f;
     my $got_intpart : float;
     my $got          = Math->modff((float)PI(), \$got_intpart);
@@ -1414,7 +1414,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_scalbn : int () {
+  static method test_scalbn : int () {
     my $eps      = 0.000000001;
     my $got      = Math->scalbn(PI(), 10);
     my $expected = 3216.990877275948150781914591789246;
@@ -1424,7 +1424,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_scalbnf : int () {
+  static method test_scalbnf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->scalbnf((float)PI(), 10);
     my $expected = 3216.990877275948150781914591789246f;
@@ -1434,7 +1434,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_scalbln : int () {
+  static method test_scalbln : int () {
     my $eps      = 0.000000001;
     my $got      = Math->scalbln(PI(), (long)10);
     my $expected = 3216.990877275948150781914591789246;
@@ -1444,7 +1444,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_scalblnf : int () {
+  static method test_scalblnf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->scalblnf((float)PI(), (long)10);
     my $expected = 3216.990877275948150781914591789246f;
@@ -1454,7 +1454,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cbrt : int () {
+  static method test_cbrt : int () {
     my $eps      = 0.000000001;
     my $got      = Math->cbrt(PI());
     my $expected = 1.464591887561523263020142527263790391738596855627937174357;
@@ -1464,7 +1464,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cbrtf : int () {
+  static method test_cbrtf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->cbrtf((float)PI());
     my $expected = 1.464591887561523263020142527263790391738596855627937174357f;
@@ -1474,7 +1474,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_abs : int () {
+  static method test_abs : int () {
     # Positive value
     {
       my $num      = 2147483647;
@@ -1503,7 +1503,7 @@ class TestCase::Lib::Math {
     
     return 1;
   }
-  sub test_labs : int () {
+  static method test_labs : int () {
     # Positive value
     {
       my $num      = 9223372036854775807L;
@@ -1533,7 +1533,7 @@ class TestCase::Lib::Math {
     return 1;
   }
   
-  sub test_fabs : int () {
+  static method test_fabs : int () {
     my $eps      = 0.000000001;
     my $got      = Math->fabs(-PI());
     my $expected = PI();
@@ -1543,7 +1543,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fabsf : int () {
+  static method test_fabsf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->fabsf((float)(-PI()));
     my $expected = (float)PI();
@@ -1553,7 +1553,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_hypot : int () {
+  static method test_hypot : int () {
     my $eps      = 0.000000001;
     my $e        = 2.718281828459045235360287471352662497757247093699959574966;
     my $got      = Math->hypot(PI(), $e);
@@ -1564,7 +1564,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_hypotf : int () {
+  static method test_hypotf : int () {
     my $eps      = 0.0001f;
     my $e        = 2.718281828459045235360287471352662497757247093699959574966f;
     my $got      = Math->hypotf((float)PI(), $e);
@@ -1575,7 +1575,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_pow : int () {
+  static method test_pow : int () {
     my $eps      = 0.000000001;
     my $got      = Math->pow(PI(), PI());
     my $expected = 36.46215960720791177099082602269212366636550840222881873870;
@@ -1585,7 +1585,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_powf : int () {
+  static method test_powf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->powf((float)PI(), (float)PI());
     my $expected = 36.46215960720791177099082602269212366636550840222881873870f;
@@ -1595,7 +1595,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_sqrt : int () {
+  static method test_sqrt : int () {
     my $eps      = 0.000000001;
     my $got      = Math->sqrt(PI());
     my $expected = 1.772453850905516027298167483341145182797549456122387128213;
@@ -1605,7 +1605,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_sqrtf : int () {
+  static method test_sqrtf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->sqrtf((float)PI());
     my $expected = 1.772453850905516027298167483341145182797549456122387128213f;
@@ -1615,7 +1615,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_erf : int () {
+  static method test_erf : int () {
     my $eps      = 0.000000001;
     my $got      = Math->erf(PI());
     my $expected = 0.999991123853632358394731620781202944712382081512876599047;
@@ -1625,7 +1625,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_erff : int () {
+  static method test_erff : int () {
     my $eps      = 0.0001f;
     my $got      = Math->erff((float)PI());
     my $expected = 0.999991123853632358394731620781202944712382081512876599047f;
@@ -1635,7 +1635,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_erfc : int () {
+  static method test_erfc : int () {
     my $eps      = 0.000000001;
     my $got      = Math->erfc(PI());
     my $expected = 0.0000088761463676416052683792187970552876179184871234009524;
@@ -1645,7 +1645,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_erfcf : int () {
+  static method test_erfcf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->erfc(1.11111111111111111111);
     my $expected = 0.116101743980548643691465409255702973167155793605751332090f;
@@ -1655,7 +1655,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_lgamma : int () {
+  static method test_lgamma : int () {
     my $eps      = 0.000000001;
     my $got      = Math->lgamma(PI());
     my $expected = 0.827694592323437101529578558452359951153501734120737316791;
@@ -1665,7 +1665,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_lgammaf : int () {
+  static method test_lgammaf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->lgammaf((float)PI());
     my $expected = 0.827694592323437101529578558452359951153501734120737316791f;
@@ -1675,7 +1675,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_tgamma : int () {
+  static method test_tgamma : int () {
     my $eps      = 0.000000001;
     my $got      = Math->tgamma(PI());
     my $expected = 2.288037795340032417959588909060233922889688153356222441199;
@@ -1685,7 +1685,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_tgammaf : int () {
+  static method test_tgammaf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->tgammaf((float)PI());
     my $expected = 2.288037795340032417959588909060233922889688153356222441199f;
@@ -1695,7 +1695,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ceil : int () {
+  static method test_ceil : int () {
     my $got      = Math->ceil(PI());
     my $expected = 4;
     unless ($got == $expected) {
@@ -1704,7 +1704,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ceilf : int () {
+  static method test_ceilf : int () {
     my $got      = Math->ceilf((float)PI());
     my $expected = 4;
     unless ($got == $expected) {
@@ -1713,7 +1713,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_floor : int () {
+  static method test_floor : int () {
     my $got      = Math->floor(PI());
     my $expected = 3;
     unless ($got == $expected) {
@@ -1722,7 +1722,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_floorf : int () {
+  static method test_floorf : int () {
     my $got      = Math->floorf((float)PI());
     my $expected = 3;
     unless ($got == $expected) {
@@ -1731,7 +1731,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_nearbyint : int () {
+  static method test_nearbyint : int () {
     {
       if (Math->fesetround(Math->FE_DOWNWARD)) {
         die "failed to set fesetround(FE_DOWNWARD)";
@@ -1811,7 +1811,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_nearbyintf : int () {
+  static method test_nearbyintf : int () {
     {
       if (Math->fesetround(Math->FE_DOWNWARD)) {
         die "failed to set fesetround(FE_DOWNWARD)";
@@ -1891,7 +1891,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_round : int () {
+  static method test_round : int () {
     my $got      = Math->round(PI());
     my $expected = 3;
     unless ($got == $expected) {
@@ -1900,7 +1900,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_roundf : int () {
+  static method test_roundf : int () {
     my $got      = Math->roundf((float)PI());
     my $expected = 3;
     unless ($got == $expected) {
@@ -1909,7 +1909,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_lround : int () {
+  static method test_lround : int () {
     my $got      = Math->lround(PI() * 1000000000);
     my $expected = 3141592654L;
     
@@ -1919,7 +1919,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_lroundf : int () {
+  static method test_lroundf : int () {
     my $got      = Math->lroundf((float)(PI() * 100000));
     my $expected = 314159L;
     unless ($got == $expected) {
@@ -1928,7 +1928,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_trunc : int () {
+  static method test_trunc : int () {
     {
       my $got = Math->trunc(PI() * 4);
       my $expected = 12;
@@ -1946,7 +1946,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_truncf : int () {
+  static method test_truncf : int () {
     {
       my $got = Math->truncf((float)(PI() * 4));
       my $expected = 12;
@@ -1964,7 +1964,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fmod : int () {
+  static method test_fmod : int () {
     my $eps      = 0.000000001;
     my $got      = Math->fmod(PI(), 2.1);
     my $expected = 1.0415926535897932384626433832795028841971693993751058;
@@ -1974,7 +1974,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fmodf : int () {
+  static method test_fmodf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->fmodf((float)PI(), 2.1f);
     my $expected = 1.0415926535897932384626433832795028841971693993751058f;
@@ -1984,7 +1984,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_remainder : int () {
+  static method test_remainder : int () {
     my $eps      = 0.000000001;
     my $got      = Math->remainder(PI(), 2.0);
     my $expected = -0.85840734641020688400;
@@ -1994,7 +1994,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_remainderf : int () {
+  static method test_remainderf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->remainderf((float)PI(), 2.0f);
     my $expected = -0.85840734641020688400f;
@@ -2004,7 +2004,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_remquo : int () {
+  static method test_remquo : int () {
     my $eps           = 0.000000001;
     my $got_quo : int;
     my $got           = Math->remquo(PI(), 2.0, \$got_quo);
@@ -2019,7 +2019,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_remquof : int () {
+  static method test_remquof : int () {
     my $eps           = 0.0001f;
     my $got_quo : int;
     my $got           = Math->remquof((float)PI(), 2.0f, \$got_quo);
@@ -2034,7 +2034,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_copysign : int () {
+  static method test_copysign : int () {
     {
       my $eps = 0.000000001;
       my $got = Math->copysign(PI(), PI());
@@ -2070,7 +2070,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_copysignf : int () {
+  static method test_copysignf : int () {
     {
       my $eps = 0.0001f;
       my $got = Math->copysignf((float)(-PI()), (float)PI());
@@ -2106,7 +2106,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_nan : int () {
+  static method test_nan : int () {
     unless (Math->isnan(Math->nan("test"))) {
       return 0;
     }
@@ -2120,7 +2120,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_nanf : int () {
+  static method test_nanf : int () {
     unless (Math->isnan(Math->nanf("test"))) {
       return 0;
     }
@@ -2133,7 +2133,7 @@ class TestCase::Lib::Math {
     $@ = undef;
     return 1;
   }
-  sub test_nextafter : int () {
+  static method test_nextafter : int () {
     my $eps      = 0.000000001;
     my $got      = Math->nextafter(PI(), 10.0);
     my $expected = 3.141592653589793560087173318606801331043243408203125;
@@ -2143,7 +2143,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_nextafterf : int () {
+  static method test_nextafterf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->nextafterf((float)PI(), 10.0f);
     my $expected = 3.141592653589793560087173318606801331043243408203125f;
@@ -2152,7 +2152,7 @@ class TestCase::Lib::Math {
     }
     return 1;
   }
-  sub test_nexttoward : int () {
+  static method test_nexttoward : int () {
     my $eps      = 0.000000001;
     my $got      = Math->nexttoward(PI(), 10.0);
     my $expected = 3.141592653589793560087173318606801331043243408203125;
@@ -2162,7 +2162,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_nexttowardf : int () {
+  static method test_nexttowardf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->nexttowardf((float)PI(), 10.0f);
     my $expected = 3.141592653589793560087173318606801331043243408203125f;
@@ -2172,7 +2172,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fdim : int () {
+  static method test_fdim : int () {
     {
       my $eps = 0.000000001;
       my $got = Math->fdim(PI(), PI() / 2);
@@ -2191,7 +2191,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fdimf : int () {
+  static method test_fdimf : int () {
     {
       my $eps      = 0.0001f;
       my $got      = Math->fdimf((float)PI(), (float)PI() / 2);
@@ -2211,7 +2211,7 @@ class TestCase::Lib::Math {
     }
   }
 
-  sub test_fmax : int () {
+  static method test_fmax : int () {
     my $eps      = 0.000000001;
     my $got      = Math->fmax(PI(), PI() / 2);
     my $expected = PI();
@@ -2221,7 +2221,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fmaxf : int () {
+  static method test_fmaxf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->fmaxf((float)PI(), (float)PI() / 2);
     my $expected = (float)PI();
@@ -2231,7 +2231,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fmin : int () {
+  static method test_fmin : int () {
     my $eps      = 0.000000001;
     my $got      = Math->fmin(PI(), PI() / 2);
     my $expected = PI() / 2;
@@ -2241,7 +2241,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fminf : int () {
+  static method test_fminf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->fminf((float)PI(), (float)PI() / 2);
     my $expected = (float)PI() / 2f;
@@ -2251,7 +2251,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fma : int () {
+  static method test_fma : int () {
     my $eps      = 0.000000001;
     my $got      = Math->fma(PI(), PI() / 2, PI() / 3);
     my $expected = 5.98199975174127640542565131909213960170745849609375;
@@ -2261,7 +2261,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fmaf : int () {
+  static method test_fmaf : int () {
     my $eps      = 0.0001f;
     my $got      = Math->fmaf((float)PI(), (float)PI() / 2, (float)PI() / 3);
     my $expected = 5.98199975174127640542565131909213960170745849609375f;
@@ -2271,7 +2271,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fpclassify : int () {
+  static method test_fpclassify : int () {
     {
       my $got = Math->fpclassify(Math->INFINITY);
       my $expected = Math->FP_INFINITE;
@@ -2296,7 +2296,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_fpclassifyf : int () {
+  static method test_fpclassifyf : int () {
     {
       my $got = Math->fpclassifyf(Math->INFINITYF);
       my $expected = Math->FP_INFINITE;
@@ -2321,7 +2321,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_signbit : int () {
+  static method test_signbit : int () {
     unless (Math->signbit(-1.0)) {
       return 0;
     }
@@ -2343,7 +2343,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_signbitf : int () {
+  static method test_signbitf : int () {
     unless (Math->signbitf(-1.0f)) {
       return 0;
     }
@@ -2365,7 +2365,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isgreater : int () {
+  static method test_isgreater : int () {
     unless (Math->isgreater(2.0, 1.0)) {
       return 0;
     }
@@ -2399,7 +2399,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isgreaterf : int () {
+  static method test_isgreaterf : int () {
     unless (Math->isgreaterf(2.0f, 1.0f)) {
       return 0;
     }
@@ -2433,7 +2433,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isgreaterequal : int () {
+  static method test_isgreaterequal : int () {
     unless (Math->isgreaterequal(2.0, 1.0)) {
       return 0;
     }
@@ -2467,7 +2467,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isgreaterequalf : int () {
+  static method test_isgreaterequalf : int () {
     unless (Math->isgreaterequalf(2.0f, 1.0f)) {
       return 0;
     }
@@ -2501,7 +2501,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isless : int () {
+  static method test_isless : int () {
     unless (Math->isless(1.0, 2.0)) {
       return 0;
     }
@@ -2535,7 +2535,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_islessf : int () {
+  static method test_islessf : int () {
     unless (Math->islessf(1.0f, 2.0f)) {
       return 0;
     }
@@ -2569,7 +2569,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_islessequal : int () {
+  static method test_islessequal : int () {
     unless (Math->islessequal(1.0, 2.0)) {
       return 0;
     }
@@ -2603,7 +2603,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_islessequalf : int () {
+  static method test_islessequalf : int () {
     unless (Math->islessequalf(1.0f, 2.0f)) {
       return 0;
     }
@@ -2637,7 +2637,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_islessgreater : int () {
+  static method test_islessgreater : int () {
     unless (Math->islessgreater(1.0, 2.0)) {
       return 0;
     }
@@ -2671,7 +2671,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_islessgreaterf : int () {
+  static method test_islessgreaterf : int () {
     unless (Math->islessgreaterf(1.0f, 2.0f)) {
       return 0;
     }
@@ -2705,7 +2705,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isunordered : int () {
+  static method test_isunordered : int () {
     unless (Math->isunordered(1.0, Math->NAN)) {
       return 0;
     }
@@ -2718,7 +2718,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_isunorderedf : int () {
+  static method test_isunorderedf : int () {
     unless (Math->isunorderedf(1.0f, Math->NANF)) {
       return 0;
     }
@@ -2731,7 +2731,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_complexf : int () {
+  static method test_complexf : int () {
     my $z1 = complex(0.5f, 0.25f);
 
     unless ($z1->{re} == 0.5f && $z1->{im} == 0.25f) {
@@ -2742,7 +2742,7 @@ class TestCase::Lib::Math {
   }
 
 
-  sub test_complex : int () {
+  static method test_complex : int () {
     my $z1 = complex(0.00000000005, 0.000000000025);
 
     unless ($z1->{re} == 0.00000000005 && $z1->{im} == 0.000000000025) {
@@ -2752,7 +2752,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_caddf : int () {
+  static method test_caddf : int () {
     my $z1 : Complex_2f;
     $z1->{re} = 0.5f;
     $z1->{im} = 0.25f;
@@ -2770,7 +2770,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cadd : int () {
+  static method test_cadd : int () {
     my $z1 : Complex_2d;
     $z1->{re} = 0.00000000005;
     $z1->{im} = 0.000000000025;
@@ -2788,7 +2788,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_csubf : int () {
+  static method test_csubf : int () {
     my $z1 : Complex_2f;
     $z1->{re} = 0.5f;
     $z1->{im} = 0.25f;
@@ -2806,7 +2806,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_csub : int () {
+  static method test_csub : int () {
     my $z1 : Complex_2d;
     $z1->{re} = 0.5;
     $z1->{im} = 0.25;
@@ -2824,7 +2824,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cmulf : int () {
+  static method test_cmulf : int () {
     my $eps = 0.001f;
 
     my $z1 : Complex_2f;
@@ -2844,7 +2844,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cmul : int () {
+  static method test_cmul : int () {
     my $eps = 0.1;
 
     my $z1 : Complex_2d;
@@ -2864,7 +2864,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cscamulf : int () {
+  static method test_cscamulf : int () {
     my $z1 = -0.5f;
 
     my $z2 : Complex_2f;
@@ -2884,7 +2884,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cscamul : int () {
+  static method test_cscamul : int () {
     my $z1 = 0.001;
 
     my $z2 : Complex_2d;
@@ -2904,7 +2904,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cdivf : int () {
+  static method test_cdivf : int () {
     my $z1 : Complex_2f;
     $z1->{re} = 0.5f;
     $z1->{im} = 0.25f;
@@ -2922,7 +2922,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cdiv : int () {
+  static method test_cdiv : int () {
     my $z1 : Complex_2d;
     $z1->{re} = 0.5f;
     $z1->{im} = 0.25f;
@@ -2940,7 +2940,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cacos : int () {
+  static method test_cacos : int () {
     my $z1 : Complex_2d;
     $z1->{re} = 0.5;
     $z1->{im} = 0.25;
@@ -2958,7 +2958,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cacosf : int () {
+  static method test_cacosf : int () {
     my $z1 : Complex_2f;
     $z1->{re} = 0.5f;
     $z1->{im} = 0.25f;
@@ -2976,7 +2976,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_casin : int () {
+  static method test_casin : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->casin($z1);
@@ -2992,7 +2992,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_casinf : int () {
+  static method test_casinf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->casinf($z1);
@@ -3008,7 +3008,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_catan : int () {
+  static method test_catan : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->catan($z1);
@@ -3024,7 +3024,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_catanf : int () {
+  static method test_catanf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->catanf($z1);
@@ -3040,7 +3040,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ccos : int () {
+  static method test_ccos : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->ccos($z1);
@@ -3056,7 +3056,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ccosf : int () {
+  static method test_ccosf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->ccosf($z1);
@@ -3072,7 +3072,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_csin : int () {
+  static method test_csin : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->csin($z1);
@@ -3088,7 +3088,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_csinf : int () {
+  static method test_csinf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->csinf($z1);
@@ -3104,7 +3104,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ctan : int () {
+  static method test_ctan : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->ctan($z1);
@@ -3120,7 +3120,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ctanf : int () {
+  static method test_ctanf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->ctanf($z1);
@@ -3136,7 +3136,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cacosh : int () {
+  static method test_cacosh : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->cacosh($z1);
@@ -3152,7 +3152,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cacoshf : int () {
+  static method test_cacoshf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->cacoshf($z1);
@@ -3168,7 +3168,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_casinh : int () {
+  static method test_casinh : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->casinh($z1);
@@ -3184,7 +3184,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_casinhf : int () {
+  static method test_casinhf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->casinhf($z1);
@@ -3200,7 +3200,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_catanh : int () {
+  static method test_catanh : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->catanh($z1);
@@ -3216,7 +3216,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_catanhf : int () {
+  static method test_catanhf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->catanhf($z1);
@@ -3232,7 +3232,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ccosh : int () {
+  static method test_ccosh : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->ccosh($z1);
@@ -3248,7 +3248,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ccoshf : int () {
+  static method test_ccoshf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->ccoshf($z1);
@@ -3264,7 +3264,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_csinh : int () {
+  static method test_csinh : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->csinh($z1);
@@ -3280,7 +3280,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_csinhf : int () {
+  static method test_csinhf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->csinhf($z1);
@@ -3296,7 +3296,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ctanh : int () {
+  static method test_ctanh : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->ctanh($z1);
@@ -3312,7 +3312,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_ctanhf : int () {
+  static method test_ctanhf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->ctanhf($z1);
@@ -3328,7 +3328,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_clog : int () {
+  static method test_clog : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->clog($z1);
@@ -3344,7 +3344,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_clogf : int () {
+  static method test_clogf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->clogf($z1);
@@ -3360,7 +3360,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cabs : int () {
+  static method test_cabs : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->cabs($z1);
@@ -3372,7 +3372,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cabsf : int () {
+  static method test_cabsf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->cabsf($z1);
@@ -3384,7 +3384,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_carg : int () {
+  static method test_carg : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->carg($z1);
@@ -3396,7 +3396,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cargf : int () {
+  static method test_cargf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->cargf($z1);
@@ -3408,7 +3408,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_conj : int () {
+  static method test_conj : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->conj($z1);
@@ -3424,7 +3424,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_conjf : int () {
+  static method test_conjf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->conjf($z1);
@@ -3441,7 +3441,7 @@ class TestCase::Lib::Math {
   }
 
 
-  sub test_csqrt : int () {
+  static method test_csqrt : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->csqrt($z1);
@@ -3457,7 +3457,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_csqrtf : int () {
+  static method test_csqrtf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->csqrtf($z1);
@@ -3473,7 +3473,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cpow : int () {
+  static method test_cpow : int () {
     my $z1 = complex(0.5, 0.25);
     my $z2 = complex(1.5, 1.25);
 
@@ -3490,7 +3490,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cpowf : int () {
+  static method test_cpowf : int () {
     my $z1 = complexf(0.5f, 0.25f);
     my $z2 = complexf(1.5f, 1.25f);
 
@@ -3507,7 +3507,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cexp : int () {
+  static method test_cexp : int () {
     my $z1 = complex(0.5, 0.25);
 
     my $z_out = Math->cexp($z1);
@@ -3522,7 +3522,7 @@ class TestCase::Lib::Math {
     return 1;
   }
 
-  sub test_cexpf : int () {
+  static method test_cexpf : int () {
     my $z1 = complexf(0.5f, 0.25f);
 
     my $z_out = Math->cexpf($z1);

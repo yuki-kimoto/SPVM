@@ -8,7 +8,7 @@ class List : precompile {
   private enum {
     DEFAULT_CAPACITY = 16,
   }
-  sub new : List ($objects : oarray) {
+  static method new : List ($objects : oarray) {
     my $self = new List;
     
     my $length : int;
@@ -43,7 +43,7 @@ class List : precompile {
     return $self;
   }
 
-  sub new_len : List ($proto_array : oarray, $length : int) {
+  static method new_len : List ($proto_array : oarray, $length : int) {
     unless ($proto_array) {
       die "First argument must not be undef";
     }
@@ -65,7 +65,7 @@ class List : precompile {
     return $self;
   }
   
-  sub insert : void ($self : self, $index : int, $value : object) {
+  method insert : void ($index : int, $value : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -88,7 +88,7 @@ class List : precompile {
     $self->{length}++;
   }
 
-  sub remove : object ($self : self, $index : int) {
+  method remove : object ($index : int) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -109,7 +109,7 @@ class List : precompile {
     return $remove_value;
   }
 
-  sub push : void ($self : self, $value : object) {
+  method push : void ($value : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
 
@@ -121,7 +121,7 @@ class List : precompile {
     ++$self->{length};
   }
   
-  sub pop : object ($self : self) {
+  method pop : object () {
     if ($self->{length} <= 0) {
       die "Length must be more than 0 for pop";
     }
@@ -137,7 +137,7 @@ class List : precompile {
     return $ret;
   }
 
-  sub unshift : void ($self : self, $value : object) {
+  method unshift : void ($value : object) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -155,7 +155,7 @@ class List : precompile {
     $self->{length}++;
   }
 
-  sub shift : object ($self : self) {
+  method shift : object () {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -177,7 +177,7 @@ class List : precompile {
     return $value;
   }
 
-  sub set : void ($self : self, $index : int, $value : object) {
+  method set : void ($index : int, $value : object) {
     my $length = $self->length;
 
     if ($index < 0 || $index > $length - 1) {
@@ -187,7 +187,7 @@ class List : precompile {
     $self->{values}[$index] = $value;
   }
 
-  sub set_array : void ($self : self, $array : oarray) {
+  method set_array : void ($array : oarray) {
     unless ($array) {
       die "Array must be defined";
     }
@@ -206,7 +206,7 @@ class List : precompile {
     }
   }
 
-  sub get : object ($self : self, $index : int) {
+  method get : object ($index : int) {
     my $length = $self->length;
 
     if ($index < 0 || $index > $length - 1) {
@@ -216,7 +216,7 @@ class List : precompile {
     return $self->{values}[$index];
   }
 
-  private sub _extend_with_capacity : void ($self : self, $new_capacity : int) {
+  private method _extend_with_capacity : void ($new_capacity : int) {
     my $new_values = new_array_proto($self->{values}, $new_capacity);
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
@@ -227,7 +227,7 @@ class List : precompile {
     $self->{values} = $new_values;
   }
 
-  private sub _extend : void ($self : self) {
+  private method _extend : void () {
     my $capacity = $self->{capacity};
     my $length = $self->{length};
     my $values = $self->{values};
@@ -244,7 +244,7 @@ class List : precompile {
     $self->{capacity} = $new_capacity;
   }
   
-  sub resize : void ($self : self, $new_length : int) {
+  method resize : void ($new_length : int) {
     if ($new_length < 0) {
       die "New length must be more than or equals to 0";
     }
@@ -265,7 +265,7 @@ class List : precompile {
     $self->{length} = $new_length;
   }
   
-  sub to_array : oarray ($self : self) {
+  method to_array : oarray () {
     my $length = $self->{length};
     my $objects = new_array_proto($self->{values}, $length);
     for (my $i = 0; $i < $length; $i++) {

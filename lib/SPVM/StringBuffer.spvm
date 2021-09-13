@@ -4,7 +4,7 @@ class StringBuffer : precompile {
   has value : byte[];
   has length : ro int;
   
-  sub new : StringBuffer () {
+  static method new : StringBuffer () {
     my $self = new StringBuffer;
     my $default_capacity = DEFAULT_CAPACITY();
     $self->{value} = new byte [$default_capacity];
@@ -12,7 +12,7 @@ class StringBuffer : precompile {
     return $self;
   }
   
-  sub push : void ($self : self, $string : string) {
+  method push : void ($string : string) {
     my $length = length($string);
     my $capacity = @$self->{value};
     if ($self->{length} + $length > $capacity) {
@@ -30,7 +30,7 @@ class StringBuffer : precompile {
     $self->{length} += $length;
   }
 
-  sub push_char : void ($self : self, $char : byte) {
+  method push_char : void ($char : byte) {
     my $capacity = @$self->{value};
     if ($self->{length} + 1 > $capacity) {
       my $new_capacity = $capacity * 2;
@@ -39,7 +39,7 @@ class StringBuffer : precompile {
     $self->{value}[$self->{length}++] = $char;
   }
 
-  sub to_string : string ($self : self) {
+  method to_string : string () {
     return (string)(copy_array_range_byte($self->{value}, 0, $self->{length}));
   }
 
@@ -48,7 +48,7 @@ class StringBuffer : precompile {
   }
   
   # O($new_capacity)
-  private sub _reallocate : void ($self : self, $new_capacity : int) {
+  private method _reallocate : void ($new_capacity : int) {
     my $new_string = new byte [$new_capacity];
     for (my $i = 0; $i < $self->{length}; ++$i) {
       $new_string->[$i] = $self->{value}[$i];

@@ -3,7 +3,7 @@ class TestCase::GenericList<T> {
   has length : int;
   has capacity : int;
 
-  sub new : TestCase::List ($capacity : int) {
+  static method new : TestCase::List ($capacity : int) {
     my $self = new TestCase::List;
     
     $self->{capacity} = $capacity;
@@ -13,7 +13,7 @@ class TestCase::GenericList<T> {
     return $self;
   }
   
-  sub add : void ($self : self, $object : T) {
+  method add : void ($object : T) {
     my $length = $self->{length};
     my $capacity = $self->{capacity};
     
@@ -28,7 +28,7 @@ class TestCase::GenericList<T> {
     $self->{length} = $self->{length} + 1;
   }
   
-  sub get_values : T[] ($self : self) {
+  method get_values : T[] () {
     my $values : T[];
     for (my $i = 0; $i < $self->length; $i++) {
       $values->[$i] = $self->values->[$i];
@@ -38,7 +38,7 @@ class TestCase::GenericList<T> {
   }
   
   
-  sub get : T ($self : self, $index : int) {
+  method get : T ($index : int) {
     return $self->{values}[$index];
   }
 }

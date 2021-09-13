@@ -23,47 +23,47 @@ class TestCase {
   has minimal : rw public TestCase::Minimal;
   has private_field : private int;
   
-  sub INT : int () { return 127; }
-  sub FLOAT_PRECICE : float () { return 16384.5f; }
-  sub DOUBLE_PRECICE : double () { return 65536.5; }
+  static method INT : int () { return 127; }
+  static method FLOAT_PRECICE : float () { return 16384.5f; }
+  static method DOUBLE_PRECICE : double () { return 65536.5; }
 
-  sub my_exe_test : int ($num : int) {
+  static method my_exe_test : int ($num : int) {
     return $num * 2;
   }
-  sub main : int ($argv : string[]) {
+  static method main : int ($argv : string[]) {
     return 10;
   }
   
-  sub get_private_field : int ($self : self) {
+  method get_private_field : int () {
     return $self->{private_field};
   }
   
-  sub get_x_byte : byte ($self : self) {
+  method get_x_byte : byte () {
     return $self->{x_byte};
   }
 
-  sub get_x_short : short ($self : self) {
+  method get_x_short : short () {
     return $self->{x_short};
   }
 
-  sub get_x_int : int ($self : self) {
+  method get_x_int : int () {
     return $self->{x_int};
   }
 
-  sub get_x_long : long ($self : self) {
+  method get_x_long : long () {
     return $self->{x_long};
   }
 
-  sub get_x_float : float ($self : self) {
+  method get_x_float : float () {
     return $self->{x_float};
   }
 
-  sub get_x_double : double ($self : self) {
+  method get_x_double : double () {
     return $self->{x_double};
   }
   
   # Only compile check
-  sub eval_block_stack_check : void () {
+  static method eval_block_stack_check : void () {
     eval {
       my $obj_error1 = "Error1";
       
@@ -77,17 +77,17 @@ class TestCase {
     }
   }
   
-  sub new : TestCase () {
+  static method new : TestCase () {
     return new TestCase;
   }
   
-  sub my_var_in_loop_free : int () {
+  static method my_var_in_loop_free : int () {
     for (my $i = 0; $i < 5; $i++) {
       my $minimal = TestCase::Minimal->new;
     }
   }
   
-  sub class_var : int () {
+  static method class_var : int () {
     if ($TestCase::CLASS_VAR_INT == 0) {
       $TestCase::CLASS_VAR_INT = INT32_MAX();
       if ($TestCase::CLASS_VAR_INT == INT32_MAX()) {
@@ -107,7 +107,7 @@ class TestCase {
     return 0;
   }
 
-  sub class_var_rel_name : int () {
+  static method class_var_rel_name : int () {
     $CLASS_VAR_INT = 2;
     
     if ($CLASS_VAR_INT == 2) {
@@ -120,7 +120,7 @@ class TestCase {
     return 0;
   }
 
-  sub class_var_other_class : int () {
+  static method class_var_other_class : int () {
     if ($TestCase::Simple::FOO == 0) {
       $TestCase::Simple::FOO = 1;
       if ($TestCase::Simple::FOO == 1) {
@@ -130,17 +130,17 @@ class TestCase {
     return 0;
   }
   
-  sub get_minimal : TestCase::Minimal ($self : self) {
+  method get_minimal : TestCase::Minimal () {
     return $self->{minimal};
   }
 
   # Resorved word
-  sub int : int ($obj : TestCase) {
+  static method int : int ($obj : TestCase) {
     
     return 5;
   }
   
-  sub use_reserved_word : int () {
+  static method use_reserved_word : int () {
     
     my $test_case = new TestCase;
     
@@ -153,7 +153,7 @@ class TestCase {
     return 0;
   }
   
-  sub concat : string () {
+  static method concat : string () {
     "a" . "b";
     
     my $value = "a" . "b";
@@ -162,18 +162,18 @@ class TestCase {
   }
   
   # string
-  sub string_utf8 : string () {
+  static method string_utf8 : string () {
     my $value = "あいうえお";
     
     return $value;
   }
-  sub string_empty : string () {
+  static method string_empty : string () {
     my $value = "";
     
     return $value;
   }
 
-  sub my_var_scope : int () {
+  static method my_var_scope : int () {
     my $ok1 = 0;
     my $ok2 = 0;
     my $ok3 = 0;
@@ -223,7 +223,7 @@ class TestCase {
   }
   
   # My variable is initialized zero
-  sub my_var_initialized_zero : int () {
+  static method my_var_initialized_zero : int () {
     my $var1 : int;
     my $var2 : TestCase;
     
@@ -235,7 +235,7 @@ class TestCase {
     return 0;
   }
 
-  sub my_var_block : int () {
+  static method my_var_block : int () {
     my $success = 1;
     
     my $var1 = 1;
@@ -268,49 +268,49 @@ class TestCase {
   }
   
   # new near small base_object_max_byte_size_use_memory_pool
-  sub new_near_small_base_object_max_byte_size_use_memory_pool : int () {
+  static method new_near_small_base_object_max_byte_size_use_memory_pool : int () {
     my $block = new byte[0xFFF0];
     
     return 1;
   }
 
   # Sum
-  sub sum_byte : byte ($a : byte, $b :byte) {
+  static method sum_byte : byte ($a : byte, $b :byte) {
     
     my $total = (byte)((int)$a + (int)$b);
     
     return $total;
   }
 
-  sub sum_short : short ($a : short, $b :short) {
+  static method sum_short : short ($a : short, $b :short) {
     
     my $total = (short)((int)$a + (int)$b);
     
     return $total;
   }
 
-  sub sum_int : int ($a : int, $b :int) {
+  static method sum_int : int ($a : int, $b :int) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  sub sum_long : long ($a : long, $b :long) {
+  static method sum_long : long ($a : long, $b :long) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  sub sum_float : float ($a : float, $b :float) {
+  static method sum_float : float ($a : float, $b :float) {
     
     my $total = $a + $b;
     
     return $total;
   }
 
-  sub sum_double : double ($a : double, $b :double) {
+  static method sum_double : double ($a : double, $b :double) {
     
     my $total = $a + $b;
     

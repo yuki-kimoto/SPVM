@@ -1,5 +1,5 @@
 class TestCase::Concat {
-  sub concat_empty_string : int () {
+  static method concat_empty_string : int () {
     {
       my $text = "abc" . "";
       unless ($text eq "abc") {
@@ -32,7 +32,7 @@ class TestCase::Concat {
     return 1;
   }
   
-  sub concat_string : int () {
+  static method concat_string : int () {
     
     my $string = "abc" . "def";
     
@@ -43,7 +43,7 @@ class TestCase::Concat {
     return 0;
   }
 
-  sub concat_left_is_number : int () {
+  static method concat_left_is_number : int () {
     
     my $string = 13 . "abc";
     
@@ -54,7 +54,7 @@ class TestCase::Concat {
     return 0;
   }
 
-  sub concat_right_is_number : int () {
+  static method concat_right_is_number : int () {
     
     my $string = "abc" . 0.25;
     
@@ -65,7 +65,7 @@ class TestCase::Concat {
     return 0;
   }
 
-  sub concat_left_is_undef : int () {
+  static method concat_left_is_undef : int () {
     
     eval {
       my $string : string = undef;
@@ -80,7 +80,7 @@ class TestCase::Concat {
     return 0;
   }
 
-  sub concat_right_is_undef : int () {
+  static method concat_right_is_undef : int () {
     
     eval {
       my $string : string = undef;

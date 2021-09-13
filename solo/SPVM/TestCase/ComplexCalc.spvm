@@ -1,5 +1,5 @@
 class TestCase::ComplexCalc {
-  sub add : TestCase::Complex_2d ($z1 : TestCase::Complex_2d, $z2 : TestCase::Complex_2d) {
+  static method add : TestCase::Complex_2d ($z1 : TestCase::Complex_2d, $z2 : TestCase::Complex_2d) {
     my $z3 : TestCase::Complex_2d;
     
     $z3->{re} = $z1->{re} + $z2->{re};

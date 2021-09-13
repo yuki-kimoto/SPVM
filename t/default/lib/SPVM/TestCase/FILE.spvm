@@ -1,5 +1,5 @@
 class TestCase::FILE {
-  sub file_name : int () {
+  static method file_name : int () {
     my $file_name = __FILE__;
     
     unless ($file_name eq "TestCase/FILE.spvm") {

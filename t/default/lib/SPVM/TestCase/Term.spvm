@@ -1,5 +1,5 @@
 class TestCase::Term {
-  sub evaluate_left_to_right : int () {
+  static method evaluate_left_to_right : int () {
     {
       my $i = 2;
       my $j = ($i = 3) * $i;
@@ -24,7 +24,7 @@ class TestCase::Term {
     return 1;
   }
   
-  sub evaluate_left_to_right_excpetion : int () {
+  static method evaluate_left_to_right_excpetion : int () {
     die "Error";
     
     return 6;

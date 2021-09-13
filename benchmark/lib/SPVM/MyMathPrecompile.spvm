@@ -1,5 +1,5 @@
 class MyMathPrecompile : precompile {
-  sub spvm_sum : int ($loop_count : int) {
+  static method spvm_sum : int ($loop_count : int) {
     
     my $total = 0;
     for (my $i = 0; $i < $loop_count; $i++) {

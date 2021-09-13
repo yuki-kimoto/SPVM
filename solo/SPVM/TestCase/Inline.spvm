@@ -1,7 +1,7 @@
 class TestCase::Native {
   use TestCase::Native;
 
-  native sub sum : int ($num1 : int, $num2 : int);
+  native static method sum : int ($num1 : int, $num2 : int);
 }
 
 __NATIVE__

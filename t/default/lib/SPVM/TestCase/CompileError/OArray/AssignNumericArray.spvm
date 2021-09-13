@@ -1,5 +1,5 @@
 class TestCase::CompileError::OArray::AssignNumericArray {
-  sub error : void () {
+  static method error : void () {
     my $obj_elems : oarray = new int[3];
   }
 }

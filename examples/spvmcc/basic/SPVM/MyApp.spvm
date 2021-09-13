@@ -1,5 +1,5 @@
 class MyApp : precompile {
-  sub main : int ($args : string[]) {
+  static method main : int ($args : string[]) {
     my $total = 0;
     for (my $i = 0; $i < 100000; $i++) {
       $total += $i;

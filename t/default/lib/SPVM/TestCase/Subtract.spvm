@@ -3,7 +3,7 @@ class TestCase::Subtract {
   # Spec tests
   #
   
-  sub subtract_byte_byte : int () {
+  static method subtract_byte_byte : int () {
     my $total = (byte)126 - (byte)127;
     
     unless ($total == -1) {
@@ -17,7 +17,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_short_short : int () {
+  static method subtract_short_short : int () {
     my $total = (short)32766 - (short)32767;
     
     unless ($total == -1) {
@@ -31,7 +31,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_int_byte : int () {
+  static method subtract_int_byte : int () {
     my $total = 1 - (byte)3;
     
     unless ($total == -2) {
@@ -45,7 +45,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_int_short : int () {
+  static method subtract_int_short : int () {
     my $total = 1 - (short)3;
     
     unless ($total == -2) {
@@ -59,7 +59,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_byte_int : int () {
+  static method subtract_byte_int : int () {
     my $total = (byte)3 - 1;
     
     unless ($total == 2) {
@@ -73,7 +73,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_short_int : int () {
+  static method subtract_short_int : int () {
     my $total = (short)3 - 1;
     
     unless ($total == 2) {
@@ -87,7 +87,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_int_int : int () {
+  static method subtract_int_int : int () {
     my $total1 = 2147483646 - 1;
     
     unless ($total1 == 2147483645) {
@@ -101,7 +101,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_long_long : int () {
+  static method subtract_long_long : int () {
     my $total1 = 9223372036854775807L - 1L;
     
     unless ($total1 == 9223372036854775806L) {
@@ -121,7 +121,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_int_float : int () {
+  static method subtract_int_float : int () {
     my $total = 1 - 0.25f;
     
     unless ($total == 0.75f) {
@@ -135,7 +135,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_int_double : int () {
+  static method subtract_int_double : int () {
     my $total = 1 - 0.25;
     
     unless ($total == 0.75) {
@@ -149,7 +149,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_minus : int ()  {
+  static method subtract_minus : int ()  {
     my $total1 = 12 - 3;
     my $total2 = 12 + (-3);
 
@@ -160,7 +160,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_zero_minus : int ()  {
+  static method subtract_zero_minus : int ()  {
     my $total1 = 0 - 3;
     my $total2 = -3;
 
@@ -171,7 +171,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_float_float : int () {
+  static method subtract_float_float : int () {
     my $total = 0.75f - 0.25f;
     
     unless ($total == 0.5f) {
@@ -184,7 +184,7 @@ class TestCase::Subtract {
     
     return 1;
   }
-  sub subtract_double_double : int () {
+  static method subtract_double_double : int () {
     my $total = 0.75 - 0.25;
     
     unless ($total == 0.5) {
@@ -198,7 +198,7 @@ class TestCase::Subtract {
     return 1;
   }
 
-  sub subtract_double_double_big : int () {
+  static method subtract_double_double_big : int () {
     my $total = 2147483647.5 - 0.25;
     
     unless ($total == 2147483647.25) {
@@ -216,7 +216,7 @@ class TestCase::Subtract {
   #
   # Optional tests
   #
-  sub subtract : int () {
+  static method subtract : int () {
     my $value1 : int = 1 - 2;
     my $value2 : int = (byte)1 - 3;
     my $value3 : int = 1 - (byte)4;
@@ -246,19 +246,19 @@ class TestCase::Subtract {
 
     return 0;
   }
-  sub subtract_int_max : int () {
+  static method subtract_int_max : int () {
     return (int)2147483647 - (int)1;
   }
-  sub subtract_int_min : int () {
+  static method subtract_int_min : int () {
     return (int)-2147483647 - (int)1;
   }
-  sub subtract_int_underflow : int () {
+  static method subtract_int_underflow : int () {
     return (int)-2147483648 - (int)1;
   }
-  sub subtract_long_max : long () {
+  static method subtract_long_max : long () {
     return (long)9223372036854775807L - (long)1;
   }
-  sub subtract_long_min : long () {
+  static method subtract_long_min : long () {
     return (long)-9223372036854775807L - (long)1;
   }
 }

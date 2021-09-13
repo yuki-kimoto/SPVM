@@ -1,7 +1,7 @@
 class TestCase::CompileError::Convert::ConvertFromStringToByteArray {
   use TestCase::Minimal;
 
-  sub main : int () {
+  static method main : int () {
     my $nums : byte[] = "abc";
   }
 }

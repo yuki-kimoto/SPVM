@@ -3,7 +3,7 @@ class TestCase::Divide {
   #
   # Spec tests
   #
-  sub divide_byte_byte : int () {
+  static method divide_byte_byte : int () {
     my $total = (byte)7 / (byte)3;
     
     unless ($total == 2) {
@@ -17,7 +17,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_short_short : int () {
+  static method divide_short_short : int () {
     my $total = (short)10 / (short)2;
     
     unless ($total == 5) {
@@ -31,7 +31,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_int_byte : int () {
+  static method divide_int_byte : int () {
     my $total = 12 / (byte)5;
     
     unless ($total == 2) {
@@ -45,7 +45,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_int_short : int () {
+  static method divide_int_short : int () {
     my $total = 7 / (short)3;
     
     unless ($total == 2) {
@@ -59,7 +59,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_byte_int : int () {
+  static method divide_byte_int : int () {
     my $total = (byte)10 / -2;
     
     unless ($total == -5) {
@@ -73,7 +73,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_short_int : int () {
+  static method divide_short_int : int () {
     my $total = (short)-7 / 3;
     
     unless ($total == -2) {
@@ -87,7 +87,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_int_int : int () {
+  static method divide_int_int : int () {
     my $total1 = -1000000000 / -2;
     
     unless ($total1 == 500000000) {
@@ -101,7 +101,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_long_long : int () {
+  static method divide_long_long : int () {
     my $total1 = -100000000000L / -2L;
     
     unless ($total1 == 50000000000L) {
@@ -115,7 +115,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_int_float : int () {
+  static method divide_int_float : int () {
     my $total = 5 / 2.5f;
     
     unless ($total == 2.0f) {
@@ -129,7 +129,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_int_double : int () {
+  static method divide_int_double : int () {
     my $total = 10 / 2.5;
     
     unless ($total == 4.0) {
@@ -143,7 +143,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_float_float : int () {
+  static method divide_float_float : int () {
     my $total = 20.0f / -2.5f;
     
     unless ($total == -8.0f) {
@@ -156,7 +156,7 @@ class TestCase::Divide {
     
     return 1;
   }
-  sub divide_double_double : int () {
+  static method divide_double_double : int () {
     my $total = 1.25 / 2.5;
     
     unless ($total == 0.5) {
@@ -170,7 +170,7 @@ class TestCase::Divide {
     return 1;
   }
 
-  sub divide_double_double_big : int () {
+  static method divide_double_double_big : int () {
     my $total = 1000000000.5 / 2.0;
     
     unless ($total == 500000000.25) {
@@ -187,7 +187,7 @@ class TestCase::Divide {
   #
   # Optional tests
   #
-  sub divide : int () {
+  static method divide : int () {
     # int
     my $int_success = 0;
     {
