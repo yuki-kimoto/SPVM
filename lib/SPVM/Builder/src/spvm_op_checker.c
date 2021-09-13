@@ -2203,6 +2203,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   int32_t i;
                   for (i = block_my_base; i < check_ast_info->my_stack->length; i++) {
                     SPVM_MY* bef_my = SPVM_LIST_fetch(check_ast_info->my_stack, i);
+                    
                     if (strcmp(my->op_name->uv.name, bef_my->op_name->uv.name) == 0) {
                       // Temporaly variable is not duplicated
                       if (my->op_name->uv.name[0] != '@') {
@@ -3422,7 +3423,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             }
             
             if (error) {
-              SPVM_COMPILER_error(compiler, "DESTROY argument must be self\n", method->op_method->file, method->op_method->line);
+              SPVM_COMPILER_error(compiler, "DESTROY argument must be self at %s line %d\n", method->op_method->file, method->op_method->line);
               return;
             }
           }
@@ -3439,7 +3440,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           }
           
           if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->op_block || method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
-            SPVM_COMPILER_error(compiler, "Callback sub can't have implementation\n", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "Callback sub can't have implementation at %s line %d\n", method->op_method->file, method->op_method->line);
             return;
           }
           
