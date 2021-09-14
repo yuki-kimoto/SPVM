@@ -2748,7 +2748,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
   }
   // Class method call
   else {
-    call_spvm_method->is_class_method = 1;
+    call_spvm_method->is_class_method_call = 1;
     call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
     call_spvm_method->op_invocant = op_invocant;
     call_spvm_method->op_name = op_name_method;
