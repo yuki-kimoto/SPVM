@@ -2734,7 +2734,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
     SPVM_COMPILER_error(compiler, "method name can't conatin :: at %s line %d\n", op_name_method->file, op_name_method->line);
   }
   
-  // Method call
+  // Instance method call
   if (op_invocant && op_invocant->id != SPVM_OP_C_ID_TYPE) {
     call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD;
     call_spvm_method->op_invocant = op_invocant;
@@ -2748,6 +2748,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
   }
   // Class method call
   else {
+    call_spvm_method->is_class_method = 1;
     call_spvm_method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
     call_spvm_method->op_invocant = op_invocant;
     call_spvm_method->op_name = op_name_method;
