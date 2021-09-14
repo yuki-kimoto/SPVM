@@ -2269,8 +2269,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_field_access->is_lvalue = op_cur->is_lvalue;
                   op_field_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                   op_field_access->is_passed_to_method = op_cur->is_passed_to_method;
-                  if (op_cur->uv.var->call_spvm_method) {
-                    op_cur->uv.var->call_spvm_method->op_invocant = op_field_access;
+                  if (op_cur->uv.var->call_method) {
+                    op_cur->uv.var->call_method->op_invocant = op_field_access;
                   }
                   
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
@@ -2291,8 +2291,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_class_var_access->is_lvalue = op_cur->is_lvalue;
                   op_class_var_access->is_assigned_to_var = op_cur->is_assigned_to_var;
                   op_class_var_access->is_passed_to_method = op_cur->is_passed_to_method;
-                  if (op_cur->uv.var->call_spvm_method) {
-                    op_cur->uv.var->call_spvm_method->op_invocant = op_class_var_access;
+                  if (op_cur->uv.var->call_method) {
+                    op_cur->uv.var->call_method->op_invocant = op_class_var_access;
                   }
 
                   SPVM_OP_CHECKER_resolve_class_var_access(compiler, op_class_var_access, class->op_class);
@@ -2319,27 +2319,27 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
             }
             case SPVM_OP_C_ID_CALL_METHOD: {
               
-              SPVM_OP* op_call_spvm_method = op_cur;
+              SPVM_OP* op_call_method = op_cur;
               
               // Resulve sub
-              SPVM_OP_CHECKER_resolve_call_spvm_method(compiler, op_cur, class->op_class);
+              SPVM_OP_CHECKER_resolve_call_method(compiler, op_cur, class->op_class);
               if (compiler->error_count > 0) {
                 return;
               }
               
               SPVM_OP* op_list_args = op_cur->last;
               
-              SPVM_CALL_METHOD* call_spvm_method = op_call_spvm_method->uv.call_spvm_method;
-              const char* method_name = call_spvm_method->method->op_name->uv.name;
+              SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
+              const char* method_name = call_method->method->op_name->uv.name;
               
-              if (!!call_spvm_method->is_class_method_call != !!call_spvm_method->method->is_class_method) {
-                SPVM_COMPILER_error(compiler, "Invalid method call \"%s->%s()\" at %s line %d\n", op_cur->uv.call_spvm_method->method->class->name, method_name, op_cur->file, op_cur->line);
+              if (!!call_method->is_class_method_call != !!call_method->method->is_class_method) {
+                SPVM_COMPILER_error(compiler, "Invalid method call \"%s->%s()\" at %s line %d\n", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                 return;
               }
 
               // Access control
               int32_t is_private;
-              if (call_spvm_method->method->flag & SPVM_METHOD_C_FLAG_PRIVATE) {
+              if (call_method->method->flag & SPVM_METHOD_C_FLAG_PRIVATE) {
                 is_private = 1;
               }
               // Default
@@ -2348,14 +2348,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (is_private) {
-                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_spvm_method->method->class->op_class)) {
-                  SPVM_COMPILER_error(compiler, "Can't call private method %s->%s at %s line %d\n", call_spvm_method->method->class->name, call_spvm_method->method->name, op_cur->file, op_cur->line);
+                if (!SPVM_OP_is_allowed(compiler, method->class->op_class, call_method->method->class->op_class)) {
+                  SPVM_COMPILER_error(compiler, "Can't call private method %s->%s at %s line %d\n", call_method->method->class->name, call_method->method->name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               
-              int32_t method_args_count = call_spvm_method->method->args->length;
-              int32_t method_is_vaarg = call_spvm_method->method->have_vaarg;
+              int32_t method_args_count = call_method->method->args->length;
+              int32_t method_is_vaarg = call_method->method->have_vaarg;
 
               // Variable length argument. Last argument is not array.
               int32_t vaarg_last_arg_is_not_array = 0;
@@ -2382,7 +2382,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Variable length arguments
               if (vaarg_last_arg_is_not_array) {
                 
-                SPVM_OP* op_list_args_new = SPVM_OP_new_op_list(compiler, op_call_spvm_method->file, op_call_spvm_method->line);
+                SPVM_OP* op_list_args_new = SPVM_OP_new_op_list(compiler, op_call_method->file, op_call_method->line);
                 
                 const char* file = op_cur->file;
                 int32_t line = op_cur->line;
@@ -2390,7 +2390,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 // New
                 SPVM_OP* op_new = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NEW, op_cur->file, op_cur->line);
                 
-                SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_spvm_method->method->args, call_spvm_method->method->args->length - 1);
+                SPVM_MY* vaarg_last_arg_my = SPVM_LIST_fetch(call_method->method->args, call_method->method->args->length - 1);
                 SPVM_TYPE* vaarg_last_arg_type = vaarg_last_arg_my->type;
 
                 // Create new type
@@ -2471,7 +2471,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 SPVM_OP_insert_child(compiler, op_list_args_new, op_list_args_new->last, op_sequence);
 
-                SPVM_OP_replace_op(compiler, op_call_spvm_method->last, op_list_args_new);
+                SPVM_OP_replace_op(compiler, op_call_method->last, op_list_args_new);
 
                 SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, check_ast_info);
                 if (compiler->error_count > 0) {
@@ -2481,23 +2481,23 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_list_args = op_list_args_new;
               }
               
-              int32_t call_spvm_method_args_count = 0;
+              int32_t call_method_args_count = 0;
               {
                 SPVM_OP* op_term = op_list_args->first;
                 while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
-                  call_spvm_method_args_count++;
-                  if (call_spvm_method_args_count > method_args_count) {
-                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s()\" at %s line %d\n", op_cur->uv.call_spvm_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  call_method_args_count++;
+                  if (call_method_args_count > method_args_count) {
+                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s()\" at %s line %d\n", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                     return;
                   }
                   
-                  SPVM_MY* method_arg_my = SPVM_LIST_fetch(call_spvm_method->method->args, call_spvm_method_args_count - 1);
+                  SPVM_MY* method_arg_my = SPVM_LIST_fetch(call_method->method->args, call_method_args_count - 1);
                   SPVM_TYPE* method_arg_my_type = SPVM_OP_get_type(compiler, method_arg_my->op_my);
                   
                   // Check if source can be assigned to dist
                   // If needed, numeric convertion op is added
                   char place[50];
-                  sprintf(place, "arguments %d", call_spvm_method_args_count);
+                  sprintf(place, "arguments %d", call_method_args_count);
                   
                   op_term = SPVM_OP_CHECKER_check_assign(compiler, method_arg_my_type, op_term, place, op_cur->file, op_cur->line);
                   if (compiler->error_count > 0) {
@@ -2506,28 +2506,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 }
               }
               
-              if (call_spvm_method_args_count < method_args_count) {
-                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s->%s()\" at %s line %d\n", op_cur->uv.call_spvm_method->method->class->name, method_name, op_cur->file, op_cur->line);
+              if (call_method_args_count < method_args_count) {
+                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s->%s()\" at %s line %d\n", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                 return;
               }
               
               // Update operand stack max
-              if (call_spvm_method_args_count > method->call_spvm_method_arg_stack_max) {
-                method->call_spvm_method_arg_stack_max = call_spvm_method_args_count;
+              if (call_method_args_count > method->call_method_arg_stack_max) {
+                method->call_method_arg_stack_max = call_method_args_count;
               }
 
               // Call sub constant pool id
               char method_id_string[sizeof(int32_t)];
-              memcpy(method_id_string, &op_cur->uv.call_spvm_method->method->id, sizeof(int32_t));
+              memcpy(method_id_string, &op_cur->uv.call_method->method->id, sizeof(int32_t));
 
               // No duplicate sub access sub id
               SPVM_METHOD* found_method = SPVM_HASH_fetch(class->info_method_id_symtable, method_id_string, sizeof(int32_t));
               if (found_method == NULL) {
-                SPVM_LIST_push(class->info_method_ids, (void*)(intptr_t)op_cur->uv.call_spvm_method->method->id);
-                SPVM_HASH_insert(class->info_method_id_symtable, method_id_string, sizeof(int32_t), op_cur->uv.call_spvm_method->method);
+                SPVM_LIST_push(class->info_method_ids, (void*)(intptr_t)op_cur->uv.call_method->method->id);
+                SPVM_HASH_insert(class->info_method_id_symtable, method_id_string, sizeof(int32_t), op_cur->uv.call_method->method);
               }
               
-              if (call_spvm_method->method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
+              if (call_method->method->flag & SPVM_METHOD_C_FLAG_DESTRUCTOR) {
                 SPVM_COMPILER_error(compiler, "Can't call DESTROY in yourself at %s line %d\n", op_cur->file, op_cur->line);
                 return;
               }
@@ -2535,29 +2535,29 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Inline expansion
               {
                 // Enum is replaced to constant value
-                if (call_spvm_method->method->flag & SPVM_METHOD_C_FLAG_ENUM) {
+                if (call_method->method->flag & SPVM_METHOD_C_FLAG_ENUM) {
                   // Replace sub to constant
                   op_cur->id = SPVM_OP_C_ID_CONSTANT;
-                  op_cur->uv.constant = call_spvm_method->method->op_inline->uv.constant;
+                  op_cur->uv.constant = call_method->method->op_inline->uv.constant;
                   
                   op_cur->first = NULL;
                   op_cur->last = NULL;
                 }
                 // Constant sub is replaced to constant value
-                else if (call_spvm_method->method->is_constant) {
+                else if (call_method->method->is_constant) {
                   // Replace sub to constant
                   op_cur->id = SPVM_OP_C_ID_CONSTANT;
-                  op_cur->uv.constant = call_spvm_method->method->op_inline->uv.constant;
+                  op_cur->uv.constant = call_method->method->op_inline->uv.constant;
                   
                   op_cur->first = NULL;
                   op_cur->last = NULL;
                 }
                 // Simple constructor is inlined
-                else if (call_spvm_method->method->is_simple_constructor) {
+                else if (call_method->method->is_simple_constructor) {
                   // Replace sub to constant
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
-                  SPVM_OP* op_type_original = call_spvm_method->method->op_inline;
+                  SPVM_OP* op_type_original = call_method->method->op_inline;
                   assert(op_type_original->id == SPVM_OP_C_ID_TYPE);
                   SPVM_TYPE* type_original = op_type_original->uv.type;
                   
@@ -2579,28 +2579,28 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_cur = op_new;
                 }
                 // Field getter is replaced to field access
-                else if (call_spvm_method->method->is_field_getter) {
+                else if (call_method->method->is_field_getter) {
                   // [Before]
                   // $object->foo
                   // [After]
                   // $object->{foo}
-                  const char* field_name = call_spvm_method->method->accessor_original_name;
+                  const char* field_name = call_method->method->accessor_original_name;
 
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
 
-                  SPVM_OP_cut_op(compiler, call_spvm_method->op_invocant);
+                  SPVM_OP_cut_op(compiler, call_method->op_invocant);
 
                   SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_spvm_method->op_invocant, op_name_field_access);
+                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_method->op_invocant, op_name_field_access);
                   op_field_access->uv.field_access->inline_expansion = 1;
 
                   // Replace parent call sub op's op_invocant
                   SPVM_OP* op_parent_list =  SPVM_OP_get_parent(compiler, op_stab);
                   if (op_parent_list->id == SPVM_OP_C_ID_LIST) {
-                    SPVM_OP* op_parent_call_spvm_method =  SPVM_OP_get_parent(compiler, op_parent_list);
-                    if (op_parent_call_spvm_method->id == SPVM_OP_C_ID_CALL_METHOD) {
-                      if (!op_parent_call_spvm_method->uv.call_spvm_method->is_class_method_call) {
-                        op_parent_call_spvm_method->uv.call_spvm_method->op_invocant = op_field_access;
+                    SPVM_OP* op_parent_call_method =  SPVM_OP_get_parent(compiler, op_parent_list);
+                    if (op_parent_call_method->id == SPVM_OP_C_ID_CALL_METHOD) {
+                      if (!op_parent_call_method->uv.call_method->is_class_method_call) {
+                        op_parent_call_method->uv.call_method->op_invocant = op_field_access;
                       }
                     }
                   }
@@ -2612,7 +2612,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_cur = op_field_access;
                 }
                 // Field setter is replaced to field access
-                else if (call_spvm_method->method->is_field_setter) {
+                else if (call_method->method->is_field_setter) {
                   // [Before]
                   // $object->set_foo($value)
                   // [After]
@@ -2627,11 +2627,11 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   op_term_value->no_need_check = 1;
 
-                  SPVM_OP_cut_op(compiler, call_spvm_method->op_invocant);
+                  SPVM_OP_cut_op(compiler, call_method->op_invocant);
                   
-                  const char* field_name = call_spvm_method->method->accessor_original_name;
+                  const char* field_name = call_method->method->accessor_original_name;
                   SPVM_OP* op_name_field_access = SPVM_OP_new_op_name(compiler, field_name, op_cur->file, op_cur->line);
-                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_spvm_method->op_invocant, op_name_field_access);
+                  SPVM_OP* op_field_access = SPVM_OP_build_field_access(compiler, call_method->op_invocant, op_name_field_access);
                   op_field_access->uv.field_access->inline_expansion = 1;
                   
                   SPVM_OP* op_assign = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_ASSIGN, op_cur->file, op_cur->line);
@@ -2644,7 +2644,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_cur = op_assign;
                 }
                 // Class var getter is replaced to class var access
-                else if (call_spvm_method->method->is_class_var_getter) {
+                else if (call_method->method->is_class_var_getter) {
                   // [Before]
                   // Class->FOO
                   // [After]
@@ -2652,8 +2652,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   
                   SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
                   
-                  const char* class_name = call_spvm_method->method->class->name;
-                  const char* class_var_base_name = call_spvm_method->method->accessor_original_name;
+                  const char* class_name = call_method->method->class->name;
+                  const char* class_var_base_name = call_method->method->accessor_original_name;
                   char* class_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name, "$", 1);
                   memcpy(class_var_name + 1, class_name, strlen(class_name));
@@ -2671,7 +2671,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                 }
                 // Class var setter is replaced to class var access
-                else if (call_spvm_method->method->is_class_var_setter) {
+                else if (call_method->method->is_class_var_setter) {
                   // [Before]
                   // Class->SET_FOO($value)
                   // [After]
@@ -2687,8 +2687,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
                   op_term_value->no_need_check = 1;
                   
-                  const char* class_name = call_spvm_method->method->class->name;
-                  const char* class_var_base_name = call_spvm_method->method->accessor_original_name;
+                  const char* class_name = call_method->method->class->name;
+                  const char* class_var_base_name = call_method->method->accessor_original_name;
                   char* class_var_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1 + strlen(class_name) + 2 + strlen(class_var_base_name));
                   memcpy(class_var_name, "$", 1);
                   memcpy(class_var_name + 1, class_name, strlen(class_name));
@@ -4609,24 +4609,24 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_spvm_method, SPVM_OP* op_class_current) {
+void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_class_current) {
   
-  SPVM_CALL_METHOD* call_spvm_method = op_call_spvm_method->uv.call_spvm_method;
+  SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
   
-  if (call_spvm_method->method) {
+  if (call_method->method) {
     return;
   }
   
   SPVM_CLASS* found_class;
   SPVM_METHOD* found_method;
   
-  const char* method_name = call_spvm_method->op_name->uv.name;
+  const char* method_name = call_method->op_name->uv.name;
   // Instance method call
-  if (!call_spvm_method->is_class_method_call) {
-    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_spvm_method->op_invocant);
+  if (!call_method->is_class_method_call) {
+    SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
     if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", type_name, method_name, op_call_spvm_method->file, op_call_spvm_method->line);
+      SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", type_name, method_name, op_call_method->file, op_call_method->line);
       return;
     }
     else {
@@ -4635,7 +4635,7 @@ void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* 
       SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
       
       if (!class) {
-        SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", basic_type_name, method_name, op_call_spvm_method->file, op_call_spvm_method->line);
+        SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", basic_type_name, method_name, op_call_method->file, op_call_method->line);
         return;
       }
       
@@ -4650,8 +4650,8 @@ void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* 
   // Class method call
   else {
     // Class name + method name
-    if (call_spvm_method->op_invocant) {
-      const char* class_name = call_spvm_method->op_invocant->uv.type->basic_type->name;
+    if (call_method->op_invocant) {
+      const char* class_name = call_method->op_invocant->uv.type->basic_type->name;
       SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
       assert(class);
       
@@ -4702,11 +4702,11 @@ void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* 
   }
   
   if (found_method) {
-    call_spvm_method->method = found_method;
+    call_method->method = found_method;
   }
   else {
     assert(found_class);
-    SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", found_class->name, method_name, op_call_spvm_method->file, op_call_spvm_method->line);
+    SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", found_class->name, method_name, op_call_method->file, op_call_method->line);
     return;
   }
 }

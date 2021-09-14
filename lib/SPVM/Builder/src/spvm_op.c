@@ -1402,10 +1402,10 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
       break;
     }
     case SPVM_OP_C_ID_CALL_METHOD: {
-      SPVM_CALL_METHOD* call_spvm_method = op->uv.call_spvm_method;
-      const char* call_spvm_method_method_name = call_spvm_method->method->name;
-      SPVM_CLASS* call_spvm_method_method_class = call_spvm_method->method->class;
-      SPVM_METHOD* method = SPVM_HASH_fetch(call_spvm_method_method_class->method_symtable, call_spvm_method_method_name, strlen(call_spvm_method_method_name));
+      SPVM_CALL_METHOD*call_method = op->uv.call_method;
+      const char*call_method_method_name =call_method->method->name;
+      SPVM_CLASS*call_method_method_class =call_method->method->class;
+      SPVM_METHOD* method = SPVM_HASH_fetch(call_method_method_class->method_symtable,call_method_method_name, strlen(call_method_method_name));
       type = method->return_type;
       break;
     }
@@ -2697,10 +2697,10 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
 SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant, SPVM_OP* op_name_method, SPVM_OP* op_list_terms) {
   
   // Build OP_METHOD
-  SPVM_OP* op_call_spvm_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_METHOD, op_name_method->file, op_name_method->line);
-  SPVM_OP_insert_child(compiler, op_call_spvm_method, op_call_spvm_method->last, op_list_terms);
+  SPVM_OP* op_call_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CALL_METHOD, op_name_method->file, op_name_method->line);
+  SPVM_OP_insert_child(compiler, op_call_method, op_call_method->last, op_list_terms);
   
-  SPVM_CALL_METHOD* call_spvm_method = SPVM_CALL_METHOD_new(compiler);
+  SPVM_CALL_METHOD*call_method = SPVM_CALL_METHOD_new(compiler);
   
   const char* method_name = op_name_method->uv.name;
   
@@ -2710,20 +2710,20 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
   
   // Instance method call
   if (op_invocant && op_invocant->id != SPVM_OP_C_ID_TYPE) {
-    call_spvm_method->op_invocant = op_invocant;
-    call_spvm_method->op_name = op_name_method;
+   call_method->op_invocant = op_invocant;
+   call_method->op_name = op_name_method;
     
     if (op_invocant->id == SPVM_OP_C_ID_VAR) {
-      op_invocant->uv.var->call_spvm_method = call_spvm_method;
+      op_invocant->uv.var->call_method =call_method;
     }
     
     SPVM_OP_insert_child(compiler, op_list_terms, op_list_terms->first, op_invocant);
   }
   // Class method call
   else {
-    call_spvm_method->is_class_method_call = 1;
-    call_spvm_method->op_invocant = op_invocant;
-    call_spvm_method->op_name = op_name_method;
+   call_method->is_class_method_call = 1;
+   call_method->op_invocant = op_invocant;
+   call_method->op_name = op_name_method;
   }
   
   // term is passed to method
@@ -2732,9 +2732,9 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
     op_term->is_passed_to_method = 1;
   }
   
-  op_call_spvm_method->uv.call_spvm_method = call_spvm_method;
+  op_call_method->uv.call_method =call_method;
   
-  return op_call_spvm_method;
+  return op_call_method;
 }
 
 SPVM_OP* SPVM_OP_build_unary_op(SPVM_COMPILER* compiler, SPVM_OP* op_unary, SPVM_OP* op_first) {

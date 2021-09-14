@@ -10,7 +10,7 @@ struct spvm_var {
   int8_t is_outer;
   int8_t is_arg;
   int8_t is_initialized;
-  SPVM_CALL_METHOD* call_spvm_method;
+  SPVM_CALL_METHOD* call_method;
 };
 
 SPVM_VAR* SPVM_VAR_new(SPVM_COMPILER* compiler);

@@ -6,7 +6,7 @@
 void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler);
 
 void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler);
-void SPVM_OP_CHECKER_resolve_call_spvm_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_spvm_method, SPVM_OP* op_class_current);
+void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_call_method, SPVM_OP* op_class_current);
 void SPVM_OP_CHECKER_resolve_field_access(SPVM_COMPILER* compiler, SPVM_OP* op_field_access);
 void SPVM_OP_CHECKER_resolve_class_var_access(SPVM_COMPILER* compiler, SPVM_OP* op_class_var_access, SPVM_OP* op_class);
 void SPVM_OP_CHECKER_resolve_basic_types(SPVM_COMPILER* compiler);
