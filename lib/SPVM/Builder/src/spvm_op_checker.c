@@ -2331,8 +2331,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               SPVM_CALL_METHOD* call_spvm_method = op_call_spvm_method->uv.call_spvm_method;
               const char* method_name = call_spvm_method->method->op_name->uv.name;
-
-              if (call_spvm_method->call_type_id != call_spvm_method->method->call_type_id) {
+              
+              if (!!call_spvm_method->is_class_method_call != !!call_spvm_method->method->is_class_method) {
                 SPVM_COMPILER_error(compiler, "Invalid method call \"%s->%s()\" at %s line %d\n", op_cur->uv.call_spvm_method->method->class->name, method_name, op_cur->file, op_cur->line);
                 return;
               }

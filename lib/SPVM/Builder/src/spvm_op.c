@@ -1810,6 +1810,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
 
           op_method->uv.method->is_class_var_getter = 1;
           op_method->uv.method->accessor_original_name = class_var->name;
+          op_method->uv.method->is_class_method = 1;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -1859,6 +1860,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           op_method->uv.method->is_class_var_setter = 1;
           op_method->uv.method->accessor_original_name = class_var->name;
+          op_method->uv.method->is_class_method = 1;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
@@ -2642,6 +2644,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   // Method is constant
   op_method->uv.method->flag |= SPVM_METHOD_C_FLAG_ENUM;
   op_method->uv.method->call_type_id = SPVM_METHOD_C_CALL_TYPE_ID_CLASS_METHOD;
+  op_method->uv.method->is_class_method = 1;
   
   return op_method;
 }
