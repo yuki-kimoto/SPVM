@@ -404,17 +404,17 @@ For example, in the case of L<Complex_2d|SPVM::Complex_2d>, do the following.
 
 =head2 Call SPVM Method
 
-If you want to call a method, you get a method id using L<get_method_id|"get_method_id"> or L<get_method_id_by_object|"get_method_id_by_object">.
+If you want to call a method, you get a method id using L<get_method_id|"get_method_id"> or L<get_instance_method_id|"get_instance_method_id">.
 
 L<get_method_id|"get_method_id"> get a method id of a class method.
 
-L<get_method_id_by_object|"get_method_id_by_object"> get a method id of a instance method.
+L<get_instance_method_id|"get_instance_method_id"> get a method id of a instance method.
 
   // Get method id of class method
   int32_t method_id = env->get_method_id(env, "Foo", "sum", "int(int,int)");
 
   // Get method id of instance method
-  int32_t method_id = env->get_method_id_by_object(env, object, "sum", "int(self,int,int)");
+  int32_t method_id = env->get_instance_method_id(env, object, "sum", "int(self,int,int)");
 
 If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
@@ -767,9 +767,9 @@ Example:
 
   int32_t method_id = env->get_method_id(env, "Foo", "func", "int(long,string)");
 
-=head2 get_method_id_by_object
+=head2 get_instance_method_id
 
-  int32_t (*get_method_id_by_object)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 
 Get the method ID by specifying the object and method name. If the method does not exist, a value less than 0 is returned.
 
@@ -777,7 +777,7 @@ The signature is the same as the method_id signature.
 
 Example:
 
-  int32_t method_id = env->get_method_id_by_object(env, object, "method", "int(self,long,string)");
+  int32_t method_id = env->get_instance_method_id(env, object, "method", "int(self,long,string)");
 
 =head2 new_object_raw
 
@@ -2224,7 +2224,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   22 get_field_offset
   23 get_class_var_id
   24 get_method_id
-  25 get_method_id_by_object
+  25 get_instance_method_id
   26 new_object_raw
   27 new_object
   28 new_byte_array_raw

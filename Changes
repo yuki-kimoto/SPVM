@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9013  2021-09-13
+0.9013  2021-09-14
         [CHANGES]
         * remove sub and self keyword and add method and static keyword. Sorry.
           [Before]
@@ -9,6 +9,8 @@ Revision history for SPVM
           [After]
           method foo : void  () {}
           static method bar : void  () {}
+        
+        * rename native api get_method_id_by_object to get_instance_method_id
         
         [BUGFIXES]
         * None

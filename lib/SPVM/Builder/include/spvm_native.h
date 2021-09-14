@@ -122,7 +122,7 @@ struct spvm_env {
   int32_t (*get_field_offset)(SPVM_ENV* env, int32_t field_id);
   int32_t (*get_class_var_id)(SPVM_ENV* env, const char* class_name, const char* class_var_name, const char* signature);
   int32_t (*get_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
-  int32_t (*get_method_id_by_object)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
+  int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
   void* (*new_object_raw)(SPVM_ENV* env, int32_t basic_type_id);
   void* (*new_object)(SPVM_ENV* env, int32_t basic_type_id);
   void* (*new_byte_array_raw)(SPVM_ENV* env, int32_t length);

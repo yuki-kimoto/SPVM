@@ -40,7 +40,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_field_offset != &env_array[22]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_class_var_id != &env_array[23]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_method_id != &env_array[24]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_method_id_by_object != &env_array[25]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_instance_method_id != &env_array[25]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_object_raw != &env_array[26]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_object != &env_array[27]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_byte_array_raw != &env_array[28]) { stack[0].ival = 0; return 0; }
