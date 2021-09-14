@@ -404,14 +404,14 @@ For example, in the case of L<Complex_2d|SPVM::Complex_2d>, do the following.
 
 =head2 Call SPVM Method
 
-If you want to call a method, you get a method id using L<get_method_id|"get_method_id"> or L<get_instance_method_id|"get_instance_method_id">.
+If you want to call a method, you get a method id using L<get_class_method_id|"get_class_method_id"> or L<get_instance_method_id|"get_instance_method_id">.
 
-L<get_method_id|"get_method_id"> get a method id of a class method.
+L<get_class_method_id|"get_class_method_id"> get a method id of a class method.
 
 L<get_instance_method_id|"get_instance_method_id"> get a method id of a instance method.
 
   // Get method id of class method
-  int32_t method_id = env->get_method_id(env, "Foo", "sum", "int(int,int)");
+  int32_t method_id = env->get_class_method_id(env, "Foo", "sum", "int(int,int)");
 
   // Get method id of instance method
   int32_t method_id = env->get_instance_method_id(env, object, "sum", "int(self,int,int)");
@@ -753,9 +753,9 @@ Example:
 
   int32_t pkgvar_id = env->get_class_var_id(env, "Foo", "$VAR", "int");
 
-=head2 get_method_id
+=head2 get_class_method_id
 
-  int32_t (*get_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
+  int32_t (*get_class_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
 
 Get the method ID by specifying the class name, method name, and signature. If no method exists, a value less than 0 is returned.
 
@@ -765,7 +765,7 @@ The signature has the following format: Must not contain white space.
 
 Example:
 
-  int32_t method_id = env->get_method_id(env, "Foo", "func", "int(long,string)");
+  int32_t method_id = env->get_class_method_id(env, "Foo", "func", "int(long,string)");
 
 =head2 get_instance_method_id
 
@@ -2223,7 +2223,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   21 get_field_id
   22 get_field_offset
   23 get_class_var_id
-  24 get_method_id
+  24 get_class_method_id
   25 get_instance_method_id
   26 new_object_raw
   27 new_object

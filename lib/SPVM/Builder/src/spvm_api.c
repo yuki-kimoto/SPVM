@@ -632,7 +632,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* 
 
 int32_t SPVM_API_call_spvm_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
   
-  int32_t method_id = env->get_method_id(env, class_name, method_name, signature);
+  int32_t method_id = env->get_class_method_id(env, class_name, method_name, signature);
   if (method_id < 0) {
     env->die(env, "Method not found, class name:%s, sub name:%s, signature:%s", class_name, method_name, signature, file, line);
     return 1;

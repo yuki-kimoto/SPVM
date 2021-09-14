@@ -11,6 +11,7 @@ Revision history for SPVM
           static method bar : void  () {}
         
         * rename native api get_method_id_by_object to get_instance_method_id
+        * rename native api get_method_id to get_class_method_id
         
         [BUGFIXES]
         * None

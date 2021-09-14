@@ -3992,7 +3992,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
           SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
           SPVM_STRING_BUFFER_add(string_buffer, "      ");
           SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
-          SPVM_STRING_BUFFER_add(string_buffer, " = env->get_method_id(env, \"");
+          SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_method_id(env, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);

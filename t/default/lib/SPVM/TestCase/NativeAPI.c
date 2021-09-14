@@ -39,7 +39,7 @@ int32_t SPVM__TestCase__NativeAPI__check_native_api_indexes(SPVM_ENV* env, SPVM_
   if ((void*)&env->get_field_id != &env_array[21]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_field_offset != &env_array[22]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_class_var_id != &env_array[23]) { stack[0].ival = 0; return 0; }
-  if ((void*)&env->get_method_id != &env_array[24]) { stack[0].ival = 0; return 0; }
+  if ((void*)&env->get_class_method_id != &env_array[24]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->get_instance_method_id != &env_array[25]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_object_raw != &env_array[26]) { stack[0].ival = 0; return 0; }
   if ((void*)&env->new_object != &env_array[27]) { stack[0].ival = 0; return 0; }
@@ -1597,7 +1597,7 @@ int32_t SPVM__TestCase__NativeAPI__native_call_spvm_method(SPVM_ENV* env, SPVM_V
   (void)env;
   (void)stack;
   
-  int32_t method_id = env->get_method_id(env, "TestCase::NativeAPI", "my_value", "int(int)");
+  int32_t method_id = env->get_class_method_id(env, "TestCase::NativeAPI", "my_value", "int(int)");
   if (method_id < 0) {
     return 1;
   }
