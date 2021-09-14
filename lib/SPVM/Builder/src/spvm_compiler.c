@@ -422,7 +422,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     
     int32_t arg_index;
     for (arg_index = 0; arg_index < method->args->length; arg_index++) {
-      if (method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD && arg_index == 0) {
+      if (!method->is_class_method && arg_index == 0) {
         // self
         length += 4;
       }
@@ -473,7 +473,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     int32_t arg_index;
     for (arg_index = 0; arg_index < method->args->length; arg_index++) {
       // self
-      if (method->call_type_id == SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD && arg_index == 0) {
+      if (!method->is_class_method && arg_index == 0) {
         memcpy(bufptr, "self", 4);
         bufptr += 4;
       }

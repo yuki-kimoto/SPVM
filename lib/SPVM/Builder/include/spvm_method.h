@@ -34,7 +34,6 @@ struct spvm_method {
   int32_t rel_id;
   int32_t eval_stack_max_length;
   int32_t mortal_stack_length;
-  int32_t call_type_id;
   int32_t id;
   void* precompile_address;
   void* native_address;
