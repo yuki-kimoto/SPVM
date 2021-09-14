@@ -404,19 +404,21 @@ For example, in the case of L<Complex_2d|SPVM::Complex_2d>, do the following.
 
 =head2 Call SPVM Method
 
-To call the SPVM method, first use the <a href="#native-api-native-sub-api-method_id">method_id</a> function or the <a href = "# native-api-native- Get the ID of the method using the sub-api-method_method_id ">method_method_id</a> function
+If you want to call a method, you get a method id using L<get_method_id|"get_method_id"> or L<get_method_id_by_object|"get_method_id_by_object">.
 
-  // For a method that is not a method
-  int32_t method_id = env->get_method_id(env, "Foo", "sum", "int (int, int)");
+L<get_method_id|"get_method_id"> get a method id of a class method.
 
-  // For method
-  int32_t method_id = env->get_method_id_by_object(env, object, "sum", "int (self, int, int)");
+L<get_method_id_by_object|"get_method_id_by_object"> get a method id of a instance method.
+
+  // Get method id of class method
+  int32_t method_id = env->get_method_id(env, "Foo", "sum", "int(int,int)");
+
+  // Get method id of instance method
+  int32_t method_id = env->get_method_id_by_object(env, object, "sum", "int(self,int,int)");
 
 If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
-  if (method_id <0) {
-    SPVM_DIE ("Can't find sub id", "Foo/Bar.c", __LINE__);
-  }
+  if (method_id < 0) { return env->die(env, "Can't find method id", "Foo/Bar.c", __LINE__); }
 
 Set the SPVM method argument to stack before calling the method.
 
@@ -478,11 +480,11 @@ If you want to set the exception message yourself, you can create an exception m
 
 If no exception message is set, a default exception message will be set.
 
-Usually, "SPVM_DIE" is defined to make it easier to use, so it is better to use this.
+Usually, L<die|"die"">  is defined to make it easier to use, so it is better to use this.
 
-  SPVM_DIE ("Error. Values must be %d and %d", 3, 5, "Foo/Bar.c", __LINE__);
+  return env->die("Error. Values must be %d and %d", 3, 5, "Foo/Bar.c", __LINE__);
 
-SPVM_DIE can be used in the same way as the C language sprintf function. Be sure to include this file name in the second from the end, and the line number in the last argument. If the message exceeds 255 bytes, the excess is truncated.
+L<die|"die""> can be used in the same way as the C language sprintf function. Be sure to include this file name in the second from the end, and the line number in the last argument. If the message exceeds 255 bytes, the excess is truncated.
 
 The exception is stored in env.
 
