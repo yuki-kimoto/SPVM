@@ -2098,8 +2098,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
           // Method having callback_t descriptor must be method
-          if (method->call_type_id != SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
-            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor must be a method at %s line %d\n", method->op_method->file, method->op_method->line);
+          if (method->is_class_method) {
+            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor must be a instance method at %s line %d\n", method->op_method->file, method->op_method->line);
           }
           // Method having callback_t descriptor must be anon
           if (strlen(method_name) != 0) {
@@ -2108,8 +2108,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         // If Method is anon, sub must be method
-        if (strlen(method_name) == 0 && method->call_type_id != SPVM_METHOD_C_CALL_TYPE_ID_INSTANCE_METHOD) {
-          SPVM_COMPILER_error(compiler, "Anon method must be method at %s line %d\n", method->op_method->file, method->op_method->line);
+        if (strlen(method_name) == 0 && method->is_class_method) {
+          SPVM_COMPILER_error(compiler, "Anon method must be instance method at %s line %d\n", method->op_method->file, method->op_method->line);
         }
 
         // If class is callback, sub must not be native
