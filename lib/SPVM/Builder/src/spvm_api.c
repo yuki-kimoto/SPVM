@@ -121,7 +121,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_field_id,
     SPVM_API_get_field_offset,
     SPVM_API_get_class_var_id,
-    SPVM_API_get_method_id,
+    SPVM_API_get_class_method_id,
     SPVM_API_get_instance_method_id,
     SPVM_API_new_object_raw,
     SPVM_API_new_object,
@@ -5282,7 +5282,7 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     else {
       const char* object_class_name = object_class->name;
       const char* method_callback_name = method_callback->name;
-      int32_t method_id = SPVM_API_get_method_id(env, object_class_name, method_callback_name, method_callback_signature);
+      int32_t method_id = SPVM_API_get_class_method_id(env, object_class_name, method_callback_name, method_callback_signature);
       if (method_id >= 0) {
         has_callback = 1;
       }
@@ -6446,7 +6446,7 @@ SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_CLASS* class, const char* m
   return method;
 }
 
-int32_t SPVM_API_get_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
+int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   
   // Method id
@@ -6531,7 +6531,7 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   // Normal sub
   else {
     const char* object_class_name = object_class->name;
-    method_id = SPVM_API_get_method_id(env, object_class_name, method_name, signature);
+    method_id = SPVM_API_get_class_method_id(env, object_class_name, method_name, signature);
   }
   
   return method_id;

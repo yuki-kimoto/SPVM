@@ -583,7 +583,7 @@ EOS
   SPVM_API_call_begin_blocks(env);
 
   // Class
-  int32_t method_id = SPVM_API_get_method_id(env, class_name, "main", "int(string[])");
+  int32_t method_id = SPVM_API_get_class_method_id(env, class_name, "main", "int(string[])");
   
   if (method_id < 0) {
     return -1;
