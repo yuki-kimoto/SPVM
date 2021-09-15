@@ -2599,17 +2599,20 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
   
   // Type
   SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, op_constant->uv.constant->type, op_name->file, op_name->line);
+
+  SPVM_OP* op_list_descriptors = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+  SPVM_OP* op_descriptor_static = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+  SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->first, op_descriptor_static);
   
   // Build method
   int32_t can_precompile = 0;
-  op_method = SPVM_OP_build_method(compiler, op_method, op_name, op_return_type, NULL, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
+  op_method = SPVM_OP_build_method(compiler, op_method, op_name, op_return_type, NULL, op_list_descriptors, op_block, NULL, NULL, 0, 0, can_precompile);
   
   // Set constant
   op_method->uv.method->op_inline = op_constant;
   
   // Method is constant
   op_method->uv.method->flag |= SPVM_METHOD_C_FLAG_ENUM;
-  op_method->uv.method->is_class_method = 1;
   
   return op_method;
 }
