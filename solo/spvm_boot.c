@@ -64,8 +64,8 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Create env
   SPVM_ENV* env = SPVM_API_create_env(compiler);
   
-  // Call begin blocks
-  SPVM_API_call_begin_blocks(env);
+  // Call init blocks
+  SPVM_API_call_init_blocks(env);
 
   // Class
   int32_t method_id = SPVM_API_get_class_method_id(env, class_name, "main", "int(string[])");

@@ -1119,7 +1119,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   free(env);
 }
 
-void SPVM_API_call_begin_blocks(SPVM_ENV* env) {
+void SPVM_API_call_init_blocks(SPVM_ENV* env) {
   (void)env;
   
   // Runtime
@@ -1132,9 +1132,9 @@ void SPVM_API_call_begin_blocks(SPVM_ENV* env) {
     
     SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_id);
     
-    if (class->op_begin_method) {
-      SPVM_METHOD* begin_method = class->op_begin_method->uv.method;
-      env->call_spvm_method(env, begin_method->id, stack);
+    if (class->op_init_method) {
+      SPVM_METHOD* init_method = class->op_init_method->uv.method;
+      env->call_spvm_method(env, init_method->id, stack);
     }
   }
 }

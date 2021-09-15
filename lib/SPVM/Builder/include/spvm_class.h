@@ -47,7 +47,7 @@ struct spvm_class {
   int32_t flag;
   int32_t category;
   const char* name;
-  SPVM_OP* op_begin_method;
+  SPVM_OP* op_init_method;
   int32_t fail_load;
   int32_t has_precompile_descriptor;
   SPVM_LIST* anon_methods;

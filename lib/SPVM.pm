@@ -70,7 +70,7 @@ sub import {
 sub init {
   unless ($SPVM_INITED) {
     if (my $builder = $BUILDER) {
-      # Call begin blocks
+      # Call init blocks
       $builder->_init;
     }
     $SPVM_INITED = 1;

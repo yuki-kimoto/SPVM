@@ -56,7 +56,7 @@ SPVM_RUNTIME* SPVM_API_build_runtime(SPVM_COMPILER* compiler);
 void SPVM_API_free_env(SPVM_ENV* env);
 void SPVM_API_free_runtime(SPVM_RUNTIME* runtime);
 
-void SPVM_API_call_begin_blocks(SPVM_ENV* env);
+void SPVM_API_call_init_blocks(SPVM_ENV* env);
 
 int32_t SPVM_API_is_type(SPVM_ENV* env, SPVM_OBJECT* object, int32_t basic_type_id, int32_t type_dimension);
 int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callback_basic_type_id);

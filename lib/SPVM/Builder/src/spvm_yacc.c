@@ -2461,11 +2461,11 @@ yyreduce:
   case 43:
 #line 301 "yacc/spvm_yacc.y" /* yacc.c:1646  */
     {
-       int32_t is_begin = 0;
+       int32_t is_init = 0;
        int32_t is_anon = 1;
        int32_t can_precompile = 1;
        
-       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-7].opval), NULL, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-8].opval), (yyvsp[0].opval), NULL, (yyvsp[-2].opval), is_begin, is_anon, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-7].opval), NULL, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-8].opval), (yyvsp[0].opval), NULL, (yyvsp[-2].opval), is_init, is_anon, can_precompile);
      }
 #line 2471 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;
@@ -2482,10 +2482,10 @@ yyreduce:
          SPVM_OP_insert_child(compiler, op_list_args, op_list_args->last, (yyvsp[-10].opval));
        }
        
-       int32_t is_begin = 0;
+       int32_t is_init = 0;
        int32_t is_anon = 1;
        int32_t can_precompile = 1;
-       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-7].opval), NULL, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-8].opval), (yyvsp[0].opval), op_list_args, (yyvsp[-2].opval), is_begin, is_anon, can_precompile);
+       (yyval.opval) = SPVM_OP_build_method(compiler, (yyvsp[-7].opval), NULL, (yyvsp[-5].opval), (yyvsp[-3].opval), (yyvsp[-8].opval), (yyvsp[0].opval), op_list_args, (yyvsp[-2].opval), is_init, is_anon, can_precompile);
      }
 #line 2491 "spvm_yacc.tab.c" /* yacc.c:1646  */
     break;

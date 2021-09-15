@@ -1997,8 +1997,8 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         }
         
         // Begin block
-        if (op_decl->uv.method->is_begin) {
-          class->op_begin_method = op_decl;
+        if (op_decl->uv.method->is_init) {
+          class->op_init_method = op_decl;
         }
       }
       else {
@@ -2349,7 +2349,7 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
   return op_field;
 }
 
-SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_begin, int32_t is_anon, int32_t can_precompile) {
+SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_OP* op_name_method, SPVM_OP* op_return_type, SPVM_OP* op_args, SPVM_OP* op_descriptors, SPVM_OP* op_block, SPVM_OP* op_captures, SPVM_OP* op_dot3, int32_t is_init, int32_t is_anon, int32_t can_precompile) {
   SPVM_METHOD* method = SPVM_METHOD_new(compiler);
   
   // Is anon method
@@ -2376,8 +2376,8 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     method->have_vaarg = 1;
   }
   
-  method->is_begin = is_begin;
-  if (!is_begin && strcmp(method_name, "INIT") == 0) {
+  method->is_init = is_init;
+  if (!is_init && strcmp(method_name, "INIT") == 0) {
     SPVM_COMPILER_error(compiler, "\"INIT\" is reserved for INIT block at %s line %d\n", op_name_method->file, op_name_method->line);
   }
 
