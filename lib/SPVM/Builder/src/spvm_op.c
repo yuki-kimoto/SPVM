@@ -1857,13 +1857,16 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           SPVM_OP_insert_child(compiler, op_statements, op_statements->last, op_assign);
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
+
+          SPVM_OP* op_list_descriptors = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+          SPVM_OP* op_descriptor_static = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+          SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->first, op_descriptor_static);
           
           int32_t can_precompile = 0;
-          SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
+          SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, op_list_descriptors, op_block, NULL, NULL, 0, 0, can_precompile);
           
           op_method->uv.method->is_class_var_setter = 1;
           op_method->uv.method->accessor_original_name = class_var->name;
-          op_method->uv.method->is_class_method = 1;
           
           SPVM_LIST_push(class->methods, op_method->uv.method);
         }
