@@ -1882,7 +1882,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         // Getter
         if (field->has_getter) {
-          // sub foo : int ($self : self) {
+          // method foo : int () {
           //   return $self->{foo};
           // }
           
@@ -1894,13 +1894,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           return_type->flag = field->type->flag;
           SPVM_OP* op_return_type = SPVM_OP_new_op_type(compiler, return_type, op_decl->file, op_decl->line);
           SPVM_OP* op_args = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
-          SPVM_OP* op_var_name = SPVM_OP_new_op_name(compiler, "$self", op_decl->file, op_decl->line);
-          SPVM_OP* op_var_self = SPVM_OP_new_op_var(compiler, op_var_name);
-          SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);
-          self_type->is_self = 1;
-          SPVM_OP* op_self_type = SPVM_OP_new_op_type(compiler, self_type, op_decl->file, op_decl->line);
-          SPVM_OP* op_arg_self = SPVM_OP_build_arg(compiler, op_var_self, op_self_type);
-          SPVM_OP_insert_child(compiler, op_args, op_args->last, op_arg_self);
           
           SPVM_OP* op_block = SPVM_OP_new_op_block(compiler, op_decl->file, op_decl->line);
           SPVM_OP* op_statements = SPVM_OP_new_op_list(compiler, op_decl->file, op_decl->line);
@@ -1916,6 +1909,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
           int32_t can_precompile = 0;
+          op_method->flag |= SPVM_OP_C_FLAG_METHOD_NOT_SUB;
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
           
           op_method->uv.method->is_field_getter = 1;
