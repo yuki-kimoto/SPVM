@@ -15,6 +15,7 @@
   #include "spvm_block.h"
   #include "spvm_list.h"
   #include "spvm_class.h"
+  #include "spvm_descriptor.h"
 %}
 
 %token <opval> CLASS HAS METHOD OUR ENUM MY USE REQUIRE ALLOW
@@ -175,8 +176,14 @@ init_block
       SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_method_name = SPVM_OP_new_op_name(compiler, "INIT", compiler->cur_file, compiler->cur_line);
       SPVM_OP* op_void_type = SPVM_OP_new_op_void_type(compiler, compiler->cur_file, compiler->cur_line);
+
+      SPVM_OP* op_list_descriptors = SPVM_OP_new_op_list(compiler, compiler->cur_file, compiler->cur_line);
+      SPVM_OP* op_descriptor_static = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_STATIC, compiler->cur_file, compiler->cur_line);
+      SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->first, op_descriptor_static);
+
       int32_t can_precompile = 0;
-      $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, NULL, $2, NULL, NULL, 1, 0, can_precompile);
+      op_method->flag |= SPVM_OP_C_FLAG_METHOD_NOT_SUB;
+      $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_descriptors, $2, NULL, NULL, 1, 0, can_precompile);
     }
     
 use
