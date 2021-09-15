@@ -1909,7 +1909,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
           int32_t can_precompile = 0;
-          op_method->flag |= SPVM_OP_C_FLAG_METHOD_NOT_SUB;
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
           
           op_method->uv.method->is_field_getter = 1;
@@ -1961,7 +1960,6 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           SPVM_OP_insert_child(compiler, op_block, op_block->last, op_statements);
           
           int32_t can_precompile = 0;
-          op_method->flag |= SPVM_OP_C_FLAG_METHOD_NOT_SUB;
           SPVM_OP_build_method(compiler, op_method, op_name_method, op_return_type, op_args, NULL, op_block, NULL, NULL, 0, 0, can_precompile);
           
           op_method->uv.method->is_field_setter = 1;
@@ -2432,7 +2430,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   }
   
   // Add $self : self before the first argument
-  if (!method->is_class_method && op_method->flag & SPVM_OP_C_FLAG_METHOD_NOT_SUB) {
+  if (!method->is_class_method) {
     SPVM_OP* op_arg_var_name_self = SPVM_OP_new_op_name(compiler, "$self", op_method->file, op_method->line);
     SPVM_OP* op_arg_var_self = SPVM_OP_new_op_var(compiler, op_arg_var_name_self);
     SPVM_TYPE* self_type = SPVM_TYPE_new(compiler);

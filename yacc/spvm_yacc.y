@@ -182,7 +182,6 @@ init_block
       SPVM_OP_insert_child(compiler, op_list_descriptors, op_list_descriptors->first, op_descriptor_static);
 
       int32_t can_precompile = 0;
-      op_method->flag |= SPVM_OP_C_FLAG_METHOD_NOT_SUB;
       $$ = SPVM_OP_build_method(compiler, op_method, op_method_name, op_void_type, NULL, op_list_descriptors, $2, NULL, NULL, 1, 0, can_precompile);
     }
     
