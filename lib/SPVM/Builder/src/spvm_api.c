@@ -3981,194 +3981,18 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_VOID:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_BYTE:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_SHORT:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          short_vars[opcode->operand0] = *(int16_t*)&stack[0];
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_INT:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          int_vars[opcode->operand0] = *(int32_t*)&stack[0];
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_LONG:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          long_vars[opcode->operand0] = *(int64_t*)&stack[0];
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_FLOAT:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          float_vars[opcode->operand0] = *(float*)&stack[0];
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_DOUBLE:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          double_vars[opcode->operand0] = *(double*)&stack[0];
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_OBJECT:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_BYTE:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          int32_t fields_length = opcode->operand3;
-          for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
-          }
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_SHORT:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          int32_t fields_length = opcode->operand3;
-          for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
-          }
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_INT:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          int32_t fields_length = opcode->operand3;
-          for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
-          }
-        }
-        break;
-      }
+      case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_LONG:
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_FLOAT:
-      {
-        int32_t decl_method_id = opcode->operand1;
-        SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
-        const char* decl_method_name = decl_method->name;
-        const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
-        call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          int32_t fields_length = opcode->operand3;
-          for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
-          }
-        }
-        break;
-      }
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_DOUBLE:
       {
         int32_t decl_method_id = opcode->operand1;
@@ -4179,12 +4003,109 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
         call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
         exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
-        if (!exception_flag) {
-          int32_t fields_length = opcode->operand3;
-          for (int32_t field_index = 0; field_index < fields_length; field_index++) {
-            double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
+        
+        switch (opcode_id) {
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_VOID: {
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_BYTE: {
+            if (!exception_flag) {
+              byte_vars[opcode->operand0] = *(int8_t*)&stack[0];
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_SHORT: {
+            if (!exception_flag) {
+              short_vars[opcode->operand0] = *(int16_t*)&stack[0];
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_INT: {
+            if (!exception_flag) {
+              int_vars[opcode->operand0] = *(int32_t*)&stack[0];
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_LONG: {
+            if (!exception_flag) {
+              long_vars[opcode->operand0] = *(int64_t*)&stack[0];
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_FLOAT: {
+            if (!exception_flag) {
+              float_vars[opcode->operand0] = *(float*)&stack[0];
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_DOUBLE: {
+            if (!exception_flag) {
+              double_vars[opcode->operand0] = *(double*)&stack[0];
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_OBJECT: {
+            if (!exception_flag) {
+              SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], stack[0].oval);
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_BYTE: {
+            if (!exception_flag) {
+              int32_t fields_length = opcode->operand3;
+              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                byte_vars[opcode->operand0 + field_index] = *(int8_t*)&stack[field_index];
+              }
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_SHORT: {
+            if (!exception_flag) {
+              int32_t fields_length = opcode->operand3;
+              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                short_vars[opcode->operand0 + field_index] = *(int16_t*)&stack[field_index];
+              }
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_INT: {
+            if (!exception_flag) {
+              int32_t fields_length = opcode->operand3;
+              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                int_vars[opcode->operand0 + field_index] = *(int32_t*)&stack[field_index];
+              }
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_LONG: {
+            if (!exception_flag) {
+              int32_t fields_length = opcode->operand3;
+              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                long_vars[opcode->operand0 + field_index] = *(int64_t*)&stack[field_index];
+              }
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_FLOAT: {
+            if (!exception_flag) {
+              int32_t fields_length = opcode->operand3;
+              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                float_vars[opcode->operand0 + field_index] = *(float*)&stack[field_index];
+              }
+            }
+            break;
+          }
+          case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_MULNUM_DOUBLE: {
+            if (!exception_flag) {
+              int32_t fields_length = opcode->operand3;
+              for (int32_t field_index = 0; field_index < fields_length; field_index++) {
+                double_vars[opcode->operand0 + field_index] = *(double*)&stack[field_index];
+              }
+            }
+            break;
           }
         }
+        
         break;
       }
       case SPVM_OPCODE_C_ID_IF_EXCEPTION_CATCH: {
