@@ -414,7 +414,7 @@ L<get_instance_method_id|"get_instance_method_id"> get a method id of a instance
   int32_t method_id = env->get_class_method_id(env, "Foo", "sum", "int(int,int)");
 
   // Get method id of instance method
-  int32_t method_id = env->get_instance_method_id(env, object, "sum", "int(self,int,int)");
+  int32_t method_id = env->get_instance_method_id(env, object, "sum", "int(int,int)");
 
 If method_id is less than 0, it means that the method was not found. It is safe to handle exceptions as follows.
 
@@ -765,7 +765,7 @@ The signature has the following format: Must not contain white space.
 
 Example:
 
-  int32_t method_id = env->get_class_method_id(env, "Foo", "func", "int(long,string)");
+  int32_t method_id = env->get_class_method_id(env, "Foo", "get", "int(long,string)");
 
 =head2 get_instance_method_id
 
@@ -777,7 +777,7 @@ The signature is the same as the method_id signature.
 
 Example:
 
-  int32_t method_id = env->get_instance_method_id(env, object, "method", "int(self,long,string)");
+  int32_t method_id = env->get_instance_method_id(env, object, "get", "int(long,string)");
 
 =head2 new_object_raw
 

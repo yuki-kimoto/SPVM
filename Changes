@@ -12,7 +12,12 @@ Revision history for SPVM
         
         * rename native api get_method_id_by_object to get_instance_method_id
         * rename native api get_method_id to get_class_method_id
-        
+        * Native api method signature don't need self.
+          [Before]
+          "int(self,long)"
+          [After]
+          "int(long)
+          
         [BUGFIXES]
         * None
 
