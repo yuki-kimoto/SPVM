@@ -3898,17 +3898,20 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         
         break;
       }
-      case SPVM_OPCODE_C_ID_CALL_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
+      case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD:
       case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD:
       {
-        int8_t is_method;
+        int8_t is_static_method_call;
         switch (opcode_id) {
-          case SPVM_OPCODE_C_ID_CALL_METHOD: {
-            is_method = 1;
+          case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
+          case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD:
+          {
+            is_static_method_call = 1;
             break;
           }
           case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD: {
-            is_method = 0;
+            is_static_method_call = 0;
             break;
           }
           default: {
@@ -3937,7 +3940,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
         
         // Call method
-        if (is_method) {
+        if (is_static_method_call) {
           SPVM_STRING_BUFFER_add(string_buffer, "    if (");
           SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
           SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
