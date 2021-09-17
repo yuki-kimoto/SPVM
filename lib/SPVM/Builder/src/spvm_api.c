@@ -3876,6 +3876,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         call_spvm_method_arg_stack_top -= call_spvm_method->args_alloc_length;
         exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
+        // warn("AAAAAAA %d %d %d", opcode_id, call_spvm_method->return_type_category_id, opcode_id - call_spvm_method->return_type_category_id);
+        
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_CALL_METHOD_VOID: {
             break;
