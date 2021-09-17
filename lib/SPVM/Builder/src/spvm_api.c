@@ -3871,10 +3871,10 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CALL_METHOD_MULNUM_FLOAT:
       case SPVM_OPCODE_C_ID_CALL_METHOD_MULNUM_DOUBLE:
       {
-        int32_t call_spvm_method_id = opcode->operand1;
-        SPVM_METHOD* call_spvm_method = SPVM_LIST_fetch(compiler->methods, call_spvm_method_id);
+        int32_t call_method_id = opcode->operand1;
+        SPVM_METHOD* call_spvm_method = SPVM_LIST_fetch(compiler->methods, call_method_id);
         call_spvm_method_arg_stack_top -= call_spvm_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
+        exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_CALL_METHOD_VOID: {
@@ -4000,9 +4000,9 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         void* object = *(void**)&object_vars[opcode->operand2];
         const char* decl_method_name = decl_method->name;
         const char* decl_method_signature = decl_method->signature;
-        int32_t call_spvm_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
+        int32_t call_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);
         call_spvm_method_arg_stack_top -= decl_method->args_alloc_length;
-        exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);
+        exception_flag = env->call_spvm_method(env, call_method_id, stack);
         
         switch (opcode_id) {
           case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD_VOID: {
