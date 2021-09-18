@@ -249,7 +249,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_class_var_float_by_name,
     SPVM_API_get_class_var_double_by_name,
     SPVM_API_get_class_var_object_by_name,
-    SPVM_API_call_spvm_method_by_name,
+    SPVM_API_call_class_method_by_name,
     SPVM_API_call_instance_method_by_name,
     SPVM_API_get_field_string_chars_by_name,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, // any_object_basic_type_id
@@ -630,7 +630,7 @@ const char* SPVM_API_get_field_string_chars_by_name(SPVM_ENV* env, SPVM_OBJECT* 
   }
 }
 
-int32_t SPVM_API_call_spvm_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
+int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
   
   int32_t method_id = env->get_class_method_id(env, class_name, method_name, signature);
   if (method_id < 0) {

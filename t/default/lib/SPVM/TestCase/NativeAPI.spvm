@@ -1080,8 +1080,8 @@ class TestCase::NativeAPI {
   static method my_value : int ($value : int) { return $value; }
   
   native static method native_call_spvm_method : int ();
-  native static method native_call_spvm_method_by_name : int ();
-  native static method native_call_spvm_method_by_name_exception : int ();
+  native static method native_call_class_method_by_name : int ();
+  native static method native_call_class_method_by_name_exception : int ();
 
   static method new_object_by_name : int () {
     my $minimal = native_new_object_by_name();
