@@ -255,5 +255,7 @@ struct spvm_env {
   void* any_object_basic_type_id;
   void* (*dump_raw)(SPVM_ENV* env, void* object);
   void* (*dump)(SPVM_ENV* env, void* object);
+  int32_t (*call_class_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
+  int32_t (*call_instance_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
 };
 #endif

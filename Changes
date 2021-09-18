@@ -19,6 +19,8 @@ Revision history for SPVM
           "int(long)
         * rename native api call_callback_method_by_name to call_instance_method_by_name
         * rename native api call_spvm_method_by_name to call_class_method_by_name
+        * add native api call_class_method. This is alias for call_spvm_method
+        * add native api call_instance_method. This is alias for call_spvm_method
         
         [BUGFIXES]
         * None

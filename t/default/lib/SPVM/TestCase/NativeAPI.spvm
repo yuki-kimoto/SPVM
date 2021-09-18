@@ -1083,6 +1083,9 @@ class TestCase::NativeAPI {
   native static method native_call_class_method_by_name : int ();
   native static method native_call_class_method_by_name_exception : int ();
 
+  native static method native_call_class_method : int ();
+  native static method native_call_instance_method : int ();
+
   static method new_object_by_name : int () {
     my $minimal = native_new_object_by_name();
     unless ($minimal isa TestCase::Minimal) {

@@ -255,6 +255,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_ANY_OBJECT, // any_object_basic_type_id
     SPVM_API_dump_raw,
     SPVM_API_dump,
+    SPVM_API_call_spvm_method, // call_class_method
+    SPVM_API_call_spvm_method, // call_instance_method
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -637,7 +639,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name
     env->die(env, "Method not found, class name:%s, sub name:%s, signature:%s", class_name, method_name, signature, file, line);
     return 1;
   }
-  int32_t e = env->call_spvm_method(env, method_id, stack);
+  int32_t e = env->call_class_method(env, method_id, stack);
   if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
     env->die(env, "%s", message, file, line);
@@ -659,8 +661,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object
     env->die(env, "Method not found, object:%p, sub name:%s, signature:%s", object, method_name, signature, file, line);
     return 1;
   };
-  env->call_spvm_method(env, method_id, stack);
-  int32_t e = env->call_spvm_method(env, method_id, stack);
+  int32_t e = env->call_instance_method(env, method_id, stack);
   if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
     env->die(env, "%s", message, file, line);

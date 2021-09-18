@@ -2140,9 +2140,9 @@ Example:
   void* value = env->get_class_var_object_by_name(env, "TestCase::NativeAPI", "$MINIMAL_VALUE", "TestCase::Minimal", &e, __FILE__, __LINE__);
   if (e) { return e; }
 
-=head2 call_spvm_method_by_name
+=head2 call_class_method_by_name
 
-  int32_t (*call_spvm_method_by_name)(SPVM_ENV* env,
+  int32_t (*call_class_method_by_name)(SPVM_ENV* env,
     const char* class_name, const char* method_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
 
@@ -2160,14 +2160,13 @@ Example:
     output = stack[0].ival;
   }
 
-=head2 call_callback_method_by_name
+=head2 call_instance_method_by_name
 
-  int32_t (*call_callback_method_by_name)(SPVM_ENV* env, void* object,
+  int32_t (*call_instance_method_by_name)(SPVM_ENV* env, void* object,
     const char* method_name, const char* signature, SPVM_VALUE* stack,
     const char* file, int32_t line);
 
 Example:
-
 
 =head2 get_field_string_chars_by_name
 
@@ -2194,6 +2193,14 @@ Get the string which dump the object. The string is the same as the return value
   void* (*dump)(SPVM_ENV* env, void* object);
 
 Do the same as C<dump_raw>, and add the created string object to the mortal stack of the environment. Use this function in normal use instead of C<dump_raw>.
+
+=head2 call_class_method
+
+Alias for L<"call_spvm_method">
+
+=head2 call_instance_method
+
+Alias for L<"call_spvm_method">
 
 =head1 Native API indexes
 
@@ -2357,6 +2364,8 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   155 any_object_basic_type_id
   156 dump_raw
   157 dump
+  158 call_class_method
+  159 call_instance_method
 
 =head1 Examples
 
