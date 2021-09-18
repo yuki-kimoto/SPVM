@@ -17,7 +17,8 @@ Revision history for SPVM
           "int(self,long)"
           [After]
           "int(long)
-          
+        * rename native api call_callback_method_by_name to call_instance_method_by_name,
+        
         [BUGFIXES]
         * None
 
