@@ -6355,9 +6355,12 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
       method = SPVM_API_get_method(env, class, method_name);
     }
     if (method) {
-      // Signature
-      if (strcmp(signature, method->signature) == 0) {
-        method_id = method->id;
+      // Instance method
+      if (!method->is_class_method) {
+        // Signature
+        if (strcmp(signature, method->signature) == 0) {
+          method_id = method->id;
+        }
       }
     }
   }

@@ -1,4 +1,11 @@
 Revision history for SPVM
+0.9020  2021-09-20
+        [CHANGES]
+        * native api get_instance_method_id return -1 if the method is class method
+        
+        [BUGFIXES]
+        * None
+
 0.9013  2021-09-14
         [CHANGES]
         * remove sub and self keyword and add method and static keyword. Sorry.
