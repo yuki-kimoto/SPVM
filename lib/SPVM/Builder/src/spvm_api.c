@@ -6301,43 +6301,24 @@ SPVM_METHOD* SPVM_API_get_method(SPVM_ENV* env, SPVM_CLASS* class, const char* m
 int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
   (void)env;
   
-  // Method id
-  int32_t method_id;
+  // Method ID
+  int32_t method_id = -1;
   
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
-  
-  // Class name
-  SPVM_CLASS* class;
-  if (!basic_type->class) {
-    class = NULL;
-  }
-  else {
-    class = basic_type->class;
-  }
-  
-  if (class == NULL) {
-    method_id = -1;
-  }
-  else {
-    int32_t methods_length = class->methods->length;
+  if (basic_type) {
     
-    if (methods_length == 0) {
-      method_id = -1;
-    }
-    else {
+    // Class
+    SPVM_CLASS* class = basic_type->class;
+    if (class) {
+
       // Method
       SPVM_METHOD* method = SPVM_API_get_method(env, class, method_name);
-      if (method == NULL) {
-        method_id = -1;
-      }
-      else {
+      if (method) {
+        
         // Signature
         if (strcmp(signature, method->signature) == 0) {
           method_id = method->id;
-        }
-        else {
-          method_id = -1;
         }
       }
     }
