@@ -6342,20 +6342,23 @@ int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, cons
   // Class
   SPVM_CLASS* class = basic_type->class;
   if (class) {
+    // Method
+    SPVM_METHOD* method = NULL;
+    
     // Anon instance method
     if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
       // Method name
-      SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, 0);
-       
+      method = SPVM_LIST_fetch(class->methods, 0);
+    }
+    // Normal instance method
+    else {
+      method = SPVM_API_get_method(env, class, method_name);
+    }
+    if (method) {
       // Signature
       if (strcmp(signature, method->signature) == 0) {
         method_id = method->id;
       }
-    }
-    // Normal instance method
-    else {
-      const char* class_name = class->name;
-      method_id = SPVM_API_get_class_method_id(env, class_name, method_name, signature);
     }
   }
 
