@@ -1096,7 +1096,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                             opcode.operand0 = mem_id_out;
                             opcode.operand1 = call_method->method->id;
-                            opcode.operand2 = first_arg_mem_id;
                           }
                           else {
                             if (call_method->method->is_class_method) {

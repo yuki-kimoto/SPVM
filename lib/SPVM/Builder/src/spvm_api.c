@@ -3973,7 +3973,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       {
         int32_t decl_method_id = opcode->operand1;
         SPVM_METHOD* decl_method = SPVM_LIST_fetch(compiler->methods, decl_method_id);
-        void* object = *(void**)&object_vars[opcode->operand2];
+        void* object = stack[0].oval;
         const char* decl_method_name = decl_method->name;
         const char* decl_method_signature = decl_method->signature;
         int32_t call_method_id = env->get_instance_method_id(env, object, decl_method_name, decl_method_signature);

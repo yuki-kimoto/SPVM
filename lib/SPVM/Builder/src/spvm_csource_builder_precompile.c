@@ -3971,9 +3971,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         }
         // Call method
         else {
-          SPVM_STRING_BUFFER_add(string_buffer, "    void* object = ");
-          SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand2);
-          SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;");
           SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_spvm_method_id = env->get_instance_method_id(env, object, \"");
           SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
           SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
