@@ -6330,43 +6330,35 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
 int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature) {
   (void)env;
   
-  // Runtime
+  // Method ID
+  int32_t method_id = -1;
+  
+  // Compiler
   SPVM_COMPILER* compiler = env->compiler;
   
-  // Class name
-  SPVM_BASIC_TYPE* object_basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
-  SPVM_CLASS* object_class;
-  if (object_basic_type->class) {
-    object_class = object_basic_type->class;
-  }
-  else {
-    object_class = NULL;
-  }
+  // Basic type
+  SPVM_BASIC_TYPE* basic_type = SPVM_LIST_fetch(compiler->basic_types, object->basic_type_id);
   
-  if (object_class == NULL) {
-    return 0;
-  }
-  
-  // Class which have only anon sub
-  int32_t method_id;
-  if (object_class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
-    // Method name
-    SPVM_METHOD* method = SPVM_LIST_fetch(object_class->methods, 0);
-     
-    // Signature
-    if (strcmp(signature, method->signature) == 0) {
-      method_id = method->id;
+  // Class
+  SPVM_CLASS* class = basic_type->class;
+  if (class) {
+    // Anon instance method
+    if (class->flag & SPVM_CLASS_C_FLAG_ANON_METHOD_CLASS) {
+      // Method name
+      SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, 0);
+       
+      // Signature
+      if (strcmp(signature, method->signature) == 0) {
+        method_id = method->id;
+      }
     }
+    // Normal instance method
     else {
-      method_id = 0;
+      const char* class_name = class->name;
+      method_id = SPVM_API_get_class_method_id(env, class_name, method_name, signature);
     }
   }
-  // Normal sub
-  else {
-    const char* object_class_name = object_class->name;
-    method_id = SPVM_API_get_class_method_id(env, object_class_name, method_name, signature);
-  }
-  
+
   return method_id;
 }
 
