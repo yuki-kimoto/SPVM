@@ -1,7 +1,8 @@
 Revision history for SPVM
-0.9020  2021-09-20
+0.9014  2021-09-21
         [CHANGES]
         * native api get_instance_method_id return -1 if the method is class method
+        * native api get_class_method_id return -1 if the method is not class method
         * add native api get_instance_method_id_static
         
         [BUGFIXES]
