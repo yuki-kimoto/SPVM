@@ -5135,7 +5135,7 @@ int32_t SPVM_API_has_callback(SPVM_ENV* env, SPVM_OBJECT* object, int32_t callba
     else {
       const char* object_class_name = object_class->name;
       const char* method_callback_name = method_callback->name;
-      int32_t method_id = SPVM_API_get_class_method_id(env, object_class_name, method_callback_name, method_callback_signature);
+      int32_t method_id = SPVM_API_get_instance_method_id_static(env, object_class_name, method_callback_name, method_callback_signature);
       if (method_id >= 0) {
         has_callback = 1;
       }
@@ -6316,10 +6316,12 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
       // Method
       SPVM_METHOD* method = SPVM_API_get_method(env, class, method_name);
       if (method) {
-        
-        // Signature
-        if (strcmp(signature, method->signature) == 0) {
-          method_id = method->id;
+        // Class method
+        if (method->is_class_method) {
+          // Signature
+          if (strcmp(signature, method->signature) == 0) {
+            method_id = method->id;
+          }
         }
       }
     }
