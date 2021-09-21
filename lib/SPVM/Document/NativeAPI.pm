@@ -757,9 +757,11 @@ Example:
 
   int32_t (*get_class_method_id)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
 
-Get the method ID by specifying the class name, method name, and signature. If no method exists, a value less than 0 is returned.
+Get a class method ID by the class name, the method name, and the method signature. If the class method does not exists, a negative value is returned.
 
-The signature has the following format: Must not contain white space.
+This ID is used by L<"call_class_method">.
+
+The method signature has the following format.
 
   ReturnValueType(ArgumentType1,ArgumentType2,...)
 
@@ -771,9 +773,13 @@ Example:
 
   int32_t (*get_instance_method_id)(SPVM_ENV* env, void* object, const char* method_name, const char* signature);
 
-Get the method ID by specifying the object and method name. If the method does not exist, a value less than 0 is returned.
+Get a instance method ID by the object, the method name, and the method signatre. If the instance method does not exist, a negative value is returned.
 
-The signature is the same as the method_id signature.
+This ID is used by L<"call_instance_method">.
+
+The method signature has the following format,
+
+  ReturnValueType(ArgumentType1,ArgumentType2,...)
 
 Example:
 
@@ -2202,6 +2208,22 @@ Alias for L<"call_spvm_method">
 
 Alias for L<"call_spvm_method">
 
+=head2 get_instance_method_id_static
+
+  int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
+
+Get a instance method ID by the class name, the method name, and the method signature. If the instance method does not exists, a negative value is returned.
+
+This ID is used by L<"call_instance_method">.
+
+The method signature has the following format.
+
+  ReturnValueType(ArgumentType1,ArgumentType2,...)
+
+Example:
+
+  int32_t method_id = env->get_instance_method_id_static(env, "Foo", "get", "int(long,string)");
+
 =head1 Native API indexes
 
 Native APIs have indexes which correspond to the names. These indexes are permanently same for the binary compatibility. When a new Native API is added, it will be added to the end.
@@ -2366,6 +2388,7 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   157 dump
   158 call_class_method
   159 call_instance_method
+  160 get_instance_method_id_static
 
 =head1 Examples
 

@@ -257,6 +257,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_dump,
     SPVM_API_call_spvm_method, // call_class_method
     SPVM_API_call_spvm_method, // call_instance_method
+    SPVM_API_get_instance_method_id_static,
   };
   
   SPVM_ENV* env = calloc(sizeof(env_init), 1);
@@ -6326,6 +6327,38 @@ int32_t SPVM_API_get_class_method_id(SPVM_ENV* env, const char* class_name, cons
   
   return method_id;
 }
+
+int32_t SPVM_API_get_instance_method_id_static(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature) {
+  (void)env;
+  
+  // Method ID
+  int32_t method_id = -1;
+  
+  // Basic type
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
+  if (basic_type) {
+    
+    // Class
+    SPVM_CLASS* class = basic_type->class;
+    if (class) {
+
+      // Method
+      SPVM_METHOD* method = SPVM_API_get_method(env, class, method_name);
+      if (method) {
+        // Instance method
+        if (!method->is_class_method) {
+          // Signature
+          if (strcmp(signature, method->signature) == 0) {
+            method_id = method->id;
+          }
+        }
+      }
+    }
+  }
+  
+  return method_id;
+}
+
 
 int32_t SPVM_API_get_instance_method_id(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature) {
   (void)env;
