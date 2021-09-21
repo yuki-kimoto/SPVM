@@ -3943,16 +3943,86 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         }
         // Call method
         else {
-          int8_t is_static_method_call;
           switch (opcode_id) {
-            case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD:
-            case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD:
-            {
-              is_static_method_call = 1;
+            case SPVM_OPCODE_C_ID_CALL_CLASS_METHOD: {
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_method_id(env, \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
+              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      if (");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Method not found ");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "->");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        return 1;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = ");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              
+              break;
+            }
+            case SPVM_OPCODE_C_ID_CALL_INSTANCE_METHOD: {
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      ");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, " = env->get_instance_method_id_static(env, \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
+              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      if (");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Method not found ");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "->");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "        return 1;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = ");
+              SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+              
               break;
             }
             case SPVM_OPCODE_C_ID_CALL_CALLBACK_METHOD: {
-              is_static_method_call = 0;
+              SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;");
+              SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_method_id = env->get_instance_method_id(env, object, \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
+              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    if (call_method_id == 0) {\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Method not found ");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "->");
+              SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
+              SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "      return 1;\n");
+              SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
+              
               break;
             }
             default: {
@@ -3960,57 +4030,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
             }
           }
           
-          // Call method
-          if (is_static_method_call) {
-            SPVM_STRING_BUFFER_add(string_buffer, "    if (");
-            SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      ");
-            SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, " = env->get_class_method_id(env, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      if (");
-            SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, " < 0) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        void* exception = env->new_string_nolen_raw(env, \"Method not found ");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "->");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        env->set_exception(env, exception);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "        return 1;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_spvm_method_id = ");
-            SPVM_STRING_BUFFER_add_method_access_id_name(string_buffer, class->name, decl_method_class_name, decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, ";\n");
-          }
-          // Call method
-          else {
-            SPVM_STRING_BUFFER_add(string_buffer, "    void* object = stack[0].oval;");
-            SPVM_STRING_BUFFER_add(string_buffer, "    int32_t call_spvm_method_id = env->get_instance_method_id(env, object, \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\", \"");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_signature);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    if (call_spvm_method_id == 0) {\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      void* exception = env->new_string_nolen_raw(env, \"Method not found ");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_class_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "->");
-            SPVM_STRING_BUFFER_add(string_buffer, (char*)decl_method_name);
-            SPVM_STRING_BUFFER_add(string_buffer, "\");\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      env->set_exception(env, exception);\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "      return 1;\n");
-            SPVM_STRING_BUFFER_add(string_buffer, "    }\n");
-          }
-          
-
-          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_spvm_method(env, call_spvm_method_id, stack);\n");
+          SPVM_STRING_BUFFER_add(string_buffer, "    exception_flag = env->call_spvm_method(env, call_method_id, stack);\n");
         }
         
         // Call method
