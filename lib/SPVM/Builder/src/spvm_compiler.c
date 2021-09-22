@@ -59,7 +59,11 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
-  
+
+  // Add Bool source
+  const char* spvm_bool_module_source = "class Bool {\n  INIT {\n    $true = new Bool;\n    $true->{value} = 1;\n    $false = new Bool;\n    $false->{value} = 0;\n  }\n  \n  our $true : ro Bool;\n  our $false : ro Bool;\n  has value : ro int;\n}";
+  SPVM_HASH_insert(compiler->module_source_symtable, "Bool", strlen("Bool"), (void*)spvm_bool_module_source);
+
   // Add Byte source
   const char* spvm_byte_module_source = "class Byte {\n  has value : ro byte;\n  static method new : Byte ($value : byte) {\n    my $self = new Byte;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Byte", strlen("Byte"), (void*)spvm_byte_module_source);
@@ -83,6 +87,15 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // Add Double source
   const char* spvm_double_module_source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Double", strlen("Double"), (void*)spvm_double_module_source);
+
+  // use Bool module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Bool", "Bool", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
 
   // use Byte module
   {
