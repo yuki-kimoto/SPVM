@@ -1,6 +1,4 @@
 class TestCase::Lib::Bool {
-  use Bool;
-  
   static method basic : int () {
     # true
     {
