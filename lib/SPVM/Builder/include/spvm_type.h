@@ -100,6 +100,7 @@ SPVM_TYPE* SPVM_TYPE_create_int_object_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_long_object_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_float_object_type(SPVM_COMPILER* compiler);
 SPVM_TYPE* SPVM_TYPE_create_double_object_type(SPVM_COMPILER* compiler);
+SPVM_TYPE* SPVM_TYPE_create_bool_object_type(SPVM_COMPILER* compiler);
 
 int32_t SPVM_TYPE_is_byte_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_short_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
@@ -107,6 +108,7 @@ int32_t SPVM_TYPE_is_int_object_type(SPVM_COMPILER* compiler, int32_t basic_type
 int32_t SPVM_TYPE_is_long_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_float_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_double_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
+int32_t SPVM_TYPE_is_bool_object_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 
 int32_t SPVM_TYPE_is_integral_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
 int32_t SPVM_TYPE_is_numeric_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag);
