@@ -1809,6 +1809,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FLOAT);
                   return FLOAT;
                 }
+                else if (strcmp(keyword, "false") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_FALSE);
+                  return FALSE;
+                }
                 break;
               }
               case 'g' : {
@@ -2020,6 +2024,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = op;
                   
                   return SCALAR;
+                }
+                break;
+              }
+              case 't' : {
+                if (strcmp(keyword, "true") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_TRUE);
+                  return TRUE;
                 }
                 break;
               }
