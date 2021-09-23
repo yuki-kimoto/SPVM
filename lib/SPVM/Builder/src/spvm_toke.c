@@ -198,7 +198,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               strcmp(class_name, "Int") == 0 ||
               strcmp(class_name, "Long") == 0 ||
               strcmp(class_name, "Float") == 0 ||
-              strcmp(class_name, "Double") == 0
+              strcmp(class_name, "Double") == 0 ||
+              strcmp(class_name, "Bool") == 0
             )
             {
               do_directry_module_search = 0;
@@ -276,6 +277,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             
             // Search module source
             char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+            
             char* original_src = NULL;
             int32_t file_size = 0;
             int32_t module_not_found = 0;

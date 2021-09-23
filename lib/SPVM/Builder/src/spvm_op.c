@@ -767,6 +767,13 @@ SPVM_OP* SPVM_OP_new_op_int_type(SPVM_COMPILER* compiler, const char* file, int3
   return op_type;
 }
 
+SPVM_OP* SPVM_OP_new_op_bool_object_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
+  SPVM_TYPE* type = SPVM_TYPE_create_bool_object_type(compiler);
+  SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
+  
+  return op_type;
+}
+
 SPVM_OP* SPVM_OP_new_op_long_type(SPVM_COMPILER* compiler, const char* file, int32_t line) {
   SPVM_TYPE* type = SPVM_TYPE_create_long_type(compiler);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
@@ -1233,6 +1240,13 @@ SPVM_TYPE* SPVM_OP_get_type(SPVM_COMPILER* compiler, SPVM_OP* op) {
   SPVM_TYPE*  type = NULL;
   
   switch (op->id) {
+    case SPVM_OP_C_ID_TRUE:
+    case SPVM_OP_C_ID_FALSE:
+    {
+      SPVM_OP* op_type = SPVM_OP_new_op_bool_object_type(compiler, op->file, op->line);
+      type = op_type->uv.type;
+      break;
+    }
     case SPVM_OP_C_ID_RETURN:
     case SPVM_OP_C_ID_LOOP_INCREMENT:
     case SPVM_OP_C_ID_CONDITION:

@@ -3625,8 +3625,12 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                         case SPVM_OP_C_ID_FIELD_ACCESS:
                         case SPVM_OP_C_ID_ARRAY_ACCESS:
                         case SPVM_OP_C_ID_CALL_METHOD:
+                        case SPVM_OP_C_ID_TRUE:
+                        case SPVM_OP_C_ID_FALSE:
+                        {
                           create_tmp_var = 1;
                           break;
+                        }
                         case SPVM_OP_C_ID_CONSTANT: {
                           if (op_cur->flag != SPVM_OP_C_FLAG_CONSTANT_CASE) {
                             if (SPVM_TYPE_is_numeric_type(compiler, tmp_var_type->basic_type->id, tmp_var_type->dimension, tmp_var_type->flag)) {
