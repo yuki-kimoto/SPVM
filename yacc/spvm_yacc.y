@@ -700,7 +700,13 @@ expression
   | comparison_op
   | isa
   | TRUE
+    {
+      $$ = SPVM_OP_new_op_true(compiler, $1);
+    }
   | FALSE
+    {
+      $$ = SPVM_OP_new_op_false(compiler, $1);
+    }
 
 expressions
   : expressions ',' expression

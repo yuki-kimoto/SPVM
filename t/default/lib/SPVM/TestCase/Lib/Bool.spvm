@@ -1,5 +1,6 @@
 class TestCase::Lib::Bool {
   static method basic : int () {
+
     # true
     {
       my $true = Bool->TRUE;
@@ -22,9 +23,53 @@ class TestCase::Lib::Bool {
       }
     }
 
+    # true - true keyword
+    {
+      my $true = true;
+      
+      # Bool type
+      unless ($true isa Bool) {
+        return 0;
+      }
+      
+      # Singleton
+      unless ($true == Bool->TRUE) {
+        return 0;
+      }
+      
+      # Value
+      my $true_value = $true->value;
+      
+      unless ($true_value == 1) {
+        return 0;
+      }
+    }
+
     # false
     {
       my $false = Bool->FALSE;
+      
+      # Bool type
+      unless ($false isa Bool) {
+        return 0;
+      }
+      
+      # Singleton
+      unless ($false == Bool->FALSE) {
+        return 0;
+      }
+      
+      # Value
+      my $false_value = $false->value;
+      
+      unless ($false_value == 0) {
+        return 0;
+      }
+    }
+
+    # false - false keyword
+    {
+      my $false = false;
       
       # Bool type
       unless ($false isa Bool) {

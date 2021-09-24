@@ -940,6 +940,26 @@ SPVM_OP* SPVM_OP_build_default_statement(SPVM_COMPILER* compiler, SPVM_OP* op_de
   return op_default;
 }
 
+SPVM_OP* SPVM_OP_new_op_true(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  
+  const char* class_var_name = "$Bool::TRUE";
+  SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
+  SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_class_var_name);
+  op_class_var_access->uv.class_var_access->inline_expansion = 1;
+
+  return op_class_var_access;
+}
+
+SPVM_OP* SPVM_OP_new_op_false(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  
+  const char* class_var_name = "$Bool::FALSE";
+  SPVM_OP* op_class_var_name = SPVM_OP_new_op_name(compiler, class_var_name, op->file, op->line);
+  SPVM_OP* op_class_var_access = SPVM_OP_build_class_var_access(compiler, op_class_var_name);
+  op_class_var_access->uv.class_var_access->inline_expansion = 1;
+  
+  return op_class_var_access;
+}
+
 SPVM_OP* SPVM_OP_build_condition(SPVM_COMPILER* compiler, SPVM_OP* op_term_condition, int32_t is_not) {
   // Condition
   int32_t id;
