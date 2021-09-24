@@ -1,6 +1,7 @@
 /spvm
 /libspvm.a
 core.*
+core
 *.output
 *.tmp
 *.o
