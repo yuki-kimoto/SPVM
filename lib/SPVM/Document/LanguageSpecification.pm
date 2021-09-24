@@ -45,6 +45,7 @@ SPVM Language Specification.
   <li><a href="#language-garbage-collection">Garbage Collection</a></li>
   <li><a href="#language-callback">Callback</a></li>
   <li><a href="#language-weak-ref">Weaken Reference</a></li>
+  <li><a href="#language-default-loaded-modules">Default loaded modules</a></li>
 </ul>
 
 <h2 id="language-c99">C99 Compliant</h2><!-- 2019/2/27 almost ok-->
@@ -353,7 +354,7 @@ Keywords in SPVM are the followings.
 allow byte INIT case die warn print default double elsif else enum eq
 eval for float gt ge has if callback_t isa int last break length
 lt le long my native ne next new our object class private
-public precompile pointer_t return require rw ro self switch
+public precompile pointer_t return require rw ro switch
 sub string short scalar undef unless use void mulnum_t while
 weaken wo __END__ __CLASS__ __FILE__ __LINE__
 </pre>
@@ -413,7 +414,7 @@ cmp length isa ref
 The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bison. 
 
 <pre>
-%token <opval> CLASS HAS METHOD OUR ENUM MY SELF USE REQUIRE ALLOW
+%token <opval> CLASS HAS METHOD OUR ENUM MY USE REQUIRE ALLOW
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -425,13 +426,13 @@ The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bis
 %type <opval> opt_classes classes class class_block
 %type <opval> opt_declarations declarations declaration
 %type <opval> enumeration enumeration_block opt_enumeration_values enumeration_values enumeration_value
-%type <opval> sub cb_obj opt_args args arg invocant has use require our
+%type <opval> sub cb_obj opt_args args arg has use require our
 %type <opval> opt_descriptors descriptors method_names opt_method_names
 %type <opval> opt_statements statements statement if_statement else_statement 
 %type <opval> for_statement while_statement switch_statement case_statement default_statement
 %type <opval> block eval_block begin_block switch_block if_require_statement
 %type <opval> unary_op binary_op comparison_op isa logical_op  expression_or_logical_op
-%type <opval> call_spvm_method opt_vaarg
+%type <opval> call_method opt_vaarg
 %type <opval> array_access field_access weaken_field unweaken_field isweak_field convert array_length
 %type <opval> assign inc dec allow
 %type <opval> new array_init
@@ -542,8 +543,6 @@ cb_obj
 opt_args
   : /* Empty */
   | args
-  | invocant
-  | invocant ',' args
 
 args
   : args ',' arg
@@ -556,9 +555,6 @@ arg
 opt_vaarg
   : /* Empty */
   | DOT3
-
-invocant
-  : var ':' SELF
 
 opt_descriptors
   : /* Empty */
@@ -662,7 +658,7 @@ expression
   | class_var_access
   | CONSTANT
   | UNDEF
-  | call_spvm_method
+  | call_method
   | field_access
   | array_access
   | convert
@@ -766,7 +762,7 @@ array_access
   | array_access '[' expression ']'
   | field_access '[' expression ']'
 
-call_spvm_method
+call_method
   : NAME '(' opt_expressions  ')'
   | basic_type ARROW method_name '(' opt_expressions  ')'
   | basic_type ARROW method_name
@@ -7422,11 +7418,13 @@ A new String Type object is created and all elements in byte[] are copied to the
 </p>
 
 <h3 id="language-type-convertion-unboxing">Unboxing Type Conversion</h3>
+
 <p>
   Unboxing Type Conversion is an operation to convert the value of Numeric Object Type to the corresponding value of Numeric Type.
 </p>
 
 <h3 id="language-type-convertion-bool">Bool Type Conversion</h3>
+
 <p>
   Bool Type Conversion is a conversion applied in the conditional part of if Statement, etc. for True/False Value judgment.
 </p>
@@ -7493,6 +7491,12 @@ CONDITION || CONDITION
   If Expression is <a href="#language-undef">Undefined Value</a>, 0 is returned.
 </p>
 <p>
+  If Expression is Bool->FALSE, 0 is returned. This is special case of the object of Bool class. false keywords means Bool->FALSE.
+</p>
+<p>
+  If Expression is Bool->TRUE, 1 is returned.  This is special case of the object of Bool class. true keywords means Bool->TRUE.
+</p>
+<p>
   When Expression is <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a> is done.
 </p>
 <p>
@@ -7507,6 +7511,52 @@ CONDITION || CONDITION
 <p>
   If Expression is Object Type, 0 is returned if it is Undefined Value, 1 otherwise.
 </p>
+
+<b>Bool Type Conversion Examples</b>
+
+<pre>
+if (1) {
+  # run
+}
+
+if (0) {
+  # not run
+}
+
+if (1.5) {
+  # run
+}
+
+if (0.0) {
+  # not run
+}
+
+if (true) {
+  # run
+}
+
+if (Bool->TRUE) {
+  # run
+}
+
+if (false) {
+  # not run
+}
+
+if (Bool->FALSE) {
+  # not run
+}
+
+my $object = SPVM::Int->new(1);
+
+if ($object) {
+  # run
+}
+
+if (undef) {
+  # not run
+}
+</pre>
 
 <h2 id="language-exception">Exception</h2>
 
@@ -7826,5 +7876,19 @@ Capture is a syntax for writing such a long description short.
 
 As a syntax related to Weaken Reference, Weaken Reference can be released <a href="#language-statement-weaken">weaken Statement</a>, and it can be confirmed whether Field is Weaken Reference <a href = "#language- There is an operator-isweak ">isweak Operator</a>.
 </p>
+
+<h2 id="language-default-loaded-modules">Default loaded modules</h2>
+
+SPVM loads the following modules just after the program start. These modules are deeply relataed to core features, such as type conversion.
+
+<ul>
+  <li><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Short">Short</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Int">Int</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Long">Long</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Float">Float</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Double">Double</a></li>
+  <li><a href="https://metacpan.org/pod/SPVM::Bool">Bool</a></li>
+</ul>
 
 =end html
