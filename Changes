@@ -1,4 +1,14 @@
 Revision history for SPVM
+0.9015  2021-09-24
+        [CHANGES]
+        * Bool module become embdded in SPVM core source
+        * rename Bool->true to Bool->TRUE
+        * rename Bool->false to Bool->FALSE
+        * add true keyword which means Bool->TRUE
+        * add false keyword which menas Bool->FALSE
+
+        [BUGFIXES]
+        * None
 0.9014  2021-09-21
         [CHANGES]
         * native api get_instance_method_id return -1 if the method is class method

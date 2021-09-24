@@ -10,8 +10,8 @@ SPVM::Bool - Bool in SPVM | Bool object
 
   use Bool;
   
-  my $true = Bool->true;
-  my $false = Bool->false;
+  my $true = Bool->TRUE;
+  my $false = Bool->FALSE;
   
   my $true_value = $true->value;
   my $false_value = $false->value;
@@ -26,15 +26,15 @@ L<Bool|SPVM::Bool> is automatically loaded just after the program starts.
 
 =head1 CLASS METHODS
 
-=head2 true
+=head2 TRUE
 
-  static method true : Bool ()
+  static method TRUE : Bool ()
 
 true singleton. This is created by INIT block when the program start.
 
-=head2 false
+=head2 FALSE
 
-  static method false : Bool ()
+  static method FALSE : Bool ()
 
 false singleton. This is created by INIT block when the program start.
 

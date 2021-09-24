@@ -31,7 +31,7 @@ SPVM::Int->new(1);
 SPVM::Long->new(1);
 SPVM::Float->new(1);
 SPVM::Double->new(1);
-SPVM::Bool->true;
+SPVM::Bool->TRUE;
 
 ok(1);
 

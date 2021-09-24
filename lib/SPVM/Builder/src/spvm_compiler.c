@@ -61,7 +61,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER_add_basic_types(compiler);
 
   // Add Bool source
-  const char* spvm_bool_module_source = "class Bool {\n  INIT {\n    $true = new Bool;\n    $true->{value} = 1;\n    $false = new Bool;\n    $false->{value} = 0;\n  }\n  \n  our $true : ro Bool;\n  our $false : ro Bool;\n  has value : ro int;\n}";
+  const char* spvm_bool_module_source = "class Bool {\n  INIT {\n    $TRUE = new Bool;\n    $TRUE->{value} = 1;\n    $FALSE = new Bool;\n    $FALSE->{value} = 0;\n  }\n  \n  our $TRUE : ro Bool;\n  our $FALSE : ro Bool;\n  has value : ro int;\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Bool", strlen("Bool"), (void*)spvm_bool_module_source);
 
   // Add Byte source

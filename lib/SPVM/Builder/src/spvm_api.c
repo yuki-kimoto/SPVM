@@ -258,10 +258,6 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_call_spvm_method, // call_class_method
     SPVM_API_call_spvm_method, // call_instance_method
     SPVM_API_get_instance_method_id_static,
-    SPVM_API_new_true_object_raw,
-    SPVM_API_new_true_object,
-    SPVM_API_new_false_object_raw,
-    SPVM_API_new_false_object,
     SPVM_API_get_bool_object_value,
   };
   
