@@ -3384,24 +3384,6 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
 
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_TRUE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* true_object = env->new_true_object_raw(env);");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", true_object);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }");
-        break;
-      }
-      case SPVM_OPCODE_C_ID_NEW_FALSE: {
-        SPVM_STRING_BUFFER_add(string_buffer, "  {");
-        SPVM_STRING_BUFFER_add(string_buffer, "    void* false_object = env->new_false_object_raw(env);");
-        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_API_OBJECT_ASSIGN(&");
-        SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, ", false_object);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "  }");
-        break;
-      }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH: {
         SPVM_STRING_BUFFER_add(string_buffer, "  if (");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);

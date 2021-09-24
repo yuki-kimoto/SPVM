@@ -3666,16 +3666,6 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         }
         break;
       }
-      case SPVM_OPCODE_C_ID_NEW_TRUE: {
-        void* true_object = env->new_true_object_raw(env);
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0] , true_object);
-        break;
-      }
-      case SPVM_OPCODE_C_ID_NEW_FALSE: {
-        void* false_object = env->new_false_object_raw(env);
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0] , false_object);
-        break;
-      }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH:
         if (*(void**)&object_vars[opcode->operand1] == NULL) {
           void* exception = env->new_string_nolen_raw(env, "Can't get array length of undef value.");
@@ -5684,34 +5674,6 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t l
   }
 
   return object;
-}
-
-SPVM_OBJECT* SPVM_API_new_true_object_raw(SPVM_ENV* env) {
-  (void)env;
-
-
-  return NULL;
-}
-
-SPVM_OBJECT* SPVM_API_new_true_object(SPVM_ENV* env) {
-  (void)env;
-
-
-  return NULL;
-}
-
-SPVM_OBJECT* SPVM_API_new_false_object_raw(SPVM_ENV* env) {
-  (void)env;
-
-
-  return NULL;
-}
-
-SPVM_OBJECT* SPVM_API_new_false_object(SPVM_ENV* env) {
-  (void)env;
-
-
-  return NULL;
 }
 
 int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_OBJECT* bool_value) {

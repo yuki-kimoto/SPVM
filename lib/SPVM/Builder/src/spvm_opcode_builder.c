@@ -2368,32 +2368,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
                           break;
                         }
-                        case SPVM_OP_C_ID_TRUE : {
-
-                          SPVM_OPCODE opcode;
-                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_TRUE);
-                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-   
-                          opcode.operand0 = mem_id_out;
-                         
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          break;
-                        }
-                        case SPVM_OP_C_ID_FALSE : {
-
-                          SPVM_OPCODE opcode;
-                          memset(&opcode, 0, sizeof(SPVM_OPCODE));
-
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_NEW_FALSE);
-                          int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-   
-                          opcode.operand0 = mem_id_out;
-                         
-                          SPVM_OPCODE_ARRAY_push_opcode(compiler, opcode_array, &opcode);
-                          break;
-                        }
                         case SPVM_OP_C_ID_CONSTANT : {
                           SPVM_CONSTANT* constant = op_assign_src->uv.constant;
 

@@ -344,8 +344,6 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
     "ARRAY_STORE_UNDEF",
     "ARRAY_LENGTH",
     "NEW_OBJECT",
-    "NEW_TRUE",
-    "NEW_FALSE",
     "NEW_STRING",
     "NEW_OBJECT_ARRAY",
     "NEW_MULTI_ARRAY",
