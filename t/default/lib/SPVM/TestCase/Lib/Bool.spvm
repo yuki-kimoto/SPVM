@@ -1,6 +1,6 @@
 class TestCase::Lib::Bool {
   static method basic : int () {
-
+    
     # true
     {
       my $true = Bool->TRUE;
@@ -19,6 +19,13 @@ class TestCase::Lib::Bool {
       my $true_value = $true->value;
       
       unless ($true_value == 1) {
+        return 0;
+      }
+    }
+    
+    # ture - bool context
+    {
+      unless (true) {
         return 0;
       }
     }
@@ -85,6 +92,13 @@ class TestCase::Lib::Bool {
       my $false_value = $false->value;
       
       unless ($false_value == 0) {
+        return 0;
+      }
+    }
+
+    # false - bool context
+    {
+      if (false) {
         return 0;
       }
     }

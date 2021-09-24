@@ -319,7 +319,7 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   // Add Bool basic_type
   {
      SPVM_BASIC_TYPE* basic_type = SPVM_BASIC_TYPE_new(compiler);
-     basic_type->id = SPVM_BASIC_TYPE_C_ID_DOUBLE_OBJECT;
+     basic_type->id = SPVM_BASIC_TYPE_C_ID_BOOL_OBJECT;
      basic_type->name = (SPVM_BASIC_TYPE_C_ID_NAMES())[basic_type->id];
      SPVM_LIST_push(compiler->basic_types, basic_type);
      SPVM_HASH_insert(compiler->basic_type_symtable, basic_type->name, strlen(basic_type->name), basic_type);

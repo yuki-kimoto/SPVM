@@ -6,6 +6,9 @@ Revision history for SPVM
         * rename Bool->false to Bool->FALSE
         * add true keyword which means Bool->TRUE
         * add false keyword which menas Bool->FALSE
+        * add bool context for Bool type.
+          if (Bool->TRUE) { # run }
+          if (Bool->FALSE) { # not run }
 
         [BUGFIXES]
         * None

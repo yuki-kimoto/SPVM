@@ -49,3 +49,31 @@ Return a C<int> value.
 If L<Bool|SPVM::Bool> object express true, this method return C<1>.
 
 If L<Bool|SPVM::Bool> object express false, this method return C<1>.
+
+=head1 BOOL CONTEXT
+
+the object of Bool class is different behavior in bool context.
+
+If the C<value> of Bool object is 1, it is evaluated as true.
+
+  if (Bool->TRUE) {
+    # Run
+  }
+
+If the C<value> of Bool object is 0, it is evaluated as false.
+
+  if (Bool->FALSE) {
+    # Not run
+  }
+
+=head1 KEYWORDS
+
+C<true> keyword means Bool->TRUE. C<false> keyword means Bool->FALSE.
+
+  if (true) {
+    # Run
+  }
+
+  if (false) {
+    # Not run
+  }

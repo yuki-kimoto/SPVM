@@ -98,7 +98,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_add_var(SPVM_COMPILER* compiler, SPVM_STRIN
       SPVM_STRING_BUFFER_add(string_buffer, "]");
       break;
     }
-    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT: {
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_BOOL_OBJECT:
+    case SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT:
+    {
       SPVM_STRING_BUFFER_add(string_buffer, "object_vars[");
       SPVM_STRING_BUFFER_add_int(string_buffer, index);
       SPVM_STRING_BUFFER_add(string_buffer, "]");

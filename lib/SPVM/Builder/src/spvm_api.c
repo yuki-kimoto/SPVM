@@ -5672,11 +5672,19 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t l
   return object;
 }
 
-int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_OBJECT* bool_value) {
+int32_t SPVM_API_get_filed_first_int(SPVM_ENV* env, SPVM_OBJECT* object) {
+
+  int32_t value = *(int32_t*)((intptr_t)object + env->object_header_byte_size);
+  
+  return value;
+}
+
+int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_OBJECT* bool_object) {
   (void)env;
 
-
-  return 0;
+  int32_t value = SPVM_API_get_filed_first_int(env, bool_object);
+  
+  return value;
 }
 
 SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length) {

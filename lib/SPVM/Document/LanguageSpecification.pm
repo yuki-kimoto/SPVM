@@ -417,7 +417,7 @@ The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bis
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
-%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT
+%token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
 %token <opval> RETURN WEAKEN DIE WARN CURRENT_CLASS UNWEAKEN '[' '{' '('
 
@@ -680,6 +680,8 @@ expression
   | isweak_field
   | comparison_op
   | isa
+  | TRUE
+  | FALSE
 
 expressions
   : expressions ',' expression
