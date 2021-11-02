@@ -18,7 +18,7 @@ Suppose the following C<SPVM/Foo.spvm> is placed on a module search path.
 
   # SPVM/Foo.spvm
   class Foo {
-    static method sum : int ($x1: int, $x2: int) {
+    static method sum : int ($x1 : int, $x2 : int) {
       return $x1 + $x2;
     }
   }
@@ -31,7 +31,7 @@ Suppose the following C<SPVM/Foo/Bar.spvm> is placed on a module search path.
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
-    static method sum : int ($x1: int, $x2: int) {
+    static method sum : int ($x1 : int, $x2 : int) {
       return $x1 + $x2;
     }
   }
@@ -58,7 +58,7 @@ The definition of C<Foo> module is the following.
 
   # SPVM/Foo.spvm
   class Foo {
-    static method sum : int ($x1: int, $x2: int) {
+    static method sum : int ($x1 : int, $x2 : int) {
       return $x1 + $x2;
     }
   }
@@ -91,7 +91,7 @@ The definition of C<Foo> module is the following.
       return new Foo;
     }
 
-    method sum : int ($x1: int, $x2: int) (
+    method sum : int ($x1 : int, $x2 : int) (
       return $x1 + $x2;
     }
   }
@@ -206,8 +206,8 @@ The followings are examples of L<Complex_2d|SPVM::Complex_2d> and L<Complex_2f|S
 
   # SPVM Method definition
   class Foo {
-    static method call_complex_float : void ($z: Complex_2f);
-    static method call_complex_double : void ($z: Complex_2d);
+    static method call_complex_float : void ($z : Complex_2f);
+    static method call_complex_double : void ($z : Complex_2d);
   }
 
   # Call from Perl
@@ -244,12 +244,12 @@ If the argument type in the SPVM Method definition was a Numeric Reference Type,
 
   # SPVM Method definition
   class Foo {
-    static method call_byte_ref : void ($num: byte&);
-    static method call_short_ref : void ($num: short&);
-    static method call_int_ref : void ($num: int&);
-    static method call_long_ref : void ($num: long&);
-    static method call_float_ref : void ($num: float&);
-    static method call_double_ref : void ($num: double&);
+    static method call_byte_ref : void ($num : byte&);
+    static method call_short_ref : void ($num : short&);
+    static method call_int_ref : void ($num : int&);
+    static method call_long_ref : void ($num : long&);
+    static method call_float_ref : void ($num : float&);
+    static method call_double_ref : void ($num : double&);
   }
 
   # Call from Perl
