@@ -599,72 +599,75 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
   
-  # Argument - Empty List push
+  # Argument various patterns
   {
+    # Argument - Empty List push
     {
-      my $list = SPVM::ByteList->new([]);
-      $list->push(1);
-      is_deeply($list->length, 1);
+      {
+        my $list = SPVM::ByteList->new([]);
+        $list->push(1);
+        is_deeply($list->length, 1);
+      }
+      {
+        my $list = SPVM::ShortList->new([]);
+        $list->push(1);
+        is_deeply($list->length, 1);
+      }
+      {
+        my $list = SPVM::IntList->new([]);
+        $list->push(1);
+        is_deeply($list->length, 1);
+      }
+      {
+        my $list = SPVM::LongList->new([]);
+        $list->push(1);
+        is_deeply($list->length, 1);
+      }
+      {
+        my $list = SPVM::FloatList->new([]);
+        $list->push(1);
+        is_deeply($list->length, 1);
+      }
+      {
+        my $list = SPVM::DoubleList->new([]);
+        $list->push(1);
+        is_deeply($list->length, 1);
+      }
+      {
+        my $list = SPVM::List->new([]);
+        $list->push(SPVM::Int->new(1));
+        is_deeply($list->length, 1);
+      }
+      {
+        my $list = SPVM::StringList->new([]);
+        $list->push("abc");
+        is_deeply($list->length, 1);
+      }
     }
-    {
-      my $list = SPVM::ShortList->new([]);
-      $list->push(1);
-      is_deeply($list->length, 1);
-    }
-    {
-      my $list = SPVM::IntList->new([]);
-      $list->push(1);
-      is_deeply($list->length, 1);
-    }
-    {
-      my $list = SPVM::LongList->new([]);
-      $list->push(1);
-      is_deeply($list->length, 1);
-    }
-    {
-      my $list = SPVM::FloatList->new([]);
-      $list->push(1);
-      is_deeply($list->length, 1);
-    }
-    {
-      my $list = SPVM::DoubleList->new([]);
-      $list->push(1);
-      is_deeply($list->length, 1);
-    }
-    {
-      my $list = SPVM::List->new([]);
-      $list->push(SPVM::Int->new(1));
-      is_deeply($list->length, 1);
-    }
-    {
-      my $list = SPVM::StringList->new([]);
-      $list->push("abc");
-      is_deeply($list->length, 1);
-    }
-  }
 
-  # Argument - Empty List new
-  {
+    # Argument - Empty List new
     {
-      my $list = SPVM::IntList->new([]);
-      is_deeply($list->length, 0);
+      {
+        my $list = SPVM::IntList->new([]);
+        is_deeply($list->length, 0);
+      }
+      {
+        my $list = SPVM::List->new([]);
+        is_deeply($list->length, 0);
+      }
     }
-    {
-      my $list = SPVM::List->new([]);
-      is_deeply($list->length, 0);
-    }
-  }
 
-  # Argument - Pass list
-  {
-    # Pass list
+    # Argument - Pass list
     {
-      my $list = SPVM::List->new([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
-      my $x = $list->get(0);
-      
-      is($list->get(0)->value, 1);
-      is($list->get(1)->value, 2.5);
-      ok(!defined $list->get(2));
+      # Pass list
+      {
+        my $list = SPVM::List->new([SPVM::Int->new(1), SPVM::Double->new(2.5), undef]);
+        my $x = $list->get(0);
+        
+        is($list->get(0)->value, 1);
+        is($list->get(1)->value, 2.5);
+        ok(!defined $list->get(2));
+      }
     }
   }
 }
