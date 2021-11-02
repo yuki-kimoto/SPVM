@@ -202,7 +202,7 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
-  # Argument SPVM array to SPVM array
+  # Argument SPVM::BlessedObject::Array
   {
     # Argument SPVM array to SPVM byte array
     {

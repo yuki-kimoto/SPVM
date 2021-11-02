@@ -192,51 +192,11 @@ If the SPVM argument type is C<double[]>, the Perl array reference is converted 
 
 If the SPVM argument type is C<string[]>, the Perl array reference is converted to SPVM array which type is C<string[]>. Each element is converted to C<string> value by L<the rule of Perl scalar to SPVM string|"Perl scalar to SPVM string">. Perl C<undef> is coverted to SPVM C<undef>.
 
-=head2 SPVM array to SPVM array
+=head2 Perl SPVM::BlessedObject::Array to SPVM array
 
-A SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to a SPVM array by the following rules.
+No conversion occurs.
 
-=head3 SPVM array to SPVM byte array
-
-If the SPVM argument type is C<byte[]>, the SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to SPVM array which type is C<byte[]>. Each element is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte">. Perl C<undef> is coverted to SPVM C<undef>.
-
-If the type is invalid, a exception occurs.
-
-=head3 SPVM array to SPVM short array
-
-If the SPVM argument type is C<short[]>, the SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to SPVM array which type is C<short[]>. Each element is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short">. Perl C<undef> is coverted to SPVM C<undef>.
-
-If the type is invalid, a exception occurs.
-
-=head3 SPVM array to SPVM int array
-
-If the SPVM argument type is C<int[]>, the SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to SPVM array which type is C<int[]>. Each element is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int">. Perl C<undef> is coverted to SPVM C<undef>.
-
-If the type is invalid, a exception occurs.
-
-=head3 SPVM array to SPVM long array
-
-If the SPVM argument type is C<long[]>, the SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to SPVM array which type is C<long[]>. Each element is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long">. Perl C<undef> is coverted to SPVM C<undef>.
-
-If the type is invalid, a exception occurs.
-
-=head3 SPVM array to SPVM float array
-
-If the SPVM argument type is C<float[]>, the SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to SPVM array which type is C<float[]>. Each element is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float">. Perl C<undef> is coverted to SPVM C<undef>.
-
-If the type is invalid, a exception occurs.
-
-=head3 SPVM array to SPVM double array
-
-If the SPVM argument type is C<double[]>, the SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to SPVM array which type is C<double[]>. Each element is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double">. Perl C<undef> is coverted to SPVM C<undef>.
-
-If the type is invalid, a exception occurs.
-
-=head3 SPVM array to SPVM string array
-
-If the SPVM argument type is C<string[]>, the SPVM array which inherits L<SPVM::BlessedObject::Array> is converted to SPVM array which type is C<string[]>. Each element is converted to C<string> value by L<the rule of Perl scalar to SPVM string|"Perl scalar to SPVM string">. Perl C<undef> is coverted to SPVM C<undef>.
-
-If the type is invalid, a exception occurs.
+Perl can have SPVM array itself as L<SPVM::BlessedObject::Array> object. This object is created by such as L<"SPVM::new_byte_array">, L<"SPVM::new_short_array">, L<"SPVM::new_int_array">, L<"SPVM::new_long_array">, L<"SPVM::new_float_array">, L<"SPVM::new_double_array">, or got as a return value of SPVM method.
 
 =head2 Perl hash reference to SPVM multi numeric type
 
