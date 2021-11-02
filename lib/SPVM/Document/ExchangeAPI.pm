@@ -100,6 +100,12 @@ The definition of C<Foo> module is the following.
 
 Perl arguments are converted to SPVM arguments in the following rules.
 
+=head3 Argument general exception
+
+If the count of given arguments is less than the count of the arguments of the method, a exception occurs.
+
+If the count of given arguments is more than the count of the arguments of the method, a exception occurs.
+
 =head3 Perl scalar to SPVM byte
 
 If the SPVM argument type is C<byte>, Perl scalar is converted to SPVM C<byte> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
