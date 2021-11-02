@@ -142,23 +142,23 @@ If the SPVM argument type is C<double>, Perl scalar is converted to SPVM C<doubl
 
   (double)SvNV(perl_scalar)
 
-=head2 Perl value to SPVM string
+=head2 Perl scalar to SPVM string
 
-=head3 Perl scalar to SPVM string
+If the SPVM argument type is C<string>, the given Perl scalar is converted by the following rules.
 
-If the SPVM argument type is C<string>, the Perl scalar is converted to SPVM C<string> value.
+If any of the following rules does not match, a exception occurs.
 
-The scalar value must be non-ref scalar, otherwise a exception occurs.
+=head3 Perl non-ref scalar to SPVM string
+
+If the SPVM argument type is C<string>, the given Perl scalar is converted to SPVM C<string> value.
 
 The scalar value is assumed to a Perl decoded string, and is converted to a SPVM C<string>.
 
-=head3 string object to SPVM string
+=head3 SPVM::BlessedObject::String to SPVM string
 
-A string object which class name is L<SPVM::BlessedObject::String> is converted to a SPVM C<string>.
+No conversion occurs.
 
-=head3 other to SPVM string
-
-If the Perl value is not the avobe things, a exception occurs.
+Perl can have SPVM string itself as L<SPVM::BlessedObject::String> object. This object is created by such as L<"SPVM::new_string">, L<"SPVM::new_string_from_bin">, or got as a return value of SPVM method.
 
 =head2 Perl array reference to SPVM array
 
