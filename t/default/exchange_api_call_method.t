@@ -122,36 +122,54 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
-  # Argument string
+  # Argument Perl scalar to SPVM string
   {
-    # Argument string - ascii
+    # Argument Perl non-ref scalar to SPVM string
     {
-      my $ok = SPVM::TestCase::ExchangeAPI->argument_string_ascii("ABC");
-      ok($ok);
-    }
+      # Argument Perl non-ref scalar to SPVM string - ascii
+      {
+        my $ok = SPVM::TestCase::ExchangeAPI->argument_non_ref_scalar_to_string_ascii("ABC");
+        ok($ok);
+      }
 
-    # Argument string - UTF-8
-    {
-      my $ok = SPVM::TestCase::ExchangeAPI->argument_string_decoded_string("あいう");
-      ok($ok);
-    }
+      # Argument Perl non-ref scalar to SPVM string - UTF-8
+      {
+        my $ok = SPVM::TestCase::ExchangeAPI->argument_non_ref_scalar_to_string_decoded_string("あいう");
+        ok($ok);
+      }
 
-    # Argument string - numerci
-    {
-      my $ok = SPVM::TestCase::ExchangeAPI->argument_string_number(4.12);
-      ok($ok);
-    }
+      # Argument Perl non-ref scalar to SPVM string - numeric
+      {
+        my $ok = SPVM::TestCase::ExchangeAPI->argument_non_ref_scalar_to_string_number(4.12);
+        ok($ok);
+      }
 
-    # Argument string - SPVM::BlessedObject::String
-    {
-      my $ok = SPVM::TestCase::ExchangeAPI->argument_string_string_object(SPVM::new_string("あいう"));
-      ok($ok);
+      # Argument Perl non-ref scalar to SPVM string - undef
+      {
+        my $ok = SPVM::TestCase::ExchangeAPI->argument_non_ref_scalar_to_string_undef(undef);
+        ok($ok);
+      }
     }
     
-    # Argument string - exception invalid type
+    # Argument Perl SPVM::BlessedObject::String to SPVM string
     {
-      eval { SPVM::TestCase::ExchangeAPI->argument_string_ascii({}) };
-      ok($@);
+      # Argument Perl SPVM::BlessedObject::String to SPVM string
+      {
+        my $ok = SPVM::TestCase::ExchangeAPI->argument_blessed_object_string_to_string(SPVM::new_string("あいう"));
+        ok($ok);
+      }
+
+      # Argument Perl SPVM::BlessedObject::String to SPVM string - undef
+      {
+        my $ok = SPVM::TestCase::ExchangeAPI->argument_blessed_object_string_to_string_undef(undef);
+        ok($ok);
+      }
+      
+      # Argument Perl SPVM::BlessedObject::String to SPVM string - exception invalid type
+      {
+        eval { SPVM::TestCase::ExchangeAPI->argument_non_ref_scalar_to_string_ascii({}) };
+        ok($@);
+      }
     }
   }
 

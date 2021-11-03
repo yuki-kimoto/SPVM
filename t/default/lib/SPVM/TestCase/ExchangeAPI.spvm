@@ -231,7 +231,7 @@ class TestCase::ExchangeAPI {
     return $bytes;
   }
   
-  static method argument_string_ascii : string ($string : string) {
+  static method argument_non_ref_scalar_to_string_ascii : int ($string : string) {
     
     unless ($string eq "ABC") {
       return 0;
@@ -240,7 +240,7 @@ class TestCase::ExchangeAPI {
     return 1;
   }
   
-  static method argument_string_decoded_string : string ($string : string) {
+  static method argument_non_ref_scalar_to_string_decoded_string : int ($string : string) {
     
     unless ($string eq "あいう") {
       return 0;
@@ -249,7 +249,7 @@ class TestCase::ExchangeAPI {
     return 1;
   }
   
-  static method argument_string_number : string ($string : string) {
+  static method argument_non_ref_scalar_to_string_number : int ($string : string) {
     
     unless ($string eq "4.12") {
       return 0;
@@ -258,9 +258,28 @@ class TestCase::ExchangeAPI {
     return 1;
   }
 
-  static method argument_string_string_object : string ($string : string) {
+  static method argument_non_ref_scalar_to_string_undef : int ($string : string) {
+    
+    unless ($string == undef) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+
+  static method argument_blessed_object_string_to_string : int ($string : string) {
     
     unless ($string eq "あいう") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method argument_blessed_object_string_to_string_undef : int ($string : string) {
+    
+    unless ($string == undef) {
       return 0;
     }
     

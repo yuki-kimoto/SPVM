@@ -2211,51 +2211,58 @@ call_spvm_method(...)
     
     // Process argument corresponding to the type category
     switch (arg->type_category) {
+      // Perl scalar to SPVM byte
       case SPVM_TYPE_C_TYPE_CATEGORY_BYTE : {
         int8_t value = (int8_t)SvIV(sv_value);
         stack[arg_values_offset].bval = value;
         arg_values_offset++;
         break;
       }
+      // Perl scalar to SPVM short
       case SPVM_TYPE_C_TYPE_CATEGORY_SHORT : {
         int16_t value = (int16_t)SvIV(sv_value);
         stack[arg_values_offset].sval = value;
         arg_values_offset++;
         break;
       }
+      // Perl scalar to SPVM int
       case SPVM_TYPE_C_TYPE_CATEGORY_INT : {
         int32_t value = (int32_t)SvIV(sv_value);
         stack[arg_values_offset].ival = value;
         arg_values_offset++;
         break;
       }
+      // Perl scalar to SPVM long
       case SPVM_TYPE_C_TYPE_CATEGORY_LONG : {
         int64_t value = (int64_t)SvIV(sv_value);
         stack[arg_values_offset].lval = value;
         arg_values_offset++;
         break;
       }
+      // Perl scalar to SPVM float
       case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT : {
         float value = (float)SvNV(sv_value);
         stack[arg_values_offset].fval = value;
         arg_values_offset++;
         break;
       }
+      // Perl scalar to SPVM double
       case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE : {
         double value = (double)SvNV(sv_value);
         stack[arg_values_offset].dval = value;
         arg_values_offset++;
         break;
       }
+      // Perl scalar to SPVM string
       case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
-        // Perl value is undef
+        // Perl undef is SPVM string
         if (!SvOK(sv_value)) {
           stack[arg_values_offset].oval = NULL;
         }
         else {
-          // If Perl value is non ref scalar, the value is converted to SPVM::BlessedObject::String object
+          // Perl non-ref scalar to SPVM string
+          // If Perl value is non-ref scalar, the value is converted to SPVM::BlessedObject::String object
           if (!SvROK(sv_value)) {
-
             const char* chars = SvPV_nolen(sv_value);
             int32_t length = SvCUR(sv_value);
             
@@ -2266,18 +2273,16 @@ call_spvm_method(...)
             sv_value = sv_string;
           }
           
-          // Check type
+          // Perl SPVM::BlessedObject::String to SPVM string
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
-            if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-              croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
-            }
+            assert(!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension));
             
             stack[arg_values_offset].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
           }
         }
         arg_values_offset++;

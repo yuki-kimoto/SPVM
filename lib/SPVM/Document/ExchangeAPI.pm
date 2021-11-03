@@ -150,15 +150,21 @@ If any of the following rules does not match, a exception occurs.
 
 =head3 Perl non-ref scalar to SPVM string
 
-If the SPVM argument type is C<string>, the given Perl scalar is converted to SPVM C<string> value.
+If the SPVM argument type is C<string>, the given Perl non-ref scalar is converted to L<SPVM::BlessedObject::String> object.
 
-The scalar value is assumed to a Perl decoded string, and is converted to a SPVM C<string>.
+The given non-ref scalar value is assumed to a Perl decoded string, and is converted to UTF-8 bytes.
 
-=head3 SPVM::BlessedObject::String to SPVM string
+If the given non-ref scalar value is Perl C<undef>, it is converted to Perl C<undef>.
+
+And the following L<"Perl SPVM::BlessedObject::String to SPVM string"> conversion is contined.
+
+=head3 Perl SPVM::BlessedObject::String to SPVM string
 
 No conversion occurs.
 
 Perl can have SPVM string itself as L<SPVM::BlessedObject::String> object. This object is created by such as L<"SPVM::new_string">, L<"SPVM::new_string_from_bin">, or got as a return value of SPVM method.
+
+If the given value is Perl C<undef>, it is converted to SPVM C<undef>
 
 =head2 Perl array reference to SPVM array
 
