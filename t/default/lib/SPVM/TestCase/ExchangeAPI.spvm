@@ -267,31 +267,31 @@ class TestCase::ExchangeAPI {
     return 1;
   }
   
-  static method call_spvm_method_value_arg_byte : TestCase::Point_3b ($point : TestCase::Point_3b) {
+  static method call_spvm_method_multi_numeric_arg_byte : TestCase::Point_3b ($point : TestCase::Point_3b) {
     return $point;
   }
 
-  static method call_spvm_method_value_arg_short : TestCase::Point_3s ($point : TestCase::Point_3s) {
+  static method call_spvm_method_multi_numeric_arg_short : TestCase::Point_3s ($point : TestCase::Point_3s) {
     return $point;
   }
 
-  static method call_spvm_method_value_arg_int : TestCase::Point_3i ($point : TestCase::Point_3i) {
+  static method call_spvm_method_multi_numeric_arg_int : TestCase::Point_3i ($point : TestCase::Point_3i) {
     return $point;
   }
 
-  static method call_spvm_method_value_arg_long : TestCase::Point_3l ($point : TestCase::Point_3l) {
+  static method call_spvm_method_multi_numeric_arg_long : TestCase::Point_3l ($point : TestCase::Point_3l) {
     return $point;
   }
 
-  static method call_spvm_method_value_arg_float : TestCase::Point_3f ($point : TestCase::Point_3f) {
+  static method call_spvm_method_multi_numeric_arg_float : TestCase::Point_3f ($point : TestCase::Point_3f) {
     return $point;
   }
 
-  static method call_spvm_method_value_arg_double : TestCase::Point_3d ($point : TestCase::Point_3d) {
+  static method call_spvm_method_multi_numeric_arg_double : TestCase::Point_3d ($point : TestCase::Point_3d) {
     return $point;
   }
   
-  static method call_spvm_method_value_ref_numeric_ref_mixed_arg : void ($point1 : TestCase::Point_3i&, $value1 : int&, $point2 : TestCase::Point_3i&, $value2 : int&) {
+  static method call_spvm_method_multi_numeric_ref_numeric_ref_mixed_arg : void ($point1 : TestCase::Point_3i&, $value1 : int&, $point2 : TestCase::Point_3i&, $value2 : int&) {
     $point1->{x} = (int)($point1->{x} + 1);
     $point1->{y} = (int)($point1->{y} + 1);
     $point1->{z} = (int)($point1->{z} + 1);
@@ -305,37 +305,37 @@ class TestCase::ExchangeAPI {
     $$value2 = $$value2 + 1;
   }
 
-  static method call_spvm_method_value_ref_arg_byte : int ($point : TestCase::Point_3b&) {
+  static method call_spvm_method_multi_numeric_ref_arg_byte : int ($point : TestCase::Point_3b&) {
     $point->{x} = (byte)($point->{x} + 1);
     $point->{y} = (byte)($point->{y} + 1);
     $point->{z} = (byte)($point->{z} + 1);
   }
 
-  static method call_spvm_method_value_ref_arg_short : int ($point : TestCase::Point_3s&) {
+  static method call_spvm_method_multi_numeric_ref_arg_short : int ($point : TestCase::Point_3s&) {
     $point->{x} = (short)($point->{x} + 1);
     $point->{y} = (short)($point->{y} + 1);
     $point->{z} = (short)($point->{z} + 1);
   }
 
-  static method call_spvm_method_value_ref_arg_int : int ($point : TestCase::Point_3i&) {
+  static method call_spvm_method_multi_numeric_ref_arg_int : int ($point : TestCase::Point_3i&) {
     $point->{x} = (int)($point->{x} + 1);
     $point->{y} = (int)($point->{y} + 1);
     $point->{z} = (int)($point->{z} + 1);
   }
 
-  static method call_spvm_method_value_ref_arg_long : int ($point : TestCase::Point_3l&) {
+  static method call_spvm_method_multi_numeric_ref_arg_long : int ($point : TestCase::Point_3l&) {
     $point->{x} = (long)($point->{x} + 1);
     $point->{y} = (long)($point->{y} + 1);
     $point->{z} = (long)($point->{z} + 1);
   }
 
-  static method call_spvm_method_value_ref_arg_float : int ($point : TestCase::Point_3f&) {
+  static method call_spvm_method_multi_numeric_ref_arg_float : int ($point : TestCase::Point_3f&) {
     $point->{x} = (float)($point->{x} + 1);
     $point->{y} = (float)($point->{y} + 1);
     $point->{z} = (float)($point->{z} + 1);
   }
 
-  static method call_spvm_method_value_ref_arg_double : int ($point : TestCase::Point_3d&) {
+  static method call_spvm_method_multi_numeric_ref_arg_double : int ($point : TestCase::Point_3d&) {
     $point->{x} = (double)($point->{x} + 1);
     $point->{y} = (double)($point->{y} + 1);
     $point->{z} = (double)($point->{z} + 1);

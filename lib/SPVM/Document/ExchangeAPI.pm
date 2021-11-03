@@ -192,6 +192,10 @@ If the SPVM argument type is C<double[]>, the Perl array reference is converted 
 
 If the SPVM argument type is C<string[]>, the Perl array reference is converted to SPVM array which type is C<string[]>. Each element is converted to C<string> value by L<the rule of Perl scalar to SPVM string|"Perl scalar to SPVM string">. Perl C<undef> is coverted to SPVM C<undef>.
 
+=head3 Perl array reference to SPVM multi numeric array
+
+If the SPVM argument type is a array of multi numeric type, the given Perl array reference is converted to SPVM multi numeric array which element type is multi numeric type. Each element which is a hash reference is converted to multi numeric type by L<the rule of Perl hash reference to SPVM multi numeric type|"Perl hash reference to SPVM multi numeric type">. Perl C<undef> is coverted to SPVM C<undef>.
+
 =head2 Perl SPVM::BlessedObject::Array to SPVM array
 
 No conversion occurs.
