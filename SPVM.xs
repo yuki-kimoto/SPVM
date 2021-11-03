@@ -2255,7 +2255,7 @@ call_spvm_method(...)
       }
       // Perl scalar to SPVM string
       case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
-        // Perl undef is SPVM string
+        // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
           stack[arg_values_offset].oval = NULL;
         }
@@ -2293,7 +2293,7 @@ call_spvm_method(...)
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
       {
-        // Perl value is undef
+        // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
           stack[arg_values_offset].oval = NULL;
         }
