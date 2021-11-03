@@ -2263,9 +2263,11 @@ call_spvm_method(...)
           // Perl non-ref scalar to SPVM string
           // If Perl value is non-ref scalar, the value is converted to SPVM::BlessedObject::String object
           if (!SvROK(sv_value)) {
-            const char* chars = SvPV_nolen(sv_value);
-            int32_t length = SvCUR(sv_value);
-            
+            // Convert Perl decoded string to loose UTF-8 bytes.
+            SV* sv_value_copy = sv_2mortal(newSVsv(sv_value));
+            sv_utf8_encode(sv_value_copy);
+            const char* chars = SvPV_nolen(sv_value_copy);
+            int32_t length = SvCUR(sv_value_copy);
             void* string = env->new_string(env, chars, length);
             
             SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
