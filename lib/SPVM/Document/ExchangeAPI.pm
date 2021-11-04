@@ -999,15 +999,15 @@ B<Example:>
   # Perl
   SPVM::My->foo({x => 1.2, y => 2.3});
 
-=head2 Perl refernce to SPVM numeric reference type
+=head2 Perl reference to SPVM numeric reference
 
 If the SPVM argument type is numeric reference type, the given Perl reference is converted to SPVM numeric reference type in the following rules.
 
-=head3 Perl refernce to SPVM byte reference type
+=head3 Perl reference to SPVM byte reference
 
 If the SPVM argument type is byte reference type, the given Perl reference is converted to SPVM byte reference type.
 
-The given value must be a scalar reference, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
 
 The given value is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte"> and return value is converted to Perl scalar by L<the rule of SPVM byte to Perl scalar|"SPVM byte to Perl scalar">
 
@@ -1022,11 +1022,11 @@ B<Example:>
   my $value = 23;
   SPVM::My->foo(\$value);
 
-=head3 Perl refernce to SPVM short reference type
+=head3 Perl reference to SPVM short reference
 
 If the SPVM argument type is short reference type, the given Perl reference is converted to SPVM short reference type.
 
-The given value must be a scalar reference, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
 
 The given value is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short"> and return value is converted to Perl scalar by L<the rule of SPVM short to Perl scalar|"SPVM short to Perl scalar">
 
@@ -1041,11 +1041,11 @@ B<Example:>
   my $value = 23;
   SPVM::My->foo(\$value);
 
-=head3 Perl refernce to SPVM int reference type
+=head3 Perl reference to SPVM int reference
 
 If the SPVM argument type is int reference type, the given Perl reference is converted to SPVM int reference type.
 
-The given value must be a scalar reference, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
 
 The given value is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int"> and return value is converted to Perl scalar by L<the rule of SPVM int to Perl scalar|"SPVM int to Perl scalar">
 
@@ -1060,11 +1060,11 @@ B<Example:>
   my $value = 23;
   SPVM::My->foo(\$value);
 
-=head3 Perl refernce to SPVM long reference type
+=head3 Perl reference to SPVM long reference
 
 If the SPVM argument type is long reference type, the given Perl reference is converted to SPVM long reference type.
 
-The given value must be a scalar reference, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
 
 The given value is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long"> and return value is converted to Perl scalar by L<the rule of SPVM long to Perl scalar|"SPVM long to Perl scalar">
 
@@ -1079,11 +1079,11 @@ B<Example:>
   my $value = 23;
   SPVM::My->foo(\$value);
 
-=head3 Perl refernce to SPVM float reference type
+=head3 Perl reference to SPVM float reference
 
 If the SPVM argument type is float reference type, the given Perl reference is converted to SPVM float reference type.
 
-The given value must be a scalar reference, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
 
 The given value is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float"> and return value is converted to Perl scalar by L<the rule of SPVM float to Perl scalar|"SPVM float to Perl scalar">
 
@@ -1098,11 +1098,11 @@ B<Example:>
   my $value = 23.5;
   SPVM::My->foo(\$value);
 
-=head3 Perl refernce to SPVM double reference type
+=head3 Perl reference to SPVM double reference
 
 If the SPVM argument type is double reference type, the given Perl reference is converted to SPVM double reference type.
 
-The given value must be a scalar reference, otherwise an exception occurs.
+The given value must be a scalar reference which referenced value is non-ref scalar, otherwise an exception occurs.
 
 The given value is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double"> and return value is converted to Perl scalar by L<the rule of SPVM double to Perl scalar|"SPVM double to Perl scalar">
 

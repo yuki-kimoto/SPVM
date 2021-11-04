@@ -2796,10 +2796,11 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
+      // Perl reference to SPVM byte reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE: {
         args_contain_ref = 1;
-        if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+        if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
+          croak("%dth argument of %s->%s() must be sa calar reference which referenced value is non-ref scalar at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int8_t value = (int8_t)SvIV(sv_value_deref);
@@ -2810,10 +2811,11 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
+      // Perl reference to SPVM short reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT: {
         args_contain_ref = 1;
-        if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+        if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int16_t value = (int16_t)SvIV(sv_value_deref);
@@ -2824,10 +2826,11 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
+      // Perl reference to SPVM int reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT: {
         args_contain_ref = 1;
-        if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+        if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int32_t value = (int32_t)SvIV(sv_value_deref);
@@ -2838,10 +2841,11 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
+      // Perl reference to SPVM long reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG: {
         args_contain_ref = 1;
-        if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+        if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int64_t value = (int64_t)SvIV(sv_value_deref);
@@ -2852,10 +2856,11 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
+      // Perl reference to SPVM long reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT: {
         args_contain_ref = 1;
-        if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+        if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         float value = (float)SvNV(sv_value_deref);
@@ -2866,10 +2871,11 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
+      // Perl reference to SPVM double reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE: {
         args_contain_ref = 1;
-        if (!SvROK(sv_value)) {
-          croak("%dth argument of %s->%s() must be scalar reference at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+        if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         double value = (double)SvNV(sv_value_deref);

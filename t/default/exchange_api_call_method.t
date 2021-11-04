@@ -173,6 +173,106 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
+  # Argument Perl reference to SPVM numeric reference
+  {
+    {
+      # Argument Perl reference to SPVM byte reference
+      {
+        my $num_byte = $BYTE_MIN;
+        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_byte(\$num_byte);
+        is($num_byte, $BYTE_MIN + 1);
+      }
+      # Argument Perl reference to SPVM short reference
+      {
+        my $num_short = $SHORT_MIN;
+        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_short(\$num_short);
+        is($num_short, $SHORT_MIN + 1);
+      }
+      # Argument Perl reference to SPVM int reference
+      {
+        my $num_int = $INT_MIN;
+        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_int(\$num_int);
+        is($num_int, $INT_MIN + 1);
+      }
+      # Argument Perl reference to SPVM long reference
+      {
+        my $num_long = $LONG_MIN;
+        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_long(\$num_long);
+        is($num_long, $LONG_MIN + 1);
+      }
+      # Argument Perl reference to SPVM float reference
+      {
+        my $num_float = POSIX::FLT_MIN();
+        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_float(\$num_float);
+        is($num_float, POSIX::FLT_MIN() + 1);
+      }
+      # Argument Perl reference to SPVM double reference
+      {
+        my $num_double = POSIX::DBL_MIN();
+        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_double(\$num_double);
+        is($num_double, POSIX::DBL_MIN() + 1);
+      }
+    }
+
+    # Argument Perl reference to SPVM numeric reference exception
+    {
+      # Argument Perl reference to SPVM byte reference exception
+      {
+        my $num_byte = $BYTE_MIN;
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_byte($num_byte) };
+        ok($@);
+
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_byte({}) };
+        ok($@);
+      }
+      # Argument Perl reference to SPVM short reference exception
+      {
+        my $num_short = $SHORT_MIN;
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_short($num_short) };
+        ok($@);
+
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_short({}) };
+        ok($@);
+      }
+      # Argument Perl reference to SPVM int reference exception
+      {
+        my $num_int = $INT_MIN;
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_int($num_int) };
+        ok($@);
+
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_int({}) };
+        ok($@);
+      }
+      # Argument Perl reference to SPVM long reference exception
+      {
+        my $num_long = $LONG_MIN;
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_long($num_long) };
+        ok($@);
+
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_long({}) };
+        ok($@);
+      }
+      # Argument Perl reference to SPVM float reference exception
+      {
+        my $num_float = POSIX::FLT_MIN();
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_float($num_float) };
+        ok($@);
+
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_float({}) };
+        ok($@);
+      }
+      # Argument Perl reference to SPVM double reference exception
+      {
+        my $num_double = POSIX::DBL_MIN();
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_double($num_double) };
+        ok($@);
+
+        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_double({}) };
+        ok($@);
+      }
+    }
+  }
+
   # Argument Perl array reference to SPVM array
   {
     # Argument Perl array reference to SPVM byte array
@@ -400,88 +500,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
-  # Argument numeric reference
-  {
-    {
-      # Argument numeric reference - byte
-      {
-        my $num_byte = $BYTE_MIN;
-        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_byte(\$num_byte);
-        is($num_byte, $BYTE_MIN + 1);
-      }
-      # Argument numeric reference - short
-      {
-        my $num_short = $SHORT_MIN;
-        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_short(\$num_short);
-        is($num_short, $SHORT_MIN + 1);
-      }
-      # Argument numeric reference - int
-      {
-        my $num_int = $INT_MIN;
-        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_int(\$num_int);
-        is($num_int, $INT_MIN + 1);
-      }
-      # Argument numeric reference - long
-      {
-        my $num_long = $LONG_MIN;
-        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_long(\$num_long);
-        is($num_long, $LONG_MIN + 1);
-      }
-      # Argument numeric reference - float
-      {
-        my $num_float = POSIX::FLT_MIN();
-        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_float(\$num_float);
-        is($num_float, POSIX::FLT_MIN() + 1);
-      }
-      # Argument numeric reference - double
-      {
-        my $num_double = POSIX::DBL_MIN();
-        SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_double(\$num_double);
-        is($num_double, POSIX::DBL_MIN() + 1);
-      }
-    }
-
-    # Argument numeric reference exception
-    {
-      # Argument numeric reference exception - byte
-      {
-        my $num_byte = $BYTE_MIN;
-        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_byte($num_byte) };
-        ok($@);
-      }
-      # Argument numeric reference exception - short
-      {
-        my $num_short = $SHORT_MIN;
-        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_short($num_short) };
-        ok($@);
-      }
-      # Argument numeric reference exception - int
-      {
-        my $num_int = $INT_MIN;
-        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_int($num_int) };
-        ok($@);
-      }
-      # Argument numeric reference exception - long
-      {
-        my $num_long = $LONG_MIN;
-        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_long($num_long) };
-        ok($@);
-      }
-      # Argument numeric reference exception - float
-      {
-        my $num_float = POSIX::FLT_MIN();
-        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_float($num_float) };
-        ok($@);
-      }
-      # Argument numeric reference exception - double
-      {
-        my $num_double = POSIX::DBL_MIN();
-        eval { SPVM::TestCase::ExchangeAPI->call_spvm_method_numeric_ref_arg_double($num_double) };
-        ok($@);
-      }
-    }
-  }
-  
   # Argument multi numeric reference
   {
     {
