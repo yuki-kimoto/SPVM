@@ -514,56 +514,123 @@ B<Example:>
   # Perl
   SPVM::My->foo({x => 1.2, y => 2.3});
 
-=head2 Perl Refernce to SPVM Numeric Reference Type
+=head2 Perl refernce to SPVM numeric reference type
 
-If the argument type in the SPVM Method definition was a Numeric Reference Type, the argument value must be a scalar reference. Otherwise, an Exception will be raised.
+If the SPVM argument type is numeric reference type, the given Perl reference is converted to SPVM numeric reference type in the following rules.
 
-  # SPVM Method definition
-  class Foo {
-    static method call_byte_ref : void ($num : byte&);
-    static method call_short_ref : void ($num : short&);
-    static method call_int_ref : void ($num : int&);
-    static method call_long_ref : void ($num : long&);
-    static method call_float_ref : void ($num : float&);
-    static method call_double_ref : void ($num : double&);
+=head3 Perl refernce to SPVM byte reference type
+
+If the SPVM argument type is byte reference type, the given Perl reference is converted to SPVM byte reference type.
+
+The given value must be a scalar reference, otherwise an exception occurs.
+
+The given value is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte"> and return value is converted to Perl scalar by L< L<the rule of SPVM byte to Perl scalar|"SPVM byte to Perl scalar">
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : byte&);
   }
 
-  # Call from Perl
-  my $num_byte = 23;
-  SPVM::Foo->call_byte_ref(\$num_byte);
+  # Perl
+  my $value = 23;
+  SPVM::My->foo(\$value);
 
-  my $num_short = 23;
-  SPVM::Foo->call_short_ref(\$num_short);
+=head3 Perl refernce to SPVM short reference type
 
-  my $num_int = 23;
-  SPVM::Foo->call_int_ref(\$num_int);
+If the SPVM argument type is short reference type, the given Perl reference is converted to SPVM short reference type.
 
-  my $num_long = 23;
-  SPVM::Foo->call_long_ref(\$num_long);
+The given value must be a scalar reference, otherwise an exception occurs.
 
-  my $num_float = 23;
-  SPVM::Foo->call_float_ref(\$num_float);
+The given value is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short"> and return value is converted to Perl scalar by L< L<the rule of SPVM short to Perl scalar|"SPVM short to Perl scalar">
 
-  my $num_double = 23;
-  SPVM::Foo->call_double_ref(\$num_double);
+B<Example:>
 
-If the argument type in the SPVM Method definition was a Multi Numeric Reference Type, the argument value is a hash reference reference and the key contains all Multi Numeric field names. is needed. Otherwise, an Exception will be raised.
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : short&);
+  }
 
-If the argument type of the SPVM Method definition is an object type and the value passed to the argument is an Undefined Value, it is converted to the SPVM Undefined Value.
+  # Perl
+  my $value = 23;
+  SPVM::My->foo(\$value);
 
-If the argument type of the SPVM Method definition is a byte[] value and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents byte[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl scalar data ​​to SPVM Numeric Value</a>.
+=head3 Perl refernce to SPVM int reference type
 
-If the argument type of the SPVM Method definition is a short[] value and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents a short[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl scalar data ​​to SPVM Numeric Value</a>.
+If the SPVM argument type is int reference type, the given Perl reference is converted to SPVM int reference type.
 
-If the argument type of the SPVM Method definition is int[] value and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents int[] Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl scalar data ​​to SPVM Numeric Value</a>.
+The given value must be a scalar reference, otherwise an exception occurs.
 
-If the argument type of the SPVM Method definition is a long[] type and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object representing long[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl scalar data ​​to SPVM Numeric Value</a>.
+The given value is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int"> and return value is converted to Perl scalar by L< L<the rule of SPVM int to Perl scalar|"SPVM int to Perl scalar">
 
-If the argument type of the SPVM Method definition is float[] value and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents float[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl scalar data ​​to SPVM Numeric Value</a>.
+B<Example:>
 
-If the argument type of the SPVM Method definition is double[] type and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents double[]. Will be done. The element value is converted by the <a href="#exchange-api-rule-perl-scalar-to-spvm-numeric">Rule to Convert Perl scalar data ​​to SPVM Numeric Value</a>.
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : int&);
+  }
 
-If the argument type of the SPVM Method definition is an object[] type and the value passed to the argument is Array Reference, convert it to a Perl L<SPVM::BlessedObject::Array> object that represents object[]. Will be done. If the element value is an Undefined Value, it is converted to SPVM undefined, and if it is a non-reference scalar value, it is encoded to UTF-8 and converted to SPVM byte[] value. If it is SPVM::Data object, it will not be converted. Otherwise, an Exception will be raised.
+  # Perl
+  my $value = 23;
+  SPVM::My->foo(\$value);
+
+=head3 Perl refernce to SPVM long reference type
+
+If the SPVM argument type is long reference type, the given Perl reference is converted to SPVM long reference type.
+
+The given value must be a scalar reference, otherwise an exception occurs.
+
+The given value is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long"> and return value is converted to Perl scalar by L< L<the rule of SPVM long to Perl scalar|"SPVM long to Perl scalar">
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : long&);
+  }
+
+  # Perl
+  my $value = 23;
+  SPVM::My->foo(\$value);
+
+=head3 Perl refernce to SPVM float reference type
+
+If the SPVM argument type is float reference type, the given Perl reference is converted to SPVM float reference type.
+
+The given value must be a scalar reference, otherwise an exception occurs.
+
+The given value is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float"> and return value is converted to Perl scalar by L< L<the rule of SPVM float to Perl scalar|"SPVM float to Perl scalar">
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : float&);
+  }
+
+  # Perl
+  my $value = 23.5;
+  SPVM::My->foo(\$value);
+
+=head3 Perl refernce to SPVM double reference type
+
+If the SPVM argument type is double reference type, the given Perl reference is converted to SPVM double reference type.
+
+The given value must be a scalar reference, otherwise an exception occurs.
+
+The given value is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double"> and return value is converted to Perl scalar by L< L<the rule of SPVM double to Perl scalar|"SPVM double to Perl scalar">
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : double&);
+  }
+
+  # Perl
+  my $value = 23.5;
+  SPVM::My->foo(\$value);
 
 =head1 RETURN VALUE CONVERSION
 
@@ -573,42 +640,42 @@ a SPVM return value is converted to a Perl value by the following rules.
 
 SPVM void return value is converted to Perl C<undef>. This is only for specification and has no meaning.
 
-=head2 SPVM byte value to Perl scalar
+=head2 SPVM byte to Perl scalar
 
 SPVM byte value(same type as int8_t of C language) is converted to Perl scalar by L<newSViv function of perlapi|https://perldoc.perl.org/perlapi#newSViv>.
 
   int8_t spvm_byte_value = VALUE;
   SV* perl_scalar = newSViv(spvm_byte_value);
 
-=head2 SPVM short value to Perl scalar
+=head2 SPVM short to Perl scalar
 
 SPVM short value(same type as int16_t of C language) is converted to Perl scalar by L<newSViv function of perlapi|https://perldoc.perl.org/perlapi#newSViv>.
 
   int16_t spvm_short_value = VALUE;
   SV* perl_scalar = newSViv(spvm_short_value);
 
-=head2 SPVM int value to Perl scalar
+=head2 SPVM int to Perl scalar
 
 SPVM int value(same type as int32_t of C language) is converted to Perl scalar by L<newSViv function of perlapi|https://perldoc.perl.org/perlapi#newSViv>.
 
   int32_t spvm_int_value = VALUE;
   SV* perl_scalar = newSViv(spvm_int_value);
 
-=head2 SPVM long value to Perl scalar
+=head2 SPVM long to Perl scalar
 
 SPVM long value(same type as int64_t of C language) is converted to Perl scalar by L<newSViv function of perlapi|https://perldoc.perl.org/perlapi#newSViv>.
 
   int64_t spvm_long_value = VALUE;
   SV* perl_scalar = newSViv(spvm_long_value);
 
-=head2 SPVM float value to Perl scalar
+=head2 SPVM float to Perl scalar
 
 SPVM float value(same type as float of C language) is converted to Perl scalar by L<newSVnv function of perlapi|https://perldoc.perl.org/perlapi#newSVnv>.
 
   float spvm_float_value = VALUE;
   SV* perl_scalar = newSVnv(spvm_float_value);
 
-=head2 SPVM double value to Perl scalar
+=head2 SPVM double to Perl scalar
 
 SPVM double value(same type as double of C language) is converted to Perl scalar by L<newSVnv function of perlapi|https://perldoc.perl.org/perlapi#newSVnv>.
 

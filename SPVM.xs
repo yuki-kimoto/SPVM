@@ -2600,7 +2600,7 @@ call_spvm_method(...)
           stack[arg_values_offset].oval = NULL;
         }
         else {
-          // Perl array referecne
+          // Argument: Perl array referecne to SPVM array
           if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
             
             SV* sv_elems = sv_value;
@@ -2609,137 +2609,105 @@ call_spvm_method(...)
             
             int32_t length = av_len(av_elems) + 1;
             
-            # 1 dimention array or oarray
             if (arg_type_dimension == 1 || arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
               switch (arg_basic_type_id) {
+                // Argument: Perl array referecne to SPVM byte array
                 case SPVM_BASIC_TYPE_C_ID_BYTE: {
-                  // New array
                   void* array = env->new_byte_array(env, length);
-
                   int8_t* elems = env->get_elems_byte(env, array);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                     elems[i] = (int8_t)SvIV(sv_value);
                   }
-                  
-                  // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
                   break;
                 }
+                // Argument: Perl array referecne to SPVM short array
                 case SPVM_BASIC_TYPE_C_ID_SHORT: {
-                  // New array
                   void* array = env->new_short_array(env, length);
-
                   int16_t* elems = env->get_elems_short(env, array);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                     elems[i] = (int16_t)SvIV(sv_value);
                   }
-                  
-                  // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
                   break;
                 }
+                // Argument: Perl array referecne to SPVM int array
                 case SPVM_BASIC_TYPE_C_ID_INT: {
-                  
-                  // New array
                   void* array = env->new_int_array(env, length);
-                  
                   int32_t* elems = env->get_elems_int(env, array);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                     elems[i] = (int32_t)SvIV(sv_value);
                   }
-                  
-                  // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-                  
                   sv_value = sv_array;
                   break;
                 }
+                // Argument: Perl array referecne to SPVM long array
                 case SPVM_BASIC_TYPE_C_ID_LONG: {
-                  // New array
                   void* array = env->new_long_array(env, length);
-
                   int64_t* elems = env->get_elems_long(env, array);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                     elems[i] = (int64_t)SvIV(sv_value);
                   }
-                  
-                  // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
                   break;
                 }
+                // Argument: Perl array referecne to SPVM float array
                 case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-                  // New array
                   void* array = env->new_float_array(env, length);
-
                   float* elems = env->get_elems_float(env, array);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                     elems[i] = (float)SvNV(sv_value);
                   }
-                  
-                  // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
                   break;
                 }
+                // Argument: Perl array referecne to SPVM double array
                 case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-                  // New array
                   void* array = env->new_double_array(env, length);
-
                   double* elems = env->get_elems_double(env, array);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_value_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
                     elems[i] = (double)SvNV(sv_value);
                   }
-                  
-                  // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
                   break;
                 }
+                // Argument: Perl array referecne to SPVM string array
                 case SPVM_BASIC_TYPE_C_ID_STRING: {
-                  // New array
                   void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
-                  
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
                     SV* sv_elem = sv_elem_ptr ? *sv_elem_ptr : &PL_sv_undef;
-
-                    // Perl value is undef
                     if (!SvOK(sv_elem)) {
                       env->set_elem_object(env, array, i, NULL);
                     }
                     else {
-                      // If Perl value is non ref scalar, the value is converted to string object
                       if (!SvROK(sv_elem)) {
-                      
                         SV* sv_elem_copy = sv_2mortal(newSVsv(sv_elem));
                         sv_utf8_encode(sv_elem_copy);
-
                         const char* chars = SvPV_nolen(sv_elem_copy);
                         int32_t length = SvCUR(sv_elem_copy);
-                        
                         void* string = env->new_string(env, chars, length);
-                        
                         SV* sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
-                        
                         sv_elem = sv_string;
                       }
-                      
-                      // Check type
                       if (sv_isobject(sv_elem) && sv_derived_from(sv_elem, "SPVM::BlessedObject::String")) {
                         SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_elem);
                         env->set_elem_object(env, array, i, object);
@@ -2749,8 +2717,6 @@ call_spvm_method(...)
                       }
                     }
                   }
-                  
-                  // New sv array
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
                   
