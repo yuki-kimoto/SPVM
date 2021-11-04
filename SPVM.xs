@@ -2300,7 +2300,7 @@ call_spvm_method(...)
           stack[arg_values_offset].oval = NULL;
         }
         else {
-          // Perl value is array refence
+          // Perl array referecne
           if (SvROK(sv_value) && sv_derived_from(sv_value, "ARRAY")) {
             
             SV* sv_elems = sv_value;
@@ -2523,7 +2523,7 @@ call_spvm_method(...)
             stack[arg_values_offset].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject::Array at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
           }
         }
         
@@ -2559,6 +2559,7 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
+      // Perl hash reference to SPVM byte multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_BYTE: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
@@ -2603,6 +2604,7 @@ call_spvm_method(...)
         }
         break;
       }
+      // Perl hash reference to SPVM short multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_SHORT: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
@@ -2648,6 +2650,7 @@ call_spvm_method(...)
         }
         break;
       }
+      // Perl hash reference to SPVM int multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_INT: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
@@ -2692,6 +2695,7 @@ call_spvm_method(...)
         }
         break;
       }
+      // Perl hash reference to SPVM long multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_LONG: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
@@ -2736,6 +2740,7 @@ call_spvm_method(...)
         }
         break;
       }
+      // Perl hash reference to SPVM float multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
@@ -2780,6 +2785,7 @@ call_spvm_method(...)
         }
         break;
       }
+      // Perl hash reference to SPVM double multi numeric type
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE: {
         if (sv_derived_from(sv_value, "HASH")) {
           HV* hv_value = (HV*)SvRV(sv_value);
