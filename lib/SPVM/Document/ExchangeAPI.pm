@@ -114,7 +114,7 @@ The conversion logic is
 
   (int8_t)SvIV(perl_scalar)
 
-Example:
+B<Example:>
 
   # SPVM method definition
   class My {
@@ -122,7 +122,7 @@ Example:
   }
   
   # Perl
-  My->foo(12);
+  SPVM::My->foo(12);
 
 =head2 Perl scalar to SPVM short
 
@@ -132,7 +132,7 @@ The conversion logic is
   
   (int16_t)SvIV(perl_scalar)
 
-Example:
+B<Example:>
 
   # SPVM method definition
   class My {
@@ -140,7 +140,7 @@ Example:
   }
   
   # Perl
-  My->foo(12);
+  SPVM::My->foo(12);
 
 =head2 Perl scalar to SPVM int
 
@@ -150,13 +150,15 @@ The conversion logic is
 
   (int32_t)SvIV(perl_scalar)
 
+B<Example:>
+
   # SPVM method definition
   class My {
     static method foo : void ($value : int) { ... }
   }
   
   # Perl
-  My->foo(12);
+  SPVM::My->foo(12);
 
 =head2 Perl scalar to SPVM long
 
@@ -166,13 +168,15 @@ The conversion logic is
 
   (int64_t)SvIV(perl_scalar)
 
+B<Example:>
+
   # SPVM method definition
   class My {
     static method foo : void ($value : long) { ... }
   }
   
   # Perl
-  My->foo(12);
+  SPVM::My->foo(12);
 
 =head2 Perl scalar to SPVM float
 
@@ -182,13 +186,15 @@ The conversion logic is
 
   (float)SvNV(perl_scalar)
 
+B<Example:>
+
   # SPVM method definition
   class My {
     static method foo : void ($value : float) { ... }
   }
   
   # Perl
-  My->foo(1.2);
+  SPVM::My->foo(1.2);
 
 =head2 Perl scalar to SPVM double
 
@@ -198,13 +204,15 @@ The conversion logic is
 
   (double)SvNV(perl_scalar)
 
+B<Example:>
+
   # SPVM method definition
   class My {
     static method foo : void ($value : double) { ... }
   }
   
   # Perl
-  My->foo(1.2);
+  SPVM::My->foo(1.2);
 
 =head2 Perl scalar to SPVM string
 
@@ -222,6 +230,16 @@ If the given non-ref scalar value is Perl C<undef>, it is converted to Perl C<un
 
 And the following L<"Perl SPVM::BlessedObject::String to SPVM string"> conversion is contined.
 
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : string) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo("あいう");
+
 =head3 Perl SPVM::BlessedObject::String to SPVM string
 
 No conversion occurs.
@@ -229,6 +247,15 @@ No conversion occurs.
 Perl can have SPVM string itself as L<SPVM::BlessedObject::String> object. This object is created by such as L<"SPVM::new_string">, L<"SPVM::new_string_from_bin">, or got as a return value of SPVM method.
 
 If the given value is Perl C<undef>, it is converted to SPVM C<undef>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : string) { ... }
+  }
+  
+  # Perl
+  my $string = SPVM::new_string("あいう");
+  SPVM::My->foo($string);
 
 =head2 Perl array reference to SPVM array
 
@@ -238,33 +265,113 @@ A Perl array reference is converted to a SPVM array by the following rules.
 
 If the SPVM argument type is C<byte[]>, the Perl array reference is converted to SPVM array which type is C<byte[]>. Each element is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte">. Perl C<undef> is coverted to SPVM C<undef>.
 
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : byte[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo([1, 2, 3]);
+
 =head3 Perl array reference to SPVM short array
 
 If the SPVM argument type is C<short[]>, the Perl array reference is converted to SPVM array which type is C<short[]>. Each element is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short">. Perl C<undef> is coverted to SPVM C<undef>.
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : short[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo([1, 2, 3]);
 
 =head3 Perl array reference to SPVM int array
 
 If the SPVM argument type is C<int[]>, the Perl array reference is converted to SPVM array which type is C<int[]>. Each element is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int">. Perl C<undef> is coverted to SPVM C<undef>.
 
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : int[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo([1, 2, 3]);
+
 =head3 Perl array reference to SPVM long array
 
 If the SPVM argument type is C<long[]>, the Perl array reference is converted to SPVM array which type is C<long[]>. Each element is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long">. Perl C<undef> is coverted to SPVM C<undef>.
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : long[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo([1, 2, 3]);
 
 =head3 Perl array reference to SPVM float array
 
 If the SPVM argument type is C<float[]>, the Perl array reference is converted to SPVM array which type is C<float[]>. Each element is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float">. Perl C<undef> is coverted to SPVM C<undef>.
 
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : float[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo([1.2, 2.3, 3.4]);
+
 =head3 Perl array reference to SPVM double array
 
 If the SPVM argument type is C<double[]>, the Perl array reference is converted to SPVM array which type is C<double[]>. Each element is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double">. Perl C<undef> is coverted to SPVM C<undef>.
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : double[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo([1.2, 2.3, 3.4]);
 
 =head3 Perl array reference to SPVM string array
 
 If the SPVM argument type is C<string[]>, the Perl array reference is converted to SPVM array which type is C<string[]>. Each element is converted to C<string> value by L<the rule of Perl scalar to SPVM string|"Perl scalar to SPVM string">. Perl C<undef> is coverted to SPVM C<undef>.
 
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : string[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo(["あい", "うえ", "お"]);
+
 =head3 Perl array reference to SPVM multi numeric array
 
 If the SPVM argument type is a array of multi numeric type, the given Perl array reference is converted to SPVM multi numeric array which element type is multi numeric type. Each element which is a hash reference is converted to multi numeric type by L<the rule of Perl hash reference to SPVM multi numeric type|"Perl hash reference to SPVM multi numeric type">. Perl C<undef> is coverted to SPVM C<undef>.
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : Complex_2d[]) { ... }
+  }
+  
+  # Perl
+  SPVM::My->foo([{re => 1.2, im => 2.3}, {re => 3.4, im => 4.5}]);
 
 =head2 Perl SPVM::BlessedObject::Array to SPVM array
 
@@ -272,45 +379,140 @@ No conversion occurs.
 
 Perl can have SPVM array itself as L<SPVM::BlessedObject::Array> object. This object is created by such as L<"SPVM::new_byte_array">, L<"SPVM::new_short_array">, L<"SPVM::new_int_array">, L<"SPVM::new_long_array">, L<"SPVM::new_float_array">, L<"SPVM::new_double_array">, or got as a return value of SPVM method.
 
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($values : int[]) { ... }
+  }
+  
+  # Perl
+  my $array = SPVM::new_int_array([1, 2, 3]);
+  SPVM::My->foo($array);
+
 =head2 Perl hash reference to SPVM multi numeric type
 
 If the argument type is a multi numeric type, the given argument is hash reference is converted to the value of SPVM multi numeric type. If the given argument is different from a hash reference, a exception occurs.
 
-The followings are examples of L<Complex_2d|SPVM::Complex_2d> and L<Complex_2f|SPVM::Complex_2f>.
+The followings are examples of L<Complex_2d|SPVM::Complex_2d>.
 
-  # SPVM Method definition
-  class Foo {
-    static method call_complex_float : void ($z : Complex_2f);
-    static method call_complex_double : void ($z : Complex_2d);
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : Complex_2d);
   }
 
-  # Call from Perl
-  SPVM::Foo->call_complex_float({re => 2.3, im => 5.6});
-  SPVM::Foo->call_complex_double({re => 2.3, im => 5.6});
+  # Perl
+  SPVM::My->foo({re => 2.3, im => 5.6});
 
 =head3 Perl hash reference to SPVM byte multi numeric type
 
 If the argument type is a byte multi numeric type, the given argument is hash reference is converted to the value of SPVM byte multi numeric type. If the given argument is different from a hash reference, a exception occurs. Each field is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte">.
 
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2b {
+    has x : byte;
+    has y : byte;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2b);
+  }
+
+  # Perl
+  SPVM::My->foo({x => 1, y => 2});
+
 =head3 Perl hash reference to SPVM short multi numeric type
 
 If the argument type is a short multi numeric type, the given argument is hash reference is converted to the value of SPVM short multi numeric type. If the given argument is different from a hash reference, a exception occurs. Each field is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short">.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2s {
+    has x : short;
+    has y : short;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2s);
+  }
+
+  # Perl
+  SPVM::My->foo({x => 1, y => 2});
 
 =head3 Perl hash reference to SPVM int multi numeric type
 
 If the argument type is a int multi numeric type, the given argument is hash reference is converted to the value of SPVM int multi numeric type. If the given argument is different from a hash reference, a exception occurs. Each field is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int">.
 
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2i {
+    has x : int;
+    has y : int;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2i);
+  }
+
+  # Perl
+  SPVM::My->foo({x => 1, y => 2});
+
 =head3 Perl hash reference to SPVM long multi numeric type
 
 If the argument type is a long multi numeric type, the given argument is hash reference is converted to the value of SPVM long multi numeric type. If the given argument is different from a hash reference, a exception occurs. Each field is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long">.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2l {
+    has x : long;
+    has y : long;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2l);
+  }
+
+  # Perl
+  SPVM::My->foo({x => 1, y => 2});
 
 =head3 Perl hash reference to SPVM float multi numeric type
 
 If the argument type is a float multi numeric type, the given argument is hash reference is converted to the value of SPVM float multi numeric type. If the given argument is different from a hash reference, a exception occurs. Each field is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float">.
 
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2f {
+    has x : float;
+    has y : float;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2f);
+  }
+
+  # Perl
+  SPVM::My->foo({x => 1.2, y => 2.3});
+
 =head3 Perl hash reference to SPVM double multi numeric type
 
 If the argument type is a double multi numeric type, the given argument is hash reference is converted to the value of SPVM double multi numeric type. If the given argument is different from a hash reference, a exception occurs. Each field is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double">.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2d {
+    has x : double;
+    has y : double;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2d);
+  }
+
+  # Perl
+  SPVM::My->foo({x => 1.2, y => 2.3});
 
 =head2 Perl Refernce to SPVM Numeric Reference Type
 
