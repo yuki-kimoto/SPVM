@@ -110,37 +110,101 @@ If the count of given arguments is more than the count of the arguments of the m
 
 If the SPVM argument type is C<byte>, Perl scalar is converted to SPVM C<byte> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
 
+The conversion logic is
+
   (int8_t)SvIV(perl_scalar)
+
+Example:
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : byte) { ... }
+  }
+  
+  # Perl
+  My->foo(12);
 
 =head2 Perl scalar to SPVM short
 
 If the SPVM argument type is C<short>, Perl scalar is converted to SPVM C<short> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
+
+The conversion logic is
   
   (int16_t)SvIV(perl_scalar)
+
+Example:
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : short) { ... }
+  }
+  
+  # Perl
+  My->foo(12);
 
 =head2 Perl scalar to SPVM int
 
 If the SPVM argument type is C<int>, Perl scalar is converted to SPVM C<int> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
 
+The conversion logic is
+
   (int32_t)SvIV(perl_scalar)
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : int) { ... }
+  }
+  
+  # Perl
+  My->foo(12);
 
 =head2 Perl scalar to SPVM long
 
 If the SPVM argument type is C<long>, Perl scalar is converted to SPVM C<long> value using L<SvIV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
 
+The conversion logic is
+
   (int64_t)SvIV(perl_scalar)
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : long) { ... }
+  }
+  
+  # Perl
+  My->foo(12);
 
 =head2 Perl scalar to SPVM float
 
 If the SPVM argument type is C<float>, Perl scalar is converted to SPVM C<float> value using L<SvNV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
 
+The conversion logic is
+
   (float)SvNV(perl_scalar)
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : float) { ... }
+  }
+  
+  # Perl
+  My->foo(1.2);
 
 =head2 Perl scalar to SPVM double
 
 If the SPVM argument type is C<double>, Perl scalar is converted to SPVM C<double> value using L<SvNV of perlapi|https://perldoc.perl.org/perlapi#SvIV>
 
+The conversion logic is
+
   (double)SvNV(perl_scalar)
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : double) { ... }
+  }
+  
+  # Perl
+  My->foo(1.2);
 
 =head2 Perl scalar to SPVM string
 
