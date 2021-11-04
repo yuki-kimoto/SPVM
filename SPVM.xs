@@ -671,13 +671,13 @@ new_string_array(...)
       SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
       if (SvOK(sv_str_value)) {
         // Copy
-        sv_str_value = sv_2mortal(newSVsv(sv_str_value));
+        SV* sv_str_value_copy = sv_2mortal(newSVsv(sv_str_value));
         
         // Encode to UTF-8
-        sv_utf8_encode(sv_str_value);
+        sv_utf8_encode(sv_str_value_copy);
         
-        int32_t length = sv_len(sv_str_value);
-        const char* chars = SvPV_nolen(sv_str_value);
+        int32_t length = sv_len(sv_str_value_copy);
+        const char* chars = SvPV_nolen(sv_str_value_copy);
         
         void* string = env->new_string_raw(env, chars, length);
         env->set_elem_object(env, array, i, string);
@@ -2425,9 +2425,12 @@ call_spvm_method(...)
                     else {
                       // If Perl value is non ref scalar, the value is converted to string object
                       if (!SvROK(sv_elem)) {
+                      
+                        SV* sv_elem_copy = sv_2mortal(newSVsv(sv_elem));
+                        sv_utf8_encode(sv_elem_copy);
 
-                        const char* chars = SvPV_nolen(sv_elem);
-                        int32_t length = SvCUR(sv_elem);
+                        const char* chars = SvPV_nolen(sv_elem_copy);
+                        int32_t length = SvCUR(sv_elem_copy);
                         
                         void* string = env->new_string(env, chars, length);
                         
@@ -2467,13 +2470,13 @@ call_spvm_method(...)
                       // Convert non-ref scalar to byte[]
                       if (!SvROK(sv_value)) {
                         // Copy
-                        sv_value = sv_2mortal(newSVsv(sv_value));
+                        SV* sv_value_copy = sv_2mortal(newSVsv(sv_value));
                         
                         // Encode to UTF-8
-                        sv_utf8_encode(sv_value);
+                        sv_utf8_encode(sv_value_copy);
                         
-                        int32_t length = sv_len(sv_value);
-                        const char* chars = SvPV_nolen(sv_value);
+                        int32_t length = sv_len(sv_value_copy);
+                        const char* chars = SvPV_nolen(sv_value_copy);
                         
                         void* string = env->new_string_raw(env, chars, length);
                         env->inc_ref_count(env, string);
