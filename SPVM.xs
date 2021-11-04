@@ -2290,32 +2290,43 @@ call_spvm_method(...)
         arg_values_offset++;
         break;
       }
-      // Object type except array object
+      // Perl SPVM::BlessedObject::Class to SPVM class
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
+      {
+        if (!SvOK(sv_value)) {
+          stack[arg_values_offset].oval = NULL;
+        }
+        else {
+          if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
+            SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
+            assert(arg_type_dimension == 0);
+            if (object->basic_type_id != arg_basic_type_id) {
+              croak("%dth argument of %s->%s() must be %s class line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+            }
+            stack[arg_values_offset].oval = object;
+          }
+          else {
+            croak("%dth argument of %s->%s() must be a SPVM::BlessedObject::Class object at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+          }
+        }
+        arg_values_offset++;
+        break;
+      }
+      // Perl SPVM::BlessedObject to SPVM any object
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       {
-        // Perl value is undef
         if (!SvOK(sv_value)) {
           stack[arg_values_offset].oval = NULL;
         }
         else {
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-            
-            assert(arg_type_dimension == 0);
-            if (arg_basic_type_id != SPVM_BASIC_TYPE_C_ID_ANY_OBJECT) {
-              if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
-              }
-            }
-            
             stack[arg_values_offset].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be a SPVM::BlessedObject at %s line %d\n", arg_index + 1, class_name, method_name, MFILE, __LINE__);
           }
         }
-        
         arg_values_offset++;
         break;
       }

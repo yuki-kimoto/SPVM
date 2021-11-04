@@ -742,6 +742,46 @@ If the given value is Perl C<undef>, it is converted to SPVM C<undef>
   my $string = SPVM::new_string("あいう");
   SPVM::My->foo($string);
 
+=head2 Perl SPVM::BlessedObject::Class to SPVM class
+
+No conversion occurs.
+
+Perl can have SPVM class object itself as a object which inherits L<SPVM::BlessedObject::Class>. This object is created by a contructor such as SPVM::Int->new, SPVM::MyClass->new.
+
+If the given value is Perl C<undef>, it is converted to SPVM C<undef>.
+
+If class name is different, an exception occurs.
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : SPVM::Int) { ... }
+  }
+  
+  # Perl
+  my $value = SPVM::Int->new(5);
+  SPVM::My->foo($value);
+
+=head2 Perl SPVM::BlessedObject to SPVM any object
+
+No conversion occurs.
+
+Perl can have SPVM object itself as a L<SPVM::BlessedObject> object. This object is created by a contructor or functions of exchange API such as SPVM::Int->new, SPVM::MyClass->new, SPVM::new_int_array.
+
+If the given value is Perl C<undef>, it is converted to SPVM C<undef>.
+
+B<Example:>
+
+  # SPVM method definition
+  class My {
+    static method foo : void ($value : object) { ... }
+  }
+  
+  # Perl
+  my $value = SPVM::Int->new(5);
+  SPVM::My->foo($value);
+
 =head2 Perl array reference to SPVM array
 
 A Perl array reference is converted to a SPVM array by the following rules.
