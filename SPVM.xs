@@ -2193,15 +2193,15 @@ call_spvm_method(...)
   // Arguments have reference type
   int32_t args_have_ref = 0;
 
-  // Reference stack
-  int32_t ref_stack_top = 0;
+  // Reference stack.
+  int32_t ref_stack_index = 0;
   SPVM_VALUE ref_stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  int32_t ref_stack_ids[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  int32_t ref_stack_indexes[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
 
   // Arguments
   for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
     
-    int32_t args_index_nth = args_index_nth;
+    int32_t args_index_nth = args_index + 1;
     
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
@@ -2817,10 +2817,10 @@ call_spvm_method(...)
         }
         SV* sv_value_deref = SvRV(sv_value);
         int8_t value = (int8_t)SvIV(sv_value_deref);
-        ref_stack[ref_stack_top].bval = value;
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top++;
+        ref_stack[ref_stack_index].bval = value;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index++;
         args_stack_index++;
         break;
       }
@@ -2832,10 +2832,10 @@ call_spvm_method(...)
         }
         SV* sv_value_deref = SvRV(sv_value);
         int16_t value = (int16_t)SvIV(sv_value_deref);
-        ref_stack[ref_stack_top].sval = value;
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top++;
+        ref_stack[ref_stack_index].sval = value;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index++;
         args_stack_index++;
         break;
       }
@@ -2847,10 +2847,10 @@ call_spvm_method(...)
         }
         SV* sv_value_deref = SvRV(sv_value);
         int32_t value = (int32_t)SvIV(sv_value_deref);
-        ref_stack[ref_stack_top].ival = value;
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top++;
+        ref_stack[ref_stack_index].ival = value;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index++;
         args_stack_index++;
         break;
       }
@@ -2862,10 +2862,10 @@ call_spvm_method(...)
         }
         SV* sv_value_deref = SvRV(sv_value);
         int64_t value = (int64_t)SvIV(sv_value_deref);
-        ref_stack[ref_stack_top].lval = value;
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top++;
+        ref_stack[ref_stack_index].lval = value;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index++;
         args_stack_index++;
         break;
       }
@@ -2877,10 +2877,10 @@ call_spvm_method(...)
         }
         SV* sv_value_deref = SvRV(sv_value);
         float value = (float)SvNV(sv_value_deref);
-        ref_stack[ref_stack_top].fval = value;
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top++;
+        ref_stack[ref_stack_index].fval = value;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index++;
         args_stack_index++;
         break;
       }
@@ -2892,10 +2892,10 @@ call_spvm_method(...)
         }
         SV* sv_value_deref = SvRV(sv_value);
         double value = (double)SvNV(sv_value_deref);
-        ref_stack[ref_stack_top].dval = value;
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top++;
+        ref_stack[ref_stack_index].dval = value;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index++;
         args_stack_index++;
         break;
       }
@@ -2956,11 +2956,11 @@ call_spvm_method(...)
             sv_field_value = &PL_sv_undef;
           }
           int8_t value = (int8_t)SvIV(sv_field_value);
-          ((int8_t*)&ref_stack[ref_stack_top])[field_index] = value;
+          ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
         }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top += fields_length;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index += fields_length;
         args_stack_index++;
         
         break;
@@ -3022,11 +3022,11 @@ call_spvm_method(...)
             sv_field_value = &PL_sv_undef;
           }
           int16_t value = (int16_t)SvIV(sv_field_value);
-          ((int16_t*)&ref_stack[ref_stack_top])[field_index] = value;
+          ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
         }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top += fields_length;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index += fields_length;
         args_stack_index++;
         break;
       }
@@ -3087,11 +3087,11 @@ call_spvm_method(...)
             sv_field_value = &PL_sv_undef;
           }
           int32_t value = (int32_t)SvIV(sv_field_value);
-          ((int32_t*)&ref_stack[ref_stack_top])[field_index] = value;
+          ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
         }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top += fields_length;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index += fields_length;
         args_stack_index++;
         break;
       }
@@ -3152,11 +3152,11 @@ call_spvm_method(...)
             sv_field_value = &PL_sv_undef;
           }
           int64_t value = (int64_t)SvIV(sv_field_value);
-          ((int64_t*)&ref_stack[ref_stack_top])[field_index] = value;
+          ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
         }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top += fields_length;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index += fields_length;
         args_stack_index++;
         break;
       }
@@ -3217,11 +3217,11 @@ call_spvm_method(...)
             sv_field_value = &PL_sv_undef;
           }
           float value = (float)SvNV(sv_field_value);
-          ((float*)&ref_stack[ref_stack_top])[field_index] = value;
+          ((float*)&ref_stack[ref_stack_index])[field_index] = value;
         }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top += fields_length;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index += fields_length;
         args_stack_index++;
         break;
       }
@@ -3282,11 +3282,11 @@ call_spvm_method(...)
             sv_field_value = &PL_sv_undef;
           }
           double value = (double)SvNV(sv_field_value);
-          ((double*)&ref_stack[ref_stack_top])[field_index] = value;
+          ((double*)&ref_stack[ref_stack_index])[field_index] = value;
         }
-        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
-        ref_stack_ids[args_index] = ref_stack_top;
-        ref_stack_top += fields_length;
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_index];
+        ref_stack_indexes[args_index] = ref_stack_index;
+        ref_stack_index += fields_length;
         args_stack_index++;
         break;
       }
@@ -3462,36 +3462,36 @@ call_spvm_method(...)
       int32_t arg_basic_type_id = arg->type->basic_type->id;
       int32_t arg_type_dimension = arg->type->dimension;
 
-      int32_t ref_stack_id = ref_stack_ids[args_index];
+      int32_t ref_stack_index = ref_stack_indexes[args_index];
       switch (arg->type_category) {
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE : {
           SV* sv_value_deref = SvRV(sv_value);
-          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].bval);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_index].bval);
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT : {
           SV* sv_value_deref = SvRV(sv_value);
-          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].sval);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_index].sval);
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT : {
           SV* sv_value_deref = SvRV(sv_value);
-          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].ival);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_index].ival);
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG : {
           SV* sv_value_deref = SvRV(sv_value);
-          sv_setiv(sv_value_deref, ref_stack[ref_stack_id].lval);
+          sv_setiv(sv_value_deref, ref_stack[ref_stack_index].lval);
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT : {
           SV* sv_value_deref = SvRV(sv_value);
-          sv_setnv(sv_value_deref, ref_stack[ref_stack_id].fval);
+          sv_setnv(sv_value_deref, ref_stack[ref_stack_index].fval);
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE : {
           SV* sv_value_deref = SvRV(sv_value);
-          sv_setnv(sv_value_deref, ref_stack[ref_stack_id].dval);
+          sv_setnv(sv_value_deref, ref_stack[ref_stack_index].dval);
           break;
         }
         case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
@@ -3504,7 +3504,7 @@ call_spvm_method(...)
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
-            SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int8_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -3519,7 +3519,7 @@ call_spvm_method(...)
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
-            SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int16_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -3534,7 +3534,7 @@ call_spvm_method(...)
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
-            SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int32_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -3549,7 +3549,7 @@ call_spvm_method(...)
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
-            SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSViv(((int64_t*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -3564,7 +3564,7 @@ call_spvm_method(...)
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
-            SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSVnv(((float*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
@@ -3579,7 +3579,7 @@ call_spvm_method(...)
           for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
             SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
             const char* field_name = field->name;
-            SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_id])[field_index]));
+            SV* sv_field_value = sv_2mortal(newSVnv(((double*)&ref_stack[ref_stack_index])[field_index]));
             (void)hv_store(hv_value, field_name, strlen(field_name), SvREFCNT_inc(sv_field_value), 0);
           }
           break;
