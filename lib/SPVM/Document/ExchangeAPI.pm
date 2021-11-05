@@ -915,13 +915,13 @@ B<Example:>
   my $array = SPVM::new_int_array([1, 2, 3]);
   SPVM::My->foo($array);
 
-=head2 Perl hash reference to SPVM multi numeric type
+=head2 Perl hash reference to SPVM multi numeric
 
 If the SPVM argument type is a multi numeric type, the given argument is converted by the following rules.
 
-=head3 Perl hash reference to SPVM byte multi numeric type
+=head3 Perl hash reference to SPVM multi numeric byte
 
-If the argument type is a byte multi numeric type, the given argument is hash reference is converted to the value of SPVM byte multi numeric type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte">.
+If the argument type is a multi numeric byte type, the given argument is hash reference is converted to the value of SPVM multi numeric byte type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte">.
 
 If a filed is missing, an exception occurs.
 
@@ -939,9 +939,9 @@ B<Example:>
   # Perl
   SPVM::My->foo({x => 1, y => 2});
 
-=head3 Perl hash reference to SPVM short multi numeric type
+=head3 Perl hash reference to SPVM multi numeric short
 
-If the argument type is a short multi numeric type, the given argument is hash reference is converted to the value of SPVM short multi numeric type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short">.
+If the argument type is a multi numeric short type, the given argument is hash reference is converted to the value of SPVM multi numeric short type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short">.
 
 If a filed is missing, an exception occurs.
 
@@ -959,9 +959,9 @@ B<Example:>
   # Perl
   SPVM::My->foo({x => 1, y => 2});
 
-=head3 Perl hash reference to SPVM int multi numeric type
+=head3 Perl hash reference to SPVM multi numeric int
 
-If the argument type is a int multi numeric type, the given argument is hash reference is converted to the value of SPVM int multi numeric type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int">.
+If the argument type is a multi numeric int type, the given argument is hash reference is converted to the value of SPVM multi numeric int type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int">.
 
 If a filed is missing, an exception occurs.
 
@@ -979,9 +979,9 @@ B<Example:>
   # Perl
   SPVM::My->foo({x => 1, y => 2});
 
-=head3 Perl hash reference to SPVM long multi numeric type
+=head3 Perl hash reference to SPVM multi numeric long
 
-If the argument type is a long multi numeric type, the given argument is hash reference is converted to the value of SPVM long multi numeric type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long">.
+If the argument type is a multi numeric long type, the given argument is hash reference is converted to the value of SPVM multi numeric long type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long">.
 
 If a filed is missing, an exception occurs.
 
@@ -999,9 +999,9 @@ B<Example:>
   # Perl
   SPVM::My->foo({x => 1, y => 2});
 
-=head3 Perl hash reference to SPVM float multi numeric type
+=head3 Perl hash reference to SPVM multi numeric float
 
-If the argument type is a float multi numeric type, the given argument is hash reference is converted to the value of SPVM float multi numeric type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float">.
+If the argument type is a multi numeric float type, the given argument is hash reference is converted to the value of SPVM multi numeric float type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float">.
 
 If a filed is missing, an exception occurs.
 
@@ -1019,9 +1019,9 @@ B<Example:>
   # Perl
   SPVM::My->foo({x => 1.2, y => 2.3});
 
-=head3 Perl hash reference to SPVM double multi numeric type
+=head3 Perl hash reference to SPVM multi numeric double
 
-If the argument type is a double multi numeric type, the given argument is hash reference is converted to the value of SPVM double multi numeric type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double">.
+If the argument type is a multi numeric double type, the given argument is hash reference is converted to the value of SPVM multi numeric double type. If the given argument is different from a hash reference, an exception occurs. Each field is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double">.
 
 If a filed is missing, an exception occurs.
 
@@ -1155,6 +1155,160 @@ B<Example:>
 
   # Perl
   my $value = 23.5;
+  SPVM::My->foo(\$value);
+
+=head2 Perl reference to SPVM multi numeric reference
+
+If the SPVM argument type is multi numeric reference type, the given Perl reference is converted by the following rules.
+
+=head3 Perl reference to SPVM multi numeric byte reference
+
+If the SPVM argument type is multi numeric byte reference type, the given Perl reference is converted to SPVM multi numeric byte reference type.
+
+The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+
+The each field of the hash of the given argument is converted to C<byte> value by L<the rule of Perl scalar to SPVM byte|"Perl scalar to SPVM byte"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM byte to Perl scalar|"SPVM byte to Perl scalar">
+
+If a field is missing, an exception occurs.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2b {
+    has x : byte;
+    has y : byte;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2b);
+  }
+
+  # Perl
+  my $value = {x => 1, y => 2};
+  SPVM::My->foo(\$value);
+
+=head3 Perl reference to SPVM multi numeric short reference
+
+If the SPVM argument type is multi numeric short reference type, the given Perl reference is converted to SPVM multi numeric short reference type.
+
+The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+
+The each field of the hash of the given argument is converted to C<short> value by L<the rule of Perl scalar to SPVM short|"Perl scalar to SPVM short"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM short to Perl scalar|"SPVM short to Perl scalar">
+
+If a field is missing, an exception occurs.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2s {
+    has x : short;
+    has y : short;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2s);
+  }
+
+  # Perl
+  my $value = {x => 1, y => 2};
+  SPVM::My->foo(\$value);
+
+=head3 Perl reference to SPVM multi numeric int reference
+
+If the SPVM argument type is multi numeric int reference type, the given Perl reference is converted to SPVM multi numeric int reference type.
+
+The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+
+The each field of the hash of the given argument is converted to C<int> value by L<the rule of Perl scalar to SPVM int|"Perl scalar to SPVM int"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM int to Perl scalar|"SPVM int to Perl scalar">
+
+If a field is missing, an exception occurs.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2i {
+    has x : int;
+    has y : int;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2i);
+  }
+
+  # Perl
+  my $value = {x => 1, y => 2};
+  SPVM::My->foo(\$value);
+
+=head3 Perl reference to SPVM multi numeric long reference
+
+If the SPVM argument type is multi numeric long reference type, the given Perl reference is converted to SPVM multi numeric long reference type.
+
+The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+
+The each field of the hash of the given argument is converted to C<long> value by L<the rule of Perl scalar to SPVM long|"Perl scalar to SPVM long"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM long to Perl scalar|"SPVM long to Perl scalar">
+
+If a field is missing, an exception occurs.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2l {
+    has x : long;
+    has y : long;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2l);
+  }
+
+  # Perl
+  my $value = {x => 1, y => 2};
+  SPVM::My->foo(\$value);
+
+=head3 Perl reference to SPVM multi numeric float reference
+
+If the SPVM argument type is multi numeric float reference type, the given Perl reference is converted to SPVM multi numeric float reference type.
+
+The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+
+The each field of the hash of the given argument is converted to C<float> value by L<the rule of Perl scalar to SPVM float|"Perl scalar to SPVM float"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM float to Perl scalar|"SPVM float to Perl scalar">
+
+If a field is missing, an exception occurs.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2f {
+    has x : float;
+    has y : float;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2f);
+  }
+
+  # Perl
+  my $value = {x => 1,2, y => 2.3};
+  SPVM::My->foo(\$value);
+
+=head3 Perl reference to SPVM multi numeric double reference
+
+If the SPVM argument type is multi numeric double reference type, the given Perl reference is converted to SPVM multi numeric double reference type.
+
+The given reference must be a scalar reference of hash reference, otherwise an exception occurs.
+
+The each field of the hash of the given argument is converted to C<double> value by L<the rule of Perl scalar to SPVM double|"Perl scalar to SPVM double"> and the each filed of the return value is converted to Perl scalar by L<the rule of SPVM double to Perl scalar|"SPVM double to Perl scalar">
+
+If a field is missing, an exception occurs.
+
+B<Example:>
+
+  # SPVM multi numeric type and method definition
+  class MyPoint_2d {
+    has x : double;
+    has y : double;
+  }
+  class My {
+    static method foo : void ($value : MyPoint_2d);
+  }
+
+  # Perl
+  my $value = {x => 1.2, y => 2.3};
   SPVM::My->foo(\$value);
 
 =head1 RETURN VALUE CONVERSION
