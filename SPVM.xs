@@ -2168,14 +2168,6 @@ call_spvm_method(...)
     croak("%s->%s method not found at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
   
-  // Argument stack
-  SPVM_VALUE stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  
-  // Reference stack
-  int32_t ref_stack_top = 0;
-  SPVM_VALUE ref_stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-  int32_t ref_stack_ids[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
-
   // Base index of SPVM arguments
   int32_t spvm_args_base = 3;
 
@@ -2191,16 +2183,25 @@ call_spvm_method(...)
   else if (items - spvm_args_base > method->args->length) {
     croak("Too many arguments %s->%s at %s line %d\n", class_name, method_name, MFILE, __LINE__);
   }
-  
-  // Arguments have reference type
-  int32_t has_ref_arg = 0;
-  
-  // In SPVM, argument index is different from stack index which is
+
+  // Argument stack
+  // In SPVM, argument index is different from arguments stack index which is
   // used arguments and return values because multi numeric type have multi width.
-  int32_t stack_index = 0;
+  SPVM_VALUE args_stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  int32_t args_stack_index = 0;
+
+  // Arguments have reference type
+  int32_t args_have_ref = 0;
+
+  // Reference stack
+  int32_t ref_stack_top = 0;
+  SPVM_VALUE ref_stack[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
+  int32_t ref_stack_ids[SPVM_LIMIT_C_METHOD_ARGS_MAX_COUNT];
 
   // Arguments
   for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
+    
+    int32_t args_index_nth = args_index_nth;
     
     // Get value from Perl argument stack
     SV* sv_value = ST(spvm_args_base + args_index);
@@ -2215,50 +2216,50 @@ call_spvm_method(...)
       // Perl scalar to SPVM byte
       case SPVM_TYPE_C_TYPE_CATEGORY_BYTE : {
         int8_t value = (int8_t)SvIV(sv_value);
-        stack[stack_index].bval = value;
-        stack_index++;
+        args_stack[args_stack_index].bval = value;
+        args_stack_index++;
         break;
       }
       // Perl scalar to SPVM short
       case SPVM_TYPE_C_TYPE_CATEGORY_SHORT : {
         int16_t value = (int16_t)SvIV(sv_value);
-        stack[stack_index].sval = value;
-        stack_index++;
+        args_stack[args_stack_index].sval = value;
+        args_stack_index++;
         break;
       }
       // Perl scalar to SPVM int
       case SPVM_TYPE_C_TYPE_CATEGORY_INT : {
         int32_t value = (int32_t)SvIV(sv_value);
-        stack[stack_index].ival = value;
-        stack_index++;
+        args_stack[args_stack_index].ival = value;
+        args_stack_index++;
         break;
       }
       // Perl scalar to SPVM long
       case SPVM_TYPE_C_TYPE_CATEGORY_LONG : {
         int64_t value = (int64_t)SvIV(sv_value);
-        stack[stack_index].lval = value;
-        stack_index++;
+        args_stack[args_stack_index].lval = value;
+        args_stack_index++;
         break;
       }
       // Perl scalar to SPVM float
       case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT : {
         float value = (float)SvNV(sv_value);
-        stack[stack_index].fval = value;
-        stack_index++;
+        args_stack[args_stack_index].fval = value;
+        args_stack_index++;
         break;
       }
       // Perl scalar to SPVM double
       case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE : {
         double value = (double)SvNV(sv_value);
-        stack[stack_index].dval = value;
-        stack_index++;
+        args_stack[args_stack_index].dval = value;
+        args_stack_index++;
         break;
       }
       // Perl scalar to SPVM string
       case SPVM_TYPE_C_TYPE_CATEGORY_STRING: {
         // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
-          stack[stack_index].oval = NULL;
+          args_stack[args_stack_index].oval = NULL;
         }
         else {
           // Perl non-ref scalar to SPVM string
@@ -2282,53 +2283,53 @@ call_spvm_method(...)
             
             assert(!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension));
             
-            stack[stack_index].oval = object;
+            args_stack[args_stack_index].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be a non-ref scalar or a SPVM::BlessedObject::String object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
           }
         }
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl SPVM::BlessedObject::Class to SPVM class
       case SPVM_TYPE_C_TYPE_CATEGORY_CLASS:
       {
         if (!SvOK(sv_value)) {
-          stack[stack_index].oval = NULL;
+          args_stack[args_stack_index].oval = NULL;
         }
         else {
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::Class")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             assert(arg_type_dimension == 0);
             if (object->basic_type_id != arg_basic_type_id) {
-              croak("%dth argument of %s->%s() must be %s class line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+              croak("%dth argument of %s->%s() must be %s class line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
             }
-            stack[stack_index].oval = object;
+            args_stack[args_stack_index].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be a SPVM::BlessedObject::Class object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
           }
         }
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl SPVM::BlessedObject to SPVM any object
       case SPVM_TYPE_C_TYPE_CATEGORY_ANY_OBJECT:
       {
         if (!SvOK(sv_value)) {
-          stack[stack_index].oval = NULL;
+          args_stack[args_stack_index].oval = NULL;
         }
         else {
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
-            stack[stack_index].oval = object;
+            args_stack[args_stack_index].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be a SPVM::BlessedObject at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be a SPVM::BlessedObject at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
           }
         }
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl hash reference to SPVM byte multi numeric type
@@ -2367,12 +2368,12 @@ call_spvm_method(...)
               sv_field_value = &PL_sv_undef;
             }
             int8_t value = (int8_t)SvIV(sv_field_value);
-            stack[stack_index + field_index].bval = value;
+            args_stack[args_stack_index + field_index].bval = value;
           }
-          stack_index += arg_class->fields->length;
+          args_stack_index += arg_class->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2413,12 +2414,12 @@ call_spvm_method(...)
               sv_field_value = &PL_sv_undef;
             }
             int16_t value = (int16_t)SvIV(sv_field_value);
-            stack[stack_index + field_index].sval = value;
+            args_stack[args_stack_index + field_index].sval = value;
           }
-          stack_index += arg_class->fields->length;
+          args_stack_index += arg_class->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2458,12 +2459,12 @@ call_spvm_method(...)
               sv_field_value = &PL_sv_undef;
             }
             int32_t value = (int32_t)SvIV(sv_field_value);
-            stack[stack_index + field_index].ival = value;
+            args_stack[args_stack_index + field_index].ival = value;
           }
-          stack_index += arg_class->fields->length;
+          args_stack_index += arg_class->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2503,12 +2504,12 @@ call_spvm_method(...)
               sv_field_value = &PL_sv_undef;
             }
             int64_t value = (int64_t)SvIV(sv_field_value);
-            stack[stack_index + field_index].lval = value;
+            args_stack[args_stack_index + field_index].lval = value;
           }
-          stack_index += arg_class->fields->length;
+          args_stack_index += arg_class->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2548,12 +2549,12 @@ call_spvm_method(...)
               sv_field_value = &PL_sv_undef;
             }
             float value = (float)SvNV(sv_field_value);
-            stack[stack_index + field_index].fval = value;
+            args_stack[args_stack_index + field_index].fval = value;
           }
-          stack_index += arg_class->fields->length;
+          args_stack_index += arg_class->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2593,12 +2594,12 @@ call_spvm_method(...)
               sv_field_value = &PL_sv_undef;
             }
             double value = (double)SvNV(sv_field_value);
-            stack[stack_index + field_index].dval = value;
+            args_stack[args_stack_index + field_index].dval = value;
           }
-          stack_index += arg_class->fields->length;
+          args_stack_index += arg_class->fields->length;
         }
         else {
-          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         break;
       }
@@ -2609,7 +2610,7 @@ call_spvm_method(...)
       {
         // Perl undef to SPVM undef
         if (!SvOK(sv_value)) {
-          stack[stack_index].oval = NULL;
+          args_stack[args_stack_index].oval = NULL;
         }
         else {
           // Argument: Perl array referecne to SPVM array
@@ -2725,7 +2726,7 @@ call_spvm_method(...)
                         env->set_elem_object(env, array, i, object);
                       }
                       else {
-                        croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+                        croak("%dth argument of %s->%s() must be inherit SPVM::BlessedObject::String at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                       }
                     }
                   }
@@ -2763,7 +2764,7 @@ call_spvm_method(...)
                       }
                       
                       if (!sv_derived_from(sv_value, "SPVM::BlessedObject")) {
-                        croak("Element of %dth argument of %s->%s() must inherit SPVM::BlessedObject object at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+                        croak("Element of %dth argument of %s->%s() must inherit SPVM::BlessedObject object at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
                       }
                       
                       env->set_elem_object(env, array, i, SPVM_XS_UTIL_get_object(sv_value));
@@ -2789,117 +2790,117 @@ call_spvm_method(...)
             
             if (arg_basic_type_id == SPVM_BASIC_TYPE_C_ID_OARRAY) {
               if (object->type_dimension == 0) {
-                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
             }
             else {
               if (!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension)) {
-                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+                croak("%dth argument of %s->%s() is invalid object type at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
               }
             }
             
-            stack[stack_index].oval = object;
+            args_stack[args_stack_index].oval = object;
           }
           else {
-            croak("%dth argument of %s->%s() must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+            croak("%dth argument of %s->%s() must be a valid array reference or SPVM::BlessedObject::Array at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
           }
         }
         
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl reference to SPVM byte reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_BYTE: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-          croak("%dth argument of %s->%s() must be sa calar reference which referenced value is non-ref scalar at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be sa calar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int8_t value = (int8_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].bval = value;
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top++;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl reference to SPVM short reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_SHORT: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int16_t value = (int16_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].sval = value;
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top++;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl reference to SPVM int reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_INT: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int32_t value = (int32_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].ival = value;
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top++;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl reference to SPVM long reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_LONG: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         int64_t value = (int64_t)SvIV(sv_value_deref);
         ref_stack[ref_stack_top].lval = value;
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top++;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl reference to SPVM long reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_FLOAT: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         float value = (float)SvNV(sv_value_deref);
         ref_stack[ref_stack_top].fval = value;
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top++;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       // Perl reference to SPVM double reference
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_DOUBLE: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         if (!(SvROK(sv_value) && !SvROK(SvRV(sv_value)))) {
-          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be a scalar reference which referenced value is non-ref scalar at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         SV* sv_value_deref = SvRV(sv_value);
         double value = (double)SvNV(sv_value_deref);
         ref_stack[ref_stack_top].dval = value;
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top++;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
@@ -2921,7 +2922,7 @@ call_spvm_method(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -2957,15 +2958,15 @@ call_spvm_method(...)
           int8_t value = (int8_t)SvIV(sv_field_value);
           ((int8_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        stack_index++;
+        args_stack_index++;
         
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
@@ -2987,7 +2988,7 @@ call_spvm_method(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3023,14 +3024,14 @@ call_spvm_method(...)
           int16_t value = (int16_t)SvIV(sv_field_value);
           ((int16_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
@@ -3052,7 +3053,7 @@ call_spvm_method(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3088,14 +3089,14 @@ call_spvm_method(...)
           int32_t value = (int32_t)SvIV(sv_field_value);
           ((int32_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
@@ -3117,7 +3118,7 @@ call_spvm_method(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
 
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3153,14 +3154,14 @@ call_spvm_method(...)
           int64_t value = (int64_t)SvIV(sv_field_value);
           ((int64_t*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
@@ -3182,7 +3183,7 @@ call_spvm_method(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
 
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3218,14 +3219,14 @@ call_spvm_method(...)
           float value = (float)SvNV(sv_field_value);
           ((float*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
-        has_ref_arg = 1;
+        args_have_ref = 1;
         int32_t is_hash_ref_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
@@ -3247,7 +3248,7 @@ call_spvm_method(...)
           is_hash_ref_ref = 0;
         }
         if (!is_hash_ref_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index + 1, class_name, method_name, MFILE, __LINE__);
+          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
 
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
@@ -3283,10 +3284,10 @@ call_spvm_method(...)
           double value = (double)SvNV(sv_field_value);
           ((double*)&ref_stack[ref_stack_top])[field_index] = value;
         }
-        stack[stack_index].oval = &ref_stack[ref_stack_top];
+        args_stack[args_stack_index].oval = &ref_stack[ref_stack_top];
         ref_stack_ids[args_index] = ref_stack_top;
         ref_stack_top += fields_length;
-        stack_index++;
+        args_stack_index++;
         break;
       }
       default:
@@ -3303,48 +3304,48 @@ call_spvm_method(...)
   int32_t excetpion_flag = 0;
   switch (method->return_type_category) {
     case SPVM_TYPE_C_TYPE_CATEGORY_VOID: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_BYTE: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].bval));
+        sv_return_value = sv_2mortal(newSViv(args_stack[0].bval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_SHORT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].sval));
+        sv_return_value = sv_2mortal(newSViv(args_stack[0].sval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_INT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].ival));
+        sv_return_value = sv_2mortal(newSViv(args_stack[0].ival));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_LONG: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSViv(stack[0].lval));
+        sv_return_value = sv_2mortal(newSViv(args_stack[0].lval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_FLOAT: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSVnv(stack[0].fval));
+        sv_return_value = sv_2mortal(newSVnv(args_stack[0].fval));
       }
       break;
     }
     case SPVM_TYPE_C_TYPE_CATEGORY_DOUBLE: {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       if (!excetpion_flag) {
-        sv_return_value = sv_2mortal(newSVnv(stack[0].dval));
+        sv_return_value = sv_2mortal(newSVnv(args_stack[0].dval));
       }
       break;
     }
@@ -3355,10 +3356,10 @@ call_spvm_method(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
     {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       
       if (!excetpion_flag) {
-        SPVM_OBJECT* return_value = (SPVM_OBJECT*)stack[0].oval;
+        SPVM_OBJECT* return_value = (SPVM_OBJECT*)args_stack[0].oval;
         sv_return_value = NULL;
         if (return_value != NULL) {
           env->inc_ref_count(env, return_value);
@@ -3396,7 +3397,7 @@ call_spvm_method(...)
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_FLOAT:
     case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_DOUBLE:
     {
-      excetpion_flag = env->call_spvm_method(env, method->id, stack);
+      excetpion_flag = env->call_spvm_method(env, method->id, args_stack);
       
       SPVM_BASIC_TYPE* method_return_basic_type = SPVM_LIST_fetch(compiler->basic_types, method_return_basic_type_id);
 
@@ -3414,27 +3415,27 @@ call_spvm_method(...)
         SV* sv_field_value = NULL;
         switch (method_return_first_field->type->basic_type->id) {
           case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            sv_field_value = sv_2mortal(newSViv(stack[field_index].bval));
+            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].bval));
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            sv_field_value = sv_2mortal(newSViv(stack[field_index].sval));
+            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].sval));
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_INT: {
-            sv_field_value = sv_2mortal(newSViv(stack[field_index].ival));
+            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].ival));
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_LONG: {
-            sv_field_value = sv_2mortal(newSViv(stack[field_index].lval));
+            sv_field_value = sv_2mortal(newSViv(args_stack[field_index].lval));
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            sv_field_value = sv_2mortal(newSVnv(stack[field_index].fval));
+            sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].fval));
             break;
           }
           case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            sv_field_value = sv_2mortal(newSVnv(stack[field_index].dval));
+            sv_field_value = sv_2mortal(newSVnv(args_stack[field_index].dval));
             break;
           }
           default:
@@ -3451,7 +3452,7 @@ call_spvm_method(...)
   }
   
   // Restore reference value
-  if (has_ref_arg) {
+  if (args_have_ref) {
     for (int32_t args_index = 0; args_index < method->args->length; args_index++) {
       SV* sv_value = ST(spvm_args_base + args_index);
       
