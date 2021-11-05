@@ -759,59 +759,31 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
         args_have_ref = 1;
-        int32_t is_hash_ref;
-        HV* hv_value;
+        HV* hv_value = NULL;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
-            else {
-              is_hash_ref = 0;
-            }
-          }
-          else {
-            is_hash_ref = 0;
           }
         }
-        else {
-          is_hash_ref = 0;
+        if (hv_value == NULL) {
+          croak("%dth argument of %s->%s() must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        if (!is_hash_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
-
         SPVM_CLASS* arg_class = arg_basic_type->class;
-        assert(arg_class);
-    
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(arg_class->fields, 0);
-        assert(first_field);
-        
         int32_t fields_length = arg_class->fields->length;
-        // Field exists check
-        int32_t hash_keys_length = 0;
-        while (hv_iternext(hv_value)) {
-          hash_keys_length++;
-        }
-        if (hash_keys_length != fields_length) {
-          croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-        }
-        
-        for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
-
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
           if (sv_field_value_ptr) {
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            sv_field_value = &PL_sv_undef;
+            croak("Filed name \"%s\" of multi numeric type \"%s\" of %dth argument is missing at %s line %d\n", field_name, arg_class->name, args_index_nth, MFILE, __LINE__);
           }
           int8_t value = (int8_t)SvIV(sv_field_value);
           ((int8_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -825,59 +797,31 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
         args_have_ref = 1;
-        int32_t is_hash_ref;
-        HV* hv_value;
+        HV* hv_value = NULL;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
-            else {
-              is_hash_ref = 0;
-            }
-          }
-          else {
-            is_hash_ref = 0;
           }
         }
-        else {
-          is_hash_ref = 0;
+        if (hv_value == NULL) {
+          croak("%dth argument of %s->%s() must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        if (!is_hash_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
-
         SPVM_CLASS* arg_class = arg_basic_type->class;
-        assert(arg_class);
-    
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(arg_class->fields, 0);
-        assert(first_field);
-        
         int32_t fields_length = arg_class->fields->length;
-        // Field exists check
-        int32_t hash_keys_length = 0;
-        while (hv_iternext(hv_value)) {
-          hash_keys_length++;
-        }
-        if (hash_keys_length != fields_length) {
-          croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-        }
-        
-        for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
-
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
           if (sv_field_value_ptr) {
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            sv_field_value = &PL_sv_undef;
+            croak("Filed name \"%s\" of multi numeric type \"%s\" of %dth argument is missing at %s line %d\n", field_name, arg_class->name, args_index_nth, MFILE, __LINE__);
           }
           int16_t value = (int16_t)SvIV(sv_field_value);
           ((int16_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -890,59 +834,31 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT: {
         args_have_ref = 1;
-        int32_t is_hash_ref;
-        HV* hv_value;
+        HV* hv_value = NULL;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
-            else {
-              is_hash_ref = 0;
-            }
-          }
-          else {
-            is_hash_ref = 0;
           }
         }
-        else {
-          is_hash_ref = 0;
+        if (hv_value == NULL) {
+          croak("%dth argument of %s->%s() must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        if (!is_hash_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-        
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
-
         SPVM_CLASS* arg_class = arg_basic_type->class;
-        assert(arg_class);
-    
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(arg_class->fields, 0);
-        assert(first_field);
-
         int32_t fields_length = arg_class->fields->length;
-        // Field exists check
-        int32_t hash_keys_length = 0;
-        while (hv_iternext(hv_value)) {
-          hash_keys_length++;
-        }
-        if (hash_keys_length != fields_length) {
-          croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-        }
-        
-        for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
-
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
           if (sv_field_value_ptr) {
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            sv_field_value = &PL_sv_undef;
+            croak("Filed name \"%s\" of multi numeric type \"%s\" of %dth argument is missing at %s line %d\n", field_name, arg_class->name, args_index_nth, MFILE, __LINE__);
           }
           int32_t value = (int32_t)SvIV(sv_field_value);
           ((int32_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -955,59 +871,31 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
         args_have_ref = 1;
-        int32_t is_hash_ref;
-        HV* hv_value;
+        HV* hv_value = NULL;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
-            else {
-              is_hash_ref = 0;
-            }
-          }
-          else {
-            is_hash_ref = 0;
           }
         }
-        else {
-          is_hash_ref = 0;
+        if (hv_value == NULL) {
+          croak("%dth argument of %s->%s() must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        if (!is_hash_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
-
         SPVM_CLASS* arg_class = arg_basic_type->class;
-        assert(arg_class);
-    
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(arg_class->fields, 0);
-        assert(first_field);
-
         int32_t fields_length = arg_class->fields->length;
-        // Field exists check
-        int32_t hash_keys_length = 0;
-        while (hv_iternext(hv_value)) {
-          hash_keys_length++;
-        }
-        if (hash_keys_length != fields_length) {
-          croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-        }
-        
-        for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
-
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
           if (sv_field_value_ptr) {
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            sv_field_value = &PL_sv_undef;
+            croak("Filed name \"%s\" of multi numeric type \"%s\" of %dth argument is missing at %s line %d\n", field_name, arg_class->name, args_index_nth, MFILE, __LINE__);
           }
           int64_t value = (int64_t)SvIV(sv_field_value);
           ((int64_t*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1020,59 +908,31 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
         args_have_ref = 1;
-        int32_t is_hash_ref;
-        HV* hv_value;
+        HV* hv_value = NULL;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
-            else {
-              is_hash_ref = 0;
-            }
-          }
-          else {
-            is_hash_ref = 0;
           }
         }
-        else {
-          is_hash_ref = 0;
+        if (hv_value == NULL) {
+          croak("%dth argument of %s->%s() must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        if (!is_hash_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
-
         SPVM_CLASS* arg_class = arg_basic_type->class;
-        assert(arg_class);
-    
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(arg_class->fields, 0);
-        assert(first_field);
-
         int32_t fields_length = arg_class->fields->length;
-        // Field exists check
-        int32_t hash_keys_length = 0;
-        while (hv_iternext(hv_value)) {
-          hash_keys_length++;
-        }
-        if (hash_keys_length != fields_length) {
-          croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-        }
-        
-        for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
-
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
           if (sv_field_value_ptr) {
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            sv_field_value = &PL_sv_undef;
+            croak("Filed name \"%s\" of multi numeric type \"%s\" of %dth argument is missing at %s line %d\n", field_name, arg_class->name, args_index_nth, MFILE, __LINE__);
           }
           float value = (float)SvNV(sv_field_value);
           ((float*)&ref_stack[ref_stack_index])[field_index] = value;
@@ -1085,59 +945,31 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
         args_have_ref = 1;
-        int32_t is_hash_ref;
-        HV* hv_value;
+        HV* hv_value = NULL;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
-            else {
-              is_hash_ref = 0;
-            }
-          }
-          else {
-            is_hash_ref = 0;
           }
         }
-        else {
-          is_hash_ref = 0;
+        if (hv_value == NULL) {
+          croak("%dth argument of %s->%s() must be a scalar reference of hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
-        if (!is_hash_ref) {
-          croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
-        }
-
         SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
-
         SPVM_CLASS* arg_class = arg_basic_type->class;
-        assert(arg_class);
-    
-        SPVM_FIELD* first_field = SPVM_LIST_fetch(arg_class->fields, 0);
-        assert(first_field);
-
         int32_t fields_length = arg_class->fields->length;
-        // Field exists check
-        int32_t hash_keys_length = 0;
-        while (hv_iternext(hv_value)) {
-          hash_keys_length++;
-        }
-        if (hash_keys_length != fields_length) {
-          croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-        }
-        
-        for (int32_t field_index = 0; field_index < arg_class->fields->length; field_index++) {
+        for (int32_t field_index = 0; field_index < fields_length; field_index++) {
           SPVM_FIELD* field = SPVM_LIST_fetch(arg_class->fields, field_index);
           const char* field_name = field->name;
-
           SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
           SV* sv_field_value;
           if (sv_field_value_ptr) {
             sv_field_value = *sv_field_value_ptr;
           }
           else {
-            sv_field_value = &PL_sv_undef;
+            croak("Filed name \"%s\" of multi numeric type \"%s\" of %dth argument is missing at %s line %d\n", field_name, arg_class->name, args_index_nth, MFILE, __LINE__);
           }
           double value = (double)SvNV(sv_field_value);
           ((double*)&ref_stack[ref_stack_index])[field_index] = value;
