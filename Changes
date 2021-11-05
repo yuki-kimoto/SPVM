@@ -1,9 +1,11 @@
 Revision history for SPVM
-0.9016  2021-11-04
+0.9016  2021-11-05
         [CHANGES]
         * In Exchange API call method argument Perl refenrece to SPVM numeric reference convision,
           the Perl reference must be scalar reference which referenced value is non-ref scalar.
-
+        * exchange api $string->to_string become croak if sv_utf8_docede fails.
+        * exchange api $array->to_elemes in string[] set SPVM::Blessed::String object as the element.
+        
         [BUGFIXES]
         * None
 0.9015  2021-09-24

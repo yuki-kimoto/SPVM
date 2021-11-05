@@ -3711,12 +3711,8 @@ array_to_elems(...)
           
           SV* sv_value;
           if (object != NULL) {
-            const char* string_chars = env->get_chars(env, object);
-            int32_t length = env->length(env, object);
-            
-            sv_value = sv_2mortal(newSVpv(string_chars, length));
-            
-            sv_utf8_decode(sv_value);
+            env->inc_ref_count(env, object);
+            sv_value = SPVM_XS_UTIL_new_sv_object(env, object, "SPVM::BlessedObject::String");
           }
           else {
             sv_value = &PL_sv_undef;
@@ -3983,7 +3979,10 @@ string_object_to_string(...)
 
   SV* sv_return_value = sv_2mortal(newSVpv(chars, length));
 
-  sv_utf8_decode(sv_return_value);
+  int32_t is_valid_utf8 = sv_utf8_decode(sv_return_value);
+  if (!is_valid_utf8) {
+    croak("String is invalid UTF-8 at %s line %d\n", MFILE, __LINE__);
+  }
 
   XPUSHs(sv_return_value);
   XSRETURN(1);

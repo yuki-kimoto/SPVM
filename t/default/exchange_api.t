@@ -45,6 +45,59 @@ my $ULONG_MAX = 18446744073709551615;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# to_elems
+{
+  # to_elems
+  {
+    # to_elems - byte[]
+    {
+      my $spvm_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
+      my $values = $spvm_values->to_elems;
+      is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
+    }
+    # to_elems - short[]
+    {
+      my $spvm_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
+      my $values = $spvm_values->to_elems;
+      is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
+    }
+    
+    # to_elems - int[]
+    {
+      my $spvm_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
+      my $values = $spvm_values->to_elems;
+      is_deeply($values, [1, $INT_MAX, $INT_MIN]);
+    }
+    # to_elems - long[]
+    {
+      my $spvm_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
+      my $values = $spvm_values->to_elems;
+      is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
+    }
+    # to_elems - float[]
+    {
+      my $spvm_values = SPVM::new_float_array([0.5, $FLT_MAX, $FLT_MIN]);
+      my $values = $spvm_values->to_elems;
+      is_deeply($values, [0.5, $FLT_MAX, $FLT_MIN]);
+    }
+    # to_elems - double[]
+    {
+      my $spvm_values = SPVM::new_double_array([0.5, $DBL_MAX, $DBL_MIN]);
+      my $values = $spvm_values->to_elems;
+      is_deeply($values, [0.5, $DBL_MAX, $DBL_MIN]);
+    }
+    # to_elems - string[]
+    {
+      my $spvm_values = SPVM::new_string_array(["あ", "い"]);
+      my $values = $spvm_values->to_elems;
+      is(ref $values->[0], "SPVM::BlessedObject::String");
+      is($values->[0], "あ");
+      is($values->[1], "い");
+      is(scalar @$values, 2);
+    }
+  }
+}
+
 # Convert a scalar value to SPVM numeric object
 {
   # SPVM::Byte->new
@@ -749,33 +802,6 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     my $spvm_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
     my $length = $spvm_values->length;
     is($length, 3);
-  }
-}
-
-# to_elems
-{
-  # to_elems
-  {
-    {
-      my $spvm_values = SPVM::new_byte_array([1, $BYTE_MAX, $BYTE_MIN]);
-      my $values = $spvm_values->to_elems;
-      is_deeply($values, [1, $BYTE_MAX, $BYTE_MIN]);
-    }
-    {
-      my $spvm_values = SPVM::new_short_array([1, $SHORT_MAX, $SHORT_MIN]);
-      my $values = $spvm_values->to_elems;
-      is_deeply($values, [1, $SHORT_MAX, $SHORT_MIN]);
-    }
-    {
-      my $spvm_values = SPVM::new_int_array([1, $INT_MAX, $INT_MIN]);
-      my $values = $spvm_values->to_elems;
-      is_deeply($values, [1, $INT_MAX, $INT_MIN]);
-    }
-    {
-      my $spvm_values = SPVM::new_long_array([1, $LONG_MAX, $LONG_MIN]);
-      my $values = $spvm_values->to_elems;
-      is_deeply($values, [1, $LONG_MAX, $LONG_MIN]);
-    }
   }
 }
 
