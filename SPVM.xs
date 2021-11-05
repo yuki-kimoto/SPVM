@@ -759,27 +759,27 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_BYTE: {
         args_have_ref = 1;
-        int32_t is_hash_ref_ref;
+        int32_t is_hash_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref_ref = 1;
+              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
             else {
-              is_hash_ref_ref = 0;
+              is_hash_ref = 0;
             }
           }
           else {
-            is_hash_ref_ref = 0;
+            is_hash_ref = 0;
           }
         }
         else {
-          is_hash_ref_ref = 0;
+          is_hash_ref = 0;
         }
-        if (!is_hash_ref_ref) {
+        if (!is_hash_ref) {
           croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         
@@ -825,27 +825,27 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_SHORT: {
         args_have_ref = 1;
-        int32_t is_hash_ref_ref;
+        int32_t is_hash_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref_ref = 1;
+              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
             else {
-              is_hash_ref_ref = 0;
+              is_hash_ref = 0;
             }
           }
           else {
-            is_hash_ref_ref = 0;
+            is_hash_ref = 0;
           }
         }
         else {
-          is_hash_ref_ref = 0;
+          is_hash_ref = 0;
         }
-        if (!is_hash_ref_ref) {
+        if (!is_hash_ref) {
           croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         
@@ -890,27 +890,27 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_INT: {
         args_have_ref = 1;
-        int32_t is_hash_ref_ref;
+        int32_t is_hash_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref_ref = 1;
+              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
             else {
-              is_hash_ref_ref = 0;
+              is_hash_ref = 0;
             }
           }
           else {
-            is_hash_ref_ref = 0;
+            is_hash_ref = 0;
           }
         }
         else {
-          is_hash_ref_ref = 0;
+          is_hash_ref = 0;
         }
-        if (!is_hash_ref_ref) {
+        if (!is_hash_ref) {
           croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
         
@@ -955,27 +955,27 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_LONG: {
         args_have_ref = 1;
-        int32_t is_hash_ref_ref;
+        int32_t is_hash_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref_ref = 1;
+              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
             else {
-              is_hash_ref_ref = 0;
+              is_hash_ref = 0;
             }
           }
           else {
-            is_hash_ref_ref = 0;
+            is_hash_ref = 0;
           }
         }
         else {
-          is_hash_ref_ref = 0;
+          is_hash_ref = 0;
         }
-        if (!is_hash_ref_ref) {
+        if (!is_hash_ref) {
           croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
 
@@ -1020,27 +1020,27 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_FLOAT: {
         args_have_ref = 1;
-        int32_t is_hash_ref_ref;
+        int32_t is_hash_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref_ref = 1;
+              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
             else {
-              is_hash_ref_ref = 0;
+              is_hash_ref = 0;
             }
           }
           else {
-            is_hash_ref_ref = 0;
+            is_hash_ref = 0;
           }
         }
         else {
-          is_hash_ref_ref = 0;
+          is_hash_ref = 0;
         }
-        if (!is_hash_ref_ref) {
+        if (!is_hash_ref) {
           croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
 
@@ -1085,27 +1085,27 @@ call_spvm_method(...)
       }
       case SPVM_TYPE_C_TYPE_CATEGORY_REF_MULNUM_DOUBLE: {
         args_have_ref = 1;
-        int32_t is_hash_ref_ref;
+        int32_t is_hash_ref;
         HV* hv_value;
         if (SvOK(sv_value)) {
           if (SvROK(sv_value) && sv_derived_from(sv_value, "REF")) {
             SV* hv_value_ref = SvRV(sv_value);
             if (SvROK(hv_value_ref) && sv_derived_from(hv_value_ref , "HASH")) {
-              is_hash_ref_ref = 1;
+              is_hash_ref = 1;
               hv_value = (HV*)SvRV(hv_value_ref);
             }
             else {
-              is_hash_ref_ref = 0;
+              is_hash_ref = 0;
             }
           }
           else {
-            is_hash_ref_ref = 0;
+            is_hash_ref = 0;
           }
         }
         else {
-          is_hash_ref_ref = 0;
+          is_hash_ref = 0;
         }
-        if (!is_hash_ref_ref) {
+        if (!is_hash_ref) {
           croak("%dth argument of %s->%s() must be scalar reference to hash reference at %s line %d\n", args_index_nth, class_name, method_name, MFILE, __LINE__);
         }
 
