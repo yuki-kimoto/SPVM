@@ -79,2046 +79,7 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
   }
 }
 
-MODULE = SPVM::BlessedObject		PACKAGE = SPVM::BlessedObject
-
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_object = ST(0);
-  HV* hv_object = (HV*)SvRV(sv_object);
-
-  assert(SvOK(sv_object));
-  
-  // Get object
-  void* object = SPVM_XS_UTIL_get_object(sv_object);
-
-  SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  assert(env->get_ref_count(env, object));
-  
-  // Decrement reference count
-  env->dec_ref_count(env, object);
-  
-  XSRETURN(0);
-}
-
-MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
-
-SV*
-create_compiler(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-  size_t iv_compiler = PTR2IV(compiler);
-  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
-  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
-  (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
-}
-
-SV*
-compile_spvm(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_name = ST(1);
-  SV* sv_file = ST(2);
-  SV* sv_line = ST(3);
-  
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  
-  // Include directries
-  SV** sv_module_dirs_ptr = hv_fetch(hv_self, "module_dirs", strlen("module_dirs"), 0);
-  SV* sv_module_dirs = sv_module_dirs_ptr ? *sv_module_dirs_ptr : &PL_sv_undef;
-  
-  // Name
-  const char* name = SvPV_nolen(sv_name);
-  char* name_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
-  memcpy(name_copy, name, sv_len(sv_name));
-  
-  // File
-  const char* file = SvPV_nolen(sv_file);
-  char* file_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
-  memcpy(file_copy, file, sv_len(sv_file));
-  
-  // Line
-  int32_t line = (int32_t)SvIV(sv_line);
-  
-  // push class to compiler use stack
-  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_copy, file_copy, line);
-  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
-  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file_copy, line);
-  SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_class);
-  
-  // Add include paths
-  AV* av_module_dirs;
-  if (SvOK(sv_module_dirs)) {
-    av_module_dirs = (AV*)SvRV(sv_module_dirs);
-  }
-  else {
-    av_module_dirs = (AV*)sv_2mortal((SV*)newAV());
-  }
-  int32_t av_module_dirs_length = (int32_t)av_len(av_module_dirs) + 1;
-  for (int32_t i = 0; i < av_module_dirs_length; i++) {
-    SV** sv_include_dir_ptr = av_fetch(av_module_dirs, i, 0);
-    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
-    char* include_dir = SvPV_nolen(sv_include_dir);
-    SPVM_LIST_push(compiler->module_dirs, include_dir);
-  }
-
-  // Compile SPVM
-  compiler->cur_class_base = compiler->classes->length;
-  SPVM_COMPILER_compile(compiler);
-  
-  SV* sv_compile_success;
-  if (compiler->error_count > 0) {
-    sv_compile_success = sv_2mortal(newSViv(0));
-  }
-  else {
-    sv_compile_success = sv_2mortal(newSViv(1));
-  }
-  
-  XPUSHs(sv_compile_success);
-  
-  XSRETURN(1);
-}
-
-SV*
-get_method_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
-  
-  // Copy class load path to builder
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-
-  for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
-    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
-    const char* method_name = method->name;
-    SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
-    
-    int32_t is_push = 0;
-    if (SvOK(sv_category)) {
-      if(strEQ(SvPV_nolen(sv_category), "native") && method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
-        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
-      }
-      else if (strEQ(SvPV_nolen(sv_category), "precompile") && method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
-        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
-      }
-    }
-    else {
-      av_push(av_method_names, SvREFCNT_inc(sv_method_name));
-    }
-  }
-  
-  XPUSHs(sv_method_names);
-  XSRETURN(1);
-}
-
-SV*
-get_anon_class_names_by_parent_class_name(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-  SV* sv_category = ST(2);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_anon_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
-  
-  // Copy class load path to builder
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-
-  for (int32_t anon_method_index = 0; anon_method_index < class->anon_methods->length; anon_method_index++) {
-    
-    SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, anon_method_index);
-    SPVM_CLASS* anon_class = anon_method->class;
-    
-    const char* anon_class_name = anon_class->name;
-    SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
-    
-    av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
-  }
-  
-  XPUSHs(sv_anon_class_names);
-  XSRETURN(1);
-}
-
-SV*
-get_class_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
-  
-  for (int32_t class_index = 0; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
-    const char* class_name = class->name;
-    if (!class->is_anon) {
-      SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
-      av_push(av_class_names, SvREFCNT_inc(sv_class_name));
-    }
-  }
-  
-  XPUSHs(sv_class_names);
-  XSRETURN(1);
-}
-
-SV*
-get_class_names_including_anon(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
-  
-  for (int32_t class_index = 0; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
-    const char* class_name = class->name;
-    SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
-    av_push(av_class_names, SvREFCNT_inc(sv_class_name));
-  }
-  
-  XPUSHs(sv_class_names);
-  XSRETURN(1);
-}
-
-SV*
-get_added_class_names(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_added_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_added_class_names = sv_2mortal(newRV_inc((SV*)av_added_class_names));
-  
-  for (int32_t added_class_index = 0; added_class_index < compiler->added_classes->length; added_class_index++) {
-    SPVM_CLASS* added_class = SPVM_LIST_fetch(compiler->added_classes, added_class_index);
-    const char* added_class_name = added_class->name;
-    if (!added_class->is_anon) {
-      SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
-      av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
-    }
-  }
-  
-  XPUSHs(sv_added_class_names);
-  XSRETURN(1);
-}
-
-SV*
-get_added_class_names_including_anon(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  AV* av_added_class_names = (AV*)sv_2mortal((SV*)newAV());
-  SV* sv_added_class_names = sv_2mortal(newRV_inc((SV*)av_added_class_names));
-  
-  for (int32_t added_class_index = 0; added_class_index < compiler->added_classes->length; added_class_index++) {
-    SPVM_CLASS* added_class = SPVM_LIST_fetch(compiler->added_classes, added_class_index);
-    const char* added_class_name = added_class->name;
-    SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
-    av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
-  }
-  
-  XPUSHs(sv_added_class_names);
-  XSRETURN(1);
-}
-
-SV*
-get_module_file(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Copy class load path to builder
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  const char* module_file = class->module_file;
-  SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
-
-  XPUSHs(sv_module_file);
-  XSRETURN(1);
-}
-
-SV*
-get_module_source(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Copy class load path to builder
-  SV* sv_module_source;
-  const char* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
-  if (module_source) {
-    sv_module_source = sv_2mortal(newSVpv(module_source, 0));
-  }
-  else {
-    sv_module_source = &PL_sv_undef;
-  }
-
-  XPUSHs(sv_module_source);
-  XSRETURN(1);
-}
-
-SV*
-get_loaded_module_file(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  SV* sv_class_name = ST(1);
-
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  // Name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Copy class load path to builder
-  SV* sv_loaded_module_file;
-  const char* loaded_module_file = SPVM_HASH_fetch(compiler->loaded_module_file_symtable, class_name, strlen(class_name));
-  if (loaded_module_file) {
-    sv_loaded_module_file = sv_2mortal(newSVpv(loaded_module_file, 0));
-  }
-  else {
-    sv_loaded_module_file = &PL_sv_undef;
-  }
-
-  XPUSHs(sv_loaded_module_file);
-  XSRETURN(1);
-}
-
-SV*
-_init(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Create env
-  SPVM_ENV* env = SPVM_API_create_env(compiler);
-  if (env == NULL) {
-    croak("Can't create SPVM env");
-  }
-  
-  // Set ENV
-  size_t iv_env = PTR2IV(env);
-  SV* sviv_env = sv_2mortal(newSViv(iv_env));
-  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
-  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  
-  SPVM_API_call_init_blocks(env);
-}
-
-SV*
-bind_method(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_class_name = ST(1);
-  SV* sv_method_name = ST(2);
-  SV* sv_native_address = ST(3);
-  SV* sv_category = ST(4);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-
-  // Class name
-  const char* class_name = SvPV_nolen(sv_class_name);
-
-  // Method name
-  const char* method_name = SvPV_nolen(sv_method_name);
-  
-  // Native address
-  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
-  
-  // Class
-  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  
-  // Method
-  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
-  
-  if (SvOK(sv_category)) {
-    if(strEQ(SvPV_nolen(sv_category), "native")) {
-      // Set native method address
-      method->native_address = native_address;
-    }
-    else if (strEQ(SvPV_nolen(sv_category), "precompile")) {
-      // Set precompile method address
-      method->precompile_address = native_address;
-    }
-    else {
-      croak("Need category");
-    }
-  }
-  else {
-    croak("Need category");
-  }
-
-  XSRETURN(0);
-}
-
-SV*
-DESTROY(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  
-  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
-  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
-  if (SvOK(sv_env)) {
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    SPVM_COMPILER* compiler = env->compiler;
-    
-    SPVM_API_free_env(env);
-  }
-}
-
-MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
-
-SV*
-build_class_csource_precompile(...)
-  PPCODE:
-{
-  SV* sv_self = ST(0);
-  HV* hv_self = (HV*)SvRV(sv_self);
-  SV* sv_class_name = ST(1);
-  const char* class_name = SvPV_nolen(sv_class_name);
-  
-  // Env
-  SV** sv_builder_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
-  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
-  HV* hv_builder = (HV*)SvRV(sv_builder);
-
-  SPVM_COMPILER* compiler;
-  SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
-  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
-  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
-  
-  // String buffer for csource
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
-
-  // Build class csource
-  SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
-  
-  SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
-  
-  SPVM_STRING_BUFFER_free(string_buffer);
-
-  XPUSHs(sv_class_csource);
-  XSRETURN(1);
-}
-
 MODULE = SPVM::ExchangeAPI		PACKAGE = SPVM::ExchangeAPI
-
-SV*
-new_string_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_string_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-
-    AV* av_elems = (AV*)SvRV(sv_elems);
-
-    int32_t length = av_len(av_elems) + 1;
-
-    // New array
-    SPVM_OBJECT* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
-
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
-      if (SvOK(sv_str_value)) {
-        // Copy
-        SV* sv_str_value_copy = sv_2mortal(newSVsv(sv_str_value));
-        
-        // Encode to UTF-8
-        sv_utf8_encode(sv_str_value_copy);
-        
-        int32_t length = sv_len(sv_str_value_copy);
-        const char* chars = SvPV_nolen(sv_str_value_copy);
-        
-        void* string = env->new_string_raw(env, chars, length);
-        env->set_elem_object(env, array, i, string);
-      }
-      else {
-        env->set_elem_object(env, array, i, NULL);
-      }
-    }
-
-    // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_byte_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_byte_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array Length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New byte array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_byte_array(env, length);
-    
-    // Copy Perl elements to SPVM elements
-    int8_t* elems = env->get_elems_byte(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int8_t)SvIV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_byte_array_unsigned(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_byte_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array Length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New byte array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_byte_array(env, length);
-    
-    // Copy Perl elements to SPVM elements
-    int8_t* elems = env->get_elems_byte(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (uint8_t)SvUV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_byte_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // New array
-  void* array = env->new_byte_array(env, length);
-  
-  // New sv array
-  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_byte_array);
-  XSRETURN(1);
-}
-
-SV*
-new_byte_array_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_binary = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t array_length = binary_length;
-    int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_byte_array(env, array_length);
-
-    int8_t* elems = env->get_elems_byte(env, array);
-    memcpy(elems, binary, array_length);
-    
-    // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_string(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_value = ST(1);
-  
-  SV* sv_string;
-  if (SvOK(sv_value)) {
-    
-    if (SvROK(sv_value)) {
-      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
-    }
-    else {
-      // Environment
-      SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-      
-      // Copy
-      SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
-      
-      // Encode to UTF-8
-      sv_utf8_encode(sv_value_tmp);
-      
-      int32_t length = sv_len(sv_value_tmp);
-      
-      const char* value = SvPV_nolen(sv_value_tmp);
-      
-      void* string = env->new_string(env, value, length);
-      
-      sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
-    }
-  }
-  else {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  XPUSHs(sv_string);
-  XSRETURN(1);
-}
-
-SV*
-new_string_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_binary = ST(1);
-  
-  SV* sv_string;
-  if (SvOK(sv_binary)) {
-    if (SvROK(sv_binary)) {
-      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
-    }
-    else {
-      int32_t binary_length = sv_len(sv_binary);
-      int32_t string_length = binary_length;
-      int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
-      
-      // Environment
-      SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-      
-      // New string
-      void* string = env->new_string(env, (const char*)binary, string_length);
-
-      const char* chars = env->get_chars(env, string);
-      memcpy((char*)chars, binary, string_length);
-      
-      // New sv string
-      sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
-    }
-  }
-  else {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  XPUSHs(sv_string);
-  XSRETURN(1);
-}
-
-SV*
-new_short_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_short_array(env, length);
-    
-    // Copy Perl elements to SPVM elements
-    int16_t* elems = env->get_elems_short(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int16_t)SvIV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_short_array_unsigned(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_short_array(env, length);
-    
-    // Copy Perl elements to SPVM elements
-    int16_t* elems = env->get_elems_short(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (uint16_t)SvUV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_short_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // New array
-  void* array = env->new_short_array(env, length);
-  
-  // New sv array
-  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_short_array);
-  XSRETURN(1);
-}
-
-SV*
-new_short_array_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_binary = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t array_length = binary_length / sizeof(int16_t);
-    int16_t* binary = (int16_t*)SvPV_nolen(sv_binary);
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_short_array(env, array_length);
-
-    int16_t* elems = env->get_elems_short(env, array);
-    memcpy(elems, binary, array_length * sizeof(int16_t));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_int_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_int_array(env, length);
-    
-    // Copy Perl elements to SPVM erlements
-    int32_t* elems = env->get_elems_int(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int32_t)SvIV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_int_array_unsigned(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_int_array(env, length);
-    
-    // Copy Perl elements to SPVM erlements
-    int32_t* elems = env->get_elems_int(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (uint32_t)SvUV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_int_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // New array
-  void* array = env->new_int_array(env, length);
-  
-  // New sv array
-  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_int_array);
-  XSRETURN(1);
-}
-
-SV*
-new_int_array_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_binary = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t array_length = binary_length / sizeof(int32_t);
-    int32_t* binary = (int32_t*)SvPV_nolen(sv_binary);
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_int_array(env, array_length);
-
-    int32_t* elems = env->get_elems_int(env, array);
-    memcpy(elems, binary, array_length * sizeof(int32_t));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_long_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_long_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_long_array(env, length);
-    
-    // Copy Perl elements to SPVM elements
-    int64_t* elems = env->get_elems_long(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (int64_t)SvIV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_long_array_unsigned(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_long_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    // Elements
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    // Array length
-    int32_t length = av_len(av_elems) + 1;
-    
-    // New array
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    void* array = env->new_long_array(env, length);
-    
-    // Copy Perl elements to SPVM elements
-    int64_t* elems = env->get_elems_long(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (uint64_t)SvUV(sv_value);
-    }
-    
-    // New SPVM::BlessedObject::Array object
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_long_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // New array
-  void* array = env->new_long_array(env, length);
-  
-  // New sv array
-  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_long_array);
-  XSRETURN(1);
-}
-
-SV*
-new_long_array_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_binary = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t array_length = binary_length / sizeof(int64_t);
-    int64_t* binary = (int64_t*)SvPV_nolen(sv_binary);
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_long_array(env, array_length);
-
-    int64_t* elems = env->get_elems_long(env, array);
-    memcpy(elems, binary, array_length * sizeof(int64_t));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_float_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_float_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    int32_t length = av_len(av_elems) + 1;
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_float_array(env, length);
-
-    float* elems = env->get_elems_float(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (float)SvNV(sv_value);
-    }
-    
-    // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_float_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // New array
-  void* array = env->new_float_array(env, length);
-  
-  // New sv array
-  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_float_array);
-  XSRETURN(1);
-}
-
-SV*
-new_float_array_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_binary = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t array_length = binary_length / sizeof(float);
-    float* binary = (float*)SvPV_nolen(sv_binary);
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_float_array(env, array_length);
-
-    float* elems = env->get_elems_float(env, array);
-    memcpy(elems, binary, array_length * sizeof(float));
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_double_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_elems = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_elems)) {
-    if (!sv_derived_from(sv_elems, "ARRAY")) {
-      croak("Argument of SPVM::ExchangeAPI::new_double_array() must be array reference at %s line %d\n", MFILE, __LINE__);
-    }
-    
-    AV* av_elems = (AV*)SvRV(sv_elems);
-    
-    int32_t length = av_len(av_elems) + 1;
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_double_array(env, length);
-
-    double* elems = env->get_elems_double(env, array);
-    for (int32_t i = 0; i < length; i++) {
-      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
-      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
-      elems[i] = (double)SvNV(sv_value);
-    }
-    
-    // sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_double_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // New array
-  void* array = env->new_double_array(env, length);
-  
-  // New sv array
-  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_double_array);
-  XSRETURN(1);
-}
-
-SV*
-new_double_array_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_binary = ST(1);
-  
-  SV* sv_array;
-  if (SvOK(sv_binary)) {
-    int32_t binary_length = sv_len(sv_binary);
-    int32_t array_length = binary_length / sizeof(double);
-    double* binary = (double*)SvPV_nolen(sv_binary);
-    
-    // Environment
-    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    
-    // New array
-    void* array = env->new_double_array(env, array_length);
-
-    double* elems = env->get_elems_double(env, array);
-    memcpy(elems, binary, array_length * sizeof(double));
-    
-    // New sv array
-    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  }
-  else {
-    sv_array = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_string_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_length = ST(1);
-
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // Element type id
-  const char* basic_type_name = "string";
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
-  assert(basic_type);
-  
-  // New array
-  void* array = env->new_object_array(env, basic_type->id, length);
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-new_object_array_len(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_length = ST(2);
-
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t length = (int32_t)SvIV(sv_length);
-  
-  if (length < 0) {
-    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  // Element type id
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
-  assert(basic_type);
-  
-  // New array
-  void* array = env->new_object_array(env, basic_type->id, length);
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-_new_object_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_elems = ST(2);
-  
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Second argument of SPVM::new_object_array must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
-  assert(basic_type);
-  
-  // New array
-  SPVM_OBJECT* array = env->new_object_array(env, basic_type->id, length);
-
-  int32_t array_basic_type_id  = array->basic_type_id;
-  int32_t array_type_dimension = array->type_dimension;
-  int32_t element_type_dimension = array_type_dimension - 1;
-
-  for (int32_t index = 0; index < length; index++) {
-    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
-    
-    if (!SvOK(sv_element)) {
-      env->set_elem_object(env, array, index, NULL);
-    }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::Class")) {
-      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
-      
-      if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
-        env->set_elem_object(env, array, index, object);
-      }
-      else {
-        croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
-      }
-    }
-    else {
-      croak("Element must be SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
-    }
-  }
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-_new_muldim_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_element_type_dimension = ST(2);
-  SV* sv_elems = ST(3);
-  
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Environment
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
-
-  int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
-
-  // Element type id
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
-  assert(basic_type);
-  
-  // New array
-  SPVM_OBJECT* array = env->new_muldim_array(env, basic_type->id, element_type_dimension, length);
-  
-  int32_t array_basic_type_id = array->basic_type_id;
-
-  for (int32_t index = 0; index < length; index++) {
-    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
-    
-    if (!SvOK(sv_element)) {
-      env->set_elem_object(env, array, index, NULL);
-    }
-    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
-      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
-      
-      if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
-        env->set_elem_object(env, array, index, object);
-      }
-      else {
-        croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
-      }
-    }
-    else {
-      croak("Element must be inherit SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
-    }
-  }
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-_new_mulnum_array(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_elems = ST(2);
-  
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
-  
-  if (basic_type == NULL) {
-    croak("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
-  }
-  
-  // New array
-  void* array = env->new_mulnum_array(env, basic_type->id, length);
-
-  for (int32_t index = 0; index < length; index++) {
-    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
-
-    if (sv_derived_from(sv_element, "HASH")) {
-      
-      SPVM_CLASS* class = basic_type->class;
-      assert(class);
-      
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
-      assert(first_field);
-
-      void* elems = (void*)env->get_elems_int(env, array);
-      
-      HV* hv_value = (HV*)SvRV(sv_element);
-      int32_t fields_length = class->fields->length;
-      // Field exists check
-      int32_t hash_keys_length = 0;
-      while (hv_iternext(hv_value)) {
-        hash_keys_length++;
-      }
-      if (hash_keys_length != fields_length) {
-        croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-      }
-
-      for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
-        const char* field_name = field->name;
-        
-        SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
-        SV* sv_field_value;
-        if (sv_field_value_ptr) {
-          sv_field_value = *sv_field_value_ptr;
-        }
-        else {
-          croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
-        }
-
-        switch (first_field->type->basic_type->id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            ((int16_t*)elems)[(fields_length * index) + field_index] = (int16_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_INT: {
-            ((int32_t*)elems)[(fields_length * index) + field_index] = (int32_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_LONG: {
-            ((int64_t*)elems)[(fields_length * index) + field_index] = (int64_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            ((float*)elems)[(fields_length * index) + field_index] = (float)SvNV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            ((double*)elems)[(fields_length * index) + field_index] = (double)SvNV(sv_field_value);
-            break;
-          }
-          default:
-            assert(0);
-        }
-      }
-    }
-    else {
-      croak("Element must be hash reference at %s line %d\n", MFILE, __LINE__);
-    }
-  }
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-_new_mulnum_array_from_bin(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  SV* sv_basic_type_name = ST(1);
-  SV* sv_binary = ST(2);
-  
-  if (!SvOK(sv_binary)) {
-    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
-  }
-  
-  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  void* binary = (void*)SvPV_nolen(sv_binary);
-  
-  int32_t binary_length = sv_len(sv_binary);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  // Runtime
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
-  
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
-  
-  if (basic_type == NULL) {
-    const char* basic_type_name = basic_type->name;
-    croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
-  }
-
-  SPVM_CLASS* class = basic_type->class;
-  assert(class);
-  
-  SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
-  assert(first_field);
-
-  int32_t field_length = class->fields->length;
-
-  int32_t array_length;
-  
-  
-  int32_t field_width;
-  switch (first_field->type->basic_type->id) {
-    case SPVM_BASIC_TYPE_C_ID_BYTE: {
-      field_width = 1;
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_SHORT: {
-      field_width = 2;
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_INT: {
-      field_width = 4;
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_LONG: {
-      field_width = 8;
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-      field_width = 4;
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-      field_width = 8;
-      break;
-    }
-    default:
-      croak("Unexpected error:set field width");
-  }
-  
-  if (binary_length % (field_length * field_width) != 0) {
-    croak("Invalid binary data size at %s line %d", MFILE, __LINE__);
-  }
-  
-  array_length = binary_length / field_length / field_width;
-
-  SPVM_OBJECT* array = env->new_mulnum_array(env, basic_type->id, array_length);
-
-  int32_t basic_type_id = array->basic_type_id;
-  int32_t dimension = array->type_dimension;
-  
-  switch (first_field->type->basic_type->id) {
-    case SPVM_BASIC_TYPE_C_ID_BYTE: {
-      int8_t* elems = env->get_elems_byte(env, array);
-      if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_width);
-      }
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_SHORT: {
-      int16_t* elems = env->get_elems_short(env, array);
-      if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_width);
-      }
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_INT: {
-      int32_t* elems = env->get_elems_int(env, array);
-      if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_width);
-      }
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_LONG: {
-      int64_t* elems = env->get_elems_long(env, array);
-      if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_width);
-      }
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-      float* elems = env->get_elems_float(env, array);
-      if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_width);
-      }
-      break;
-    }
-    case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-      double* elems = env->get_elems_double(env, array);
-      if (array_length > 0) {
-        memcpy(elems, binary, field_length * array_length * field_width);
-      }
-      break;
-    }
-    default:
-      assert(0);
-  }
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
-  
-  XPUSHs(sv_array);
-  XSRETURN(1);
-}
-
-SV*
-_get_exception(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  void* str_exception = env->get_exception(env);
-  
-  SV* sv_exception;
-  if (str_exception) {
-    const char* exception_chars = env->get_chars(env, str_exception);
-    int32_t length = env->length(env, str_exception);
-    
-    sv_exception = sv_2mortal(newSVpv(exception_chars, length));
-  }
-  else {
-    sv_exception = &PL_sv_undef;
-  }
-  
-  XPUSHs(sv_exception);
-  XSRETURN(1);
-}
-
-SV*
-_set_exception(...)
-  PPCODE:
-{
-  (void)RETVAL;
-
-  SV* sv_env = ST(0);
-  SV* sv_exception = ST(1);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  if (SvOK(sv_exception)) {
-    const char* exception = SvPV_nolen(sv_exception);
-    int32_t length = (int32_t)sv_len(sv_exception);
-    
-    void* str_exception = env->new_string_raw(env, exception, length);
-    env->set_exception(env, str_exception);
-  }
-  else {
-    env->set_exception(env, NULL);
-  }
-  
-  XSRETURN(0);
-}
-
-SV*
-get_memory_blocks_count(...)
-  PPCODE:
-{
-  (void)RETVAL;
-  
-  SV* sv_env = ST(0);
-  
-  // Env
-  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
-  int32_t memory_blocks_count = env->get_memory_blocks_count(env);
-  SV* sv_memory_blocks_count = sv_2mortal(newSViv(memory_blocks_count));
-  
-  XPUSHs(sv_memory_blocks_count);
-  XSRETURN(1);
-}
 
 SV*
 call_spvm_method(...)
@@ -4254,5 +2215,2043 @@ array_get(...)
   XSRETURN(1);
 }
 
+SV*
+new_string_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_string_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+
+    AV* av_elems = (AV*)SvRV(sv_elems);
+
+    int32_t length = av_len(av_elems) + 1;
+
+    // New array
+    SPVM_OBJECT* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
+
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_str_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_str_value = sv_str_value_ptr ? *sv_str_value_ptr : &PL_sv_undef;
+      if (SvOK(sv_str_value)) {
+        // Copy
+        SV* sv_str_value_copy = sv_2mortal(newSVsv(sv_str_value));
+        
+        // Encode to UTF-8
+        sv_utf8_encode(sv_str_value_copy);
+        
+        int32_t length = sv_len(sv_str_value_copy);
+        const char* chars = SvPV_nolen(sv_str_value_copy);
+        
+        void* string = env->new_string_raw(env, chars, length);
+        env->set_elem_object(env, array, i, string);
+      }
+      else {
+        env->set_elem_object(env, array, i, NULL);
+      }
+    }
+
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_byte_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_byte_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array Length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New byte array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_byte_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int8_t* elems = env->get_elems_byte(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (int8_t)SvIV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_byte_array_unsigned(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_byte_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array Length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New byte array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_byte_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int8_t* elems = env->get_elems_byte(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (uint8_t)SvUV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_byte_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // New array
+  void* array = env->new_byte_array(env, length);
+  
+  // New sv array
+  SV* sv_byte_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_byte_array);
+  XSRETURN(1);
+}
+
+SV*
+new_byte_array_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length;
+    int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_byte_array(env, array_length);
+
+    int8_t* elems = env->get_elems_byte(env, array);
+    memcpy(elems, binary, array_length);
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_string(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_value = ST(1);
+  
+  SV* sv_string;
+  if (SvOK(sv_value)) {
+    
+    if (SvROK(sv_value)) {
+      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
+    }
+    else {
+      // Environment
+      SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+      
+      // Copy
+      SV* sv_value_tmp = sv_2mortal(newSVsv(sv_value));
+      
+      // Encode to UTF-8
+      sv_utf8_encode(sv_value_tmp);
+      
+      int32_t length = sv_len(sv_value_tmp);
+      
+      const char* value = SvPV_nolen(sv_value_tmp);
+      
+      void* string = env->new_string(env, value, length);
+      
+      sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+    }
+  }
+  else {
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
+SV*
+new_string_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_string;
+  if (SvOK(sv_binary)) {
+    if (SvROK(sv_binary)) {
+      croak("Argument must not be reference at %s line %d\n", MFILE, __LINE__);
+    }
+    else {
+      int32_t binary_length = sv_len(sv_binary);
+      int32_t string_length = binary_length;
+      int8_t* binary = (int8_t*)SvPV_nolen(sv_binary);
+      
+      // Environment
+      SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+      
+      // New string
+      void* string = env->new_string(env, (const char*)binary, string_length);
+
+      const char* chars = env->get_chars(env, string);
+      memcpy((char*)chars, binary, string_length);
+      
+      // New sv string
+      sv_string = SPVM_XS_UTIL_new_sv_object(env, string, "SPVM::BlessedObject::String");
+    }
+  }
+  else {
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  XPUSHs(sv_string);
+  XSRETURN(1);
+}
+
+SV*
+new_short_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_short_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int16_t* elems = env->get_elems_short(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (int16_t)SvIV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_short_array_unsigned(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_short_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_short_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int16_t* elems = env->get_elems_short(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (uint16_t)SvUV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_short_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // New array
+  void* array = env->new_short_array(env, length);
+  
+  // New sv array
+  SV* sv_short_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_short_array);
+  XSRETURN(1);
+}
+
+SV*
+new_short_array_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(int16_t);
+    int16_t* binary = (int16_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_short_array(env, array_length);
+
+    int16_t* elems = env->get_elems_short(env, array);
+    memcpy(elems, binary, array_length * sizeof(int16_t));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_int_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_int_array(env, length);
+    
+    // Copy Perl elements to SPVM erlements
+    int32_t* elems = env->get_elems_int(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (int32_t)SvIV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_int_array_unsigned(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_int_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_int_array(env, length);
+    
+    // Copy Perl elements to SPVM erlements
+    int32_t* elems = env->get_elems_int(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (uint32_t)SvUV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_int_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // New array
+  void* array = env->new_int_array(env, length);
+  
+  // New sv array
+  SV* sv_int_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_int_array);
+  XSRETURN(1);
+}
+
+SV*
+new_int_array_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(int32_t);
+    int32_t* binary = (int32_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_int_array(env, array_length);
+
+    int32_t* elems = env->get_elems_int(env, array);
+    memcpy(elems, binary, array_length * sizeof(int32_t));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_long_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_long_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_long_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int64_t* elems = env->get_elems_long(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (int64_t)SvIV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_long_array_unsigned(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_long_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    // Elements
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    // Array length
+    int32_t length = av_len(av_elems) + 1;
+    
+    // New array
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    void* array = env->new_long_array(env, length);
+    
+    // Copy Perl elements to SPVM elements
+    int64_t* elems = env->get_elems_long(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (uint64_t)SvUV(sv_value);
+    }
+    
+    // New SPVM::BlessedObject::Array object
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_long_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // New array
+  void* array = env->new_long_array(env, length);
+  
+  // New sv array
+  SV* sv_long_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_long_array);
+  XSRETURN(1);
+}
+
+SV*
+new_long_array_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(int64_t);
+    int64_t* binary = (int64_t*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_long_array(env, array_length);
+
+    int64_t* elems = env->get_elems_long(env, array);
+    memcpy(elems, binary, array_length * sizeof(int64_t));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_float_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_float_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_float_array(env, length);
+
+    float* elems = env->get_elems_float(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (float)SvNV(sv_value);
+    }
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_float_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // New array
+  void* array = env->new_float_array(env, length);
+  
+  // New sv array
+  SV* sv_float_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_float_array);
+  XSRETURN(1);
+}
+
+SV*
+new_float_array_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(float);
+    float* binary = (float*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_float_array(env, array_length);
+
+    float* elems = env->get_elems_float(env, array);
+    memcpy(elems, binary, array_length * sizeof(float));
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_double_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_elems = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_elems)) {
+    if (!sv_derived_from(sv_elems, "ARRAY")) {
+      croak("Argument of SPVM::ExchangeAPI::new_double_array() must be array reference at %s line %d\n", MFILE, __LINE__);
+    }
+    
+    AV* av_elems = (AV*)SvRV(sv_elems);
+    
+    int32_t length = av_len(av_elems) + 1;
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_double_array(env, length);
+
+    double* elems = env->get_elems_double(env, array);
+    for (int32_t i = 0; i < length; i++) {
+      SV** sv_value_ptr = av_fetch(av_elems, i, 0);
+      SV* sv_value = sv_value_ptr ? *sv_value_ptr : &PL_sv_undef;
+      elems[i] = (double)SvNV(sv_value);
+    }
+    
+    // sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_double_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // New array
+  void* array = env->new_double_array(env, length);
+  
+  // New sv array
+  SV* sv_double_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_double_array);
+  XSRETURN(1);
+}
+
+SV*
+new_double_array_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_binary = ST(1);
+  
+  SV* sv_array;
+  if (SvOK(sv_binary)) {
+    int32_t binary_length = sv_len(sv_binary);
+    int32_t array_length = binary_length / sizeof(double);
+    double* binary = (double*)SvPV_nolen(sv_binary);
+    
+    // Environment
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    
+    // New array
+    void* array = env->new_double_array(env, array_length);
+
+    double* elems = env->get_elems_double(env, array);
+    memcpy(elems, binary, array_length * sizeof(double));
+    
+    // New sv array
+    sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  }
+  else {
+    sv_array = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_string_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_length = ST(1);
+
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // Element type id
+  const char* basic_type_name = "string";
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  assert(basic_type);
+  
+  // New array
+  void* array = env->new_object_array(env, basic_type->id, length);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+new_object_array_len(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_length = ST(2);
+
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t length = (int32_t)SvIV(sv_length);
+  
+  if (length < 0) {
+    croak("Length must be more than or equals to 0 at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  // Element type id
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  assert(basic_type);
+  
+  // New array
+  void* array = env->new_object_array(env, basic_type->id, length);
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+_new_object_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_elems = ST(2);
+  
+  if (!sv_derived_from(sv_elems, "ARRAY")) {
+    croak("Second argument of SPVM::new_object_array must be array reference at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  AV* av_elems = (AV*)SvRV(sv_elems);
+  
+  int32_t length = av_len(av_elems) + 1;
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  assert(basic_type);
+  
+  // New array
+  SPVM_OBJECT* array = env->new_object_array(env, basic_type->id, length);
+
+  int32_t array_basic_type_id  = array->basic_type_id;
+  int32_t array_type_dimension = array->type_dimension;
+  int32_t element_type_dimension = array_type_dimension - 1;
+
+  for (int32_t index = 0; index < length; index++) {
+    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
+    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+    
+    if (!SvOK(sv_element)) {
+      env->set_elem_object(env, array, index, NULL);
+    }
+    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject::Class")) {
+      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
+      
+      if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
+        env->set_elem_object(env, array, index, object);
+      }
+      else {
+        croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
+      }
+    }
+    else {
+      croak("Element must be SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
+    }
+  }
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+_new_muldim_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_element_type_dimension = ST(2);
+  SV* sv_elems = ST(3);
+  
+  if (!sv_derived_from(sv_elems, "ARRAY")) {
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  AV* av_elems = (AV*)SvRV(sv_elems);
+  
+  int32_t length = av_len(av_elems) + 1;
+  
+  // Environment
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+
+  int32_t element_type_dimension = (int32_t)SvIV(sv_element_type_dimension);
+
+  // Element type id
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  assert(basic_type);
+  
+  // New array
+  SPVM_OBJECT* array = env->new_muldim_array(env, basic_type->id, element_type_dimension, length);
+  
+  int32_t array_basic_type_id = array->basic_type_id;
+
+  for (int32_t index = 0; index < length; index++) {
+    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
+    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+    
+    if (!SvOK(sv_element)) {
+      env->set_elem_object(env, array, index, NULL);
+    }
+    else if (sv_isobject(sv_element) && sv_derived_from(sv_element, "SPVM::BlessedObject")) {
+      SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_element);
+      
+      if (object->basic_type_id == array_basic_type_id && object->type_dimension == element_type_dimension) {
+        env->set_elem_object(env, array, index, object);
+      }
+      else {
+        croak("Element is invalid object type at %s line %d\n", MFILE, __LINE__);
+      }
+    }
+    else {
+      croak("Element must be inherit SPVM::BlessedObject object at %s line %d\n", MFILE, __LINE__);
+    }
+  }
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+_new_mulnum_array(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_elems = ST(2);
+  
+  if (!sv_derived_from(sv_elems, "ARRAY")) {
+    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  AV* av_elems = (AV*)SvRV(sv_elems);
+  
+  int32_t length = av_len(av_elems) + 1;
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  
+  if (basic_type == NULL) {
+    croak("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
+  }
+  
+  // New array
+  void* array = env->new_mulnum_array(env, basic_type->id, length);
+
+  for (int32_t index = 0; index < length; index++) {
+    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
+    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
+
+    if (sv_derived_from(sv_element, "HASH")) {
+      
+      SPVM_CLASS* class = basic_type->class;
+      assert(class);
+      
+      SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+      assert(first_field);
+
+      void* elems = (void*)env->get_elems_int(env, array);
+      
+      HV* hv_value = (HV*)SvRV(sv_element);
+      int32_t fields_length = class->fields->length;
+      // Field exists check
+      int32_t hash_keys_length = 0;
+      while (hv_iternext(hv_value)) {
+        hash_keys_length++;
+      }
+      if (hash_keys_length != fields_length) {
+        croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
+      }
+
+      for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
+        SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
+        const char* field_name = field->name;
+        
+        SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
+        SV* sv_field_value;
+        if (sv_field_value_ptr) {
+          sv_field_value = *sv_field_value_ptr;
+        }
+        else {
+          croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
+        }
+
+        switch (first_field->type->basic_type->id) {
+          case SPVM_BASIC_TYPE_C_ID_BYTE: {
+            ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_SHORT: {
+            ((int16_t*)elems)[(fields_length * index) + field_index] = (int16_t)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_INT: {
+            ((int32_t*)elems)[(fields_length * index) + field_index] = (int32_t)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_LONG: {
+            ((int64_t*)elems)[(fields_length * index) + field_index] = (int64_t)SvIV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+            ((float*)elems)[(fields_length * index) + field_index] = (float)SvNV(sv_field_value);
+            break;
+          }
+          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+            ((double*)elems)[(fields_length * index) + field_index] = (double)SvNV(sv_field_value);
+            break;
+          }
+          default:
+            assert(0);
+        }
+      }
+    }
+    else {
+      croak("Element must be hash reference at %s line %d\n", MFILE, __LINE__);
+    }
+  }
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+_new_mulnum_array_from_bin(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  SV* sv_basic_type_name = ST(1);
+  SV* sv_binary = ST(2);
+  
+  if (!SvOK(sv_binary)) {
+    croak("Argument must be defined at %s line %d\n", MFILE, __LINE__);
+  }
+  
+  const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
+  
+  void* binary = (void*)SvPV_nolen(sv_binary);
+  
+  int32_t binary_length = sv_len(sv_binary);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  // Runtime
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  
+  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
+  
+  if (basic_type == NULL) {
+    const char* basic_type_name = basic_type->name;
+    croak("Can't load %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
+  }
+
+  SPVM_CLASS* class = basic_type->class;
+  assert(class);
+  
+  SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
+  assert(first_field);
+
+  int32_t field_length = class->fields->length;
+
+  int32_t array_length;
+  
+  
+  int32_t field_width;
+  switch (first_field->type->basic_type->id) {
+    case SPVM_BASIC_TYPE_C_ID_BYTE: {
+      field_width = 1;
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_SHORT: {
+      field_width = 2;
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_INT: {
+      field_width = 4;
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_LONG: {
+      field_width = 8;
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+      field_width = 4;
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+      field_width = 8;
+      break;
+    }
+    default:
+      croak("Unexpected error:set field width");
+  }
+  
+  if (binary_length % (field_length * field_width) != 0) {
+    croak("Invalid binary data size at %s line %d", MFILE, __LINE__);
+  }
+  
+  array_length = binary_length / field_length / field_width;
+
+  SPVM_OBJECT* array = env->new_mulnum_array(env, basic_type->id, array_length);
+
+  int32_t basic_type_id = array->basic_type_id;
+  int32_t dimension = array->type_dimension;
+  
+  switch (first_field->type->basic_type->id) {
+    case SPVM_BASIC_TYPE_C_ID_BYTE: {
+      int8_t* elems = env->get_elems_byte(env, array);
+      if (array_length > 0) {
+        memcpy(elems, binary, field_length * array_length * field_width);
+      }
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_SHORT: {
+      int16_t* elems = env->get_elems_short(env, array);
+      if (array_length > 0) {
+        memcpy(elems, binary, field_length * array_length * field_width);
+      }
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_INT: {
+      int32_t* elems = env->get_elems_int(env, array);
+      if (array_length > 0) {
+        memcpy(elems, binary, field_length * array_length * field_width);
+      }
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_LONG: {
+      int64_t* elems = env->get_elems_long(env, array);
+      if (array_length > 0) {
+        memcpy(elems, binary, field_length * array_length * field_width);
+      }
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_FLOAT: {
+      float* elems = env->get_elems_float(env, array);
+      if (array_length > 0) {
+        memcpy(elems, binary, field_length * array_length * field_width);
+      }
+      break;
+    }
+    case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
+      double* elems = env->get_elems_double(env, array);
+      if (array_length > 0) {
+        memcpy(elems, binary, field_length * array_length * field_width);
+      }
+      break;
+    }
+    default:
+      assert(0);
+  }
+  
+  // New sv array
+  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+  
+  XPUSHs(sv_array);
+  XSRETURN(1);
+}
+
+SV*
+_get_exception(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  void* str_exception = env->get_exception(env);
+  
+  SV* sv_exception;
+  if (str_exception) {
+    const char* exception_chars = env->get_chars(env, str_exception);
+    int32_t length = env->length(env, str_exception);
+    
+    sv_exception = sv_2mortal(newSVpv(exception_chars, length));
+  }
+  else {
+    sv_exception = &PL_sv_undef;
+  }
+  
+  XPUSHs(sv_exception);
+  XSRETURN(1);
+}
+
+SV*
+_set_exception(...)
+  PPCODE:
+{
+  (void)RETVAL;
+
+  SV* sv_env = ST(0);
+  SV* sv_exception = ST(1);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  if (SvOK(sv_exception)) {
+    const char* exception = SvPV_nolen(sv_exception);
+    int32_t length = (int32_t)sv_len(sv_exception);
+    
+    void* str_exception = env->new_string_raw(env, exception, length);
+    env->set_exception(env, str_exception);
+  }
+  else {
+    env->set_exception(env, NULL);
+  }
+  
+  XSRETURN(0);
+}
+
+SV*
+get_memory_blocks_count(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_env = ST(0);
+  
+  // Env
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  int32_t memory_blocks_count = env->get_memory_blocks_count(env);
+  SV* sv_memory_blocks_count = sv_2mortal(newSViv(memory_blocks_count));
+  
+  XPUSHs(sv_memory_blocks_count);
+  XSRETURN(1);
+}
+
+MODULE = SPVM::BlessedObject		PACKAGE = SPVM::BlessedObject
+
+SV*
+DESTROY(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_object = ST(0);
+  HV* hv_object = (HV*)SvRV(sv_object);
+
+  assert(SvOK(sv_object));
+  
+  // Get object
+  void* object = SPVM_XS_UTIL_get_object(sv_object);
+
+  SV** sv_env_ptr = hv_fetch(hv_object, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+  
+  assert(env->get_ref_count(env, object));
+  
+  // Decrement reference count
+  env->dec_ref_count(env, object);
+  
+  XSRETURN(0);
+}
+
+MODULE = SPVM::Builder		PACKAGE = SPVM::Builder
+
+SV*
+create_compiler(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+  size_t iv_compiler = PTR2IV(compiler);
+  SV* sviv_compiler = sv_2mortal(newSViv(iv_compiler));
+  SV* sv_compiler = sv_2mortal(newRV_inc(sviv_compiler));
+  (void)hv_store(hv_self, "compiler", strlen("compiler"), SvREFCNT_inc(sv_compiler), 0);
+}
+
+SV*
+compile_spvm(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_name = ST(1);
+  SV* sv_file = ST(2);
+  SV* sv_line = ST(3);
+  
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  
+  
+  // Include directries
+  SV** sv_module_dirs_ptr = hv_fetch(hv_self, "module_dirs", strlen("module_dirs"), 0);
+  SV* sv_module_dirs = sv_module_dirs_ptr ? *sv_module_dirs_ptr : &PL_sv_undef;
+  
+  // Name
+  const char* name = SvPV_nolen(sv_name);
+  char* name_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
+  memcpy(name_copy, name, sv_len(sv_name));
+  
+  // File
+  const char* file = SvPV_nolen(sv_file);
+  char* file_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
+  memcpy(file_copy, file, sv_len(sv_file));
+  
+  // Line
+  int32_t line = (int32_t)SvIV(sv_line);
+  
+  // push class to compiler use stack
+  SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_copy, file_copy, line);
+  SPVM_OP* op_type_class = SPVM_OP_build_basic_type(compiler, op_name_class);
+  SPVM_OP* op_use_class = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, file_copy, line);
+  SPVM_OP_build_use(compiler, op_use_class, op_type_class, NULL, 0);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_class);
+  
+  // Add include paths
+  AV* av_module_dirs;
+  if (SvOK(sv_module_dirs)) {
+    av_module_dirs = (AV*)SvRV(sv_module_dirs);
+  }
+  else {
+    av_module_dirs = (AV*)sv_2mortal((SV*)newAV());
+  }
+  int32_t av_module_dirs_length = (int32_t)av_len(av_module_dirs) + 1;
+  for (int32_t i = 0; i < av_module_dirs_length; i++) {
+    SV** sv_include_dir_ptr = av_fetch(av_module_dirs, i, 0);
+    SV* sv_include_dir = sv_include_dir_ptr ? *sv_include_dir_ptr : &PL_sv_undef;
+    char* include_dir = SvPV_nolen(sv_include_dir);
+    SPVM_LIST_push(compiler->module_dirs, include_dir);
+  }
+
+  // Compile SPVM
+  compiler->cur_class_base = compiler->classes->length;
+  SPVM_COMPILER_compile(compiler);
+  
+  SV* sv_compile_success;
+  if (compiler->error_count > 0) {
+    sv_compile_success = sv_2mortal(newSViv(0));
+  }
+  else {
+    sv_compile_success = sv_2mortal(newSViv(1));
+  }
+  
+  XPUSHs(sv_compile_success);
+  
+  XSRETURN(1);
+}
+
+SV*
+get_method_names(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_class_name = ST(1);
+  SV* sv_category = ST(2);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_method_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_method_names = sv_2mortal(newRV_inc((SV*)av_method_names));
+  
+  // Copy class load path to builder
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+
+  for (int32_t method_index = 0; method_index < class->methods->length; method_index++) {
+    SPVM_METHOD* method = SPVM_LIST_fetch(class->methods, method_index);
+    const char* method_name = method->name;
+    SV* sv_method_name = sv_2mortal(newSVpv(method_name, 0));
+    
+    int32_t is_push = 0;
+    if (SvOK(sv_category)) {
+      if(strEQ(SvPV_nolen(sv_category), "native") && method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+      }
+      else if (strEQ(SvPV_nolen(sv_category), "precompile") && method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE) {
+        av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+      }
+    }
+    else {
+      av_push(av_method_names, SvREFCNT_inc(sv_method_name));
+    }
+  }
+  
+  XPUSHs(sv_method_names);
+  XSRETURN(1);
+}
+
+SV*
+get_anon_class_names_by_parent_class_name(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_class_name = ST(1);
+  SV* sv_category = ST(2);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_anon_class_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_anon_class_names = sv_2mortal(newRV_inc((SV*)av_anon_class_names));
+  
+  // Copy class load path to builder
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+
+  for (int32_t anon_method_index = 0; anon_method_index < class->anon_methods->length; anon_method_index++) {
+    
+    SPVM_METHOD* anon_method = SPVM_LIST_fetch(class->anon_methods, anon_method_index);
+    SPVM_CLASS* anon_class = anon_method->class;
+    
+    const char* anon_class_name = anon_class->name;
+    SV* sv_anon_class_name = sv_2mortal(newSVpv(anon_class_name, 0));
+    
+    av_push(av_anon_class_names, SvREFCNT_inc(sv_anon_class_name));
+  }
+  
+  XPUSHs(sv_anon_class_names);
+  XSRETURN(1);
+}
+
+SV*
+get_class_names(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
+  
+  for (int32_t class_index = 0; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+    const char* class_name = class->name;
+    if (!class->is_anon) {
+      SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
+      av_push(av_class_names, SvREFCNT_inc(sv_class_name));
+    }
+  }
+  
+  XPUSHs(sv_class_names);
+  XSRETURN(1);
+}
+
+SV*
+get_class_names_including_anon(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_class_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_class_names = sv_2mortal(newRV_inc((SV*)av_class_names));
+  
+  for (int32_t class_index = 0; class_index < compiler->classes->length; class_index++) {
+    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
+    const char* class_name = class->name;
+    SV* sv_class_name = sv_2mortal(newSVpv(class_name, 0));
+    av_push(av_class_names, SvREFCNT_inc(sv_class_name));
+  }
+  
+  XPUSHs(sv_class_names);
+  XSRETURN(1);
+}
+
+SV*
+get_added_class_names(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_added_class_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_added_class_names = sv_2mortal(newRV_inc((SV*)av_added_class_names));
+  
+  for (int32_t added_class_index = 0; added_class_index < compiler->added_classes->length; added_class_index++) {
+    SPVM_CLASS* added_class = SPVM_LIST_fetch(compiler->added_classes, added_class_index);
+    const char* added_class_name = added_class->name;
+    if (!added_class->is_anon) {
+      SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
+      av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
+    }
+  }
+  
+  XPUSHs(sv_added_class_names);
+  XSRETURN(1);
+}
+
+SV*
+get_added_class_names_including_anon(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  AV* av_added_class_names = (AV*)sv_2mortal((SV*)newAV());
+  SV* sv_added_class_names = sv_2mortal(newRV_inc((SV*)av_added_class_names));
+  
+  for (int32_t added_class_index = 0; added_class_index < compiler->added_classes->length; added_class_index++) {
+    SPVM_CLASS* added_class = SPVM_LIST_fetch(compiler->added_classes, added_class_index);
+    const char* added_class_name = added_class->name;
+    SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
+    av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
+  }
+  
+  XPUSHs(sv_added_class_names);
+  XSRETURN(1);
+}
+
+SV*
+get_module_file(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_class_name = ST(1);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  // Name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Copy class load path to builder
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  const char* module_file = class->module_file;
+  SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
+
+  XPUSHs(sv_module_file);
+  XSRETURN(1);
+}
+
+SV*
+get_module_source(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_class_name = ST(1);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Copy class load path to builder
+  SV* sv_module_source;
+  const char* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+  if (module_source) {
+    sv_module_source = sv_2mortal(newSVpv(module_source, 0));
+  }
+  else {
+    sv_module_source = &PL_sv_undef;
+  }
+
+  XPUSHs(sv_module_source);
+  XSRETURN(1);
+}
+
+SV*
+get_loaded_module_file(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  SV* sv_class_name = ST(1);
+
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  // Name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Copy class load path to builder
+  SV* sv_loaded_module_file;
+  const char* loaded_module_file = SPVM_HASH_fetch(compiler->loaded_module_file_symtable, class_name, strlen(class_name));
+  if (loaded_module_file) {
+    sv_loaded_module_file = sv_2mortal(newSVpv(loaded_module_file, 0));
+  }
+  else {
+    sv_loaded_module_file = &PL_sv_undef;
+  }
+
+  XPUSHs(sv_loaded_module_file);
+  XSRETURN(1);
+}
+
+SV*
+_init(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Create env
+  SPVM_ENV* env = SPVM_API_create_env(compiler);
+  if (env == NULL) {
+    croak("Can't create SPVM env");
+  }
+  
+  // Set ENV
+  size_t iv_env = PTR2IV(env);
+  SV* sviv_env = sv_2mortal(newSViv(iv_env));
+  SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
+  (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
+  
+  SPVM_API_call_init_blocks(env);
+}
+
+SV*
+bind_method(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_class_name = ST(1);
+  SV* sv_method_name = ST(2);
+  SV* sv_native_address = ST(3);
+  SV* sv_category = ST(4);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+
+  // Class name
+  const char* class_name = SvPV_nolen(sv_class_name);
+
+  // Method name
+  const char* method_name = SvPV_nolen(sv_method_name);
+  
+  // Native address
+  void* native_address = INT2PTR(void*, SvIV(sv_native_address));
+  
+  // Class
+  SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+  
+  // Method
+  SPVM_METHOD* method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
+  
+  if (SvOK(sv_category)) {
+    if(strEQ(SvPV_nolen(sv_category), "native")) {
+      // Set native method address
+      method->native_address = native_address;
+    }
+    else if (strEQ(SvPV_nolen(sv_category), "precompile")) {
+      // Set precompile method address
+      method->precompile_address = native_address;
+    }
+    else {
+      croak("Need category");
+    }
+  }
+  else {
+    croak("Need category");
+  }
+
+  XSRETURN(0);
+}
+
+SV*
+DESTROY(...)
+  PPCODE:
+{
+  (void)RETVAL;
+  
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  
+  SV** sv_env_ptr = hv_fetch(hv_self, "env", strlen("env"), 0);
+  SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
+  if (SvOK(sv_env)) {
+    SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
+    SPVM_COMPILER* compiler = env->compiler;
+    
+    SPVM_API_free_env(env);
+  }
+}
+
+MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
+
+SV*
+build_class_csource_precompile(...)
+  PPCODE:
+{
+  SV* sv_self = ST(0);
+  HV* hv_self = (HV*)SvRV(sv_self);
+  SV* sv_class_name = ST(1);
+  const char* class_name = SvPV_nolen(sv_class_name);
+  
+  // Env
+  SV** sv_builder_ptr = hv_fetch(hv_self, "builder", strlen("builder"), 0);
+  SV* sv_builder = sv_builder_ptr ? *sv_builder_ptr : &PL_sv_undef;
+  HV* hv_builder = (HV*)SvRV(sv_builder);
+
+  SPVM_COMPILER* compiler;
+  SV** sv_compiler_ptr = hv_fetch(hv_builder, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  
+  // String buffer for csource
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(0);
+
+  // Build class csource
+  SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
+  
+  SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
+  
+  SPVM_STRING_BUFFER_free(string_buffer);
+
+  XPUSHs(sv_class_csource);
+  XSRETURN(1);
+}
 
 MODULE = SPVM		PACKAGE = SPVM
