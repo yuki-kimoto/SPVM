@@ -20,7 +20,7 @@ use Encode 'encode', 'decode';
 
 use Carp 'confess';
 
-our $VERSION = '0.9015';
+our $VERSION = '0.9016';
 
 my $SPVM_INITED;
 my $BUILDER;
@@ -293,6 +293,10 @@ sub call_spvm_method {
 =head1 NAME
 
 SPVM - Static Perl Virtual Machine. Fast Calculation, Fast Array Operation, and Easy C/C++ Binding.
+
+=head1 CAUTHION
+
+B<L<SPVM> is yet before 1.0 released. L<SPVM> is changed without warnings. There will be quite a lot of changes until I feel enough good.>
 
 =head1 SYNOPSIS
 
