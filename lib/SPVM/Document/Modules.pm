@@ -64,8 +64,6 @@ List of SPVM Core Modules
 
 =item * L<LongList|SPVM::LongList> - Dynamic long array
 
-=item * L<Math|SPVM::Math> - Math functions
-
 =item * L<Regex|SPVM::Regex> - Regular expression
 
 =item * L<Regex::Pattern|SPVM::Regex::Pattern> - Regular expression pattern
@@ -87,5 +85,13 @@ List of SPVM Core Modules
 =item * L<Time::Info|SPVM::Time::Info> - Time information
 
 =item * L<Unicode|SPVM::Unicode> - 
+
+=back
+
+=head1 CPAN MODULES
+
+=over 2
+
+=item * L<Math|SPVM::Math> - Math functions
 
 =back

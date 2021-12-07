@@ -17,7 +17,6 @@ class Fn : precompile {
   use StringList;
   use Unicode (uchar_to_utf8);
   use Regex;
-  use Math;
   
   INIT {
     srand(time());
@@ -59,6 +58,50 @@ class Fn : precompile {
     return $random_number;
   }
 
+  static method abs : double ($x : int) {
+    
+    my $ret = 0;
+    if ($x > 0) {
+      $ret = $x;
+    }
+    else {
+      $ret = -$x;
+    }
+    return $ret;
+  }
+
+  static method labs : double ($x : long) {
+    
+    my $ret = 0L;
+    if ($x > 0) {
+      $ret = $x;
+    }
+    else {
+      $ret = -$x;
+    }
+    return $ret;
+  }
+
+  static method powi : int ($x : int, $y : int) {
+    my $p = 1;
+    
+    for (my $i = 0; $i < $y; $i++) {
+      $p = $p * $x;
+    }
+    
+    return $p;
+  }
+
+  static method powl : long ($x : long, $y : long) {
+    my $p = 1L;
+    
+    for (my $i = 0; $i < $y; $i++) {
+      $p = $p * $x;
+    }
+    
+    return $p;
+  }
+  
   static method hex : int ($hex_string : string) {
     
     unless ($hex_string) {
@@ -85,7 +128,7 @@ class Fn : precompile {
         elsif ($ascii_code >= 'A' && $ascii_code <= 'F') {
           $digit_value = $ascii_code - 55;
         }
-        $value += $digit_value * (int)Math->pow(16, $digit);
+        $value += $digit_value * Fn->powi(16, $digit);
         
         $digit += 1;
       }

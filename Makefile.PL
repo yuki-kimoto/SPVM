@@ -147,7 +147,6 @@ sub MY::postamble {
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Fn');
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Math');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Hash');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Time');
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Unicode');

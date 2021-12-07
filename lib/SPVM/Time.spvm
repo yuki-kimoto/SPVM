@@ -1,6 +1,6 @@
 class Time {
   use Time::Info;
-  use Math (pow, labs);
+  use Fn;
   
   native static method time : long ();
   native static method localtime : Time::Info ($time : long);
@@ -45,9 +45,9 @@ class Time {
     my $epoc_days = _daygm($epoc_time_info->mday, $epoc_time_info->mon, $epoc_time_info->year);
     my $days = _daygm($mday, $month, $year) - $epoc_days + 1;
     
-    my $maxDay = 365 * pow(2, 31);
+    my $maxDay = 365 * Fn->powl(2, 31);
     
-    unless (labs($days) < $maxDay) {
+    unless (Fn->labs($days) < $maxDay) {
       my $msg = "";
       if ($days > $maxDay) {
         $msg .= "Day too big - $days > $maxDay\n";

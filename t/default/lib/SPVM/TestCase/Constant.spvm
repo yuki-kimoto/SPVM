@@ -1,6 +1,5 @@
 class TestCase::Constant {
   use Complex_2d;
-  use Math (csub);
   
   static method load_constant_long_middle : long () {
     return 4611686018427387904L;

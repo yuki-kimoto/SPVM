@@ -5,6 +5,11 @@ Revision history for SPVM
           the Perl reference must be scalar reference which referenced value is non-ref scalar.
         * exchange api $string->to_string become croak if sv_utf8_docede fails.
         * exchange api $array->to_elemes in string[] set SPVM::Blessed::String object as the element.
+        * add abs method to Fn module
+        * add labs method to Fn module
+        * add powi method to Fn module
+        * add powl method to Fn module
+        * remove SPVM::Math module from core. SPVM::Math is planed to be used as a CPAN module.
         
         [BUGFIXES]
         * None

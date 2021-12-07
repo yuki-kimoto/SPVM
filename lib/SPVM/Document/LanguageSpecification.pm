@@ -3923,10 +3923,10 @@ Function Call is <a href="#language-expression">Expression</a>.
 
 <pre>
 class Foo {
-  use Math(sin);
+  use Fn (copy_string);
   
   static method test : void () {
-    my $ret = sin(3.0);
+    my $ret = copy_string("hello");
   }
 }
 </pre>

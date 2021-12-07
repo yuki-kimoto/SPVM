@@ -10,8 +10,6 @@ ctest/README.txt
 ctest/t/test_spvm_hash.c
 ctest/t/test_spvm_list.c
 DEVELOPMENT.txt
-examples/complex/complex.pl
-examples/complex/lib/SPVM/MyComplex.spvm
 examples/native/bind_clib/bind_clib.pl
 examples/native/bind_clib/lib/SPVM/BindCLib.c
 examples/native/bind_clib/lib/SPVM/BindCLib.config
@@ -505,10 +503,6 @@ lib/SPVM/List.spvm
 lib/SPVM/Long.pm
 lib/SPVM/LongList.pm
 lib/SPVM/LongList.spvm
-lib/SPVM/Math.c
-lib/SPVM/Math.config
-lib/SPVM/Math.pm
-lib/SPVM/Math.spvm
 lib/SPVM/Regex.pm
 lib/SPVM/Regex.spvm
 lib/SPVM/Regex/Pattern.pm
@@ -777,7 +771,6 @@ t/default/lib/SPVM/TestCase/Lib/IntList.spvm
 t/default/lib/SPVM/TestCase/Lib/List.spvm
 t/default/lib/SPVM/TestCase/Lib/Long.spvm
 t/default/lib/SPVM/TestCase/Lib/LongList.spvm
-t/default/lib/SPVM/TestCase/Lib/Math.spvm
 t/default/lib/SPVM/TestCase/Lib/Regex.spvm
 t/default/lib/SPVM/TestCase/Lib/Short.spvm
 t/default/lib/SPVM/TestCase/Lib/ShortList.spvm
@@ -894,7 +887,6 @@ t/default/SPVM_IntList.t
 t/default/SPVM_List.t
 t/default/SPVM_Long.t
 t/default/SPVM_LongList.t
-t/default/SPVM_Math.t
 t/default/SPVM_Regex.t
 t/default/SPVM_Short.t
 t/default/SPVM_ShortList.t
