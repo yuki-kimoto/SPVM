@@ -10,6 +10,7 @@ Revision history for SPVM
         * add powi method to Fn module
         * add powl method to Fn module
         * remove SPVM::Math module from core. SPVM::Math is planed to be used as a CPAN module.
+        * Support many OSs again. SPVM want to support OSs that Perl supports as possible.
         
         [BUGFIXES]
         * None
