@@ -1039,7 +1039,9 @@ Source offset + length must be within the range of the source array, otherwise a
 
 =head2 substr
 
-TODO
+  static method substr : string ($string : string, $offset : int, $length : int)
+
+Get the substring of the string with the start offset and the length.
 
 =head2 new_array_proto
 
@@ -1194,6 +1196,10 @@ Offset + Length must be in the array range. Otherwise a exception occurs.
 Split a string by the specific separator.
 
 =head2 sprintf
+
+  static method sprintf : string ($format : string, $args : object[]...)
+
+Create a formatted string with the format and the embdded values.
 
 TODO
 
