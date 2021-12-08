@@ -40,7 +40,7 @@ class Fn : precompile {
   static method UINT64_MAX : long () { return 0xFFFFFFFFFFFFFFFFL; }
   static method UINT8_MAX : byte () { return (byte)0xFF; }
 
-  static method abs : double ($x : int) {
+  static method abs : int ($x : int) {
     
     my $ret = 0;
     if ($x > 0) {
@@ -1223,7 +1223,7 @@ class Fn : precompile {
     return $join;
   }
 
-  static method labs : double ($x : long) {
+  static method labs : long ($x : long) {
     
     my $ret = 0L;
     if ($x > 0) {

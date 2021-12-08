@@ -126,6 +126,16 @@ SKIP: {
   ok(SPVM::TestCase::Lib::Fn->test_split);
 }
 
+# abs
+{
+  ok(SPVM::TestCase::Lib::Fn->test_abs);
+}
+
+# labs
+{
+  ok(SPVM::TestCase::Lib::Fn->test_labs);
+}
+
 # sprintf
 {
   ok(SPVM::TestCase::Lib::Fn->test_sprintf_d);

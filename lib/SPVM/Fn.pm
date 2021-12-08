@@ -307,7 +307,9 @@ Return -1. The same bit expression of 0xFF in the unsigned 8bit integer in 2's c
 
 =head2 abs
 
-TODO
+  static method abs : int ($x : int) {
+
+Return the absolute value.
 
 =head2 chompr
 
@@ -805,7 +807,9 @@ If string array is undef, a exception occurs.
 
 =head2 labs
 
-TODO
+  static method labs : long ($x : long) {
+
+Return the absolute value.
 
 =head2 lc
 

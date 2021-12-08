@@ -100,6 +100,78 @@ class TestCase::Lib::Fn {
     to_upper,
   );
 
+  static method test_abs : int () {
+    
+    # Positive values
+    {
+      my $num = 3;
+      my $ret = Fn->abs($num);
+      unless ($ret isa int) {
+        return 0;
+      }
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    # Negative values
+    {
+      my $num = -3;
+      my $ret = Fn->abs($num);
+      unless ($ret == 3) {
+        return 0;
+      }
+      
+    }
+
+    # Zeros
+    {
+      my $num = 0;
+      my $ret = Fn->abs($num);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method test_labs : int () {
+    
+    # Positive values
+    {
+      my $num = 3L;
+      my $ret = Fn->labs($num);
+      unless ($ret isa long) {
+        return 0;
+      }
+      unless ($ret == 3) {
+        return 0;
+      }
+    }
+    
+    # Negative values
+    {
+      my $num = -3L;
+      my $ret = Fn->labs($num);
+      unless ($ret == 3) {
+        return 0;
+      }
+      
+    }
+
+    # Zeros
+    {
+      my $num = 0;
+      my $ret = Fn->labs($num);
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   static method test_crand : int () {
     
     my $founds_plus = new int[10];
