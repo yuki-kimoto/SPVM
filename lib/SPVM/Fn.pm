@@ -28,7 +28,7 @@ SPVM::Fn - Fn in SPVM | Starndard functions
     my $string_copy = Fn->copy_string ($string);
   }
 
-  # Search methodstr
+  # Search substr
   {
     my $found_offset = Fn->index("pppabcde", "bcd", 2);
   }

@@ -1,6 +1,10 @@
 Revision history for SPVM
 0.9016  2021-12-08
         [CHANGES]
+        * Fix bugs that Fn->substr method is changed to Fn->methodstr by a mistake
+        
+0.9016  2021-12-08
+        [CHANGES]
         * In Exchange API call method argument Perl refenrece to SPVM numeric reference convision,
           the Perl reference must be scalar reference which referenced value is non-ref scalar.
         * exchange api $string->to_string become croak if sv_utf8_docede fails.

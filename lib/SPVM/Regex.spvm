@@ -6,7 +6,7 @@ class Regex : precompile {
   use StringBuffer;
   use Regex::Replacer;
   use Regex::Pattern;
-  use Fn (is_perl_word, is_digit, to_int_with_base, methodstr, copy_string);
+  use Fn (is_perl_word, is_digit, to_int_with_base, substr, copy_string);
   use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
   use Fn (copy_array_range_byte);
   use Hash;
@@ -584,7 +584,7 @@ class Regex : precompile {
         
         if ($match_uchar_repeat) {
           if ($pattern->{capture_end}) {
-            $self->{captures}[$capture_count] = methodstr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
+            $self->{captures}[$capture_count] = substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
             $capture_count++;
             if ($capture_count > 255) {
               die "Too many captures";
@@ -676,7 +676,7 @@ class Regex : precompile {
     my $tarlength = length $target;
     
     if ($target_base_index > 0) {
-      my $first_string = methodstr($target, 0, $target_base_index);
+      my $first_string = substr($target, 0, $target_base_index);
       $result_buffer->push($first_string);
     }
     
@@ -749,7 +749,7 @@ class Regex : precompile {
     else {
       my $match_end = $self->match_start + $self->match_length;
       my $rest_length = $tarlength - $match_end;
-      my $rest_string = methodstr($target, $match_end, $rest_length);
+      my $rest_string = substr($target, $match_end, $rest_length);
       $result_buffer->push($rest_string);
       
       $result = (byte[])$result_buffer->to_string;

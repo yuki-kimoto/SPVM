@@ -1581,7 +1581,7 @@ class Fn : precompile {
           }
         }
         if ($match) {
-          my $separated_string = methodstr($string, $string_base, $string_index - $string_base);
+          my $separated_string = substr($string, $string_base, $string_index - $string_base);
           $separated_strings_list->push($separated_string);
           $string_base = $string_index + $sep_length;
           $string_index += $sep_length - 1;
@@ -1592,7 +1592,7 @@ class Fn : precompile {
       $separated_strings_list->push("");
     }
     else {
-      my $separated_string = methodstr($string, $string_base, $string_length - $string_base);
+      my $separated_string = substr($string, $string_base, $string_length - $string_base);
       $separated_strings_list->push($separated_string);
     }
 
@@ -1622,7 +1622,7 @@ class Fn : precompile {
 
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = Fn->methodstr($format, $index, $constant_string_length);
+          my $format_part = Fn->substr($format, $index, $constant_string_length);
           
           $buffer->push($format_part);
           $index += $constant_string_length;
@@ -1638,7 +1638,7 @@ class Fn : precompile {
       else {
         # Add constant string
         if ($constant_string_length > 0) {
-          my $format_part = Fn->methodstr($format, $index, $constant_string_length);
+          my $format_part = Fn->substr($format, $index, $constant_string_length);
           $buffer->push($format_part);
           $index += $constant_string_length;
           $constant_string_length = 0;
@@ -1711,7 +1711,7 @@ class Fn : precompile {
 
         unless ($index < $format_length) {
           die "Invalid conversion in sprintf: \""
-              . methodstr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
+              . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
         }
 
         my $specifier_char = $format->[$index];
@@ -1879,7 +1879,7 @@ class Fn : precompile {
         elsif ($specifier_char == 'l') {
           unless ($index + 1 < $format_length && ($format->[$index + 1] == 'd' || $format->[$index + 1] == 'u')) {
             die "Invalid conversion in sprintf: \""
-                . methodstr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+                . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
           }
 
           my $is_signed_format = $format->[$index + 1] == 'd';
@@ -1952,7 +1952,7 @@ class Fn : precompile {
         elsif ($specifier_char == 'f' || $specifier_char == 'g') {
           ++$index;
           my $arg = (Double)$args->[$arg_count];
-          my $specifier_str = methodstr($format, $specifier_base_index, $index - $specifier_base_index);
+          my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
           my $string = _snsprintf_double($specifier_str, $arg->value);
           $buffer->push($string);
         }
@@ -1964,7 +1964,7 @@ class Fn : precompile {
         }
         else {
           die "Invalid conversion in sprintf: \""
-              . methodstr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+              . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
         }
 
         ++$arg_count;
@@ -1973,7 +1973,7 @@ class Fn : precompile {
 
     # Add constant string
     if ($constant_string_length > 0) {
-      my $format_part = Fn->methodstr($format, $index, $constant_string_length);
+      my $format_part = Fn->substr($format, $index, $constant_string_length);
       $buffer->push($format_part);
       $index += $constant_string_length;
       $constant_string_length = 0;
@@ -1985,7 +1985,7 @@ class Fn : precompile {
 
   native static method srand : void ($seed : long);
 
-  static method methodstr : string ($string : string, $offset : int, $length : int) {
+  static method substr : string ($string : string, $offset : int, $length : int) {
 
     if ($string == undef) {
       die "String must be defined";
@@ -2086,13 +2086,13 @@ class Fn : precompile {
       return "";
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = methodstr($string, $start_string_index, $length - $start_string_index);
+      $trimed_string = substr($string, $start_string_index, $length - $start_string_index);
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = methodstr($string, 0, $end_string_index + 1);
+      $trimed_string = substr($string, 0, $end_string_index + 1);
     }
     else {
-      $trimed_string = methodstr($string, $start_string_index, $end_string_index - $start_string_index + 1);
+      $trimed_string = substr($string, $start_string_index, $end_string_index - $start_string_index + 1);
     }
     
     return $trimed_string;
