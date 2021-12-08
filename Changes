@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9016  2021-11-05
+0.9016  2021-12-08
         [CHANGES]
         * In Exchange API call method argument Perl refenrece to SPVM numeric reference convision,
           the Perl reference must be scalar reference which referenced value is non-ref scalar.
