@@ -1,8 +1,10 @@
 Revision history for SPVM
 0.9017  2021-12-08
         [CHANGES]
-        * Fix bugs that Fn->substr method is changed to Fn->methodstr by a mistake
+        * None
+        
         [BUG FIXES]
+        * Fix bugs that Fn->substr method is changed to Fn->methodstr by a mistake
         * Fix a bug that the return type of Fn->abs method was double. This become int type
         * Fix a bug that the return type of Fn->labs method was double. This become long type
         
