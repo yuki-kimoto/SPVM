@@ -307,7 +307,7 @@ Return -1. The same bit expression of 0xFF in the unsigned 8bit integer in 2's c
 
 =head2 abs
 
-  static method abs : int ($x : int) {
+  static method abs : int ($x : int)
 
 Return the absolute value.
 
@@ -807,7 +807,7 @@ If string array is undef, a exception occurs.
 
 =head2 labs
 
-  static method labs : long ($x : long) {
+  static method labs : long ($x : long)
 
 Return the absolute value.
 
@@ -1049,11 +1049,15 @@ Create a new generic object array as the same type as the given array.
 
 =head2 powi
 
-TODO
+  static method powi : int ($x : int, $y : int)
+
+Calculate the exponentiation.
 
 =head2 powl
 
-TODO
+  static method powl : long ($x : long, $y : long)
+
+Calculate the exponentiation.
 
 =head2 rand
 
