@@ -1,7 +1,9 @@
 Revision history for SPVM
 0.9017  2021-12-08
         [CHANGES]
-        * Remove unneeded spaces of the Makefile. This will maybe fix the fail of solaris make.
+        * The parts of Makefile created by SPVM::Builder::Util::create_class_make_rule() become
+          more compatible the Makefile created by ExtUtils::MakeMaker.
+          This will maybe fix the fail of solaris make.
         
         [BUG FIXES]
         * Fix bugs that Fn->substr method is changed to Fn->methodstr by a mistake

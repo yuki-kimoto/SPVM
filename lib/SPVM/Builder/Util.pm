@@ -177,7 +177,8 @@ sub create_class_make_rule {
   $class_name_under_score =~ s/:/_/g;
   
   my $target_name = "spvm_${category}_$class_name_under_score";
-  $make_rule .= "$target_name\n\n";
+  $make_rule .= "$target_name\n";
+  $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
   
   my $module_base_name = $class_name;
   $module_base_name =~ s/^.+:://;
@@ -220,12 +221,10 @@ sub create_class_make_rule {
   my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
   
   # Get source files
-  $make_rule
-    .= "$target_name :: $shared_lib_file\n\n";
-  $make_rule
-    .= "$shared_lib_file :: @deps\n\n";
-  $make_rule
-    .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => '.spvm_build')->build_shared_lib_dist('$class_name', '$category')\"\n\n";
+  $make_rule .= "$target_name :: $shared_lib_file\n";
+  $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
+  $make_rule .= "$shared_lib_file :: @deps\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => '.spvm_build')->build_shared_lib_dist('$class_name', '$category')\"\n\n";
   
   return $make_rule;
 }
