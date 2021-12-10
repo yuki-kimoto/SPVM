@@ -176,10 +176,8 @@ sub create_class_make_rule {
   my $class_name_under_score = $class_name;
   $class_name_under_score =~ s/:/_/g;
   
-  my $target_name = "spvm_${category}_$class_name_under_score ";
-  $make_rule
-    .= "$target_name ";
-  $make_rule .= "\n\n";
+  my $target_name = "spvm_${category}_$class_name_under_score";
+  $make_rule .= "$target_name\n\n";
   
   my $module_base_name = $class_name;
   $module_base_name =~ s/^.+:://;
