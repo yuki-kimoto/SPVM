@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9017  2021-12-08
+0.9017  2021-12-11
         [CHANGES]
         * The parts of Makefile created by SPVM::Builder::Util::create_class_make_rule() become
           more compatible the Makefile created by ExtUtils::MakeMaker.
