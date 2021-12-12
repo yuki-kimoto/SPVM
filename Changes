@@ -1,6 +1,12 @@
 Revision history for SPVM
 0.9017  2021-12-11
         [CHANGES]
+        * Depends on ExtUtils::CBuilder for Perl 5.8
+        
+        [BUG FIXES]
+        * None
+0.9017  2021-12-11
+        [CHANGES]
         * The parts of Makefile created by SPVM::Builder::Util::create_class_make_rule() become
           more compatible the Makefile created by ExtUtils::MakeMaker.
           This will maybe fix the fail of solaris make.

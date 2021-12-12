@@ -81,6 +81,9 @@ WriteMakefile(
         },
     },
     EXE_FILES => ['script/spvmcc'],
+    PREREQ_PM => {
+        'ExtUtils::CBuilder' => '0.280236',
+    },
 );
 
 # Create precompile test
