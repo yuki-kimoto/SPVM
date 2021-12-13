@@ -681,7 +681,7 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_f : int () {
     my $tests = [
-        [ sprintf("abc%.2f", 3.14),                  "abc3.14"      ],
+        [ sprintf("abc%.2f", 3.1415),                  "abc3.14"      ],
         [ sprintf("%.2fabc", 3.14),                  "3.14abc"      ],
         [ sprintf("%.2fabc%.2f", 3.14, 2.71),        "3.14abc2.71"  ],
         [ sprintf("%.2f%.2f%.2f", 3.14, 2.71, 2.67), "3.142.712.67" ],

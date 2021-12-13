@@ -213,31 +213,31 @@ SPVM::Fn - SPVM Starndard Functions
 
   static method DBL_MAX : double ()
 
-Return the value of DBL_MAX macro defined in float.h C header.
+Return the value of DBL_MAX macro defined in C<float.h> header of C language.
 
 =head2 DBL_MIN
 
   static method DBL_MIN : double ()
 
-Return the value of DBL_MIN macro defined in float.h C header.
+Return the value of DBL_MIN macro defined in C<float.h> header of C language.
 
 =head2 FLT_MAX
 
   static method FLT_MAX : float ()
 
-Return the value of FLT_MAX macro defined in float.h C header.
+Return the value of FLT_MAX macro defined in C<float.h> header of C language.
 
 =head2 FLT_MIN
 
   static method FLT_MIN : float ()
 
-Return the value of FLT_MIN macro defined in float.h C header.
+Return the value of FLT_MIN macro defined in C<float.h> header of C language.
 
 =head2 INT16_MAX
 
   static method INT16_MAX : short ()
 
-Return 32767. The maximum value of the signed 16bit integer .
+Return 32767. The maximum value of the signed 16bit integer.
 
 =head2 INT16_MIN
 
@@ -739,7 +739,7 @@ If character is a control character(0x00-0x1F, 0x7F), return 1. If not, return 0
 
   static method is_digit : int ($code_point : int)
 
-If character is decimal digit ('0'～'9'), return 1. If not, return 0.
+If character is decimal digit ('0'-'9'), return 1. If not, return 0.
 
 =head2 is_graph
 
@@ -1201,7 +1201,67 @@ Split a string by the specific separator.
 
 Create a formatted string with the format and the embdded values.
 
-TODO
+=begin html
+
+<table>
+  <tr><th>Format Specifier</th></tr><tr><th>Description</th></tr>
+  <tr><td>%d</td></tr><tr><td>32bit Integer</td></tr>
+  <tr><td>%u</td></tr><tr><td>Unsigned 32bit Integer</td></tr>
+  <tr><td>%ld</td></tr><tr><td>64bit Integer</td></tr>
+  <tr><td>%lu</td></tr><tr><td>Unsigned 64bit Integer</td></tr>
+  <tr><td>%f</td></tr><tr><td>64bit Floating Point</td></tr>
+  <tr><td>%c</td></tr><tr><td></td>Character</tr>
+  <tr><td>%s</td></tr><tr><td></td>String</tr>
+  <tr><td>%U</td></tr><tr><td></td>Unicode Code Point to UTF-8</tr>
+</table>
+
+=end html
+
+=head3 Format Options
+
+=head4 Zero Padding
+  
+  # Format
+  "%05d"
+  
+  # Value
+  123
+  
+  # Output
+  "00123"
+
+=head4 Plus
+
+  # Format
+  %+d
+  
+  # Value
+  123
+  
+  # Output
+  "+123"
+
+=head4 Left Justified
+
+  # Format
+  "%-5d"
+  
+  # Value
+  123
+  
+  # Output
+  "123  "
+
+=head4 Number of Decimal Places Displayed
+
+  # Format
+  "%.2f"
+  
+  # Value
+  3.1415
+  
+  # Output
+  "3.14"
 
 =head2 srand
 
