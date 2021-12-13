@@ -1,10 +1,10 @@
 Revision history for SPVM
-0.9017  2021-12-11
+0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8
         
         [BUG FIXES]
-        * None
+        * Fix bugs that tests of SPVM fails in some old Perl version. 
 0.9017  2021-12-11
         [CHANGES]
         * The parts of Makefile created by SPVM::Builder::Util::create_class_make_rule() become

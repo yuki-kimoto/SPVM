@@ -242,8 +242,6 @@ call_spvm_method(...)
           if (sv_isobject(sv_value) && sv_derived_from(sv_value, "SPVM::BlessedObject::String")) {
             SPVM_OBJECT* object = SPVM_XS_UTIL_get_object(sv_value);
             
-            assert(!(object->basic_type_id == arg_basic_type_id && object->type_dimension == arg_type_dimension));
-            
             args_stack[args_stack_index].oval = object;
           }
           else {
