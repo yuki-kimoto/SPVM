@@ -7,7 +7,6 @@ use Carp 'confess';
 use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
-use DynaLoader;
 use Config;
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
