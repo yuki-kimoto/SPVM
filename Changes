@@ -7,7 +7,8 @@ Revision history for SPVM
           The implementation before removing is saved at the following branch.
           
           https://github.com/yuki-kimoto/SPVM/releases/tag/before_remove_exe_20211216
-          
+        
+        * SPVM::Builder::Config "ccflags" default becomes empty string.
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8

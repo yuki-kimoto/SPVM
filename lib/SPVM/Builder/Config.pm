@@ -19,18 +19,14 @@ sub new {
   
   $self->{quiet} = 1;
 
+  $self->{ccflags} = '';
+
   bless $self, $class;
 
   # Use default config
   my $default_config = {%Config};
   $self->replace_all_config($default_config);
 
-  # Remove and get include dir from ccflags
-  my @ccflags_include_dirs = $self->_remove_include_dirs_from_ccflags;
-  
-  # Add ccflags include dir
-  $self->unshift_include_dirs(@ccflags_include_dirs);
-  
   # SPVM::Builder::Config directory
   my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
 
@@ -38,7 +34,7 @@ sub new {
   my $spvm_builder_dir = $spvm_builder_config_dir;
   $spvm_builder_dir =~ s/\/Config\.pm$//;
 
-  # Add SPVM include directory to ccflags
+  # Add SPVM include directory
   my $spvm_include_dir = $spvm_builder_dir;
   $spvm_include_dir .= '/include';
   $self->unshift_include_dirs($spvm_include_dir);
@@ -454,32 +450,6 @@ sub to_hash {
   return $hash_config;
 }
 
-sub _remove_include_dirs_from_ccflags {
-  my ($self) = @_;
-  
-  my $ccflags = $self->get_ccflags;
-  
-  my @parts = split(/ +/, $ccflags);
-  
-  my @rest_parts;
-  my @include_dirs;
-  for my $part (@parts) {
-    if ($part =~ /^-I(.*)/) {
-      my $include_dir = $1;
-      push @include_dirs, $include_dir;
-    }
-    else {
-      push @rest_parts, $part;
-    }
-  }
-  
-  my $rest_ccflags = join(' ', @rest_parts);
-  
-  $self->set_ccflags($rest_ccflags);
-  
-  return @include_dirs;
-}
-
 sub _remove_lib_dirs_from_lddlflags {
   my ($self) = @_;
   
@@ -631,7 +601,7 @@ Get C<ccflags> option using C<get_config> method.
 
 C<ccflags> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
 
-Default is copied from $Config{ccflags}.
+Default is empty string.
 
 =head2 set_ccflags
 
@@ -799,7 +769,7 @@ Get C<include_dirs> option. This option is array refernce.
 
 C<include_dirs> option is used by C<compile> method of L<Builder::CC|SPVM::Builder::CC> to set -I<inculde_dir>.
 
-Default is "SPVM/Builder/include" of one up of directory SPVM::Buidler::Config.pm loaded and the values of -I<include_dir> in $Config{ccflags}.
+Default is "SPVM/Builder/include" of one up of directory that SPVM::Buidler::Config.pm is loaded.
 
 =head2 set_include_dirs
 
