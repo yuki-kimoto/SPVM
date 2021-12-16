@@ -217,7 +217,7 @@ sub compile {
   my $config = $bconf->to_hash;
 
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => 0, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   
   # Parse source code dependency
   my $dependency = $self->parse_native_source_dependencies($native_include_dir, $native_src_dir, $src_ext);
