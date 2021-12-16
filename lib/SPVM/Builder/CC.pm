@@ -208,9 +208,6 @@ sub compile {
     confess "Can't find source file $spvm_method_src_file";
   }
   
-  # CBuilder configs
-  my $ccflags = $bconf->get_ccflags;
-
   # Optimize(Override config optimize)
   my $optimize = $self->optimize;
   if (defined $optimize) {
