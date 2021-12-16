@@ -15,7 +15,7 @@ sub new {
 
   $self->{lib_dirs} = [];
 
-  $self->{libs} = [];
+  $self->{runtime_libs} = [];
   
   $self->{quiet} = 1;
 
@@ -400,30 +400,30 @@ sub unshift_lib_dirs {
   unshift @{$self->{lib_dirs}}, @lib_dirs;
 }
 
-sub get_libs {
-  my ($self, $libs) = @_;
+sub get_runtime_libs {
+  my ($self) = @_;
   
-  return $self->{libs};
+  return $self->{runtime_libs};
 }
 
-sub set_libs {
-  my ($self, $libs) = @_;
+sub set_runtime_libs {
+  my ($self, $runtime_libs) = @_;
   
-  $self->{libs} = $libs;
+  $self->{runtime_libs} = $runtime_libs;
   
   return $self;
 }
 
-sub unshift_libs {
-  my ($self, @libs) = @_;
+sub unshift_runtime_libs {
+  my ($self, @runtime_libs) = @_;
   
-  unshift @{$self->{libs}}, @libs;
+  unshift @{$self->{runtime_libs}}, @runtime_libs;
 }
 
-sub push_libs {
-  my ($self, @libs) = @_;
+sub push_runtime_libs {
+  my ($self, @runtime_libs) = @_;
   
-  push @{$self->{libs}}, @libs;
+  push @{$self->{runtime_libs}}, @runtime_libs;
 }
 
 sub get_force_compile {
@@ -859,41 +859,39 @@ Add a element after the last element of C<lib_dirs> option.
 
 See C<get_lib_dirs> method about C<lib_dirs> option.
 
-=head2 get_libs
+=head2 get_runtime_libs
 
-  my $libs = $bconf->get_libs;
+  my $runtime_libs = $bconf->get_runtime_libs;
 
-Get C<libs> option. This option is array refernce.
+Get C<runtime_libs> option. This option is array refernce.
 
-C<libs> option is used by C<link> method of L<Builder::CC|SPVM::Builder::CC> to set -l<lib>.
+C<runtime_libs> option is used to load the library at runtime. If the library is dynamic link library, you must specify this option to load this at runtime.
 
 Don't add prefix '-l' or 'lib' before library name. 'gsl' is valid. 'libgsl', '-lgsl' is invalid.
 
-The shared libraries of C<libs> option, unlike the C <lddlflags> option, is loaded using C<dl_load_file> function of L<DynaLoader> when the SPVM method is bind to Perl methods.
+=head2 set_runtime_libs
 
-=head2 set_libs
+  $bconf->set_runtime_libs($runtime_libs);
 
-  $bconf->set_libs($libs);
+Set C<runtime_libs> option. This option is array refernce.
 
-Set C<libs> option. This option is array refernce.
+See L<"get_runtime_libs"> method about C<runtime_libs> option.
 
-See C<get_libs> method about C<libs> option.
+=head2 unshift_runtime_libs
 
-=head2 unshift_libs
+  $bconf->unshift_runtime_libs($lib1, $lib2, ...);
 
-  $bconf->unshift_libs($lib1, $lib2, ...);
+Add a library before the first element of C<runtime_libs> option.
 
-Add a library before the first element of C<libs> option.
+See L<"get_runtime_libs"> method about C<runtime_libs> option.
 
-See C<get_libs> method about C<libs> option.
+=head2 push_runtime_libs
 
-=head2 push_libs
+  $bconf->push_runtime_libs($lib1, $lib2, ...);
 
-  $bconf->push_libs($lib1, $lib2, ...);
+Add a library after the last element of C<runtime_libs> option.
 
-Add a library after the last element of C<libs> option.
-
-See C<get_libs> method about C<libs> option.
+See L<"get_runtime_libs"> method about C<runtime_libs> option.
 
 =head2 get_force_compile
 

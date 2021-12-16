@@ -1,4 +1,9 @@
 Revision history for SPVM
+0.9019  2021-12-16
+        [CHANGES]
+        * Rename SPVM::Builder::Config's get_libs, set_libs, unshift_libs, push_libs method to get_runtime_libs, set_runtime_libs, unshift_runtime_libs, push_runtime_libs
+          and don't add libraries to linker flags of linker.
+        
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8

@@ -137,23 +137,18 @@ sub build_and_bind_shared_lib {
 sub bind_methods {
   my ($self, $cc, $shared_lib_file, $class_name, $category) = @_;
 
-  # m library is maybe not dynamic link library
-  my %must_not_load_libs = map { $_ => 1 } ('m');
-
   # Load pre-required dynamic library
   my $bconf = $self->get_config($class_name, $category);
   my $lib_dirs = $bconf->get_lib_dirs;
   {
-    local @DynaLoader::dl_library_path = (@$lib_dirs, @DynaLoader::dl_library_path);
-    my $libs = $bconf->get_libs;
-    for my $lib (@$libs) {
-      unless ($must_not_load_libs{$lib}) {
-        my ($lib_file) = DynaLoader::dl_findfile("-l$lib");
-        my $shared_lib_libref = DynaLoader::dl_load_file($lib_file);
-        unless ($shared_lib_libref) {
-          my $dl_error = DynaLoader::dl_error();
-          confess "Can't load shared_lib file \"$shared_lib_file\": $dl_error";
-        }
+    local @DynaLoader::dl_runtime_library_path = (@$lib_dirs, @DynaLoader::dl_runtime_library_path);
+    my $runtime_libs = $bconf->get_runtime_libs;
+    for my $runtime_lib (@$runtime_libs) {
+      my ($shared_lib_file) = DynaLoader::dl_findfile("-l$runtime_lib");
+      my $shared_libref = DynaLoader::dl_load_file($shared_lib_file);
+      unless ($shared_libref) {
+        my $dl_error = DynaLoader::dl_error();
+        confess "Can't load shared_runtime_lib file \"$shared_lib_file\": $dl_error";
       }
     }
   }
@@ -166,7 +161,6 @@ sub bind_methods {
     $method_info->{method_name} = $method_name;
     push @$method_infos, $method_info;
   }
-  
   
   # Add anon class sub names if precompile
   if ($category eq 'precompile') {

@@ -438,8 +438,7 @@ EOS
 
   # Add library directories and libraries to Linker flags
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
-  my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
-  $bconf->append_lddlflags("$lib_dirs_str $libs_str");
+  $bconf->append_lddlflags("$lib_dirs_str");
 
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs

@@ -113,7 +113,7 @@ sub build_exe_file {
   $self->compile_precompile_csources;
 
   # Compile precompile C sources
-  my ($native_object_files, $all_libs) = $self->compile_native_csources;
+  my ($native_object_files) = $self->compile_native_csources;
 
   # Create SPMV module C sources
   $self->create_spvm_module_csources;
@@ -131,7 +131,7 @@ sub build_exe_file {
   $self->compile_bootstrap_csource;
 
   # Link and generate executable file
-  $self->link($native_object_files, $all_libs);
+  $self->link($native_object_files);
 }
 
 sub create_precompile_csources {
@@ -231,7 +231,6 @@ sub compile_native_csources {
   );
   
   my $class_names = $builder->get_class_names;
-  my $all_libs = [];
   my $all_object_files = [];
   for my $class_name (@$class_names) {
 
@@ -243,7 +242,6 @@ sub compile_native_csources {
       my $native_dir = $native_module_file;
       
       my $bconf = $builder->get_config($class_name, 'native');
-      push @$all_libs, $bconf->get_libs;
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
@@ -262,7 +260,7 @@ sub compile_native_csources {
     }
   }
   
-  return ($all_object_files, $all_libs);
+  return ($all_object_files);
 }
 
 sub create_spvm_module_csources {
@@ -844,8 +842,7 @@ sub link {
   my $output_file = $self->{output_file};
 
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
-  my $libs_str = join(' ', map { "-l$_" } @{$bconf->get_libs});
-  $bconf->append_lddlflags("$lib_dirs_str $libs_str");
+  $bconf->append_lddlflags("$lib_dirs_str");
   
   # SPVM runtime object files
   my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
