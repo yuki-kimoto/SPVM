@@ -12,7 +12,7 @@ Revision history for SPVM
         * Remove delete_std and get_std of SPVM::Builder::Config
         * SPVM::Builder::CC->compile don't depend on Perl compiled environment.
         * add SPVM_DEBUG_CC enviroment variable to print SVPM::Builder::CC compile and link outputs to stderr.
-        
+        * Remove get_cccdlflags, set_cccdlflags, append_cccdlflags, prepend_cccdlflags of SPVM::Builder::Config
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8

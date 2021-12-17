@@ -203,44 +203,6 @@ sub prepend_ccflags {
   return $self;
 }
 
-sub get_cccdlflags {
-  my ($self) = @_;
-  
-  return $self->get_config('cccdlflags');
-}
-
-sub set_cccdlflags {
-  my ($self, $cccdlflags) = @_;
-  
-  $self->set_config(cccdlflags => $cccdlflags);
-  
-  return $self;
-}
-
-sub append_cccdlflags {
-  my ($self, $new_cccdlflags) = @_;
-  
-  my $cccdlflags = $self->get_config('cccdlflags');
-  
-  $cccdlflags .= " $new_cccdlflags";
-  
-  $self->set_config('cccdlflags' => $cccdlflags);
-  
-  return $self;
-}
-
-sub prepend_cccdlflags {
-  my ($self, $new_cccdlflags) = @_;
-  
-  my $cccdlflags = $self->get_config('cccdlflags');
-  
-  $cccdlflags = "$new_cccdlflags $cccdlflags";
-  
-  $self->set_config('cccdlflags' => $cccdlflags);
-  
-  return $self;
-}
-
 sub get_archlibexp {
   my ($self) = @_;
   
@@ -612,40 +574,6 @@ See C<get_ccflags> method about C<ccflags> option.
 Add new C<ccflags> before current C<ccflags> using C<get_config> and C<set_config> method.
 
 See C<get_ccflags> method about C<ccflags> option.
-
-=head2 get_cccdlflags
-
-  my $cccdlflags = $bconf->get_cccdlflags;
-
-Get C<cccdlflags> option using C<get_config> method.
-
-C<cccdlflags> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
-
-Default is copied from $Config{cccdlflags}.
-
-=head2 set_cccdlflags
-
-  $bconf->set_cccdlflags($cccdlflags);
-
-Set C<cccdlflags> using C<set_config> method.
-
-See C<get_cccdlflags> method about C<cccdlflags> option.
-
-=head2 append_cccdlflags
-
-  $bconf->append_cccdlflags($cccdlflags);
-
-Add new C<cccdlflags> after current C<cccdlflags> using C<get_config> and C<set_config> method.
-
-See C<get_cccdlflags> method about C<cccdlflags> option.
-
-=head2 prepend_cccdlflags
-
-  $bconf->prepend_cccdlflags($cccdlflags);
-
-Add new C<cccdlflags> before current C<cccdlflags> using C<get_config> and C<set_config> method.
-
-See C<get_cccdlflags> method about C<cccdlflags> option.
 
 =head2 get_archlibexp
 
