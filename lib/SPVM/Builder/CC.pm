@@ -23,6 +23,10 @@ sub new {
   
   my $self = {@_};
   
+  if ($ENV{SPVM_DEBUG_CC}) {
+    $self->{quiet} = 0;
+  }
+  
   return bless $self, $class;
 }
 
