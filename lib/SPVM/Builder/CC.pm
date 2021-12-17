@@ -206,9 +206,6 @@ sub compile {
     $config->{ccflags} .= " -std=$std";
   }
   
-  # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
-  
   # Parse source code dependency
   my $dependency = $self->parse_native_source_dependencies($native_include_dir, $native_src_dir, $src_ext);
 
@@ -278,18 +275,13 @@ sub compile {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
-  
+
+      my $cc_cmd = $self->create_compile_command($bconf, $object_file, $src_file);
       eval {
-        # Compile source file
-        $cbuilder->compile(
-          source => $src_file,
-          object_file => $object_file,
-          include_dirs => $bconf->get_include_dirs,
-        );
+        # Execute compile command
+        system(@$cc_cmd) == 0
+          or confess "Can't compile $src_file: @$cc_cmd";
       };
-      if (my $error = $@) {
-        confess $error;
-      }
     }
     push @$object_files, $object_file;
     
@@ -297,6 +289,36 @@ sub compile {
   }
   
   return $object_files;
+}
+
+sub create_compile_command {
+  my ($self, $bconf, $output_file, $src_file) = @_;
+  
+  my $cc = $bconf->get_cc;
+
+  my $ccflags = $bconf->get_ccflags;
+  
+  my $optimize = $bconf->get_optimize;
+  
+  if (length $optimize) {
+    $ccflags .= " $optimize";
+  }
+  
+  my $std = $bconf->get_std;
+  if (length $std) {
+    $ccflags .= " -std=$std";
+  }
+  
+  my $include_dirs = $bconf->get_include_dirs;
+  for my $include_dir (@$include_dirs) {
+    $ccflags .= " -I$include_dir";
+  }
+  
+  my @ccflags = ExtUtils::CBuilder->new->split_like_shell($ccflags);
+  
+  my $cc_cmd = [$cc, '-c', @ccflags, '-o', $output_file, $src_file];
+  
+  return $cc_cmd;
 }
 
 sub link {

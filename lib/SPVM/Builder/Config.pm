@@ -28,6 +28,16 @@ sub new {
   # Use default config
   my $default_config = {%Config};
   $self->replace_all_config($default_config);
+  
+  # ccflags
+  my $ccflags = '';
+  
+  # MinGW on Windows always create position independent codes, and if -fPIC is specified, the warning occurs.
+  unless ($^O eq 'MSWin32') {
+    $ccflags .= '-fPIC';
+  }
+
+  $self->set_ccflags($ccflags);
 
   # SPVM::Builder::Config directory
   my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
