@@ -332,6 +332,12 @@ sub set_lib_dirs {
   return $self;
 }
 
+sub push_lib_dirs {
+  my ($self, @lib_dirs) = @_;
+  
+  push @{$self->{lib_dirs}}, @lib_dirs;
+}
+
 sub unshift_lib_dirs {
   my ($self, @lib_dirs) = @_;
   
