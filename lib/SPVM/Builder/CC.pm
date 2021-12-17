@@ -295,12 +295,12 @@ sub create_compile_command {
   my $inc = join(' ', map { "-I$_" } @$include_dirs);
   $cflags .= " $inc";
 
-  my $ccflags = $bconf->get_ccflags;
-  $cflags .= " $ccflags";
-
   my $cccdlflags = $bconf->get_cccdlflags;
   $cflags .= " $cccdlflags";
   
+  my $ccflags = $bconf->get_ccflags;
+  $cflags .= " $ccflags";
+
   my $optimize = $bconf->get_optimize;
   $cflags .= " $optimize";
   
