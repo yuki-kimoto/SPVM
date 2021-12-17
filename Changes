@@ -15,6 +15,7 @@ Revision history for SPVM
         * Remove get_cccdlflags, set_cccdlflags, append_cccdlflags, prepend_cccdlflags of SPVM::Builder::Config
         * Remove get_archlibexp, set_archlibexp of SPVM::Builder::Config
         * remove get_shrpenv, and set_shrpenv. shrpenv config is not used when linking
+        * SPVM::Builder::CC->link don't depend on Perl compiled environment.
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8

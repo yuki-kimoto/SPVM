@@ -19,8 +19,6 @@ sub new {
   
   $self->{quiet} = 1;
 
-  $self->{ccflags} = '';
-  
   $self->{std} = '';
 
   bless $self, $class;
@@ -39,6 +37,18 @@ sub new {
 
   $self->set_ccflags($ccflags);
 
+  # lddlflags
+  my $lddlflags = '';
+  
+  # Dynamic link options
+  if ($^O eq 'MSWin32') {
+    $lddlflags .= '-mdll -s';
+  }
+  else {
+    $lddlflags .= '-shared';
+  }
+  $self->set_lddlflags($lddlflags);
+
   # SPVM::Builder::Config directory
   my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
 
@@ -50,10 +60,6 @@ sub new {
   my $spvm_include_dir = $spvm_builder_dir;
   $spvm_include_dir .= '/include';
   $self->unshift_include_dirs($spvm_include_dir);
-
-  # Remove and get lib dir from lddlflags
-  my @lib_dirs_in_lddlflags = $self->_remove_lib_dirs_from_lddlflags;
-  $self->unshift_lib_dirs(@lib_dirs_in_lddlflags);
 
   # Optimize
   $self->set_optimize('-O3');
@@ -378,32 +384,6 @@ sub to_hash {
   return $hash_config;
 }
 
-sub _remove_lib_dirs_from_lddlflags {
-  my ($self) = @_;
-  
-  my $lddlflags = $self->get_lddlflags;
-  
-  my @parts = split(/ +/, $lddlflags);
-  
-  my @rest_parts;
-  my @lib_dirs;
-  for my $part (@parts) {
-    if ($part =~ /^-L(.*)/) {
-      my $lib_dir = $1;
-      push @lib_dirs, $lib_dir;
-    }
-    else {
-      push @rest_parts, $part;
-    }
-  }
-  
-  my $rest_lddlflags = join(' ', @rest_parts);
-  
-  $self->set_lddlflags($rest_lddlflags);
-  
-  return @lib_dirs;
-}
-
 1;
 
 =head1 NAME
@@ -585,7 +565,15 @@ Get C<lddlflags> option using C<get_config> method.
 
 C<lddlflags> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
 
-Default is copied from $Config{lddlflags}.
+B<Default:>
+
+Windows
+
+  "-mdll -s"
+  
+Non-Windows
+
+  "-shared"
 
 =head2 set_lddlflags
 
