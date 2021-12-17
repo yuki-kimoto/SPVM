@@ -12,6 +12,7 @@ use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
+use File::Spec;
 
 sub category { shift->{category} }
 sub builder { shift->{builder} }
@@ -311,12 +312,18 @@ sub create_compile_command {
   
   my $include_dirs = $bconf->get_include_dirs;
   for my $include_dir (@$include_dirs) {
+    $include_dir = File::Spec->catpath(File::Spec->splitpath($include_dir));
     $ccflags .= " -I$include_dir";
   }
   
   my @ccflags = ExtUtils::CBuilder->new->split_like_shell($ccflags);
   
+  $output_file = File::Spec->catpath(File::Spec->splitpath($output_file));
+  $src_file = File::Spec->catpath(File::Spec->splitpath($src_file));
+
   my $cc_cmd = [$cc, '-c', @ccflags, '-o', $output_file, $src_file];
+  
+  use D;du $cc_cmd;
   
   return $cc_cmd;
 }
