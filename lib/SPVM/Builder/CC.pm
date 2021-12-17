@@ -444,6 +444,9 @@ EOS
   # Config
   my $config = $bconf->to_hash;
   
+  # shrpenv is empty string
+  $config->{shrpenv} = '';
+  
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
 

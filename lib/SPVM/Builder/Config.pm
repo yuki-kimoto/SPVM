@@ -304,20 +304,6 @@ sub prepend_lddlflags {
   return $self;
 }
 
-sub get_shrpenv {
-  my ($self) = @_;
-  
-  return $self->get_config('shrpenv');
-}
-
-sub set_shrpenv {
-  my ($self, $shrpenv) = @_;
-  
-  $self->set_config(shrpenv => $shrpenv);
-  
-  return $self;
-}
-
 sub get_lib_dirs {
   my ($self, $lib_dirs) = @_;
   
@@ -624,24 +610,6 @@ See C<get_lddlflags> method about C<lddlflags> option.
 Add new C<lddlflags> before current C<lddlflags> using C<get_config> and C<set_config> method.
 
 See C<get_lddlflags> method about C<lddlflags> option.
-
-=head2 get_shrpenv
-
-  my $shrpenv = $bconf->get_shrpenv;
-
-Get C<shrpenv> option using C<get_config> method.
-
-C<shrpenv> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
-
-Default is copied from $Config{shrpenv}.
-
-=head2 set_shrpenv
-
-  $bconf->set_shrpenv($shrpenv);
-
-Set C<shrpenv> using C<set_config> method.
-
-See C<get_shrpenv> method about C<shrpenv> option.
 
 =head2 get_include_dirs
 
