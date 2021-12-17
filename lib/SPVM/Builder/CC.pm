@@ -323,8 +323,6 @@ sub create_compile_command {
 
   my $cc_cmd = [$cc, '-c', @ccflags, '-o', $output_file, $src_file];
   
-  use D;du $cc_cmd;
-  
   return $cc_cmd;
 }
 
