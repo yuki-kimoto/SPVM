@@ -22,11 +22,10 @@ sub new {
   $self->{std} = '';
 
   bless $self, $class;
-
-  # Use default config
-  my $default_config = {%Config};
-  $self->replace_all_config($default_config);
   
+  # cc
+  $self->set_cc($Config{cc});
+
   # ccflags
   my $ccflags = '';
   
@@ -36,7 +35,10 @@ sub new {
   }
 
   $self->set_ccflags($ccflags);
-
+  
+  # ld
+  $self->set_ld($Config{ld});
+  
   # lddlflags
   my $lddlflags = '';
   
@@ -491,7 +493,7 @@ Set C<cc>.
 
   my $cc = $bconf->get_cc;
 
-Get C<cc>.
+Get C<cc>. Default is the C<cc> value of L<Config> module.
 
 =head2 get_ccflags
 
@@ -535,7 +537,7 @@ Get C<optimize> option using C<get_config> method.
 
 C<optimize> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method 
 
-Default is copied from $Config{optimize}.
+Default is C<-O3>.
 
 =head2 set_optimize
 
@@ -555,7 +557,7 @@ Set C<ld>.
 
   my $ld = $bconf->get_ld;
 
-Get C<ld>.
+Get C<ld>. Default is the C<ld> value of L<Config> module.
 
 =head2 get_lddlflags
 
@@ -641,7 +643,7 @@ Get C<lib_dirs> option. This option is array refernce.
 
 C<lib_dirs> option is used by C<compile> method of L<Builder::CC|SPVM::Builder::CC> to set -L<lib_dir>.
 
-Default is the values of -L<lib_dir> in $Config{lddlflags}.
+Default is emplty list.
 
 =head2 set_lib_dirs
 
