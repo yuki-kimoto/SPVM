@@ -1,5 +1,5 @@
 Revision history for SPVM
-0.9019  2021-12-16
+0.9019  2021-12-18
         [CHANGES]
         * Rename SPVM::Builder::Config's get_libs, set_libs, unshift_libs, push_libs method to get_runtime_libs, set_runtime_libs, unshift_runtime_libs, push_runtime_libs
           and don't add libraries to linker flags of linker.
@@ -15,7 +15,7 @@ Revision history for SPVM
         * Remove get_cccdlflags, set_cccdlflags, append_cccdlflags, prepend_cccdlflags of SPVM::Builder::Config
         * Remove get_archlibexp, set_archlibexp of SPVM::Builder::Config
         * remove get_shrpenv, and set_shrpenv. shrpenv config is not used when linking
-        * SPVM::Builder::CC->link don't depend on Perl compiled environment.
+        * SPVM::Builder::CC->link don't depend on Perl compiled environment as possible.
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8

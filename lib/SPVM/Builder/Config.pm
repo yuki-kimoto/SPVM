@@ -39,6 +39,12 @@ sub new {
   # ld
   $self->set_ld($Config{ld});
   
+  # Library directories
+  if ($^O eq 'MSWin32') {
+    # Windows need perlxxx.dll(for example, perl534.dll) when creating dynamic links
+    $self->push_lib_dirs($Config{bin});
+  }
+  
   # lddlflags
   my $lddlflags = '';
   
@@ -378,14 +384,6 @@ sub replace_all_config {
   $self->{config} = $config;
 }
 
-sub to_hash {
-  my ($self) = @_;
-  
-  my $hash_config = {%{$self->{config}}};
-  
-  return $hash_config;
-}
-
 1;
 
 =head1 NAME
@@ -449,7 +447,7 @@ All of old configs is removed and added new config.
 
   my $config = $bconf->to_hash;
 
-Convert configs to hash reference.
+Convert L<SPVM::Builder::Config> to a hash reference.
 
 =head2 get_config
 

@@ -207,9 +207,6 @@ sub compile {
     confess "Can't find source file $spvm_method_src_file";
   }
   
-  # Config
-  my $config = $bconf->to_hash;
-  
   # Parse source code dependency
   my $dependency = $self->parse_native_source_dependencies($native_include_dir, $native_src_dir, $src_ext);
 
@@ -410,9 +407,6 @@ EOS
     $quiet = $self->quiet;
   }
   
-  # CBuilder configs
-  my $lddlflags = $bconf->get_lddlflags;
-
   # dl_func_list
   # This option is needed Windows DLL file
   my $dl_func_list = [];
@@ -439,13 +433,17 @@ EOS
 
   # Add library directories and libraries to Linker flags
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
-  $bconf->append_lddlflags("$lib_dirs_str");
+  $bconf->prepend_lddlflags("$lib_dirs_str");
 
   # Config
-  my $config = $bconf->to_hash;
+  my $ld = $bconf->get_ld;
+  my $lddlflags = $bconf->get_lddlflags;
   
-  # shrpenv is empty string
-  $config->{shrpenv} = '';
+  my $config = {
+    ld => $ld,
+    lddlflags => $lddlflags,
+    shrpenv => '',
+  };
   
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
