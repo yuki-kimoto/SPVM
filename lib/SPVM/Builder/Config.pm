@@ -9,8 +9,6 @@ sub new {
   
   my $self = {};
   
-  $self->{config} = {};
-  
   $self->{include_dirs} = [];
 
   $self->{lib_dirs} = [];
@@ -153,42 +151,28 @@ sub set_quiet {
   return $self;
 }
 
-sub get_config {
-  my ($self, $name) = @_;
-  
-  return $self->{config}{$name};
-}
-
-sub set_config {
-  my ($self, $name, $value) = @_;
-  
-  $self->{config}{$name} = $value;
-  
-  return $self;
-}
-
 sub get_cc {
   my ($self, $cc) = @_;
   
-  return $self->get_config('cc');
+  return $self->{cc};
 }
 
 sub set_cc {
   my ($self, $cc) = @_;
   
-  return $self->set_config(cc => $cc);
+  return $self->{cc} = $cc;
 }
 
 sub get_ccflags {
   my ($self) = @_;
   
-  return $self->get_config('ccflags');
+  return $self->{ccflags};
 }
 
 sub set_ccflags {
   my ($self, $ccflags) = @_;
   
-  $self->set_config(ccflags => $ccflags);
+  $self->{ccflags} = $ccflags;
   
   return $self;
 }
@@ -196,11 +180,11 @@ sub set_ccflags {
 sub append_ccflags {
   my ($self, $new_ccflags) = @_;
   
-  my $ccflags = $self->get_config('ccflags');
+  my $ccflags = $self->{ccflags};
   
   $ccflags .= " $new_ccflags";
   
-  $self->set_config('ccflags' => $ccflags);
+  $self->{ccflags} = $ccflags;
   
   return $self;
 }
@@ -208,11 +192,11 @@ sub append_ccflags {
 sub prepend_ccflags {
   my ($self, $new_ccflags) = @_;
   
-  my $ccflags = $self->get_config('ccflags');
+  my $ccflags = $self->{ccflags};
   
   $ccflags = "$new_ccflags $ccflags";
   
-  $self->set_config('ccflags' => $ccflags);
+  $self->{ccflags} = $ccflags;
   
   return $self;
 }
@@ -220,13 +204,13 @@ sub prepend_ccflags {
 sub get_optimize {
   my ($self, $optimize) = @_;
   
-  return $self->get_config('optimize');
+  return $self->{optimize};
 }
 
 sub set_optimize {
   my ($self, $optimize) = @_;
   
-  return $self->set_config(optimize => $optimize);
+  return $self->{optimize} = $optimize;
 }
 
 sub get_include_dirs {
@@ -271,25 +255,25 @@ sub set_std {
 sub get_ld {
   my ($self, $ld) = @_;
   
-  return $self->get_config('ld');
+  return $self->{ld};
 }
 
 sub set_ld {
   my ($self, $ld) = @_;
   
-  return $self->set_config(ld => $ld);
+  return $self->{ld} = $ld;
 }
 
 sub get_lddlflags {
   my ($self) = @_;
   
-  return $self->get_config('lddlflags');
+  return $self->{lddlflags};
 }
 
 sub set_lddlflags {
   my ($self, $lddlflags) = @_;
   
-  $self->set_config(lddlflags => $lddlflags);
+  $self->{lddlflags} = $lddlflags;
   
   return $self;
 }
@@ -297,11 +281,11 @@ sub set_lddlflags {
 sub append_lddlflags {
   my ($self, $new_lddlflags) = @_;
   
-  my $lddlflags = $self->get_config('lddlflags');
+  my $lddlflags = $self->{lddlflags};
   
   $lddlflags .= " $new_lddlflags";
   
-  $self->set_config('lddlflags' => $lddlflags);
+  $self->{lddlflags} = $lddlflags;
   
   return $self;
 }
@@ -309,11 +293,11 @@ sub append_lddlflags {
 sub prepend_lddlflags {
   my ($self, $new_lddlflags) = @_;
   
-  my $lddlflags = $self->get_config('lddlflags');
+  my $lddlflags = $self->{lddlflags};
   
   $lddlflags = "$new_lddlflags $lddlflags";
   
-  $self->set_config('lddlflags' => $lddlflags);
+  $self->{lddlflags} = $lddlflags;
   
   return $self;
 }
@@ -384,17 +368,19 @@ sub set_force_compile {
   return $self;
 }
 
-sub replace_all_config {
-  my ($self, $config) = @_;
+sub to_hash {
+  my $self = shift;
   
-  $self->{config} = $config;
+  my $hash = {%$self};
+  
+  return $hash;
 }
 
 1;
 
 =head1 NAME
 
-SPVM::Builder::Config - build config
+SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
 =head1 DESCRIPTION
 
@@ -439,15 +425,6 @@ If you want to use the specific C++ version, use C<set_std> method.
   my $bconf = SPVM::Builder::Config->new_cpp11;
 
 Create default build config with C++11 settings. This is L<Builder::Config|SPVM::Builder::Config> object.
-
-=head2 replace_all_config
-
-  my $config = {cc => 'g++', ld => 'g++'};
-  $bconf->replace_all_config($config);
-
-Replace all config.
-
-All of old configs is removed and added new config.
 
 =head2 to_hash
 

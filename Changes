@@ -16,6 +16,9 @@ Revision history for SPVM
         * Remove get_archlibexp, set_archlibexp of SPVM::Builder::Config
         * remove get_shrpenv, and set_shrpenv. shrpenv config is not used when linking
         * SPVM::Builder::CC->link don't depend on Perl compiled environment as possible.
+        * remove set_config and get_config of SPVM::Builder::Config
+        * remove replace_all_config of SPVM::Builder::Config
+        * to_hash of SPVM::Builder::Config return the content of SPVM::Builder::Config instead of ExtUtils::CBuilder config.
         
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
