@@ -15,6 +15,7 @@ use SPVM::Builder::Config;
 
 sub category { shift->{category} }
 sub builder { shift->{builder} }
+sub force { shift->{force} }
 
 sub new {
   my $class = shift;
@@ -232,33 +233,38 @@ sub compile {
     
     # Do compile. This is same as make command
     my $do_compile;
-    if ($bconf->get_force_compile) {
+    if ($self->force) {
       $do_compile = 1;
     }
     else {
-      if (!-f $object_file) {
+      if ($bconf->get_force_compile) {
         $do_compile = 1;
       }
       else {
-        # Do compile if one of dependency files(source file and include files and config file) is newer than object file
-        my @dependency_files;
-        if (-f $config_file) {
-          push @dependency_files, $config_file;
+        if (!-f $object_file) {
+          $do_compile = 1;
         }
-        push @dependency_files, $src_file;
-        my $dependency_files_native = $dependency->{$src_file};
-        if ($dependency_files_native) {
-          for my $dependency_file_native (@$dependency_files_native) {
-            push @dependency_files, $dependency_file_native;
+        else {
+          # Do compile if one of dependency files(source file and include files and config file) is newer than object file
+          my @dependency_files;
+          if (-f $config_file) {
+            push @dependency_files, $config_file;
           }
-        }
-        
-        my $mod_time_object_file = (stat($object_file))[9];
-        for my $dependency_file (@dependency_files) {
-          my $mod_time_dependency_file = (stat($dependency_file))[9];
-          if ($mod_time_dependency_file > $mod_time_object_file) {
-            $do_compile = 1;
-            last;
+          push @dependency_files, $src_file;
+          my $dependency_files_native = $dependency->{$src_file};
+          if ($dependency_files_native) {
+            for my $dependency_file_native (@$dependency_files_native) {
+              push @dependency_files, $dependency_file_native;
+            }
+          }
+          
+          my $mod_time_object_file = (stat($object_file))[9];
+          for my $dependency_file (@dependency_files) {
+            my $mod_time_dependency_file = (stat($dependency_file))[9];
+            if ($mod_time_dependency_file > $mod_time_object_file) {
+              $do_compile = 1;
+              last;
+            }
           }
         }
       }
