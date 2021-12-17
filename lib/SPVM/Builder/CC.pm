@@ -16,6 +16,7 @@ use SPVM::Builder::Config;
 sub category { shift->{category} }
 sub builder { shift->{builder} }
 sub force { shift->{force} }
+sub quiet { shift->{quiet} }
 
 sub new {
   my $class = shift;
@@ -183,6 +184,11 @@ sub compile {
 
   # Quiet output
   my $quiet = $bconf->get_quiet;
+
+  # If quiet field exists, overwrite it
+  if (defined $self->quiet) {
+    $quiet = $self->quiet;
+  }
   
   # SPVM Method source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
@@ -393,6 +399,11 @@ EOS
   # Quiet output
   my $quiet = $bconf->get_quiet;
 
+  # If quiet field exists, overwrite it
+  if (defined $self->quiet) {
+    $quiet = $self->quiet;
+  }
+  
   # CBuilder configs
   my $lddlflags = $bconf->get_lddlflags;
 
