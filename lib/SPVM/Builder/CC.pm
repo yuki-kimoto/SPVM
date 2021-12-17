@@ -198,7 +198,14 @@ sub compile {
   
   # Config
   my $config = $bconf->to_hash;
-
+  
+  my $std = $bconf->get_std;
+  
+  # Standard
+  if (length $std) {
+    $config->{ccflags} .= " -std=$std";
+  }
+  
   # Compile source files
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
   

@@ -20,6 +20,8 @@ sub new {
   $self->{quiet} = 1;
 
   $self->{ccflags} = '';
+  
+  $self->{std} = '';
 
   bless $self, $class;
 
@@ -281,35 +283,16 @@ sub push_include_dirs {
   push @{$self->{include_dirs}}, @include_dirs;
 }
 
-sub set_std {
-  my ($self, $spec) = @_;
-  
-  my $ccflags = $self->get_ccflags;
-  $ccflags = '' unless defined $ccflags;
-  
-  # Remove -std=foo section
-  $ccflags =~ s/-std=[^ ]+//g;
-  
-  $ccflags .= " -std=$spec";
-  
-  # Add -std=foo section
-  $self->set_ccflags($ccflags);
-  
-  return $self;
-}
-
-sub delete_std {
+sub get_std {
   my ($self) = @_;
   
-  my $ccflags = $self->get_ccflags;
+  return $self->{std};
+}
+
+sub set_std {
+  my ($self, $std) = @_;
   
-  # Remove -std=foo section
-  $ccflags =~ s/-std=[^ ]+//g;
-  
-  # Add -std=foo section
-  $self->set_ccflags($ccflags);
-  
-  return $self;
+  $self->{std} = $std;
 }
 
 sub get_ld {
