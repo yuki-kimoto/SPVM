@@ -15,7 +15,6 @@ use SPVM::Builder::Config;
 
 sub category { shift->{category} }
 sub builder { shift->{builder} }
-sub optimize { shift->{optimize} }
 
 sub new {
   my $class = shift;
@@ -195,12 +194,6 @@ sub compile {
   my $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
   unless (-f $spvm_method_src_file) {
     confess "Can't find source file $spvm_method_src_file";
-  }
-  
-  # Optimize(Override config optimize)
-  my $optimize = $self->optimize;
-  if (defined $optimize) {
-    $bconf->set_optimize($optimize);
   }
   
   # Config
