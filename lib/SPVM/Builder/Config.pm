@@ -203,20 +203,6 @@ sub prepend_ccflags {
   return $self;
 }
 
-sub get_archlibexp {
-  my ($self) = @_;
-  
-  return $self->get_config('archlibexp');
-}
-
-sub set_archlibexp {
-  my ($self, $archlibexp) = @_;
-  
-  $self->set_config(archlibexp => $archlibexp);
-  
-  return $self;
-}
-
 sub get_optimize {
   my ($self, $optimize) = @_;
   
@@ -574,24 +560,6 @@ See C<get_ccflags> method about C<ccflags> option.
 Add new C<ccflags> before current C<ccflags> using C<get_config> and C<set_config> method.
 
 See C<get_ccflags> method about C<ccflags> option.
-
-=head2 get_archlibexp
-
-  my $archlibexp = $bconf->get_archlibexp;
-
-Get C<archlibexp> option using C<get_config> method.
-
-C<archlibexp> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
-
-Default is copied from $Config{archlibexp}.
-
-=head2 set_archlibexp
-
-  $bconf->set_archlibexp($archlibexp);
-
-Set C<archlibexp> using C<set_config> method.
-
-See C<get_archlibexp> method about C<archlibexp> option.
 
 =head2 get_optimize
 
