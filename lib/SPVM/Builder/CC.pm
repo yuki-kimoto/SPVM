@@ -553,4 +553,4 @@ sub parse_native_source_dependencies {
 
 =head1 NAME
 
-SPVM::Builder::CC - Native code Compiler and linker. Wrapper of ExtUtils::CBuilder for SPVM
+SPVM::Builder::CC - Compiler and Linker of Native Sources
