@@ -212,6 +212,8 @@ sub compile {
   # Native source files
   my @native_src_files = sort keys %$dependency;
   
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
+  
   # Compile source files
   my $object_files = [];
   my $is_native_src;
@@ -284,7 +286,7 @@ sub compile {
       my $cc_cmd = $self->create_compile_command($bconf, $object_file, $src_file);
       eval {
         # Execute compile command
-        ExtUtils::CBuilder->new->do_system(@$cc_cmd)
+        $cbuilder->do_system(@$cc_cmd)
           or confess "Can't compile $src_file: @$cc_cmd";
       };
     }
