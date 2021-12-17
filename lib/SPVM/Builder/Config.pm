@@ -69,6 +69,37 @@ sub new {
 
   # Optimize
   $self->set_optimize('-O3');
+  
+  # Get cc library directories callback
+  $self->set_search_lib_dirs_cb(sub {
+    my ($self) = @_;
+    
+    my $cc = $self->get_cc;
+    
+    my $cmd = "$cc -print-search-dirs";
+    
+    my $output = `$cmd`;
+    
+    my $lib_dirs_str;
+    if ($output =~ /^libraries:\s+=(.+)/m) {
+      $lib_dirs_str = $1;
+    }
+    
+    my $sep;
+    if ($^O eq 'MSWin32') {
+      $sep = ';';
+    }
+    else {
+      $sep = ':';
+    }
+    
+    my @lib_dirs;
+    if (defined $lib_dirs_str) {
+      @lib_dirs = split($sep, $lib_dirs_str);
+    }
+    
+    return \@lib_dirs;
+  });
 
   return $self;
 }
@@ -369,11 +400,29 @@ sub set_force_compile {
 }
 
 sub to_hash {
-  my $self = shift;
+  my ($self) = @_;
   
   my $hash = {%$self};
   
   return $hash;
+}
+
+sub search_lib_dirs {
+  my ($self) = @_;
+  
+  $self->get_search_lib_dirs_cb->(@_);
+}
+
+sub get_search_lib_dirs_cb {
+  my ($self, $cb) = @_;
+  
+  return $self->{search_lib_dirs_cb};
+}
+
+sub set_search_lib_dirs_cb {
+  my ($self, $cb) = @_;
+  
+  $self->{search_lib_dirs_cb} = $cb;
 }
 
 1;

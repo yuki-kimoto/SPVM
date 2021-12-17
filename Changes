@@ -19,6 +19,7 @@ Revision history for SPVM
         * remove set_config and get_config of SPVM::Builder::Config
         * remove replace_all_config of SPVM::Builder::Config
         * to_hash of SPVM::Builder::Config return the content of SPVM::Builder::Config instead of ExtUtils::CBuilder config.
+        * add search_lib_dirs, set_search_lib_dirs_cb, get_search_lib_dirs_cb of SPVM::Builder::Config
         
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
