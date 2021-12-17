@@ -199,13 +199,6 @@ sub compile {
   # Config
   my $config = $bconf->to_hash;
   
-  my $std = $bconf->get_std;
-  
-  # Standard
-  if (length $std) {
-    $config->{ccflags} .= " -std=$std";
-  }
-  
   # Parse source code dependency
   my $dependency = $self->parse_native_source_dependencies($native_include_dir, $native_src_dir, $src_ext);
 
@@ -302,11 +295,6 @@ sub create_compile_command {
   
   if (length $optimize) {
     $ccflags .= " $optimize";
-  }
-  
-  my $std = $bconf->get_std;
-  if (length $std) {
-    $ccflags .= " -std=$std";
   }
   
   my $include_dirs = $bconf->get_include_dirs;

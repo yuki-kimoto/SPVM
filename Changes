@@ -9,7 +9,7 @@ Revision history for SPVM
           https://github.com/yuki-kimoto/SPVM/releases/tag/before_remove_exe_20211216
         
         * SPVM::Builder::Config "ccflags" default becomes empty string.
-        * Remove delete_std of SPVM::Builder::Config
+        * Remove delete_std and get_std of SPVM::Builder::Config
         * SPVM::Builder::CC->compile don't depend on Perl compiled environment.
         
 0.9018  2021-12-11

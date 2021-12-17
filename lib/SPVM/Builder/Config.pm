@@ -293,16 +293,17 @@ sub push_include_dirs {
   push @{$self->{include_dirs}}, @include_dirs;
 }
 
-sub get_std {
-  my ($self) = @_;
-  
-  return $self->{std};
-}
-
 sub set_std {
-  my ($self, $std) = @_;
+  my ($self, $standard) = @_;
   
-  $self->{std} = $std;
+  my $ccflags = $self->get_ccflags;
+  
+  $ccflags .= " -std=$standard";
+  
+  # Add -std=foo section
+  $self->set_ccflags($ccflags);
+  
+  return $self;
 }
 
 sub get_ld {
@@ -550,17 +551,9 @@ Set a config value.
 
   $bconf->set_std('gnu99');
 
-Set C<std>.
+Set C<-std> value.
 
-Internally, remove C<-std=old> if exists and add C<-std=new> after C<ccflags>.
-
-=head2 delete_std
-
-  $bconf->delete_std;
-
-Delete C<std>.
-
-Internally, remove C<-std=old> if exists from C<ccflags>.
+Internally, add add C<-std=VALUE> after C<ccflags>.
 
 =head2 set_cc
 
