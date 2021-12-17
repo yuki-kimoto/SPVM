@@ -288,23 +288,25 @@ sub create_compile_command {
   my ($self, $bconf, $output_file, $src_file) = @_;
   
   my $cc = $bconf->get_cc;
+  
+  my $cflags = '';
+
+  my $include_dirs = $bconf->get_include_dirs;
+  my $inc = join(' ', map { "-I$_" } @$include_dirs);
+  $cflags .= " $inc";
 
   my $ccflags = $bconf->get_ccflags;
+  $cflags .= " $ccflags";
+
+  my $cccdlflags = $bconf->get_cccdlflags;
+  $cflags .= " $cccdlflags";
   
   my $optimize = $bconf->get_optimize;
+  $cflags .= " $optimize";
   
-  if (length $optimize) {
-    $ccflags .= " $optimize";
-  }
-  
-  my $include_dirs = $bconf->get_include_dirs;
-  for my $include_dir (@$include_dirs) {
-    $ccflags .= " -I$include_dir";
-  }
-  
-  my @ccflags = ExtUtils::CBuilder->new->split_like_shell($ccflags);
-  
-  my $cc_cmd = [$cc, '-c', @ccflags, '-o', $output_file, $src_file];
+  my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
+
+  my $cc_cmd = [$cc, '-c', @cflags, '-o', $output_file, $src_file];
   
   return $cc_cmd;
 }

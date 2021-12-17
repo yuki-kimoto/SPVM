@@ -19,8 +19,6 @@ sub new {
   
   $self->{quiet} = 1;
 
-  $self->{ccflags} = '';
-  
   $self->{std} = '';
 
   bless $self, $class;
@@ -29,15 +27,17 @@ sub new {
   my $default_config = {%Config};
   $self->replace_all_config($default_config);
   
-  # ccflags
-  my $ccflags = '';
+  $self->set_ccflags('');
   
+  # cccdlflags
+  my $cccdlflags = '';
+
   # MinGW on Windows always create position independent codes, and if -fPIC is specified, the warning occurs.
   unless ($^O eq 'MSWin32') {
-    $ccflags .= '-fPIC';
+    $cccdlflags .= '-fPIC';
   }
 
-  $self->set_ccflags($ccflags);
+  $self->set_cccdlflags($cccdlflags);
 
   # SPVM::Builder::Config directory
   my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
@@ -621,7 +621,11 @@ Get C<cccdlflags> option using C<get_config> method.
 
 C<cccdlflags> option is passed to C<config> option of L<ExtUtils::CBuilder> C<new> method.
 
-Default is copied from $Config{cccdlflags}.
+B<Default:>
+
+Windows: "-fPIC"
+
+Not Windows: ""
 
 =head2 set_cccdlflags
 
