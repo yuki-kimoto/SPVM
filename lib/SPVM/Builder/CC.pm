@@ -7,7 +7,6 @@ use Carp 'confess';
 use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
-use Config;
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
 
@@ -203,9 +202,8 @@ sub compile {
   if (defined $optimize) {
     $bconf->set_optimize($optimize);
   }
-
-  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
-  # and overwrite user configs
+  
+  # Config
   my $config = $bconf->to_hash;
 
   # Compile source files
@@ -411,8 +409,7 @@ EOS
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
   $bconf->append_lddlflags("$lib_dirs_str");
 
-  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
-  # and overwrite user configs
+  # Config
   my $config = $bconf->to_hash;
   
   # ExtUtils::CBuilder object
