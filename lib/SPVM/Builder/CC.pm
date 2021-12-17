@@ -279,7 +279,7 @@ sub compile {
       my $cc_cmd = $self->create_compile_command($bconf, $object_file, $src_file);
       eval {
         # Execute compile command
-        system(@$cc_cmd) == 0
+        ExtUtils::CBuilder->new->do_system(@$cc_cmd)
           or confess "Can't compile $src_file: @$cc_cmd";
       };
     }
