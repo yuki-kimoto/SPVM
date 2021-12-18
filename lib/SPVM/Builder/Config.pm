@@ -199,7 +199,7 @@ sub new {
   # Add SPVM include directory
   my $spvm_include_dir = $spvm_builder_dir;
   $spvm_include_dir .= '/include';
-  $self->unshift_include_dirs($spvm_include_dir);
+  unshift @{$self->include_dirs}, $spvm_include_dir;
 
   # Optimize
   $self->optimize('-O3');
@@ -294,12 +294,6 @@ sub add_ccflags {
   push @{$self->{ccflags}}, @ccflags;
 }
 
-sub unshift_include_dirs {
-  my ($self, @include_dirs) = @_;
-  
-  unshift @{$self->{include_dirs}}, @include_dirs;
-}
-
 sub add_include_dirs {
   my ($self, @include_dirs) = @_;
   
@@ -331,12 +325,6 @@ sub add_lib_dirs {
   push @{$self->{lib_dirs}}, @lib_dirs;
 }
 
-sub unshift_lib_dirs {
-  my ($self, @lib_dirs) = @_;
-  
-  unshift @{$self->{lib_dirs}}, @lib_dirs;
-}
-
 sub add_runtime_libs {
   my ($self, @runtime_libs) = @_;
   
@@ -365,7 +353,7 @@ SPVM::Builder::Config - Configurations of Compile and Link of Native Sources
 
 =head1 DESCRIPTION
 
-L<Builder::Config|SPVM::Builder::Config> is configuration of c/c++ compile and link.
+L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 =head1 FIELDS
 
@@ -476,13 +464,13 @@ The default is C<1>.
 
   my $bconf = SPVM::Builder::Config->new;
   
-Create L<Builder::Config|SPVM::Builder::Config> object.
+Create L<SPVM::Builder::Config> object.
 
 =head2 new_c
   
   my $bconf = SPVM::Builder::Config->new_c;
 
-Create default build config with C settings. This is L<Builder::Config|SPVM::Builder::Config> object.
+Create default build config with C settings. This is L<SPVM::Builder::Config> object.
 
 If you want to use the specific C version, use C<set_std> method.
 
@@ -492,13 +480,13 @@ If you want to use the specific C version, use C<set_std> method.
   
   my $bconf = SPVM::Builder::Config->new_c99;
 
-Create default build config with C99 settings. This is L<Builder::Config|SPVM::Builder::Config> object.
+Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
 
 =head2 new_cpp
   
   my $bconf = SPVM::Builder::Config->new_cpp;
 
-Create default build config with C++ settings. This is L<Builder::Config|SPVM::Builder::Config> object.
+Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
 
 If you want to use the specific C++ version, use C<set_std> method.
 
@@ -508,7 +496,7 @@ If you want to use the specific C++ version, use C<set_std> method.
   
   my $bconf = SPVM::Builder::Config->new_cpp11;
 
-Create default build config with C++11 settings. This is L<Builder::Config|SPVM::Builder::Config> object.
+Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
 
 =head2 to_hash
 
@@ -536,23 +524,11 @@ Add new compiler flags after current C<ccflags>.
 
 Add new linker flags after current C<lddlflags>.
 
-=head2 unshift_include_dirs
-
-  $bconf->unshift_include_dirs($include_dir1, $include_dir2, ...);
-
-Add a element before the first element of C<include_dirs> option.
-
 =head2 add_include_dirs
 
   $bconf->add_include_dirs($include_dir1, $include_dir2, ...);
 
 Add a element after the last element of C<include_dirs> option.
-
-=head2 unshift_lib_dirs
-
-  $bconf->unshift_lib_dirs($lib_dir1, $lib_dir2, ...);
-
-Add a element before the first element of C<lib_dirs> option.
 
 =head2 add_lib_dirs
 
