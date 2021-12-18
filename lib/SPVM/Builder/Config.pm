@@ -289,15 +289,9 @@ sub new_cpp11 {
 }
 
 sub add_ccflags {
-  my ($self, $new_ccflags) = @_;
+  my ($self, @ccflags) = @_;
   
-  my $ccflags = $self->{ccflags};
-  
-  push @$ccflags, $new_ccflags;
-  
-  $self->{ccflags} = $ccflags;
-  
-  return $self;
+  push @{$self->{ccflags}}, @ccflags;
 }
 
 sub unshift_include_dirs {
@@ -326,15 +320,9 @@ sub set_std {
 }
 
 sub add_lddlflags {
-  my ($self, $new_lddlflags) = @_;
+  my ($self, @lddlflags) = @_;
   
-  my $lddlflags = $self->{lddlflags};
-  
-  push @$lddlflags, $new_lddlflags;
-  
-  $self->{lddlflags} = $lddlflags;
-  
-  return $self;
+  push @{$self->{lddlflags}}, @lddlflags;
 }
 
 sub add_lib_dirs {
@@ -538,15 +526,16 @@ Internally, add add C<-std=VALUE> after C<ccflags>.
 
 =head2 add_ccflags
 
-  $bconf->add_ccflags($ccflags);
+  $bconf->add_ccflags(@ccflags);
 
-Add new C<ccflags> after current C<ccflags>.
+Add new compiler flags after current C<ccflags>.
 
 =head2 add_lddlflags
 
-  $bconf->add_lddlflags($lddlflags);
+  $bconf->add_lddlflags(@lddlflags);
 
-Add new C<lddlflags> after current C<lddlflags>.
+Add new linker flags after current C<lddlflags>.
+
 =head2 unshift_include_dirs
 
   $bconf->unshift_include_dirs($include_dir1, $include_dir2, ...);

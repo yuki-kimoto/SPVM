@@ -32,6 +32,7 @@ Revision history for SPVM
         * runtime dynamic libraries are loaded from lib_dirs of SPVM::Builder::Config of each class.
         * rename apeend_ccflags to add_ccflags, append_lddlflags to add_lddlflags
         * rename push_include_dirs to add_include_dirs, push_lib_dirs to add_lib_dirs, push_libs to add_libs, push_runtime_libs to add_libs
+        * add_ccflags and add_lddlflags can receive list
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
 0.9018  2021-12-11
