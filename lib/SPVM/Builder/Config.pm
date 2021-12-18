@@ -154,6 +154,17 @@ sub new_cpp11 {
   return $self;
 }
 
+sub ext {
+  my $self = shift;
+  if (@_) {
+    $self->{ext} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ext};
+  }
+}
+
 sub get_ext {
   my ($self, $ext) = @_;
   
@@ -166,6 +177,17 @@ sub set_ext {
   $self->{ext} = $ext;
   
   return $self;
+}
+
+sub quiet {
+  my $self = shift;
+  if (@_) {
+    $self->{quiet} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{quiet};
+  }
 }
 
 sub get_quiet {
@@ -182,6 +204,17 @@ sub set_quiet {
   return $self;
 }
 
+sub cc {
+  my $self = shift;
+  if (@_) {
+    $self->{cc} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{cc};
+  }
+}
+
 sub get_cc {
   my ($self, $cc) = @_;
   
@@ -192,6 +225,17 @@ sub set_cc {
   my ($self, $cc) = @_;
   
   return $self->{cc} = $cc;
+}
+
+sub ccflags {
+  my $self = shift;
+  if (@_) {
+    $self->{ccflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ccflags};
+  }
 }
 
 sub get_ccflags {
@@ -232,6 +276,17 @@ sub prepend_ccflags {
   return $self;
 }
 
+sub optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{optimize};
+  }
+}
+
 sub get_optimize {
   my ($self, $optimize) = @_;
   
@@ -248,6 +303,17 @@ sub get_include_dirs {
   my ($self, $include_dirs) = @_;
   
   return $self->{include_dirs};
+}
+
+sub include_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{include_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{include_dirs};
+  }
 }
 
 sub set_include_dirs {
@@ -270,6 +336,17 @@ sub push_include_dirs {
   push @{$self->{include_dirs}}, @include_dirs;
 }
 
+sub std {
+  my $self = shift;
+  if (@_) {
+    $self->{std} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{std};
+  }
+}
+
 sub set_std {
   my ($self, $standard) = @_;
   
@@ -283,6 +360,17 @@ sub set_std {
   return $self;
 }
 
+sub ld {
+  my $self = shift;
+  if (@_) {
+    $self->{ld} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ld};
+  }
+}
+
 sub get_ld {
   my ($self, $ld) = @_;
   
@@ -293,6 +381,17 @@ sub set_ld {
   my ($self, $ld) = @_;
   
   return $self->{ld} = $ld;
+}
+
+sub lddlflags {
+  my $self = shift;
+  if (@_) {
+    $self->{lddlflags} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lddlflags};
+  }
 }
 
 sub get_lddlflags {
@@ -333,6 +432,17 @@ sub prepend_lddlflags {
   return $self;
 }
 
+sub lib_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{lib_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{lib_dirs};
+  }
+}
+
 sub get_lib_dirs {
   my ($self, $lib_dirs) = @_;
   
@@ -359,6 +469,17 @@ sub unshift_lib_dirs {
   unshift @{$self->{lib_dirs}}, @lib_dirs;
 }
 
+sub runtime_libs {
+  my $self = shift;
+  if (@_) {
+    $self->{runtime_libs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{runtime_libs};
+  }
+}
+
 sub get_runtime_libs {
   my ($self) = @_;
   
@@ -373,16 +494,21 @@ sub set_runtime_libs {
   return $self;
 }
 
-sub unshift_runtime_libs {
-  my ($self, @runtime_libs) = @_;
-  
-  unshift @{$self->{runtime_libs}}, @runtime_libs;
-}
-
 sub push_runtime_libs {
   my ($self, @runtime_libs) = @_;
   
   push @{$self->{runtime_libs}}, @runtime_libs;
+}
+
+sub force_compile {
+  my $self = shift;
+  if (@_) {
+    $self->{force_compile} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{force_compile};
+  }
 }
 
 sub get_force_compile {
@@ -411,6 +537,17 @@ sub search_lib_dirs {
   my ($self) = @_;
   
   $self->get_search_lib_dirs_cb->(@_);
+}
+
+sub search_lib_dirs_cb {
+  my $self = shift;
+  if (@_) {
+    $self->{search_lib_dirs_cb} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{search_lib_dirs_cb};
+  }
 }
 
 sub get_search_lib_dirs_cb {
@@ -714,14 +851,6 @@ Don't add prefix '-l' or 'lib' before library name. 'gsl' is valid. 'libgsl', '-
   $bconf->set_runtime_libs($runtime_libs);
 
 Set C<runtime_libs> option. This option is array refernce.
-
-See L<"get_runtime_libs"> method about C<runtime_libs> option.
-
-=head2 unshift_runtime_libs
-
-  $bconf->unshift_runtime_libs($lib1, $lib2, ...);
-
-Add a library before the first element of C<runtime_libs> option.
 
 See L<"get_runtime_libs"> method about C<runtime_libs> option.
 
