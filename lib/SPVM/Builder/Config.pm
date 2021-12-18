@@ -325,6 +325,14 @@ sub add_lib_dirs {
   push @{$self->{lib_dirs}}, @lib_dirs;
 }
 
+sub add_libs {
+  my ($self, @libs) = @_;
+  
+  my @libs_lddlflags = map { "-l$_" } @libs;
+  
+  $self->add_lddlflags(@libs_lddlflags);
+}
+
 sub add_runtime_libs {
   my ($self, @runtime_libs) = @_;
   
@@ -498,46 +506,62 @@ If you want to use the specific C++ version, use C<set_std> method.
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
 
-=head2 to_hash
-
-  my $config = $bconf->to_hash;
-
-Convert L<SPVM::Builder::Config> to a hash reference.
-
 =head2 set_std
 
+  $bconf->set_std($std);
+
+Add the value that is converted to C<-std=$std> after the last element of C<ccflags> field.
+
+B<Example:>
+
   $bconf->set_std('gnu99');
-
-Set C<-std> value.
-
-Internally, add add C<-std=VALUE> after C<ccflags>.
 
 =head2 add_ccflags
 
   $bconf->add_ccflags(@ccflags);
 
-Add new compiler flags after current C<ccflags>.
+Add values after the last element of C<ccflags> field.
 
 =head2 add_lddlflags
 
   $bconf->add_lddlflags(@lddlflags);
 
-Add new linker flags after current C<lddlflags>.
+Add values after the last element of C<lddlflags> field.
 
 =head2 add_include_dirs
 
-  $bconf->add_include_dirs($include_dir1, $include_dir2, ...);
+  $bconf->add_include_dirs(@include_dirs);
 
-Add a element after the last element of C<include_dirs> option.
+Add values after the last element of C<include_dirs> field.
 
 =head2 add_lib_dirs
 
-  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
+  $bconf->add_lib_dirs(@lib_dirs);
 
-Add a element after the last element of C<lib_dirs> option.
+Add values after the last element of  C<lib_dirs> field.
+
+=head2 add_libs
+
+  $bconf->add_libs(@libs);
+
+Add values that each value is converted to C<-l$lib"> after the last element of C<lddlflags> field.
+
+B<Examples:>
+
+  $bconf->add_libs('gsl');
 
 =head2 add_runtime_libs
 
-  $bconf->add_runtime_libs($lib1, $lib2, ...);
+  $bconf->add_runtime_libs(@libs);
 
-Add a library after the last element of C<runtime_libs> option.
+Add values after the last element of  C<runtime_libs> field.
+
+B<Examples:>
+
+  $bconf->add_runtime_libs('gsl');
+
+=head2 to_hash
+
+  my $config = $bconf->to_hash;
+
+Convert L<SPVM::Builder::Config> to a hash reference.
