@@ -311,7 +311,7 @@ sub create_compile_command {
   $cflags .= " $inc";
   
   my $ccflags = $bconf->ccflags;
-  $cflags .= " $ccflags";
+  $cflags .= " " . join(' ', @$ccflags);
   
   my $optimize = $bconf->optimize;
   $cflags .= " $optimize";
@@ -433,15 +433,17 @@ EOS
 
   # Add library directories and libraries to Linker flags
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->lib_dirs});
-  $bconf->prepend_lddlflags("$lib_dirs_str");
-
+ 
   # Config
   my $ld = $bconf->ld;
   my $lddlflags = $bconf->lddlflags;
   
+  my $lddlflags_str = join(' ', @{$bconf->lddlflags});
+  $lddlflags_str = "$lib_dirs_str $lddlflags_str";
+  
   my $config = {
     ld => $ld,
-    lddlflags => $lddlflags,
+    lddlflags => $lddlflags_str,
     shrpenv => '',
   };
   

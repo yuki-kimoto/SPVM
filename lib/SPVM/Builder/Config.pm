@@ -159,11 +159,11 @@ sub new {
   $self->cc($Config{cc});
 
   # ccflags
-  my $ccflags = '';
+  my $ccflags = [];
   
   # MinGW on Windows always create position independent codes, and if -fPIC is specified, the warning occurs.
   unless ($^O eq 'MSWin32') {
-    $ccflags .= '-fPIC';
+    push @$ccflags, '-fPIC';
   }
 
   $self->ccflags($ccflags);
@@ -178,14 +178,14 @@ sub new {
   }
   
   # lddlflags
-  my $lddlflags = '';
+  my $lddlflags = [];
   
   # Dynamic link options
   if ($^O eq 'MSWin32') {
-    $lddlflags .= '-mdll -s';
+    push @$lddlflags, '-mdll -s';
   }
   else {
-    $lddlflags .= '-shared';
+    push @$lddlflags, '-shared';
   }
   $self->lddlflags($lddlflags);
 
@@ -293,19 +293,7 @@ sub append_ccflags {
   
   my $ccflags = $self->{ccflags};
   
-  $ccflags .= " $new_ccflags";
-  
-  $self->{ccflags} = $ccflags;
-  
-  return $self;
-}
-
-sub prepend_ccflags {
-  my ($self, $new_ccflags) = @_;
-  
-  my $ccflags = $self->{ccflags};
-  
-  $ccflags = "$new_ccflags $ccflags";
+  push @$ccflags, $new_ccflags;
   
   $self->{ccflags} = $ccflags;
   
@@ -329,7 +317,7 @@ sub set_std {
   
   my $ccflags = $self->ccflags;
   
-  $ccflags .= " -std=$standard";
+  push @$ccflags, "-std=$standard";
   
   # Add -std=foo section
   $self->ccflags($ccflags);
@@ -342,19 +330,7 @@ sub append_lddlflags {
   
   my $lddlflags = $self->{lddlflags};
   
-  $lddlflags .= " $new_lddlflags";
-  
-  $self->{lddlflags} = $lddlflags;
-  
-  return $self;
-}
-
-sub prepend_lddlflags {
-  my ($self, $new_lddlflags) = @_;
-  
-  my $lddlflags = $self->{lddlflags};
-  
-  $lddlflags = "$new_lddlflags $lddlflags";
+  push @$lddlflags, $new_lddlflags;
   
   $self->{lddlflags} = $lddlflags;
   
@@ -580,24 +556,11 @@ Internally, add add C<-std=VALUE> after C<ccflags>.
 
 Add new C<ccflags> after current C<ccflags>.
 
-=head2 prepend_ccflags
-
-  $bconf->prepend_ccflags($ccflags);
-
-Add new C<ccflags> before current C<ccflags>.
-
 =head2 append_lddlflags
 
   $bconf->append_lddlflags($lddlflags);
 
 Add new C<lddlflags> after current C<lddlflags>.
-
-=head2 prepend_lddlflags
-
-  $bconf->prepend_lddlflags($lddlflags);
-
-Add new C<lddlflags> before current C<lddlflags>.
-
 =head2 unshift_include_dirs
 
   $bconf->unshift_include_dirs($include_dir1, $include_dir2, ...);

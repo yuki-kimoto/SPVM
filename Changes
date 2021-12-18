@@ -26,6 +26,9 @@ Revision history for SPVM
           set_quiet, set_search_lib_dirs_cb, set_force_compile of SPVM::Config
         * remove get_ext, get_cc, get_ccflags, get_include_dirs, get_ld, get_lddlflags, get_lib_dirs, get_runtime_lib_dirs, get_optimize,
           get_quiet, get_search_lib_dirs_cb, get_force_compile of SPVM::Config
+        * remove unshift_lib_dirs, unshift_include_dirs, prepend_ccflags, prepend_lddlflags
+        * remove prepend_ccflags, prepend_lddlflags
+        * ccflags, lddlflags of SPVM::Builder::Config become an array reference 
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
 0.9018  2021-12-11
