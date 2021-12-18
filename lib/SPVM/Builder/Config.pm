@@ -174,7 +174,7 @@ sub new {
   # Library directories
   if ($^O eq 'MSWin32') {
     # Windows need perlxxx.dll(for example, perl534.dll) when creating dynamic links
-    $self->push_lib_dirs($Config{bin});
+    $self->add_lib_dirs($Config{bin});
   }
   
   # lddlflags
@@ -288,7 +288,7 @@ sub new_cpp11 {
   return $self;
 }
 
-sub append_ccflags {
+sub add_ccflags {
   my ($self, $new_ccflags) = @_;
   
   my $ccflags = $self->{ccflags};
@@ -306,7 +306,7 @@ sub unshift_include_dirs {
   unshift @{$self->{include_dirs}}, @include_dirs;
 }
 
-sub push_include_dirs {
+sub add_include_dirs {
   my ($self, @include_dirs) = @_;
   
   push @{$self->{include_dirs}}, @include_dirs;
@@ -325,7 +325,7 @@ sub set_std {
   return $self;
 }
 
-sub append_lddlflags {
+sub add_lddlflags {
   my ($self, $new_lddlflags) = @_;
   
   my $lddlflags = $self->{lddlflags};
@@ -337,7 +337,7 @@ sub append_lddlflags {
   return $self;
 }
 
-sub push_lib_dirs {
+sub add_lib_dirs {
   my ($self, @lib_dirs) = @_;
   
   push @{$self->{lib_dirs}}, @lib_dirs;
@@ -349,7 +349,7 @@ sub unshift_lib_dirs {
   unshift @{$self->{lib_dirs}}, @lib_dirs;
 }
 
-sub push_runtime_libs {
+sub add_runtime_libs {
   my ($self, @runtime_libs) = @_;
   
   push @{$self->{runtime_libs}}, @runtime_libs;
@@ -536,15 +536,15 @@ Set C<-std> value.
 
 Internally, add add C<-std=VALUE> after C<ccflags>.
 
-=head2 append_ccflags
+=head2 add_ccflags
 
-  $bconf->append_ccflags($ccflags);
+  $bconf->add_ccflags($ccflags);
 
 Add new C<ccflags> after current C<ccflags>.
 
-=head2 append_lddlflags
+=head2 add_lddlflags
 
-  $bconf->append_lddlflags($lddlflags);
+  $bconf->add_lddlflags($lddlflags);
 
 Add new C<lddlflags> after current C<lddlflags>.
 =head2 unshift_include_dirs
@@ -553,9 +553,9 @@ Add new C<lddlflags> after current C<lddlflags>.
 
 Add a element before the first element of C<include_dirs> option.
 
-=head2 push_include_dirs
+=head2 add_include_dirs
 
-  $bconf->push_include_dirs($include_dir1, $include_dir2, ...);
+  $bconf->add_include_dirs($include_dir1, $include_dir2, ...);
 
 Add a element after the last element of C<include_dirs> option.
 
@@ -565,14 +565,14 @@ Add a element after the last element of C<include_dirs> option.
 
 Add a element before the first element of C<lib_dirs> option.
 
-=head2 push_lib_dirs
+=head2 add_lib_dirs
 
-  $bconf->push_lib_dirs($lib_dir1, $lib_dir2, ...);
+  $bconf->add_lib_dirs($lib_dir1, $lib_dir2, ...);
 
 Add a element after the last element of C<lib_dirs> option.
 
-=head2 push_runtime_libs
+=head2 add_runtime_libs
 
-  $bconf->push_runtime_libs($lib1, $lib2, ...);
+  $bconf->add_runtime_libs($lib1, $lib2, ...);
 
 Add a library after the last element of C<runtime_libs> option.
