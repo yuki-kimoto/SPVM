@@ -20,7 +20,8 @@ Revision history for SPVM
         * remove replace_all_config of SPVM::Builder::Config
         * to_hash of SPVM::Builder::Config return the content of SPVM::Builder::Config instead of ExtUtils::CBuilder config.
         * add search_lib_dirs, set_search_lib_dirs_cb, get_search_lib_dirs_cb of SPVM::Builder::Config
-        
+        * add ext, cc, ccflags, include_dirs, ld, lddlflags, lib_dirs, runtime_lib_dirs, optimize,
+          quiet, search_lib_dirs_cb, force_compile fields to SPVM::Config
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
 0.9018  2021-12-11
