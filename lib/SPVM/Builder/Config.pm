@@ -349,20 +349,6 @@ sub unshift_lib_dirs {
   unshift @{$self->{lib_dirs}}, @lib_dirs;
 }
 
-sub get_runtime_libs {
-  my ($self) = @_;
-  
-  return $self->{runtime_libs};
-}
-
-sub set_runtime_libs {
-  my ($self, $runtime_libs) = @_;
-  
-  $self->{runtime_libs} = $runtime_libs;
-  
-  return $self;
-}
-
 sub push_runtime_libs {
   my ($self, @runtime_libs) = @_;
   

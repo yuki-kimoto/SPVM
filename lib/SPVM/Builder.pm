@@ -142,7 +142,7 @@ sub bind_methods {
   my $lib_dirs = $bconf->lib_dirs;
   {
     local @DynaLoader::dl_runtime_library_path = (@$lib_dirs, @DynaLoader::dl_runtime_library_path);
-    my $runtime_libs = $bconf->get_runtime_libs;
+    my $runtime_libs = $bconf->runtime_libs;
     for my $runtime_lib (@$runtime_libs) {
       my ($shared_lib_file) = DynaLoader::dl_findfile("-l$runtime_lib");
       my $shared_libref = DynaLoader::dl_load_file($shared_lib_file);
