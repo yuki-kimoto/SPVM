@@ -89,13 +89,13 @@ Native Config File is Perl source code. Native Config File must return properly 
   $bconf->set_cccdlflags(q(--compiler-options '-fPIC'));
 
   # Compiler
-  $bconf->set_cc('nvcc');
-  $bconf->set_ccflags('');
-  $bconf->set_ext('cu');
+  $bconf->cc('nvcc');
+  $bconf->ccflags('');
+  $bconf->ext('cu');
 
   # Linker
-  $bconf->set_ld('nvcc');
-  $bconf->set_lddlflags('-shared');
+  $bconf->ld('nvcc');
+  $bconf->lddlflags('-shared');
 
   $bconf;
 
@@ -109,7 +109,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   my $bconf = SPVM::Builder::Config->new_c99;
 
   # Show the compile commands
-  $bconf->set_quiet(0);
+  $bconf->quiet(0);
 
   $bconf;
 
@@ -122,7 +122,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   my $bconf = SPVM::Builder::Config->new_c99;
 
   # Show the compile commands
-  $bconf->set_force_compile(1);
+  $bconf->force_compile(1);
 
   $bconf;
 

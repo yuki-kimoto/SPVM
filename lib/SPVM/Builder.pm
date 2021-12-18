@@ -139,7 +139,7 @@ sub bind_methods {
 
   # Load pre-required dynamic library
   my $bconf = $self->get_config($class_name, $category);
-  my $lib_dirs = $bconf->get_lib_dirs;
+  my $lib_dirs = $bconf->lib_dirs;
   {
     local @DynaLoader::dl_runtime_library_path = (@$lib_dirs, @DynaLoader::dl_runtime_library_path);
     my $runtime_libs = $bconf->get_runtime_libs;

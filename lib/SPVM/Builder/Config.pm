@@ -156,7 +156,7 @@ sub new {
   bless $self, $class;
   
   # cc
-  $self->set_cc($Config{cc});
+  $self->cc($Config{cc});
 
   # ccflags
   my $ccflags = '';
@@ -166,10 +166,10 @@ sub new {
     $ccflags .= '-fPIC';
   }
 
-  $self->set_ccflags($ccflags);
+  $self->ccflags($ccflags);
   
   # ld
-  $self->set_ld($Config{ld});
+  $self->ld($Config{ld});
   
   # Library directories
   if ($^O eq 'MSWin32') {
@@ -187,7 +187,7 @@ sub new {
   else {
     $lddlflags .= '-shared';
   }
-  $self->set_lddlflags($lddlflags);
+  $self->lddlflags($lddlflags);
 
   # SPVM::Builder::Config directory
   my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
@@ -202,13 +202,13 @@ sub new {
   $self->unshift_include_dirs($spvm_include_dir);
 
   # Optimize
-  $self->set_optimize('-O3');
+  $self->optimize('-O3');
   
   # Get cc library directories callback
-  $self->set_search_lib_dirs_cb(sub {
+  $self->search_lib_dirs_cb(sub {
     my ($self) = @_;
     
-    my $cc = $self->get_cc;
+    my $cc = $self->cc;
     
     my $cmd = "$cc -print-search-dirs";
     
@@ -244,7 +244,7 @@ sub new_c {
   my $self = SPVM::Builder::Config->new;
   
   # NativeAPI
-  $self->set_ext('c');
+  $self->ext('c');
   
   return $self;
 }
@@ -266,13 +266,13 @@ sub new_cpp {
   my $self = SPVM::Builder::Config->new;
   
   # CC
-  $self->set_cc('g++');
+  $self->cc('g++');
   
   # LD
-  $self->set_ld('g++');
+  $self->ld('g++');
   
   # NativeAPI
-  $self->set_ext('cpp');
+  $self->ext('cpp');
   
   return $self;
 }
@@ -284,60 +284,6 @@ sub new_cpp11 {
   
   # C++11
   $self->set_std('c++11');
-  
-  return $self;
-}
-
-sub get_ext {
-  my ($self, $ext) = @_;
-  
-  return $self->{ext};
-}
-
-sub set_ext {
-  my ($self, $ext) = @_;
-  
-  $self->{ext} = $ext;
-  
-  return $self;
-}
-
-sub get_quiet {
-  my ($self, $quiet) = @_;
-  
-  return $self->{quiet};
-}
-
-sub set_quiet {
-  my ($self, $quiet) = @_;
-  
-  $self->{quiet} = $quiet;
-  
-  return $self;
-}
-
-sub get_cc {
-  my ($self, $cc) = @_;
-  
-  return $self->{cc};
-}
-
-sub set_cc {
-  my ($self, $cc) = @_;
-  
-  return $self->{cc} = $cc;
-}
-
-sub get_ccflags {
-  my ($self) = @_;
-  
-  return $self->{ccflags};
-}
-
-sub set_ccflags {
-  my ($self, $ccflags) = @_;
-  
-  $self->{ccflags} = $ccflags;
   
   return $self;
 }
@@ -366,32 +312,6 @@ sub prepend_ccflags {
   return $self;
 }
 
-sub get_optimize {
-  my ($self, $optimize) = @_;
-  
-  return $self->{optimize};
-}
-
-sub set_optimize {
-  my ($self, $optimize) = @_;
-  
-  return $self->{optimize} = $optimize;
-}
-
-sub get_include_dirs {
-  my ($self, $include_dirs) = @_;
-  
-  return $self->{include_dirs};
-}
-
-sub set_include_dirs {
-  my ($self, $include_dirs) = @_;
-  
-  $self->{include_dirs} = $include_dirs;
-  
-  return $self;
-}
-
 sub unshift_include_dirs {
   my ($self, @include_dirs) = @_;
   
@@ -407,38 +327,12 @@ sub push_include_dirs {
 sub set_std {
   my ($self, $standard) = @_;
   
-  my $ccflags = $self->get_ccflags;
+  my $ccflags = $self->ccflags;
   
   $ccflags .= " -std=$standard";
   
   # Add -std=foo section
-  $self->set_ccflags($ccflags);
-  
-  return $self;
-}
-
-sub get_ld {
-  my ($self, $ld) = @_;
-  
-  return $self->{ld};
-}
-
-sub set_ld {
-  my ($self, $ld) = @_;
-  
-  return $self->{ld} = $ld;
-}
-
-sub get_lddlflags {
-  my ($self) = @_;
-  
-  return $self->{lddlflags};
-}
-
-sub set_lddlflags {
-  my ($self, $lddlflags) = @_;
-  
-  $self->{lddlflags} = $lddlflags;
+  $self->ccflags($ccflags);
   
   return $self;
 }
@@ -463,20 +357,6 @@ sub prepend_lddlflags {
   $lddlflags = "$new_lddlflags $lddlflags";
   
   $self->{lddlflags} = $lddlflags;
-  
-  return $self;
-}
-
-sub get_lib_dirs {
-  my ($self, $lib_dirs) = @_;
-  
-  return $self->{lib_dirs};
-}
-
-sub set_lib_dirs {
-  my ($self, $lib_dirs) = @_;
-  
-  $self->{lib_dirs} = $lib_dirs;
   
   return $self;
 }
@@ -513,20 +393,6 @@ sub push_runtime_libs {
   push @{$self->{runtime_libs}}, @runtime_libs;
 }
 
-sub get_force_compile {
-  my ($self, $force_compile) = @_;
-  
-  return $self->{force_compile};
-}
-
-sub set_force_compile {
-  my ($self, $force_compile) = @_;
-  
-  $self->{force_compile} = $force_compile;
-  
-  return $self;
-}
-
 sub to_hash {
   my ($self) = @_;
   
@@ -538,19 +404,7 @@ sub to_hash {
 sub search_lib_dirs {
   my ($self) = @_;
   
-  $self->get_search_lib_dirs_cb->(@_);
-}
-
-sub get_search_lib_dirs_cb {
-  my ($self, $cb) = @_;
-  
-  return $self->{search_lib_dirs_cb};
-}
-
-sub set_search_lib_dirs_cb {
-  my ($self, $cb) = @_;
-  
-  $self->{search_lib_dirs_cb} = $cb;
+  $self->search_lib_dirs_cb->(@_);
 }
 
 1;

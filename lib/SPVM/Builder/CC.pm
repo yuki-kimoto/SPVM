@@ -184,10 +184,10 @@ sub compile {
   }
   
   # Add native include dir
-  unshift @{$bconf->get_include_dirs}, $native_include_dir;
+  unshift @{$bconf->include_dirs}, $native_include_dir;
 
   # Quiet output
-  my $quiet = $bconf->get_quiet;
+  my $quiet = $bconf->quiet;
 
   # If quiet field exists, overwrite it
   if (defined $self->quiet) {
@@ -197,7 +197,7 @@ sub compile {
   # SPVM Method source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
   my $spvm_method_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
-  my $src_ext = $bconf->get_ext;
+  my $src_ext = $bconf->ext;
   unless (defined $src_ext) {
     confess "Source extension is not specified";
   }
@@ -246,7 +246,7 @@ sub compile {
       $do_compile = 1;
     }
     else {
-      if ($bconf->get_force_compile) {
+      if ($bconf->force_compile) {
         $do_compile = 1;
       }
       else {
@@ -302,18 +302,18 @@ sub compile {
 sub create_compile_command {
   my ($self, $bconf, $output_file, $src_file) = @_;
   
-  my $cc = $bconf->get_cc;
+  my $cc = $bconf->cc;
   
   my $cflags = '';
 
-  my $include_dirs = $bconf->get_include_dirs;
+  my $include_dirs = $bconf->include_dirs;
   my $inc = join(' ', map { "-I$_" } @$include_dirs);
   $cflags .= " $inc";
   
-  my $ccflags = $bconf->get_ccflags;
+  my $ccflags = $bconf->ccflags;
   $cflags .= " $ccflags";
   
-  my $optimize = $bconf->get_optimize;
+  my $optimize = $bconf->optimize;
   $cflags .= " $optimize";
   
   my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
@@ -400,7 +400,7 @@ EOS
   }
   
   # Quiet output
-  my $quiet = $bconf->get_quiet;
+  my $quiet = $bconf->quiet;
 
   # If quiet field exists, overwrite it
   if (defined $self->quiet) {
@@ -432,12 +432,12 @@ EOS
   }
 
   # Add library directories and libraries to Linker flags
-  my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->get_lib_dirs});
+  my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->lib_dirs});
   $bconf->prepend_lddlflags("$lib_dirs_str");
 
   # Config
-  my $ld = $bconf->get_ld;
-  my $lddlflags = $bconf->get_lddlflags;
+  my $ld = $bconf->ld;
+  my $lddlflags = $bconf->lddlflags;
   
   my $config = {
     ld => $ld,
