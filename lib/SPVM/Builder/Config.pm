@@ -141,99 +141,139 @@ sub search_lib_dirs_cb {
 sub new {
   my $class = shift;
   
-  my $self = {};
-  
-  $self->{include_dirs} = [];
-
-  $self->{lib_dirs} = [];
-
-  $self->{runtime_libs} = [];
-  
-  $self->{quiet} = 1;
-
-  $self->{std} = '';
+  my $self = {@_};
 
   bless $self, $class;
   
-  # cc
-  $self->cc($Config{cc});
-
-  # ccflags
-  my $ccflags = [];
-  
-  # MinGW on Windows always create position independent codes, and if -fPIC is specified, the warning occurs.
-  unless ($^O eq 'MSWin32') {
-    push @$ccflags, '-fPIC';
+  # quiet
+  unless (defined $self->{quiet}) {
+    $self->quiet(1);
   }
 
-  $self->ccflags($ccflags);
+  # optimize
+  unless (defined $self->{optimize}) {
+    $self->optimize('-O3');
+  }
+  
+  # force_compile
+  unless (defined $self->{force_compile}) {
+    $self->force_compile(0);
+  }
+  
+  # ext
+  unless (defined $self->{ext}) {
+    $self->ext(undef);
+  }
+
+  # cc
+  unless (defined $self->{cc}) {
+    $self->cc($Config{cc});
+  }
+
+  # include_dirs
+  unless (defined $self->{include_dirs}) {
+    $self->include_dirs([]);
+    
+    my @default_include_dirs;
+
+    # Add "include" directory of SPVM::Builder. This directory contains spvm_native.h
+    my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
+    my $spvm_builder_dir = $spvm_builder_config_dir;
+    $spvm_builder_dir =~ s/\/Config\.pm$//;
+    my $spvm_include_dir = $spvm_builder_dir;
+    $spvm_include_dir .= '/include';
+    push @default_include_dirs, $spvm_include_dir;
+    
+    $self->add_include_dirs(@default_include_dirs);
+  }
+  
+  # ccflags
+  unless (defined $self->{ccflags}) {
+    $self->ccflags([]);
+    
+    my @default_ccflags;
+    
+    # MinGW on Windows always create position independent codes, and if -fPIC is specified, the warning occurs.
+    unless ($^O eq 'MSWin32') {
+      push @default_ccflags, '-fPIC';
+    }
+    
+    $self->add_ccflags(@default_ccflags);
+  }
   
   # ld
-  $self->ld($Config{ld});
-  
-  # Library directories
-  if ($^O eq 'MSWin32') {
-    # Windows need perlxxx.dll(for example, perl534.dll) when creating dynamic links
-    $self->add_lib_dirs($Config{bin});
+  unless (defined $self->{ld}) {
+    $self->ld($Config{ld});
+  }
+
+  # lib_dirs
+  unless (defined $self->{lib_dirs}) {
+    $self->lib_dirs([]);
+    
+    my @default_lib_dirs;
+    
+    # Library directories
+    if ($^O eq 'MSWin32') {
+      # Windows need perlxxx.dll(for example, perl534.dll) when creating dynamic links
+      push @default_lib_dirs, $Config{bin};
+    }
+    
+    $self->add_lib_dirs(@default_lib_dirs);
   }
   
   # lddlflags
-  my $lddlflags = [];
-  
-  # Dynamic link options
-  if ($^O eq 'MSWin32') {
-    push @$lddlflags, '-mdll -s';
-  }
-  else {
-    push @$lddlflags, '-shared';
-  }
-  $self->lddlflags($lddlflags);
-
-  # SPVM::Builder::Config directory
-  my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
-
-  # SPVM::Builder directory
-  my $spvm_builder_dir = $spvm_builder_config_dir;
-  $spvm_builder_dir =~ s/\/Config\.pm$//;
-
-  # Add SPVM include directory
-  my $spvm_include_dir = $spvm_builder_dir;
-  $spvm_include_dir .= '/include';
-  unshift @{$self->include_dirs}, $spvm_include_dir;
-
-  # Optimize
-  $self->optimize('-O3');
-  
-  # Get cc library directories callback
-  $self->search_lib_dirs_cb(sub {
-    my ($self) = @_;
+  unless (defined $self->{lddlflags}) {
+    $self->lddlflags([]);
     
-    my $cc = $self->cc;
+    my @default_lddlflags;
     
-    my $cmd = "$cc -print-search-dirs";
-    
-    my $output = `$cmd`;
-    
-    my $lib_dirs_str;
-    if ($output =~ /^libraries:\s+=(.+)/m) {
-      $lib_dirs_str = $1;
-    }
-    
-    my $sep;
+    # Dynamic link options
     if ($^O eq 'MSWin32') {
-      $sep = ';';
+      push @default_lddlflags, '-mdll -s';
     }
     else {
-      $sep = ':';
+      push @default_lddlflags, '-shared';
     }
-    
-    my @lib_dirs;
-    if (defined $lib_dirs_str) {
-      @lib_dirs = split($sep, $lib_dirs_str);
-    }
-    
-    return \@lib_dirs;
-  });
+    $self->add_lddlflags(@default_lddlflags);
+  }
+  
+  # runtime_libs
+  unless (defined $self->{runtime_libs}) {
+    $self->runtime_libs([]);
+  }
+  
+  # search_lib_dirs_cb
+  unless (defined $self->{search_lib_dirs_cb}) {
+    $self->search_lib_dirs_cb(sub {
+      my ($self) = @_;
+      
+      my $cc = $self->cc;
+      
+      my $cmd = "$cc -print-search-dirs";
+      
+      my $output = `$cmd`;
+      
+      my $lib_dirs_str;
+      if ($output =~ /^libraries:\s+=(.+)/m) {
+        $lib_dirs_str = $1;
+      }
+      
+      my $sep;
+      if ($^O eq 'MSWin32') {
+        $sep = ';';
+      }
+      else {
+        $sep = ':';
+      }
+      
+      my @lib_dirs;
+      if (defined $lib_dirs_str) {
+        @lib_dirs = split($sep, $lib_dirs_str);
+      }
+      
+      return \@lib_dirs;
+    });
+  }
 
   return $self;
 }
@@ -367,6 +407,20 @@ L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 Fields.
 
+=head2 ext
+
+  my $ext = $bconf->ext;
+  $bconf->ext($ext);
+
+Get and set the extension of native sources. This is used by the compiler.
+
+The default is C<undef>.
+
+B<Examples:>
+
+  $bconf->ext('c');
+  $bconf->ext('cpp');
+  
 =head2 cc
 
   my $cc = $bconf->cc;

@@ -37,6 +37,7 @@ Revision history for SPVM
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
         * add add_libs to SPVM::Builder::Config
+        * SPVM::Builder::Config->new supports default values
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8
