@@ -34,10 +34,11 @@ Revision history for SPVM
         * rename push_include_dirs to add_include_dirs, push_lib_dirs to add_lib_dirs, push_libs to add_libs, push_runtime_libs to add_libs
         * add_ccflags and add_lddlflags can receive list of SPVM::Builder::Config
         * remove unshift_lib_dirs, unshift_include_dirs of SPVM::Builder::Config
-        [BUG FIX]
-        * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
         * add add_libs to SPVM::Builder::Config
         * SPVM::Builder::Config->new supports default values
+
+        [BUG FIX]
+        * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8
