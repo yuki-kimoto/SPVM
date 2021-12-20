@@ -460,7 +460,11 @@ In bash, you can set SPVM_BUILD_DIR to the following.
 
 =head2 SPVM_CC_DEBUG
 
-Print SVPM::Builder::CC compile and link outputs to stderr.
+Print L<SVPM::Builder::CC> compile and link outputs to stderr.
+
+=head2 SPVM_CC_FORCE
+
+Force L<SVPM::Builder::CC> compile and link.
 
 =head1 CAUTION
 
