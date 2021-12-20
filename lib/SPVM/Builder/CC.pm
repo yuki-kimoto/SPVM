@@ -401,7 +401,7 @@ EOS
   # Library directory
   my $native_lib_dir = "$native_dir/lib";
   if (-d $native_lib_dir) {
-    $config->unshift_lib_dirs($native_lib_dir);
+    unshift @{$config->lib_dirs}, $native_lib_dir;
   }
   
   # Quiet output
@@ -436,18 +436,21 @@ EOS
     push @$dl_func_list, '';
   }
 
-  # Add library directories and libraries to Linker flags
-  my $lib_dirs = [@{$config->lib_dirs}];
-  my $lib_dirs_str = join(' ', map { "-L$_" } @$lib_dirs);
- 
-  # Config
+  # Linker
   my $ld = $config->ld;
-  my $ldflags = $config->ldflags;
   
+  # Linker flags
+  my $ldflags = $config->ldflags;
   my $ldflags_str = join(' ', @{$config->ldflags});
   $ldflags_str = "$ldflags_str";
-
+  
+  # Optimize
+  my $ld_optimize = $config->ld_optimize;
+  $ldflags_str .= " $ld_optimize";
+  
   # Libraries
+  # Libraries is linked using absolute path because the linked libraries must be known at runtime.
+  my $lib_dirs = [@{$config->lib_dirs}];
   my @lib_files;
   {
     my $libs = $config->libs;
@@ -499,9 +502,6 @@ EOS
   }
   push @$object_files, @lib_files;
 
-  my $ld_optimize = $config->ld_optimize;
-  $ldflags_str .= " $ld_optimize";
-  
   my $cbuilder_config = {
     ld => $ld,
     lddlflags => $ldflags_str,

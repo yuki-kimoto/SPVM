@@ -385,9 +385,7 @@ sub add_lib_dirs {
 sub add_libs {
   my ($self, @libs) = @_;
   
-  my @libs_ldflags = map { "-l$_" } @libs;
-  
-  $self->add_ldflags(@libs_ldflags);
+  push @{$self->{libs}}, @libs;
 }
 
 sub add_static_libs {
@@ -680,16 +678,6 @@ Add the values that each element is converted to the following hash reference af
 B<Examples:>
 
   $config->add_dynamic_libs('gsl');
-
-=head2 add_libs
-
-  $config->add_libs(@libs);
-
-Add values that each value is converted to C<-l$lib"> after the last element of C<ldflags> field.
-
-B<Examples:>
-
-  $config->add_libs('gsl');
 
 =head2 to_hash
 
