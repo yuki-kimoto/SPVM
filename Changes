@@ -11,7 +11,7 @@ Revision history for SPVM
         * SPVM::Builder::Config "ccflags" default becomes empty string except for Windows. Windows is "-fPIC"
         * Remove delete_std and get_std of SPVM::Builder::Config
         * SPVM::Builder::CC->compile don't depend on Perl compiled environment.
-        * add SPVM_DEBUG_CC enviroment variable to print SVPM::Builder::CC compile and link outputs to stderr.
+        * add SPVM_CC_DEBUG enviroment variable to print SVPM::Builder::CC compile and link outputs to stderr.
         * Remove get_cccdlflags, set_cccdlflags, append_cccdlflags, prepend_cccdlflags of SPVM::Builder::Config
         * Remove get_archlibexp, set_archlibexp of SPVM::Builder::Config
         * remove get_shrpenv, and set_shrpenv. shrpenv config is not used when linking

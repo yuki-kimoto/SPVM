@@ -23,7 +23,7 @@ sub new {
   
   my $self = {@_};
   
-  if ($ENV{SPVM_DEBUG_CC}) {
+  if ($ENV{SPVM_CC_DEBUG}) {
     $self->{quiet} = 0;
   }
   

@@ -458,7 +458,7 @@ In bash, you can set SPVM_BUILD_DIR to the following.
 
   export SPVM_BUILD_DIR=~/.spvm_build
 
-=head2 SPVM_DEBUG_CC
+=head2 SPVM_CC_DEBUG
 
 Print SVPM::Builder::CC compile and link outputs to stderr.
 
