@@ -115,14 +115,14 @@ sub runtime_libs {
   }
 }
 
-sub force_compile {
+sub force {
   my $self = shift;
   if (@_) {
-    $self->{force_compile} = $_[0];
+    $self->{force} = $_[0];
     return $self;
   }
   else {
-    return $self->{force_compile};
+    return $self->{force};
   }
 }
 
@@ -155,9 +155,9 @@ sub new {
     $self->optimize('-O3');
   }
   
-  # force_compile
-  unless (defined $self->{force_compile}) {
-    $self->force_compile(0);
+  # force
+  unless (defined $self->{force}) {
+    $self->force(0);
   }
   
   # ext
@@ -504,10 +504,10 @@ Get and get the directories libraries are load in runtime by Perl.
 
 If the library is dynamic link library, you must specify this option to load this at runtime.
 
-=head2 force_compile
+=head2 force
 
-  my $force_compile = $bconf->force_compile;
-  $bconf->force_compile($force_compile);
+  my $force = $bconf->force;
+  $bconf->force($force);
 
 Get and set the flag to force compiles and links without caching.
 

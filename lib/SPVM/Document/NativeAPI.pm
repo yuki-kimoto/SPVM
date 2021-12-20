@@ -122,7 +122,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   my $bconf = SPVM::Builder::Config->new_c99;
 
   # Show the compile commands
-  $bconf->force_compile(1);
+  $bconf->force(1);
 
   $bconf;
 

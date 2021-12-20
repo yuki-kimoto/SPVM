@@ -250,7 +250,7 @@ sub compile {
       $do_compile = 1;
     }
     else {
-      if ($bconf->force_compile) {
+      if ($bconf->force) {
         $do_compile = 1;
       }
       else {
