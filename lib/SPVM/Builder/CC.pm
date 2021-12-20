@@ -440,22 +440,22 @@ EOS
  
   # Config
   my $ld = $bconf->ld;
-  my $lddlflags = $bconf->ldflags;
+  my $lddlflags = $bconf->lddlflags;
   
-  my $lddlflags_str = join(' ', @{$bconf->ldflags});
+  my $lddlflags_str = join(' ', @{$bconf->lddlflags});
   $lddlflags_str = "$lib_dirs_str $lddlflags_str";
 
   my $ld_optimize = $bconf->ld_optimize;
   $lddlflags_str .= " $ld_optimize";
   
-  my $config = {
+  my $cbuilder_config = {
     ld => $ld,
     lddlflags => $lddlflags_str,
     shrpenv => '',
   };
   
   # ExtUtils::CBuilder object
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
 
   # Move temporary shared library file to blib directory
   mkpath dirname $shared_lib_file;
