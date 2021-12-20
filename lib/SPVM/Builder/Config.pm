@@ -421,6 +421,18 @@ sub add_libs {
   $self->add_ldflags(@libs_ldflags);
 }
 
+sub add_static_libs {
+  my ($self, @static_libs) = @_;
+  
+  push @{$self->{static_libs}}, @static_libs;
+}
+
+sub add_dynamic_libs {
+  my ($self, @dynamic_libs) = @_;
+  
+  push @{$self->{dynamic_libs}}, @dynamic_libs;
+}
+
 sub add_runtime_libs {
   my ($self, @runtime_libs) = @_;
   
