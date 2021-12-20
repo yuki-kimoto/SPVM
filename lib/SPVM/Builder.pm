@@ -141,18 +141,20 @@ sub bind_methods {
   my $bconf = $self->get_config($class_name, $category);
   my $lib_dirs = $bconf->lib_dirs;
   {
-    my $lib_dirs_str = join(' ', map { "-L$_" }  @$lib_dirs);
     my $runtime_libs = $bconf->runtime_libs;
     
-    local @DynaLoader::dl_library_path = ();
     for my $runtime_lib (@$runtime_libs) {
-      my $dl_findfile_arg = "$lib_dirs_str -l$runtime_lib";
-      my ($shared_lib_file) = DynaLoader::dl_findfile($dl_findfile_arg);
+      # Search dynamic link library
+      local @DynaLoader::dl_library_path = ();
+      my @dl_findfile_args = map { "-L$_" } @$lib_dirs;
+      push @dl_findfile_args, "-l$runtime_lib";
+      my ($shared_lib_file) = DynaLoader::dl_findfile(@dl_findfile_args);
       unless ($shared_lib_file) {
         my $dl_error = DynaLoader::dl_error();
-        confess "Dynamic link library \"$runtime_lib\" is not found : DynaLoader::dl_findfile fail. the artument \"$dl_findfile_arg\".";
+        confess "Dynamic link library \"$runtime_lib\" is not found : DynaLoader::dl_findfile fail. the artument \"@dl_findfile_args\".";
       }
       
+      # Load dynamic link library
       my $shared_libref = DynaLoader::dl_load_file($shared_lib_file);
       unless ($shared_libref) {
         my $dl_error = DynaLoader::dl_error();
