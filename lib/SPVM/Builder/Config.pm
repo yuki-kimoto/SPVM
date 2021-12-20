@@ -115,14 +115,14 @@ sub lib_dirs {
   }
 }
 
-sub dynamic_libs {
+sub libs {
   my $self = shift;
   if (@_) {
-    $self->{dynamic_libs} = $_[0];
+    $self->{libs} = $_[0];
     return $self;
   }
   else {
-    return $self->{dynamic_libs};
+    return $self->{libs};
   }
 }
 
@@ -233,14 +233,9 @@ sub new {
     $self->lib_dirs([]);
   }
   
-  # static_libs
-  unless (defined $self->{static_libs}) {
-    $self->static_libs([]);
-  }
-  
-  # dynamic_libs
-  unless (defined $self->{dynamic_libs}) {
-    $self->dynamic_libs([]);
+  # libs
+  unless (defined $self->{libs}) {
+    $self->libs([]);
   }
   
   # ldflags
@@ -398,13 +393,17 @@ sub add_libs {
 sub add_static_libs {
   my ($self, @static_libs) = @_;
   
-  push @{$self->{static_libs}}, @static_libs;
+  my @static_lib_infos = map { {type => 'static', name => $_ } } @static_libs;
+  
+  $self->add_libs(@static_lib_infos);
 }
 
 sub add_dynamic_libs {
   my ($self, @dynamic_libs) = @_;
   
-  push @{$self->{dynamic_libs}}, @dynamic_libs;
+  my @dynamic_lib_infos = map { {type => 'dynamic', name => $_ } } @dynamic_libs;
+  
+  $self->add_libs(@dynamic_lib_infos);
 }
 
 sub to_hash {
@@ -499,9 +498,7 @@ Get and set a linker. Default is C<ld> of L<Config> module.
   my $lib_dirs = $config->lib_dirs;
   $config->lib_dirs($lib_dirs);
 
-Get and set the directories libraries are load of the linker. This is same as C<-L> option of C<gcc>.
-
-This value is used by Perl at runtime. Perl needs to load the dynamic link libraries at runtime.
+Get and set the directories libraries are searched for by the linker. This is same as C<-L> option of C<gcc>.
 
 B<Default:>
 
@@ -513,19 +510,26 @@ Not Windows
 
   empty list
 
-=head2 static_libs
+=head2 libs
 
-  my $static_libs = $config->static_libs;
-  $config->static_libs($static_libs);
+  my $libs = $config->libs;
+  $config->libs($libs);
 
-Get and get static libraries. These libraries are linked as static librares by the linker.
+Get and get libraries. These libraries are linked by the linker.
 
-=head2 dynamic_libs
+If a dynamic link library is found from L<"lib_dirs">, this is linked. Otherwise if a static link library is found from L<"lib_dirs">, this is linked.
 
-  my $dynamic_libs = $config->dynamic_libs;
-  $config->dynamic_libs($dynamic_libs);
+B<Examples:>
 
-Get and get static libraries. These libraries are linked as dynamic librares by the linker using the ablosute path.
+  $config->libs(['gsl', 'png']);
+
+If you want to link only dynamic link library, you can use the following hash reference as the value of the element instead of the library name.
+
+  {type => 'dynamic', name => 'gsl'}
+
+If you want to link only static link library, you can use the following hash reference as the value of the element instead of the library name.
+
+  {type => 'static', name => 'gsl'}
 
 =head2 ldflags
 
@@ -643,11 +647,23 @@ Add values after the last element of C<include_dirs> field.
 
 Add values after the last element of  C<lib_dirs> field.
 
+=head2 add_libs
+
+  $config->add_libs(@libs);
+
+Add the values after the last element of C<libs> field.
+
+B<Examples:>
+
+  $config->add_libs('gsl');
+
 =head2 add_static_libs
 
   $config->add_static_libs(@libs);
 
-Add values after the last element of C<static_libs> field.
+Add the values that each element is converted to the following hash reference after the last element of C<libs> field.
+
+  {type => 'static', name => $lib}
 
 B<Examples:>
 
@@ -657,7 +673,9 @@ B<Examples:>
 
   $config->add_dynamic_libs(@libs);
 
-Add values after the last element of C<dynamic_libs> field.
+Add the values that each element is converted to the following hash reference after the last element of C<libs> field.
+
+  {type => 'dynamic', name => $lib}
 
 B<Examples:>
 

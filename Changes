@@ -39,7 +39,7 @@ Revision history for SPVM
         * Add SPVM_CC_FORCE enviroment variables.
         * Rename force_compile field of SPVM::Builder::Config to force.
         * Add ld_optimize field of SPVM::Builder::Config.
-        * Add static_libs and dynamic_libs fields to SPVM::Builder::Config
+        * Add libs field to SPVM::Builder::Config
         * Add add_static_libs and add_dynamic_libs methods to SPVM::Builder::Config
         * Rename lddlflags field to ldflags, add_lddlflags method to add_ldflags
         * remove runtime_libs filed field, add_runtime_libs method of SPVM::Builder::Config.

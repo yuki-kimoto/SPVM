@@ -447,41 +447,57 @@ EOS
   my $ldflags_str = join(' ', @{$config->ldflags});
   $ldflags_str = "$ldflags_str";
 
-  # Static libraries
-  my @static_lib_files;
+  # Libraries
+  my @lib_files;
   {
-    my $static_libs = $config->static_libs;
-    for my $static_lib (@$static_libs) {
-      for my $lib_dir (@$lib_dirs) {
-        $lib_dir =~ s|[\\/]$||;
-        my $static_lib_file_base = "lib$static_lib.a";
-        my $static_lib_file = "$lib_dir/$static_lib_file_base";
-        if (-f $static_lib_file) {
-          push @static_lib_files, $static_lib_file;
-          last;
-        }
+    my $libs = $config->libs;
+    for my $lib (@$libs) {
+      my $type;
+      my $lib_name;
+      if (ref $lib eq 'HASH') {
+        $type = $lib->{type};
+        $lib_name = $lib->{name};
       }
-    }
-  }
-  push @$object_files, @static_lib_files;
-  
-  # Dynamic libraries
-  my @dynamic_lib_files;
-  {
-    my $dynamic_libs = $config->dynamic_libs;
-    for my $dynamic_lib (@$dynamic_libs) {
+      else {
+        $lib_name = $lib;
+        $type = 'dynamic,static';
+      }
+      
       for my $lib_dir (@$lib_dirs) {
         $lib_dir =~ s|[\\/]$||;
-        my $dynamic_lib_file_base = "lib$dynamic_lib.$Config{dlext}";
+
+        my $dynamic_lib_file_base = "lib$lib_name.$Config{dlext}";
         my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
-        if (-f $dynamic_lib_file) {
-          push @dynamic_lib_files, $dynamic_lib_file;
-          last;
+
+        my $static_lib_file_base = "lib$lib_name.a";
+        my $static_lib_file = "$lib_dir/$static_lib_file_base";
+        
+        if ($type eq 'dynamic,static') {
+          if (-f $dynamic_lib_file) {
+            push @lib_files, $dynamic_lib_file;
+            last;
+          }
+          elsif (-f $static_lib_file) {
+            push @lib_files, $static_lib_file;
+            last;
+          }
+        }
+        elsif ($type eq 'dynamic') {
+          if (-f $dynamic_lib_file) {
+            push @lib_files, $dynamic_lib_file;
+            last;
+          }
+        }
+        elsif ($type eq 'static') {
+          if (-f $static_lib_file) {
+            push @lib_files, $static_lib_file;
+            last;
+          }
         }
       }
     }
   }
-  push @$object_files, @dynamic_lib_files;
+  push @$object_files, @lib_files;
 
   my $ld_optimize = $config->ld_optimize;
   $ldflags_str .= " $ld_optimize";
