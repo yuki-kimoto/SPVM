@@ -440,9 +440,9 @@ EOS
  
   # Config
   my $ld = $bconf->ld;
-  my $lddlflags = $bconf->lddlflags;
+  my $lddlflags = $bconf->ldflags;
   
-  my $lddlflags_str = join(' ', @{$bconf->lddlflags});
+  my $lddlflags_str = join(' ', @{$bconf->ldflags});
   $lddlflags_str = "$lib_dirs_str $lddlflags_str";
 
   my $ld_optimize = $bconf->ld_optimize;

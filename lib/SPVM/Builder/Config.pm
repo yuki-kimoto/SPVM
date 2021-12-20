@@ -93,14 +93,14 @@ sub ld {
   }
 }
 
-sub lddlflags {
+sub ldflags {
   my $self = shift;
   if (@_) {
-    $self->{lddlflags} = $_[0];
+    $self->{ldflags} = $_[0];
     return $self;
   }
   else {
-    return $self->{lddlflags};
+    return $self->{ldflags};
   }
 }
 
@@ -264,20 +264,20 @@ sub new {
     $self->dynamic_libs([]);
   }
   
-  # lddlflags
-  unless (defined $self->{lddlflags}) {
-    $self->lddlflags([]);
+  # ldflags
+  unless (defined $self->{ldflags}) {
+    $self->ldflags([]);
     
-    my @default_lddlflags;
+    my @default_ldflags;
     
     # Dynamic link options
     if ($^O eq 'MSWin32') {
-      push @default_lddlflags, '-mdll -s';
+      push @default_ldflags, '-mdll -s';
     }
     else {
-      push @default_lddlflags, '-shared';
+      push @default_ldflags, '-shared';
     }
-    $self->add_lddlflags(@default_lddlflags);
+    $self->add_ldflags(@default_ldflags);
   }
 
   # ld_optimize
@@ -401,10 +401,10 @@ sub set_std {
   return $self;
 }
 
-sub add_lddlflags {
-  my ($self, @lddlflags) = @_;
+sub add_ldflags {
+  my ($self, @ldflags) = @_;
   
-  push @{$self->{lddlflags}}, @lddlflags;
+  push @{$self->{ldflags}}, @ldflags;
 }
 
 sub add_lib_dirs {
@@ -416,9 +416,9 @@ sub add_lib_dirs {
 sub add_libs {
   my ($self, @libs) = @_;
   
-  my @libs_lddlflags = map { "-l$_" } @libs;
+  my @libs_ldflags = map { "-l$_" } @libs;
   
-  $self->add_lddlflags(@libs_lddlflags);
+  $self->add_ldflags(@libs_ldflags);
 }
 
 sub add_runtime_libs {
@@ -547,10 +547,10 @@ Get and get static libraries. These libraries are linked as static librares by t
 
 Get and get static libraries. These libraries are linked as dynamic librares by the linker using the ablosute path.
 
-=head2 lddlflags
+=head2 ldflags
 
-  my lddlflags = $bconf->lddlflags;
-  $bconf->lddlflags(lddlflags);
+  my ldflags = $bconf->ldflags;
+  $bconf->ldflags(ldflags);
 
 Get and set linker flags. 
 
@@ -654,11 +654,11 @@ B<Example:>
 
 Add values after the last element of C<ccflags> field.
 
-=head2 add_lddlflags
+=head2 add_ldflags
 
-  $bconf->add_lddlflags(@lddlflags);
+  $bconf->add_ldflags(@ldflags);
 
-Add values after the last element of C<lddlflags> field.
+Add values after the last element of C<ldflags> field.
 
 =head2 add_include_dirs
 
@@ -696,7 +696,7 @@ B<Examples:>
 
   $bconf->add_libs(@libs);
 
-Add values that each value is converted to C<-l$lib"> after the last element of C<lddlflags> field.
+Add values that each value is converted to C<-l$lib"> after the last element of C<ldflags> field.
 
 B<Examples:>
 

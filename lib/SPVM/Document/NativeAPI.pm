@@ -95,7 +95,7 @@ Native Config File is Perl source code. Native Config File must return properly 
 
   # Linker
   $bconf->ld('nvcc');
-  $bconf->lddlflags('-shared');
+  $bconf->ldflags('-shared');
 
   $bconf;
 
