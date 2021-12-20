@@ -457,10 +457,13 @@ EOS
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $config);
 
+  # Move temporary shared library file to blib directory
+  mkpath dirname $shared_lib_file;
+
   # Link and create shared library
-  my $tmp_shared_lib_file;
   eval {
-    $tmp_shared_lib_file = $cbuilder->link(
+    $cbuilder->link(
+      lib_file => $shared_lib_file,
       objects => $object_files,
       module_name => $class_name,
       dl_func_list => $dl_func_list,
@@ -469,11 +472,6 @@ EOS
   if (my $error = $@) {
     confess $error;
   }
-
-  # Move temporary shared library file to blib directory
-  mkpath dirname $shared_lib_file;
-  move($tmp_shared_lib_file, $shared_lib_file)
-    or die "Can't move $tmp_shared_lib_file to $shared_lib_file";
   
   return $shared_lib_file;
 }
