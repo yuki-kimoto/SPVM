@@ -115,6 +115,28 @@ sub lib_dirs {
   }
 }
 
+sub dynamic_libs {
+  my $self = shift;
+  if (@_) {
+    $self->{dynamic_libs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{dynamic_libs};
+  }
+}
+
+sub static_libs {
+  my $self = shift;
+  if (@_) {
+    $self->{static_libs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{static_libs};
+  }
+}
+
 sub runtime_libs {
   my $self = shift;
   if (@_) {
@@ -230,6 +252,16 @@ sub new {
     }
     
     $self->add_lib_dirs(@default_lib_dirs);
+  }
+  
+  # static_libs
+  unless (defined $self->{static_libs}) {
+    $self->static_libs([]);
+  }
+  
+  # dynamic_libs
+  unless (defined $self->{dynamic_libs}) {
+    $self->dynamic_libs([]);
   }
   
   # lddlflags
@@ -501,6 +533,20 @@ Not Windows
 
   empty list
 
+=head2 static_libs
+
+  my $static_libs = $bconf->static_libs;
+  $bconf->static_libs($static_libs);
+
+Get and get static libraries. These libraries are linked as static librares by the linker.
+
+=head2 dynamic_libs
+
+  my $dynamic_libs = $bconf->dynamic_libs;
+  $bconf->dynamic_libs($dynamic_libs);
+
+Get and get static libraries. These libraries are linked as dynamic librares by the linker using the ablosute path.
+
 =head2 lddlflags
 
   my lddlflags = $bconf->lddlflags;
@@ -625,6 +671,26 @@ Add values after the last element of C<include_dirs> field.
   $bconf->add_lib_dirs(@lib_dirs);
 
 Add values after the last element of  C<lib_dirs> field.
+
+=head2 add_static_libs
+
+  $bconf->add_static_libs(@libs);
+
+Add values after the last element of C<static_libs> field.
+
+B<Examples:>
+
+  $bconf->add_static_libs('gsl');
+
+=head2 add_dynamic_libs
+
+  $bconf->add_dynamic_libs(@libs);
+
+Add values after the last element of C<dynamic_libs> field.
+
+B<Examples:>
+
+  $bconf->add_dynamic_libs('gsl');
 
 =head2 add_libs
 
