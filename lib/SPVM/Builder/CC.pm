@@ -3,6 +3,7 @@ package SPVM::Builder::CC;
 use strict;
 use warnings;
 use Carp 'confess';
+use Config;
 
 use ExtUtils::CBuilder;
 use File::Copy 'copy', 'move';
@@ -436,7 +437,8 @@ EOS
   }
 
   # Add library directories and libraries to Linker flags
-  my $lib_dirs_str = join(' ', map { "-L$_" } @{$config->lib_dirs});
+  my $lib_dirs = $config->lib_dirs;
+  my $lib_dirs_str = join(' ', map { "-L$_" } @$lib_dirs);
  
   # Config
   my $ld = $config->ld;
@@ -444,6 +446,38 @@ EOS
   
   my $ldflags_str = join(' ', @{$config->ldflags});
   $ldflags_str = "$lib_dirs_str $ldflags_str";
+
+  # Static libraries
+  my @static_lib_files;
+  {
+    my $static_libs = $config->static_libs;
+    for my $static_lib (@$static_libs) {
+      for my $lib_dir (@$lib_dirs) {
+        my $static_lib_file_base = "lib$static_lib.a";
+        my $static_lib_file = "$lib_dir/$static_lib_file_base";
+        if (-f $static_lib_file) {
+          push @static_lib_files, $static_lib_file;
+        }
+      }
+    }
+  }
+  $ldflags_str .= ' ' . join(' ', @static_lib_files);
+
+  # Dynamic libraries
+  my @dynamic_lib_files;
+  {
+    my $dynamic_libs = $config->dynamic_libs;
+    for my $dynamic_lib (@$dynamic_libs) {
+      for my $lib_dir (@$lib_dirs) {
+        my $dynamic_lib_file_base = "lib$dynamic_lib.$Config{dlext}";
+        my $dynamic_lib_file = "$lib_dir/$dynamic_lib_file_base";
+        if (-f $dynamic_lib_file) {
+          push @dynamic_lib_files, $dynamic_lib_file;
+        }
+      }
+    }
+  }
+  $ldflags_str .= ' ' . join(' ', @dynamic_lib_files);
 
   my $ld_optimize = $config->ld_optimize;
   $ldflags_str .= " $ld_optimize";
