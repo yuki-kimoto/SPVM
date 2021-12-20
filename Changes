@@ -36,6 +36,7 @@ Revision history for SPVM
         * remove unshift_lib_dirs, unshift_include_dirs of SPVM::Builder::Config
         * add add_libs to SPVM::Builder::Config
         * SPVM::Builder::Config->new supports default values
+        * add SPVM_CC_FORCE enviroment variables.
 
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.

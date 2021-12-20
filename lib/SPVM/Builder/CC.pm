@@ -27,6 +27,10 @@ sub new {
     $self->{quiet} = 0;
   }
   
+  if ($ENV{SPVM_CC_FORCE}) {
+    $self->{force} = 1;
+  }
+  
   return bless $self, $class;
 }
 
