@@ -444,6 +444,9 @@ EOS
   
   my $lddlflags_str = join(' ', @{$bconf->lddlflags});
   $lddlflags_str = "$lib_dirs_str $lddlflags_str";
+
+  my $ld_optimize = $bconf->ld_optimize;
+  $lddlflags_str .= " $ld_optimize";
   
   my $config = {
     ld => $ld,

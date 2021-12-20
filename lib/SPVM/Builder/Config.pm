@@ -60,6 +60,17 @@ sub optimize {
   }
 }
 
+sub ld_optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{ld_optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ld_optimize};
+  }
+}
+
 sub include_dirs {
   my $self = shift;
   if (@_) {
@@ -150,11 +161,6 @@ sub new {
     $self->quiet(1);
   }
 
-  # optimize
-  unless (defined $self->{optimize}) {
-    $self->optimize('-O3');
-  }
-  
   # force
   unless (defined $self->{force}) {
     $self->force(0);
@@ -200,6 +206,11 @@ sub new {
     
     $self->add_ccflags(@default_ccflags);
   }
+
+  # optimize
+  unless (defined $self->{optimize}) {
+    $self->optimize('-O3');
+  }
   
   # ld
   unless (defined $self->{ld}) {
@@ -235,6 +246,11 @@ sub new {
       push @default_lddlflags, '-shared';
     }
     $self->add_lddlflags(@default_lddlflags);
+  }
+
+  # ld_optimize
+  unless (defined $self->{ld_optimize}) {
+    $self->ld_optimize('-O2');
   }
   
   # runtime_libs
@@ -447,10 +463,17 @@ Get and set compiler flags. the default is a empty string.
 =head2 optimize
 
   my $optimize = $bconf->optimize;
+  $bconf->optimize($optimize);
 
-Get and set the option for optimization such as C<-O3>, C<-O2>, C<-g3 -O0>.
+Get and set the option for optimization of the compiler.
 
 The default is C<-O3>.
+
+B<Examples:>
+
+  $bconf->optimize('-O3');
+  $bconf->optimize('-O2');
+  $bconf->optimize('-g3 -O0');
 
 =head2 ld
 
@@ -494,6 +517,15 @@ Windows
 Non-Windows
 
   "-shared"
+
+=head2 ld_optimize
+
+  my $ld_optimize = $bconf->ld_optimize;
+  $bconf->ld_optimize($ld_optimize);
+
+Get and set the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
+
+The default is C<-O2>.
 
 =head2 runtime_libs
 
