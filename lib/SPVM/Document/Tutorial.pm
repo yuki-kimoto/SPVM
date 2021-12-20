@@ -520,9 +520,9 @@ use strict;
 use warnings;
 
 use SPVM::Builder::Config;
-my $bconf = SPVM::Builder::Config->new_c99;
+my $config = SPVM::Builder::Config->new_c99;
 
-$bconf;
+$config;
 </pre>
 
 Use SPVM Native Method from Perl
@@ -605,9 +605,9 @@ use strict;
 use warnings;
 
 use SPVM::Builder::Config;
-my $bconf = SPVM::Builder::Config->new_c99;
+my $config = SPVM::Builder::Config->new_c99;
 
-$bconf;
+$config;
 </pre>
 
 Call C library from C program.

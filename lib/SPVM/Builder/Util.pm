@@ -38,12 +38,12 @@ sub load_config {
   open my $config_fh, '<', $config_file
     or confess "Can't open $config_file: $!";
   my $config_content = do { local $/; <$config_fh> };
-  my $bconf = eval "$config_content";
+  my $config = eval "$config_content";
   if (my $messge = $@) {
     confess "Can't parse config file \"$config_file\": $@";
   }
   
-  return $bconf;
+  return $config;
 }
 
 sub unindent {

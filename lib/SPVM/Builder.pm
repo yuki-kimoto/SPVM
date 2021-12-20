@@ -138,10 +138,10 @@ sub bind_methods {
   my ($self, $cc, $shared_lib_file, $class_name, $category) = @_;
 
   # Load pre-required dynamic library
-  my $bconf = $self->get_config($class_name, $category);
-  my $lib_dirs = $bconf->lib_dirs;
+  my $config = $self->get_config($class_name, $category);
+  my $lib_dirs = $config->lib_dirs;
   {
-    my $runtime_libs = $bconf->runtime_libs;
+    my $runtime_libs = $config->runtime_libs;
     
     for my $runtime_lib (@$runtime_libs) {
       # Search dynamic link library
@@ -243,9 +243,9 @@ sub get_config {
   my $config_file = "$src_dir/$config_rel_file";
   
   # Config
-  my $bconf;
+  my $config;
   if (-f $config_file) {
-    $bconf = SPVM::Builder::Util::load_config($config_file);
+    $config = SPVM::Builder::Util::load_config($config_file);
   }
   else {
     if ($category eq 'native') {
@@ -258,21 +258,21 @@ use strict;
 use warnings;
 
 use SPVM::Builder::Config;
-my \$bconf = SPVM::Builder::Config->new_c99;
+my \$config = SPVM::Builder::Config->new_c99;
 
-\$bconf;
+\$config;
 ----------------------------------------------
 $@
 EOS
       confess $error;
     }
     else {
-      $bconf = SPVM::Builder::Config->new_c99;
+      $config = SPVM::Builder::Config->new_c99;
     }
   }
 
 
-  return $bconf;
+  return $config;
 }
 
 1;

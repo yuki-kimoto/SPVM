@@ -37,9 +37,9 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99;
 
-  $bconf;
+  $config;
 
 =head3 C11 Config File Example
 
@@ -48,11 +48,11 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_c;
+  my $config = SPVM::Builder::Config->new_c;
 
-  $bconf->set_std('c11');
+  $config->set_std('c11');
 
-  $bconf;
+  $config;
 
 =head3 C++ Config File Example
 
@@ -61,9 +61,9 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_cpp;
+  my $config = SPVM::Builder::Config->new_cpp;
 
-  $bconf;
+  $config;
 
 =head3 C++11 Config File Example
 
@@ -72,32 +72,32 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_cpp;
+  my $config = SPVM::Builder::Config->new_cpp;
 
-  $bconf->set_std('c++11');
+  $config->set_std('c++11');
 
-  $bconf;
+  $config;
 
 =head3 CUDA/nvcc Config File Example
 
   use strict;
   use warnings;
 
-  my $bconf = SPVM::Builder::Config->new;
+  my $config = SPVM::Builder::Config->new;
 
   # Compiler and Linker common
-  $bconf->set_cccdlflags(q(--compiler-options '-fPIC'));
+  $config->set_cccdlflags(q(--compiler-options '-fPIC'));
 
   # Compiler
-  $bconf->cc('nvcc');
-  $bconf->ccflags('');
-  $bconf->ext('cu');
+  $config->cc('nvcc');
+  $config->ccflags('');
+  $config->ext('cu');
 
   # Linker
-  $bconf->ld('nvcc');
-  $bconf->ldflags('-shared');
+  $config->ld('nvcc');
+  $config->ldflags('-shared');
 
-  $bconf;
+  $config;
 
 =head3 Show the compile commands
 
@@ -106,12 +106,12 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99;
 
   # Show the compile commands
-  $bconf->quiet(0);
+  $config->quiet(0);
 
-  $bconf;
+  $config;
 
 =head3 Force the compiles
 
@@ -119,12 +119,12 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99;
 
   # Show the compile commands
-  $bconf->force(1);
+  $config->force(1);
 
-  $bconf;
+  $config;
 
 =head2 Native Method Definition
 

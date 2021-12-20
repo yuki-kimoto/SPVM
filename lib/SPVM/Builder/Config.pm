@@ -457,8 +457,8 @@ Fields.
 
 =head2 ext
 
-  my $ext = $bconf->ext;
-  $bconf->ext($ext);
+  my $ext = $config->ext;
+  $config->ext($ext);
 
 Get and set the extension of native sources. This is used by the compiler.
 
@@ -466,20 +466,20 @@ The default is C<undef>.
 
 B<Examples:>
 
-  $bconf->ext('c');
-  $bconf->ext('cpp');
+  $config->ext('c');
+  $config->ext('cpp');
   
 =head2 cc
 
-  my $cc = $bconf->cc;
-  $bconf->cc($cc);
+  my $cc = $config->cc;
+  $config->cc($cc);
 
 Get and set a compiler. The default is the value of C<cc> of L<Config> module.
 
 =head2 include_dirs
 
-  my $include_dirs = $bconf->include_dirs;
-  $bconf->include_dirs($include_dirs);
+  my $include_dirs = $config->include_dirs;
+  $config->include_dirs($include_dirs);
 
 Get and set header including directories of the compiler. This is same as C<-I> option of C<gcc>. 
 
@@ -487,15 +487,15 @@ The default value is "SPVM/Builder/include" of one up of directory that SPVM::Bu
 
 =head2 ccflags
 
-  my $ccflags = $bconf->ccflags;
-  $bconf->ccflags($ccflags);
+  my $ccflags = $config->ccflags;
+  $config->ccflags($ccflags);
 
 Get and set compiler flags. the default is a empty string.
 
 =head2 optimize
 
-  my $optimize = $bconf->optimize;
-  $bconf->optimize($optimize);
+  my $optimize = $config->optimize;
+  $config->optimize($optimize);
 
 Get and set the option for optimization of the compiler.
 
@@ -503,21 +503,21 @@ The default is C<-O3>.
 
 B<Examples:>
 
-  $bconf->optimize('-O3');
-  $bconf->optimize('-O2');
-  $bconf->optimize('-g3 -O0');
+  $config->optimize('-O3');
+  $config->optimize('-O2');
+  $config->optimize('-g3 -O0');
 
 =head2 ld
 
-  my $ld = $bconf->ld;
-  $bconf->ld($ld);
+  my $ld = $config->ld;
+  $config->ld($ld);
 
 Get and set a linker. Default is C<ld> of L<Config> module.
 
 =head2 lib_dirs
 
-  my $lib_dirs = $bconf->lib_dirs;
-  $bconf->lib_dirs($lib_dirs);
+  my $lib_dirs = $config->lib_dirs;
+  $config->lib_dirs($lib_dirs);
 
 Get and set the directories libraries are load of the linker. This is same as C<-L> option of C<gcc>.
 
@@ -535,22 +535,22 @@ Not Windows
 
 =head2 static_libs
 
-  my $static_libs = $bconf->static_libs;
-  $bconf->static_libs($static_libs);
+  my $static_libs = $config->static_libs;
+  $config->static_libs($static_libs);
 
 Get and get static libraries. These libraries are linked as static librares by the linker.
 
 =head2 dynamic_libs
 
-  my $dynamic_libs = $bconf->dynamic_libs;
-  $bconf->dynamic_libs($dynamic_libs);
+  my $dynamic_libs = $config->dynamic_libs;
+  $config->dynamic_libs($dynamic_libs);
 
 Get and get static libraries. These libraries are linked as dynamic librares by the linker using the ablosute path.
 
 =head2 ldflags
 
-  my ldflags = $bconf->ldflags;
-  $bconf->ldflags(ldflags);
+  my ldflags = $config->ldflags;
+  $config->ldflags(ldflags);
 
 Get and set linker flags. 
 
@@ -566,8 +566,8 @@ Non-Windows
 
 =head2 ld_optimize
 
-  my $ld_optimize = $bconf->ld_optimize;
-  $bconf->ld_optimize($ld_optimize);
+  my $ld_optimize = $config->ld_optimize;
+  $config->ld_optimize($ld_optimize);
 
 Get and set the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
 
@@ -575,8 +575,8 @@ The default is C<-O2>.
 
 =head2 runtime_libs
 
-  my $runtime_libs = $bconf->runtime_libs;
-  $bconf->runtime_libs($runtime_libs);
+  my $runtime_libs = $config->runtime_libs;
+  $config->runtime_libs($runtime_libs);
 
 Get and get the directories libraries are load in runtime by Perl.
 
@@ -584,15 +584,15 @@ If the library is dynamic link library, you must specify this option to load thi
 
 =head2 force
 
-  my $force = $bconf->force;
-  $bconf->force($force);
+  my $force = $config->force;
+  $config->force($force);
 
 Get and set the flag to force compiles and links without caching.
 
 =head2 quiet
 
-  my $quiet = $bconf->quiet;
-  $bconf->quiet($quiet);
+  my $quiet = $config->quiet;
+  $config->quiet($quiet);
 
 Get and set the flag if the compiler and the linker output the results.
 
@@ -602,118 +602,118 @@ The default is C<1>.
 
 =head2 new
 
-  my $bconf = SPVM::Builder::Config->new;
+  my $config = SPVM::Builder::Config->new;
   
 Create L<SPVM::Builder::Config> object.
 
 =head2 new_c
   
-  my $bconf = SPVM::Builder::Config->new_c;
+  my $config = SPVM::Builder::Config->new_c;
 
 Create default build config with C settings. This is L<SPVM::Builder::Config> object.
 
 If you want to use the specific C version, use C<set_std> method.
 
-  $bconf->set_std('c99');
+  $config->set_std('c99');
 
 =head2 new_c99
   
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99;
 
 Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
 
 =head2 new_cpp
   
-  my $bconf = SPVM::Builder::Config->new_cpp;
+  my $config = SPVM::Builder::Config->new_cpp;
 
 Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
 
 If you want to use the specific C++ version, use C<set_std> method.
 
-  $bconf->set_std('c++11');
+  $config->set_std('c++11');
 
 =head2 new_cpp11
   
-  my $bconf = SPVM::Builder::Config->new_cpp11;
+  my $config = SPVM::Builder::Config->new_cpp11;
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
 
 =head2 set_std
 
-  $bconf->set_std($std);
+  $config->set_std($std);
 
 Add the value that is converted to C<-std=$std> after the last element of C<ccflags> field.
 
 B<Example:>
 
-  $bconf->set_std('gnu99');
+  $config->set_std('gnu99');
 
 =head2 add_ccflags
 
-  $bconf->add_ccflags(@ccflags);
+  $config->add_ccflags(@ccflags);
 
 Add values after the last element of C<ccflags> field.
 
 =head2 add_ldflags
 
-  $bconf->add_ldflags(@ldflags);
+  $config->add_ldflags(@ldflags);
 
 Add values after the last element of C<ldflags> field.
 
 =head2 add_include_dirs
 
-  $bconf->add_include_dirs(@include_dirs);
+  $config->add_include_dirs(@include_dirs);
 
 Add values after the last element of C<include_dirs> field.
 
 =head2 add_lib_dirs
 
-  $bconf->add_lib_dirs(@lib_dirs);
+  $config->add_lib_dirs(@lib_dirs);
 
 Add values after the last element of  C<lib_dirs> field.
 
 =head2 add_static_libs
 
-  $bconf->add_static_libs(@libs);
+  $config->add_static_libs(@libs);
 
 Add values after the last element of C<static_libs> field.
 
 B<Examples:>
 
-  $bconf->add_static_libs('gsl');
+  $config->add_static_libs('gsl');
 
 =head2 add_dynamic_libs
 
-  $bconf->add_dynamic_libs(@libs);
+  $config->add_dynamic_libs(@libs);
 
 Add values after the last element of C<dynamic_libs> field.
 
 B<Examples:>
 
-  $bconf->add_dynamic_libs('gsl');
+  $config->add_dynamic_libs('gsl');
 
 =head2 add_libs
 
-  $bconf->add_libs(@libs);
+  $config->add_libs(@libs);
 
 Add values that each value is converted to C<-l$lib"> after the last element of C<ldflags> field.
 
 B<Examples:>
 
-  $bconf->add_libs('gsl');
+  $config->add_libs('gsl');
 
 =head2 add_runtime_libs
 
-  $bconf->add_runtime_libs(@libs);
+  $config->add_runtime_libs(@libs);
 
 Add values after the last element of  C<runtime_libs> field.
 
 B<Examples:>
 
-  $bconf->add_runtime_libs('gsl');
+  $config->add_runtime_libs('gsl');
 
 =head2 to_hash
 
-  my $config = $bconf->to_hash;
+  my $config = $config->to_hash;
 
 Convert L<SPVM::Builder::Config> to a hash reference.

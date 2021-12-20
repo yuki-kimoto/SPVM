@@ -179,19 +179,19 @@ sub compile {
   my $native_src_dir = "$native_dir/src";
 
   # Config
-  my $bconf;
+  my $config;
   if (-f $config_file) {
-    $bconf = SPVM::Builder::Util::load_config($config_file);
+    $config = SPVM::Builder::Util::load_config($config_file);
   }
   else {
-    $bconf = SPVM::Builder::Config->new_c99;;
+    $config = SPVM::Builder::Config->new_c99;;
   }
   
   # Add native include dir
-  unshift @{$bconf->include_dirs}, $native_include_dir;
+  unshift @{$config->include_dirs}, $native_include_dir;
 
   # Quiet output
-  my $quiet = $bconf->quiet;
+  my $quiet = $config->quiet;
 
   # If quiet field exists, overwrite it
   if (defined $self->quiet) {
@@ -201,7 +201,7 @@ sub compile {
   # SPVM Method source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
   my $spvm_method_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
-  my $src_ext = $bconf->ext;
+  my $src_ext = $config->ext;
   unless (defined $src_ext) {
     confess "Source extension is not specified";
   }
@@ -250,7 +250,7 @@ sub compile {
       $do_compile = 1;
     }
     else {
-      if ($bconf->force) {
+      if ($config->force) {
         $do_compile = 1;
       }
       else {
@@ -288,7 +288,7 @@ sub compile {
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
 
-      my $cc_cmd = $self->create_compile_command($bconf, $object_file, $src_file);
+      my $cc_cmd = $self->create_compile_command($config, $object_file, $src_file);
       eval {
         # Execute compile command
         $cbuilder->do_system(@$cc_cmd)
@@ -304,20 +304,20 @@ sub compile {
 }
 
 sub create_compile_command {
-  my ($self, $bconf, $output_file, $src_file) = @_;
+  my ($self, $config, $output_file, $src_file) = @_;
   
-  my $cc = $bconf->cc;
+  my $cc = $config->cc;
   
   my $cflags = '';
 
-  my $include_dirs = $bconf->include_dirs;
+  my $include_dirs = $config->include_dirs;
   my $inc = join(' ', map { "-I$_" } @$include_dirs);
   $cflags .= " $inc";
   
-  my $ccflags = $bconf->ccflags;
+  my $ccflags = $config->ccflags;
   $cflags .= " " . join(' ', @$ccflags);
   
-  my $optimize = $bconf->optimize;
+  my $optimize = $config->optimize;
   $cflags .= " $optimize";
   
   my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
@@ -364,9 +364,9 @@ sub link {
   my $config_file = "$src_dir/$config_rel_file";
 
   # Config
-  my $bconf;
+  my $config;
   if (-f $config_file) {
-    $bconf = SPVM::Builder::Util::load_config($config_file);
+    $config = SPVM::Builder::Util::load_config($config_file);
   }
   else {
     if ($category eq 'native') {
@@ -379,16 +379,16 @@ use strict;
 use warnings;
 
 use SPVM::Builder::Config;
-my \$bconf = SPVM::Builder::Config->new_c99;
+my \$config = SPVM::Builder::Config->new_c99;
 
-\$bconf;
+\$config;
 ----------------------------------------------
 
 EOS
       confess $error;
     }
     else {
-      $bconf = SPVM::Builder::Config->new_c99;
+      $config = SPVM::Builder::Config->new_c99;
     }
   }
 
@@ -400,11 +400,11 @@ EOS
   # Library directory
   my $native_lib_dir = "$native_dir/lib";
   if (-d $native_lib_dir) {
-    $bconf->unshift_lib_dirs($native_lib_dir);
+    $config->unshift_lib_dirs($native_lib_dir);
   }
   
   # Quiet output
-  my $quiet = $bconf->quiet;
+  my $quiet = $config->quiet;
 
   # If quiet field exists, overwrite it
   if (defined $self->quiet) {
@@ -436,21 +436,21 @@ EOS
   }
 
   # Add library directories and libraries to Linker flags
-  my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->lib_dirs});
+  my $lib_dirs_str = join(' ', map { "-L$_" } @{$config->lib_dirs});
  
   # Config
-  my $ld = $bconf->ld;
-  my $lddlflags = $bconf->lddlflags;
+  my $ld = $config->ld;
+  my $ldflags = $config->ldflags;
   
-  my $lddlflags_str = join(' ', @{$bconf->lddlflags});
-  $lddlflags_str = "$lib_dirs_str $lddlflags_str";
+  my $ldflags_str = join(' ', @{$config->ldflags});
+  $ldflags_str = "$lib_dirs_str $ldflags_str";
 
-  my $ld_optimize = $bconf->ld_optimize;
-  $lddlflags_str .= " $ld_optimize";
+  my $ld_optimize = $config->ld_optimize;
+  $ldflags_str .= " $ld_optimize";
   
   my $cbuilder_config = {
     ld => $ld,
-    lddlflags => $lddlflags_str,
+    lddlflags => $ldflags_str,
     shrpenv => '',
   };
   
