@@ -137,17 +137,6 @@ sub static_libs {
   }
 }
 
-sub runtime_libs {
-  my $self = shift;
-  if (@_) {
-    $self->{runtime_libs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{runtime_libs};
-  }
-}
-
 sub force {
   my $self = shift;
   if (@_) {
@@ -273,11 +262,6 @@ sub new {
   # ld_optimize
   unless (defined $self->{ld_optimize}) {
     $self->ld_optimize('-O2');
-  }
-  
-  # runtime_libs
-  unless (defined $self->{runtime_libs}) {
-    $self->runtime_libs([]);
   }
   
   # search_lib_dirs_cb
@@ -421,12 +405,6 @@ sub add_dynamic_libs {
   my ($self, @dynamic_libs) = @_;
   
   push @{$self->{dynamic_libs}}, @dynamic_libs;
-}
-
-sub add_runtime_libs {
-  my ($self, @runtime_libs) = @_;
-  
-  push @{$self->{runtime_libs}}, @runtime_libs;
 }
 
 sub to_hash {
@@ -575,15 +553,6 @@ Get and set the option for optimization of the linker such as C<-O3>, C<-O2>, C<
 
 The default is C<-O2>.
 
-=head2 runtime_libs
-
-  my $runtime_libs = $config->runtime_libs;
-  $config->runtime_libs($runtime_libs);
-
-Get and get the directories libraries are load in runtime by Perl.
-
-If the library is dynamic link library, you must specify this option to load this at runtime.
-
 =head2 force
 
   my $force = $config->force;
@@ -703,16 +672,6 @@ Add values that each value is converted to C<-l$lib"> after the last element of 
 B<Examples:>
 
   $config->add_libs('gsl');
-
-=head2 add_runtime_libs
-
-  $config->add_runtime_libs(@libs);
-
-Add values after the last element of  C<runtime_libs> field.
-
-B<Examples:>
-
-  $config->add_runtime_libs('gsl');
 
 =head2 to_hash
 

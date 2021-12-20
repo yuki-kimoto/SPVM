@@ -137,32 +137,6 @@ sub build_and_bind_shared_lib {
 sub bind_methods {
   my ($self, $cc, $shared_lib_file, $class_name, $category) = @_;
 
-  # Load pre-required dynamic library
-  my $config = $self->get_config($class_name, $category);
-  my $lib_dirs = $config->lib_dirs;
-  {
-    my $runtime_libs = $config->runtime_libs;
-    
-    for my $runtime_lib (@$runtime_libs) {
-      # Search dynamic link library
-      local @DynaLoader::dl_library_path = ();
-      my @dl_findfile_args = map { "-L$_" } @$lib_dirs;
-      push @dl_findfile_args, "-l$runtime_lib";
-      my ($shared_lib_file) = DynaLoader::dl_findfile(@dl_findfile_args);
-      unless ($shared_lib_file) {
-        my $dl_error = DynaLoader::dl_error();
-        confess "Dynamic link library \"$runtime_lib\" is not found : DynaLoader::dl_findfile fail. the artument \"@dl_findfile_args\".";
-      }
-      
-      # Load dynamic link library
-      my $shared_libref = DynaLoader::dl_load_file($shared_lib_file);
-      unless ($shared_libref) {
-        my $dl_error = DynaLoader::dl_error();
-        confess "Loading dynamic link library \"$runtime_lib\" fail : DynaLoader::dl_load_file fail. the artument \"$shared_lib_file\". Error message:$dl_error";
-      }
-    }
-  }
-  
   my $method_names = $self->get_method_names($class_name, $category);
   my $method_infos = [];
   for my $method_name (@$method_names) {

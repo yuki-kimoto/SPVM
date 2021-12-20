@@ -42,7 +42,9 @@ Revision history for SPVM
         * Add static_libs and dynamic_libs fields to SPVM::Builder::Config
         * Add add_static_libs and add_dynamic_libs methods to SPVM::Builder::Config
         * Rename lddlflags field to ldflags, add_lddlflags method to add_ldflags
-
+        * remove runtime_libs filed field, add_runtime_libs method of SPVM::Builder::Config.
+          The runtime linking is resolved at compile time using absolute path.
+        
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
 0.9018  2021-12-11
