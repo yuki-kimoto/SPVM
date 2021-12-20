@@ -242,16 +242,6 @@ sub new {
   # lib_dirs
   unless (defined $self->{lib_dirs}) {
     $self->lib_dirs([]);
-    
-    my @default_lib_dirs;
-    
-    # Library directories
-    if ($^O eq 'MSWin32') {
-      # Windows need perlxxx.dll(for example, perl534.dll) when creating dynamic links
-      push @default_lib_dirs, $Config{bin};
-    }
-    
-    $self->add_lib_dirs(@default_lib_dirs);
   }
   
   # static_libs
@@ -272,7 +262,7 @@ sub new {
     
     # Dynamic link options
     if ($^O eq 'MSWin32') {
-      push @default_ldflags, '-mdll -s';
+      push @default_ldflags, '-mdll', '-s' , "-L$Config{bin}";
     }
     else {
       push @default_ldflags, '-shared';
