@@ -126,17 +126,6 @@ sub libs {
   }
 }
 
-sub static_libs {
-  my $self = shift;
-  if (@_) {
-    $self->{static_libs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{static_libs};
-  }
-}
-
 sub force {
   my $self = shift;
   if (@_) {
