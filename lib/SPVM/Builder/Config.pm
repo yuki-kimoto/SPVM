@@ -148,17 +148,6 @@ sub force {
   }
 }
 
-sub search_lib_dirs_cb {
-  my $self = shift;
-  if (@_) {
-    $self->{search_lib_dirs_cb} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{search_lib_dirs_cb};
-  }
-}
-
 # Methods
 sub new {
   my $class = shift;
@@ -259,39 +248,6 @@ sub new {
     $self->ld_optimize('-O2');
   }
   
-  # search_lib_dirs_cb
-  unless (defined $self->{search_lib_dirs_cb}) {
-    $self->search_lib_dirs_cb(sub {
-      my ($self) = @_;
-      
-      my $cc = $self->cc;
-      
-      my $cmd = "$cc -print-search-dirs";
-      
-      my $output = `$cmd`;
-      
-      my $lib_dirs_str;
-      if ($output =~ /^libraries:\s+=(.+)/m) {
-        $lib_dirs_str = $1;
-      }
-      
-      my $sep;
-      if ($^O eq 'MSWin32') {
-        $sep = ';';
-      }
-      else {
-        $sep = ':';
-      }
-      
-      my @lib_dirs;
-      if (defined $lib_dirs_str) {
-        @lib_dirs = split($sep, $lib_dirs_str);
-      }
-      
-      return \@lib_dirs;
-    });
-  }
-
   return $self;
 }
 
@@ -412,10 +368,34 @@ sub to_hash {
   return $hash;
 }
 
-sub search_lib_dirs {
+sub search_lib_dirs_from_cc_info {
   my ($self) = @_;
   
-  $self->search_lib_dirs_cb->(@_);
+  my $cc = $self->cc;
+  
+  my $cmd = "$cc -print-search-dirs";
+  
+  my $output = `$cmd`;
+  
+  my $lib_dirs_str;
+  if ($output =~ /^libraries:\s+=(.+)/m) {
+    $lib_dirs_str = $1;
+  }
+  
+  my $sep;
+  if ($^O eq 'MSWin32') {
+    $sep = ';';
+  }
+  else {
+    $sep = ':';
+  }
+  
+  my @lib_dirs;
+  if (defined $lib_dirs_str) {
+    @lib_dirs = split($sep, $lib_dirs_str);
+  }
+  
+  return \@lib_dirs;
 }
 
 1;
@@ -684,3 +664,9 @@ B<Examples:>
   my $config = $config->to_hash;
 
 Convert L<SPVM::Builder::Config> to a hash reference.
+
+=head2 search_lib_dirs_from_cc_info
+
+  my $lib_dirs = $config->search_lib_dirs_from_cc_info;
+
+Get the library searching directories parsing the infomation the compiler has.
