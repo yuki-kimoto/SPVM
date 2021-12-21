@@ -456,6 +456,8 @@ Get and set header including directories of the compiler. This is same as C<-I> 
 
 The default value is "SPVM/Builder/include" of one up of directory that SPVM::Buidler::Config.pm is loaded.
 
+At runtime, the "include" directory of the native module is added before C<include_dirs>.
+
 =head2 ccflags
 
   my $ccflags = $config->ccflags;
@@ -501,6 +503,8 @@ Windows
 Not Windows
 
   empty list
+
+At runtime, the "lib" directory of the native module is added before C<include_dirs>.
 
 =head2 libs
 
