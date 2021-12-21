@@ -565,12 +565,23 @@ EOS
   mkpath dirname $shared_lib_file;
 
   # Link and create shared library
-  $cbuilder->link(
+  my (undef, @tmp_files) = $cbuilder->link(
     lib_file => $shared_lib_file,
     objects => $object_files,
     module_name => $class_name,
     dl_func_list => $dl_func_list,
   );
+
+  if ($self->debug) {
+    for my $tmp_file (@tmp_files) {
+      if (-T $tmp_file) {
+        my $content = SPVM::Builder::Util::slurp_binary($tmp_file);
+        
+        warn "[$tmp_file]\n$content\n";
+      }
+    }
+  }
+  
   return $shared_lib_file;
 }
 
