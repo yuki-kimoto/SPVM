@@ -13,6 +13,17 @@ use File::Basename 'dirname';
 # SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure perl script, not contain XS functions and don't use any other SPVM modules.
 
+sub slurp_binary {
+  my ($self, $file) = @_;
+  
+  open my $fh, '<', $file
+    or confess "Can't open file \"$file\":$!";
+    
+  my $content = do { local $/; <$fh> };
+  
+  return $content;
+}
+
 sub create_cfunc_name {
   my ($class_name, $method_name, $category) = @_;
   
