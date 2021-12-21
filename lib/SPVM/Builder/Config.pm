@@ -237,6 +237,11 @@ sub new {
   unless (defined $self->{resources}) {
     $self->resources([]);
   }
+
+  # sources
+  unless (defined $self->{sources}) {
+    $self->sources([]);
+  }
   
   # libs
   unless (defined $self->{libs}) {

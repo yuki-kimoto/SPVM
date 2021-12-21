@@ -237,14 +237,14 @@ sub compile {
   my $dependency = $self->parse_native_source_dependencies($native_include_dir, $native_src_dir, $src_ext);
 
   # Native source files
-  my @native_src_files = sort keys %$dependency;
+  my $native_src_files = [map { "$native_src_dir/$_" } @{$config->sources} ];
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
   
   # Compile source files
   my $object_files = [];
   my $is_native_src;
-  for my $src_file ($spvm_method_src_file, @native_src_files) {
+  for my $src_file ($spvm_method_src_file, @$native_src_files) {
     my $object_file;
     # Native object file name
     if ($is_native_src) {
