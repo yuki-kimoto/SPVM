@@ -552,6 +552,9 @@ EOS
     ld => $ld,
     lddlflags => $ldflags_str,
     shrpenv => '',
+    
+    # Only used on Windows Setting
+    perllibs => '',
   };
   
   # ExtUtils::CBuilder object
