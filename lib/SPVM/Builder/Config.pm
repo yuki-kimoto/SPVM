@@ -199,8 +199,8 @@ sub new {
     
     my @default_ccflags;
     
-    # MinGW on Windows always create position independent codes, and if -fPIC is specified, the warning occurs.
-    unless ($^O eq 'MSWin32') {
+    # If dynamic link libraries must link position independent codes, add -fPIC option.
+    if ($Config{cccdlflags} =~ /-fPIC\b/) {
       push @default_ccflags, '-fPIC';
     }
     
@@ -382,13 +382,7 @@ sub search_lib_dirs_from_cc_info {
     $lib_dirs_str = $1;
   }
   
-  my $sep;
-  if ($^O eq 'MSWin32') {
-    $sep = ';';
-  }
-  else {
-    $sep = ':';
-  }
+  my $sep = $Config{path_sep};
   
   my @lib_dirs;
   if (defined $lib_dirs_str) {
