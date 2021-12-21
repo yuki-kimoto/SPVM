@@ -311,11 +311,10 @@ sub compile {
       mkpath dirname $object_file;
 
       my $cc_cmd = $self->create_compile_command($config, $object_file, $src_file, \@runtime_include_dirs);
-      eval {
-        # Execute compile command
-        $cbuilder->do_system(@$cc_cmd)
-          or confess "Can't compile $src_file: @$cc_cmd";
-      };
+
+      # Execute compile command
+      $cbuilder->do_system(@$cc_cmd)
+        or confess "Can't compile $src_file: @$cc_cmd";
     }
     push @$object_files, $object_file;
     
@@ -558,18 +557,12 @@ EOS
   mkpath dirname $shared_lib_file;
 
   # Link and create shared library
-  eval {
-    $cbuilder->link(
-      lib_file => $shared_lib_file,
-      objects => $object_files,
-      module_name => $class_name,
-      dl_func_list => $dl_func_list,
-    );
-  };
-  if (my $error = $@) {
-    confess $error;
-  }
-  
+  $cbuilder->link(
+    lib_file => $shared_lib_file,
+    objects => $object_files,
+    module_name => $class_name,
+    dl_func_list => $dl_func_list,
+  );
   return $shared_lib_file;
 }
 
