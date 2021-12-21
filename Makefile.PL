@@ -52,7 +52,48 @@ if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
 
-my @csource_files = ('SPVM.c', glob 'lib/SPVM/Builder/src/*.c');
+# Source files
+my @csource_files = qw(
+  SPVM.c
+  lib/SPVM/Builder/src/spvm_allow.c
+  lib/SPVM/Builder/src/spvm_api.c
+  lib/SPVM/Builder/src/spvm_array_field_access.c
+  lib/SPVM/Builder/src/spvm_basic_type.c
+  lib/SPVM/Builder/src/spvm_block.c
+  lib/SPVM/Builder/src/spvm_call_method.c
+  lib/SPVM/Builder/src/spvm_case_info.c
+  lib/SPVM/Builder/src/spvm_class.c
+  lib/SPVM/Builder/src/spvm_class_var_access.c
+  lib/SPVM/Builder/src/spvm_class_var.c
+  lib/SPVM/Builder/src/spvm_compiler_allocator.c
+  lib/SPVM/Builder/src/spvm_compiler.c
+  lib/SPVM/Builder/src/spvm_constant.c
+  lib/SPVM/Builder/src/spvm_csource_builder_precompile.c
+  lib/SPVM/Builder/src/spvm_descriptor.c
+  lib/SPVM/Builder/src/spvm_dumper.c
+  lib/SPVM/Builder/src/spvm_enumeration.c
+  lib/SPVM/Builder/src/spvm_enumeration_value.c
+  lib/SPVM/Builder/src/spvm_field_access.c
+  lib/SPVM/Builder/src/spvm_field.c
+  lib/SPVM/Builder/src/spvm_hash.c
+  lib/SPVM/Builder/src/spvm_list.c
+  lib/SPVM/Builder/src/spvm_method.c
+  lib/SPVM/Builder/src/spvm_my.c
+  lib/SPVM/Builder/src/spvm_op.c
+  lib/SPVM/Builder/src/spvm_op_checker.c
+  lib/SPVM/Builder/src/spvm_opcode_array.c
+  lib/SPVM/Builder/src/spvm_opcode_builder.c
+  lib/SPVM/Builder/src/spvm_opcode.c
+  lib/SPVM/Builder/src/spvm_string_buffer.c
+  lib/SPVM/Builder/src/spvm_switch_info.c
+  lib/SPVM/Builder/src/spvm_toke.c
+  lib/SPVM/Builder/src/spvm_type.c
+  lib/SPVM/Builder/src/spvm_use.c
+  lib/SPVM/Builder/src/spvm_util_allocator.c
+  lib/SPVM/Builder/src/spvm_var.c
+  lib/SPVM/Builder/src/spvm_yacc.c
+  lib/SPVM/Builder/src/spvm_yacc_util.c
+);
 
 WriteMakefile(
     NAME              => 'SPVM',
