@@ -421,25 +421,6 @@ EOS
   # Runtime library directories
   my @runtime_lib_dirs;
   
-  # Add resouce lib directories
-  my $resources = $config->resources;
-  for my $resource (@$resources) {
-    eval "require $resource";
-    if ($@) {
-      confess "Can't load $resource";
-    }
-    my $module_name = $resource;
-    $module_name =~ s|::|/|g;
-    $module_name .= '.pm';
-    
-    my $module_path = $INC{$module_name};
-    
-    my $lib_dir = $module_path;
-    $lib_dir =~ s/\.pm$//;
-    $lib_dir .= '.native/lib';
-    push @runtime_lib_dirs, $lib_dir;
-  }
-  
   # Library directory
   my $native_lib_dir = "$native_dir/lib";
   if (-d $native_lib_dir) {
@@ -489,7 +470,30 @@ EOS
   # Optimize
   my $ld_optimize = $config->ld_optimize;
   $ldflags_str .= " $ld_optimize";
-  
+
+  # Add resouce lib directories
+  my $resources = $config->resources;
+  for my $resource (@$resources) {
+    eval "require $resource";
+    if ($@) {
+      confess "Can't load $resource";
+    }
+    my $module_name = $resource;
+    $module_name =~ s|::|/|g;
+    $module_name .= '.pm';
+    
+    my $module_path = $INC{$module_name};
+    
+    my $shared_lib_file = $module_path;
+    $shared_lib_file =~ s/\.pm$/\.$Config{dlext}/;
+    if (-f $shared_lib_file) {
+      push @$object_files, $shared_lib_file;
+    }
+    else {
+      confess "Can't find resource shared library file \"$shared_lib_file\"";
+    }
+  }
+
   # Libraries
   # Libraries is linked using absolute path because the linked libraries must be known at runtime.
   my $lib_dirs = [@runtime_lib_dirs, @{$config->lib_dirs}];
