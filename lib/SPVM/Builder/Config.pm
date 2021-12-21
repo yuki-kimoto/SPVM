@@ -126,6 +126,17 @@ sub libs {
   }
 }
 
+sub resources {
+  my $self = shift;
+  if (@_) {
+    $self->{resources} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{resources};
+  }
+}
+
 sub force {
   my $self = shift;
   if (@_) {
@@ -209,6 +220,11 @@ sub new {
   # lib_dirs
   unless (defined $self->{lib_dirs}) {
     $self->lib_dirs([]);
+  }
+
+  # resources
+  unless (defined $self->{resources}) {
+    $self->resources([]);
   }
   
   # libs
@@ -331,6 +347,12 @@ sub add_libs {
   my ($self, @libs) = @_;
   
   push @{$self->{libs}}, @libs;
+}
+
+sub add_resources {
+  my ($self, @resources) = @_;
+  
+  push @{$self->{resources}}, @resources;
 }
 
 sub add_static_libs {
@@ -516,6 +538,19 @@ If you want to link only static link library, you can use the following hash ref
 
   {type => 'static', name => 'gsl'}
 
+=head2 resources
+
+  my $resources = $config->resources;
+  $config->resources($resources);
+
+Get and get resouce module names.
+
+At runtime, each modules' native "include" directory is added before C<include_dirs>, and "lib" directory is added before C<lib_dirs>.
+
+E<Examples:>
+
+  $config->resources(['SPVM::Resouce::Zlib::V1_15']);
+  
 =head2 ldflags
 
   my ldflags = $config->ldflags;
@@ -665,6 +700,16 @@ Add the values that each element is converted to the following hash reference af
 B<Examples:>
 
   $config->add_dynamic_libs('gsl');
+
+=head2 add_resources
+
+  $config->add_resources(@resources);
+
+Add the values after the last element of C<resources> field.
+
+B<Examples:>
+
+  $config->add_resources('SPVM::Resouce::Zlib::V1_15');
 
 =head2 to_hash
 

@@ -46,7 +46,7 @@ Revision history for SPVM
           The runtime linking is resolved at compile time using absolute path.
 
         * Add search_include_dirs_from_config_incpth, search_lib_dirs_from_config_libpth methods to SPVM::Builder::Config.
-
+        * Add resources field and add add_resources method to SPVM::Builder::Config, and implement resouce system of SPVM::Builder::CC
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
 0.9018  2021-12-11

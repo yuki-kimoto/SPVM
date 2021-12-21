@@ -173,12 +173,6 @@ sub compile {
   $native_dir =~ s/\.config$//;
   $native_dir .= '.native';
 
-  # Include directory
-  my $native_include_dir = "$native_dir/include";
-  
-  # Source directory
-  my $native_src_dir = "$native_dir/src";
-
   # Config
   my $config;
   if (-f $config_file) {
@@ -188,9 +182,36 @@ sub compile {
     $config = SPVM::Builder::Config->new_c99;;
   }
   
-  # Add native include dir
-  unshift @{$config->include_dirs}, $native_include_dir;
+  # Runtime include directries
+  my @runtime_include_dirs;
 
+  # Include directory
+  my $native_include_dir = "$native_dir/include";
+  
+  # Add native include dir
+  push @runtime_include_dirs, $native_include_dir;
+
+  my $resources = $config->resources;
+  for my $resource (@$resources) {
+    eval "require $resource";
+    if ($@) {
+      confess "Can't load $resource";
+    }
+    my $module_name = $resource;
+    $module_name =~ s|::|/|g;
+    $module_name .= '.pm';
+    
+    my $module_path = $INC{$module_name};
+    
+    my $include_dir = $module_path;
+    $include_dir =~ s/\.pm$//;
+    $include_dir .= '.native/incldue';
+    push @runtime_include_dirs, $include_dir;
+  }
+
+  # Source directory
+  my $native_src_dir = "$native_dir/src";
+  
   # Quiet output
   my $quiet = $config->quiet;
 
@@ -289,7 +310,7 @@ sub compile {
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
 
-      my $cc_cmd = $self->create_compile_command($config, $object_file, $src_file);
+      my $cc_cmd = $self->create_compile_command($config, $object_file, $src_file, \@runtime_include_dirs);
       eval {
         # Execute compile command
         $cbuilder->do_system(@$cc_cmd)
@@ -305,14 +326,14 @@ sub compile {
 }
 
 sub create_compile_command {
-  my ($self, $config, $output_file, $src_file) = @_;
+  my ($self, $config, $output_file, $src_file, $runtime_include_dirs) = @_;
   
   my $cc = $config->cc;
   
   my $cflags = '';
 
   my $include_dirs = $config->include_dirs;
-  my $inc = join(' ', map { "-I$_" } @$include_dirs);
+  my $inc = join(' ', map { "-I$_" } @$runtime_include_dirs, @$include_dirs);
   $cflags .= " $inc";
   
   my $ccflags = $config->ccflags;
@@ -398,10 +419,32 @@ EOS
   $native_dir =~ s/\.config$//;
   $native_dir .= '.native';
   
+  # Runtime library directories
+  my @runtime_lib_dirs;
+  
+  # Add resouce lib directories
+  my $resources = $config->resources;
+  for my $resource (@$resources) {
+    eval "require $resource";
+    if ($@) {
+      confess "Can't load $resource";
+    }
+    my $module_name = $resource;
+    $module_name =~ s|::|/|g;
+    $module_name .= '.pm';
+    
+    my $module_path = $INC{$module_name};
+    
+    my $lib_dir = $module_path;
+    $lib_dir =~ s/\.pm$//;
+    $lib_dir .= '.native/lib';
+    push @runtime_lib_dirs, $lib_dir;
+  }
+  
   # Library directory
   my $native_lib_dir = "$native_dir/lib";
   if (-d $native_lib_dir) {
-    unshift @{$config->lib_dirs}, $native_lib_dir;
+    push @runtime_lib_dirs, $native_lib_dir;
   }
   
   # Quiet output
@@ -450,7 +493,7 @@ EOS
   
   # Libraries
   # Libraries is linked using absolute path because the linked libraries must be known at runtime.
-  my $lib_dirs = [@{$config->lib_dirs}];
+  my $lib_dirs = [@runtime_lib_dirs, @{$config->lib_dirs}];
   my @lib_files;
   {
     my $libs = $config->libs;
