@@ -126,6 +126,17 @@ sub libs {
   }
 }
 
+sub sources {
+  my $self = shift;
+  if (@_) {
+    $self->{sources} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{sources};
+  }
+}
+
 sub resources {
   my $self = shift;
   if (@_) {
@@ -349,6 +360,12 @@ sub add_libs {
   push @{$self->{libs}}, @libs;
 }
 
+sub add_sources {
+  my ($self, @sources) = @_;
+  
+  push @{$self->{sources}}, @sources;
+}
+
 sub add_resources {
   my ($self, @resources) = @_;
   
@@ -491,6 +508,17 @@ B<Examples:>
   $config->optimize('-O2');
   $config->optimize('-g3 -O0');
 
+=head2 sources
+
+  my $sources = $config->sources;
+  $config->sources($sources);
+
+Get and get source files. These sourceraries are linked by the compiler.
+
+B<Examples:>
+
+  $config->sources(['foo.c', 'bar.c']);
+
 =head2 ld
 
   my $ld = $config->ld;
@@ -522,7 +550,7 @@ At runtime, the "lib" directory of the native module is added before C<include_d
   my $libs = $config->libs;
   $config->libs($libs);
 
-Get and get libraries. These libraries are linked by the linker.
+Get and set libraries. These libraries are linked by the linker.
 
 If a dynamic link library is found from L<"lib_dirs">, this is linked. Otherwise if a static link library is found from L<"lib_dirs">, this is linked.
 
@@ -666,6 +694,12 @@ Add values after the last element of C<include_dirs> field.
   $config->add_lib_dirs(@lib_dirs);
 
 Add values after the last element of  C<lib_dirs> field.
+
+=head2 add_sources
+
+  $config->add_sources(@sources);
+
+Add the values after the last element of C<sources> field.
 
 =head2 add_libs
 
