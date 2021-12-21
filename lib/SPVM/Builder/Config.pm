@@ -182,10 +182,6 @@ sub new {
     
     my @default_include_dirs;
 
-    # Add native include directry
-    my $native_inculde_dir = 
-    push @default_include_dirs, $native_include_dir;
-
     # Add "include" directory of SPVM::Builder. This directory contains spvm_native.h
     my $spvm_builder_config_dir = $INC{"SPVM/Builder/Config.pm"};
     my $spvm_builder_dir = $spvm_builder_config_dir;
@@ -460,8 +456,6 @@ Get and set header including directories of the compiler. This is same as C<-I> 
 
 The default value is "SPVM/Builder/include" of one up of directory that SPVM::Buidler::Config.pm is loaded.
 
-At runtime, the "include" directory of the native module is added before C<include_dirs>.
-
 =head2 ccflags
 
   my $ccflags = $config->ccflags;
@@ -507,8 +501,6 @@ Windows
 Not Windows
 
   empty list
-
-At runtime, the "lib" directory of the native module is added before C<include_dirs>.
 
 =head2 libs
 
