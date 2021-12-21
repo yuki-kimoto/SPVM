@@ -18,6 +18,7 @@ sub category { shift->{category} }
 sub builder { shift->{builder} }
 sub force { shift->{force} }
 sub quiet { shift->{quiet} }
+sub debug { shift->{debug} }
 
 sub new {
   my $class = shift;
@@ -25,7 +26,7 @@ sub new {
   my $self = {@_};
   
   if ($ENV{SPVM_CC_DEBUG}) {
-    $self->{quiet} = 0;
+    $self->{debug} = 1;
   }
   
   if ($ENV{SPVM_CC_FORCE}) {
@@ -215,9 +216,9 @@ sub compile {
   # Quiet output
   my $quiet = $config->quiet;
 
-  # If quiet field exists, overwrite it
-  if (defined $self->quiet) {
-    $quiet = $self->quiet;
+  # Debug mode
+  if ($self->debug) {
+    $quiet = 0;
   }
   
   # SPVM Method source file
@@ -431,8 +432,8 @@ EOS
   my $quiet = $config->quiet;
 
   # If quiet field exists, overwrite it
-  if (defined $self->quiet) {
-    $quiet = $self->quiet;
+  if ($self->debug) {
+    $quiet = 0;
   }
   
   # dl_func_list
