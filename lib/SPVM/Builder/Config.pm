@@ -3,6 +3,7 @@ package SPVM::Builder::Config;
 use strict;
 use warnings;
 use Config;
+use Carp 'confess';
 
 # Fields
 sub ext {
@@ -443,6 +444,38 @@ sub search_include_dirs_from_config_incpth {
   my @include_dirs = split(/ +/, $incpth);
   
   return \@include_dirs;
+}
+
+sub parse_windows_def_file {
+  my ($self, $def_file) = @_;
+  
+  open my $def_fh, '<', $def_file
+    or confess "Can't open file \"def_file\":$!";
+  
+  my @export_functions;
+  my $is_export_line = 0;
+  while (my $line = <$def_fh>) {
+    $line =~ s/\x0D?\x0A?$//;
+    next if $line =~ /^;/;
+    
+    if ($line =~ /^[ \t]/) {
+      my $export_function;
+      if ($line =~ /[ \t]+(\w+)/) {
+        $export_function = $1;
+        push @export_functions, $export_function;
+      }
+    }
+    else {
+      if ($line eq 'EXPORTS') {
+        $is_export_line = 1;
+      }
+      else {
+        
+      }
+    }
+  }
+  
+  return \@export_functions;
 }
 
 1;

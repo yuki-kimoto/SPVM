@@ -1,0 +1,8 @@
+; zlib data compression library
+EXPORTS
+; basic functions
+    zlibVersion
+    deflate
+; advanced functions
+    deflateSetDictionary
+    deflateGetDictionary
