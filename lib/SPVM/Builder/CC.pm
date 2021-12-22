@@ -363,7 +363,7 @@ sub link {
   else {
     confess "SPVM_BUILD_DIR environment variable must be set for link";
   }
-  
+
   # Object directory
   my $object_dir = $opt->{object_dir};
   unless (defined $object_dir && -d $object_dir) {
@@ -573,7 +573,7 @@ EOS
   # Move temporary shared library file to blib directory
   mkpath dirname $shared_lib_file;
 
-  # Link and create shared library
+  # Create shared library
   my (undef, @tmp_files) = $cbuilder->link(
     lib_file => $shared_lib_file,
     objects => $object_files,
@@ -607,6 +607,16 @@ EOS
       }
     }
   }
+
+  # Create static library
+  my $ar_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'a');
+  my $ar_file = "$lib_dir/$ar_rel_file";
+  if (-f $ar_file) {
+    unlink $ar_file
+      or confess "Can't delete file \"$ar_file\":$!";
+  }
+  my @ar_cmd = ('ar', 'rc', $ar_file, @$object_files);
+  $cbuilder->do_system(@ar_cmd);
   
   return $shared_lib_file;
 }
