@@ -14,7 +14,7 @@ use File::Basename 'dirname';
 # so this module must be wrote as pure perl script, not contain XS functions and don't use any other SPVM modules.
 
 sub slurp_binary {
-  my ($self, $file) = @_;
+  my ($file) = @_;
   
   open my $fh, '<', $file
     or confess "Can't open file \"$file\":$!";
