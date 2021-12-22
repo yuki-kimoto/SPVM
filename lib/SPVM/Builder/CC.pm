@@ -599,8 +599,6 @@ EOS
     }
   }
   
-  sleep 100;
-  
   return $shared_lib_file;
 }
 
