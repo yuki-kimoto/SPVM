@@ -500,6 +500,33 @@ sub parse_windows_def_file {
   return \@export_functions;
 }
 
+sub get_include_dir {
+  my ($file) = @_;
+  
+  my $include_dir = $file;
+  $include_dir =~ s|\.config$|.native/include|;
+  
+  return $include_dir;
+}
+
+sub get_src_dir {
+  my ($file) = @_;
+  
+  my $src_dir = $file;
+  $src_dir =~ s|\.config$|.native/src|;
+  
+  return $src_dir;
+}
+
+sub get_lib_dir {
+  my ($file) = @_;
+  
+  my $lib_dir = $file;
+  $lib_dir =~ s|\.config$|.native/lib|;
+  
+  return $lib_dir;
+}
+
 1;
 
 =head1 NAME
@@ -841,3 +868,21 @@ Get the library searching directories parsing C<libpth> of L<Config>.
   my $include_dirs = $config->search_include_dirs_from_config_incpth;
 
 Get the header searching directories parsing C<incpth> of L<Config>.
+
+=head2 sub get_include_dir
+
+  my $include_dir = $config->get_include_dir(__FILE__);
+
+Get the header include directory from the config file name.
+
+=head2 get_src_dir
+
+  my $src_dir = $config->get_src_dir(__FILE__);
+
+Get the source directory from the config file name.
+
+=head2 get_lib_dir
+
+  my $lib_dir = $config->get_lib_dir(__FILE__);
+
+Get the library directory from the config file name.
