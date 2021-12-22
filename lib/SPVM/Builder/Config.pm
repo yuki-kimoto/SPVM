@@ -472,7 +472,7 @@ sub parse_windows_def_file {
   my ($self, $def_file) = @_;
   
   open my $def_fh, '<', $def_file
-    or confess "Can't open file \"def_file\":$!";
+    or confess "Can't open file \"$def_file\":$!";
   
   my @export_functions;
   my $is_export_line = 0;
