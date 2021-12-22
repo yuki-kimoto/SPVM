@@ -553,10 +553,14 @@ EOS
     ld => $ld,
     lddlflags => $ldflags_str,
     shrpenv => '',
-    
-    # Only used on Windows Setting
     perllibs => '',
+    libpth => '',
   };
+
+  # Setting for Windows MinGW
+  if ($^O eq 'MSWin32') {
+    $cbuilder_config->{libpth} = "$Config{bin}";
+  }
   
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);

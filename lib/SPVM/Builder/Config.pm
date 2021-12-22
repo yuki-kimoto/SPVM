@@ -256,7 +256,7 @@ sub new {
     
     # Dynamic link options
     if ($^O eq 'MSWin32') {
-      push @default_ldflags, '-mdll', '-s' , "-L$Config{bin}";
+      push @default_ldflags, '-mdll', '-s';
     }
     else {
       push @default_ldflags, '-shared';
