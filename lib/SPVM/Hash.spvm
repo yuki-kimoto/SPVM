@@ -1,6 +1,6 @@
 class Hash : precompile {
   use Hash::Entry;
-  use Fn (INT32_MAX);
+  use Fn;
 
   has bucket_count : int;
   has count : ro int;
@@ -15,8 +15,8 @@ class Hash : precompile {
     my $self = new Hash;
     
     my $default_capacity = 32;
-    $self->{bucket_count} = _DEFALUT_HASH_TABLE_LENGTH();
-    $self->{entries} = new Hash::Entry[_DEFALUT_HASH_TABLE_LENGTH()];
+    $self->{bucket_count} = Hash->_DEFALUT_HASH_TABLE_LENGTH();
+    $self->{entries} = new Hash::Entry[Hash->_DEFALUT_HASH_TABLE_LENGTH()];
     $self->{count} = 0;
     
     my $length : int;
@@ -51,16 +51,16 @@ class Hash : precompile {
       die "key must not be undef";
     }
     # Rehash
-    if (((double)$self->{count} / $self->{bucket_count}) > _MAX_LOAD_FACTOR()) {
+    if (((double)$self->{count} / $self->{bucket_count}) > Hash->_MAX_LOAD_FACTOR()) {
       $self->_rehash;
     }
     my $count = $self->{count};
-    _set_to_container($self->{entries}, $self->{bucket_count}, \$count, $key, $val);
+    Hash->_set_to_container($self->{entries}, $self->{bucket_count}, \$count, $key, $val);
     $self->{count} = $count;
   }
 
   method get : object ($key : string) {
-    my $index = _index_by_key($key, $self->{bucket_count});
+    my $index = Hash->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     unless ($ref) {
       return undef;
@@ -77,7 +77,7 @@ class Hash : precompile {
   }
 
   method exists : int ($key : string) {
-    my $index = _index_by_key($key, $self->{bucket_count});
+    my $index = Hash->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
 
     unless ($ref) {
@@ -95,7 +95,7 @@ class Hash : precompile {
   }
 
   method delete : object ($key : string) {
-    my $index = _index_by_key($key, $self->{bucket_count});
+    my $index = Hash->_index_by_key($key, $self->{bucket_count});
     my $ref = $self->{entries}->[$index];
     my $prev : Hash::Entry = undef;
     unless ($ref) {
@@ -214,12 +214,12 @@ class Hash : precompile {
 
   static method _index_by_key : int ($key : string, $bucket_count : int) {
     my $default_seed = 123456789;
-    return (int)(_murmur_hash($key, $default_seed) % $bucket_count);
+    return (int)(Hash->_murmur_hash($key, $default_seed) % $bucket_count);
   }
 
   static method _set_to_container : void ($entries : Hash::Entry[], $bucket_count : int, $count_ref : int&,
     $key : string, $val : object) {
-    my $index = _index_by_key($key, $bucket_count);
+    my $index = Hash->_index_by_key($key, $bucket_count);
     my $ref = $entries->[$index];
     unless ($ref) {
       $entries->[$index] = new Hash::Entry;
@@ -255,7 +255,7 @@ class Hash : precompile {
     for (my $i = 0; $i < $self->{bucket_count}; ++$i) {
       my $ref = $self->{entries}->[$i];
       while ($ref) {
-        _set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->{key}, $ref->{val});
+        Hash->_set_to_container($new_entries, $new_bucket_count, \$new_count, $ref->{key}, $ref->{val});
         $ref = $ref->{next_entry};
       }
     }

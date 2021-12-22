@@ -1,5 +1,5 @@
 class LongList : precompile {
-  use Fn (memcpy_long, memmove_long);
+  use Fn;
   
   has values   : long[];
   has capacity : int;
@@ -20,8 +20,8 @@ class LongList : precompile {
     }
     
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < LongList->DEFAULT_CAPACITY()) {
+      $capacity = LongList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -32,7 +32,7 @@ class LongList : precompile {
     $self->{length} = $length;
     
     if ($array) {
-      memcpy_long($values, 0, $array, 0, $length);
+      Fn->memcpy_long($values, 0, $array, 0, $length);
     }
     
     $self->{values} = $values;
@@ -46,8 +46,8 @@ class LongList : precompile {
       die "length must be more than or equals to zero";
     }
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < LongList->DEFAULT_CAPACITY()) {
+      $capacity = LongList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -78,7 +78,7 @@ class LongList : precompile {
     
     my $new_values = new long[$new_capacity];
     
-    memcpy_long($new_values, 0, $values, 0, $length);
+    Fn->memcpy_long($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -100,7 +100,7 @@ class LongList : precompile {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      memmove_long($values, $dist_index, $values, $index, $move_length);
+      Fn->memmove_long($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -121,7 +121,7 @@ class LongList : precompile {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    memmove_long($values, $dist_index, $values, $src_index, $move_length);
+    Fn->memmove_long($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -167,7 +167,7 @@ class LongList : precompile {
     
     my $values = $self->{values};
     
-    memmove_long($values, 1, $values, 0, $length);
+    Fn->memmove_long($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -185,7 +185,7 @@ class LongList : precompile {
     
     my $value = $values->[0];
     
-    memmove_long($values, 0, $values, 1, $length - 1);
+    Fn->memmove_long($values, 0, $values, 1, $length - 1);
     
     $values->[$length - 1] = 0;
     
@@ -239,7 +239,7 @@ class LongList : precompile {
     
     my $values = $self->{values};
     
-    memcpy_long($array, 0, $values, 0, $length);
+    Fn->memcpy_long($array, 0, $values, 0, $length);
     
     return $array;
   }

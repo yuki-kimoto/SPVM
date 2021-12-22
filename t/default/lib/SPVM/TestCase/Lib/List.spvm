@@ -1,7 +1,7 @@
 class TestCase::Lib::List {
   use Int;
   use List;
-  use Fn (equals_array_object);
+  use Fn;
   use EqualityChecker::SameObject;
   
   static method new : int () {

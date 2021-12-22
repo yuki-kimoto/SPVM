@@ -2222,17 +2222,6 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
   use->op_type = op_type;
   use->is_require = is_require;
 
-  // Check method_names
-  if (op_method_names) {
-    SPVM_LIST* method_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-    SPVM_OP* op_method_name = op_method_names->first;
-    while ((op_method_name = SPVM_OP_sibling(compiler, op_method_name))) {
-      const char* method_name = op_method_name->uv.name;
-      SPVM_LIST_push(method_names, (void*)method_name);
-    }
-    use->method_names = method_names;
-  }
-
   SPVM_LIST_push(compiler->op_use_stack, op_use);
   
   return op_use;

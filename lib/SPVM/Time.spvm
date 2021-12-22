@@ -20,10 +20,10 @@ class Time {
       die "Month '$month' out of range 0..11";
     }
     
-    my $monthDays = _MonthDays();
+    my $monthDays = Time->_MonthDays();
 
     my $md = $monthDays->[$month];
-    if ($month == 1 && _is_leap_year( $year + 1900 )) {
+    if ($month == 1 && Time->_is_leap_year( $year + 1900 )) {
       ++$md;
     }
 
@@ -41,9 +41,9 @@ class Time {
       die "Second '$sec' out of range 0..59";
     }
     
-    my $epoc_time_info = gmtime(0);
-    my $epoc_days = _daygm($epoc_time_info->mday, $epoc_time_info->mon, $epoc_time_info->year);
-    my $days = _daygm($mday, $month, $year) - $epoc_days + 1;
+    my $epoc_time_info = Time->gmtime(0);
+    my $epoc_days = Time->_daygm($epoc_time_info->mday, $epoc_time_info->mon, $epoc_time_info->year);
+    my $days = Time->_daygm($mday, $month, $year) - $epoc_days + 1;
     
     my $maxDay = 365 * Fn->powl(2, 31);
     
@@ -59,9 +59,9 @@ class Time {
     }
 
     return $sec
-        + ( SECS_PER_MINUTE() * $min )
-        + ( SECS_PER_HOUR() * $hour )
-        + ( SECS_PER_DAY() * $days );
+        + ( Time->SECS_PER_MINUTE() * $min )
+        + ( Time->SECS_PER_HOUR() * $hour )
+        + ( Time->SECS_PER_DAY() * $days );
   }
 
   private static method SECS_PER_MINUTE : int () { return 60; }

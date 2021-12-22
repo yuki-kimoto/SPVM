@@ -4630,7 +4630,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     SPVM_TYPE* type = SPVM_OP_get_type(compiler, call_method->op_invocant);
     if (SPVM_TYPE_is_array_type(compiler, type->basic_type->id, type->dimension, type->flag)) {
       const char* type_name = SPVM_TYPE_new_type_name(compiler, type->basic_type->id, type->dimension, type->flag);
-      SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", type_name, method_name, op_call_method->file, op_call_method->line);
+      SPVM_COMPILER_error(compiler, "Unknown instance method \"%s->%s\" at %s line %d\n", type_name, method_name, op_call_method->file, op_call_method->line);
       return;
     }
     else {
@@ -4639,7 +4639,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
       SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
       
       if (!class) {
-        SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", basic_type_name, method_name, op_call_method->file, op_call_method->line);
+        SPVM_COMPILER_error(compiler, "Unknown instance method \"%s->%s\" at %s line %d\n", basic_type_name, method_name, op_call_method->file, op_call_method->line);
         return;
       }
       
@@ -4666,42 +4666,9 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         strlen(method_name)
       );
     }
-    // Only method name
     else {
-      // Search current pacakge
-      SPVM_CLASS* class = op_class_current->uv.class;
-      found_class = class;
-      found_method = SPVM_HASH_fetch(
-        class->method_symtable,
-        method_name,
-        strlen(method_name)
-      );
-      
-      // Search imported methods
-      SPVM_LIST* op_uses = class->op_uses;
-      if (op_uses) {
-        for (int32_t use_index = 0; use_index < op_uses->length; use_index++) {
-          SPVM_OP* op_use = SPVM_LIST_fetch(op_uses, use_index);
-          SPVM_TYPE* type = op_use->uv.use->op_type->uv.type;
-          const char* basic_type_name = type->basic_type->name;
-          SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
-          assert(class);
-          
-          SPVM_LIST* import_method_names = op_use->uv.use->method_names;
-          if (import_method_names) {
-            for (int32_t import_method_name_index = 0; import_method_name_index < import_method_names->length; import_method_name_index++) {
-              const char* import_method_name = SPVM_LIST_fetch(import_method_names, import_method_name_index);
-              if (strcmp(method_name, import_method_name) == 0) {
-                found_method = SPVM_HASH_fetch(
-                  class->method_symtable,
-                  method_name,
-                  strlen(method_name)
-                );
-              }
-            }
-          }
-        }
-      }
+      SPVM_COMPILER_error(compiler, "Unqualified method names are forbbiden \"%s\" at %s line %d\n", method_name, op_call_method->file, op_call_method->line);
+      return;
     }
   }
   
@@ -4710,7 +4677,7 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   }
   else {
     assert(found_class);
-    SPVM_COMPILER_error(compiler, "Unknown sub \"%s->%s\" at %s line %d\n", found_class->name, method_name, op_call_method->file, op_call_method->line);
+    SPVM_COMPILER_error(compiler, "Unknown method \"%s->%s\" at %s line %d\n", found_class->name, method_name, op_call_method->file, op_call_method->line);
     return;
   }
 }

@@ -1,5 +1,5 @@
 class DoubleList : precompile {
-  use Fn (memcpy_double, memmove_double);
+  use Fn;
   
   has values   : double[];
   has capacity : int;
@@ -20,8 +20,8 @@ class DoubleList : precompile {
     }
     
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < DoubleList->DEFAULT_CAPACITY()) {
+      $capacity = DoubleList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -32,7 +32,7 @@ class DoubleList : precompile {
     $self->{length} = $length;
     
     if ($array) {
-      memcpy_double($values, 0, $array, 0, $length);
+      Fn->memcpy_double($values, 0, $array, 0, $length);
     }
     
     $self->{values} = $values;
@@ -46,8 +46,8 @@ class DoubleList : precompile {
       die "length must be more than or equals to zero";
     }
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < DoubleList->DEFAULT_CAPACITY()) {
+      $capacity = DoubleList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -78,7 +78,7 @@ class DoubleList : precompile {
     
     my $new_values = new double[$new_capacity];
     
-    memcpy_double($new_values, 0, $values, 0, $length);
+    Fn->memcpy_double($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -100,7 +100,7 @@ class DoubleList : precompile {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      memmove_double($values, $dist_index, $values, $index, $move_length);
+      Fn->memmove_double($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -121,7 +121,7 @@ class DoubleList : precompile {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    memmove_double($values, $dist_index, $values, $src_index, $move_length);
+    Fn->memmove_double($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -167,7 +167,7 @@ class DoubleList : precompile {
     
     my $values = $self->{values};
     
-    memmove_double($values, 1, $values, 0, $length);
+    Fn->memmove_double($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -185,7 +185,7 @@ class DoubleList : precompile {
     
     my $value = $values->[0];
     
-    memmove_double($values, 0, $values, 1, $length - 1);
+    Fn->memmove_double($values, 0, $values, 1, $length - 1);
     
     $values->[$length - 1] = 0;
     
@@ -217,7 +217,6 @@ class DoubleList : precompile {
       die "The length of argument array must be same as the length of current list array";
     }
     
-    
     Fn->memcpy_double($self->{values}, 0, $array, 0, $cur_length);
   }
 
@@ -240,7 +239,7 @@ class DoubleList : precompile {
     
     my $values = $self->{values};
     
-    memcpy_double($array, 0, $values, 0, $length);
+    Fn->memcpy_double($array, 0, $values, 0, $length);
     
     return $array;
   }

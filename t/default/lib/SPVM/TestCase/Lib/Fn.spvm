@@ -1,12 +1,12 @@
 class TestCase::Lib::Fn {
   use Unicode (uchar);
   use TestCase::Minimal;
-  use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use Fn;
   use TestCase::Minimal;
   use Time (time);
   use EqualityChecker;
   use EqualityChecker::SameObject;
-  use Fn(copy_array_object, equals_array_object, equals_array_string);
+  use Fn;
   use TestCase::Minimal;
   use TestCase::Minimal;
   use EqualityChecker;

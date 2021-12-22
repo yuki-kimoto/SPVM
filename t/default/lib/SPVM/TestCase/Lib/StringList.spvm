@@ -1,6 +1,6 @@
 class TestCase::Lib::StringList {
   use StringList;
-  use Fn (equals_array_string);
+  use Fn;
 
   static method new : int () {
     # new with array

@@ -1,12 +1,12 @@
 class StringBuffer : precompile {
-  use Fn (copy_array_range_byte);
+  use Fn;
 
   has value : byte[];
   has length : ro int;
   
   static method new : StringBuffer () {
     my $self = new StringBuffer;
-    my $default_capacity = DEFAULT_CAPACITY();
+    my $default_capacity = StringBuffer->DEFAULT_CAPACITY();
     $self->{value} = new byte [$default_capacity];
     $self->{length} = 0;
     return $self;
@@ -40,7 +40,7 @@ class StringBuffer : precompile {
   }
 
   method to_string : string () {
-    return (string)(copy_array_range_byte($self->{value}, 0, $self->{length}));
+    return (string)(Fn->copy_array_range_byte($self->{value}, 0, $self->{length}));
   }
 
   private enum {

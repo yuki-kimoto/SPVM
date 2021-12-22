@@ -1,7 +1,7 @@
 class TestCase::Lib::DoubleList {
   use DoubleList;
-  use Fn (equals_array_double);
-  use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
+  use Fn;
+  use Fn;
 
   static method new : int () {
     # new with array

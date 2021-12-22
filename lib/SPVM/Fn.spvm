@@ -1,5 +1,5 @@
 class Fn : precompile {
-  use Time (time);
+  use Time;
   use Cloner;
   use EqualityChecker;
   use Comparator::Byte;
@@ -15,11 +15,11 @@ class Fn : precompile {
   use EqualityChecker;
   use StringBuffer;
   use StringList;
-  use Unicode (uchar_to_utf8);
+  use Unicode;
   use Regex;
   
   INIT {
-    srand(time());
+    Fn->srand(Time->time());
   }
   
   native static method DBL_MAX : double ();
@@ -60,14 +60,14 @@ class Fn : precompile {
     my $new_string : string;
     my $length = length $string;
     if ($length == 0) {
-      $new_string = copy_string($string);
+      $new_string = Fn->copy_string($string);
     }
     else {
       if ($string->[$length - 1] == '\n') {
         $new_string = (string)Fn->copy_array_range_byte((byte[])$string, 0, $length - 1);
       }
       else {
-        $new_string = copy_string($string);
+        $new_string = Fn->copy_string($string);
       }
     }
 
@@ -345,7 +345,7 @@ class Fn : precompile {
       die "Offset + length must not be in the array range";
     }
 
-    my $range = new_array_proto($objects, $length);
+    my $range = Fn->new_array_proto($objects, $length);
 
     my $pos = 0;
     for (my $i = $offset; $i < $offset + $length; $i++) {
@@ -1313,7 +1313,7 @@ class Fn : precompile {
   static method rand : double () {
     
     # 0 <= random_number < 1
-    my $random_number = (double)crand() / ((double)RAND_MAX() + 1);
+    my $random_number = (double)Fn->crand() / ((double)Fn->RAND_MAX() + 1);
     
     return $random_number;
   }
@@ -1363,7 +1363,7 @@ class Fn : precompile {
     }
     
     my $b = new byte[$length];
-    _sort_byte_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_byte_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
   static method sort_double : void ($nums : double[], $offset : int, $length : int, $comparator : Comparator::Double) {
@@ -1390,7 +1390,7 @@ class Fn : precompile {
     }
     
     my $b = new double[$length];
-    _sort_double_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_double_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
   static method sort_float : void ($nums : float[], $offset : int, $length : int, $comparator : Comparator::Float) {
@@ -1417,7 +1417,7 @@ class Fn : precompile {
     }
     
     my $b = new float[$length];
-    _sort_float_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_float_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
   static method sort_int : void ($nums : int[], $offset : int, $length : int, $comparator : Comparator::Int) {
@@ -1444,7 +1444,7 @@ class Fn : precompile {
     }
     
     my $b = new int[$length];
-    _sort_int_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_int_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
   static method sort_long : void ($nums : long[], $offset : int, $length : int, $comparator : Comparator::Long) {
@@ -1471,7 +1471,7 @@ class Fn : precompile {
     }
     
     my $b = new long[$length];
-    _sort_long_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_long_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
   
   static method sort_object : void ($objects : oarray, $offset : int, $length : int, $comparator : Comparator::Object) {
@@ -1493,9 +1493,9 @@ class Fn : precompile {
       die "Offset + Length must be in the array range";
     }
     
-    my $b = new_array_proto($objects, $length);
+    my $b = Fn->new_array_proto($objects, $length);
     
-    _sort_object_merge_sort($objects, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_object_merge_sort($objects, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
   static method sort_short : void ($nums : short[], $offset : int, $length : int, $comparator : Comparator::Short) {
@@ -1522,7 +1522,7 @@ class Fn : precompile {
     }
     
     my $b = new short[$length];
-    _sort_short_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_short_merge_sort($nums, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
   static method sort_string : void ($strings : string[], $offset : int, $length : int, $comparator : Comparator::String) {
@@ -1545,7 +1545,7 @@ class Fn : precompile {
     }
     
     my $b = new string[$length];
-    _sort_string_merge_sort($strings, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
+    Fn->_sort_string_merge_sort($strings, $b, $offset, $offset + $length - 1, $length - 1, $comparator);
   }
 
   static method split : string[] ($sep : string, $string : string) {
@@ -1581,7 +1581,7 @@ class Fn : precompile {
           }
         }
         if ($match) {
-          my $separated_string = substr($string, $string_base, $string_index - $string_base);
+          my $separated_string = Fn->substr($string, $string_base, $string_index - $string_base);
           $separated_strings_list->push($separated_string);
           $string_base = $string_index + $sep_length;
           $string_index += $sep_length - 1;
@@ -1592,7 +1592,7 @@ class Fn : precompile {
       $separated_strings_list->push("");
     }
     else {
-      my $separated_string = substr($string, $string_base, $string_length - $string_base);
+      my $separated_string = Fn->substr($string, $string_base, $string_length - $string_base);
       $separated_strings_list->push($separated_string);
     }
 
@@ -1711,7 +1711,7 @@ class Fn : precompile {
 
         unless ($index < $format_length) {
           die "Invalid conversion in sprintf: \""
-              . substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
+              . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index) . "\"";
         }
 
         my $specifier_char = $format->[$index];
@@ -1879,7 +1879,7 @@ class Fn : precompile {
         elsif ($specifier_char == 'l') {
           unless ($index + 1 < $format_length && ($format->[$index + 1] == 'd' || $format->[$index + 1] == 'u')) {
             die "Invalid conversion in sprintf: \""
-                . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+                . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
           }
 
           my $is_signed_format = $format->[$index + 1] == 'd';
@@ -1896,7 +1896,7 @@ class Fn : precompile {
             }
           }
           else {
-            _long_to_unsigned_digits($arg, $digits, \$digit_count);
+            Fn->_long_to_unsigned_digits($arg, $digits, \$digit_count);
           }
 
           if ($left_justified) {
@@ -1952,19 +1952,19 @@ class Fn : precompile {
         elsif ($specifier_char == 'f' || $specifier_char == 'g') {
           ++$index;
           my $arg = (Double)$args->[$arg_count];
-          my $specifier_str = substr($format, $specifier_base_index, $index - $specifier_base_index);
-          my $string = _snsprintf_double($specifier_str, $arg->value);
+          my $specifier_str = Fn->substr($format, $specifier_base_index, $index - $specifier_base_index);
+          my $string = Fn->_snsprintf_double($specifier_str, $arg->value);
           $buffer->push($string);
         }
         elsif ($specifier_char == 'U') {
           ++$index;
           my $arg = (Int)$args->[$arg_count];
-          my $utf8 = uchar_to_utf8($arg->value);
+          my $utf8 = Unicode->uchar_to_utf8($arg->value);
           $buffer->push($utf8);
         }
         else {
           die "Invalid conversion in sprintf: \""
-              . substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
+              . Fn->substr($format, $specifier_base_index, $index - $specifier_base_index + 1) . "\"";
         }
 
         ++$arg_count;
@@ -2021,13 +2021,13 @@ class Fn : precompile {
   native static method to_float : float ($string : string);
 
   static method to_int : int ($string : string) {
-    return to_int_with_base($string, 10);
+    return Fn->to_int_with_base($string, 10);
   }
   
   native static method to_int_with_base : int ($string : string, $digit : int);
   
   static method to_long : long ($string : string) {
-    return to_long_with_base($string, 10);
+    return Fn->to_long_with_base($string, 10);
   }
   native static method to_long_with_base : long ($string : string, $digit : int);
 
@@ -2059,7 +2059,7 @@ class Fn : precompile {
     
     for (my $i = 0; $i < $length; $i++) {
       if ($start_string_index == -1) {
-        if (is_space($string->[$i])) {
+        if (Fn->is_space($string->[$i])) {
           # Skip
         }
         else {
@@ -2071,7 +2071,7 @@ class Fn : precompile {
 
     for (my $i = $length - 1; $i >= 0; $i--) {
       if ($end_string_index == -1) {
-        if (is_space($string->[$i])) {
+        if (Fn->is_space($string->[$i])) {
           # Skip
         }
         else {
@@ -2086,13 +2086,13 @@ class Fn : precompile {
       return "";
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = substr($string, $start_string_index, $length - $start_string_index);
+      $trimed_string = Fn->substr($string, $start_string_index, $length - $start_string_index);
     }
     elsif ($end_string_index == -1) {
-      $trimed_string = substr($string, 0, $end_string_index + 1);
+      $trimed_string = Fn->substr($string, 0, $end_string_index + 1);
     }
     else {
-      $trimed_string = substr($string, $start_string_index, $end_string_index - $start_string_index + 1);
+      $trimed_string = Fn->substr($string, $start_string_index, $end_string_index - $start_string_index + 1);
     }
     
     return $trimed_string;
@@ -2186,9 +2186,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_byte_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_byte_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_byte_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_byte_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_byte_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_byte_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
   private static method _sort_short_merge : void($a : short[], $b : short[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Short) {
@@ -2234,9 +2234,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_short_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_short_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_short_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_short_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_short_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_short_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
 
@@ -2283,9 +2283,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_int_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_int_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_int_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_int_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_int_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_int_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
   private static method _sort_long_merge : void($a : long[], $b : long[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Long) {
@@ -2331,9 +2331,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_long_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_long_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_long_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_long_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_long_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_long_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
   private static method _sort_float_merge : void($a : float[], $b : float[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Float) {
@@ -2379,9 +2379,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_float_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_float_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_float_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_float_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_float_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_float_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
   private static method _sort_double_merge : void($a : double[], $b : double[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Double) {
@@ -2427,9 +2427,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_double_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_double_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_double_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_double_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_double_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_double_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
   private static method _sort_string_merge : void($a : string[], $b : string[], $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::String) {
@@ -2476,9 +2476,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_string_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_string_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_string_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_string_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_string_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 
   private static method _sort_object_merge : void($a : oarray, $b : oarray, $left : int, $mid : int, $right : int, $n : int, $comparator : Comparator::Object) {
@@ -2525,9 +2525,9 @@ class Fn : precompile {
 
     my $mid = ($left + $right) / 2;
 
-    _sort_object_merge_sort($a, $b, $left, $mid, $n, $comparator);
-    _sort_object_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
-    _sort_object_merge($a, $b, $left, $mid, $right, $n, $comparator);
+    Fn->_sort_object_merge_sort($a, $b, $left, $mid, $n, $comparator);
+    Fn->_sort_object_merge_sort($a, $b, $mid + 1, $right, $n, $comparator);
+    Fn->_sort_object_merge($a, $b, $left, $mid, $right, $n, $comparator);
   }
 }
 

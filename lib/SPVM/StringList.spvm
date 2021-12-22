@@ -18,8 +18,8 @@ class StringList : precompile {
     }
     
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < StringList->DEFAULT_CAPACITY()) {
+      $capacity = StringList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -44,8 +44,8 @@ class StringList : precompile {
       die "length must be more than or equals to zero";
     }
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < StringList->DEFAULT_CAPACITY()) {
+      $capacity = StringList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;

@@ -1,14 +1,12 @@
 class Regex : precompile {
-  use Unicode (uchar);
+  use Unicode;
   use List;
   use IntList;
   use Hash;
   use StringBuffer;
   use Regex::Replacer;
   use Regex::Pattern;
-  use Fn (is_perl_word, is_digit, to_int_with_base, substr, copy_string);
-  use Fn (INT8_MIN, INT8_MAX, INT16_MIN, INT16_MAX, INT32_MIN, INT32_MAX, INT64_MIN, INT64_MAX, FLT_MIN, FLT_MAX, DBL_MIN, DBL_MAX);
-  use Fn (copy_array_range_byte);
+  use Fn;
   use Hash;
   has patterns : List;
   has string_start : byte;
@@ -33,7 +31,7 @@ class Regex : precompile {
   
   static method new : Regex ($re_str : string) {
     
-    my $self = _new_without_compile();
+    my $self = Regex->_new_without_compile();
     
     $self->compile($re_str);
     
@@ -41,7 +39,7 @@ class Regex : precompile {
   }
 
   static method new_with_options : Regex ($re_str : string, $option_chars : string) {
-    my $self = _new_without_compile();
+    my $self = Regex->_new_without_compile();
     
     if ($option_chars) {
       my $options_h = Hash->new({});
@@ -102,7 +100,7 @@ class Regex : precompile {
     my $quantifier_min_str = "";
     my $quantifier_max_str = "";
     
-    my $status = STATUS_START();
+    my $status = Regex->STATUS_START();
     
     my $char_class_uchar_min_maxs_list : IntList;
     my $char_class_negate = 0;
@@ -112,7 +110,7 @@ class Regex : precompile {
     my $is_capture = 0;
     my $is_capture_start = 0;
     
-    while ((my $uchar = uchar($re_str, \$pos)) >= 0) {
+    while ((my $uchar = Unicode->uchar($re_str, \$pos)) >= 0) {
       if ($self->{string_end}) {
         die "\$ must be last of regex";
       }
@@ -123,7 +121,7 @@ class Regex : precompile {
       
       switch ($uchar) {
         case '\\': {
-          my $next_uchar = uchar($re_str, \$pos);
+          my $next_uchar = Unicode->uchar($re_str, \$pos);
           if ($uchar < 0) {
             die "Invalid regex. Last is \\ ";
           }
@@ -193,13 +191,13 @@ class Regex : precompile {
               break;
             }
             default: {
-              if (is_perl_word($next_uchar)) {
+              if (Fn->is_perl_word($next_uchar)) {
                 die "Invalid regex escape character";
               }
               # \: \- etc
               else {
                 my $uchar_min_maxs = [(int)$next_uchar, $next_uchar];
-                if ($status == STATUS_CHAR_CLASS()) {
+                if ($status == Regex->STATUS_CHAR_CLASS()) {
                   $char_class_uchar_min_maxs_list->push($uchar_min_maxs->[0]);
                   $char_class_uchar_min_maxs_list->push($uchar_min_maxs->[1]);
                 }
@@ -214,9 +212,9 @@ class Regex : precompile {
           break;
         }
         default: {
-          if ($status == STATUS_CHAR_CLASS()) {
+          if ($status == Regex->STATUS_CHAR_CLASS()) {
             if ($uchar == ']') {
-              $status = STATUS_CONTINUE();
+              $status = Regex->STATUS_CONTINUE();
               $cur_uchar_min_maxs = $char_class_uchar_min_maxs_list->to_array;
               if (@$cur_uchar_min_maxs == 0) {
                 die "Emtpy character class";
@@ -265,10 +263,10 @@ class Regex : precompile {
           else {
             switch ($uchar) {
               case '^': {
-                if ($status == STATUS_CHAR_CLASS()) {
+                if ($status == Regex->STATUS_CHAR_CLASS()) {
                   die "Unexpected";
                 }
-                elsif ($status != STATUS_START()) {
+                elsif ($status != Regex->STATUS_START()) {
                   die "Regex compile error";
                 }
                 
@@ -317,7 +315,7 @@ class Regex : precompile {
                 break;
               }
               case '[': {
-                $status = STATUS_CHAR_CLASS();
+                $status = Regex->STATUS_CHAR_CLASS();
                 $char_class_uchar_min_maxs_list = IntList->new_len(0);
                 $before_is_char_class_range = 0;
                 break;
@@ -332,7 +330,7 @@ class Regex : precompile {
                 }
                 my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 0;
-                $before_pattern->{max_repeat} = INT32_MAX();
+                $before_pattern->{max_repeat} = Fn->INT32_MAX();
                 $before_is_charset = 0;
                 break;
               }
@@ -342,7 +340,7 @@ class Regex : precompile {
                 }
                 my $before_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $before_pattern->{min_repeat} = 1;
-                $before_pattern->{max_repeat} = INT32_MAX();
+                $before_pattern->{max_repeat} = Fn->INT32_MAX();
                 $before_is_charset = 0;
                 break;
               }
@@ -360,42 +358,42 @@ class Regex : precompile {
                 unless ($before_is_charset) {
                   die "Regex compile error";
                 }
-                $status = STATUS_QUANTIFIER_MIN();
+                $status = Regex->STATUS_QUANTIFIER_MIN();
                 $before_is_charset = 0;
                 break;
               }
               case '}': {
-                unless ($status == STATUS_QUANTIFIER_MAX()) {
+                unless ($status == Regex->STATUS_QUANTIFIER_MAX()) {
                   die "Regex compile error";
                 }
-                my $quantifier_max = to_int_with_base($quantifier_max_str, 10);
+                my $quantifier_max = Fn->to_int_with_base($quantifier_max_str, 10);
                 my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                 $last_pattern->{max_repeat} = $quantifier_max;
                 
-                $status = STATUS_CONTINUE();
+                $status = Regex->STATUS_CONTINUE();
                 $before_is_charset = 0;
                 $quantifier_max_str = "";
                 break;
               }
               default: {
-                if ($status == STATUS_QUANTIFIER_MIN()) {
-                  if (is_digit($uchar)) {
+                if ($status == Regex->STATUS_QUANTIFIER_MIN()) {
+                  if (Fn->is_digit($uchar)) {
                     $quantifier_min_str .= $uchar - '0';
                   }
                   elsif ($uchar == ',') {
-                    my $quantifier_min = to_int_with_base($quantifier_min_str, 10);
+                    my $quantifier_min = Fn->to_int_with_base($quantifier_min_str, 10);
                     my $last_pattern = (Regex::Pattern)$patterns->get($patterns->length - 1);
                     $last_pattern->{min_repeat} = $quantifier_min;
                     
-                    $status = STATUS_QUANTIFIER_MAX();
+                    $status = Regex->STATUS_QUANTIFIER_MAX();
                     $quantifier_min_str .= "";
                   }
                   else {
                     die "Quantifier min must be non-fractional number";
                   }
                 }
-                elsif ($status == STATUS_QUANTIFIER_MAX()) {
-                  if (is_digit($uchar)) {
+                elsif ($status == Regex->STATUS_QUANTIFIER_MAX()) {
+                  if (Fn->is_digit($uchar)) {
                     $quantifier_max_str .= $uchar - '0';
                   }
                   else {
@@ -488,7 +486,7 @@ class Regex : precompile {
     my $target_base_index_before : int;
     while (1) {
       $target_base_index_before = $target_base_index;
-      my $target_base_uchar = uchar($target, \$target_base_index);
+      my $target_base_uchar = Unicode->uchar($target, \$target_base_index);
       unless ($target_base_uchar >= 0) {
         last;
       }
@@ -511,7 +509,7 @@ class Regex : precompile {
         }
         
         my $target_before_index = $target_index;
-        my $target_uchar = uchar($target, \$target_index);
+        my $target_uchar = Unicode->uchar($target, \$target_index);
         unless ($target_uchar >= 0) {
           last;
         }
@@ -566,7 +564,7 @@ class Regex : precompile {
                 last;
               }
               
-              $target_uchar = uchar($target, \$target_index);
+              $target_uchar = Unicode->uchar($target, \$target_index);
               
               $target_before_index = $target_index;
             }
@@ -584,7 +582,7 @@ class Regex : precompile {
         
         if ($match_uchar_repeat) {
           if ($pattern->{capture_end}) {
-            $self->{captures}[$capture_count] = substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
+            $self->{captures}[$capture_count] = Fn->substr($target, $capture_start_index, $repeat_before_target_index - $capture_start_index);
             $capture_count++;
             if ($capture_count > 255) {
               die "Too many captures";
@@ -676,7 +674,7 @@ class Regex : precompile {
     my $tarlength = length $target;
     
     if ($target_base_index > 0) {
-      my $first_string = substr($target, 0, $target_base_index);
+      my $first_string = Fn->substr($target, 0, $target_base_index);
       $result_buffer->push($first_string);
     }
     
@@ -730,7 +728,7 @@ class Regex : precompile {
       
       my $rest_length = $tarlength - $match_end;
       
-      my $before_result = (string)copy_array_range_byte((byte[])$target, $target_base_index, $match_start - $target_base_index);
+      my $before_result = (string)Fn->copy_array_range_byte((byte[])$target, $target_base_index, $match_start - $target_base_index);
       $result_buffer->push($before_result);
       $result_buffer->push($replace);
       
@@ -744,12 +742,12 @@ class Regex : precompile {
     
     
     if ($replace_count == 0) {
-      $result = (byte[])copy_string($target);
+      $result = (byte[])Fn->copy_string($target);
     }
     else {
       my $match_end = $self->match_start + $self->match_length;
       my $rest_length = $tarlength - $match_end;
-      my $rest_string = substr($target, $match_end, $rest_length);
+      my $rest_string = Fn->substr($target, $match_end, $rest_length);
       $result_buffer->push($rest_string);
       
       $result = (byte[])$result_buffer->to_string;

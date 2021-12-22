@@ -1,5 +1,5 @@
 class List : precompile {
-  use Fn(new_array_proto);
+  use Fn;
   
   has values   : oarray;
   has capacity : int;
@@ -20,8 +20,8 @@ class List : precompile {
     }
     
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < List->DEFAULT_CAPACITY()) {
+      $capacity = List->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -29,10 +29,10 @@ class List : precompile {
     $self->{capacity} = $capacity;
     
     if ($objects) {
-      $self->{values} = new_array_proto($objects, $capacity);
+      $self->{values} = Fn->new_array_proto($objects, $capacity);
     }
     else {
-      $self->{values} = new_array_proto(new object[0], $capacity);
+      $self->{values} = Fn->new_array_proto(new object[0], $capacity);
     }
     
     for (my $i = 0; $i < @$objects; ++$i) {
@@ -53,15 +53,15 @@ class List : precompile {
       die "length must be more than or equals to zero";
     }
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < List->DEFAULT_CAPACITY()) {
+      $capacity = List->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
     }
     $self->{capacity} = $capacity;
     $self->{length} = $length;
-    $self->{values} = new_array_proto($proto_array, $capacity);
+    $self->{values} = Fn->new_array_proto($proto_array, $capacity);
     return $self;
   }
   
@@ -217,7 +217,7 @@ class List : precompile {
   }
 
   private method _extend_with_capacity : void ($new_capacity : int) {
-    my $new_values = new_array_proto($self->{values}, $new_capacity);
+    my $new_values = Fn->new_array_proto($self->{values}, $new_capacity);
     for (my $i = 0; $i < $self->{length}; ++$i) {
       my $target = $i;
       if ($target < 0) { $target += $self->{capacity}; };
@@ -234,7 +234,7 @@ class List : precompile {
     
     my $new_capacity = $capacity * 2;
     
-    my $new_values = new_array_proto($self->{values}, $new_capacity);
+    my $new_values = Fn->new_array_proto($self->{values}, $new_capacity);
     
     for (my $i = 0; $i < $length; $i++) {
       $new_values->[$i] = $values->[$i];
@@ -267,7 +267,7 @@ class List : precompile {
   
   method to_array : oarray () {
     my $length = $self->{length};
-    my $objects = new_array_proto($self->{values}, $length);
+    my $objects = Fn->new_array_proto($self->{values}, $length);
     for (my $i = 0; $i < $length; $i++) {
       $objects->[$i] = $self->{values}[$i];
     }

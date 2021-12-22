@@ -1500,16 +1500,6 @@ else {
 }
 </pre>
 
-<h3 id="language-module-function-import">Function Import</h3>
-
-The Method which is defined as Class Method is imported as Function using <a href="#language-module-use">use Statement</a>.
-
-<pre>
-use Foo(method1, method2);
-</pre>
-
-This function is called by <a href="language-expression-callsub-function-call">Function Call</a>
-
 <h2 id="language-class-var">Class Variable</h2>
 <ul>
   <li><a href="#language-class-var-definition">Class Variable Definition</a></li>
@@ -3910,7 +3900,7 @@ my $ret = Foo->bar(1, 2, 3);
 Method which is defined as Class Method is imported as Function using <a href="#language-module-use">use Statement</a>.
 
 <pre>
-use Foo(MethodName);
+use Foo;
 </pre>
 
 <pre>
@@ -3923,10 +3913,10 @@ Function Call is <a href="#language-expression">Expression</a>.
 
 <pre>
 class Foo {
-  use Fn (copy_string);
+  use Fn;
   
   static method test : void () {
-    my $ret = copy_string("hello");
+    my $ret = Fn->copy_string("hello");
   }
 }
 </pre>

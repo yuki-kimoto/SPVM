@@ -1,5 +1,5 @@
 class FloatList : precompile {
-  use Fn (memcpy_float, memmove_float);
+  use Fn;
   
   has values   : float[];
   has capacity : int;
@@ -20,8 +20,8 @@ class FloatList : precompile {
     }
     
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < FloatList->DEFAULT_CAPACITY()) {
+      $capacity = FloatList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -31,7 +31,7 @@ class FloatList : precompile {
     $self->{length} = $length;
     
     if ($array) {
-      memcpy_float($values, 0, $array, 0, $length);
+      Fn->memcpy_float($values, 0, $array, 0, $length);
     }
     
     $self->{values} = $values;
@@ -45,8 +45,8 @@ class FloatList : precompile {
       die "length must be more than or equals to zero";
     }
     my $capacity = 0;
-    if ($length < DEFAULT_CAPACITY()) {
-      $capacity = DEFAULT_CAPACITY();
+    if ($length < FloatList->DEFAULT_CAPACITY()) {
+      $capacity = FloatList->DEFAULT_CAPACITY();
     }
     else {
       $capacity = $length;
@@ -77,7 +77,7 @@ class FloatList : precompile {
     
     my $new_values = new float[$new_capacity];
     
-    memcpy_float($new_values, 0, $values, 0, $length);
+    Fn->memcpy_float($new_values, 0, $values, 0, $length);
     
     $self->{values} = $new_values;
     $self->{capacity} = $new_capacity;
@@ -99,7 +99,7 @@ class FloatList : precompile {
     if ($index != $length) {
       my $dist_index = $index + 1;
       my $move_length = $length - $index;
-      memmove_float($values, $dist_index, $values, $index, $move_length);
+      Fn->memmove_float($values, $dist_index, $values, $index, $move_length);
     }
     $values->[$index] = $value;
     
@@ -120,7 +120,7 @@ class FloatList : precompile {
     my $dist_index = $index;
     my $src_index = $index + 1;
     my $move_length = $length - $index - 1;
-    memmove_float($values, $dist_index, $values, $src_index, $move_length);
+    Fn->memmove_float($values, $dist_index, $values, $src_index, $move_length);
     
     $self->{length}--;
     
@@ -166,7 +166,7 @@ class FloatList : precompile {
     
     my $values = $self->{values};
     
-    memmove_float($values, 1, $values, 0, $length);
+    Fn->memmove_float($values, 1, $values, 0, $length);
     
     $values->[0] = $value;
     $self->{length}++;
@@ -184,7 +184,7 @@ class FloatList : precompile {
     
     my $value = $values->[0];
     
-    memmove_float($values, 0, $values, 1, $length - 1);
+    Fn->memmove_float($values, 0, $values, 1, $length - 1);
     
     $values->[$length - 1] = 0;
     
@@ -239,7 +239,7 @@ class FloatList : precompile {
     
     my $values = $self->{values};
     
-    memcpy_float($array, 0, $values, 0, $length);
+    Fn->memcpy_float($array, 0, $values, 0, $length);
     
     return $array;
   }
