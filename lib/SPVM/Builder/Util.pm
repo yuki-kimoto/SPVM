@@ -9,6 +9,7 @@ use Pod::Usage 'pod2usage';
 use Getopt::Long 'GetOptionsFromArray';
 use List::Util 'min';
 use File::Basename 'dirname';
+use File::Spec;
 
 # SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure perl script, not contain XS functions and don't use any other SPVM modules.
@@ -46,11 +47,8 @@ sub create_cfunc_name {
 sub load_config {
   my ($config_file) = @_;
   
-  open my $config_fh, '<', $config_file
-    or confess "Can't open $config_file: $!";
-  my $config_content = do { local $/; <$config_fh> };
-  my $config = eval "$config_content";
-  if (my $messge = $@) {
+  my $config = do File::Spec->rel2abs($config_file);
+  if ($@) {
     confess "Can't parse config file \"$config_file\": $@";
   }
   
