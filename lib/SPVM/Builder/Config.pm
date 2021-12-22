@@ -501,7 +501,7 @@ sub parse_windows_def_file {
 }
 
 sub get_include_dir {
-  my ($file) = @_;
+  my ($self, $file) = @_;
   
   my $include_dir = $file;
   $include_dir =~ s|\.config$|.native/include|;
@@ -510,7 +510,7 @@ sub get_include_dir {
 }
 
 sub get_src_dir {
-  my ($file) = @_;
+  my ($self, $file) = @_;
   
   my $src_dir = $file;
   $src_dir =~ s|\.config$|.native/src|;
@@ -519,7 +519,7 @@ sub get_src_dir {
 }
 
 sub get_lib_dir {
-  my ($file) = @_;
+  my ($self, $file) = @_;
   
   my $lib_dir = $file;
   $lib_dir =~ s|\.config$|.native/lib|;
