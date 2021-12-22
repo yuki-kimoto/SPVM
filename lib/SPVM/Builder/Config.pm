@@ -6,6 +6,17 @@ use Config;
 use Carp 'confess';
 
 # Fields
+sub exported_funcs {
+  my $self = shift;
+  if (@_) {
+    $self->{exported_funcs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{exported_funcs};
+  }
+}
+
 sub ext {
   my $self = shift;
   if (@_) {
@@ -188,6 +199,11 @@ sub new {
     $self->cc($Config{cc});
   }
 
+  # exported_funcs
+  unless (defined $self->{exported_funcs}) {
+    $self->exported_funcs([]);
+  }
+
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
@@ -364,6 +380,12 @@ sub add_libs {
   my ($self, @libs) = @_;
   
   push @{$self->{libs}}, @libs;
+}
+
+sub add_exported_funcs {
+  my ($self, @exported_funcs) = @_;
+  
+  push @{$self->{exported_funcs}}, @exported_funcs;
 }
 
 sub add_sources {
@@ -583,6 +605,13 @@ Not Windows
 
 At runtime, the "lib" directory of the native module is added before C<include_dirs>.
 
+=head2 exported_funcs
+
+  my $exported_funcs = $config->exported_funcs;
+  $config->exported_funcs($exported_funcs);
+
+Get and set the exported functions. This has means on Windows.
+
 =head2 libs
 
   my $libs = $config->libs;
@@ -738,6 +767,12 @@ Add values after the last element of  C<lib_dirs> field.
   $config->add_sources(@sources);
 
 Add the values after the last element of C<sources> field.
+
+=head2 add_exported_funcs
+
+  $config->add_exported_funcs(@exported_funcs);
+
+Add values after the last element of  C<exported_funcs> field.
 
 =head2 add_libs
 

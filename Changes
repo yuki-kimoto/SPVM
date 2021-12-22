@@ -2,6 +2,8 @@ Revision history for SPVM
 0.9020  2021-12-22
         [CHANGES]
         * Remove Windows library searching path from ldflags of SPVM::Builder::Config
+        * Add parse_windows_def_file to SPVM::Builder::Config
+        * Add exported_funcs field and add_exported_funcs method to SPVM::Builder::Config, and add the logic of adding exported functions.
         
 0.9019  2021-12-21
         [CHANGES]
