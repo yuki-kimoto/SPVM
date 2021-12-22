@@ -573,14 +573,33 @@ EOS
   );
 
   if ($self->debug) {
-    for my $tmp_file (@tmp_files) {
-      if (-T $tmp_file) {
-        my $content = SPVM::Builder::Util::slurp_binary($tmp_file);
-        
-        warn "[$tmp_file]\n$content\n";
+    if ($^O eq 'MSWin32') {
+      my $def_file;
+      my $lds_file;
+      for my $tmp_file (@tmp_files) {
+        # Remove double quote
+        $tmp_file =~ s/^"//;
+        $tmp_file =~ s/"$//;
+
+        if ($tmp_file =~ /\.def$/) {
+          $def_file = $tmp_file;
+          $lds_file = $def_file;
+          $lds_file =~ s/\.def$/.lds/;
+          last;
+        }
+      }
+      if (defined $def_file && -f $def_file) {
+        my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
+        warn "[$def_file]\n$def_content\n";
+      }
+      if (defined $lds_file && -f $lds_file) {
+        my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
+        warn "[$lds_file]\n$lds_content\n";
       }
     }
   }
+  
+  sleep 100;
   
   return $shared_lib_file;
 }
