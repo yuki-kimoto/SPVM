@@ -490,13 +490,13 @@ EOS
     
     my $module_path = $INC{$module_name};
     
-    my $shared_lib_file = $module_path;
-    $shared_lib_file =~ s/\.pm$/\.$Config{dlext}/;
-    if (-f $shared_lib_file) {
-      push @$object_files, $shared_lib_file;
+    my $static_lib_file = $module_path;
+    $static_lib_file =~ s/\.pm$/\.a/;
+    if (-f $static_lib_file) {
+      push @$object_files, $static_lib_file;
     }
     else {
-      confess "Can't find resource shared library file \"$shared_lib_file\"";
+      confess "Can't find resource static library file \"$static_lib_file\"";
     }
   }
 

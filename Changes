@@ -6,6 +6,7 @@ Revision history for SPVM
         * Add exported_funcs field and add_exported_funcs method to SPVM::Builder::Config, and add the logic of adding exported functions.
         * Add get_src_dir, get_include_dir, get_lib_dir to SPVM::Builder::Config.
         * Create static library for SPVM natvie module
+        * Static resource is linked instead of dynamic resource.
 0.9019  2021-12-21
         [CHANGES]
         * Rename SPVM::Builder::Config's get_libs, set_libs, unshift_libs, push_libs method to get_runtime_libs, set_runtime_libs, unshift_runtime_libs, push_runtime_libs
