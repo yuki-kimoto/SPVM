@@ -414,7 +414,7 @@ cmp length isa ref
 The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bison. 
 
 <pre>
-%token <opval> CLASS HAS METHOD OUR ENUM MY USE REQUIRE ALLOW CURRENT_CLASS
+%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -499,10 +499,11 @@ begin_block
 
 use
   : USE basic_type ';'
-  | USE basic_type '(' opt_method_names ')' ';'
+  | USE basic_type AS basic_type';'
 
 require
   : REQUIRE basic_type
+  | REQUIRE basic_type AS basic_type';'
 
 allow
   : ALLOW basic_type ';'
@@ -875,6 +876,9 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
   <tr>
     <td>USE</td><td>use</td>
+  </tr>
+  <tr>
+    <td>AS</td><td>as</td>
   </tr>
   <tr>
     <td>REQUIRE</td><td>require</td>
@@ -1449,6 +1453,16 @@ class Foo {
   use Foo;
 }
 </pre>
+
+<h3 id="language-module-use-class-alias">Class Alias</h3>
+
+Define class aliases using <b>as</b> syntax with <b>use</b>
+
+<pre>
+use Foo::Bar as FB;
+</pre>
+
+FB is used as Foo::Bar alias.
 
 <h3 id="language-module-auto-loaded-module">Automatically Loaded Module</h3>
 
