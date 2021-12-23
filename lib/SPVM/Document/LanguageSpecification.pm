@@ -1462,7 +1462,12 @@ Define class aliases using <b>as</b> syntax with <b>use</b>
 use Foo::Bar as FB;
 </pre>
 
-FB is used as Foo::Bar alias.
+FB is used as Foo::Bar alias in class method calls.
+
+<pre>
+# This means Foo::Bar->sum(1, 2);
+FB->sum(1, 2);
+</pre>
 
 <h3 id="language-module-auto-loaded-module">Automatically Loaded Module</h3>
 
