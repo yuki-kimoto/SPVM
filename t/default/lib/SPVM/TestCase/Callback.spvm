@@ -44,7 +44,7 @@ class TestCase::Callback {
     return 1;
   }
   
-  static method sort_objectect : void ($values : oarray, $comparator : Comparator::Object) {
+  static method sort_objects : void ($values : oarray, $comparator : Comparator::Object) {
 
     my $change_cnt = @$values - 1;
     while( $change_cnt > 0){
@@ -88,7 +88,7 @@ class TestCase::Callback {
       $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
-      sort_objectect($minimals, $comparator);
+      TestCase::Callback->sort_objects($minimals, $comparator);
       
       if ($minimals->[0]{x} == 1 && $minimals->[1]{x} == 2 && $minimals->[2]{x} == 3) {
         return 1;

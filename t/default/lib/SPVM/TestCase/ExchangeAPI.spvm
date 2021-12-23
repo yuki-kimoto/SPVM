@@ -415,8 +415,8 @@ class TestCase::ExchangeAPI {
       if ($obj->{x_short} == 32767) {
         if ($obj->{x_int} == 2147483647) {
           if ($obj->{x_long} == 9223372036854775807L) {
-            if ($obj->{x_float} == FLOAT_PRECICE()) {
-              if ($obj->{x_double} == DOUBLE_PRECICE()) {
+            if ($obj->{x_float} == TestCase::ExchangeAPI->FLOAT_PRECICE()) {
+              if ($obj->{x_double} == TestCase::ExchangeAPI->DOUBLE_PRECICE()) {
                 if ($obj->{minimal}->{x} == 3) {
                   return 1;
                 }
@@ -781,7 +781,7 @@ class TestCase::ExchangeAPI {
     
     if ($values->[0] == (float)97) {
       if ($values->[1] == (float)98) {
-        if ($values->[2] == (float)FLOAT_PRECICE()) {
+        if ($values->[2] == (float)TestCase::ExchangeAPI->FLOAT_PRECICE()) {
            if (@$values == 3) {
              return 1;
            }
@@ -796,7 +796,7 @@ class TestCase::ExchangeAPI {
     
     if ($values->[0] == (double)97) {
       if ($values->[1] == (double)98) {
-        if ($values->[2] == (double)DOUBLE_PRECICE()) {
+        if ($values->[2] == (double)TestCase::ExchangeAPI->DOUBLE_PRECICE()) {
            if (@$values == 3) {
              return 1;
            }
@@ -971,7 +971,7 @@ class TestCase::ExchangeAPI {
   static method spvm_set_and_get_float : int ($nums : float[]) {
     
     if ($nums->[0] == 0.0f) {
-      if ($nums->[1] == FLOAT_PRECICE()) {
+      if ($nums->[1] == TestCase::ExchangeAPI->FLOAT_PRECICE()) {
         return 1;
       }
     }
@@ -981,7 +981,7 @@ class TestCase::ExchangeAPI {
   static method spvm_set_and_get_double : int ($nums : double[]) {
     
     if ($nums->[0] == 0.0) {
-      if ($nums->[1] == DOUBLE_PRECICE()) {
+      if ($nums->[1] == TestCase::ExchangeAPI->DOUBLE_PRECICE()) {
         return 1;
       }
     }

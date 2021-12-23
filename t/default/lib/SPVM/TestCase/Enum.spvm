@@ -15,7 +15,7 @@ class TestCase::Enum {
   }
   
   static method enum_descriptor  : int () {
-    unless (PRIVATE_VALUE() == 12) {
+    unless (TestCase::Enum->PRIVATE_VALUE() == 12) {
       return 0;
     }
     
@@ -62,7 +62,7 @@ class TestCase::Enum {
 
     # Function call
     {
-      unless (Fn->INT_ONE() == 1) {
+      unless (TestCase::Enum->INT_ONE() == 1) {
         return 0;
       }
     }

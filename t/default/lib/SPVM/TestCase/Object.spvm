@@ -60,7 +60,7 @@ class TestCase::Object {
 
   static method destructor : int () {
     my $minimal = TestCase::Minimal->new();
-    destructor_call($minimal);
+    TestCase::Object->destructor_call($minimal);
     
     if ($minimal->{x} == 3) {
       return 1;
@@ -126,8 +126,8 @@ class TestCase::Object {
     $test_case->{x_short} = Fn->INT16_MAX();
     $test_case->{x_int} = Fn->INT32_MAX();
     $test_case->{x_long} = Fn->INT64_MAX();
-    $test_case->{x_float} = FLOAT_PRECICE();
-    $test_case->{x_double} = DOUBLE_PRECICE();
+    $test_case->{x_float} = TestCase::Object->FLOAT_PRECICE();
+    $test_case->{x_double} = TestCase::Object->DOUBLE_PRECICE();
     my $minimal = TestCase::Minimal->new();
     $minimal->{x} = 3;
     $test_case->{minimal} = $minimal;
@@ -136,16 +136,16 @@ class TestCase::Object {
     $test_case->{x_short} = Fn->INT16_MAX();
     $test_case->{x_int} = Fn->INT32_MAX();
     $test_case->{x_long} = Fn->INT64_MAX();
-    $test_case->{x_float} = FLOAT_PRECICE();
-    $test_case->{x_double} = DOUBLE_PRECICE();
+    $test_case->{x_float} = TestCase::Object->FLOAT_PRECICE();
+    $test_case->{x_double} = TestCase::Object->DOUBLE_PRECICE();
     $test_case->{minimal} = $minimal;
 
     if ((int)$test_case->{x_byte} == (int)Fn->INT8_MAX()) {
       if ((int)$test_case->{x_short} == (int)Fn->INT16_MAX()) {
         if ($test_case->{x_int} == Fn->INT32_MAX()) {
           if ($test_case->{x_long} == Fn->INT64_MAX()) {
-            if ($test_case->{x_float} == FLOAT_PRECICE()) {
-              if ($test_case->{x_double} == DOUBLE_PRECICE()) {
+            if ($test_case->{x_float} == TestCase::Object->FLOAT_PRECICE()) {
+              if ($test_case->{x_double} == TestCase::Object->DOUBLE_PRECICE()) {
                 if ($test_case->{minimal}->{x} == 3) {
                   return 1;
                 }

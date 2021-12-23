@@ -7,7 +7,7 @@ class TestCase::Inline {
   
   # Array store undef
   static method constant_method : int () {
-    unless (constant_method_return_double() == 0.25) {
+    unless (TestCase::Inline->constant_method_return_double() == 0.25) {
       return 0;
     }
     

@@ -1,7 +1,7 @@
 class TestCase::Switch {
 
   static method switch_return : int () {
-    my $ret = switch_return_method();
+    my $ret = TestCase::Switch->switch_return_method();
     
     unless ($ret == 5) {
       return 0;

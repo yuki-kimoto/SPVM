@@ -1,9 +1,8 @@
 class TestCase::Lib::Fn {
-  use Unicode (uchar);
+  use Unicode;
   use TestCase::Minimal;
   use Fn;
   use TestCase::Minimal;
-  use Time (time);
   use EqualityChecker;
   use EqualityChecker::SameObject;
   use Fn;
@@ -11,94 +10,10 @@ class TestCase::Lib::Fn {
   use TestCase::Minimal;
   use EqualityChecker;
   use EqualityChecker::SameObject;
-
-  use Fn (
-    copy_array_byte,
-    copy_array_short,
-    copy_array_int,
-    copy_array_long,
-    copy_array_float,
-    copy_array_double,
-    copy_array_string,
-    equals_array_byte,
-    equals_array_short,
-    equals_array_int,
-    equals_array_long,
-    equals_array_float,
-    equals_array_double,
-    dump_array_byte,
-    dump_array_short,
-    dump_array_int,
-    dump_array_long,
-    dump_array_float,
-    dump_array_double,
-    copy_array_range_byte,
-    copy_array_range_short,
-    copy_array_range_int,
-    copy_array_range_long,
-    copy_array_range_float,
-    copy_array_range_double,
-    copy_array_range_object,
-    memcpy_byte,
-    memcpy_short,
-    memcpy_int,
-    memcpy_long,
-    memcpy_float,
-    memcpy_double,
-    memmove_byte,
-    memmove_short,
-    memmove_int,
-    memmove_long,
-    memmove_float,
-    memmove_double,
-    new_array_proto,
-  );
-  
   use Fn;
-  use Fn (
-    crand,
-    srand,
-  );
-
   use TestCase::Minimal;
   use EqualityChecker;
   use EqualityChecker::SameObject;
-
-  use Fn (
-    chompr,
-    copy_string,
-    is_perl_space,
-    is_perl_word,
-    is_alnum,
-    is_alpha,
-    is_blank,
-    is_cntrl,
-    is_digit,
-    is_graph,
-    is_lower,
-    is_print,
-    is_punct,
-    is_space,
-    is_upper,
-    is_xdigit,
-    join,
-    lc,
-    lcfirst,
-    uc,
-    ucfirst,
-    rindex,
-    to_double,
-    to_float,
-    to_int,
-    to_int_with_base,
-    to_long,
-    to_long_with_base,
-    index,
-    split,
-    sprintf,
-    to_lower,
-    to_upper,
-  );
 
   static method test_abs : int () {
     
@@ -178,13 +93,13 @@ class TestCase::Lib::Fn {
     my $founds_minus = new int[10];
     my $rand = 0;
     for (my $i = 0; $i < 100000; $i++) {
-      $rand = crand();
+      $rand = Fn->crand();
 
       my $dig0 = $rand % 10;
       $founds_plus->[$dig0] = 1;
     }
     
-    unless (equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+    unless (Fn->equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
       return 0;
     }
 
@@ -224,7 +139,7 @@ class TestCase::Lib::Fn {
         $founds_plus->[$dig0] = 1;
       }
       
-      unless (equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
+      unless (Fn->equals_array_int($founds_plus, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1])) {
         return 0;
       }
     }
@@ -243,23 +158,23 @@ class TestCase::Lib::Fn {
 
   static method test_srand : int () {
     
-    srand(10);
+    Fn->srand(10);
     
-    my $rand1 = crand();
-    my $rand2 = crand();
-    my $rand3 = crand();
+    my $rand1 = Fn->crand();
+    my $rand2 = Fn->crand();
+    my $rand3 = Fn->crand();
     
-    srand(10);
+    Fn->srand(10);
     
-    unless (crand() == $rand1) {
+    unless (Fn->crand() == $rand1) {
       return 0;
     }
     
-    unless (crand() == $rand2) {
+    unless (Fn->crand() == $rand2) {
       return 0;
     }
     
-    unless (crand() == $rand3) {
+    unless (Fn->crand() == $rand3) {
       return 0;
     }
     
@@ -463,76 +378,76 @@ class TestCase::Lib::Fn {
   static method test_split : int () {
     {
       my $string = "foo,bar,baz";
-      my $split_strs = split(",", $string);
-      unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
+      my $split_strs = Fn->split(",", $string);
+      unless (Fn->equals_array_string($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
 
     {
       my $string = "foo,bar,";
-      my $split_strs = split(",", $string);
-      unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
+      my $split_strs = Fn->split(",", $string);
+      unless (Fn->equals_array_string($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
 
     {
       my $string = ",foo,,bar,,";
-      my $split_strs = split(",", $string);
-      unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+      my $split_strs = Fn->split(",", $string);
+      unless (Fn->equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
 
     {
       my $string = "foo : bar : baz";
-      my $split_strs = split(" : ", $string);
-      unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
+      my $split_strs = Fn->split(" : ", $string);
+      unless (Fn->equals_array_string($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
     {
       my $string = "foo : bar : ";
-      my $split_strs = split(" : ", $string);
-      unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
+      my $split_strs = Fn->split(" : ", $string);
+      unless (Fn->equals_array_string($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
     {
       my $string = " : foo :  : bar :  : ";
-      my $split_strs = split(" : ", $string);
-      unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+      my $split_strs = Fn->split(" : ", $string);
+      unless (Fn->equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
 
     {
       my $string = "foo---bar---baz";
-      my $split_strs = split("---", $string);
-      unless (equals_array_string($split_strs, ["foo", "bar", "baz"])) {
+      my $split_strs = Fn->split("---", $string);
+      unless (Fn->equals_array_string($split_strs, ["foo", "bar", "baz"])) {
         return 0;
       }
     }
     {
       my $string = "foo---bar---";
-      my $split_strs = split("---", $string);
-      unless (equals_array_string($split_strs, ["foo", "bar", ""])) {
+      my $split_strs = Fn->split("---", $string);
+      unless (Fn->equals_array_string($split_strs, ["foo", "bar", ""])) {
         return 0;
       }
     }
     {
       my $string = "---foo------bar------";
-      my $split_strs = split("---", $string);
-      unless (equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
+      my $split_strs = Fn->split("---", $string);
+      unless (Fn->equals_array_string($split_strs, ["", "foo", "", "bar", "", ""])) {
         return 0;
       }
     }
 
     {
       my $string = "foo--!bar---baz";
-      my $split_strs = split("---", $string);
-      unless (equals_array_string($split_strs, ["foo--!bar", "baz"])) {
+      my $split_strs = Fn->split("---", $string);
+      unless (Fn->equals_array_string($split_strs, ["foo--!bar", "baz"])) {
         return 0;
       }
     }
@@ -541,14 +456,14 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_d : int () {
     my $tests = [
-        [ sprintf("abc%d", 123),          "abc123" ],
-        [ sprintf("%dabc", 123),          "123abc" ],
-        [ sprintf("%dabc%d", 1, 10),      "1abc10" ],
-        [ sprintf("%d%d%d", 1, 10, 100),  "110100" ],
-        [ sprintf("%d%d%d", 1, 10, 100),  "110100" ],
-        [ sprintf("%05d", 123),           "00123"  ],
-        [ sprintf("%+5d", 123),           " +123"  ],
-        [ sprintf("%-5d", 123),           "123  "  ],
+        [ Fn->sprintf("abc%d", 123),          "abc123" ],
+        [ Fn->sprintf("%dabc", 123),          "123abc" ],
+        [ Fn->sprintf("%dabc%d", 1, 10),      "1abc10" ],
+        [ Fn->sprintf("%d%d%d", 1, 10, 100),  "110100" ],
+        [ Fn->sprintf("%d%d%d", 1, 10, 100),  "110100" ],
+        [ Fn->sprintf("%05d", 123),           "00123"  ],
+        [ Fn->sprintf("%+5d", 123),           " +123"  ],
+        [ Fn->sprintf("%-5d", 123),           "123  "  ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -558,9 +473,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%d", "str");
+        Fn->sprintf("%d", "str");
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -571,15 +486,15 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_u : int () {
     my $tests = [
-        [ sprintf("abc%u", 123),          "abc123" ],
-        [ sprintf("%uabc", 123),          "123abc" ],
-        [ sprintf("%uabc%u", 1, 10),      "1abc10" ],
-        [ sprintf("%u%u%u", 1, 10, 100),  "110100" ],
-        [ sprintf("%05u", 123),           "00123"  ],
-        [ sprintf("%+5u", 123),           " +123"  ],
-        [ sprintf("%-5u", 123),           "123  "  ],
-        [ sprintf("%-5u", 123),           "123  "  ],
-        [ sprintf("%u", -1),              "4294967295" ],
+        [ Fn->sprintf("abc%u", 123),          "abc123" ],
+        [ Fn->sprintf("%uabc", 123),          "123abc" ],
+        [ Fn->sprintf("%uabc%u", 1, 10),      "1abc10" ],
+        [ Fn->sprintf("%u%u%u", 1, 10, 100),  "110100" ],
+        [ Fn->sprintf("%05u", 123),           "00123"  ],
+        [ Fn->sprintf("%+5u", 123),           " +123"  ],
+        [ Fn->sprintf("%-5u", 123),           "123  "  ],
+        [ Fn->sprintf("%-5u", 123),           "123  "  ],
+        [ Fn->sprintf("%u", -1),              "4294967295" ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -589,9 +504,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%d", "str");
+        Fn->sprintf("%d", "str");
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -602,13 +517,13 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_ld : int () {
     my $tests = [
-        [ sprintf("abc%ld", 10000000000L),                                "abc10000000000"                    ],
-        [ sprintf("%ldabc", 10000000000L),                                "10000000000abc"                    ],
-        [ sprintf("%ldabc%ld", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
-        [ sprintf("%ld%ld%ld", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
-        [ sprintf("%013ld", 12345678901L),                                "0012345678901"                     ],
-        [ sprintf("%+13ld", 12345678901L),                                " +12345678901"                     ],
-        [ sprintf("%-13ld", 12345678901L),                                "12345678901  "                     ],
+        [ Fn->sprintf("abc%ld", 10000000000L),                                "abc10000000000"                    ],
+        [ Fn->sprintf("%ldabc", 10000000000L),                                "10000000000abc"                    ],
+        [ Fn->sprintf("%ldabc%ld", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
+        [ Fn->sprintf("%ld%ld%ld", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
+        [ Fn->sprintf("%013ld", 12345678901L),                                "0012345678901"                     ],
+        [ Fn->sprintf("%+13ld", 12345678901L),                                " +12345678901"                     ],
+        [ Fn->sprintf("%-13ld", 12345678901L),                                "12345678901  "                     ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -618,9 +533,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%ld", "str");
+        Fn->sprintf("%ld", "str");
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -628,9 +543,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%l", 1L);
+        Fn->sprintf("%l", 1L);
       };
-      unless ($@ && index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
+      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -641,14 +556,14 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_lu : int () {
     my $tests = [
-        [ sprintf("abc%lu", 10000000000L),                                "abc10000000000"                    ],
-        [ sprintf("%luabc", 10000000000L),                                "10000000000abc"                    ],
-        [ sprintf("%luabc%lu", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
-        [ sprintf("%lu%ld%lu", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
-        [ sprintf("%013lu", 12345678901L),                                "0012345678901"                     ],
-        [ sprintf("%+13lu", 12345678901L),                                " +12345678901"                     ],
-        [ sprintf("%-13lu", 12345678901L),                                "12345678901  "                     ],
-        [ sprintf("%lu", -1L),                                            "18446744073709551615"              ],
+        [ Fn->sprintf("abc%lu", 10000000000L),                                "abc10000000000"                    ],
+        [ Fn->sprintf("%luabc", 10000000000L),                                "10000000000abc"                    ],
+        [ Fn->sprintf("%luabc%lu", 10000000000L, 20000000000L),               "10000000000abc20000000000"         ],
+        [ Fn->sprintf("%lu%ld%lu", 10000000000L, 20000000000L, 30000000000L), "100000000002000000000030000000000" ],
+        [ Fn->sprintf("%013lu", 12345678901L),                                "0012345678901"                     ],
+        [ Fn->sprintf("%+13lu", 12345678901L),                                " +12345678901"                     ],
+        [ Fn->sprintf("%-13lu", 12345678901L),                                "12345678901  "                     ],
+        [ Fn->sprintf("%lu", -1L),                                            "18446744073709551615"              ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -658,9 +573,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%ld", "str");
+        Fn->sprintf("%ld", "str");
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -668,9 +583,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%l", 1L);
+        Fn->sprintf("%l", 1L);
       };
-      unless ($@ && index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
+      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: \"%l\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -681,16 +596,16 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_f : int () {
     my $tests = [
-        [ sprintf("abc%.2f", 3.1415),                  "abc3.14"      ],
-        [ sprintf("%.2fabc", 3.14),                  "3.14abc"      ],
-        [ sprintf("%.2fabc%.2f", 3.14, 2.71),        "3.14abc2.71"  ],
-        [ sprintf("%.2f%.2f%.2f", 3.14, 2.71, 2.67), "3.142.712.67" ],
-        [ sprintf("%.10f", 3.14),                    "3.1400000000" ],
-        [ sprintf("%012.6f", 3.14),                  "00003.140000" ],
-        [ sprintf("%+12.6f", 3.14),                  "   +3.140000" ],
-        [ sprintf("%-12.6f", 3.14),                  "3.140000    " ],
-        [ sprintf("%+-12.6f", 3.14),                 "+3.140000   " ],
-        [ sprintf("%g", 3.14),                       "3.14"         ],
+        [ Fn->sprintf("abc%.2f", 3.1415),                  "abc3.14"      ],
+        [ Fn->sprintf("%.2fabc", 3.14),                  "3.14abc"      ],
+        [ Fn->sprintf("%.2fabc%.2f", 3.14, 2.71),        "3.14abc2.71"  ],
+        [ Fn->sprintf("%.2f%.2f%.2f", 3.14, 2.71, 2.67), "3.142.712.67" ],
+        [ Fn->sprintf("%.10f", 3.14),                    "3.1400000000" ],
+        [ Fn->sprintf("%012.6f", 3.14),                  "00003.140000" ],
+        [ Fn->sprintf("%+12.6f", 3.14),                  "   +3.140000" ],
+        [ Fn->sprintf("%-12.6f", 3.14),                  "3.140000    " ],
+        [ Fn->sprintf("%+-12.6f", 3.14),                 "+3.140000   " ],
+        [ Fn->sprintf("%g", 3.14),                       "3.14"         ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -700,9 +615,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%f", "str");
+        Fn->sprintf("%f", "str");
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -713,12 +628,12 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_c : int () {
     my $tests = [
-        [ sprintf("abc%c", 'x'),            "abcx"  ],
-        [ sprintf("%cabc", 'x'),            "xabc"  ],
-        [ sprintf("%cabc%c", 'x', 'y'),     "xabcy" ],
-        [ sprintf("%c%c%c", 'x', 'y', 'z'), "xyz"   ],
-        [ sprintf("%05c", 'x'),             "0000x" ],
-        [ sprintf("%-5c", 'x'),             "x    " ],
+        [ Fn->sprintf("abc%c", 'x'),            "abcx"  ],
+        [ Fn->sprintf("%cabc", 'x'),            "xabc"  ],
+        [ Fn->sprintf("%cabc%c", 'x', 'y'),     "xabcy" ],
+        [ Fn->sprintf("%c%c%c", 'x', 'y', 'z'), "xyz"   ],
+        [ Fn->sprintf("%05c", 'x'),             "0000x" ],
+        [ Fn->sprintf("%-5c", 'x'),             "x    " ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -728,9 +643,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%c", "str");
+        Fn->sprintf("%c", "str");
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -741,12 +656,12 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_s : int () {
     my $tests = [
-        [ sprintf("abc%s", "ABC"),                "abcABC"    ],
-        [ sprintf("%sabc", "ABC"),                "ABCabc"    ],
-        [ sprintf("%sabc%s", "ABC", "XYZ"),       "ABCabcXYZ" ],
-        [ sprintf("%s%s%s", "ABC", "XYZ", "123"), "ABCXYZ123" ],
-        [ sprintf("%05s", "str"),                 "00str"     ],
-        [ sprintf("%-5s", "str"),                 "str  "     ],
+        [ Fn->sprintf("abc%s", "ABC"),                "abcABC"    ],
+        [ Fn->sprintf("%sabc", "ABC"),                "ABCabc"    ],
+        [ Fn->sprintf("%sabc%s", "ABC", "XYZ"),       "ABCabcXYZ" ],
+        [ Fn->sprintf("%s%s%s", "ABC", "XYZ", "123"), "ABCXYZ123" ],
+        [ Fn->sprintf("%05s", "str"),                 "00str"     ],
+        [ Fn->sprintf("%-5s", "str"),                 "str  "     ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -756,9 +671,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%s", 1);
+        Fn->sprintf("%s", 1);
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -769,15 +684,15 @@ class TestCase::Lib::Fn {
 
   private static method _first_uchar : int ($string : string) {
     my $uchar_pos = 0;
-    return uchar($string, \$uchar_pos);
+    return Unicode->uchar($string, \$uchar_pos);
   }
 
   static method test_sprintf_U : int () {
     my $tests = [
-        [ sprintf("abc%U", _first_uchar("あ")), "abcあ" ],
-        [ sprintf("%Uabc", _first_uchar("あ")), "あabc" ],
-        [ sprintf("%Uabc%U", _first_uchar("あ"), _first_uchar("い")), "あabcい" ],
-        [ sprintf("%U%U%U", _first_uchar("あ"), _first_uchar("い"), _first_uchar("う")), "あいう" ],
+        [ Fn->sprintf("abc%U", TestCase::Lib::Fn->_first_uchar("あ")), "abcあ" ],
+        [ Fn->sprintf("%Uabc", TestCase::Lib::Fn->_first_uchar("あ")), "あabc" ],
+        [ Fn->sprintf("%Uabc%U", TestCase::Lib::Fn->_first_uchar("あ"), TestCase::Lib::Fn->_first_uchar("い")), "あabcい" ],
+        [ Fn->sprintf("%U%U%U", TestCase::Lib::Fn->_first_uchar("あ"), TestCase::Lib::Fn->_first_uchar("い"), TestCase::Lib::Fn->_first_uchar("う")), "あいう" ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -787,9 +702,9 @@ class TestCase::Lib::Fn {
     }
     {
       eval {
-        sprintf("%U", "str");
+        Fn->sprintf("%U", "str");
       };
-      unless ($@ && index($@, "Can't cast", 0) > -1) {
+      unless ($@ && Fn->index($@, "Can't cast", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -800,9 +715,9 @@ class TestCase::Lib::Fn {
 
   static method test_sprintf_percent : int () {
     my $tests = [
-        [ sprintf("%d%%",    1), "1%"    ],
-        [ sprintf("%%%d",    1), "%1"    ],
-        [ sprintf("%d%%str", 1), "1%str" ],
+        [ Fn->sprintf("%d%%",    1), "1%"    ],
+        [ Fn->sprintf("%%%d",    1), "%1"    ],
+        [ Fn->sprintf("%d%%str", 1), "1%str" ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
@@ -817,9 +732,9 @@ class TestCase::Lib::Fn {
     {
       # Invalid conversion (end of string)
       eval {
-        sprintf("%d%", 1);
+        Fn->sprintf("%d%", 1);
       };
-      unless ($@ && index($@, "Invalid conversion in sprintf: end of string", 0) > -1) {
+      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: end of string", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -828,9 +743,9 @@ class TestCase::Lib::Fn {
     {
       # Invalid conversion (unknown specifier)
       eval {
-        sprintf("%d%k", 1, 2);
+        Fn->sprintf("%d%k", 1, 2);
       };
-      unless ($@ && index($@, "Invalid conversion in sprintf: \"%k\"", 0) > -1) {
+      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: \"%k\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -839,9 +754,9 @@ class TestCase::Lib::Fn {
     {
       # Invalid conversion (no type)
       eval {
-        sprintf("%012.3", 3.14);
+        Fn->sprintf("%012.3", 3.14);
       };
-      unless ($@ && index($@, "Invalid conversion in sprintf: \"%012.3\"", 0) > -1) {
+      unless ($@ && Fn->index($@, "Invalid conversion in sprintf: \"%012.3\"", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -850,9 +765,9 @@ class TestCase::Lib::Fn {
     {
       # Missing argument
       eval {
-        sprintf("%d%d", 1);
+        Fn->sprintf("%d%d", 1);
       };
-      unless ($@ && index($@, "Missing argument in sprintf", 0) > -1) {
+      unless ($@ && Fn->index($@, "Missing argument in sprintf", 0) > -1) {
         warn("got error: $@");
         return 0;
       }
@@ -860,21 +775,21 @@ class TestCase::Lib::Fn {
     }
     {
       my $string = "abc\n";
-      my $ret = chompr($string);
+      my $ret = Fn->chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "abc";
-      my $ret = chompr($string);
+      my $ret = Fn->chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "";
-      my $ret = chompr($string);
+      my $ret = Fn->chompr($string);
       unless ($ret eq "") {
         return 0;
       }
@@ -886,21 +801,21 @@ class TestCase::Lib::Fn {
   static method test_chompr : int () {
     {
       my $string = "abc\n";
-      my $ret = chompr($string);
+      my $ret = Fn->chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "abc";
-      my $ret = chompr($string);
+      my $ret = Fn->chompr($string);
       unless ($ret eq "abc") {
         return 0;
       }
     }
     {
       my $string = "";
-      my $ret = chompr($string);
+      my $ret = Fn->chompr($string);
       unless ($ret eq "") {
         return 0;
       }
@@ -916,13 +831,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z') || ($char >= '0' && $char <= '9')) {
-        my $ret = is_alnum($char);
+        my $ret = Fn->is_alnum($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_alnum($char);
+        my $ret = Fn->is_alnum($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -943,13 +858,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if (($char >= 'A' && $char <= 'Z') || ($char >= 'a' && $char <= 'z')) {
-        my $ret = is_alpha($char);
+        my $ret = Fn->is_alpha($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_alpha($char);
+        my $ret = Fn->is_alpha($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -970,13 +885,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char >= ' ' ||  $char <= '\t') {
-        my $ret = is_blank($char);
+        my $ret = Fn->is_blank($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_blank($char);
+        my $ret = Fn->is_blank($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -997,13 +912,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if (($char >= 0x00 && $char <= 0x1f) || $char == 0x7f) {
-        my $ret = is_cntrl($char);
+        my $ret = Fn->is_cntrl($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_cntrl($char);
+        my $ret = Fn->is_cntrl($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1024,13 +939,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char >= '0' && $char <= '9') {
-        my $ret = is_digit($char);
+        my $ret = Fn->is_digit($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_digit($char);
+        my $ret = Fn->is_digit($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1051,13 +966,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char >= 0x21 && $char <= 0x7e) {
-        my $ret = is_graph($char);
+        my $ret = Fn->is_graph($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_graph($char);
+        my $ret = Fn->is_graph($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1078,13 +993,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
     if ($char >= 'a' && $char <= 'z') {
-        my $ret = is_lower($char);
+        my $ret = Fn->is_lower($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_lower($char);
+        my $ret = Fn->is_lower($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1105,13 +1020,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char >= 0x20 && $char <= 0x7e) {
-        my $ret = is_print($char);
+        my $ret = Fn->is_print($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_print($char);
+        my $ret = Fn->is_print($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1132,13 +1047,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if (($char >= 0x21 && $char <= 0x2f) || ($char >= 0x3a && $char <= 0x40) || ($char >= 0x5b && $char <= 0x60) || ($char >= 0x7b && $char <= 0x7e)) {
-        my $ret = is_punct($char);
+        my $ret = Fn->is_punct($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_punct($char);
+        my $ret = Fn->is_punct($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1159,13 +1074,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if (($char >= 0x09 && $char <= 0x0d) || $char == 0x20) {
-        my $ret = is_space($char);
+        my $ret = Fn->is_space($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_space($char);
+        my $ret = Fn->is_space($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1186,13 +1101,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char >= 'A' && $char <= 'Z') {
-        my $ret = is_upper($char);
+        my $ret = Fn->is_upper($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_upper($char);
+        my $ret = Fn->is_upper($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1213,13 +1128,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if (($char >= 'A' && $char <= 'F') || ($char >= 'a' && $char <= 'f') || ($char >= '0' && $char <= '9')) {
-        my $ret = is_xdigit($char);
+        my $ret = Fn->is_xdigit($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_xdigit($char);
+        my $ret = Fn->is_xdigit($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1240,13 +1155,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char >= 'A' && $char <= 'Z') {
-        my $ret = to_lower($char);
+        my $ret = Fn->to_lower($char);
         unless ($ret == $char + 0x20) {
           $ok = 0;
         }
       }
       else {
-        my $ret = to_lower($char);
+        my $ret = Fn->to_lower($char);
         unless ($ret == $char) {
           $ok = 0;
         }
@@ -1267,13 +1182,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
     if ($char >= 'a' && $char <= 'z') {
-        my $ret = to_upper($char);
+        my $ret = Fn->to_upper($char);
         unless ($ret == $char - 0x20) {
           $ok = 0;
         }
       }
       else {
-        my $ret = to_upper($char);
+        my $ret = Fn->to_upper($char);
         unless ($ret == $char) {
           $ok = 0;
         }
@@ -1294,13 +1209,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char == ' ' || $char == '\r' || $char == '\n' || $char == '\t' || $char == '\f') {
-        my $ret = is_perl_space($char);
+        my $ret = Fn->is_perl_space($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_perl_space($char);
+        my $ret = Fn->is_perl_space($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1321,13 +1236,13 @@ class TestCase::Lib::Fn {
       my $char = $i;
 
       if ($char >= 'a' && $char <= 'z' || $char >= 'A' && $char <= 'Z' || $char == '_' || $char >= '0' && $char <= '9') {
-        my $ret = is_perl_word($char);
+        my $ret = Fn->is_perl_word($char);
         unless ($ret == 1) {
           $ok = 0;
         }
       }
       else {
-        my $ret = is_perl_word($char);
+        my $ret = Fn->is_perl_word($char);
         unless ($ret == 0) {
           $ok = 0;
         }
@@ -1345,7 +1260,7 @@ class TestCase::Lib::Fn {
     # 10 digit minimal and return type is int
     {
       my $string = "-2147483648";
-      my $num = to_int($string);
+      my $num = Fn->to_int($string);
       unless ($num isa int) {
         return 0;
       }
@@ -1362,7 +1277,7 @@ class TestCase::Lib::Fn {
     # 10 digit minimal and return type is int
     {
       my $string = "-2147483648";
-      my $num = to_int_with_base($string, 10);
+      my $num = Fn->to_int_with_base($string, 10);
       unless ($num isa int) {
         return 0;
       }
@@ -1375,7 +1290,7 @@ class TestCase::Lib::Fn {
     # 10 digit max
     {
       my $string = "2147483647";
-      my $num = to_int_with_base($string, 10);
+      my $num = Fn->to_int_with_base($string, 10);
       unless ($num isa int) {
         return 0;
       }
@@ -1388,7 +1303,7 @@ class TestCase::Lib::Fn {
     # 2 digit
     {
       my $string = "11";
-      my $num = to_int_with_base($string, 2);
+      my $num = Fn->to_int_with_base($string, 2);
 
       unless ($num == 3) {
         return 0;
@@ -1398,7 +1313,7 @@ class TestCase::Lib::Fn {
     # 8 digit
     {
       my $string = "11";
-      my $num = to_int_with_base($string, 8);
+      my $num = Fn->to_int_with_base($string, 8);
 
       unless ($num == 9) {
         return 0;
@@ -1408,7 +1323,7 @@ class TestCase::Lib::Fn {
     # 16 digit
     {
       my $string = "FF";
-      my $num = to_int_with_base($string, 16);
+      my $num = Fn->to_int_with_base($string, 16);
 
       unless ($num == 255) {
         return 0;
@@ -1419,7 +1334,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "10oppp";
       eval {
-        to_int_with_base($string, 10);
+        Fn->to_int_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1431,7 +1346,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "10";
       eval {
-        to_int_with_base($string, 100);
+        Fn->to_int_with_base($string, 100);
       };
       unless ($@) {
         return 0;
@@ -1443,7 +1358,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "2147483648";
       eval {
-        to_int_with_base($string, 10);
+        Fn->to_int_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1455,7 +1370,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "-2147483649";
       eval {
-        to_int_with_base($string, 10);
+        Fn->to_int_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1470,7 +1385,7 @@ class TestCase::Lib::Fn {
     # 10 digit minimal and return type is int
     {
       my $string = "-9223372036854775808";
-      my $num = to_long($string);
+      my $num = Fn->to_long($string);
       unless ($num isa long) {
         return 0;
       }
@@ -1487,7 +1402,7 @@ class TestCase::Lib::Fn {
     # 10 digit minimal and return type is int
     {
       my $string = "-9223372036854775808";
-      my $num = to_long_with_base($string, 10);
+      my $num = Fn->to_long_with_base($string, 10);
       unless ($num isa long) {
         return 0;
       }
@@ -1500,7 +1415,7 @@ class TestCase::Lib::Fn {
     # 10 digit max
     {
       my $string = "9223372036854775807";
-      my $num = to_long_with_base($string, 10);
+      my $num = Fn->to_long_with_base($string, 10);
 
       unless ($num == 9223372036854775807L) {
         return 0;
@@ -1510,7 +1425,7 @@ class TestCase::Lib::Fn {
     # 2 digit
     {
       my $string = "11";
-      my $num = to_long_with_base($string, 2);
+      my $num = Fn->to_long_with_base($string, 2);
 
       unless ($num == 3) {
         return 0;
@@ -1520,7 +1435,7 @@ class TestCase::Lib::Fn {
     # 8 digit
     {
       my $string = "11";
-      my $num = to_long_with_base($string, 8);
+      my $num = Fn->to_long_with_base($string, 8);
 
       unless ($num == 9) {
         return 0;
@@ -1530,7 +1445,7 @@ class TestCase::Lib::Fn {
     # 16 digit
     {
       my $string = "FF";
-      my $num = to_long_with_base($string, 16);
+      my $num = Fn->to_long_with_base($string, 16);
 
       unless ($num == 255) {
         return 0;
@@ -1541,7 +1456,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "10oppp";
       eval {
-        to_long_with_base($string, 10);
+        Fn->to_long_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1553,7 +1468,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "10";
       eval {
-        to_long_with_base($string, 100);
+        Fn->to_long_with_base($string, 100);
       };
       unless ($@) {
         return 0;
@@ -1565,7 +1480,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "9223372036854775808";
       eval {
-        to_long_with_base($string, 10);
+        Fn->to_long_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1577,7 +1492,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "-9223372036854775809";
       eval {
-        to_long_with_base($string, 10);
+        Fn->to_long_with_base($string, 10);
       };
       unless ($@) {
         return 0;
@@ -1592,7 +1507,7 @@ class TestCase::Lib::Fn {
     # 10 digit minimal and return type is int
     {
       my $string = "1.25";
-      my $num = to_float($string);
+      my $num = Fn->to_float($string);
       unless ($num isa float) {
         return 0;
       }
@@ -1606,7 +1521,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "10.5oppp";
       eval {
-        to_float($string);
+        Fn->to_float($string);
       };
       unless ($@) {
         return 0;
@@ -1621,7 +1536,7 @@ class TestCase::Lib::Fn {
     # 10 digit minimal and return type is int
     {
       my $string = "1.25";
-      my $num = to_double($string);
+      my $num = Fn->to_double($string);
       unless ($num isa double) {
         return 0;
       }
@@ -1635,7 +1550,7 @@ class TestCase::Lib::Fn {
     {
       my $string = "10.5oppp";
       eval {
-        to_double($string);
+        Fn->to_double($string);
       };
       unless ($@) {
         return 0;
@@ -1649,14 +1564,14 @@ class TestCase::Lib::Fn {
   static method test_ucfirst : int () {
     {
       my $string = "@abc";
-      my $result_str = ucfirst($string);
+      my $result_str = Fn->ucfirst($string);
       unless ($result_str eq "@abc") {
         return 0;
       }
     }
     {
       my $string = "[abc";
-      my $result_str = ucfirst($string);
+      my $result_str = Fn->ucfirst($string);
       unless ($result_str eq "[abc") {
         return 0;
       }
@@ -1664,7 +1579,7 @@ class TestCase::Lib::Fn {
 
     {
       my $string = "aabc";
-      my $result_str = ucfirst($string);
+      my $result_str = Fn->ucfirst($string);
       unless ($result_str eq "Aabc") {
         return 0;
       }
@@ -1672,7 +1587,7 @@ class TestCase::Lib::Fn {
 
     {
       my $string = "pabc";
-      my $result_str = ucfirst($string);
+      my $result_str = Fn->ucfirst($string);
       unless ($result_str eq "Pabc") {
         return 0;
       }
@@ -1680,7 +1595,7 @@ class TestCase::Lib::Fn {
 
     {
       my $string = "zabc";
-      my $result_str = ucfirst($string);
+      my $result_str = Fn->ucfirst($string);
       unless ($result_str eq "Zabc") {
         return 0;
       }
@@ -1691,7 +1606,7 @@ class TestCase::Lib::Fn {
   static method test_uc : int () {
     {
       my $string = "@[apz[";
-      my $result_str = uc($string);
+      my $result_str = Fn->uc($string);
       unless ($result_str eq "@[APZ[") {
         return 0;
       }
@@ -1702,7 +1617,7 @@ class TestCase::Lib::Fn {
   static method test_lc : int () {
     {
       my $string = "@[APZ[";
-      my $result_str = lc($string);
+      my $result_str = Fn->lc($string);
       unless ($result_str eq "@[apz[") {
         return 0;
       }
@@ -1713,14 +1628,14 @@ class TestCase::Lib::Fn {
   static method test_lcfirst : int () {
     {
       my $string = "@ABC";
-      my $result_str = lcfirst($string);
+      my $result_str = Fn->lcfirst($string);
       unless ($result_str eq "@ABC") {
         return 0;
       }
     }
     {
       my $string = "[ABC";
-      my $result_str = lcfirst($string);
+      my $result_str = Fn->lcfirst($string);
       unless ($result_str eq "[ABC") {
         return 0;
       }
@@ -1728,7 +1643,7 @@ class TestCase::Lib::Fn {
 
     {
       my $string = "AABC";
-      my $result_str = lcfirst($string);
+      my $result_str = Fn->lcfirst($string);
       unless ($result_str eq "aABC") {
         return 0;
       }
@@ -1736,7 +1651,7 @@ class TestCase::Lib::Fn {
 
     {
       my $string = "PABC";
-      my $result_str = lcfirst($string);
+      my $result_str = Fn->lcfirst($string);
       unless ($result_str eq "pABC") {
         return 0;
       }
@@ -1744,7 +1659,7 @@ class TestCase::Lib::Fn {
 
     {
       my $string = "ZABC";
-      my $result_str = lcfirst($string);
+      my $result_str = Fn->lcfirst($string);
       unless ($result_str eq "zABC") {
         return 0;
       }
@@ -1757,7 +1672,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abcde";
       my $search = "bcd";
-      my $pos = index($target, $search, 0);
+      my $pos = Fn->index($target, $search, 0);
       unless ($pos == 1) {
         return 0;
       }
@@ -1766,7 +1681,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abcde";
       my $search = "bcd";
-      my $pos = index($target, $search, 1);
+      my $pos = Fn->index($target, $search, 1);
       unless ($pos == 1) {
         return 0;
       }
@@ -1775,7 +1690,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abcde";
       my $search = "bcd";
-      my $pos = index($target, $search, 2);
+      my $pos = Fn->index($target, $search, 2);
       unless ($pos == -1) {
         return 0;
       }
@@ -1784,7 +1699,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abcde";
       my $search = "pq";
-      my $pos = index($target, $search, 2);
+      my $pos = Fn->index($target, $search, 2);
       unless ($pos == -1) {
         return 0;
       }
@@ -1798,7 +1713,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abab";
       my $search = "ab";
-      my $pos = rindex($target, $search, 3);
+      my $pos = Fn->rindex($target, $search, 3);
       unless ($pos == 2) {
         return 0;
       }
@@ -1807,7 +1722,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abab";
       my $search = "ab";
-      my $pos = rindex($target, $search, 2);
+      my $pos = Fn->rindex($target, $search, 2);
       unless ($pos == 2) {
         return 0;
       }
@@ -1816,7 +1731,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abab";
       my $search = "ab";
-      my $pos = rindex($target, $search, 1);
+      my $pos = Fn->rindex($target, $search, 1);
       unless ($pos == 0) {
         return 0;
       }
@@ -1825,7 +1740,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abab";
       my $search = "ab";
-      my $pos = rindex($target, $search, 0);
+      my $pos = Fn->rindex($target, $search, 0);
       unless ($pos == 0) {
         return 0;
       }
@@ -1834,7 +1749,7 @@ class TestCase::Lib::Fn {
     {
       my $target = "abab";
       my $search = "pq";
-      my $pos = rindex($target, $search, 2);
+      my $pos = Fn->rindex($target, $search, 2);
       unless ($pos == -1) {
         return 0;
       }
@@ -1846,7 +1761,7 @@ class TestCase::Lib::Fn {
   static method test_join : int () {
     my $strings = ["abc", "def", "hij"];
 
-    my $dump = join(",", $strings);
+    my $dump = Fn->join(",", $strings);
 
     if ($dump eq "abc,def,hij") {
       return 1;
@@ -1859,7 +1774,7 @@ class TestCase::Lib::Fn {
     # copy string
     {
       my $string = "abc";
-      my $string_out = copy_string($string);
+      my $string_out = Fn->copy_string($string);
       
       # Equals the value
       unless ($string_out eq "abc") {
@@ -1874,7 +1789,7 @@ class TestCase::Lib::Fn {
     
     # undef
     {
-      my $string_out = copy_string(undef);
+      my $string_out = Fn->copy_string(undef);
       
       # Equals the value
       unless ($string_out == undef) {
@@ -1889,7 +1804,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $nums = [(byte)1, 2, Fn->INT8_MIN()];
-      my $nums_out = copy_array_byte($nums);
+      my $nums_out = Fn->copy_array_byte($nums);
 
       unless ($nums->[0] == 1) {
         return 0;
@@ -1910,7 +1825,7 @@ class TestCase::Lib::Fn {
     
     # Array is undef
     {
-      my $output = copy_array_byte(undef);
+      my $output = Fn->copy_array_byte(undef);
       unless ($output == undef) {
         return 0;
       }
@@ -1923,7 +1838,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $nums = [(short)1, 2, Fn->INT16_MIN()];
-      my $nums_out = copy_array_short($nums);
+      my $nums_out = Fn->copy_array_short($nums);
 
       unless ($nums->[0] == 1) {
         return 0;
@@ -1944,7 +1859,7 @@ class TestCase::Lib::Fn {
     
     # Array is undef
     {
-      my $output = copy_array_short(undef);
+      my $output = Fn->copy_array_short(undef);
       unless ($output == undef) {
         return 0;
       }
@@ -1957,7 +1872,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $nums = [(int)1, 2, Fn->INT32_MIN()];
-      my $nums_out = copy_array_int($nums);
+      my $nums_out = Fn->copy_array_int($nums);
 
       unless ($nums->[0] == 1) {
         return 0;
@@ -1978,7 +1893,7 @@ class TestCase::Lib::Fn {
 
     # Array is undef
     {
-      my $output = copy_array_int(undef);
+      my $output = Fn->copy_array_int(undef);
       unless ($output == undef) {
         return 0;
       }
@@ -1991,7 +1906,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $nums = [(long)1, 2, Fn->INT64_MIN()];
-      my $nums_out = copy_array_long($nums);
+      my $nums_out = Fn->copy_array_long($nums);
 
       unless ($nums->[0] == 1) {
         return 0;
@@ -2012,7 +1927,7 @@ class TestCase::Lib::Fn {
 
     # Array is undef
     {
-      my $output = copy_array_long(undef);
+      my $output = Fn->copy_array_long(undef);
       unless ($output == undef) {
         return 0;
       }
@@ -2025,7 +1940,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $nums = [(float)0.5f, 0.25f, Fn->FLT_MIN()];
-      my $nums_out = copy_array_float($nums);
+      my $nums_out = Fn->copy_array_float($nums);
 
       unless ($nums->[0] == 0.5) {
         return 0;
@@ -2046,7 +1961,7 @@ class TestCase::Lib::Fn {
 
     # Array is undef
     {
-      my $output = copy_array_float(undef);
+      my $output = Fn->copy_array_float(undef);
       unless ($output == undef) {
         return 0;
       }
@@ -2059,7 +1974,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $nums = [(double)0.5, 0.25, Fn->DBL_MIN()];
-      my $nums_out = copy_array_double($nums);
+      my $nums_out = Fn->copy_array_double($nums);
 
       unless ($nums->[0] == 0.5) {
         return 0;
@@ -2080,7 +1995,7 @@ class TestCase::Lib::Fn {
 
     # Array is undef
     {
-      my $output = copy_array_double(undef);
+      my $output = Fn->copy_array_double(undef);
       unless ($output == undef) {
         return 0;
       }
@@ -2093,7 +2008,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $strings = ["abc", "def", "hij"];
-      my $strings_out = copy_array_string($strings);
+      my $strings_out = Fn->copy_array_string($strings);
 
       unless ($strings->[0] eq $strings_out->[0]) {
         return 0;
@@ -2124,7 +2039,7 @@ class TestCase::Lib::Fn {
 
     # Array is undef
     {
-      my $output = copy_array_string(undef);
+      my $output = Fn->copy_array_string(undef);
       unless ($output == undef) {
         return 0;
       }
@@ -2137,7 +2052,7 @@ class TestCase::Lib::Fn {
     # Copy array
     {
       my $objects = [(object)Int->new(1), Int->new(2), Int->new(Fn->INT32_MIN())];
-      my $objects_out = copy_array_object($objects, method : object ($obj : object) {
+      my $objects_out = Fn->copy_array_object($objects, method : object ($obj : object) {
         my $int_obj = (Int)$obj;
         my $new_int_obj = Int->new($int_obj->value);
         return $new_int_obj;
@@ -2185,40 +2100,40 @@ class TestCase::Lib::Fn {
     my $nums3 = [(byte)0, 1];
     my $nums4 = [(byte)0, 1, 2];
     {
-      my $is_equals = equals_array_byte($nums1, $nums2);
+      my $is_equals = Fn->equals_array_byte($nums1, $nums2);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_byte($nums1, $nums3);
+      my $is_equals = Fn->equals_array_byte($nums1, $nums3);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_byte($nums1, $nums4);
+      my $is_equals = Fn->equals_array_byte($nums1, $nums4);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_byte(undef, undef);
+      my $is_equals = Fn->equals_array_byte(undef, undef);
       if ($is_equals) {
         return 1;
       }
     }
     
     {
-      my $is_equals = equals_array_byte($nums1, undef);
+      my $is_equals = Fn->equals_array_byte($nums1, undef);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_byte(undef, $nums1);
+      my $is_equals = Fn->equals_array_byte(undef, $nums1);
       if ($is_equals) {
         return 0;
       }
@@ -2234,42 +2149,42 @@ class TestCase::Lib::Fn {
     my $nums4 = [(short)0, 1, 2];
 
     {
-      my $is_equals = equals_array_short($nums1, $nums2);
+      my $is_equals = Fn->equals_array_short($nums1, $nums2);
 
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_short($nums1, $nums3);
+      my $is_equals = Fn->equals_array_short($nums1, $nums3);
 
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_short($nums1, $nums4);
+      my $is_equals = Fn->equals_array_short($nums1, $nums4);
       if ($is_equals) {
         return 0;
       }
     }
 
     {
-      my $is_equals = equals_array_short(undef, undef);
+      my $is_equals = Fn->equals_array_short(undef, undef);
       if ($is_equals) {
         return 1;
       }
     }
     
     {
-      my $is_equals = equals_array_short($nums1, undef);
+      my $is_equals = Fn->equals_array_short($nums1, undef);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_short(undef, $nums1);
+      my $is_equals = Fn->equals_array_short(undef, $nums1);
       if ($is_equals) {
         return 0;
       }
@@ -2285,40 +2200,40 @@ class TestCase::Lib::Fn {
     my $nums4 = [(int)0, 1, 2];
 
     {
-      my $is_equals = equals_array_int($nums1, $nums2);
+      my $is_equals = Fn->equals_array_int($nums1, $nums2);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_int($nums1, $nums3);
+      my $is_equals = Fn->equals_array_int($nums1, $nums3);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_int($nums1, $nums4);
+      my $is_equals = Fn->equals_array_int($nums1, $nums4);
       if ($is_equals) {
         return 0;
       }
     }
 
     {
-      my $is_equals = equals_array_int(undef, undef);
+      my $is_equals = Fn->equals_array_int(undef, undef);
       if ($is_equals) {
         return 1;
       }
     }
     
     {
-      my $is_equals = equals_array_int($nums1, undef);
+      my $is_equals = Fn->equals_array_int($nums1, undef);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_int(undef, $nums1);
+      my $is_equals = Fn->equals_array_int(undef, $nums1);
       if ($is_equals) {
         return 0;
       }
@@ -2334,40 +2249,40 @@ class TestCase::Lib::Fn {
     my $nums4 = [(long)0, 1, 2];
 
     {
-      my $is_equals = equals_array_long($nums1, $nums2);
+      my $is_equals = Fn->equals_array_long($nums1, $nums2);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_long($nums1, $nums3);
+      my $is_equals = Fn->equals_array_long($nums1, $nums3);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_long($nums1, $nums4);
+      my $is_equals = Fn->equals_array_long($nums1, $nums4);
       if ($is_equals) {
         return 0;
       }
     }
 
     {
-      my $is_equals = equals_array_long(undef, undef);
+      my $is_equals = Fn->equals_array_long(undef, undef);
       if ($is_equals) {
         return 1;
       }
     }
     
     {
-      my $is_equals = equals_array_long($nums1, undef);
+      my $is_equals = Fn->equals_array_long($nums1, undef);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_long(undef, $nums1);
+      my $is_equals = Fn->equals_array_long(undef, $nums1);
       if ($is_equals) {
         return 0;
       }
@@ -2383,40 +2298,40 @@ class TestCase::Lib::Fn {
     my $nums4 = [(float)0.0f, 1.5f, 0.5f];
 
     {
-      my $is_equals = equals_array_float($nums1, $nums2);
+      my $is_equals = Fn->equals_array_float($nums1, $nums2);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_float($nums1, $nums3);
+      my $is_equals = Fn->equals_array_float($nums1, $nums3);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_float($nums1, $nums4);
+      my $is_equals = Fn->equals_array_float($nums1, $nums4);
       if ($is_equals) {
         return 0;
       }
     }
 
     {
-      my $is_equals = equals_array_float(undef, undef);
+      my $is_equals = Fn->equals_array_float(undef, undef);
       if ($is_equals) {
         return 1;
       }
     }
     
     {
-      my $is_equals = equals_array_float($nums1, undef);
+      my $is_equals = Fn->equals_array_float($nums1, undef);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_float(undef, $nums1);
+      my $is_equals = Fn->equals_array_float(undef, $nums1);
       if ($is_equals) {
         return 0;
       }
@@ -2432,40 +2347,40 @@ class TestCase::Lib::Fn {
     my $nums4 = [(double)0.0, 1.5, 0.5];
 
     {
-      my $is_equals = equals_array_double($nums1, $nums2);
+      my $is_equals = Fn->equals_array_double($nums1, $nums2);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_double($nums1, $nums3);
+      my $is_equals = Fn->equals_array_double($nums1, $nums3);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_double($nums1, $nums4);
+      my $is_equals = Fn->equals_array_double($nums1, $nums4);
       if ($is_equals) {
         return 0;
       }
     }
 
     {
-      my $is_equals = equals_array_double(undef, undef);
+      my $is_equals = Fn->equals_array_double(undef, undef);
       if ($is_equals) {
         return 1;
       }
     }
     
     {
-      my $is_equals = equals_array_double($nums1, undef);
+      my $is_equals = Fn->equals_array_double($nums1, undef);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_double(undef, $nums1);
+      my $is_equals = Fn->equals_array_double(undef, $nums1);
       if ($is_equals) {
         return 0;
       }
@@ -2481,40 +2396,40 @@ class TestCase::Lib::Fn {
     my $strings4 = ["abc", "def", "xxx"];
 
     {
-      my $is_equals = equals_array_string($strings1, $strings2);
+      my $is_equals = Fn->equals_array_string($strings1, $strings2);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_string($strings1, $strings3);
+      my $is_equals = Fn->equals_array_string($strings1, $strings3);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_string($strings1, $strings4);
+      my $is_equals = Fn->equals_array_string($strings1, $strings4);
       if ($is_equals) {
         return 0;
       }
     }
 
     {
-      my $is_equals = equals_array_string(undef, undef);
+      my $is_equals = Fn->equals_array_string(undef, undef);
       if ($is_equals) {
         return 1;
       }
     }
     
     {
-      my $is_equals = equals_array_string($strings1, undef);
+      my $is_equals = Fn->equals_array_string($strings1, undef);
       if ($is_equals) {
         return 0;
       }
     }
     
     {
-      my $is_equals = equals_array_string(undef, $strings1);
+      my $is_equals = Fn->equals_array_string(undef, $strings1);
       if ($is_equals) {
         return 0;
       }
@@ -2546,25 +2461,25 @@ class TestCase::Lib::Fn {
     };
 
     {
-      my $is_equals = equals_array_object($nums1, $nums2, $equality_checker);
+      my $is_equals = Fn->equals_array_object($nums1, $nums2, $equality_checker);
       unless ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_object($nums1, $nums3, $equality_checker);
+      my $is_equals = Fn->equals_array_object($nums1, $nums3, $equality_checker);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_object($nums1, $nums4, $equality_checker);
+      my $is_equals = Fn->equals_array_object($nums1, $nums4, $equality_checker);
       if ($is_equals) {
         return 0;
       }
     }
     {
-      my $is_equals = equals_array_object($nums1, $nums5, $equality_checker);
+      my $is_equals = Fn->equals_array_object($nums1, $nums5, $equality_checker);
       unless ($is_equals) {
         return 0;
       }
@@ -2579,7 +2494,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      memcpy_byte($dest, 0, $source, 0, 3);
+      Fn->memcpy_byte($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
         return 0;
       }
@@ -2589,7 +2504,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      memcpy_byte($dest, 1, $source, 0, 3);
+      Fn->memcpy_byte($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
         return 0;
       }
@@ -2599,7 +2514,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5, 9];
-      memcpy_byte($dest, 1, $source, 1, 2);
+      Fn->memcpy_byte($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
         return 0;
       }
@@ -2609,7 +2524,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      memcpy_byte($dest, 0, $source, 0, 0);
+      Fn->memcpy_byte($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
         return 0;
       }
@@ -2618,7 +2533,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(byte)1, 3, 5];
-      eval { memcpy_byte(undef, 0, $source, 0, 3); };
+      eval { Fn->memcpy_byte(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2627,7 +2542,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new byte[4];
-      eval { memcpy_byte($dest, 0, undef, 0, 3); };
+      eval { Fn->memcpy_byte($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2637,7 +2552,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      eval { memcpy_byte($dest, 0, $source, 0, -1); };
+      eval { Fn->memcpy_byte($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -2647,7 +2562,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      eval { memcpy_byte($dest, 2, $source, 0, 3); };
+      eval { Fn->memcpy_byte($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2657,7 +2572,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      eval { memcpy_byte($dest, 0, $source, 1, 3); };
+      eval { Fn->memcpy_byte($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -2675,7 +2590,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      memcpy_short($dest, 0, $source, 0, 3);
+      Fn->memcpy_short($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_short($dest, [(short)1, 3, 5, 0])) {
         return 0;
       }
@@ -2685,7 +2600,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      memcpy_short($dest, 1, $source, 0, 3);
+      Fn->memcpy_short($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_short($dest, [(short)0, 1, 3, 5])) {
         return 0;
       }
@@ -2695,7 +2610,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5, 9];
-      memcpy_short($dest, 1, $source, 1, 2);
+      Fn->memcpy_short($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_short($dest, [(short)0, 3, 5, 0])) {
         return 0;
       }
@@ -2705,7 +2620,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      memcpy_short($dest, 0, $source, 0, 0);
+      Fn->memcpy_short($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_short($dest, [(short)0, 0, 0, 0])) {
         return 0;
       }
@@ -2714,7 +2629,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(short)1, 3, 5];
-      eval { memcpy_short(undef, 0, $source, 0, 3); };
+      eval { Fn->memcpy_short(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2723,7 +2638,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new short[4];
-      eval { memcpy_short($dest, 0, undef, 0, 3); };
+      eval { Fn->memcpy_short($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2733,7 +2648,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      eval { memcpy_short($dest, 0, $source, 0, -1); };
+      eval { Fn->memcpy_short($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -2743,7 +2658,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      eval { memcpy_short($dest, 2, $source, 0, 3); };
+      eval { Fn->memcpy_short($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2753,7 +2668,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      eval { memcpy_short($dest, 0, $source, 1, 3); };
+      eval { Fn->memcpy_short($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -2770,7 +2685,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      memcpy_int($dest, 0, $source, 0, 3);
+      Fn->memcpy_int($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_int($dest, [(int)1, 3, 5, 0])) {
         return 0;
       }
@@ -2780,7 +2695,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      memcpy_int($dest, 1, $source, 0, 3);
+      Fn->memcpy_int($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_int($dest, [(int)0, 1, 3, 5])) {
         return 0;
       }
@@ -2790,7 +2705,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5, 9];
-      memcpy_int($dest, 1, $source, 1, 2);
+      Fn->memcpy_int($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_int($dest, [(int)0, 3, 5, 0])) {
         return 0;
       }
@@ -2800,7 +2715,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      memcpy_int($dest, 0, $source, 0, 0);
+      Fn->memcpy_int($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_int($dest, [(int)0, 0, 0, 0])) {
         return 0;
       }
@@ -2809,7 +2724,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(int)1, 3, 5];
-      eval { memcpy_int(undef, 0, $source, 0, 3); };
+      eval { Fn->memcpy_int(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2818,7 +2733,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new int[4];
-      eval { memcpy_int($dest, 0, undef, 0, 3); };
+      eval { Fn->memcpy_int($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2828,7 +2743,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      eval { memcpy_int($dest, 0, $source, 0, -1); };
+      eval { Fn->memcpy_int($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -2838,7 +2753,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      eval { memcpy_int($dest, 2, $source, 0, 3); };
+      eval { Fn->memcpy_int($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2848,7 +2763,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      eval { memcpy_int($dest, 0, $source, 1, 3); };
+      eval { Fn->memcpy_int($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -2865,7 +2780,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      memcpy_long($dest, 0, $source, 0, 3);
+      Fn->memcpy_long($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_long($dest, [(long)1, 3, 5, 0])) {
         return 0;
       }
@@ -2875,7 +2790,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      memcpy_long($dest, 1, $source, 0, 3);
+      Fn->memcpy_long($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_long($dest, [(long)0, 1, 3, 5])) {
         return 0;
       }
@@ -2885,7 +2800,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5, 9];
-      memcpy_long($dest, 1, $source, 1, 2);
+      Fn->memcpy_long($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_long($dest, [(long)0, 3, 5, 0])) {
         return 0;
       }
@@ -2895,7 +2810,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      memcpy_long($dest, 0, $source, 0, 0);
+      Fn->memcpy_long($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_long($dest, [(long)0, 0, 0, 0])) {
         return 0;
       }
@@ -2904,7 +2819,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(long)1, 3, 5];
-      eval { memcpy_long(undef, 0, $source, 0, 3); };
+      eval { Fn->memcpy_long(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2913,7 +2828,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new long[4];
-      eval { memcpy_long($dest, 0, undef, 0, 3); };
+      eval { Fn->memcpy_long($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2923,7 +2838,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      eval { memcpy_long($dest, 0, $source, 0, -1); };
+      eval { Fn->memcpy_long($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -2933,7 +2848,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      eval { memcpy_long($dest, 2, $source, 0, 3); };
+      eval { Fn->memcpy_long($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -2943,7 +2858,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      eval { memcpy_long($dest, 0, $source, 1, 3); };
+      eval { Fn->memcpy_long($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -2960,7 +2875,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      memcpy_float($dest, 0, $source, 0, 3);
+      Fn->memcpy_float($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_float($dest, [(float)1, 3, 5, 0])) {
         return 0;
       }
@@ -2970,7 +2885,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      memcpy_float($dest, 1, $source, 0, 3);
+      Fn->memcpy_float($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_float($dest, [(float)0, 1, 3, 5])) {
         return 0;
       }
@@ -2980,7 +2895,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5, 9];
-      memcpy_float($dest, 1, $source, 1, 2);
+      Fn->memcpy_float($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_float($dest, [(float)0, 3, 5, 0])) {
         return 0;
       }
@@ -2990,7 +2905,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      memcpy_float($dest, 0, $source, 0, 0);
+      Fn->memcpy_float($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_float($dest, [(float)0, 0, 0, 0])) {
         return 0;
       }
@@ -2999,7 +2914,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(float)1, 3, 5];
-      eval { memcpy_float(undef, 0, $source, 0, 3); };
+      eval { Fn->memcpy_float(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3008,7 +2923,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new float[4];
-      eval { memcpy_float($dest, 0, undef, 0, 3); };
+      eval { Fn->memcpy_float($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3018,7 +2933,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      eval { memcpy_float($dest, 0, $source, 0, -1); };
+      eval { Fn->memcpy_float($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3028,7 +2943,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      eval { memcpy_float($dest, 2, $source, 0, 3); };
+      eval { Fn->memcpy_float($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3038,7 +2953,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      eval { memcpy_float($dest, 0, $source, 1, 3); };
+      eval { Fn->memcpy_float($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3055,7 +2970,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      memcpy_double($dest, 0, $source, 0, 3);
+      Fn->memcpy_double($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_double($dest, [(double)1, 3, 5, 0])) {
         return 0;
       }
@@ -3065,7 +2980,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      memcpy_double($dest, 1, $source, 0, 3);
+      Fn->memcpy_double($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_double($dest, [(double)0, 1, 3, 5])) {
         return 0;
       }
@@ -3075,7 +2990,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5, 9];
-      memcpy_double($dest, 1, $source, 1, 2);
+      Fn->memcpy_double($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_double($dest, [(double)0, 3, 5, 0])) {
         return 0;
       }
@@ -3085,7 +3000,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      memcpy_double($dest, 0, $source, 0, 0);
+      Fn->memcpy_double($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_double($dest, [(double)0, 0, 0, 0])) {
         return 0;
       }
@@ -3094,7 +3009,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(double)1, 3, 5];
-      eval { memcpy_double(undef, 0, $source, 0, 3); };
+      eval { Fn->memcpy_double(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3103,7 +3018,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new double[4];
-      eval { memcpy_double($dest, 0, undef, 0, 3); };
+      eval { Fn->memcpy_double($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3113,7 +3028,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      eval { memcpy_double($dest, 0, $source, 0, -1); };
+      eval { Fn->memcpy_double($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3123,7 +3038,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      eval { memcpy_double($dest, 2, $source, 0, 3); };
+      eval { Fn->memcpy_double($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3133,7 +3048,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      eval { memcpy_double($dest, 0, $source, 1, 3); };
+      eval { Fn->memcpy_double($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3150,7 +3065,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      memmove_byte($dest, 0, $source, 0, 3);
+      Fn->memmove_byte($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_byte($dest, [(byte)1, 3, 5, 0])) {
         return 0;
       }
@@ -3160,7 +3075,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      memmove_byte($dest, 1, $source, 0, 3);
+      Fn->memmove_byte($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_byte($dest, [(byte)0, 1, 3, 5])) {
         return 0;
       }
@@ -3170,7 +3085,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5, 9];
-      memmove_byte($dest, 1, $source, 1, 2);
+      Fn->memmove_byte($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_byte($dest, [(byte)0, 3, 5, 0])) {
         return 0;
       }
@@ -3180,7 +3095,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      memmove_byte($dest, 0, $source, 0, 0);
+      Fn->memmove_byte($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_byte($dest, [(byte)0, 0, 0, 0])) {
         return 0;
       }
@@ -3189,7 +3104,7 @@ class TestCase::Lib::Fn {
     # Copy overwrap
     {
       my $dest = [(byte)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      memmove_byte($dest, 0, $dest, 1, 9);
+      Fn->memmove_byte($dest, 0, $dest, 1, 9);
       unless (Fn->equals_array_byte($dest, [(byte)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
@@ -3198,7 +3113,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(byte)1, 3, 5];
-      eval { memmove_byte(undef, 0, $source, 0, 3); };
+      eval { Fn->memmove_byte(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3207,7 +3122,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new byte[4];
-      eval { memmove_byte($dest, 0, undef, 0, 3); };
+      eval { Fn->memmove_byte($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3217,7 +3132,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      eval { memmove_byte($dest, 0, $source, 0, -1); };
+      eval { Fn->memmove_byte($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3227,7 +3142,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      eval { memmove_byte($dest, 2, $source, 0, 3); };
+      eval { Fn->memmove_byte($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3237,7 +3152,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new byte[4];
       my $source = [(byte)1, 3, 5];
-      eval { memmove_byte($dest, 0, $source, 1, 3); };
+      eval { Fn->memmove_byte($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3254,7 +3169,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      memmove_short($dest, 0, $source, 0, 3);
+      Fn->memmove_short($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_short($dest, [(short)1, 3, 5, 0])) {
         return 0;
       }
@@ -3264,7 +3179,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      memmove_short($dest, 1, $source, 0, 3);
+      Fn->memmove_short($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_short($dest, [(short)0, 1, 3, 5])) {
         return 0;
       }
@@ -3274,7 +3189,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5, 9];
-      memmove_short($dest, 1, $source, 1, 2);
+      Fn->memmove_short($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_short($dest, [(short)0, 3, 5, 0])) {
         return 0;
       }
@@ -3284,7 +3199,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      memmove_short($dest, 0, $source, 0, 0);
+      Fn->memmove_short($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_short($dest, [(short)0, 0, 0, 0])) {
         return 0;
       }
@@ -3293,7 +3208,7 @@ class TestCase::Lib::Fn {
     # Copy overwrap
     {
       my $dest = [(short)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      memmove_short($dest, 0, $dest, 1, 9);
+      Fn->memmove_short($dest, 0, $dest, 1, 9);
       unless (Fn->equals_array_short($dest, [(short)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
@@ -3302,7 +3217,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(short)1, 3, 5];
-      eval { memmove_short(undef, 0, $source, 0, 3); };
+      eval { Fn->memmove_short(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3311,7 +3226,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new short[4];
-      eval { memmove_short($dest, 0, undef, 0, 3); };
+      eval { Fn->memmove_short($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3321,7 +3236,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      eval { memmove_short($dest, 0, $source, 0, -1); };
+      eval { Fn->memmove_short($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3331,7 +3246,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      eval { memmove_short($dest, 2, $source, 0, 3); };
+      eval { Fn->memmove_short($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3341,7 +3256,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new short[4];
       my $source = [(short)1, 3, 5];
-      eval { memmove_short($dest, 0, $source, 1, 3); };
+      eval { Fn->memmove_short($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3358,7 +3273,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      memmove_int($dest, 0, $source, 0, 3);
+      Fn->memmove_int($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_int($dest, [(int)1, 3, 5, 0])) {
         return 0;
       }
@@ -3368,7 +3283,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      memmove_int($dest, 1, $source, 0, 3);
+      Fn->memmove_int($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_int($dest, [(int)0, 1, 3, 5])) {
         return 0;
       }
@@ -3378,7 +3293,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5, 9];
-      memmove_int($dest, 1, $source, 1, 2);
+      Fn->memmove_int($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_int($dest, [(int)0, 3, 5, 0])) {
         return 0;
       }
@@ -3388,7 +3303,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      memmove_int($dest, 0, $source, 0, 0);
+      Fn->memmove_int($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_int($dest, [(int)0, 0, 0, 0])) {
         return 0;
       }
@@ -3397,7 +3312,7 @@ class TestCase::Lib::Fn {
     # Copy overwrap
     {
       my $dest = [(int)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      memmove_int($dest, 0, $dest, 1, 9);
+      Fn->memmove_int($dest, 0, $dest, 1, 9);
       unless (Fn->equals_array_int($dest, [(int)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
@@ -3406,7 +3321,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(int)1, 3, 5];
-      eval { memmove_int(undef, 0, $source, 0, 3); };
+      eval { Fn->memmove_int(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3415,7 +3330,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new int[4];
-      eval { memmove_int($dest, 0, undef, 0, 3); };
+      eval { Fn->memmove_int($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3425,7 +3340,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      eval { memmove_int($dest, 0, $source, 0, -1); };
+      eval { Fn->memmove_int($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3435,7 +3350,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      eval { memmove_int($dest, 2, $source, 0, 3); };
+      eval { Fn->memmove_int($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3445,7 +3360,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new int[4];
       my $source = [(int)1, 3, 5];
-      eval { memmove_int($dest, 0, $source, 1, 3); };
+      eval { Fn->memmove_int($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3462,7 +3377,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      memmove_long($dest, 0, $source, 0, 3);
+      Fn->memmove_long($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_long($dest, [(long)1, 3, 5, 0])) {
         return 0;
       }
@@ -3472,7 +3387,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      memmove_long($dest, 1, $source, 0, 3);
+      Fn->memmove_long($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_long($dest, [(long)0, 1, 3, 5])) {
         return 0;
       }
@@ -3482,7 +3397,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5, 9];
-      memmove_long($dest, 1, $source, 1, 2);
+      Fn->memmove_long($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_long($dest, [(long)0, 3, 5, 0])) {
         return 0;
       }
@@ -3492,7 +3407,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      memmove_long($dest, 0, $source, 0, 0);
+      Fn->memmove_long($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_long($dest, [(long)0, 0, 0, 0])) {
         return 0;
       }
@@ -3501,7 +3416,7 @@ class TestCase::Lib::Fn {
     # Copy overwrap
     {
       my $dest = [(long)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      memmove_long($dest, 0, $dest, 1, 9);
+      Fn->memmove_long($dest, 0, $dest, 1, 9);
       unless (Fn->equals_array_long($dest, [(long)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
@@ -3510,7 +3425,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(long)1, 3, 5];
-      eval { memmove_long(undef, 0, $source, 0, 3); };
+      eval { Fn->memmove_long(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3519,7 +3434,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new long[4];
-      eval { memmove_long($dest, 0, undef, 0, 3); };
+      eval { Fn->memmove_long($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3529,7 +3444,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      eval { memmove_long($dest, 0, $source, 0, -1); };
+      eval { Fn->memmove_long($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3539,7 +3454,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      eval { memmove_long($dest, 2, $source, 0, 3); };
+      eval { Fn->memmove_long($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3549,7 +3464,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new long[4];
       my $source = [(long)1, 3, 5];
-      eval { memmove_long($dest, 0, $source, 1, 3); };
+      eval { Fn->memmove_long($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3566,7 +3481,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      memmove_float($dest, 0, $source, 0, 3);
+      Fn->memmove_float($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_float($dest, [(float)1, 3, 5, 0])) {
         return 0;
       }
@@ -3576,7 +3491,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      memmove_float($dest, 1, $source, 0, 3);
+      Fn->memmove_float($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_float($dest, [(float)0, 1, 3, 5])) {
         return 0;
       }
@@ -3586,7 +3501,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5, 9];
-      memmove_float($dest, 1, $source, 1, 2);
+      Fn->memmove_float($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_float($dest, [(float)0, 3, 5, 0])) {
         return 0;
       }
@@ -3596,7 +3511,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      memmove_float($dest, 0, $source, 0, 0);
+      Fn->memmove_float($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_float($dest, [(float)0, 0, 0, 0])) {
         return 0;
       }
@@ -3605,7 +3520,7 @@ class TestCase::Lib::Fn {
     # Copy overwrap
     {
       my $dest = [(float)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      memmove_float($dest, 0, $dest, 1, 9);
+      Fn->memmove_float($dest, 0, $dest, 1, 9);
       unless (Fn->equals_array_float($dest, [(float)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
@@ -3614,7 +3529,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(float)1, 3, 5];
-      eval { memmove_float(undef, 0, $source, 0, 3); };
+      eval { Fn->memmove_float(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3623,7 +3538,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new float[4];
-      eval { memmove_float($dest, 0, undef, 0, 3); };
+      eval { Fn->memmove_float($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3633,7 +3548,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      eval { memmove_float($dest, 0, $source, 0, -1); };
+      eval { Fn->memmove_float($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3643,7 +3558,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      eval { memmove_float($dest, 2, $source, 0, 3); };
+      eval { Fn->memmove_float($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3653,7 +3568,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new float[4];
       my $source = [(float)1, 3, 5];
-      eval { memmove_float($dest, 0, $source, 1, 3); };
+      eval { Fn->memmove_float($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3670,7 +3585,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      memmove_double($dest, 0, $source, 0, 3);
+      Fn->memmove_double($dest, 0, $source, 0, 3);
       unless (Fn->equals_array_double($dest, [(double)1, 3, 5, 0])) {
         return 0;
       }
@@ -3680,7 +3595,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      memmove_double($dest, 1, $source, 0, 3);
+      Fn->memmove_double($dest, 1, $source, 0, 3);
       unless (Fn->equals_array_double($dest, [(double)0, 1, 3, 5])) {
         return 0;
       }
@@ -3690,7 +3605,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5, 9];
-      memmove_double($dest, 1, $source, 1, 2);
+      Fn->memmove_double($dest, 1, $source, 1, 2);
       unless (Fn->equals_array_double($dest, [(double)0, 3, 5, 0])) {
         return 0;
       }
@@ -3700,7 +3615,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      memmove_double($dest, 0, $source, 0, 0);
+      Fn->memmove_double($dest, 0, $source, 0, 0);
       unless (Fn->equals_array_double($dest, [(double)0, 0, 0, 0])) {
         return 0;
       }
@@ -3709,7 +3624,7 @@ class TestCase::Lib::Fn {
     # Copy overwrap
     {
       my $dest = [(double)1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      memmove_double($dest, 0, $dest, 1, 9);
+      Fn->memmove_double($dest, 0, $dest, 1, 9);
       unless (Fn->equals_array_double($dest, [(double)2, 3, 4, 5, 6, 7, 8, 9, 10, 10])) {
         return 0;
       }
@@ -3718,7 +3633,7 @@ class TestCase::Lib::Fn {
     # Exception - Destnation must be defined
     {
       my $source = [(double)1, 3, 5];
-      eval { memmove_double(undef, 0, $source, 0, 3); };
+      eval { Fn->memmove_double(undef, 0, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3727,7 +3642,7 @@ class TestCase::Lib::Fn {
     # Exception - Source must be defined
     {
       my $dest = new double[4];
-      eval { memmove_double($dest, 0, undef, 0, 3); };
+      eval { Fn->memmove_double($dest, 0, undef, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3737,7 +3652,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      eval { memmove_double($dest, 0, $source, 0, -1); };
+      eval { Fn->memmove_double($dest, 0, $source, 0, -1); };
       unless ($@) {
         return 0;
       }
@@ -3747,7 +3662,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      eval { memmove_double($dest, 2, $source, 0, 3); };
+      eval { Fn->memmove_double($dest, 2, $source, 0, 3); };
       unless ($@) {
         return 0;
       }
@@ -3757,7 +3672,7 @@ class TestCase::Lib::Fn {
     {
       my $dest = new double[4];
       my $source = [(double)1, 3, 5];
-      eval { memmove_double($dest, 0, $source, 1, 3); };
+      eval { Fn->memmove_double($dest, 0, $source, 1, 3); };
       unless ($@) {
         return 0;
       }
@@ -3773,7 +3688,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(byte)1, 2, Fn->INT8_MIN()];
 
-      my $dump = dump_array_byte($nums);
+      my $dump = Fn->dump_array_byte($nums);
       
       unless ($dump eq "[\n  1,\n  2,\n  -128\n]") {
         return 0;
@@ -3782,7 +3697,7 @@ class TestCase::Lib::Fn {
 
     # Dump undef
     {
-      my $dump = dump_array_byte(undef);
+      my $dump = Fn->dump_array_byte(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -3797,7 +3712,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(short)1, 2, Fn->INT16_MIN()];
 
-      my $dump = dump_array_short($nums);
+      my $dump = Fn->dump_array_short($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  -32768\n]") {
         return 0;
@@ -3806,7 +3721,7 @@ class TestCase::Lib::Fn {
     
     # Dump undef
     {
-      my $dump = dump_array_short(undef);
+      my $dump = Fn->dump_array_short(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -3821,7 +3736,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(int)1, 2, Fn->INT32_MIN()];
 
-      my $dump = dump_array_int($nums);
+      my $dump = Fn->dump_array_int($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  -2147483648\n]") {
         return 0;
@@ -3830,7 +3745,7 @@ class TestCase::Lib::Fn {
 
     # Dump undef
     {
-      my $dump = dump_array_int(undef);
+      my $dump = Fn->dump_array_int(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -3846,7 +3761,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(long)1, 2, Fn->INT64_MIN()];
 
-      my $dump = dump_array_long($nums);
+      my $dump = Fn->dump_array_long($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  -9223372036854775808\n]") {
         return 0;
@@ -3855,7 +3770,7 @@ class TestCase::Lib::Fn {
 
     # Dump undef
     {
-      my $dump = dump_array_long(undef);
+      my $dump = Fn->dump_array_long(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -3871,7 +3786,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(float)1, 2, 2.45f];
 
-      my $dump = dump_array_float($nums);
+      my $dump = Fn->dump_array_float($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
         return 0;
@@ -3880,7 +3795,7 @@ class TestCase::Lib::Fn {
 
     # Dump undef
     {
-      my $dump = dump_array_float(undef);
+      my $dump = Fn->dump_array_float(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -3895,7 +3810,7 @@ class TestCase::Lib::Fn {
     {
       my $nums = [(double)1, 2, 2.45];
 
-      my $dump = dump_array_double($nums);
+      my $dump = Fn->dump_array_double($nums);
 
       unless ($dump eq "[\n  1,\n  2,\n  2.45\n]") {
         return 0;
@@ -3904,7 +3819,7 @@ class TestCase::Lib::Fn {
 
     # Dump undef
     {
-      my $dump = dump_array_double(undef);
+      my $dump = Fn->dump_array_double(undef);
       
       unless ($dump == undef) {
         return 0;
@@ -4072,7 +3987,7 @@ class TestCase::Lib::Fn {
   static method test_new_array_proto : int () {
     my $minimals = new TestCase::Minimal[1];
 
-    my $new_array_object = new_array_proto($minimals, 2);
+    my $new_array_object = Fn->new_array_proto($minimals, 2);
     unless ($new_array_object isa TestCase::Minimal[]) {
       return 0;
     }
@@ -4086,23 +4001,23 @@ class TestCase::Lib::Fn {
   static method test_copy_array_range_byte : int () {
     {
       my $nums = [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19];
-      my $range = copy_array_range_byte($nums, 0, 7);
-      unless (equals_array_byte($range, [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19])) {
+      my $range = Fn->copy_array_range_byte($nums, 0, 7);
+      unless (Fn->equals_array_byte($range, [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
 
     {
       my $nums = [(byte)5, -7, 9, Fn->INT8_MIN(), 127, 15, 19];
-      my $range = copy_array_range_byte($nums, 1, 3);
-      unless (equals_array_byte($range, [(byte)-7, 9, Fn->INT8_MIN()])) {
+      my $range = Fn->copy_array_range_byte($nums, 1, 3);
+      unless (Fn->equals_array_byte($range, [(byte)-7, 9, Fn->INT8_MIN()])) {
         return 0;
       }
     }
     
     # Exception - The argument array must be defined
     {
-      eval { copy_array_range_byte(undef, 0, 7); };
+      eval { Fn->copy_array_range_byte(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -4111,27 +4026,27 @@ class TestCase::Lib::Fn {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { copy_array_range_byte([(byte)5, -7, 9], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_byte([(byte)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { copy_array_range_byte([(byte)5, -7, 9], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_byte([(byte)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { copy_array_range_byte([(byte)5, -7, 9], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_byte([(byte)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -4139,22 +4054,22 @@ class TestCase::Lib::Fn {
   static method test_copy_array_range_short : int () {
     {
       my $nums = [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19];
-      my $range = copy_array_range_short($nums, 0, 7);
-      unless (equals_array_short($range, [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19])) {
+      my $range = Fn->copy_array_range_short($nums, 0, 7);
+      unless (Fn->equals_array_short($range, [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(short)5, -7, 9, Fn->INT16_MIN(), 127, 15, 19];
-      my $range = copy_array_range_short($nums, 1, 3);
-      unless (equals_array_short($range, [(short)-7, 9, Fn->INT16_MIN()])) {
+      my $range = Fn->copy_array_range_short($nums, 1, 3);
+      unless (Fn->equals_array_short($range, [(short)-7, 9, Fn->INT16_MIN()])) {
         return 0;
       }
     }
 
     # Exception - The argument array must be defined
     {
-      eval { copy_array_range_short(undef, 0, 7); };
+      eval { Fn->copy_array_range_short(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -4163,27 +4078,27 @@ class TestCase::Lib::Fn {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { copy_array_range_short([(short)5, -7, 9], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_short([(short)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { copy_array_range_short([(short)5, -7, 9], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_short([(short)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { copy_array_range_short([(short)5, -7, 9], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_short([(short)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -4191,22 +4106,22 @@ class TestCase::Lib::Fn {
   static method test_copy_array_range_int : int () {
     {
       my $nums = [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19];
-      my $range = copy_array_range_int($nums, 0, 7);
-      unless (equals_array_int($range, [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19])) {
+      my $range = Fn->copy_array_range_int($nums, 0, 7);
+      unless (Fn->equals_array_int($range, [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(int)5, -7, 9, Fn->INT32_MIN(), 127, 15, 19];
-      my $range = copy_array_range_int($nums, 1, 3);
-      unless (equals_array_int($range, [(int)-7, 9, Fn->INT32_MIN()])) {
+      my $range = Fn->copy_array_range_int($nums, 1, 3);
+      unless (Fn->equals_array_int($range, [(int)-7, 9, Fn->INT32_MIN()])) {
         return 0;
       }
     }
 
     # Exception - The argument array must be defined
     {
-      eval { copy_array_range_int(undef, 0, 7); };
+      eval { Fn->copy_array_range_int(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -4215,27 +4130,27 @@ class TestCase::Lib::Fn {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { copy_array_range_int([(int)5, -7, 9], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_int([(int)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { copy_array_range_int([(int)5, -7, 9], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_int([(int)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { copy_array_range_int([(int)5, -7, 9], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_int([(int)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -4243,22 +4158,22 @@ class TestCase::Lib::Fn {
   static method test_copy_array_range_long : int () {
     {
       my $nums = [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19];
-      my $range = copy_array_range_long($nums, 0, 7);
-      unless (equals_array_long($range, [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19])) {
+      my $range = Fn->copy_array_range_long($nums, 0, 7);
+      unless (Fn->equals_array_long($range, [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(long)5, -7, 9, Fn->INT64_MIN(), 127, 15, 19];
-      my $range = copy_array_range_long($nums, 1, 3);
-      unless (equals_array_long($range, [(long)-7, 9, Fn->INT64_MIN()])) {
+      my $range = Fn->copy_array_range_long($nums, 1, 3);
+      unless (Fn->equals_array_long($range, [(long)-7, 9, Fn->INT64_MIN()])) {
         return 0;
       }
     }
 
     # Exception - The argument array must be defined
     {
-      eval { copy_array_range_long(undef, 0, 7); };
+      eval { Fn->copy_array_range_long(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -4267,27 +4182,27 @@ class TestCase::Lib::Fn {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { copy_array_range_long([(long)5, -7, 9], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_long([(long)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { copy_array_range_long([(long)5, -7, 9], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_long([(long)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { copy_array_range_long([(long)5, -7, 9], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_long([(long)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -4295,22 +4210,22 @@ class TestCase::Lib::Fn {
   static method test_copy_array_range_float : int () {
     {
       my $nums = [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19];
-      my $range = copy_array_range_float($nums, 0, 7);
-      unless (equals_array_float($range, [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19])) {
+      my $range = Fn->copy_array_range_float($nums, 0, 7);
+      unless (Fn->equals_array_float($range, [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(float)5, -7, 9, Fn->FLT_MIN(), 127, 15, 19];
-      my $range = copy_array_range_float($nums, 1, 3);
-      unless (equals_array_float($range, [(float)-7, 9, Fn->FLT_MIN()])) {
+      my $range = Fn->copy_array_range_float($nums, 1, 3);
+      unless (Fn->equals_array_float($range, [(float)-7, 9, Fn->FLT_MIN()])) {
         return 0;
       }
     }
 
     # Exception - The argument array must be defined
     {
-      eval { copy_array_range_float(undef, 0, 7); };
+      eval { Fn->copy_array_range_float(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -4319,27 +4234,27 @@ class TestCase::Lib::Fn {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { copy_array_range_float([(float)5, -7, 9], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_float([(float)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { copy_array_range_float([(float)5, -7, 9], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_float([(float)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { copy_array_range_float([(float)5, -7, 9], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_float([(float)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -4348,22 +4263,22 @@ class TestCase::Lib::Fn {
   static method test_copy_array_range_double : int () {
     {
       my $nums = [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19];
-      my $range = copy_array_range_double($nums, 0, 7);
-      unless (equals_array_double($range, [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19])) {
+      my $range = Fn->copy_array_range_double($nums, 0, 7);
+      unless (Fn->equals_array_double($range, [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19])) {
         return 0;
       }
     }
     {
       my $nums = [(double)5, -7, 9, Fn->DBL_MIN(), 127, 15, 19];
-      my $range = copy_array_range_double($nums, 1, 3);
-      unless (equals_array_double($range, [(double)-7, 9, Fn->DBL_MIN()])) {
+      my $range = Fn->copy_array_range_double($nums, 1, 3);
+      unless (Fn->equals_array_double($range, [(double)-7, 9, Fn->DBL_MIN()])) {
         return 0;
       }
     }
 
     # Exception - The argument array must be defined
     {
-      eval { copy_array_range_double(undef, 0, 7); };
+      eval { Fn->copy_array_range_double(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -4372,27 +4287,27 @@ class TestCase::Lib::Fn {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { copy_array_range_double([(double)5, -7, 9], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_double([(double)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { copy_array_range_double([(double)5, -7, 9], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_double([(double)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { copy_array_range_double([(double)5, -7, 9], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_double([(double)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -4402,14 +4317,14 @@ class TestCase::Lib::Fn {
     {
       my $strings = ["a", "b", "c", "d", "e", "f", "g"];
       my $range = Fn->copy_array_range_string($strings, 0, 7);
-      unless (equals_array_string($range, ["a", "b", "c", "d", "e", "f", "g"])) {
+      unless (Fn->equals_array_string($range, ["a", "b", "c", "d", "e", "f", "g"])) {
         return 0;
       }
     }
     {
       my $strings = ["a", "b", "c", "d", "e", "f", "g"];
       my $range = Fn->copy_array_range_string($strings, 1, 3);
-      unless (equals_array_string($range, ["b", "c", "d"])) {
+      unless (Fn->equals_array_string($range, ["b", "c", "d"])) {
         return 0;
       }
     }
@@ -4425,27 +4340,27 @@ class TestCase::Lib::Fn {
     # Exception - Offset must be in the array range
     {
       {
-	      eval { Fn->copy_array_range_string([(string)5, -7, 9], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_string([(string)5, -7, 9], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { Fn->copy_array_range_string([(string)5, -7, 9], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_string([(string)5, -7, 9], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      eval { Fn->copy_array_range_string([(string)5, -7, 9], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_string([(string)5, -7, 9], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -4460,7 +4375,7 @@ class TestCase::Lib::Fn {
       my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $range = (TestCase::Minimal[])copy_array_range_object($elems, 0, 4);
+      my $range = (TestCase::Minimal[])Fn->copy_array_range_object($elems, 0, 4);
       unless (Fn->equals_array_object($range, [$minimal1, $minimal2, $minimal3, $minimal4], EqualityChecker::SameObject->new)) {
         return 0;
       }
@@ -4472,7 +4387,7 @@ class TestCase::Lib::Fn {
       my $minimal4 = TestCase::Minimal->new;
 
       my $elems = [$minimal1, $minimal2, $minimal3, $minimal4];
-      my $range = (TestCase::Minimal[])copy_array_range_object($elems, 1, 2);
+      my $range = (TestCase::Minimal[])Fn->copy_array_range_object($elems, 1, 2);
       unless (Fn->equals_array_object($range, [$minimal2, $minimal3], EqualityChecker::SameObject->new)) {
         return 0;
       }
@@ -4480,7 +4395,7 @@ class TestCase::Lib::Fn {
 
     # Exception - The argument array must be defined
     {
-      eval { copy_array_range_object(undef, 0, 7); };
+      eval { Fn->copy_array_range_object(undef, 0, 7); };
       unless ($@) {
         return 0;
       }
@@ -4492,31 +4407,31 @@ class TestCase::Lib::Fn {
       my $minimal2 = TestCase::Minimal->new;
       my $minimal3 = TestCase::Minimal->new;
       {
-	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], -1, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_object([$minimal1, $minimal2, $minimal3], -1, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
       {
-	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], 3, 1); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        eval { Fn->copy_array_range_object([$minimal1, $minimal2, $minimal3], 3, 1); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     # Exception - Offset + length must be in the array range
     {
       {
-	      my $minimal1 = TestCase::Minimal->new;
-	      my $minimal2 = TestCase::Minimal->new;
-	      my $minimal3 = TestCase::Minimal->new;
-	      
-	      eval { copy_array_range_object([$minimal1, $minimal2, $minimal3], 1, 3); };
-	      unless ($@) {
-	        return 0;
-	      }
-	    }
+        my $minimal1 = TestCase::Minimal->new;
+        my $minimal2 = TestCase::Minimal->new;
+        my $minimal3 = TestCase::Minimal->new;
+        
+        eval { Fn->copy_array_range_object([$minimal1, $minimal2, $minimal3], 1, 3); };
+        unless ($@) {
+          return 0;
+        }
+      }
     }
 
     return 1;
@@ -5527,13 +5442,13 @@ class TestCase::Lib::Fn {
     
     # Sort array by asc order
     {
-      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0)];
       
       Fn->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0)], method : int ($a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [TestCase::Lib::Fn->new_minimal(1, 0), TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0)], method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       
@@ -5544,7 +5459,7 @@ class TestCase::Lib::Fn {
 
     # Sort array by multiple conditions
     {
-      my $objs = [new_minimal(2, 1), new_minimal(2, 2), new_minimal(1, 3)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(2, 1), TestCase::Lib::Fn->new_minimal(2, 2), TestCase::Lib::Fn->new_minimal(1, 3)];
 
       Fn->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
         my $a_x = ((TestCase::Minimal)$a)->x;
@@ -5563,7 +5478,7 @@ class TestCase::Lib::Fn {
         return $cmp;
       });
 
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(1, 3), new_minimal(2, 1), new_minimal(2, 2)], method : int ($a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [TestCase::Lib::Fn->new_minimal(1, 3), TestCase::Lib::Fn->new_minimal(2, 1), TestCase::Lib::Fn->new_minimal(2, 2)], method : int ($a : object, $b : object) {
         if (((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x && ((TestCase::Minimal)$a)->y == ((TestCase::Minimal)$b)->y) {
           return 1;
         }
@@ -5579,13 +5494,13 @@ class TestCase::Lib::Fn {
 
     # Sort array by desc order
     {
-      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0)];
       
       Fn->sort_object($objs, 0, scalar @$objs, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$b)->x <=> ((TestCase::Minimal)$a)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(3, 0), new_minimal(2, 0), new_minimal(1, 0)], method : int ($a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(1, 0)], method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       
@@ -5596,13 +5511,13 @@ class TestCase::Lib::Fn {
 
     # If length is 0, There is nothing to do
     {
-      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0)];
       
       Fn->sort_object($objs, 0, 0, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
       });
       
-      my $is_equals = Fn->equals_array_object($objs, [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)], method : int ($a : object, $b : object) {
+      my $is_equals = Fn->equals_array_object($objs, [TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0)], method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
       });
       unless ($is_equals) {
@@ -5612,7 +5527,7 @@ class TestCase::Lib::Fn {
     
     # Sort partially
     {
-      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(5, 0), TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0), TestCase::Lib::Fn->new_minimal(-10, 0)];
       
       Fn->sort_object($objs, 1, 3, method : int ($a : object, $b : object) {
         return ((TestCase::Minimal)$a)->x <=> ((TestCase::Minimal)$b)->x;
@@ -5620,7 +5535,7 @@ class TestCase::Lib::Fn {
       
       my $is_equals = Fn->equals_array_object(
         $objs,
-        [new_minimal(5, 0), new_minimal(1, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(-10, 0)],
+        [TestCase::Lib::Fn->new_minimal(5, 0), TestCase::Lib::Fn->new_minimal(1, 0), TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(-10, 0)],
         method : int ($a : object, $b : object) {
           return ((TestCase::Minimal)$a)->x == ((TestCase::Minimal)$b)->x;
         }
@@ -5632,7 +5547,7 @@ class TestCase::Lib::Fn {
 
     # Exception - Array must be not undef
     {
-      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0)];
       
       eval {
         Fn->sort_object(undef, 0, scalar @$objs, method : int ($a : object, $b : object) {
@@ -5646,7 +5561,7 @@ class TestCase::Lib::Fn {
     
     # Exception - Offset must be more than or equals to 0
     {
-      my $objs = [new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0)];
       
       eval {
         Fn->sort_object($objs, -1, 3, method : int ($a : object, $b : object) {
@@ -5660,7 +5575,7 @@ class TestCase::Lib::Fn {
 
     # Exception - Length must be more than or equals to 0
     {
-      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(5, 0), TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0), TestCase::Lib::Fn->new_minimal(-10, 0)];
       
       eval {
         Fn->sort_object($objs, 1, -1, method : int ($a : object, $b : object) {
@@ -5674,7 +5589,7 @@ class TestCase::Lib::Fn {
 
     # Exception - Offset + Length must be in the array range
     {
-      my $objs = [new_minimal(5, 0), new_minimal(2, 0), new_minimal(3, 0), new_minimal(1, 0), new_minimal(-10, 0)];
+      my $objs = [TestCase::Lib::Fn->new_minimal(5, 0), TestCase::Lib::Fn->new_minimal(2, 0), TestCase::Lib::Fn->new_minimal(3, 0), TestCase::Lib::Fn->new_minimal(1, 0), TestCase::Lib::Fn->new_minimal(-10, 0)];
       
       eval {
         Fn->sort_object($objs, 3, 3, method : int ($a : object, $b : object) {

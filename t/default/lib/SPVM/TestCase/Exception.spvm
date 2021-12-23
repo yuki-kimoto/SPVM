@@ -116,7 +116,7 @@ class TestCase::Exception {
   }
   static method exception_eval_call_spvm_method : int () {
     eval {
-      exception_die_return_int();
+      TestCase::Exception->exception_die_return_int();
     };
     
     if ($@) {
@@ -127,7 +127,7 @@ class TestCase::Exception {
   }
   
   static method exception_call_stack : int () {
-    exception_die_return_int();
+    TestCase::Exception->exception_die_return_int();
   }
   
   static method exception_die_return_byte : byte () {

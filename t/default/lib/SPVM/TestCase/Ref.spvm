@@ -167,7 +167,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    pass_value_ref_byte($point1, $point2, \$point_out);
+    TestCase::Ref->pass_value_ref_byte($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT8_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -245,7 +245,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    pass_value_ref_short($point1, $point2, \$point_out);
+    TestCase::Ref->pass_value_ref_short($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT16_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -340,7 +340,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    pass_value_ref_int($point1, $point2, \$point_out);
+    TestCase::Ref->pass_value_ref_int($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT32_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -418,7 +418,7 @@ class TestCase::Ref {
     $point2->{y} = 4;
     $point2->{z} = 5;
     
-    pass_value_ref_long($point1, $point2, \$point_out);
+    TestCase::Ref->pass_value_ref_long($point1, $point2, \$point_out);
     
     if ($point_out->{x} == Fn->INT64_MIN() + 3 && $point_out->{y} == 5 && $point_out->{z} == 7) {
       return 1;
@@ -496,7 +496,7 @@ class TestCase::Ref {
     $point2->{y} = 0.5f;
     $point2->{z} = 0.125f;
     
-    pass_value_ref_float($point1, $point2, \$point_out);
+    TestCase::Ref->pass_value_ref_float($point1, $point2, \$point_out);
     
     if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
       return 1;
@@ -557,7 +557,7 @@ class TestCase::Ref {
     $point2->{y} = 0.5;
     $point2->{z} = 0.125;
     
-    pass_value_ref_double($point1, $point2, \$point_out);
+    TestCase::Ref->pass_value_ref_double($point1, $point2, \$point_out);
     
     if ($point_out->{x} == 0.5 && $point_out->{y} == 1 && $point_out->{z} == 0.25) {
       return 1;

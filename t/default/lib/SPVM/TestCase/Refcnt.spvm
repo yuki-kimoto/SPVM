@@ -54,8 +54,8 @@ class TestCase::Refcnt {
       
       $simple->{object_value} = new TestCase::Minimal;
       
-      func($simple->{object_value});
-      func($simple->{object_value});
+      TestCase::Refcnt->func($simple->{object_value});
+      TestCase::Refcnt->func($simple->{object_value});
       
       my $minimal = $simple->{object_value};
       
