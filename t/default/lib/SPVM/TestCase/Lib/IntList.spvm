@@ -6,7 +6,7 @@ class TestCase::Lib::IntList {
   static method new : int () {
     # new with array
     {
-      my $list = IntList->new([3, 5, INT32_MAX()]);
+      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -16,7 +16,7 @@ class TestCase::Lib::IntList {
         return 0;
       }
 
-      unless ($list->get(2) == INT32_MAX()) {
+      unless ($list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -164,7 +164,7 @@ class TestCase::Lib::IntList {
 
   static method to_array : int () {
     {
-      my $list = IntList->new([3, 5, INT32_MAX()]);
+      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
       
       my $array = $list->to_array;
       
@@ -180,7 +180,7 @@ class TestCase::Lib::IntList {
         return 0;
       }
 
-      unless ($array->[2] == INT32_MAX()) {
+      unless ($array->[2] == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -195,7 +195,7 @@ class TestCase::Lib::IntList {
 
   static method get : int () {
     {
-      my $list = IntList->new([3, 5, INT32_MAX()]);
+      my $list = IntList->new([3, 5, Fn->INT32_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -205,7 +205,7 @@ class TestCase::Lib::IntList {
         return 0;
       }
 
-      unless ($list->get(2) == INT32_MAX()) {
+      unless ($list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -240,7 +240,7 @@ class TestCase::Lib::IntList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => INT32_MAX());
+      $list->set(2 => Fn->INT32_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -250,7 +250,7 @@ class TestCase::Lib::IntList {
         return 0;
       }
 
-      unless ($list->get(2) == INT32_MAX()) {
+      unless ($list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
       
@@ -319,14 +319,14 @@ class TestCase::Lib::IntList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(INT32_MAX());
+      $list->push(Fn->INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == INT32_MAX()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT32_MAX()) {
         return 0;
       }
     }
@@ -362,9 +362,9 @@ class TestCase::Lib::IntList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(INT32_MAX());
+      $list->push(Fn->INT32_MAX());
       
-      unless ($list->pop == INT32_MAX()) {
+      unless ($list->pop == Fn->INT32_MAX()) {
         return 0;
       }
 
@@ -400,14 +400,14 @@ class TestCase::Lib::IntList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT32_MAX());
+      $list->unshift(Fn->INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == INT32_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->INT32_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -442,9 +442,9 @@ class TestCase::Lib::IntList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT32_MAX());
+      $list->unshift(Fn->INT32_MAX());
       
-      unless ($list->shift == INT32_MAX()) {
+      unless ($list->shift == Fn->INT32_MAX()) {
         return 0;
       }
 
@@ -480,7 +480,7 @@ class TestCase::Lib::IntList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT32_MAX());
+      $list->unshift(Fn->INT32_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {

@@ -89,10 +89,10 @@ class TestCase {
   
   static method class_var : int () {
     if ($TestCase::CLASS_VAR_INT == 0) {
-      $TestCase::CLASS_VAR_INT = INT32_MAX();
-      if ($TestCase::CLASS_VAR_INT == INT32_MAX()) {
-        $TestCase::CLASS_VAR_LONG = INT64_MAX();
-        if ($TestCase::CLASS_VAR_LONG == INT64_MAX()) {
+      $TestCase::CLASS_VAR_INT = Fn->INT32_MAX();
+      if ($TestCase::CLASS_VAR_INT == Fn->INT32_MAX()) {
+        $TestCase::CLASS_VAR_LONG = Fn->INT64_MAX();
+        if ($TestCase::CLASS_VAR_LONG == Fn->INT64_MAX()) {
           $TestCase::CLASS_VAR_MINIMAL = TestCase::Minimal->new();
           
           $TestCase::CLASS_VAR_MINIMAL->set_x(4);

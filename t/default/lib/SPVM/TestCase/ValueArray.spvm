@@ -18,7 +18,7 @@ class TestCase::ValueArray {
   static method value_array_max_fields_byte : int () {
     my $mat = new TestCase::Matrix4_16b[3];
     
-    $mat->[0]{x11} = INT8_MIN();
+    $mat->[0]{x11} = Fn->INT8_MIN();
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -78,7 +78,7 @@ class TestCase::ValueArray {
     $mat->[2]{x34} = (byte)($mat->[0]{x34} + $mat->[1]{x34});
     $mat->[2]{x44} = (byte)($mat->[0]{x44} + $mat->[1]{x44});
 
-    unless ($mat->[2]{x11} == INT8_MIN() + 21) {
+    unless ($mat->[2]{x11} == Fn->INT8_MIN() + 21) {
       return 0;
     }
     unless ($mat->[2]{x21} == 52) {
@@ -133,7 +133,7 @@ class TestCase::ValueArray {
   static method value_array_max_fields_short : int () {
     my $mat = new TestCase::Matrix4_16s[3];
     
-    $mat->[0]{x11} = INT16_MIN();
+    $mat->[0]{x11} = Fn->INT16_MIN();
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -193,7 +193,7 @@ class TestCase::ValueArray {
     $mat->[2]{x34} = (short)($mat->[0]{x34} + $mat->[1]{x34});
     $mat->[2]{x44} = (short)($mat->[0]{x44} + $mat->[1]{x44});
 
-    unless ($mat->[2]{x11} == INT16_MIN() + 111) {
+    unless ($mat->[2]{x11} == Fn->INT16_MIN() + 111) {
       return 0;
     }
     
@@ -249,7 +249,7 @@ class TestCase::ValueArray {
   static method value_array_max_fields_int : int () {
     my $mat = new TestCase::Matrix4_16i[3];
     
-    $mat->[0]{x11} = INT32_MIN();
+    $mat->[0]{x11} = Fn->INT32_MIN();
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -309,7 +309,7 @@ class TestCase::ValueArray {
     $mat->[2]{x34} = $mat->[0]{x34} + $mat->[1]{x34};
     $mat->[2]{x44} = $mat->[0]{x44} + $mat->[1]{x44};
 
-    unless ($mat->[2]{x11} == INT32_MIN() + 111) {
+    unless ($mat->[2]{x11} == Fn->INT32_MIN() + 111) {
       return 0;
     }
     
@@ -365,7 +365,7 @@ class TestCase::ValueArray {
   static method value_array_max_fields_long : int () {
     my $mat = new TestCase::Matrix4_16l[3];
     
-    $mat->[0]{x11} = INT64_MIN();
+    $mat->[0]{x11} = Fn->INT64_MIN();
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -425,7 +425,7 @@ class TestCase::ValueArray {
     $mat->[2]{x34} = $mat->[0]{x34} + $mat->[1]{x34};
     $mat->[2]{x44} = $mat->[0]{x44} + $mat->[1]{x44};
 
-    unless ($mat->[2]{x11} == INT64_MIN() + 111) {
+    unless ($mat->[2]{x11} == Fn->INT64_MIN() + 111) {
       return 0;
     }
     
@@ -481,7 +481,7 @@ class TestCase::ValueArray {
   static method value_array_max_fields_float : int () {
     my $mat = new TestCase::Matrix4_16f[3];
     
-    $mat->[0]{x11} = FLT_MIN();
+    $mat->[0]{x11} = Fn->FLT_MIN();
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -541,7 +541,7 @@ class TestCase::ValueArray {
     $mat->[2]{x34} = $mat->[0]{x34} + $mat->[1]{x34};
     $mat->[2]{x44} = $mat->[0]{x44} + $mat->[1]{x44};
 
-    unless ($mat->[2]{x11} == FLT_MIN() + 111) {
+    unless ($mat->[2]{x11} == Fn->FLT_MIN() + 111) {
       return 0;
     }
     
@@ -597,7 +597,7 @@ class TestCase::ValueArray {
   static method value_array_max_fields_double : int () {
     my $mat = new TestCase::Matrix4_16d[3];
     
-    $mat->[0]{x11} = DBL_MIN();
+    $mat->[0]{x11} = Fn->DBL_MIN();
     $mat->[0]{x21} = 21;
     $mat->[0]{x31} = 31;
     $mat->[0]{x41} = 41;
@@ -657,7 +657,7 @@ class TestCase::ValueArray {
     $mat->[2]{x34} = $mat->[0]{x34} + $mat->[1]{x34};
     $mat->[2]{x44} = $mat->[0]{x44} + $mat->[1]{x44};
 
-    unless ($mat->[2]{x11} == DBL_MIN() + 111) {
+    unless ($mat->[2]{x11} == Fn->DBL_MIN() + 111) {
       return 0;
     }
     
@@ -712,9 +712,9 @@ class TestCase::ValueArray {
   
   static method array_byte : int () {
     my $nums1 = new TestCase::Point_3b[10];
-    $nums1->[9]{x} = (byte)INT8_MIN();
-    $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
-    $nums1->[9]{z} = (byte)(INT8_MIN() + 2);
+    $nums1->[9]{x} = (byte)Fn->INT8_MIN();
+    $nums1->[9]{y} = (byte)(Fn->INT8_MIN() + 1);
+    $nums1->[9]{z} = (byte)(Fn->INT8_MIN() + 2);
     
     my $nums2 = new TestCase::Point_3b[10];
     $nums2->[3] = $nums1->[9];
@@ -723,7 +723,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[3]{y};
     my $z = $nums2->[3]{z};
     
-    if ($x == INT8_MIN() && $y == (INT8_MIN() + 1) && $z == (INT8_MIN() + 2)) {
+    if ($x == Fn->INT8_MIN() && $y == (Fn->INT8_MIN() + 1) && $z == (Fn->INT8_MIN() + 2)) {
       return 1;
     }
     
@@ -733,9 +733,9 @@ class TestCase::ValueArray {
   static method array_short : int () {
     
     my $nums1 = new TestCase::Point_3s[10];
-    $nums1->[9]{x} = (short)INT16_MIN();
-    $nums1->[9]{y} = (short)(INT16_MIN() + 1);
-    $nums1->[9]{z} = (short)(INT16_MIN() + 2);
+    $nums1->[9]{x} = (short)Fn->INT16_MIN();
+    $nums1->[9]{y} = (short)(Fn->INT16_MIN() + 1);
+    $nums1->[9]{z} = (short)(Fn->INT16_MIN() + 2);
     
     my $nums2 = new TestCase::Point_3s[10];
     $nums2->[3] = $nums1->[9];
@@ -744,7 +744,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[3]{y};
     my $z = $nums2->[3]{z};
     
-    if ($x == INT16_MIN() && $y == (INT16_MIN() + 1) && $z == (INT16_MIN() + 2)) {
+    if ($x == Fn->INT16_MIN() && $y == (Fn->INT16_MIN() + 1) && $z == (Fn->INT16_MIN() + 2)) {
       return 1;
     }
     
@@ -753,9 +753,9 @@ class TestCase::ValueArray {
 
   static method array_int : int () {
     my $nums1 = new TestCase::Point_3i[10];
-    $nums1->[9]{x} = INT32_MIN();
-    $nums1->[9]{y} = INT32_MIN() + 1;
-    $nums1->[9]{z} = INT32_MIN() + 2;
+    $nums1->[9]{x} = Fn->INT32_MIN();
+    $nums1->[9]{y} = Fn->INT32_MIN() + 1;
+    $nums1->[9]{z} = Fn->INT32_MIN() + 2;
     
     my $nums2 = new TestCase::Point_3i[10];
     $nums2->[3] = $nums1->[9];
@@ -764,7 +764,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[3]{y};
     my $z = $nums2->[3]{z};
     
-    if ($x == INT32_MIN() && $y == (INT32_MIN() + 1) && $z == (INT32_MIN() + 2)) {
+    if ($x == Fn->INT32_MIN() && $y == (Fn->INT32_MIN() + 1) && $z == (Fn->INT32_MIN() + 2)) {
       return 1;
     }
     
@@ -773,9 +773,9 @@ class TestCase::ValueArray {
 
   static method array_long : int () {
     my $nums1 = new TestCase::Point_3l[10];
-    $nums1->[9]{x} = INT64_MIN();
-    $nums1->[9]{y} = INT64_MIN() + 1;
-    $nums1->[9]{z} = INT64_MIN() + 2;
+    $nums1->[9]{x} = Fn->INT64_MIN();
+    $nums1->[9]{y} = Fn->INT64_MIN() + 1;
+    $nums1->[9]{z} = Fn->INT64_MIN() + 2;
     
     my $nums2 = new TestCase::Point_3l[10];
     $nums2->[3] = $nums1->[9];
@@ -784,7 +784,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[3]{y};
     my $z = $nums2->[3]{z};
     
-    if ($x == INT64_MIN() && $y == (INT64_MIN() + 1) && $z == (INT64_MIN() + 2)) {
+    if ($x == Fn->INT64_MIN() && $y == (Fn->INT64_MIN() + 1) && $z == (Fn->INT64_MIN() + 2)) {
       return 1;
     }
     
@@ -793,9 +793,9 @@ class TestCase::ValueArray {
 
   static method array_float : int () {
     my $nums1 = new TestCase::Point_3f[10];
-    $nums1->[9]{x} = FLT_MIN();
-    $nums1->[9]{y} = FLT_MIN() + 0.25f;
-    $nums1->[9]{z} = FLT_MIN() + 0.5f;
+    $nums1->[9]{x} = Fn->FLT_MIN();
+    $nums1->[9]{y} = Fn->FLT_MIN() + 0.25f;
+    $nums1->[9]{z} = Fn->FLT_MIN() + 0.5f;
     
     my $nums2 = new TestCase::Point_3f[10];
     $nums2->[3] = $nums1->[9];
@@ -804,7 +804,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[3]{y};
     my $z = $nums2->[3]{z};
     
-    if ($x == FLT_MIN() && $y == (FLT_MIN() + 0.25) && $z == (FLT_MIN() + 0.5)) {
+    if ($x == Fn->FLT_MIN() && $y == (Fn->FLT_MIN() + 0.25) && $z == (Fn->FLT_MIN() + 0.5)) {
       return 1;
     }
     
@@ -813,9 +813,9 @@ class TestCase::ValueArray {
   
   static method array_double : int () {
     my $nums1 = new TestCase::Point_3d[10];
-    $nums1->[9]{x} = DBL_MIN();
-    $nums1->[9]{y} = DBL_MIN() + 0.25;
-    $nums1->[9]{z} = DBL_MIN() + 0.5;
+    $nums1->[9]{x} = Fn->DBL_MIN();
+    $nums1->[9]{y} = Fn->DBL_MIN() + 0.25;
+    $nums1->[9]{z} = Fn->DBL_MIN() + 0.5;
     
     my $nums2 = new TestCase::Point_3d[10];
     $nums2->[3] = $nums1->[9];
@@ -824,7 +824,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[3]{y};
     my $z = $nums2->[3]{z};
     
-    if ($x == DBL_MIN() && $y == (DBL_MIN() + 0.25) && $z == (DBL_MIN() + 0.5)) {
+    if ($x == Fn->DBL_MIN() && $y == (Fn->DBL_MIN() + 0.25) && $z == (Fn->DBL_MIN() + 0.5)) {
       return 1;
     }
     
@@ -833,15 +833,15 @@ class TestCase::ValueArray {
   
   static method array_field_byte : int () {
     my $nums = new TestCase::Point_3b[10];
-    $nums->[9]{x} = (byte)INT8_MIN();
-    $nums->[9]{y} = (byte)(INT8_MIN() + 1);
-    $nums->[9]{z} = (byte)(INT8_MIN() + 2);
+    $nums->[9]{x} = (byte)Fn->INT8_MIN();
+    $nums->[9]{y} = (byte)(Fn->INT8_MIN() + 1);
+    $nums->[9]{z} = (byte)(Fn->INT8_MIN() + 2);
     
     my $x = $nums->[9]{x};
     my $y = $nums->[9]{y};
     my $z = $nums->[9]{z};
     
-    if ($x == INT8_MIN() && $y == (INT8_MIN() + 1) && $z == (INT8_MIN() + 2)) {
+    if ($x == Fn->INT8_MIN() && $y == (Fn->INT8_MIN() + 1) && $z == (Fn->INT8_MIN() + 2)) {
       return 1;
     }
     
@@ -851,15 +851,15 @@ class TestCase::ValueArray {
   static method array_field_short : int () {
     
     my $nums = new TestCase::Point_3s[10];
-    $nums->[9]{x} = (short)INT16_MIN();
-    $nums->[9]{y} = (short)(INT16_MIN() + 1);
-    $nums->[9]{z} = (short)(INT16_MIN() + 2);
+    $nums->[9]{x} = (short)Fn->INT16_MIN();
+    $nums->[9]{y} = (short)(Fn->INT16_MIN() + 1);
+    $nums->[9]{z} = (short)(Fn->INT16_MIN() + 2);
     
     my $x = $nums->[9]{x};
     my $y = $nums->[9]{y};
     my $z = $nums->[9]{z};
     
-    if ($x == INT16_MIN() && $y == (INT16_MIN() + 1) && $z == (INT16_MIN() + 2)) {
+    if ($x == Fn->INT16_MIN() && $y == (Fn->INT16_MIN() + 1) && $z == (Fn->INT16_MIN() + 2)) {
       return 1;
     }
     
@@ -868,15 +868,15 @@ class TestCase::ValueArray {
   
   static method array_field_int : int () {
     my $nums = new TestCase::Point_3i[10];
-    $nums->[9]{x} = INT32_MIN();
-    $nums->[9]{y} = INT32_MIN() + 1;
-    $nums->[9]{z} = INT32_MIN() + 2;
+    $nums->[9]{x} = Fn->INT32_MIN();
+    $nums->[9]{y} = Fn->INT32_MIN() + 1;
+    $nums->[9]{z} = Fn->INT32_MIN() + 2;
     
     my $x = $nums->[9]{x};
     my $y = $nums->[9]{y};
     my $z = $nums->[9]{z};
     
-    if ($x == INT32_MIN() && $y == (INT32_MIN() + 1) && $z == (INT32_MIN() + 2)) {
+    if ($x == Fn->INT32_MIN() && $y == (Fn->INT32_MIN() + 1) && $z == (Fn->INT32_MIN() + 2)) {
       return 1;
     }
     
@@ -885,15 +885,15 @@ class TestCase::ValueArray {
 
   static method array_field_long : int () {
     my $nums = new TestCase::Point_3l[10];
-    $nums->[9]{x} = INT64_MIN();
-    $nums->[9]{y} = INT64_MIN() + 1;
-    $nums->[9]{z} = INT64_MIN() + 2;
+    $nums->[9]{x} = Fn->INT64_MIN();
+    $nums->[9]{y} = Fn->INT64_MIN() + 1;
+    $nums->[9]{z} = Fn->INT64_MIN() + 2;
     
     my $x = $nums->[9]{x};
     my $y = $nums->[9]{y};
     my $z = $nums->[9]{z};
     
-    if ($x == INT64_MIN() && $y == (INT64_MIN() + 1) && $z == (INT64_MIN() + 2)) {
+    if ($x == Fn->INT64_MIN() && $y == (Fn->INT64_MIN() + 1) && $z == (Fn->INT64_MIN() + 2)) {
       return 1;
     }
     
@@ -902,15 +902,15 @@ class TestCase::ValueArray {
 
   static method array_field_float : int () {
     my $nums = new TestCase::Point_3f[10];
-    $nums->[9]{x} = FLT_MIN();
-    $nums->[9]{y} = FLT_MIN() + 0.25f;
-    $nums->[9]{z} = FLT_MIN() + 0.5f;
+    $nums->[9]{x} = Fn->FLT_MIN();
+    $nums->[9]{y} = Fn->FLT_MIN() + 0.25f;
+    $nums->[9]{z} = Fn->FLT_MIN() + 0.5f;
     
     my $x = $nums->[9]{x};
     my $y = $nums->[9]{y};
     my $z = $nums->[9]{z};
     
-    if ($x == FLT_MIN() && $y == (FLT_MIN() + 0.25) && $z == (FLT_MIN() + 0.5)) {
+    if ($x == Fn->FLT_MIN() && $y == (Fn->FLT_MIN() + 0.25) && $z == (Fn->FLT_MIN() + 0.5)) {
       return 1;
     }
     
@@ -919,15 +919,15 @@ class TestCase::ValueArray {
   
   static method array_field_double : int () {
     my $nums = new TestCase::Point_3d[10];
-    $nums->[9]{x} = DBL_MIN();
-    $nums->[9]{y} = DBL_MIN() + 0.25;
-    $nums->[9]{z} = DBL_MIN() + 0.5;
+    $nums->[9]{x} = Fn->DBL_MIN();
+    $nums->[9]{y} = Fn->DBL_MIN() + 0.25;
+    $nums->[9]{z} = Fn->DBL_MIN() + 0.5;
     
     my $x = $nums->[9]{x};
     my $y = $nums->[9]{y};
     my $z = $nums->[9]{z};
     
-    if ($x == DBL_MIN() && $y == (DBL_MIN() + 0.25) && $z == (DBL_MIN() + 0.5)) {
+    if ($x == Fn->DBL_MIN() && $y == (Fn->DBL_MIN() + 0.25) && $z == (Fn->DBL_MIN() + 0.5)) {
       return 1;
     }
     
@@ -936,9 +936,9 @@ class TestCase::ValueArray {
 
   static method move_byte : int () {
     my $nums1 = new TestCase::Point_3b[10];
-    $nums1->[9]{x} = (byte)INT8_MIN();
-    $nums1->[9]{y} = (byte)(INT8_MIN() + 1);
-    $nums1->[9]{z} = (byte)(INT8_MIN() + 2);
+    $nums1->[9]{x} = (byte)Fn->INT8_MIN();
+    $nums1->[9]{y} = (byte)(Fn->INT8_MIN() + 1);
+    $nums1->[9]{z} = (byte)(Fn->INT8_MIN() + 2);
     
     my $nums2 = $nums1;
     
@@ -946,7 +946,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[9]{y};
     my $z = $nums2->[9]{z};
     
-    if ($x == INT8_MIN() && $y == (INT8_MIN() + 1) && $z == (INT8_MIN() + 2)) {
+    if ($x == Fn->INT8_MIN() && $y == (Fn->INT8_MIN() + 1) && $z == (Fn->INT8_MIN() + 2)) {
       return 1;
     }
     
@@ -956,9 +956,9 @@ class TestCase::ValueArray {
   static method move_short : int () {
     
     my $nums1 = new TestCase::Point_3s[10];
-    $nums1->[9]{x} = (short)INT16_MIN();
-    $nums1->[9]{y} = (short)(INT16_MIN() + 1);
-    $nums1->[9]{z} = (short)(INT16_MIN() + 2);
+    $nums1->[9]{x} = (short)Fn->INT16_MIN();
+    $nums1->[9]{y} = (short)(Fn->INT16_MIN() + 1);
+    $nums1->[9]{z} = (short)(Fn->INT16_MIN() + 2);
     
     my $nums2 = $nums1;
     
@@ -966,7 +966,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[9]{y};
     my $z = $nums2->[9]{z};
     
-    if ($x == INT16_MIN() && $y == (INT16_MIN() + 1) && $z == (INT16_MIN() + 2)) {
+    if ($x == Fn->INT16_MIN() && $y == (Fn->INT16_MIN() + 1) && $z == (Fn->INT16_MIN() + 2)) {
       return 1;
     }
     
@@ -975,9 +975,9 @@ class TestCase::ValueArray {
 
   static method move_int : int () {
     my $nums1 = new TestCase::Point_3i[10];
-    $nums1->[9]{x} = INT32_MIN();
-    $nums1->[9]{y} = INT32_MIN() + 1;
-    $nums1->[9]{z} = INT32_MIN() + 2;
+    $nums1->[9]{x} = Fn->INT32_MIN();
+    $nums1->[9]{y} = Fn->INT32_MIN() + 1;
+    $nums1->[9]{z} = Fn->INT32_MIN() + 2;
     
     my $nums2 = $nums1;
     
@@ -985,7 +985,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[9]{y};
     my $z = $nums2->[9]{z};
     
-    if ($x == INT32_MIN() && $y == (INT32_MIN() + 1) && $z == (INT32_MIN() + 2)) {
+    if ($x == Fn->INT32_MIN() && $y == (Fn->INT32_MIN() + 1) && $z == (Fn->INT32_MIN() + 2)) {
       return 1;
     }
     
@@ -994,9 +994,9 @@ class TestCase::ValueArray {
 
   static method move_long : int () {
     my $nums1 = new TestCase::Point_3l[10];
-    $nums1->[9]{x} = INT64_MIN();
-    $nums1->[9]{y} = INT64_MIN() + 1;
-    $nums1->[9]{z} = INT64_MIN() + 2;
+    $nums1->[9]{x} = Fn->INT64_MIN();
+    $nums1->[9]{y} = Fn->INT64_MIN() + 1;
+    $nums1->[9]{z} = Fn->INT64_MIN() + 2;
     
     my $nums2 = $nums1;
 
@@ -1004,7 +1004,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[9]{y};
     my $z = $nums2->[9]{z};
     
-    if ($x == INT64_MIN() && $y == (INT64_MIN() + 1) && $z == (INT64_MIN() + 2)) {
+    if ($x == Fn->INT64_MIN() && $y == (Fn->INT64_MIN() + 1) && $z == (Fn->INT64_MIN() + 2)) {
       return 1;
     }
     
@@ -1013,9 +1013,9 @@ class TestCase::ValueArray {
 
   static method move_float : int () {
     my $nums1 = new TestCase::Point_3f[10];
-    $nums1->[9]{x} = FLT_MIN();
-    $nums1->[9]{y} = FLT_MIN() + 0.25f;
-    $nums1->[9]{z} = FLT_MIN() + 0.5f;
+    $nums1->[9]{x} = Fn->FLT_MIN();
+    $nums1->[9]{y} = Fn->FLT_MIN() + 0.25f;
+    $nums1->[9]{z} = Fn->FLT_MIN() + 0.5f;
     
     my $nums2 = $nums1;
 
@@ -1023,7 +1023,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[9]{y};
     my $z = $nums2->[9]{z};
     
-    if ($x == FLT_MIN() && $y == (FLT_MIN() + 0.25) && $z == (FLT_MIN() + 0.5)) {
+    if ($x == Fn->FLT_MIN() && $y == (Fn->FLT_MIN() + 0.25) && $z == (Fn->FLT_MIN() + 0.5)) {
       return 1;
     }
     
@@ -1032,9 +1032,9 @@ class TestCase::ValueArray {
   
   static method move_double : int () {
     my $nums1 = new TestCase::Point_3d[10];
-    $nums1->[9]{x} = DBL_MIN();
-    $nums1->[9]{y} = DBL_MIN() + 0.25;
-    $nums1->[9]{z} = DBL_MIN() + 0.5;
+    $nums1->[9]{x} = Fn->DBL_MIN();
+    $nums1->[9]{y} = Fn->DBL_MIN() + 0.25;
+    $nums1->[9]{z} = Fn->DBL_MIN() + 0.5;
     
     my $nums2 = $nums1;
 
@@ -1042,7 +1042,7 @@ class TestCase::ValueArray {
     my $y = $nums2->[9]{y};
     my $z = $nums2->[9]{z};
     
-    if ($x == DBL_MIN() && $y == (DBL_MIN() + 0.25) && $z == (DBL_MIN() + 0.5)) {
+    if ($x == Fn->DBL_MIN() && $y == (Fn->DBL_MIN() + 0.25) && $z == (Fn->DBL_MIN() + 0.5)) {
       return 1;
     }
     

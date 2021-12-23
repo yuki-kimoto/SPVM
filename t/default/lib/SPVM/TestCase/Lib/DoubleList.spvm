@@ -6,7 +6,7 @@ class TestCase::Lib::DoubleList {
   static method new : int () {
     # new with array
     {
-      my $list = DoubleList->new([(double)3, 5, DBL_MIN()]);
+      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -16,7 +16,7 @@ class TestCase::Lib::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == DBL_MIN()) {
+      unless ($list->get(2) == Fn->DBL_MIN()) {
         return 0;
       }
       
@@ -164,7 +164,7 @@ class TestCase::Lib::DoubleList {
 
   static method to_array : int () {
     {
-      my $list = DoubleList->new([(double)3, 5, DBL_MIN()]);
+      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MIN()]);
       
       my $array = $list->to_array;
       
@@ -180,7 +180,7 @@ class TestCase::Lib::DoubleList {
         return 0;
       }
 
-      unless ($array->[2] == DBL_MIN()) {
+      unless ($array->[2] == Fn->DBL_MIN()) {
         return 0;
       }
       
@@ -195,7 +195,7 @@ class TestCase::Lib::DoubleList {
 
   static method get : int () {
     {
-      my $list = DoubleList->new([(double)3, 5, DBL_MIN()]);
+      my $list = DoubleList->new([(double)3, 5, Fn->DBL_MIN()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -209,7 +209,7 @@ class TestCase::Lib::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == DBL_MIN()) {
+      unless ($list->get(2) == Fn->DBL_MIN()) {
         return 0;
       }
       
@@ -244,7 +244,7 @@ class TestCase::Lib::DoubleList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => DBL_MIN());
+      $list->set(2 => Fn->DBL_MIN());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -254,7 +254,7 @@ class TestCase::Lib::DoubleList {
         return 0;
       }
 
-      unless ($list->get(2) == DBL_MIN()) {
+      unless ($list->get(2) == Fn->DBL_MIN()) {
         return 0;
       }
       
@@ -323,14 +323,14 @@ class TestCase::Lib::DoubleList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(DBL_MIN());
+      $list->push(Fn->DBL_MIN());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == DBL_MIN()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->DBL_MIN()) {
         return 0;
       }
     }
@@ -366,10 +366,10 @@ class TestCase::Lib::DoubleList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(DBL_MIN());
+      $list->push(Fn->DBL_MIN());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == DBL_MIN()) {
+      unless ($pop0 == Fn->DBL_MIN()) {
         return 0;
       }
       unless ($pop0 isa double) {
@@ -408,14 +408,14 @@ class TestCase::Lib::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(DBL_MIN());
+      $list->unshift(Fn->DBL_MIN());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == DBL_MIN() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->DBL_MIN() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -450,9 +450,9 @@ class TestCase::Lib::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(DBL_MIN());
+      $list->unshift(Fn->DBL_MIN());
       
-      unless ($list->shift == DBL_MIN()) {
+      unless ($list->shift == Fn->DBL_MIN()) {
         return 0;
       }
 
@@ -488,7 +488,7 @@ class TestCase::Lib::DoubleList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(DBL_MIN());
+      $list->unshift(Fn->DBL_MIN());
       
       my $length = $list->length;
       unless ($length == 3) {

@@ -1,10 +1,10 @@
 class TestCase::Lib::Int {
   use Fn;
   static method basic : int () {
-    my $oval = Int->new(INT32_MIN());
+    my $oval = Int->new(Fn->INT32_MIN());
     my $value1 = $oval->value;
     
-    unless ($value1 == INT32_MIN()) {
+    unless ($value1 == Fn->INT32_MIN()) {
       return 0;
     }
     

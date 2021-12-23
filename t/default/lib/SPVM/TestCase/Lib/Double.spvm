@@ -2,10 +2,10 @@ class TestCase::Lib::Double {
   use Fn;
   
   static method basic : int () {
-    my $oval = Double->new(DBL_MIN());
+    my $oval = Double->new(Fn->DBL_MIN());
     my $value1 = $oval->value;
     
-    unless ($value1 == DBL_MIN()) {
+    unless ($value1 == Fn->DBL_MIN()) {
       return 0;
     }
     

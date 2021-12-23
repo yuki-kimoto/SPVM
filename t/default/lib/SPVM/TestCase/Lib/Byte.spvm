@@ -2,10 +2,10 @@ class TestCase::Lib::Byte {
   use Fn;
   
   static method basic : int () {
-    my $oval = Byte->new(INT8_MIN());
+    my $oval = Byte->new(Fn->INT8_MIN());
     my $value1 = $oval->value;
     
-    unless ($value1 == INT8_MIN()) {
+    unless ($value1 == Fn->INT8_MIN()) {
       return 0;
     }
     

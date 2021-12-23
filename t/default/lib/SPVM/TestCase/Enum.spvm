@@ -62,7 +62,7 @@ class TestCase::Enum {
 
     # Function call
     {
-      unless (INT_ONE() == 1) {
+      unless (Fn->INT_ONE() == 1) {
         return 0;
       }
     }

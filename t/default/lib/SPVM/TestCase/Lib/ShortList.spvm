@@ -5,7 +5,7 @@ class TestCase::Lib::ShortList {
 
   static method new : int () {
     {
-      my $list = ShortList->new([(short)3, 5, INT16_MAX()]);
+      my $list = ShortList->new([(short)3, 5, Fn->INT16_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -15,7 +15,7 @@ class TestCase::Lib::ShortList {
         return 0;
       }
 
-      unless ($list->get(2) == INT16_MAX()) {
+      unless ($list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -163,7 +163,7 @@ class TestCase::Lib::ShortList {
 
   static method to_array : int () {
     {
-      my $list = ShortList->new([(short)3, 5, INT16_MAX()]);
+      my $list = ShortList->new([(short)3, 5, Fn->INT16_MAX()]);
       
       my $array = $list->to_array;
       
@@ -179,7 +179,7 @@ class TestCase::Lib::ShortList {
         return 0;
       }
 
-      unless ($array->[2] == INT16_MAX()) {
+      unless ($array->[2] == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -194,7 +194,7 @@ class TestCase::Lib::ShortList {
 
   static method get : int () {
     {
-      my $list = ShortList->new([(short)3, 5, INT16_MAX()]);
+      my $list = ShortList->new([(short)3, 5, Fn->INT16_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -208,7 +208,7 @@ class TestCase::Lib::ShortList {
         return 0;
       }
 
-      unless ($list->get(2) == INT16_MAX()) {
+      unless ($list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -243,7 +243,7 @@ class TestCase::Lib::ShortList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => INT16_MAX());
+      $list->set(2 => Fn->INT16_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -253,7 +253,7 @@ class TestCase::Lib::ShortList {
         return 0;
       }
 
-      unless ($list->get(2) == INT16_MAX()) {
+      unless ($list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
       
@@ -322,14 +322,14 @@ class TestCase::Lib::ShortList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(INT16_MAX());
+      $list->push(Fn->INT16_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == INT16_MAX()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT16_MAX()) {
         return 0;
       }
     }
@@ -365,10 +365,10 @@ class TestCase::Lib::ShortList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(INT16_MAX());
+      $list->push(Fn->INT16_MAX());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == INT16_MAX()) {
+      unless ($pop0 == Fn->INT16_MAX()) {
         return 0;
       }
       unless ($pop0 isa short) {
@@ -407,14 +407,14 @@ class TestCase::Lib::ShortList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT16_MAX());
+      $list->unshift(Fn->INT16_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == INT16_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->INT16_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -449,9 +449,9 @@ class TestCase::Lib::ShortList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT16_MAX());
+      $list->unshift(Fn->INT16_MAX());
       
-      unless ($list->shift == INT16_MAX()) {
+      unless ($list->shift == Fn->INT16_MAX()) {
         return 0;
       }
 
@@ -487,7 +487,7 @@ class TestCase::Lib::ShortList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT16_MAX());
+      $list->unshift(Fn->INT16_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {

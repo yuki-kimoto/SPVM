@@ -6,7 +6,7 @@ class TestCase::Lib::LongList {
   static method new : int () {
     # new with array
     {
-      my $list = LongList->new([(long)3, 5, INT64_MAX()]);
+      my $list = LongList->new([(long)3, 5, Fn->INT64_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -16,7 +16,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == INT64_MAX()) {
+      unless ($list->get(2) == Fn->INT64_MAX()) {
         return 0;
       }
       
@@ -164,7 +164,7 @@ class TestCase::Lib::LongList {
 
   static method to_array : int () {
     {
-      my $list = LongList->new([(long)3, 5, INT64_MAX()]);
+      my $list = LongList->new([(long)3, 5, Fn->INT64_MAX()]);
       
       my $array = $list->to_array;
       
@@ -180,7 +180,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($array->[2] == INT64_MAX()) {
+      unless ($array->[2] == Fn->INT64_MAX()) {
         return 0;
       }
       
@@ -195,7 +195,7 @@ class TestCase::Lib::LongList {
 
   static method get : int () {
     {
-      my $list = LongList->new([(long)3, 5, INT64_MAX()]);
+      my $list = LongList->new([(long)3, 5, Fn->INT64_MAX()]);
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -209,7 +209,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == INT64_MAX()) {
+      unless ($list->get(2) == Fn->INT64_MAX()) {
         return 0;
       }
       
@@ -244,7 +244,7 @@ class TestCase::Lib::LongList {
       
       $list->set(0 => 3);
       $list->set(1 => 5);
-      $list->set(2 => INT64_MAX());
+      $list->set(2 => Fn->INT64_MAX());
       
       unless ($list->get(0) == 3) {
         return 0;
@@ -254,7 +254,7 @@ class TestCase::Lib::LongList {
         return 0;
       }
 
-      unless ($list->get(2) == INT64_MAX()) {
+      unless ($list->get(2) == Fn->INT64_MAX()) {
         return 0;
       }
       
@@ -323,14 +323,14 @@ class TestCase::Lib::LongList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(INT64_MAX());
+      $list->push(Fn->INT64_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == INT64_MAX()) {
+      unless ($list->get(0) == 3 && $list->get(1) == 5 && $list->get(2) == Fn->INT64_MAX()) {
         return 0;
       }
     }
@@ -366,10 +366,10 @@ class TestCase::Lib::LongList {
       
       $list->push(3);
       $list->push(5);
-      $list->push(INT64_MAX());
+      $list->push(Fn->INT64_MAX());
       
       my $pop0 = $list->pop;
-      unless ($pop0 == INT64_MAX()) {
+      unless ($pop0 == Fn->INT64_MAX()) {
         return 0;
       }
       unless ($pop0 isa long) {
@@ -408,14 +408,14 @@ class TestCase::Lib::LongList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT64_MAX());
+      $list->unshift(Fn->INT64_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {
         return 0;
       }
       
-      unless ($list->get(0) == INT64_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
+      unless ($list->get(0) == Fn->INT64_MAX() && $list->get(1) == 5 && $list->get(2) == 3) {
         return 0;
       }
     }
@@ -450,9 +450,9 @@ class TestCase::Lib::LongList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT64_MAX());
+      $list->unshift(Fn->INT64_MAX());
       
-      unless ($list->shift == INT64_MAX()) {
+      unless ($list->shift == Fn->INT64_MAX()) {
         return 0;
       }
 
@@ -488,7 +488,7 @@ class TestCase::Lib::LongList {
       
       $list->unshift(3);
       $list->unshift(5);
-      $list->unshift(INT64_MAX());
+      $list->unshift(Fn->INT64_MAX());
       
       my $length = $list->length;
       unless ($length == 3) {

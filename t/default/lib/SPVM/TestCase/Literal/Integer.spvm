@@ -95,14 +95,14 @@ class TestCase::Literal::Integer {
   }
   static method hex_max_int : int () {
     my $max_int = 0x7FFFFFFF;
-    unless ($max_int == INT32_MAX()) {
+    unless ($max_int == Fn->INT32_MAX()) {
       return 0;
     }
     return 1;
   }
   static method hex_min_int : int () {
     my $min_int = 0x80000000;
-    unless ($min_int == INT32_MIN()) {
+    unless ($min_int == Fn->INT32_MIN()) {
       return 0;
     }
     return 1;

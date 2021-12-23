@@ -1,10 +1,10 @@
 class TestCase::Lib::Long {
   use Fn;
   static method basic : int () {
-    my $oval = Long->new(INT64_MIN());
+    my $oval = Long->new(Fn->INT64_MIN());
     my $value1 = $oval->value;
     
-    unless ($value1 == INT64_MIN()) {
+    unless ($value1 == Fn->INT64_MIN()) {
       return 0;
     }
     

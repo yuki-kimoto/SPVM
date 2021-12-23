@@ -253,11 +253,11 @@ class TestCase::Array {
   }
 
   static method array_init_byte : int () {
-    my $nums = [(byte)1, (byte)2, INT8_MAX()];
+    my $nums = [(byte)1, (byte)2, Fn->INT8_MAX()];
     
     if ($nums->[0] == 1) {
       if ($nums->[1] == 2) {
-        if ($nums->[2] == INT8_MAX()) {
+        if ($nums->[2] == Fn->INT8_MAX()) {
           return 1;
         }
       }
@@ -430,30 +430,30 @@ class TestCase::Array {
 
 
   static method array_max_index_byte : int () {
-    my $nums = new byte[INT32_MAX()];
+    my $nums = new byte[Fn->INT32_MAX()];
     
     $nums->[0] = 1;
-    $nums->[INT32_MAX() - 1] = 2;
+    $nums->[Fn->INT32_MAX() - 1] = 2;
     
     unless ($nums->[0] == 1) {
       return 0;
     }
     
-    unless ($nums->[INT32_MAX() - 1] == 2) {
+    unless ($nums->[Fn->INT32_MAX() - 1] == 2) {
       return 0;
     }
     
     eval {
-      $nums->[INT32_MAX()];
+      $nums->[Fn->INT32_MAX()];
     };
     unless ($@) {
       return 0;
     }
     
     # Additional use memory
-    my $nums1 = new byte[INT32_MAX()];
-    my $nums2 = new byte[INT32_MAX()];
-    my $nums3 = new byte[INT32_MAX()];
+    my $nums1 = new byte[Fn->INT32_MAX()];
+    my $nums2 = new byte[Fn->INT32_MAX()];
+    my $nums3 = new byte[Fn->INT32_MAX()];
     
     return 1;
   }

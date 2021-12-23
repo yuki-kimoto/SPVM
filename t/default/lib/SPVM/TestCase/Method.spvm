@@ -230,7 +230,7 @@ class TestCase::Method {
   
   static method return_value_byte_method : TestCase::Point_3b () {
     my $value : TestCase::Point_3b;
-    $value->{x} = INT8_MIN();
+    $value->{x} = Fn->INT8_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
     
@@ -240,7 +240,7 @@ class TestCase::Method {
   static method return_value_byte : int () {
     my $value : TestCase::Point_3b = return_value_byte_method();
     
-    if ($value->{x} == INT8_MIN()) {
+    if ($value->{x} == Fn->INT8_MIN()) {
       if ($value->{y} == 1) {
         if ($value->{z} == 2) {
           return 1;
@@ -253,7 +253,7 @@ class TestCase::Method {
   
   static method return_value_short_method : TestCase::Point_3s () {
     my $value : TestCase::Point_3s;
-    $value->{x} = INT16_MIN();
+    $value->{x} = Fn->INT16_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
     
@@ -263,7 +263,7 @@ class TestCase::Method {
   static method return_value_short : int () {
     my $value : TestCase::Point_3s = return_value_short_method();
     
-    if ($value->{x} == INT16_MIN()) {
+    if ($value->{x} == Fn->INT16_MIN()) {
       if ($value->{y} == 1) {
         if ($value->{z} == 2) {
           return 1;
@@ -276,7 +276,7 @@ class TestCase::Method {
   
   static method return_value_int_method : TestCase::Point_3i () {
     my $value : TestCase::Point_3i;
-    $value->{x} = INT32_MIN();
+    $value->{x} = Fn->INT32_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
     
@@ -286,7 +286,7 @@ class TestCase::Method {
   static method return_value_int : int () {
     my $value : TestCase::Point_3i = return_value_int_method();
     
-    if ($value->{x} == INT32_MIN()) {
+    if ($value->{x} == Fn->INT32_MIN()) {
       if ($value->{y} == 1) {
         if ($value->{z} == 2) {
           return 1;
@@ -299,7 +299,7 @@ class TestCase::Method {
   
   static method return_value_long_method : TestCase::Point_3l () {
     my $value : TestCase::Point_3l;
-    $value->{x} = INT64_MIN();
+    $value->{x} = Fn->INT64_MIN();
     $value->{y} = 1;
     $value->{z} = 2;
     
@@ -309,7 +309,7 @@ class TestCase::Method {
   static method return_value_long : int () {
     my $value : TestCase::Point_3l = return_value_long_method();
     
-    if ($value->{x} == INT64_MIN()) {
+    if ($value->{x} == Fn->INT64_MIN()) {
       if ($value->{y} == 1) {
         if ($value->{z} == 2) {
           return 1;
@@ -322,7 +322,7 @@ class TestCase::Method {
   
   static method return_value_float_method : TestCase::Point_3f () {
     my $value : TestCase::Point_3f;
-    $value->{x} = FLT_MIN();
+    $value->{x} = Fn->FLT_MIN();
     $value->{y} = 0.25f;
     $value->{z} = 0.5f;
     
@@ -332,7 +332,7 @@ class TestCase::Method {
   static method return_value_float : int () {
     my $value : TestCase::Point_3f = return_value_float_method();
     
-    if ($value->{x} == FLT_MIN()) {
+    if ($value->{x} == Fn->FLT_MIN()) {
       if ($value->{y} == 0.25f) {
         if ($value->{z} == 0.5f) {
           return 1;
@@ -345,7 +345,7 @@ class TestCase::Method {
   
   static method return_value_double_method : TestCase::Point_3d () {
     my $value : TestCase::Point_3d;
-    $value->{x} = DBL_MIN();
+    $value->{x} = Fn->DBL_MIN();
     $value->{y} = 0.25;
     $value->{z} = 0.5;
     
@@ -355,7 +355,7 @@ class TestCase::Method {
   static method return_value_double : int () {
     my $value : TestCase::Point_3d = return_value_double_method();
     
-    if ($value->{x} == DBL_MIN()) {
+    if ($value->{x} == Fn->DBL_MIN()) {
       if ($value->{y} == 0.25) {
         if ($value->{z} == 0.5) {
           return 1;

@@ -2,10 +2,10 @@ class TestCase::Lib::Float {
   use Fn;
   
   static method basic : int () {
-    my $oval = Float->new(FLT_MIN());
+    my $oval = Float->new(Fn->FLT_MIN());
     my $value1 = $oval->value;
     
-    unless ($value1 == FLT_MIN()) {
+    unless ($value1 == Fn->FLT_MIN()) {
       return 0;
     }
     
