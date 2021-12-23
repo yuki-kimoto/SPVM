@@ -19,7 +19,7 @@ class Fn : precompile {
   use Regex;
   
   INIT {
-    Fn->srand(Time->time());
+    cur->srand(Time->time());
   }
   
   native static method DBL_MAX : double ();
@@ -60,14 +60,14 @@ class Fn : precompile {
     my $new_string : string;
     my $length = length $string;
     if ($length == 0) {
-      $new_string = Fn->copy_string($string);
+      $new_string = cur->copy_string($string);
     }
     else {
       if ($string->[$length - 1] == '\n') {
-        $new_string = (string)Fn->copy_array_range_byte((byte[])$string, 0, $length - 1);
+        $new_string = (string)cur->copy_array_range_byte((byte[])$string, 0, $length - 1);
       }
       else {
-        $new_string = Fn->copy_string($string);
+        $new_string = cur->copy_string($string);
       }
     }
 

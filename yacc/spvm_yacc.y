@@ -18,13 +18,13 @@
   #include "spvm_descriptor.h"
 %}
 
-%token <opval> CLASS HAS METHOD OUR ENUM MY USE REQUIRE ALLOW
+%token <opval> CLASS HAS METHOD OUR ENUM MY USE REQUIRE ALLOW CURRENT_CLASS
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
 %token <opval> UNDEF VOID BYTE SHORT INT LONG FLOAT DOUBLE STRING OBJECT TRUE FALSE
 %token <opval> DOT3 FATCAMMA RW RO WO INIT NEW
-%token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS UNWEAKEN '[' '{' '('
+%token <opval> RETURN WEAKEN DIE WARN PRINT CURRENT_CLASS_NAME UNWEAKEN '[' '{' '('
 
 %type <opval> grammar
 %type <opval> opt_classes classes class class_block
@@ -691,7 +691,7 @@ expression
         $$ = $2;
       }
     }
-  | CURRENT_CLASS
+  | CURRENT_CLASS_NAME
   | isweak_field
   | comparison_op
   | isa
@@ -1007,9 +1007,14 @@ array_access
     }
 
 call_spvm_method
-  : NAME '(' opt_expressions  ')'
+  : CURRENT_CLASS ARROW NAME '(' opt_expressions  ')'
     {
-      $$ = SPVM_OP_build_call_method(compiler, NULL, $1, $3);
+      $$ = SPVM_OP_build_call_method(compiler, $1, $3, $5);
+    }
+  | CURRENT_CLASS ARROW NAME
+    {
+      SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
+      $$ = SPVM_OP_build_call_method(compiler, $1, $3, op_expressions);
     }
   | basic_type ARROW method_name '(' opt_expressions  ')'
     {

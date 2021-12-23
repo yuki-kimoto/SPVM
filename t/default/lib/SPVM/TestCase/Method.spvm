@@ -47,21 +47,21 @@ class TestCase::Method {
   
   static method return_value_automatical_numeric_convertion : int () {
     {
-      my $num : double = TestCase::Method->test_return_value_automatical_numeric_convertion_widening();
+      my $num : double = cur->test_return_value_automatical_numeric_convertion_widening();
       unless ($num == 2.0) {
         return 0;
       }
     }
     
     {
-      my $num : byte = TestCase::Method->test_return_value_automatical_numeric_convertion_narrowing_byte();
+      my $num : byte = cur->test_return_value_automatical_numeric_convertion_narrowing_byte();
       unless ($num == 127) {
         return 0;
       }
     }
 
     {
-      my $num : short = TestCase::Method->test_return_value_automatical_numeric_convertion_narrowing_short();
+      my $num : short = cur->test_return_value_automatical_numeric_convertion_narrowing_short();
       unless ($num == 32767) {
         return 0;
       }

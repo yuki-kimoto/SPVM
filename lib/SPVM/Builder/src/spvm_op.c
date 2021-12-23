@@ -173,7 +173,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "INIT",
     "REQUIRE",
     "IF_REQUIRE",
-    "CURRENT_CLASS",
+    "CURRENT_CLASS_NAME",
     "FREE_TMP",
     "REFCNT",
     "ALLOW",
@@ -184,6 +184,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "DUMP",
     "TRUE",
     "FALSE",
+    "CURRENT_CLASS",
   };
   
   return id_names;
@@ -2729,21 +2730,21 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
   }
   
   // Instance method call
-  if (op_invocant && op_invocant->id != SPVM_OP_C_ID_TYPE) {
+  if (op_invocant->id == SPVM_OP_C_ID_TYPE || op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+   call_method->is_class_method_call = 1;
    call_method->op_invocant = op_invocant;
    call_method->op_name = op_name_method;
+  }
+  // Class method call
+  else {
+    call_method->op_invocant = op_invocant;
+    call_method->op_name = op_name_method;
     
     if (op_invocant->id == SPVM_OP_C_ID_VAR) {
       op_invocant->uv.var->call_method =call_method;
     }
     
     SPVM_OP_insert_child(compiler, op_list_terms, op_list_terms->first, op_invocant);
-  }
-  // Class method call
-  else {
-   call_method->is_class_method_call = 1;
-   call_method->op_invocant = op_invocant;
-   call_method->op_name = op_name_method;
   }
   
   // term is passed to method

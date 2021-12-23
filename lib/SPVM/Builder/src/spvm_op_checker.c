@@ -352,7 +352,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               break;
             }
-            case SPVM_OP_C_ID_CURRENT_CLASS: {
+            case SPVM_OP_C_ID_CURRENT_CLASS_NAME: {
               SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->name, strlen(class->name), op_cur->file, op_cur->line);
 
@@ -4655,7 +4655,14 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
   else {
     // Class name + method name
     if (call_method->op_invocant) {
-      const char* class_name = call_method->op_invocant->uv.type->basic_type->name;
+      const char* class_name;
+      if (call_method->op_invocant->id == SPVM_OP_C_ID_CURRENT_CLASS) {
+        class_name = op_class_current->uv.class->name;
+      }
+      else {
+        class_name = call_method->op_invocant->uv.type->basic_type->name;
+      }
+      
       SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
       assert(class);
       

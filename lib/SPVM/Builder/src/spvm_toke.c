@@ -1758,6 +1758,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   
                   return CLASS;
                 }
+                else if (strcmp(keyword, "cur") == 0) {
+                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
+                  
+                  return CURRENT_CLASS;
+                }
                 break;
               }
               case 'd' : {
@@ -2088,8 +2093,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   continue;
                 }
                 else if (strcmp(keyword, "__CLASS__") == 0) {
-                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS, compiler->cur_file, compiler->cur_line);
-                  return CURRENT_CLASS;
+                  yylvalp->opval = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_CURRENT_CLASS_NAME, compiler->cur_file, compiler->cur_line);
+                  return CURRENT_CLASS_NAME;
                 }
                 else if (strcmp(keyword, "__FILE__") == 0) {
                   SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, compiler->cur_rel_file, strlen(compiler->cur_rel_file), compiler->cur_file, compiler->cur_line);
