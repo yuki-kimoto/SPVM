@@ -1752,7 +1752,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_MULNUM_T:
-          class->category = SPVM_CLASS_C_CATEGORY_VALUE;
+          class->category = SPVM_CLASS_C_CATEGORY_MULNUM;
           category_descriptors_count++;
           break;
         case SPVM_DESCRIPTOR_C_ID_PRIVATE:

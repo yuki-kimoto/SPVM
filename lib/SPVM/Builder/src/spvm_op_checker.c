@@ -1094,7 +1094,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_COMPILER_error(compiler, "Can't create object of callback class at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
-                  else if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
+                  else if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
                     SPVM_COMPILER_error(compiler, "Can't create object of mulnum_t class at %s line %d\n", op_cur->file, op_cur->line);
                     return;
                   }
@@ -2908,7 +2908,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_private = 0;
                 }
                 // If multi numeric type, field is public
-                else if (field->class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
+                else if (field->class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
                   is_private = 0;
                 }
                 // Default is private
@@ -4864,7 +4864,7 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
     const char* class_name = class->op_name->uv.name;
     
     // mulnum_t class limitation
-    if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
+    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
       // Can't have methods
       if (class->methods->length > 0) {
         SPVM_COMPILER_error(compiler, "mulnum_t class can't have methods at %s line %d\n", class->op_class->file, class->op_class->line);

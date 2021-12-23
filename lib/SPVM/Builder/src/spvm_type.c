@@ -1047,7 +1047,7 @@ int32_t SPVM_TYPE_is_multi_numeric_type(SPVM_COMPILER* compiler, int32_t basic_t
     SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
     // Class
     if (class) {
-      if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
         is_mulnum_t = 1;
       }
       else {
@@ -1078,7 +1078,7 @@ int32_t SPVM_TYPE_is_value_ref_type(SPVM_COMPILER* compiler, int32_t basic_type_
     SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
     // Class
     if (class) {
-      if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
         is_value_ref_type = 1;
       }
       else {
@@ -1109,7 +1109,7 @@ int32_t SPVM_TYPE_is_value_array_type(SPVM_COMPILER* compiler, int32_t basic_typ
     SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
     // Class
     if (class) {
-      if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
+      if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
         is_value_array_type = 1;
       }
       else {
@@ -1141,7 +1141,7 @@ int32_t SPVM_TYPE_basic_type_is_multi_numeric_type(SPVM_COMPILER* compiler, int3
   
   // Class
   if (class) {
-    if (class->category == SPVM_CLASS_C_CATEGORY_VALUE) {
+    if (class->category == SPVM_CLASS_C_CATEGORY_MULNUM) {
       is_basic_type_mulnum_t = 1;
     }
     else {
