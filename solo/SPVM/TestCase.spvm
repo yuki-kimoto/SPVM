@@ -442,7 +442,7 @@ SPVM::Test - SPVM test module
     }
 
     {
-      vaarg(10, 20, 30);
+      TestCase->vaarg(10, 20, 30);
     }
     
     {
@@ -502,10 +502,10 @@ SPVM::Test - SPVM test module
       my $values_point_float = new TestCase::Point_3f[1];
       my $values_point_double = new TestCase::Point_3d[1];
       
-      $values_point_byte->[0]{x} = (byte)INT8_MIN();
-      $values_point_short->[0]{x} = (short)INT16_MIN();
-      $values_point_int->[0]{x} = INT32_MIN();
-      $values_point_long->[0]{x} = INT64_MIN();
+      $values_point_byte->[0]{x} = (byte)TestCase->INT8_MIN();
+      $values_point_short->[0]{x} = (short)TestCase->INT16_MIN();
+      $values_point_int->[0]{x} = TestCase->INT32_MIN();
+      $values_point_long->[0]{x} = TestCase->INT64_MIN();
       $values_point_float->[0]{x} = 1.5f;
       $values_point_double->[0]{x} = 1.25;
 
@@ -595,7 +595,7 @@ SPVM::Test - SPVM test module
       
       my $out : TestCase::Complex_2d;
       
-      ref_sum_complex($z, $z, \$out);
+      TestCase->ref_sum_complex($z, $z, \$out);
       
       print($out->{re} . " " . $out->{im} . "\n");
     }
@@ -612,7 +612,7 @@ SPVM::Test - SPVM test module
     
     {
       my $out : double;
-      ref_sum(0.25, 0.5, \$out);
+      TestCase->ref_sum(0.25, 0.5, \$out);
       
       print($out . "\n");
     }
@@ -706,7 +706,7 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $total = sum0(sum0(1, 2), sum0(3, 4));
+      my $total = TestCase->sum0(TestCase->sum0(1, 2), TestCase->sum0(3, 4));
     }
     
     # Multi array init
@@ -769,7 +769,7 @@ SPVM::Test - SPVM test module
         $minimal = undef;
       }
       {
-        receive_undef(undef);
+        TestCase->receive_undef(undef);
       }
     }
     
@@ -803,7 +803,7 @@ SPVM::Test - SPVM test module
       $minimals->[2] = TestCase::Minimal->new;
       $minimals->[2]{x} = 2;
       
-      sort_objectect($minimals, method : int ($object1 : object, $object2 : object) {
+      TestCase->sort_objectect($minimals, method : int ($object1 : object, $object2 : object) {
         my $minimal1 = (TestCase::Minimal)$object1;
         my $minimal2 = (TestCase::Minimal)$object2;
         
@@ -886,7 +886,7 @@ SPVM::Test - SPVM test module
     my $num : byte = 127;
     
     eval {
-      exception_die_return_object();
+      TestCase->exception_die_return_object();
     };
 
 =pod
@@ -896,7 +896,7 @@ SPVM::Test - SPVM test module
 =cut
     
     {
-      my $num = sum0(1, 2);
+      my $num = TestCase->sum0(1, 2);
       print($num . "\n");
     }
     
@@ -995,12 +995,12 @@ SPVM::Test - SPVM test module
     }
     
     {
-      my $ret = error_eval();
+      my $ret = TestCase->error_eval();
       
       print($ret . "\n");
     }
     
-    error_eval();
+    TestCase->error_eval();
     
     my $dest = TestCase::Destructor->new();
     
@@ -1149,7 +1149,7 @@ SPVM::Test - SPVM test module
     # Call new method without variable
     {
       TestCase::Minimal->new();
-      sum0(1, 3);
+      TestCase->sum0(1, 3);
     }
     
     # Create temporary varialbe
@@ -1361,11 +1361,11 @@ SPVM::Test - SPVM test module
     }
     
     eval {
-      sum0(1, 2);
+      TestCase->sum0(1, 2);
       
       3;
       
-      sum0(3, 4);
+      TestCase->sum0(3, 4);
       
       die "Catch error";
       
@@ -1373,7 +1373,7 @@ SPVM::Test - SPVM test module
     };
     
     {
-      sum0(5, 6);
+      TestCase->sum0(5, 6);
       2;
       print("Error" . "\n");
     }
@@ -1438,8 +1438,8 @@ SPVM::Test - SPVM test module
     }
     7;
     
-    print(sum0(1, 1) . "\n");
-    print(sum2(1, 2) . "\n");
+    print(TestCase->sum0(1, 1) . "\n");
+    print(TestCase->sum2(1, 2) . "\n");
 
     # Constant float
     print(0.3f . "\n");
@@ -1773,10 +1773,10 @@ SPVM::Test - SPVM test module
     my $bar : double = (double)1;
     undef;
     
-    sum0(1, 2);
-    sum0(1, 2);
+    TestCase->sum0(1, 2);
+    TestCase->sum0(1, 2);
     
-    test1();
+    TestCase->test1();
     
     while (1) {
       1;
@@ -1818,7 +1818,7 @@ SPVM::Test - SPVM test module
   static method call_void : int () {
     my $nums = [1];
     
-    call_void_method($nums);
+    TestCase->call_void_method($nums);
     
     if ($nums->[0] == 5) {
       return 1;
@@ -1876,7 +1876,7 @@ SPVM::Test - SPVM test module
       
     }
     
-    array_new();
+    TestCase->array_new();
     
     return 2;
   }
@@ -1891,7 +1891,7 @@ SPVM::Test - SPVM test module
   static method sum2 : int ($num1 : int, $num2 : int) {
     # die "Error";
     
-    my $num3 = sum0($num1, $num2);
+    my $num3 = TestCase->sum0($num1, $num2);
     
     return $num3 + 3;
   }
@@ -1986,7 +1986,7 @@ SPVM::Test - SPVM test module
   }
   
   static method error_call_stack : int () {
-    error();
+    TestCase->error();
   }
 
   static method error_eval : int () {
@@ -2004,7 +2004,7 @@ SPVM::Test - SPVM test module
 
   static method error_eval_call : int () {
     eval {
-      error();
+      TestCase->error();
     };
     
     if ($@) {
@@ -2026,7 +2026,7 @@ SPVM::Test - SPVM test module
   }
   
   static method call_spvm_method_args_convertion : int () {
-    my $return_value1 = call_spvm_method_args_convertion_stab1(16);
+    my $return_value1 = TestCase->call_spvm_method_args_convertion_stab1(16);
     return 0;
   }
 
