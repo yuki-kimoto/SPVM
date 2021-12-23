@@ -3,7 +3,7 @@ class TestCase {
   use TestCase::EnumB;
   use TestCase::EnumC;
   use TestCase::EnumD;
-  use TestCase::Simple;
+  use TestCase::Simple as TS;
   use TestCase::Minimal;
   use TestCase::Destructor;
   use TestCase::Callback1;
@@ -248,7 +248,7 @@ SPVM::Test - SPVM test module
       my $name = ref $minimal;
     }
     {
-      my $simple = TestCase::Simple->new;
+      my $simple = TS->new;
       my $minimal = TestCase::Minimal->new;
       $simple->set_minimal($minimal);
       

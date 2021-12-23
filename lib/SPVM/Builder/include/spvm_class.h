@@ -20,6 +20,7 @@ struct spvm_class {
   SPVM_OP* op_name;
   SPVM_LIST* class_vars;
   SPVM_HASH* class_var_symtable;
+  SPVM_HASH* class_alias_symtable;
   SPVM_LIST* methods;
   SPVM_HASH* method_symtable;
   SPVM_LIST* fields;

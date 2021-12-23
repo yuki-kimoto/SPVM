@@ -1,5 +1,5 @@
 class TestCase::Lib::Fn {
-  use Unicode;
+  use Unicode as Un;
   use TestCase::Minimal;
   use Fn;
   use TestCase::Minimal;
@@ -684,7 +684,7 @@ class TestCase::Lib::Fn {
 
   private static method _first_uchar : int ($string : string) {
     my $uchar_pos = 0;
-    return Unicode->uchar($string, \$uchar_pos);
+    return Un->uchar($string, \$uchar_pos);
   }
 
   static method test_sprintf_U : int () {

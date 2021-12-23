@@ -4581,6 +4581,12 @@ void SPVM_OP_CHECKER_resolve_types(SPVM_COMPILER* compiler) {
     if (type->is_self) {
       continue;
     }
+    else if (type->is_class_alias) {
+      continue;
+    }
+    else if (type->is_maybe_class_alias) {
+      continue;
+    }
     
     // Basic type name
     const char* basic_type_name = type->basic_type->name;
@@ -4660,7 +4666,12 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         class_name = op_class_current->uv.class->name;
       }
       else {
-        class_name = call_method->op_invocant->uv.type->basic_type->name;
+        const char* class_name_maybe = call_method->op_invocant->uv.type->basic_type->name;
+        SPVM_CLASS* class_current = op_class_current->uv.class;
+        class_name = SPVM_HASH_fetch(class_current->class_alias_symtable, class_name_maybe, strlen(class_name_maybe));
+        if (class_name == NULL) {
+          class_name = class_name_maybe;
+        }
       }
       
       SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
@@ -5094,37 +5105,6 @@ void SPVM_OP_CHECKER_resolve_classes(SPVM_COMPILER* compiler) {
       // Set sub precompile flag if class have precompile descriptor
       if (class->has_precompile_descriptor && method->can_precompile) {
         method->flag |= SPVM_METHOD_C_FLAG_PRECOMPILE;
-      }
-    }
-  }
-  
-  // Check import method
-  for (int32_t class_index = compiler->cur_class_base; class_index < compiler->classes->length; class_index++) {
-    SPVM_CLASS* class = SPVM_LIST_fetch(compiler->classes, class_index);
-    const char* class_name = class->op_name->uv.name;
-    SPVM_LIST* op_uses = class->op_uses;
-    
-    for (int32_t uses_index = 0; uses_index < op_uses->length; uses_index++) {
-      SPVM_OP* op_use = (SPVM_OP*)SPVM_LIST_fetch(op_uses, uses_index);
-      
-      SPVM_OP* use_op_type = op_use->uv.use->op_type;
-      const char* use_class_name = use_op_type->uv.type->basic_type->name;
-      SPVM_CLASS* use_class = SPVM_HASH_fetch(compiler->class_symtable, use_class_name, strlen(use_class_name));
-      
-      SPVM_LIST* import_method_names = op_use->uv.use->method_names;
-      if (import_method_names) {
-        for (int32_t import_method_name_index = 0; import_method_name_index < import_method_names->length; import_method_name_index++) {
-          const char* import_method_name = SPVM_LIST_fetch(import_method_names, import_method_name_index);
-          SPVM_METHOD* found_method = SPVM_HASH_fetch(
-            use_class->method_symtable,
-            import_method_name,
-            strlen(import_method_name)
-          );
-          if (!found_method) {
-            SPVM_COMPILER_error(compiler, "Fail method importing. Not found \"%s->%s\" at %s line %d\n", use_class_name, import_method_name, op_use->file, op_use->line);
-            return;
-          }
-        }
       }
     }
   }

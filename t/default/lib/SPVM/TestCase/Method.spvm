@@ -7,15 +7,15 @@ class TestCase::Method {
   use TestCase::Point_3f;
   use TestCase::Point_3d;
   use Comparator::Object;
-  use TestCase::Simple;
+  use TestCase::Simple as TS;
   use Fn;
   
   static method test_import_method : int () {
-    unless (TestCase::Simple->import_method1() == 1) {
+    unless (TS->import_method1() == 1) {
       return 0;
     }
     
-    unless (TestCase::Simple->import_method2() == 2) {
+    unless (TS->import_method2() == 2) {
       return 0;
     }
     

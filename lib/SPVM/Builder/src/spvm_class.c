@@ -49,6 +49,7 @@ SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
   class->op_allows = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   class->info_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   class->anon_methods = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  class->class_alias_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   return class;
 }

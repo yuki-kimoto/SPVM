@@ -8,7 +8,7 @@ Revision history for SPVM
         * Static resource is linked instead of dynamic resource.
         * Remove function call syntax and function import syntax. You don't call static method without full qualified name.
           This is because SPVM after version 1.0 want to keep backword compatible when new keywords is added.
-        * add current package syntax "cur"
+        * Add current package syntax "cur"
           You can call the class method using "cur" keyword
           class Foo {
             
@@ -21,6 +21,11 @@ Revision history for SPVM
               return $num1 + $num2;
             }
           }
+        * Add class alias syntax
+          use Foo::Bar::Baz as FBB;
+          
+          FBB->new;
+          
 0.9019  2021-12-21
         [CHANGES]
         * Rename SPVM::Builder::Config's get_libs, set_libs, unshift_libs, push_libs method to get_runtime_libs, set_runtime_libs, unshift_runtime_libs, push_runtime_libs

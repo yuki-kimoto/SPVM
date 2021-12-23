@@ -18,7 +18,7 @@
   #include "spvm_descriptor.h"
 %}
 
-%token <opval> CLASS HAS METHOD OUR ENUM MY USE REQUIRE ALLOW CURRENT_CLASS
+%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -190,12 +190,21 @@ use
     {
       $$ = SPVM_OP_build_use(compiler, $1, $2, NULL, 0);
     }
+  | USE basic_type AS basic_type';'
+    {
+      $$ = SPVM_OP_build_use(compiler, $1, $2, $4, 0);
+    }
 
 require
   : REQUIRE basic_type
     {
       SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, compiler->cur_file, compiler->cur_line);
       $$ = SPVM_OP_build_use(compiler, op_use, $2, NULL, 1);
+    }
+  | REQUIRE basic_type AS basic_type';'
+    {
+      SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, compiler->cur_file, compiler->cur_line);
+      $$ = SPVM_OP_build_use(compiler, op_use, $2, $4, 1);
     }
 
 allow
