@@ -1,3 +1,6 @@
+// Don't include sys/wait.h
+#undef I_SYS_WAIT
+
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
