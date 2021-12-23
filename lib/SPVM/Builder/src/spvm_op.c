@@ -2232,7 +2232,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
     // Class name must start with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
     if (islower(class_alias_name[0])) {
-      SPVM_COMPILER_error(compiler, "class alias name \"%s\" must start with upper case at %s line %d\n", class_alias_name, op_type_alias->file, op_type_alias->line);
+      SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d\n", class_alias_name, op_type_alias->file, op_type_alias->line);
     }
     use->op_type_alias = op_type_alias;
   }

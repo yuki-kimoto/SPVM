@@ -54,6 +54,16 @@ use lib "$FindBin::Bin/lib";
     my $success = $build->compile_spvm('TestCase::CompileError::Use::ImportMethodNotFound', __FILE__, __LINE__);
     ok($success == 0);
   }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::Use::AliasStartsLowerCase', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::Use::AliasDuplication', __FILE__, __LINE__);
+    ok($success == 0);
+  }
 }
 
 # Logical operator
