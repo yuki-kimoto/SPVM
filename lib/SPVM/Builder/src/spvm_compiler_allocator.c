@@ -10,6 +10,28 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"
 
+void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size) {
+  (void)compiler;
+  
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  
+  void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(byte_size);
+  
+  allocator->tmp_blocks_count++;
+  
+  return block;
+}
+
+void SPVM_COMPILER_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block) {
+  (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  
+  free(block);
+  
+  allocator->tmp_blocks_count--;
+}
+
 const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler, const char* message_template, ...) {
   
   int32_t message_length = 0;
