@@ -141,7 +141,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // '\0' means end of file, so try to read next module source
     if (ch == '\0') {
       compiler->cur_file = NULL;
-      free(compiler->cur_src);
       compiler->cur_src = NULL;
       compiler->bufptr = NULL;
       compiler->befbufptr = NULL;
@@ -262,28 +261,28 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
-                char* original_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
-                if ((int32_t)fread(original_src, 1, file_size, fh) < file_size) {
+                char* src = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_size + 1);
+                if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                   SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                   return 0;
                 }
                 fclose(fh);
-                original_src[file_size] = '\0';
+                src[file_size] = '\0';
                 
                 // Save module source
-                SPVM_HASH_insert(compiler->module_source_symtable, class_name, strlen(class_name), original_src);
+                SPVM_HASH_insert(compiler->module_source_symtable, class_name, strlen(class_name), src);
               }
             }
             
             // Search module source
             char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
             
-            char* original_src = NULL;
+            char* src = NULL;
             int32_t file_size = 0;
             int32_t module_not_found = 0;
             if (found_module_source) {
-              original_src = found_module_source;
-              file_size = strlen(original_src);
+              src = found_module_source;
+              file_size = strlen(src);
             }
             else {
               module_not_found = 1;
@@ -305,8 +304,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else {
               
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-              compiler->cur_src = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(file_size + 1);
-              memcpy(compiler->cur_src, original_src, file_size + 1);
+              compiler->cur_src = src;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
               
