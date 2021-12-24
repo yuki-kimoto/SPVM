@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9103  2021-12-24
+        [CHANGES]
+        * Fix the bug that old string buffers of the compiler isn't freed when new memory is allocated.
+
 0.9102  2021-12-24
         [CHANGES]
         * Upgrads ppport.h to fix Perl 5.8.7 compilation errors.

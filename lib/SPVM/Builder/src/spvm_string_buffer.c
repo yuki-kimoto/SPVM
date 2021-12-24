@@ -34,6 +34,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
     int32_t new_capacity = string_buffer->capacity * 2;
     char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_capacity);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
+    free(string_buffer->buffer);
     string_buffer->buffer = new_buffer;
     string_buffer->capacity = new_capacity;
   }
