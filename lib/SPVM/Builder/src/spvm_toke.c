@@ -310,7 +310,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
               
-                  
               // If we get current module file path, set it, otherwise set module relative file path
               if (cur_file) {
                 compiler->cur_file = cur_file;
@@ -318,30 +317,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               else {
                 compiler->cur_file = cur_rel_file;
               }
-              
-              // Convert \r\n to \n
-              int32_t cur_src_pos = 0;
-              int32_t nl_merge_count = 0;
-              int32_t cur_src_len = strlen(compiler->cur_src);
-              while (cur_src_pos < cur_src_len) {
-                int32_t ch = compiler->cur_src[cur_src_pos];
-                int32_t ch_next = compiler->cur_src[cur_src_pos + 1];
-                
-                if (ch == '\r' && ch_next == '\n') {
-                  compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
-                  nl_merge_count++;
-                  cur_src_pos += 2;
-                }
-                else if (ch == '\r') {
-                  compiler->cur_src[cur_src_pos - nl_merge_count] = '\n';
-                  cur_src_pos++;
-                }
-                else {
-                  compiler->cur_src[cur_src_pos - nl_merge_count] = ch;
-                  cur_src_pos++;
-                }
-              }
-              compiler->cur_src[cur_src_pos - nl_merge_count] = '\0';
               
               // Set initial information for tokenization
               compiler->bufptr = compiler->cur_src;
@@ -369,13 +344,22 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case ' ':
       case '\t':
       case '\f':
+      {
         compiler->bufptr++;
         continue;
+      }
+      case '\r':
       case '\n':
+      {
+        if (*compiler->bufptr == '\r' && *(compiler->bufptr + 1) == '\n') {
+          compiler->bufptr++;
+        }
+
         compiler->bufptr++;
         compiler->cur_line++;
         compiler->line_start_ptr = compiler->bufptr;
         continue;
+      }
       // Cancat
       case '.': {
         if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_FIRST_CONCAT) {
@@ -600,7 +584,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
       case '#':
         compiler->bufptr++;
         while(1) {
-          if (*compiler->bufptr == '\n' || *compiler->bufptr == '\0') {
+          if (*compiler->bufptr == '\r' && *(compiler->bufptr + 1) == '\n') {
+            compiler->bufptr++;
+          }
+          if (*compiler->bufptr == '\n' || *compiler->bufptr == '\r' || *compiler->bufptr == '\0') {
             break;
           }
           else {
@@ -893,6 +880,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         return CONSTANT;
       }
+      // String Literal
       case '"': {
         if (state_var_expansion == SPVM_TOKE_C_STATE_VAR_EXPANSION_DOUBLE_QUOTE) {
           // Nothing
@@ -1024,14 +1012,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr += 2;
               }
               else {
-                if (*compiler->bufptr == '\n') {
-                  compiler->bufptr++;
-                  compiler->cur_line++;
-                  compiler->line_start_ptr = compiler->bufptr;
-                }
-                else {
-                  compiler->bufptr++;
-                }
+                compiler->bufptr++;
               }
             }
           }
@@ -1260,6 +1241,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 }
               }
               else {
+                if (*char_ptr == '\r' && *(char_ptr + 1) == '\n') {
+                  char_ptr++;
+                }
+                if (*char_ptr == '\n' || *char_ptr == '\r') {
+                  compiler->cur_line++;
+                  compiler->line_start_ptr = compiler->bufptr;
+                }
+                
                 str[str_length] = *char_ptr;
                 str_length++;
                 char_ptr++;
