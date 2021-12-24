@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9102  2021-12-24
+        [CHANGES]
+        * Upgrads ppport.h to fix Perl 5.8.7 compilation errors.
+
 0.9101  2021-12-24
         [CHANGES]
         * The argument of exchange API calling method support the conversion from Perl array reference to SPVM multi numeric array.
