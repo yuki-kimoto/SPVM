@@ -79,10 +79,10 @@ SPVM_OBJECT* SPVM_XS_UTIL_get_object(SV* sv_data) {
   }
 }
 
-SV* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV* sv_elems, int32_t* error_code) {
+SV* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV* sv_elems, SV** sv_error) {
   
   if (!sv_derived_from(sv_elems, "ARRAY")) {
-    *error_code = 1;
+    *sv_error = sv_2mortal(newSVpvf("Argument must be array reference at %s line %d\n", MFILE, __LINE__));
     return NULL;
   }
   
@@ -96,7 +96,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV
   SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
   
   if (basic_type == NULL) {
-    *error_code = 2;
+    *sv_error = sv_2mortal(newSVpvf("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__));
     return NULL;
   }
   
@@ -125,7 +125,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV
         hash_keys_length++;
       }
       if (hash_keys_length != fields_length) {
-        *error_code = 3;
+        *sv_error = sv_2mortal(newSVpvf("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__));
         return NULL;
       }
 
@@ -139,7 +139,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV
           sv_field_value = *sv_field_value_ptr;
         }
         else {
-          *error_code = 4;
+          *sv_error = sv_2mortal(newSVpvf("Value element must be defined at %s line %d\n", MFILE, __LINE__));
           return NULL;
         }
 
@@ -174,7 +174,7 @@ SV* SPVM_XS_UTIL_new_mulnum_array(SPVM_ENV* env, const char* basic_type_name, SV
       }
     }
     else {
-      *error_code = 5;
+      *sv_error = sv_2mortal(newSVpvf("Element must be a hash reference at %s line %d\n", MFILE, __LINE__));
       return NULL;
     }
   }
