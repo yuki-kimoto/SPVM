@@ -562,9 +562,8 @@ call_spvm_method(...)
         }
         break;
       }
-      // Array Object type
-      case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY:
+      case SPVM_TYPE_C_TYPE_CATEGORY_NUMERIC_ARRAY:
       case SPVM_TYPE_C_TYPE_CATEGORY_OBJECT_ARRAY:
       {
         // Perl undef to SPVM undef
@@ -738,8 +737,22 @@ call_spvm_method(...)
                   sv_value = sv_array;
                   break;
                 }
-                default:
-                  assert(0);
+                default: {
+                  if (arg->type_category == SPVM_TYPE_C_TYPE_CATEGORY_MULNUM_ARRAY) {
+                    SV* sv_error = NULL;
+                    SPVM_BASIC_TYPE* arg_basic_type = SPVM_LIST_fetch(compiler->basic_types, arg_basic_type_id);
+                    const char* arg_basic_type_name = arg_basic_type->name;
+                    SPVM_OBJECT* array = SPVM_XS_UTIL_new_mulnum_array(env, arg_basic_type_name, sv_value, &sv_error);
+                    if (sv_error) {
+                      croak_sv(sv_error);
+                    }
+                    SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
+                    sv_value = sv_array;
+                  }
+                  else {
+                    assert(0);
+                  }
+                }
               }
             }
           }

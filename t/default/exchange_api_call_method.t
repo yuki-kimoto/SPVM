@@ -500,6 +500,88 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
     }
   }
 
+  # Argument multi numeric array
+  {
+    
+    # Argument multi numeric array - byte
+    {
+      my $values = [
+        {x => $BYTE_MIN, y => 1, z => 2},
+        {x => 3, y => 4, z => 5},
+        {x => 6, y => 7, z => 8},
+      ];
+      my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3b[]", $values);
+      ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_byte($values));
+      my $out_values = $spvm_values->to_elems;
+      is_deeply($out_values, $values);
+    }
+
+    # Argument multi numeric array - short
+    {
+      my $values = [
+        {x => $SHORT_MIN, y => 1, z => 2},
+        {x => 3, y => 4, z => 5},
+        {x => 6, y => 7, z => 8},
+      ];
+      my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3s[]", $values);
+      ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_short($values));
+      my $out_values = $spvm_values->to_elems;
+      is_deeply($out_values, $values);
+    }
+
+    # Argument multi numeric array - int
+    {
+      my $values = [
+        {x => $INT_MIN, y => 1, z => 2},
+        {x => 3, y => 4, z => 5},
+        {x => 6, y => 7, z => 8},
+      ];
+      my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3i[]", $values);
+      ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_int($values));
+      my $out_values = $spvm_values->to_elems;
+      is_deeply($out_values, $values);
+    }
+
+    # Argument multi numeric array - long
+    {
+      my $values = [
+        {x => $LONG_MIN, y => 1, z => 2},
+        {x => 3, y => 4, z => 5},
+        {x => 6, y => 7, z => 8},
+      ];
+      my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3l[]", $values);
+      ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_long($values));
+      my $out_values = $spvm_values->to_elems;
+      is_deeply($out_values, $values);
+    }
+
+    # Argument multi numeric array - float
+    {
+      my $values = [
+        {x => $FLT_MIN, y => 1, z => 2},
+        {x => 3, y => 4, z => 5},
+        {x => 6, y => 7, z => 8},
+      ];
+      my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3f[]", $values);
+      ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_float($values));
+      my $out_values = $spvm_values->to_elems;
+      is_deeply($out_values, $values);
+    }
+
+    # Argument multi numeric array - double
+    {
+      my $values = [
+        {x => $DBL_MIN, y => 1, z => 2},
+        {x => 3, y => 4, z => 5},
+        {x => 6, y => 7, z => 8},
+      ];
+      my $spvm_values = SPVM::new_mulnum_array("TestCase::Point_3d[]", $values);
+      ok(SPVM::TestCase::ExchangeAPI->spvm_new_mulnum_array_double($values));
+      my $out_values = $spvm_values->to_elems;
+      is_deeply($out_values, $values);
+    }
+  }
+
   # Argument multi numeric reference
   {
     {
