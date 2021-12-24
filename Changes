@@ -1,9 +1,12 @@
 Revision history for SPVM
 
+0.9101  2021-12-24
+        [CHANGES]
+        * The argument of exchange API calling method support the conversion from Perl array reference to SPVM multi numeric array.
+
 0.9021  2021-12-24
         [CHANGES]
         * Reference symbol is changed from & to *.
-        * The argument of exchange API calling method support the conversion from Perl array reference to SPVM multi numeric array.
 
 0.9020  2021-12-23
         [CHANGES]
