@@ -3210,107 +3210,18 @@ _new_mulnum_array(...)
   SV* sv_env = ST(0);
   SV* sv_basic_type_name = ST(1);
   SV* sv_elems = ST(2);
-  
-  if (!sv_derived_from(sv_elems, "ARRAY")) {
-    croak("Argument must be array reference at %s line %d\n", MFILE, __LINE__);
-  }
-  
+
   const char* basic_type_name = SvPV_nolen(sv_basic_type_name);
-  
-  AV* av_elems = (AV*)SvRV(sv_elems);
-  
-  int32_t length = av_len(av_elems) + 1;
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  // Runtime
-  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
+  SV* sv_error = NULL;
+  SV* sv_array = SPVM_XS_UTIL_new_mulnum_array(env, basic_type_name, sv_elems, &sv_error);
   
-  SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, basic_type_name);
-  
-  if (basic_type == NULL) {
-    croak("Not found %s at %s line %d\n", basic_type_name, MFILE, __LINE__);
+  if (sv_error) {
+    croak_sv(sv_error);
   }
-  
-  // New array
-  void* array = env->new_mulnum_array(env, basic_type->id, length);
-
-  for (int32_t index = 0; index < length; index++) {
-    SV** sv_element_ptr = av_fetch(av_elems, index, 0);
-    SV* sv_element = sv_element_ptr ? *sv_element_ptr : &PL_sv_undef;
-
-    if (sv_derived_from(sv_element, "HASH")) {
-      
-      SPVM_CLASS* class = basic_type->class;
-      assert(class);
-      
-      SPVM_FIELD* first_field = SPVM_LIST_fetch(class->fields, 0);
-      assert(first_field);
-
-      void* elems = (void*)env->get_elems_int(env, array);
-      
-      HV* hv_value = (HV*)SvRV(sv_element);
-      int32_t fields_length = class->fields->length;
-      // Field exists check
-      int32_t hash_keys_length = 0;
-      while (hv_iternext(hv_value)) {
-        hash_keys_length++;
-      }
-      if (hash_keys_length != fields_length) {
-        croak("Value element hash key is lacked at %s line %d\n", MFILE, __LINE__);
-      }
-
-      for (int32_t field_index = 0; field_index < class->fields->length; field_index++) {
-        SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, field_index);
-        const char* field_name = field->name;
-        
-        SV** sv_field_value_ptr = hv_fetch(hv_value, field_name, strlen(field_name), 0);
-        SV* sv_field_value;
-        if (sv_field_value_ptr) {
-          sv_field_value = *sv_field_value_ptr;
-        }
-        else {
-          croak("Value element must be defined at %s line %d\n", MFILE, __LINE__);
-        }
-
-        switch (first_field->type->basic_type->id) {
-          case SPVM_BASIC_TYPE_C_ID_BYTE: {
-            ((int8_t*)elems)[(fields_length * index) + field_index] = (int8_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_SHORT: {
-            ((int16_t*)elems)[(fields_length * index) + field_index] = (int16_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_INT: {
-            ((int32_t*)elems)[(fields_length * index) + field_index] = (int32_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_LONG: {
-            ((int64_t*)elems)[(fields_length * index) + field_index] = (int64_t)SvIV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_FLOAT: {
-            ((float*)elems)[(fields_length * index) + field_index] = (float)SvNV(sv_field_value);
-            break;
-          }
-          case SPVM_BASIC_TYPE_C_ID_DOUBLE: {
-            ((double*)elems)[(fields_length * index) + field_index] = (double)SvNV(sv_field_value);
-            break;
-          }
-          default:
-            assert(0);
-        }
-      }
-    }
-    else {
-      croak("Element must be a hash reference at %s line %d\n", MFILE, __LINE__);
-    }
-  }
-  
-  // New sv array
-  SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
   
   XPUSHs(sv_array);
   XSRETURN(1);
