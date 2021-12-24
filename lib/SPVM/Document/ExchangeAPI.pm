@@ -1055,7 +1055,7 @@ B<Example:>
 
   # SPVM method definition
   class My {
-    static method foo : void ($value : byte&);
+    static method foo : void ($value : byte*);
   }
 
   # Perl
@@ -1074,7 +1074,7 @@ B<Example:>
 
   # SPVM method definition
   class My {
-    static method foo : void ($value : short&);
+    static method foo : void ($value : short*);
   }
 
   # Perl
@@ -1093,7 +1093,7 @@ B<Example:>
 
   # SPVM method definition
   class My {
-    static method foo : void ($value : int&);
+    static method foo : void ($value : int*);
   }
 
   # Perl
@@ -1112,7 +1112,7 @@ B<Example:>
 
   # SPVM method definition
   class My {
-    static method foo : void ($value : long&);
+    static method foo : void ($value : long*);
   }
 
   # Perl
@@ -1131,7 +1131,7 @@ B<Example:>
 
   # SPVM method definition
   class My {
-    static method foo : void ($value : float&);
+    static method foo : void ($value : float*);
   }
 
   # Perl
@@ -1150,7 +1150,7 @@ B<Example:>
 
   # SPVM method definition
   class My {
-    static method foo : void ($value : double&);
+    static method foo : void ($value : double*);
   }
 
   # Perl

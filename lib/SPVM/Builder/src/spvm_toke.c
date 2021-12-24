@@ -488,10 +488,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return SPECIAL_ASSIGN;
         }
+        // * is used in MULTIPLY operator or type reference
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MULTIPLY);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
           yylvalp->opval = op;
-          return MULTIPLY;
+          return '*';
         }
       }
       // Divide
@@ -589,11 +590,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return SPECIAL_ASSIGN;
         }
-        // & - Bit AND operator or type reference
         else {
-          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_NULL);
+          SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_AND);
           yylvalp->opval = op;
-          return '&';
+          return BIT_AND;
         }
       
       // Comment

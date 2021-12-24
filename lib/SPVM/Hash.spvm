@@ -217,7 +217,7 @@ class Hash : precompile {
     return (int)(Hash->_murmur_hash($key, $default_seed) % $bucket_count);
   }
 
-  static method _set_to_container : void ($entries : Hash::Entry[], $bucket_count : int, $count_ref : int&,
+  static method _set_to_container : void ($entries : Hash::Entry[], $bucket_count : int, $count_ref : int*,
     $key : string, $val : object) {
     my $index = Hash->_index_by_key($key, $bucket_count);
     my $ref = $entries->[$index];

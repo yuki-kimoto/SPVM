@@ -1,4 +1,9 @@
 Revision history for SPVM
+
+0.9021  2021-12-24
+        [CHANGES]
+        * Reference symbol is changed from & to *.
+
 0.9020  2021-12-23
         [CHANGES]
         * Remove Windows library searching path from ldflags of SPVM::Builder::Config

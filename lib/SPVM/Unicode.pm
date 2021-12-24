@@ -44,7 +44,7 @@ return -2. this means uchar function find invalid utf8.
 
 =head2 uchar
 
-  static method uchar : int ($str : string, $offset_ref : int&);
+  static method uchar : int ($str : string, $offset_ref : int*);
   
 Get a Unicode codepoint from UTF-8 string with the byte offset and proceed the offset to next UTF-8 character position.
 

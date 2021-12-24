@@ -51,8 +51,8 @@ class TestCase::Assign {
 
   static method assign_return_value_ref : int () {
     my $num = 1;
-    my $num_ref1 : int&;
-    my $num_ref2 : int&;
+    my $num_ref1 : int*;
+    my $num_ref2 : int*;
     
     $num_ref1 = $num_ref2 = \$num;
     

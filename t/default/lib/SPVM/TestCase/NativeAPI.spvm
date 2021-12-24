@@ -416,7 +416,7 @@ class TestCase::NativeAPI {
     return 1;
   }
 
-  native static method ref_byte_sum : byte ($x_in : byte, $x_in2 : byte, $x_out : byte&);
+  native static method ref_byte_sum : byte ($x_in : byte, $x_in2 : byte, $x_out : byte*);
   static method ref_byte : int () {
     my $out : byte;
     my $out_ref = \$out;
@@ -430,7 +430,7 @@ class TestCase::NativeAPI {
     return 0;
   }
 
-  native static method ref_short_sum : short ($x_in : short, $x_in2 : short, $x_out : short&);
+  native static method ref_short_sum : short ($x_in : short, $x_in2 : short, $x_out : short*);
   static method ref_short : int () {
     my $out : short;
     my $out_ref = \$out;
@@ -444,7 +444,7 @@ class TestCase::NativeAPI {
     return 0;
   }
 
-  native static method ref_int_sum : int ($x_in : int, $x_in2 : int, $x_out : int&);
+  native static method ref_int_sum : int ($x_in : int, $x_in2 : int, $x_out : int*);
   static method ref_int : int () {
     my $out : int;
     my $out_ref = \$out;
@@ -458,7 +458,7 @@ class TestCase::NativeAPI {
     return 0;
   }
 
-  native static method ref_long_sum : long ($x_in : long, $x_in2 : long, $x_out : long&);
+  native static method ref_long_sum : long ($x_in : long, $x_in2 : long, $x_out : long*);
   static method ref_long : int () {
     my $out : long;
     my $out_ref = \$out;
@@ -472,7 +472,7 @@ class TestCase::NativeAPI {
     return 0;
   }
   
-  native static method ref_float_sum : float ($x_in : float, $x_in2 : float, $x_out : float&);
+  native static method ref_float_sum : float ($x_in : float, $x_in2 : float, $x_out : float*);
   static method ref_float : int () {
     my $out : float;
     my $out_ref = \$out;
@@ -486,7 +486,7 @@ class TestCase::NativeAPI {
     return 0;
   }
 
-  native static method ref_double_sum : double ($x_in : double, $x_in2 : double, $x_out : double&);
+  native static method ref_double_sum : double ($x_in : double, $x_in2 : double, $x_out : double*);
   static method ref_double : int () {
     my $out : double;
     my $out_ref = \$out;

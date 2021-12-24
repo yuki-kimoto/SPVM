@@ -49,12 +49,12 @@
 %left <opval> LOGICAL_OR
 %left <opval> LOGICAL_AND
 %left <opval> BIT_OR BIT_XOR
-%left <opval> '&'
+%left <opval> BIT_AND
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
 %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
-%left <opval> MULTIPLY DIVIDE REMAINDER
+%left <opval> '*' DIVIDE REMAINDER
 %right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
@@ -812,9 +812,10 @@ binary_op
       SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_SUBTRACT, $2->file, $2->line);
       $$ = SPVM_OP_build_binary_op(compiler, op, $1, $3);
     }
-  | expression MULTIPLY expression
+  | expression '*' expression
     {
-      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
+      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MULTIPLY, $2->file, $2->line);
+      $$ = SPVM_OP_build_binary_op(compiler, op, $1, $3);
     }
   | expression DIVIDE expression
     {
@@ -828,10 +829,9 @@ binary_op
     {
       $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
-  | expression '&' expression
+  | expression BIT_AND expression
     {
-      SPVM_OP* op = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_BIT_AND, $2->file, $2->line);
-      $$ = SPVM_OP_build_binary_op(compiler, op, $1, $3);
+      $$ = SPVM_OP_build_binary_op(compiler, $2, $1, $3);
     }
   | expression BIT_OR expression
     {
@@ -1181,7 +1181,7 @@ basic_type
     }
 
 ref_type
-  : basic_type '&'
+  : basic_type '*'
     {
       $$ = SPVM_OP_build_ref_type(compiler, $1);
     }

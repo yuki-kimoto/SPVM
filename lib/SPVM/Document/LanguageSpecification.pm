@@ -445,13 +445,13 @@ The following is Syntax Parsing Definition in SPVM, using the syntax in yacc/bis
 %left <opval> LOGICAL_OR
 %left <opval> LOGICAL_AND
 %left <opval> BIT_OR BIT_XOR
-%left <opval> '&'
+%left <opval> BIT_AND
 %nonassoc <opval> NUMEQ NUMNE STREQ STRNE
 %nonassoc <opval> NUMGT NUMGE NUMLT NUMLE STRGT STRGE STRLT STRLE ISA NUMERIC_CMP STRING_CMP
 %left <opval> SHIFT
 %left <opval> '+' '-' '.'
-%left <opval> MULTIPLY DIVIDE REMAINDER
-%right <opval> LOGICAL_NOT BIT_NOT '@' REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
+%left <opval> '*' DIVIDE REMAINDER
+%right <opval> LOGICAL_NOT BIT_NOT '@' CREATE_REF DEREF PLUS MINUS CONVERT SCALAR STRING_LENGTH ISWEAK REFCNT REFOP DUMP
 %nonassoc <opval> INC DEC
 %left <opval> ARROW
 
@@ -707,11 +707,11 @@ dec
 binary_op
   : expression '+' expression
   | expression '-' expression
-  | expression MULTIPLY expression
+  | expression '*' expression
   | expression DIVIDE expression
   | expression REMAINDER expression
   | expression BIT_XOR expression
-  | expression '&' expression
+  | expression BIT_AND expression
   | expression BIT_OR expression
   | expression SHIFT expression
   | expression '.' expression
@@ -819,7 +819,7 @@ basic_type
   | STRING
 
 ref_type
-  : basic_type '&'
+  : basic_type '*'
 
 array_type
   : basic_type '[' ']'
@@ -1031,10 +1031,13 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>LOGICAL_AND</td><td>&&</td>
   </tr>
   <tr>
+    <td>BIT_AND</td><td>&</td>
+  </tr>
+  <tr>
     <td>BIT_OR</td><td>|</td>
   </tr>
   <tr>
-    <td>BIT_XOR</td><td>&</td>
+    <td>BIT_XOR</td><td>^</td>
   </tr>
   <tr>
     <td>NUMEQ</td><td>==</td>
@@ -1083,9 +1086,6 @@ The following is a correspondence table between tokens in yacc/bison and keyword
   </tr>
   <tr>
     <td>SHIFT</td><td>&lt;&lt;  &gt;&gt;  &gt;&gt;&gt;</td>
-  </tr>
-  <tr>
-    <td>MULTIPLY</td><td>*</td>
   </tr>
   <tr>
     <td>DIVIDE</td><td>/</td>
@@ -2275,7 +2275,7 @@ Lexical variable name must be follow the rule of <a href="#language-token-identi
 my $var : int;
 my $var : Point;
 my $var : Complex_2d;
-my $var : int&;
+my $var : int*;
 </pre>
 
 Local Variable is initialized by <a href="#language-local-var-initial-value">Local Variable Initial Value</a>.
@@ -3298,17 +3298,17 @@ Reference is data that indicates the location of <a href="#language-local-var">L
 
 You can get Reference of Local Variable using <a href="#language-operator-ref">Reference Operator</a>.
 
-<a href="#language-type-ref">Reference Type</a> is represented by <a href="#language-type-numeric">Numeric Type</a> "&" or <a href="#language-type-multi-numeric ">Multi Numeric Type</a> followed by "&".
-Reference types are represented by appending an & after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric ">Multi Numeric Type</a>.
+<a href="#language-type-ref">Reference Type</a> is represented by <a href="#language-type-numeric">Numeric Type</a> "*" or <a href="#language-type-multi-numeric ">Multi Numeric Type</a> followed by "*".
+Reference types are represented by appending an * after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric ">Multi Numeric Type</a>.
 
 <pre>
 # Numeric Type Reference
 my $num : int;
-my $num_ref : int& = \$num;
+my $num_ref : int* = \$num;
 
 # Multi Numeric Type Reference
 my $point : Point_3d;
-my $point_ref : Point_3d& = \$point;
+my $point_ref : Point_3d* = \$point;
 </pre>
 
 Target of Reference Operator is Variable of <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. <a href="#language-type-object">Object Type</a> Variable or <a href="#language-literal">Literal</a> can't be target of Reference Operator.
@@ -3317,7 +3317,7 @@ Target of Reference Operator is Variable of <a href="#language-type-numeric">Num
 
 <pre>
 # Method Definition
-static method sum : void ($out_ref : int&, $in1 : int, $in2 : int) {
+static method sum : void ($out_ref : int*, $in1 : int, $in2 : int) {
   $$out_ref = $in1 + $in2;
 }
 
@@ -4004,11 +4004,11 @@ $VARIABLE
 </pre>
 <pre>
 my $num : int;
-my $num_ref : int& = \$num;
+my $num_ref : int* = \$num;
 my $num_deref : int = $$num_ref;
 
 my $z : Complex_2d;
-my $z_ref : Complex_2d& = \$z;
+my $z_ref : Complex_2d* = \$z;
 my $z_deref : Complex_2d = $$z_ref;
 </pre>
 
@@ -4033,11 +4033,11 @@ $VARIABLE = Expression
 </pre>
 <pre>
 my $num : int;
-my $num_ref : int& = \$num;
+my $num_ref : int* = \$num;
 $$num_ref = 1;
 
 my $z : Complex_2d;
-my $z_ref : Complex_2d& = \$z;
+my $z_ref : Complex_2d* = \$z;
 
 my $z2 : Complex_2d;
 
@@ -5208,7 +5208,7 @@ $x >>>= 1;
 
 <h3 id="language-operator-ref">Reference Operator</h3>
 <p>
-  The Reference Operator is an Operator that retrieves the address of a variable for <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. Designed to achieve c address Operator "&".
+  The Reference Operator is an Operator that retrieves the address of a variable for <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a>. Designed to achieve c address Operator "*".
 </p>
 <pre>
 \VARIABLE
@@ -5224,10 +5224,10 @@ $x >>>= 1;
 </pre>
 <pre>
 my $num : int;
-my $num_ref : int& = \$num;
+my $num_ref : int* = \$num;
 
 my $z : Complex_2d;
-my $z_ref : Complex_2d& = \$z;
+my $z_ref : Complex_2d* = \$z;
 </pre>
 <p>
   For a detailed description of Reference, see <a href="#language-ref">Reference</a>.
@@ -6946,14 +6946,14 @@ class Point_3i : mulnum_t {
 
 <h3 id="language-type-ref">Reference Type</h3>
 <p>
-  Reference Type is a Type that can store the address of a variable. Add "&" after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a> You can define it.
+  Reference Type is a Type that can store the address of a variable. Add "*" after <a href="#language-type-numeric">Numeric Type</a> or <a href="#language-type-multi-numeric">Multi Numeric Type</a> You can define it.
 </p>
 <pre>
 my $num : int;
-my $num_ref : int& = \$num;
+my $num_ref : int* = \$num;
 
 my $point : Point_3i;
-my $point_ref : Point_3i& = \$point;
+my $point_ref : Point_3i* = \$point;
 </pre>
 <p>
   Only the address of the Local Variable acquired by <a href="#language-operator-ref">Reference Operator</a> can be assigned to the value of Reference Type.

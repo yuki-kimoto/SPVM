@@ -2050,11 +2050,11 @@ SPVM::Test - SPVM test module
   static method receive_undef : void ($test_case : TestCase) {
     
   }
-  static method ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double&) {
+  static method ref_sum : double ($x_in1 : double, $x_in2 : double, $x_out : double*) {
     $$x_out = $x_in1 + $x_in2;
   }
   
-  static method ref_sum_complex : double ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d&) {
+  static method ref_sum_complex : double ($x_in1 : TestCase::Complex_2d, $x_in2 : TestCase::Complex_2d, $x_out : TestCase::Complex_2d*) {
     $x_out->{re} = $x_in1->{re} + $x_in2->{re};
     $x_out->{im} = $x_in1->{im} + $x_in2->{im};
   }

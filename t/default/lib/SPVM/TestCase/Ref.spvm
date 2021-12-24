@@ -175,7 +175,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_byte : void ($x_in1 : TestCase::Point_3b, $x_in2 : TestCase::Point_3b, $x_out : TestCase::Point_3b&) {
+  static method pass_value_ref_byte : void ($x_in1 : TestCase::Point_3b, $x_in2 : TestCase::Point_3b, $x_out : TestCase::Point_3b*) {
     $x_out->{x} = (byte)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (byte)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (byte)($x_in1->{z} + $x_in2->{z});
@@ -253,7 +253,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_short : void ($x_in1 : TestCase::Point_3s, $x_in2 : TestCase::Point_3s, $x_out : TestCase::Point_3s&) {
+  static method pass_value_ref_short : void ($x_in1 : TestCase::Point_3s, $x_in2 : TestCase::Point_3s, $x_out : TestCase::Point_3s*) {
     $x_out->{x} = (short)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (short)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (short)($x_in1->{z} + $x_in2->{z});
@@ -348,7 +348,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_int : void ($x_in1 : TestCase::Point_3i, $x_in2 : TestCase::Point_3i, $x_out : TestCase::Point_3i&) {
+  static method pass_value_ref_int : void ($x_in1 : TestCase::Point_3i, $x_in2 : TestCase::Point_3i, $x_out : TestCase::Point_3i*) {
     $x_out->{x} = (int)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (int)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (int)($x_in1->{z} + $x_in2->{z});
@@ -426,7 +426,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_long : void ($x_in1 : TestCase::Point_3l, $x_in2 : TestCase::Point_3l, $x_out : TestCase::Point_3l&) {
+  static method pass_value_ref_long : void ($x_in1 : TestCase::Point_3l, $x_in2 : TestCase::Point_3l, $x_out : TestCase::Point_3l*) {
     $x_out->{x} = (long)($x_in1->{x} + $x_in2->{x});
     $x_out->{y} = (long)($x_in1->{y} + $x_in2->{y});
     $x_out->{z} = (long)($x_in1->{z} + $x_in2->{z});
@@ -504,7 +504,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_float : void ($x_in1 : TestCase::Point_3f, $x_in2 : TestCase::Point_3f, $x_out : TestCase::Point_3f&) {
+  static method pass_value_ref_float : void ($x_in1 : TestCase::Point_3f, $x_in2 : TestCase::Point_3f, $x_out : TestCase::Point_3f*) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};
@@ -565,7 +565,7 @@ class TestCase::Ref {
     return 0;
   }
   
-  static method pass_value_ref_double : void ($x_in1 : TestCase::Point_3d, $x_in2 : TestCase::Point_3d, $x_out : TestCase::Point_3d&) {
+  static method pass_value_ref_double : void ($x_in1 : TestCase::Point_3d, $x_in2 : TestCase::Point_3d, $x_out : TestCase::Point_3d*) {
     $x_out->{x} = $x_in1->{x} + $x_in2->{x};
     $x_out->{y} = $x_in1->{y} + $x_in2->{y};
     $x_out->{z} = $x_in1->{z} + $x_in2->{z};

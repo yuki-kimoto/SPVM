@@ -1,4 +1,4 @@
 class Unicode : precompile {
-  native static method uchar : int ($str : string, $offset_ref : int&);
+  native static method uchar : int ($str : string, $offset_ref : int*);
   native static method uchar_to_utf8 : string ($uchar : int);
 }
