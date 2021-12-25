@@ -3969,10 +3969,13 @@ DESTROY(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   if (SvOK(sv_env)) {
     SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-    SPVM_COMPILER* compiler = env->compiler;
-    
     SPVM_API_free_env(env);
   }
+
+  SV** sv_compiler_ptr = hv_fetch(hv_self, "compiler", strlen("compiler"), 0);
+  SV* sv_compiler = sv_compiler_ptr ? *sv_compiler_ptr : &PL_sv_undef;
+  SPVM_COMPILER* compiler = INT2PTR(SPVM_COMPILER*, SvIV(SvRV(sv_compiler)));
+  SPVM_COMPILER_free(compiler);
 }
 
 MODULE = SPVM::Builder::CC		PACKAGE = SPVM::Builder::CC
