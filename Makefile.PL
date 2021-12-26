@@ -53,8 +53,7 @@ if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
 my $inc = '-Ilib/SPVM/Builder/include';
 
 # Source files
-my @csource_files = qw(
-  SPVM.c
+my @spvm_csource_files = qw(
   lib/SPVM/Builder/src/spvm_allow.c
   lib/SPVM/Builder/src/spvm_api.c
   lib/SPVM/Builder/src/spvm_array_field_access.c
@@ -94,6 +93,11 @@ my @csource_files = qw(
   lib/SPVM/Builder/src/spvm_yacc.c
   lib/SPVM/Builder/src/spvm_yacc_util.c
 );
+my @csource_files = ('SPVM.c', @spvm_csource_files);
+
+# Header files(This is only used to resolve dependencies)
+my @spvm_header_files = glob 'lib/SPVM/Builder/include/*.h';
+my @header_files = ('ppport.h', @spvm_header_files);
 
 WriteMakefile(
     NAME              => 'SPVM',
@@ -106,6 +110,7 @@ WriteMakefile(
     CCFLAGS => $ccflags,
     OPTIMIZE => $optimize,
     C => [@csource_files],
+    H => [@header_files],
     OBJECT            => '$(O_FILES)', # link all the C files too
     INC => $inc,
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'},
