@@ -637,7 +637,7 @@ Get and get resouce module names.
 
 At runtime, each modules' native "include" directory is added before C<include_dirs>, and "lib" directory is added before C<lib_dirs>.
 
-E<Examples:>
+B<Examples:>
 
   $config->resources(['SPVM::Resouce::Zlib::V1_15']);
   
