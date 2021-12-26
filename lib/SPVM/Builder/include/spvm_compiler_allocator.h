@@ -17,9 +17,7 @@ struct spvm_compiler_allocator {
   // Constant pools
   SPVM_LIST* constant_pools;
   
-  void** memory_blocks;
-  
-  int32_t tmp_blocks_count;
+  int32_t tmp_blocks_count; 
 };
 
 void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size);

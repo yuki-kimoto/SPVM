@@ -8,6 +8,7 @@ use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 use Getopt::Long 'GetOptions';
+use File::Find 'find';
 
 use SPVM::Builder::Util;
 
@@ -131,16 +132,13 @@ WriteMakefile(
     },
 );
 
-# Create precompile test
-my $create_precompile_test_cmd = 'perl t/copy_default_to_precompile.pl';
-system($create_precompile_test_cmd) == 0
-  or die "Can't execute $create_precompile_test_cmd: $!";
-
 # Add Build shared library make rule
 sub MY::postamble {
-
+  
+  # The content of Makefile
   my $make_rule = '';
   
+  # Compile native and precompile codes of standard modules
   unless (grep { $_ eq '-DSPVM_DONT_COMPILE_CORE_MODULES' } @defines) {
     # Native compile make rule
     $make_rule .= SPVM::Builder::Util::create_make_rule_native('Fn');
@@ -163,6 +161,24 @@ sub MY::postamble {
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Unicode');
     $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Regex');
   }
+  
+  # Create precompile tests
+  my @test_files;
+  find(
+    sub {
+      if (-f $File::Find::name) {
+        my $rel_path = $File::Find::name;
+        $rel_path =~ s|^\Q$FindBin::Bin/||;
+        if ($rel_path =~ /(\.t|\.pm|\.spvm|\.c|\.cpp|\.h)$/) {
+          push @test_files, $rel_path;
+        }
+      }
+    },
+    "$FindBin::Bin/t/default"
+  );
+  my $test_files_str = join(' ', @test_files);
+  $make_rule .= "dynamic :: $test_files_str\n";
+  $make_rule .= "\tperl t/copy_default_to_precompile.pl\n";
   
   return $make_rule;
 }
