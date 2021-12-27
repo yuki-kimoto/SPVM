@@ -6,7 +6,7 @@ use File::Find 'find';
 
 use Test::More 'no_plan';
 
-# Check that SPVM.xs, SPVM c source codes, and headers contain calloc only one in spvm_compiler_allocator.c
+# Memory allocation static analysys
 {
   my $builder_dir = "$FindBin::Bin/../lib/SPVM/Builder";
   my $xs_file = "$FindBin::Bin/../SPVM.xs";
@@ -31,24 +31,95 @@ use Test::More 'no_plan';
   # Check if c source files exist
   ok(grep { /\.c$/ } @check_files);
   
-  my $alloc_counts = 0;
-  my $calloc_counts_in_compiler_allocator_source;
-  for my $check_file (@check_files) {
-    open my $check_fh, '<', $check_file
-      or die "Can't open file \"$check_file\": $!";
-    
-    my $check_content = do { local $/; <$check_fh> };
-    my $re = qr/\b(calloc|alloc|malloc)\(/;
-    my $match_count;
-    if ($check_file =~ /spvm_compiler_allocator\.c$/) {
-      $match_count = $check_content =~ /$re/g;
-      $calloc_counts_in_compiler_allocator_source = 1;
+  # Check that SPVM.xs, SPVM c source codes, and headers contain calloc only one in spvm_compiler_allocator.c
+  {
+    my $alloc_counts = 0;
+    my $calloc_counts_in_compiler_allocator_source;
+    for my $check_file (@check_files) {
+      open my $check_fh, '<', $check_file
+        or die "Can't open file \"$check_file\": $!";
+      
+      my $check_content = do { local $/; <$check_fh> };
+      my $re = qr/\b(calloc|alloc|malloc)\(/;
+      my $match_count;
+      if ($check_file =~ /spvm_compiler_allocator\.c$/) {
+        $match_count = $check_content =~ /$re/g;
+        $calloc_counts_in_compiler_allocator_source = 1;
+      }
+      else {
+        $match_count = $check_content =~ /$re/g;
+      }
+      $alloc_counts += $match_count;
     }
-    else {
-      $match_count = $check_content =~ /$re/g;
-    }
-    $alloc_counts += $match_count;
+    is($alloc_counts, 1);
+    ok($calloc_counts_in_compiler_allocator_source);
   }
-  is($alloc_counts, 1);
-  ok($calloc_counts_in_compiler_allocator_source);
+  
+  # SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed is only used to allocate the compiler and allocator
+  {
+    my $count = 0;
+    my $compiler_contains_only_one;
+    my $allocator_contains_only_one;
+    for my $check_file (@check_files) {
+      open my $check_fh, '<', $check_file
+        or die "Can't open file \"$check_file\": $!";
+      
+      my $check_content = do { local $/; <$check_fh> };
+      my $re = qr/[^d]\s+SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed/;
+      my $match_count;
+      if ($check_file =~ /spvm_compiler\.c$/) {
+        $match_count = $check_content =~ /$re/g;
+        if ($match_count == 1) {
+          $compiler_contains_only_one = 1;
+        }
+      }
+      elsif ($check_file =~ /spvm_compiler_allocator\.c$/) {
+        $match_count = $check_content =~ /$re/g;
+        if ($match_count == 1) {
+          $allocator_contains_only_one = 1;
+        }
+      }
+      else {
+        $match_count = $check_content =~ /$re/g;
+      }
+      $count += $match_count;
+    }
+    is($count, 2);
+    ok($compiler_contains_only_one);
+    ok($allocator_contains_only_one);
+  }
+
+  # PVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed is only used to allocate the compiler and allocator
+  {
+    my $count = 0;
+    my $compiler_contains_only_one;
+    my $allocator_contains_only_one;
+    for my $check_file (@check_files) {
+      open my $check_fh, '<', $check_file
+        or die "Can't open file \"$check_file\": $!";
+      
+      my $check_content = do { local $/; <$check_fh> };
+      my $re = qr/[^\*]\s+SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed/;
+      my $match_count;
+      if ($check_file =~ /spvm_compiler\.c$/) {
+        $match_count = $check_content =~ /$re/g;
+        if ($match_count == 1) {
+          $compiler_contains_only_one = 1;
+        }
+      }
+      elsif ($check_file =~ /spvm_compiler_allocator\.c$/) {
+        $match_count = $check_content =~ /$re/g;
+        if ($match_count == 1) {
+          $allocator_contains_only_one = 1;
+        }
+      }
+      else {
+        $match_count = $check_content =~ /$re/g;
+      }
+      $count += $match_count;
+    }
+    is($count, 2);
+    ok($compiler_contains_only_one);
+    ok($allocator_contains_only_one);
+  }
 }
