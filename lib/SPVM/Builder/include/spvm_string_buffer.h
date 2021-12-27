@@ -4,6 +4,7 @@
 #include "spvm_typedecl.h"
 
 struct spvm_string_buffer {
+  SPVM_COMPILER* compiler;
   char* buffer;
   int32_t capacity;
   int32_t length;

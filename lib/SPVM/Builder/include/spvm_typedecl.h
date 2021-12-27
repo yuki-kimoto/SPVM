@@ -4,8 +4,15 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#include "spvm_list.h"
-#include "spvm_hash.h"
+// spvm_hash.h
+struct spvm_hash;
+typedef struct spvm_hash SPVM_HASH;
+struct spvm_hash_entry;
+typedef struct spvm_hash_entry SPVM_HASH_ENTRY;
+
+// spvm_list.h
+struct spvm_list;
+typedef struct spvm_list SPVM_LIST;
 
 // spvm_allow.h
 struct spvm_allow;

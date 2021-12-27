@@ -1,13 +1,10 @@
 #ifndef SPVM_LIST_H
 #define SPVM_LIST_H
 
-#include <stdint.h>
-#include <stddef.h>
-
-struct spvm_list;
-typedef struct spvm_list SPVM_LIST;
+#include "spvm_typedecl.h"
 
 struct spvm_list {
+  SPVM_COMPILER* compiler;
   void** values;
   int32_t length;
   int32_t capacity;
