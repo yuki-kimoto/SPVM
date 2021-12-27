@@ -4,13 +4,14 @@
 
 #include "spvm_hash.h"
 #include "spvm_compiler.h"
+#include "spvm_compiler_allocator.h"
 
 SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity) {
   
   assert(table_capacity >= 0);
 
   // Create hash
-  SPVM_HASH* hash = calloc(1, sizeof(SPVM_HASH));
+  SPVM_HASH* hash = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_HASH));
 
   // Default table capacity
   if (table_capacity == 0) {
@@ -21,18 +22,20 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity) {
   }
   
   // Initialize table
-  hash->table = calloc(hash->table_capacity, sizeof(int32_t));
+  hash->table = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, hash->table_capacity * sizeof(int32_t));
   memset(hash->table, -1, hash->table_capacity * sizeof(int32_t));
   
   // Initialize entries
   hash->entries_capacity = 1;
-  hash->entries =  calloc(hash->entries_capacity, sizeof(SPVM_HASH_ENTRY));
+  hash->entries =  SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
   hash->entries_length = 0;
   
   // Initialize key buffer
   hash->key_buffer_capacity = 1;
-  hash->key_buffer = calloc(1, hash->key_buffer_capacity);
+  hash->key_buffer = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, hash->key_buffer_capacity);
   hash->key_buffer_length = 0;
+
+  hash->compiler = compiler;
   
   return hash;
 }
@@ -103,16 +106,20 @@ void* SPVM_HASH_fetch_with_exists(SPVM_HASH* hash, const char* key, int32_t leng
 }
 
 void SPVM_HASH_free(SPVM_HASH* hash) {
+
+  SPVM_COMPILER* compiler = hash->compiler;
   
   assert(hash);
   
-  free(hash->table);
-  free(hash->entries);
-  free(hash->key_buffer);
-  free(hash);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->table);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->entries);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->key_buffer);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash);
 }
 
 void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
+
+  SPVM_COMPILER* compiler = hash->compiler;
   
   assert(hash);
   
@@ -125,9 +132,9 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
   if (entries_length >= entries_capacity) {
     int32_t new_entries_capacity = entries_capacity * 2;
     
-    SPVM_HASH_ENTRY* new_entries = calloc(new_entries_capacity, sizeof(SPVM_HASH_ENTRY));
+    SPVM_HASH_ENTRY* new_entries = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
-    free(hash->entries);
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->entries);
     hash->entries = new_entries;
     
     hash->entries_capacity = new_entries_capacity;
@@ -136,6 +143,8 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
 
 void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
   
+  SPVM_COMPILER* compiler = hash->compiler;
+
   assert(hash);
   
   int32_t key_buffer_length = hash->key_buffer_length;
@@ -147,9 +156,9 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
   if (key_buffer_length + length + (int32_t)sizeof(int32_t) >= key_buffer_capacity) {
     int32_t new_key_buffer_capacity = (key_buffer_length + length + sizeof(int32_t)) * 2;
     
-    char* new_key_buffer = calloc(1, new_key_buffer_capacity);
+    char* new_key_buffer = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_key_buffer_capacity);
     memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
-    free(hash->key_buffer);
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->key_buffer);
     hash->key_buffer = new_key_buffer;
 
     hash->key_buffer_capacity = new_key_buffer_capacity;
@@ -210,9 +219,9 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   }
   
   // Replace hash fields
-  free(hash->table);
-  free(hash->entries);
-  free(hash->key_buffer);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->table);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->entries);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, hash->key_buffer);
   hash->entries_length = new_hash->entries_length;
   hash->table_capacity = new_hash->table_capacity;
   hash->entries_capacity = new_hash->entries_capacity;
@@ -223,7 +232,7 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   hash->key_buffer_length = new_hash->key_buffer_length;
   hash->key_buffer = new_hash->key_buffer;
   
-  free(new_hash);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, new_hash);
 }
 
 void SPVM_HASH_insert_norehash(SPVM_HASH* hash, const char* key, int32_t length, void* value) {
