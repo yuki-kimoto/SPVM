@@ -11,6 +11,7 @@
 #include "spvm_hash.h"
 
 #include "spvm_compiler.h"
+#include "spvm_compiler_allocator.h"
 #include "spvm_op.h"
 
 #include "spvm_opcode_array.h"
@@ -261,7 +262,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_bool_object_value,
   };
   
-  SPVM_ENV* env = calloc(sizeof(env_init), 1);
+  SPVM_ENV* env = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(env_init));
   if (env == NULL) {
     return NULL;
   }
