@@ -105,7 +105,7 @@ const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler,
 
 SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new() {
   
-  SPVM_COMPILER_ALLOCATOR* allocator = calloc(1, sizeof(SPVM_COMPILER_ALLOCATOR));
+  SPVM_COMPILER_ALLOCATOR* allocator = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_COMPILER_ALLOCATOR));
 
   return allocator;
 }
