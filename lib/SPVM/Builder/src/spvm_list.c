@@ -10,110 +10,110 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity) {
   
   assert(capacity >= 0);
   
-  SPVM_LIST* array = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_LIST));
+  SPVM_LIST* list = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_LIST));
   
-  array->length = 0;
+  list->length = 0;
   
   if (capacity == 0) {
-    array->capacity = 1;
+    list->capacity = 1;
   }
   else {
-    array->capacity = capacity;
+    list->capacity = capacity;
   }
   
-  void** values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, array->capacity * sizeof(void*));
+  void** values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, list->capacity * sizeof(void*));
   
-  array->values = values;
+  list->values = values;
   
-  array->compiler = compiler;
+  list->compiler = compiler;
   
-  return array;
+  return list;
 }
 
-void SPVM_LIST_maybe_extend(SPVM_LIST* array) {
+void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
   
-  assert(array);
+  assert(list);
   
-  SPVM_COMPILER* compiler = array->compiler;
+  SPVM_COMPILER* compiler = list->compiler;
   
-  int32_t length = array->length;
-  int32_t capacity = array->capacity;
+  int32_t length = list->length;
+  int32_t capacity = list->capacity;
   
   if (length >= capacity) {
     int32_t new_capacity = capacity * 2;
     
     void** new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_capacity * sizeof(void*));
-    memcpy(new_values, array->values, capacity * sizeof(void*));
-    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, array->values);
-    array->values = new_values;
+    memcpy(new_values, list->values, capacity * sizeof(void*));
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
+    list->values = new_values;
     
-    array->capacity = new_capacity;
+    list->capacity = new_capacity;
   }
 }
 
-void SPVM_LIST_free(SPVM_LIST* array) {
+void SPVM_LIST_free(SPVM_LIST* list) {
 
-  SPVM_COMPILER* compiler = array->compiler;
+  SPVM_COMPILER* compiler = list->compiler;
 
-  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, array->values);
-  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, array);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list);
 }
 
-void SPVM_LIST_push(SPVM_LIST* array, void* value) {
+void SPVM_LIST_push(SPVM_LIST* list, void* value) {
   
-  SPVM_LIST_maybe_extend(array);
+  SPVM_LIST_maybe_extend(list);
   
-  int32_t length = array->length;
+  int32_t length = list->length;
   
-  *(void**)&array->values[length] = value;
-  array->length++;
+  *(void**)&list->values[length] = value;
+  list->length++;
 }
 
-void* SPVM_LIST_fetch(SPVM_LIST* array, int32_t index) {
-  assert(array);
+void* SPVM_LIST_fetch(SPVM_LIST* list, int32_t index) {
+  assert(list);
   assert(index >= 0);
-  assert(index < array->length);
+  assert(index < list->length);
   
   
-  return *(void**)&array->values[index];
+  return *(void**)&list->values[index];
 }
 
-void SPVM_LIST_store(SPVM_LIST* array, int32_t index, void* value) {
+void SPVM_LIST_store(SPVM_LIST* list, int32_t index, void* value) {
   
-  assert(array);
+  assert(list);
   assert(index >= 0);
-  assert(index < array->length);
+  assert(index < list->length);
   
-  *(void**)&array->values[index] = value;
+  *(void**)&list->values[index] = value;
 }
 
-void* SPVM_LIST_pop(SPVM_LIST* array) {
+void* SPVM_LIST_pop(SPVM_LIST* list) {
   
-  assert(array->length >= 0);
+  assert(list->length >= 0);
   
-  if (array->length == 0) {
+  if (list->length == 0) {
     return NULL;
   }
   else {
-    array->length--;
-    return *(void**)&array->values[array->length];
+    list->length--;
+    return *(void**)&list->values[list->length];
   }
 }
 
-void* SPVM_LIST_shift(SPVM_LIST* array) {
+void* SPVM_LIST_shift(SPVM_LIST* list) {
   
-  assert(array->length >= 0);
+  assert(list->length >= 0);
   
-  if (array->length == 0) {
+  if (list->length == 0) {
     return NULL;
   }
   else {
-    void* return_value = array->values[0];
-    for (int32_t i = 0; i < array->length - 1; i++) {
-      array->values[i] = array->values[i + 1];
+    void* return_value = list->values[0];
+    for (int32_t i = 0; i < list->length - 1; i++) {
+      list->values[i] = list->values[i + 1];
     }
 
-    array->length--;
+    list->length--;
     return return_value;
   }
 }
