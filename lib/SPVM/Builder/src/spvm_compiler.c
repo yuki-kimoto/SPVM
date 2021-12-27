@@ -610,5 +610,5 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   // Free allocator
   SPVM_COMPILER_ALLOCATOR_free(compiler);
   
-  free(compiler);
+  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(compiler);
 }
