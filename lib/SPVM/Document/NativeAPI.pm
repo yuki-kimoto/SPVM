@@ -1602,9 +1602,9 @@ If block is not NULL, free the memory and memory blocks count(memory_blocks_coun
 
   int32_t (*get_memory_blocks_count)(SPVM_ENV* env);
 
-Returns the current number of memory blocks.
+Get the all count of memory blocks created by the SPVM compiler and runtime.
 
-The memory block is increased by 1 when an object is created, when the alloc_memory_block_zero function is called, and when a back reference is added by the weaken function.
+For examples, memory blocks are created when an object is created, when the alloc_memory_block_zero function is called, and when a back reference is added by the weaken function in runtime.
 
 =head2 get_type_name_raw
 
@@ -1646,7 +1646,7 @@ Release the execution environment.
 
   void* memory_blocks_count;
 
-Memory blocks count. This is used internally.
+This is no more used because L<"get_memory_blocks_count"> return all memory block created by SPVM compiler and runtime.
 
 =head2 get_chars
 

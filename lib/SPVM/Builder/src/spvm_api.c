@@ -5387,8 +5387,10 @@ SPVM_OBJECT* SPVM_API_concat(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* s
 
 int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env) {
   (void)env;
+
+  SPVM_COMPILER* compiler = env->compiler;
   
-  return (int32_t)(intptr_t)env->memory_blocks_count;
+  return (int32_t)(intptr_t)compiler->allocator->memory_blocks_count;
 }
 
 void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
@@ -6654,18 +6656,9 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
   
   void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, (size_t)byte_size);
   
-  if (block) {
-    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
-    memory_blocks_count++;
-    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
-  
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
-  fprintf(stderr, "[ALLOC_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
+  fprintf(stderr, "[ALLOC_MEMORY %p %d]\n", block, (int32_t)(intptr_t)compiler->allocator->memory_blocks_count);
 #endif
-  }
-  else {
-    
-  }
 
   return block;
 }
@@ -6676,12 +6669,8 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
   SPVM_COMPILER* compiler = env->compiler;
 
   if (block) {
-    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
-    memory_blocks_count--;
-    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
-    
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
-    fprintf(stderr, "[FREE_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
+    fprintf(stderr, "[FREE_MEMORY %p %d]\n", block, (int32_t)(intptr_t)compiler->allocator->memory_blocks_count);
 #endif
     SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, block);
   }
