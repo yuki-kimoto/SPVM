@@ -14,11 +14,12 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int3
   (void)compiler;
   
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
-  
+
   void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(byte_size);
-  
+
+  assert(allocator);
   allocator->tmp_blocks_count++;
-  
+
   return block;
 }
 
@@ -77,10 +78,17 @@ const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler,
   return message;
 }
 
-SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
-  (void)compiler;
+SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new() {
   
   SPVM_COMPILER_ALLOCATOR* allocator = calloc(1, sizeof(SPVM_COMPILER_ALLOCATOR));
+
+  return allocator;
+}
+
+void SPVM_COMPILER_ALLOCATOR_init(SPVM_COMPILER* compiler) {
+  (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   // Objects
   allocator->blocks = SPVM_LIST_new(compiler, 0);
@@ -90,8 +98,6 @@ SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
   
   // Hashes
   allocator->hashes = SPVM_LIST_new(compiler, 8);
-
-  return allocator;
 }
 
 void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t byte_size) {

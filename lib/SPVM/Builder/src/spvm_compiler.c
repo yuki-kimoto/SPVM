@@ -33,7 +33,9 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
   
   // Allocator
-  compiler->allocator = SPVM_COMPILER_ALLOCATOR_new(compiler);
+  SPVM_COMPILER_ALLOCATOR* allocator = SPVM_COMPILER_ALLOCATOR_new();
+  compiler->allocator = allocator;
+  SPVM_COMPILER_ALLOCATOR_init(compiler);
 
   compiler->bufptr = "";
 

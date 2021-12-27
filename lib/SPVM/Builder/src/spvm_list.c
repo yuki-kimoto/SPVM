@@ -4,12 +4,13 @@
 
 #include "spvm_list.h"
 #include "spvm_compiler.h"
+#include "spvm_compiler_allocator.h"
 
 SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity) {
   
   assert(capacity >= 0);
   
-  SPVM_LIST* array = calloc(1, sizeof(SPVM_LIST));
+  SPVM_LIST* array = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_LIST));
   
   array->length = 0;
   
@@ -20,9 +21,11 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity) {
     array->capacity = capacity;
   }
   
-  void** values = calloc(array->capacity, sizeof(void*));
+  void** values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, array->capacity * sizeof(void*));
   
   array->values = values;
+  
+  array->compiler = compiler;
   
   return array;
 }
@@ -31,15 +34,17 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* array) {
   
   assert(array);
   
+  SPVM_COMPILER* compiler = array->compiler;
+  
   int32_t length = array->length;
   int32_t capacity = array->capacity;
   
   if (length >= capacity) {
     int32_t new_capacity = capacity * 2;
     
-    void** new_values = calloc(new_capacity, sizeof(void*));
+    void** new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_capacity * sizeof(void*));
     memcpy(new_values, array->values, capacity * sizeof(void*));
-    free(array->values);
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, array->values);
     array->values = new_values;
     
     array->capacity = new_capacity;
@@ -47,9 +52,11 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* array) {
 }
 
 void SPVM_LIST_free(SPVM_LIST* array) {
-  
-  free(array->values);
-  free(array);
+
+  SPVM_COMPILER* compiler = array->compiler;
+
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, array->values);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, array);
 }
 
 void SPVM_LIST_push(SPVM_LIST* array, void* value) {

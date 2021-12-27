@@ -23,7 +23,8 @@ struct spvm_compiler_allocator {
 void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size);
 void SPVM_COMPILER_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block);
 
-SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler);
+SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new();
+void SPVM_COMPILER_ALLOCATOR_init(SPVM_COMPILER* compiler);
 
 SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t capacity);
 SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t capacity);
