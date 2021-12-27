@@ -54,6 +54,30 @@ use Test::More 'no_plan';
     is($alloc_counts, 1);
     ok($calloc_counts_in_compiler_allocator_source);
   }
+
+  # Check that SPVM.xs, SPVM c source codes, and headers contain free only one in spvm_compiler_allocator.c
+  {
+    my $alloc_counts = 0;
+    my $calloc_counts_in_compiler_allocator_source;
+    for my $check_file (@check_files) {
+      open my $check_fh, '<', $check_file
+        or die "Can't open file \"$check_file\": $!";
+      
+      my $check_content = do { local $/; <$check_fh> };
+      my $re = qr/\bfree\(/;
+      my $match_count = 0;
+      if ($check_file =~ /spvm_compiler_allocator\.c$/) {
+        $match_count++ while $check_content =~ /$re/g;
+        $calloc_counts_in_compiler_allocator_source = 1;
+      }
+      else {
+        $match_count++ while $check_content =~ /$re/g;
+      }
+      $alloc_counts += $match_count;
+    }
+    is($alloc_counts, 1);
+    ok($calloc_counts_in_compiler_allocator_source);
+  }
   
   # SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed is only used to allocate the compiler and allocator
   {
