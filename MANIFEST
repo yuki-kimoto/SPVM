@@ -395,7 +395,6 @@ lib/SPVM/Builder/include/spvm_toke.h
 lib/SPVM/Builder/include/spvm_type.h
 lib/SPVM/Builder/include/spvm_typedecl.h
 lib/SPVM/Builder/include/spvm_use.h
-lib/SPVM/Builder/include/spvm_util_allocator.h
 lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
@@ -434,7 +433,6 @@ lib/SPVM/Builder/src/spvm_switch_info.c
 lib/SPVM/Builder/src/spvm_toke.c
 lib/SPVM/Builder/src/spvm_type.c
 lib/SPVM/Builder/src/spvm_use.c
-lib/SPVM/Builder/src/spvm_util_allocator.c
 lib/SPVM/Builder/src/spvm_var.c
 lib/SPVM/Builder/src/spvm_yacc.c
 lib/SPVM/Builder/src/spvm_yacc_util.c
@@ -570,6 +568,9 @@ solo/SPVM/TestCase/Weaken.spvm
 solo/SPVM/TestCase/Weaken2.spvm
 solo/spvm_boot.c
 SPVM.xs
+t/builder_config.t
+t/builder_config/libpng.def
+t/builder_config/zlib.def
 t/copy_default_to_precompile.pl
 t/default/000_use_spvm.t
 t/default/001_use_empty_class.t
@@ -724,6 +725,8 @@ t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndef.spvm
 t/default/lib/SPVM/TestCase/CompileError/TypeCantBeDetectedUndefDefault.spvm
 t/default/lib/SPVM/TestCase/CompileError/UnaryMinus/NotNumeric.spvm
 t/default/lib/SPVM/TestCase/CompileError/UnaryPlus/NotNumeric.spvm
+t/default/lib/SPVM/TestCase/CompileError/Use/AliasDuplication.spvm
+t/default/lib/SPVM/TestCase/CompileError/Use/AliasStartsLowerCase.spvm
 t/default/lib/SPVM/TestCase/CompileError/Use/ImportMethodNotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/Value/Fields17.spvm
 t/default/lib/SPVM/TestCase/CompileError/Value/FieldsZero.spvm

@@ -6,7 +6,6 @@
 
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_util_allocator.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"
 

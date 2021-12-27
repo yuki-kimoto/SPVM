@@ -89,7 +89,6 @@ my @spvm_csource_files = qw(
   lib/SPVM/Builder/src/spvm_toke.c
   lib/SPVM/Builder/src/spvm_type.c
   lib/SPVM/Builder/src/spvm_use.c
-  lib/SPVM/Builder/src/spvm_util_allocator.c
   lib/SPVM/Builder/src/spvm_var.c
   lib/SPVM/Builder/src/spvm_yacc.c
   lib/SPVM/Builder/src/spvm_yacc_util.c

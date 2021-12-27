@@ -7,7 +7,6 @@
 #include "spvm_compiler.h"
 #include "spvm_yacc_util.h"
 #include "spvm_compiler_allocator.h"
-#include "spvm_util_allocator.h"
 #include "spvm_yacc.h"
 #include "spvm_constant.h"
 #include "spvm_var.h"

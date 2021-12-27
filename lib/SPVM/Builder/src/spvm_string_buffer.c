@@ -5,7 +5,6 @@
 #include <inttypes.h>
 
 #include "spvm_string_buffer.h"
-#include "spvm_util_allocator.h"
 #include "spvm_compiler.h"
 #include "spvm_compiler_allocator.h"
 

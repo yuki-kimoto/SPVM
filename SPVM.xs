@@ -18,7 +18,6 @@
 #include "spvm_compiler.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
-#include "spvm_util_allocator.h"
 #include "spvm_op.h"
 #include "spvm_method.h"
 #include "spvm_class.h"

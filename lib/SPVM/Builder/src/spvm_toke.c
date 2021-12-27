@@ -12,7 +12,6 @@
 #include "spvm_yacc.h"
 #include "spvm_op.h"
 #include "spvm_compiler_allocator.h"
-#include "spvm_util_allocator.h"
 #include "spvm_constant.h"
 #include "spvm_var.h"
 #include "spvm_list.h"
