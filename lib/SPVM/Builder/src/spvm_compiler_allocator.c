@@ -199,5 +199,5 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   }
   SPVM_LIST_free(allocator->hashes);
 
-  free(allocator);
+  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(allocator);
 }
