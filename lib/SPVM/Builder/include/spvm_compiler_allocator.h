@@ -14,9 +14,6 @@ struct spvm_compiler_allocator {
   // Hashes
   SPVM_LIST* hashes;
   
-  // Constant pools
-  SPVM_LIST* constant_pools;
-  
   // This is all memory blocks allocated by the SPVM compiler and runtime.
   int32_t memory_blocks_count;
 };
