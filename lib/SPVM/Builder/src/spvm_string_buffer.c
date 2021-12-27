@@ -7,19 +7,21 @@
 #include "spvm_string_buffer.h"
 #include "spvm_util_allocator.h"
 #include "spvm_compiler.h"
+#include "spvm_compiler_allocator.h"
 
 SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_COMPILER* compiler, int32_t capacity) {
-  
   
   if (capacity == 0) {
     capacity = 16;
   }
   
-  SPVM_STRING_BUFFER* string_buffer = (SPVM_STRING_BUFFER*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_STRING_BUFFER));
+  SPVM_STRING_BUFFER* string_buffer = (SPVM_STRING_BUFFER*)SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_STRING_BUFFER));
   
   string_buffer->capacity = capacity;
-  string_buffer->buffer = (char*)SPVM_UTIL_ALLOCATOR_safe_malloc_zero(capacity);
+  string_buffer->buffer = (char*)SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, capacity);
   
+  string_buffer->compiler = compiler;
+
   return string_buffer;
 }
 
@@ -29,13 +31,15 @@ char* SPVM_STRING_BUFFER_get_buffer(SPVM_STRING_BUFFER* string_buffer) {
 }
 
 void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t new_length) {
-  
+
+  SPVM_COMPILER* compiler = string_buffer->compiler;
+
   // Extend
   while (new_length > string_buffer->capacity) {
     int32_t new_capacity = string_buffer->capacity * 2;
-    char* new_buffer = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(new_capacity);
+    char* new_buffer = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_capacity);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
-    free(string_buffer->buffer);
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, string_buffer->buffer);
     string_buffer->buffer = new_buffer;
     string_buffer->capacity = new_capacity;
   }
@@ -299,8 +303,10 @@ int32_t SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double 
 }
 
 void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
+
+  SPVM_COMPILER* compiler = string_buffer->compiler;
   
-  free(string_buffer->buffer);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, string_buffer->buffer);
   
-  free(string_buffer);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, string_buffer);
 }
