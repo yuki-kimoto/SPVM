@@ -80,7 +80,7 @@ const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler,
 SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_COMPILER_ALLOCATOR* allocator = malloc(sizeof(SPVM_COMPILER_ALLOCATOR));
+  SPVM_COMPILER_ALLOCATOR* allocator = calloc(1, sizeof(SPVM_COMPILER_ALLOCATOR));
   
   // Objects
   allocator->blocks = SPVM_LIST_new(compiler, 0);
