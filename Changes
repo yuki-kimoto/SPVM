@@ -3,6 +3,8 @@ Revision history for SPVM
 0.9103  2021-12-26
         [CHANGES]
         * Fix the bug that old string buffers of the compiler isn't freed when new memory is allocated.
+        * SPVM::get_memory_blocks_count and native api's get_memory_blocks_count return
+          all count of memory blocks created by the SPVM compiler and runtime.
         [BUG FIX]
         * Fix bugs that SPVM compiler is not freed at program end.
 0.9102  2021-12-24
