@@ -10,7 +10,6 @@
 #include "spvm_op.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
-#include "spvm_util_allocator.h"
 #include "spvm_compiler_allocator.h"
 #include "spvm_yacc_util.h"
 #include "spvm_list.h"
@@ -30,7 +29,7 @@
 #include "spvm_string_buffer.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
-  SPVM_COMPILER* compiler = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(sizeof(SPVM_COMPILER));
+  SPVM_COMPILER* compiler = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_COMPILER));
   
   // Allocator
   SPVM_COMPILER_ALLOCATOR* allocator = SPVM_COMPILER_ALLOCATOR_new();

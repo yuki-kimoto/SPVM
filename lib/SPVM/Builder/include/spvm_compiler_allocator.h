@@ -20,6 +20,9 @@ struct spvm_compiler_allocator {
   int32_t tmp_blocks_count;
 };
 
+void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size);
+void SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(void* block);
+
 void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size);
 void SPVM_COMPILER_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block);
 

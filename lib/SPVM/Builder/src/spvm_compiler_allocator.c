@@ -10,12 +10,38 @@
 #include "spvm_compiler_allocator.h"
 #include "spvm_compiler.h"
 
+void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size) {
+  
+  if (byte_size < 1) {
+    fprintf(stderr, "Failed to allocate memory. Size must be more than 0(%s)\n", __FILE__);
+    abort();
+  }
+  
+  if ((size_t)byte_size > SIZE_MAX) {
+    fprintf(stderr, "Failed to allocate memory. Size is too big(%s)\n", __FILE__);
+    abort();
+  }
+  
+  void* block = calloc(1, (size_t)byte_size);
+  
+  if (block == NULL) {
+    fprintf(stderr, "Failed to allocate memory. malloc function return NULL(%s)\n", __FILE__);
+    abort();
+  }
+  
+  return block;
+}
+
+void SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(void* block) {
+  free(block);
+}
+
 void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size) {
   (void)compiler;
   
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
 
-  void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(byte_size);
+  void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(byte_size);
 
   assert(allocator);
   allocator->tmp_blocks_count++;
@@ -28,7 +54,7 @@ void SPVM_COMPILER_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block) {
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  free(block);
+  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(block);
   
   allocator->tmp_blocks_count--;
 }
@@ -105,7 +131,7 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t 
   
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  void* block = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(byte_size);
+  void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(byte_size);
   
   SPVM_LIST_push(allocator->blocks, block);
   
