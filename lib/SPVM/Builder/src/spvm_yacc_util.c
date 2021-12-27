@@ -35,14 +35,14 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message) {
     ptr++;
   }
   
-  char* token = (char*) SPVM_UTIL_ALLOCATOR_safe_malloc_zero(length + 1);
+  char* token = (char*) SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, length + 1);
   memcpy(token, compiler->befbufptr + empty_count, length);
   token[length] = '\0';
   
   int32_t char_pos = (int32_t)(compiler->befbufptr + empty_count + 1 - compiler->line_start_ptr);
   
   fprintf(stderr, "[CompileError]Unexpected token \"%s\" at %s line %d:%d\n", token, compiler->cur_file, compiler->cur_line, char_pos);
-  free(token);
+  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, token);
 }
 
 // Print token value for debug
