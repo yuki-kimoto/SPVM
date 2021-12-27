@@ -3462,13 +3462,13 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             check_ast_info->loop_block_stack_length = 0;
             
             // My stack
-            check_ast_info->my_stack = SPVM_LIST_new(0);
+            check_ast_info->my_stack = SPVM_LIST_new(compiler, 0);
             
             // Block my base stack
-            check_ast_info->block_my_base_stack = SPVM_LIST_new(0);
+            check_ast_info->block_my_base_stack = SPVM_LIST_new(compiler, 0);
             
             // Switch stack
-            check_ast_info->op_switch_stack = SPVM_LIST_new(0);
+            check_ast_info->op_switch_stack = SPVM_LIST_new(compiler, 0);
             
             // First tree traversal
             SPVM_OP_CHECKER_check_tree(compiler, method->op_block, check_ast_info);
@@ -3732,7 +3732,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             // Fix LEAVE_SCOPE
             {
               // Block stack
-              SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
+              SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler, 0);
               
               // Run OPs
               SPVM_OP* op_root = method->op_block;
@@ -3850,18 +3850,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Resolve my mem ids
           if (!(method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
             {
-              SPVM_LIST* tmp_my_stack = SPVM_LIST_new(0);
-              SPVM_LIST* no_tmp_my_stack = SPVM_LIST_new(0);
-              SPVM_LIST* block_no_tmp_my_base_stack = SPVM_LIST_new(0);
+              SPVM_LIST* tmp_my_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* no_tmp_my_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* block_no_tmp_my_base_stack = SPVM_LIST_new(compiler, 0);
               
-              SPVM_LIST* byte_mem_stack = SPVM_LIST_new(0);
-              SPVM_LIST* short_mem_stack = SPVM_LIST_new(0);
-              SPVM_LIST* int_mem_stack = SPVM_LIST_new(0);
-              SPVM_LIST* long_mem_stack = SPVM_LIST_new(0);
-              SPVM_LIST* float_mem_stack = SPVM_LIST_new(0);
-              SPVM_LIST* double_mem_stack = SPVM_LIST_new(0);
-              SPVM_LIST* object_mem_stack = SPVM_LIST_new(0);
-              SPVM_LIST* ref_mem_stack = SPVM_LIST_new(0);
+              SPVM_LIST* byte_mem_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* short_mem_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* int_mem_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* long_mem_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* float_mem_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* double_mem_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* object_mem_stack = SPVM_LIST_new(compiler, 0);
+              SPVM_LIST* ref_mem_stack = SPVM_LIST_new(compiler, 0);
 
               // Run OPs
               SPVM_OP* op_root = method->op_block;

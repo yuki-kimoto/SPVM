@@ -6,8 +6,9 @@
 
 #include "spvm_string_buffer.h"
 #include "spvm_util_allocator.h"
+#include "spvm_compiler.h"
 
-SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(int32_t capacity) {
+SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_COMPILER* compiler, int32_t capacity) {
   
   
   if (capacity == 0) {

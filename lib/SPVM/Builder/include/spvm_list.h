@@ -10,7 +10,7 @@ struct spvm_list {
   int32_t capacity;
 };
 
-SPVM_LIST* SPVM_LIST_new(int32_t capacity);
+SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity);
 void SPVM_LIST_free(SPVM_LIST* array);
 void SPVM_LIST_maybe_extend(SPVM_LIST* array);
 

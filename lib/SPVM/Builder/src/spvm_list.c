@@ -3,8 +3,9 @@
 #include <assert.h>
 
 #include "spvm_list.h"
+#include "spvm_compiler.h"
 
-SPVM_LIST* SPVM_LIST_new(int32_t capacity) {
+SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity) {
   
   assert(capacity >= 0);
   

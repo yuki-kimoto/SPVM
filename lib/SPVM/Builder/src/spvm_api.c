@@ -308,10 +308,12 @@ SPVM_OBJECT* SPVM_API_dump(SPVM_ENV* env, SPVM_OBJECT* object) {
 }
 
 SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
+
+  SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   int32_t depth = 0;
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(255);
-  SPVM_HASH* address_symtable = SPVM_HASH_new(255);
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 255);
+  SPVM_HASH* address_symtable = SPVM_HASH_new(compiler, 255);
   
   SPVM_API_dump_recursive(env, object, &depth, string_buffer, address_symtable);
   

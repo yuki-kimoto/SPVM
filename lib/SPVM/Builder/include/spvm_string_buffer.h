@@ -10,7 +10,7 @@ struct spvm_string_buffer {
   int32_t length;
 };
 
-SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(int32_t capacity);
+SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_COMPILER* compiler, int32_t capacity);
 char* SPVM_STRING_BUFFER_get_buffer(SPVM_STRING_BUFFER* string_buffer);
 void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t new_length);
 

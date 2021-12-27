@@ -23,7 +23,7 @@ struct spvm_hash_entry {
   int32_t key_index;
 };
 
-SPVM_HASH* SPVM_HASH_new(int32_t capacity);
+SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t capacity);
 
 void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value);
 void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length);

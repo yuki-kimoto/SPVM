@@ -3,8 +3,9 @@
 #include <assert.h>
 
 #include "spvm_hash.h"
+#include "spvm_compiler.h"
 
-SPVM_HASH* SPVM_HASH_new(int32_t table_capacity) {
+SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity) {
   
   assert(table_capacity >= 0);
 
@@ -189,8 +190,10 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   assert(hash);
   assert(new_table_capacity > 0);
   
+  SPVM_COMPILER* compiler = hash->compiler;
+  
   // Create new hash
-  SPVM_HASH* new_hash = SPVM_HASH_new(new_table_capacity);
+  SPVM_HASH* new_hash = SPVM_HASH_new(compiler, new_table_capacity);
   
   // Rehash
   {
