@@ -6638,6 +6638,9 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
 }
 
 void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
+
+  // Runtime
+  SPVM_COMPILER* compiler = env->compiler;
   
   assert(byte_size > 0);
 
@@ -6645,7 +6648,7 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
     return NULL;
   }
   
-  void* block = calloc(1, (size_t)byte_size);
+  void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, (size_t)byte_size);
   
   if (block) {
     int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
