@@ -107,6 +107,8 @@ SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new() {
   
   SPVM_COMPILER_ALLOCATOR* allocator = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_COMPILER_ALLOCATOR));
 
+  assert(allocator->memory_blocks_count == 0);
+
   return allocator;
 }
 
@@ -198,6 +200,9 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
     }
   }
   SPVM_LIST_free(allocator->hashes);
+  
+  // TODO: comment out
+  // assert(allocator->memory_blocks_count == 0);
 
   SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(allocator);
 }
