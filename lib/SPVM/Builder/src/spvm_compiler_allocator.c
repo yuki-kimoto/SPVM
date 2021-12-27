@@ -130,7 +130,7 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t 
   
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(byte_size);
+  void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, byte_size);
   
   SPVM_LIST_push(allocator->blocks, block);
   
@@ -171,7 +171,7 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   for (i = 0; i < allocator->blocks->length; i++) {
     void* block = SPVM_LIST_fetch(allocator->blocks, i);
     if (block != NULL) {
-      free(block);
+      SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, block);
     }
   }
   
