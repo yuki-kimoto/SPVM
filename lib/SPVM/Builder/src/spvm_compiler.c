@@ -604,11 +604,11 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   
-  // Free allocator
-  SPVM_COMPILER_ALLOCATOR_free(compiler);
-  
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
+
+  // Free allocator
+  SPVM_COMPILER_ALLOCATOR_free(compiler);
   
   free(compiler);
 }
