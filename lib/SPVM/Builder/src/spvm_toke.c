@@ -1086,7 +1086,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (*char_ptr == 'x') {
                   char_ptr++;
                   if (*char_ptr == '0' || *char_ptr == '1' || *char_ptr == '2' || *char_ptr == '3' || *char_ptr == '4' || *char_ptr == '5' || *char_ptr == '6' || *char_ptr == '7') {
-                    char* num_str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 3);
+                    int32_t memory_blocks_count = compiler->allocator->memory_blocks_count;
+                    char* num_str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, 3);
                     num_str[0] = *char_ptr;
                     char_ptr++;
                     if (
@@ -1105,6 +1106,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     else {
                       SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                     }
+                    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, num_str);
+                    assert(compiler->allocator->memory_blocks_count == memory_blocks_count);
                   }
                   else {
                     SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
