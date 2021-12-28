@@ -1489,12 +1489,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             }
             num_str[pos] = '\0';
           }
-          // Back suffix when hex floating number
+          // Back suffix such as "f" or "F" when hex floating number
           if (is_hex_floating_number && !isdigit(*(compiler->bufptr - 1))) {
             compiler->bufptr--;
             num_str[pos - 1] = '\0';
           }
-          
+
           // Constant
           SPVM_TYPE* constant_type;
           
