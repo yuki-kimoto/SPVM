@@ -1139,7 +1139,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         SPVM_COMPILER_error(compiler, "Too big unicode code point at %s line %d\n", compiler->cur_file, compiler->cur_line);
                       }
                       else {
-                        char* unicode_chars = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, unicode_chars_length + 1);
+                        int32_t memory_blocks_count = compiler->allocator->memory_blocks_count;
+                        char* unicode_chars = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, unicode_chars_length + 1);
                         memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
                         char *end;
                         int32_t unicode = (int32_t)strtoll(unicode_chars, &end, 16);
@@ -1156,6 +1157,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         else {
                           SPVM_COMPILER_error(compiler, "Invalid unicode code point at %s line %d\n", compiler->cur_file, compiler->cur_line);
                         }
+                        SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, unicode_chars);
+                        assert(compiler->allocator->memory_blocks_count == memory_blocks_count);
                       }
                     }
                     else {
