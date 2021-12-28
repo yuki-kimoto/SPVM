@@ -897,10 +897,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         int8_t next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
         
-        char* str;
+        char* str_tmp;
         int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
-          str = "";
+          str_tmp = "";
           compiler->bufptr++;
         }
         else {
@@ -1027,59 +1027,59 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           compiler->bufptr++;
           
-          str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_tmp_len + 1);
+          str_tmp = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_tmp_len + 1);
           {
             char* char_ptr = (char*)cur_token_ptr;
             while (char_ptr != compiler->bufptr - 1) {
               if (*char_ptr == '\\') {
                 char_ptr++;
                 if (*char_ptr == '0') {
-                  str[str_length] = '\0';
+                  str_tmp[str_length] = '\0';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 'a') {
-                  str[str_length] = '\a';
+                  str_tmp[str_length] = '\a';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 'f') {
-                  str[str_length] = '\f';
+                  str_tmp[str_length] = '\f';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 't') {
-                  str[str_length] = '\t';
+                  str_tmp[str_length] = '\t';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 'r') {
-                  str[str_length] = '\r';
+                  str_tmp[str_length] = '\r';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == 'n') {
-                  str[str_length] = '\n';
+                  str_tmp[str_length] = '\n';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == '\'') {
-                  str[str_length] = '\'';
+                  str_tmp[str_length] = '\'';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == '"') {
-                  str[str_length] = '\"';
+                  str_tmp[str_length] = '\"';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == '\\') {
-                  str[str_length] = '\\';
+                  str_tmp[str_length] = '\\';
                   str_length++;
                   char_ptr++;
                 }
                 else if (*char_ptr == '$') {
-                  str[str_length] = '$';
+                  str_tmp[str_length] = '$';
                   str_length++;
                   char_ptr++;
                 }
@@ -1100,7 +1100,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       char_ptr++;
                       char *end;
                       ch = (char)strtol(num_str, &end, 16);
-                      str[str_length] = ch;
+                      str_tmp[str_length] = ch;
                       str_length++;
                     }
                     else {
@@ -1150,7 +1150,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           char utf8_chars[4];
                           int32_t byte_length = SPVM_TOKE_convert_unicode_codepoint_to_utf8(unicode, (uint8_t*)utf8_chars);
                           for (int32_t byte_index = 0; byte_index < byte_length; byte_index++) {
-                            str[str_length] = utf8_chars[byte_index];
+                            str_tmp[str_length] = utf8_chars[byte_index];
                             str_length++;
                           }
                         }
@@ -1233,9 +1233,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     case '8':
                     case '9':
                     {
-                      str[str_length] = '\\';
+                      str_tmp[str_length] = '\\';
                       str_length++;
-                      str[str_length] = *char_ptr;
+                      str_tmp[str_length] = *char_ptr;
                       str_length++;
                       char_ptr++;
                       break;
@@ -1255,16 +1255,16 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   compiler->line_start_ptr = compiler->bufptr;
                 }
                 
-                str[str_length] = *char_ptr;
+                str_tmp[str_length] = *char_ptr;
                 str_length++;
                 char_ptr++;
               }
             }
           }
-          str[str_length] = '\0';
+          str_tmp[str_length] = '\0';
         }
         
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, str_length, compiler->cur_file, compiler->cur_line);
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str_tmp, str_length, compiler->cur_file, compiler->cur_line);
         
         yylvalp->opval = op_constant;
         
