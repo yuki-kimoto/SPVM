@@ -1497,8 +1497,18 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           int32_t num_str_length = strlen(num_str_tmp);
-          char* num_str = (char*)SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, num_str_length + 1);
-          memcpy(num_str, num_str_tmp, num_str_length);
+
+          // Keyword string
+          char* num_str;
+          char* found_num_str = SPVM_HASH_fetch(compiler->const_string_symtable, num_str_tmp, num_str_length);
+          if (found_num_str) {
+            num_str = found_num_str;
+          }
+          else {
+            num_str = (char*)SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, num_str_length + 1);
+            memcpy(num_str, num_str_tmp, num_str_length);
+            SPVM_HASH_insert(compiler->const_string_symtable, num_str, num_str_length, num_str);
+          }
           
           SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, num_str_tmp);
           assert(compiler->allocator->memory_blocks_count == memoyr_blocks_count);
