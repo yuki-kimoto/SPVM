@@ -898,6 +898,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         int8_t next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
         
         char* str_tmp;
+        int32_t memory_blocks_count = compiler->allocator->memory_blocks_count;
         int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
           str_tmp = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, 1);
@@ -1280,6 +1281,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, str_length, compiler->cur_file, compiler->cur_line);
         
         SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, str_tmp);
+        assert(compiler->allocator->memory_blocks_count == memory_blocks_count);
         
         yylvalp->opval = op_constant;
         
