@@ -73,8 +73,8 @@ struct spvm_compiler {
   // Module searching directories
   SPVM_LIST* module_dirs;
 
-  // OP name symtable
-  SPVM_HASH* name_symtable;
+  // Constant string symtable
+  SPVM_HASH* const_string_symtable;
 
   // Class loading stack
   SPVM_LIST* op_use_stack;

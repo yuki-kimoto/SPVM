@@ -38,7 +38,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->bufptr = "";
 
-  compiler->name_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->const_string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Parser information
   compiler->op_use_stack = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);

@@ -1664,7 +1664,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           // Keyword string
           char* keyword;
           int32_t keyword_length = (compiler->bufptr - cur_token_ptr);
-          char* found_name = SPVM_HASH_fetch(compiler->name_symtable, cur_token_ptr, keyword_length);
+          char* found_name = SPVM_HASH_fetch(compiler->const_string_symtable, cur_token_ptr, keyword_length);
           if (found_name) {
             keyword = found_name;
           }
@@ -1672,7 +1672,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             keyword = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, keyword_length + 1);
             memcpy(keyword, cur_token_ptr, keyword_length);
             keyword[keyword_length] = '\0';
-            SPVM_HASH_insert(compiler->name_symtable, keyword, keyword_length, keyword);
+            SPVM_HASH_insert(compiler->const_string_symtable, keyword, keyword_length, keyword);
           }
 
           // If following token is fat comma, keyword is manipulated as string literal
