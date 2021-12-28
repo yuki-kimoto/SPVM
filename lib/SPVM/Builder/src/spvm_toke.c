@@ -900,7 +900,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char* str_tmp;
         int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
-          str_tmp = "";
+          str_tmp = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, 1);
+          str_tmp[0] = '\0';
           compiler->bufptr++;
         }
         else {
@@ -1027,7 +1028,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           compiler->bufptr++;
           
-          str_tmp = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_tmp_len + 1);
+          str_tmp = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, str_tmp_len + 1);
           {
             char* char_ptr = (char*)cur_token_ptr;
             while (char_ptr != compiler->bufptr - 1) {
@@ -1263,8 +1264,22 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           str_tmp[str_length] = '\0';
         }
+
+        char* str;
+        // Keyword string
+        char* found_str = SPVM_HASH_fetch(compiler->const_string_symtable, str_tmp, str_length);
+        if (found_str) {
+          str = found_str;
+        }
+        else {
+          str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, str_length + 1);
+          memcpy(str, str_tmp, str_length);
+          SPVM_HASH_insert(compiler->const_string_symtable, str, str_length, str);
+        }
         
-        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str_tmp, str_length, compiler->cur_file, compiler->cur_line);
+        SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, str_length, compiler->cur_file, compiler->cur_line);
+        
+        SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, str_tmp);
         
         yylvalp->opval = op_constant;
         
