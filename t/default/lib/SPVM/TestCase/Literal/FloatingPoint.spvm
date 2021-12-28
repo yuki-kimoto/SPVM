@@ -92,6 +92,9 @@ class TestCase::Literal::FloatingPoint {
     my $all_numbers2 = 0x0.abcdep0;
     my $all_numbers3 = 0x0.ABCDEFp0;
     
+    unless ($all_numbers1 isa double) {
+      return 0;
+    }
     unless ($all_numbers1 == 0x0.123456789p0) {
       return 0;
     }
@@ -106,12 +109,18 @@ class TestCase::Literal::FloatingPoint {
     return 1;
   }
   static method hex_suffix : int () {
-    my $hex_suffix_f : float = 0x0.FFp0f;
+    my $hex_suffix_f = 0x0.FFp0f;
+    unless ($hex_suffix_f isa float) {
+      return 0;
+    }
     unless ($hex_suffix_f == 0x0.FFp0f) {
       return 0;
     }
 
-    my $hex_suffix_F : float = 0x0.FFp0F;
+    my $hex_suffix_F = 0x0.FFp0F;
+    unless ($hex_suffix_f isa float) {
+      return 0;
+    }
     unless ($hex_suffix_F == 0x0.FFp0F) {
       return 0;
     }
