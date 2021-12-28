@@ -900,8 +900,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         char* str;
         int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
-          str = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 1);
-          str[0] = '\0';
+          str = "";
           compiler->bufptr++;
         }
         else {
