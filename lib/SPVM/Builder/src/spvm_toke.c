@@ -1258,7 +1258,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         }
 
         char* str;
-        // Keyword string
+        // String Literal
         char* found_str = SPVM_HASH_fetch(compiler->const_string_symtable, str_tmp, str_length);
         if (found_str) {
           str = found_str;
