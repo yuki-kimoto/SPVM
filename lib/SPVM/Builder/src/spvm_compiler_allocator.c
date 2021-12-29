@@ -160,7 +160,8 @@ SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t c
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  SPVM_HASH* hash = SPVM_HASH_new(compiler, capacity, 0);
+  int32_t is_eternal = 1;
+  SPVM_HASH* hash = SPVM_HASH_new(compiler, capacity, is_eternal);
   
   SPVM_LIST_push(allocator->hashes, hash);
   
@@ -186,15 +187,6 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   SPVM_LIST_free(allocator->lists);
   
   // Free hashes
-  {
-    int32_t i;
-    for (i = 0; i < allocator->hashes->length; i++) {
-      SPVM_HASH* hash = SPVM_LIST_fetch(allocator->hashes, i);
-      if (hash != NULL) {
-        SPVM_HASH_free(hash);
-      }
-    }
-  }
   SPVM_LIST_free(allocator->hashes);
   
   // TODO: comment out

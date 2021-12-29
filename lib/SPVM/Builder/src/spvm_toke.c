@@ -1485,7 +1485,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
           
           // Ignore under line
-          int32_t memoyr_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+          int32_t num_str_tmp_memoyr_blocks_count = compiler->allocator->tmp_memory_blocks_count;
           char* num_str_tmp = (char*)SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, str_len + 2);
           int32_t pos = 0;
           {
@@ -1519,7 +1519,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, num_str_tmp);
-          assert(compiler->allocator->tmp_memory_blocks_count == memoyr_blocks_count);
+          assert(compiler->allocator->tmp_memory_blocks_count == num_str_tmp_memoyr_blocks_count);
 
           // Constant
           SPVM_TYPE* constant_type;
