@@ -180,6 +180,7 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
       SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, block);
     }
   }
+  SPVM_LIST_free(allocator->blocks);
   
   // Free lists
   SPVM_LIST_free(allocator->lists);
