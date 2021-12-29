@@ -10,7 +10,13 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_e
   
   assert(capacity >= 0);
   
-  SPVM_LIST* list = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_LIST));
+  SPVM_LIST* list;
+  if (is_eternal) {
+    list = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_LIST));
+  }
+  else {
+    list = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_LIST));
+  }
   
   list->length = 0;
   
@@ -21,8 +27,13 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_e
     list->capacity = capacity;
   }
   
-  void** values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, list->capacity * sizeof(void*));
-  
+  void** values;
+  if (is_eternal) {
+    values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, list->capacity * sizeof(void*));
+  }
+  else {
+    values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, list->capacity * sizeof(void*));
+  }
   list->values = values;
   
   list->compiler = compiler;
@@ -44,9 +55,17 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
   if (length >= capacity) {
     int32_t new_capacity = capacity * 2;
     
-    void** new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_capacity * sizeof(void*));
+    void** new_values;
+    if (list->is_eternal) {
+      new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, new_capacity * sizeof(void*));
+    }
+    else {
+      new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_capacity * sizeof(void*));
+    }
     memcpy(new_values, list->values, capacity * sizeof(void*));
-    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
+    if (!list->is_eternal) {
+      SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
+    }
     list->values = new_values;
     
     list->capacity = new_capacity;
@@ -56,9 +75,11 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
 void SPVM_LIST_free(SPVM_LIST* list) {
 
   SPVM_COMPILER* compiler = list->compiler;
-
-  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
-  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list);
+  
+  if (!list->is_eternal) {
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list);
+  }
 }
 
 void SPVM_LIST_push(SPVM_LIST* list, void* value) {

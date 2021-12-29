@@ -147,7 +147,8 @@ SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t c
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  SPVM_LIST* list = SPVM_LIST_new(compiler, capacity, 0);
+  int32_t is_eternal = 1;
+  SPVM_LIST* list = SPVM_LIST_new(compiler, capacity, is_eternal);
   
   SPVM_LIST_push(allocator->lists, list);
   
@@ -181,15 +182,6 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   }
   
   // Free lists
-  {
-    int32_t i;
-    for (i = 0; i < allocator->lists->length; i++) {
-      SPVM_LIST* list = SPVM_LIST_fetch(allocator->lists, i);
-      if (list != NULL) {
-        SPVM_LIST_free(list);
-      }
-    }
-  }
   SPVM_LIST_free(allocator->lists);
   
   // Free hashes
