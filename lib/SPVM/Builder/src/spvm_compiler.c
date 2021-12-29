@@ -342,7 +342,7 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   }
   compiler->tmp_added_class_names = SPVM_LIST_new(compiler, 0);
 
-  /* Parse */
+  /* Tokenize and Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (parse_error_flag) {
     return;
