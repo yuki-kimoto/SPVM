@@ -124,9 +124,6 @@ struct spvm_compiler {
   // Field ops
   SPVM_LIST* fields;
   
-  // No directory module search
-  int32_t no_directry_module_search;
-  
   char* next_double_quote_start_bufptr;
 };
 

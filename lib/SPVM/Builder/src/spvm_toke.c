@@ -203,7 +203,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               do_directry_module_search = 0;
             }
             else {
-              do_directry_module_search = !compiler->no_directry_module_search;
+              do_directry_module_search = 1;
             }
             
             if (do_directry_module_search) {
