@@ -140,6 +140,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     // '\0' means end of file, so try to read next module source
     if (ch == '\0') {
       compiler->cur_file = NULL;
+      if (compiler->cur_src && compiler->cur_src_need_free) {
+        SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, compiler->cur_src);
+      }
       compiler->cur_src = NULL;
       compiler->bufptr = NULL;
       compiler->befbufptr = NULL;
@@ -190,8 +193,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t do_directry_module_search;
 
             // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in module source symtable
+            int32_t src_need_free;
             const char* found_module_source = SPVM_HASH_fetch(compiler->embedded_module_source_symtable, class_name, strlen(class_name));
-            if (found_module_source == NULL) {
+            if (found_module_source) {
+              src_need_free = 0;
+            }
+            else {
+              src_need_free = 1;
+              
               // Search module file
               FILE* fh = NULL;
               int32_t module_dirs_length = compiler->module_dirs->length;
@@ -245,7 +254,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
-                char* src = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, file_size + 1);
+                char* src = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                   SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                   return 0;
@@ -285,6 +294,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
               compiler->cur_src = (char*)src;
+              compiler->cur_src_need_free = src_need_free;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
               
