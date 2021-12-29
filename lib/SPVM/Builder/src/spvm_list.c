@@ -6,7 +6,7 @@
 #include "spvm_compiler.h"
 #include "spvm_compiler_allocator.h"
 
-SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity) {
+SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_eternal) {
   
   assert(capacity >= 0);
   
@@ -26,6 +26,8 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity) {
   list->values = values;
   
   list->compiler = compiler;
+  
+  list->is_eternal = is_eternal;
   
   return list;
 }

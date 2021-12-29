@@ -6,7 +6,7 @@
 #include "spvm_compiler.h"
 #include "spvm_compiler_allocator.h"
 
-SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity) {
+SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_t is_eternal) {
   
   assert(table_capacity >= 0);
 
@@ -36,6 +36,8 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity) {
   hash->key_buffer_length = 0;
 
   hash->compiler = compiler;
+  
+  hash->is_eternal = is_eternal;
   
   return hash;
 }
@@ -202,7 +204,7 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   SPVM_COMPILER* compiler = hash->compiler;
   
   // Create new hash
-  SPVM_HASH* new_hash = SPVM_HASH_new(compiler, new_table_capacity);
+  SPVM_HASH* new_hash = SPVM_HASH_new(compiler, new_table_capacity, 0);
   
   // Rehash
   {

@@ -56,7 +56,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
   compiler->loaded_module_file_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
   compiler->embedded_module_source_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->added_classes = SPVM_LIST_new(compiler, 0);
+  compiler->added_classes = SPVM_LIST_new(compiler, 0, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -340,7 +340,7 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   if (compiler->tmp_added_class_names) {
     SPVM_LIST_free(compiler->tmp_added_class_names);
   }
-  compiler->tmp_added_class_names = SPVM_LIST_new(compiler, 0);
+  compiler->tmp_added_class_names = SPVM_LIST_new(compiler, 0, 0);
 
   /* Tokenize and Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
@@ -365,7 +365,7 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   // Add added class names if compile is success
   SPVM_LIST_free(compiler->added_classes);
-  compiler->added_classes = SPVM_LIST_new(compiler, 0);
+  compiler->added_classes = SPVM_LIST_new(compiler, 0, 0);
   for (int32_t i = 0; i < compiler->tmp_added_class_names->length; i++) {
     const char* class_name = (const char*)SPVM_LIST_fetch(compiler->tmp_added_class_names, i);
     SPVM_CLASS* pakcage = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
