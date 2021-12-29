@@ -44,6 +44,7 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int3
 
   assert(allocator);
   allocator->memory_blocks_count++;
+  allocator->tmp_memory_blocks_count++;
 
   return block;
 }
@@ -56,6 +57,7 @@ void SPVM_COMPILER_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block) {
   SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(block);
   
   allocator->memory_blocks_count--;
+  allocator->tmp_memory_blocks_count--;
 }
 
 const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler, const char* message_template, ...) {

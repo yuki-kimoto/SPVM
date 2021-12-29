@@ -16,6 +16,9 @@ struct spvm_compiler_allocator {
   
   // This is all memory blocks allocated by the SPVM compiler and runtime.
   int32_t memory_blocks_count;
+
+  // This is temporary memory blocks allocated by the SPVM compiler and runtime.
+  int32_t tmp_memory_blocks_count;
 };
 
 void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size);
