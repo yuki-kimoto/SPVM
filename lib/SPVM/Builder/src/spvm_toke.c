@@ -189,24 +189,9 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Do directry module search
             int32_t do_directry_module_search;
 
-            // Byte, Short, Int, Long, Float, Double is already registered in module source symtable
-            if (
-              strcmp(class_name, "Byte") == 0 ||
-              strcmp(class_name, "Short") == 0 ||
-              strcmp(class_name, "Int") == 0 ||
-              strcmp(class_name, "Long") == 0 ||
-              strcmp(class_name, "Float") == 0 ||
-              strcmp(class_name, "Double") == 0 ||
-              strcmp(class_name, "Bool") == 0
-            )
-            {
-              do_directry_module_search = 0;
-            }
-            else {
-              do_directry_module_search = 1;
-            }
-            
-            if (do_directry_module_search) {
+            // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in module source symtable
+            const char* found_module_source = SPVM_HASH_fetch(compiler->embedded_module_source_symtable, class_name, strlen(class_name));
+            if (found_module_source == NULL) {
               // Search module file
               FILE* fh = NULL;
               int32_t module_dirs_length = compiler->module_dirs->length;
@@ -268,15 +253,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 fclose(fh);
                 src[file_size] = '\0';
                 
-                // Save module source
-                SPVM_HASH_insert(compiler->embedded_module_source_symtable, class_name, strlen(class_name), src);
+                found_module_source = src;
               }
             }
             
-            // Search module source
-            char* found_module_source = SPVM_HASH_fetch(compiler->embedded_module_source_symtable, class_name, strlen(class_name));
-            
-            char* src = NULL;
+            const char* src = NULL;
             int32_t file_size = 0;
             int32_t module_not_found = 0;
             if (found_module_source) {
@@ -303,7 +284,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else {
               
               // Copy original source to current source because original source is used at other places(for example, SPVM::Builder::Exe)
-              compiler->cur_src = src;
+              compiler->cur_src = (char*)src;
               compiler->cur_rel_file = cur_rel_file;
               compiler->cur_rel_file_class_name = class_name;
               
