@@ -135,7 +135,7 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
   void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, byte_size);
-  allocator->memory_blocks_count--;
+  allocator->tmp_memory_blocks_count--;
   
   SPVM_LIST_push(allocator->blocks, block);
   
