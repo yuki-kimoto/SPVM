@@ -3829,7 +3829,7 @@ get_module_source(...)
 
   // Copy class load path to builder
   SV* sv_module_source;
-  const char* module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+  const char* module_source = SPVM_HASH_fetch(compiler->embedded_module_source_symtable, class_name, strlen(class_name));
   if (module_source) {
     sv_module_source = sv_2mortal(newSVpv(module_source, 0));
   }

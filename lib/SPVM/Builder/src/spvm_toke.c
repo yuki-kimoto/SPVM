@@ -269,12 +269,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 src[file_size] = '\0';
                 
                 // Save module source
-                SPVM_HASH_insert(compiler->module_source_symtable, class_name, strlen(class_name), src);
+                SPVM_HASH_insert(compiler->embedded_module_source_symtable, class_name, strlen(class_name), src);
               }
             }
             
             // Search module source
-            char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
+            char* found_module_source = SPVM_HASH_fetch(compiler->embedded_module_source_symtable, class_name, strlen(class_name));
             
             char* src = NULL;
             int32_t file_size = 0;
