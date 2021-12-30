@@ -336,15 +336,17 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 #endif
   
   // Initialize added class names
-  if (compiler->added_class_names) {
-    SPVM_LIST_free(compiler->added_class_names);
-  }
-  compiler->added_class_names = SPVM_LIST_new(compiler, 0, 0);
+  compiler->added_class_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
   
   int32_t error = 0;
   
   /* Tokenize and Parse */
+  int32_t parse_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
+  if (compiler->cur_src && compiler->cur_src_need_free) {
+    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, compiler->cur_src);
+  }
+  assert(compiler->allocator->tmp_memory_blocks_count == parse_start_tmp_memory_blocks_count);
   if (parse_error_flag) {
     error = 1;
   }
@@ -600,10 +602,6 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
-
-  if (compiler->added_class_names) {
-    SPVM_LIST_free(compiler->added_class_names);
-  }
 
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
