@@ -3472,16 +3472,16 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             
             // First tree traversal
             SPVM_OP_CHECKER_check_tree(compiler, method->op_block, check_ast_info);
+
+            // Free list
+            SPVM_LIST_free(check_ast_info->my_stack);
+            SPVM_LIST_free(check_ast_info->block_my_base_stack);
+            SPVM_LIST_free(check_ast_info->op_switch_stack);
             
             if (compiler->error_count > 0) {
               return;
             }
             
-            // Free list
-            SPVM_LIST_free(check_ast_info->my_stack);
-            SPVM_LIST_free(check_ast_info->block_my_base_stack);
-            SPVM_LIST_free(check_ast_info->op_switch_stack);
-
             // Second tree traversal
             // set assign_to_var flag - 
             // Add string to constant pool

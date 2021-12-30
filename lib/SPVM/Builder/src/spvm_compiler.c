@@ -356,7 +356,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     }
     else {
       // Check syntax
+      int32_t check_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
       SPVM_OP_CHECKER_check(compiler);
+      assert(compiler->allocator->tmp_memory_blocks_count == check_start_tmp_memory_blocks_count);
       if (compiler->error_count > 0) {
         error = 1;
       }
