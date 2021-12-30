@@ -41,17 +41,17 @@ struct spvm_class {
   SPVM_OP* op_type;
   SPVM_LIST* op_uses;
   SPVM_LIST* op_allows;
+  const char* name;
+  SPVM_OP* op_init_method;
+  SPVM_LIST* anon_methods;
   int32_t id;
   int32_t fields_byte_size;
   int32_t object_fields_offset;
   int32_t object_fields_length;
   int32_t flag;
-  int32_t category;
-  const char* name;
-  SPVM_OP* op_init_method;
-  int32_t fail_load;
-  int32_t has_precompile_descriptor;
-  SPVM_LIST* anon_methods;
+  int8_t category;
+  int8_t fail_load;
+  int8_t has_precompile_descriptor;
   int8_t is_anon;
 };
 
