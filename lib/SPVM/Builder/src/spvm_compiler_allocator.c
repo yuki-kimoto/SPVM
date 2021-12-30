@@ -60,6 +60,16 @@ void SPVM_COMPILER_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block) {
   allocator->tmp_memory_blocks_count--;
 }
 
+void SPVM_COMPILER_ALLOCATOR_free_block(SPVM_COMPILER* compiler, void* block) {
+  (void)compiler;
+
+  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  
+  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(block);
+  
+  allocator->memory_blocks_count--;
+}
+
 const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler, const char* message_template, ...) {
   
   int32_t message_length = 0;
@@ -178,7 +188,7 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   for (i = 0; i < allocator->blocks->length; i++) {
     void* block = SPVM_LIST_fetch(allocator->blocks, i);
     if (block != NULL) {
-      SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, block);
+      SPVM_COMPILER_ALLOCATOR_free_block(compiler, block);
     }
   }
   SPVM_LIST_free(allocator->blocks);
@@ -190,7 +200,9 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   SPVM_LIST_free(allocator->hashes);
   
   // TODO: comment out
+  // warn("AAAAAAAA %d %d", allocator->memory_blocks_count, allocator->tmp_memory_blocks_count);
   // assert(allocator->memory_blocks_count == 0);
+  // assert(allocator->tmp_memory_blocks_count == 0);
 
   SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(allocator);
 }
