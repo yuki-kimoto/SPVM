@@ -45,6 +45,17 @@ struct spvm_method {
   SPVM_LIST* object_arg_ids;
   SPVM_LIST* mys;
   SPVM_LIST* captures;
+  void* precompile_address;
+  void* native_address;
+  SPVM_TYPE* return_type;
+  SPVM_LIST* args;
+  const char* name;
+  const char* signature;
+  SPVM_CLASS* class;
+  const char* accessor_original_name;
+  SPVM_OP* op_list_tmp_mys;
+  SPVM_OP* op_my_condition_flag;
+  const char* anon_method_defined_class_name;
   int32_t opcodes_base;
   int32_t opcodes_length;
   int32_t call_method_arg_stack_max;
@@ -52,14 +63,7 @@ struct spvm_method {
   int32_t eval_stack_max_length;
   int32_t mortal_stack_length;
   int32_t id;
-  void* precompile_address;
-  void* native_address;
-  SPVM_TYPE* return_type;
   int32_t return_type_category_id;
-  SPVM_LIST* args;
-  const char* name;
-  const char* signature;
-  SPVM_CLASS* class;
   int32_t flag;
   int32_t args_alloc_length;
   int32_t vars_alloc_length;
@@ -72,6 +76,7 @@ struct spvm_method {
   int32_t object_vars_alloc_length;
   int32_t ref_vars_alloc_length;
   int32_t return_type_category;
+  int32_t tmp_vars_length;
   int8_t have_vaarg;
   int8_t is_class_var_setter;
   int8_t is_class_var_getter;
@@ -81,12 +86,7 @@ struct spvm_method {
   int8_t is_constant;
   int8_t is_init;
   int8_t is_class_method;
-  const char* accessor_original_name;
-  SPVM_OP* op_list_tmp_mys;
-  int32_t tmp_vars_length;
-  SPVM_OP* op_my_condition_flag;
-  int32_t can_precompile;
-  const char* anon_method_defined_class_name;
+  int8_t can_precompile;
 };
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler);
