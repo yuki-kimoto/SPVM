@@ -257,6 +257,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 char* src = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                   SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
+                  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, src);
                   return 0;
                 }
                 fclose(fh);
