@@ -4000,7 +4000,10 @@ build_class_csource_precompile(...)
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 0);
 
   // Build class csource
+  
+  int32_t build_class_csource_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
+  assert(compiler->allocator->tmp_memory_blocks_count == build_class_csource_start_tmp_memory_blocks_count);
   
   SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   
