@@ -10,12 +10,12 @@
 SPVM_OPCODE_ARRAY* SPVM_OPCODE_ARRAY_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_OPCODE_ARRAY* opcodes = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_OPCODE_ARRAY));
+  SPVM_OPCODE_ARRAY* opcodes = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_OPCODE_ARRAY));
   opcodes->capacity = 64;
   opcodes->length = 0;
   
   int64_t values_byte_size = (int64_t)opcodes->capacity * (int64_t)sizeof(SPVM_OPCODE);
-  SPVM_OPCODE* values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, values_byte_size);
+  SPVM_OPCODE* values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, values_byte_size);
   opcodes->values = values;
   
   // Add 1 opcode because 0 mean no opcode
@@ -36,9 +36,8 @@ void SPVM_OPCODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
     int32_t new_capacity = capacity * 2;
     
     int64_t new_values_byte_size = (int64_t)new_capacity * (int64_t)sizeof(SPVM_OPCODE);
-    SPVM_OPCODE* new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_values_byte_size);
+    SPVM_OPCODE* new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, new_values_byte_size);
     memcpy(new_values, opcodes->values, capacity * sizeof(SPVM_OPCODE));
-    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, opcodes->values);
     opcodes->values = new_values;
     
     opcodes->capacity = new_capacity;
@@ -52,7 +51,4 @@ void SPVM_OPCODE_ARRAY_push_opcode(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* o
 
 void SPVM_OPCODE_ARRAY_free(SPVM_COMPILER* compiler, SPVM_OPCODE_ARRAY* opcodes) {
   (void)compiler;
-  
-  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, opcodes->values);
-  SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, opcodes);
 }
