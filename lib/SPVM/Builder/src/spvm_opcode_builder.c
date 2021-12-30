@@ -93,6 +93,18 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
       {
         int32_t method_index;
         for (method_index = 0; method_index < methods->length; method_index++) {
+          SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
+          
+          // Check sub information
+          assert(method->id > -1);
+          assert(method->op_name);
+          assert(method->return_type);
+          assert(method->class->module_file);
+          
+          if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
+            continue;
+          }
+
           // opcode index stack for if start
           SPVM_LIST* if_eq_or_if_ne_goto_opcode_rel_index_stack = SPVM_LIST_new(compiler, 0, 0);
           
@@ -126,6 +138,9 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // Switch stack
           SPVM_LIST* switch_info_stack = SPVM_LIST_new(compiler, 0, 0);
           
+          // Block stack
+          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler, 0, 0);
+          
           // next block base stack
           SPVM_LIST* next_block_base_stack = SPVM_LIST_new(compiler, 0, 0);
           
@@ -135,9 +150,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           // break block base stack
           SPVM_LIST* break_block_base_stack = SPVM_LIST_new(compiler, 0, 0);
           
-          // Block stack
-          SPVM_LIST* op_block_stack = SPVM_LIST_new(compiler, 0, 0);
-          
           // Mortal variable stack
           SPVM_LIST* mortal_stack = SPVM_LIST_new(compiler, 0, 0);
           
@@ -146,18 +158,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
           // Object temporary variable stack
           SPVM_LIST* object_op_var_tmp_stack = SPVM_LIST_new(compiler, 0, 0);
-
-          SPVM_METHOD* method = SPVM_LIST_fetch(methods, method_index);
-          
-          // Check sub information
-          assert(method->id > -1);
-          assert(method->op_name);
-          assert(method->return_type);
-          assert(method->class->module_file);
-          
-          if (method->flag & SPVM_METHOD_C_FLAG_NATIVE) {
-            continue;
-          }
           
           int32_t method_opcodes_base = opcode_array->length;
           
@@ -4770,13 +4770,12 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
           SPVM_LIST_free(return_goto_opcode_rel_index_stack);
           SPVM_LIST_free(switch_info_stack);
           SPVM_LIST_free(op_block_stack);
-          SPVM_LIST_free(mortal_stack);
-          SPVM_LIST_free(mortal_top_stack);
-          SPVM_LIST_free(object_op_var_tmp_stack);
-
           SPVM_LIST_free(next_block_base_stack);
           SPVM_LIST_free(last_block_base_stack);
           SPVM_LIST_free(break_block_base_stack);
+          SPVM_LIST_free(mortal_stack);
+          SPVM_LIST_free(mortal_top_stack);
+          SPVM_LIST_free(object_op_var_tmp_stack);
         }
       }
     }

@@ -364,7 +364,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
       }
       else {
         // Build operation code
+        int32_t build_opcode_array_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
         SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
+        assert(compiler->allocator->tmp_memory_blocks_count == build_opcode_array_start_tmp_memory_blocks_count);
         if (compiler->error_count > 0) {
           error = 1;
         }
