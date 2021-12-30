@@ -3738,10 +3738,9 @@ get_added_class_names(...)
   AV* av_added_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_added_class_names = sv_2mortal(newRV_inc((SV*)av_added_class_names));
   
-  for (int32_t added_class_index = 0; added_class_index < compiler->added_classes->length; added_class_index++) {
-    SPVM_CLASS* added_class = SPVM_LIST_fetch(compiler->added_classes, added_class_index);
-    const char* added_class_name = added_class->name;
-    if (!added_class->is_anon) {
+  for (int32_t added_class_index = 0; added_class_index < compiler->added_class_names->length; added_class_index++) {
+    const char* added_class_name = SPVM_LIST_fetch(compiler->added_class_names, added_class_index);
+    if (!strstr(added_class_name, "::anon")) {
       SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
       av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
     }
@@ -3769,9 +3768,8 @@ get_added_class_names_including_anon(...)
   AV* av_added_class_names = (AV*)sv_2mortal((SV*)newAV());
   SV* sv_added_class_names = sv_2mortal(newRV_inc((SV*)av_added_class_names));
   
-  for (int32_t added_class_index = 0; added_class_index < compiler->added_classes->length; added_class_index++) {
-    SPVM_CLASS* added_class = SPVM_LIST_fetch(compiler->added_classes, added_class_index);
-    const char* added_class_name = added_class->name;
+  for (int32_t added_class_index = 0; added_class_index < compiler->added_class_names->length; added_class_index++) {
+    const char* added_class_name = SPVM_LIST_fetch(compiler->added_class_names, added_class_index);
     SV* sv_added_class_name = sv_2mortal(newSVpv(added_class_name, 0));
     av_push(av_added_class_names, SvREFCNT_inc(sv_added_class_name));
   }

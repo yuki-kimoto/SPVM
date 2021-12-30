@@ -92,11 +92,8 @@ struct spvm_compiler {
   SPVM_LIST* classes;
 
   // added_class_names tmp
-  SPVM_LIST* tmp_added_class_names;
+  SPVM_LIST* added_class_names;
   
-  // added_classes
-  SPVM_LIST* added_classes;
-
   // module file symtable
   SPVM_HASH* loaded_module_file_symtable;
 

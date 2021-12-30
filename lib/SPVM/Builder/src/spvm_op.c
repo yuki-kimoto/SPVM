@@ -1680,7 +1680,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   class->op_type = op_type;
   
   // Add addede class names in this compile
-  SPVM_LIST_push(compiler->tmp_added_class_names, (void*)class_name);
+  SPVM_LIST_push(compiler->added_class_names, (void*)class_name);
   
   if (!class->is_anon) {
 
