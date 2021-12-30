@@ -3555,10 +3555,10 @@ compile_spvm(...)
 
   // Compile SPVM
   compiler->cur_class_base = compiler->classes->length;
-  SPVM_COMPILER_compile(compiler);
+  int32_t compile_error = SPVM_COMPILER_compile(compiler);
   
   SV* sv_compile_success;
-  if (compiler->error_count > 0) {
+  if (compile_error) {
     sv_compile_success = sv_2mortal(newSViv(0));
   }
   else {

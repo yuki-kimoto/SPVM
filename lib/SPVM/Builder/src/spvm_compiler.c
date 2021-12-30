@@ -327,7 +327,7 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   }
 }
 
-void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
+int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 
   // If this is set to 1, you can see yacc parsing result
 #ifdef SPVM_DEBUG_YACC
@@ -341,36 +341,44 @@ void SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     SPVM_LIST_free(compiler->tmp_added_class_names);
   }
   compiler->tmp_added_class_names = SPVM_LIST_new(compiler, 0, 0);
-
+  
+  int32_t error = 0;
+  
   /* Tokenize and Parse */
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (parse_error_flag) {
-    return;
+    error = 1;
   }
-  if (compiler->error_count > 0) {
-    return;
+  else {
+    if (compiler->error_count > 0) {
+      error = 1;
+    }
+    else {
+      // Check syntax
+      SPVM_OP_CHECKER_check(compiler);
+      if (compiler->error_count > 0) {
+        error = 1;
+      }
+      else {
+        // Build operation code
+        SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
+        if (compiler->error_count > 0) {
+          error = 1;
+        }
+        else {
+          // Add added class names if compile is success
+          SPVM_LIST_free(compiler->added_classes);
+          compiler->added_classes = SPVM_LIST_new(compiler, 0, 0);
+          for (int32_t i = 0; i < compiler->tmp_added_class_names->length; i++) {
+            const char* class_name = (const char*)SPVM_LIST_fetch(compiler->tmp_added_class_names, i);
+            SPVM_CLASS* pakcage = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
+            SPVM_LIST_push(compiler->added_classes, pakcage);
+          }
+        }
+      }
+    }
   }
-  
-  // Check syntax
-  SPVM_OP_CHECKER_check(compiler);
-  if (compiler->error_count > 0) {
-    return;
-  }
-
-  // Build operation code
-  SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
-  if (compiler->error_count > 0) {
-    return;
-  }
-  
-  // Add added class names if compile is success
-  SPVM_LIST_free(compiler->added_classes);
-  compiler->added_classes = SPVM_LIST_new(compiler, 0, 0);
-  for (int32_t i = 0; i < compiler->tmp_added_class_names->length; i++) {
-    const char* class_name = (const char*)SPVM_LIST_fetch(compiler->tmp_added_class_names, i);
-    SPVM_CLASS* pakcage = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-    SPVM_LIST_push(compiler->added_classes, pakcage);
-  }
+  return error;
 }
 
 void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, ...) {
