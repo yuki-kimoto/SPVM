@@ -600,7 +600,11 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
 }
 
 void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
-  
+
+  if (compiler->added_class_names) {
+    SPVM_LIST_free(compiler->added_class_names);
+  }
+
   // Free opcode array
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
 
