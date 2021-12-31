@@ -79,7 +79,7 @@ use Test::More 'no_plan';
     ok($calloc_counts_in_compiler_allocator_source);
   }
   
-  # SPVM_ALLOCATOR_free_tmp_no_managed is only used to allocate the compiler and allocator
+  # SPVM_ALLOCATOR_free_block_unmanaged is only used to allocate the compiler and allocator
   {
     my $count = 0;
     my $compiler_contains_only_one;
@@ -89,7 +89,7 @@ use Test::More 'no_plan';
         or die "Can't open file \"$check_file\": $!";
       
       my $check_content = do { local $/; <$check_fh> };
-      my $re = qr/[^d]\s+SPVM_ALLOCATOR_free_tmp_no_managed/;
+      my $re = qr/[^d]\s+SPVM_ALLOCATOR_free_block_unmanaged/;
       my $match_count = 0;
       if ($check_file =~ /spvm_compiler\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
