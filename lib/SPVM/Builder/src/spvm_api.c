@@ -262,7 +262,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_bool_object_value,
   };
   
-  SPVM_ENV* env = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(env_init));
+  SPVM_ENV* env = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(env_init));
   if (env == NULL) {
     return NULL;
   }
@@ -6654,7 +6654,7 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
     return NULL;
   }
   
-  void* block = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, (size_t)byte_size);
+  void* block = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, (size_t)byte_size);
   
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
   fprintf(stderr, "[ALLOC_MEMORY %p %d]\n", block, (int32_t)(intptr_t)compiler->allocator->memory_blocks_count);

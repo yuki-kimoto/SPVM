@@ -14,10 +14,10 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_COMPILER* compiler, int32_t capa
     capacity = 16;
   }
   
-  SPVM_STRING_BUFFER* string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_STRING_BUFFER));
+  SPVM_STRING_BUFFER* string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_STRING_BUFFER));
   
   string_buffer->capacity = capacity;
-  string_buffer->buffer = (char*)SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, capacity);
+  string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, capacity);
   
   string_buffer->compiler = compiler;
 
@@ -36,7 +36,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
   // Extend
   while (new_length > string_buffer->capacity) {
     int32_t new_capacity = string_buffer->capacity * 2;
-    char* new_buffer = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_capacity);
+    char* new_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_capacity);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
     SPVM_ALLOCATOR_free_tmp(compiler, string_buffer->buffer);
     string_buffer->buffer = new_buffer;

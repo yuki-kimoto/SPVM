@@ -16,7 +16,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_
     hash = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_HASH));
   }
   else {
-    hash = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, sizeof(SPVM_HASH));
+    hash = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_HASH));
   }
   
   // Default table capacity
@@ -32,7 +32,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_
     hash->table = SPVM_ALLOCATOR_safe_malloc_zero(compiler, hash->table_capacity * sizeof(int32_t));
   }
   else {
-    hash->table = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, hash->table_capacity * sizeof(int32_t));
+    hash->table = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, hash->table_capacity * sizeof(int32_t));
   }
   memset(hash->table, -1, hash->table_capacity * sizeof(int32_t));
   
@@ -42,7 +42,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_
     hash->entries =  SPVM_ALLOCATOR_safe_malloc_zero(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
   }
   else {
-    hash->entries =  SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
+    hash->entries =  SPVM_ALLOCATOR_new_block_compile_tmp(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
   }
   hash->entries_length = 0;
 
@@ -52,7 +52,7 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_
     hash->key_buffer = SPVM_ALLOCATOR_safe_malloc_zero(compiler, hash->key_buffer_capacity);
   }
   else {
-    hash->key_buffer = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, hash->key_buffer_capacity);
+    hash->key_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, hash->key_buffer_capacity);
   }
   hash->key_buffer_length = 0;
 
@@ -162,7 +162,7 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
       new_entries = SPVM_ALLOCATOR_safe_malloc_zero(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
     }
     else {
-      new_entries = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
+      new_entries = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
     }
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
     if (hash->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
@@ -194,7 +194,7 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
       new_key_buffer = SPVM_ALLOCATOR_safe_malloc_zero(compiler, new_key_buffer_capacity);
     }
     else {
-      new_key_buffer = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_key_buffer_capacity);
+      new_key_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_key_buffer_capacity);
     }
     memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
     if (hash->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {

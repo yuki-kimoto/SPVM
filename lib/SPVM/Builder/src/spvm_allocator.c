@@ -35,7 +35,7 @@ void SPVM_ALLOCATOR_free_block_unmanaged(void* block) {
   free(block);
 }
 
-void* SPVM_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size) {
+void* SPVM_ALLOCATOR_new_block_compile_tmp(SPVM_COMPILER* compiler, int32_t byte_size) {
   (void)compiler;
   
   SPVM_ALLOCATOR* allocator = compiler->allocator;
@@ -98,7 +98,7 @@ void* SPVM_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t byte_size
   
   SPVM_ALLOCATOR* allocator = compiler->allocator;
   
-  void* block = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, byte_size);
+  void* block = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, byte_size);
   allocator->tmp_memory_blocks_count--;
   
   SPVM_LIST_push(allocator->blocks, block);
