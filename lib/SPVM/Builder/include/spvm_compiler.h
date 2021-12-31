@@ -35,7 +35,7 @@ struct spvm_compiler {
   int32_t cur_line;
   
   // Allocator
-  SPVM_COMPILER_ALLOCATOR* allocator;
+  SPVM_ALLOCATOR* allocator;
 
   // Line start position
   char* line_start_ptr;

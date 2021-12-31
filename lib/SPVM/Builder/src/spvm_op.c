@@ -25,7 +25,7 @@
 #include "spvm_op_checker.h"
 #include "spvm_switch_info.h"
 #include "spvm_descriptor.h"
-#include "spvm_compiler_allocator.h"
+#include "spvm_allocator.h"
 #include "spvm_limit.h"
 #include "spvm_use.h"
 #include "spvm_class_var.h"
@@ -1668,7 +1668,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     int32_t anon_method_class_name_length = 6 + strlen(anon_method_defined_rel_file_class_name) + 2 + int32_max_length + 2 + int32_max_length;
     
     // Anon class name
-    char* name_class = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, anon_method_class_name_length + 1);
+    char* name_class = SPVM_ALLOCATOR_safe_malloc_zero(compiler, anon_method_class_name_length + 1);
     sprintf(name_class, "%s::anon::%d::%d", anon_method_defined_rel_file_class_name, anon_method_defined_line, anon_method_defined_keyword_start_pos);
     SPVM_OP* op_name_class = SPVM_OP_new_op_name(compiler, name_class, op_class->file, op_class->line);
     op_type = SPVM_OP_build_basic_type(compiler, op_name_class);
@@ -1864,7 +1864,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           //   $FOO = $foo;
           // }
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 4 + strlen(class_var->name) - 1 + 1);
+          char* method_name = SPVM_ALLOCATOR_safe_malloc_zero(compiler, 4 + strlen(class_var->name) - 1 + 1);
           memcpy(method_name, "SET_", 4);
           memcpy(method_name + 4, class_var->name + 1, strlen(class_var->name) - 1);
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
@@ -1963,7 +1963,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           // }
 
           SPVM_OP* op_method = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_METHOD, op_decl->file, op_decl->line);
-          char* method_name = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, 4 + strlen(field->name) + 1);
+          char* method_name = SPVM_ALLOCATOR_safe_malloc_zero(compiler, 4 + strlen(field->name) + 1);
           memcpy(method_name, "set_", 4);
           memcpy(method_name + 4, field->name, strlen(field->name));
           SPVM_OP* op_name_method = SPVM_OP_new_op_name(compiler, method_name, op_decl->file, op_decl->line);
@@ -3152,7 +3152,7 @@ SPVM_OP* SPVM_OP_new_op_list(SPVM_COMPILER* compiler, const char* file, int32_t 
 
 SPVM_OP* SPVM_OP_new_op(SPVM_COMPILER* compiler, int32_t id, const char* file, int32_t line) {
 
-  SPVM_OP *op = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_OP));
+  SPVM_OP *op = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_OP));
   
   memset(op, 0, sizeof(SPVM_OP));
   

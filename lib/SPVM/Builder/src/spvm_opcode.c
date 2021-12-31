@@ -1,6 +1,6 @@
 #include "spvm_opcode.h"
 #include "spvm_compiler.h"
-#include "spvm_compiler_allocator.h"
+#include "spvm_allocator.h"
 
 
 
@@ -459,7 +459,7 @@ const char* const* SPVM_OPCODE_C_ID_NAMES(void) {
 }
 
 SPVM_OPCODE* SPVM_OPCODE_new(SPVM_COMPILER* compiler) {
-  SPVM_OPCODE* opcode = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_OPCODE));
+  SPVM_OPCODE* opcode = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_OPCODE));
   
   return opcode;
 }

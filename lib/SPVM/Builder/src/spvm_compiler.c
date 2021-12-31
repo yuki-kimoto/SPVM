@@ -10,7 +10,7 @@
 #include "spvm_op.h"
 #include "spvm_hash.h"
 #include "spvm_list.h"
-#include "spvm_compiler_allocator.h"
+#include "spvm_allocator.h"
 #include "spvm_yacc_util.h"
 #include "spvm_list.h"
 #include "spvm_opcode_array.h"
@@ -29,33 +29,33 @@
 #include "spvm_string_buffer.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
-  SPVM_COMPILER* compiler = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_COMPILER));
+  SPVM_COMPILER* compiler = SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_COMPILER));
   
   // Allocator
-  SPVM_COMPILER_ALLOCATOR* allocator = SPVM_COMPILER_ALLOCATOR_new();
+  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();
   compiler->allocator = allocator;
-  SPVM_COMPILER_ALLOCATOR_init(compiler);
+  SPVM_ALLOCATOR_init(compiler);
 
   compiler->bufptr = "";
 
-  compiler->const_string_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->const_string_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Parser information
-  compiler->op_use_stack = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->op_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->basic_types = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->basic_type_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->methods = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->method_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->fields = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->classes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->class_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->class_vars = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->op_constants = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->module_dirs = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->op_use_stack = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->op_types = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->basic_types = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->basic_type_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->methods = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->method_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->fields = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->classes = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->class_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->class_vars = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->op_constants = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->module_dirs = SPVM_ALLOCATOR_alloc_list(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  compiler->loaded_module_file_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->embedded_module_source_symtable = SPVM_COMPILER_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->loaded_module_file_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->embedded_module_source_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -336,7 +336,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 #endif
   
   // Initialize added class names
-  compiler->added_class_names = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->added_class_names = SPVM_ALLOCATOR_alloc_list(compiler, 0);
   
   int32_t error = 0;
   
@@ -344,7 +344,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   int32_t parse_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (compiler->cur_src && compiler->cur_src_need_free) {
-    SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, compiler->cur_src);
+    SPVM_ALLOCATOR_free_tmp(compiler, compiler->cur_src);
   }
   assert(compiler->allocator->tmp_memory_blocks_count == parse_start_tmp_memory_blocks_count);
   if (parse_error_flag) {
@@ -420,7 +420,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   }
   va_end(args);
   
-  char* message = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
+  char* message = SPVM_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
   
   va_start(args, message_template);
   vsprintf(message, message_template, args);
@@ -477,7 +477,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     length += 1;
   }
   
-  char* method_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* method_signature = SPVM_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
   
   // Calcurate method signature length
   char* bufptr = method_signature;
@@ -552,7 +552,7 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
     length += field->type->dimension * 2;
   }
   
-  char* field_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* field_signature = SPVM_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
   
   // Calcurate field signature length
   char* bufptr = field_signature;
@@ -585,7 +585,7 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
     length += class_var->type->dimension * 2;
   }
   
-  char* class_var_signature = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* class_var_signature = SPVM_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
   
   // Calcurate class_var signature length
   char* bufptr = class_var_signature;
@@ -611,7 +611,7 @@ void SPVM_COMPILER_free(SPVM_COMPILER* compiler) {
   SPVM_OPCODE_ARRAY_free(compiler, compiler->opcode_array);
 
   // Free allocator
-  SPVM_COMPILER_ALLOCATOR_free(compiler);
+  SPVM_ALLOCATOR_free(compiler);
   
-  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(compiler);
+  SPVM_ALLOCATOR_free_tmp_no_managed(compiler);
 }

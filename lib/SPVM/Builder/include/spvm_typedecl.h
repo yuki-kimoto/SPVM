@@ -90,10 +90,6 @@ typedef struct spvm_use SPVM_USE;
 struct spvm_runtime;
 typedef struct spvm_runtime SPVM_RUNTIME;
 
-// spvm_compiler_allocator.h
-struct spvm_compiler_allocator;
-typedef struct spvm_compiler_allocator SPVM_COMPILER_ALLOCATOR;
-
 // spvm_heap.h
 struct spvm_heap;
 typedef struct spvm_heap SPVM_HEAP;
@@ -114,7 +110,7 @@ typedef struct spvm_vm SPVM_VM;
 struct spvm_switch_info;
 typedef struct spvm_switch_info SPVM_SWITCH_INFO;
 
-// spvm_compiler_allocator.h
+// spvm_allocator.h
 struct spvm_allocator;
 typedef struct spvm_allocator SPVM_ALLOCATOR;
 

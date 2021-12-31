@@ -33,7 +33,7 @@
 #include "spvm_string_buffer.h"
 #include "spvm_use.h"
 #include "spvm_limit.h"
-#include "spvm_compiler_allocator.h"
+#include "spvm_allocator.h"
 #include "spvm_my.h"
 
 static const char* MFILE = "SPVM.xs";
@@ -3519,12 +3519,12 @@ compile_spvm(...)
   
   // Name
   const char* name = SvPV_nolen(sv_name);
-  char* name_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
+  char* name_copy = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
   memcpy(name_copy, name, sv_len(sv_name));
   
   // File
   const char* file = SvPV_nolen(sv_file);
-  char* file_copy = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
+  char* file_copy = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
   memcpy(file_copy, file, sv_len(sv_file));
   
   // Line

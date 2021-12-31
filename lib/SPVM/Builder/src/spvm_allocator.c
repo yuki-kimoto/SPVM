@@ -6,10 +6,10 @@
 
 #include "spvm_list.h"
 #include "spvm_hash.h"
-#include "spvm_compiler_allocator.h"
+#include "spvm_allocator.h"
 #include "spvm_compiler.h"
 
-void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size) {
+void* SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size) {
   
   if (byte_size < 1) {
     fprintf(stderr, "Failed to allocate memory. Size must be more than 0(%s)\n", __FILE__);
@@ -31,16 +31,16 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size) 
   return block;
 }
 
-void SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(void* block) {
+void SPVM_ALLOCATOR_free_tmp_no_managed(void* block) {
   free(block);
 }
 
-void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size) {
+void* SPVM_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size) {
   (void)compiler;
   
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
 
-  void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(byte_size);
+  void* block = SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(byte_size);
 
   assert(allocator);
   allocator->memory_blocks_count++;
@@ -49,28 +49,28 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int3
   return block;
 }
 
-void SPVM_COMPILER_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block) {
+void SPVM_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block) {
   (void)compiler;
 
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
   
-  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(block);
+  SPVM_ALLOCATOR_free_tmp_no_managed(block);
   
   allocator->memory_blocks_count--;
   allocator->tmp_memory_blocks_count--;
 }
 
-void SPVM_COMPILER_ALLOCATOR_free_block(SPVM_COMPILER* compiler, void* block) {
+void SPVM_ALLOCATOR_free_block(SPVM_COMPILER* compiler, void* block) {
   (void)compiler;
 
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
   
-  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(block);
+  SPVM_ALLOCATOR_free_tmp_no_managed(block);
   
   allocator->memory_blocks_count--;
 }
 
-const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler, const char* message_template, ...) {
+const char* SPVM_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler, const char* message_template, ...) {
   
   int32_t message_length = 0;
   
@@ -106,7 +106,7 @@ const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler,
   }
   va_end(args);
   
-  char* message = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
+  char* message = SPVM_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
   
   va_start(args, message_template);
   vsprintf(message, message_template, args);
@@ -115,19 +115,19 @@ const char* SPVM_COMPILER_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler,
   return message;
 }
 
-SPVM_COMPILER_ALLOCATOR* SPVM_COMPILER_ALLOCATOR_new() {
+SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
-  SPVM_COMPILER_ALLOCATOR* allocator = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_COMPILER_ALLOCATOR));
+  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_ALLOCATOR));
 
   assert(allocator->memory_blocks_count == 0);
 
   return allocator;
 }
 
-void SPVM_COMPILER_ALLOCATOR_init(SPVM_COMPILER* compiler) {
+void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler) {
   (void)compiler;
 
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
   
   // Arrays
   allocator->lists = SPVM_LIST_new(compiler, 8, 0);
@@ -136,15 +136,15 @@ void SPVM_COMPILER_ALLOCATOR_init(SPVM_COMPILER* compiler) {
   allocator->blocks = SPVM_LIST_new(compiler, 0, 0);
   
   // Hashes
-  allocator->hashes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 8);
+  allocator->hashes = SPVM_ALLOCATOR_alloc_list(compiler, 8);
 }
 
-void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t byte_size) {
+void* SPVM_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t byte_size) {
   (void)compiler;
   
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
   
-  void* block = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, byte_size);
+  void* block = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, byte_size);
   allocator->tmp_memory_blocks_count--;
   
   SPVM_LIST_push(allocator->blocks, block);
@@ -152,10 +152,10 @@ void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t 
   return block;
 }
 
-SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t capacity) {
+SPVM_LIST* SPVM_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t capacity) {
   (void)compiler;
 
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
   
   int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
   SPVM_LIST* list = SPVM_LIST_new(compiler, capacity, memory_block_type);
@@ -165,10 +165,10 @@ SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t c
   return list;
 }
 
-SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t capacity) {
+SPVM_HASH* SPVM_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t capacity) {
   (void)compiler;
 
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
   
   int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
   SPVM_HASH* hash = SPVM_HASH_new(compiler, capacity, memory_block_type);
@@ -178,17 +178,17 @@ SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t c
   return hash;
 }
 
-void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
+void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
   
   // Free blocks
   int32_t i;
   for (i = 0; i < allocator->blocks->length; i++) {
     void* block = SPVM_LIST_fetch(allocator->blocks, i);
     if (block != NULL) {
-      SPVM_COMPILER_ALLOCATOR_free_block(compiler, block);
+      SPVM_ALLOCATOR_free_block(compiler, block);
     }
   }
   SPVM_LIST_free(allocator->blocks);
@@ -201,5 +201,5 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   // assert(allocator->memory_blocks_count == 0);
   // assert(allocator->tmp_memory_blocks_count == 0);
 
-  SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed(allocator);
+  SPVM_ALLOCATOR_free_tmp_no_managed(allocator);
 }

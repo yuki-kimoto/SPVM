@@ -3,7 +3,7 @@
 
 #include "spvm_field.h"
 
-#include "spvm_compiler_allocator.h"
+#include "spvm_allocator.h"
 #include "spvm_type.h"
 #include "spvm_op.h"
 #include "spvm_compiler.h"
@@ -12,7 +12,7 @@
 SPVM_FIELD* SPVM_FIELD_new(SPVM_COMPILER* compiler) {
   (void)compiler;
   
-  return SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_FIELD));
+  return SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_FIELD));
 }
 
 int32_t SPVM_FIELD_get_byte_size(SPVM_COMPILER* compiler, SPVM_FIELD* field) {

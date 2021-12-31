@@ -355,6 +355,7 @@ lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
+lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
 lib/SPVM/Builder/include/spvm_array_field_access.h
@@ -367,7 +368,6 @@ lib/SPVM/Builder/include/spvm_class.h
 lib/SPVM/Builder/include/spvm_class_var.h
 lib/SPVM/Builder/include/spvm_class_var_access.h
 lib/SPVM/Builder/include/spvm_compiler.h
-lib/SPVM/Builder/include/spvm_compiler_allocator.h
 lib/SPVM/Builder/include/spvm_constant.h
 lib/SPVM/Builder/include/spvm_csource_builder_precompile.h
 lib/SPVM/Builder/include/spvm_descriptor.h
@@ -399,6 +399,7 @@ lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
+lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
 lib/SPVM/Builder/src/spvm_api.c
 lib/SPVM/Builder/src/spvm_array_field_access.c
@@ -410,7 +411,6 @@ lib/SPVM/Builder/src/spvm_class.c
 lib/SPVM/Builder/src/spvm_class_var.c
 lib/SPVM/Builder/src/spvm_class_var_access.c
 lib/SPVM/Builder/src/spvm_compiler.c
-lib/SPVM/Builder/src/spvm_compiler_allocator.c
 lib/SPVM/Builder/src/spvm_constant.c
 lib/SPVM/Builder/src/spvm_csource_builder_precompile.c
 lib/SPVM/Builder/src/spvm_descriptor.c
@@ -908,6 +908,7 @@ t/default/while.t
 t/get_native_api_indexes.pl
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
+t/memory.t
 t/sort_method_name_native.pl
 t/sort_method_name_pod.pl
 t/sort_method_name_spvm.pl

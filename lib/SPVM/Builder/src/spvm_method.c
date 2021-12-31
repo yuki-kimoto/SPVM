@@ -2,7 +2,7 @@
 
 #include "spvm_method.h"
 
-#include "spvm_compiler_allocator.h"
+#include "spvm_allocator.h"
 #include "spvm_compiler.h"
 #include "spvm_my.h"
 #include "spvm_list.h"
@@ -11,12 +11,12 @@
 #include "spvm_basic_type.h"
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
-  SPVM_METHOD* method = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_METHOD));
+  SPVM_METHOD* method = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_METHOD));
   
-  method->args = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  method->mys = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  method->object_arg_ids = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
-  method->captures = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
+  method->args = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  method->mys = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  method->object_arg_ids = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  method->captures = SPVM_ALLOCATOR_alloc_list(compiler, 0);
   
   return method;
 }
