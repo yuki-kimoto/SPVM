@@ -38,24 +38,24 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
 
   compiler->bufptr = "";
 
-  compiler->const_string_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->const_string_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
   // Parser information
-  compiler->op_use_stack = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->op_types = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->basic_types = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->basic_type_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->methods = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->method_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->fields = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->classes = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->class_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->class_vars = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->op_constants = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  compiler->module_dirs = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->op_use_stack = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->op_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->basic_types = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->basic_type_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  compiler->methods = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->method_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  compiler->fields = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->classes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  compiler->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->op_constants = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->module_dirs = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->opcode_array = SPVM_OPCODE_ARRAY_new(compiler);
-  compiler->loaded_module_file_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
-  compiler->embedded_module_source_symtable = SPVM_ALLOCATOR_alloc_hash(compiler, 0);
+  compiler->loaded_module_file_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
+  compiler->embedded_module_source_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
@@ -336,7 +336,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
 #endif
   
   // Initialize added class names
-  compiler->added_class_names = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  compiler->added_class_names = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   
   int32_t error = 0;
   

@@ -13,10 +13,10 @@
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
   SPVM_METHOD* method = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_METHOD));
   
-  method->args = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  method->mys = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  method->object_arg_ids = SPVM_ALLOCATOR_alloc_list(compiler, 0);
-  method->captures = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  method->args = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  method->mys = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  method->object_arg_ids = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  method->captures = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   
   return method;
 }

@@ -7,7 +7,7 @@
 SPVM_SWITCH_INFO* SPVM_SWITCH_INFO_new(SPVM_COMPILER* compiler) {
   SPVM_SWITCH_INFO* switch_info = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_SWITCH_INFO));
   
-  switch_info->case_infos = SPVM_ALLOCATOR_alloc_list(compiler, 0);
+  switch_info->case_infos = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   
   return switch_info;
 }

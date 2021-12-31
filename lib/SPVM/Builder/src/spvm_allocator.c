@@ -90,7 +90,7 @@ void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler) {
   allocator->blocks = SPVM_LIST_new(compiler, 0, 0);
   
   // Hashes
-  allocator->hashes = SPVM_ALLOCATOR_alloc_list(compiler, 8);
+  allocator->hashes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 8);
 }
 
 void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_COMPILER* compiler, int32_t byte_size) {
@@ -106,7 +106,7 @@ void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_COMPILER* compiler, int32_t 
   return block;
 }
 
-SPVM_LIST* SPVM_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t capacity) {
+SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_COMPILER* compiler, int32_t capacity) {
   (void)compiler;
 
   SPVM_ALLOCATOR* allocator = compiler->allocator;
@@ -119,7 +119,7 @@ SPVM_LIST* SPVM_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t capacity) 
   return list;
 }
 
-SPVM_HASH* SPVM_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t capacity) {
+SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_COMPILER* compiler, int32_t capacity) {
   (void)compiler;
 
   SPVM_ALLOCATOR* allocator = compiler->allocator;
