@@ -30,7 +30,7 @@ struct spvm_allocator {
 void* SPVM_ALLOCATOR_new_block_unmanaged(size_t byte_size);
 void SPVM_ALLOCATOR_free_block_unmanaged(void* block);
 
-void* SPVM_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size);
+void* SPVM_ALLOCATOR_new_block_tmp(SPVM_COMPILER* compiler, int32_t byte_size);
 void SPVM_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block);
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new();

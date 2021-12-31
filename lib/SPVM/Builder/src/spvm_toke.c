@@ -254,7 +254,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return 0;
                 }
                 fseek(fh, 0, SEEK_SET);
-                char* src = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, file_size + 1);
+                char* src = SPVM_ALLOCATOR_new_block_tmp(compiler, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                   SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
                   SPVM_ALLOCATOR_free_tmp(compiler, src);
@@ -825,7 +825,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               if (*compiler->bufptr == '0' || *compiler->bufptr == '1' || *compiler->bufptr == '2' || *compiler->bufptr == '3' || *compiler->bufptr == '4' || *compiler->bufptr == '5' || *compiler->bufptr == '6' || *compiler->bufptr == '7') {
                 int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
                 
-                char* num_str = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, 3);
+                char* num_str = SPVM_ALLOCATOR_new_block_tmp(compiler, 3);
                 num_str[0] = *compiler->bufptr;
                 compiler->bufptr++;
                 if (
@@ -893,7 +893,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
         int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
-          str_tmp = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, 1);
+          str_tmp = SPVM_ALLOCATOR_new_block_tmp(compiler, 1);
           str_tmp[0] = '\0';
           compiler->bufptr++;
         }
@@ -1021,7 +1021,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
           compiler->bufptr++;
           
-          str_tmp = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, str_tmp_len + 1);
+          str_tmp = SPVM_ALLOCATOR_new_block_tmp(compiler, str_tmp_len + 1);
           {
             char* char_ptr = (char*)cur_token_ptr;
             while (char_ptr != compiler->bufptr - 1) {
@@ -1081,7 +1081,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   char_ptr++;
                   if (*char_ptr == '0' || *char_ptr == '1' || *char_ptr == '2' || *char_ptr == '3' || *char_ptr == '4' || *char_ptr == '5' || *char_ptr == '6' || *char_ptr == '7') {
                     int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
-                    char* num_str = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, 3);
+                    char* num_str = SPVM_ALLOCATOR_new_block_tmp(compiler, 3);
                     num_str[0] = *char_ptr;
                     char_ptr++;
                     if (
@@ -1134,7 +1134,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       }
                       else {
                         int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
-                        char* unicode_chars = SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, unicode_chars_length + 1);
+                        char* unicode_chars = SPVM_ALLOCATOR_new_block_tmp(compiler, unicode_chars_length + 1);
                         memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
                         char *end;
                         int32_t unicode = (int32_t)strtoll(unicode_chars, &end, 16);
@@ -1487,7 +1487,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           // Ignore under line
           int32_t num_str_tmp_memoyr_blocks_count = compiler->allocator->tmp_memory_blocks_count;
-          char* num_str_tmp = (char*)SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, str_len + 2);
+          char* num_str_tmp = (char*)SPVM_ALLOCATOR_new_block_tmp(compiler, str_len + 2);
           int32_t pos = 0;
           {
             int32_t i;
