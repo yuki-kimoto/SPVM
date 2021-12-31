@@ -31,7 +31,7 @@ use Test::More 'no_plan';
   # Check if c source files exist
   ok(grep { /\.c$/ } @check_files);
   
-  # Check that SPVM.xs, SPVM c source codes, and headers contain calloc only one in spvm_compiler_allocator.c
+  # Check that SPVM.xs, SPVM c source codes, and headers contain calloc only one in spvm_allocator.c
   {
     my $alloc_counts = 0;
     my $calloc_counts_in_compiler_allocator_source;
@@ -42,7 +42,7 @@ use Test::More 'no_plan';
       my $check_content = do { local $/; <$check_fh> };
       my $re = qr/\b(calloc|alloc|malloc)\(/;
       my $match_count = 0;
-      if ($check_file =~ /spvm_compiler_allocator\.c$/) {
+      if ($check_file =~ /spvm_allocator\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
         $calloc_counts_in_compiler_allocator_source = 1;
       }
@@ -55,7 +55,7 @@ use Test::More 'no_plan';
     ok($calloc_counts_in_compiler_allocator_source);
   }
 
-  # Check that SPVM.xs, SPVM c source codes, and headers contain free only one in spvm_compiler_allocator.c
+  # Check that SPVM.xs, SPVM c source codes, and headers contain free only one in spvm_allocator.c
   {
     my $alloc_counts = 0;
     my $calloc_counts_in_compiler_allocator_source;
@@ -66,7 +66,7 @@ use Test::More 'no_plan';
       my $check_content = do { local $/; <$check_fh> };
       my $re = qr/\bfree\(/;
       my $match_count = 0;
-      if ($check_file =~ /spvm_compiler_allocator\.c$/) {
+      if ($check_file =~ /spvm_allocator\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
         $calloc_counts_in_compiler_allocator_source = 1;
       }
@@ -79,7 +79,7 @@ use Test::More 'no_plan';
     ok($calloc_counts_in_compiler_allocator_source);
   }
   
-  # SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed is only used to allocate the compiler and allocator
+  # SPVM_ALLOCATOR_free_tmp_no_managed is only used to allocate the compiler and allocator
   {
     my $count = 0;
     my $compiler_contains_only_one;
@@ -89,7 +89,7 @@ use Test::More 'no_plan';
         or die "Can't open file \"$check_file\": $!";
       
       my $check_content = do { local $/; <$check_fh> };
-      my $re = qr/[^d]\s+SPVM_COMPILER_ALLOCATOR_free_tmp_no_managed/;
+      my $re = qr/[^d]\s+SPVM_ALLOCATOR_free_tmp_no_managed/;
       my $match_count = 0;
       if ($check_file =~ /spvm_compiler\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
@@ -97,7 +97,7 @@ use Test::More 'no_plan';
           $compiler_contains_only_one = 1;
         }
       }
-      elsif ($check_file =~ /spvm_compiler_allocator\.c$/) {
+      elsif ($check_file =~ /spvm_allocator\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
         if ($match_count == 3) {
           $allocator_contains_only_three = 1;
@@ -113,7 +113,7 @@ use Test::More 'no_plan';
     ok($allocator_contains_only_three);
   }
 
-  # PVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed is only used to allocate the compiler and allocator
+  # SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed is only used to allocate the compiler and allocator
   {
     my $count = 0;
     my $compiler_contains_only_one;
@@ -123,7 +123,7 @@ use Test::More 'no_plan';
         or die "Can't open file \"$check_file\": $!";
       
       my $check_content = do { local $/; <$check_fh> };
-      my $re = qr/[^\*]\s+SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp_no_managed/;
+      my $re = qr/[^\*]\s+SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed/;
       my $match_count = 0;
       if ($check_file =~ /spvm_compiler\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
@@ -131,7 +131,7 @@ use Test::More 'no_plan';
           $compiler_contains_only_one = 1;
         }
       }
-      elsif ($check_file =~ /spvm_compiler_allocator\.c$/) {
+      elsif ($check_file =~ /spvm_allocator\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
         if ($match_count == 2) {
           $allocator_contains_only_two = 1;
