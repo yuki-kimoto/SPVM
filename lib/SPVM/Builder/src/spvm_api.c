@@ -1119,6 +1119,19 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 
   // Free exception
   SPVM_API_set_exception(env, NULL);
+  
+  // Free objects of class variables
+  SPVM_LIST* class_vars = compiler->class_vars;
+  for (int32_t i = 0; i < class_vars->length; i++) {
+    SPVM_CLASS_VAR* class_var = (SPVM_CLASS_VAR*)SPVM_LIST_fetch(class_vars, i);
+    SPVM_TYPE* class_var_type = class_var->type;
+    if (SPVM_TYPE_is_object_type(compiler, class_var_type->basic_type->id, class_var_type->dimension, 0)) {
+      SPVM_OBJECT* object = *(void**)&((SPVM_VALUE*)env->class_vars_heap)[class_var->id];
+      if (object) {
+        SPVM_API_dec_ref_count(env, object);
+      }
+    }
+  }
 
   // Free class variables heap
   SPVM_API_free_memory_block(env, env->class_vars_heap);
