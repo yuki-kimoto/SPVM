@@ -60,7 +60,7 @@ void SPVM_ALLOCATOR_free_block_compile_tmp(SPVM_COMPILER* compiler, void* block)
   allocator->tmp_memory_blocks_count--;
 }
 
-void SPVM_ALLOCATOR_free_block(SPVM_COMPILER* compiler, void* block) {
+void SPVM_ALLOCATOR_free_block_compile_eternal(SPVM_COMPILER* compiler, void* block) {
   (void)compiler;
 
   SPVM_ALLOCATOR* allocator = compiler->allocator;
@@ -142,7 +142,7 @@ void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   for (i = 0; i < allocator->blocks->length; i++) {
     void* block = SPVM_LIST_fetch(allocator->blocks, i);
     if (block != NULL) {
-      SPVM_ALLOCATOR_free_block(compiler, block);
+      SPVM_ALLOCATOR_free_block_compile_eternal(compiler, block);
     }
   }
   SPVM_LIST_free(allocator->blocks);
