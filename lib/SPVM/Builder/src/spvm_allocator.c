@@ -151,10 +151,8 @@ void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   // Free lists
   SPVM_LIST_free(allocator->lists);
   
-  // TODO: comment out
-  // warn("AAAAAAAA %d %d", allocator->memory_blocks_count, allocator->tmp_memory_blocks_count);
-  // assert(allocator->memory_blocks_count == 0);
-  // assert(allocator->tmp_memory_blocks_count == 0);
+  assert(allocator->memory_blocks_count == 0);
+  assert(allocator->tmp_memory_blocks_count == 0);
 
   SPVM_ALLOCATOR_free_block_unmanaged(allocator);
 }
