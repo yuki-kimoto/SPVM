@@ -69,52 +69,6 @@ void SPVM_ALLOCATOR_free_block(SPVM_COMPILER* compiler, void* block) {
   
   allocator->memory_blocks_count--;
 }
-
-const char* SPVM_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler, const char* message_template, ...) {
-  
-  int32_t message_length = 0;
-  
-  // Message template
-  int32_t message_template_length = (int32_t)strlen(message_template);
-  
-  va_list args;
-  va_start(args, message_template);
-
-  message_length += message_template_length;
-  
-  // Argument count
-  char* found_ptr = (char*)message_template;
-  while (1) {
-    found_ptr = strchr(found_ptr, '%');
-    if (found_ptr) {
-      if (*(found_ptr + 1) == 's') {
-        char* arg = va_arg(args, char*);
-        message_length += strlen(arg);
-      }
-      else if (*(found_ptr + 1) == 'd') {
-        (void) va_arg(args, int);
-        message_length += 30;
-      }
-      else {
-        assert(0);
-      }
-      found_ptr++;
-    }
-    else {
-      break;
-    }
-  }
-  va_end(args);
-  
-  char* message = SPVM_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
-  
-  va_start(args, message_template);
-  vsprintf(message, message_template, args);
-  va_end(args);
-
-  return message;
-}
-
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_ALLOCATOR));

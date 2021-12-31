@@ -39,7 +39,6 @@ void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler);
 SPVM_LIST* SPVM_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t capacity);
 SPVM_HASH* SPVM_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t capacity);
 void* SPVM_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t size);
-const char* SPVM_ALLOCATOR_alloc_format_string(SPVM_COMPILER* compiler, const char* message_template, ...);
 
 SPVM_VMCODE* SPVM_ALLOCATOR_alloc_vmcode(SPVM_COMPILER* compiler);
 
