@@ -9,6 +9,30 @@
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
 
+SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
+  
+  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_ALLOCATOR));
+
+  assert(allocator->memory_blocks_count == 0);
+
+  return allocator;
+}
+
+void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler) {
+  (void)compiler;
+
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
+  
+  // Arrays
+  allocator->lists = SPVM_LIST_new(compiler, 8, 0);
+
+  // Objects
+  allocator->blocks = SPVM_LIST_new(compiler, 0, 0);
+  
+  // Hashes
+  allocator->hashes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 8);
+}
+
 void* SPVM_ALLOCATOR_new_block_unmanaged(size_t byte_size) {
   
   if (byte_size < 1) {
@@ -68,29 +92,6 @@ void SPVM_ALLOCATOR_free_block_compile_eternal(SPVM_COMPILER* compiler, void* bl
   SPVM_ALLOCATOR_free_block_unmanaged(block);
   
   allocator->memory_blocks_count--;
-}
-SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
-  
-  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_ALLOCATOR));
-
-  assert(allocator->memory_blocks_count == 0);
-
-  return allocator;
-}
-
-void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler) {
-  (void)compiler;
-
-  SPVM_ALLOCATOR* allocator = compiler->allocator;
-  
-  // Arrays
-  allocator->lists = SPVM_LIST_new(compiler, 8, 0);
-
-  // Objects
-  allocator->blocks = SPVM_LIST_new(compiler, 0, 0);
-  
-  // Hashes
-  allocator->hashes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 8);
 }
 
 void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_COMPILER* compiler, int32_t byte_size) {
