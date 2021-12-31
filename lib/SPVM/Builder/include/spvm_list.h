@@ -8,10 +8,10 @@ struct spvm_list {
   void** values;
   int32_t length;
   int32_t capacity;
-  int8_t is_eternal;
+  int8_t memory_block_type;
 };
 
-SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_eternal);
+SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memory_block_type);
 void SPVM_LIST_free(SPVM_LIST* array);
 void SPVM_LIST_maybe_extend(SPVM_LIST* array);
 

@@ -157,8 +157,8 @@ SPVM_LIST* SPVM_COMPILER_ALLOCATOR_alloc_list(SPVM_COMPILER* compiler, int32_t c
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  int32_t is_eternal = 1;
-  SPVM_LIST* list = SPVM_LIST_new(compiler, capacity, is_eternal);
+  int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
+  SPVM_LIST* list = SPVM_LIST_new(compiler, capacity, memory_block_type);
   
   SPVM_LIST_push(allocator->lists, list);
   
@@ -170,8 +170,8 @@ SPVM_HASH* SPVM_COMPILER_ALLOCATOR_alloc_hash(SPVM_COMPILER* compiler, int32_t c
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
-  int32_t is_eternal = 1;
-  SPVM_HASH* hash = SPVM_HASH_new(compiler, capacity, is_eternal);
+  int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
+  SPVM_HASH* hash = SPVM_HASH_new(compiler, capacity, memory_block_type);
   
   SPVM_LIST_push(allocator->hashes, hash);
   

@@ -14,7 +14,7 @@ struct spvm_hash {
   int32_t entries_length;
   int32_t key_buffer_capacity;
   int32_t key_buffer_length;
-  int8_t is_eternal;
+  int8_t memory_block_type;
 };
 
 // Hash entry
@@ -24,7 +24,7 @@ struct spvm_hash_entry {
   int32_t key_index;
 };
 
-SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_eternal);
+SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memory_block_type);
 
 void SPVM_HASH_insert(SPVM_HASH* hash, const char* key, int32_t length, void* value);
 void* SPVM_HASH_fetch(SPVM_HASH* hash, const char* key, int32_t length);

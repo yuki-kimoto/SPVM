@@ -314,7 +314,7 @@ SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   
   int32_t depth = 0;
   SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 255);
-  SPVM_HASH* address_symtable = SPVM_HASH_new(compiler, 255, 0);
+  SPVM_HASH* address_symtable = SPVM_HASH_new(compiler, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME);
   
   SPVM_API_dump_recursive(env, object, &depth, string_buffer, address_symtable);
   

@@ -6,12 +6,12 @@
 #include "spvm_compiler.h"
 #include "spvm_compiler_allocator.h"
 
-SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_eternal) {
+SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memory_block_type) {
   
   assert(capacity >= 0);
   
   SPVM_LIST* list;
-  if (is_eternal) {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
     list = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_LIST));
   }
   else {
@@ -28,7 +28,7 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_e
   }
   
   void** values;
-  if (is_eternal) {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
     values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, list->capacity * sizeof(void*));
   }
   else {
@@ -38,7 +38,7 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t is_e
   
   list->compiler = compiler;
   
-  list->is_eternal = is_eternal;
+  list->memory_block_type = memory_block_type;
   
   return list;
 }
@@ -56,14 +56,14 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
     int32_t new_capacity = capacity * 2;
     
     void** new_values;
-    if (list->is_eternal) {
+    if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
       new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(compiler, new_capacity * sizeof(void*));
     }
     else {
       new_values = SPVM_COMPILER_ALLOCATOR_safe_malloc_zero_tmp(compiler, new_capacity * sizeof(void*));
     }
     memcpy(new_values, list->values, capacity * sizeof(void*));
-    if (!list->is_eternal) {
+    if (list->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
       SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
     }
     list->values = new_values;
@@ -76,7 +76,7 @@ void SPVM_LIST_free(SPVM_LIST* list) {
 
   SPVM_COMPILER* compiler = list->compiler;
   
-  if (!list->is_eternal) {
+  if (list->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
     SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list->values);
     SPVM_COMPILER_ALLOCATOR_free_tmp(compiler, list);
   }

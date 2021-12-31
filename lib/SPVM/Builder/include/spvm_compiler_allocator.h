@@ -3,6 +3,12 @@
 
 #include "spvm_typedecl.h"
 
+enum {
+  SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY = 0,
+  SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL = 1,
+  SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME = 2,
+};
+
 // Parser information
 struct spvm_compiler_allocator {
   // Blocks
