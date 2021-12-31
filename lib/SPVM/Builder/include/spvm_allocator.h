@@ -27,7 +27,7 @@ struct spvm_allocator {
   int32_t tmp_memory_blocks_count;
 };
 
-void* SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size);
+void* SPVM_ALLOCATOR_new_block_unmanaged(size_t byte_size);
 void SPVM_ALLOCATOR_free_tmp_no_managed(void* block);
 
 void* SPVM_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_size);

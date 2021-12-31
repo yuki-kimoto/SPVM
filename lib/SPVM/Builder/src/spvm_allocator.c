@@ -9,7 +9,7 @@
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
 
-void* SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(size_t byte_size) {
+void* SPVM_ALLOCATOR_new_block_unmanaged(size_t byte_size) {
   
   if (byte_size < 1) {
     fprintf(stderr, "Failed to allocate memory. Size must be more than 0(%s)\n", __FILE__);
@@ -40,7 +40,7 @@ void* SPVM_ALLOCATOR_safe_malloc_zero_tmp(SPVM_COMPILER* compiler, int32_t byte_
   
   SPVM_ALLOCATOR* allocator = compiler->allocator;
 
-  void* block = SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(byte_size);
+  void* block = SPVM_ALLOCATOR_new_block_unmanaged(byte_size);
 
   assert(allocator);
   allocator->memory_blocks_count++;
@@ -71,7 +71,7 @@ void SPVM_ALLOCATOR_free_block(SPVM_COMPILER* compiler, void* block) {
 }
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
-  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_ALLOCATOR));
+  SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_ALLOCATOR));
 
   assert(allocator->memory_blocks_count == 0);
 

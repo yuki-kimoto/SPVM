@@ -29,7 +29,7 @@
 #include "spvm_string_buffer.h"
 
 SPVM_COMPILER* SPVM_COMPILER_new() {
-  SPVM_COMPILER* compiler = SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed(sizeof(SPVM_COMPILER));
+  SPVM_COMPILER* compiler = SPVM_ALLOCATOR_new_block_unmanaged(sizeof(SPVM_COMPILER));
   
   // Allocator
   SPVM_ALLOCATOR* allocator = SPVM_ALLOCATOR_new();

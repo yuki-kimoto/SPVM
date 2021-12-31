@@ -113,7 +113,7 @@ use Test::More 'no_plan';
     ok($allocator_contains_only_three);
   }
 
-  # SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed is only used to allocate the compiler and allocator
+  # SPVM_ALLOCATOR_new_block_unmanaged is only used to allocate the compiler and allocator
   {
     my $count = 0;
     my $compiler_contains_only_one;
@@ -123,7 +123,7 @@ use Test::More 'no_plan';
         or die "Can't open file \"$check_file\": $!";
       
       my $check_content = do { local $/; <$check_fh> };
-      my $re = qr/[^\*]\s+SPVM_ALLOCATOR_safe_malloc_zero_tmp_no_managed/;
+      my $re = qr/[^\*]\s+SPVM_ALLOCATOR_new_block_unmanaged/;
       my $match_count = 0;
       if ($check_file =~ /spvm_compiler\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
