@@ -344,7 +344,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   int32_t parse_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (compiler->cur_src && compiler->cur_src_need_free) {
-    SPVM_ALLOCATOR_free_tmp(compiler, compiler->cur_src);
+    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, compiler->cur_src);
   }
   assert(compiler->allocator->tmp_memory_blocks_count == parse_start_tmp_memory_blocks_count);
   if (parse_error_flag) {

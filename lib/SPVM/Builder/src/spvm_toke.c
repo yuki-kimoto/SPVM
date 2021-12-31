@@ -141,7 +141,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
     if (ch == '\0') {
       compiler->cur_file = NULL;
       if (compiler->cur_src && compiler->cur_src_need_free) {
-        SPVM_ALLOCATOR_free_tmp(compiler, compiler->cur_src);
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, compiler->cur_src);
       }
       compiler->cur_src = NULL;
       compiler->bufptr = NULL;
@@ -257,7 +257,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 char* src = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, file_size + 1);
                 if ((int32_t)fread(src, 1, file_size, fh) < file_size) {
                   SPVM_COMPILER_error(compiler, "Can't read file %s at %s line %d\n", cur_file, op_use->file, op_use->line);
-                  SPVM_ALLOCATOR_free_tmp(compiler, src);
+                  SPVM_ALLOCATOR_free_block_compile_tmp(compiler, src);
                   return 0;
                 }
                 fclose(fh);
@@ -842,7 +842,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else {
                   SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                 }
-                SPVM_ALLOCATOR_free_tmp(compiler, num_str);
+                SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str);
                 assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
               }
               else {
@@ -1100,7 +1100,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                     else {
                       SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                     }
-                    SPVM_ALLOCATOR_free_tmp(compiler, num_str);
+                    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str);
                     assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
                   }
                   else {
@@ -1151,7 +1151,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         else {
                           SPVM_COMPILER_error(compiler, "Invalid unicode code point at %s line %d\n", compiler->cur_file, compiler->cur_line);
                         }
-                        SPVM_ALLOCATOR_free_tmp(compiler, unicode_chars);
+                        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, unicode_chars);
                         assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
                       }
                     }
@@ -1272,7 +1272,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         
         SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, str_length, compiler->cur_file, compiler->cur_line);
         
-        SPVM_ALLOCATOR_free_tmp(compiler, str_tmp);
+        SPVM_ALLOCATOR_free_block_compile_tmp(compiler, str_tmp);
         assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
         
         yylvalp->opval = op_constant;
@@ -1519,7 +1519,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             SPVM_HASH_insert(compiler->const_string_symtable, num_str, num_str_length, num_str);
           }
           
-          SPVM_ALLOCATOR_free_tmp(compiler, num_str_tmp);
+          SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str_tmp);
           assert(compiler->allocator->tmp_memory_blocks_count == num_str_tmp_memoyr_blocks_count);
 
           // Constant

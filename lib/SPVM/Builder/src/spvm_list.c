@@ -64,7 +64,7 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
     }
     memcpy(new_values, list->values, capacity * sizeof(void*));
     if (list->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-      SPVM_ALLOCATOR_free_tmp(compiler, list->values);
+      SPVM_ALLOCATOR_free_block_compile_tmp(compiler, list->values);
     }
     list->values = new_values;
     
@@ -77,8 +77,8 @@ void SPVM_LIST_free(SPVM_LIST* list) {
   SPVM_COMPILER* compiler = list->compiler;
   
   if (list->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-    SPVM_ALLOCATOR_free_tmp(compiler, list->values);
-    SPVM_ALLOCATOR_free_tmp(compiler, list);
+    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, list->values);
+    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, list);
   }
 }
 

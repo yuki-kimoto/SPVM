@@ -38,7 +38,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
     int32_t new_capacity = string_buffer->capacity * 2;
     char* new_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_capacity);
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
-    SPVM_ALLOCATOR_free_tmp(compiler, string_buffer->buffer);
+    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, string_buffer->buffer);
     string_buffer->buffer = new_buffer;
     string_buffer->capacity = new_capacity;
   }
@@ -305,7 +305,7 @@ void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
 
   SPVM_COMPILER* compiler = string_buffer->compiler;
   
-  SPVM_ALLOCATOR_free_tmp(compiler, string_buffer->buffer);
+  SPVM_ALLOCATOR_free_block_compile_tmp(compiler, string_buffer->buffer);
   
-  SPVM_ALLOCATOR_free_tmp(compiler, string_buffer);
+  SPVM_ALLOCATOR_free_block_compile_tmp(compiler, string_buffer);
 }

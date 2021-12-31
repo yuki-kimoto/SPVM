@@ -1126,7 +1126,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   // Free mortal stack
   SPVM_API_free_memory_block(env, env->native_mortal_stack);
 
-  SPVM_ALLOCATOR_free_tmp(compiler, env);
+  SPVM_ALLOCATOR_free_block_compile_tmp(compiler, env);
 }
 
 void SPVM_API_call_init_blocks(SPVM_ENV* env) {
@@ -6672,7 +6672,7 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     fprintf(stderr, "[FREE_MEMORY %p %d]\n", block, (int32_t)(intptr_t)compiler->allocator->memory_blocks_count);
 #endif
-    SPVM_ALLOCATOR_free_tmp(compiler, block);
+    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, block);
   }
 }
 

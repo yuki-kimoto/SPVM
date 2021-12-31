@@ -49,7 +49,7 @@ void* SPVM_ALLOCATOR_new_block_compile_tmp(SPVM_COMPILER* compiler, int32_t byte
   return block;
 }
 
-void SPVM_ALLOCATOR_free_tmp(SPVM_COMPILER* compiler, void* block) {
+void SPVM_ALLOCATOR_free_block_compile_tmp(SPVM_COMPILER* compiler, void* block) {
   (void)compiler;
 
   SPVM_ALLOCATOR* allocator = compiler->allocator;

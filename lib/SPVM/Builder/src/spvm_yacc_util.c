@@ -41,7 +41,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message) {
   int32_t char_pos = (int32_t)(compiler->befbufptr + empty_count + 1 - compiler->line_start_ptr);
   
   fprintf(stderr, "[CompileError]Unexpected token \"%s\" at %s line %d:%d\n", token, compiler->cur_file, compiler->cur_line, char_pos);
-  SPVM_ALLOCATOR_free_tmp(compiler, token);
+  SPVM_ALLOCATOR_free_block_compile_tmp(compiler, token);
 }
 
 // Print token value for debug
