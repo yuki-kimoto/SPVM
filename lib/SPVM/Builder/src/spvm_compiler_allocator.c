@@ -129,14 +129,14 @@ void SPVM_COMPILER_ALLOCATOR_init(SPVM_COMPILER* compiler) {
 
   SPVM_COMPILER_ALLOCATOR* allocator = compiler->allocator;
   
+  // Arrays
+  allocator->lists = SPVM_LIST_new(compiler, 8, 0);
+
   // Objects
   allocator->blocks = SPVM_LIST_new(compiler, 0, 0);
   
-  // Arrays
-  allocator->lists = SPVM_LIST_new(compiler, 8, 0);
-  
   // Hashes
-  allocator->hashes = SPVM_LIST_new(compiler, 8, 0);
+  allocator->hashes = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 8);
 }
 
 void* SPVM_COMPILER_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t byte_size) {
@@ -195,9 +195,6 @@ void SPVM_COMPILER_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   
   // Free lists
   SPVM_LIST_free(allocator->lists);
-  
-  // Free hashes
-  SPVM_LIST_free(allocator->hashes);
   
   // TODO: comment out
   // warn("AAAAAAAA %d %d", allocator->memory_blocks_count, allocator->tmp_memory_blocks_count);
