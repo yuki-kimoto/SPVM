@@ -99,8 +99,8 @@ void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_COMPILER* compiler, int32_t 
   
   SPVM_ALLOCATOR* allocator = compiler->allocator;
   
-  void* block = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, byte_size);
-  allocator->tmp_memory_blocks_count--;
+  void* block = SPVM_ALLOCATOR_new_block_unmanaged(byte_size);
+  allocator->memory_blocks_count++;
   
   SPVM_LIST_push(allocator->blocks, block);
   

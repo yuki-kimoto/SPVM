@@ -117,7 +117,7 @@ use Test::More 'no_plan';
   {
     my $count = 0;
     my $compiler_contains_only_one;
-    my $allocator_contains_only_two;
+    my $allocator_contains_only_three;
     for my $check_file (@check_files) {
       open my $check_fh, '<', $check_file
         or die "Can't open file \"$check_file\": $!";
@@ -133,8 +133,8 @@ use Test::More 'no_plan';
       }
       elsif ($check_file =~ /spvm_allocator\.c$/) {
         $match_count++ while $check_content =~ /$re/g;
-        if ($match_count == 2) {
-          $allocator_contains_only_two = 1;
+        if ($match_count == 3) {
+          $allocator_contains_only_three = 1;
         }
       }
       else {
@@ -142,8 +142,8 @@ use Test::More 'no_plan';
       }
       $count += $match_count;
     }
-    is($count, 3);
+    is($count, 4);
     ok($compiler_contains_only_one);
-    ok($allocator_contains_only_two);
+    ok($allocator_contains_only_three);
   }
 }
