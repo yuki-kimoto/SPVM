@@ -21,7 +21,7 @@ const char* const* SPVM_CLASS_C_CATEGORY_NAMES(void) {
 }
 
 SPVM_CLASS* SPVM_CLASS_new(SPVM_COMPILER* compiler) {
-  SPVM_CLASS* class = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_CLASS));
+  SPVM_CLASS* class = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_CLASS));
   
   // Fields
   class->fields = SPVM_ALLOCATOR_alloc_list(compiler, 0);

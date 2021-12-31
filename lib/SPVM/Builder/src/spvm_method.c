@@ -11,7 +11,7 @@
 #include "spvm_basic_type.h"
 
 SPVM_METHOD* SPVM_METHOD_new(SPVM_COMPILER* compiler) {
-  SPVM_METHOD* method = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_METHOD));
+  SPVM_METHOD* method = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_METHOD));
   
   method->args = SPVM_ALLOCATOR_alloc_list(compiler, 0);
   method->mys = SPVM_ALLOCATOR_alloc_list(compiler, 0);

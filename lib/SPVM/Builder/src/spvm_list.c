@@ -12,7 +12,7 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memo
   
   SPVM_LIST* list;
   if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-    list = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sizeof(SPVM_LIST));
+    list = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_LIST));
   }
   else {
     list = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_LIST));
@@ -29,7 +29,7 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memo
   
   void** values;
   if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-    values = SPVM_ALLOCATOR_safe_malloc_zero(compiler, list->capacity * sizeof(void*));
+    values = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, list->capacity * sizeof(void*));
   }
   else {
     values = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, list->capacity * sizeof(void*));
@@ -57,7 +57,7 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
     
     void** new_values;
     if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-      new_values = SPVM_ALLOCATOR_safe_malloc_zero(compiler, new_capacity * sizeof(void*));
+      new_values = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_capacity * sizeof(void*));
     }
     else {
       new_values = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_capacity * sizeof(void*));

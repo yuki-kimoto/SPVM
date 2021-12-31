@@ -93,7 +93,7 @@ void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler) {
   allocator->hashes = SPVM_ALLOCATOR_alloc_list(compiler, 8);
 }
 
-void* SPVM_ALLOCATOR_safe_malloc_zero(SPVM_COMPILER* compiler, int32_t byte_size) {
+void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_COMPILER* compiler, int32_t byte_size) {
   (void)compiler;
   
   SPVM_ALLOCATOR* allocator = compiler->allocator;

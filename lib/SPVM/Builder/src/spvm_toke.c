@@ -168,7 +168,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           else {
             // Create moudle relative file name from class name by changing :: to / and add ".spvm"
             int32_t cur_rel_file_length = (int32_t)(strlen(class_name) + 6);
-            char* cur_rel_file = SPVM_ALLOCATOR_safe_malloc_zero(compiler, cur_rel_file_length + 1);
+            char* cur_rel_file = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, cur_rel_file_length + 1);
             const char* bufptr_orig = class_name;
             char* bufptr_to = cur_rel_file;
             while (*bufptr_orig) {
@@ -209,7 +209,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 
                 // File name
                 int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(cur_rel_file));
-                cur_file = SPVM_ALLOCATOR_safe_malloc_zero(compiler, file_name_length + 1);
+                cur_file = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, file_name_length + 1);
                 sprintf(cur_file, "%s/%s", include_dir, cur_rel_file);
                 cur_file[file_name_length] = '\0';
                 
@@ -1265,7 +1265,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           str = found_str;
         }
         else {
-          str = SPVM_ALLOCATOR_safe_malloc_zero(compiler, str_length + 1);
+          str = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, str_length + 1);
           memcpy(str, str_tmp, str_length);
           SPVM_HASH_insert(compiler->const_string_symtable, str, str_length, str);
         }
@@ -1359,7 +1359,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               var_name = found_var_name;
             }
             else {
-              var_name = SPVM_ALLOCATOR_safe_malloc_zero(compiler, 1 + var_name_length_without_sigil + 1);
+              var_name = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 1 + var_name_length_without_sigil + 1);
               var_name[0] = '$';
               memcpy(&var_name[1], cur_token_ptr, var_name_length_without_sigil);
               var_name[1 + var_name_length_without_sigil] = '\0';
@@ -1514,7 +1514,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             num_str = found_num_str;
           }
           else {
-            num_str = (char*)SPVM_ALLOCATOR_safe_malloc_zero(compiler, num_str_length + 1);
+            num_str = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, num_str_length + 1);
             memcpy(num_str, num_str_tmp, num_str_length);
             SPVM_HASH_insert(compiler->const_string_symtable, num_str, num_str_length, num_str);
           }
@@ -1715,7 +1715,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             keyword = found_name;
           }
           else {
-            keyword = SPVM_ALLOCATOR_safe_malloc_zero(compiler, keyword_length + 1);
+            keyword = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, keyword_length + 1);
             memcpy(keyword, cur_token_ptr, keyword_length);
             keyword[keyword_length] = '\0';
             SPVM_HASH_insert(compiler->const_string_symtable, keyword, keyword_length, keyword);

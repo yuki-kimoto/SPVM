@@ -420,7 +420,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   }
   va_end(args);
   
-  char* message = SPVM_ALLOCATOR_safe_malloc_zero(compiler, message_length + 1);
+  char* message = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, message_length + 1);
   
   va_start(args, message_template);
   vsprintf(message, message_template, args);
@@ -477,7 +477,7 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     length += 1;
   }
   
-  char* method_signature = SPVM_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* method_signature = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, length + 1);
   
   // Calcurate method signature length
   char* bufptr = method_signature;
@@ -552,7 +552,7 @@ const char* SPVM_COMPILER_create_field_signature(SPVM_COMPILER* compiler, SPVM_F
     length += field->type->dimension * 2;
   }
   
-  char* field_signature = SPVM_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* field_signature = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, length + 1);
   
   // Calcurate field signature length
   char* bufptr = field_signature;
@@ -585,7 +585,7 @@ const char* SPVM_COMPILER_create_class_var_signature(SPVM_COMPILER* compiler, SP
     length += class_var->type->dimension * 2;
   }
   
-  char* class_var_signature = SPVM_ALLOCATOR_safe_malloc_zero(compiler, length + 1);
+  char* class_var_signature = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, length + 1);
   
   // Calcurate class_var signature length
   char* bufptr = class_var_signature;

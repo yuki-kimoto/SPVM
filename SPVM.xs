@@ -3519,12 +3519,12 @@ compile_spvm(...)
   
   // Name
   const char* name = SvPV_nolen(sv_name);
-  char* name_copy = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_name) + 1);
+  char* name_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_name) + 1);
   memcpy(name_copy, name, sv_len(sv_name));
   
   // File
   const char* file = SvPV_nolen(sv_file);
-  char* file_copy = SPVM_ALLOCATOR_safe_malloc_zero(compiler, sv_len(sv_file) + 1);
+  char* file_copy = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sv_len(sv_file) + 1);
   memcpy(file_copy, file, sv_len(sv_file));
   
   // Line
