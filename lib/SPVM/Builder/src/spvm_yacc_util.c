@@ -34,7 +34,7 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message) {
     ptr++;
   }
   
-  char* token = (char*) SPVM_ALLOCATOR_new_block_tmp(compiler, length + 1);
+  char* token = (char*) SPVM_ALLOCATOR_safe_malloc_zero_tmp(compiler, length + 1);
   memcpy(token, compiler->befbufptr + empty_count, length);
   token[length] = '\0';
   
