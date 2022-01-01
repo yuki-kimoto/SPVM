@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9104  2021-01-02
+        [CHANGES]
+        * SPVM gcc option is simplified. 
+
 0.9103  2021-01-01
         [CHANGES]
         * Fix the bug that old string buffers of the compiler isn't freed when new memory is allocated.

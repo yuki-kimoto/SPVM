@@ -50,6 +50,21 @@ if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
   $ccflags .= ' -Wall -Wextra -Wno-unused-label -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wno-missing-field-initializers';
 }
 
+# This flags is needed for Perl, but SPVM don't need them.
+my @unneeded_ccflags = qw(
+  -fwrapv
+  -fno-strict-aliasing
+  -pipe
+  -D_LARGEFILE_SOURCE
+  -D_FILE_OFFSET_BITS=64
+);
+warn $ccflags;
+for my $unneeded_ccflag (@unneeded_ccflags) {
+  $ccflags =~ s/\Q$unneeded_ccflag//;
+}
+
+warn $ccflags;
+
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
 
