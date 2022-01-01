@@ -28,9 +28,6 @@ void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler) {
 
   // Objects
   allocator->blocks = SPVM_LIST_new(compiler, 0, 0);
-  
-  // Hashes
-  allocator->hashes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 8);
 }
 
 void* SPVM_ALLOCATOR_new_block_unmanaged(size_t byte_size) {
@@ -127,8 +124,6 @@ SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_COMPILER* compiler, int3
   
   int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
   SPVM_HASH* hash = SPVM_HASH_new(compiler, capacity, memory_block_type);
-  
-  SPVM_LIST_push(allocator->hashes, hash);
   
   return hash;
 }
