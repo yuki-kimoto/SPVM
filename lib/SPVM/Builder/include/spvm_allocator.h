@@ -14,9 +14,6 @@ struct spvm_allocator {
   // Blocks
   SPVM_LIST* blocks;
 
-  // Lists
-  SPVM_LIST* lists;
-  
   // This is all memory blocks allocated by the SPVM compiler and runtime.
   int32_t memory_blocks_count;
 

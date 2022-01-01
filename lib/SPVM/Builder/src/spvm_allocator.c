@@ -23,9 +23,6 @@ void SPVM_ALLOCATOR_init(SPVM_COMPILER* compiler) {
 
   SPVM_ALLOCATOR* allocator = compiler->allocator;
   
-  // Arrays
-  allocator->lists = SPVM_LIST_new(compiler, 8, 0);
-
   // Objects
   allocator->blocks = SPVM_LIST_new(compiler, 0, 0);
 }
@@ -112,8 +109,6 @@ SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_COMPILER* compiler, int3
   int32_t memory_block_type = SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL;
   SPVM_LIST* list = SPVM_LIST_new(compiler, capacity, memory_block_type);
   
-  SPVM_LIST_push(allocator->lists, list);
-  
   return list;
 }
 
@@ -142,9 +137,6 @@ void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {
     }
   }
   SPVM_LIST_free(allocator->blocks);
-  
-  // Free lists
-  SPVM_LIST_free(allocator->lists);
   
   assert(allocator->memory_blocks_count == 0);
   assert(allocator->tmp_memory_blocks_count == 0);
