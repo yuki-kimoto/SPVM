@@ -1,9 +1,5 @@
 Revision history for SPVM
 
-0.9104  2021-01-02
-        [CHANGES]
-        * Improve Makefile.PL. gcc options of SPVM module is most same as SPVM::Builder::Config setting.
-
 0.9103  2021-01-01
         [CHANGES]
         * Fix the bug that old string buffers of the compiler isn't freed when new memory is allocated.
