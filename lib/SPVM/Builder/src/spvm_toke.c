@@ -823,7 +823,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             else if (*compiler->bufptr == 'x') {
               compiler->bufptr++;
               if (*compiler->bufptr == '0' || *compiler->bufptr == '1' || *compiler->bufptr == '2' || *compiler->bufptr == '3' || *compiler->bufptr == '4' || *compiler->bufptr == '5' || *compiler->bufptr == '6' || *compiler->bufptr == '7') {
-                int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+                int32_t memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
                 
                 char* num_str = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, 3);
                 num_str[0] = *compiler->bufptr;
@@ -843,7 +843,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                 }
                 SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str);
-                assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
+                assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
               }
               else {
                 SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
@@ -890,7 +890,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         int8_t next_state_var_expansion = SPVM_TOKE_C_STATE_VAR_EXPANSION_DEFAULT;
         
         char* str_tmp;
-        int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+        int32_t memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
         int32_t str_length = 0;
         if (*(compiler->bufptr) == '"') {
           str_tmp = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, 1);
@@ -1080,7 +1080,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 else if (*char_ptr == 'x') {
                   char_ptr++;
                   if (*char_ptr == '0' || *char_ptr == '1' || *char_ptr == '2' || *char_ptr == '3' || *char_ptr == '4' || *char_ptr == '5' || *char_ptr == '6' || *char_ptr == '7') {
-                    int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+                    int32_t memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
                     char* num_str = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, 3);
                     num_str[0] = *char_ptr;
                     char_ptr++;
@@ -1101,7 +1101,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                       SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
                     }
                     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str);
-                    assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
+                    assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
                   }
                   else {
                     SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of string literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
@@ -1133,7 +1133,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                         SPVM_COMPILER_error(compiler, "Too big unicode code point at %s line %d\n", compiler->cur_file, compiler->cur_line);
                       }
                       else {
-                        int32_t tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+                        int32_t memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
                         char* unicode_chars = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, unicode_chars_length + 1);
                         memcpy(unicode_chars, char_start_ptr, unicode_chars_length);
                         char *end;
@@ -1152,7 +1152,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                           SPVM_COMPILER_error(compiler, "Invalid unicode code point at %s line %d\n", compiler->cur_file, compiler->cur_line);
                         }
                         SPVM_ALLOCATOR_free_block_compile_tmp(compiler, unicode_chars);
-                        assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
+                        assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
                       }
                     }
                     else {
@@ -1273,7 +1273,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
         SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, str, str_length, compiler->cur_file, compiler->cur_line);
         
         SPVM_ALLOCATOR_free_block_compile_tmp(compiler, str_tmp);
-        assert(compiler->allocator->tmp_memory_blocks_count == tmp_memory_blocks_count);
+        assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
         
         yylvalp->opval = op_constant;
         
@@ -1486,7 +1486,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           int32_t str_len = (compiler->bufptr - cur_token_ptr);
           
           // Ignore under line
-          int32_t num_str_tmp_memoyr_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+          int32_t num_str_tmp_memoyr_blocks_count = compiler->allocator->memory_blocks_count_compile_tmp;
           char* num_str_tmp = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, str_len + 2);
           int32_t pos = 0;
           {
@@ -1520,7 +1520,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           }
           
           SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str_tmp);
-          assert(compiler->allocator->tmp_memory_blocks_count == num_str_tmp_memoyr_blocks_count);
+          assert(compiler->allocator->memory_blocks_count_compile_tmp == num_str_tmp_memoyr_blocks_count);
 
           // Constant
           SPVM_TYPE* constant_type;

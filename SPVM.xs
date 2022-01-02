@@ -4001,9 +4001,9 @@ build_class_csource_precompile(...)
 
   // Build class csource
   
-  int32_t build_class_csource_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+  int32_t build_class_csource_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   SPVM_CSOURCE_BUILDER_PRECOMPILE_build_class_csource(compiler, string_buffer, class_name);
-  assert(compiler->allocator->tmp_memory_blocks_count == build_class_csource_start_tmp_memory_blocks_count);
+  assert(compiler->allocator->memory_blocks_count_compile_tmp == build_class_csource_start_memory_blocks_count_compile_tmp);
   
   SV* sv_class_csource = sv_2mortal(newSVpv(string_buffer->buffer, string_buffer->length));
   

@@ -62,7 +62,7 @@ void* SPVM_ALLOCATOR_new_block_compile_tmp(SPVM_COMPILER* compiler, int32_t byte
 
   assert(allocator);
   allocator->memory_blocks_count++;
-  allocator->tmp_memory_blocks_count++;
+  allocator->memory_blocks_count_compile_tmp++;
 
   return block;
 }
@@ -75,7 +75,7 @@ void SPVM_ALLOCATOR_free_block_compile_tmp(SPVM_COMPILER* compiler, void* block)
   SPVM_ALLOCATOR_free_block_unmanaged(block);
   
   allocator->memory_blocks_count--;
-  allocator->tmp_memory_blocks_count--;
+  allocator->memory_blocks_count_compile_tmp--;
 }
 
 void SPVM_ALLOCATOR_free_block_compile_eternal(SPVM_COMPILER* compiler, void* block) {
@@ -139,7 +139,7 @@ void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {
   SPVM_LIST_free(allocator->blocks);
   
   assert(allocator->memory_blocks_count == 0);
-  assert(allocator->tmp_memory_blocks_count == 0);
+  assert(allocator->memory_blocks_count_compile_tmp == 0);
 
   SPVM_ALLOCATOR_free_block_unmanaged(allocator);
 }

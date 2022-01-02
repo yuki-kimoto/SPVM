@@ -341,12 +341,12 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   int32_t error = 0;
   
   /* Tokenize and Parse */
-  int32_t parse_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+  int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
   if (compiler->cur_src && compiler->cur_src_need_free) {
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, compiler->cur_src);
   }
-  assert(compiler->allocator->tmp_memory_blocks_count == parse_start_tmp_memory_blocks_count);
+  assert(compiler->allocator->memory_blocks_count_compile_tmp == parse_start_memory_blocks_count_compile_tmp);
   if (parse_error_flag) {
     error = 1;
   }
@@ -356,17 +356,17 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     }
     else {
       // Check syntax
-      int32_t check_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+      int32_t check_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
       SPVM_OP_CHECKER_check(compiler);
-      assert(compiler->allocator->tmp_memory_blocks_count == check_start_tmp_memory_blocks_count);
+      assert(compiler->allocator->memory_blocks_count_compile_tmp == check_start_memory_blocks_count_compile_tmp);
       if (compiler->error_count > 0) {
         error = 1;
       }
       else {
         // Build operation code
-        int32_t build_opcode_array_start_tmp_memory_blocks_count = compiler->allocator->tmp_memory_blocks_count;
+        int32_t build_opcode_array_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
         SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
-        assert(compiler->allocator->tmp_memory_blocks_count == build_opcode_array_start_tmp_memory_blocks_count);
+        assert(compiler->allocator->memory_blocks_count_compile_tmp == build_opcode_array_start_memory_blocks_count_compile_tmp);
         if (compiler->error_count > 0) {
           error = 1;
         }
