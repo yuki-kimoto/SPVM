@@ -6665,7 +6665,7 @@ void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
     return NULL;
   }
   
-  void* block = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, (size_t)byte_size);
+  void* block = SPVM_ALLOCATOR_new_block_runtime(compiler, (size_t)byte_size);
   
   if (block) {
     int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
@@ -6696,7 +6696,7 @@ void SPVM_API_free_memory_block(SPVM_ENV* env, void* block) {
 #ifdef SPVM_DEBUG_ALLOC_MEMORY_COUNT
     fprintf(stderr, "[FREE_MEMORY %p %d]\n", block, (int32_t)(intptr_t)env->memory_blocks_count);
 #endif
-    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, block);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, block);
   }
 }
 
