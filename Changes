@@ -5,7 +5,6 @@ Revision history for SPVM
         * SPVM::get_memory_blocks_count and native api's get_memory_blocks_count return
           the count of memory blocks created by the runtime environment. This is revert of 0.9103
 
-
 0.9104  2021-01-02
         [CHANGES]
         * SPVM gcc option is simplified. 
