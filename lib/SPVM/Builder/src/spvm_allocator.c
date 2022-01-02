@@ -95,6 +95,7 @@ void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_COMPILER* compiler, int32_t 
   
   void* block = SPVM_ALLOCATOR_new_block_unmanaged(byte_size);
   allocator->memory_blocks_count++;
+  allocator->memory_blocks_count_compile_eternal++;
   
   SPVM_LIST_push(allocator->blocks, block);
   
@@ -121,6 +122,31 @@ SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_COMPILER* compiler, int3
   SPVM_HASH* hash = SPVM_HASH_new(compiler, capacity, memory_block_type);
   
   return hash;
+}
+
+void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_size) {
+  (void)compiler;
+  
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
+
+  void* block = SPVM_ALLOCATOR_new_block_unmanaged(byte_size);
+
+  assert(allocator);
+  allocator->memory_blocks_count++;
+  allocator->memory_blocks_count_runtime++;
+
+  return block;
+}
+
+void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block) {
+  (void)compiler;
+
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
+  
+  SPVM_ALLOCATOR_free_block_unmanaged(block);
+  
+  allocator->memory_blocks_count--;
+  allocator->memory_blocks_count_runtime--;
 }
 
 void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {
