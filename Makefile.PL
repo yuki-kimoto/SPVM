@@ -58,12 +58,9 @@ my @unneeded_ccflags = qw(
   -D_LARGEFILE_SOURCE
   -D_FILE_OFFSET_BITS=64
 );
-warn $ccflags;
 for my $unneeded_ccflag (@unneeded_ccflags) {
   $ccflags =~ s/\Q$unneeded_ccflag//;
 }
-
-warn $ccflags;
 
 # INC
 my $inc = '-Ilib/SPVM/Builder/include';
