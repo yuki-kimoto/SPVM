@@ -262,7 +262,7 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_bool_object_value,
   };
   
-  SPVM_ENV* env = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(env_init));
+  SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime(compiler, sizeof(env_init));
   if (env == NULL) {
     return NULL;
   }
@@ -1139,7 +1139,7 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   // Free mortal stack
   SPVM_API_free_memory_block(env, env->native_mortal_stack);
 
-  SPVM_ALLOCATOR_free_block_compile_tmp(compiler, env);
+  SPVM_ALLOCATOR_free_block_runtime(compiler, env);
 }
 
 void SPVM_API_call_init_blocks(SPVM_ENV* env) {
