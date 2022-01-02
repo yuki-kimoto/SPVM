@@ -476,7 +476,7 @@ SPVM::set_exception(undef);
 
   my $count = SPVM::get_memory_blocks_count();
 
-Get the all count of memory blocks created by the SPVM compiler and runtime.
+Get the count of created memory blocks. SPVM runtime create a memory block on the heap when a object is created or new week reference is created.
 
 You can check the memory leaks by this method.
 
