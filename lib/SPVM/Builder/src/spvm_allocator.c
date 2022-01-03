@@ -8,6 +8,7 @@
 #include "spvm_hash.h"
 #include "spvm_allocator.h"
 #include "spvm_compiler.h"
+#include "spvm_native.h"
 
 SPVM_ALLOCATOR* SPVM_ALLOCATOR_new() {
   
@@ -125,7 +126,7 @@ SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_COMPILER* compiler, int3
   return hash;
 }
 
-void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_size) {
+void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_size, SPVM_ENV* env) {
   (void)compiler;
   
   SPVM_ALLOCATOR* allocator = compiler->allocator;
@@ -135,11 +136,16 @@ void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_siz
   assert(allocator);
   allocator->memory_blocks_count++;
   allocator->memory_blocks_count_runtime++;
-
+  if (env) {
+    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
+    memory_blocks_count++;
+    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
+  }
+  
   return block;
 }
 
-void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block) {
+void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block, SPVM_ENV* env) {
   (void)compiler;
 
   SPVM_ALLOCATOR* allocator = compiler->allocator;
@@ -148,6 +154,11 @@ void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block) {
   
   allocator->memory_blocks_count--;
   allocator->memory_blocks_count_runtime--;
+  if (env) {
+    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
+    memory_blocks_count--;
+    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
+  }
 }
 
 void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {

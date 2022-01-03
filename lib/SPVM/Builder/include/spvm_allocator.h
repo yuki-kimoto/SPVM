@@ -2,6 +2,7 @@
 #define SPVM_ALLOCATOR_H
 
 #include "spvm_typedecl.h"
+#include "spvm_native.h"
 
 enum {
   SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY = 0,
@@ -40,8 +41,8 @@ void* SPVM_ALLOCATOR_new_block_compile_eternal(SPVM_COMPILER* compiler, int32_t 
 SPVM_LIST* SPVM_ALLOCATOR_new_list_compile_eternal(SPVM_COMPILER* compiler, int32_t capacity);
 SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_COMPILER* compiler, int32_t capacity);
 
-void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_size);
-void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block);
+void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_size, SPVM_ENV* env);
+void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block, SPVM_ENV* env);
 
 void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler);
 
