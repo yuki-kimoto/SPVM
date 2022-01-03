@@ -16,25 +16,39 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_COMPILER* compiler, int32_t capa
   }
   
   SPVM_STRING_BUFFER* string_buffer;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+    string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_STRING_BUFFER));
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
     string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_STRING_BUFFER));
   }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_runtime(compiler, sizeof(SPVM_STRING_BUFFER), env);
+  }
   else {
-    string_buffer = (SPVM_STRING_BUFFER*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_STRING_BUFFER));
+    assert(0);
   }
   
   string_buffer->capacity = capacity;
   string_buffer->buffer;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-    string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, capacity);
-  }
-  else {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, capacity);
   }
-  
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, capacity);
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_runtime(compiler, capacity, env);
+  }
+  else {
+    assert(0);
+  }
+
   string_buffer->compiler = compiler;
   
   string_buffer->memory_block_type = memory_block_type;
+  
+  string_buffer->env = env;
 
   return string_buffer;
 }
@@ -52,17 +66,34 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
   while (new_length > string_buffer->capacity) {
     int32_t new_capacity = string_buffer->capacity * 2;
     char* new_buffer;
-    if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+      new_buffer = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_capacity);
+    }
+    else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
       new_buffer = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_capacity);
     }
+    else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      new_buffer = (char*)SPVM_ALLOCATOR_new_block_runtime(compiler, new_capacity, string_buffer->env);
+    }
     else {
-      new_buffer = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_capacity);
+      assert(0);
     }
 
     memcpy(new_buffer, string_buffer->buffer, string_buffer->length);
-    if (string_buffer->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+
+    if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
       SPVM_ALLOCATOR_free_block_compile_tmp(compiler, string_buffer->buffer);
     }
+    else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+      // Nothing
+    }
+    else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      SPVM_ALLOCATOR_free_block_runtime(compiler, string_buffer->buffer, string_buffer->env);
+    }
+    else {
+      assert(0);
+    }
+
     string_buffer->buffer = new_buffer;
     string_buffer->capacity = new_capacity;
   }
@@ -329,8 +360,18 @@ void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
 
   SPVM_COMPILER* compiler = string_buffer->compiler;
   
-  if (string_buffer->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+  if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, string_buffer->buffer);
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, string_buffer);
+  }
+  else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    // Nothing
+  }
+  else if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    SPVM_ALLOCATOR_free_block_runtime(compiler, string_buffer->buffer, string_buffer->env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, string_buffer, string_buffer->env);
+  }
+  else {
+    assert(0);
   }
 }
