@@ -5,8 +5,9 @@
 #include "spvm_hash.h"
 #include "spvm_compiler.h"
 #include "spvm_allocator.h"
+#include "spvm_native.h"
 
-SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_t memory_block_type) {
+SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_t memory_block_type, SPVM_ENV* env) {
   
   assert(table_capacity >= 0);
 
@@ -243,7 +244,7 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   SPVM_COMPILER* compiler = hash->compiler;
 
   // Create new hash
-  SPVM_HASH* new_hash = SPVM_HASH_new(compiler, new_table_capacity, hash->memory_block_type);
+  SPVM_HASH* new_hash = SPVM_HASH_new(compiler, new_table_capacity, hash->memory_block_type, NULL);
   
   // Rehash
   {

@@ -5,8 +5,9 @@
 #include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_allocator.h"
+#include "spvm_native.h"
 
-SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memory_block_type) {
+SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memory_block_type, SPVM_ENV* env) {
   
   assert(capacity >= 0);
   
