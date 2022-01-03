@@ -136,7 +136,10 @@ void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_siz
   assert(allocator);
   allocator->memory_blocks_count++;
   allocator->memory_blocks_count_runtime++;
-  if (env) {
+  
+  assert(env);
+  
+  {
     int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
     memory_blocks_count++;
     env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
@@ -154,11 +157,38 @@ void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block, SPV
   
   allocator->memory_blocks_count--;
   allocator->memory_blocks_count_runtime--;
-  if (env) {
+  
+  assert(env);
+  {
     int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
     memory_blocks_count--;
     env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
   }
+}
+
+void* SPVM_ALLOCATOR_new_block_runtime_noenv(SPVM_COMPILER* compiler, int32_t byte_size) {
+  (void)compiler;
+  
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
+
+  void* block = SPVM_ALLOCATOR_new_block_unmanaged(byte_size);
+
+  assert(allocator);
+  allocator->memory_blocks_count++;
+  allocator->memory_blocks_count_runtime++;
+  
+  return block;
+}
+
+void SPVM_ALLOCATOR_free_block_runtime_noenv(SPVM_COMPILER* compiler, void* block) {
+  (void)compiler;
+
+  SPVM_ALLOCATOR* allocator = compiler->allocator;
+  
+  SPVM_ALLOCATOR_free_block_unmanaged(block);
+  
+  allocator->memory_blocks_count--;
+  allocator->memory_blocks_count_runtime--;
 }
 
 void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler) {

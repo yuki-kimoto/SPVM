@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9106  2021-01-04
+        [BUGS]
+        * Fix the memory blocks count in runtime environment.
+
 0.9105  2021-01-03
         [CHANGES]
         * SPVM::get_memory_blocks_count and native api's get_memory_blocks_count return

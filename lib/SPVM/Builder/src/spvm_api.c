@@ -262,10 +262,17 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_bool_object_value,
   };
   
-  SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime(compiler, sizeof(env_init), NULL);
+  SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
   if (env == NULL) {
     return NULL;
   }
+  
+  {
+    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
+    memory_blocks_count++;
+    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
+  }
+  
   memcpy(env, env_init, sizeof(env_init));
 
   // Mortal stack
@@ -313,8 +320,8 @@ SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
   int32_t depth = 0;
-  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, NULL);
-  SPVM_HASH* address_symtable = SPVM_HASH_new(compiler, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, NULL);
+  SPVM_STRING_BUFFER* string_buffer = SPVM_STRING_BUFFER_new(compiler, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, env);
+  SPVM_HASH* address_symtable = SPVM_HASH_new(compiler, 255, SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME, env);
   
   SPVM_API_dump_recursive(env, object, &depth, string_buffer, address_symtable);
   
@@ -1139,7 +1146,13 @@ void SPVM_API_free_env(SPVM_ENV* env) {
   // Free mortal stack
   SPVM_API_free_memory_block(env, env->native_mortal_stack);
 
-  SPVM_ALLOCATOR_free_block_runtime(compiler, env, NULL);
+  SPVM_ALLOCATOR_free_block_runtime_noenv(compiler, env);
+
+  {
+    int32_t memory_blocks_count = (int32_t)(intptr_t)env->memory_blocks_count;
+    memory_blocks_count--;
+    env->memory_blocks_count = (void*)(intptr_t)memory_blocks_count;
+  }
 }
 
 void SPVM_API_call_init_blocks(SPVM_ENV* env) {

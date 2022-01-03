@@ -44,6 +44,9 @@ SPVM_HASH* SPVM_ALLOCATOR_new_hash_compile_eternal(SPVM_COMPILER* compiler, int3
 void* SPVM_ALLOCATOR_new_block_runtime(SPVM_COMPILER* compiler, int32_t byte_size, SPVM_ENV* env);
 void SPVM_ALLOCATOR_free_block_runtime(SPVM_COMPILER* compiler, void* block, SPVM_ENV* env);
 
+void* SPVM_ALLOCATOR_new_block_runtime_noenv(SPVM_COMPILER* compiler, int32_t byte_size);
+void SPVM_ALLOCATOR_free_block_runtime_noenv(SPVM_COMPILER* compiler, void* block);
+
 void SPVM_ALLOCATOR_free(SPVM_COMPILER* compiler);
 
 #endif
