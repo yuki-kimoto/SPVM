@@ -12,11 +12,17 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memo
   assert(capacity >= 0);
   
   SPVM_LIST* list;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+    list = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_LIST));
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
     list = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_LIST));
   }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    list = SPVM_ALLOCATOR_new_block_runtime(compiler, sizeof(SPVM_LIST), env);
+  }
   else {
-    list = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_LIST));
+    assert(0);
   }
   
   list->length = 0;
@@ -29,17 +35,26 @@ SPVM_LIST* SPVM_LIST_new(SPVM_COMPILER* compiler, int32_t capacity, int32_t memo
   }
   
   void** values;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-    values = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, list->capacity * sizeof(void*));
-  }
-  else {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     values = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, list->capacity * sizeof(void*));
   }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    values = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, list->capacity * sizeof(void*));
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    values = SPVM_ALLOCATOR_new_block_runtime(compiler, list->capacity * sizeof(void*), env);
+  }
+  else {
+    assert(0);
+  }
+
   list->values = values;
   
   list->compiler = compiler;
   
   list->memory_block_type = memory_block_type;
+  
+  list->env = env;
   
   return list;
 }
@@ -57,16 +72,32 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
     int32_t new_capacity = capacity * 2;
     
     void** new_values;
-    if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-      new_values = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_capacity * sizeof(void*));
-    }
-    else {
+    if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
       new_values = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_capacity * sizeof(void*));
     }
+    else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+      new_values = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_capacity * sizeof(void*));
+    }
+    else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      new_values = SPVM_ALLOCATOR_new_block_runtime(compiler, new_capacity * sizeof(void*), list->env);
+    }
+    else {
+      assert(0);
+    }
     memcpy(new_values, list->values, capacity * sizeof(void*));
-    if (list->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
       SPVM_ALLOCATOR_free_block_compile_tmp(compiler, list->values);
     }
+    else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+      // Nothing
+    }
+    else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      SPVM_ALLOCATOR_free_block_runtime(compiler, list->values, list->env);
+    }
+    else {
+      assert(0);
+    }
+
     list->values = new_values;
     
     list->capacity = new_capacity;
@@ -76,10 +107,20 @@ void SPVM_LIST_maybe_extend(SPVM_LIST* list) {
 void SPVM_LIST_free(SPVM_LIST* list) {
 
   SPVM_COMPILER* compiler = list->compiler;
-  
-  if (list->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+
+  if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, list->values);
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, list);
+  }
+  else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    // Nothing
+  }
+  else if (list->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    SPVM_ALLOCATOR_free_block_runtime(compiler, list->values, list->env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, list, list->env);
+  }
+  else {
+    assert(0);
   }
 }
 
