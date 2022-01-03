@@ -13,11 +13,17 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_
 
   // Create hash
   SPVM_HASH* hash;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+    hash = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_HASH));
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
     hash = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, sizeof(SPVM_HASH));
   }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    hash = SPVM_ALLOCATOR_new_block_runtime(compiler, sizeof(SPVM_HASH), env);
+  }
   else {
-    hash = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, sizeof(SPVM_HASH));
+    assert(0);
   }
   
   // Default table capacity
@@ -29,37 +35,60 @@ SPVM_HASH* SPVM_HASH_new(SPVM_COMPILER* compiler, int32_t table_capacity, int32_
   }
   
   // Initialize table
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-    hash->table = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, hash->table_capacity * sizeof(int32_t));
-  }
-  else {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     hash->table = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, hash->table_capacity * sizeof(int32_t));
   }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    hash->table = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, hash->table_capacity * sizeof(int32_t));
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    hash->table = SPVM_ALLOCATOR_new_block_runtime(compiler, hash->table_capacity * sizeof(int32_t), env);
+  }
+  else {
+    assert(0);
+  }
+
   memset(hash->table, -1, hash->table_capacity * sizeof(int32_t));
   
   // Initialize entries
   hash->entries_capacity = 1;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
+    hash->entries =  SPVM_ALLOCATOR_new_block_compile_tmp(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
     hash->entries =  SPVM_ALLOCATOR_new_block_compile_eternal(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
   }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    hash->entries =  SPVM_ALLOCATOR_new_block_runtime(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY), env);
+  }
   else {
-    hash->entries =  SPVM_ALLOCATOR_new_block_compile_tmp(compiler, hash->entries_capacity * sizeof(SPVM_HASH_ENTRY));
+    assert(0);
   }
   hash->entries_length = 0;
 
   // Initialize key buffer
   hash->key_buffer_capacity = 1;
-  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-    hash->key_buffer = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, hash->key_buffer_capacity);
-  }
-  else {
+  if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     hash->key_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, hash->key_buffer_capacity);
   }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    hash->key_buffer = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, hash->key_buffer_capacity);
+  }
+  else if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    hash->key_buffer = SPVM_ALLOCATOR_new_block_runtime(compiler, hash->key_buffer_capacity, env);
+  }
+  else {
+    assert(0);
+  }
+
   hash->key_buffer_length = 0;
 
   hash->compiler = compiler;
   
   hash->memory_block_type = memory_block_type;
+  
+  hash->env = env;
 
   return hash;
 }
@@ -134,12 +163,24 @@ void SPVM_HASH_free(SPVM_HASH* hash) {
   SPVM_COMPILER* compiler = hash->compiler;
   
   assert(hash);
-  
-  if (hash->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+
+  if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->table);
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->entries);
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->key_buffer);
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash);
+  }
+  else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    // Nothing
+  }
+  else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    SPVM_ALLOCATOR_free_block_runtime(compiler, hash->table, hash->env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, hash->entries, hash->env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, hash->key_buffer, hash->env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, hash, hash->env);
+  }
+  else {
+    assert(0);
   }
 }
 
@@ -159,16 +200,33 @@ void SPVM_HASH_maybe_extend_entries(SPVM_HASH* hash) {
     int32_t new_entries_capacity = entries_capacity * 2;
     
     SPVM_HASH_ENTRY* new_entries;
-    if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-      new_entries = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
-    }
-    else {
+    if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
       new_entries = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
     }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+      new_entries = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY));
+    }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      new_entries = SPVM_ALLOCATOR_new_block_runtime(compiler, new_entries_capacity * sizeof(SPVM_HASH_ENTRY), hash->env);
+    }
+    else {
+      assert(0);
+    }
+
     memcpy(new_entries, hash->entries, entries_capacity * sizeof(SPVM_HASH_ENTRY));
-    if (hash->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
       SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->entries);
     }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+      // Nothing
+    }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      SPVM_ALLOCATOR_free_block_runtime(compiler, hash->entries, hash->env);
+    }
+    else {
+      assert(0);
+    }
+
     hash->entries = new_entries;
     
     hash->entries_capacity = new_entries_capacity;
@@ -191,16 +249,33 @@ void SPVM_HASH_maybe_extend_key_buffer(SPVM_HASH* hash, int32_t length) {
     int32_t new_key_buffer_capacity = (key_buffer_length + length + sizeof(int32_t)) * 2;
     
     char* new_key_buffer;
-    if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
-      new_key_buffer = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_key_buffer_capacity);
-    }
-    else {
+    if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
       new_key_buffer = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, new_key_buffer_capacity);
     }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+      new_key_buffer = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, new_key_buffer_capacity);
+    }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      new_key_buffer = SPVM_ALLOCATOR_new_block_runtime(compiler, new_key_buffer_capacity, hash->env);
+    }
+    else {
+      assert(0);
+    }
+
     memcpy(new_key_buffer, hash->key_buffer, key_buffer_capacity);
-    if (hash->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
       SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->key_buffer);
     }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+      // Nothing
+    }
+    else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+      SPVM_ALLOCATOR_free_block_runtime(compiler, hash->key_buffer, hash->env);
+    }
+    else {
+      assert(0);
+    }
+
     hash->key_buffer = new_key_buffer;
 
     hash->key_buffer_capacity = new_key_buffer_capacity;
@@ -261,11 +336,23 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   }
   
   // Replace hash fields
-  if (hash->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+  if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->table);
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->entries);
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, hash->key_buffer);
   }
+  else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    // Nothing
+  }
+  else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    SPVM_ALLOCATOR_free_block_runtime(compiler, hash->table, hash->env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, hash->entries, hash->env);
+    SPVM_ALLOCATOR_free_block_runtime(compiler, hash->key_buffer, hash->env);
+  }
+  else {
+    assert(0);
+  }
+
   hash->entries_length = new_hash->entries_length;
   hash->table_capacity = new_hash->table_capacity;
   hash->entries_capacity = new_hash->entries_capacity;
@@ -276,8 +363,17 @@ void SPVM_HASH_rehash(SPVM_HASH* hash, int32_t new_table_capacity) {
   hash->key_buffer_length = new_hash->key_buffer_length;
   hash->key_buffer = new_hash->key_buffer;
   
-  if (hash->memory_block_type != SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+  if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     SPVM_ALLOCATOR_free_block_compile_tmp(compiler, new_hash);
+  }
+  else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_ETERNAL) {
+    // Nothing
+  }
+  else if (hash->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_RUN_TIME) {
+    SPVM_ALLOCATOR_free_block_runtime(compiler, new_hash, hash->env);
+  }
+  else {
+    assert(0);
   }
 }
 
