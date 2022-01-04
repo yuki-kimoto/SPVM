@@ -3896,8 +3896,6 @@ _init(...)
   SV* sviv_env = sv_2mortal(newSViv(iv_env));
   SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
   (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
-  
-  SPVM_API_call_init_blocks(env);
 }
 
 SV*

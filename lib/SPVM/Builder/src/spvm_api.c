@@ -301,6 +301,8 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
   
   // Object header byte size
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
+
+  SPVM_API_call_init_blocks(env);
   
   return env;
 }

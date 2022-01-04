@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9107  2021-01-04
+        [CHANGES]
+        * Native API new_env call INIT blocks.
+
 0.9106  2021-01-04
         [BUGS]
         * Fix the memory blocks count in runtime environment.
