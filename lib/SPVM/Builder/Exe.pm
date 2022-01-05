@@ -358,12 +358,6 @@ sub compile_spvm_module_csources {
     $config->optimize($optimize);
   }
   
-  # ExtUtils::CBuilder config
-  my $cbuilder_config = $config->to_hash;
-  
-  # ExtUtils::CBuilder object
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
-  
   for my $class_name (@$class_names) {
 
     my $perl_class_name = "SPVM::$class_name";
@@ -399,14 +393,14 @@ sub compile_spvm_module_csources {
     }
     
     if ($do_compile) {
-      # Compile source file
-      $cbuilder->compile(
-        source => $module_source_csource_file,
-        object_file => $module_source_object_file,
-        include_dirs => $config->include_dirs,
-        extra_compiler_flags => $self->extra_compiler_flags,
-        force => $self->force,
-      );
+      # Compile command
+      my $builder_cc = SPVM::Builder::CC->new;
+      my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $module_source_object_file, source_file => $module_source_csource_file});
+
+      # Execute compile command
+      my $cbuilder = ExtUtils::CBuilder->new;
+      $cbuilder->do_system(@$cc_cmd)
+        or confess "Can't compile $module_source_csource_file: @$cc_cmd";
     }
   }
 }
