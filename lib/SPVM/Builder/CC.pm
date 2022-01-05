@@ -209,6 +209,7 @@ sub compile {
     $include_dir .= '.native/incldue';
     push @runtime_include_dirs, $include_dir;
   }
+  unshift @{$config->include_dirs}, @runtime_include_dirs;
 
   # Source directory
   my $native_src_dir = "$native_dir/src";
@@ -311,7 +312,7 @@ sub compile {
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
 
-      my $cc_cmd = $self->create_compile_command($config, $object_file, $src_file, \@runtime_include_dirs);
+      my $cc_cmd = $self->create_compile_command($config, $object_file, $src_file);
 
       # Execute compile command
       $cbuilder->do_system(@$cc_cmd)
@@ -326,14 +327,14 @@ sub compile {
 }
 
 sub create_compile_command {
-  my ($self, $config, $output_file, $src_file, $runtime_include_dirs) = @_;
+  my ($self, $config, $output_file, $src_file) = @_;
   
   my $cc = $config->cc;
   
   my $cflags = '';
 
   my $include_dirs = $config->include_dirs;
-  my $inc = join(' ', map { "-I$_" } @$runtime_include_dirs, @$include_dirs);
+  my $inc = join(' ', map { "-I$_" } @$include_dirs);
   $cflags .= " $inc";
   
   my $ccflags = $config->ccflags;
