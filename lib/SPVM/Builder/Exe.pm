@@ -657,27 +657,23 @@ sub compile_bootstrap_csource {
     $config->optimize($optimize);
   }
   
-  # ExtUtils::CBuilder config
-  my $cbuilder_config = $config->to_hash;
-  
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
   my $object_file = $self->builder->create_build_object_path("$class_name_rel_file.boot.o");
   my $src_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
   
   # Create directory for object file output
   mkdir dirname $object_file;
-  
-  # Compile source file
-  $cbuilder->compile(
-    source => $src_file,
-    object_file => $object_file,
-    include_dirs => $config->include_dirs,
-    extra_compiler_flags => $self->extra_compiler_flags,
-    force => $self->force,
-  );
-  
+
+  # Compile command
+  my $builder_cc = SPVM::Builder::CC->new;
+  my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $object_file, source_file => $src_file});
+
+  # Execute compile command
+  my $cbuilder = ExtUtils::CBuilder->new;
+  $cbuilder->do_system(@$cc_cmd)
+    or confess "Can't compile $src_file: @$cc_cmd";
+
   return $object_file;
 }
 
