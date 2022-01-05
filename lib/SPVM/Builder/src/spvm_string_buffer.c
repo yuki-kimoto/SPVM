@@ -63,7 +63,7 @@ void SPVM_STRING_BUFFER_maybe_extend(SPVM_STRING_BUFFER* string_buffer, int32_t 
   SPVM_COMPILER* compiler = string_buffer->compiler;
 
   // Extend
-  while (new_length > string_buffer->capacity) {
+  while (new_length >= string_buffer->capacity) {
     int32_t new_capacity = string_buffer->capacity * 2;
     char* new_buffer;
     if (string_buffer->memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {

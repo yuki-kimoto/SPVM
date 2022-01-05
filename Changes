@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9108  2021-01-05
+        [CHANGES]
+        * Fix string buffer memory allocate edge case bug.
+
 0.9107  2021-01-04
         [CHANGES]
         * Native API new_env call INIT blocks.
