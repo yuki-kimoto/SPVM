@@ -749,10 +749,6 @@ sub compile_spvm_compiler_and_runtime_csources {
     $config->optimize($optimize);
   }
   
-  # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
-  # and overwrite user configs
-  my $cbuilder_config = $config->to_hash;
-  
   # Build directory
   my $build_dir = $self->builder->build_dir;
   
@@ -761,7 +757,6 @@ sub compile_spvm_compiler_and_runtime_csources {
   mkpath $object_dir;
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
   my $object_files = [];
   for my $src_file (@spvm_compiler_and_runtime_src_files) {
     # Object file
@@ -789,14 +784,16 @@ sub compile_spvm_compiler_and_runtime_csources {
     }
       
     if ($do_compile) {
+
+      # Compile command
+      my $builder_cc = SPVM::Builder::CC->new;
+      my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $object_file, source_file => $src_file});
+
+      # Execute compile command
+      my $cbuilder = ExtUtils::CBuilder->new;
+      $cbuilder->do_system(@$cc_cmd)
+        or confess "Can't compile $src_file: @$cc_cmd";
       
-      # Compile source file
-      $cbuilder->compile(
-        source => $src_file,
-        object_file => $object_file,
-        include_dirs => $config->include_dirs,
-        extra_compiler_flags => $self->extra_compiler_flags,
-      );
       push @$object_files, $object_file;
     }
   }
