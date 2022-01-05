@@ -311,8 +311,8 @@ sub compile {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
-
-      my $cc_cmd = $self->create_compile_command($config, $object_file, $src_file);
+      
+      my $cc_cmd = $self->create_compile_command({config => $config, output_file => $object_file, source_file => $src_file});
 
       # Execute compile command
       $cbuilder->do_system(@$cc_cmd)
@@ -327,7 +327,15 @@ sub compile {
 }
 
 sub create_compile_command {
-  my ($self, $config, $output_file, $src_file) = @_;
+  my ($self, $options) = @_;
+
+  unless ($options) {
+    $options = {};
+  }
+  
+  my $config = $options->{config};
+  my $output_file = $options->{output_file};
+  my $source_file = $options->{source_file};
   
   my $cc = $config->cc;
   
@@ -345,7 +353,7 @@ sub create_compile_command {
   
   my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
   
-  my $cc_cmd = [$cc, '-c', @cflags, '-o', $output_file, $src_file];
+  my $cc_cmd = [$cc, '-c', @cflags, '-o', $output_file, $source_file];
   
   return $cc_cmd;
 }
