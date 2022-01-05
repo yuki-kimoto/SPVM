@@ -103,7 +103,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Leave scope
   env->leave_scope(env, scope_id);
   
-  SPVM_API_free_env(env);
+  env->free_env(env);
 
   // Free compiler
   SPVM_COMPILER_free(compiler);
