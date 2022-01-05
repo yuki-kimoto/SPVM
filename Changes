@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9108  2021-01-05
+        [CHANGES]
+        * SPVM::get_exception return SPVM::BlessedObject::String
+        
 0.9107  2021-01-05
         [CHANGES]
         * Native API new_env call INIT blocks.

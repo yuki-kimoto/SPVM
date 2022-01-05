@@ -121,16 +121,6 @@ sub set_exception {
   _set_exception($env, $exception);
 }
 
-sub get_exception {
-  my ($env) = @_;
-  
-  my $exception = _get_exception($env);
-  
-  $exception = decode('UTF-8', $exception);
-  
-  return $exception;
-}
-
 # other functions is implemented in SPVM.xs
 
 1;

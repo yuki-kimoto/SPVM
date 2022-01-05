@@ -3378,7 +3378,7 @@ _new_mulnum_array_from_bin(...)
 }
 
 SV*
-_get_exception(...)
+get_exception(...)
   PPCODE:
 {
   (void)RETVAL;
@@ -3392,10 +3392,8 @@ _get_exception(...)
   
   SV* sv_exception;
   if (str_exception) {
-    const char* exception_chars = env->get_chars(env, str_exception);
-    int32_t length = env->length(env, str_exception);
-    
-    sv_exception = sv_2mortal(newSVpv(exception_chars, length));
+    env->inc_ref_count(env, str_exception);
+    sv_exception = SPVM_XS_UTIL_new_sv_object(env, str_exception, "SPVM::BlessedObject::String");
   }
   else {
     sv_exception = &PL_sv_undef;

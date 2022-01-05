@@ -461,7 +461,7 @@ If the SPVM data type is not a string array, an exception occurs.
 my $exception = SPVM::get_exception();
 </pre>
 
-Gets the SPVM exception of the default SPVM runtime as a decoded string.
+Get the exception of the SPVM runtime environment as L<SPVM::BlessedObject::String> object.
 
 =head2 SPVM::set_exception
 

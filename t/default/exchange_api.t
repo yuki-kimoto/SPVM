@@ -516,7 +516,9 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   # exception - string
   {
     SPVM::set_exception("あいう");
-    is(SPVM::get_exception, "あいう");
+    my $exception = SPVM::get_exception;
+    is(ref $exception, 'SPVM::BlessedObject::String');
+    is($exception, "あいう");
   }
 
   # exception - undef
