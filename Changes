@@ -4,6 +4,8 @@ Revision history for SPVM
         [CHANGES]
         * Native API new_env call INIT blocks.
 
+        * Add SPVM::Builder::Exe again. This is revert of 0.9019.
+
 0.9106  2021-01-04
         [BUGS]
         * Fix the memory blocks count in runtime environment.
@@ -117,6 +119,7 @@ Revision history for SPVM
         
         [BUG FIX]
         * add push_lib_dirs of SPVM::Builder::Config. This is documented but doesn't exist.
+
 0.9018  2021-12-11
         [CHANGES]
         * Depends on ExtUtils::CBuilder for Perl 5.8

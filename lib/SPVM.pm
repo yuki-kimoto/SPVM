@@ -446,6 +446,16 @@ SPVM Native APIs is C APIs used in SPVM native method.
 
 =back
 
+=head2 Generate Execution File
+
+spvmcc is a compiler to compile SPVM source codes to a execution file. The execution file can be run by itself.
+
+=over 2
+
+=item * L<spvmcc>
+
+=back
+
 =head1 ENVIRONMENT VARIABLE
 
 =head2 SPVM_BUILD_DIR

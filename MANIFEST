@@ -346,6 +346,9 @@ examples/native/zlib/lib/SPVM/MyZlib.c
 examples/native/zlib/lib/SPVM/MyZlib.config
 examples/native/zlib/lib/SPVM/MyZlib.spvm
 examples/native/zlib/zlib.pl
+examples/spvmcc/basic/myapp
+examples/spvmcc/basic/README.txt
+examples/spvmcc/basic/SPVM/MyApp.spvm
 lib/SPVM.pm
 lib/SPVM/BlessedObject.pm
 lib/SPVM/BlessedObject/Array.pm
@@ -355,6 +358,7 @@ lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
+lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
@@ -529,6 +533,7 @@ Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README.md
+script/spvmcc
 solo/solo_Makefile.PL
 solo/SPVM/Main.spvm
 solo/SPVM/TestCase.spvm
@@ -905,6 +910,22 @@ t/default/value_array.t
 t/default/warn.t
 t/default/weaken.t
 t/default/while.t
+t/exe/lib/SPVM/MyExe.spvm
+t/exe/lib/SPVM/MyExe/Foo/Bar.spvm
+t/exe/lib/SPVM/MyExe/Precompile.spvm
+t/exe/lib/SPVM/TestCase/NativeAPI2.c
+t/exe/lib/SPVM/TestCase/NativeAPI2.config
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/include/bar.h
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/include/base.h
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/include/baz/baz.h
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/include/foo.h
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/bar.c
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/baz/baz.c
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/baz/noneed.txt
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/foo.c
+t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
+t/exe/lib/SPVM/TestCase/NativeAPI2.spvm
+t/exe/spvmcc.t
 t/get_native_api_indexes.pl
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
