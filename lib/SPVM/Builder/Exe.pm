@@ -241,7 +241,7 @@ sub compile_native_csources {
       my $native_module_file = $builder->get_module_file($class_name);
       my $native_dir = $native_module_file;
       
-      my $bconf = $builder->get_config($class_name, 'native');
+      my $config = $builder->get_config($class_name, 'native');
       
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
@@ -350,19 +350,19 @@ sub compile_spvm_module_csources {
   my $class_names = $builder->get_class_names;
   
   # Config
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99;
 
   # Optimize
   my $optimize = $self->optimize;
   if (defined $optimize) {
-    $bconf->optimize($optimize);
+    $config->optimize($optimize);
   }
   
   # ExtUtils::CBuilder config
-  my $config = $bconf->to_hash;
+  my $cbuilder_config = $config->to_hash;
   
   # ExtUtils::CBuilder object
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
   
   for my $class_name (@$class_names) {
 
@@ -403,7 +403,7 @@ sub compile_spvm_module_csources {
       $cbuilder->compile(
         source => $module_source_csource_file,
         object_file => $module_source_object_file,
-        include_dirs => $bconf->include_dirs,
+        include_dirs => $config->include_dirs,
         extra_compiler_flags => $self->extra_compiler_flags,
         force => $self->force,
       );
@@ -655,19 +655,19 @@ sub compile_bootstrap_csource {
   my $build_dir = $self->builder->build_dir;
   
   # Config
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   # Optimize
   my $optimize = $self->optimize;
   if (defined $optimize) {
-    $bconf->optimize($optimize);
+    $config->optimize($optimize);
   }
   
   # ExtUtils::CBuilder config
-  my $config = $bconf->to_hash;
+  my $cbuilder_config = $config->to_hash;
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
   my $object_file = $self->builder->create_build_object_path("$class_name_rel_file.boot.o");
   my $src_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
@@ -679,7 +679,7 @@ sub compile_bootstrap_csource {
   $cbuilder->compile(
     source => $src_file,
     object_file => $object_file,
-    include_dirs => $bconf->include_dirs,
+    include_dirs => $config->include_dirs,
     extra_compiler_flags => $self->extra_compiler_flags,
     force => $self->force,
   );
@@ -748,20 +748,20 @@ sub compile_spvm_compiler_and_runtime_csources {
   my @spvm_compiler_and_runtime_src_files = map { "$spvm_compiler_and_runtime_src_dir/$_" } @SPVM_RUNTIME_SRC_BASE_NAMES;
   
   # Config
-  my $bconf = SPVM::Builder::Config->new_c99;;
+  my $config = SPVM::Builder::Config->new_c99;;
   
   # Default include path
-  $bconf->add_ccflags("-Iblib/lib/SPVM/Builder/include");
+  $config->add_ccflags("-Iblib/lib/SPVM/Builder/include");
   
   # Optimize
   my $optimize = $self->optimize;
   if (defined $optimize) {
-    $bconf->optimize($optimize);
+    $config->optimize($optimize);
   }
   
   # Use all of default %Config not to use %Config directory by ExtUtils::CBuilder
   # and overwrite user configs
-  my $config = $bconf->to_hash;
+  my $cbuilder_config = $config->to_hash;
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -771,7 +771,7 @@ sub compile_spvm_compiler_and_runtime_csources {
   mkpath $object_dir;
   
   # Compile source files
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $config);
+  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
   my $object_files = [];
   for my $src_file (@spvm_compiler_and_runtime_src_files) {
     # Object file
@@ -804,7 +804,7 @@ sub compile_spvm_compiler_and_runtime_csources {
       $cbuilder->compile(
         source => $src_file,
         object_file => $object_file,
-        include_dirs => $bconf->include_dirs,
+        include_dirs => $config->include_dirs,
         extra_compiler_flags => $self->extra_compiler_flags,
       );
       push @$object_files, $object_file;
@@ -829,13 +829,13 @@ sub link {
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
   push @$object_files, glob "$build_work_object_dir/$class_name_rel_file.boot.o";
   
-  my $bconf = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99;
   
   # CBuilder configs
   my $output_file = $self->{output_file};
 
-  my $lib_dirs_str = join(' ', map { "-L$_" } @{$bconf->lib_dirs});
-  $bconf->add_ldflags("$lib_dirs_str");
+  my $lib_dirs_str = join(' ', map { "-L$_" } @{$config->lib_dirs});
+  $config->add_ldflags("$lib_dirs_str");
   
   # SPVM runtime object files
   my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
@@ -872,15 +872,15 @@ sub link {
   push @$object_files, @$native_object_files;
 
   # Linker
-  my $ld = $bconf->ld;
+  my $ld = $config->ld;
   
   # Linker flags
-  my $ldflags = $bconf->ldflags;
-  my $ldflags_str = join(' ', @{$bconf->ldflags});
+  my $ldflags = $config->ldflags;
+  my $ldflags_str = join(' ', @{$config->ldflags});
   $ldflags_str = "$ldflags_str";
   
   # Optimize
-  my $ld_optimize = $bconf->ld_optimize;
+  my $ld_optimize = $config->ld_optimize;
   $ldflags_str .= " $ld_optimize";
   
   # ExeUtils::CBuilder config
