@@ -3920,7 +3920,7 @@ my $ret = Foo->bar(1, 2, 3);
 
 <h3 id="language-expression-callmethod-current-class">Current Class</h3>
 
-<b>cur</b> keyword expresses the current class. You can call method using <b>cur</b> keyword instead of the class name.
+<b>&</b> before method name means the current class. You can call method using "&" keyword instead of the current class name.
 
 <b>Current Class Example</b>
 
