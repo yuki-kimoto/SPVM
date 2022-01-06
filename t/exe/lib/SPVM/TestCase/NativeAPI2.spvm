@@ -1,6 +1,6 @@
 class TestCase::NativeAPI2 {
   static method spvm_extension2 : int () {
-    my $total = cur->mul(5, 3);
+    my $total = &mul(5, 3);
     
     if ($total == 15) {
       return 1;

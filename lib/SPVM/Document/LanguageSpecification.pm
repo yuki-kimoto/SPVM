@@ -3929,7 +3929,7 @@ class Foo {
   
   static method test : void () {
     # This means Foo->sum(1, 2)
-    my $ret = cur->sum(1, 2);
+    my $ret = &sum(1, 2);
   }
 
   static method sum : int ($num1 : int, $num2 : int) {

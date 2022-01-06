@@ -1,5 +1,14 @@
 Revision history for SPVM
 
+0.9110  2021-01-07
+        [CHANGES]
+        * Current class "cur->" is changed to "&"
+          [Before]
+          cur->sum(1, 2)
+          
+          [After]
+          &sum(1, 2)
+
 0.9109  2021-01-06
         [CHANGES]
         * SPVM is compiled as GNU99 instead of C99

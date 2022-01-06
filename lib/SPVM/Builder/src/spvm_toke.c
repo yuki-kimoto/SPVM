@@ -541,13 +541,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
       case '&':
         compiler->bufptr++;
-        // Or
+        // &&
         if (*compiler->bufptr == '&') {
           compiler->bufptr++;
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_LOGICAL_AND);
           yylvalp->opval = op;
           return LOGICAL_AND;
         }
+        // &=
         else if (*compiler->bufptr == '=') {
           compiler->bufptr++;
           SPVM_OP* op_special_assign = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_SPECIAL_ASSIGN);
@@ -557,6 +558,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           
           return SPECIAL_ASSIGN;
         }
+        // &foo - Current class
+        else if (isalpha(*compiler->bufptr)) {
+          yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
+          compiler->expect_method_name = 1;
+          return CURRENT_CLASS;
+        }
+        // &
         else {
           SPVM_OP* op = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_BIT_AND);
           yylvalp->opval = op;
@@ -1787,11 +1795,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CLASS);
                   
                   return CLASS;
-                }
-                else if (strcmp(keyword, "cur") == 0) {
-                  yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
-                  
-                  return CURRENT_CLASS;
                 }
                 break;
               }

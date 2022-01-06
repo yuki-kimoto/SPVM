@@ -414,9 +414,9 @@ SPVM::Test - SPVM test module
       print($BEGIN_INIT . "\n");
     }
     {
-      cur->SET_CLASS_VAR_RW(6);
+      &SET_CLASS_VAR_RW(6);
       
-      my $class_var_rw = cur->CLASS_VAR_RW;
+      my $class_var_rw = &CLASS_VAR_RW;
       print("$class_var_rw\n");
     }
     

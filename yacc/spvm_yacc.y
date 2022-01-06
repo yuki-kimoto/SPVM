@@ -1016,14 +1016,14 @@ array_access
     }
 
 call_spvm_method
-  : CURRENT_CLASS ARROW NAME '(' opt_expressions  ')'
+  : CURRENT_CLASS NAME '(' opt_expressions  ')'
     {
-      $$ = SPVM_OP_build_call_method(compiler, $1, $3, $5);
+      $$ = SPVM_OP_build_call_method(compiler, $1, $2, $4);
     }
-  | CURRENT_CLASS ARROW NAME
+  | CURRENT_CLASS NAME
     {
       SPVM_OP* op_expressions = SPVM_OP_new_op_list(compiler, $1->file, $2->line);
-      $$ = SPVM_OP_build_call_method(compiler, $1, $3, op_expressions);
+      $$ = SPVM_OP_build_call_method(compiler, $1, $2, op_expressions);
     }
   | basic_type ARROW method_name '(' opt_expressions  ')'
     {
