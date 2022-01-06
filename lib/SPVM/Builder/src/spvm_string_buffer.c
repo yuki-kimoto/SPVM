@@ -328,10 +328,13 @@ int32_t SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float va
   
   int32_t new_max_length = string_buffer->length + max_length;
   
+  SPVM_VALUE tmp_constant;
+  tmp_constant.fval = value;
+  
   // Extend
   SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
   
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%a", value);
+  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "(tmp_constant.ival = %" PRId32 ", tmp_constant.fval)", tmp_constant.ival);
   
   string_buffer->length += write_length;
   
