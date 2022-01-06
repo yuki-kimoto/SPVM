@@ -35,6 +35,4 @@ int32_t SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double 
 
 void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer);
 
-int32_t SPVM_STRING_BUFFER_add_float(SPVM_STRING_BUFFER* string_buffer, float value);
-
 #endif

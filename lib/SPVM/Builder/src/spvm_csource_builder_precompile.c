@@ -2416,9 +2416,9 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE tmp_constant;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_FLOAT, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_float(string_buffer, value.fval);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = (tmp_constant.ival = ");
+        SPVM_STRING_BUFFER_add_int(string_buffer, value.ival);
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.fval);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
