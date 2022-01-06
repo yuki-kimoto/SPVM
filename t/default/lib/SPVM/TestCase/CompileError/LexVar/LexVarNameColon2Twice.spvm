@@ -1,4 +1,4 @@
-class TestCase::CompileError::LexVar::LexVarNameEndColon2 {
+class TestCase::CompileError::LexVar::LexVarNameColon2Twice {
   static method foo : void () {
     my $FOO::::BAR = 0;
   }
