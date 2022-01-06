@@ -332,7 +332,12 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Remainder::LeftIsNotNumeric', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Remainder::RightIsNotIntegral', __FILE__, __LINE__);
+    ok($success == 0);
+  }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::Remainder::LeftIsNotIntegral', __FILE__, __LINE__);
     ok($success == 0);
   }
 }
