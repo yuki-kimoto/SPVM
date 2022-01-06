@@ -1,15 +1,12 @@
 Revision history for SPVM
 
-0.9109  2021-01-06
-        [CHANGES]
-        * Don't use hex floating point literal and %a specifier of sprintf
-          because it seems that some compilers don't support this C99 syntax.
-
 0.9108  2021-01-06
         [CHANGES]
         * SPVM::get_exception return SPVM::BlessedObject::String
         * SPVM::set_exception can receive a SPVM::BlessedObject::String object
         * SPVM::new_byte_array_from_string encode the string using utf8::encode instead of Encode::encode('UTF-8', ...)
+        * Don't use hex floating point literal and %a specifier of sprintf
+          because it seems that some compilers don't support this C99 syntax.
 0.9107  2021-01-05
         [CHANGES]
         * Native API new_env call INIT blocks.
