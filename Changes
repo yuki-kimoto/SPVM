@@ -1,8 +1,9 @@
 Revision history for SPVM
 
-0.9108  2021-01-05
+0.9108  2021-01-06
         [CHANGES]
         * SPVM::get_exception return SPVM::BlessedObject::String
+        * SPVM::set_exception can receive a SPVM::BlessedObject::String object
         
 0.9107  2021-01-05
         [CHANGES]

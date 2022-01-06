@@ -3414,13 +3414,13 @@ _set_exception(...)
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
+
   if (SvOK(sv_exception)) {
-    const char* exception = SvPV_nolen(sv_exception);
-    int32_t length = (int32_t)sv_len(sv_exception);
-    
-    void* str_exception = env->new_string_raw(env, exception, length);
-    env->set_exception(env, str_exception);
+    if (!(sv_isobject(sv_exception) && sv_derived_from(sv_exception, "SPVM::BlessedObject::String"))) {
+      croak("The argument must be a SPVM::BlessedObject::String object");
+    }
+    SPVM_OBJECT* exception = SPVM_XS_UTIL_get_object(sv_exception);
+    env->set_exception(env, exception);
   }
   else {
     env->set_exception(env, NULL);

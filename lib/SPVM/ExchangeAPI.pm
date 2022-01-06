@@ -116,7 +116,9 @@ sub new_mulnum_array_from_bin {
 sub set_exception {
   my ($env, $exception) = @_;
   
-  $exception = encode('UTF-8', $exception);
+  if (defined $exception && !ref $exception) {
+    $exception = SPVM::ExchangeAPI::new_string($env, $exception);
+  }
   
   _set_exception($env, $exception);
 }

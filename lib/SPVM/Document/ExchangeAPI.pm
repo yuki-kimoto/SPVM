@@ -465,10 +465,13 @@ Get the exception of the SPVM runtime environment as L<SPVM::BlessedObject::Stri
 
 =head2 SPVM::set_exception
 
-Set a SPVM exception of the default SPVM runtime. The argument must be a decoded string or C<undef>. There is one exception per runtime. Perl starts a default SPVM runtime when a first SVPM method is called.
+Set a SPVM exception of the SPVM runtime environment.
+
+The argument must be a L<SPVM::BlessedObject::String> object, a decoded string or C<undef>, otherwise an exception occurs.
 
 <pre>
-SPVM::set_exception("Aiu");
+SPVM::set_exception(SPVM::new_string("abc"));
+SPVM::set_exception("abc");
 SPVM::set_exception(undef);
 </pre>
 
