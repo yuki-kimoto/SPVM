@@ -657,8 +657,8 @@ t/default/lib/SPVM/TestCase/CompileError/BitNot/NotIntegral.spvm
 t/default/lib/SPVM/TestCase/CompileError/Bool/NotNumericObject.spvm
 t/default/lib/SPVM/TestCase/CompileError/CallMethod/CallSub/NotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/CallMethod/NotFound.spvm
-t/default/lib/SPVM/TestCase/CompileError/Class/classPartNameStartWithUpperCase.spvm
-t/default/lib/SPVM/TestCase/CompileError/Class/Package/packagePartNameStartWithUpperCase.spvm
+t/default/lib/SPVM/TestCase/CompileError/Class/classPartNameStartWithLowerCase.spvm
+t/default/lib/SPVM/TestCase/CompileError/Class/Package/classPartNameStartWithLowerCase.spvm
 t/default/lib/SPVM/TestCase/CompileError/ClassVar/OurClassVarNameColon2Twice.spvm
 t/default/lib/SPVM/TestCase/CompileError/ClassVar/OurClassVarNameContainsUnderScoreTwice.spvm
 t/default/lib/SPVM/TestCase/CompileError/ClassVar/OurClassVarNameEndColon2.spvm
