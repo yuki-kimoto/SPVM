@@ -1,5 +1,11 @@
 Revision history for SPVM
 
+0.9109  2021-01-06
+        [CHANGES]
+        * SPVM is compiled as GNU99 instead of C99
+          SPVM source codes is pure C99, but  is not pure C99.
+          Some platforms can't compile SPVM.xs that contains perl.h as C99.
+
 0.9108  2021-01-06
         [CHANGES]
         * SPVM::get_exception return SPVM::BlessedObject::String
