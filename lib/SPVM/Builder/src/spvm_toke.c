@@ -228,7 +228,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               // Module not found
               if (!fh) {
                 if (!op_use->uv.use->is_require) {
-                  fprintf(stderr, "[CompileError]Can't locate %s for %s class in @INC (@INC contains:", cur_rel_file, class_name);
+                  fprintf(stderr, "[CompileError]Can't locate %s to load %s class in @INC (@INC contains:", cur_rel_file, class_name);
                   for (int32_t i = 0; i < module_dirs_length; i++) {
                     const char* include_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
                     fprintf(stderr, " %s", include_dir);
