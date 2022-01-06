@@ -320,24 +320,6 @@ int32_t SPVM_STRING_BUFFER_add_long(SPVM_STRING_BUFFER* string_buffer, int64_t v
   return id;
 }
 
-int32_t SPVM_STRING_BUFFER_add_double(SPVM_STRING_BUFFER* string_buffer, double value) {
-
-  int32_t id = string_buffer->length;
-  
-  int32_t max_length = 100;
-  
-  int32_t new_max_length = string_buffer->length + max_length;
-  
-  // Extend
-  SPVM_STRING_BUFFER_maybe_extend(string_buffer, new_max_length);
-
-  int32_t write_length = sprintf(string_buffer->buffer + string_buffer->length, "%a", value);
-  
-  string_buffer->length += write_length;
-
-  return id;
-}
-
 void SPVM_STRING_BUFFER_free(SPVM_STRING_BUFFER* string_buffer) {
 
   SPVM_COMPILER* compiler = string_buffer->compiler;

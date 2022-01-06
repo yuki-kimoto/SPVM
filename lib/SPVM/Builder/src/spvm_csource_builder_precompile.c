@@ -2427,11 +2427,17 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_CONSTANT* constant = class->info_constants->values[constant_id];
         double double_value = constant->value.dval;
 
-        SPVM_STRING_BUFFER_add(string_buffer, "  ");
+        SPVM_VALUE value;
+        value.dval = double_value;
+
+        SPVM_STRING_BUFFER_add(string_buffer, "  {\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    SPVM_VALUE tmp_constant;\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "    ");
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_DOUBLE, opcode->operand0);
-        SPVM_STRING_BUFFER_add(string_buffer, " = ");
-        SPVM_STRING_BUFFER_add_double(string_buffer, double_value);
-        SPVM_STRING_BUFFER_add(string_buffer, ";\n");
+        SPVM_STRING_BUFFER_add(string_buffer, " = (tmp_constant.lval = ");
+        SPVM_STRING_BUFFER_add_long(string_buffer, value.lval);
+        SPVM_STRING_BUFFER_add(string_buffer, ", tmp_constant.dval);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "  }\n");
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE:
