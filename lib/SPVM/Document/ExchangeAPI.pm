@@ -91,7 +91,7 @@ or UTF-8 bytes.
   use utf8;
   my $spvm_byte_array = SPVM::new_byte_array_from_string("あいう");
 
-Convert a Perl string to SPVM byte[] value. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
+Convert a decoded string to SPVM byte[] value using L<utf8::encode|utf8>. Return value is L<SPVM::BlessedObject::Array> object which wraps the SPVM array.
 
 =head2 SPVM::new_short_array
 

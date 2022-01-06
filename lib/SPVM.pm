@@ -16,8 +16,6 @@ use FindBin;
 use SPVM::Builder;
 use SPVM::ExchangeAPI;
 
-use Encode 'encode', 'decode';
-
 use Carp 'confess';
 
 our $VERSION = '0.9107';

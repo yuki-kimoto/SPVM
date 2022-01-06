@@ -3,15 +3,14 @@ package SPVM::ExchangeAPI;
 use strict;
 use warnings;
 
-use Encode 'encode', 'decode';
 use Carp 'confess';
 
 sub new_byte_array_from_string {
   my ($env, $string) = @_;
   
-  my $bin = encode('UTF-8', $string);
+  utf8::encode($string);
   
-  return SPVM::ExchangeAPI::new_byte_array_from_bin($env, $bin);
+  return SPVM::ExchangeAPI::new_byte_array_from_bin($env, $string);
 }
 
 sub new_object_array {

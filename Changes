@@ -4,7 +4,7 @@ Revision history for SPVM
         [CHANGES]
         * SPVM::get_exception return SPVM::BlessedObject::String
         * SPVM::set_exception can receive a SPVM::BlessedObject::String object
-        
+        * SPVM::new_byte_array_from_string encode the string using utf8::encode instead of Encode::encode('UTF-8', ...)
 0.9107  2021-01-05
         [CHANGES]
         * Native API new_env call INIT blocks.
