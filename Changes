@@ -1,5 +1,14 @@
 Revision history for SPVM
 
+0.9111  2021-01-07
+        [CHANGES]
+        * Improve compile error message. 
+          [Before]
+          Can't locate Foo/Bar.spvm in @INC ...
+          
+          [After]
+          Can't locate Foo/Bar.spvm for Foo::Bar class in @INC ...
+
 0.9110  2021-01-07
         [CHANGES]
         * Current class "cur->" is changed to "&"
