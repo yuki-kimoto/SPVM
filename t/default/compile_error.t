@@ -113,7 +113,7 @@ use lib "$FindBin::Bin/lib";
   }
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Literal::Interger::IntOutOfRange', __FILE__, __LINE__);
+    my $success = $build->compile_spvm('TestCase::CompileError::Literal::Integer::IntOutOfRange', __FILE__, __LINE__);
     ok($success == 0);
   }
 }
