@@ -123,11 +123,6 @@ use lib "$FindBin::Bin/lib";
 {
   {
     my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::LexVar::Private', __FILE__, __LINE__);
-    ok($success == 0);
-  }
-  {
-    my $build = SPVM::Builder->new;
     my $success = $build->compile_spvm('TestCase::CompileError::LexVar::LexVarNameStartDigit', __FILE__, __LINE__);
     ok($success == 0);
   }
