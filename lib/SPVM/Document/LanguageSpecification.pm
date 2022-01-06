@@ -764,8 +764,8 @@ array_access
   | field_access '[' expression ']'
 
 call_method
-  : CURRENT_CLASS ARROW NAME '(' opt_expressions  ')'
-  | CURRENT_CLASS ARROW NAME
+  : CURRENT_CLASS NAME '(' opt_expressions  ')'
+  | CURRENT_CLASS NAME
   | basic_type ARROW method_name '(' opt_expressions  ')'
   | basic_type ARROW method_name
   | expression ARROW method_name '(' opt_expressions ')'
@@ -1010,7 +1010,7 @@ The following is a correspondence table between tokens in yacc/bison and keyword
     <td>PRINT</td><td>print</td>
   </tr>
   <tr>
-    <td>CURRENT_CLASS</td><td>cur</td>
+    <td>CURRENT_CLASS</td><td>&</td>
   </tr>
   <tr>
     <td>CURRENT_CLASS_NAME</td><td>__CLASS__</td>
