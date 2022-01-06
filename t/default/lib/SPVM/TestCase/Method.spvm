@@ -9,7 +9,72 @@ class TestCase::Method {
   use Comparator::Object;
   use TestCase::Simple as TS;
   use Fn;
-  
+
+  # Use keyword name as method name
+  static method int : int () {
+    
+    return 5;
+  }
+  method if : int () {
+    
+    return 3;
+  }
+
+  static method call_keyword_name_method : int () {
+    
+    # Call a static method with parenthes
+    {
+      my $num = TestCase::Method->int();
+      unless ($num == 5) {
+        return 0;
+      }
+    }
+    
+    # Call a static method without parenthes
+    {
+      my $num = TestCase::Method->int;
+      unless ($num == 5) {
+        return 0;
+      }
+    }
+    
+    # Call a static method with parenthes and current class
+    {
+      my $num = &int();
+      unless ($num == 5) {
+        return 0;
+      }
+    }
+    
+    # Call a static method without parenthes and current class
+    {
+      my $num = &int;
+      unless ($num == 5) {
+        return 0;
+      }
+    }
+    
+    # Call a instance method with parenthes
+    {
+      my $method = new TestCase::Method;
+      my $num = $method->if();
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # Call a instance method without parenthes
+    {
+      my $method = new TestCase::Method;
+      my $num = $method->if;
+      unless ($num == 3) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
   static method test_import_method : int () {
     unless (TS->import_method1() == 1) {
       return 0;

@@ -24,6 +24,10 @@ my $DOUBLE_PRECICE = 65536.5;
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+{
+  ok(SPVM::TestCase::Method->call_keyword_name_method);
+}
+
 # Import sub
 {
   ok(SPVM::TestCase::Method->test_import_method);
