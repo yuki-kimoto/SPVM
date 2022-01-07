@@ -12,10 +12,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-          image: i386/ubuntu:latest
+      image: i386/ubuntu:latest
     steps:
+      - name: install the Perl header and core modules
         run: |
-          apt-get update
+          apt update
           apt install -y libperl-dev
       - uses: actions/checkout@v1
       - name: perl Makefile.PL
