@@ -261,6 +261,11 @@ use lib "$FindBin::Bin/lib";
     my $success = $build->compile_spvm('TestCase::CompileError::CallMethod::NotFound', __FILE__, __LINE__);
     ok($success == 0);
   }
+  {
+    my $build = SPVM::Builder->new;
+    my $success = $build->compile_spvm('TestCase::CompileError::CallMethod::ClassNotFound', __FILE__, __LINE__);
+    ok($success == 0);
+  }
 }
 
 # Assign

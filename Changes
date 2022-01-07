@@ -19,6 +19,7 @@ Revision history for SPVM
         [BUGS]
         * Fix the bugs that variable names can contain ":::".
         * Fix the bugs that the type conversion from multi numrci type to object type is allowed.
+        * Fix the bugs that when class is not found in static method call, a segmentation fault occurs.
 
 0.9110  2021-01-07
         [CHANGES]

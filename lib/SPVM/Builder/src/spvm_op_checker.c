@@ -4641,16 +4641,15 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
     else {
       const char* basic_type_name = type->basic_type->name;
       
-      SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
+      found_class = SPVM_HASH_fetch(compiler->class_symtable, basic_type_name, strlen(basic_type_name));
       
-      if (!class) {
+      if (!found_class) {
         SPVM_COMPILER_error(compiler, "Unknown instance method \"%s->%s\" at %s line %d\n", basic_type_name, method_name, op_call_method->file, op_call_method->line);
         return;
       }
       
-      found_class = class;
       found_method = SPVM_HASH_fetch(
-        class->method_symtable,
+        found_class->method_symtable,
         method_name,
         strlen(method_name)
       );
@@ -4673,15 +4672,19 @@ void SPVM_OP_CHECKER_resolve_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_ca
         }
       }
       
-      SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-      assert(class);
+      found_class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
       
-      found_class = class;
-      found_method = SPVM_HASH_fetch(
-        class->method_symtable,
-        method_name,
-        strlen(method_name)
-      );
+      if (found_class) {
+        found_method = SPVM_HASH_fetch(
+          found_class->method_symtable,
+          method_name,
+          strlen(method_name)
+        );
+      }
+      else {
+        SPVM_COMPILER_error(compiler, "Class \"%s\" not found at %s line %d\n", class_name, op_call_method->file, op_call_method->line);
+        return;
+      }
     }
     else {
       SPVM_COMPILER_error(compiler, "Unqualified method names are forbbiden \"%s\" at %s line %d\n", method_name, op_call_method->file, op_call_method->line);
