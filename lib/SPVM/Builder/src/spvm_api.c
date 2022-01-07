@@ -1144,10 +1144,12 @@ void SPVM_API_free_env(SPVM_ENV* env) {
 
   // Free class variables heap
   SPVM_API_free_memory_block(env, env->class_vars_heap);
+  env->class_vars_heap = NULL;
   
   // Free mortal stack
   SPVM_API_free_memory_block(env, env->native_mortal_stack);
-
+  env->native_mortal_stack = NULL;
+  
   SPVM_ALLOCATOR_free_block_runtime_noenv(compiler, env);
 
   {
@@ -5120,6 +5122,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
   }
   
   SPVM_API_free_memory_block(env, call_stack);
+  call_stack = NULL;
   
   return exception_flag;
 }
@@ -5210,6 +5213,7 @@ int32_t SPVM_API_push_mortal(SPVM_ENV* env, SPVM_OBJECT* object) {
       memcpy(new_mortal_stack, env->native_mortal_stack, sizeof(void*) * (intptr_t)env->native_mortal_stack_capacity);
       env->native_mortal_stack_capacity = (void*)(intptr_t)new_mortal_stack_capacity;
       SPVM_API_free_memory_block(env, env->native_mortal_stack);
+      env->native_mortal_stack = NULL;
       env->native_mortal_stack = new_mortal_stack;
     }
     
@@ -5428,6 +5432,7 @@ void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_WEAKEN_BACKREF* weaken_b
     *(weaken_backref_head_cur->object_address) = NULL;
     weaken_backref_head_next = weaken_backref_head_cur->next;
     SPVM_API_free_memory_block(env, weaken_backref_head_cur);
+    weaken_backref_head_cur = NULL;
     weaken_backref_head_cur = weaken_backref_head_next;
   }
 }
@@ -5525,6 +5530,7 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   while ((*weaken_backref_next_address)->next != NULL){
     if ((*weaken_backref_next_address)->next->object_address == object_address) {
       SPVM_API_free_memory_block(env, (*weaken_backref_next_address)->next);
+      (*weaken_backref_next_address)->next = NULL;
       *weaken_backref_next_address = (*weaken_backref_next_address)->next->next;
       break;
     }
@@ -6238,6 +6244,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
   
     // Free object
     SPVM_API_free_memory_block(env, object);
+    object = NULL;
   }
   else {
     // Decrement reference count
