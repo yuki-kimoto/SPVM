@@ -332,7 +332,10 @@ SPVM_OBJECT* SPVM_API_dump_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   SPVM_OBJECT* dump = SPVM_API_new_string_raw(env, string_buffer->buffer, string_buffer->length);
   
   SPVM_HASH_free(address_symtable);
+  address_symtable = NULL;
+  
   SPVM_STRING_BUFFER_free(string_buffer);
+  string_buffer = NULL;
   
   return dump;
 }
@@ -1084,7 +1087,10 @@ int32_t SPVM_API_die(SPVM_ENV* env, const char* message, ...) {
   void* exception = env->new_string_raw(env, buffer, strlen(buffer));
   
   env->free_memory_block(env, message_with_line);
+  message_with_line = NULL;
+  
   env->free_memory_block(env, buffer);
+  buffer = NULL;
   
   env->set_exception(env, exception);
   
