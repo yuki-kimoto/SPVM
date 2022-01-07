@@ -5422,14 +5422,13 @@ int32_t SPVM_API_get_memory_blocks_count(SPVM_ENV* env) {
 void SPVM_API_free_weaken_back_refs(SPVM_ENV* env, SPVM_WEAKEN_BACKREF* weaken_backref_head) {
   (void)env;
   
-  SPVM_WEAKEN_BACKREF* temp = weaken_backref_head;
-  SPVM_WEAKEN_BACKREF* swap = NULL;
-
-  while(temp != NULL){
-    swap = temp->next;
-    *(temp->object_address) = NULL;
-    SPVM_API_free_memory_block(env, temp);
-    temp = swap;
+  SPVM_WEAKEN_BACKREF* weaken_backref_head_cur = weaken_backref_head;
+  SPVM_WEAKEN_BACKREF* weaken_backref_head_next = NULL;
+  while (weaken_backref_head_cur != NULL){
+    *(weaken_backref_head_cur->object_address) = NULL;
+    weaken_backref_head_next = weaken_backref_head_cur->next;
+    SPVM_API_free_memory_block(env, weaken_backref_head_cur);
+    weaken_backref_head_cur = weaken_backref_head_next;
   }
 }
 
