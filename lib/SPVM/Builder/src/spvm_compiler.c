@@ -49,6 +49,7 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->method_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->fields = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->classes = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+  compiler->used_class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->class_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->class_vars = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
   compiler->op_constants = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);

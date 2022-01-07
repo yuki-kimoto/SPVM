@@ -2,12 +2,19 @@ Revision history for SPVM
 
 0.9111  2021-01-07
         [CHANGES]
-        * Improve compile error message. 
+        * Improve compile error message "Can't locate ...". 
           [Before]
           Can't locate Foo/Bar.spvm in @INC ...
           
           [After]
           Can't locate Foo/Bar.spvm to load Foo::Bar class in @INC ...
+        * Improve compile error message "... is different from". And this message is output only once.
+          [Before]
+          Class name "ClassNameDifferntFromModuleNameXXXXXXX" is different from
+          the class name corresponding to the module file "TestCase::CompileError::Class::ClassNameDifferntFromModuleName"
+          [After]
+          Wrong class name "ClassNameDifferntFromModuleNameXXXXXXX".
+          The class name must be "TestCase::CompileError::Class::ClassNameDifferntFromModuleName"
 
 0.9110  2021-01-07
         [CHANGES]
