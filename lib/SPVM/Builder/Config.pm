@@ -400,6 +400,8 @@ sub add_resources {
   push @{$self->{resources}}, @resources;
 }
 
+sub use { shift->add_resources(@_) }
+
 sub add_static_libs {
   my ($self, @static_libs) = @_;
   
@@ -802,6 +804,16 @@ Add the values that each element is converted to the following hash reference af
 B<Examples:>
 
   $config->add_dynamic_libs('gsl');
+
+=head2 use
+
+  $config->use(@resources);
+
+This method is the alias for L<"add_resources"> to improve user experiences.
+
+B<Examples:>
+
+  $config->use('SPVM::Resouce::Zlib::V1_15');
 
 =head2 add_resources
 
