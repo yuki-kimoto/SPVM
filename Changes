@@ -1,6 +1,10 @@
 Revision history for SPVM
 
 0.9111  2021-01-07
+        [BUGS]
+        * Fix a unweaken memory leak bug.
+        
+0.9111  2021-01-07
         [CHANGES]
         * Improve compile error message "Can't locate ...". 
           [Before]

@@ -5529,19 +5529,24 @@ void SPVM_API_unweaken(SPVM_ENV* env, SPVM_OBJECT** object_address) {
   
   // Increment reference count
   object->ref_count++;
-  
+
   // Remove weaken back ref
   SPVM_WEAKEN_BACKREF** weaken_backref_next_address = &object->weaken_backref_head;
   assert(*weaken_backref_next_address);
-  while ((*weaken_backref_next_address)->next != NULL){
-    if ((*weaken_backref_next_address)->next->object_address == object_address) {
-      SPVM_API_free_memory_block(env, (*weaken_backref_next_address)->next);
-      (*weaken_backref_next_address)->next = NULL;
-      *weaken_backref_next_address = (*weaken_backref_next_address)->next->next;
+  
+  int32_t pass_one = 0;
+  while (*weaken_backref_next_address != NULL){
+    if ((*weaken_backref_next_address)->object_address == object_address) {
+      pass_one++;
+      SPVM_WEAKEN_BACKREF* tmp = (*weaken_backref_next_address)->next;
+      SPVM_API_free_memory_block(env, *weaken_backref_next_address);
+      *weaken_backref_next_address = NULL;
+      *weaken_backref_next_address = tmp;
       break;
     }
     *weaken_backref_next_address = (*weaken_backref_next_address)->next;
   }
+  assert(pass_one == 1);
 }
 
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception) {
