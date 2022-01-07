@@ -1,5 +1,5 @@
 class TestCase::CompileError::CallMethod::NotFound {
   static method main : int () {
-    NOT_FOUND_METHOD();
+    &NOT_FOUND_METHOD();
   }
 }

@@ -254,7 +254,7 @@ use lib "$FindBin::Bin/lib";
   }
 }
 
-# Call sub
+# Call method
 {
   {
     my $build = SPVM::Builder->new;
