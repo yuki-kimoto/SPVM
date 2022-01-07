@@ -16,6 +16,10 @@ Revision history for SPVM
           Wrong class name "ClassNameDifferntFromModuleNameXXXXXXX".
           The class name must be "TestCase::CompileError::Class::ClassNameDifferntFromModuleName"
 
+        [BUGS]
+        * Fix the bugs that variable names can contain ":::".
+        * Fix the bugs that the type conversion from multi numrci type to object type is allowed.
+
 0.9110  2021-01-07
         [CHANGES]
         * Current class "cur->" is changed to "&"
