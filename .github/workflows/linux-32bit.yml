@@ -1,0 +1,24 @@
+name: linux
+
+on:
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+          image: i386/ubuntu:latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: perl Makefile.PL
+        run: perl Makefile.PL
+      - name: make
+        run: make
+      - name: make disttest
+        run: make disttest
+
