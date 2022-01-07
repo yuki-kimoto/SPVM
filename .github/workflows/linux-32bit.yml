@@ -1,4 +1,4 @@
-name: linux
+name: linux-32bit
 
 on:
   push:
@@ -14,10 +14,10 @@ jobs:
     container:
       image: i386/ubuntu:latest
     steps:
-      - name: install the Perl header and core modules
+      - name: install the Perl header, core modules, building tools
         run: |
           apt update
-          apt install -y libperl-dev
+          apt install -y libperl-dev build-essential
       - uses: actions/checkout@v1
       - name: perl Makefile.PL
         run: perl Makefile.PL
