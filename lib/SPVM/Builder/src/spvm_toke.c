@@ -1386,7 +1386,11 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
 
             // Variable name can't conatain __
             if (strstr(var_name, "__")) {
-              SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not contains __ at %s line %d\n", var_name, compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "Variable name \"%s\" can't contain \"__\" at %s line %d\n", var_name, compiler->cur_file, compiler->cur_line);
+            }
+
+            if (strstr(var_name, ":::")) {
+              SPVM_COMPILER_error(compiler, "Variable name \"%s\" can't contain \":::\" at %s line %d\n", var_name, compiler->cur_file, compiler->cur_line);
             }
 
             // Variable name can't start with number
@@ -1397,6 +1401,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             if (strlen(var_name) > 1 && var_name[var_name_length_without_sigil] == ':' && var_name[var_name_length_without_sigil - 1] == ':') {
               SPVM_COMPILER_error(compiler, "Variable name \"%s\" must not end with \"::\" at %s line %d\n", var_name, compiler->cur_file, compiler->cur_line);
             }
+            
             
             // Class variable
             return VAR_NAME;
