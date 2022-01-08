@@ -253,7 +253,13 @@ sub compile {
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
 
-  my $mod_time_config_file = (stat($config_file))[9];
+  my $mod_time_config_file;
+  if (-f $config_file) {
+     $mod_time_config_file = (stat($config_file))[9];
+  }
+  else {
+    $mod_time_config_file = 0;
+  }
   my $mod_time_header_files_max = 0;
   for my $header_file (@include_file_names) {
     my $mod_time_header_file = (stat($header_file))[9];
