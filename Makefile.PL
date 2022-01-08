@@ -133,6 +133,9 @@ WriteMakefile(
     PREREQ_PM => {
         'ExtUtils::CBuilder' => '0.2602',
     },
+    TEST_REQUIRES => {
+        'Test::More' => 0.92,
+    },
 );
 
 # Add Build shared library make rule
