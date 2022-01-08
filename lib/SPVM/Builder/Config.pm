@@ -127,14 +127,14 @@ sub libs {
   }
 }
 
-sub sources {
+sub source_files {
   my $self = shift;
   if (@_) {
-    $self->{sources} = $_[0];
+    $self->{source_files} = $_[0];
     return $self;
   }
   else {
-    return $self->{sources};
+    return $self->{source_files};
   }
 }
 
@@ -239,9 +239,9 @@ sub new {
     $self->resources([]);
   }
 
-  # sources
-  unless (defined $self->{sources}) {
-    $self->sources([]);
+  # source_files
+  unless (defined $self->{source_files}) {
+    $self->source_files([]);
   }
   
   # libs
@@ -366,10 +366,10 @@ sub add_exported_funcs {
   push @{$self->{exported_funcs}}, @exported_funcs;
 }
 
-sub add_sources {
-  my ($self, @sources) = @_;
+sub add_source_files {
+  my ($self, @source_files) = @_;
   
-  push @{$self->{sources}}, @sources;
+  push @{$self->{source_files}}, @source_files;
 }
 
 sub add_resources {
@@ -544,16 +544,16 @@ B<Examples:>
   $config->optimize('-O2');
   $config->optimize('-g3 -O0');
 
-=head2 sources
+=head2 source_files
 
-  my $sources = $config->sources;
-  $config->sources($sources);
+  my $source_files = $config->source_files;
+  $config->source_files($source_files);
 
 Get and get source files. These sourceraries are linked by the compiler.
 
 B<Examples:>
 
-  $config->sources(['foo.c', 'bar.c']);
+  $config->source_files(['foo.c', 'bar.c']);
 
 =head2 ld
 
@@ -738,11 +738,11 @@ Add values after the last element of C<include_dirs> field.
 
 Add values after the last element of  C<lib_dirs> field.
 
-=head2 add_sources
+=head2 add_source_files
 
-  $config->add_sources(@sources);
+  $config->add_source_files(@source_files);
 
-Add the values after the last element of C<sources> field.
+Add the values after the last element of C<source_files> field.
 
 =head2 add_exported_funcs
 

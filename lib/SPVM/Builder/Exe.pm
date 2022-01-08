@@ -106,22 +106,22 @@ sub build_exe_file {
     exit(255);
   }
 
-  # Create precompile C sources
+  # Create precompile C source_files
   $self->create_precompile_csources;
   
-  # Compile precompile C sources
+  # Compile precompile C source_files
   $self->compile_precompile_csources;
 
-  # Compile precompile C sources
+  # Compile precompile C source_files
   my ($native_object_files) = $self->compile_native_csources;
 
-  # Create SPMV module C sources
+  # Create SPMV module C source_files
   $self->create_spvm_module_csources;
 
-  # Compile SPVM compiler and runtime C sources
+  # Compile SPVM compiler and runtime C source_files
   $self->compile_spvm_module_csources;
 
-  # Compile SPVM compiler and runtime C sources
+  # Compile SPVM compiler and runtime C source_files
   $self->compile_spvm_compiler_and_runtime_csources;
 
   # Create bootstrap C source
@@ -496,7 +496,7 @@ EOS
   SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
   SPVM_LIST_push(compiler->op_use_stack, op_use_start);
   
-  // Set module sources
+  // Set module source_files
 EOS
   
   for my $class_name (@$class_names) {

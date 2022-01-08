@@ -229,10 +229,10 @@ sub compile {
   my $spvm_method_src_file = "$spvm_method_src_file_no_ext.c";
   
   # Parse source code dependency
-  my $sources = $config->sources;
+  my $source_files = $config->source_files;
 
   # Native source files
-  my $native_src_files = [map { "$native_src_dir/$_" } @$sources ];
+  my $native_src_files = [map { "$native_src_dir/$_" } @$source_files ];
 
   # Native header files
   my @include_file_names;
