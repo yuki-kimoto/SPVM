@@ -30,7 +30,6 @@ SPVM_STRING_BUFFER* SPVM_STRING_BUFFER_new(SPVM_COMPILER* compiler, int32_t capa
   }
   
   string_buffer->capacity = capacity;
-  string_buffer->buffer;
   if (memory_block_type == SPVM_COMPIER_ALLOCATOR_C_MEMORY_BLOCK_TYPE_COMPILE_TIME_TEMPORARY) {
     string_buffer->buffer = (char*)SPVM_ALLOCATOR_new_block_compile_tmp(compiler, capacity);
   }
