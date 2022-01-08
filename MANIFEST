@@ -654,6 +654,7 @@ t/default/lib/SPVM/TestCase/CompileError/Assign/StringToBytArray.spvm
 t/default/lib/SPVM/TestCase/CompileError/Assign/UnboxingDifferentType.spvm
 t/default/lib/SPVM/TestCase/CompileError/BitNot/NotIntegral.spvm
 t/default/lib/SPVM/TestCase/CompileError/Bool/NotNumericObject.spvm
+t/default/lib/SPVM/TestCase/CompileError/CallMethod/ClassNotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/CallMethod/NotFound.spvm
 t/default/lib/SPVM/TestCase/CompileError/Class/ClassNameDifferntFromModuleName.spvm
 t/default/lib/SPVM/TestCase/CompileError/Class/classPartNameStartWithLowerCase.spvm
@@ -870,7 +871,6 @@ t/default/return.t
 t/default/seqop.t
 t/default/special_assign.t
 t/default/SPVM_Bool.t
-t/default/SPVM_Build_Util.t
 t/default/SPVM_Byte.t
 t/default/SPVM_ByteList.t
 t/default/SPVM_Double.t
@@ -927,6 +927,7 @@ t/memory.t
 t/sort_method_name_native.pl
 t/sort_method_name_pod.pl
 t/sort_method_name_spvm.pl
+t/SPVM_Build_Util.t
 t/test_files/file_eof.txt
 t/test_files/fread.txt
 t/test_files/fread_eof.txt
