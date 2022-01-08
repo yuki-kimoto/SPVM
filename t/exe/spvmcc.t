@@ -1,4 +1,4 @@
-use Test::More 'no_plan';
+use Test::More;
 use strict;
 use warnings;
 use utf8;
@@ -44,3 +44,4 @@ use lib "$FindBin::Bin/exe/lib";
 }
 
 ok(1);
+done_testing;

@@ -4,7 +4,7 @@ use TestAuto;
 use strict;
 use warnings;
 
-use Test::More 'no_plan';
+use Test::More;
 
 use SPVM 'TestCase::Exception';
 
@@ -90,3 +90,5 @@ ok($@);
   ok(SPVM::TestCase::Exception->exception_get_field_object_undef());
 }
 
+
+done_testing;

@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More 'no_plan';
+use Test::More;
 
 use SPVM::Builder::Config;
 
@@ -44,3 +44,5 @@ use SPVM::Builder::Config;
   $config->use('SPVM::Resource::X1', 'SPVM::Resource::X2');
   is_deeply($config->resources, ['SPVM::Resource::X1', 'SPVM::Resource::X2']);
 }
+
+done_testing;

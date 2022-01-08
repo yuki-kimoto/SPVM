@@ -9,7 +9,7 @@ use Test::More;
 use SPVM 'TestCase::Array';
 
 if ($ENV{SPVM_TEST_PRIVATE}) {
-  plan 'no_plan';
+  plan;
 }
 else {
   plan skip_all => 'This is private test because not understandable memory error occured' ;
@@ -36,3 +36,5 @@ SPVM::set_exception(undef);
 # All object is freed
 my $end_memory_blocks_count = SPVM::get_memory_blocks_count();
 is($end_memory_blocks_count, $start_memory_blocks_count);
+
+done_testing;

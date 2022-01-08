@@ -7,7 +7,7 @@ use FindBin;
 
 use SPVM::Builder;
 
-use Test::More 'no_plan';
+use Test::More;
 
 my $file = 't/' . basename $0;
 
@@ -473,3 +473,5 @@ use lib "$FindBin::Bin/lib";
     ok($success == 0);
   }
 }
+
+done_testing;

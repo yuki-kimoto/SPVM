@@ -4,7 +4,7 @@ use warnings;
 use FindBin;
 use File::Find 'find';
 
-use Test::More 'no_plan';
+use Test::More;
 
 # Memory allocation static analysys
 {
@@ -147,3 +147,5 @@ use Test::More 'no_plan';
     ok($allocator_contains_only_five);
   }
 }
+
+done_testing;

@@ -14,3 +14,5 @@ use SPVM 'MinimalMethod';
 SPVM::MinimalMethod->foo;
 
 ok(1);
+
+done_testing;

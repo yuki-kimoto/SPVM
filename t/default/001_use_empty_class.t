@@ -12,3 +12,5 @@ use lib "$FindBin::Bin/lib";
 use SPVM 'EmptyClass';
 
 ok(1);
+
+done_testing;

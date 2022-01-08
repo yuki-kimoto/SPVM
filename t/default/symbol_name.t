@@ -4,7 +4,7 @@ use TestAuto;
 use strict;
 use warnings;
 
-use Test::More 'no_plan';
+use Test::More;
 
 
 
@@ -12,3 +12,5 @@ use Test::More 'no_plan';
 use SPVM 'TestCase::SymbolName_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
 
 ok(1);
+
+done_testing;
