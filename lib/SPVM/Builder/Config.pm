@@ -496,6 +496,21 @@ Fields.
 
 Get and set a compiler. The default is the value of C<cc> of L<Config> module.
 
+B<Examples:>
+  
+  # gcc
+  $config->cc('gcc');
+  
+  # g++ for C++
+  $config->cc('g++');
+  
+  # nvcc for CUDA/GUP
+  $config->cc('nvcc');
+  
+  # cc that compiled this Perl
+  use Config;
+  $config->cc($Config{cc});
+
 =head2 include_dirs
 
   my $include_dirs = $config->include_dirs;
