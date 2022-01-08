@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9113  2021-01-08
+        [CHANGES]
+        * Add "use" method to SPVM::Builder::Config. This method is the alias for "add_resources".
+        * Remove "ext" field of SPVM::Builder::Config because source files was needed to be specifed.
 0.9112  2021-01-07
         [BUGS]
         * Fix a unweaken memory leak bug.

@@ -17,17 +17,6 @@ sub exported_funcs {
   }
 }
 
-sub ext {
-  my $self = shift;
-  if (@_) {
-    $self->{ext} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{ext};
-  }
-}
-
 sub quiet {
   my $self = shift;
   if (@_) {
@@ -189,11 +178,6 @@ sub new {
     $self->force(0);
   }
   
-  # ext
-  unless (defined $self->{ext}) {
-    $self->ext(undef);
-  }
-
   # cc
   unless (defined $self->{cc}) {
     $self->cc($Config{cc});
@@ -294,9 +278,6 @@ sub new_c {
   
   my $self = SPVM::Builder::Config->new;
   
-  # NativeAPI
-  $self->ext('c');
-  
   return $self;
 }
 
@@ -321,9 +302,6 @@ sub new_cpp {
   
   # LD
   $self->ld('g++');
-  
-  # NativeAPI
-  $self->ext('cpp');
   
   return $self;
 }
@@ -511,20 +489,6 @@ L<SPVM::Builder::Config> is configuration of c/c++ compile and link.
 
 Fields.
 
-=head2 ext
-
-  my $ext = $config->ext;
-  $config->ext($ext);
-
-Get and set the extension of native sources. This is used by the compiler.
-
-The default is C<undef>.
-
-B<Examples:>
-
-  $config->ext('c');
-  $config->ext('cpp');
-  
 =head2 cc
 
   my $cc = $config->cc;

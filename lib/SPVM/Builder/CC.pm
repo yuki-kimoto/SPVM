@@ -225,24 +225,43 @@ sub compile {
   # SPVM Method source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
   my $spvm_method_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
-  my $src_ext = $config->ext;
-  unless (defined $src_ext) {
-    confess "Source extension is not specified";
-  }
   
-  my $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
-  unless (-f $spvm_method_src_file) {
-    confess "Can't find source file $spvm_method_src_file";
-  }
+  my $spvm_method_src_file = "$spvm_method_src_file_no_ext.c";
   
   # Parse source code dependency
-  my $dependency = $self->parse_native_source_dependencies($native_include_dir, $native_src_dir, $src_ext);
+  my $sources = $config->sources;
 
   # Native source files
-  my $native_src_files = [map { "$native_src_dir/$_" } @{$config->sources} ];
+  my $native_src_files = [map { "$native_src_dir/$_" } @$sources ];
+
+  # Native header files
+  my @include_file_names;
+  if (-d $native_include_dir) {
+    find(
+      {
+        wanted => sub {
+          my $include_file_name = $File::Find::name;
+          if (-f $include_file_name) {
+            push @include_file_names, $include_file_name;
+          }
+        },
+        no_chdir => 1,
+      },
+      $native_include_dir,
+    );
+  }
   
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
-  
+
+  my $mod_time_config_file = (stat($config_file))[9];
+  my $mod_time_header_files_max = 0;
+  for my $header_file (@include_file_names) {
+    my $mod_time_header_file = (stat($header_file))[9];
+    if ($mod_time_header_file > $mod_time_header_files_max) {
+      $mod_time_header_files_max = $mod_time_header_file;
+    }
+  }
+
   # Compile source files
   my $object_files = [];
   my $is_native_src;
@@ -268,46 +287,44 @@ sub compile {
       $object_file = "$object_dir/$object_rel_file";
     }
     
-    # Do compile. This is same as make command
-    my $do_compile;
+    # Need the compilation. This is same as make command
+    my $need_compile;
     if ($self->force) {
-      $do_compile = 1;
+      $need_compile = 1;
     }
     else {
       if ($config->force) {
-        $do_compile = 1;
+        $need_compile = 1;
       }
       else {
         if (!-f $object_file) {
-          $do_compile = 1;
+          $need_compile = 1;
         }
         else {
-          # Do compile if one of dependency files(source file and include files and config file) is newer than object file
-          my @dependency_files;
-          if (-f $config_file) {
-            push @dependency_files, $config_file;
-          }
-          push @dependency_files, $src_file;
-          my $dependency_files_native = $dependency->{$src_file};
-          if ($dependency_files_native) {
-            for my $dependency_file_native (@$dependency_files_native) {
-              push @dependency_files, $dependency_file_native;
-            }
-          }
-          
           my $mod_time_object_file = (stat($object_file))[9];
-          for my $dependency_file (@dependency_files) {
-            my $mod_time_dependency_file = (stat($dependency_file))[9];
-            if ($mod_time_dependency_file > $mod_time_object_file) {
-              $do_compile = 1;
-              last;
+          
+          # Need the compilation if the config file is newer than the object file.
+          if ($mod_time_config_file > $mod_time_object_file) {
+            $need_compile = 1;
+          }
+          else {
+            # Need the compilation if one of the header files is newer than the object file.
+            if ($mod_time_header_files_max > $mod_time_object_file) {
+              $need_compile = 1;
+            }
+            else {
+              # Need the compilation if the source files is newer than the object file.
+              my $mod_time_src_file = (stat($src_file))[9];
+              if ($mod_time_src_file > $mod_time_object_file) {
+                $need_compile = 1;
+              }
             }
           }
         }
       }
     }
     
-    if ($do_compile) {
+    if ($need_compile) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
@@ -674,80 +691,6 @@ sub create_precompile_csource {
     print $fh $class_csource;
     close $fh;
   }
-}
-
-sub parse_native_source_dependencies {
-  my ($self, $include_dir, $src_dir, $src_ext) = @_;
-  
-  # Get header files
-  my @include_file_names;
-  if (-d $include_dir) {
-    find(
-      {
-        wanted => sub {
-          my $include_file_name = $File::Find::name;
-          if (-f $include_file_name) {
-            push @include_file_names, $include_file_name;
-          }
-        },
-        no_chdir => 1,
-      },
-      $include_dir,
-    );
-  }
-  
-  # Get source files
-  my @src_file_names;
-  if (-d $src_dir) {
-    find(
-      {
-        wanted => sub {
-          my $src_file_name = $File::Find::name;
-          if (-f $src_file_name) {
-            push @src_file_names, $src_file_name;
-          }
-        },
-        no_chdir => 1,
-      },
-      $src_dir,
-    );
-  }
-  
-  my $dependencies = {};
-  for my $include_file_name (@include_file_names) {
-    my $include_file_name_no_ext_rel = $include_file_name;
-    $include_file_name_no_ext_rel =~ s/^\Q$include_dir//;
-    $include_file_name_no_ext_rel =~ s/^[\\\/]//;
-    $include_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
-    
-    my $match_at_least_one;
-    for my $src_file_name (@src_file_names) {
-      # Skip if file have no source extension
-      next unless $src_file_name =~ /\Q.$src_ext\E$/;
-      
-      my $src_file_name_no_ext_rel = $src_file_name;
-      $src_file_name_no_ext_rel =~ s/^\Q$src_dir//;
-      $src_file_name_no_ext_rel =~ s/^[\\\/]//;
-      $src_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
-      
-      if ($src_file_name_no_ext_rel eq $include_file_name_no_ext_rel) {
-        $dependencies->{$src_file_name} ||= [];
-        push @{$dependencies->{$src_file_name}}, $include_file_name;
-        $match_at_least_one++;
-      }
-    }
-    
-    # If not match at least one, we assume the header files is common file
-    unless ($match_at_least_one) {
-      for my $src_file_name (@src_file_names) {
-        # Skip if file have no source extension
-        next unless $src_file_name =~ /\Q.$src_ext\E$/;
-        push @{$dependencies->{$src_file_name}}, $include_file_name;
-      }
-    }
-  }
-  
-  return $dependencies;
 }
 
 1;
