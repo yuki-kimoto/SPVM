@@ -1,5 +1,10 @@
 Revision history for SPVM
 
+0.9114  2021-01-10
+        [BUGS]
+        * new_c, new_c99, new_cpp, new_cpp11 of SPVM::Builder::Config pass
+          arguments to new of SPVM::Builder::Config.
+
 0.9113  2021-01-09
         [CHANGES]
         * Add "use" method to SPVM::Builder::Config. This method is the alias for "add_resources".

@@ -276,7 +276,7 @@ sub new {
 sub new_c {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new;
+  my $self = SPVM::Builder::Config->new(@_);
   
   return $self;
 }
@@ -284,7 +284,7 @@ sub new_c {
 sub new_c99 {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new_c;
+  my $self = SPVM::Builder::Config->new_c(@_);
   
   # C99
   $self->set_std('c99');
@@ -295,7 +295,7 @@ sub new_c99 {
 sub new_cpp {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new;
+  my $self = SPVM::Builder::Config->new(@_);
   
   # CC
   $self->cc('g++');
@@ -309,7 +309,7 @@ sub new_cpp {
 sub new_cpp11 {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new_cpp;
+  my $self = SPVM::Builder::Config->new_cpp(@_);
   
   # C++11
   $self->set_std('c++11');
