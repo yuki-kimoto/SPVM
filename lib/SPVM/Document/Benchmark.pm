@@ -140,7 +140,7 @@ B<SPVM/MyMath.config>
 
   use SPVM::Builder::Config;
 
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   $config;
 
@@ -148,7 +148,7 @@ B<SPVM/MyMathNative.c>
 
   #include "spvm_native.h"
 
-  int32_t SPVM__SPVM__MyMathNative__spvm_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+  int32_t SPVM__MyMathNative__spvm_sum(SPVM_ENV* env, SPVM_VALUE* stack) {
     
     int32_t loop_count = stack[0].ival;
 

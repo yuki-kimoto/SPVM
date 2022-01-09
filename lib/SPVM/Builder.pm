@@ -232,7 +232,7 @@ use strict;
 use warnings;
 
 use SPVM::Builder::Config;
-my \$config = SPVM::Builder::Config->new_c99;
+my \$config = SPVM::Builder::Config->new(file => __FILE__);
 
 \$config;
 ----------------------------------------------
@@ -241,7 +241,8 @@ EOS
       confess $error;
     }
     else {
-      $config = SPVM::Builder::Config->new_c99;
+      # Precompile
+      $config = SPVM::Builder::Config->new_c99(file_optional => 1);
     }
   }
 

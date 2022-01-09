@@ -37,7 +37,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   $config;
 
@@ -48,7 +48,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c;
+  my $config = SPVM::Builder::Config->new_c(file => __FILE__);
 
   $config->set_std('c11');
 
@@ -61,7 +61,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_cpp;
+  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
   $config;
 
@@ -72,7 +72,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_cpp;
+  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
 
   $config->set_std('c++11');
 
@@ -83,7 +83,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use strict;
   use warnings;
 
-  my $config = SPVM::Builder::Config->new;
+  my $config = SPVM::Builder::Config->new(file => __FILE__);
 
   # Compiler and Linker common
   $config->set_cccdlflags(q(--compiler-options '-fPIC'));
@@ -91,7 +91,6 @@ Native Config File is Perl source code. Native Config File must return properly 
   # Compiler
   $config->cc('nvcc');
   $config->ccflags('');
-  $config->ext('cu');
 
   # Linker
   $config->ld('nvcc');
@@ -106,7 +105,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   # Show the compile commands
   $config->quiet(0);
@@ -119,7 +118,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
 
   # Show the compile commands
   $config->force(1);

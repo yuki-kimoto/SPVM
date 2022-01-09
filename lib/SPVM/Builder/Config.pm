@@ -774,13 +774,18 @@ The default is C<1>.
 
 =head2 new
 
-  my $config = SPVM::Builder::Config->new;
+  my $config = SPVM::Builder::Config->new(file => $config_file);
   
 Create L<SPVM::Builder::Config> object.
 
+B<Examples:>
+  
+  # Foo/Bar.config
+  my $config = SPVM::Builder::Config->new(file => __FILE__);
+
 =head2 new_c
   
-  my $config = SPVM::Builder::Config->new_c;
+  my $config = SPVM::Builder::Config->new_c(file => $config_file);
 
 Create default build config with C settings. This is L<SPVM::Builder::Config> object.
 
@@ -788,15 +793,25 @@ If you want to use the specific C version, use C<set_std> method.
 
   $config->set_std('c99');
 
+B<Examples:>
+  
+  # Foo/Bar.config
+  my $config = SPVM::Builder::Config->new_c(file => __FILE__);
+
 =head2 new_c99
   
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_c99(file => $config_file);
 
 Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
 
+B<Examples:>
+  
+  # Foo/Bar.config
+  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
+
 =head2 new_cpp
   
-  my $config = SPVM::Builder::Config->new_cpp;
+  my $config = SPVM::Builder::Config->new_cpp(file => $config_file);
 
 Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
 
@@ -804,11 +819,21 @@ If you want to use the specific C++ version, use C<set_std> method.
 
   $config->set_std('c++11');
 
+B<Examples:>
+  
+  # Foo/Bar.config
+  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
+
 =head2 new_cpp11
   
-  my $config = SPVM::Builder::Config->new_cpp11;
+  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
+
+B<Examples:>
+  
+  # Foo/Bar.config
+  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
 =head2 set_std
 
