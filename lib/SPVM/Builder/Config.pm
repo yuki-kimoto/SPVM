@@ -7,28 +7,6 @@ use Carp 'confess';
 use File::Basename 'dirname';
 
 # Fields
-sub file {
-  my $self = shift;
-  if (@_) {
-    $self->{file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file};
-  }
-}
-
-sub file_optional {
-  my $self = shift;
-  if (@_) {
-    $self->{file_optional} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file_optional};
-  }
-}
-
 sub exported_funcs {
   my $self = shift;
   if (@_) {
@@ -95,17 +73,6 @@ sub ld_optimize {
   }
 }
 
-sub native_include_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{native_include_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_include_dir};
-  }
-}
-
 sub include_dirs {
   my $self = shift;
   if (@_) {
@@ -136,17 +103,6 @@ sub ldflags {
   }
   else {
     return $self->{ldflags};
-  }
-}
-
-sub native_src_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{native_src_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_src_dir};
   }
 }
 
@@ -233,26 +189,6 @@ sub new {
     $self->exported_funcs([]);
   }
 
-  # file_optional
-  unless (defined $self->{file_optional}) {
-    $self->file_optional(1);
-  }
-  
-  # file
-  if (!$self->file_optional && !defined $self->{file}) {
-    confess('file field must be specified.');
-  }
-  
-  if (defined $self->{file}) {
-    my $config_file = $self->{file};
-    my $config_dir = dirname $config_file;
-    my $native_include_dir = "$config_dir.native/include";
-    my $native_src_dir = "$config_dir.native/src";
-    
-    $self->native_include_dir($native_include_dir);
-    $self->native_src_dir($native_src_dir);
-  }
-  
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
@@ -712,48 +648,6 @@ Non-Windows
 Get and set the option for optimization of the linker such as C<-O3>, C<-O2>, C<-g3 -O0>.
 
 The default is C<-O2>.
-
-=head2 file
-
-  my $file = $config->file;
-  $config->file($file);
-
-Get and set the config file path.
-
-=head2 file_optional
-
-  my $file_optional = $config->file_optional;
-  $config->file_optional($file_optional);
-
-Get and set the L<"file"> field is optional in L<"new"> method.
-
-Default is C<0>.
-
-B<Examples:>
-
-  my $config = SPVM::Builder::Config->new(file_optional => 1);
-
-=head2 native_include_dir
-
-  my $native_include_dir = $config->native_include_dir;
-  $config->native_include_dir($native_include_dir);
-
-Get and set the native C<include> directory.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<native_include_dir> becomes C</path/SPVM/Foo.native/include>
-
-=head2 native_src_dir
-
-  my $native_src_dir = $config->native_src_dir;
-  $config->native_src_dir($native_src_dir);
-
-Get and set the native C<src> directory. This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<native_include_dir> becomes C</path/SPVM/Foo.native/src>
 
 =head2 force
 
