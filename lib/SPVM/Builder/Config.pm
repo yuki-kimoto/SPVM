@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Config;
 use Carp 'confess';
+use File::Basename 'dirname';
 
 # Fields
 sub file {
@@ -91,17 +92,6 @@ sub ld_optimize {
   }
   else {
     return $self->{ld_optimize};
-  }
-}
-
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
   }
 }
 
@@ -277,34 +267,16 @@ sub new {
   
   if (defined $self->{file}) {
     my $config_file = $self->{file};
-    my $config_file_without_ext = $config_file;
-    $config_file_without_ext =~ s/\.config$//;
-    
-    my $native_include_dir = "$config_file_without_ext.native/include";
-    my $native_src_dir = "$config_file_without_ext.native/src";
-    my $native_lib_dir = "$config_file_without_ext.native/lib";
-    my $native_bin_dir = "$config_file_without_ext.native/bin";
+    my $config_dir = dirname $config_file;
+    my $native_include_dir = "$config_dir.native/include";
+    my $native_src_dir = "$config_dir.native/src";
+    my $native_lib_dir = "$config_dir.native/lib";
+    my $native_bin_dir = "$config_dir.native/bin";
     
     $self->native_include_dir($native_include_dir);
     $self->native_src_dir($native_src_dir);
     $self->native_lib_dir($native_lib_dir);
     $self->native_bin_dir($native_bin_dir);
-    
-  }
-
-  unless (defined $self->{class_name}) {
-    if (defined $self->{file}) {
-      my $config_file = $self->{file};
-      my $config_file_without_ext = $config_file;
-      $config_file_without_ext =~ s/\.config$//;
-      
-      my $module_file = "$config_file_without_ext.spvm";
-      my $module_source = SPVM::Builder::Util::slurp_binary($module_file);
-      if ($module_source =~ /\bclass\s+([\w:]+)/s) {
-        my $class_name = $1;
-        $self->{class_name} = $class_name;
-      }
-    }
   }
   
   # include_dirs
@@ -786,19 +758,6 @@ Default is C<0>.
 B<Examples:>
 
   my $config = SPVM::Builder::Config->new(file_optional => 1);
-
-=head2 class_name
-
-  my $class_name = $config->class_name;
-  $config->class_name($class_name);
-
-Get and set the class name.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<class_name> becomes C<SPVM::Foo>.
-
-Because This is parsed from C</path/SPVM/Foo.spvm>, the module file must be exist if C<file> field is specified.
 
 =head2 native_include_dir
 
