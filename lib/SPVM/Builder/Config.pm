@@ -106,6 +106,28 @@ sub native_include_dir {
   }
 }
 
+sub native_lib_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{native_lib_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{native_lib_dir};
+  }
+}
+
+sub native_bin_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{native_bin_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{native_bin_dir};
+  }
+}
+
 sub include_dirs {
   my $self = shift;
   if (@_) {
@@ -248,9 +270,13 @@ sub new {
     my $config_dir = dirname $config_file;
     my $native_include_dir = "$config_dir.native/include";
     my $native_src_dir = "$config_dir.native/src";
+    my $native_lib_dir = "$config_dir.native/lib";
+    my $native_bin_dir = "$config_dir.native/bin";
     
     $self->native_include_dir($native_include_dir);
     $self->native_src_dir($native_src_dir);
+    $self->native_lib_dir($native_lib_dir);
+    $self->native_bin_dir($native_bin_dir);
   }
   
   # include_dirs
@@ -754,6 +780,28 @@ Get and set the native C<src> directory. This is automatically decided by L<"fil
 This is automatically decided by L<"file"> field when C<"new"> method is called.
 
 For example L<"file"> is C</path/SPVM/Foo.config>, C<native_include_dir> becomes C</path/SPVM/Foo.native/src>
+
+=head2 native_lib_dir
+
+  my $native_lib_dir = $config->native_lib_dir;
+  $config->native_lib_dir($native_lib_dir);
+
+Get and set the native C<lib> directory.
+
+This is automatically decided by L<"file"> field when C<"new"> method is called.
+
+For example L<"file"> is C</path/SPVM/Foo.config>, C<native_lib_dir> becomes C</path/SPVM/Foo.native/lib>
+
+=head2 native_bin_dir
+
+  my $native_bin_dir = $config->native_bin_dir;
+  $config->native_bin_dir($native_bin_dir);
+
+Get and set the native C<bin> directory.
+
+This is automatically decided by L<"file"> field when C<"new"> method is called.
+
+For example L<"file"> is C</path/SPVM/Foo.config>, C<native_bin_dir> becomes C</path/SPVM/Foo.native/bin>
 
 =head2 force
 
