@@ -5,6 +5,12 @@ Revision history for SPVM
         * new_c, new_c99, new_cpp, new_cpp11 of SPVM::Builder::Config pass
           arguments to new of SPVM::Builder::Config.
         * Add file, file_optional, native_include_dir, native_src_dir fields to SPVM::Builder::Config.
+        * Need file field new, new_c, new_c99, new_cpp, new_cpp11 of SPVM::Builder::Config
+          [Now Runtime Exception 
+          my $config = SPVM::Config->new;
+          
+          [New Code]
+          my $config = SPVM::Config->new(file => __FILE__);
 
 0.9113  2021-01-09
         [CHANGES]
