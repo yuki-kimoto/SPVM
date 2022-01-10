@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Config;
 use Carp 'confess';
+use File::Basename 'dirname';
 
 # Fields
 sub file {
