@@ -350,7 +350,7 @@ sub compile_spvm_module_csources {
   my $class_names = $builder->get_class_names;
   
   # Config
-  my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
+  my $config = SPVM::Builder::Config->new_c99;
 
   # Optimize
   my $optimize = $self->optimize;
@@ -649,7 +649,7 @@ sub compile_bootstrap_csource {
   my $build_dir = $self->builder->build_dir;
   
   # Config
-  my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
+  my $config = SPVM::Builder::Config->new_c99;
   
   # Optimize
   my $optimize = $self->optimize;
@@ -738,7 +738,7 @@ sub compile_spvm_compiler_and_runtime_csources {
   my @spvm_compiler_and_runtime_src_files = map { "$spvm_compiler_and_runtime_src_dir/$_" } @SPVM_RUNTIME_SRC_BASE_NAMES;
   
   # Config
-  my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
+  my $config = SPVM::Builder::Config->new_c99;;
   
   # Default include path
   $config->add_ccflags("-Iblib/lib/SPVM/Builder/include");
@@ -816,7 +816,7 @@ sub link {
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
   push @$object_files, glob "$build_work_object_dir/$class_name_rel_file.boot.o";
   
-  my $config = SPVM::Builder::Config->new_c99(file_optional => 1);
+  my $config = SPVM::Builder::Config->new_c99;
   
   # CBuilder configs
   my $output_file = $self->{output_file};
