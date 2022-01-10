@@ -235,7 +235,7 @@ sub new {
 
   # file_optional
   unless (defined $self->{file_optional}) {
-    $self->file_optional(0);
+    $self->file_optional(1);
   }
   
   # file
