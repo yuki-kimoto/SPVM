@@ -5,7 +5,7 @@ Revision history for SPVM
         * new_c, new_c99, new_cpp, new_cpp11 of SPVM::Builder::Config pass
           arguments to new of SPVM::Builder::Config.
         [CHANGES]
-        * Add file, file_optional, native_include_dir,
+        * Add class_name, file, file_optional, native_include_dir,
           native_src_dir native_lib_dir, native_bin_dir
           fields to SPVM::Builder::Config.
         [NON BACKWORD COMPATIBLE CHANGES]
