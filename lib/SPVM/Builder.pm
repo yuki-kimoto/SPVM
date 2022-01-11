@@ -183,7 +183,7 @@ You must write the following definition.
 
 int32_t $cfunc_name(SPVM_ENV* env, SPVM_VALUE* stack) {
   
-  return SPVM_SUCCESS;
+  return 0;
 }
 --------------------------------------------------
 
