@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9115  2021-01-11
+        [CHANGES]
+        * Add "ext" field of SPVM::Builder::Config again for the SPVM native source extension.
+
 0.9114  2021-01-10
         [FIX BUGS]
         * new_c, new_c99, new_cpp, new_cpp11 of SPVM::Builder::Config pass
