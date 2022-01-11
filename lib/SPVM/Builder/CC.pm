@@ -225,8 +225,15 @@ sub compile {
   # SPVM Method source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
   my $spvm_method_src_file_no_ext = "$src_dir/$src_rel_file_no_ext";
+  my $src_ext = $config->ext;
+  unless (defined $src_ext) {
+    confess "Source extension is not specified";
+  }
   
-  my $spvm_method_src_file = "$spvm_method_src_file_no_ext.c";
+  my $spvm_method_src_file = "$spvm_method_src_file_no_ext.$src_ext";
+  unless (-f $spvm_method_src_file) {
+    confess "Can't find source file $spvm_method_src_file";
+  }
   
   # Parse source code dependency
   my $source_files = $config->source_files;
@@ -293,7 +300,7 @@ sub compile {
       $object_file = "$object_dir/$object_rel_file";
     }
     
-    # Need the compilation. This is same as make command
+    # Do compile. This is same as make command
     my $need_compile;
     if ($self->force) {
       $need_compile = 1;
@@ -328,8 +335,7 @@ sub compile {
           }
         }
       }
-    }
-    
+    }    
     if ($need_compile) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_object_dir = "$object_dir/$class_rel_dir";
@@ -697,6 +703,80 @@ sub create_precompile_csource {
     print $fh $class_csource;
     close $fh;
   }
+}
+
+sub parse_native_source_dependencies {
+  my ($self, $include_dir, $src_dir, $src_ext) = @_;
+  
+  # Get header files
+  my @include_file_names;
+  if (-d $include_dir) {
+    find(
+      {
+        wanted => sub {
+          my $include_file_name = $File::Find::name;
+          if (-f $include_file_name) {
+            push @include_file_names, $include_file_name;
+          }
+        },
+        no_chdir => 1,
+      },
+      $include_dir,
+    );
+  }
+  
+  # Get source files
+  my @src_file_names;
+  if (-d $src_dir) {
+    find(
+      {
+        wanted => sub {
+          my $src_file_name = $File::Find::name;
+          if (-f $src_file_name) {
+            push @src_file_names, $src_file_name;
+          }
+        },
+        no_chdir => 1,
+      },
+      $src_dir,
+    );
+  }
+  
+  my $dependencies = {};
+  for my $include_file_name (@include_file_names) {
+    my $include_file_name_no_ext_rel = $include_file_name;
+    $include_file_name_no_ext_rel =~ s/^\Q$include_dir//;
+    $include_file_name_no_ext_rel =~ s/^[\\\/]//;
+    $include_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
+    
+    my $match_at_least_one;
+    for my $src_file_name (@src_file_names) {
+      # Skip if file have no source extension
+      next unless $src_file_name =~ /\Q.$src_ext\E$/;
+      
+      my $src_file_name_no_ext_rel = $src_file_name;
+      $src_file_name_no_ext_rel =~ s/^\Q$src_dir//;
+      $src_file_name_no_ext_rel =~ s/^[\\\/]//;
+      $src_file_name_no_ext_rel =~ s/\.[^\\\/]+$//;
+      
+      if ($src_file_name_no_ext_rel eq $include_file_name_no_ext_rel) {
+        $dependencies->{$src_file_name} ||= [];
+        push @{$dependencies->{$src_file_name}}, $include_file_name;
+        $match_at_least_one++;
+      }
+    }
+    
+    # If not match at least one, we assume the header files is common file
+    unless ($match_at_least_one) {
+      for my $src_file_name (@src_file_names) {
+        # Skip if file have no source extension
+        next unless $src_file_name =~ /\Q.$src_ext\E$/;
+        push @{$dependencies->{$src_file_name}}, $include_file_name;
+      }
+    }
+  }
+  
+  return $dependencies;
 }
 
 1;

@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9116  2021-01-11
+        [CHANGES]
+        * Add "ext" field of SPVM::Builder::Config again for the SPVM native source extension.
+
 0.9115  2021-01-11
         [NON BACKWORD COMPATIBLE CHANGES]
         * Revert most of 0.9114 Changes
