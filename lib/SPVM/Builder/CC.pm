@@ -180,7 +180,7 @@ sub compile {
     $config = SPVM::Builder::Util::load_config($config_file);
   }
   else {
-    $config = SPVM::Builder::Config->new_c99(file_optional => 1);
+    $config = SPVM::Builder::Config->new_c99;;
   }
   
   # Runtime include directries
@@ -433,7 +433,7 @@ use strict;
 use warnings;
 
 use SPVM::Builder::Config;
-my \$config = SPVM::Builder::Config->new(file => __FILE__);
+my \$config = SPVM::Builder::Config->new_c99;
 
 \$config;
 ----------------------------------------------
@@ -442,7 +442,7 @@ EOS
       confess $error;
     }
     else {
-      $config = SPVM::Builder::Config->new_c99(file_optional => 1);
+      $config = SPVM::Builder::Config->new_c99;
     }
   }
 

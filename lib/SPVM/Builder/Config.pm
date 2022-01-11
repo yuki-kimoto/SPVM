@@ -4,30 +4,9 @@ use strict;
 use warnings;
 use Config;
 use Carp 'confess';
+use File::Basename 'dirname';
 
 # Fields
-sub file {
-  my $self = shift;
-  if (@_) {
-    $self->{file} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file};
-  }
-}
-
-sub file_optional {
-  my $self = shift;
-  if (@_) {
-    $self->{file_optional} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{file_optional};
-  }
-}
-
 sub exported_funcs {
   my $self = shift;
   if (@_) {
@@ -94,50 +73,6 @@ sub ld_optimize {
   }
 }
 
-sub class_name {
-  my $self = shift;
-  if (@_) {
-    $self->{class_name} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{class_name};
-  }
-}
-
-sub native_include_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{native_include_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_include_dir};
-  }
-}
-
-sub native_lib_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{native_lib_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_lib_dir};
-  }
-}
-
-sub native_bin_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{native_bin_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_bin_dir};
-  }
-}
-
 sub include_dirs {
   my $self = shift;
   if (@_) {
@@ -168,17 +103,6 @@ sub ldflags {
   }
   else {
     return $self->{ldflags};
-  }
-}
-
-sub native_src_dir {
-  my $self = shift;
-  if (@_) {
-    $self->{native_src_dir} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{native_src_dir};
   }
 }
 
@@ -265,48 +189,6 @@ sub new {
     $self->exported_funcs([]);
   }
 
-  # file_optional
-  unless (defined $self->{file_optional}) {
-    $self->file_optional(0);
-  }
-  
-  # file
-  if (!$self->file_optional && !defined $self->{file}) {
-    confess('file field must be specified.');
-  }
-  
-  if (defined $self->{file}) {
-    my $config_file = $self->{file};
-    my $config_file_without_ext = $config_file;
-    $config_file_without_ext =~ s/\.config$//;
-    
-    my $native_include_dir = "$config_file_without_ext.native/include";
-    my $native_src_dir = "$config_file_without_ext.native/src";
-    my $native_lib_dir = "$config_file_without_ext.native/lib";
-    my $native_bin_dir = "$config_file_without_ext.native/bin";
-    
-    $self->native_include_dir($native_include_dir);
-    $self->native_src_dir($native_src_dir);
-    $self->native_lib_dir($native_lib_dir);
-    $self->native_bin_dir($native_bin_dir);
-    
-  }
-
-  unless (defined $self->{class_name}) {
-    if (defined $self->{file}) {
-      my $config_file = $self->{file};
-      my $config_file_without_ext = $config_file;
-      $config_file_without_ext =~ s/\.config$//;
-      
-      my $module_file = "$config_file_without_ext.spvm";
-      my $module_source = SPVM::Builder::Util::slurp_binary($module_file);
-      if ($module_source =~ /\bclass\s+([\w:]+)/s) {
-        my $class_name = $1;
-        $self->{class_name} = $class_name;
-      }
-    }
-  }
-  
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
@@ -767,83 +649,6 @@ Get and set the option for optimization of the linker such as C<-O3>, C<-O2>, C<
 
 The default is C<-O2>.
 
-=head2 file
-
-  my $file = $config->file;
-  $config->file($file);
-
-Get and set the config file path.
-
-=head2 file_optional
-
-  my $file_optional = $config->file_optional;
-  $config->file_optional($file_optional);
-
-Get and set the L<"file"> field is optional in L<"new"> method.
-
-Default is C<0>.
-
-B<Examples:>
-
-  my $config = SPVM::Builder::Config->new(file_optional => 1);
-
-=head2 class_name
-
-  my $class_name = $config->class_name;
-  $config->class_name($class_name);
-
-Get and set the class name.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<class_name> becomes C<SPVM::Foo>.
-
-Because This is parsed from C</path/SPVM/Foo.spvm>, the module file must be exist if C<file> field is specified.
-
-=head2 native_include_dir
-
-  my $native_include_dir = $config->native_include_dir;
-  $config->native_include_dir($native_include_dir);
-
-Get and set the native C<include> directory.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<native_include_dir> becomes C</path/SPVM/Foo.native/include>
-
-=head2 native_src_dir
-
-  my $native_src_dir = $config->native_src_dir;
-  $config->native_src_dir($native_src_dir);
-
-Get and set the native C<src> directory. This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<native_include_dir> becomes C</path/SPVM/Foo.native/src>
-
-=head2 native_lib_dir
-
-  my $native_lib_dir = $config->native_lib_dir;
-  $config->native_lib_dir($native_lib_dir);
-
-Get and set the native C<lib> directory.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<native_lib_dir> becomes C</path/SPVM/Foo.native/lib>
-
-=head2 native_bin_dir
-
-  my $native_bin_dir = $config->native_bin_dir;
-  $config->native_bin_dir($native_bin_dir);
-
-Get and set the native C<bin> directory.
-
-This is automatically decided by L<"file"> field when C<"new"> method is called.
-
-For example L<"file"> is C</path/SPVM/Foo.config>, C<native_bin_dir> becomes C</path/SPVM/Foo.native/bin>
-
 =head2 force
 
   my $force = $config->force;
@@ -864,18 +669,13 @@ The default is C<1>.
 
 =head2 new
 
-  my $config = SPVM::Builder::Config->new(file => $config_file);
+  my $config = SPVM::Builder::Config->new;
   
 Create L<SPVM::Builder::Config> object.
 
-B<Examples:>
-  
-  # Foo/Bar.config
-  my $config = SPVM::Builder::Config->new(file => __FILE__);
-
 =head2 new_c
   
-  my $config = SPVM::Builder::Config->new_c(file => $config_file);
+  my $config = SPVM::Builder::Config->new_c;
 
 Create default build config with C settings. This is L<SPVM::Builder::Config> object.
 
@@ -883,25 +683,15 @@ If you want to use the specific C version, use C<set_std> method.
 
   $config->set_std('c99');
 
-B<Examples:>
-  
-  # Foo/Bar.config
-  my $config = SPVM::Builder::Config->new_c(file => __FILE__);
-
 =head2 new_c99
   
-  my $config = SPVM::Builder::Config->new_c99(file => $config_file);
+  my $config = SPVM::Builder::Config->new_c99;
 
 Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
 
-B<Examples:>
-  
-  # Foo/Bar.config
-  my $config = SPVM::Builder::Config->new_c99(file => __FILE__);
-
 =head2 new_cpp
   
-  my $config = SPVM::Builder::Config->new_cpp(file => $config_file);
+  my $config = SPVM::Builder::Config->new_cpp;
 
 Create default build config with C++ settings. This is L<SPVM::Builder::Config> object.
 
@@ -909,21 +699,11 @@ If you want to use the specific C++ version, use C<set_std> method.
 
   $config->set_std('c++11');
 
-B<Examples:>
-  
-  # Foo/Bar.config
-  my $config = SPVM::Builder::Config->new_cpp(file => __FILE__);
-
 =head2 new_cpp11
   
-  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
+  my $config = SPVM::Builder::Config->new_cpp11;
 
 Create default build config with C++11 settings. This is L<SPVM::Builder::Config> object.
-
-B<Examples:>
-  
-  # Foo/Bar.config
-  my $config = SPVM::Builder::Config->new_cpp11(file => __FILE__);
 
 =head2 set_std
 
