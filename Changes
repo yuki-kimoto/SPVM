@@ -1,6 +1,8 @@
 Revision history for SPVM
 
 0.9116  2021-01-11
+        [FIX BUGS]
+        * Fix the bugs that C++ code can't be compiled
         [CHANGES]
         * Add "ext" field of SPVM::Builder::Config again for the SPVM native source extension.
 
