@@ -141,6 +141,39 @@ sub build_shared_lib {
   return $build_shared_lib_file;
 }
 
+sub resolve_resources {
+  my ($self, $resource_class_name_root) = @_;
+  
+  my @all_resources = ($resource_class_name_root);
+  
+  my $found_resources_h = {};
+  while (my $resource = shift @all_resources) {
+    next if $found_resources_h->{$resource};
+    
+    eval "require $resource";
+    if ($@) {
+      confess "Can't load $resource";
+    }
+    
+    $found_resources_h->{$resource}++;
+    
+    my $module_name = $resource;
+    $module_name =~ s|::|/|g;
+    $module_name .= '.pm';
+    
+    my $module_path = $INC{$module_name};
+    my $config_file = $module_path;
+    $config_file =~ s/\.pm$/\.config/;
+
+    # Config file
+    my $config = SPVM::Builder::Util::load_config($config_file);
+    
+    my $new_resources = $config->resources;
+    
+    unshift @all_resources, @$new_resources;
+  }
+}
+
 sub compile {
   my ($self, $class_name, $opt) = @_;
 
