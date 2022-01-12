@@ -1,6 +1,10 @@
 Revision history for SPVM
 
 0.9116  2021-01-11
+        [CHANGES]
+        * ar file don't contains static link files.
+
+0.9116  2021-01-11
         [FIX BUGS]
         * Fix the bugs that C++ code can't be compiled
         [CHANGES]

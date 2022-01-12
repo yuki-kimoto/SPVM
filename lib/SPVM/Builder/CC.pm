@@ -653,7 +653,8 @@ EOS
     unlink $ar_file
       or confess "Can't delete file \"$ar_file\":$!";
   }
-  my @ar_cmd = ('ar', 'rc', $ar_file, @$object_files);
+  my @object_files_no_static_libs = grep { $_ !~ /\.a$/ } @$object_files;
+  my @ar_cmd = ('ar', 'rc', $ar_file, @object_files_no_static_libs);
   $cbuilder->do_system(@ar_cmd);
   
   return $shared_lib_file;
