@@ -175,6 +175,12 @@ sub resolve_resources {
           confess "Can't find dependent resource file \"$depend_resource_file\"";
         }
         
+        my $mod_time_depend_resource_file = (stat($depend_resource_file))[9];
+        my $mod_time_resource_file = (stat($resource_file))[9];
+        unless ($mod_time_resource_file > $mod_time_depend_resource_file) {
+          confess "Resource file \"$resource_file\" must be newer than the dependent resource file \"$depend_resource_file\". Resource \"$resource\" must be re-compiled";
+        }
+        
         unshift @all_resources, @$depend_resources;
       }
     }
