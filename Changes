@@ -1,6 +1,6 @@
 Revision history for SPVM
 
-0.9116  2021-01-11
+0.9117  2021-01-12
         [CHANGES]
         * ar file don't contains static link files.
         * ar file don't contains SPVM module object file.
