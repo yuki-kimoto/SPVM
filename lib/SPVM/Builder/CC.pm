@@ -575,19 +575,12 @@ EOS
   # Add resource lib directories
   my $symbol_names_h = {};
   my $resources = $config->resources;
-  for my $resource (@$resources) {
-    eval "require $resource";
-    if ($@) {
-      confess "Can't load $resource";
-    }
-    my $module_name = $resource;
-    $module_name =~ s|::|/|g;
-    $module_name .= '.pm';
+  my $resources_all_depend = $self->resolve_resources($class_name, $resources);
+  for my $resource (@$resources_all_depend) {
+    my $config_file = $self->get_config_file_from_class_name($resource);
     
-    my $module_path = $INC{$module_name};
-    
-    my $static_lib_file = $module_path;
-    $static_lib_file =~ s/\.pm$/\.a/;
+    my $static_lib_file = $config_file;
+    $static_lib_file =~ s/\.config$/\.a/;
     if (-f $static_lib_file) {
       # Check resource symbol duplication
       my @symbol_lines = `nm $static_lib_file`;
