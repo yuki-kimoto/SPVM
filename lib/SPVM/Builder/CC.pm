@@ -152,6 +152,11 @@ sub resolve_resources {
     next if $found_resources_h->{$resource};
     
     my $config_file = $self->get_config_file_from_class_name($resource);
+    my $resource_file = $config_file;
+    $resource_file =~ s/\.config/\.a/;
+    unless (-f $resource_file) {
+      confess "Can't find resource file \"$resource_file\"";
+    }
     
     # Config file
     if (defined $config_file) {
@@ -162,6 +167,14 @@ sub resolve_resources {
       my $depend_resources = $config->resources;
       
       for my $depend_resource (@$depend_resources) {
+        my $depend_config_file = $self->get_config_file_from_class_name($depend_resource);
+        my $depend_resource_file = $depend_config_file;
+        $depend_resource_file =~ s/\.config/\.a/;
+        
+        unless (-f $depend_resource_file) {
+          confess "Can't find dependent resource file \"$depend_resource_file\"";
+        }
+        
         unshift @all_resources, @$depend_resources;
       }
     }
@@ -573,30 +586,32 @@ EOS
   $ldflags_str .= " $ld_optimize";
 
   # Add resource lib directories
-  my $symbol_names_h = {};
-  my $resources = $config->resources;
-  my $resources_all_depend = $self->resolve_resources($class_name, $resources);
-  for my $resource (@$resources_all_depend) {
-    my $config_file = $self->get_config_file_from_class_name($resource);
-    
-    my $static_lib_file = $config_file;
-    $static_lib_file =~ s/\.config$/\.a/;
-    if (-f $static_lib_file) {
-      # Check resource symbol duplication
-      my @symbol_lines = `nm $static_lib_file`;
-      for my $symbol_line (@symbol_lines) {
-        my ($address, $type, $symbol_name) = split(/\s+/, $symbol_line);
-        if ($type eq 'T') {
-          $symbol_names_h->{$symbol_name}++;
-          if ($symbol_names_h->{$symbol_name} > 1) {
-            confess "Duplicate symbol $symbol_name using resource \"$resource\"";
+  if ($category eq 'native') {
+    my $symbol_names_h = {};
+    my $resources = $config->resources;
+    my $resources_all_depend = $self->resolve_resources($class_name, $resources);
+    for my $resource (@$resources_all_depend) {
+      my $config_file = $self->get_config_file_from_class_name($resource);
+      
+      my $static_lib_file = $config_file;
+      $static_lib_file =~ s/\.config$/\.a/;
+      if (-f $static_lib_file) {
+        # Check resource symbol duplication
+        my @symbol_lines = `nm $static_lib_file`;
+        for my $symbol_line (@symbol_lines) {
+          my ($address, $type, $symbol_name) = split(/\s+/, $symbol_line);
+          if ($type eq 'T') {
+            $symbol_names_h->{$symbol_name}++;
+            if ($symbol_names_h->{$symbol_name} > 1) {
+              confess "Duplicate symbol $symbol_name using resource \"$resource\"";
+            }
           }
         }
+        push @$object_files, $static_lib_file;
       }
-      push @$object_files, $static_lib_file;
-    }
-    else {
-      confess "Can't find resource static library file \"$static_lib_file\"";
+      else {
+        confess "Can't find resource static library file \"$static_lib_file\"";
+      }
     }
   }
 
