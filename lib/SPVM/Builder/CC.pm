@@ -516,6 +516,7 @@ EOS
   $ldflags_str .= " $ld_optimize";
 
   # Add resouce lib directories
+  my $symbol_names_h = {};
   my $resources = $config->resources;
   for my $resource (@$resources) {
     eval "require $resource";
@@ -531,6 +532,17 @@ EOS
     my $static_lib_file = $module_path;
     $static_lib_file =~ s/\.pm$/\.a/;
     if (-f $static_lib_file) {
+      # Check resource symbol duplication
+      my @symbol_lines = `nm $static_lib_file`;
+      for my $symbol_line (@symbol_lines) {
+        my ($address, $type, $symbol_name) = split(/\s+/, $symbol_line);
+        if ($type eq 'T') {
+          $symbol_names_h->{$symbol_name}++;
+          if ($symbol_names_h->{$symbol_name} > 1) {
+            confess "Duplicate symbol $symbol_name using resource \"$resource\"";
+          }
+        }
+      }
       push @$object_files, $static_lib_file;
     }
     else {
