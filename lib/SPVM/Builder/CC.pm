@@ -646,7 +646,7 @@ EOS
     }
   }
 
-  # Create static library
+  # Create static library for resource system
   my $ar_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'a');
   my $ar_file = "$lib_dir/$ar_rel_file";
   if (-f $ar_file) {
@@ -654,6 +654,9 @@ EOS
       or confess "Can't delete file \"$ar_file\":$!";
   }
   my @object_files_no_static_libs = grep { $_ !~ /\.a$/ } @$object_files;
+  my $spvm_object_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
+  $spvm_object_rel_file .= '.o';
+  @object_files_no_static_libs = grep { $_ !~ m|\Q$spvm_object_rel_file\E$| } @object_files_no_static_libs;
   my @ar_cmd = ('ar', 'rc', $ar_file, @object_files_no_static_libs);
   $cbuilder->do_system(@ar_cmd);
   
