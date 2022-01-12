@@ -4,7 +4,7 @@ Revision history for SPVM
         [CHANGES]
         * ar file don't contains static link files.
         * ar file don't contains SPVM module object file.
-        * Add checking resource symbol duplication.
+        * Add checking resource symbol duplication. SPVM depends on nm command.
 
 0.9116  2021-01-11
         [FIX BUGS]
