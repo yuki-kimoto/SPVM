@@ -144,34 +144,38 @@ sub build_shared_lib {
 sub resolve_resources {
   my ($self, $resource_class_name_root) = @_;
   
+  my @found_resources;
   my @all_resources = ($resource_class_name_root);
-  
   my $found_resources_h = {};
   while (my $resource = shift @all_resources) {
     next if $found_resources_h->{$resource};
     
-    eval "require $resource";
-    if ($@) {
-      confess "Can't load $resource";
+    my $config_file_base = $resource;
+    $config_file_base =~ s|::|/|g;
+    $config_file_base .= '.config';
+    
+    my $config_file;
+    for my $inc (@INC) {
+      my $config_file_tmp = "$inc/$config_file_base";
+      
+      if (-f $config_file_tmp) {
+        $config_file = $config_file_tmp;
+        last;
+      }
     }
     
-    $found_resources_h->{$resource}++;
-    
-    my $module_name = $resource;
-    $module_name =~ s|::|/|g;
-    $module_name .= '.pm';
-    
-    my $module_path = $INC{$module_name};
-    my $config_file = $module_path;
-    $config_file =~ s/\.pm$/\.config/;
-
     # Config file
-    my $config = SPVM::Builder::Util::load_config($config_file);
-    
-    my $new_resources = $config->resources;
-    
-    unshift @all_resources, @$new_resources;
+    if (-f $config_file) {
+      $found_resources_h->{$resource}++;
+      push @found_resources, $resource;
+      
+      my $config = SPVM::Builder::Util::load_config($config_file);
+      my $new_resources = $config->resources;
+      unshift @all_resources, @$new_resources;
+    }
   }
+  
+  return \@found_resources;
 }
 
 sub compile {
@@ -225,6 +229,8 @@ sub compile {
   # Add native include dir
   push @runtime_include_dirs, $native_include_dir;
 
+  my $resources_all_depend = $self->resolve_resources("SPVM::$class_name");
+  
   my $resources = $config->resources;
   for my $resource (@$resources) {
     eval "require $resource";
