@@ -142,40 +142,64 @@ sub build_shared_lib {
 }
 
 sub resolve_resources {
-  my ($self, $resource_class_name_root) = @_;
+  my ($self, $self_class_name, $resource_class_names_root) = @_;
   
   my @found_resources;
-  my @all_resources = ($resource_class_name_root);
-  my $found_resources_h = {};
+  my @all_resources = (@$resource_class_names_root);
+  my $found_resources_h = {$self_class_name => 1};
+  my $parent_resource;
   while (my $resource = shift @all_resources) {
     next if $found_resources_h->{$resource};
     
-    my $config_file_base = $resource;
-    $config_file_base =~ s|::|/|g;
-    $config_file_base .= '.config';
-    
-    my $config_file;
-    for my $inc (@INC) {
-      my $config_file_tmp = "$inc/$config_file_base";
-      
-      if (-f $config_file_tmp) {
-        $config_file = $config_file_tmp;
-        last;
-      }
-    }
+    my $config_file = $self->get_config_file_from_class_name($resource);
     
     # Config file
-    if (-f $config_file) {
+    if (defined $config_file) {
       $found_resources_h->{$resource}++;
       push @found_resources, $resource;
       
       my $config = SPVM::Builder::Util::load_config($config_file);
-      my $new_resources = $config->resources;
-      unshift @all_resources, @$new_resources;
+      my $depend_resources = $config->resources;
+      
+      for my $depend_resource (@$depend_resources) {
+        unshift @all_resources, @$depend_resources;
+      }
+    }
+    else {
+      warn "Can't find config file $config_file";
     }
   }
   
   return \@found_resources;
+}
+
+sub get_config_file_from_class_name {
+  my ($self, $class_name) = @_;
+  
+  my $class_file_base = $class_name;
+  $class_file_base =~ s|::|/|g;
+  $class_file_base .= '.spvm';
+  
+  my $class_file;
+  for my $inc (@INC) {
+    my $class_file_tmp = "$inc/SPVM/$class_file_base";
+    
+    if (-f $class_file_tmp) {
+      $class_file = $class_file_tmp;
+      last;
+    }
+  }
+  
+  my $config_file;
+  if (-f $class_file) {
+    my $config_file_tmp = $class_file;
+    $config_file_tmp =~ s/\.spvm/\.config/;
+    if (-f $config_file_tmp) {
+      $config_file = $config_file_tmp;
+    }
+  }
+  
+  return $config_file;
 }
 
 sub compile {
@@ -228,25 +252,19 @@ sub compile {
   
   # Add native include dir
   push @runtime_include_dirs, $native_include_dir;
-
-  my $resources_all_depend = $self->resolve_resources("SPVM::$class_name");
   
-  my $resources = $config->resources;
-  for my $resource (@$resources) {
-    eval "require $resource";
-    if ($@) {
-      confess "Can't load $resource";
+  if ($category eq 'native') {
+    
+    my $resources = $config->resources;
+    my $resources_all_depend = $self->resolve_resources($class_name, $resources);
+    for my $resource (@$resources_all_depend) {
+      my $config_file = $self->get_config_file_from_class_name($resource);
+      
+      my $include_dir = $config_file;
+      $include_dir =~ s|\.config$|\.native/incldue|;
+      
+      push @runtime_include_dirs, $include_dir;
     }
-    my $module_name = $resource;
-    $module_name =~ s|::|/|g;
-    $module_name .= '.pm';
-    
-    my $module_path = $INC{$module_name};
-    
-    my $include_dir = $module_path;
-    $include_dir =~ s/\.pm$//;
-    $include_dir .= '.native/incldue';
-    push @runtime_include_dirs, $include_dir;
   }
   unshift @{$config->include_dirs}, @runtime_include_dirs;
 
@@ -554,7 +572,7 @@ EOS
   my $ld_optimize = $config->ld_optimize;
   $ldflags_str .= " $ld_optimize";
 
-  # Add resouce lib directories
+  # Add resource lib directories
   my $symbol_names_h = {};
   my $resources = $config->resources;
   for my $resource (@$resources) {
