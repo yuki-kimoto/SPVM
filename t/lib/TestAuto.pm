@@ -41,7 +41,7 @@ sub import {
     $ENV{SPVM_BUILD_DIR} = 't/default/.spvm_build';
   }
   
-  push @INC, $ENV{SPVM_TEST_LIB_DIR};
+  unshift @INC, $ENV{SPVM_TEST_LIB_DIR};
 }
 
 1;
