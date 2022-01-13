@@ -356,6 +356,12 @@ sub compile {
   if ($self->debug) {
     $quiet = 0;
   }
+  else {
+    if (defined $self->quiet) {
+      $quiet = $self->quiet;
+    }
+  }
+  
   
   # SPVM Method source file
   my $src_rel_file_no_ext = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category);
@@ -621,6 +627,11 @@ EOS
   # If quiet field exists, overwrite it
   if ($self->debug) {
     $quiet = 0;
+  }
+  else {
+    if (defined $self->quiet) {
+      $quiet = $self->quiet;
+    }
   }
   
   # dl_func_list

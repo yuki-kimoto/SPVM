@@ -6,6 +6,7 @@ Revision history for SPVM
         * Add new_gnu99 method to SPVM::Builder::Config.
         * Remove perllib $Config{bin} dependency of creating Windows DLL.
         * Improve resource not found messages.
+        * Output build commands in build_shared_lib_dist method.
         [FIX BUGS]
         * Fix the document that ccflags and ldflags of SPVM::Builder::Config default value is empty string.
           The right description is an array reference that has default values.
