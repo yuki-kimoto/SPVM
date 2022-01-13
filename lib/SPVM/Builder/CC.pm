@@ -742,15 +742,16 @@ EOS
     ld => $ld,
     lddlflags => $ldflags_str,
     shrpenv => '',
-    perllibs => '',
     libpth => '',
+    libperl => '',
+    
+    # "perllibs" should be empty string, but ExtUtils::CBuiler outputs "INPUT()" into 
+    # Linker Script File(.lds) when "perllibs" is empty string.
+    # This is syntax error in Linker Script File(.lds)
+    # For the reason, libm is linked which seems to have no effect.
+    perllibs => '-lm',
   };
 
-  # Setting for Windows MinGW
-  if ($^O eq 'MSWin32') {
-    $cbuilder_config->{libpth} = "$Config{bin}";
-  }
-  
   # ExtUtils::CBuilder object
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet, config => $cbuilder_config);
 
