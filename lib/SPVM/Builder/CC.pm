@@ -442,7 +442,14 @@ sub create_compile_command {
   my $output_file = $options->{output_file};
   my $source_file = $options->{source_file};
   
-  my $cc = $config->cc;
+  my $cc_each = $config->cc_each;
+  my $cc;
+  if ($cc_each) {
+    $cc = $config->cc_each($config, $source_file);
+  }
+  else {
+    $cc = $config->cc;
+  }
   
   my $cflags = '';
 
@@ -450,7 +457,14 @@ sub create_compile_command {
   my $inc = join(' ', map { "-I$_" } @$include_dirs);
   $cflags .= " $inc";
   
-  my $ccflags = $config->ccflags;
+  my $ccflags_each = $config->ccflags_each;
+  my $ccflags;
+  if ($ccflags_each) {
+    $ccflags = $config->ccflags_each($config, $source_file);
+  }
+  else {
+    $ccflags = $config->ccflags;
+  }
   $cflags .= " " . join(' ', @$ccflags);
   
   my $optimize = $config->optimize;

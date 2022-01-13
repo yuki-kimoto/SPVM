@@ -51,6 +51,17 @@ sub cc {
   }
 }
 
+sub cc_each {
+  my $self = shift;
+  if (@_) {
+    $self->{cc_each} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{cc_each};
+  }
+}
+
 sub ccflags {
   my $self = shift;
   if (@_) {
@@ -59,6 +70,17 @@ sub ccflags {
   }
   else {
     return $self->{ccflags};
+  }
+}
+
+sub ccflags_each {
+  my $self = shift;
+  if (@_) {
+    $self->{ccflags_each} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{ccflags_each};
   }
 }
 
@@ -534,7 +556,7 @@ B<Examples:>
   my $cc = $config->cc;
   $config->cc($cc);
 
-Get and set a compiler. The default is the value of C<cc> of L<Config> module.
+Get and set a compiler name. The default is the value of C<cc> of L<Config> module.
 
 B<Examples:>
   
@@ -550,6 +572,33 @@ B<Examples:>
   # cc that compiled this Perl
   use Config;
   $config->cc($Config{cc});
+
+=head2 cc_each
+
+  my $cc_each = $config->cc_each;
+  $config->cc_each($cc_each);
+
+Get and set a callback that returns the compiler name for each source file. The call back receives L<SPVM::Bulder::Config> object and each source file.
+
+C<cc_each> takes precedence over C<cc>.
+
+B<Examples:>
+  
+  $config->cc_each(sub {
+    my ($config, $source_file) = @_;
+    
+    my $cc;
+    # C source file
+    if ($source_file =~ /\.c$/) {
+      $cc = 'gcc';
+    }
+    # C++ source file
+    elsif ($source_file =~ /\.cpp$/) {
+      $cc = 'g++';
+    }
+    
+    return $cc;
+  });
 
 =head2 include_dirs
 
@@ -567,7 +616,46 @@ At runtime, the "include" directory of the native module is added before C<inclu
   my $ccflags = $config->ccflags;
   $config->ccflags($ccflags);
 
-Get and set compiler flags. the default is a empty string.
+Get and set compiler flags.
+
+B<Default:>
+
+  # $Config{cccdlflags} has -fPIC.
+  ['-fPIC']
+  
+  # Other
+  []
+
+=head2 ccflags_each
+
+  my $ccflags_each = $config->ccflags_each;
+  $config->ccflags_each($ccflags_each);
+
+Get and set a callback that returns the compiler flags for each source file. The call back receives L<SPVM::Bulder::Config> object and each source file.
+
+C<ccflags_each> takes precedence over C<ccflags>.
+
+B<Examples:>
+  
+  $config->ccflags_each(sub {
+    my ($config, $source_file) = @_;
+    
+    my $config_ccflags = $config->ccflags;
+    
+    my $ccflags = [];
+    # C source file
+    if ($source_file =~ /\.c$/) {
+      $ccflags = ['-DFoo', @$config_ccflags];
+    }
+    # C++ source file
+    elsif ($source_file =~ /\.cpp$/) {
+      $ccflags = ['-DBar', @$config_ccflags];
+    }
+    
+    return $ccflags;
+  });
+
+C<cc_each> takes precedence over C<cc>.
 
 =head2 optimize
 
@@ -667,17 +755,17 @@ B<Examples:>
   my ldflags = $config->ldflags;
   $config->ldflags(ldflags);
 
-Get and set linker flags. 
+Get and set linker flags. The default is emtpy array reference.
 
 B<Default:>
 
 Windows
 
-  "-mdll -s"
+  ['-mdll', '-s']
   
 Non-Windows
 
-  "-shared"
+  ['-shared']
 
 =head2 ld_optimize
 
