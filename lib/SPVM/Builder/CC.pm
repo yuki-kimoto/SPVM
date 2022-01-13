@@ -197,7 +197,11 @@ sub resolve_resources {
   my @all_resources = (@$resource_class_names_root);
   my $found_resources_h = {$self_class_name => 1};
   my $parent_resource;
-  while (my $resource = shift @all_resources) {
+  while (1) {
+    last unless @all_resources;
+    
+    my $resource = shift @all_resources;
+    
     next if $found_resources_h->{$resource};
     
     my $config_file = $self->get_config_file_from_class_name($resource);
