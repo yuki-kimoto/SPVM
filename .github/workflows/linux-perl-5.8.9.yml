@@ -16,6 +16,8 @@ jobs:
     - uses: shogo82148/actions-setup-perl@v1
       with:
         perl-version: '5.8.9'
+    - name: perl -V
+      run: perl -V
     - run: cpanm ExtUtils::CBuilder
     - name: perl Makefile.PL
       run: perl Makefile.PL

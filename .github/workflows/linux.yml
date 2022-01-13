@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: perl -V
+        run: perl -V
       - name: perl Makefile.PL
         run: perl Makefile.PL
       - name: make
