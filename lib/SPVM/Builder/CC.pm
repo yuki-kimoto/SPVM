@@ -14,11 +14,60 @@ use File::Basename 'dirname', 'basename';
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 
-sub category { shift->{category} }
-sub builder { shift->{builder} }
-sub force { shift->{force} }
-sub quiet { shift->{quiet} }
-sub debug { shift->{debug} }
+sub category {
+  my $self = shift;
+  if (@_) {
+    $self->{category} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{category};
+  }
+}
+
+sub builder {
+  my $self = shift;
+  if (@_) {
+    $self->{builder} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{builder};
+  }
+}
+
+sub force {
+  my $self = shift;
+  if (@_) {
+    $self->{force} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{force};
+  }
+}
+
+sub quiet {
+  my $self = shift;
+  if (@_) {
+    $self->{quiet} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{quiet};
+  }
+}
+
+sub debug {
+  my $self = shift;
+  if (@_) {
+    $self->{debug} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{debug};
+  }
+}
 
 sub new {
   my $class = shift;
