@@ -12,7 +12,10 @@ use SPVM 'TestCase::NativeAPI';
 use SPVM 'TestCase::NativeAPI2';
 use SPVM 'TestCase::Pointer';
 
-
+# Use resource
+{
+  ok(SPVM::TestCase::NativeAPI2->use_resource);
+}
 
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();

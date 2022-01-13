@@ -196,7 +196,6 @@ sub resolve_resources {
   my @found_resources;
   my @all_resources = (@$resource_class_names_root);
   my $found_resources_h = {$self_class_name => 1};
-  my $parent_resource;
   while (my $resource = shift @all_resources) {
     next if $found_resources_h->{$resource};
     
@@ -329,7 +328,7 @@ sub compile {
       my $config_file = $self->get_config_file_from_class_name($resource);
       
       my $include_dir = $config_file;
-      $include_dir =~ s|\.config$|\.native/incldue|;
+      $include_dir =~ s|\.config$|\.native/include|;
       
       push @runtime_include_dirs, $include_dir;
     }

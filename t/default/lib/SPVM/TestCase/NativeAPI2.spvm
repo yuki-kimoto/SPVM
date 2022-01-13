@@ -36,6 +36,8 @@ class TestCase::NativeAPI2 {
     return 0;
   }
 
+  native static method use_resource : int ();
+  
   native static method mul : int ($num1 : int, $num2 : int);
 
   native static method src_foo : int ();
