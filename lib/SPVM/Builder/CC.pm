@@ -248,13 +248,20 @@ sub get_config_file_from_class_name {
   $class_file_base .= '.spvm';
   
   my $class_file;
+  my @spvm_inc;
   for my $inc (@INC) {
-    my $class_file_tmp = "$inc/SPVM/$class_file_base";
+    my $spvm_inc = "$inc/SPVM";
+    push @spvm_inc, $spvm_inc;
+    my $class_file_tmp = "$spvm_inc/$class_file_base";
     
     if (-f $class_file_tmp) {
       $class_file = $class_file_tmp;
       last;
     }
+  }
+  
+  unless ($class_file) {
+    confess "Can't find class file $class_file_base for the class \"$class_name\" in (" . join(', ', @spvm_inc) . ")";
   }
   
   my $config_file;
@@ -264,6 +271,10 @@ sub get_config_file_from_class_name {
     if (-f $config_file_tmp) {
       $config_file = $config_file_tmp;
     }
+  }
+
+  unless ($config_file) {
+    confess "Can't find config file \"$config_file\"";
   }
   
   return $config_file;
