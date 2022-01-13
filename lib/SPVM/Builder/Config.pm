@@ -334,6 +334,17 @@ sub new_c99 {
   return $self;
 }
 
+sub new_gnu99 {
+  my $class = shift;
+  
+  my $self = SPVM::Builder::Config->new_c(@_);
+  
+  # C99
+  $self->set_std('gnu99');
+  
+  return $self;
+}
+
 sub new_cpp {
   my $class = shift;
   
