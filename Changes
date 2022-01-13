@@ -7,10 +7,12 @@ Revision history for SPVM
         * Remove perllib $Config{bin} dependency of creating Windows DLL.
         * Improve resource not found messages.
         * Output build commands in build_shared_lib_dist method.
+        * Don't create ar file in precompile.
         [FIX BUGS]
         * Fix the document that ccflags and ldflags of SPVM::Builder::Config default value is empty string.
           The right description is an array reference that has default values.
         * Fix the bug that SPVM::Builder::CC can't load resource include directories.
+        * Fix the bug that mac output ar warnings.
 
 0.9117  2021-01-12
         [CHANGES]
