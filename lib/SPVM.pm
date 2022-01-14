@@ -18,7 +18,7 @@ use SPVM::ExchangeAPI;
 
 use Carp 'confess';
 
-our $VERSION = '0.9119';
+our $VERSION = '0.9120';
 
 my $SPVM_INITED;
 my $BUILDER;
