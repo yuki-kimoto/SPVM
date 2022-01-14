@@ -430,7 +430,7 @@ class MyMath {
 Use SPVM Module from Perl
 
 <pre>
-# spvm.pl
+# sum.pl
 use strict;
 use warnings;
 use FindBin;
@@ -471,7 +471,7 @@ class MyMath : precompile {
 Call SPVM Precompile Method from Perl
 
 <pre>
-# spvm.pl
+# sum_precompile.pl
 use strict;
 use warnings;
 use FindBin;
@@ -528,7 +528,7 @@ $config;
 Use SPVM Native Method from Perl
 
 <pre>
-# spvm.pl
+# sum_native.pl
 use strict;
 use warnings;
 use FindBin;
