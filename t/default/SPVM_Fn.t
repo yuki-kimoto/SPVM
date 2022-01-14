@@ -392,22 +392,22 @@ SKIP: {
 
 # memcpy
 {
-  ok(SPVM::TestCase::Lib::Fn->test_memcpy_byte);
-  ok(SPVM::TestCase::Lib::Fn->test_memcpy_short);
-  ok(SPVM::TestCase::Lib::Fn->test_memcpy_int);
-  ok(SPVM::TestCase::Lib::Fn->test_memcpy_long);
-  ok(SPVM::TestCase::Lib::Fn->test_memcpy_float);
-  ok(SPVM::TestCase::Lib::Fn->test_memcpy_double);
+  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_byte);
+  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_short);
+  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_int);
+  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_long);
+  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_float);
+  ok(SPVM::TestCase::Lib::Fn2->test_memcpy_double);
 }
 
 # memmove
 {
-  ok(SPVM::TestCase::Lib::Fn->test_memmove_byte);
-  ok(SPVM::TestCase::Lib::Fn->test_memmove_short);
-  ok(SPVM::TestCase::Lib::Fn->test_memmove_int);
-  ok(SPVM::TestCase::Lib::Fn->test_memmove_long);
-  ok(SPVM::TestCase::Lib::Fn->test_memmove_float);
-  ok(SPVM::TestCase::Lib::Fn->test_memmove_double);
+  ok(SPVM::TestCase::Lib::Fn2->test_memmove_byte);
+  ok(SPVM::TestCase::Lib::Fn2->test_memmove_short);
+  ok(SPVM::TestCase::Lib::Fn2->test_memmove_int);
+  ok(SPVM::TestCase::Lib::Fn2->test_memmove_long);
+  ok(SPVM::TestCase::Lib::Fn2->test_memmove_float);
+  ok(SPVM::TestCase::Lib::Fn2->test_memmove_double);
 }
 
 # new_array_proto
