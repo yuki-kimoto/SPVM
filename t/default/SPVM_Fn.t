@@ -418,14 +418,14 @@ SKIP: {
 
 # sort
 {
-  ok(SPVM::TestCase::Lib::Fn->sort_byte);
-  ok(SPVM::TestCase::Lib::Fn->sort_short);
-  ok(SPVM::TestCase::Lib::Fn->sort_int);
-  ok(SPVM::TestCase::Lib::Fn->sort_long);
-  ok(SPVM::TestCase::Lib::Fn->sort_float);
-  ok(SPVM::TestCase::Lib::Fn->sort_double);
-  ok(SPVM::TestCase::Lib::Fn->sort_string);
-  ok(SPVM::TestCase::Lib::Fn->sort_object);
+  ok(SPVM::TestCase::Lib::Fn1->sort_byte);
+  ok(SPVM::TestCase::Lib::Fn1->sort_short);
+  ok(SPVM::TestCase::Lib::Fn1->sort_int);
+  ok(SPVM::TestCase::Lib::Fn1->sort_long);
+  ok(SPVM::TestCase::Lib::Fn1->sort_float);
+  ok(SPVM::TestCase::Lib::Fn1->sort_double);
+  ok(SPVM::TestCase::Lib::Fn1->sort_string);
+  ok(SPVM::TestCase::Lib::Fn1->sort_object);
 }
 
 # All object is freed
