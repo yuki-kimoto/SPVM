@@ -17,13 +17,9 @@ int32_t SPVM__TestCase__Pointer__new(SPVM_ENV* env, SPVM_VALUE* args) {
   
   pointer->x = x;
   
-  int32_t basic_type_id = env->get_basic_type_id(env, "TestCase::Pointer");
-  
-  if (basic_type_id < 0) {
-    return env->die(env, "Can't find TestCase::Pointer");
-  }
-  
-  void* struct_object = env->new_pointer_raw(env, basic_type_id, pointer);
+  int32_t e;
+  void* struct_object = env->new_pointer_by_name(env, "TestCase::Pointer", pointer, &e, "TestCase/Pointer.c", __LINE__);
+  if (e) { return e; }
   
   args[0].oval = struct_object;
   

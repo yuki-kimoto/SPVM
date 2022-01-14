@@ -562,21 +562,6 @@ int32_t SPVM__TestCase__NativeAPI__native_new_object_by_name_exception(SPVM_ENV*
   return 0;
 }
 
-int32_t SPVM__TestCase__NativeAPI__native_new_pointer_by_name(SPVM_ENV* env, SPVM_VALUE* stack) {
-  (void)env;
-  (void)stack;
-  
-  void* pointer;
-  
-  int32_t e;
-  void* minimal = env->new_pointer_by_name(env, "TestCase::Pointer", pointer, &e, MFILE, __LINE__);
-  if (e) { return e; }
-  
-  stack[0].oval = minimal;
-  
-  return 0;
-}
-
 int32_t SPVM__TestCase__NativeAPI__native_new_pointer_by_name_exception(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

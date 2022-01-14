@@ -1120,14 +1120,18 @@ class TestCase::NativeAPI {
 
   
   static method new_pointer_by_name : int () {
-    my $pointer = TestCase::NativeAPI->native_new_pointer_by_name();
+    my $pointer = TestCase::Pointer->new(3);
+    
     unless ($pointer isa TestCase::Pointer) {
+      return 0;
+    }
+    
+    unless ($pointer->get_x == 3) {
       return 0;
     }
     
     return 1;
   }
-  native static method native_new_pointer_by_name : TestCase::Pointer ();
 
   static method new_pointer_by_name_exception : int () {
     my $pointer : TestCase::Pointer;
