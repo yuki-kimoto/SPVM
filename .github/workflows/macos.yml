@@ -15,6 +15,10 @@ jobs:
       - uses: actions/checkout@v1
       - name: Install perl
         run: brew install perl
+      - name: perl -V
+        run: perl -V
+      - name: perl %Config
+        run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
       - name: perl Makefile.PL
         run: perl Makefile.PL
       - name: make
