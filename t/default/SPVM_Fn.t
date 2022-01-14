@@ -295,55 +295,55 @@ SKIP: {
 # Copy
 {
   # copy_array_byte
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_byte);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_byte);
 
   # copy_array_short
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_short);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_short);
 
   # copy_array_int
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_int);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_int);
 
   # copy_array_long
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_long);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_long);
 
   # copy_array_float
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_float);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_float);
 
   # copy_array_double
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_double);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_double);
 
   # copy_array_string
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_string);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_string);
   
   # copy_array_object
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_object);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_object);
 }
 
 # copy_array_range
 {
   # copy_array_range_byte
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_byte);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_byte);
 
   # copy_array_range_short
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_short);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_short);
 
   # copy_array_range_int
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_int);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_int);
 
   # copy_array_range_long
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_long);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_long);
 
   # copy_array_range_float
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_float);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_float);
 
   # copy_array_range_double
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_double);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_double);
 
   # copy_array_range_double
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_string);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_string);
 
   # copy_array_range_double
-  ok(SPVM::TestCase::Lib::Fn->test_copy_array_range_object);
+  ok(SPVM::TestCase::Lib::Fn2->test_copy_array_range_object);
 }
 
 # dump array
@@ -366,28 +366,28 @@ SKIP: {
 # equals
 {
   # equals_array_byte
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_byte);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_byte);
 
   # equals_array_short
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_short);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_short);
 
   # equals_array_int
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_int);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_int);
 
   # equeals_array_long
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_long);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_long);
 
   # equals_array_float
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_float);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_float);
 
   # equals_array_double
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_double);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_double);
 
   # equals_array_string
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_string);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_string);
 
   # equals_array_object
-  ok(SPVM::TestCase::Lib::Fn->test_equals_array_object);
+  ok(SPVM::TestCase::Lib::Fn2->test_equals_array_object);
 }
 
 # memcpy
@@ -413,7 +413,7 @@ SKIP: {
 # new_array_proto
 {
   # copy_array_range_byte
-  ok(SPVM::TestCase::Lib::Fn->test_new_array_proto);
+  ok(SPVM::TestCase::Lib::Fn2->test_new_array_proto);
 }
 
 # sort
