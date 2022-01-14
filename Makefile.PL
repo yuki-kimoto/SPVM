@@ -47,6 +47,9 @@ my $ccflags = $Config{ccflags};
 # SPVM is compiled as C99, but some platforms can't compile XS which contains perl.h with pure C99(-std=c99). I select -std=gnu99.
 $ccflags .= ' -std=gnu99';
 
+# Fix compile warnings
+$ccflags .= ' -std=gnu99';
+
 # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
 # so I dicide not to print warning in release version
 if ($ENV{SPVM_TEST_ENABLE_WARNINGS}) {
