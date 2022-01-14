@@ -17,6 +17,8 @@ jobs:
         run: perl -V
       - name: perl %Config
         run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
+      - name gcc -Q --help=warnings
+        run: gcc -Q --help=warnings
       - name: perl Makefile.PL
         run: perl Makefile.PL
       - name: make
