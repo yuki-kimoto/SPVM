@@ -19,6 +19,9 @@ class TestCase::Method {
     
     return 3;
   }
+  static method _under_score : int () {
+    return 4;
+  }
 
   static method call_keyword_name_method : int () {
     
@@ -68,6 +71,14 @@ class TestCase::Method {
       my $method = new TestCase::Method;
       my $num = $method->if;
       unless ($num == 3) {
+        return 0;
+      }
+    }
+
+    # Call a static method with current class that starts under score.
+    {
+      my $num = &_under_score();
+      unless ($num == 4) {
         return 0;
       }
     }

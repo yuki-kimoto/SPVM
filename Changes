@@ -1,5 +1,12 @@
 Revision history for SPVM
 
+0.9121  2021-01-15
+        [CHANGES]
+        * Improve the error messages that instance methods are called as class methods,
+          and class methods are called as instance methods
+        [FIX BUGS]
+        * Fix the bug that the current class syntax "&_foo" becomes a compilation error.
+
 0.9120  2021-01-14
         [CHANGES]
         * Native and precompile shared object files are cached.

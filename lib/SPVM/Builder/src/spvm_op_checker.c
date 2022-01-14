@@ -2332,9 +2332,17 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_CALL_METHOD* call_method = op_call_method->uv.call_method;
               const char* method_name = call_method->method->op_name->uv.name;
               
-              if (!!call_method->is_class_method_call != !!call_method->method->is_class_method) {
-                SPVM_COMPILER_error(compiler, "Invalid method call \"%s->%s()\" at %s line %d\n", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
-                return;
+              if (call_method->method->is_class_method) {
+                if (!call_method->is_class_method_call) {
+                  SPVM_COMPILER_error(compiler, "Class methods can't be called as instance methods \"%s->%s()\" at %s line %d\n", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  return;
+                }
+              }
+              else {
+                if (call_method->is_class_method_call) {
+                  SPVM_COMPILER_error(compiler, "Instance methods can't be called as static methods \"%s->%s()\" at %s line %d\n", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  return;
+                }
               }
 
               // Access control
