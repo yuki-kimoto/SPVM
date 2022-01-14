@@ -561,7 +561,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           return SPECIAL_ASSIGN;
         }
         // &foo - Current class
-        else if (isalpha(*compiler->bufptr)) {
+        else if (isalpha(*compiler->bufptr) || *compiler->bufptr == '_') {
           yylvalp->opval = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_CURRENT_CLASS);
           compiler->expect_method_name = 1;
           return CURRENT_CLASS;
