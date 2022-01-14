@@ -40,6 +40,8 @@ find(
       
       if (-f $file) {
         
+        my ($file_atime, $file_mtime) = (stat $file)[8, 9];
+        
         open my $fh, '<', $file
           or die "Can't open $file: $!";
         
@@ -55,6 +57,10 @@ find(
         print $to_fh $content;
         
         close $to_fh;
+        
+        # Copy time stamp
+        utime $file_atime, $file_mtime, $to_file
+          or die;
       }
     },
     no_chdir => 1,

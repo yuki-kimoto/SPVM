@@ -32,6 +32,7 @@ sub import {
       $test_precompile_dir
     );
 
+    $ENV{SPVM_TEST_PRECOMPILE} = 1;
     $ENV{SPVM_TEST_LIB_DIR} = "$test_precompile_dir";
     $ENV{SPVM_BUILD_DIR} = 't/precompile/.spvm_build';
   }
