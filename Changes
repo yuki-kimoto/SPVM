@@ -1,5 +1,10 @@
 Revision history for SPVM
 
+0.9120  2021-01-15
+        [CHANGES]
+        * Improve the error messages that instance methods are called as class methods,
+          and class methods are called as instance methods
+
 0.9120  2021-01-14
         [CHANGES]
         * Native and precompile shared object files are cached.
