@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9119  2021-01-14
+        [CHANGES]
+        * Suppress clang -Wcompound-token-split-by-macro
+
 0.9118  2021-01-13
         [CHANGES]
         * Add cc_each, ccflags_each methods to SPVM::Builder::Config.
