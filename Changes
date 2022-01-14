@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9120  2021-01-14
+        [CHANGES]
+        * Native and precompile shared object files are cached.
+
 0.9119  2021-01-14
         [CHANGES]
         * Suppress clang 12+ -Wcompound-token-split-by-macro warnings in perl.h when compiling SPVM.xs

@@ -779,56 +779,104 @@ EOS
   # Move temporary shared library file to blib directory
   mkpath dirname $shared_lib_file;
 
-  # Create shared library
-  my (undef, @tmp_files) = $cbuilder->link(
-    lib_file => $shared_lib_file,
-    objects => $object_files,
-    module_name => $class_name,
-    dl_func_list => $dl_func_list,
-  );
-
-  if ($self->debug) {
-    if ($^O eq 'MSWin32') {
-      my $def_file;
-      my $lds_file;
-      for my $tmp_file (@tmp_files) {
-        # Remove double quote
-        $tmp_file =~ s/^"//;
-        $tmp_file =~ s/"$//;
-
-        if ($tmp_file =~ /\.def$/) {
-          $def_file = $tmp_file;
-          $lds_file = $def_file;
-          $lds_file =~ s/\.def$/.lds/;
-          last;
-        }
-      }
-      if (defined $def_file && -f $def_file) {
-        my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
-        warn "[$def_file]\n$def_content\n";
-      }
-      if (defined $lds_file && -f $lds_file) {
-        my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
-        warn "[$lds_file]\n$lds_content\n";
-      }
+  my $mod_time_config_file;
+  if (-f $config_file) {
+     $mod_time_config_file = (stat($config_file))[9];
+  }
+  else {
+    $mod_time_config_file = 0;
+  }
+  my $mod_time_object_files_max = 0;
+  for my $object_file (@$object_files) {
+    my $mod_time_object_file = (stat($object_file))[9];
+    if ($mod_time_object_file > $mod_time_object_files_max) {
+      $mod_time_object_files_max = $mod_time_object_file;
     }
   }
 
-  if ($category eq 'native') {
-    # Create static library for resource system
-    my $ar_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'a');
-    my $ar_file = "$lib_dir/$ar_rel_file";
-    if (-f $ar_file) {
-      unlink $ar_file
-        or confess "Can't delete file \"$ar_file\":$!";
+  # Need link
+  my $need_link;
+  if ($self->force) {
+    $need_link = 1;
+  }
+  else {
+    if ($config->force) {
+      $need_link = 1;
     }
-    my @object_files_no_static_libs = grep { $_ !~ /\.a$/ } @$object_files;
-    my $spvm_object_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-    $spvm_object_rel_file .= '.o';
-    @object_files_no_static_libs = grep { $_ !~ m|\Q$spvm_object_rel_file\E$| } @object_files_no_static_libs;
-    if (@object_files_no_static_libs) {
-      my @ar_cmd = ('ar', 'rc', $ar_file, @object_files_no_static_libs);
-      $cbuilder->do_system(@ar_cmd);
+    else {
+      if (!-f $shared_lib_file) {
+        $need_link = 1;
+      }
+      else {
+        
+        my $mod_shared_lib_file = (stat($shared_lib_file))[9];
+        
+        # Need the compilation if the config file is newer than the object file.
+        if ($mod_time_config_file > $mod_shared_lib_file) {
+          $need_link = 1;
+        }
+        else {
+          # Need the compilation if one of the header files is newer than the object file.
+          if ($mod_time_object_files_max > $mod_shared_lib_file) {
+            $need_link = 1;
+          }
+        }
+      }
+    }
+  }
+  
+  if ($need_link) {
+    # Create shared library
+    my (undef, @tmp_files) = $cbuilder->link(
+      lib_file => $shared_lib_file,
+      objects => $object_files,
+      module_name => $class_name,
+      dl_func_list => $dl_func_list,
+    );
+
+    if ($self->debug) {
+      if ($^O eq 'MSWin32') {
+        my $def_file;
+        my $lds_file;
+        for my $tmp_file (@tmp_files) {
+          # Remove double quote
+          $tmp_file =~ s/^"//;
+          $tmp_file =~ s/"$//;
+
+          if ($tmp_file =~ /\.def$/) {
+            $def_file = $tmp_file;
+            $lds_file = $def_file;
+            $lds_file =~ s/\.def$/.lds/;
+            last;
+          }
+        }
+        if (defined $def_file && -f $def_file) {
+          my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
+          warn "[$def_file]\n$def_content\n";
+        }
+        if (defined $lds_file && -f $lds_file) {
+          my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
+          warn "[$lds_file]\n$lds_content\n";
+        }
+      }
+    }
+
+    if ($category eq 'native') {
+      # Create static library for resource system
+      my $ar_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'a');
+      my $ar_file = "$lib_dir/$ar_rel_file";
+      if (-f $ar_file) {
+        unlink $ar_file
+          or confess "Can't delete file \"$ar_file\":$!";
+      }
+      my @object_files_no_static_libs = grep { $_ !~ /\.a$/ } @$object_files;
+      my $spvm_object_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
+      $spvm_object_rel_file .= '.o';
+      @object_files_no_static_libs = grep { $_ !~ m|\Q$spvm_object_rel_file\E$| } @object_files_no_static_libs;
+      if (@object_files_no_static_libs) {
+        my @ar_cmd = ('ar', 'rc', $ar_file, @object_files_no_static_libs);
+        $cbuilder->do_system(@ar_cmd);
+      }
     }
   }
   
