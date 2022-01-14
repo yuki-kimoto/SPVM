@@ -6,6 +6,10 @@ benchmark/lib/SPVM/MyMathNative.spvm
 benchmark/lib/SPVM/MyMathPrecompile.spvm
 Changes
 DEVELOPMENT.txt
+examples/doc/tutorial/basic/lib/SPVM/MyMath.spvm
+examples/doc/tutorial/basic/sum.pl
+examples/doc/tutorial/precompile/lib/SPVM/MyMath.spvm
+examples/doc/tutorial/precompile/sum_precompile.pl
 examples/native/bind_clib/bind_clib.pl
 examples/native/bind_clib/lib/SPVM/BindCLib.c
 examples/native/bind_clib/lib/SPVM/BindCLib.config
@@ -762,7 +766,9 @@ t/default/lib/SPVM/TestCase/Lib/Double.spvm
 t/default/lib/SPVM/TestCase/Lib/DoubleList.spvm
 t/default/lib/SPVM/TestCase/Lib/Float.spvm
 t/default/lib/SPVM/TestCase/Lib/FloatList.spvm
-t/default/lib/SPVM/TestCase/Lib/Fn.spvm
+t/default/lib/SPVM/TestCase/Lib/Fn1.spvm
+t/default/lib/SPVM/TestCase/Lib/Fn2.spvm
+t/default/lib/SPVM/TestCase/Lib/Fn3.spvm
 t/default/lib/SPVM/TestCase/Lib/Hash.spvm
 t/default/lib/SPVM/TestCase/Lib/Int.spvm
 t/default/lib/SPVM/TestCase/Lib/IntList.spvm
@@ -812,6 +818,11 @@ t/default/lib/SPVM/TestCase/NativeAPI2.native/src/baz/noneed.txt
 t/default/lib/SPVM/TestCase/NativeAPI2.native/src/foo.c
 t/default/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/default/lib/SPVM/TestCase/NativeAPI2.spvm
+t/default/lib/SPVM/TestCase/NativeAPICpp.config
+t/default/lib/SPVM/TestCase/NativeAPICpp.cpp
+t/default/lib/SPVM/TestCase/NativeAPICpp.native/include/mylib.hpp
+t/default/lib/SPVM/TestCase/NativeAPICpp.native/src/mylib.cpp
+t/default/lib/SPVM/TestCase/NativeAPICpp.spvm
 t/default/lib/SPVM/TestCase/NumericOperator.spvm
 t/default/lib/SPVM/TestCase/OArray.spvm
 t/default/lib/SPVM/TestCase/Object.spvm
@@ -858,6 +869,8 @@ t/default/logical_operator.t
 t/default/method.t
 t/default/multiply.t
 t/default/native_api.t
+t/default/native_api_cached.t
+t/default/native_api_cpp.t
 t/default/numeric_operator.t
 t/default/oarray.t
 t/default/object.t
