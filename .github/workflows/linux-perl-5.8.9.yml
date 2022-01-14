@@ -18,6 +18,8 @@ jobs:
         perl-version: '5.8.9'
     - name: perl -V
       run: perl -V
+      - name: perl %Config
+        run: perl -MConfig -MData::Dumper -e 'local $Data::Dumper::Sortkeys = 1;warn Dumper \%Config;'
     - run: cpanm ExtUtils::CBuilder
     - name: perl Makefile.PL
       run: perl Makefile.PL
