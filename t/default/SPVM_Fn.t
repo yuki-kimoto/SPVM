@@ -7,6 +7,14 @@ use warnings;
 use Test::More;
 
 use SPVM 'TestCase::Lib::Fn';
+
+# SPVM::Fn tests is separated multiple files(smaller than 50KB)
+# The reason is gcc can't compile the precompile code for the insufficient memory
+# in some environment of CPAN testers.
+use SPVM 'TestCase::Lib::Fn1';
+use SPVM 'TestCase::Lib::Fn2';
+use SPVM 'TestCase::Lib::Fn3';
+
 use SPVM 'Fn';
 
 use POSIX();
@@ -138,16 +146,16 @@ SKIP: {
 
 # sprintf
 {
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_d);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_u);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_ld);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_lu);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_f);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_c);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_s);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_U);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_percent);
-  ok(SPVM::TestCase::Lib::Fn->test_sprintf_all);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_d);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_u);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_ld);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_lu);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_f);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_c);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_s);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_U);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_percent);
+  ok(SPVM::TestCase::Lib::Fn1->test_sprintf_all);
 }
 
 # to_int_with_base
