@@ -237,10 +237,10 @@ class TestCase::Lib::Fn1 {
 
   static method test_sprintf_U : int () {
     my $tests = [
-        [ Fn->sprintf("abc%U", TestCase::Lib::Fn->_first_uchar("あ")), "abcあ" ],
-        [ Fn->sprintf("%Uabc", TestCase::Lib::Fn->_first_uchar("あ")), "あabc" ],
-        [ Fn->sprintf("%Uabc%U", TestCase::Lib::Fn->_first_uchar("あ"), TestCase::Lib::Fn->_first_uchar("い")), "あabcい" ],
-        [ Fn->sprintf("%U%U%U", TestCase::Lib::Fn->_first_uchar("あ"), TestCase::Lib::Fn->_first_uchar("い"), TestCase::Lib::Fn->_first_uchar("う")), "あいう" ],
+        [ Fn->sprintf("abc%U", &_first_uchar("あ")), "abcあ" ],
+        [ Fn->sprintf("%Uabc", &_first_uchar("あ")), "あabc" ],
+        [ Fn->sprintf("%Uabc%U", &_first_uchar("あ"), &_first_uchar("い")), "あabcい" ],
+        [ Fn->sprintf("%U%U%U", &_first_uchar("あ"), &_first_uchar("い"), &_first_uchar("う")), "あいう" ],
     ];
     for (my $i = 0; $i < @$tests; ++$i) {
       unless ($tests->[$i][0] eq $tests->[$i][1]) {
