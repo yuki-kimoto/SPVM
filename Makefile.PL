@@ -48,7 +48,27 @@ my $ccflags = $Config{ccflags};
 $ccflags .= ' -std=gnu99';
 
 # Fix compile warnings
-$ccflags .= ' -std=gnu99';
+{
+  my $compiler_name;
+  my $compiler_major_version;
+  my $compiler_minor_version;
+  
+  my $config_gcc_version = $Config{gccversion};
+  
+  if ($config_gcc_version =~ /clang-(\d{2})(\d{2})\b/) {
+    $compiler_name = 'clang';
+    $compiler_major_version = $1;
+    $compiler_minor_version = $2;
+  }
+  
+  if (defined $compiler_name) {
+    if ($compiler_name eq 'clang') {
+      if ($compiler_major_version >= 12) {
+        $ccflags .= ' -Wno-compound-token-split-by-macro';
+      }
+    }
+  }
+}
 
 # I want to print warnings, but if gcc version is different, can't suppress no needed warning message.
 # so I dicide not to print warning in release version
