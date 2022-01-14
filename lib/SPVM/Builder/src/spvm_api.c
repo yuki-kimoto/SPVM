@@ -6686,7 +6686,7 @@ void SPVM_API_set_field_object(SPVM_ENV* env, SPVM_OBJECT* object, int32_t field
   SPVM_API_OBJECT_ASSIGN(get_field_object_address, value);
 }
 
-void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, int64_t byte_size) {
+void* SPVM_API_alloc_memory_block_zero(SPVM_ENV* env, size_t byte_size) {
 
   // Runtime
   SPVM_COMPILER* compiler = env->compiler;
