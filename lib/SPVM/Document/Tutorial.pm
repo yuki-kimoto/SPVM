@@ -4,7 +4,7 @@ SPVM::Document::Tutorial - SPVM Performance Tutorial
 
 =head1 DESCRIPTION
 
-SPVM Tutorial
+This document is SPVM Tutorial. Describes SPVM basic grammers, how to get more performance, how to bind C/C++ libraries.
 
 =head1 TUTORIAL
 
@@ -67,7 +67,7 @@ class MyMath {
 
 <h4>Class Definition</h4>
 
-Write <b>Class Definition</b> by <b>class</b> keyword. Unlike Perl, SPVM always need class. The whole SPVM grammar is a set of classes.
+The <b>class</b> keyword defines a class.
 
 <pre>
 # Class Definition
@@ -80,18 +80,18 @@ See also <a href="/language.html#language-class">Class - SPVM Language Specifica
 
 <h4>Method Definition</h4>
 
-Write <b>Method Definition</b> by <b>sub</b> keyword. Unlike Perl, SPVM Method Definition have return type and argument types.
-  
+The <b>method</b> keyword defines a method. If the method doesn't have the instance, you define a static method using a C<static> descriptor.
+
 <pre>
 class MyMath {
-  # Method Definition
+  # Static method definition
   static method sum : int ($nums : int[]) {
     
   }
 }
 </pre>
 
-See also <a href="/language.html#language-sub">Method - SPVM Language Specification</a> about Method.
+See also <a href="/language.html#language-method">Method - SPVM Language Specification</a> about Method.
 
 <h4>Numeric Types</h4>
 
