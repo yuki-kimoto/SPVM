@@ -1,4 +1,6 @@
 class TestCase::Lib::Fn2 {
+  use EqualityChecker::SameObject;
+  
   static method test_copy_array_byte : int () {
     # Copy array
     {
