@@ -49,3 +49,8 @@ find(
   },
   $test_default_dir
 );
+
+# Add the time stamp file for Makefile
+my $time_stamp_file = "$test_precompile_dir/time_stamp.txt";
+open my $time_stamp_fh, '>', $time_stamp_file
+  or die "Can't open file \"$time_stamp_file\": $!";
