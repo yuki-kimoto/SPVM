@@ -198,9 +198,11 @@ sub MY::postamble {
       if (-f $File::Find::name) {
         my $rel_path = $File::Find::name;
         $rel_path =~ s|^\Q$FindBin::Bin/||;
-        if ($rel_path =~ /(\.t|\.pm|\.spvm|\.c|\.cpp|\.h)$/) {
-          push @test_files, $rel_path;
-        }
+        
+        # Slip hidden files
+        return if $rel_path =~ /[\/\\]\./;
+
+        push @test_files, $rel_path;
       }
     },
     "$FindBin::Bin/t/default"
