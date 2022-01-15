@@ -6,6 +6,7 @@ Revision history for SPVM
           and class methods are called as instance methods
         [FIX BUGS]
         * Fix the bug that the current class syntax "&_foo" becomes a compilation error.
+        * Fix the cache bug that when SPVM module file is updated, the shared library is not created.
 
 0.9120  2021-01-14
         [CHANGES]

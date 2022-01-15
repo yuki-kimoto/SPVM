@@ -472,6 +472,19 @@ sub compile {
               if ($mod_time_src_file > $mod_time_object_file) {
                 $need_compile = 1;
               }
+              else {
+                # Need the compilation if the module file is newer than the object file.
+                unless ($is_native_src) {
+                  my $module_file = $src_file;
+                  $module_file =~ s/\.[^\/\\]+$//;
+                  $module_file .= '.spvm';
+                  
+                  my $mod_time_module_file = (stat($module_file))[9];
+                  if ($mod_time_module_file > $mod_time_object_file) {
+                    $need_compile = 1;
+                  }
+                }
+              }
             }
           }
         }
