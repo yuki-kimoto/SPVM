@@ -176,19 +176,6 @@ sub create_class_make_rule {
 
   $class_name =~ s/^SPVM:://;
   
-  my $make_rule;
-  
-  # dynamic section
-  $make_rule
-  = "dynamic :: ";
-
-  my $class_name_under_score = $class_name;
-  $class_name_under_score =~ s/:/_/g;
-  
-  my $target_name = "spvm_${category}_$class_name_under_score";
-  $make_rule .= "$target_name\n";
-  $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
-  
   my $module_base_name = $class_name;
   $module_base_name =~ s/^.+:://;
   
@@ -224,14 +211,18 @@ sub create_class_make_rule {
   elsif ($category eq 'precompile') {
     push @deps, $spvm_file;
   }
-  
+
   # Shared library file
   my $shared_lib_rel_file = convert_class_name_to_shared_lib_rel_file($class_name, $category);
   my $shared_lib_file = "blib/lib/$shared_lib_rel_file";
   
-  # Get source files
-  $make_rule .= "$target_name :: $shared_lib_file\n";
+  my $make_rule = '';
+  
+  # dynamic section
+  $make_rule .= "dynamic :: $shared_lib_file\n";
   $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
+  
+  # Get source files
   $make_rule .= "$shared_lib_file :: @deps\n";
   $make_rule .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => '.spvm_build')->build_shared_lib_dist('$class_name', '$category')\"\n\n";
   
