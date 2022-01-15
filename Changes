@@ -9,7 +9,7 @@ Revision history for SPVM
         [FIX BUGS]
         * Fix the bug that the current class syntax "&_foo" becomes a compilation error.
         * Fix the cache bug that when SPVM module file is updated, the shared library is not created.
-
+        * Fix the test bug that copmile cache test fails.
 0.9120  2021-01-14
         [CHANGES]
         * Native and precompile shared object files are cached.
