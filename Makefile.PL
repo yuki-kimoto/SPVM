@@ -192,24 +192,34 @@ sub MY::postamble {
   }
   
   # Create precompile tests
-  my @test_files;
-  find(
-    sub {
-      if (-f $File::Find::name) {
-        my $rel_path = $File::Find::name;
-        $rel_path =~ s|^\Q$FindBin::Bin/||;
-        
-        # Slip hidden files
-        return if $rel_path =~ /[\/\\]\./;
+  {
+    my @test_files;
+    find(
+      sub {
+        if (-f $File::Find::name) {
+          my $rel_path = $File::Find::name;
+          $rel_path =~ s|^\Q$FindBin::Bin/||;
+          
+          # Slip hidden files
+          return if $rel_path =~ /[\/\\]\./;
 
-        push @test_files, $rel_path;
-      }
-    },
-    "$FindBin::Bin/t/default"
-  );
-  my $test_files_str = join(' ', @test_files);
-  $make_rule .= "dynamic :: $test_files_str\n";
-  $make_rule .= "\tperl t/copy_default_to_precompile.pl\n";
+          push @test_files, $rel_path;
+        }
+      },
+      "$FindBin::Bin/t/default"
+    );
+    my $test_files_str = join(' ', @test_files);
+    
+    my $time_stamp_file = "$FindBin::Bin/t/precompile/time_stamp.txt";
+    
+    warn $time_stamp_file;
+    
+    $make_rule .= "dynamic :: $time_stamp_file\n";
+    $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
+
+    $make_rule .= "$time_stamp_file :: $test_files_str\n";
+    $make_rule .= "\tperl t/copy_default_to_precompile.pl\n";
+  }
   
   return $make_rule;
 }
