@@ -3,6 +3,7 @@ use TestAuto;
 
 use strict;
 use warnings;
+use Config;
 
 use Test::More;
 
@@ -28,15 +29,16 @@ BEGIN {
 my $native_shared_lib_file;
 my $start_native_shared_lib_file_mtime;
 BEGIN {
- $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.so";
+ $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
  $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 }
 
 my $precompile_shared_lib_file;
 my $start_precompile_shared_lib_file_mtime;
 BEGIN {
- $precompile_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.precompile.so";
+ $precompile_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.precompile.$Config{dlext}";
  if ($ENV{SPVM_TEST_PRECOMPILE}) {
+   warn "AAAAAAAAAAA $precompile_shared_lib_file";
    ok(-f $precompile_shared_lib_file);
    $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
  }
