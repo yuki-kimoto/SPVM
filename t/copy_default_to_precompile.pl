@@ -5,28 +5,12 @@ use File::Basename 'basename', 'dirname';
 use File::Path 'mkpath', 'rmtree';
 use File::Find;
 
+
 mkpath 't/precompile';
 
-# remove and copy test files for Precompile
-my @old_precompile_test_files = glob 't/precompile/*';
-for my $old_precompile_test_file (@old_precompile_test_files) {
-  if (-f $old_precompile_test_file) {
-    unlink $old_precompile_test_file
-      or die "Can't delete $old_precompile_test_file";
-  }
-}
-my @default_test_files = glob 't/default/*';
-for my $default_test_file (@default_test_files) {
-  my $new_precompile_test_file = 't/precompile/' . basename $default_test_file;
-  if (-f $default_test_file) {
-    copy $default_test_file, $new_precompile_test_file
-      or die "Can't copy $default_test_file to $new_precompile_test_file";
-  }
-}
-
 # remove and edit and copy lib file for JIT
-my $test_default_dir = 't/default/lib';
-my $test_precompile_dir = 't/precompile/lib';
+my $test_default_dir = 't/default';
+my $test_precompile_dir = 't/precompile';
 rmtree $test_precompile_dir;
 mkdir $test_precompile_dir;
 find(
@@ -34,11 +18,13 @@ find(
     wanted => sub {
       my $file = $File::Find::name;
       my $to_dir = dirname $file;
-      $to_dir =~ s|t/default/lib|t/precompile/lib|;
+      $to_dir =~ s|t/default|t/precompile|;
       my $to_file = $file;
-      $to_file =~ s|t/default/lib|t/precompile/lib|;
+      $to_file =~ s|t/default|t/precompile|;
       
       if (-f $file) {
+        
+        return if $file =~ /[\/\\]\./;
         
         my ($file_atime, $file_mtime) = (stat $file)[8, 9];
         
@@ -57,13 +43,14 @@ find(
         print $to_fh $content;
         
         close $to_fh;
-        
-        # Copy time stamp
-        utime $file_atime, $file_mtime, $to_file
-          or die;
       }
     },
     no_chdir => 1,
   },
   $test_default_dir
 );
+
+# Add the time stamp file for Makefile
+my $time_stamp_file = "$test_precompile_dir/time_stamp.txt";
+open my $time_stamp_fh, '>', $time_stamp_file
+  or die "Can't open file \"$time_stamp_file\": $!";

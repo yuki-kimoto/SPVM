@@ -4,8 +4,11 @@ Revision history for SPVM
         [CHANGES]
         * Improve the error messages that instance methods are called as class methods,
           and class methods are called as instance methods
+        * Simplify the Makefile created by SPVM::Builder::Util::create_make_rule_native
+          and SPVM::Builder::Util::create_make_rule_precompile
         [FIX BUGS]
         * Fix the bug that the current class syntax "&_foo" becomes a compilation error.
+        * Fix the cache bug that when SPVM module file is updated, the shared library is not created.
 
 0.9120  2021-01-14
         [CHANGES]
