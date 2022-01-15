@@ -212,8 +212,6 @@ sub MY::postamble {
     
     my $time_stamp_file = "$FindBin::Bin/t/precompile/time_stamp.txt";
     
-    warn $time_stamp_file;
-    
     $make_rule .= "dynamic :: $time_stamp_file\n";
     $make_rule .= "\t\$(NOECHO) \$(NOOP)\n\n";
 
