@@ -24,7 +24,7 @@ find(
       
       if (-f $file) {
         
-        return if $file =~ /^\./;
+        return if $file =~ /[\/\\]\./;
         
         my ($file_atime, $file_mtime) = (stat $file)[8, 9];
         
