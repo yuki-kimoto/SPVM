@@ -3,6 +3,7 @@ Revision history for SPVM
 0.9122  2021-01-17
         [CHANGES]
         * new_cpp, new_cpp11 methods of SPVM::Builder::Config use the linker that linked Perl itself.
+        * new_cpp, new_cpp11 methods of SPVM::Builder::Config use the clang++ compiler if the Perl itself was compiled by clang.
         
         [FIX BUGS]
         * Fix the bug that C++ native API tests fail on FreeBSD.
