@@ -308,19 +308,26 @@ sub compile {
   my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'config');
   my $config_file = "$src_dir/$config_rel_file";
   
+  # Config
+  my $config;
+  if ($category eq 'native') {
+    if (-f $config_file) {
+      $config = SPVM::Builder::Util::load_config($config_file);
+    }
+    else {
+      my $error = $self->_error_message_find_config($config_file);
+      confess $error;
+    }
+  }
+  elsif ($category eq 'precompile') {
+    $config = SPVM::Builder::Config->new_gnu99;
+  }
+  else { confess 'Unexpected Error' }
+
   # Native Directory
   my $native_dir = $config_file;
   $native_dir =~ s/\.config$//;
   $native_dir .= '.native';
-
-  # Config
-  my $config;
-  if (-f $config_file) {
-    $config = SPVM::Builder::Util::load_config($config_file);
-  }
-  else {
-    $config = SPVM::Builder::Config->new_gnu99;
-  }
   
   # Runtime include directries
   my @runtime_include_dirs;
@@ -557,6 +564,26 @@ sub create_compile_command {
   return $cc_cmd;
 }
 
+sub _error_message_find_config {
+  my ($self, $config_file) = @_;
+  
+  my $error = <<"EOS";
+Can't find the native config file \"$config_file\".
+
+The config file must contain at least the following code.
+----------------------------------------------
+use strict;
+use warnings;
+
+use SPVM::Builder::Config;
+my \$config = SPVM::Builder::Config->new_gnu99;
+
+\$config;
+----------------------------------------------
+EOS
+  
+}
+
 sub link {
   my ($self, $class_name, $object_files, $opt) = @_;
 
@@ -595,32 +622,19 @@ sub link {
 
   # Config
   my $config;
-  if (-f $config_file) {
-    $config = SPVM::Builder::Util::load_config($config_file);
-  }
-  else {
-    if ($category eq 'native') {
-      my $error = <<"EOS";
-Can't find $config_file.
-
-Config file must contains at least the following code
-----------------------------------------------
-use strict;
-use warnings;
-
-use SPVM::Builder::Config;
-my \$config = SPVM::Builder::Config->new(file => __FILE__);
-
-\$config;
-----------------------------------------------
-
-EOS
-      confess $error;
+  if ($category eq 'native') {
+    if (-f $config_file) {
+      $config = SPVM::Builder::Util::load_config($config_file);
     }
     else {
-      $config = SPVM::Builder::Config->new_gnu99;
+      my $error = $self->_error_message_find_config($config_file);
+      confess $error;
     }
   }
+  elsif ($category eq 'precompile') {
+    $config = SPVM::Builder::Config->new_gnu99;
+  }
+  else { confess 'Unexpected Error' }
 
   # Native Directory
   my $native_dir = $config_file;
