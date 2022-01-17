@@ -598,6 +598,7 @@ t/default/class_var.t
 t/default/comment.t
 t/default/comparison_operator.t
 t/default/compile_error.t
+t/default/compile_native_api.pl
 t/default/concat.t
 t/default/constant.t
 t/default/convert.t
