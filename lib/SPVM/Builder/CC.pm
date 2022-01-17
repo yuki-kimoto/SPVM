@@ -319,7 +319,7 @@ sub compile {
     $config = SPVM::Builder::Util::load_config($config_file);
   }
   else {
-    $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+    $config = SPVM::Builder::Config->new_gnu99;
   }
   
   # Runtime include directries
@@ -618,7 +618,7 @@ EOS
       confess $error;
     }
     else {
-      $config = SPVM::Builder::Config->new_gnu99(file_optional => 1);
+      $config = SPVM::Builder::Config->new_gnu99;
     }
   }
 
