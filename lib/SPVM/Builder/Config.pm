@@ -353,9 +353,6 @@ sub new_cpp {
   # CC
   $self->cc('g++');
   
-  # LD
-  $self->ld('g++');
-  
   # NativeAPI
   $self->ext('cpp');
   

@@ -1,5 +1,12 @@
 Revision history for SPVM
 
+0.9122  2021-01-17
+        [CHANGES]
+        * new_cpp, new_cpp11 methods of SPVM::Builder::Config use the linker that linked Perl itself.
+        
+        [FIX BUGS]
+        * Fix the bug that C++ native API tests fail on FreeBSD.
+
 0.9121  2021-01-15
         [CHANGES]
         * Improve the error messages that instance methods are called as class methods,
