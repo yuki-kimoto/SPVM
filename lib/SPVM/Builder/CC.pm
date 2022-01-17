@@ -14,6 +14,17 @@ use File::Basename 'dirname', 'basename';
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 
+sub is_compiled_from_source {
+  my $self = shift;
+  if (@_) {
+    $self->{is_compiled_from_source} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{is_compiled_from_source};
+  }
+}
+
 sub category {
   my $self = shift;
   if (@_) {
