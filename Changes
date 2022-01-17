@@ -4,6 +4,7 @@ Revision history for SPVM
         [CHANGES]
         * SPMV standard modules and precompile source is compiled as gnu99 instead of c99
           because gnu99 is more widely assumed in the exsiting C libraries than c99.
+        * Remove 
 
 0.9122  2021-01-17
         [CHANGES]

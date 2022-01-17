@@ -636,20 +636,6 @@ sub link {
   }
   else { confess 'Unexpected Error' }
 
-  # Native Directory
-  my $native_dir = $config_file;
-  $native_dir =~ s/\.config$//;
-  $native_dir .= '.native';
-  
-  # Runtime library directories
-  my @runtime_lib_dirs;
-  
-  # Library directory
-  my $native_lib_dir = "$native_dir/lib";
-  if (-d $native_lib_dir) {
-    push @runtime_lib_dirs, $native_lib_dir;
-  }
-  
   # Quiet output
   my $quiet = $config->quiet;
 
@@ -736,7 +722,7 @@ sub link {
 
   # Libraries
   # Libraries is linked using absolute path because the linked libraries must be known at runtime.
-  my $lib_dirs = [@runtime_lib_dirs, @{$config->lib_dirs}];
+  my $lib_dirs = $config->lib_dirs;
   my @lib_files;
   {
     my $libs = $config->libs;
