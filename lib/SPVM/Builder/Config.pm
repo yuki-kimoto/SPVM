@@ -827,7 +827,7 @@ If you want to use the specific C version, use C<set_std> method.
 
 =head2 new_c99
   
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_gnu99;
 
 Create default build config with C99 settings. This is L<SPVM::Builder::Config> object.
 

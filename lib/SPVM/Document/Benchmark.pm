@@ -140,7 +140,7 @@ B<SPVM/MyMath.config>
 
   use SPVM::Builder::Config;
 
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_gnu99;
 
   $config;
 

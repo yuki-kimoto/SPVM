@@ -37,7 +37,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_gnu99;
 
   $config;
 
@@ -106,7 +106,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_gnu99;
 
   # Show the compile commands
   $config->quiet(0);
@@ -119,7 +119,7 @@ Native Config File is Perl source code. Native Config File must return properly 
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_c99;
+  my $config = SPVM::Builder::Config->new_gnu99;
 
   # Show the compile commands
   $config->force(1);
