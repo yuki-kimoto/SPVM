@@ -350,8 +350,15 @@ sub new_cpp {
   
   my $self = SPVM::Builder::Config->new(@_);
   
-  # CC
-  $self->cc('g++');
+  # The compiler
+  # [Memo]Free BSD don't have g++ in the environment clang++ exists.
+  my $config_gcc_version = $Config{gccversion};
+  if ($config_gcc_version =~ /\bclang\b/) {
+    $self->cc('clang++');
+  }
+  else {
+    $self->cc('g++');
+  }
   
   # NativeAPI
   $self->ext('cpp');
