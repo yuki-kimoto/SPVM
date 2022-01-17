@@ -206,49 +206,6 @@ EOS
 
 }
 
-sub get_config {
-  my ($self, $class_name, $category) = @_;
-
-  my $module_file = $self->get_module_file($class_name);
-  my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($module_file, $class_name);
-  
-  # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'config');
-  my $config_file = "$src_dir/$config_rel_file";
-  
-  # Config
-  my $config;
-  if (-f $config_file) {
-    $config = SPVM::Builder::Util::load_config($config_file);
-  }
-  else {
-    if ($category eq 'native') {
-      my $error = <<"EOS";
-Can't find $config_file.
-
-Config file must contains at least the following code
-----------------------------------------------
-use strict;
-use warnings;
-
-use SPVM::Builder::Config;
-my \$config = SPVM::Builder::Config->new_gnu99;
-
-\$config;
-----------------------------------------------
-$@
-EOS
-      confess $error;
-    }
-    else {
-      $config = SPVM::Builder::Config->new_gnu99;
-    }
-  }
-
-
-  return $config;
-}
-
 1;
 
 =encoding utf8

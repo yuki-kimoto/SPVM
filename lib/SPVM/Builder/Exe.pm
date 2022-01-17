@@ -241,8 +241,6 @@ sub compile_native_csources {
       my $native_module_file = $builder->get_module_file($class_name);
       my $native_dir = $native_module_file;
       
-      my $config = $builder->get_config($class_name, 'native');
-      
       $native_dir =~ s/\.spvm$//;
       $native_dir .= 'native';
       my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
