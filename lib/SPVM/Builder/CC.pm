@@ -199,7 +199,17 @@ sub resolve_resources {
   while (my $resource = shift @all_resources) {
     next if $found_resources_h->{$resource};
     
-    my $config_file = $self->get_config_file_from_class_name($resource);
+    my $module_file = $self->builder->get_module_file($resource);
+    unless (defined $module_file) {
+      confess "Resouce module \"$resource\" is not loaded";
+    }
+    
+    my $config_file = $module_file;
+    $config_file =~ s/\.spvm$/.config/;
+    unless (-f $config_file) {
+      confess "Can't find config file \"$config_file\"";
+    }
+    
     my $resource_file = $config_file;
     $resource_file =~ s/\.config/\.a/;
     unless (-f $resource_file) {
