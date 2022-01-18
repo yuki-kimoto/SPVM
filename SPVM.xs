@@ -3797,9 +3797,16 @@ get_module_file(...)
 
   // Copy class load path to builder
   SPVM_CLASS* class = SPVM_HASH_fetch(compiler->class_symtable, class_name, strlen(class_name));
-  const char* module_file = class->module_file;
-  SV* sv_module_file = sv_2mortal(newSVpv(module_file, 0));
-
+  const char* module_file;
+  SV* sv_module_file;
+  if (class) {
+    module_file = class->module_file;
+    sv_module_file = sv_2mortal(newSVpv(module_file, 0));
+  }
+  else {
+    sv_module_file = &PL_sv_undef;
+  }
+  
   XPUSHs(sv_module_file);
   XSRETURN(1);
 }
