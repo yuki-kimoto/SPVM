@@ -226,6 +226,7 @@ sub resolve_resources {
       
       for my $depend_resource (@$depend_resources) {
         my $depend_config_file = $self->get_config_file_from_class_name($depend_resource);
+
         my $depend_resource_file = $depend_config_file;
         $depend_resource_file =~ s/\.config/\.a/;
         
@@ -253,30 +254,15 @@ sub resolve_resources {
 sub get_config_file_from_class_name {
   my ($self, $class_name) = @_;
   
-  my $class_file_base = $class_name;
-  $class_file_base =~ s|::|/|g;
-  $class_file_base .= '.spvm';
+  my $module_file = $self->builder->get_module_file($class_name);
   
-  my $class_file;
-  my @spvm_inc;
-  for my $inc (@INC) {
-    my $spvm_inc = "$inc/SPVM";
-    push @spvm_inc, $spvm_inc;
-    my $class_file_tmp = "$spvm_inc/$class_file_base";
-    
-    if (-f $class_file_tmp) {
-      $class_file = $class_file_tmp;
-      last;
-    }
-  }
-  
-  unless ($class_file) {
-    confess "Can't find class file $class_file_base for the class \"$class_name\" in (" . join(', ', @spvm_inc) . ")";
+  unless ($module_file) {
+    confess "$module_file is not loaded";
   }
   
   my $config_file;
-  if (-f $class_file) {
-    my $config_file_tmp = $class_file;
+  if (-f $module_file) {
+    my $config_file_tmp = $module_file;
     $config_file_tmp =~ s/\.spvm/\.config/;
     if (-f $config_file_tmp) {
       $config_file = $config_file_tmp;
