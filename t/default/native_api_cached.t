@@ -177,26 +177,10 @@ system($compile_native_api_prgoram) == 0 or die;
   $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.o";
   $start_native_object_file_mtime = (stat $native_object_file)[9];
 
-  my $precompile_object_file;
-  my $start_precompile_object_file_mtime;
-  $precompile_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.precompile.o";
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-   ok(-f $precompile_object_file);
-   $start_precompile_object_file_mtime = (stat $precompile_object_file)[9];
-  }
-
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
    $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI2.$Config{dlext}";
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-
-  my $precompile_shared_lib_file;
-  my $start_precompile_shared_lib_file_mtime;
-   $precompile_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI2.precompile.$Config{dlext}";
-   if ($ENV{SPVM_TEST_PRECOMPILE}) {
-     ok(-f $precompile_shared_lib_file);
-     $start_precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-   }
 
   # Update src file
   sleep $wait_time;
@@ -208,19 +192,9 @@ system($compile_native_api_prgoram) == 0 or die;
   my $native_object_file_mtime = (stat $native_object_file)[9];
   isnt($native_object_file_mtime, $start_native_object_file_mtime);
   
-  my $precompile_object_file_mtime = (stat $precompile_object_file)[9];
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    isnt($precompile_object_file_mtime, $start_precompile_object_file_mtime);
-  }
-
   # Naative shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
   isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
-
-  my $precompile_shared_lib_file_mtime = (stat $precompile_shared_lib_file)[9];
-  if ($ENV{SPVM_TEST_PRECOMPILE}) {
-    isnt($precompile_shared_lib_file_mtime, $start_precompile_shared_lib_file_mtime);
-  }
 }
 
 # Update native src file
