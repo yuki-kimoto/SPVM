@@ -199,10 +199,10 @@ system($compile_native_api_prgoram) == 0 or die;
 
 # Update native src file
 {
-  my $native_object_file;
-  my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
-  $start_native_object_file_mtime = (stat $native_object_file)[9];
+  my $native_src_object_file;
+  my $start_native_src_object_file_mtime;
+  $native_src_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI2.native/baz/baz.o";
+  $start_native_src_object_file_mtime = (stat $native_src_object_file)[9];
 
   my $native_shared_lib_file;
   my $start_native_shared_lib_file_mtime;
@@ -216,8 +216,8 @@ system($compile_native_api_prgoram) == 0 or die;
   system($compile_native_api_prgoram) == 0 or die;
 
   # Native object file is cached
-  my $native_object_file_mtime = (stat $native_object_file)[9];
-  isnt($native_object_file_mtime, $start_native_object_file_mtime);
+  my $native_src_object_file_mtime = (stat $native_src_object_file)[9];
+  isnt($native_src_object_file_mtime, $start_native_src_object_file_mtime);
   
   # Naative shared_lib file is cached
   my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
