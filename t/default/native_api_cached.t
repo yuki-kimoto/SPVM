@@ -9,6 +9,9 @@ use Test::More;
 
 use FindBin;
 
+# Wait 2 seconds because the time in 1 secend is not detected.
+my $wait_time = 2;
+
 my $compile_native_api_prgoram = "$^X -Mblib $FindBin::Bin/compile_native_api.pl";
 
 my $module_file = "$FindBin::Bin/lib/SPVM/TestCase/NativeAPI.spvm";
@@ -85,7 +88,7 @@ system($compile_native_api_prgoram) == 0 or die;
    $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
 
   # Update config file
-  sleep 1;
+  sleep $wait_time;
   my $now = time;
   utime $now, $now, $config_file;
   system($compile_native_api_prgoram) == 0 or die;
@@ -128,7 +131,7 @@ system($compile_native_api_prgoram) == 0 or die;
    }
 
   # Update module file
-  sleep 1;
+  sleep $wait_time;
   my $now = time;
   utime $now, $now, $module_file;
   system($compile_native_api_prgoram) == 0 or die;
