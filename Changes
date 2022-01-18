@@ -1,6 +1,6 @@
 Revision history for SPVM
 
-0.9123  2021-01-19
+0.9124  2021-01-19
         [CHANGES]
         * The path of native config file are decided from the native module name.
 0.9123  2021-01-18
