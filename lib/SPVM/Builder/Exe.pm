@@ -35,17 +35,6 @@ sub extra_compiler_flags { shift->{extra_compiler_flags} }
 sub extra_linker_flags { shift->{extra_linker_flags} }
 sub force { shift->{force} }
 
-sub is_compiled_from_source {
-  my $self = shift;
-  if (@_) {
-    $self->{is_compiled_from_source} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{is_compiled_from_source};
-  }
-}
-
 sub new {
   my $class = shift;
   
