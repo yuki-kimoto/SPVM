@@ -910,43 +910,40 @@ sub create_precompile_csource {
   my $src_dir = $opt->{src_dir};
   mkpath $src_dir;
   
-  my $category = 'precompile';
+  my $module_file = $self->builder->get_module_file($class_name);
   
   my $class_rel_file_without_ext = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
-  my $source_file = "$src_dir/$class_rel_file_without_ext.$category.c";
-  
-  my $source_dir = "$src_dir/$class_rel_dir";
-  mkpath $source_dir;
-  
-  my $class_csource = $self->build_class_csource_precompile($class_name);
-  
-  my $is_create_csource_file;
+  my $source_file = "$src_dir/$class_rel_file_without_ext.precompile.c";
 
-  # Get old csource source
-  my $old_class_csource;
-  if (-f $source_file) {
-    open my $fh, '<', $source_file
-      or die "Can't open $source_file";
-    $old_class_csource = do { local $/; <$fh> };
+  my $need_create;
+  if ($self->force) {
+    $need_create = 1;
   }
   else {
-    $old_class_csource = '';
+    if (!-f $source_file) {
+      $need_create = 1;
+    }
+    else {
+      my $mtime_module_file = (stat($module_file))[9];
+      my $mtime_source_file = (stat($source_file))[9];
+      if ($mtime_module_file > $mtime_source_file) {
+        $need_create = 1;
+      }
+    }
   }
   
-  if ($class_csource ne $old_class_csource) {
-    $is_create_csource_file = 1;
-  }
-  else {
-    $is_create_csource_file = 0;
-  }
-  
-  # Create source fil
-  if ($is_create_csource_file) {
-    open my $fh, '>', $source_file
-      or die "Can't create $source_file";
-    print $fh $class_csource;
-    close $fh;
+  if ($need_create) {
+    my $source_dir = "$src_dir/$class_rel_dir";
+    mkpath $source_dir;
+    
+    my $class_csource = $self->build_class_csource_precompile($class_name);
+    if ($need_create) {
+      open my $fh, '>', $source_file
+        or die "Can't create $source_file";
+      print $fh $class_csource;
+      close $fh;
+    }
   }
 }
 
