@@ -68,30 +68,4 @@ system($compile_native_api_prgoram) == 0 or die;
   }
 }
 
-# Update native config files
-{
-  my $native_object_file;
-  my $start_native_object_file_mtime;
-  $native_object_file = "$FindBin::Bin/.spvm_build/work/object/SPVM/TestCase/NativeAPI.o";
-  $start_native_object_file_mtime = (stat $native_object_file)[9];
-
-  my $native_shared_lib_file;
-  my $start_native_shared_lib_file_mtime;
-   $native_shared_lib_file = "$FindBin::Bin/.spvm_build/work/lib/SPVM/TestCase/NativeAPI.$Config{dlext}";
-   $start_native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-
-  # Update mtime of config file and compile
-  my $cur_time = time;
-  utime $cur_time, $cur_time, $config_file or die;
-  system($compile_native_api_prgoram) == 0 or die;
-
-  # Naative object file is recompiled
-  my $native_object_file_mtime = (stat $native_object_file)[9];
-  isnt($native_object_file_mtime, $start_native_object_file_mtime);
-
-  # Naative shared_lib file is recompiled
-  my $native_shared_lib_file_mtime = (stat $native_shared_lib_file)[9];
-  isnt($native_shared_lib_file_mtime, $start_native_shared_lib_file_mtime);
-}
-
 done_testing;
