@@ -4,11 +4,17 @@ Revision history for SPVM
         [CHANGES]
         * SPMV standard modules and precompile source is compiled as gnu99 instead of c99
           because gnu99 is more widely assumed in the exsiting C libraries than c99.
+        * new_cpp, new_cpp11 methods of SPVM::Builder::Config use the clang++ linker if the Perl itself was compiled by clang.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Remove native/lib directory from the directories that libraries are searched for at runtime
           because generally libraries exists in the system, not the module sources.
-        * Resouce modules must be loaded as SPVM modules.
+        * Resoruce modules must be loaded as SPVM modules.
+
+        [FIX BUGS]
+        * Fix the bug that C++ native module can't find the symbol.
+          The reason of this is 0.9122 "new_cpp, new_cpp11 methods of SPVM::Builder::Config 
+          use the clang++ compiler if the Perl itself was compiled by clang."
 
 0.9122  2021-01-17
         [CHANGES]

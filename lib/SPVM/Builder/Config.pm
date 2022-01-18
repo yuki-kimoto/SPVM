@@ -355,9 +355,11 @@ sub new_cpp {
   my $config_gcc_version = $Config{gccversion};
   if ($config_gcc_version =~ /\bclang\b/) {
     $self->cc('clang++');
+    $self->ld('clang++');
   }
   else {
     $self->cc('g++');
+    $self->ld('g++');
   }
   
   # NativeAPI
