@@ -1,5 +1,8 @@
 Revision history for SPVM
 
+0.9123  2021-01-19
+        [CHANGES]
+        * The path of native config file are decided from the native module name.
 0.9123  2021-01-18
         [CHANGES]
         * SPMV standard modules and precompile source is compiled as gnu99 instead of c99

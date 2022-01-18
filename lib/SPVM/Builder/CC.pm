@@ -314,13 +314,18 @@ sub compile {
     confess "Temporary directory must be specified for " . $self->category . " build";
   }
   
-  # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'config');
-  my $config_file = "$src_dir/$config_rel_file";
+  # Module file
+  my $module_file = $self->builder->get_module_file($class_name);
+  unless (defined $module_file) {
+    confess "\"$module_file\" module is not loaded";
+  }
   
   # Config
+  my $config_file = $module_file;
+  $config_file =~ s/\.spvm$/.config/;
   my $config;
   if ($category eq 'native') {
+    # Config file
     if (-f $config_file) {
       $config = SPVM::Builder::Util::load_config($config_file);
     }
@@ -335,8 +340,8 @@ sub compile {
   else { confess 'Unexpected Error' }
 
   # Native Directory
-  my $native_dir = $config_file;
-  $native_dir =~ s/\.config$//;
+  my $native_dir = $module_file;
+  $native_dir =~ s/\.spvm$//;
   $native_dir .= '.native';
   
   # Runtime include directries
@@ -625,10 +630,15 @@ sub link {
   my $shared_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_shared_lib_rel_file($class_name, $self->category);
   my $shared_lib_file = "$lib_dir/$shared_lib_rel_file";
 
+  # Module file
+  my $module_file = $self->builder->get_module_file($class_name);
+  unless (defined $module_file) {
+    confess "\"$module_file\" module is not loaded";
+  }
+  
   # Config file
-  my $config_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'config');
-  my $src_dir = $opt->{src_dir};
-  my $config_file = "$src_dir/$config_rel_file";
+  my $config_file = $module_file;
+  $config_file =~ s/\.spvm$/.config/;
 
   # Config
   my $config;
