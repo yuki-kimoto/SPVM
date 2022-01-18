@@ -506,7 +506,7 @@ sub compile {
       mkpath dirname $object_file;
       
       my $cc_cmd = $self->create_compile_command({config => $config, output_file => $object_file, source_file => $src_file});
-
+      
       # Execute compile command
       $cbuilder->do_system(@$cc_cmd)
         or confess "Can't compile $src_file: @$cc_cmd";
