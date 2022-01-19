@@ -23,15 +23,94 @@ use Scalar::Util 'weaken';
 
 use File::Basename 'dirname', 'basename';
 
-# Accessors
-sub builder { shift->{builder} }
-sub build_dir { shift->builder->build_dir }
-sub class_name { shift->{class_name} }
-sub output_file { shift->{output_file} }
-sub quiet { shift->{quiet} }
-sub module_dirs { shift->{module_dirs} }
-sub optimize { shift->{optimize} }
-sub force { shift->{force} }
+# Fields
+sub module_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{module_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{module_dirs};
+  }
+}
+
+sub builder {
+  my $self = shift;
+  if (@_) {
+    $self->{builder} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{builder};
+  }
+}
+
+sub build_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{build_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{build_dir};
+  }
+}
+
+sub class_name {
+  my $self = shift;
+  if (@_) {
+    $self->{class_name} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{class_name};
+  }
+}
+
+sub output_file {
+  my $self = shift;
+  if (@_) {
+    $self->{output_file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{output_file};
+  }
+}
+
+sub optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{optimize};
+  }
+}
+
+sub quiet {
+  my $self = shift;
+  if (@_) {
+    $self->{quiet} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{quiet};
+  }
+}
+
+sub force {
+  my $self = shift;
+  if (@_) {
+    $self->{force} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{force};
+  }
+}
 
 sub new {
   my $class = shift;
@@ -890,3 +969,7 @@ sub link {
 }
 
 1;
+
+=head1 NAME
+
+SPVM::Builder::Exe - Create a Executable File
