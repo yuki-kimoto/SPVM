@@ -1,9 +1,8 @@
 Revision history for SPVM
 
-0.9124  2021-01-25
-        [NON BACKWORD COMPATIBLE CHANGES]
-        * Remove exported_funcs field of SPVM::Builder::Config because this is only used when creating Windows dll.
-          Native source files is not compiled to Windows DLL.
+0.9125  2021-01-19
+        [FIX BUGS]
+        * Fix the bug that clang is not detected.
 
 0.9124  2021-01-19
         [CHANGES]
