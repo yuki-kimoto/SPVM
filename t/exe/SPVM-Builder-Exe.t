@@ -24,13 +24,13 @@ use FindBin;
   my $exe_dir = 't/.spvm_build/work/exe';
   mkpath $exe_dir;
   
-  my $module_name = 'MyExe';
+  my $class_name = 'MyExe';
   my $build_dir = 't/exe/.spvm_build';
   my $module_dirs = ['t/exe/lib', @INC];
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
-    module_name => $module_name,
+    class_name => $class_name,
     output_file => $output_file,
     build_dir => $build_dir,
     module_dirs => $module_dirs,
@@ -44,13 +44,13 @@ use FindBin;
   my $exe_dir = 't/.spvm_build/work/exe';
   mkpath $exe_dir;
   
-  my $module_name = 'MyExe::Foo::Bar';
+  my $class_name = 'MyExe::Foo::Bar';
   my $build_dir = 't/exe/.spvm_build';
   my $module_dirs = ['t/exe/lib', @INC];
   my $output_file = "$build_dir/work/myexe";
 
   my $builder_exe = SPVM::Builder::Exe->new(
-    module_name => $module_name,
+    class_name => $class_name,
     output_file => $output_file,
     build_dir => $build_dir,
     module_dirs => $module_dirs,
