@@ -103,6 +103,12 @@ sub build_exe_file {
   unless ($compile_success) {
     exit(255);
   }
+  
+  # Config file
+  my $module_file = $builder->get_module_file($module_name);
+  my $config_file = $module_file;
+  $config_file =~ s/\.spvm$/.config/;
+  my $config = SPVM::Builder::Util::load_config($config_file);
 
   # Create precompile C source_files
   $self->create_precompile_csources;
