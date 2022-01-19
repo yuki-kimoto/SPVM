@@ -12,9 +12,28 @@ use SPVM::Builder::CC;
 # because SPVM::Builder XS method is loaded when SPVM is loaded
 use SPVM();
 
-# Accessors
-sub build_dir { shift->{build_dir} }
-sub module_dirs { shift->{module_dirs} }
+# Fields
+sub module_dirs {
+  my $self = shift;
+  if (@_) {
+    $self->{module_dirs} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{module_dirs};
+  }
+}
+
+sub build_dir {
+  my $self = shift;
+  if (@_) {
+    $self->{build_dir} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{build_dir};
+  }
+}
 
 sub new {
   my $class = shift;
