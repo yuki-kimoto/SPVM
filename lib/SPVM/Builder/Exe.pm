@@ -112,6 +112,17 @@ sub force {
   }
 }
 
+sub config {
+  my $self = shift;
+  if (@_) {
+    $self->{config} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config};
+  }
+}
+
 sub new {
   my $class = shift;
   
