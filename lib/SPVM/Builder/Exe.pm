@@ -370,7 +370,7 @@ sub create_spvm_module_csources {
     # This source is UTF-8 binary
     my $module_source = $builder->get_module_source($class_name);
     
-    my $loaded_module_file = $builder->get_loaded_module_file($class_name);
+    my $loaded_module_file = $builder->get_module_file($class_name);
 
     my $build_dir = $self->builder->build_dir;
     my $build_src_dir = $self->builder->create_build_src_path;
