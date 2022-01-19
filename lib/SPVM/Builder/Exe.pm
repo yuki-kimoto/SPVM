@@ -378,13 +378,13 @@ sub create_spvm_module_csources {
     $module_source_base =~ s|::|/|g;
     my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
     
-    my $do_create;
+    my $need_create;
     if ($self->force) {
-      $do_create = 1;
+      $need_create = 1;
     }
     else {
       if (!-f $module_source_csource_file) {
-        $do_create = 1;
+        $need_create = 1;
       }
       else {
         my $loaded_module_file_mtime;
@@ -398,12 +398,12 @@ sub create_spvm_module_csources {
         my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
         
         if ($loaded_module_file_mtime > $module_source_csource_file_mtime) {
-          $do_create = 1;
+          $need_create = 1;
         }
       }
     }
     
-    if ($do_create) {
+    if ($need_create) {
       my $module_source_c_hex = $module_source;
       
       # Escape to Hex C launguage string literal
@@ -467,24 +467,24 @@ sub compile_spvm_module_csources {
     my $module_source_object_file = "$build_object_dir/$class_name_rel_file.modsrc.o";
     mkpath dirname $module_source_object_file;
     
-    my $do_compile;
+    my $need_compile;
     if ($self->force) {
-      $do_compile = 1;
+      $need_compile = 1;
     }
     else {
       if (!-f $module_source_object_file) {
-        $do_compile = 1;
+        $need_compile = 1;
       }
       else {
         my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
         my $module_source_object_file_mtime = (stat($module_source_object_file))[9];
         if ($module_source_csource_file_mtime > $module_source_object_file_mtime) {
-          $do_compile = 1;
+          $need_compile = 1;
         }
       }
     }
     
-    if ($do_compile) {
+    if ($need_compile) {
       # Compile command
       my $builder_cc = SPVM::Builder::CC->new;
       my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $module_source_object_file, source_file => $module_source_csource_file});
@@ -857,25 +857,25 @@ sub compile_spvm_compiler_and_runtime_csources {
     $object_file .= '.o';
     
     # Do compile
-    my $do_compile;
+    my $need_compile;
     
     if ($self->force) {
-      $do_compile = 1;
+      $need_compile = 1;
     }
     else {
       if (!-f $object_file) {
-        $do_compile = 1;
+        $need_compile = 1;
       }
       else {
         my $mod_time_src_file = (stat($src_file))[9];
         my $mod_time_object_file = (stat($object_file))[9];
         if ($mod_time_src_file > $mod_time_object_file) {
-          $do_compile = 1;
+          $need_compile = 1;
         }
       }
     }
       
-    if ($do_compile) {
+    if ($need_compile) {
 
       # Compile command
       my $builder_cc = SPVM::Builder::CC->new;
