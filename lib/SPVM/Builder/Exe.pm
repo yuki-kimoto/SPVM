@@ -31,8 +31,6 @@ sub output_file { shift->{output_file} }
 sub quiet { shift->{quiet} }
 sub module_dirs { shift->{module_dirs} }
 sub optimize { shift->{optimize} }
-sub extra_compiler_flags { shift->{extra_compiler_flags} }
-sub extra_linker_flags { shift->{extra_linker_flags} }
 sub force { shift->{force} }
 
 sub new {
@@ -185,7 +183,6 @@ sub compile_precompile_csources {
     builder => $builder,
     quiet => $self->quiet,
     optimize => $self->optimize,
-    extra_compiler_flags => $self->extra_compiler_flags,
     force => $self->force,
   );
   
@@ -226,7 +223,6 @@ sub compile_native_csources {
     builder => $builder,
     quiet => $self->quiet,
     optimize => $self->optimize,
-    extra_compiler_flags => $self->extra_compiler_flags,
     force => $self->force,
   );
   
@@ -884,7 +880,6 @@ sub link {
     objects => $object_files,
     module_name => $module_name,
     exe_file => $exe_file,
-    extra_linker_flags => $self->extra_linker_flags,
   );
 }
 

@@ -33,7 +33,7 @@ use lib "$FindBin::Bin/exe/lib";
   
   # -O, -f,  --ccflags, --lddlflags
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f --ccflags "-DSOMETHING_MACRO" --lddlflags "-L/foo/bar/baz" -O "-O0 -g" -B t/exe/.spvm_build -I t/exe/lib -o t/.spvm_build/work/exe/myexe MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -O "-O0 -g" -B t/exe/.spvm_build -I t/exe/lib -o t/.spvm_build/work/exe/myexe MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 

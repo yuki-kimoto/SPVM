@@ -9,6 +9,9 @@ Revision history for SPVM
         [FIX BUGS]
         * Fix the bug that spvmcc --force option is ignored in creating precompile c source.
         * Suppress Unicode module compile time warnings.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Remove --ccflags, --lddlflags option of spvmcc
+          because these config is done in SPVM::Builder::Config::Exe.
         
 0.9123  2021-01-18
         [CHANGES]

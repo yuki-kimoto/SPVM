@@ -15,26 +15,35 @@ SPVM::Builder::Util::getopt
   'I|module-dir=s' => \my @module_dirs,
   'q|quiet'   => \my $quiet,
   'O|optimize=s' => \my $optimize,
-  'ccflags=s' => \my $extra_compiler_flags,
-  'lddlflags=s' => \my $extra_linker_flags,
   '-f|force' => \my $force,
 ;
 
-die SPVM::Builder::Util::extract_usage if $help || !(my $module_name = shift);
+if ($help) {
+  die SPVM::Builder::Util::extract_usage;
+}
+elsif ($show_version) {
+  my $version_string = 'spvmcc v$SPVM::VERSION';
+  print "$version_string\n";
+}
+else {
+  my $module_name = shift;
+  unless (defined $module_name) {
+    die SPVM::Builder::Util::extract_usage;
+  }
+  
+  push @module_dirs, @INC;
 
-push @module_dirs, @INC;
+  my $build_exe = SPVM::Builder::Exe->new(
+    module_dirs => \@module_dirs,
+    output_file => $output_file,
+    module_name => $module_name,
+    quiet => $quiet,
+    optimize => $optimize,
+    force => $force,
+  );
+  $build_exe->build_exe_file;
+}
 
-my $build_exe = SPVM::Builder::Exe->new(
-  module_dirs => \@module_dirs,
-  output_file => $output_file,
-  module_name => $module_name,
-  quiet => $quiet,
-  optimize => $optimize,
-  extra_compiler_flags => $extra_compiler_flags,
-  extra_linker_flags => $extra_linker_flags,
-  force => $force,
-);
-$build_exe->build_exe_file;
 
 =encoding utf8
 
@@ -51,14 +60,12 @@ spvmcc - SPVM compiler to create exe file
 
   Options:
     -h, --help                     Show this message
-    -v, --version                  Version
+    -v, --version                  Show the version
     -o, --output                   Excutable file name
     -I, --module-dir <directory>   Add SPVM module searching directory
     -B, --build-dir <directory>    Building diretory
     -q, --quiet                    Quiet output
     -O, --optimize <level>         Optimaization level
-    --ccflags <options>            Additional compiler flags
-    --lddlflags <options>          Additional linker flags
     -f, --force                    Force compile and link
     
 =head1 DESCRIPTION
