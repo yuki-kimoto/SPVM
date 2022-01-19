@@ -26,7 +26,7 @@ use File::Basename 'dirname', 'basename';
 # Accessors
 sub builder { shift->{builder} }
 sub build_dir { shift->builder->build_dir }
-sub module_name { shift->{module_name} }
+sub class_name { shift->{class_name} }
 sub output_file { shift->{output_file} }
 sub quiet { shift->{quiet} }
 sub module_dirs { shift->{module_dirs} }
@@ -48,15 +48,15 @@ sub new {
   $module_dirs = $self->{module_dirs};
 
   # Target class name
-  my $module_name = $self->{module_name};
-  unless (defined $module_name) {
+  my $class_name = $self->{class_name};
+  unless (defined $class_name) {
     confess "Class name not specified";
   }
   
   # Excutable file name
   my $output_file = $self->{output_file};
   unless (defined $output_file) {
-    $output_file = $module_name;
+    $output_file = $class_name;
     $output_file =~ s/::/__/g;
     $self->{output_file} = $output_file;
   }
@@ -89,7 +89,7 @@ sub build_exe_file {
   my $builder = $self->builder;
 
   # Target class name
-  my $module_name = $self->{module_name};
+  my $class_name = $self->{class_name};
   
   # Excutable file name
   my $output_file = $self->{output_file};
@@ -99,13 +99,13 @@ sub build_exe_file {
   mkpath $build_dir;
   
   # Compile SPVM
-  my $compile_success = $builder->compile_spvm($module_name, __FILE__, __LINE__);
+  my $compile_success = $builder->compile_spvm($class_name, __FILE__, __LINE__);
   unless ($compile_success) {
     exit(255);
   }
   
   # Config file
-  my $module_file = $builder->get_module_file($module_name);
+  my $module_file = $builder->get_module_file($class_name);
   my $config_file = $module_file;
   $config_file =~ s/\.spvm$/.config/;
   my $config = SPVM::Builder::Util::load_config($config_file);
@@ -408,9 +408,9 @@ sub compile_spvm_module_csources {
 sub create_bootstrap_csource {
   my ($self) = @_;
   
-  my $module_name = $self->module_name;
+  my $class_name = $self->class_name;
   
-  my $target_perl_class_name = "SPVM::$module_name";
+  my $target_perl_class_name = "SPVM::$class_name";
 
   my $builder = $self->builder;
 
@@ -481,7 +481,7 @@ EOS
 
   $boot_csource .= <<"EOS";
   // Class name
-  const char* class_name = "$module_name";
+  const char* class_name = "$class_name";
 EOS
 
   $boot_csource .= <<'EOS';
@@ -641,9 +641,9 @@ sub compile_bootstrap_csource {
   my ($self) = @_;
   
   # Target class name
-  my $module_name = $self->module_name;
+  my $class_name = $self->class_name;
   
-  my $target_perl_class_name = "SPVM::$module_name";
+  my $target_perl_class_name = "SPVM::$class_name";
   
   # Build directory
   my $build_dir = $self->builder->build_dir;
@@ -802,9 +802,9 @@ sub compile_spvm_compiler_and_runtime_csources {
 sub link {
   my ($self, $native_object_files) = @_;
   
-  my $module_name = $self->module_name;
+  my $class_name = $self->class_name;
   
-  my $target_perl_class_name = "SPVM::$module_name";
+  my $target_perl_class_name = "SPVM::$class_name";
   
   my $builder = $self->builder;
   
@@ -884,7 +884,7 @@ sub link {
 
   my $tmp_shared_lib_file = $cbuilder->link_executable(
     objects => $object_files,
-    module_name => $module_name,
+    module_name => $class_name,
     exe_file => $exe_file,
   );
 }

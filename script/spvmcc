@@ -26,8 +26,8 @@ elsif ($show_version) {
   print "$version_string\n";
 }
 else {
-  my $module_name = shift;
-  unless (defined $module_name) {
+  my $class_name = shift;
+  unless (defined $class_name) {
     die SPVM::Builder::Util::extract_usage;
   }
   
@@ -36,7 +36,7 @@ else {
   my $build_exe = SPVM::Builder::Exe->new(
     module_dirs => \@module_dirs,
     output_file => $output_file,
-    module_name => $module_name,
+    class_name => $class_name,
     quiet => $quiet,
     optimize => $optimize,
     force => $force,

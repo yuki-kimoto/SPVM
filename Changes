@@ -13,6 +13,7 @@ Revision history for SPVM
         * Remove --ccflags, --lddlflags option of spvmcc
           because these config is done in SPVM::Builder::Config::Exe.
         * Remove extra_compiler_flags, extra_linker_flags from SPVM::Builder::Exe.
+        * Rename module_name of SPVM::Builde::Exe to class_name.
 0.9123  2021-01-18
         [CHANGES]
         * SPMV standard modules and precompile source is compiled as gnu99 instead of c99
