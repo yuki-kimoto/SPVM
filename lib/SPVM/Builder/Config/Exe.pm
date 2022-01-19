@@ -16,6 +16,17 @@ sub new {
   return $self;
 }
 
+sub global_optimize {
+  my $self = shift;
+  if (@_) {
+    $self->{global_optimize} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{global_optimize};
+  }
+}
+
 sub global_ccflags {
   my $self = shift;
   if (@_) {
@@ -57,6 +68,13 @@ Get and set global C<ccflags> that is added to all C<ccflags> of the compiler.
 B<Default:>
 
   []
+  
+=head2 global_optimize
+
+  my $global_optimize = $config->global_optimize;
+  $config->global_optimize($global_optimize);
+
+Get and set global C<optimize> that replaces all C<optimize> of the compiler.
 
 =head1 METHODS
 
