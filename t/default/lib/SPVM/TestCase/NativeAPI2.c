@@ -4,13 +4,13 @@
 #include "bar.h"
 #include "baz/baz.h"
 
-#include "utf8proc.h"
+#include "spvm_utf8proc.h"
 
 int32_t SPVM__TestCase__NativeAPI2__use_resource(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
-  int32_t value = UTF8PROC_VERSION_MAJOR;
+  int32_t value = SPVM_UTF8PROC_VERSION_MAJOR;
   
   if (value) {
     stack[0].ival = 1;
