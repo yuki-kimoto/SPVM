@@ -1,11 +1,14 @@
 Revision history for SPVM
 
+
 0.9124  2021-01-19
         [CHANGES]
         * The path of native config file are decided from the native module name.
         * Simplify the cache logic to create precompile c source file.
+        * Unicode module use own utf8proc library(spvm_utf8proc) instead of original utf8proc library.
         [FIX BUGS]
         * Fix the bug that spvmcc --force option is ignored in creating precompile c source.
+        
 0.9123  2021-01-18
         [CHANGES]
         * SPMV standard modules and precompile source is compiled as gnu99 instead of c99

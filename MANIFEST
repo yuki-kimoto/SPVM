@@ -524,9 +524,9 @@ lib/SPVM/Time/Info.pm
 lib/SPVM/Time/Info.spvm
 lib/SPVM/Unicode.c
 lib/SPVM/Unicode.config
-lib/SPVM/Unicode.native/include/utf8proc.h
-lib/SPVM/Unicode.native/include/utf8proc_data.c
-lib/SPVM/Unicode.native/src/utf8proc.c
+lib/SPVM/Unicode.native/include/spvm_utf8proc.h
+lib/SPVM/Unicode.native/include/spvm_utf8proc_data.c
+lib/SPVM/Unicode.native/src/spvm_utf8proc.c
 lib/SPVM/Unicode.pm
 lib/SPVM/Unicode.spvm
 Makefile.PL
