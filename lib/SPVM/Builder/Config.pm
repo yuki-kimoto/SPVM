@@ -7,17 +7,6 @@ use Carp 'confess';
 use File::Basename 'dirname';
 
 # Fields
-sub exported_funcs {
-  my $self = shift;
-  if (@_) {
-    $self->{exported_funcs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{exported_funcs};
-  }
-}
-
 sub ext {
   my $self = shift;
   if (@_) {
@@ -222,11 +211,6 @@ sub new {
     $self->cc($Config{cc});
   }
 
-  # exported_funcs
-  unless (defined $self->{exported_funcs}) {
-    $self->exported_funcs([]);
-  }
-
   # include_dirs
   unless (defined $self->{include_dirs}) {
     $self->include_dirs([]);
@@ -352,8 +336,9 @@ sub new_cpp {
   
   # The compiler
   # [Memo]Free BSD don't have g++ in the environment clang++ exists.
+  # [Memo]"Clang" or "clang" is assumed.
   my $config_gcc_version = $Config{gccversion};
-  if ($config_gcc_version =~ /\bclang\b/) {
+  if ($config_gcc_version =~ /\bclang\b/i) {
     $self->cc('clang++');
     $self->ld('clang++');
   }
@@ -420,12 +405,6 @@ sub add_libs {
   my ($self, @libs) = @_;
   
   push @{$self->{libs}}, @libs;
-}
-
-sub add_exported_funcs {
-  my ($self, @exported_funcs) = @_;
-  
-  push @{$self->{exported_funcs}}, @exported_funcs;
 }
 
 sub add_source_files {
@@ -724,13 +703,6 @@ Not Windows
 
   empty list
 
-=head2 exported_funcs
-
-  my $exported_funcs = $config->exported_funcs;
-  $config->exported_funcs($exported_funcs);
-
-Get and set the exported functions. This has means on Windows.
-
 =head2 libs
 
   my $libs = $config->libs;
@@ -886,12 +858,6 @@ Add values after the last element of  C<lib_dirs> field.
   $config->add_source_files(@source_files);
 
 Add the values after the last element of C<source_files> field.
-
-=head2 add_exported_funcs
-
-  $config->add_exported_funcs(@exported_funcs);
-
-Add values after the last element of  C<exported_funcs> field.
 
 =head2 add_libs
 

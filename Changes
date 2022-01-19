@@ -1,5 +1,8 @@
 Revision history for SPVM
 
+0.9125  2021-01-19
+        [FIX BUGS]
+        * Fix the bug that clang is not detected.
 
 0.9124  2021-01-19
         [CHANGES]
