@@ -674,11 +674,6 @@ sub link {
     }
   }
 
-  my $exported_funcs = $config->exported_funcs;
-  for my $exported_func (@$exported_funcs) {
-    push @$dl_func_list, $exported_func;
-  }
-
   # This is bad hack to suppress boot strap function error.
   unless (@$dl_func_list) {
     push @$dl_func_list, '';
