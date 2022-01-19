@@ -393,10 +393,12 @@ spvm_utf8proc_category_t spvm_utf8proc_category(spvm_utf8proc_int32_t c) {
   return spvm_utf8proc_get_property(c)->category;
 }
 
+/* Comment out to suppress warnings of SPVM Unicode module
 const char *spvm_utf8proc_category_string(spvm_utf8proc_int32_t c) {
   const char s[][3] = {"Cn","Lu","Ll","Lt","Lm","Lo","Mn","Mc","Me","Nd","Nl","No","Pc","Pd","Ps","Pe","Pi","Pf","Po","Sm","Sc","Sk","So","Zs","Zl","Zp","Cc","Cf","Cs","Co"};
   return s[spvm_utf8proc_category(c)];
 }
+*/
 
 #define spvm_utf8proc_decompose_lump(replacement_uc) \
   return spvm_utf8proc_decompose_char((replacement_uc), dst, bufsize, \
