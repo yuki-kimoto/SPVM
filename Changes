@@ -3,6 +3,11 @@ Revision history for SPVM
 0.9125  2021-01-19
         [FIX BUGS]
         * Fix the bug that clang is not detected.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Remove --ccflags, --lddlflags option of spvmcc
+          because these config is done in SPVM::Builder::Config::Exe.
+        * Remove extra_compiler_flags, extra_linker_flags from SPVM::Builder::Exe.
+        * Rename module_name of SPVM::Builde::Exe to class_name.
 
 0.9124  2021-01-19
         [CHANGES]
@@ -12,11 +17,6 @@ Revision history for SPVM
         [FIX BUGS]
         * Fix the bug that spvmcc --force option is ignored in creating precompile c source.
         * Suppress Unicode module compile time warnings.
-        [NON BACKWORD COMPATIBLE CHANGES]
-        * Remove --ccflags, --lddlflags option of spvmcc
-          because these config is done in SPVM::Builder::Config::Exe.
-        * Remove extra_compiler_flags, extra_linker_flags from SPVM::Builder::Exe.
-        * Rename module_name of SPVM::Builde::Exe to class_name.
 0.9123  2021-01-18
         [CHANGES]
         * SPMV standard modules and precompile source is compiled as gnu99 instead of c99
