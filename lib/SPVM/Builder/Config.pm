@@ -336,8 +336,9 @@ sub new_cpp {
   
   # The compiler
   # [Memo]Free BSD don't have g++ in the environment clang++ exists.
+  # [Memo]"Clang" or "clang" is assumed.
   my $config_gcc_version = $Config{gccversion};
-  if ($config_gcc_version =~ /\bclang\b/) {
+  if ($config_gcc_version =~ /\bclang\b/i) {
     $self->cc('clang++');
     $self->ld('clang++');
   }
