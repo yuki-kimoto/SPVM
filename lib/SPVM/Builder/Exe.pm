@@ -199,6 +199,8 @@ sub build_exe_file {
   my $config_file = $module_file;
   $config_file =~ s/\.spvm$/.config/;
   my $config = SPVM::Builder::Util::load_config($config_file);
+  
+  $self->config($config);
 
   # Create precompile C source_files
   $self->create_precompile_csources;
