@@ -218,7 +218,7 @@ sub build_exe_file {
   $self->compile_spvm_module_csources;
 
   # Compile SPVM compiler and runtime C source_files
-  $self->compile_spvm_compiler_and_runtime_csources;
+  my $spvm_core_objects = $self->compile_spvm_core_sources;
 
   # Create bootstrap C source
   $self->create_bootstrap_csource;
@@ -769,8 +769,55 @@ sub compile_bootstrap_csource {
   return $object_file;
 }
 
+sub compile_source_file {
+  my ($self, $opt) = @_;
+
+  # Config
+  my $config = SPVM::Builder::Config->new_gnu99;
+  
+  # Optimize
+  my $optimize = $self->optimize;
+  if (defined $optimize) {
+    $config->optimize($optimize);
+  }
+
+  my $source_file = $opt->{source_file};
+  my $output_file = $opt->{output_file};
+  
+  my $need_compile;
+  if ($self->force) {
+    $need_compile = 1;
+  }
+  elsif ($config->force) {
+    $need_compile = 1;
+  }
+  else {
+    if (!-f $output_file) {
+      $need_compile = 1;
+    }
+    else {
+      my $mod_time_source_file = (stat($source_file))[9];
+      my $mod_time_output_file = (stat($output_file))[9];
+      if ($mod_time_source_file > $mod_time_output_file) {
+        $need_compile = 1;
+      }
+    }
+  }
+
+  if ($need_compile) {
+    # Compile command
+    my $builder_cc = SPVM::Builder::CC->new;
+    my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $output_file, source_file => $source_file});
+
+    # Execute compile command
+    my $cbuilder = ExtUtils::CBuilder->new;
+    $cbuilder->do_system(@$cc_cmd)
+      or confess "Can't compile $source_file: @$cc_cmd";
+  }
+}
+
 # SPVM runtime source files
-my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
+my @spvm_runtime_src_base_names = qw(
   spvm_allow.c
   spvm_api.c
   spvm_array_field_access.c
@@ -810,46 +857,7 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
   spvm_yacc_util.c
 );
 
-sub compile_source_file_if_needed {
-  my ($self, $opt) = @_;
-  
-  my $config = $opt->{config};
-  my $source_file = $opt->{source_file};
-  my $output_file = $opt->{output_file};
-  
-  my $need_compile;
-  if ($self->force) {
-    $need_compile = 1;
-  }
-  elsif ($config->force) {
-    $need_compile = 1;
-  }
-  else {
-    if (!-f $output_file) {
-      $need_compile = 1;
-    }
-    else {
-      my $mod_time_source_file = (stat($source_file))[9];
-      my $mod_time_output_file = (stat($output_file))[9];
-      if ($mod_time_source_file > $mod_time_output_file) {
-        $need_compile = 1;
-      }
-    }
-  }
-  
-  if ($need_compile) {
-    # Compile command
-    my $builder_cc = SPVM::Builder::CC->new;
-    my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $output_file, source_file => $source_file});
-
-    # Execute compile command
-    my $cbuilder = ExtUtils::CBuilder->new;
-    $cbuilder->do_system(@$cc_cmd)
-      or confess "Can't compile $source_file: @$cc_cmd";
-  }
-}
-
-sub compile_spvm_compiler_and_runtime_csources {
+sub compile_spvm_core_sources {
   my ($self) = @_;
 
   # SPVM::Builder::Config directory
@@ -859,29 +867,10 @@ sub compile_spvm_compiler_and_runtime_csources {
   my $spvm_builder_dir = $spvm_builder_config_dir;
   $spvm_builder_dir =~ s/\/Config\.pm$//;
 
-  # Add SPVM include directory
-  my $spvm_compiler_and_runtime_include_dir = $spvm_builder_dir;
-  $spvm_compiler_and_runtime_include_dir .= '/include';
-
   # Add SPVM src directory
-  my $spvm_compiler_and_runtime_src_dir = "$spvm_builder_dir/src";
+  my $spvm_core_source_dir = "$spvm_builder_dir/src";
   
-  my @spvm_compiler_and_runtime_src_files = map { "$spvm_compiler_and_runtime_src_dir/$_" } @SPVM_RUNTIME_SRC_BASE_NAMES;
-  
-  # Config
-  my $config = SPVM::Builder::Config->new_gnu99;;
-  
-  # Default include path
-  $config->add_ccflags("-Iblib/lib/SPVM/Builder/include");
-  
-  # Optimize
-  my $optimize = $self->optimize;
-  if (defined $optimize) {
-    $config->optimize($optimize);
-  }
-  
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
+  my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @spvm_runtime_src_base_names;
   
   # Object dir
   my $object_dir = $self->builder->create_build_object_path;
@@ -889,15 +878,17 @@ sub compile_spvm_compiler_and_runtime_csources {
   
   # Compile source files
   my $object_files = [];
-  for my $src_file (@spvm_compiler_and_runtime_src_files) {
+  for my $src_file (@spvm_core_source_files) {
     # Object file
     my $object_file = "$object_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
-    $self->compile_source_file_if_needed({config => $config, source_file => $src_file, output_file => $object_file});
+    $self->compile_source_file({source_file => $src_file, output_file => $object_file});
     push @$object_files, $object_file;
   }
+  
+  return $object_files;
 }
 
 sub link {
@@ -926,7 +917,7 @@ sub link {
   $config->add_ldflags("$lib_dirs_str");
   
   # SPVM runtime object files
-  my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @SPVM_RUNTIME_SRC_BASE_NAMES;
+  my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @spvm_runtime_src_base_names;
   push @$object_files, @spvm_compiler_and_runtime_object_files;
 
   # Compiled class names
