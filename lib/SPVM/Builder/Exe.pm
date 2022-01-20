@@ -220,7 +220,8 @@ sub build_exe_file {
   $self->create_precompile_csources;
   
   # Compile precompile C source_files
-  $self->compile_precompile_csources;
+  my $precompile_object_files = $self->compile_precompile_sources;
+  push @$object_files, @$precompile_object_files;
 
   # Compile precompile C source_files
   my $native_object_files = $self->compile_native_csources;
@@ -232,7 +233,9 @@ sub build_exe_file {
   # Compile bootstrap C source
   my $boot_strap_object = $self->compile_bootstrap_source;
   push @$object_files, $boot_strap_object;
-
+  
+  use D;du $object_files;
+  
   # Link and generate executable file
   $self->link($native_object_files);
 }
@@ -272,15 +275,15 @@ sub create_precompile_csources {
   }
 }
 
-sub compile_precompile_csources {
+sub compile_precompile_sources {
   my ($self) = @_;
   
+  # Builer
   my $builder = $self->builder;
-
+  
   # Build directory
   my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
-
+  
   # Build precompile classes
   my $builder_c_precompile = SPVM::Builder::CC->new(
     build_dir => $build_dir,
@@ -292,6 +295,7 @@ sub compile_precompile_csources {
   );
   
   my $class_names = $builder->get_class_names;
+  my $object_files = [];
   for my $class_name (@$class_names) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     if (@$precompile_method_names) {
@@ -301,15 +305,18 @@ sub compile_precompile_csources {
       my $object_dir = $self->builder->create_build_object_path;
       mkpath $object_dir;
       
-      $builder_c_precompile->compile(
+      my $precompile_object_files = $builder_c_precompile->compile(
         $class_name,
         {
           src_dir => $src_dir,
           object_dir => $object_dir,
         }
       );
+      push @$object_files, @$precompile_object_files;
     }
   }
+  
+  return $object_files;
 }
 
 sub compile_native_csources {
