@@ -38,8 +38,6 @@ sub import {
 
   # Add class informations
   if (defined $class_name) {
-    $class_name =~ s/^SPVM:://;
-    
     my ($file, $line) = (caller)[1, 2];
 
     # Compile SPVM source code and create runtime env
