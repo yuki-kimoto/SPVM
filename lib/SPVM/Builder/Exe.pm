@@ -863,8 +863,6 @@ sub link {
   
   my $config = $self->config;
   
-  warn "AAAAAAAAA $config";
-  
   # CBuilder configs
   my $output_file = $self->{output_file};
 
