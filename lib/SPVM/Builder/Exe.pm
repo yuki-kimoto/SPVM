@@ -678,9 +678,6 @@ const char* SPMODSRC__${class_cname}__get_module_source() {
 }
 EOS
 
-      # Build source directory
-      mkpath $build_src_dir;
-      
       mkpath dirname $module_source_csource_file;
       
       open my $module_source_csource_fh, '>', $module_source_csource_file
