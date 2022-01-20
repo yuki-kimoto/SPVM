@@ -197,10 +197,13 @@ sub build_exe_file {
   
   # Config file
   my $module_file = $builder->get_module_file($class_name);
+  warn $module_file;
+  
   my $config_file = $module_file;
   $config_file =~ s/\.spvm$/.config/;
   my $config = SPVM::Builder::Util::load_config($config_file);
   
+  warn "$config_file";
   $self->config($config);
   
   # Object files
@@ -861,6 +864,8 @@ sub link {
   my $class_name = $self->class_name;
   
   my $config = $self->config;
+  
+  warn "AAAAAAAAA $config";
   
   # CBuilder configs
   my $output_file = $self->{output_file};
