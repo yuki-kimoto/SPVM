@@ -230,8 +230,8 @@ sub build_exe_file {
   $self->create_bootstrap_source;
 
   # Compile bootstrap C source
-  my $boot_strap_object_file = $self->compile_bootstrap_source;
-  push @$object_files, $boot_strap_object_file;
+  my $bootstrap_object_file = $self->compile_bootstrap_source;
+  push @$object_files, $bootstrap_object_file;
   
   # Link and generate executable file
   $self->link($object_files);
