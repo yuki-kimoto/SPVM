@@ -24,17 +24,6 @@ use Scalar::Util 'weaken';
 use File::Basename 'dirname', 'basename';
 
 # Fields
-sub module_dirs {
-  my $self = shift;
-  if (@_) {
-    $self->{module_dirs} = $_[0];
-    return $self;
-  }
-  else {
-    return $self->{module_dirs};
-  }
-}
-
 sub builder {
   my $self = shift;
   if (@_) {
@@ -46,14 +35,25 @@ sub builder {
   }
 }
 
-sub build_dir {
+sub module_dirs {
   my $self = shift;
   if (@_) {
-    $self->{build_dir} = $_[0];
+    $self->builder->module_dirs($_[0]);
     return $self;
   }
   else {
-    return $self->{build_dir};
+    return $self->builder->module_dirs;
+  }
+}
+
+sub build_dir {
+  my $self = shift;
+  if (@_) {
+    $self->builder->build_dir($_[0]);
+    return $self;
+  }
+  else {
+    return $self->builder->build_dir;
   }
 }
 
@@ -155,11 +155,10 @@ sub new {
   }
 
   # Module searching directries
-  my $module_dirs = $self->{module_dirs};
-  unless (exists $self->{module_dirs}) {
-    $self->{module_dirs} = [];
+  my $module_dirs = delete $self->{module_dirs};
+  unless (defined $module_dirs) {
+    $module_dirs = [];
   }
-  $module_dirs = $self->{module_dirs};
   
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(

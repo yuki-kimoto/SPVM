@@ -6,6 +6,7 @@ Revision history for SPVM
         [CHANGE]
         * Rewrite many internals of spvmcc and SPVM::Builder::Exe.
         * Add global_ccflags to SPVM::Builder::CC.
+        * module_dirs, build_dir of SPVM::Builder::Exe is saved to SPVM::Builder object.
         
 0.9125  2021-01-19
         [FIX BUGS]
