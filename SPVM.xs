@@ -196,7 +196,7 @@ call_spvm_method(...)
   
   // Env
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
-  
+
   // Runtime
   SPVM_COMPILER* compiler = (SPVM_COMPILER*)env->compiler;
   
@@ -205,7 +205,7 @@ call_spvm_method(...)
   
   // Method name
   const char* method_name = SvPV_nolen(sv_method_name);
-
+  
   // Basic type
   SPVM_BASIC_TYPE* basic_type = SPVM_API_get_basic_type(env, class_name);
   
@@ -661,6 +661,7 @@ call_spvm_method(...)
                 }
                 // Argument: Perl array referecne to SPVM string array
                 case SPVM_BASIC_TYPE_C_ID_STRING: {
+                  
                   void* array = env->new_object_array(env, SPVM_BASIC_TYPE_C_ID_STRING, length);
                   for (int32_t i = 0; i < length; i++) {
                     SV** sv_elem_ptr = av_fetch(av_elems, i, 0);
@@ -689,7 +690,7 @@ call_spvm_method(...)
                   }
                   SV* sv_array = SPVM_XS_UTIL_new_sv_object(env, array, "SPVM::BlessedObject::Array");
                   sv_value = sv_array;
-                  
+
                   break;
                 }
                 case SPVM_BASIC_TYPE_C_ID_ANY_OBJECT:

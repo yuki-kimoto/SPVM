@@ -1,0 +1,80 @@
+#!perl
+
+use strict;
+use warnings;
+
+use SPVM();
+use SPVM::Builder::Util;
+
+SPVM::Builder::Util::getopt
+  'h|help'          => \my $help,
+  'v|version'       => \my $show_version,
+  'o|output=s'        => \my $output_file,
+  'B|build-dir=s'   => \my $build_dir,
+  'I|module-dir=s' => \my @module_dirs,
+  'q|quiet'   => \my $quiet,
+  'O|optimize=s' => \my $optimize,
+  '-f|force' => \my $force,
+;
+
+if ($help) {
+  die SPVM::Builder::Util::extract_usage;
+}
+elsif ($show_version) {
+  my $version_string = 'spvmcc v$SPVM::VERSION';
+  print "$version_string\n";
+}
+else {
+  my $class_name = shift;
+  unless (defined $class_name) {
+    die SPVM::Builder::Util::extract_usage;
+  }
+
+  unshift @INC, @module_dirs;
+  
+  unless (defined $build_dir) {
+    $build_dir = $ENV{SPVM_BUILD_DIR};
+  }
+  
+  my $builder = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
+  
+  my $file = __FILE__;
+  my $line = __LINE__;
+  my $build_success = $builder->build($class_name, $file, $line);
+  unless ($build_success) {
+    exit(255);
+  }
+  
+  my $module_file = $builder->get_module_file($class_name);
+  
+  $builder->_init;
+  
+  SPVM::ExchangeAPI::call_spvm_method($builder->{env}, $class_name, 'main', $class_name, $module_file, \@ARGV);
+}
+
+=encoding utf8
+
+=head1 NAME
+
+spvmcc - SPVM compiler to create exe file
+
+=head1 SYNOPSIS
+
+  Usage: spvmcc [OPTIONS] [MODULE_NAME]
+    
+    # lib/SPVM/Myapp.spvm
+    spvmcc -I lib -o myapp Myapp
+
+  Options:
+    -h, --help                     Show this message
+    -v, --version                  Show the version
+    -o, --output                   Excutable file name
+    -I, --module-dir <directory>   Add SPVM module searching directory
+    -B, --build-dir <directory>    Building diretory
+    -q, --quiet                    Quiet output
+    -O, --optimize <level>         Optimaization level
+    -f, --force                    Force compile and link
+    
+=head1 DESCRIPTION
+
+spvmcc is SPVM compiler to create executable file.
