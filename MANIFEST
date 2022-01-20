@@ -358,6 +358,7 @@ lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
+lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Exe.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
@@ -576,6 +577,7 @@ SPVM.xs
 t/builder_config.t
 t/builder_config/libpng.def
 t/builder_config/zlib.def
+t/builder_config_exe.t
 t/copy_default_to_precompile.pl
 t/default/000_use_spvm.t
 t/default/001_use_empty_class.t
@@ -918,7 +920,9 @@ t/default/value_array.t
 t/default/warn.t
 t/default/weaken.t
 t/default/while.t
+t/exe/lib/SPVM/MyExe.config
 t/exe/lib/SPVM/MyExe.spvm
+t/exe/lib/SPVM/MyExe/Foo/Bar.config
 t/exe/lib/SPVM/MyExe/Foo/Bar.spvm
 t/exe/lib/SPVM/MyExe/Precompile.spvm
 t/exe/lib/SPVM/TestCase/NativeAPI2.c
