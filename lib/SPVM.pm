@@ -31,43 +31,26 @@ my $loaded_spvm_modules = {};
 sub import {
   my ($class, $class_name) = @_;
   
+  unless (defined $class_name) {
+    return;
+  }
+  
   my ($file, $line) = (caller)[1, 2];
-  
-  SPVM::load_module($class_name, $file, $line);
-}
 
-sub load_module {
-  my ($class_name, $file, $line) = @_;
-  
   unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
   }
 
-  # Add class informations
-  if (defined $class_name) {
-
-    # Compile SPVM source code and create runtime env
-    my $compile_success = $BUILDER->compile_spvm($class_name, $file, $line);
-    
-    unless ($compile_success) {
-      exit(255);
-    }
-    if ($compile_success) {
-      my $added_class_names = $BUILDER->get_added_class_names;
-      for my $added_class_name (@$added_class_names) {
-        
-        # Build Precompile classs - Compile C source codes and link them to SPVM precompile method
-        $BUILDER->build_and_bind_shared_lib($added_class_name, 'precompile');
-
-        # Build native classs - Compile C source codes and link them to SPVM native method
-        $BUILDER->build_and_bind_shared_lib($added_class_name, 'native');
-      }
-
-      # Bind SPVM method to Perl
-      bind_to_perl($BUILDER, $added_class_names);
-    }
+  my $build_success = $BUILDER->build($class_name, $file, $line);
+  unless ($build_success) {
+    exit(255);
   }
+
+  my $added_class_names = $BUILDER->get_added_class_names;
+
+  # Bind SPVM method to Perl
+  bind_to_perl($BUILDER, $added_class_names);
 }
 
 sub init {
