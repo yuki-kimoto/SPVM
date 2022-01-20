@@ -221,10 +221,10 @@ sub build_exe_file {
   my ($native_object_files) = $self->compile_native_csources;
   
   # Create bootstrap C source
-  $self->create_bootstrap_csource;
+  $self->create_bootstrap_source;
 
   # Compile bootstrap C source
-  $self->compile_bootstrap_csource;
+  $self->compile_bootstrap_source;
 
   # Link and generate executable file
   $self->link($native_object_files);
@@ -466,7 +466,7 @@ sub compile_spvm_module_sources {
   return $object_files;
 }
 
-sub create_bootstrap_csource {
+sub create_bootstrap_source {
   my ($self) = @_;
   
   my $class_name = $self->class_name;
@@ -698,7 +698,7 @@ EOS
   print $boot_csource_fh $boot_csource;
 }
 
-sub compile_bootstrap_csource {
+sub compile_bootstrap_source {
   my ($self) = @_;
   
   # Target class name
@@ -706,35 +706,17 @@ sub compile_bootstrap_csource {
   
   my $target_perl_class_name = "SPVM::$class_name";
   
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  
-  # Config
-  my $config = SPVM::Builder::Config->new_gnu99;
-  
-  # Optimize
-  my $optimize = $self->optimize;
-  if (defined $optimize) {
-    $config->optimize($optimize);
-  }
-  
   # Compile source files
   my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
   my $object_file = $self->builder->create_build_object_path("$class_name_rel_file.boot.o");
-  my $src_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
+  my $source_file = $self->builder->create_build_src_path("$class_name_rel_file.boot.c");
   
   # Create directory for object file output
   mkdir dirname $object_file;
-
-  # Compile command
-  my $builder_cc = SPVM::Builder::CC->new;
-  my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $object_file, source_file => $src_file});
-
-  # Execute compile command
-  my $cbuilder = ExtUtils::CBuilder->new;
-  $cbuilder->do_system(@$cc_cmd)
-    or confess "Can't compile $src_file: @$cc_cmd";
-
+  
+  # Compile
+  $self->compile_source_file({source_file => $source_file, output_file => $object_file});
+  
   return $object_file;
 }
 
