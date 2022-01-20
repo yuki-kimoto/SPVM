@@ -31,12 +31,10 @@ else {
     die SPVM::Builder::Util::extract_usage;
   }
   
-  push @module_dirs, @INC;
-  
-  my @spvm_module_dirs = map { "$_/SPVM" } @module_dirs;
+  push @module_dirs, map { "$_/SPVM" } @INC;
   
   my $build_exe = SPVM::Builder::Exe->new(
-    module_dirs => \@spvm_module_dirs,
+    module_dirs => \@module_dirs,
     output_file => $output_file,
     class_name => $class_name,
     quiet => $quiet,

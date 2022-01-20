@@ -1,13 +1,14 @@
 Revision history for SPVM
 
-0.9126  2021-01-19
+0.9126  2021-01-20
         [FIX BUGS]
         * Fix bugs that when native config file is not found, an exeption doesn't occur.
         [CHANGE]
-        * Rewrite many internals of spvmcc and SPVM::Builder::Exe.
         * Add global_ccflags to SPVM::Builder::CC.
         * module_dirs, build_dir of SPVM::Builder::Exe is saved to SPVM::Builder object.
         * Add spvm command.
+        * spvmcc -I option doesn't add "/SPVM" after the directory names.
+        * Improve module not found error message.
         
 0.9125  2021-01-19
         [FIX BUGS]
