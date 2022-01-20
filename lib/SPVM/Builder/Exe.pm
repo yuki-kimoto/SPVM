@@ -243,7 +243,7 @@ sub create_source_file {
   # Config
   my $config = $self->config;
   
-  my $input_file = $opt->{input_file};
+  my $input_files = $opt->{input_files};
   my $output_file = $opt->{output_file};
   my $create_cb = $opt->{create_cb};
   
@@ -259,9 +259,15 @@ sub create_source_file {
       $need_create = 1;
     }
     else {
-      my $input_file_mtime = (stat($input_file))[9];
+      my $input_files_mtime_max = 0;
+      for my $input_file (@$input_files) {
+        my $input_file_mtime = (stat($input_file))[9];
+        if ($input_file_mtime > $input_files_mtime_max) {
+          $input_files_mtime_max = $input_file_mtime;
+        }
+      }
       my $output_file_mtime = (stat($output_file))[9];
-      if ($input_file_mtime > $output_file_mtime) {
+      if ($input_files_mtime_max > $output_file_mtime) {
         $need_create = 1;
       }
     }
@@ -699,7 +705,7 @@ EOS
     
     # Create source file
     $self->create_source_file({
-      input_file => $module_file,
+      input_files => [$module_file],
       output_file => $module_source_csource_file,
       create_cb => $create_cb,
     });
