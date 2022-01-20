@@ -123,6 +123,7 @@ sub config {
   }
 }
 
+# Methods
 sub new {
   my $class = shift;
   
@@ -231,253 +232,58 @@ sub build_exe_file {
   $self->create_bootstrap_source;
 
   # Compile bootstrap C source
-  my $boot_strap_object = $self->compile_bootstrap_source;
-  push @$object_files, $boot_strap_object;
-  
-  use D;du $object_files;
+  my $boot_strap_object_file = $self->compile_bootstrap_source;
+  push @$object_files, $boot_strap_object_file;
   
   # Link and generate executable file
-  $self->link($native_object_files);
+  $self->link($object_files);
 }
 
-sub create_precompile_csources {
-  my ($self) = @_;
+sub compile_source_file {
+  my ($self, $opt) = @_;
 
-  my $builder = $self->builder;
-
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
-
-  # Build precompile classes
-  my $builder_c_precompile = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    category => 'precompile',
-    builder => $builder,
-    quiet => $self->quiet,
-    force => $self->force,
-  );
-
-  my $class_names = $builder->get_class_names;
-  for my $class_name (@$class_names) {
-    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
-    if (@$precompile_method_names) {
-      
-      my $src_dir = $self->builder->create_build_src_path;
-      mkpath $src_dir;
-      $builder_c_precompile->create_precompile_csource(
-        $class_name,
-        {
-          src_dir => $src_dir,
-        }
-      );
-    }
+  # Config
+  my $config = SPVM::Builder::Config->new_gnu99;
+  
+  # Optimize
+  my $optimize = $self->optimize;
+  if (defined $optimize) {
+    $config->optimize($optimize);
   }
-}
 
-sub compile_precompile_sources {
-  my ($self) = @_;
+  my $source_file = $opt->{source_file};
+  my $output_file = $opt->{output_file};
   
-  # Builer
-  my $builder = $self->builder;
-  
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  
-  # Build precompile classes
-  my $builder_c_precompile = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    category => 'precompile',
-    builder => $builder,
-    quiet => $self->quiet,
-    optimize => $self->optimize,
-    force => $self->force,
-  );
-  
-  my $class_names = $builder->get_class_names;
-  my $object_files = [];
-  for my $class_name (@$class_names) {
-    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
-    if (@$precompile_method_names) {
-      my $src_dir = $self->builder->create_build_src_path;
-      mkpath $src_dir;
-      
-      my $object_dir = $self->builder->create_build_object_path;
-      mkpath $object_dir;
-      
-      my $precompile_object_files = $builder_c_precompile->compile(
-        $class_name,
-        {
-          src_dir => $src_dir,
-          object_dir => $object_dir,
-        }
-      );
-      push @$object_files, @$precompile_object_files;
-    }
+  my $need_compile;
+  if ($self->force) {
+    $need_compile = 1;
   }
-  
-  return $object_files;
-}
-
-sub compile_native_csources {
-  my ($self) = @_;
-  
-  my $builder = $self->builder;
-
-  # Build directory
-  my $build_dir = $self->builder->build_dir;
-  mkpath $build_dir;
-
-  # Build native classes
-  my $builder_c_native = SPVM::Builder::CC->new(
-    build_dir => $build_dir,
-    category => 'native',
-    builder => $builder,
-    quiet => $self->quiet,
-    optimize => $self->optimize,
-    force => $self->force,
-  );
-  
-  my $class_names = $builder->get_class_names;
-  my $all_object_files = [];
-  for my $class_name (@$class_names) {
-
-    my $perl_class_name = "SPVM::$class_name";
-    
-    my $native_method_names = $builder->get_method_names($class_name, 'native');
-    if (@$native_method_names) {
-      my $native_module_file = $builder->get_module_file($class_name);
-      my $native_dir = $native_module_file;
-      
-      $native_dir =~ s/\.spvm$//;
-      $native_dir .= 'native';
-      my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
-      my $object_dir = $self->builder->create_build_object_path;
-      mkpath $object_dir;
-      
-      my $object_files = $builder_c_native->compile(
-        $class_name,
-        {
-          src_dir => $src_dir,
-          object_dir => $object_dir,
-        }
-      );
-      push @$all_object_files, @$object_files;
-    }
+  elsif ($config->force) {
+    $need_compile = 1;
   }
-  
-  return $all_object_files;
-}
-
-sub create_spvm_module_sources {
-  my ($self) = @_;
-  
-  my $builder = $self->builder;
-  
-  # Compiled class names
-  my $class_names = $builder->get_class_names;
-  
-  for my $class_name (@$class_names) {
-
-    my $perl_class_name = "SPVM::$class_name";
-
-    # This source is UTF-8 binary
-    my $module_source = $builder->get_module_source($class_name);
-    
-    my $loaded_module_file = $builder->get_module_file($class_name);
-
-    my $build_dir = $self->builder->build_dir;
-    my $build_src_dir = $self->builder->create_build_src_path;
-    my $module_source_base = $perl_class_name;
-    $module_source_base =~ s|::|/|g;
-    my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
-    
-    my $need_create;
-    if ($self->force) {
-      $need_create = 1;
+  else {
+    if (!-f $output_file) {
+      $need_compile = 1;
     }
     else {
-      if (!-f $module_source_csource_file) {
-        $need_create = 1;
-      }
-      else {
-        my $loaded_module_file_mtime;
-        if (defined $loaded_module_file) {
-          $loaded_module_file_mtime = (stat($loaded_module_file))[9];
-        }
-        else {
-          $loaded_module_file_mtime = 0;
-        }
-        
-        my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
-        
-        if ($loaded_module_file_mtime > $module_source_csource_file_mtime) {
-          $need_create = 1;
-        }
+      my $mod_time_source_file = (stat($source_file))[9];
+      my $mod_time_output_file = (stat($output_file))[9];
+      if ($mod_time_source_file > $mod_time_output_file) {
+        $need_compile = 1;
       }
     }
-    
-    if ($need_create) {
-      my $module_source_c_hex = $module_source;
-      
-      # Escape to Hex C launguage string literal
-      $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
-      
-      # native class name
-      my $class_cname = $class_name;
-      $class_cname =~ s/::/__/g;
-
-      my $get_module_source_csource = <<"EOS";
-static const char* module_source = "$module_source_c_hex";
-const char* SPMODSRC__${class_cname}__get_module_source() {
-  return module_source;
-}
-EOS
-
-      # Build source directory
-      mkpath $build_src_dir;
-      
-      mkpath dirname $module_source_csource_file;
-      
-      open my $module_source_csource_fh, '>', $module_source_csource_file
-        or die "Can't open file $module_source_csource_file:$!";
-
-      print $module_source_csource_fh $get_module_source_csource;
-    }
   }
-}
 
-sub compile_spvm_module_sources {
-  my ($self) = @_;
-  
-  my $builder = $self->builder;
-  
-  # Compile module source files
-  my $class_names = $builder->get_class_names;
-  my $object_files = [];
-  for my $class_name (@$class_names) {
-    my $perl_class_name = "SPVM::$class_name";
-    
-    # Build source directory
-    my $build_src_dir = $self->builder->create_build_src_path;
-    
-    # Create source directory
-    my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($perl_class_name);
-    my $source_file = "$build_src_dir/$class_name_rel_file.modsrc.c";
-    mkpath dirname $source_file;
-    
-    # Create object directory
-    my $build_object_dir = $self->builder->create_build_object_path;
-    mkpath $build_object_dir;
-    my $object_file = "$build_object_dir/$class_name_rel_file.modsrc.o";
-    mkpath dirname $object_file;
-    
-    # Compile
-    $self->compile_source_file({source_file => $source_file, output_file => $object_file});
-    push @$object_files, $object_file;
+  if ($need_compile) {
+    # Compile command
+    my $builder_cc = SPVM::Builder::CC->new;
+    my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $output_file, source_file => $source_file});
+
+    # Execute compile command
+    my $cbuilder = ExtUtils::CBuilder->new;
+    $cbuilder->do_system(@$cc_cmd)
+      or confess "Can't compile $source_file: @$cc_cmd";
   }
-  
-  return $object_files;
 }
 
 sub create_bootstrap_source {
@@ -734,94 +540,6 @@ sub compile_bootstrap_source {
   return $object_file;
 }
 
-sub compile_source_file {
-  my ($self, $opt) = @_;
-
-  # Config
-  my $config = SPVM::Builder::Config->new_gnu99;
-  
-  # Optimize
-  my $optimize = $self->optimize;
-  if (defined $optimize) {
-    $config->optimize($optimize);
-  }
-
-  my $source_file = $opt->{source_file};
-  my $output_file = $opt->{output_file};
-  
-  my $need_compile;
-  if ($self->force) {
-    $need_compile = 1;
-  }
-  elsif ($config->force) {
-    $need_compile = 1;
-  }
-  else {
-    if (!-f $output_file) {
-      $need_compile = 1;
-    }
-    else {
-      my $mod_time_source_file = (stat($source_file))[9];
-      my $mod_time_output_file = (stat($output_file))[9];
-      if ($mod_time_source_file > $mod_time_output_file) {
-        $need_compile = 1;
-      }
-    }
-  }
-
-  if ($need_compile) {
-    # Compile command
-    my $builder_cc = SPVM::Builder::CC->new;
-    my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $output_file, source_file => $source_file});
-
-    # Execute compile command
-    my $cbuilder = ExtUtils::CBuilder->new;
-    $cbuilder->do_system(@$cc_cmd)
-      or confess "Can't compile $source_file: @$cc_cmd";
-  }
-}
-
-# SPVM runtime source files
-my @spvm_runtime_src_base_names = qw(
-  spvm_allow.c
-  spvm_api.c
-  spvm_array_field_access.c
-  spvm_basic_type.c
-  spvm_block.c
-  spvm_call_method.c
-  spvm_case_info.c
-  spvm_allocator.c
-  spvm_compiler.c
-  spvm_constant.c
-  spvm_csource_builder_precompile.c
-  spvm_descriptor.c
-  spvm_dumper.c
-  spvm_enumeration.c
-  spvm_enumeration_value.c
-  spvm_field_access.c
-  spvm_field.c
-  spvm_hash.c
-  spvm_list.c
-  spvm_my.c
-  spvm_op.c
-  spvm_op_checker.c
-  spvm_opcode_array.c
-  spvm_opcode_builder.c
-  spvm_opcode.c
-  spvm_class.c
-  spvm_class_var_access.c
-  spvm_class_var.c
-  spvm_string_buffer.c
-  spvm_method.c
-  spvm_switch_info.c
-  spvm_toke.c
-  spvm_type.c
-  spvm_use.c
-  spvm_var.c
-  spvm_yacc.c
-  spvm_yacc_util.c
-);
-
 sub compile_spvm_core_sources {
   my ($self) = @_;
 
@@ -835,6 +553,47 @@ sub compile_spvm_core_sources {
   # Add SPVM src directory
   my $spvm_core_source_dir = "$spvm_builder_dir/src";
   
+  # SPVM runtime source files
+  my @spvm_runtime_src_base_names = qw(
+    spvm_allow.c
+    spvm_api.c
+    spvm_array_field_access.c
+    spvm_basic_type.c
+    spvm_block.c
+    spvm_call_method.c
+    spvm_case_info.c
+    spvm_allocator.c
+    spvm_compiler.c
+    spvm_constant.c
+    spvm_csource_builder_precompile.c
+    spvm_descriptor.c
+    spvm_dumper.c
+    spvm_enumeration.c
+    spvm_enumeration_value.c
+    spvm_field_access.c
+    spvm_field.c
+    spvm_hash.c
+    spvm_list.c
+    spvm_my.c
+    spvm_op.c
+    spvm_op_checker.c
+    spvm_opcode_array.c
+    spvm_opcode_builder.c
+    spvm_opcode.c
+    spvm_class.c
+    spvm_class_var_access.c
+    spvm_class_var.c
+    spvm_string_buffer.c
+    spvm_method.c
+    spvm_switch_info.c
+    spvm_toke.c
+    spvm_type.c
+    spvm_use.c
+    spvm_var.c
+    spvm_yacc.c
+    spvm_yacc_util.c
+  );
+
   my @spvm_core_source_files = map { "$spvm_core_source_dir/$_" } @spvm_runtime_src_base_names;
   
   # Object dir
@@ -856,24 +615,252 @@ sub compile_spvm_core_sources {
   return $object_files;
 }
 
-sub link {
-  my ($self, $native_object_files) = @_;
-  
-  my $class_name = $self->class_name;
-  
-  my $target_perl_class_name = "SPVM::$class_name";
+sub create_spvm_module_sources {
+  my ($self) = @_;
   
   my $builder = $self->builder;
   
+  # Compiled class names
+  my $class_names = $builder->get_class_names;
+  
+  for my $class_name (@$class_names) {
+
+    my $perl_class_name = "SPVM::$class_name";
+
+    # This source is UTF-8 binary
+    my $module_source = $builder->get_module_source($class_name);
+    
+    my $loaded_module_file = $builder->get_module_file($class_name);
+
+    my $build_dir = $self->builder->build_dir;
+    my $build_src_dir = $self->builder->create_build_src_path;
+    my $module_source_base = $perl_class_name;
+    $module_source_base =~ s|::|/|g;
+    my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
+    
+    my $need_create;
+    if ($self->force) {
+      $need_create = 1;
+    }
+    else {
+      if (!-f $module_source_csource_file) {
+        $need_create = 1;
+      }
+      else {
+        my $loaded_module_file_mtime;
+        if (defined $loaded_module_file) {
+          $loaded_module_file_mtime = (stat($loaded_module_file))[9];
+        }
+        else {
+          $loaded_module_file_mtime = 0;
+        }
+        
+        my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
+        
+        if ($loaded_module_file_mtime > $module_source_csource_file_mtime) {
+          $need_create = 1;
+        }
+      }
+    }
+    
+    if ($need_create) {
+      my $module_source_c_hex = $module_source;
+      
+      # Escape to Hex C launguage string literal
+      $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
+      
+      # native class name
+      my $class_cname = $class_name;
+      $class_cname =~ s/::/__/g;
+
+      my $get_module_source_csource = <<"EOS";
+static const char* module_source = "$module_source_c_hex";
+const char* SPMODSRC__${class_cname}__get_module_source() {
+  return module_source;
+}
+EOS
+
+      # Build source directory
+      mkpath $build_src_dir;
+      
+      mkpath dirname $module_source_csource_file;
+      
+      open my $module_source_csource_fh, '>', $module_source_csource_file
+        or die "Can't open file $module_source_csource_file:$!";
+
+      print $module_source_csource_fh $get_module_source_csource;
+    }
+  }
+}
+
+sub compile_spvm_module_sources {
+  my ($self) = @_;
+  
+  my $builder = $self->builder;
+  
+  # Compile module source files
+  my $class_names = $builder->get_class_names;
+  my $object_files = [];
+  for my $class_name (@$class_names) {
+    my $perl_class_name = "SPVM::$class_name";
+    
+    # Build source directory
+    my $build_src_dir = $self->builder->create_build_src_path;
+    
+    # Create source directory
+    my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($perl_class_name);
+    my $source_file = "$build_src_dir/$class_name_rel_file.modsrc.c";
+    mkpath dirname $source_file;
+    
+    # Create object directory
+    my $build_object_dir = $self->builder->create_build_object_path;
+    mkpath $build_object_dir;
+    my $object_file = "$build_object_dir/$class_name_rel_file.modsrc.o";
+    mkpath dirname $object_file;
+    
+    # Compile
+    $self->compile_source_file({source_file => $source_file, output_file => $object_file});
+    push @$object_files, $object_file;
+  }
+  
+  return $object_files;
+}
+
+sub create_precompile_csources {
+  my ($self) = @_;
+
+  my $builder = $self->builder;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
+  # Build precompile classes
+  my $builder_c_precompile = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'precompile',
+    builder => $builder,
+    quiet => $self->quiet,
+    force => $self->force,
+  );
+
+  my $class_names = $builder->get_class_names;
+  for my $class_name (@$class_names) {
+    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
+    if (@$precompile_method_names) {
+      
+      my $src_dir = $self->builder->create_build_src_path;
+      mkpath $src_dir;
+      $builder_c_precompile->create_precompile_csource(
+        $class_name,
+        {
+          src_dir => $src_dir,
+        }
+      );
+    }
+  }
+}
+
+sub compile_precompile_sources {
+  my ($self) = @_;
+  
+  # Builer
+  my $builder = $self->builder;
+  
+  # Build directory
   my $build_dir = $self->builder->build_dir;
   
-  my $build_work_object_dir = $self->builder->create_build_object_path;
+  # Build precompile classes
+  my $builder_c_precompile = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'precompile',
+    builder => $builder,
+    quiet => $self->quiet,
+    optimize => $self->optimize,
+    force => $self->force,
+  );
   
+  my $class_names = $builder->get_class_names;
   my $object_files = [];
-  my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($target_perl_class_name);
-  push @$object_files, glob "$build_work_object_dir/$class_name_rel_file.boot.o";
+  for my $class_name (@$class_names) {
+    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
+    if (@$precompile_method_names) {
+      my $src_dir = $self->builder->create_build_src_path;
+      mkpath $src_dir;
+      
+      my $object_dir = $self->builder->create_build_object_path;
+      mkpath $object_dir;
+      
+      my $precompile_object_files = $builder_c_precompile->compile(
+        $class_name,
+        {
+          src_dir => $src_dir,
+          object_dir => $object_dir,
+        }
+      );
+      push @$object_files, @$precompile_object_files;
+    }
+  }
   
-  my $config = SPVM::Builder::Config->new_gnu99;
+  return $object_files;
+}
+
+sub compile_native_csources {
+  my ($self) = @_;
+  
+  my $builder = $self->builder;
+
+  # Build directory
+  my $build_dir = $self->builder->build_dir;
+  mkpath $build_dir;
+
+  # Build native classes
+  my $builder_c_native = SPVM::Builder::CC->new(
+    build_dir => $build_dir,
+    category => 'native',
+    builder => $builder,
+    quiet => $self->quiet,
+    optimize => $self->optimize,
+    force => $self->force,
+  );
+  
+  my $class_names = $builder->get_class_names;
+  my $all_object_files = [];
+  for my $class_name (@$class_names) {
+
+    my $perl_class_name = "SPVM::$class_name";
+    
+    my $native_method_names = $builder->get_method_names($class_name, 'native');
+    if (@$native_method_names) {
+      my $native_module_file = $builder->get_module_file($class_name);
+      my $native_dir = $native_module_file;
+      
+      $native_dir =~ s/\.spvm$//;
+      $native_dir .= 'native';
+      my $src_dir = SPVM::Builder::Util::remove_class_part_from_file($native_module_file, $perl_class_name);
+      my $object_dir = $self->builder->create_build_object_path;
+      mkpath $object_dir;
+      
+      my $object_files = $builder_c_native->compile(
+        $class_name,
+        {
+          src_dir => $src_dir,
+          object_dir => $object_dir,
+        }
+      );
+      push @$all_object_files, @$object_files;
+    }
+  }
+  
+  return $all_object_files;
+}
+
+sub link {
+  my ($self, $object_files) = @_;
+  
+  my $class_name = $self->class_name;
+  
+  my $config = $self->config;
   
   # CBuilder configs
   my $output_file = $self->{output_file};
@@ -881,40 +868,6 @@ sub link {
   my $lib_dirs_str = join(' ', map { "-L$_" } @{$config->lib_dirs});
   $config->add_ldflags("$lib_dirs_str");
   
-  # SPVM runtime object files
-  my @spvm_compiler_and_runtime_object_files = map { my $tmp = "$build_work_object_dir/$_"; $tmp =~ s/\.c$/.o/; $tmp} @spvm_runtime_src_base_names;
-  push @$object_files, @spvm_compiler_and_runtime_object_files;
-
-  # Compiled class names
-  my $class_names = $builder->get_class_names;
-  
-  # SPVM module source object files
-  for my $class_name (@$class_names) {
-    my $perl_class_name = "SPVM::$class_name";
-    
-    my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($perl_class_name);
-    my $module_source_object_file = $self->builder->create_build_object_path("$class_name_rel_file.modsrc.o");
-    push @$object_files, $module_source_object_file;
-  }
-  
-  # SPVM precompile object files
-  my $precompile_object_files = [];
-  for my $class_name (@$class_names) {
-    my $perl_class_name = "SPVM::$class_name";
-    
-    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
-    if (@$precompile_method_names) {
-      my $category = 'precompile';
-      my $precompile_object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($perl_class_name, $category, 'o');
-      my $precompile_object_file = $self->builder->create_build_object_path($precompile_object_rel_file);
-      push @$precompile_object_files, $precompile_object_file;
-    }
-  }
-  push @$object_files, @$precompile_object_files;
-
-  # SPVM native object files
-  push @$object_files, @$native_object_files;
-
   # Linker
   my $ld = $config->ld;
   
@@ -923,7 +876,7 @@ sub link {
   my $ldflags_str = join(' ', @{$config->ldflags});
   $ldflags_str = "$ldflags_str";
   
-  # Optimize
+  # Linker optimize
   my $ld_optimize = $config->ld_optimize;
   $ldflags_str .= " $ld_optimize";
   
@@ -935,15 +888,16 @@ sub link {
     perllibs => '',
     libpth => '',
   };
-
-  my $exe_file = $output_file;
+  
+  # Create the executable file
   my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
-
-  my $tmp_shared_lib_file = $cbuilder->link_executable(
+  $cbuilder->link_executable(
     objects => $object_files,
     module_name => $class_name,
-    exe_file => $exe_file,
+    exe_file => $output_file,
   );
+  
+  return $output_file;
 }
 
 1;
