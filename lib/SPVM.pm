@@ -30,7 +30,15 @@ my $loaded_spvm_modules = {};
 
 sub import {
   my ($class, $class_name) = @_;
+  
+  my ($file, $line) = (caller)[1, 2];
+  
+  SPVM::load_module($class_name, $file, $line);
+}
 
+sub load_module {
+  my ($class_name, $file, $line) = @_;
+  
   unless ($BUILDER) {
     my $build_dir = $ENV{SPVM_BUILD_DIR};
     $BUILDER = SPVM::Builder->new(build_dir => $build_dir, include_dirs => [@INC]);
@@ -38,7 +46,6 @@ sub import {
 
   # Add class informations
   if (defined $class_name) {
-    my ($file, $line) = (caller)[1, 2];
 
     # Compile SPVM source code and create runtime env
     my $compile_success = $BUILDER->compile_spvm($class_name, $file, $line);
