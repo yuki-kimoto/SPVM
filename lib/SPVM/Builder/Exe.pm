@@ -212,10 +212,10 @@ sub build_exe_file {
   my ($native_object_files) = $self->compile_native_csources;
   
   # Create SPMV module C source_files
-  $self->create_spvm_module_csources;
+  $self->create_spvm_module_sources;
 
   # Compile SPVM compiler and runtime C source_files
-  $self->compile_spvm_module_csources;
+  my $spvm_module_objects = $self->compile_spvm_module_sources;
 
   # Compile SPVM compiler and runtime C source_files
   my $spvm_core_objects = $self->compile_spvm_core_sources;
@@ -355,7 +355,7 @@ sub compile_native_csources {
   return ($all_object_files);
 }
 
-sub create_spvm_module_csources {
+sub create_spvm_module_sources {
   my ($self) = @_;
   
   my $builder = $self->builder;
@@ -433,68 +433,37 @@ EOS
   }
 }
 
-sub compile_spvm_module_csources {
+sub compile_spvm_module_sources {
   my ($self) = @_;
   
   my $builder = $self->builder;
   
-  # Compiled class names
+  # Compile module source files
   my $class_names = $builder->get_class_names;
-  
-  # Config
-  my $config = SPVM::Builder::Config->new_gnu99;
-
-  # Optimize
-  my $optimize = $self->optimize;
-  if (defined $optimize) {
-    $config->optimize($optimize);
-  }
-  
+  my $object_files = [];
   for my $class_name (@$class_names) {
-
     my $perl_class_name = "SPVM::$class_name";
     
     # Build source directory
     my $build_src_dir = $self->builder->create_build_src_path;
-    mkpath $build_src_dir;
     
+    # Create source directory
     my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($perl_class_name);
-    my $module_source_csource_file = "$build_src_dir/$class_name_rel_file.modsrc.c";
-    mkpath dirname $module_source_csource_file;
-
+    my $source_file = "$build_src_dir/$class_name_rel_file.modsrc.c";
+    mkpath dirname $source_file;
+    
+    # Create object directory
     my $build_object_dir = $self->builder->create_build_object_path;
     mkpath $build_object_dir;
-    my $module_source_object_file = "$build_object_dir/$class_name_rel_file.modsrc.o";
-    mkpath dirname $module_source_object_file;
+    my $object_file = "$build_object_dir/$class_name_rel_file.modsrc.o";
+    mkpath dirname $object_file;
     
-    my $need_compile;
-    if ($self->force) {
-      $need_compile = 1;
-    }
-    else {
-      if (!-f $module_source_object_file) {
-        $need_compile = 1;
-      }
-      else {
-        my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
-        my $module_source_object_file_mtime = (stat($module_source_object_file))[9];
-        if ($module_source_csource_file_mtime > $module_source_object_file_mtime) {
-          $need_compile = 1;
-        }
-      }
-    }
-    
-    if ($need_compile) {
-      # Compile command
-      my $builder_cc = SPVM::Builder::CC->new;
-      my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $module_source_object_file, source_file => $module_source_csource_file});
-
-      # Execute compile command
-      my $cbuilder = ExtUtils::CBuilder->new;
-      $cbuilder->do_system(@$cc_cmd)
-        or confess "Can't compile $module_source_csource_file: @$cc_cmd";
-    }
+    # Compile
+    $self->compile_source_file({source_file => $source_file, output_file => $object_file});
+    push @$object_files, $object_file;
   }
+  
+  return $object_files;
 }
 
 sub create_bootstrap_csource {
