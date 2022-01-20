@@ -618,6 +618,8 @@ sub create_spvm_module_sources {
   
   my $builder = $self->builder;
   
+  my $config = $self->config;
+  
   # Compiled class names
   my $class_names = $builder->get_class_names;
   
@@ -628,16 +630,35 @@ sub create_spvm_module_sources {
     # This source is UTF-8 binary
     my $module_source = $builder->get_module_source($class_name);
     
-    my $loaded_module_file = $builder->get_module_file($class_name);
+    my $module_file = $builder->get_module_file($class_name);
 
     my $build_dir = $self->builder->build_dir;
     my $build_src_dir = $self->builder->create_build_src_path;
     my $module_source_base = $perl_class_name;
     $module_source_base =~ s|::|/|g;
     my $module_source_csource_file = "$build_src_dir/$module_source_base.modsrc.c";
+
+    my $module_source_c_hex = $module_source;
     
+    # Escape to Hex C launguage string literal
+    $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
+    
+    # native class name
+    my $class_cname = $class_name;
+    $class_cname =~ s/::/__/g;
+
+    my $get_module_source_csource = <<"EOS";
+static const char* module_source = "$module_source_c_hex";
+const char* SPMODSRC__${class_cname}__get_module_source() {
+  return module_source;
+}
+EOS
+
     my $need_create;
     if ($self->force) {
+      $need_create = 1;
+    }
+    elsif ($config->force) {
       $need_create = 1;
     }
     else {
@@ -645,39 +666,23 @@ sub create_spvm_module_sources {
         $need_create = 1;
       }
       else {
-        my $loaded_module_file_mtime;
-        if (defined $loaded_module_file) {
-          $loaded_module_file_mtime = (stat($loaded_module_file))[9];
+        my $module_file_mtime;
+        if (defined $module_file) {
+          $module_file_mtime = (stat($module_file))[9];
         }
         else {
-          $loaded_module_file_mtime = 0;
+          $module_file_mtime = 0;
         }
         
         my $module_source_csource_file_mtime = (stat($module_source_csource_file))[9];
         
-        if ($loaded_module_file_mtime > $module_source_csource_file_mtime) {
+        if ($module_file_mtime > $module_source_csource_file_mtime) {
           $need_create = 1;
         }
       }
     }
     
     if ($need_create) {
-      my $module_source_c_hex = $module_source;
-      
-      # Escape to Hex C launguage string literal
-      $module_source_c_hex =~ s/(.)/$_ = sprintf("\\x%02X", ord($1));$_/ges;
-      
-      # native class name
-      my $class_cname = $class_name;
-      $class_cname =~ s/::/__/g;
-
-      my $get_module_source_csource = <<"EOS";
-static const char* module_source = "$module_source_c_hex";
-const char* SPMODSRC__${class_cname}__get_module_source() {
-  return module_source;
-}
-EOS
-
       mkpath dirname $module_source_csource_file;
       
       open my $module_source_csource_fh, '>', $module_source_csource_file
