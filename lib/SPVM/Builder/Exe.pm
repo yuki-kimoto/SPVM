@@ -201,15 +201,20 @@ sub build_exe_file {
   my $config = SPVM::Builder::Util::load_config($config_file);
   
   $self->config($config);
+  
+  # Object files
+  my $object_files = [];
 
   # Compile SPVM core source files
   my $spvm_core_objects = $self->compile_spvm_core_sources;
+  push @$object_files, @$spvm_core_objects;
 
   # Create SPMV module C source_files
   $self->create_spvm_module_sources;
 
   # Compile SPVM compiler and runtime C source files
   my $spvm_module_objects = $self->compile_spvm_module_sources;
+  push @$object_files, @$spvm_module_objects;
 
   # Create precompile C source_files
   $self->create_precompile_csources;
@@ -218,13 +223,15 @@ sub build_exe_file {
   $self->compile_precompile_csources;
 
   # Compile precompile C source_files
-  my ($native_object_files) = $self->compile_native_csources;
+  my $native_object_files = $self->compile_native_csources;
+  push @$object_files, @$native_object_files;
   
   # Create bootstrap C source
   $self->create_bootstrap_source;
 
   # Compile bootstrap C source
-  $self->compile_bootstrap_source;
+  my $boot_strap_object = $self->compile_bootstrap_source;
+  push @$object_files, $boot_strap_object;
 
   # Link and generate executable file
   $self->link($native_object_files);
@@ -352,7 +359,7 @@ sub compile_native_csources {
     }
   }
   
-  return ($all_object_files);
+  return $all_object_files;
 }
 
 sub create_spvm_module_sources {
