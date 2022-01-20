@@ -129,15 +129,6 @@ sub new {
   
   my $self = {@_};
   
-  # Include directries
-  my $module_dirs = $self->{module_dirs};
-  unless (exists $self->{module_dirs}) {
-    $self->{module_dirs} = [];
-  }
-  
-  $self->{module_dirs} = [map { "$_/SPVM" } @{$self->{module_dirs}}];
-  $module_dirs = $self->{module_dirs};
-
   # Target class name
   my $class_name = $self->{class_name};
   unless (defined $class_name) {
@@ -162,6 +153,13 @@ sub new {
   unless (defined $build_dir) {
     $build_dir = '.spvm_build';
   }
+
+  # Module searching directries
+  my $module_dirs = $self->{module_dirs};
+  unless (exists $self->{module_dirs}) {
+    $self->{module_dirs} = [];
+  }
+  $module_dirs = $self->{module_dirs};
   
   # New SPVM::Builder object
   my $builder = SPVM::Builder->new(

@@ -32,9 +32,11 @@ else {
   }
   
   push @module_dirs, @INC;
-
+  
+  my @spvm_module_dirs = map { "$_/SPVM" } @module_dirs;
+  
   my $build_exe = SPVM::Builder::Exe->new(
-    module_dirs => \@module_dirs,
+    module_dirs => \@spvm_module_dirs,
     output_file => $output_file,
     class_name => $class_name,
     quiet => $quiet,
