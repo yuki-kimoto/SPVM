@@ -276,7 +276,7 @@ sub compile_source_file {
   my ($self, $opt) = @_;
 
   # Config
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = $self->config;
   
   # Optimize
   my $optimize = $self->optimize;
