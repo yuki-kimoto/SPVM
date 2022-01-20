@@ -662,7 +662,7 @@ sub create_spvm_module_sources {
     # Moudle file - Input
     my $module_file = $builder->get_module_file($class_name);
     
-    # Source file - Outpu
+    # Source file - Output
     my $build_dir = $self->builder->build_dir;
     my $build_src_dir = $self->builder->create_build_src_path;
     my $perl_class_name = "SPVM::$class_name";
