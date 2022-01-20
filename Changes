@@ -3,6 +3,7 @@ Revision history for SPVM
 0.9126  2021-01-20
         [FIX BUGS]
         * Fix bugs that when native config file is not found, an exeption doesn't occur.
+        * Fix the bug that spvmcc don't see the config file when compile sources for own.
         * Fix the bug that spvmcc don't see "force" option in the config file when source files are created.
         [CHANGE]
         * Add global_ccflags to SPVM::Builder::CC.
