@@ -202,6 +202,9 @@ sub build_exe_file {
   
   $self->config($config);
 
+  # Compile SPVM core source files
+  my $spvm_core_objects = $self->compile_spvm_core_sources;
+
   # Create precompile C source_files
   $self->create_precompile_csources;
   
@@ -214,11 +217,8 @@ sub build_exe_file {
   # Create SPMV module C source_files
   $self->create_spvm_module_sources;
 
-  # Compile SPVM compiler and runtime C source_files
+  # Compile SPVM compiler and runtime C source files
   my $spvm_module_objects = $self->compile_spvm_module_sources;
-
-  # Compile SPVM compiler and runtime C source_files
-  my $spvm_core_objects = $self->compile_spvm_core_sources;
 
   # Create bootstrap C source
   $self->create_bootstrap_csource;
