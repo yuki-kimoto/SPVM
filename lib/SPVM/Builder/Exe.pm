@@ -331,9 +331,9 @@ sub create_bootstrap_source {
   # Compiled class names
   my $class_names = $builder->get_class_names;
 
-  my $boot_csource = '';
+  my $boot_source = '';
   
-  $boot_csource .= <<'EOS';
+  $boot_source .= <<'EOS';
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -354,51 +354,51 @@ sub create_bootstrap_source {
 
 EOS
   
-  $boot_csource .= "// module source get functions declaration\n";
+  $boot_source .= "// module source get functions declaration\n";
   for my $class_name (@$class_names) {
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
-    $boot_csource .= <<"EOS";
+    $boot_source .= <<"EOS";
 const char* SPMODSRC__${class_cname}__get_module_source();
 EOS
   }
 
   my $class_names_including_anon = $self->builder->get_class_names_including_anon;
-  $boot_csource .= "// precompile functions declaration\n";
+  $boot_source .= "// precompile functions declaration\n";
   for my $class_name (@$class_names_including_anon) {
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     for my $method_name (@$precompile_method_names) {
       my $class_cname = $class_name;
       $class_cname =~ s/::/__/g;
-      $boot_csource .= <<"EOS";
+      $boot_source .= <<"EOS";
 int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
 
-  $boot_csource .= "// native functions declaration\n";
+  $boot_source .= "// native functions declaration\n";
   for my $class_cname (@$class_names) {
     my $native_method_names = $builder->get_method_names($class_cname, 'native');
     for my $method_name (@$native_method_names) {
       my $class_cname = $class_cname;
       $class_cname =~ s/::/__/g;
-      $boot_csource .= <<"EOS";
+      $boot_source .= <<"EOS";
 int32_t SPVM__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
     }
   }
   
-  $boot_csource .= <<'EOS';
+  $boot_source .= <<'EOS';
 
 int32_t main(int32_t argc, const char *argv[]) {
 EOS
 
-  $boot_csource .= <<"EOS";
+  $boot_source .= <<"EOS";
   // Class name
   const char* class_name = "$class_name";
 EOS
 
-  $boot_csource .= <<'EOS';
+  $boot_source .= <<'EOS';
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
@@ -417,14 +417,14 @@ EOS
     my $class_cname = $class_name;
     $class_cname =~ s/::/__/g;
     
-    $boot_csource .= "  {\n";
-    $boot_csource .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
-    $boot_csource .= qq(    SPVM_HASH_insert(compiler->embedded_module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
-    $boot_csource .= "  }\n";
+    $boot_source .= "  {\n";
+    $boot_source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
+    $boot_source .= qq(    SPVM_HASH_insert(compiler->embedded_module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
+    $boot_source .= "  }\n";
   }
-  $boot_csource .= "\n";
+  $boot_source .= "\n";
 
-  $boot_csource .= <<'EOS';
+  $boot_source .= <<'EOS';
 
   SPVM_COMPILER_compile(compiler);
 
@@ -440,7 +440,7 @@ EOS
     my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
     
     for my $precompile_method_name (@$precompile_method_names) {
-      $boot_csource .= <<"EOS";
+      $boot_source .= <<"EOS";
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$precompile_method_name";
@@ -463,7 +463,7 @@ EOS
     my $native_method_names = $builder->get_method_names($class_name, 'native');
     
     for my $native_method_name (@$native_method_names) {
-      $boot_csource .= <<"EOS";
+      $boot_source .= <<"EOS";
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$native_method_name";
@@ -479,7 +479,7 @@ EOS
     }
   }
 
-  $boot_csource .= <<'EOS';
+  $boot_source .= <<'EOS';
     
   // Create env
   SPVM_ENV* env = SPVM_API_create_env(compiler);
@@ -541,14 +541,14 @@ EOS
   my $build_src_dir = $self->builder->create_build_src_path;
   mkpath $build_src_dir;
   
-  my $boot_csource_file = "$build_src_dir/$boot_base.boot.c";
+  my $boot_source_file = "$build_src_dir/$boot_base.boot.c";
   
-  mkpath dirname $boot_csource_file;
+  mkpath dirname $boot_source_file;
   
-  open my $boot_csource_fh, '>', $boot_csource_file
-    or die "Can't open file $boot_csource_file:$!";
+  open my $boot_source_fh, '>', $boot_source_file
+    or die "Can't open file $boot_source_file:$!";
 
-  print $boot_csource_fh $boot_csource;
+  print $boot_source_fh $boot_source;
 }
 
 sub compile_bootstrap_source {
