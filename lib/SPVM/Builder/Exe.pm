@@ -810,6 +810,45 @@ my @SPVM_RUNTIME_SRC_BASE_NAMES = qw(
   spvm_yacc_util.c
 );
 
+sub compile_source_file_if_needed {
+  my ($self, $opt) = @_;
+  
+  my $config = $opt->{config};
+  my $source_file = $opt->{source_file};
+  my $output_file = $opt->{output_file};
+  
+  my $need_compile;
+  if ($self->force) {
+    $need_compile = 1;
+  }
+  elsif ($config->force) {
+    $need_compile = 1;
+  }
+  else {
+    if (!-f $output_file) {
+      $need_compile = 1;
+    }
+    else {
+      my $mod_time_source_file = (stat($source_file))[9];
+      my $mod_time_output_file = (stat($output_file))[9];
+      if ($mod_time_source_file > $mod_time_output_file) {
+        $need_compile = 1;
+      }
+    }
+  }
+  
+  if ($need_compile) {
+    # Compile command
+    my $builder_cc = SPVM::Builder::CC->new;
+    my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $output_file, source_file => $source_file});
+
+    # Execute compile command
+    my $cbuilder = ExtUtils::CBuilder->new;
+    $cbuilder->do_system(@$cc_cmd)
+      or confess "Can't compile $source_file: @$cc_cmd";
+  }
+}
+
 sub compile_spvm_compiler_and_runtime_csources {
   my ($self) = @_;
 
@@ -856,38 +895,8 @@ sub compile_spvm_compiler_and_runtime_csources {
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
-    # Do compile
-    my $need_compile;
-    
-    if ($self->force) {
-      $need_compile = 1;
-    }
-    else {
-      if (!-f $object_file) {
-        $need_compile = 1;
-      }
-      else {
-        my $mod_time_src_file = (stat($src_file))[9];
-        my $mod_time_object_file = (stat($object_file))[9];
-        if ($mod_time_src_file > $mod_time_object_file) {
-          $need_compile = 1;
-        }
-      }
-    }
-      
-    if ($need_compile) {
-
-      # Compile command
-      my $builder_cc = SPVM::Builder::CC->new;
-      my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $object_file, source_file => $src_file});
-
-      # Execute compile command
-      my $cbuilder = ExtUtils::CBuilder->new;
-      $cbuilder->do_system(@$cc_cmd)
-        or confess "Can't compile $src_file: @$cc_cmd";
-      
-      push @$object_files, $object_file;
-    }
+    $self->compile_source_file_if_needed({config => $config, source_file => $src_file, output_file => $object_file});
+    push @$object_files, $object_file;
   }
 }
 
