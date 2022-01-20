@@ -4,7 +4,8 @@ Revision history for SPVM
         [FIX BUGS]
         * Fix bugs that when native config file is not found, an exeption doesn't occur.
         [CHANGE]
-        Rewrite many internals of spvmcc and SPVM::Builder::Exe.
+        * Rewrite many internals of spvmcc and SPVM::Builder::Exe.
+        * Add global_ccflags to SPVM::Builder::CC.
         
 0.9125  2021-01-19
         [FIX BUGS]
