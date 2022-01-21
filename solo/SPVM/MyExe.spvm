@@ -1,6 +1,6 @@
 class MyExe {
   use TestCase;
-  static method main : int ($args : string[]) {
-    TestCase->main($args);
+  static method main : int ($start_file : string, $args : string[]) {
+    TestCase->main($start_file, $args);
   }
 }

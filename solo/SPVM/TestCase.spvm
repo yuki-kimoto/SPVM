@@ -72,7 +72,15 @@ SPVM::Test - SPVM test module
   static method FLOAT_PRECICE : float () { return 32767f; }
   static method DOUBLE_PRECICE : double () { return 2147483647.0; }
 
-  static method main : int ($args : string[]) {
+  static method main : int ($start_file : string, $args : string[]) {
+    # Starting file
+    warn $start_file;
+    
+    warn dump $args;
+    
+    print($args->[0] . "\n");
+    print($args->[1] . "\n");
+    
     # dump
     {
       # string
@@ -559,10 +567,6 @@ SPVM::Test - SPVM test module
     {
       my $num : string = 1;
     }
-    
-    print($args->[0] . "\n");
-    print($args->[1] . "\n");
-    print($args->[2] . "\n");
     
     {
       my $point1 : TestCase::Point_3d;
