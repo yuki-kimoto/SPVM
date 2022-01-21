@@ -237,21 +237,19 @@ sub build_exe_file {
   $self->link($object_files);
 }
 
-sub create_source_file {
+sub need_generate {
   my ($self, $opt) = @_;
   
-  # Config
-  my $config = $self->config;
-  
+  my $global_force = $opt->{global_force};
+  my $config_force = $opt->{config_force};
   my $input_files = $opt->{input_files};
   my $output_file = $opt->{output_file};
-  my $create_cb = $opt->{create_cb};
-  
+
   my $need_generate;
-  if ($self->force) {
+  if ($global_force) {
     $need_generate = 1;
   }
-  elsif ($config->force) {
+  elsif ($config_force) {
     $need_generate = 1;
   }
   else {
@@ -272,6 +270,26 @@ sub create_source_file {
       }
     }
   }
+  
+  return $need_generate;
+}
+
+sub create_source_file {
+  my ($self, $opt) = @_;
+  
+  # Config
+  my $config = $self->config;
+  
+  my $input_files = $opt->{input_files};
+  my $output_file = $opt->{output_file};
+  my $create_cb = $opt->{create_cb};
+  
+  my $need_generate = $self->need_generate({
+    global_force => $self->force,
+    config_force => $config->force,
+    output_file => $output_file,
+    input_files => $input_files,
+  });
   
   if ($need_generate) {
     $create_cb->();
