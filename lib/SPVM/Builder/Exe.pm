@@ -247,16 +247,16 @@ sub create_source_file {
   my $output_file = $opt->{output_file};
   my $create_cb = $opt->{create_cb};
   
-  my $need_create;
+  my $need_generate;
   if ($self->force) {
-    $need_create = 1;
+    $need_generate = 1;
   }
   elsif ($config->force) {
-    $need_create = 1;
+    $need_generate = 1;
   }
   else {
     if (!-f $output_file) {
-      $need_create = 1;
+      $need_generate = 1;
     }
     else {
       my $input_files_mtime_max = 0;
@@ -268,12 +268,12 @@ sub create_source_file {
       }
       my $output_file_mtime = (stat($output_file))[9];
       if ($input_files_mtime_max > $output_file_mtime) {
-        $need_create = 1;
+        $need_generate = 1;
       }
     }
   }
   
-  if ($need_create) {
+  if ($need_generate) {
     $create_cb->();
   }
 }
@@ -293,27 +293,27 @@ sub compile_source_file {
   my $source_file = $opt->{source_file};
   my $output_file = $opt->{output_file};
   
-  my $need_compile;
+  my $need_generate;
   if ($self->force) {
-    $need_compile = 1;
+    $need_generate = 1;
   }
   elsif ($config->force) {
-    $need_compile = 1;
+    $need_generate = 1;
   }
   else {
     if (!-f $output_file) {
-      $need_compile = 1;
+      $need_generate = 1;
     }
     else {
       my $mod_time_source_file = (stat($source_file))[9];
       my $mod_time_output_file = (stat($output_file))[9];
       if ($mod_time_source_file > $mod_time_output_file) {
-        $need_compile = 1;
+        $need_generate = 1;
       }
     }
   }
 
-  if ($need_compile) {
+  if ($need_generate) {
     # Compile command
     my $builder_cc = SPVM::Builder::CC->new;
     my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $output_file, source_file => $source_file});
