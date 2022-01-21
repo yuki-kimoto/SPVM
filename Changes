@@ -1,6 +1,6 @@
 Revision history for SPVM
 
-0.9126  2021-01-20
+0.9126  2021-01-21
         [FIX BUGS]
         * Fix bugs that when native config file is not found, an exeption doesn't occur.
         * Fix the bug that spvmcc don't see the config file when compile sources for own.
