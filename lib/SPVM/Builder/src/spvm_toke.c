@@ -296,16 +296,13 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               compiler->cur_rel_file_class_name = class_name;
               
               // If we get current module file path, set it, otherwise set module relative file path
-              if (SPVM_TYPE_is_embedded_class_name(compiler, class_name)) {
-                char embedded_file_name[30] = {0};
-                sprintf(embedded_file_name, "embedded://%s.spvm", class_name);
-                compiler->cur_file = embedded_file_name;
-              }
-              else if (cur_file) {
+              if (cur_file) {
                 compiler->cur_file = cur_file;
               }
               else {
-                assert(0);
+                char* embedded_file_name = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 11 + strlen(cur_rel_file) + 5 + 1);
+                sprintf(embedded_file_name, "embedded://%s.spvm", cur_rel_file);
+                compiler->cur_file = embedded_file_name;
               }
               
               // Set initial information for tokenization
