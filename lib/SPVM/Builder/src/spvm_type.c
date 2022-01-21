@@ -55,6 +55,36 @@ const char* const* SPVM_TYPE_TYPE_CATEGORY_C_ID_NAMES(void) {
   return id_names;
 }
 
+int32_t SPVM_TYPE_is_embedded_class_name(SPVM_COMPILER* compiler, const char* type_name) {
+  int32_t is_embedded_class_name;
+  if (strcmp(type_name, "Bool") == 0) {
+    is_embedded_class_name = 1;
+  }
+  else if (strcmp(type_name, "Byte") == 0) {
+    is_embedded_class_name = 1;
+  }
+  else if (strcmp(type_name, "Short") == 0) {
+    is_embedded_class_name = 1;
+  }
+  else if (strcmp(type_name, "Int") == 0) {
+    is_embedded_class_name = 1;
+  }
+  else if (strcmp(type_name, "Long") == 0) {
+    is_embedded_class_name = 1;
+  }
+  else if (strcmp(type_name, "Float") == 0) {
+    is_embedded_class_name = 1;
+  }
+  else if (strcmp(type_name, "Double") == 0) {
+    is_embedded_class_name = 1;
+  }
+  else {
+    is_embedded_class_name = 0;
+  }
+  
+  return is_embedded_class_name;
+}
+
 int32_t SPVM_TYPE_get_type_category(SPVM_COMPILER* compiler, int32_t basic_type_id, int32_t dimension, int32_t flag) {
   
   int32_t type_category;
