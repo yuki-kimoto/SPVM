@@ -938,6 +938,7 @@ t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/baz/noneed.txt
 t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/foo.c
 t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/exe/lib/SPVM/TestCase/NativeAPI2.spvm
+t/exe/myexe.config
 t/exe/spvmcc.t
 t/get_native_api_indexes.pl
 t/lib/TestAuto.pm
