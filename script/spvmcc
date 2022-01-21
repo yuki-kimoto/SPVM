@@ -15,7 +15,7 @@ SPVM::Builder::Util::getopt
   'I|module-dir=s' => \my @module_dirs,
   'q|quiet'   => \my $quiet,
   'O|optimize=s' => \my $optimize,
-  '-f|force' => \my $force,
+  'f|force' => \my $force,
 ;
 
 if ($help) {
