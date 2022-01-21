@@ -2447,13 +2447,13 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\"\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
         }
       }
     }
     
     if ((method->flag & SPVM_METHOD_C_FLAG_NATIVE) && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
-      SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together", op_descriptors->file, op_descriptors->line);
+      SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together at %s line %d\n", op_descriptors->file, op_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
       SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d\n", op_method->file, op_method->line);
@@ -2462,7 +2462,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
 
   // Native method can't have block
   if ((method->flag & SPVM_METHOD_C_FLAG_NATIVE) && op_block) {
-    SPVM_COMPILER_error(compiler, "Native method can't have block", op_block->file, op_block->line);
+    SPVM_COMPILER_error(compiler, "Native method can't have block at %s line %d\n", op_block->file, op_block->line);
   }
   
   // sub args
@@ -2515,7 +2515,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     
     // DESTROY return type must be void
     if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
-      SPVM_COMPILER_error(compiler, "DESTROY return type must be void\n", op_block->file, op_block->line);
+      SPVM_COMPILER_error(compiler, "DESTROY return type must be void at %s line %d\n", op_block->file, op_block->line);
     }
   }
   
@@ -2682,7 +2682,7 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             access_control_descriptors_count++;
             break;
           default:
-            SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\"\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+            SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
         }
       }
       if (access_control_descriptors_count > 1) {
