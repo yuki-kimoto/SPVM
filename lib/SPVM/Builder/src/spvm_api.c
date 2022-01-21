@@ -5311,9 +5311,9 @@ void SPVM_API_leave_scope(SPVM_ENV* env, int32_t original_mortal_stack_top) {
 SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception, const char* class_name, const char* method_name, const char* file, int32_t line) {
   
   // stack trace symbols
-  const char* new_line_part = "\n ";
+  const char* new_line_part = "\n    ";
   const char* arrow_part = "->";
-  const char* at_part = " called at ";
+  const char* at_part = " at ";
 
   // Exception
   int8_t* exception_bytes = env->get_elems_byte(env, exception);
