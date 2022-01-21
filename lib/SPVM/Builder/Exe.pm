@@ -311,25 +311,12 @@ sub compile_source_file {
   my $source_file = $opt->{source_file};
   my $output_file = $opt->{output_file};
   
-  my $need_generate;
-  if ($self->force) {
-    $need_generate = 1;
-  }
-  elsif ($config->force) {
-    $need_generate = 1;
-  }
-  else {
-    if (!-f $output_file) {
-      $need_generate = 1;
-    }
-    else {
-      my $mod_time_source_file = (stat($source_file))[9];
-      my $mod_time_output_file = (stat($output_file))[9];
-      if ($mod_time_source_file > $mod_time_output_file) {
-        $need_generate = 1;
-      }
-    }
-  }
+  my $need_generate = $self->need_generate({
+    global_force => $self->force,
+    config_force => $config->force,
+    output_file => $output_file,
+    input_files => [$source_file],
+  });
 
   if ($need_generate) {
     # Compile command
@@ -944,14 +931,23 @@ sub link {
     perllibs => '',
     libpth => '',
   };
+
+  my $need_generate = $self->need_generate({
+    global_force => $self->force,
+    config_force => $config->force,
+    output_file => $output_file,
+    input_files => $object_files,
+  });
   
-  # Create the executable file
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
-  $cbuilder->link_executable(
-    objects => $object_files,
-    module_name => $class_name,
-    exe_file => $output_file,
-  );
+  if ($need_generate) {
+    # Create the executable file
+    my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
+    $cbuilder->link_executable(
+      objects => $object_files,
+      module_name => $class_name,
+      exe_file => $output_file,
+    );
+  }
   
   return $output_file;
 }
