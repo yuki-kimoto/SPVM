@@ -37,23 +37,23 @@ DEVELOPERS NOTE
     SPVM solo test command
 
        # Normal run
-       yacc/bison.sh && perl Makefile.PL && make && perl solo/solo_Makefile.PL && make -f solo/Makefile && ./solo/main foo bar
+       yacc/bison.sh && perl solo/solo_Makefile.PL && make -f solo/Makefile && ./solo/work/myexe foo bar
+
+       # Debug run
+       yacc/bison.sh && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g" && make -f solo/Makefile && ./solo/work/myexe foo bar
 
        # Debug run - Print AST, package information, operaion codes
-       yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_ALLOC_MEMORY_COUNT && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_ALLOC_MEMORY_COUNT && make -f solo/Makefile && ./solo/main foo bar
+       yacc/bison.sh && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP --DEFINE=SPVM_DEBUG_ALLOC_MEMORY_COUNT && make -f solo/Makefile && ./solo/work/myexe foo bar
 
-       # Debug run - Only syntax check, don't compile core modules
-       yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DONT_USE_SPVM_CORE --DEFINE=SPVM_DONT_COMPILE_CORE_MODULES && make && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g" && make -f solo/Makefile && ./solo/main foo bar
-
-       # Debug run - Print yacc result, don't compile core modules
-       yacc/bison.sh && perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC --DEFINE=SPVM_DONT_USE_SPVM_CORE --DEFINE=SPVM_DONT_COMPILE_CORE_MODULES && make && perl solo/solo_Makefile.PL  --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make -f solo/Makefile && ./solo/main foo bar
+       # Debug run - Print yacc result
+       yacc/bison.sh && perl solo/solo_Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_YACC && make -f solo/Makefile && ./solo/work/myexe foo bar
     
        # Cleanup
        make -f solo/Makefile clean
     
     See batcktrace of core dump
 
-      gdb solo/main core.*
+      gdb solo/work/myexe core.*
 
     What is solo test command?
 
@@ -65,17 +65,17 @@ DEVELOPERS NOTE
       
       If you use the above solo test commands, you can create
       
-        solo/main
+        solo/work/myexe
       
-      "solo/main" can execute SPVM module by the following way.
+      "solo/work/myexe" can execute SPVM module by the following way.
       
-        ./solo/main
+        ./solo/work/myexe
 
     See core dump
 
       If you use Debug run, you can see core dump and back trace by gdb command
         
-        gdb solo/main core.*
+        gdb solo/work/myexe core.*
         
         bt
       
@@ -97,7 +97,7 @@ DEVELOPERS NOTE
     
       perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP && \
       make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvm_build/work/exe -n MyExe TestCase::MyExe && \
-      gcc -o spvm_build/work/exe/MyExe spvm_build/work/exe/libmy_main.so && \
+      gcc -o spvm_build/work/exe/MyExe spvm_build/work/exe/libmy_myexe.so && \
       spvm_build/work/exe/MyExe
   
   EXTERNAL LIBRARY
