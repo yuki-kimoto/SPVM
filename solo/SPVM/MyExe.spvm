@@ -1,4 +1,4 @@
-class Main {
+class MyExe {
   use TestCase;
   static method main : int ($args : string[]) {
     TestCase->main($args);

@@ -536,8 +536,9 @@ ppport.h
 README.md
 script/spvm
 script/spvmcc
+solo/myexe.c
 solo/solo_Makefile.PL
-solo/SPVM/Main.spvm
+solo/SPVM/MyExe.spvm
 solo/SPVM/TestCase.spvm
 solo/SPVM/TestCase/Allow.spvm
 solo/SPVM/TestCase/Callback1.spvm
@@ -573,7 +574,6 @@ solo/SPVM/TestCase/Pointer.spvm
 solo/SPVM/TestCase/Simple.spvm
 solo/SPVM/TestCase/Weaken.spvm
 solo/SPVM/TestCase/Weaken2.spvm
-solo/spvm_boot.c
 SPVM.xs
 t/builder_config.t
 t/builder_config/libpng.def
