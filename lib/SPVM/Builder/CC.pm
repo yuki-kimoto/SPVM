@@ -467,40 +467,12 @@ sub compile {
     # Do compile. This is same as make command
     my $need_generate;
     if ($is_native_src) {
-      if ($self->force) {
-        $need_generate = 1;
-      }
-      else {
-        if ($config->force) {
-          $need_generate = 1;
-        }
-        else {
-          if (!-f $object_file) {
-            $need_generate = 1;
-          }
-          else {
-            my $mod_time_object_file = (stat($object_file))[9];
-            
-            # Need the compilation if the config file is newer than the object file.
-            if ($mod_time_config_file > $mod_time_object_file) {
-              $need_generate = 1;
-            }
-            else {
-              # Need the compilation if one of the header files is newer than the object file.
-              if ($mod_time_header_files_max > $mod_time_object_file) {
-                $need_generate = 1;
-              }
-              else {
-                # Need the compilation if the source files is newer than the object file.
-                my $mod_time_src_file = (stat($src_file))[9];
-                if ($mod_time_src_file > $mod_time_object_file) {
-                  $need_generate = 1;
-                }
-              }
-            }
-          }
-        }
-      }
+      $need_generate = SPVM::Builder::Util::need_generate({
+        global_force => $self->force,
+        config_force => $config->force,
+        output_file => $object_file,
+        input_files => [$config_file, $src_file, @$object_files, @include_file_names],
+      });
     }
     else {
       if ($self->force) {
