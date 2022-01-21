@@ -98,7 +98,7 @@ struct spvm_compiler {
   SPVM_HASH* used_class_symtable;
   
   // module file symtable
-  SPVM_HASH* loaded_module_file_symtable;
+  SPVM_HASH* module_file_symtable;
 
   // module source symtable
   SPVM_HASH* embedded_module_source_symtable;
