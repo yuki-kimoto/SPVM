@@ -10,6 +10,7 @@ Revision history for SPVM
         * module_dirs, build_dir of SPVM::Builder::Exe is saved to SPVM::Builder object.
         * Add spvm command.
         * Improve module not found error message.
+        * spvmcc bootstrap sources can detect the dependencies.
 
         [NON BACKWORD COMPATIBLE CHANGES]
         * spvmcc -I option doesn't add "/SPVM" after the directory names.

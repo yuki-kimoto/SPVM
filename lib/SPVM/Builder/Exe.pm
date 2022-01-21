@@ -328,18 +328,35 @@ sub compile_source_file {
 sub create_bootstrap_source {
   my ($self) = @_;
   
+  # Builder
+  my $builder = $self->builder;
+  
+  # Class name
   my $class_name = $self->class_name;
   
-  my $target_perl_class_name = "SPVM::$class_name";
-
-  my $builder = $self->builder;
-
-  # Compiled class names
+  # Class names
   my $class_names = $builder->get_class_names;
-
-  my $boot_source = '';
   
-  $boot_source .= <<'EOS';
+  # Module files - Input
+  my $module_files = [];
+  for my $class_name (@$class_names) {
+    my $module_file = $builder->get_module_file($class_name);
+    push @$module_files, $module_file;
+  }
+  
+  # Source file - Output
+  my $build_src_dir = $self->builder->create_build_src_path;
+  my $target_perl_class_name = "SPVM::$class_name";
+  my $boot_base = $target_perl_class_name;
+  $boot_base =~ s|::|/|g;
+  my $boot_source_file = "$build_src_dir/$boot_base.boot.c";
+
+  # Source creating callback
+  my $create_cb = sub {
+    
+    my $boot_source = '';
+    
+    $boot_source .= <<'EOS';
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -359,52 +376,52 @@ sub create_bootstrap_source {
 #include "spvm_basic_type.h"
 
 EOS
-  
-  $boot_source .= "// module source get functions declaration\n";
-  for my $class_name (@$class_names) {
-    my $class_cname = $class_name;
-    $class_cname =~ s/::/__/g;
-    $boot_source .= <<"EOS";
-const char* SPMODSRC__${class_cname}__get_module_source();
-EOS
-  }
-
-  my $class_names_including_anon = $self->builder->get_class_names_including_anon;
-  $boot_source .= "// precompile functions declaration\n";
-  for my $class_name (@$class_names_including_anon) {
-    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
-    for my $method_name (@$precompile_method_names) {
+    
+    $boot_source .= "// module source get functions declaration\n";
+    for my $class_name (@$class_names) {
       my $class_cname = $class_name;
       $class_cname =~ s/::/__/g;
       $boot_source .= <<"EOS";
+const char* SPMODSRC__${class_cname}__get_module_source();
+EOS
+    }
+
+    my $class_names_including_anon = $self->builder->get_class_names_including_anon;
+    $boot_source .= "// precompile functions declaration\n";
+    for my $class_name (@$class_names_including_anon) {
+      my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
+      for my $method_name (@$precompile_method_names) {
+        my $class_cname = $class_name;
+        $class_cname =~ s/::/__/g;
+        $boot_source .= <<"EOS";
 int32_t SPVMPRECOMPILE__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
+      }
     }
-  }
 
-  $boot_source .= "// native functions declaration\n";
-  for my $class_cname (@$class_names) {
-    my $native_method_names = $builder->get_method_names($class_cname, 'native');
-    for my $method_name (@$native_method_names) {
-      my $class_cname = $class_cname;
-      $class_cname =~ s/::/__/g;
-      $boot_source .= <<"EOS";
+    $boot_source .= "// native functions declaration\n";
+    for my $class_cname (@$class_names) {
+      my $native_method_names = $builder->get_method_names($class_cname, 'native');
+      for my $method_name (@$native_method_names) {
+        my $class_cname = $class_cname;
+        $class_cname =~ s/::/__/g;
+        $boot_source .= <<"EOS";
 int32_t SPVM__${class_cname}__$method_name(SPVM_ENV* env, SPVM_VALUE* stack);
 EOS
+      }
     }
-  }
-  
-  $boot_source .= <<'EOS';
+    
+    $boot_source .= <<'EOS';
 
 int32_t main(int32_t argc, const char *argv[]) {
 EOS
 
-  $boot_source .= <<"EOS";
+    $boot_source .= <<"EOS";
   // Class name
   const char* class_name = "$class_name";
 EOS
 
-  $boot_source .= <<'EOS';
+    $boot_source .= <<'EOS';
   
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
@@ -418,19 +435,19 @@ EOS
   
   // Set module source_files
 EOS
-  
-  for my $class_name (@$class_names) {
-    my $class_cname = $class_name;
-    $class_cname =~ s/::/__/g;
     
-    $boot_source .= "  {\n";
-    $boot_source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
-    $boot_source .= qq(    SPVM_HASH_insert(compiler->embedded_module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
-    $boot_source .= "  }\n";
-  }
-  $boot_source .= "\n";
+    for my $class_name (@$class_names) {
+      my $class_cname = $class_name;
+      $class_cname =~ s/::/__/g;
+      
+      $boot_source .= "  {\n";
+      $boot_source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
+      $boot_source .= qq(    SPVM_HASH_insert(compiler->embedded_module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
+      $boot_source .= "  }\n";
+    }
+    $boot_source .= "\n";
 
-  $boot_source .= <<'EOS';
+    $boot_source .= <<'EOS';
 
   SPVM_COMPILER_compile(compiler);
 
@@ -438,15 +455,15 @@ EOS
     exit(1);
   }
 EOS
-  
-  for my $class_name (@$class_names_including_anon) {
-    my $class_cname = $class_name;
-    $class_cname =~ s/::/__/g;
     
-    my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
-    
-    for my $precompile_method_name (@$precompile_method_names) {
-      $boot_source .= <<"EOS";
+    for my $class_name (@$class_names_including_anon) {
+      my $class_cname = $class_name;
+      $class_cname =~ s/::/__/g;
+      
+      my $precompile_method_names = $builder->get_method_names($class_name, 'precompile');
+      
+      for my $precompile_method_name (@$precompile_method_names) {
+        $boot_source .= <<"EOS";
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$precompile_method_name";
@@ -459,17 +476,17 @@ EOS
     method->precompile_address = SPVMPRECOMPILE__${class_cname}__$precompile_method_name;
   }
 EOS
+      }
     }
-  }
 
-  for my $class_name (@$class_names) {
-    my $class_cname = $class_name;
-    $class_cname =~ s/::/__/g;
-    
-    my $native_method_names = $builder->get_method_names($class_name, 'native');
-    
-    for my $native_method_name (@$native_method_names) {
-      $boot_source .= <<"EOS";
+    for my $class_name (@$class_names) {
+      my $class_cname = $class_name;
+      $class_cname =~ s/::/__/g;
+      
+      my $native_method_names = $builder->get_method_names($class_name, 'native');
+      
+      for my $native_method_name (@$native_method_names) {
+        $boot_source .= <<"EOS";
   { 
     const char* class_name = "$class_name";
     const char* method_name = "$native_method_name";
@@ -482,10 +499,10 @@ EOS
     method->native_address = SPVM__${class_cname}__$native_method_name;
   }
 EOS
+      }
     }
-  }
 
-  $boot_source .= <<'EOS';
+    $boot_source .= <<'EOS';
     
   // Create env
   SPVM_ENV* env = SPVM_API_create_env(compiler);
@@ -538,23 +555,25 @@ EOS
 }
 EOS
 
-  my $build_dir = $self->builder->build_dir;
+    my $build_dir = $self->builder->build_dir;
 
-  my $boot_base = $target_perl_class_name;
-  $boot_base =~ s|::|/|g;
+    # Build source directory
+    my $build_src_dir = $self->builder->create_build_src_path;
+    mkpath $build_src_dir;
+    mkpath dirname $boot_source_file;
+    
+    open my $boot_source_fh, '>', $boot_source_file
+      or die "Can't open file $boot_source_file:$!";
 
-  # Build source directory
-  my $build_src_dir = $self->builder->create_build_src_path;
-  mkpath $build_src_dir;
+    print $boot_source_fh $boot_source;
+  };
   
-  my $boot_source_file = "$build_src_dir/$boot_base.boot.c";
-  
-  mkpath dirname $boot_source_file;
-  
-  open my $boot_source_fh, '>', $boot_source_file
-    or die "Can't open file $boot_source_file:$!";
-
-  print $boot_source_fh $boot_source;
+  # Create source file
+  $self->create_source_file({
+    input_files => $module_files,
+    output_file => $boot_source_file,
+    create_cb => $create_cb,
+  });
 }
 
 sub compile_bootstrap_source {
