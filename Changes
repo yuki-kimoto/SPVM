@@ -12,6 +12,8 @@ Revision history for SPVM
         * Improve module not found error message.
         * spvmcc bootstrap sources can detect the dependencies.
         * the executable file created by spvmcc is cached.
+        * Add -c|--config option to spvmcc command.
+          The value is a config file that return SPVM::Builder::Config::Exe object.
 
         [NON BACKWORD COMPATIBLE CHANGES]
         * spvmcc -I option doesn't add "/SPVM" after the directory names.

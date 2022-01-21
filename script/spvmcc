@@ -16,6 +16,7 @@ SPVM::Builder::Util::getopt
   'q|quiet'   => \my $quiet,
   'O|optimize=s' => \my $optimize,
   'f|force' => \my $force,
+  'c|config=s' => \my $config_file,
 ;
 
 if ($help) {
@@ -40,6 +41,7 @@ else {
     quiet => $quiet,
     optimize => $optimize,
     force => $force,
+    config_file => $config_file,
   );
   $build_exe->build_exe_file;
 }
@@ -67,6 +69,7 @@ spvmcc - SPVM compiler to create exe file
     -q, --quiet                    Quiet output
     -O, --optimize <level>         Optimaization level
     -f, --force                    Force compile and link
+    -c, --config                   Config file
     
 =head1 DESCRIPTION
 

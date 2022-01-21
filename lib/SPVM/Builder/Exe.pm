@@ -123,6 +123,17 @@ sub config {
   }
 }
 
+sub config_file {
+  my $self = shift;
+  if (@_) {
+    $self->{config_file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config_file};
+  }
+}
+
 # Methods
 sub new {
   my $class = shift;
@@ -166,6 +177,19 @@ sub new {
     module_dirs => $module_dirs
   );
   
+  # Config file
+  my $config_file = $self->{config_file};
+  
+  # Config
+  my $config;
+  if (defined $config_file) {
+    $config = SPVM::Builder::Util::load_config($config_file);
+  }
+  else {
+    $config = SPVM::Builder::Config->new_gnu99;
+  }
+  $self->{config} = $config;
+  
   $self->{builder} = $builder;
   
   return bless $self, $class;
@@ -175,6 +199,8 @@ sub build_exe_file {
   my ($self) = @_;
   
   my $builder = $self->builder;
+  
+  my $config = $self->config;
 
   # Target class name
   my $class_name = $self->{class_name};
@@ -194,12 +220,6 @@ sub build_exe_file {
   
   # Config file
   my $module_file = $builder->get_module_file($class_name);
-  
-  my $config_file = $module_file;
-  $config_file =~ s/\.spvm$/.config/;
-  my $config = SPVM::Builder::Util::load_config($config_file);
-  
-  $self->config($config);
   
   # Object files
   my $object_files = [];

@@ -22,7 +22,7 @@ use lib "$FindBin::Bin/exe/lib";
   
   # Basic
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B t/exe/.spvm_build -I t/exe/lib/SPVM -o t/.spvm_build/work/exe/myexe MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B t/exe/.spvm_build -I t/exe/lib/SPVM -o t/.spvm_build/work/exe/myexe -c t/exe/myexe.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
@@ -33,7 +33,7 @@ use lib "$FindBin::Bin/exe/lib";
   
   # -O, -f,  --ccflags, --lddlflags
   {
-    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -O "-O0 -g" -B t/exe/.spvm_build -I t/exe/lib/SPVM -o t/.spvm_build/work/exe/myexe MyExe);
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -O "-O0 -g" -B t/exe/.spvm_build -I t/exe/lib/SPVM -o t/.spvm_build/work/exe/myexe --config t/exe/myexe.config MyExe);
     system($spvmcc_cmd) == 0
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
