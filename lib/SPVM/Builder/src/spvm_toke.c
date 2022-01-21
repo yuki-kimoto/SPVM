@@ -300,8 +300,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->cur_file = cur_file;
               }
               else {
-                char* embedded_file_name = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 11 + strlen(cur_rel_file) + 5 + 1);
-                sprintf(embedded_file_name, "embedded://%s.spvm", cur_rel_file);
+                char* embedded_file_name = (char*)SPVM_ALLOCATOR_new_block_compile_eternal(compiler, 11 + strlen(cur_rel_file) + 1);
+                sprintf(embedded_file_name, "embedded://%s", cur_rel_file);
                 compiler->cur_file = embedded_file_name;
               }
               
