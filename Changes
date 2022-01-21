@@ -11,6 +11,7 @@ Revision history for SPVM
         * Add spvm command.
         * Improve module not found error message.
         * spvmcc bootstrap sources can detect the dependencies.
+        * the executable file created by spvmcc is cached.
 
         [NON BACKWORD COMPATIBLE CHANGES]
         * spvmcc -I option doesn't add "/SPVM" after the directory names.
