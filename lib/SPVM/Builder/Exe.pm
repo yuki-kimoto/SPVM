@@ -237,43 +237,6 @@ sub build_exe_file {
   $self->link($object_files);
 }
 
-sub need_generate {
-  my ($self, $opt) = @_;
-  
-  my $global_force = $opt->{global_force};
-  my $config_force = $opt->{config_force};
-  my $input_files = $opt->{input_files};
-  my $output_file = $opt->{output_file};
-
-  my $need_generate;
-  if ($global_force) {
-    $need_generate = 1;
-  }
-  elsif ($config_force) {
-    $need_generate = 1;
-  }
-  else {
-    if (!-f $output_file) {
-      $need_generate = 1;
-    }
-    else {
-      my $input_files_mtime_max = 0;
-      for my $input_file (@$input_files) {
-        my $input_file_mtime = (stat($input_file))[9];
-        if ($input_file_mtime > $input_files_mtime_max) {
-          $input_files_mtime_max = $input_file_mtime;
-        }
-      }
-      my $output_file_mtime = (stat($output_file))[9];
-      if ($input_files_mtime_max > $output_file_mtime) {
-        $need_generate = 1;
-      }
-    }
-  }
-  
-  return $need_generate;
-}
-
 sub create_source_file {
   my ($self, $opt) = @_;
   
@@ -284,7 +247,7 @@ sub create_source_file {
   my $output_file = $opt->{output_file};
   my $create_cb = $opt->{create_cb};
   
-  my $need_generate = $self->need_generate({
+  my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,
@@ -311,7 +274,7 @@ sub compile_source_file {
   my $source_file = $opt->{source_file};
   my $output_file = $opt->{output_file};
   
-  my $need_generate = $self->need_generate({
+  my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,
@@ -931,8 +894,8 @@ sub link {
     perllibs => '',
     libpth => '',
   };
-
-  my $need_generate = $self->need_generate({
+  
+  my $need_generate = SPVM::Builder::Util::need_generate({
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,

@@ -14,6 +14,49 @@ use File::Spec;
 # SPVM::Builder::Util is used from Makefile.PL
 # so this module must be wrote as pure perl script, not contain XS functions and don't use any other SPVM modules.
 
+sub need_generate {
+  my ($opt) = @_;
+  
+  my $global_force = $opt->{global_force};
+  my $config_force = $opt->{config_force};
+  my $input_files = $opt->{input_files};
+  my $output_file = $opt->{output_file};
+
+  my $need_generate;
+  if ($global_force) {
+    $need_generate = 1;
+  }
+  elsif ($config_force) {
+    $need_generate = 1;
+  }
+  else {
+    if (!-f $output_file) {
+      $need_generate = 1;
+    }
+    else {
+      my $input_files_mtime_max = 0;
+      my $exists_input_file_at_least_one;
+      for my $input_file (@$input_files) {
+        if (-f $input_file) {
+          $exists_input_file_at_least_one = 1;
+          my $input_file_mtime = (stat($input_file))[9];
+          if ($input_file_mtime > $input_files_mtime_max) {
+            $input_files_mtime_max = $input_file_mtime;
+          }
+        }
+      }
+      if ($exists_input_file_at_least_one) {
+        my $output_file_mtime = (stat($output_file))[9];
+        if ($input_files_mtime_max > $output_file_mtime) {
+          $need_generate = 1;
+        }
+      }
+    }
+  }
+  
+  return $need_generate;
+}
+
 sub slurp_binary {
   my ($file) = @_;
   
