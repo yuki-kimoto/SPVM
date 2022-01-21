@@ -466,65 +466,21 @@ sub compile {
     
     # Do compile. This is same as make command
     my $need_generate;
-    if ($is_native_src) {
-      $need_generate = SPVM::Builder::Util::need_generate({
-        global_force => $self->force,
-        config_force => $config->force,
-        output_file => $object_file,
-        input_files => [$config_file, $src_file, @$object_files, @include_file_names],
-      });
+    my $input_files = [$config_file, $src_file, @include_file_names];
+    unless ($is_native_src) {
+      my $module_file = $src_file;
+      $module_file =~ s/\.[^\/\\]+$//;
+      $module_file .= '.spvm';
+      
+      push @$input_files, $module_file;
     }
-    else {
-      if ($self->force) {
-        $need_generate = 1;
-      }
-      else {
-        if ($config->force) {
-          $need_generate = 1;
-        }
-        else {
-          if (!-f $object_file) {
-            $need_generate = 1;
-          }
-          else {
-            my $mod_time_object_file = (stat($object_file))[9];
-            
-            # Need the compilation if the config file is newer than the object file.
-            if ($mod_time_config_file > $mod_time_object_file) {
-              $need_generate = 1;
-            }
-            else {
-              # Need the compilation if one of the header files is newer than the object file.
-              if ($mod_time_header_files_max > $mod_time_object_file) {
-                $need_generate = 1;
-              }
-              else {
-                # Need the compilation if the source files is newer than the object file.
-                my $mod_time_src_file = (stat($src_file))[9];
-                if ($mod_time_src_file > $mod_time_object_file) {
-                  $need_generate = 1;
-                }
-                else {
-                  # Need the compilation if the module file is newer than the object file.
-                  unless ($is_native_src) {
-                    my $module_file = $src_file;
-                    $module_file =~ s/\.[^\/\\]+$//;
-                    $module_file .= '.spvm';
-                    
-                    if (-f $module_file) {
-                      my $mod_time_module_file = (stat($module_file))[9];
-                      if ($mod_time_module_file > $mod_time_object_file) {
-                        $need_generate = 1;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    $need_generate = SPVM::Builder::Util::need_generate({
+      global_force => $self->force,
+      config_force => $config->force,
+      output_file => $object_file,
+      input_files => $input_files,
+    });
+    
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_object_dir = "$object_dir/$class_rel_dir";
