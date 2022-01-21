@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9127  2021-01-21
+        [CHANGE]
+        * Improve "invalid method descriptor" error message.
+
 0.9126  2021-01-21
         [FIX BUGS]
         * Fix bugs that when native config file is not found, an exeption doesn't occur.
