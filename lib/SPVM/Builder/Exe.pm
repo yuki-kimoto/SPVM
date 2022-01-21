@@ -447,7 +447,7 @@ EOS
       
       $boot_source .= "  {\n";
       $boot_source .= "    const char* module_source = SPMODSRC__${class_cname}__get_module_source();\n";
-      $boot_source .= qq(    SPVM_HASH_insert(compiler->embedded_module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
+      $boot_source .= qq(    SPVM_HASH_insert(compiler->module_source_symtable, "$class_name", strlen("$class_name"), (void*)module_source);\n);
       $boot_source .= "  }\n";
     }
     $boot_source .= "\n";

@@ -192,7 +192,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             int32_t do_directry_module_search;
 
             // Byte, Short, Int, Long, Float, Double, Bool is already existsregistered in module source symtable
-            const char* found_module_source = SPVM_HASH_fetch(compiler->embedded_module_source_symtable, class_name, strlen(class_name));
+            const char* found_module_source = SPVM_HASH_fetch(compiler->module_source_symtable, class_name, strlen(class_name));
             if (found_module_source) {
 
             }
@@ -260,7 +260,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 src[file_size] = '\0';
                 
                 found_module_source = src;
-                SPVM_HASH_insert(compiler->embedded_module_source_symtable, class_name, strlen(class_name), src);
+                SPVM_HASH_insert(compiler->module_source_symtable, class_name, strlen(class_name), src);
               }
             }
             
