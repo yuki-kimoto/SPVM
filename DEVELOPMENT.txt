@@ -1,36 +1,26 @@
-SPVM
-
-  Static Perl Virtual Machine. Fast calculation & Easy C/C++ Binding
-  
-  See SPVM document
-  
-  https://metacpan.org/pod/SPVM
-
 DEVELOPERS NOTE
+    
+  Tests
   
-  TESTS
+    perl Makefile.PL
+    make
+    make test
+  
+  Unit Tests
+  
+    make && perl -Mblib t/default/convert.t
+
+  Cleanup
+  
+    make clean
     
-    Do tests
+  Create distribution
     
-      perl Makefile.PL
-      make
-      make test
-    
-    Cleanup
-    
-      make clean
-      
-    Create distribution
-      
-      perl Makefile.PL
-      rm MANIFEST
-      make manifest
-      make disttest
-      make dist
-    
-    Unit tests
-    
-      make && perl -Mblib t/default/convert.t
+    perl Makefile.PL
+    rm MANIFEST
+    make manifest
+    make disttest
+    make dist
 
   SOLE TESTS
 
@@ -53,60 +43,15 @@ DEVELOPERS NOTE
     
     See batcktrace of core dump
 
-      gdb solo/work/myexe core.*
+      gdb solo/work/myexe core
+      
+      bt
 
-    What is solo test command?
-
-      solo test is used for debgug.
       
-      SPVM is compiled to dynamic link library by -O3 option.
-      
-      this is difficult to debug because debug information is removed and it is not simple machine code.
-      
-      If you use the above solo test commands, you can create
-      
-        solo/work/myexe
-      
-      "solo/work/myexe" can execute SPVM module by the following way.
-      
-        ./solo/work/myexe
-
-    See core dump
-
-      If you use Debug run, you can see core dump and back trace by gdb command
-        
-        gdb solo/work/myexe core.*
-        
-        bt
-      
-      If core file is not output, set the following.
+    If core file is not output, set the following.
       
         ulimit -c unlimited
-  
-  EXE TESTS
-    
-    SPVM can create exe file.
-    
-      perl Makefile.PL
-      make && perl -Mblib -- blib/script/spvmcc -I t/default/lib TestCase::MyExe
-      env LD_LIBRARY_PATH=spvm_build/work/exe spvm_build/work/exe/TestCase__MyExe
- 
-      gdb spvm_build/work/exe/MyExe core.*
-    
-    Debug mode
-    
-      perl Makefile.PL --OPTIMIZE="-O0 -g" --DEFINE=SPVM_DEBUG_DUMP && \
-      make && perl -Mblib -- blib/script/spvmcc -I t/default/lib -B spvm_build/work/exe -n MyExe TestCase::MyExe && \
-      gcc -o spvm_build/work/exe/MyExe spvm_build/work/exe/libmy_myexe.so && \
-      spvm_build/work/exe/MyExe
-  
-  EXTERNAL LIBRARY
-    
-    For unicode processing, utf8proc is used. SPVM utf8proc is replaced utf8proc to spvm_utf8proc, UTF8PROC to SPVM_UTF8PROC
-    
-    utf8proc
-    https://github.com/JuliaStrings/utf8proc
-    
+
   PORTABILITY NOTE
   
     SPVM is run on various environments.
@@ -117,20 +62,19 @@ DEVELOPERS NOTE
     - don't use realloc.
     - don't use global variables
     - don't use inline keyword
-    - use -std=c99 always in core modules
+    - use -std=gnu99 always in core modules
     - use fgetc instead of getc for FreeBSD compile error
     - Don't use os error number(error.h defined values) outside of native subrsoutine.
     - Don't contain os dependency features(for example unistd.h, windows.h)
     - NOTE: In Windows/MinGW/Strawbery Perl, newline is always \x0A if mode is text mode
     - Automatically loaded module must not be native or precompile
-      Currently, SPVM::Byte, SPVM::Short, SPVM::Int, SPVM::Long, SPVM::Float, SPVM::Double, SPVM::Complex_2f, SPVM::Complex_2d
+      Currently, Byte, Short, Int, Long, Float, Double, Bool
     - Don't use temporary directory in SPVM module, for example, using File::Temp.
       Security risk is increased and, Windows dll file can't be removed by cleanuping temporary directory
     - Don't use feature_test_macros, for example,
       #define _XOPEN_SOURCE
       #define _POSIX_SOURCE
       #define _POSIX_C_SOURCE
-    - Don't provide spvm command because resolving module path is too complex.
 
   CODING GUIDE LINE
     - use int8_t, int16_t, int32_t, int64_t instead of byte, short, int, long, _Bool.
@@ -140,10 +84,3 @@ DEVELOPERS NOTE
     - constant name is ,for example, SPVM_TYPE_C_FLAG_REF.
       all character is upper case or under score. need _C_ between package name and constant base name
     - fix all warnings before CPAN release
-
-=head1 COPYRIGHT & LICENSE
-
-	Copyright 2018-2020 Yuki Kimoto, all rights reserved.
-
-	This program is free software; you can redistribute it and/or modify it
-	under the same terms as Perl itself.
