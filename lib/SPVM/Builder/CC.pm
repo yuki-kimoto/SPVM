@@ -813,53 +813,14 @@ sub link {
   # Move temporary shared library file to blib directory
   mkpath dirname $shared_lib_file;
 
-  my $mod_time_config_file;
-  if (-f $config_file) {
-     $mod_time_config_file = (stat($config_file))[9];
-  }
-  else {
-    $mod_time_config_file = 0;
-  }
-  my $mod_time_object_files_max = 0;
-  for my $object_file (@$object_files) {
-    my $mod_time_object_file = (stat($object_file))[9];
-    if ($mod_time_object_file > $mod_time_object_files_max) {
-      $mod_time_object_files_max = $mod_time_object_file;
-    }
-  }
+  my $need_generate = SPVM::Builder::Util::need_generate({
+    global_force => $self->force,
+    config_force => $config->force,
+    output_file => $shared_lib_file,
+    input_files => [$config_file, @$object_files],
+  });
 
-  # Need link
-  my $need_link;
-  if ($self->force) {
-    $need_link = 1;
-  }
-  else {
-    if ($config->force) {
-      $need_link = 1;
-    }
-    else {
-      if (!-f $shared_lib_file) {
-        $need_link = 1;
-      }
-      else {
-        
-        my $mod_shared_lib_file = (stat($shared_lib_file))[9];
-        
-        # Need the compilation if the config file is newer than the object file.
-        if ($mod_time_config_file > $mod_shared_lib_file) {
-          $need_link = 1;
-        }
-        else {
-          # Need the compilation if one of the header files is newer than the object file.
-          if ($mod_time_object_files_max > $mod_shared_lib_file) {
-            $need_link = 1;
-          }
-        }
-      }
-    }
-  }
-  
-  if ($need_link) {
+  if ($need_generate) {
     # Create shared library
     my (undef, @tmp_files) = $cbuilder->link(
       lib_file => $shared_lib_file,
