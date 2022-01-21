@@ -534,6 +534,7 @@ Makefile.PL
 MANIFEST			This list of files
 ppport.h
 README.md
+script/spvm
 script/spvmcc
 solo/solo_Makefile.PL
 solo/SPVM/Main.spvm
