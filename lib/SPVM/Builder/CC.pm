@@ -923,40 +923,30 @@ sub create_precompile_csource {
   my $src_dir = $opt->{src_dir};
   mkpath $src_dir;
   
+  # Module file - Input
   my $module_file = $self->builder->get_module_file($class_name);
   
+  # Precompile source file - Output
   my $class_rel_file_without_ext = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
   my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
   my $source_file = "$src_dir/$class_rel_file_without_ext.precompile.c";
 
-  my $need_create;
-  if ($self->force) {
-    $need_create = 1;
-  }
-  else {
-    if (!-f $source_file) {
-      $need_create = 1;
-    }
-    else {
-      my $mtime_module_file = (stat($module_file))[9];
-      my $mtime_source_file = (stat($source_file))[9];
-      if ($mtime_module_file > $mtime_source_file) {
-        $need_create = 1;
-      }
-    }
-  }
+  my $need_generate = SPVM::Builder::Util::need_generate({
+    global_force => $self->force,
+    config_force => 0,
+    output_file => $source_file,
+    input_files => [$module_file],
+  });
   
-  if ($need_create) {
+  if ($need_generate) {
     my $source_dir = "$src_dir/$class_rel_dir";
     mkpath $source_dir;
     
     my $class_csource = $self->build_class_csource_precompile($class_name);
-    if ($need_create) {
-      open my $fh, '>', $source_file
-        or die "Can't create $source_file";
-      print $fh $class_csource;
-      close $fh;
-    }
+    open my $fh, '>', $source_file
+      or die "Can't create $source_file";
+    print $fh $class_csource;
+    close $fh;
   }
 }
 
