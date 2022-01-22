@@ -35,7 +35,7 @@ my $output_expect = 'AAA t/exe/myexe.pl 3 1 1 7 args1 args2';
     
     my $output = `$execute_cmd_with_args`;
     chomp $output;
-    my $output_expect = 'AAA t/.spvm_build/work/exe/myexe 3 1 1 7 args1 args2';
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
     is($output, $output_expect);
   }
   
@@ -49,15 +49,28 @@ my $output_expect = 'AAA t/exe/myexe.pl 3 1 1 7 args1 args2';
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command: $execute_cmd_with_args:$!";
+
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
+    is($output, $output_expect);
   }
 }
 
 # SPVM script
 {
   $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build";
-  my $spvm_script = qq($^X -Mblib -I t/exe/lib t/exe/myexe.pl args1 args2);
-  system($spvm_script) == 0
-    or die "Can't execute SPVM script: $spvm_script:$!";
+  
+  my $spvm_script = File::Spec->catfile(qw/t exe myexe.pl/);
+  my $execute_cmd = qq($^X -Mblib -I t/exe/lib $spvm_script);
+  my $execute_cmd_with_args = "$execute_cmd args1 args2";
+  system($execute_cmd_with_args) == 0
+    or die "Can't execute SPVM script: $execute_cmd_with_args:$!";
+
+  my $output = `$execute_cmd_with_args`;
+  chomp $output;
+  my $output_expect = "AAA $spvm_script 3 1 1 7 args1 args2";
+  is($output, $output_expect);
 }
 
 ok(1);
