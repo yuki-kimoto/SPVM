@@ -27,8 +27,9 @@ use lib "$FindBin::Bin/exe/lib";
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
     my $execute_cmd = File::Spec->catfile(qw/t .spvm_build work exe myexe/);
-    system($execute_cmd) == 0
-      or die "Can't execute exe file $execute_cmd:$!";
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    system($execute_cmd_with_args) == 0
+      or die "Can't execute command:$execute_cmd_with_args:$!";
   }
   
   # -O, -f,  --ccflags, --lddlflags
@@ -38,9 +39,18 @@ use lib "$FindBin::Bin/exe/lib";
       or die "Can't execute spvmcc command $spvmcc_cmd:$!";
 
     my $execute_cmd = File::Spec->catfile(qw/t .spvm_build work exe myexe/);
-    system($execute_cmd) == 0
-      or die "Can't execute exe file $execute_cmd:$!";
+    my $execute_cmd_with_args = "$execute_cmd args1 args2";
+    system($execute_cmd_with_args) == 0
+      or die "Can't execute command: $execute_cmd_with_args:$!";
   }
+}
+
+# SPVM script
+{
+  $ENV{SPVM_BUILD_DIR} = "$FindBin::Bin/.spvm_build";
+  my $spvm_script = qq($^X -Mblib -I t/exe/lib t/exe/myexe.pl args1 args2);
+  system($spvm_script) == 0
+    or die "Can't execute SPVM script: $spvm_script:$!";
 }
 
 ok(1);

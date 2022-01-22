@@ -496,27 +496,32 @@ EOS
   SPVM_ENV* env = SPVM_API_create_env(compiler);
   
   // Class
-  int32_t method_id = SPVM_API_get_class_method_id(env, class_name, "main", "int(string[])");
+  int32_t method_id = SPVM_API_get_class_method_id(env, class_name, "main", "int(string,string[])");
   
   if (method_id < 0) {
+    fprintf(stderr, "Can't find the definition of valid %s->main method:.\n    static method main : int ($start_file : string, $args : string[]) { ... } \n", class_name);
     return -1;
   }
   
   // Enter scope
   int32_t scope_id = env->enter_scope(env);
   
+  // Starting file name
+  void* cmd_start_file_obj = env->new_string(env, argv[0], strlen(argv[0]));
+  
   // new byte[][args_length] object
   int32_t arg_type_basic_id = env->get_basic_type_id(env, "byte");
-  void* cmd_args_obj = env->new_muldim_array(env, arg_type_basic_id, 1, argc);
+  void* cmd_args_obj = env->new_muldim_array(env, arg_type_basic_id, 1, argc - 1);
   
   // Set command line arguments
-  for (int32_t arg_index = 0; arg_index < argc; arg_index++) {
+  for (int32_t arg_index = 1; arg_index < argc; arg_index++) {
     void* cmd_arg_obj = env->new_string(env, argv[arg_index], strlen(argv[arg_index]));
-    env->set_elem_object(env, cmd_args_obj, arg_index, cmd_arg_obj);
+    env->set_elem_object(env, cmd_args_obj, arg_index - 1, cmd_arg_obj);
   }
   
   SPVM_VALUE stack[255];
-  stack[0].oval = cmd_args_obj;
+  stack[0].oval = cmd_start_file_obj;
+  stack[1].oval = cmd_args_obj;
   
   // Run
   int32_t exception_flag = env->call_spvm_method(env, method_id, stack);

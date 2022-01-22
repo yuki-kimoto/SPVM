@@ -3,7 +3,7 @@ class MyExe {
   use TestCase::NativeAPI2;
   use Unicode;
   
-  static method main : int ($args : string[]) {
+  static method main : int ($start_file : string, $args : string[]) {
     my $sum = MyExe::Precompile->sum(1, 2);
     my $ret1 = TestCase::NativeAPI2->src_foo;
     my $ret2 = TestCase::NativeAPI2->src_bar;
@@ -12,6 +12,6 @@ class MyExe {
     
     my $ret4 = Unicode->uchar_to_utf8(13);
     
-    print "AAA $sum $ret1 $ret2 $ret3\n";
+    print "AAA $start_file $sum $ret1 $ret2 $ret3 $args->[0] $args->[1]\n";
   }
 }
