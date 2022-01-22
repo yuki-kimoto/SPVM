@@ -16,6 +16,8 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/exe/lib";
 
+my $output_expect = 'AAA t/exe/myexe.pl 3 1 1 7 args1 args2';
+
 {
   my $exe_dir = 't/.spvm_build/work/exe';
   mkpath $exe_dir;
@@ -30,6 +32,11 @@ use lib "$FindBin::Bin/exe/lib";
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
     system($execute_cmd_with_args) == 0
       or die "Can't execute command:$execute_cmd_with_args:$!";
+    
+    my $output = `$execute_cmd_with_args`;
+    chomp $output;
+    my $output_expect = 'AAA t/.spvm_build/work/exe/myexe 3 1 1 7 args1 args2';
+    is($output, $output_expect);
   }
   
   # -O, -f,  --ccflags, --lddlflags
