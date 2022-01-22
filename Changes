@@ -10,7 +10,7 @@ Revision history for SPVM
           static method main : int ($args : string[]) {
           [After]
           static method main : int ($start_file : string, $args : string[]) {
-        * Remove spvm command because perl command is enough and I realize this is not needed.
+        * Remove spvm command because perl command is enough. I realized spvm command is not needed now.
           #!/usr/bin/perl
           
           use strict;
@@ -18,7 +18,7 @@ Revision history for SPVM
 
           use SPVM 'MyExe';
 
-          MyExe->main($0, \@ARGV);
+          SPVM::MyExe->main($0, \@ARGV);
           
 0.9126  2021-01-21
         [FIX BUGS]
