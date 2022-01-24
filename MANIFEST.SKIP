@@ -32,3 +32,4 @@ SPVM-.*
 \.so$
 ^SPVM.def
 \.spvm_build
+^tmp/
