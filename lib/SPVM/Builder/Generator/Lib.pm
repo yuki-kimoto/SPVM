@@ -67,14 +67,14 @@ sub module_dir {
   }
 }
 
-sub language {
+sub native_language {
   my $self = shift;
   if (@_) {
-    $self->{language} = $_[0];
+    $self->{native_language} = $_[0];
     return $self;
   }
   else {
-    return $self->{language};
+    return $self->{native_language};
   }
 }
 
@@ -94,14 +94,14 @@ sub new {
     confess "Class name must be specified";
   }
   
-  my $language = $self->language;
-  if (defined $language) {
-    unless ($language eq 'c' || $language eq 'c++') {
-      confess "Can't support language \"$language\"";
+  my $native_language = $self->native_language;
+  if (defined $native_language) {
+    unless ($native_language eq 'c' || $native_language eq 'c++') {
+      confess "Can't support native_language \"$native_language\"";
     }
   }
   else {
-    $self->language('c');
+    $self->native_language('c');
   }
   
   return $self;
@@ -114,7 +114,7 @@ sub generate_lib {
   
   my $class_name = $self->class_name;
   
-  my $language = $self->language;
+  my $native_language = $self->native_language;
   
   my $class_name_rel_file = $class_name;
   $class_name_rel_file =~ s|::|/|g;
@@ -122,11 +122,11 @@ sub generate_lib {
   my $native_lib_name = $self->native_lib_name;
 
   my $native_module_ext;
-  if ($language eq 'c') {
+  if ($native_language eq 'c') {
     $native_module_ext = 'c';
   }
-  elsif ($language eq 'c++') {
-    $native_module_ext = 'c++';
+  elsif ($native_language eq 'c++') {
+    $native_module_ext = 'cpp';
   }
   
   # Create lib directory
@@ -158,10 +158,10 @@ EOS
     mkpath dirname $config_file;
     
     my $new_method;
-    if ($language eq 'c') {
+    if ($native_language eq 'c') {
       $new_method = 'new_gnu99';
     }
-    elsif ($language eq 'c++') {
+    elsif ($native_language eq 'c++') {
       $new_method = 'new_cpp';
     }
     
@@ -190,7 +190,7 @@ EOS
   # Create the native module file
   my $extern_c_start;
   my $extern_c_end;
-  if ($native_module_ext eq 'c++') {
+  if ($native_language eq 'c++') {
     $extern_c_start = qq(extern "C" {);
     $extern_c_end = "}";
   }
@@ -285,13 +285,14 @@ EOS
 
   # Create the script file
   my $script_file = $self->script_file;
-  if ($force || !-f $script_file) {
-    mkpath dirname $script_file;
-    
-    my $perl_module_dir = $module_dir;
-    $perl_module_dir =~ s/[\\\/]SPVM$//;
-    
-    my $script_content = <<"EOS";
+  if (defined $script_file) {
+    if ($force || !-f $script_file) {
+      mkpath dirname $script_file;
+      
+      my $perl_module_dir = $module_dir;
+      $perl_module_dir =~ s/[\\\/]SPVM$//;
+      
+      my $script_content = <<"EOS";
 use strict;
 use warnings;
 use FindBin;
@@ -302,10 +303,11 @@ my \$total = SPVM::$class_name->sum(1, 2);
 
 print "\$total\n";
 EOS
-    SPVM::Builder::Util::spurt_binary($script_file, $script_content);
-  }
-  else {
-    warn "Module file \"$script_file\" already exists";
+      SPVM::Builder::Util::spurt_binary($script_file, $script_content);
+    }
+    else {
+      warn "Module file \"$script_file\" already exists";
+    }
   }
 }
 
