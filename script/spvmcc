@@ -23,7 +23,7 @@ if ($help) {
   die SPVM::Builder::Util::extract_usage;
 }
 elsif ($show_version) {
-  my $version_string = 'spvmcc v$SPVM::VERSION';
+  my $version_string = "spvmcc v$SPVM::VERSION";
   print "$version_string\n";
 }
 else {
