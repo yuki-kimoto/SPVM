@@ -1,5 +1,10 @@
 Revision history for SPVM
 
+0.9128  2021-01-24
+        [CHANGE]
+        * Add spvmlibgen command and SPVM::Builder::Generator::Lib.
+        [FIX BUGS]
+        * Fix the bug that "spvmcc -v" doesn't display the version.
 0.9127  2021-01-22
         [CHANGE]
         * Improve "invalid method descriptor" error message.

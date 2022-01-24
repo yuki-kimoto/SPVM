@@ -360,6 +360,7 @@ lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
 lib/SPVM/Builder/Exe.pm
+lib/SPVM/Builder/Generator/Lib.pm
 lib/SPVM/Builder/include/spvm_allocator.h
 lib/SPVM/Builder/include/spvm_allow.h
 lib/SPVM/Builder/include/spvm_api.h
@@ -535,6 +536,7 @@ MANIFEST			This list of files
 ppport.h
 README.md
 script/spvmcc
+script/spvmgenlib
 solo/myexe.c
 solo/solo_Makefile.PL
 solo/SPVM/MyExe.spvm

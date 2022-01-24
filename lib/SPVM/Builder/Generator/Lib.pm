@@ -11,11 +11,6 @@ use File::Basename 'dirname', 'basename';
 use SPVM::Builder::Util;
 use Getopt::Long 'GetOptions';
 
-# Command line utility SPVM::genlib
-sub genlib {
-  
-}
-
 # Fields
 sub force {
   my $self = shift;
@@ -61,14 +56,14 @@ sub class_name {
   }
 }
 
-sub lib_dir {
+sub module_dir {
   my $self = shift;
   if (@_) {
-    $self->{lib_dir} = $_[0];
+    $self->{module_dir} = $_[0];
     return $self;
   }
   else {
-    return $self->{lib_dir};
+    return $self->{module_dir};
   }
 }
 
@@ -134,10 +129,14 @@ sub generate_lib {
   }
   
   # Create lib directory
-  my $lib_dir = $self->lib_dir;
+  unless (defined $self->module_dir) {
+    my $default_module_dir = 'lib/SPVM';
+    $self->module_dir($default_module_dir);
+  }
+  my $module_dir = $self->module_dir;
   
   # Create the module file
-  my $module_file = "$lib_dir/$class_name_rel_file.spvm";
+  my $module_file = "$module_dir/$class_name_rel_file.spvm";
   if ($force || !-f $module_file) {
     mkpath dirname $module_file;
     
@@ -153,7 +152,7 @@ EOS
   }
   
   # Create the config file
-  my $config_file = "$lib_dir/$class_name_rel_file.config";
+  my $config_file = "$module_dir/$class_name_rel_file.config";
   if ($force || !-f $config_file) {
     mkpath dirname $config_file;
     
@@ -210,7 +209,7 @@ EOS
     $calcurate_total = 'num0 + num1';
   }
   
-  my $native_module_file = "$lib_dir/$class_name_rel_file.$native_module_ext";
+  my $native_module_file = "$module_dir/$class_name_rel_file.$native_module_ext";
   if ($force || !-f $native_module_file) {
     mkpath dirname $native_module_file;
     
@@ -247,7 +246,7 @@ EOS
   }
   
   if (defined $native_lib_name) {
-    my $native_header_file = "$lib_dir/$class_name_rel_file/native/include/$native_lib_name.h";
+    my $native_header_file = "$module_dir/$class_name_rel_file/native/include/$native_lib_name.h";
     if ($force || !-f $native_header_file) {
       mkpath dirname $native_header_file;
       
@@ -262,7 +261,7 @@ EOS
       warn "Native header file \"$native_header_file\" already exists";
     }
 
-    my $native_source_file = "$lib_dir/$class_name_rel_file/native/src/$native_lib_name.$native_module_ext";
+    my $native_source_file = "$module_dir/$class_name_rel_file/native/src/$native_lib_name.$native_module_ext";
     if ($force || !-f $native_source_file) {
       mkpath dirname $native_source_file;
       
