@@ -68,6 +68,15 @@ sub slurp_binary {
   return $content;
 }
 
+sub spurt_binary {
+  my ($file, $content) = @_;
+  
+  open my $fh, '>:raw', $file
+    or confess "Can't open file \"$file\":$!";
+    
+  print $fh $content;
+}
+
 sub create_cfunc_name {
   my ($class_name, $method_name, $category) = @_;
   
