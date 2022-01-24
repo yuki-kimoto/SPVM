@@ -20,7 +20,13 @@ use SPVM::Builder::Util;
   # SPVM only support 64bit integer Perl
   my $ivsize = $Config{ivsize};
   if ($ivsize < 8) {
-    warn "SPVM don't support the Perl which \"ivsize\" is lower than 8\n";
+    warn "SPVM doesn't support the Perl which \"ivsize\" is lower than 8\n";
+    die "OS unsupported\n";
+  }
+
+  my $uname = $Config{uname};
+  if ($uname =~ /\balpine\b/i) {
+    warn "Currently SPVM doesn't support Alpine Linux because segmentation fault occurs due to incompatibility with glibc. If you want to use SPVM on Alpine Linux, please join SVPM product to fix the problems\n";
     die "OS unsupported\n";
   }
 }
