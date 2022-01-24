@@ -23,10 +23,11 @@ use SPVM::Builder::Util;
     warn "SPVM doesn't support the Perl which \"ivsize\" is lower than 8\n";
     die "OS unsupported\n";
   }
-
+  
+  # Currently SPVM doesn't support Alpine Linux
   my $uname = $Config{uname};
   if ($uname =~ /\balpine\b/i) {
-    warn "Currently SPVM doesn't support Alpine Linux because segmentation fault occurs due to incompatibility with glibc. If you want to use SPVM on Alpine Linux, please join SVPM product to fix the problems\n";
+    warn "Currently SPVM doesn't support Alpine Linux because segmentation fault occurs due to incompatibility with glibc. If you want to use SPVM on Alpine Linux, please join SVPM project to fix the problems\n";
     die "OS unsupported\n";
   }
 }
