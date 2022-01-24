@@ -96,11 +96,11 @@ sub new {
   
   my $language = $self->language;
   if (defined $language) {
-    unless ($language eq 'c' || $language eq 'cpp') {
+    unless ($language eq 'c' || $language eq 'c++') {
       confess "Can't support language \"$language\"";
     }
   }
-  elsif (defined $language) {
+  else {
     $self->language('c');
   }
   
@@ -116,7 +116,8 @@ sub generate_lib {
   
   my $language = $self->language;
   
-  my $class_name_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
+  my $class_name_rel_file = $class_name;
+  $class_name_rel_file =~ s|::|/|g;
   
   my $native_lib_name = $self->native_lib_name;
 
@@ -124,8 +125,8 @@ sub generate_lib {
   if ($language eq 'c') {
     $native_module_ext = 'c';
   }
-  elsif ($language eq 'cpp') {
-    $native_module_ext = 'cpp';
+  elsif ($language eq 'c++') {
+    $native_module_ext = 'c++';
   }
   
   # Create lib directory
@@ -142,10 +143,10 @@ sub generate_lib {
     
     my $module_content = <<"EOS";
 class $class_name {
-  native static method sum (\$num0 : int, \$num1 : int);
+  native static method sum : int (\$num0 : int, \$num1 : int);
 }
 EOS
-    SPVM::Builder::Util::squrt_binary($module_content);
+    SPVM::Builder::Util::spurt_binary($module_file, $module_content);
   }
   else {
     warn "Module file \"$module_file\" already exists";
@@ -160,7 +161,7 @@ EOS
     if ($language eq 'c') {
       $new_method = 'new_gnu99';
     }
-    elsif ($language eq 'cpp') {
+    elsif ($language eq 'c++') {
       $new_method = 'new_cpp';
     }
     
@@ -180,7 +181,7 @@ $add_source_files;
 
 \$config;
 EOS
-    SPVM::Builder::Util::squrt_binary($config_content);
+    SPVM::Builder::Util::spurt_binary($config_file, $config_content);
   }
   else {
     warn "Config file \"$config_file\" already exists";
@@ -189,7 +190,7 @@ EOS
   # Create the native module file
   my $extern_c_start;
   my $extern_c_end;
-  if ($native_module_ext eq 'cpp') {
+  if ($native_module_ext eq 'c++') {
     $extern_c_start = qq(extern "C" {);
     $extern_c_end = "}";
   }
@@ -222,7 +223,7 @@ $include_native_header
 
 $extern_c_start
 
-int32_t ${native_class_name}__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__${native_class_name}__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   
   int32_t num0 = stack[0].ival;
@@ -239,14 +240,14 @@ $extern_c_end
 EOS
 
     
-    SPVM::Builder::Util::squrt_binary($native_module_content);
+    SPVM::Builder::Util::spurt_binary($native_module_file, $native_module_content);
   }
   else {
     warn "Native module file \"$native_module_file\" already exists";
   }
   
   if (defined $native_lib_name) {
-    my $native_header_file = "$module_dir/$class_name_rel_file/native/include/$native_lib_name.h";
+    my $native_header_file = "$module_dir/$class_name_rel_file.native/include/$native_lib_name.h";
     if ($force || !-f $native_header_file) {
       mkpath dirname $native_header_file;
       
@@ -255,13 +256,13 @@ EOS
 
 int32_t ${native_lib_name}_sum(int32_t num0, int32_t num1);
 EOS
-      SPVM::Builder::Util::squrt_binary($native_header_content);
+      SPVM::Builder::Util::spurt_binary($native_header_file, $native_header_content);
     }
     else {
       warn "Native header file \"$native_header_file\" already exists";
     }
 
-    my $native_source_file = "$module_dir/$class_name_rel_file/native/src/$native_lib_name.$native_module_ext";
+    my $native_source_file = "$module_dir/$class_name_rel_file.native/src/$native_lib_name.$native_module_ext";
     if ($force || !-f $native_source_file) {
       mkpath dirname $native_source_file;
       
@@ -275,7 +276,7 @@ int32_t ${native_lib_name}_sum(int32_t num0, int32_t num1) {
   return total;
 }
 EOS
-      SPVM::Builder::Util::squrt_binary($native_source_content);
+      SPVM::Builder::Util::spurt_binary($native_source_file, $native_source_content);
     }
     else {
       warn "Native source file \"$native_source_file\" already exists";
@@ -287,17 +288,21 @@ EOS
   if ($force || !-f $script_file) {
     mkpath dirname $script_file;
     
+    my $perl_module_dir = $module_dir;
+    $perl_module_dir =~ s/[\\\/]SPVM$//;
+    
     my $script_content = <<"EOS";
 use strict;
 use warnings;
-
+use FindBin;
+use lib '$perl_module_dir';
 use SPVM '$class_name';
 
-my \$total = $class_name->sum(1, 2);
+my \$total = SPVM::$class_name->sum(1, 2);
 
 print "\$total\n";
 EOS
-    SPVM::Builder::Util::squrt_binary($script_content);
+    SPVM::Builder::Util::spurt_binary($script_file, $script_content);
   }
   else {
     warn "Module file \"$script_file\" already exists";
