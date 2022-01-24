@@ -3,6 +3,10 @@ Revision history for SPVM
 0.9128  2021-01-24
         [CHANGE]
         * Add spvmlibgen command and SPVM::Builder::Generator::Lib.
+        * Currently SPVM doesn't support Alpine Linux because segmentation fault occurs
+          due to incompatibility with glibc.
+          If you want to use SPVM on Alpine Linux,
+          please join SVPM project to fix the problems
         [FIX BUGS]
         * Fix the bug that "spvmcc -v" doesn't display the version.
 0.9127  2021-01-22
