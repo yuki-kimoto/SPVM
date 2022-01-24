@@ -1,0 +1,5 @@
+class TestCase::CompileError::Literal::Character::InvalidHexAscii1 {
+  static method main : int () {
+    '\xg1';
+  }
+}

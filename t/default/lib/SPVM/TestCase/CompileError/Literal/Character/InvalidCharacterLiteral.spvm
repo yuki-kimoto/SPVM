@@ -1,4 +1,4 @@
-class TestCase::CompileError::Literal::InvalidCharacterLiteral {
+class TestCase::CompileError::Literal::Character::InvalidCharacterLiteral {
   static method main : int () {
     '\A';
   }

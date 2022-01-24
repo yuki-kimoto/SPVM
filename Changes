@@ -1,6 +1,8 @@
 Revision history for SPVM
 
 0.9129  2021-01-24
+        [CHANGE]
+        * Improve the error messages of character literals.
         [FIX BUGS]
         * Fix the bug that \b is escaped to ASCII Code 8 BS in the charater literal.
           \b is a raw escape charater in the string literal. In document, \b is both escaped to ASCII Code 8 BS and \b is raw escape charater.

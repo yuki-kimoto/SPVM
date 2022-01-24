@@ -101,23 +101,43 @@ use lib "$FindBin::Bin/lib";
 
 # Literal
 {
+  # Caharater
   {
-    my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty', __FILE__, __LINE__);
-    ok($success == 0);
+    {
+      
+      my $build = SPVM::Builder->new;
+      my $success = $build->compile_spvm('TestCase::CompileError::Literal::Character::InvalidCharacterLiteralEmpty', __FILE__, __LINE__);
+      ok($success == 0);
+    }
+    {
+      
+      my $build = SPVM::Builder->new;
+      my $success = $build->compile_spvm('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral', __FILE__, __LINE__);
+      ok($success == 0);
+    }
+    {
+      my $build = SPVM::Builder->new;
+      my $success = $build->compile_spvm('TestCase::CompileError::Literal::Character::NotEnd', __FILE__, __LINE__);
+      ok($success == 0);
+    }
+    {
+      my $build = SPVM::Builder->new;
+      my $success = $build->compile_spvm('TestCase::CompileError::Literal::Character::InvalidHexAscii1', __FILE__, __LINE__);
+      ok($success == 0);
+    }
+    {
+      my $build = SPVM::Builder->new;
+      my $success = $build->compile_spvm('TestCase::CompileError::Literal::Character::InvalidHexAscii2', __FILE__, __LINE__);
+      ok($success == 0);
+    }
   }
-  {
-    my $build = SPVM::Builder->new;
-    my $success = $build->compile_spvm('TestCase::CompileError::Literal::Character::InvalidCharacterLiteral', __FILE__, __LINE__);
-    ok($success == 0);
-  }
+  # Integer
   {
     my $build = SPVM::Builder->new;
     my $success = $build->compile_spvm('TestCase::CompileError::Literal::Integer::IntOutOfRange', __FILE__, __LINE__);
     ok($success == 0);
   }
 }
-
 
 # Lexcarl Variable
 {

@@ -774,13 +774,14 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
           yylvalp->opval = op;
         return BIT_NOT;
       }
-      // Character Literal
+      // Character literals
       case '\'': {
         compiler->bufptr++;
         char ch = 0;
         
         if (*compiler->bufptr == '\'') {
-          SPVM_COMPILER_error(compiler, "Character Literal must have one character at %s line %d\n", compiler->cur_file, compiler->cur_line);
+          SPVM_COMPILER_error(compiler, "Character literals must have at least one character at %s line %d\n", compiler->cur_file, compiler->cur_line);
+          compiler->bufptr++;
         }
         else {
           if (*compiler->bufptr == '\\') {
@@ -824,7 +825,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             // Hex ascii code
             else if (*compiler->bufptr == 'x') {
               compiler->bufptr++;
-              if (*compiler->bufptr == '0' || *compiler->bufptr == '1' || *compiler->bufptr == '2' || *compiler->bufptr == '3' || *compiler->bufptr == '4' || *compiler->bufptr == '5' || *compiler->bufptr == '6' || *compiler->bufptr == '7') {
+              if (isdigit(*compiler->bufptr)
+                  || (*compiler->bufptr >= 'a' && *compiler->bufptr <= 'f')
+                  || (*compiler->bufptr >= 'A' && *compiler->bufptr <= 'F'))
+              {
                 int32_t memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
                 
                 char* num_str = SPVM_ALLOCATOR_new_block_compile_tmp(compiler, 3);
@@ -832,9 +836,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                 compiler->bufptr++;
                 if (
                   isdigit(*compiler->bufptr)
-                  || *compiler->bufptr == 'a'  || *compiler->bufptr == 'b'  || *compiler->bufptr == 'c'  || *compiler->bufptr == 'd'  || *compiler->bufptr == 'e'  || *compiler->bufptr == 'f'
-                  || *compiler->bufptr == 'A'  || *compiler->bufptr == 'B'  || *compiler->bufptr == 'C'  || *compiler->bufptr == 'D'  || *compiler->bufptr == 'E'  || *compiler->bufptr == 'F'
-                )
+                  || (*compiler->bufptr >= 'a' && *compiler->bufptr <= 'f')
+                  || (*compiler->bufptr >= 'A' && *compiler->bufptr <= 'F'))
                 {
                   num_str[1] = *compiler->bufptr;
                   compiler->bufptr++;
@@ -842,17 +845,20 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   ch = (char)strtol(num_str, &end, 16);
                 }
                 else {
-                  SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                  SPVM_COMPILER_error(compiler, "A invalid hexadecimal ascii code \"\\x%c%c\" in the second hexadecimal character of the charater literal at %s line %d\n", *(compiler->bufptr - 1), *compiler->bufptr, compiler->cur_file, compiler->cur_line);
+                  compiler->bufptr++;
                 }
                 SPVM_ALLOCATOR_free_block_compile_tmp(compiler, num_str);
                 assert(compiler->allocator->memory_blocks_count_compile_tmp == memory_blocks_count_compile_tmp);
               }
               else {
-                SPVM_COMPILER_error(compiler, "Invalid ascii code in escape character of charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+                SPVM_COMPILER_error(compiler, "A invalid hexadecimal ascii code \"\\x%c%c\" in the first hexadecimal character of the charater literal at %s line %d\n", *compiler->bufptr, *(compiler->bufptr + 1), compiler->cur_file, compiler->cur_line);
+                compiler->bufptr += 2;
               }
             }
             else {
-              SPVM_COMPILER_error(compiler, "Invalid escape character in charater literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
+              SPVM_COMPILER_error(compiler, "A invalid escape character \"\\%c\" in the charater literal at %s line %d\n", *compiler->bufptr, compiler->cur_file, compiler->cur_line);
+              compiler->bufptr++;
             }
           }
           else {
@@ -864,7 +870,7 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
             compiler->bufptr++;
           }
           else {
-            SPVM_COMPILER_error(compiler, "Can't find character literal terminiator at %s line %d\n", compiler->cur_file, compiler->cur_line);
+            SPVM_COMPILER_error(compiler, "Can't find the terminiator \"'\" of the character literal at %s line %d\n", compiler->cur_file, compiler->cur_line);
           }
         }
         
