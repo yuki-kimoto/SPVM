@@ -55,10 +55,10 @@ spvmcc - SPVM compiler to create exe file
 
 =head1 SYNOPSIS
 
-  Usage: spvmcc [OPTIONS] [MODULE_NAME]
+  Usage: spvmcc [OPTIONS] [CLASS_NAME]
     
     # lib/SPVM/Myapp.spvm
-    spvmcc -I lib -o myapp Myapp
+    spvmcc -I lib/SPVM -o myapp Myapp
 
   Options:
     -h, --help                     Show this message
