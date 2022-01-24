@@ -2719,14 +2719,6 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
   </tr>
   <tr>
     <td>
-      <b>\b</b>
-    </td>
-    <td>
-      ASCII Code 8 BS
-    </td>
-  </tr>
-  <tr>
-    <td>
       <b>\t</b>
     </td>
     <td>
@@ -2802,7 +2794,6 @@ Charater Literal Type is "<a href="#language-type-byte">byte Type</a>"
 
 # Charater Literal using Escape Character
 '\a'
-'\b'
 '\t'
 '\n'
 '\f'
@@ -2847,14 +2838,6 @@ The content of String Literal is zero or more ASCII printable Characters or Esca
     </td>
     <td>
       ASCII Code 7 BEL
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>\b</b>
-    </td>
-    <td>
-      ASCII Code 8 BS
     </td>
   </tr>
   <tr>

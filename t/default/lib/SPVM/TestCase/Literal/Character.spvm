@@ -15,7 +15,6 @@ class TestCase::Literal::Character {
     # Escape sequence
     my $ch_0 = '\0';
     my $ch_a = '\a';
-    my $ch_b = '\b';
     my $ch_t = '\t';
     my $ch_n = '\n';
     my $ch_f = '\f';
@@ -29,10 +28,6 @@ class TestCase::Literal::Character {
     }
 
     unless ($ch_a == 7) {
-      return 0;
-    }
-    
-    unless ($ch_b == 8) {
       return 0;
     }
     
