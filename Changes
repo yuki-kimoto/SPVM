@@ -2,9 +2,11 @@ Revision history for SPVM
 
 0.9129  2021-01-24
         [FIX BUGS]
-        * Fix the dobument bug that \b is escaped to ASCII Code 8 BS in the charater literal and the string literal.
-          \b is a raw escape charater. In document, \b is both escaped to ASCII Code 8 BS and \b is raw escape charater.
+        * Fix the bug that \b is escaped to ASCII Code 8 BS in the charater literal.
+          \b is a raw escape charater in the string literal. In document, \b is both escaped to ASCII Code 8 BS and \b is raw escape charater.
           It is right that \b is a raw escape charater.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Sorry. \b is not supported in the character literal. Please replace \b with \x08.
 
 0.9128  2021-01-24
         [CHANGE]

@@ -793,10 +793,6 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               ch = '\a';
               compiler->bufptr++;
             }
-            else if (*compiler->bufptr == 'b') {
-              ch = '\b';
-              compiler->bufptr++;
-            }
             else if (*compiler->bufptr == 'f') {
               ch = '\f';
               compiler->bufptr++;
