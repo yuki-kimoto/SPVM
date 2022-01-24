@@ -272,6 +272,11 @@ sub call_spvm_method {
   SPVM::ExchangeAPI::call_spvm_method($BUILDER->{env}, @_);
 }
 
+sub genlib {
+  require SPVM::Builder::Generator::Lib;
+  SPVM::Builder::Generator::Lib->genlib;
+}
+
 1;
 
 =encoding utf8

@@ -8,7 +8,13 @@ use File::Copy 'copy', 'move';
 use File::Path 'mkpath';
 use File::Find 'find';
 use File::Basename 'dirname', 'basename';
-use SPVM::Util;
+use SPVM::Builder::Util;
+use Getopt::Long 'GetOptions';
+
+# Command line utility SPVM::genlib
+sub genlib {
+  
+}
 
 # Fields
 sub force {
@@ -99,7 +105,7 @@ sub new {
       confess "Can't support language \"$language\"";
     }
   }
-  else (defined $language) {
+  elsif (defined $language) {
     $self->language('c');
   }
   
@@ -120,10 +126,10 @@ sub generate_lib {
   my $native_lib_name = $self->native_lib_name;
 
   my $native_module_ext;
-  if ($lagunage eq 'c') {
+  if ($language eq 'c') {
     $native_module_ext = 'c';
   }
-  elsif ($langauge eq 'cpp') {
+  elsif ($language eq 'cpp') {
     $native_module_ext = 'cpp';
   }
   
@@ -211,7 +217,7 @@ EOS
     my $native_class_name = $class_name;
     $native_class_name =~ s/::/__/g;
     
-    my $native_module_content_without_native_lib = <<"EOS";
+    my $native_module_content = <<"EOS";
 #include "spvm_native.h"
 $include_native_header
 
@@ -248,7 +254,7 @@ EOS
       my $native_header_content = <<"EOS";
 #include <stdint.h>
 
-int32_t ${natvie_lib_name}_sum(int32_t num0, int32_t num1);
+int32_t ${native_lib_name}_sum(int32_t num0, int32_t num1);
 EOS
       SPVM::Builder::Util::squrt_binary($native_header_content);
     }
@@ -262,9 +268,9 @@ EOS
       
       my $native_source_content = <<"EOS";
 #include <stdint.h>
-#include <${natvie_lib_name}.h>
+#include <${native_lib_name}.h>
 
-int32_t ${natvie_lib_name}_sum(int32_t num0, int32_t num1) {
+int32_t ${native_lib_name}_sum(int32_t num0, int32_t num1) {
   int32_t total = num0 + num1;
   
   return total;
@@ -277,3 +283,5 @@ EOS
     }
   }
 }
+
+1;
