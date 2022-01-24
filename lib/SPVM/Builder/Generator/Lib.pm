@@ -281,6 +281,27 @@ EOS
       warn "Native source file \"$native_source_file\" already exists";
     }
   }
+
+  # Create the script file
+  my $script_file = $self->script_file;
+  if ($force || !-f $script_file) {
+    mkpath dirname $script_file;
+    
+    my $script_content = <<"EOS";
+use strict;
+use warnings;
+
+use SPVM '$class_name';
+
+my \$total = $class_name->sum(1, 2);
+
+print "\$total\n";
+EOS
+    SPVM::Builder::Util::squrt_binary($script_content);
+  }
+  else {
+    warn "Module file \"$script_file\" already exists";
+  }
 }
 
 1;
