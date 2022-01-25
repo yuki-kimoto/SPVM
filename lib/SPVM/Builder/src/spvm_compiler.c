@@ -428,6 +428,7 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   va_end(args);
 
   compiler->error_count++;
+  SPVM_LIST_push(compiler->error_messages, message);
   
   fprintf(stderr, "[CompileError]%s", message);
 }
