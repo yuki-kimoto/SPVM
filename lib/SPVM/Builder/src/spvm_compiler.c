@@ -344,6 +344,9 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   int32_t error = 0;
   
+  // Initialize the error count of the compiler.
+  compiler->error_count = 0;
+  
   /* Tokenize and Parse */
   int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
