@@ -327,6 +327,11 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
   }
 }
 
+int32_t SPVM_COMPILER_get_error_count(SPVM_COMPILER* compiler) {
+  
+  return compiler->error_messages->length;
+}
+
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   //yacc/bison debug mode. The default is off.
