@@ -201,12 +201,12 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               FILE* fh = NULL;
               int32_t module_dirs_length = compiler->module_dirs->length;
               for (int32_t i = 0; i < module_dirs_length; i++) {
-                const char* include_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
+                const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
                 
                 // File name
-                int32_t file_name_length = (int32_t)(strlen(include_dir) + 1 + strlen(cur_rel_file));
+                int32_t file_name_length = (int32_t)(strlen(module_dir) + 1 + strlen(cur_rel_file));
                 cur_file = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, file_name_length + 1);
-                sprintf(cur_file, "%s/%s", include_dir, cur_rel_file);
+                sprintf(cur_file, "%s/%s", module_dir, cur_rel_file);
                 cur_file[file_name_length] = '\0';
                 
                 // \ is replaced to /
@@ -230,13 +230,21 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
               // Module not found
               if (!fh) {
                 if (!op_use->uv.use->is_require) {
-                  fprintf(stderr, "[CompileError]Can't find \"%s\" to use \"%s\" in @INC (@INC contains:", cur_rel_file, class_name);
+                  int32_t moduler_dirs_str_length = 0;
                   for (int32_t i = 0; i < module_dirs_length; i++) {
-                    const char* include_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
-                    fprintf(stderr, " %s", include_dir);
+                    const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
+                    moduler_dirs_str_length += 1 + strlen(module_dir);
                   }
-                  fprintf(stderr, ") at %s line %d\n", op_use->file, op_use->line);
-                  compiler->error_count++;
+                  char* moduler_dirs_str = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, moduler_dirs_str_length + 1);
+                  int32_t moduler_dirs_str_offset = 0;
+                  for (int32_t i = 0; i < module_dirs_length; i++) {
+                    const char* module_dir = (const char*) SPVM_LIST_fetch(compiler->module_dirs, i);
+                    sprintf(moduler_dirs_str + moduler_dirs_str_offset, " %s", module_dir);
+                    moduler_dirs_str_offset += 1 + strlen(module_dir);
+                  }
+                  
+                  SPVM_COMPILER_error(compiler, "Can't find \"%s\" to use \"%s\" in @INC (@INC contains:%s) at %s line %d\n", cur_rel_file, class_name, moduler_dirs_str, op_use->file, op_use->line);
+                  
                   return 0;
                 }
               }
