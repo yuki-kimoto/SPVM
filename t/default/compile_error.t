@@ -14,6 +14,16 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+sub print_error_messages {
+  my ($builder) = @_;
+  
+  my $error_messages = $builder->get_error_messages;
+  
+  for my $error_message (@$error_messages) {
+    print stderr $error_message;
+  }
+}
+
 # Class
 {
   {
