@@ -19,8 +19,6 @@
 void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message_not_used) {
   (void)compiler;
   
-  compiler->error_count++;
-  
   // Current token
   int32_t length = 0;
   int32_t empty_count = 0;

@@ -350,9 +350,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   int32_t error = 0;
   
-  // Initialize the error count of the compiler.
-  compiler->error_count = 0;
-  
   /* Tokenize and Parse */
   int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
@@ -361,7 +358,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
     error = 1;
   }
   else {
-    if (compiler->error_count > 0) {
+    if (SPVM_COMPILER_get_error_count(compiler) > 0) {
       error = 1;
     }
     else {
@@ -369,7 +366,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
       int32_t check_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
       SPVM_OP_CHECKER_check(compiler);
       assert(compiler->allocator->memory_blocks_count_compile_tmp == check_start_memory_blocks_count_compile_tmp);
-      if (compiler->error_count > 0) {
+      if (SPVM_COMPILER_get_error_count(compiler) > 0) {
         error = 1;
       }
       else {
@@ -377,7 +374,7 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
         int32_t build_opcode_array_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
         SPVM_OPCODE_BUILDER_build_opcode_array(compiler);
         assert(compiler->allocator->memory_blocks_count_compile_tmp == build_opcode_array_start_memory_blocks_count_compile_tmp);
-        if (compiler->error_count > 0) {
+        if (SPVM_COMPILER_get_error_count(compiler) > 0) {
           error = 1;
         }
       }
@@ -436,7 +433,6 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   vsprintf(message, message_template, args);
   va_end(args);
 
-  compiler->error_count++;
   SPVM_LIST_push(compiler->error_messages, message);
   
   fprintf(stderr, "[CompileError]%s", message);

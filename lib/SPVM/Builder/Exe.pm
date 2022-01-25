@@ -439,7 +439,7 @@ EOS
 
   SPVM_COMPILER_compile(compiler);
 
-  if (compiler->error_count > 0) {
+  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
     exit(1);
   }
 EOS

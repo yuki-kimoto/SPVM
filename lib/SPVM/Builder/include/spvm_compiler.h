@@ -68,9 +68,6 @@ struct spvm_compiler {
   SPVM_OP* op_grammar;
   
   // Syntax error count
-  int32_t error_count;
-
-  // Syntax error count
   SPVM_LIST* error_messages;
   
   // Module searching directories

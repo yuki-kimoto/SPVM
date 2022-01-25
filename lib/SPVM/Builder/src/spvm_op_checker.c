@@ -325,7 +325,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               SPVM_OP_replace_op(compiler, op_stab, op_sequence);
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -357,7 +357,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_OP* op_constant = SPVM_OP_new_op_constant_string(compiler, class->name, strlen(class->name), op_cur->file, op_cur->line);
 
               SPVM_OP_CHECKER_check_tree(compiler, op_constant, check_ast_info);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
 
@@ -531,7 +531,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_first);
                 SPVM_OP_replace_op(compiler, op_stab, op_false);
                 SPVM_OP_CHECKER_check_tree(compiler, op_false, check_ast_info);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -540,7 +540,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               {
                 // Convert byte or short type to int type
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
                 is_valid_type = 1;
@@ -576,7 +576,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_cur = op_assign_bool;
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
                 SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -606,7 +606,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_valid_type = 1;
                   
                   SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -642,7 +642,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 op_cur = op_assign_bool;
                 SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
                 SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -672,7 +672,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   is_valid_type = 1;
                   
                   SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -711,7 +711,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -736,7 +736,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -761,7 +761,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
 
@@ -786,7 +786,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -811,7 +811,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1045,7 +1045,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_replace_op(compiler, op_stab, op_sequence);
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
-                    if (compiler->error_count > 0) {
+                    if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                       return;
                     }
 
@@ -1063,7 +1063,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   assert(index_type);
                   if (SPVM_TYPE_is_numeric_type(compiler, index_type->basic_type->id, index_type->dimension, index_type->flag)) {
                     SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_index_term);
-                    if (compiler->error_count > 0) {
+                    if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                       return;
                     }
                     
@@ -1144,7 +1144,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1180,7 +1180,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_true, op_cur->file, op_cur->line);
                   SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                   op_cur = op_assign_bool;
@@ -1191,7 +1191,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP* op_assign_bool = SPVM_OP_new_op_assign_bool(compiler, op_constant_false, op_cur->file, op_cur->line);
                   SPVM_OP_replace_op(compiler, op_stab, op_assign_bool);
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign_bool, check_ast_info);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                   op_cur = op_assign_bool;
@@ -1293,7 +1293,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_assign;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1354,7 +1354,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_assign;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               break;
@@ -1432,7 +1432,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_sequence;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1512,7 +1512,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_sequence;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_sequence, check_ast_info);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1642,7 +1642,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               op_cur = op_assign;
               
               SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1671,7 +1671,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // If needed, numeric convertion op is added
               dist_type = SPVM_OP_get_type(compiler, op_term_dist);
               SPVM_OP_CHECKER_check_assign(compiler, dist_type, op_term_src, "assign operator", op_cur->file, op_cur->line);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
 
@@ -1698,7 +1698,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 if (op_term) {
                   // Automatical numeric convertion
                   SPVM_OP_CHECKER_check_assign(compiler, method->return_type, op_term, "return statement", op_cur->file, op_cur->line);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -1721,7 +1721,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply unary widening convertion
               SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->first);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1738,7 +1738,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Apply unary widening convertion
               SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->first);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1755,7 +1755,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply unary widening convertion
               SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->first);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1779,7 +1779,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
                                               
@@ -1803,7 +1803,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1827,7 +1827,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1851,7 +1851,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
 
@@ -1875,7 +1875,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Apply binary numeric convertion
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
                                               
@@ -1898,7 +1898,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1921,7 +1921,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               SPVM_OP_CHECKER_apply_binary_numeric_convertion(compiler, op_cur->first, op_cur->last);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -1934,7 +1934,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left operand must be numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -1946,7 +1946,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Right operand must be int type
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
                 
@@ -1969,7 +1969,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left operand must be numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -1981,7 +1981,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Right operand must be int type
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
                 
@@ -2004,7 +2004,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left operand must be numeric type
               if (SPVM_TYPE_is_integral_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2016,7 +2016,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Right operand must be int type
               if (SPVM_TYPE_is_integral_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
                 
@@ -2039,7 +2039,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Left type is numeric type
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2052,7 +2052,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Right operand is numeric type
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2092,7 +2092,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
 
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2110,7 +2110,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2128,7 +2128,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
                 SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2279,7 +2279,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   op_cur = op_field_access;
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_field_access, check_ast_info);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -2304,7 +2304,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     op_cur = op_class_var_access;
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_class_var_access, check_ast_info);
-                    if (compiler->error_count > 0) {
+                    if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                       return;
                     }
                   }
@@ -2323,7 +2323,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Resulve sub
               SPVM_OP_CHECKER_resolve_call_method(compiler, op_cur, class->op_class);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -2482,7 +2482,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_call_method->last, op_list_args_new);
 
                 SPVM_OP_CHECKER_check_tree(compiler, op_list_args_new, check_ast_info);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
                 
@@ -2508,7 +2508,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   sprintf(place, "arguments %d", call_method_args_count);
                   
                   op_term = SPVM_OP_CHECKER_check_assign(compiler, method_arg_my_type, op_term, place, op_cur->file, op_cur->line);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -2723,7 +2723,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Check field name
               SPVM_OP_CHECKER_resolve_class_var_access(compiler, op_cur, class->op_class);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -2787,7 +2787,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               // Right operand must be integer
               if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
                 SPVM_OP_CHECKER_apply_unary_numeric_widening_convertion(compiler, op_cur->last);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
                 
@@ -2825,7 +2825,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
                 
                 SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2850,7 +2850,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
                 SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                if (compiler->error_count > 0) {
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                   return;
                 }
               }
@@ -2892,7 +2892,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               // Check field name
               SPVM_OP_CHECKER_resolve_field_access(compiler, op_cur);
-              if (compiler->error_count > 0) {
+              if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                 return;
               }
               
@@ -2978,7 +2978,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                     SPVM_OP_replace_op(compiler, op_stab, op_array_field_access);
                     
                     SPVM_OP_CHECKER_check_tree(compiler, op_array_field_access, check_ast_info);
-                    if (compiler->error_count > 0) {
+                    if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                       return;
                     }
                   }
@@ -3005,7 +3005,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -3029,7 +3029,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
                   
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -3059,7 +3059,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   SPVM_OP_replace_op(compiler, op_stab, op_assign);
 
                   SPVM_OP_CHECKER_check_tree(compiler, op_assign, check_ast_info);
-                  if (compiler->error_count > 0) {
+                  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
                     return;
                   }
                 }
@@ -3383,19 +3383,19 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
   
   // Resolve types
   SPVM_OP_CHECKER_resolve_types(compiler);
-  if (compiler->error_count > 0) {
+  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
     return;
   }
   
   // Resolve basic types
   SPVM_OP_CHECKER_resolve_basic_types(compiler);
-  if (compiler->error_count > 0) {
+  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
     return;
   }
   
   // Resolve classes
   SPVM_OP_CHECKER_resolve_classes(compiler);
-  if (compiler->error_count > 0) {
+  if (SPVM_COMPILER_get_error_count(compiler) > 0) {
     return;
   }
   
@@ -3485,7 +3485,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             SPVM_LIST_free(check_ast_info->block_my_base_stack);
             SPVM_LIST_free(check_ast_info->op_switch_stack);
             
-            if (compiler->error_count > 0) {
+            if (SPVM_COMPILER_get_error_count(compiler) > 0) {
               return;
             }
             
@@ -3721,7 +3721,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
             }
-            if (compiler->error_count > 0) {
+            if (SPVM_COMPILER_get_error_count(compiler) > 0) {
               return;
             }
             assert(method->class->module_file);
@@ -4255,7 +4255,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
 
 #ifdef SPVM_DEBUG_DUMP
 #include "spvm_dumper.h"
-  if (compiler->error_count == 0) {
+  if (SPVM_COMPILER_get_error_count(compiler) == 0) {
     printf("\n[Basic types]\n");
     SPVM_DUMPER_dump_basic_types(compiler, compiler->basic_types);
     
