@@ -124,8 +124,6 @@ struct spvm_compiler {
   // Field ops
   SPVM_LIST* fields;
   
-  int8_t cur_src_need_free;
-  
   char* next_double_quote_start_bufptr;
 };
 

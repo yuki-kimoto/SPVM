@@ -345,9 +345,6 @@ int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   /* Tokenize and Parse */
   int32_t parse_start_memory_blocks_count_compile_tmp = compiler->allocator->memory_blocks_count_compile_tmp;
   int32_t parse_error_flag = SPVM_yyparse(compiler);
-  if (compiler->cur_src && compiler->cur_src_need_free) {
-    SPVM_ALLOCATOR_free_block_compile_tmp(compiler, compiler->cur_src);
-  }
   assert(compiler->allocator->memory_blocks_count_compile_tmp == parse_start_memory_blocks_count_compile_tmp);
   if (parse_error_flag) {
     error = 1;
