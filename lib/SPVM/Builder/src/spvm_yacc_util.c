@@ -44,17 +44,15 @@ void SPVM_yyerror(SPVM_COMPILER* compiler, const char* message) {
   SPVM_ALLOCATOR_free_block_compile_tmp(compiler, token);
 }
 
-// Print token value for debug
+// Print the token value in yacc/bison debug mode
 void SPVM_yyprint (FILE *file, int type, YYSTYPE yylval) {
   
   switch(type) {
-    case NAME: {
-      fprintf(file, "%s", yylval.opval->uv.name);
-      break;
-    }
-    case VAR_NAME: {
-      const char* var_name = yylval.opval->uv.name;
-      fprintf(file, "%s", var_name);
+    case NAME:
+    case VAR_NAME:
+    {
+      const char* name = yylval.opval->uv.name;
+      fprintf(file, "%s", name);
       break;
     }
   }

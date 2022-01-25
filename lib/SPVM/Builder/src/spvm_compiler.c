@@ -328,12 +328,13 @@ void SPVM_COMPILER_add_basic_types(SPVM_COMPILER* compiler) {
 }
 
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
-
-  // If this is set to 1, you can see yacc parsing result
-#ifdef SPVM_DEBUG_YACC
-  SPVM_yydebug = 1;
-#else
+  
+  //yacc/bison debug mode. The default is off.
   SPVM_yydebug = 0;
+
+#ifdef SPVM_DEBUG_YACC
+  // Turn on yacc/bison debug mode
+  SPVM_yydebug = 1;
 #endif
   
   // Initialize added class names
