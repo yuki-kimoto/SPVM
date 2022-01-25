@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9130  2021-01-25
+        [FIX BUGS]
+        * Fix the bug that the uname of the platform can't be detected in Makefile.PL.
+
 0.9129  2021-01-24
         [CHANGE]
         * Improve the error messages of character literals.

@@ -25,8 +25,8 @@ use SPVM::Builder::Util;
   }
   
   # Currently SPVM doesn't support Alpine Linux
-  my $uname = $Config{uname};
-  if ($uname =~ /\balpine\b/i) {
+  my $myuname = $Config{myuname};
+  if ($myuname =~ /\balpine\b/i) {
     warn "Currently SPVM doesn't support Alpine Linux because segmentation fault occurs due to incompatibility with glibc. If you want to use SPVM on Alpine Linux, please join SVPM project to fix the problems\n";
     die "OS unsupported\n";
   }
