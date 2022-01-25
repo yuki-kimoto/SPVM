@@ -58,6 +58,8 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   compiler->module_file_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
   compiler->module_source_symtable = SPVM_ALLOCATOR_new_hash_compile_eternal(compiler, 0);
 
+  compiler->error_messages = SPVM_ALLOCATOR_new_list_compile_eternal(compiler, 0);
+
   // Add basic types
   SPVM_COMPILER_add_basic_types(compiler);
 
