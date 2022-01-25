@@ -1,16 +1,13 @@
 Revision history for SPVM
 
-0.9130  2021-01-25
-        [FIX BUGS]
-        * Fix the bug that the uname of the platform can't be detected in Makefile.PL.
-
-0.9129  2021-01-24
+0.9129  2021-01-25
         [CHANGE]
         * Improve the error messages of character literals.
         [FIX BUGS]
         * Fix the bug that \b is escaped to ASCII Code 8 BS in the charater literal.
           \b is a raw escape charater in the string literal. In document, \b is both escaped to ASCII Code 8 BS and \b is raw escape charater.
           It is right that \b is a raw escape charater.
+        * Fix the bug that the uname of the platform can't be detected in Makefile.PL.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Sorry. \b is not supported in the character literal. Please replace \b with \x08.
 
