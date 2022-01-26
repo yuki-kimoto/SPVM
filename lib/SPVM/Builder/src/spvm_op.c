@@ -2169,7 +2169,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             // OK
           }
           else {
-            SPVM_COMPILER_error(compiler, "Method must have implementation block at %s line %d", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "Method \"%s\" must have the block at %s line %d", method->name, method->op_method->file, method->op_method->line);
           }
         }
         
