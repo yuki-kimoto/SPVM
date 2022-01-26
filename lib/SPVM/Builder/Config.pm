@@ -651,7 +651,7 @@ B<Examples:>
     return $ccflags;
   });
 
-C<cc_each> takes precedence over C<cc>.
+C<ccflags_each> takes precedence over C<ccflags>.
 
 =head2 optimize
 
