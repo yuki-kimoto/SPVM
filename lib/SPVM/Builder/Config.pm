@@ -629,7 +629,7 @@ B<Default:>
 
 Get and set a callback that returns the compiler flags for each source file. The call back receives L<SPVM::Bulder::Config> object and each source file.
 
-C<ccflags_each> takes precedence over C<ccflags>.
+If C<ccflags_each> is defined, the compiler use the return value of C<ccflags_each> as the compiler name instead of C<ccflags>.
 
 B<Examples:>
   
@@ -650,8 +650,6 @@ B<Examples:>
     
     return $ccflags;
   });
-
-C<ccflags_each> takes precedence over C<ccflags>.
 
 =head2 optimize
 
