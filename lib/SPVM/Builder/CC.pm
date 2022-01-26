@@ -524,9 +524,6 @@ sub create_compile_command {
   
   my $cflags = '';
   
-  my $global_ccflags = $self->global_ccflags;
-  $cflags .= join(' ', @$global_ccflags);
-  
   my $include_dirs = $config->include_dirs;
   my $inc = join(' ', map { "-I$_" } @$include_dirs);
   $cflags .= " $inc";

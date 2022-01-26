@@ -14,6 +14,9 @@ Revision history for SPVM
           SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
         * Add SPVM::Builder::API module for the public APIs of SPVM::Builder.
         * Add optimize_each field to SPVM::Builder::Config
+        * Add global_cc_each field to SPVM::Builder::Config::Exe
+        * Add global_ccflags_each field to SPVM::Builder::Config::Exe
+        * Add global_optimize_each field to SPVM::Builder::Config::Exe
         [NON BACKWORD COMPATIBLE CHANGES]
         * Change cc_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
           - source_file
@@ -22,6 +25,8 @@ Revision history for SPVM
           - source_file
           - class_name
           - cc
+        * Remove global_ccflags fields of SPVM::Builder::Config::Exe. Please use global_ccflags_each instead.
+        * Remove add_global_ccflas method of SPVM::Builder::Config::Exe. Please use global_ccflags_each instead.
         
 0.9129  2021-01-25
         [CHANGE]
