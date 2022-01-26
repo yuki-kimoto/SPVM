@@ -1191,7 +1191,7 @@ SPVM::Test - SPVM test module
       my $ch3 = '\\';
       my $ch4 = '\n';
       my $ch5 = '\t';
-      my $ch6 = '\b';
+      my $ch6 = '\x08';
       my $ch7 = '\r';
       my $ch8 = '\f';
     }

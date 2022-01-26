@@ -38,7 +38,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_COMPILER_compile(compiler);
   
   if (SPVM_COMPILER_get_error_count(compiler) > 0) {
-    SPVM_COMPILER_print_error_messages(stderr, compiler);
+    SPVM_COMPILER_print_error_messages(compiler, stderr);
     exit(1);
   }
 
