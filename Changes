@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9130  2021-01-26
+        [CHANGE]
+        * Compilation error messages is saved as strings.
+
 0.9129  2021-01-25
         [CHANGE]
         * Improve the error messages of character literals.
