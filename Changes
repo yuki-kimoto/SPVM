@@ -13,6 +13,14 @@ Revision history for SPVM
           SPVM::Builder::Util::API::create_make_rule_native('Foo');
           SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
         * Add SPVM::Builder::API module for the public APIs of SPVM::Builder.
+        [NON BACKWORD COMPATIBLE CHANGES]
+        * Change cc_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
+          - source_file
+          - class_name
+        * Change ccflags_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
+          - source_file
+          - class_name
+          - cc
         
 0.9129  2021-01-25
         [CHANGE]

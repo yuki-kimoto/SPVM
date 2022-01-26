@@ -574,14 +574,34 @@ B<Examples:>
   my $cc_each = $config->cc_each;
   $config->cc_each($cc_each);
 
-Get and set a callback that returns the compiler name for each source file. The call back receives L<SPVM::Bulder::Config> object and each source file.
+Get and set a callback that returns the compiler name for each source file. The call back receives L<SPVM::Bulder::Config> object and optional arguments as a hash reference.
+
+B<Optional Arguments:>
+
+=over 2
+
+=item * source_file
+
+Each source file.
+
+=item * class_name
+
+The class name
+
+=back
 
 If C<cc_each> is defined, the compiler use the return value of C<cc_each> as the compiler name instead of C<cc>.
 
 B<Examples:>
   
   $config->cc_each(sub {
-    my ($config, $source_file) = @_;
+    my ($config, $args) = @_;
+    
+    # Source file
+    my $source_file = $args->{source_file};
+    
+    # Class name
+    my $class_name = $args->{class_name}
     
     my $cc;
     # C source file
@@ -627,7 +647,25 @@ B<Default:>
   my $ccflags_each = $config->ccflags_each;
   $config->ccflags_each($ccflags_each);
 
-Get and set a callback that returns the compiler flags for each source file. The call back receives L<SPVM::Bulder::Config> object and each source file.
+Get and set a callback that returns the compiler flags for each source file. The call back receives L<SPVM::Bulder::Config> object and optional arguments as a hash reference.
+
+B<Optional Arguments:>
+
+=over 2
+
+=item * source_file
+
+Each source file.
+
+=item * class_name
+
+The class name
+
+=item * cc
+
+The compiler name that is the value after the process of the process of L<cc> or L<cc_each>.
+
+=back
 
 If C<ccflags_each> is defined, the compiler use the return value of C<ccflags_each> as the compiler flags instead of C<ccflags>.
 
@@ -635,7 +673,17 @@ B<Examples:>
   
   $config->ccflags_each(sub {
     my ($config, $source_file) = @_;
+
+    # Source file
+    my $source_file = $args->{source_file};
     
+    # Class name
+    my $class_name = $args->{class_name}
+
+    # The compiler name
+    my $cc = $args->{cc};
+    
+    # ccflags
     my $config_ccflags = $config->ccflags;
     
     my $ccflags = [];

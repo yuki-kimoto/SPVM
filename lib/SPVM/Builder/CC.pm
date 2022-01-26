@@ -486,7 +486,7 @@ sub compile {
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
       
-      my $cc_cmd = $self->create_compile_command({config => $config, output_file => $object_file, source_file => $src_file});
+      my $cc_cmd = $self->create_compile_command({class_name => $class_name, config => $config, output_file => $object_file, source_file => $src_file});
       
       # Execute compile command
       $cbuilder->do_system(@$cc_cmd)
@@ -507,6 +507,8 @@ sub create_compile_command {
     $options = {};
   }
   
+  my $class_name = $options->{class_name};
+  
   my $config = $options->{config};
   my $output_file = $options->{output_file};
   my $source_file = $options->{source_file};
@@ -514,7 +516,7 @@ sub create_compile_command {
   my $cc_each = $config->cc_each;
   my $cc;
   if ($cc_each) {
-    $cc = $config->cc_each($config, $source_file);
+    $cc = $config->cc_each($config, {class_name => $class_name, source_file => $source_file});
   }
   else {
     $cc = $config->cc;
@@ -532,7 +534,7 @@ sub create_compile_command {
   my $ccflags_each = $config->ccflags_each;
   my $ccflags;
   if ($ccflags_each) {
-    $ccflags = $config->ccflags_each($config, $source_file);
+    $ccflags = $config->ccflags_each($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
   }
   else {
     $ccflags = $config->ccflags;
