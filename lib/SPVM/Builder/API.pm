@@ -10,7 +10,7 @@ SPVM::Builder::API - SPVM Builder Public APIs
 
 B<SPVM::Builder::API> is the public APIs of SPVM Builder. 
 
-L<SPVM::Builder>, L<SPVM::Builder::CC>, L<SPVM::Builder::Util> is a private modules of L<SPVM>.
+L<SPVM::Builder> is a private modules of L<SPVM>.
 
 The names and arguments of the methods are changed without warnings in the future release.
 
