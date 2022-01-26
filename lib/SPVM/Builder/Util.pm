@@ -293,39 +293,3 @@ SPVM::Builder::Util - Build Utilities
 =head1 DESCRIPTION
 
 SPVM::Builder::Util is building utilities.
-
-=head1 FUNCTIONS
-
-=head2 create_make_rule_native
-
-Create native compile make rule.
-
-This is used in Makefile.PL of your distributed module.
-  
-  # Makefile.PL
-  static method MY::postamble {
-
-    my $make_rule = '';
-    
-    # Native compile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_native('Foo');
-    
-    return $make_rule;
-  }
-
-=head2 create_make_rule_precompile
-
-Create precompile make rule.
-
-This is used in Makefile.PL of your distributed module.
-
-  static method MY::postamble {
-
-    my $make_rule = '';
-    
-    # Precompile make rule
-    $make_rule .= SPVM::Builder::Util::create_make_rule_precompile('Foo');
-    
-    return $make_rule;
-  }
-

@@ -3,6 +3,15 @@ Revision history for SPVM
 0.9130  2021-01-26
         [CHANGE]
         * Compilation error messages is saved as strings.
+        * Add SPVM::Builder::Util::API module for the public APIs of SPVM::Builder::Util.
+          SPVM::Builder::Util become a private module of SPVM. Please rewrite the codes.
+          [Before]
+          SPVM::Builder::Util::create_make_rule_native('Foo');
+          SPVM::Builder::Util::create_make_rule_precompile('Foo');
+          
+          [After]
+          SPVM::Builder::Util::API::create_make_rule_native('Foo');
+          SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
 
 0.9129  2021-01-25
         [CHANGE]
