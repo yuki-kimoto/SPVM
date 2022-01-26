@@ -2142,7 +2142,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         
         // If Method is anon, sub must be method
         if (strlen(method_name) == 0 && method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "Anon method must be instance method at %s line %d", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Anon methods must be instance methods at %s line %d", method->op_method->file, method->op_method->line);
         }
 
         // If class is callback, sub must not be native
