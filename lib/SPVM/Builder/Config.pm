@@ -576,7 +576,7 @@ B<Examples:>
 
 Get and set a callback that returns the compiler name for each source file. The call back receives L<SPVM::Bulder::Config> object and each source file.
 
-C<cc_each> takes precedence over C<cc>.
+If C<cc_each> is defined, the compiler use the return value of C<cc_each> as the compiler name instead of C<cc>.
 
 B<Examples:>
   
@@ -629,7 +629,7 @@ B<Default:>
 
 Get and set a callback that returns the compiler flags for each source file. The call back receives L<SPVM::Bulder::Config> object and each source file.
 
-If C<ccflags_each> is defined, the compiler use the return value of C<ccflags_each> as the compiler name instead of C<ccflags>.
+If C<ccflags_each> is defined, the compiler use the return value of C<ccflags_each> as the compiler flags instead of C<ccflags>.
 
 B<Examples:>
   
