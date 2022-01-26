@@ -12,6 +12,7 @@ Revision history for SPVM
           [After]
           SPVM::Builder::Util::API::create_make_rule_native('Foo');
           SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
+        * Add SPVM::Builder::API module for the public APIs of SPVM::Builder.
 
 0.9129  2021-01-25
         [CHANGE]
