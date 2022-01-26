@@ -44,7 +44,7 @@ sub print_error_messages {
 
   my $error_messages = $self->get_error_messages;
   for my $error_message (@$error_messages) {
-    printf $fh "[CompileError]$error_message";
+    printf $fh "[CompileError]$error_message\n";
   }
 }
 

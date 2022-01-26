@@ -919,7 +919,7 @@ SPVM_OP* SPVM_OP_build_case_statement(SPVM_COMPILER* compiler, SPVM_OP* op_case_
     if (op_statements) {
       SPVM_OP* op_last_statement = op_statements->last;
       if (!(op_last_statement && (op_last_statement->id == SPVM_OP_C_ID_BREAK || op_last_statement->id == SPVM_OP_C_ID_RETURN))) {
-        SPVM_COMPILER_error(compiler, "Last statement of case block must be break or return statement at %s line %d\n", op_block->file, op_block->line);
+        SPVM_COMPILER_error(compiler, "Last statement of case block must be break or return statement at %s line %d", op_block->file, op_block->line);
       }
     }
     
@@ -1178,7 +1178,7 @@ SPVM_OP* SPVM_OP_build_array_init(SPVM_COMPILER* compiler, SPVM_OP* op_array_ini
       }
       int32_t is_odd = element_index % 2 == 1;
       if (is_odd) {
-        SPVM_COMPILER_error(compiler, "Odd number of elements in {} array init syntax at %s line %d\n", op_list_elements->file, op_list_elements->line);
+        SPVM_COMPILER_error(compiler, "Odd number of elements in {} array init syntax at %s line %d", op_list_elements->file, op_list_elements->line);
       }
     }
   }
@@ -1687,7 +1687,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // Class name must start with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
     if (islower(class_name[0])) {
-      SPVM_COMPILER_error(compiler, "class name \"%s\" must start with upper case at %s line %d\n", class_name, op_class->file, op_class->line);
+      SPVM_COMPILER_error(compiler, "class name \"%s\" must start with upper case at %s line %d", class_name, op_class->file, op_class->line);
     }
     else {
       
@@ -1699,7 +1699,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (i > 1) {
           if (class_name[i - 2] == ':' && class_name[i - 1] == ':') {
             if (islower(class_name[i])) {
-              SPVM_COMPILER_error(compiler, "Part name of class \"%s\" must start with upper case at %s line %d\n", class_name, op_class->file, op_class->line);
+              SPVM_COMPILER_error(compiler, "Part name of class \"%s\" must start with upper case at %s line %d", class_name, op_class->file, op_class->line);
               break;
             }
           }
@@ -1710,7 +1710,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       if (strcmp(class_name, compiler->cur_rel_file_class_name) != 0) {
         // If class fail load by if (require xxx) syntax, that is ok
         if (!op_type->uv.type->basic_type->fail_load) {
-          SPVM_COMPILER_error(compiler, "Wrong class name \"%s\". The class name must be \"%s\" at %s line %d\n", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
+          SPVM_COMPILER_error(compiler, "Wrong class name \"%s\". The class name must be \"%s\" at %s line %d", class_name, compiler->cur_rel_file_class_name, op_class->file, op_class->line);
           return op_class;
         }
       }
@@ -1722,7 +1722,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
   // Redeclaration class error
   SPVM_CLASS* found_class = SPVM_HASH_fetch(class_symtable, class_name, strlen(class_name));
   if (found_class) {
-    SPVM_COMPILER_error(compiler, "Redeclaration of class \"%s\" at %s line %d\n", class_name, op_class->file, op_class->line);
+    SPVM_COMPILER_error(compiler, "Redeclaration of class \"%s\" at %s line %d", class_name, op_class->file, op_class->line);
   }
   else {
     // Add class
@@ -1768,14 +1768,14 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           class->has_precompile_descriptor = 1;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid class descriptor %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_class->file, op_class->line);
+          SPVM_COMPILER_error(compiler, "Invalid class descriptor %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_class->file, op_class->line);
       }
     }
     if (category_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "callback, mulnum_t, pointer can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "callback, mulnum_t, pointer can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "private, public can be specified only one at %s line %d\n", op_list_descriptors->file, op_list_descriptors->line);
+      SPVM_COMPILER_error(compiler, "private, public can be specified only one at %s line %d", op_list_descriptors->file, op_list_descriptors->line);
     }
   }
   
@@ -1799,7 +1799,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
           
           const char* use_class_name_exists = SPVM_HASH_fetch(class->class_alias_symtable, class_alias_name, strlen(class_alias_name));
           if (use_class_name_exists) {
-            SPVM_COMPILER_error(compiler, "Class alias name \"%s\" is already used at %s line %d\n", class_alias_name, op_decl->file, op_decl->line);
+            SPVM_COMPILER_error(compiler, "Class alias name \"%s\" is already used at %s line %d", class_alias_name, op_decl->file, op_decl->line);
           }
           else {
             SPVM_HASH_insert(class->class_alias_symtable, class_alias_name, strlen(class_alias_name), (void*)use_class_name);
@@ -1815,7 +1815,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_CLASS_VAR* class_var = op_decl->uv.class_var;
 
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback class can't have class variable at %s line %d\n", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Callback class can't have class variable at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->class_vars, op_decl->uv.class_var);
 
@@ -1916,7 +1916,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_FIELD* field = op_decl->uv.field;
         
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
-          SPVM_COMPILER_error(compiler, "Callback class can't have field at %s line %d\n", op_decl->file, op_decl->line);
+          SPVM_COMPILER_error(compiler, "Callback class can't have field at %s line %d", op_decl->file, op_decl->line);
         }
         SPVM_LIST_push(class->fields, field);
         
@@ -2049,7 +2049,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* field = SPVM_LIST_fetch(class->fields, i);
 
       if (class->flag & SPVM_CLASS_C_FLAG_POINTER) {
-        SPVM_COMPILER_error(compiler, "class which has pointer_t descriptor can't have fields at %s line %d\n", field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "class which has pointer_t descriptor can't have fields at %s line %d", field->op_field->file, field->op_field->line);
         continue;
       }
 
@@ -2059,7 +2059,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* found_field = SPVM_HASH_fetch(class->field_symtable, field_name, strlen(field_name));
       
       if (found_field) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->%s\" at %s line %d\n", class_name, field_name, field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->%s\" at %s line %d", class_name, field_name, field->op_field->file, field->op_field->line);
       }
       else {
         field->id = compiler->fields->length;
@@ -2081,7 +2081,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_CLASS_VAR* found_class_var = SPVM_HASH_fetch(class->class_var_symtable, class_var_name, strlen(class_var_name));
         
         if (found_class_var) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"%s::%s\" at %s line %d\n", class_name, class_var_name, class_var->op_class_var->file, class_var->op_class_var->line);
+          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"%s::%s\" at %s line %d", class_name, class_var_name, class_var->op_class_var->file, class_var->op_class_var->line);
         }
         else {
           class_var->id = compiler->class_vars->length;
@@ -2132,32 +2132,32 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
           // Method having callback_t descriptor must be method
           if (method->is_class_method) {
-            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor must be a instance method at %s line %d\n", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor must be a instance method at %s line %d", method->op_method->file, method->op_method->line);
           }
           // Method having callback_t descriptor must be anon
           if (strlen(method_name) != 0) {
-            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor can't have the name at %s line %d\n", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "The method belonging to the class with a callback_t descriptor can't have the name at %s line %d", method->op_method->file, method->op_method->line);
           }
         }
         
         // If Method is anon, sub must be method
         if (strlen(method_name) == 0 && method->is_class_method) {
-          SPVM_COMPILER_error(compiler, "Anon method must be instance method at %s line %d\n", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Anon method must be instance method at %s line %d", method->op_method->file, method->op_method->line);
         }
 
         // If class is callback, sub must not be native
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_NATIVE)) {
-          SPVM_COMPILER_error(compiler, "Method of callback can't have native descriptor at %s line %d\n", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Method of callback can't have native descriptor at %s line %d", method->op_method->file, method->op_method->line);
         }
 
         // If class is callback, sub must not be precompile
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
-          SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d\n", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d", method->op_method->file, method->op_method->line);
         }
 
         // If class is callback, sub must not be precompile
         if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
-          SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d\n", method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Method of callback can't have precompile descriptor at %s line %d", method->op_method->file, method->op_method->line);
         }
 
         // If class is callback, sub must not be precompile
@@ -2169,20 +2169,20 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
             // OK
           }
           else {
-            SPVM_COMPILER_error(compiler, "Method must have implementation block at %s line %d\n", method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "Method must have implementation block at %s line %d", method->op_method->file, method->op_method->line);
           }
         }
         
         SPVM_METHOD* found_method = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
         
         if (found_method) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", method_name, method->op_method->file, method->op_method->line);
+          SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
         }
         // Unknown sub
         else {
           const char* found_method_name = SPVM_HASH_fetch(class->method_symtable, method_name, strlen(method_name));
           if (found_method_name) {
-            SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d\n", method_name, method->op_method->file, method->op_method->line);
+            SPVM_COMPILER_error(compiler, "Redeclaration of sub \"%s\" at %s line %d", method_name, method->op_method->file, method->op_method->line);
           }
           else {
             // Bind standard functions
@@ -2206,7 +2206,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // Callback must have only one method
     if (class->category == SPVM_CLASS_C_CATEGORY_CALLBACK) {
       if (class->methods->length != 1) {
-        SPVM_COMPILER_error(compiler, "Callback must have only one method at %s line %d\n", op_class->file, op_class->line);
+        SPVM_COMPILER_error(compiler, "Callback must have only one method at %s line %d", op_class->file, op_class->line);
       }
     }
     
@@ -2233,7 +2233,7 @@ SPVM_OP* SPVM_OP_build_use(SPVM_COMPILER* compiler, SPVM_OP* op_use, SPVM_OP* op
     // Class name must start with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
     if (islower(class_alias_name[0])) {
-      SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d\n", class_alias_name, op_type_alias->file, op_type_alias->line);
+      SPVM_COMPILER_error(compiler, "Class alias name \"%s\" must start with upper case at %s line %d", class_alias_name, op_type_alias->file, op_type_alias->line);
     }
     use->op_type_alias = op_type_alias;
   }
@@ -2271,7 +2271,7 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
   }
   
   if (invalid_name) {
-    SPVM_COMPILER_error(compiler, "Invalid class variable name %s at %s line %d\n", name, op_name->file, op_name->line);
+    SPVM_COMPILER_error(compiler, "Invalid class variable name %s at %s line %d", name, op_name->file, op_name->line);
   }
   
   class_var->op_name = op_name;
@@ -2311,13 +2311,13 @@ SPVM_OP* SPVM_OP_build_our(SPVM_COMPILER* compiler, SPVM_OP* op_class_var, SPVM_
           accessor_descriptors_count++;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid class variable descriptor in class variable declaration %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid class variable descriptor in class variable declaration %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
       if (accessor_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in class variable  declaration at %s line %d\n", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in class variable  declaration at %s line %d", op_class_var->file, op_class_var->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "private, public can be specifed only one in class variable declaration at %s line %d\n", op_class_var->file, op_class_var->line);
+        SPVM_COMPILER_error(compiler, "private, public can be specifed only one in class variable declaration at %s line %d", op_class_var->file, op_class_var->line);
       }
     }
   }
@@ -2371,14 +2371,14 @@ SPVM_OP* SPVM_OP_build_has(SPVM_COMPILER* compiler, SPVM_OP* op_field, SPVM_OP* 
           accessor_descriptors_count++;
           break;
         default:
-          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid field descriptor %s at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
       }
       
       if (accessor_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in field declaration at %s line %d\n", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "rw, ro, wo can be specifed only one in field declaration at %s line %d", op_field->file, op_field->line);
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "public, private can be specifed only one in field declaration at %s line %d\n", op_field->file, op_field->line);
+        SPVM_COMPILER_error(compiler, "public, private can be specifed only one in field declaration at %s line %d", op_field->file, op_field->line);
       }
     }
   }
@@ -2417,7 +2417,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
   
   method->is_init = is_init;
   if (!is_init && strcmp(method_name, "INIT") == 0) {
-    SPVM_COMPILER_error(compiler, "\"INIT\" is reserved for INIT block at %s line %d\n", op_name_method->file, op_name_method->line);
+    SPVM_COMPILER_error(compiler, "\"INIT\" is reserved for INIT block at %s line %d", op_name_method->file, op_name_method->line);
   }
 
   // Descriptors
@@ -2447,22 +2447,22 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
           break;
         }
         default: {
-          SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+          SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
         }
       }
     }
     
     if ((method->flag & SPVM_METHOD_C_FLAG_NATIVE) && (method->flag & SPVM_METHOD_C_FLAG_PRECOMPILE)) {
-      SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together at %s line %d\n", op_descriptors->file, op_descriptors->line);
+      SPVM_COMPILER_error(compiler, "native and compile descriptor can't be used together at %s line %d", op_descriptors->file, op_descriptors->line);
     }
     if (access_control_descriptors_count > 1) {
-      SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d\n", op_method->file, op_method->line);
+      SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d", op_method->file, op_method->line);
     }
   }
 
   // Native method can't have block
   if ((method->flag & SPVM_METHOD_C_FLAG_NATIVE) && op_block) {
-    SPVM_COMPILER_error(compiler, "Native method can't have block at %s line %d\n", op_block->file, op_block->line);
+    SPVM_COMPILER_error(compiler, "Native method can't have block at %s line %d", op_block->file, op_block->line);
   }
   
   // sub args
@@ -2515,7 +2515,7 @@ SPVM_OP* SPVM_OP_build_method(SPVM_COMPILER* compiler, SPVM_OP* op_method, SPVM_
     
     // DESTROY return type must be void
     if (!(method->return_type->dimension == 0 && method->return_type->basic_type->id == SPVM_BASIC_TYPE_C_ID_VOID)) {
-      SPVM_COMPILER_error(compiler, "DESTROY return type must be void at %s line %d\n", op_block->file, op_block->line);
+      SPVM_COMPILER_error(compiler, "DESTROY return type must be void at %s line %d", op_block->file, op_block->line);
     }
   }
   
@@ -2608,7 +2608,7 @@ SPVM_OP* SPVM_OP_build_enumeration_value(SPVM_COMPILER* compiler, SPVM_OP* op_na
       compiler->current_enum_value = constant->value.ival;
     }
     else {
-      SPVM_COMPILER_error(compiler, "enum value must be int type at %s line %d\n", op_constant->file, op_constant->line);
+      SPVM_COMPILER_error(compiler, "enum value must be int type at %s line %d", op_constant->file, op_constant->line);
     }
     
     compiler->current_enum_value++;
@@ -2682,11 +2682,11 @@ SPVM_OP* SPVM_OP_build_enumeration(SPVM_COMPILER* compiler, SPVM_OP* op_enumerat
             access_control_descriptors_count++;
             break;
           default:
-            SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d\n", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
+            SPVM_COMPILER_error(compiler, "Invalid method descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
         }
       }
       if (access_control_descriptors_count > 1) {
-        SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d\n", op_method->file, op_method->line);
+        SPVM_COMPILER_error(compiler, "public, private can be specifed only one in sub declaration at %s line %d", op_method->file, op_method->line);
       }
     }
   }
@@ -2741,7 +2741,7 @@ SPVM_OP* SPVM_OP_build_call_method(SPVM_COMPILER* compiler, SPVM_OP* op_invocant
   const char* method_name = op_name_method->uv.name;
   
   if (strstr(method_name, "::")) {
-    SPVM_COMPILER_error(compiler, "method name can't conatin :: at %s line %d\n", op_name_method->file, op_name_method->line);
+    SPVM_COMPILER_error(compiler, "method name can't conatin :: at %s line %d", op_name_method->file, op_name_method->line);
   }
   
   // Class method call
@@ -2827,7 +2827,7 @@ SPVM_OP* SPVM_OP_build_inc(SPVM_COMPILER* compiler, SPVM_OP* op_inc, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_inc, op_inc->last, op_first);
 
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "Operand of ++ operator must be mutable at %s line %d\n", op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "Operand of ++ operator must be mutable at %s line %d", op_first->file, op_first->line);
   }
   
   return op_inc;
@@ -2839,7 +2839,7 @@ SPVM_OP* SPVM_OP_build_dec(SPVM_COMPILER* compiler, SPVM_OP* op_dec, SPVM_OP* op
   SPVM_OP_insert_child(compiler, op_dec, op_dec->last, op_first);
 
   if (!SPVM_OP_is_mutable(compiler, op_first)) {
-    SPVM_COMPILER_error(compiler, "Operand of -- operator must be mutable at %s line %d\n", op_first->file, op_first->line);
+    SPVM_COMPILER_error(compiler, "Operand of -- operator must be mutable at %s line %d", op_first->file, op_first->line);
   }
   
   return op_dec;
@@ -2990,7 +2990,7 @@ SPVM_OP* SPVM_OP_build_special_assign(SPVM_COMPILER* compiler, SPVM_OP* op_speci
   SPVM_OP_insert_child(compiler, op_special_assign, op_special_assign->last, op_term_dist);
   
   if (!SPVM_OP_is_mutable(compiler, op_term_dist)) {
-    SPVM_COMPILER_error(compiler, "special assign operator left value must be mutable at %s line %d\n", op_term_dist->file, op_term_dist->line);
+    SPVM_COMPILER_error(compiler, "special assign operator left value must be mutable at %s line %d", op_term_dist->file, op_term_dist->line);
   }
   
   return op_special_assign;
@@ -3007,7 +3007,7 @@ SPVM_OP* SPVM_OP_build_assign(SPVM_COMPILER* compiler, SPVM_OP* op_assign, SPVM_
   op_term_dist->is_lvalue = 1;
   
   if (!SPVM_OP_is_mutable(compiler, op_term_dist)) {
-    SPVM_COMPILER_error(compiler, "assign operator left value must be mutable at %s line %d\n", op_term_dist->file, op_term_dist->line);
+    SPVM_COMPILER_error(compiler, "assign operator left value must be mutable at %s line %d", op_term_dist->file, op_term_dist->line);
   }
   
   return op_assign;

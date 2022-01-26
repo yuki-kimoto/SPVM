@@ -20,7 +20,7 @@ sub print_error_messages {
   my $error_messages = $builder->get_error_messages;
   
   for my $error_message (@$error_messages) {
-    print STDERR "[CompileError]$error_message";
+    print STDERR "[CompileError]$error_message\n";
   }
 }
 

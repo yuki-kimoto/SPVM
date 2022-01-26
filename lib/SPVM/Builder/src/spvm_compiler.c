@@ -336,7 +336,7 @@ void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
   
   for (int32_t i = 0; i < compiler->error_messages->length; i++) {
     const char* error_message = (const char*)SPVM_LIST_fetch(compiler->error_messages, i);
-    fprintf(fh, "[CompileError]%s", error_message);
+    fprintf(fh, "[CompileError]%s\n", error_message);
   }
 }
 
