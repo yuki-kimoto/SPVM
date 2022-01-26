@@ -47,15 +47,24 @@ sub get_class_names {
   return $class_names;
 }
 
-
 sub get_method_names {
-  my ($self, $class) = @_;
+  my ($self, $class_name) = @_;
   
   my $builder = $self->{builder};
   
-  my $method_names = $builder->get_class_names($class);
+  my $method_names = $builder->get_class_names($class_name);
   
   return $method_names;
+}
+
+sub get_method_signature {
+  my ($self, $class_name, $method_name) = @_;
+  
+  my $builder = $self->{builder};
+  
+  my $method_signature = $builder->get_method_signature($class_name, $method_name);
+  
+  return $method_signature;
 }
 
 1;
@@ -87,6 +96,12 @@ SPVM::Builder::API - SPVM Builder Public APIs
     # Method names
     my $method_names = $api->get_method_names($class_name);
     
+    for my $method_name (@$method_names) {
+      # Method signature
+      my $method_signature = $api->get_method_signature($class_name, $method_name);
+      
+      print "$class_name->$method_name: $method_signature\n";
+    }
   }
   
 =head1 DESCRIPTION
@@ -112,3 +127,6 @@ B<SPVM::Builder::API> provides the public APIs to call the methods. These APIs i
 =head2 get_class_names
 
 =head2 get_method_names
+
+=head2 get_method_signature
+
