@@ -44,6 +44,7 @@ sub import {
 
   my $build_success = $BUILDER->build($class_name, $file, $line);
   unless ($build_success) {
+    $BUILDER->printf_error_messages(*STDERR);
     exit(255);
   }
 

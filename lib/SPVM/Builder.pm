@@ -39,6 +39,15 @@ sub build {
   return 1;
 }
 
+sub print_error_messages {
+  my ($self, $fh) = @_;
+
+  my $error_messages = $self->get_error_messages;
+  for my $error_message (@$error_messages) {
+    printf $fh "[CompileError]$error_message";
+  }
+}
+
 # Fields
 sub module_dirs {
   my $self = shift;

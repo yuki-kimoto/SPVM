@@ -442,8 +442,6 @@ void SPVM_COMPILER_error(SPVM_COMPILER* compiler, const char* message_template, 
   va_end(args);
 
   SPVM_LIST_push(compiler->error_messages, message);
-  
-  fprintf(stderr, "[CompileError]%s", message);
 }
 
 const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_METHOD* method) {
