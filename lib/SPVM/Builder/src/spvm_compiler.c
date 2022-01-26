@@ -332,6 +332,14 @@ int32_t SPVM_COMPILER_get_error_count(SPVM_COMPILER* compiler) {
   return compiler->error_messages->length;
 }
 
+void SPVM_COMPILER_print_error_messages(SPVM_COMPILER* compiler, FILE* fh) {
+  
+  for (int32_t i = 0; i < compiler->error_messages->length; i++) {
+    const char* error_message = (const char*)SPVM_LIST_fetch(compiler->error_messages, i);
+    fprintf(fh, "[CompileError]%s", error_message);
+  }
+}
+
 int32_t SPVM_COMPILER_compile(SPVM_COMPILER* compiler) {
   
   //yacc/bison debug mode. The default is off.
