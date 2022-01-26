@@ -17,6 +17,10 @@ Revision history for SPVM
         * Add global_cc_each field to SPVM::Builder::Config::Exe
         * Add global_ccflags_each field to SPVM::Builder::Config::Exe
         * Add global_optimize_each field to SPVM::Builder::Config::Exe
+        * Add global_cc_each field to SPVM::Builder::CC
+        * Add global_ccflags_each field to SPVM::Builder::CC
+        * Add global_optimize_each field to SPVM::Builder::CC
+        * SPVM::Builder::CC uses global_cc_each, global_ccflags_each, global_optimize_each field.
         [NON BACKWORD COMPATIBLE CHANGES]
         * Change cc_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
           - source_file

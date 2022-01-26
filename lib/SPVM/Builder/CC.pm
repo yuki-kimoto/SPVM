@@ -69,14 +69,36 @@ sub debug {
   }
 }
 
-sub global_ccflags {
+sub global_cc_each {
   my $self = shift;
   if (@_) {
-    $self->{global_ccflags} = $_[0];
+    $self->{global_cc_each} = $_[0];
     return $self;
   }
   else {
-    return $self->{global_ccflags};
+    return $self->{global_cc_each};
+  }
+}
+
+sub global_ccflags_each {
+  my $self = shift;
+  if (@_) {
+    $self->{global_ccflags_each} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{global_ccflags_each};
+  }
+}
+
+sub global_optimize_each {
+  my $self = shift;
+  if (@_) {
+    $self->{global_optimize_each} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{global_optimize_each};
   }
 }
 
@@ -91,10 +113,6 @@ sub new {
   
   if ($ENV{SPVM_CC_FORCE}) {
     $self->{force} = 1;
-  }
-  
-  unless (defined $self->{global_ccflags}) {
-    $self->{global_ccflags} = [];
   }
   
   return bless $self, $class;
@@ -516,10 +534,14 @@ sub create_compile_command {
   my $cc_each = $config->cc_each;
   my $cc;
   if ($cc_each) {
-    $cc = $config->cc_each($config, {class_name => $class_name, source_file => $source_file});
+    $cc = $cc_each->($config, {class_name => $class_name, source_file => $source_file});
   }
   else {
     $cc = $config->cc;
+  }
+  my $global_cc_each = $self->global_cc_each;
+  if ($global_cc_each) {
+    $cc = $global_cc_each->($config, {class_name => $class_name, source_file => $source_file, cc => $cc});
   }
   
   my $cflags = '';
@@ -531,20 +553,28 @@ sub create_compile_command {
   my $ccflags_each = $config->ccflags_each;
   my $ccflags;
   if ($ccflags_each) {
-    $ccflags = $config->ccflags_each($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
+    $ccflags = $ccflags_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
   }
   else {
     $ccflags = $config->ccflags;
+  }
+  my $global_ccflags_each = $self->global_ccflags_each;
+  if ($global_ccflags_each) {
+    $ccflags = $global_ccflags_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file, ccflags => $ccflags});
   }
   $cflags .= " " . join(' ', @$ccflags);
   
   my $optimize_each = $config->optimize_each;
   my $optimize;
   if ($optimize_each) {
-    $optimize = $config->optimize_each($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
+    $optimize = $optimize_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
   }
   else {
     $optimize = $config->optimize;
+  }
+  my $global_optimize_each = $self->global_optimize_each;
+  if ($global_optimize_each) {
+    $optimize = $global_optimize_each->($config, {cc => $cc, class_name => $class_name, source_file => $source_file, optimize => $optimize});
   }
   $cflags .= " $optimize";
   
