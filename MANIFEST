@@ -356,6 +356,7 @@ lib/SPVM/BlessedObject/Class.pm
 lib/SPVM/BlessedObject/String.pm
 lib/SPVM/Bool.pm
 lib/SPVM/Builder.pm
+lib/SPVM/Builder/API.pm
 lib/SPVM/Builder/CC.pm
 lib/SPVM/Builder/Config.pm
 lib/SPVM/Builder/Config/Exe.pm
@@ -706,6 +707,9 @@ t/default/lib/SPVM/TestCase/CompileError/LexVar/LexVarNameInvalidColon.spvm
 t/default/lib/SPVM/TestCase/CompileError/LexVar/LexVarNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Literal/Character/InvalidCharacterLiteral.spvm
 t/default/lib/SPVM/TestCase/CompileError/Literal/Character/InvalidCharacterLiteralEmpty.spvm
+t/default/lib/SPVM/TestCase/CompileError/Literal/Character/InvalidHexAscii1.spvm
+t/default/lib/SPVM/TestCase/CompileError/Literal/Character/InvalidHexAscii2.spvm
+t/default/lib/SPVM/TestCase/CompileError/Literal/Character/NotEnd.spvm
 t/default/lib/SPVM/TestCase/CompileError/Literal/Integer/IntOutOfRange.spvm
 t/default/lib/SPVM/TestCase/CompileError/LogicalOperator/AndNotExpression.spvm
 t/default/lib/SPVM/TestCase/CompileError/LogicalOperator/NotNotExpression.spvm
@@ -942,6 +946,7 @@ t/exe/lib/SPVM/TestCase/NativeAPI2.spvm
 t/exe/myexe.config
 t/exe/myexe.pl
 t/exe/spvmcc.t
+t/exe/spvmgenlib.t
 t/get_native_api_indexes.pl
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
