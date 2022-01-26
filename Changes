@@ -13,6 +13,7 @@ Revision history for SPVM
           SPVM::Builder::Util::API::create_make_rule_native('Foo');
           SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
         * Add SPVM::Builder::API module for the public APIs of SPVM::Builder.
+        * Add optimize_each field to SPVM::Builder::Config
         [NON BACKWORD COMPATIBLE CHANGES]
         * Change cc_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
           - source_file

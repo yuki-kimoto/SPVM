@@ -84,6 +84,17 @@ sub optimize {
   }
 }
 
+sub optimize_each {
+  my $self = shift;
+  if (@_) {
+    $self->{optimize_each} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{optimize_each};
+  }
+}
+
 sub ld_optimize {
   my $self = shift;
   if (@_) {
@@ -713,6 +724,63 @@ B<Examples:>
   $config->optimize('-O3');
   $config->optimize('-O2');
   $config->optimize('-g3 -O0');
+
+=head2 optimize_each
+
+  my $optimize_each = $config->optimize_each;
+  $config->optimize_each($optimize_each);
+
+Get and set a callback that returns the value of optimize for each source file. The callback receives L<SPVM::Bulder::Config> object and optional arguments as a hash reference.
+
+B<Optional Arguments:>
+
+=over 2
+
+=item * source_file
+
+Each source file.
+
+=item * class_name
+
+The class name
+
+=item * cc
+
+The compiler name that is the value after the process of the process of L<cc> or L<cc_each>.
+
+=back
+
+If C<optimize_each> is defined, the compiler use the return value of C<optimize_each> as the compiler flags instead of C<optimize>.
+
+B<Examples:>
+  
+  $config->optimize_each(sub {
+    my ($config, $source_file) = @_;
+
+    # Source file
+    my $source_file = $args->{source_file};
+    
+    # Class name
+    my $class_name = $args->{class_name}
+
+    # The compiler name
+    my $cc = $args->{cc};
+    
+    # optimize
+    my $config_optimize = $config->optimize;
+    
+    my $optimize = [];
+    # C source file
+    if ($source_file =~ /\.c$/) {
+      $optimize = '-O3';
+    }
+    # C++ source file
+    elsif ($source_file =~ /\.cpp$/) {
+      $optimize = '-O3';
+    }
+    
+    return $optimize;
+  });
 
 =head2 source_files
 

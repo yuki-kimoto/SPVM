@@ -541,7 +541,14 @@ sub create_compile_command {
   }
   $cflags .= " " . join(' ', @$ccflags);
   
-  my $optimize = $config->optimize;
+  my $optimize_each = $config->optimize_each;
+  my $optimize;
+  if ($optimize_each) {
+    $optimize = $config->optimize_each($config, {cc => $cc, class_name => $class_name, source_file => $source_file});
+  }
+  else {
+    $optimize = $config->optimize;
+  }
   $cflags .= " $optimize";
   
   my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
