@@ -14,6 +14,20 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/lib";
 
+# SPVM compile error
+{
+  my $command = "$^X -Mblib $FindBin::Bin/compile_error.pl 2>&1";
+  my $output = `$command 2>&1`;
+  like($output, qr/CompileError/);
+}
+
+# SPVM dist compile error
+{
+  my $command = "$^X -Mblib $FindBin::Bin/compile_error_dist.pl 2>&1";
+  my $output = `$command 2>&1`;
+  like($output, qr/CompileError/);
+}
+
 sub print_error_messages {
   my ($builder) = @_;
   

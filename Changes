@@ -8,6 +8,7 @@ Revision history for SPVM
 
         [BAG FIX]
         * Fix the bug that build_shared_lib_dist of SPVM::Builder don't output the compilation error messages.
+        * Fix the bug that SPVM compilation error raise unexpected exception.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * create_make_rule_native of SPVM::Builder::Util::API doesn't use private API.

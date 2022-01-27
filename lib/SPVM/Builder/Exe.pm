@@ -218,7 +218,7 @@ sub build_exe_file {
   # Compile SPVM
   my $compile_success = $builder->compile_spvm($class_name, __FILE__, __LINE__);
   unless ($compile_success) {
-    $builder->printf_error_messages(*STDERR);
+    $builder->print_error_messages(*STDERR);
     exit(255);
   }
   
