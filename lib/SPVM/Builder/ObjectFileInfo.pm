@@ -64,6 +64,17 @@ sub class_name {
   }
 }
 
+sub config {
+  my $self = shift;
+  if (@_) {
+    $self->{config} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{config};
+  }
+}
+
 # Methods
 sub to_string {
   my ($self) = @_;
@@ -130,6 +141,13 @@ Get and set the compiler flags that compiled the object file.
   $object_file->class_name($class_name);
 
 Get and set the class name belonged to when the object file was compiled.
+
+=head2 config
+
+  my $config = $object_file->config;
+  $object_file->config($config);
+
+Get and set the config object when the object file was compiled. The config object is a L<SPVM::Builder::Config> object.
 
 =head1 METHODS
 
