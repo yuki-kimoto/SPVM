@@ -636,7 +636,7 @@ EOS
 
 sub link {
   my ($self, $class_name, $object_files, $opt) = @_;
-
+  
   # Category
   my $category = $self->category;
 
@@ -649,12 +649,6 @@ sub link {
     confess "SPVM_BUILD_DIR environment variable must be set for link";
   }
 
-  # Object directory
-  my $object_dir = $opt->{object_dir};
-  unless (defined $object_dir && -d $object_dir) {
-    confess "Object directory must be specified for link";
-  }
-  
   # Shared library directory
   my $lib_dir = $opt->{lib_dir};
   unless (defined $lib_dir && -d $lib_dir) {
@@ -690,6 +684,12 @@ sub link {
     $config = SPVM::Builder::Config->new_gnu99;
   }
   else { confess 'Unexpected Error' }
+  
+  # Execute the callback before this link
+  my $before_link = $config->before_link;
+  if ($before_link) {
+    $object_files = $config->before_link($config, $object_files);
+  }
 
   # Quiet output
   my $quiet = $config->quiet;

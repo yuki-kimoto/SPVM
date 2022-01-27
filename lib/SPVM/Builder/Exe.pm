@@ -905,10 +905,15 @@ sub compile_native_csources {
 
 sub link {
   my ($self, $object_files) = @_;
-  
+
   my $class_name = $self->class_name;
   
   my $config = $self->config;
+
+  my $before_link = $config->before_link;
+  if ($before_link) {
+    $object_files = $before_link->($config, $object_files);
+  }
   
   # CBuilder configs
   my $output_file = $self->{output_file};

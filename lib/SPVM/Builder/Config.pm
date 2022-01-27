@@ -194,6 +194,17 @@ sub force {
   }
 }
 
+sub before_link {
+  my $self = shift;
+  if (@_) {
+    $self->{before_link} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{before_link};
+  }
+}
+
 sub is_exe { 0 }
 
 # Methods
@@ -885,6 +896,25 @@ The default is C<-O2>.
   $config->force($force);
 
 Get and set the flag to force compiles and links without caching.
+
+=head2 before_link
+
+  my $before_link = $config->before_link;
+  $config->before_link($before_link);
+
+Get and set the callback that is executed before the link. The callback receives L<SPVM::Builder::Config> object and the array reference of L<SPVM::Builder::ObjectFileInfo> objects.
+
+This callback must be return the array reference of L<SPVM::Builder::ObjectFileInfo> objects that is used by the linker.
+
+B<Examples:>
+
+  $config->before_link(sub {
+    my ($config, $object_infos) = @_;
+    
+    # Do something
+
+    return $object_infos;
+  });
 
 =head2 quiet
 
