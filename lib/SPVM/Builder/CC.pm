@@ -502,7 +502,7 @@ sub compile {
 
     my $compile_info = $self->create_compile_command_info({class_name => $class_name, config => $config, output_file => $object_file, source_file => $source_file});
 
-    my $cc_cmd = $self->create_compile_command({compile_info => $compile_info});
+    my $cc_cmd = $self->create_compile_command($compile_info);
     
     my $compile_info_cc = $compile_info->{cc};
     my $compile_info_ccflags = $compile_info->{ccflags};
@@ -534,10 +534,8 @@ sub compile {
 }
 
 sub create_compile_command {
-  my ($self, $options) = @_;
+  my ($self, $compile_info) = @_;
 
-  my $compile_info = $options->{compile_info} ? $options->{compile_info} : $self->create_compile_command_info($options);
-  
   my $cc = $compile_info->{cc};
   my $ccflags = $compile_info->{ccflags};
   my $object_file = $compile_info->{object_file};

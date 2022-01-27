@@ -306,7 +306,7 @@ sub compile_source_file {
   my $builder_cc = SPVM::Builder::CC->new;
 
   my $compile_info = $builder_cc->create_compile_command_info({config => $config, output_file => $output_file, source_file => $source_file});
-  my $cc_cmd = $builder_cc->create_compile_command({compile_info => $compile_info});
+  my $cc_cmd = $builder_cc->create_compile_command($compile_info);
 
   if ($need_generate) {
 
