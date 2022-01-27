@@ -1,4 +1,4 @@
-package SPVM::Builder::ObjectFile;
+package SPVM::Builder::ObjectFileInfo;
 
 use strict;
 use warnings;
@@ -86,15 +86,15 @@ sub new {
 
 =head1 NAME
 
-SPVM::Builder::ObjectFile - Object file information
+SPVM::Builder::ObjectFileInfo - Object file information
 
 =head1 DESCRIPTION
 
-B<SPVM::Builder::ObjectFile> is a object file information. This infromation is used by the linker.
+B<SPVM::Builder::ObjectFileInfo> is a object file information. This infromation is used by the linker.
 
 =head1 FIELDS
 
-Fields of B<SPVM::Builder::ObjectFile>.
+Fields of B<SPVM::Builder::ObjectFileInfo>.
 
 =head2 object_file
 
@@ -133,11 +133,11 @@ Get and set the class name belonged to when the object file was compiled.
 
 =head1 METHODS
 
-Methods of B<SPVM::Builder::ObjectFile>.
+Methods of B<SPVM::Builder::ObjectFileInfo>.
 
 =head2 new
 
-  my $object_file = SPVM::Builder::ObjectFile->new;
+  my $object_file = SPVM::Builder::ObjectFileInfo->new;
 
 =head2 to_string
 
