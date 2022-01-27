@@ -13,6 +13,7 @@ use File::Basename 'dirname', 'basename';
 
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
+use SPVM::Builder::ObjectFileInfo;
 
 sub category {
   my $self = shift;
@@ -458,15 +459,15 @@ sub compile {
   }
 
   # Compile source files
-  my $object_files = [];
+  my $object_file_infos = [];
   my $is_native_src;
-  for my $src_file ($spvm_method_src_file, @$native_src_files) {
+  for my $source_file ($spvm_method_src_file, @$native_src_files) {
     my $object_file;
     # Native object file name
     if ($is_native_src) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
-      my $object_file_base = $src_file;
+      my $object_file_base = $source_file;
       $object_file_base =~ s/^\Q$native_src_dir//;
       $object_file_base =~ s/^[\\\/]//;
       
@@ -484,9 +485,9 @@ sub compile {
     
     # Do compile. This is same as make command
     my $need_generate;
-    my $input_files = [$config_file, $src_file, @include_file_names];
+    my $input_files = [$config_file, $source_file, @include_file_names];
     unless ($is_native_src) {
-      my $module_file = $src_file;
+      my $module_file = $source_file;
       $module_file =~ s/\.[^\/\\]+$//;
       $module_file .= '.spvm';
       
@@ -498,24 +499,31 @@ sub compile {
       output_file => $object_file,
       input_files => $input_files,
     });
+
+    my $cc_cmd = $self->create_compile_command({class_name => $class_name, config => $config, output_file => $object_file, source_file => $source_file});
     
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
       my $work_object_dir = "$object_dir/$class_rel_dir";
       mkpath dirname $object_file;
       
-      my $cc_cmd = $self->create_compile_command({class_name => $class_name, config => $config, output_file => $object_file, source_file => $src_file});
-      
       # Execute compile command
       $cbuilder->do_system(@$cc_cmd)
-        or confess "Can't compile $src_file: @$cc_cmd";
+        or confess "Can't compile $source_file: @$cc_cmd";
     }
-    push @$object_files, $object_file;
+    
+    my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+      object_file => $object_file,
+      class_name => $class_name,
+      source_file => $source_file,
+    );
+    
+    push @$object_file_infos, $object_file_info;
     
     $is_native_src = 1;
   }
   
-  return $object_files;
+  return $object_file_infos;
 }
 
 sub create_compile_command {
