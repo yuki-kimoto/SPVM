@@ -67,6 +67,22 @@ sub get_method_signature {
   return $method_signature;
 }
 
+sub build_shared_lib_dist_precompile {
+  my ($self, $class_name) = @_;
+  
+  my $builder = $self->{builder};
+  
+  $builer->build_shared_lib_dist($class_name, 'precompile');
+}
+
+sub build_shared_lib_dist_native {
+  my ($self, $class_name) = @_;
+  
+  my $builder = $self->{builder};
+
+  $builer->build_shared_lib_dist($class_name, 'native');
+}
+
 1;
 
 =head1 NAME
@@ -76,7 +92,9 @@ SPVM::Builder::API - SPVM Builder Public APIs
 =head1 SYNOPSYS
   
   # Builder API
-  my $api = SPVM::Builder::API->new;
+  my $api = SPVM::Builder::API->new(
+    build_dir => '.spvm_build',
+  );
   
   # Compile SPVM
   my $success = $api->compile_spvm('MyLib');
@@ -120,13 +138,54 @@ B<SPVM::Builder::API> provides the public APIs to call the methods. These APIs i
 
 =head2 new
 
+  # Builder API
+  my $api = SPVM::Builder::API->new;
+
+Create B<SPVM::Builder::API> object.
+
+B<Options:>
+
+=over 2
+
+=item * build_dir
+
+Build directory.
+
+=back
+
 =head2 compile_spvm
+
+  # Compile SPVM
+  my $success = $api->compile_spvm('MyLib');
+
+Compile SPVM module. If succeeded, return true value, otherwise false value.
 
 =head2 get_error_messages
 
+  # Error message
+  my $error_messages = $self->get_error_messages;
+
+Get error messages of the compililation as array reference.
+
 =head2 get_class_names
+
+  # Class names
+  my $class_names = $api->get_class_names;
+
+Get class names as array reference.
 
 =head2 get_method_names
 
+  # Method names
+  my $method_names = $api->get_method_names($class_name);
+
+Get method names as array reference.
+
 =head2 get_method_signature
 
+  # Method signature
+  my $method_signature = $api->get_method_signature($class_name, $method_name);
+
+Get the method signature. The first argument is a class name. The second argument is a method name.
+
+About method signatures, see L<SPVM::Document::LanguageSpecification>.

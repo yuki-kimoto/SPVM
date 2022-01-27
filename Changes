@@ -1,5 +1,10 @@
 Revision history for SPVM
 
+0.9131  2021-01-27
+        [CHANGE]
+        * Add build_shared_lib_dist_precompile to SPVM::Builder::API
+        * Add build_shared_lib_dist_native to SPVM::Builder::API
+
 0.9130  2021-01-27
         [CHANGE]
         * Compilation error messages is saved as strings.
