@@ -9,8 +9,12 @@ sub new {
   my $class = shift;
   
   my $self = {};
-
-  my $builder = SPVM::Builder->new;
+  
+  my %options = @_;
+  
+  my $build_dir = $options{build_dir};
+  
+  my $builder = SPVM::Builder->new(build_dir => $build_dir);
 
   $self->{builder} = $builder;
   
@@ -22,7 +26,7 @@ sub compile_spvm {
   
   my $builder = $self->{builder};
   
-  my $succcess = $builder->compile_spvm($class_name, __FILE__, __LINE__);
+  my $success = $builder->compile_spvm($class_name, __FILE__, __LINE__);
   
   return $success;
 }
@@ -32,7 +36,7 @@ sub get_error_messages {
   
   my $builder = $self->{builder};
   
-  my $error_messages = $builder->get_error_messages
+  my $error_messages = $builder->get_error_messages;
   
   return $error_messages;
 }
@@ -72,7 +76,7 @@ sub build_shared_lib_dist_precompile {
   
   my $builder = $self->{builder};
   
-  $builer->build_shared_lib_dist($class_name, 'precompile');
+  $builder->build_shared_lib_dist($class_name, 'precompile');
 }
 
 sub build_shared_lib_dist_native {
@@ -80,7 +84,7 @@ sub build_shared_lib_dist_native {
   
   my $builder = $self->{builder};
 
-  $builer->build_shared_lib_dist($class_name, 'native');
+  $builder->build_shared_lib_dist($class_name, 'native');
 }
 
 1;
@@ -189,3 +193,15 @@ Get method names as array reference.
 Get the method signature. The first argument is a class name. The second argument is a method name.
 
 About method signatures, see L<SPVM::Document::LanguageSpecification>.
+
+=head2 build_shared_lib_dist_precompile
+
+  $api->build_shared_lib_dist_precompile($class_name)
+
+Build a precompile shared library into C<blib/lib>.
+
+=head2 build_shared_lib_dist_native
+
+  $api->build_shared_lib_dist_native($class_name)
+
+Build a native shared library into C<blib/lib>.

@@ -15,13 +15,13 @@ SPVM::Builder::Util::API - Public APIs of the utility of SPVM Builder
 
 =head1 SYNOPSYS
     
-    # Create native make rule
-    my $native_make_rule
-      = SPVM::Builder::Util::API::create_make_rule_native('Foo');
-    
-    # Create precompile make rule
-    my $precompile_make_rule
-      = SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
+  # Create native make rule
+  my $native_make_rule
+    = SPVM::Builder::Util::API::create_make_rule_native('Foo');
+  
+  # Create precompile make rule
+  my $precompile_make_rule
+    = SPVM::Builder::Util::API::create_make_rule_precompile('Foo');
 
 =head1 DESCRIPTION
 

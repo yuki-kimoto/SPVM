@@ -279,7 +279,7 @@ sub create_class_make_rule {
   
   # Get source files
   $make_rule .= "$shared_lib_file :: @deps\n";
-  $make_rule .= "\t$^X -Mblib -MSPVM::Builder -e \"SPVM::Builder->new(build_dir => '.spvm_build')->build_shared_lib_dist('$class_name', '$category')\"\n\n";
+  $make_rule .= "\t$^X -Mblib -MSPVM::Builder::API -e \"SPVM::Builder::API->new(build_dir => '.spvm_build')->build_shared_lib_dist_$category('$class_name')\"\n\n";
   
   return $make_rule;
 }
