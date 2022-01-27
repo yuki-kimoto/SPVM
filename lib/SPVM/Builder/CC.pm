@@ -523,6 +523,7 @@ sub compile {
       source_file => $source_file,
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
+      config => $config,
     );
     
     push @$object_file_infos, $object_file_info;

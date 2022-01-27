@@ -1,6 +1,6 @@
 Revision history for SPVM
 
-0.9130  2021-01-26
+0.9130  2021-01-27
         [CHANGE]
         * Compilation error messages is saved as strings.
         * Add SPVM::Builder::Util::API module for the public APIs of SPVM::Builder::Util.
@@ -21,6 +21,8 @@ Revision history for SPVM
         * Add global_ccflags_each field to SPVM::Builder::CC
         * Add global_optimize_each field to SPVM::Builder::CC
         * SPVM::Builder::CC uses global_cc_each, global_ccflags_each, global_optimize_each field.
+        * Add is_exe method to SPVM::Builder::Config and SPVM::Builder::Config::Exe.
+          
         [NON BACKWORD COMPATIBLE CHANGES]
         * Change cc_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
           - source_file

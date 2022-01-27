@@ -308,13 +308,25 @@ sub compile_source_file {
   my $compile_info = $builder_cc->create_compile_command_info({config => $config, output_file => $output_file, source_file => $source_file});
   my $cc_cmd = $builder_cc->create_compile_command($compile_info);
 
-  if ($need_generate) {
+  my $compile_info_cc = $compile_info->{cc};
+  my $compile_info_ccflags = $compile_info->{ccflags};
 
+  if ($need_generate) {
     # Execute compile command
     my $cbuilder = ExtUtils::CBuilder->new;
     $cbuilder->do_system(@$cc_cmd)
       or confess "Can't compile $source_file: @$cc_cmd";
   }
+  
+  my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+    object_file => $output_file,
+    source_file => $source_file,
+    cc => $compile_info_cc,
+    ccflags => $compile_info_ccflags,
+    config => $config,
+  );
+  
+  return $object_file_info;
 }
 
 sub create_bootstrap_source {
@@ -591,9 +603,9 @@ sub compile_bootstrap_source {
   mkdir dirname $object_file;
   
   # Compile
-  $self->compile_source_file({source_file => $source_file, output_file => $object_file});
+  my $object_file_info = $self->compile_source_file({source_file => $source_file, output_file => $object_file});
   
-  return $object_file;
+  return $object_file_info;
 }
 
 sub compile_spvm_core_sources {
@@ -657,18 +669,18 @@ sub compile_spvm_core_sources {
   mkpath $object_dir;
   
   # Compile source files
-  my $object_files = [];
+  my $object_file_infos = [];
   for my $src_file (@spvm_core_source_files) {
     # Object file
     my $object_file = "$object_dir/" . basename($src_file);
     $object_file =~ s/\.c$//;
     $object_file .= '.o';
     
-    $self->compile_source_file({source_file => $src_file, output_file => $object_file});
-    push @$object_files, $object_file;
+    my $object_file_info = $self->compile_source_file({source_file => $src_file, output_file => $object_file});
+    push @$object_file_infos, $object_file_info;
   }
   
-  return $object_files;
+  return $object_file_infos;
 }
 
 sub create_spvm_module_sources {
@@ -736,7 +748,7 @@ sub compile_spvm_module_sources {
   
   # Compile module source files
   my $class_names = $builder->get_class_names;
-  my $object_files = [];
+  my $object_file_infos = [];
   for my $class_name (@$class_names) {
     my $perl_class_name = "SPVM::$class_name";
     
@@ -755,11 +767,11 @@ sub compile_spvm_module_sources {
     mkpath dirname $object_file;
     
     # Compile
-    $self->compile_source_file({source_file => $source_file, output_file => $object_file});
-    push @$object_files, $object_file;
+    my $object_file_info = $self->compile_source_file({source_file => $source_file, output_file => $object_file});
+    push @$object_file_infos, $object_file_info;
   }
   
-  return $object_files;
+  return $object_file_infos;
 }
 
 sub create_precompile_csources {
