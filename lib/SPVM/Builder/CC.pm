@@ -688,7 +688,7 @@ sub link {
   # Execute the callback before this link
   my $before_link = $config->before_link;
   if ($before_link) {
-    $object_files = $config->before_link($config, $object_files);
+    $object_files = $before_link->($config, $object_files);
   }
 
   # Quiet output
