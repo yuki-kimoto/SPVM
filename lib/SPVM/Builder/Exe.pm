@@ -9,7 +9,7 @@ use Config;
 use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
-use SPVM::Builder::Config;
+use SPVM::Builder::Config::Exe;
 use File::Spec;
 use File::Find 'find';
 
@@ -184,9 +184,12 @@ sub new {
   my $config;
   if (defined $config_file) {
     $config = SPVM::Builder::Util::load_config($config_file);
+    unless ($config->is_exe) {
+      confess "Config file \"$config_file\" is not the config to create the executable file";
+    }
   }
   else {
-    $config = SPVM::Builder::Config->new_gnu99;
+    $config = SPVM::Builder::Config::Exe->new_gnu99;
   }
   $self->{config} = $config;
   
@@ -323,7 +326,7 @@ sub compile_source_file {
     source_file => $source_file,
     cc => $compile_info_cc,
     ccflags => $compile_info_ccflags,
-    config => $config,
+    is_exe_config => $config->is_exe,
   );
   
   return $object_file_info;

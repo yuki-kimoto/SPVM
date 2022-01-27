@@ -213,7 +213,7 @@ sub new {
   
   my $self = {@_};
 
-  bless $self, $class;
+  bless $self, ref $class || $class;
   
   # quiet
   unless (defined $self->{quiet}) {
@@ -323,7 +323,7 @@ sub new {
 sub new_c {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new(@_);
+  my $self = $class->new(@_);
   
   # NativeAPI
   $self->ext('c');
@@ -334,7 +334,7 @@ sub new_c {
 sub new_c99 {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new_c(@_);
+  my $self = $class->new_c(@_);
   
   # C99
   $self->set_std('c99');
@@ -345,7 +345,7 @@ sub new_c99 {
 sub new_gnu99 {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new_c(@_);
+  my $self = $class->new_c(@_);
   
   # C99
   $self->set_std('gnu99');
@@ -356,7 +356,7 @@ sub new_gnu99 {
 sub new_cpp {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new(@_);
+  my $self = $class->new(@_);
   
   # The compiler
   # [Memo]Free BSD don't have g++ in the environment clang++ exists.
@@ -380,7 +380,7 @@ sub new_cpp {
 sub new_cpp11 {
   my $class = shift;
   
-  my $self = SPVM::Builder::Config->new_cpp(@_);
+  my $self = $class->new_cpp(@_);
   
   # C++11
   $self->set_std('c++11');

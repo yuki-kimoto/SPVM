@@ -64,14 +64,14 @@ sub class_name {
   }
 }
 
-sub config {
+sub is_exe_config {
   my $self = shift;
   if (@_) {
-    $self->{config} = $_[0];
+    $self->{is_exe_config} = $_[0];
     return $self;
   }
   else {
-    return $self->{config};
+    return $self->{is_exe_config};
   }
 }
 
@@ -142,12 +142,12 @@ Get and set the compiler flags that compiled the object file.
 
 Get and set the class name belonged to when the object file was compiled.
 
-=head2 config
+=head2 is_exe_config
 
-  my $config = $object_file->config;
-  $object_file->config($config);
+  my $is_exe_config = $object_file->is_exe_config;
+  $object_file->is_exe_config($is_exe_config);
 
-Get and set the config object when the object file was compiled. The config object is a L<SPVM::Builder::Config> object.
+Get and set if the object file is compiled using L<SPVM::Builder::Config::Exe>.
 
 =head1 METHODS
 

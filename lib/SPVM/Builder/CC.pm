@@ -523,7 +523,7 @@ sub compile {
       source_file => $source_file,
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
-      config => $config,
+      is_exe_config => $config->is_exe,
     );
     
     push @$object_file_infos, $object_file_info;

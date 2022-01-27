@@ -26,6 +26,8 @@ Revision history for SPVM
         * Execute a before_link field callback before the link in SPVM::Bulder::CC link method.
         * Execute a before_link field callback before the link in SPVM::Bulder::Exe link method.
         * Add SPVM::Builder::ObjectFileInfo module
+        [BAG FIX]
+        * Fix the bug that SPVM::Builder::Config::Exe return SPVM::Builder::Config object and SPVM::Builder::Config doesn't support inheritance.
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Change cc_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
