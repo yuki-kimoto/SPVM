@@ -2010,6 +2010,8 @@ Signature is a string that follow the following rule sequence of Method Retrun V
 
 4. )
 
+It the method is a instance method, the part of signature of the first argument is "self".
+
 <b>Signature Example:</b>
 
 <pre>
@@ -2024,6 +2026,13 @@ static method foo : void ()
 
 # Signature
 void()
+
+<pre>
+# Method Definition
+method foo : int ($num1 : double, $num2 : long[])
+
+# Signature
+int(self,double,long[])
 </pre>
 
 Signature is not used in SPVM programs. Signature is used when calling the SPVM Method from <a href="/native-api.html">SPVM Native API</a>.
