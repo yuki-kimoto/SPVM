@@ -25,6 +25,7 @@ Revision history for SPVM
         * Add before_link field to SPVM::Builder::Config
         * Execute a before_link field callback before the link in SPVM::Bulder::CC link method.
         * Execute a before_link field callback before the link in SPVM::Bulder::Exe link method.
+        * Add SPVM::Builder::ObjectFileInfo module
         
         [NON BACKWORD COMPATIBLE CHANGES]
         * Change cc_each second argument of SPVM::Builder::Config from each source file to optional argument as hash reference
