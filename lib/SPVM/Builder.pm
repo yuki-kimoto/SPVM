@@ -149,6 +149,7 @@ sub build_shared_lib_dist {
 
   my $compile_success = $self->compile_spvm($class_name, '(build_shared_lib_dist)', 0);
   unless ($compile_success) {
+    $self->print_error_messages(*STDERR);
     exit(255);
   }
 
