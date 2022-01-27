@@ -635,7 +635,7 @@ EOS
 }
 
 sub link {
-  my ($self, $class_name, $object_files, $opt) = @_;
+  my ($self, $class_name, $object_file_infos, $opt) = @_;
   
   # Category
   my $category = $self->category;
@@ -685,12 +685,6 @@ sub link {
   }
   else { confess 'Unexpected Error' }
   
-  # Execute the callback before this link
-  my $before_link = $config->before_link;
-  if ($before_link) {
-    $object_files = $before_link->($config, $object_files);
-  }
-
   # Quiet output
   my $quiet = $config->quiet;
 
@@ -762,13 +756,28 @@ sub link {
             }
           }
         }
-        push @$object_files, $static_lib_file;
+        my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+          object_file => $static_lib_file,
+          class_name => $resource,
+          is_exe_config => 0,
+          is_resource => 1,
+        );
+        
+        push @$object_file_infos, $object_file_info;
       }
       else {
         confess "Can't find resource static library file \"$static_lib_file\"";
       }
     }
   }
+
+  # Execute the callback before this link
+  my $before_link = $config->before_link;
+  if ($before_link) {
+    $object_file_infos = $before_link->($config, $object_file_infos);
+  }
+
+  my $object_files = [map { $_->to_string } @$object_file_infos];
 
   # Libraries
   # Libraries is linked using absolute path because the linked libraries must be known at runtime.

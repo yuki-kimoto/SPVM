@@ -907,7 +907,7 @@ sub compile_native_csources {
 }
 
 sub link {
-  my ($self, $object_files) = @_;
+  my ($self, $object_file_infos) = @_;
 
   my $class_name = $self->class_name;
   
@@ -915,7 +915,7 @@ sub link {
 
   my $before_link = $config->before_link;
   if ($before_link) {
-    $object_files = $before_link->($config, $object_files);
+    $object_file_infos = $before_link->($config, $object_file_infos);
   }
   
   # CBuilder configs
@@ -949,10 +949,12 @@ sub link {
     global_force => $self->force,
     config_force => $config->force,
     output_file => $output_file,
-    input_files => $object_files,
+    input_files => $object_file_infos,
   });
   
   if ($need_generate) {
+    my $object_files = [map { $_->to_string } @$object_file_infos];
+    
     # Create the executable file
     my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
     $cbuilder->link_executable(
