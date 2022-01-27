@@ -604,7 +604,9 @@ t/default/callback.t
 t/default/class_var.t
 t/default/comment.t
 t/default/comparison_operator.t
+t/default/compile_error.pl
 t/default/compile_error.t
+t/default/compile_error_dist.pl
 t/default/compile_native_api.pl
 t/default/concat.t
 t/default/constant.t
@@ -700,6 +702,7 @@ t/default/lib/SPVM/TestCase/CompileError/Enum/PrivateAccess.spvm
 t/default/lib/SPVM/TestCase/CompileError/Field/HasFieldNameContainsUnderScoreTwice.spvm
 t/default/lib/SPVM/TestCase/CompileError/Field/HasFieldNameStartDigit.spvm
 t/default/lib/SPVM/TestCase/CompileError/Field/Private.spvm
+t/default/lib/SPVM/TestCase/CompileError/ForTest.spvm
 t/default/lib/SPVM/TestCase/CompileError/InvalidType.spvm
 t/default/lib/SPVM/TestCase/CompileError/Isa/LeftIsNotObject.spvm
 t/default/lib/SPVM/TestCase/CompileError/LexVar/LexVarNameColon2Twice.spvm
