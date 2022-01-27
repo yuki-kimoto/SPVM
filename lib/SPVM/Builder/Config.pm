@@ -194,6 +194,8 @@ sub force {
   }
 }
 
+sub is_exe { 0 }
+
 # Methods
 sub new {
   my $class = shift;
@@ -1068,3 +1070,9 @@ Get the source directory from the config file name.
   my $lib_dir = $config->get_lib_dir(__FILE__);
 
 Get the library directory from the config file name.
+
+=head2 is_exe
+
+  my $is_exe = $config->is_exe;
+
+Check this config is used for creating executalbe file. Always 0.

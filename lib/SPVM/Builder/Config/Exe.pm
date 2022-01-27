@@ -44,6 +44,8 @@ sub global_optimize_each {
   }
 }
 
+sub is_exe { 1 }
+
 1;
 
 =head1 NAME
@@ -56,7 +58,9 @@ SPVM::Builder::Config::Exe is configuration of creating excutable files of L<spv
 
 =head1 FIELDS
 
-Fields is inherited from L<SPVM::Builder::Config> and you can use the following ones.
+Fields of B<SPVM::Builder::Config::Exe>.
+
+Fields are inherited from L<SPVM::Builder::Config> and you can use the following fields.
 
 =head2 global_cc_each
 
@@ -227,3 +231,15 @@ B<Examples:>
     
     return $global_optimize;
   });
+
+=head1 METHODS
+
+Methods of B<SPVM::Builder::Config::Exe>.
+
+Methods are inherited from L<SPVM::Builder::Config> and you can use the following methods.
+
+=head2 is_exe
+
+  my $is_exe = $config->is_exe;
+
+Check this config is used for creating executalbe file. Always 1.
