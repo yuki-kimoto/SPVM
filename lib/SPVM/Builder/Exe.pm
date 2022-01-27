@@ -302,10 +302,13 @@ sub compile_source_file {
     input_files => [$source_file],
   });
 
+  # Compile command
+  my $builder_cc = SPVM::Builder::CC->new;
+
+  my $compile_info = $builder_cc->create_compile_command_info({config => $config, output_file => $output_file, source_file => $source_file});
+  my $cc_cmd = $builder_cc->create_compile_command({compile_info => $compile_info});
+
   if ($need_generate) {
-    # Compile command
-    my $builder_cc = SPVM::Builder::CC->new;
-    my $cc_cmd = $builder_cc->create_compile_command({config => $config, output_file => $output_file, source_file => $source_file});
 
     # Execute compile command
     my $cbuilder = ExtUtils::CBuilder->new;
