@@ -500,7 +500,12 @@ sub compile {
       input_files => $input_files,
     });
 
-    my $cc_cmd = $self->create_compile_command({class_name => $class_name, config => $config, output_file => $object_file, source_file => $source_file});
+    my $compile_info = $self->create_compile_command_info({class_name => $class_name, config => $config, output_file => $object_file, source_file => $source_file});
+
+    my $cc_cmd = $self->create_compile_command({compile_info => $compile_info});
+    
+    my $compile_info_cc = $compile_info->{cc};
+    my $compile_info_ccflags = $compile_info->{ccflags};
     
     if ($need_generate) {
       my $class_rel_dir = SPVM::Builder::Util::convert_class_name_to_rel_dir($class_name);
@@ -516,6 +521,8 @@ sub compile {
       object_file => $object_file,
       class_name => $class_name,
       source_file => $source_file,
+      cc => $compile_info_cc,
+      ccflags => $compile_info_ccflags,
     );
     
     push @$object_file_infos, $object_file_info;
@@ -527,6 +534,21 @@ sub compile {
 }
 
 sub create_compile_command {
+  my ($self, $options) = @_;
+
+  my $compile_info = $options->{compile_info} ? $options->{compile_info} : $self->create_compile_command_info($options);
+  
+  my $cc = $compile_info->{cc};
+  my $ccflags = $compile_info->{ccflags};
+  my $object_file = $compile_info->{object_file};
+  my $source_file = $compile_info->{source_file};
+  
+  my $cc_cmd = [$cc, '-c', @$ccflags, '-o', $object_file, $source_file];
+  
+  return $cc_cmd;
+}
+
+sub create_compile_command_info {
   my ($self, $options) = @_;
 
   unless ($options) {
@@ -588,9 +610,9 @@ sub create_compile_command {
   
   my @cflags = ExtUtils::CBuilder->new->split_like_shell($cflags);
   
-  my $cc_cmd = [$cc, '-c', @cflags, '-o', $output_file, $source_file];
+  my $compile_info = {cc => $cc, ccflags => \@cflags, object_file => $output_file, source_file => $source_file};
   
-  return $cc_cmd;
+  return $compile_info;
 }
 
 sub _error_message_find_config {
