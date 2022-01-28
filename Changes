@@ -1,5 +1,9 @@
 Revision history for SPVM
 
+0.9133  2021-01-29
+        [FIX DOCUMENT BAG]
+        * Add the document of get_bool_object_value of Native APIs.
+
 0.9132  2021-01-28
         [CHANGE]
         * SPVM::Builder::Config::Exe default ldflags become empty list.
