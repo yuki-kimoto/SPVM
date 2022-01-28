@@ -441,8 +441,6 @@ sub compile {
     );
   }
   
-  my $cbuilder = ExtUtils::CBuilder->new(quiet => $quiet);
-
   my $mod_time_config_file;
   if (-f $config_file) {
      $mod_time_config_file = (stat($config_file))[9];
@@ -513,8 +511,12 @@ sub compile {
       mkpath dirname $object_file;
       
       # Execute compile command
+      my $cbuilder = ExtUtils::CBuilder->new(quiet => 1);
       $cbuilder->do_system(@$cc_cmd)
         or confess "Can't compile $source_file: @$cc_cmd";
+      unless ($quiet) {
+        print "@$cc_cmd\n";
+      }
     }
     
     my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
@@ -888,11 +890,11 @@ sub link {
         }
         if (defined $def_file && -f $def_file) {
           my $def_content = SPVM::Builder::Util::slurp_binary($def_file);
-          warn "[$def_file]\n$def_content\n";
+          print "[$def_file]\n$def_content\n";
         }
         if (defined $lds_file && -f $lds_file) {
           my $lds_content = SPVM::Builder::Util::slurp_binary($lds_file);
-          warn "[$lds_file]\n$lds_content\n";
+          print "[$lds_file]\n$lds_content\n";
         }
       }
     }

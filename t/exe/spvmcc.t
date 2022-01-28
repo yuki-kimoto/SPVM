@@ -50,6 +50,8 @@ my $exe_dir = "$build_dir/work/exe";
     like($spvmcc_output, qr/-lm\b/);
     like($spvmcc_output, qr/-L\./);
     like($spvmcc_output, qr/-std=gnu99/);
+    like($spvmcc_output, qr/NativeAPI2\.o/);
+    like($spvmcc_output, qr/NativeAPI2\.precompile\.o/);
     
     warn "$spvmcc_output";
 
