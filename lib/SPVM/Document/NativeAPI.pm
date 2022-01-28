@@ -32,7 +32,9 @@ If the native config file does not exist, an exception occurs.
 
 Native config files are writen by Perl. It must return L<Builder::Config|SPVM::Builder::Config> object, otherwise an exception occurs.
 
-=head3 Examples of GNU99
+I show some examples of native config files.
+
+=head3 GNU99 Config Files
 
   # GNU99 Config File
   use strict;
@@ -43,7 +45,7 @@ Native config files are writen by Perl. It must return L<Builder::Config|SPVM::B
 
   $config;
 
-=head3 Examples of C99 Config File
+=head3 C99 Config Files
 
   # C99 Config File
   use strict;
@@ -54,7 +56,7 @@ Native config files are writen by Perl. It must return L<Builder::Config|SPVM::B
 
   $config;
 
-=head3 C11 Config File Example
+=head3 C11 Config Files
 
   # C11 Config File
   use strict;
@@ -67,7 +69,7 @@ Native config files are writen by Perl. It must return L<Builder::Config|SPVM::B
 
   $config;
 
-=head3 C++ Config File Example
+=head3 C++ Config Files
 
   # C++ Config File
   use strict;
@@ -78,7 +80,7 @@ Native config files are writen by Perl. It must return L<Builder::Config|SPVM::B
 
   $config;
 
-=head3 C++11 Config File Example
+=head3 C++11 Config Files
 
   # C++11 Config File
   use strict;
@@ -91,7 +93,7 @@ Native config files are writen by Perl. It must return L<Builder::Config|SPVM::B
 
   $config;
 
-=head3 CUDA/nvcc Config File Example
+=head3 CUDA/nvcc Config Files
 
   use strict;
   use warnings;
@@ -112,21 +114,22 @@ Native config files are writen by Perl. It must return L<Builder::Config|SPVM::B
 
   $config;
 
-=head3 Show the compile commands
+=head3 The Options of Config Files
 
-  # C99 Config File
+B<Output the commands of the compililation and the link:>
+
   use strict;
   use warnings;
 
   use SPVM::Builder::Config;
   my $config = SPVM::Builder::Config->new_gnu99;
 
-  # Show the compile commands
+  # Output the commands of the compililation and link
   $config->quiet(0);
 
   $config;
 
-=head3 Force the compiles
+B<Force the compilation and the link:>
 
   use strict;
   use warnings;
@@ -134,19 +137,27 @@ Native config files are writen by Perl. It must return L<Builder::Config|SPVM::B
   use SPVM::Builder::Config;
   my $config = SPVM::Builder::Config->new_gnu99;
 
-  # Show the compile commands
+  # Force the compilation and the link
   $config->force(1);
 
   $config;
 
-=head2 Native Method Definition
+=head2 Native Method Definitions
 
-Native Method Definition is written in native source file. Native source file is basically C language source file which extension is ".c". This extension can be changed to ".cpp" for C++ source file, or ".cu" for CUDA source file, etc.
+A native method definition is written in the native module file. Native module files are writen C, C++, or the language that the rule of function call is same as C. 
 
-  # Native source file for Foo::Bar module
+The extension is defined L<ext|SPVM::Builder::Config/"ext"> method in L<the config file|"Native-Config-Files">.
+
+  $config->ext('cpp');
+
+Generally the extension of C is C<c>, C++ is C<cpp>, CUDA/nvcc is C<cu>.
+
+Put the config file in the same directory as the SPVM module.
+
+  # Native module file for Foo::Bar module
   SPVM/Foo/Bar.c
 
-The following is natvie source file example written by C language.
+This is an example of SPVM natvie module. The config file is L<GNU99|/"GNU99 Config Files">.
 
   #include "spvm_native.h"
 
@@ -162,44 +173,43 @@ The following is natvie source file example written by C language.
     return 0;
   }
 
-=head3 Include spvm_native.h
+=head3 The header of Native APIs
 
-Include "spvm_native.h" at the beginning of the native source file. This header file defines SPVM Native APIs and data structures for Native APIs.
+Include C<spvm_native.h> at the beginning of the natvie module. C<spvm_native.h> is the header of Native APIs. It defines L<the native APIs||/"List-of-Native-APIs"> and the data structures, such as C<SPVM_ENV>, C<SPVM_VALUE>.
 
-spvm_native.h include the following types.
+=head3 Native Function Names
 
-  SPVM_ENV
-  SPVM_VALUE
+A SPVM native method have a native function.
 
-See L<List of Native APIs|/"List-of-Native-APIs"> about included SPVM Native APIs.
-
-=head3 Return Value
-
-The return type is "int32_t" type. If the method raises an exception, "1" is returned. If the method is succeed "0" is returned.
-
-=head3 Function Name
-
-Native Method Definition is a simple C language function such as
+Native funtions have the rule of the names. For example, the name is C<SPVM__Foo__Bar__sum>.
 
   SPVM__Foo__Bar__sum
 
+This name is write by the following rules.
+
 The function name starts with "SPVM__".
 
-Followed by class name "Foo__Bar", which is replaced "::" in Foo::Bar.
+Followed by the class name "Foo__Bar", that is replaced "::" with "__".
 
 Followed by "__".
 
-Followed by method name "sum".
+Followed by the method name "sum".
 
-If Native Method Name is invalid, a compile error will occur.
+If the name is invalid, a compilation error occurs.
 
-There are two arguments, the first argument is "SPVM_ENV* env" which has the information of the execution environment, and the second argument is "SPVM_VALUE* stack" which is used for the argument and return value.
+=head3 Native Function Arguments
+
+A native function has two arguments.
+
+The first argument is C<env> that type is C<SPVM_ENV*>. This has the information of the runtime environment.
+
+The second argument is C<stack> that type is C<SPVM_VALUE*>. This is used for getting the values of the arguments and setting the return value.
 
   int32_t SPVM__Foo__Bar__sum(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   }
 
-In the above sample, it takes two int type arguments of SPVM, calculates the sum, and returns the return value.
+In the above example, SPVM native method takes two arguments that type is C<int>. It calculates the sum of the tow values, and returns the total value.
 
   #include "spvm_native.h"
 
@@ -214,6 +224,12 @@ In the above sample, it takes two int type arguments of SPVM, calculates the sum
 
     return 0;
   }
+
+=head3 Native Function Return Value
+
+The type of return value of native function is C<int32_t>. If the method succeeds, the method must return C<1>.  If the method fails, the method must return C<0>.
+
+Note that this is B<not> the return value of the SPVM native method, such as the total value in the above example.
 
 =head2 Compile Native Method
 
@@ -2410,7 +2426,7 @@ B<Examples:>
 
   int32_t (*get_bool_object_value)(SPVM_ENV* env, void* bool_object);
 
-Get the value of a L<SPVM::Bool|Bool> object. If the Bool object is true, return 1, otherwise return 0.
+Get the value of a L<Bool|SPVM::Bool> object. If the Bool object is true, return 1, otherwise return 0.
 
 B<Examples:>
 
