@@ -4,40 +4,53 @@ SPVM::Document::NativeAPI - SPVM Native APIs
 
 =head1 DESCRIPTION
 
-SPVM Native APIs is C APIs used in SPVM native method. This document describes the way to define native methods, and shows the all of SPVM Native APIs. If you want to know the list of Native APIs, see L<List of Native APIs|/"List-of-Native-APIs">.
+B<SPVM Native APIs> are public APIs that are used in native modules. SPVM Native APIs are writen in C language.
 
-Native method can be written by C language or C++, If the code is compatible with C language or C++(for example, CUDA/nvcc), it can be compiled into native method. If you see examples of SPVM Native APIs, see L<Examples using SPVM Native APIs|https://github.com/yuki-kimoto/SPVM/tree/master/examples/native>. This contains the examples of C language, C++ and CUDA/nvcc.
+This document describes L<the usage of SPVM Native APIs|/"List-of-Native-APIs">, and also the way to write native methods and native modules.
 
-=head1 Defintion of SPVM Native Method
+Native methods can be written by C language or C++. If the rule of the function call is same as C, you can use any language, for example, CUDA/nvcc.
 
-=head2 Native Method Declaration
+=head1 Native Methods
 
-Native Method Declaration is written using Method Descriptor "native" in SPVM module file. SPVM Native Method Declaration ends with a semicolon without Sobroutine Block.
+=head2 Native Method Declarations
+
+A native method declaration are written using the method descriptor "native" in a SPVM module file. The method can't have the block. it ends with a semicolon.
 
   # SPVM/Foo/Bar.spvm
   class Foo::Bar {
     native static method sum : int ($num1 : int, $num2 : int);
   }
 
-=head2 SPVM Native Config File
+=head2 Native Config Files
 
-SPVM Native Config File must be created for SPVM Native Method. The base name without the extension of native config file must be same as SPVM module file and the extension must be ".config".
+A native config file is needed for the native module. The extension is C<config>. Put the config file in the same directory as the SPVM module.
 
   # Native configuration file for Foo::Bar module
   SPVM/Foo/Bar.config
 
-If native configuration file does not exist, an exception occurs.
+If the native config file does not exist, an exception occurs.
 
-Native Config File is Perl source code. Native Config File must return properly L<Builder::Config|SPVM::Builder::Config> object, otherwise an exception occurs.
+Native config files are writen by Perl. It must return L<Builder::Config|SPVM::Builder::Config> object, otherwise an exception occurs.
 
-=head3 C99 Config File Example
+=head3 Examples of GNU99
+
+  # GNU99 Config File
+  use strict;
+  use warnings;
+
+  use SPVM::Builder::Config;
+  my $config = SPVM::Builder::Config->new_gnu99;
+
+  $config;
+
+=head3 Examples of C99 Config File
 
   # C99 Config File
   use strict;
   use warnings;
 
   use SPVM::Builder::Config;
-  my $config = SPVM::Builder::Config->new_gnu99;
+  my $config = SPVM::Builder::Config->new_c99;
 
   $config;
 
@@ -757,7 +770,7 @@ Native APIs of L<SPVM> have the IDs that is corresponding to the names. These ID
   159 call_instance_method
   160 get_instance_method_id_static
   161 get_bool_object_value
-  
+
 =head1 List of Native APIs
 
 List of Native APIs of L<SPVM>.
