@@ -923,7 +923,7 @@ sub link {
   
   # Add output file extension
   my $output_file_base = basename $output_file;
-  unless ($output_file =~ /\./) {
+  unless ($output_file_base =~ /\./) {
     my $exe_ext = $Config{exe_ext};
     $output_file .= $exe_ext;
   }
