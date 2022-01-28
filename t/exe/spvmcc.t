@@ -41,6 +41,13 @@ my $exe_dir = "$build_dir/work/exe";
     my $output_expect = "AAA $execute_cmd 3 1 1 7 args1 args2";
     is($output, $output_expect);
   }
+
+  # Compile and link cached
+  {
+    my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe -c t/exe/myexe.config MyExe);
+    my $spvmcc_output = `$spvmcc_cmd`;
+    ok(length $spvmcc_output == 0);
+  }
   
   # -O, -f,  --ccflags, --lddlflags
   {
