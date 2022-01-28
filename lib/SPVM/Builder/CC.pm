@@ -835,7 +835,7 @@ sub link {
 
   my $cbuilder_config = {
     ld => $ld,
-    lddlflags => $ldflags_str,
+    lddlflags => '',
     shrpenv => '',
     libpth => '',
     libperl => '',
@@ -867,6 +867,7 @@ sub link {
       objects => $object_files,
       module_name => $class_name,
       dl_func_list => $dl_func_list,
+      extra_linker_flags => $ldflags_str,
     );
 
     if ($self->debug) {
