@@ -948,7 +948,7 @@ sub link {
   # ExeUtils::CBuilder config
   my $cbuilder_config = {
     ld => $ld,
-    ldflags => $ldflags_str,
+    ldflags => '',
     shrpenv => '',
     perllibs => '',
     libpth => '',
@@ -970,6 +970,7 @@ sub link {
       objects => $object_files,
       module_name => $class_name,
       exe_file => $output_file,
+      extra_linker_flags => $ldflags_str,
     );
   }
   
