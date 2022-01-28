@@ -921,9 +921,6 @@ sub link {
   # CBuilder configs
   my $output_file = $self->{output_file};
 
-  my $lib_dirs_str = join(' ', map { "-L$_" } @{$config->lib_dirs});
-  $config->add_ldflags("$lib_dirs_str");
-  
   # Linker
   my $ld = $config->ld;
   
@@ -936,10 +933,22 @@ sub link {
   my $ld_optimize = $config->ld_optimize;
   $ldflags_str .= " $ld_optimize";
   
+  # Library directory
+  my $lib_dirs = $config->lib_dirs;
+  for my $lib_dir (@$lib_dirs) {
+    if (-d $lib_dir) {
+      $ldflags_str .= " -L$lib_dir";
+    }
+  }
+  
+  # Libraries
+  my $libs = $config->libs;
+  $ldflags_str .= " " . join(' ', map { "-l$_" } @$libs);
+  
   # ExeUtils::CBuilder config
   my $cbuilder_config = {
     ld => $ld,
-    lddlflags => $ldflags_str,
+    ldflags => $ldflags_str,
     shrpenv => '',
     perllibs => '',
     libpth => '',

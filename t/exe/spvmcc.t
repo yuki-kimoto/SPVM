@@ -45,8 +45,13 @@ my $exe_dir = "$build_dir/work/exe";
   # -O, -f,  --ccflags, --lddlflags
   {
     my $spvmcc_cmd = qq($^X -Mblib blib/script/spvmcc -f -O "-O0 -g" -B $build_dir -I t/exe/lib/SPVM -o $exe_dir/myexe --config t/exe/myexe.config MyExe);
-    system($spvmcc_cmd) == 0
-      or die "Can't execute spvmcc command $spvmcc_cmd:$!";
+    my $spvmcc_output = `$spvmcc_cmd`;
+    like($spvmcc_output, qr/\Q-O0 -g/);
+    like($spvmcc_output, qr/-lm\b/);
+    like($spvmcc_output, qr/-L\./);
+    like($spvmcc_output, qr/-std=gnu99/);
+    
+    warn "$spvmcc_output";
 
     my $execute_cmd = File::Spec->catfile(@build_dir_parts, qw/work exe myexe/);
     my $execute_cmd_with_args = "$execute_cmd args1 args2";
