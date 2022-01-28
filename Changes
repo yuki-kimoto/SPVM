@@ -5,6 +5,7 @@ Revision history for SPVM
         * SPVM::Builder::Config::Exe default ldflags become empty list.
         [FIX BAG]
         * Fix the bug that spvmcc doesn't use libs, ldflags, lib_dirs fields.
+        * Fix the bug that spvmcc doesn't cache the executable file.
         [FIX DOCUMENT BAG]
         * Fix SPVM::Document::NativeAPI.
           Fix from call_spvm_method_by_name to call_class_method_by_name

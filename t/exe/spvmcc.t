@@ -16,8 +16,6 @@ my $file = 't/' . basename $0;
 use FindBin;
 use lib "$FindBin::Bin/exe/lib";
 
-my $output_expect = 'AAA t/exe/myexe.pl 3 1 1 7 args1 args2';
-
 my $build_dir = 't/exe/.spvm_build';
 my @build_dir_parts = split('/', $build_dir);
 my $exe_dir = "$build_dir/work/exe";

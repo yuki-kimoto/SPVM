@@ -920,6 +920,13 @@ sub link {
   
   # CBuilder configs
   my $output_file = $self->{output_file};
+  
+  # Add output file extension
+  my $output_file_base = basename $output_file;
+  unless ($output_file =~ /\./) {
+    my $exe_ext = $Config{exe_ext};
+    $output_file .= $exe_ext;
+  }
 
   # Linker
   my $ld = $config->ld;
