@@ -1,6 +1,8 @@
 Revision history for SPVM
 
 0.9132  2021-01-28
+        [CHANGE]
+        * SPVM::Builder::Config::Exe default ldflags become empty list.
         [FIX DOCUMENT BAG]
         * Fix SPVM::Document::NativeAPI.
           Fix from call_spvm_method_by_name to call_class_method_by_name

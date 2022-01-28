@@ -6,8 +6,14 @@ use warnings;
 use base 'SPVM::Builder::Config';
 
 sub new {
-  my $self = shift->SUPER::new(@_);
+  my ($self, %options) = @_;
   
+  unless (defined $options{ldflags}) {
+    $options{ldflags} = [];
+  }
+  
+  $self = $self->SUPER::new(%options);
+
   return $self;
 }
 
