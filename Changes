@@ -1,5 +1,11 @@
 Revision history for SPVM
 
+0.9132  2021-01-28
+        [FIX DOCUMENT BAG]
+        * Fix SPVM::Document::NativeAPI.
+          Fix from call_spvm_method_by_name to call_class_method_by_name
+          Fix from call_callback_method_by_name to call_instance_method_by_name
+
 0.9131  2021-01-27
         [CHANGE]
         * Add build_shared_lib_dist_precompile to SPVM::Builder::API

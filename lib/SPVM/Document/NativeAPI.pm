@@ -2159,7 +2159,7 @@ Example:
   int32_t output;
   {
     stack[0].ival = 5;
-    int32_t exception_flag = env->call_spvm_method_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
+    int32_t exception_flag = env->call_class_method_by_name(env, "TestCase::NativeAPI", "my_value", "int(int)", stack, __FILE__, __LINE__);
     if (exception_flag) {
       return exception_flag;
     }
@@ -2380,8 +2380,8 @@ Native APIs have indexes which correspond to the names. These indexes are perman
   149 get_class_var_float_by_name
   150 get_class_var_double_by_name
   151 get_class_var_object_by_name
-  152 call_spvm_method_by_name
-  153 call_callback_method_by_name
+  152 call_class_method_by_name
+  153 call_instance_method_by_name
   154 get_field_string_chars_by_name
   155 any_object_basic_type_id
   156 dump_raw
