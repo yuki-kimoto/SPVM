@@ -155,7 +155,7 @@ sub new {
   }
   
   # Quiet output
-  unless (exists $self->{quiet}) {
+  unless (defined $self->{quiet}) {
     $self->{quiet} = 0;
   }
   
