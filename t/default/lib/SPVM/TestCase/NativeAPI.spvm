@@ -1083,6 +1083,29 @@ class TestCase::NativeAPI {
   native static method native_call_class_method_by_name : int ();
   native static method native_call_class_method_by_name_exception : int ();
 
+  static method call_instance_method_by_name : int () {
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x(5);
+    
+    my $value = &call_instance_method_by_name_native($minimal);
+    
+    unless ($value == 5) {
+      return 0;
+    }
+    
+    return 1;
+  }
+  native static method call_instance_method_by_name_native : int ($minimal : TestCase::Minimal);
+  static method call_instance_method_by_name_exception : int () {
+    my $minimal = TestCase::Minimal->new;
+    $minimal->set_x(5);
+
+    &call_instance_method_by_name_exception_native($minimal);
+    
+    return 1;
+  }
+  native static method call_instance_method_by_name_exception_native : int ($minimal : TestCase::Minimal);
+
   native static method native_call_class_method : int ();
   native static method native_call_instance_method : int ();
 

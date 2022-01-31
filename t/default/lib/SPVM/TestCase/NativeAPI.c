@@ -1709,6 +1709,52 @@ int32_t SPVM__TestCase__NativeAPI__native_call_class_method_by_name_exception(SP
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  void* minimal = stack[0].oval;
+  
+  int32_t output;
+  {
+    stack[0].oval = minimal;
+    int32_t exception_flag = env->call_instance_method_by_name(env, minimal, "x", "int()", stack, MFILE, __LINE__);
+    if (e) { return e; }
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = output;
+  
+  return 0;
+}
+
+int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+
+  void* minimal = stack[0].oval;
+  
+  int32_t output;
+  {
+    stack[0].oval = minimal;
+    e = env->call_instance_method_by_name(env, minimal, "not_found", "int()", stack, MFILE, __LINE__);
+    if (e) { return e; };
+    output = stack[0].ival;
+  }
+  
+  stack[0].ival = 0;
+  
+  if (output == 5) {
+    stack[0].ival = 1;
+  }
+  
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;

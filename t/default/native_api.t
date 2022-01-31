@@ -149,11 +149,19 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
   ok(SPVM::TestCase::NativeAPI->native_call_instance_method);
 }
 
-# env->call_spvm_method_by_name
+# env->call_class_method_by_name
 {
   ok(SPVM::TestCase::NativeAPI->native_call_class_method_by_name);
   
   eval { SPVM::TestCase::NativeAPI->native_call_class_method_by_name_exception; };
+  ok($@);
+}
+
+# env->call_instance_method_by_name
+{
+  ok(SPVM::TestCase::NativeAPI->call_instance_method_by_name);
+  
+  eval { SPVM::TestCase::NativeAPI->call_instance_method_by_name_exception; };
   ok($@);
 }
 

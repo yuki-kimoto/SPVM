@@ -667,7 +667,7 @@ int32_t SPVM_API_call_class_method_by_name(SPVM_ENV* env, const char* class_name
 }
 
 int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object, const char* method_name, const char* signature, SPVM_VALUE* stack, const char* file, int32_t line) {
-
+  
   if (object == NULL) {
     env->die(env, "Object must not be NULL", file, line);
     return 1;
@@ -679,6 +679,7 @@ int32_t SPVM_API_call_instance_method_by_name(SPVM_ENV* env, SPVM_OBJECT* object
     return 1;
   };
   int32_t e = env->call_instance_method(env, method_id, stack);
+  
   if (e) {
     const char* message = env->get_chars(env, env->get_exception(env));
     env->die(env, "%s", message, file, line);
