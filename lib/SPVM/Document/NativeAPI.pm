@@ -2432,6 +2432,20 @@ B<Examples:>
 
   int32_t bool_value = env->get_bool_object_value(env, bool_object);
 
+=head1 Utilities
+
+Utilities.
+
+=head2 spvmgenlib
+
+If you want to create SPVM module that have the native module, L<spvmgenlib> is useful.
+
+=over 2
+
+=item * L<spvmgenlib>
+
+=back
+
 =head1 Examples
 
 =over 2

@@ -47,13 +47,15 @@ else {
 
 =head1 NAME
 
-spvmgenlib - The Command to Generate SPVM Native Libraries
+spvmgenlib - The Command to Generate SPVM Native Modules
 
 =head1 SYNOPSIS
 
   Usage: spvmgenlib [OPTIONS] [CLASS_NAME]
     
     spvmgenlib MyLib
+    spvmgenlib MyLib --native-lib-name mylib --native-language c
+    spvmgenlib MyLib --native-lib-name mylib --native-language c --script-file=mylib.pl
 
   Options:
     -h, --help                     Show this message
@@ -67,4 +69,4 @@ spvmgenlib - The Command to Generate SPVM Native Libraries
     
 =head1 DESCRIPTION
 
-B<spvmgenlib> is the command to generate SPVM native libraries.
+B<spvmgenlib> is the command to generate SPVM native modules.

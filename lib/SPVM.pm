@@ -435,11 +435,21 @@ SPVM Native API is C API used in SPVM native method.
 
 =head2 Generate Execution File
 
-spvmcc is a compiler to compile SPVM source codes to a execution file. The execution file can be run by itself.
+B<spvmcc> is a compiler to compile SPVM source codes to a execution file. The execution file can be run by itself.
 
 =over 2
 
 =item * L<spvmcc>
+
+=back
+
+=head2 Generate SPVM Native Modules
+
+B<spvmgenlib> is the command to generate SPVM native modules.
+
+=over 2
+
+=item * L<spvmgenlib>
 
 =back
 
