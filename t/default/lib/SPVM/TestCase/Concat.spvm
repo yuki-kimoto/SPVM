@@ -34,35 +34,36 @@ class TestCase::Concat {
   
   static method concat_string : int () {
     
-    my $string = "abc" . "def";
-    
-    if ($string eq "abcdef") {
-      return 1;
+    {
+      my $string = "abc" . "def";
+      unless ($string eq "abcdef") {
+        return 0;
+      }
     }
     
-    return 0;
+    return 1;
   }
 
   static method concat_left_is_number : int () {
     
     my $string = 13 . "abc";
     
-    if ($string eq "13abc") {
-      return 1;
+    unless ($string eq "13abc") {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 
   static method concat_right_is_number : int () {
     
     my $string = "abc" . 0.25;
     
-    if ($string eq "abc0.25") {
-      return 1;
+    unless ($string eq "abc0.25") {
+      return 0;
     }
     
-    return 0;
+    return 1;
   }
 
   static method concat_left_is_undef : int () {
@@ -72,12 +73,13 @@ class TestCase::Concat {
       $string . "abc";
     };
     
-    if ($@) {
-      $@ = undef;
-      return 1;
+    unless ($@) {
+      return 0;
     }
+
+    $@ = undef;
     
-    return 0;
+    return 1;
   }
 
   static method concat_right_is_undef : int () {
@@ -87,11 +89,12 @@ class TestCase::Concat {
       "abc" . $string;
     };
     
-    if ($@) {
-      $@ = undef;
-      return 1;
+    unless ($@) {
+      return 0;
     }
+
+    $@ = undef;
     
-    return 0;
+    return 1;
   }
 }
