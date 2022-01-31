@@ -3,6 +3,8 @@ Revision history for SPVM
 0.9133  2021-01-29
         [CHANGE]
         * byte[] object is available in eq, ne, gt, ge, lt, le, cmp . operators.
+        * Add the link to spvmgenlib command to the doc of SPVM.pm and the doc of SPVM::Document::NativeAPI
+        
         [FIX BAG]
         * Fix the messages of the compilation errors of eq, ne, gt, ge, lt, le, cmp operator.
         [FIX DOCUMENT BAG]
