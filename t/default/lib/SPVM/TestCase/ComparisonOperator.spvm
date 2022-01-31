@@ -16,6 +16,12 @@ class TestCase::ComparisonOperator {
     unless ($string eq $string_same) {
       return 0;
     }
+    unless ($string eq (byte[])$string_same) {
+      return 0;
+    }
+    unless ((byte[])$string eq $string_same) {
+      return 0;
+    }
     unless (!($string eq $string_short)) {
       return 0;
     }
@@ -64,6 +70,7 @@ class TestCase::ComparisonOperator {
     else {
       # OK
     }
+
     
     return 1;
   }
@@ -80,6 +87,12 @@ class TestCase::ComparisonOperator {
     
     # ne
     unless (!($string ne $string_same)) {
+      return 0;
+    }
+    unless (!($string ne (byte[])$string_same)) {
+      return 0;
+    }
+    unless (!((byte[])$string ne $string_same)) {
       return 0;
     }
     unless (($string ne $string_short)) {
@@ -135,6 +148,12 @@ class TestCase::ComparisonOperator {
     unless (!($string gt $string_same)) {
       return 0;
     }
+    unless (!($string gt (byte[])$string_same)) {
+      return 0;
+    }
+    unless (!((byte[])$string gt $string_same)) {
+      return 0;
+    }
     unless ($string gt $string_short) {
       return 0;
     }
@@ -186,6 +205,12 @@ class TestCase::ComparisonOperator {
     
     # ge
     unless ($string ge $string_same) {
+      return 0;
+    }
+    unless ($string ge (byte[])$string_same) {
+      return 0;
+    }
+    unless ((byte[])$string ge $string_same) {
       return 0;
     }
     unless ($string ge $string_short) {
@@ -241,6 +266,12 @@ class TestCase::ComparisonOperator {
     unless ($string lt $string_same) {
       return 1;
     }
+    unless ($string lt (byte[])$string_same) {
+      return 1;
+    }
+    unless ((byte[])$string lt $string_same) {
+      return 1;
+    }
     unless (!($string lt $string_short)) {
       return 0;
     }
@@ -294,6 +325,12 @@ class TestCase::ComparisonOperator {
     # le
     my $ok = 0;
     unless ($string le $string_same) {
+      return 0;
+    }
+    unless ($string le (byte[])$string_same) {
+      return 0;
+    }
+    unless ((byte[])$string le $string_same) {
       return 0;
     }
     unless (!($string le $string_short)) {
@@ -369,6 +406,20 @@ class TestCase::ComparisonOperator {
 
     {
       my $ret = "abc" cmp "abc";
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = "abc" cmp (byte[])"abc";
+      unless ($ret == 0) {
+        return 0;
+      }
+    }
+
+    {
+      my $ret = (byte[])"abc" cmp "abc";
       unless ($ret == 0) {
         return 0;
       }
