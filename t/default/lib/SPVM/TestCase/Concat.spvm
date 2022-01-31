@@ -36,10 +36,34 @@ class TestCase::Concat {
     
     {
       my $string = "abc" . "def";
+      unless ($string isa string) {
+        return 0;
+      }
       unless ($string eq "abcdef") {
         return 0;
       }
     }
+
+    {
+      my $string = "abc" . (byte[])"def";
+      unless ($string isa string) {
+        return 0;
+      }
+      unless ($string eq "abcdef") {
+        return 0;
+      }
+    }
+
+    {
+      my $string = (byte[])"abc" . "def";
+      unless ($string isa string) {
+        return 0;
+      }
+      unless ($string eq "abcdef") {
+        return 0;
+      }
+    }
+
     
     return 1;
   }
