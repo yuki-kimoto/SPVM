@@ -192,6 +192,16 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 # Check not creating no needed object file
 ok(!-f "$FindBin::Bin/.spvm_build/work/object/SPVM/CORE.o");
 
+# get_instance_method_id_static
+{
+  ok(SPVM::TestCase::NativeAPI->get_instance_method_id_static);
+}
+
+# get_bool_object_value
+{
+  ok(SPVM::TestCase::NativeAPI->get_bool_object_value);
+}
+
 # Clear exception
 SPVM::set_exception(undef);
 

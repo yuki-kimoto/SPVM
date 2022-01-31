@@ -1721,6 +1721,29 @@ int32_t SPVM__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* 
   return 0;
 }
 
+int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  void* minimal = stack[0].oval;
+  
+  int32_t method_id = env->get_instance_method_id_static(env, "TestCase::Minimal", "x", "int()");
+  if (method_id < 0) { return 0; }
+  
+  int32_t ret;
+  {
+    env->call_spvm_method(env, method_id, stack);
+    if (e) { return e; }
+    ret = stack[0].ival;
+  }
+  
+  stack[0].ival = ret;
+
+  return 0;
+}
+
 int32_t SPVM__TestCase__NativeAPI__get_bool_object_value_native(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
