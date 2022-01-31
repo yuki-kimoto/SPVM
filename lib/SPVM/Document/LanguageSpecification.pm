@@ -4838,13 +4838,13 @@ And Object Type Operation(==, !=) is defined.
 
 <h3 id="language-operator-comparison-string">String Comparison Operator</h3>
 <p>
-  <b>String Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that is placed between Left Expression and Right Expression to compare String Size in dictionary order.
+  <b>String Comparison Operator</b> is a <a href="#language-operator-comparison">Comparison Operator</a> that compares the bytes in the tow string.
 </p>
 <pre>
 LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 </pre>
 <p>
-  Left Expression and Right Expression must be <a href="#language-type-string">String Type</a>.
+  Left Expression and Right Expression must be <a href="#language-type-string">String Type</a> or byte[] type.
 </p>
 <p>
   A list of String Comparison Operators.
@@ -5050,21 +5050,18 @@ LEFT_EXPRESSION || RIGHT_EXPRESSION
 
 <h3 id="language-operator-concat">String Concatenation Operator</h3>
 <p>
-  String StringOn Operator is a <a href="#language-operator-binary">Binary Operator</a>.
+  String Concatenation Operator is a <a href="#language-operator-binary">Binary Operator</a>.
 </p>
 <pre>
 LEFT_EXPRESSION . RIGHT_EXPRESSION
 </pre>
-<p>
-  If the Left Expression or Right Expression was</a><a href="#language-type-numeric">Numeric Type=<a href="#language-type-convertion-numeric-to-string=numeric>to-string</a> href="#language-String Type-</a>=>stringtype</a> convertion</a> converts it to a String.
-</p>
-</p>
-<p>
-  Both Left Expression and Right Expression must be <a href="#language-type-string">String Type</a> There is an otherwise Compile Error. </p>
-</p>
-<p>
-  String Concatenation Operator concatenates the <a href="#language-string">String</a> represented by Left Expression and Right Expression and returns a new String.
-</p>
+
+The left expression and the right expression are concatenated.
+
+The left expression and the right expression must be a string type or byte[] type, otherwise a compilation error occurs.
+
+String Concatenation Operator returns the concatenated <a href="#language-string">string</a>.
+
 <p>
   String Concatenation Operator retruns <a href="#language-expression">Expression</a>, The Type is <a href="#language-type-string">String Type</a>.
 </p>
@@ -5082,6 +5079,7 @@ my $str = "abc" . "def";
 my $str = "def" . 34;
 my $str = 123 . 456;
 </pre>
+
 <h3 id="language-operator-assign">Assignment Operator</h3>
 <p>
   Assignment Operator is a <a href="#language-operator-binary">Binary Operator</a> for assignment, expressed in "=".
@@ -5436,7 +5434,7 @@ isweak VARIABLE->{FIELD_NAME};
     <td>
       Addition Operator"+"<br>
       Subtraction Operator"-" <br>
-      String StringOn Operator "."
+      String Concatenation Operator "."
     </td>
   </tr>
   <tr>

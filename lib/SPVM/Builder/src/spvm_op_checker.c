@@ -822,14 +822,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of eq operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
               // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of eq operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -840,14 +840,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of ne operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
               // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of ne operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -858,14 +858,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of gt operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
               // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of gt operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -876,14 +876,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of ge operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
               // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of ge operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -894,14 +894,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of lt operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
               // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of lt operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -912,14 +912,14 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of le operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
               // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of le operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
@@ -930,15 +930,70 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
               
               // Left operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Left operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of cmp operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
               }
               
               // Right operand must be string type
-              if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "Right operand of eq operator must be string type at %s line %d", op_cur->file, op_cur->line);
+              if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of cmp operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
                 return;
+              }
+              
+              break;
+            }
+            case SPVM_OP_C_ID_CONCAT: {
+              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
+              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
+              
+              // Left type is numeric type
+              if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
+                  return;
+                }
+              }
+              // Left type is not string type or byte array type
+              else if (!SPVM_TYPE_is_string_or_byte_array_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The left operand of \".\" operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // Right operand is numeric type
+              if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->last);
+                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
+                  return;
+                }
+              }
+              // Right operand is not string type or byte array type
+              else if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
+                SPVM_COMPILER_error(compiler, "The right operand of \".\" operator must be string or byte[] type at %s line %d", op_cur->file, op_cur->line);
+                return;
+              }
+              
+              // If . left and right is both string literal, concat them at compile time
+              if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT && op_cur->last->id == SPVM_OP_C_ID_CONSTANT) {
+                SPVM_OP* op_constant_string1 = op_cur->first;
+                int32_t string1_length = op_constant_string1->uv.constant->string_length;
+                const char* string1 = op_constant_string1->uv.constant->value.oval;
+                
+                SPVM_OP* op_constant_string2 = op_cur->last;
+                int32_t string2_length = op_constant_string2->uv.constant->string_length;
+                const char* string2 = op_constant_string2->uv.constant->value.oval;
+                
+                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
+                
+                char* concat_string = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, string1_length + string2_length + 1);
+                memcpy(concat_string, string1, string1_length);
+                memcpy(concat_string + string1_length, string2, string2_length);
+                int32_t concant_string_length = string1_length + string2_length;
+                SPVM_OP* op_concat_constant_string = SPVM_OP_new_op_constant_string(compiler, concat_string, concant_string_length, op_cur->file, op_cur->line);
+                
+                SPVM_OP_replace_op(compiler, op_stab, op_concat_constant_string);
+                
+                op_cur = op_concat_constant_string;
               }
               
               break;
@@ -2028,61 +2083,6 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               else {
                 SPVM_COMPILER_error(compiler, "Right operand of >>> operator must be int type at %s line %d", op_cur->file, op_cur->line);
                 return;
-              }
-              
-              break;
-            }
-            case SPVM_OP_C_ID_CONCAT: {
-              SPVM_TYPE* first_type = SPVM_OP_get_type(compiler, op_cur->first);
-              SPVM_TYPE* last_type = SPVM_OP_get_type(compiler, op_cur->last);
-              
-              // Left type is numeric type
-              if (SPVM_TYPE_is_numeric_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->first);
-                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
-                  return;
-                }
-              }
-              // Left type is not string type
-              else if (!SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                SPVM_COMPILER_error(compiler, "\".\" operator left value must be string type at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // Right operand is numeric type
-              if (SPVM_TYPE_is_numeric_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_OP_CHECKER_apply_numeric_to_string_convertion(compiler, op_cur->last);
-                if (SPVM_COMPILER_get_error_count(compiler) > 0) {
-                  return;
-                }
-              }
-              // Right operand is not string type
-              else if (!SPVM_TYPE_is_string_type(compiler, last_type->basic_type->id, last_type->dimension, last_type->flag)) {
-                SPVM_COMPILER_error(compiler, "\".\" operator right value must be string type at %s line %d", op_cur->file, op_cur->line);
-                return;
-              }
-              
-              // If . left and right is both string literal, concat them at compile time
-              if (op_cur->first->id == SPVM_OP_C_ID_CONSTANT && op_cur->last->id == SPVM_OP_C_ID_CONSTANT) {
-                SPVM_OP* op_constant_string1 = op_cur->first;
-                int32_t string1_length = op_constant_string1->uv.constant->string_length;
-                const char* string1 = op_constant_string1->uv.constant->value.oval;
-                
-                SPVM_OP* op_constant_string2 = op_cur->last;
-                int32_t string2_length = op_constant_string2->uv.constant->string_length;
-                const char* string2 = op_constant_string2->uv.constant->value.oval;
-                
-                SPVM_OP* op_stab = SPVM_OP_cut_op(compiler, op_cur);
-                
-                char* concat_string = SPVM_ALLOCATOR_new_block_compile_eternal(compiler, string1_length + string2_length + 1);
-                memcpy(concat_string, string1, string1_length);
-                memcpy(concat_string + string1_length, string2, string2_length);
-                int32_t concant_string_length = string1_length + string2_length;
-                SPVM_OP* op_concat_constant_string = SPVM_OP_new_op_constant_string(compiler, concat_string, concant_string_length, op_cur->file, op_cur->line);
-                
-                SPVM_OP_replace_op(compiler, op_stab, op_concat_constant_string);
-                
-                op_cur = op_concat_constant_string;
               }
               
               break;
