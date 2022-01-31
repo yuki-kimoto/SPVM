@@ -1720,3 +1720,18 @@ int32_t SPVM__TestCase__NativeAPI__push_mortal_multi(SPVM_ENV* env, SPVM_VALUE* 
   
   return 0;
 }
+
+int32_t SPVM__TestCase__NativeAPI__get_bool_object_value_native(SPVM_ENV* env, SPVM_VALUE* stack) {
+  (void)env;
+  (void)stack;
+  
+  int32_t e;
+  
+  void* bool_object = stack[0].oval;
+  
+  int32_t value = env->get_bool_object_value(env, bool_object);
+  
+  stack[0].ival = value;
+
+  return 0;
+}

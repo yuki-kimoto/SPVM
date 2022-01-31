@@ -1145,4 +1145,29 @@ class TestCase::NativeAPI {
     return 1;
   }
   native static method native_new_pointer_by_name_exception : TestCase::Pointer ();
+  
+  static method get_bool_object_value : int () {
+    
+    # true
+    {
+      my $true = true;
+      my $value = &get_bool_object_value_native($true);
+      unless ($value == 1) {
+        return 0;
+      }
+    }
+    
+    # false
+    {
+      my $false = false;
+      my $value = &get_bool_object_value_native($false);
+      unless ($value == 0) {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+  
+  native static method get_bool_object_value_native : int ($bool_object : Bool);
 }
