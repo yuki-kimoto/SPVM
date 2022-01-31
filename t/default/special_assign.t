@@ -13,6 +13,11 @@ use SPVM 'TestCase::SpecialAssign';
 # Start objects count
 my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 
+# Special assign concat
+{
+  ok(SPVM::TestCase::SpecialAssign->special_assign_concat);
+}
+
 # Special assign add
 {
   ok(SPVM::TestCase::SpecialAssign->special_assign_add_var);

@@ -725,11 +725,33 @@ class TestCase::SpecialAssign {
   # Concat
   static method special_assign_concat : string () {
     
-    my $value = "a";
-    
-    $value .= "b";
-    
-    return $value;
+    {
+      my $value = "a";
+      
+      $value .= "b";
+      
+      unless ($value isa string) {
+        return 0;
+      }
+      unless ($value eq "ab") {
+        return 0;
+      }
+    }
+
+    {
+      my $value = "a";
+      
+      $value .= (byte[])"b";
+      
+      unless ($value isa string) {
+        return 0;
+      }
+      unless ($value eq "ab") {
+        return 0;
+      }
+    }
+
+    return 1;
   }
   
   static method special_assign : int () {

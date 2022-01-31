@@ -5155,6 +5155,10 @@ LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
     <td>Logical Right Shift Operator</td>
     <td>>>>=</td>
   </tr>
+  <tr>
+    <td>Concatenation Operator</td>
+    <td>.=</td>
+  </tr>
 </table>
 <p>
   The Special Assignment Operator is deployed as follows:
@@ -5194,6 +5198,7 @@ $x %= 1;
 $x <<= 1;
 $x >>= 1;
 $x >>>= 1;
+$x .= "abc";
 </pre>
 
 <h3 id="language-operator-ref">Reference Operator</h3>
