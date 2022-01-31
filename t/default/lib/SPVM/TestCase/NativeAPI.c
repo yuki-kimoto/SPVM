@@ -1720,7 +1720,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_native(SPVM_ENV*
   int32_t output;
   {
     stack[0].oval = minimal;
-    int32_t exception_flag = env->call_instance_method_by_name(env, minimal, "x", "int()", stack, MFILE, __LINE__);
+    int32_t exception_flag = env->call_instance_method_by_name(env, minimal, "x", "int(self)", stack, MFILE, __LINE__);
     if (e) { return e; }
     output = stack[0].ival;
   }
@@ -1741,7 +1741,7 @@ int32_t SPVM__TestCase__NativeAPI__call_instance_method_by_name_exception_native
   int32_t output;
   {
     stack[0].oval = minimal;
-    e = env->call_instance_method_by_name(env, minimal, "not_found", "int()", stack, MFILE, __LINE__);
+    e = env->call_instance_method_by_name(env, minimal, "not_found", "int(self)", stack, MFILE, __LINE__);
     if (e) { return e; };
     output = stack[0].ival;
   }
@@ -1775,7 +1775,7 @@ int32_t SPVM__TestCase__NativeAPI__get_instance_method_id_static_native(SPVM_ENV
   
   void* minimal = stack[0].oval;
   
-  int32_t method_id = env->get_instance_method_id_static(env, "TestCase::Minimal", "x", "int()");
+  int32_t method_id = env->get_instance_method_id_static(env, "TestCase::Minimal", "x", "int(self)");
   if (method_id < 0) { return 0; }
   
   int32_t ret;

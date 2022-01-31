@@ -1,22 +1,24 @@
 Revision history for SPVM
 
-0.9133  2021-01-29
+0.9133  2021-01-31
         [CHANGE]
         * byte[] object is available in eq, ne, gt, ge, lt, le, cmp . operators.
         * Add the link to spvmgenlib command to the doc of SPVM.pm and the doc of SPVM::Document::NativeAPI
         
-        [FIX BAG]
+        [FIX BUG]
         * Fix the messages of the compilation errors of eq, ne, gt, ge, lt, le, cmp operator.
-        [FIX DOCUMENT BAG]
+        * Fix the bug that instance method signatures don't add "self" to the top of the arguments
+        
+        [FIX DOCUMENT BUG]
         * Add the document of get_bool_object_value of Native APIs.
 
 0.9132  2021-01-28
         [CHANGE]
         * SPVM::Builder::Config::Exe default ldflags become empty list.
-        [FIX BAG]
+        [FIX BUG]
         * Fix the bug that spvmcc doesn't use libs, ldflags, lib_dirs fields.
         * Fix the bug that spvmcc doesn't cache the executable file.
-        [FIX DOCUMENT BAG]
+        [FIX DOCUMENT BUG]
         * Fix SPVM::Document::NativeAPI.
           Fix from call_spvm_method_by_name to call_class_method_by_name
           Fix from call_callback_method_by_name to call_instance_method_by_name
@@ -27,7 +29,7 @@ Revision history for SPVM
         * Add build_shared_lib_dist_native to SPVM::Builder::API
         * Add build_dir option to new method of SPVM::Builder::API.
 
-        [BAG FIX]
+        [BUG FIX]
         * Fix the bug that build_shared_lib_dist of SPVM::Builder don't output the compilation error messages.
         * Fix the bug that SPVM compilation error raise unexpected exception.
         

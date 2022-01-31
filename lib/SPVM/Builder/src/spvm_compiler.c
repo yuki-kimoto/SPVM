@@ -461,9 +461,9 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     
     int32_t arg_index;
     for (arg_index = 0; arg_index < method->args->length; arg_index++) {
+      // self
       if (!method->is_class_method && arg_index == 0) {
-        // Nothing
-        continue;
+        length += 4;
       }
       else {
         SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
@@ -513,8 +513,8 @@ const char* SPVM_COMPILER_create_method_signature(SPVM_COMPILER* compiler, SPVM_
     for (arg_index = 0; arg_index < method->args->length; arg_index++) {
       // self
       if (!method->is_class_method && arg_index == 0) {
-        // Nothing
-        continue;
+        memcpy(bufptr, "self", 4);
+        bufptr += 4;
       }
       else {
         SPVM_MY* arg_my_method = SPVM_LIST_fetch(method->args, arg_index);
