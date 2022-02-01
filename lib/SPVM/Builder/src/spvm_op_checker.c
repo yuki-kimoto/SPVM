@@ -2505,7 +2505,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   // Check if source can be assigned to dist
                   // If needed, numeric convertion op is added
                   char place[50];
-                  sprintf(place, "arguments %d", call_method_args_count);
+                  sprintf(place, "%dth argument", call_method_args_count);
                   
                   op_term = SPVM_OP_CHECKER_check_assign(compiler, method_arg_my_type, op_term, place, op_cur->file, op_cur->line);
                   if (SPVM_COMPILER_get_error_count(compiler) > 0) {
