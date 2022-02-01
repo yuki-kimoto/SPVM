@@ -2059,7 +2059,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
       SPVM_FIELD* found_field = SPVM_HASH_fetch(class->field_symtable, field_name, strlen(field_name));
       
       if (found_field) {
-        SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->%s\" at %s line %d", class_name, field_name, field->op_field->file, field->op_field->line);
+        SPVM_COMPILER_error(compiler, "Redeclaration of field \"%s->{%s}\" at %s line %d", class_name, field_name, field->op_field->file, field->op_field->line);
       }
       else {
         field->id = compiler->fields->length;
@@ -2081,7 +2081,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_CLASS_VAR* found_class_var = SPVM_HASH_fetch(class->class_var_symtable, class_var_name, strlen(class_var_name));
         
         if (found_class_var) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"%s->%s\" at %s line %d", class_name, class_var_name, class_var->op_class_var->file, class_var->op_class_var->line);
+          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"$%s::%s\" at %s line %d", class_name, class_var_name + 1, class_var->op_class_var->file, class_var->op_class_var->line);
         }
         else {
           class_var->id = compiler->class_vars->length;
