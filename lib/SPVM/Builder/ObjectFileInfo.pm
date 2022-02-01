@@ -86,6 +86,17 @@ sub is_lib_file {
   }
 }
 
+sub is_native_source {
+  my $self = shift;
+  if (@_) {
+    $self->{is_native_source} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{is_native_source};
+  }
+}
+
 sub is_exe_config {
   my $self = shift;
   if (@_) {
@@ -177,6 +188,13 @@ Get and set if the object file(this is static library(.a)) is a resource.
   $object_file_info->is_lib_file($is_lib_file);
 
 Get and set if the object file is a library file.
+
+=head2 is_native_source
+
+  my $is_native_source = $object_file_info->is_native_source;
+  $object_file_info->is_native_source($is_native_source);
+
+Get and set if the object file is compiled from a native source file.
 
 =head2 is_exe_config
 

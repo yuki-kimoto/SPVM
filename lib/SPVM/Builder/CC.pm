@@ -459,11 +459,11 @@ sub compile {
 
   # Compile source files
   my $object_file_infos = [];
-  my $is_native_src;
+  my $is_native_source = 0;
   for my $source_file ($spvm_method_src_file, @$native_src_files) {
     my $object_file;
     # Native object file name
-    if ($is_native_src) {
+    if ($is_native_source) {
       my $object_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'native');
       
       my $object_file_base = $source_file;
@@ -485,7 +485,7 @@ sub compile {
     # Do compile. This is same as make command
     my $need_generate;
     my $input_files = [$config_file, $source_file, @include_file_names];
-    unless ($is_native_src) {
+    unless ($is_native_source) {
       my $module_file = $source_file;
       $module_file =~ s/\.[^\/\\]+$//;
       $module_file .= '.spvm';
@@ -527,11 +527,12 @@ sub compile {
       cc => $compile_info_cc,
       ccflags => $compile_info_ccflags,
       is_exe_config => $config->is_exe,
+      is_native_source => $is_native_source,
     );
     
     push @$object_file_infos, $object_file_info;
     
-    $is_native_src = 1;
+    $is_native_source = 1;
   }
   
   return $object_file_infos;
@@ -638,10 +639,10 @@ EOS
 }
 
 sub link {
-  my ($self, $class_name, $object_file_infos_, $opt) = @_;
+  my ($self, $class_name, $object_file_infos, $opt) = @_;
   
   # All object file infos
-  my $all_object_file_infos = [@$object_file_infos_];
+  my $all_object_file_infos = [@$object_file_infos];
   
   # Category
   my $category = $self->category;
@@ -923,20 +924,20 @@ sub link {
       }
     }
 
+    # Create a resource.
+    # This is a static library. 
+    # This contains the object files that is compiled from native source files.
     if ($category eq 'native') {
-      # Create static library for resource system
-      my $ar_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'a');
-      my $ar_file = "$lib_dir/$ar_rel_file";
-      if (-f $ar_file) {
-        unlink $ar_file
-          or confess "Can't delete file \"$ar_file\":$!";
+      my $resource_static_lib_rel_file = SPVM::Builder::Util::convert_class_name_to_category_rel_file($class_name, $category, 'a');
+      my $resource_static_lib_file = "$lib_dir/$resource_static_lib_rel_file";
+      if (-f $resource_static_lib_file) {
+        unlink $resource_static_lib_file
+          or confess "Can't delete file \"$resource_static_lib_file\":$!";
       }
-      my @object_files_no_static_libs = grep { $_ = "$_"; $_ !~ /\.a$/ } @$object_file_infos_;
-      my $spvm_object_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
-      $spvm_object_rel_file .= '.o';
-      @object_files_no_static_libs = grep { $_ !~ m|\Q$spvm_object_rel_file\E$| } @object_files_no_static_libs;
-      if (@object_files_no_static_libs) {
-        my @ar_cmd = ('ar', 'rc', $ar_file, @object_files_no_static_libs);
+      my @native_source_object_file_infos = grep { $_->is_native_source } @$all_object_file_infos;
+      if (@native_source_object_file_infos) {
+        my @native_source_object_files = map { "$_" } @native_source_object_file_infos;
+        my @ar_cmd = ('ar', 'rc', $resource_static_lib_file, @native_source_object_files);
         $cbuilder->do_system(@ar_cmd);
       }
     }
