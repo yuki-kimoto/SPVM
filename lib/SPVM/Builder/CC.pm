@@ -731,15 +731,17 @@ sub link {
 
   # Linker
   my $ld = $config->ld;
-  
+
+  # All linker flags
+  my @all_ldflags;
+
   # Linker flags
   my $ldflags = $config->ldflags;
-  my $ldflags_str = join(' ', @{$config->ldflags});
-  $ldflags_str = "$ldflags_str";
+  push @all_ldflags, @{$config->ldflags};
   
   # Optimize
   my $ld_optimize = $config->ld_optimize;
-  $ldflags_str .= " $ld_optimize";
+  push @all_ldflags, $ld_optimize;
 
   # Add resource lib directories
   if ($category eq 'native') {
@@ -881,20 +883,23 @@ sub link {
       class_name => $class_name,
       object_file_infos => $all_object_file_infos,
       ld => $ld,
-      ldflags => $ldflags_str,
+      ldflags => \@all_ldflags,
       output_file => $shared_lib_file,
     );
-    $all_object_file_infos = $before_link->($config, $link_info);
+    $before_link->($config, $link_info);
   }
 
   if ($need_generate) {
+
+    my $all_ldflags_str = join(' ', @all_ldflags);
+
     # Create shared library
     my (undef, @tmp_files) = $cbuilder->link(
       lib_file => $shared_lib_file,
       objects => $all_object_files,
       module_name => $class_name,
       dl_func_list => $dl_func_list,
-      extra_linker_flags => $ldflags_str,
+      extra_linker_flags => $all_ldflags_str,
     );
 
     if ($self->debug) {
@@ -935,6 +940,7 @@ sub link {
           or confess "Can't delete file \"$resource_static_lib_file\":$!";
       }
       my @native_source_object_file_infos = grep { $_->is_native_source } @$all_object_file_infos;
+      
       if (@native_source_object_file_infos) {
         my @native_source_object_files = map { "$_" } @native_source_object_file_infos;
         my @ar_cmd = ('ar', 'rc', $resource_static_lib_file, @native_source_object_files);

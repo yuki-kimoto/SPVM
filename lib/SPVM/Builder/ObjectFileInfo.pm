@@ -170,7 +170,7 @@ Get and set the compiler name that compiled the object file.
   my $ccflags = $object_file_info->ccflags;
   $object_file_info->ccflags($ccflags);
 
-Get and set the compiler flags that compiled the object file. This value is a string.
+Get and set the compiler flags that compiled the object file. The default value is C<[]>.
 
 =head2 class_name
 

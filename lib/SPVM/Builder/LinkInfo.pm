@@ -91,6 +91,10 @@ sub new {
   unless (defined $self->object_file_infos) {
     $self->object_file_infos([]);
   }
+
+  unless (defined $self->ldflags) {
+    $self->ldflags([]);
+  }
   
   return $self;
 }
@@ -128,7 +132,7 @@ Get and set the linker name.
   my $ldflags = $object_file_info->ldflags;
   $object_file_info->ldflags($ldflags);
 
-Get and set the linker flags. This value is a string.
+Get and set the linker flags.  The default value is C<[]>.
 
 =head2 object_file_infos
 
