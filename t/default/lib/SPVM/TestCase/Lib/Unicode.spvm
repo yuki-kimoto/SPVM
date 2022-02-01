@@ -1,6 +1,15 @@
 class TestCase::Lib::Unicode {
   use Unicode;
 
+  static method ERROR_INVALID_UTF8 : int () {
+    
+    unless (Unicode->ERROR_INVALID_UTF8 == -2) {
+      return 0;
+    }
+    
+    return 1;
+  }
+
   static method uchar : int () {
     
     {
@@ -122,4 +131,131 @@ class TestCase::Lib::Unicode {
     }
     return 1;
   }
+
+  static method utf32_to_utf16 : int () {
+    # あaい
+    {
+      my $u32chars = [0x3042, 'a', 0x3044];
+      
+      my $u16chars = Unicode->utf32_to_utf16($u32chars);
+      
+      unless ($u16chars->[0] == $u32chars->[0]) {
+        return 0;
+      }
+      unless ($u16chars->[1] == $u32chars->[1]) {
+        return 0;
+      }
+      
+      unless ($u16chars->[2] == $u32chars->[2]) {
+        return 0;
+      }
+    }
+
+    # あ𠮷a(サロゲートペア)
+    {
+      my $u32chars = [0x3042, 0x20bb7, 'a'];
+      
+      my $u16chars = Unicode->utf32_to_utf16($u32chars);
+      
+      unless (@$u16chars == 4) {
+        return 0;
+      }
+      
+      unless ($u16chars->[0] == 0x3042) {
+        return 0;
+      }
+      unless ($u16chars->[1] == (short)0xd842) {
+        return 0;
+      }
+      unless ($u16chars->[2] == (short)0xdfb7) {
+        return 0;
+      }
+      
+      unless ($u16chars->[3] == 'a') {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method utf16_to_utf32 : int () {
+    # あaい
+    {
+      my $u16chars = [(short)0x3042, 'a', 0x3044];
+      
+      my $u32chars = Unicode->utf16_to_utf32($u16chars);
+      
+      unless ($u32chars->[0] == $u16chars->[0]) {
+        return 0;
+      }
+      unless ($u32chars->[1] == $u16chars->[1]) {
+        return 0;
+      }
+      
+      unless ($u32chars->[2] == $u16chars->[2]) {
+        return 0;
+      }
+    }
+
+    # あ𠮷a(サロゲートペア)
+    {
+      my $u16chars = [(short)0x3042, (short)0xd842, (short)0xdfb7, 'a'];
+      
+      my $u32chars = Unicode->utf16_to_utf32($u16chars);
+      
+      unless ($u32chars->[0] == 0x3042) {
+        return 0;
+      }
+      
+      unless ($u32chars->[1] == 0x20bb7) {
+        return 0;
+      }
+      unless ($u32chars->[2] == 'a') {
+        return 0;
+      }
+    }
+    
+    return 1;
+  }
+
+  static method utf8_to_utf16 : int () {
+    # サロゲートペア含む
+    my $str = "あ𠮷a";
+    
+    my $u16chars = Unicode->utf8_to_utf16($str);
+    
+    unless (@$u16chars == 4) {
+      return 0;
+    }
+    unless ($u16chars->[0] == 0x3042) {
+      return 0;
+    }
+    unless ($u16chars->[1] == (short)0xd842) {
+      return 0;
+    }
+    unless ($u16chars->[2] == (short)0xdfb7) {
+      return 0;
+    }
+    
+    unless ($u16chars->[3] == 'a') {
+      return 0;
+    }
+    
+    return 1;
+  }
+
+  static method utf16_to_utf8 : int () {
+    # サロゲートペア含む
+    my $u16chars = [(short)0x3042, (short)0xd842, (short)0xdfb7, 'a'];
+    
+    my $str = Unicode->utf16_to_utf8($u16chars);
+    
+    unless ($str eq "あ𠮷a") {
+      return 0;
+    }
+    
+    return 1;
+  }
+
 }

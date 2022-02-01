@@ -59,3 +59,21 @@ If invalid UTF-8 character is found, this method returns -2. This is the same va
 Convert a Unicode codepoint to a UTF-8 character.
 
 If the argument value is invalid Unicode code point, this method returns undef.
+
+=head2 utf8_to_utf16
+
+  static method utf16_to_utf8 : string ($utf16_chars : short[]);
+
+Convert big-endian UTF-16 code points to UTF-8 string.
+
+=head2 utf32_to_utf16
+
+  static method utf32_to_utf16 : short[] ($utf32_characters : int[]);
+
+Convert UTF-32(Unicode) code points to big-endian UTF-16 code points.
+
+=head2 utf16_to_utf32
+
+  static method utf16_to_utf32 : int[] ($utf16_characters : short[]);
+
+Convert big-endian UTF-16 code points to UTF-32(Unicode) code points.

@@ -6,6 +6,10 @@ Revision history for SPVM
         * Add is_lib_file field to SPVM::Builder::ObjectFileInfo.
         * Add is_native_source to SPVM::Builder::ObjectFileInfo.
         * ccflags field of SPVM::Builder::ObjectFileInfo has the default value [].
+        * Add utf32_to_utf16 method to Unicode module again.
+        * Add utf16_to_utf32 method to Unicode module again.
+        * Add utf16_to_utf8 method to Unicode module again.
+        * Add ERROR_INVALID_UTF8 method to Unicode module again.
         [NON BACKWORD COMPATIBLE CHANGES]
         * The second argument of before_link callback of SPVM::Builder::Config is changed.
           [Before]

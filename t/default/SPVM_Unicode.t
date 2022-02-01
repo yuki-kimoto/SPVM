@@ -16,6 +16,11 @@ my $start_memory_blocks_count = SPVM::get_memory_blocks_count();
 {
   ok(SPVM::TestCase::Lib::Unicode->uchar);
   ok(SPVM::TestCase::Lib::Unicode->uchar_to_utf8);
+  ok(SPVM::TestCase::Lib::Unicode->utf32_to_utf16);
+  ok(SPVM::TestCase::Lib::Unicode->utf16_to_utf32);
+  ok(SPVM::TestCase::Lib::Unicode->utf8_to_utf16);
+  ok(SPVM::TestCase::Lib::Unicode->utf16_to_utf8);
+  ok(SPVM::TestCase::Lib::Unicode->ERROR_INVALID_UTF8);
 }
 
 # All object is freed
