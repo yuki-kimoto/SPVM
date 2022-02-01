@@ -876,30 +876,36 @@ sub link {
     input_files => [$config_file, @$all_object_files],
   });
 
+  my $link_info = SPVM::Builder::LinkInfo->new(
+    class_name => $class_name,
+    object_file_infos => $all_object_file_infos,
+    ld => $ld,
+    ldflags => \@all_ldflags,
+    output_file => $shared_lib_file,
+  );
+
   # Execute the callback before this link
   my $before_link = $config->before_link;
   if ($before_link) {
-    my $link_info = SPVM::Builder::LinkInfo->new(
-      class_name => $class_name,
-      object_file_infos => $all_object_file_infos,
-      ld => $ld,
-      ldflags => \@all_ldflags,
-      output_file => $shared_lib_file,
-    );
     $before_link->($config, $link_info);
   }
 
   if ($need_generate) {
-
-    my $all_ldflags_str = join(' ', @all_ldflags);
+    my $link_info_ld = $link_info->ld;
+    my $link_info_ldflags = $link_info->ldflags;
+    my $link_info_class_name = $link_info->class_name;
+    my $link_info_output_file = $link_info->output_file;
+    my $link_info_object_file_infos = $link_info->object_file_infos;
+    my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
+    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
 
     # Create shared library
     my (undef, @tmp_files) = $cbuilder->link(
-      lib_file => $shared_lib_file,
-      objects => $all_object_files,
-      module_name => $class_name,
+      lib_file => $link_info_output_file,
+      objects => $link_info_object_files,
+      module_name => $link_info_class_name,
+      extra_linker_flags => $link_info_ldflags_str,
       dl_func_list => $dl_func_list,
-      extra_linker_flags => $all_ldflags_str,
     );
 
     if ($self->debug) {

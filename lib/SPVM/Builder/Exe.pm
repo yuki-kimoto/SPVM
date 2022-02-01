@@ -967,31 +967,36 @@ sub link {
     input_files => $object_file_infos,
   });
 
+  my $link_info = SPVM::Builder::LinkInfo->new(
+    class_name => $class_name,
+    object_file_infos => $object_file_infos,
+    ld => $ld,
+    ldflags => \@all_ldflags,
+    is_exe => 1,
+    output_file => $output_file,
+  );
+
   my $before_link = $config->before_link;
   if ($before_link) {
-    my $link_info = SPVM::Builder::LinkInfo->new(
-      class_name => $class_name,
-      object_file_infos => $object_file_infos,
-      ld => $ld,
-      ldflags => \@all_ldflags,
-      is_exe => 1,
-      output_file => $output_file,
-    );
     $before_link->($config, $link_info);
   }
   
   if ($need_generate) {
-    my $object_files = [map { $_->to_string } @$object_file_infos];
-
-    my $all_ldflags_str = joins(' ', @all_ldflags);
+    my $link_info_ld = $link_info->ld;
+    my $link_info_ldflags = $link_info->ldflags;
+    my $link_info_class_name = $link_info->class_name;
+    my $link_info_output_file = $link_info->output_file;
+    my $link_info_object_file_infos = $link_info->object_file_infos;
+    my $link_info_object_files = [map { $_->to_string } @$link_info_object_file_infos];
+    my $link_info_ldflags_str = join(' ', @$link_info_ldflags);
     
     # Create the executable file
     my $cbuilder = ExtUtils::CBuilder->new(quiet => $self->quiet, config => $cbuilder_config);
     $cbuilder->link_executable(
-      objects => $object_files,
-      module_name => $class_name,
-      exe_file => $output_file,
-      extra_linker_flags => $all_ldflags_str,
+      objects => $link_info_object_files,
+      module_name => $link_info_class_name,
+      exe_file => $link_info_output_file,
+      extra_linker_flags => $link_info_ldflags_str,
     );
   }
   
