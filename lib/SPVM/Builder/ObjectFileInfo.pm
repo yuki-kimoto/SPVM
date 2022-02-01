@@ -101,10 +101,6 @@ sub new {
 
   bless $self, $class;
   
-  unless (defined $self->ccflags) {
-    $self->ccflags([]);
-  }
-  
   return $self;
 }
 

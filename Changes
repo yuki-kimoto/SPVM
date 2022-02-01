@@ -1,9 +1,5 @@
 Revision history for SPVM
 
-0.9134  2021-02-01
-        [CHANGE]
-        * ccflags field of SPVM::Builder::ObjectFileInfo has the default value [].
-
 0.9133  2021-01-31
         [CHANGE]
         * byte[] object is available in eq, ne, gt, ge, lt, le, cmp . operators.
