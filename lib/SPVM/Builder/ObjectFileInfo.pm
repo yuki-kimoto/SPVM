@@ -75,6 +75,17 @@ sub is_resource {
   }
 }
 
+sub is_lib_file {
+  my $self = shift;
+  if (@_) {
+    $self->{is_lib_file} = $_[0];
+    return $self;
+  }
+  else {
+    return $self->{is_lib_file};
+  }
+}
+
 sub is_exe_config {
   my $self = shift;
   if (@_) {
@@ -159,6 +170,13 @@ Get and set the class name belonged to when the object file was compiled.
   $object_file_info->is_resource($is_resource);
 
 Get and set if the object file(this is static library(.a)) is a resource.
+
+=head2 is_lib_file
+
+  my $is_lib_file = $object_file_info->is_lib_file;
+  $object_file_info->is_lib_file($is_lib_file);
+
+Get and set if the object file is a library file.
 
 =head2 is_exe_config
 
