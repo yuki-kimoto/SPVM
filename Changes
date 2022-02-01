@@ -4,6 +4,7 @@ Revision history for SPVM
         [CHANGE]
         * Add SPVM::Builder::LinkInfo.
         * Add is_lib_file field to SPVM::Builder::ObjectFileInfo.
+        * Add is_native_source to SPVM::Builder::ObjectFileInfo.
         [NON BACKWORD COMPATIBLE CHANGES]
         * The second argument of before_link callback of SPVM::Builder::Config is changed.
           [Before]
