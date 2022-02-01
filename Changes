@@ -1,4 +1,7 @@
 Revision history for SPVM
+0.9501  2021-02-01
+        [CHANGE]
+        * Improve comlilation error messages. All method expressions is Foo->bar.
 
 0.9500  2021-02-01
         [CHANGE]

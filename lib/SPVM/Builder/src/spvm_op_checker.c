@@ -2334,13 +2334,13 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               
               if (call_method->method->is_class_method) {
                 if (!call_method->is_class_method_call) {
-                  SPVM_COMPILER_error(compiler, "Class methods can't be called as instance methods \"%s->%s()\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Class methods can't be called as instance methods \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                   return;
                 }
               }
               else {
                 if (call_method->is_class_method_call) {
-                  SPVM_COMPILER_error(compiler, "Instance methods can't be called as static methods \"%s->%s()\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                  SPVM_COMPILER_error(compiler, "Instance methods can't be called as static methods \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                   return;
                 }
               }
@@ -2495,7 +2495,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 while ((op_term = SPVM_OP_sibling(compiler, op_term))) {
                   call_method_args_count++;
                   if (call_method_args_count > method_args_count) {
-                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s()\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                    SPVM_COMPILER_error(compiler, "Too many arguments \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                     return;
                   }
                   
@@ -2515,7 +2515,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
               
               if (call_method_args_count < method_args_count) {
-                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s->%s()\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
+                SPVM_COMPILER_error(compiler, "Too few argument. sub \"%s->%s\" at %s line %d", op_cur->uv.call_method->method->class->name, method_name, op_cur->file, op_cur->line);
                 return;
               }
               

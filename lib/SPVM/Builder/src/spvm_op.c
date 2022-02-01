@@ -2081,7 +2081,7 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
         SPVM_CLASS_VAR* found_class_var = SPVM_HASH_fetch(class->class_var_symtable, class_var_name, strlen(class_var_name));
         
         if (found_class_var) {
-          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"%s::%s\" at %s line %d", class_name, class_var_name, class_var->op_class_var->file, class_var->op_class_var->line);
+          SPVM_COMPILER_error(compiler, "Redeclaration of class variable \"%s->%s\" at %s line %d", class_name, class_var_name, class_var->op_class_var->file, class_var->op_class_var->line);
         }
         else {
           class_var->id = compiler->class_vars->length;
