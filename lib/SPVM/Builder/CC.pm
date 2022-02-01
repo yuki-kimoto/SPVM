@@ -14,6 +14,7 @@ use File::Basename 'dirname', 'basename';
 use SPVM::Builder::Util;
 use SPVM::Builder::Config;
 use SPVM::Builder::ObjectFileInfo;
+use SPVM::Builder::LinkInfo;
 
 sub category {
   my $self = shift;
@@ -637,7 +638,10 @@ EOS
 }
 
 sub link {
-  my ($self, $class_name, $object_file_infos, $opt) = @_;
+  my ($self, $class_name, $object_file_infos_, $opt) = @_;
+  
+  # All object file infos
+  my $all_object_file_infos = [@$object_file_infos_];
   
   # Category
   my $category = $self->category;
@@ -763,17 +767,16 @@ sub link {
           class_name => $resource,
           is_exe_config => 0,
           is_resource => 1,
+          is_lib_file => 1,
         );
         
-        push @$object_file_infos, $object_file_info;
+        push @$all_object_file_infos, $object_file_info;
       }
       else {
         confess "Can't find resource static library file \"$static_lib_file\"";
       }
     }
   }
-
-  my $object_files = [map { $_->to_string } @$object_file_infos];
 
   # Libraries
   # Libraries is linked using absolute path because the linked libraries must be known at runtime.
@@ -793,6 +796,7 @@ sub link {
         $type = 'dynamic,static';
       }
       
+      my $found_lib_file;
       for my $lib_dir (@$lib_dirs) {
         $lib_dir =~ s|[\\/]$||;
 
@@ -804,30 +808,43 @@ sub link {
         
         if ($type eq 'dynamic,static') {
           if (-f $dynamic_lib_file) {
-            push @lib_files, $dynamic_lib_file;
+            $found_lib_file = $dynamic_lib_file;
             last;
           }
           elsif (-f $static_lib_file) {
-            push @lib_files, $static_lib_file;
+            $found_lib_file = $static_lib_file;
             last;
           }
         }
         elsif ($type eq 'dynamic') {
           if (-f $dynamic_lib_file) {
-            push @lib_files, $dynamic_lib_file;
+            $found_lib_file = $dynamic_lib_file;
             last;
           }
         }
         elsif ($type eq 'static') {
           if (-f $static_lib_file) {
-            push @lib_files, $static_lib_file;
+            $found_lib_file = $static_lib_file;
             last;
           }
         }
       }
+      
+      if (defined $found_lib_file) {
+        push @lib_files, $found_lib_file;
+        
+        my $object_file_info = SPVM::Builder::ObjectFileInfo->new(
+          object_file => $found_lib_file,
+          class_name => $class_name,
+          is_exe_config => 0,
+          is_lib_file => 1,
+        );
+        push @$all_object_file_infos, $object_file_info;
+      }
     }
   }
-  push @$object_files, @lib_files;
+
+  my $all_object_files = [map { $_->to_string } @$all_object_file_infos];
 
   my $cbuilder_config = {
     ld => $ld,
@@ -853,7 +870,7 @@ sub link {
     global_force => $self->force,
     config_force => $config->force,
     output_file => $shared_lib_file,
-    input_files => [$config_file, @$object_files],
+    input_files => [$config_file, @$all_object_files],
   });
 
   # Execute the callback before this link
@@ -861,19 +878,19 @@ sub link {
   if ($before_link) {
     my $link_info = SPVM::Builder::LinkInfo->new(
       class_name => $class_name,
-      object_file_infos => $object_file_infos,
+      object_file_infos => $all_object_file_infos,
       ld => $ld,
       ldflags => $ldflags_str,
       output_file => $shared_lib_file,
     );
-    $object_file_infos = $before_link->($config, $link_info);
+    $all_object_file_infos = $before_link->($config, $link_info);
   }
 
   if ($need_generate) {
     # Create shared library
     my (undef, @tmp_files) = $cbuilder->link(
       lib_file => $shared_lib_file,
-      objects => $object_files,
+      objects => $all_object_files,
       module_name => $class_name,
       dl_func_list => $dl_func_list,
       extra_linker_flags => $ldflags_str,
@@ -914,7 +931,7 @@ sub link {
         unlink $ar_file
           or confess "Can't delete file \"$ar_file\":$!";
       }
-      my @object_files_no_static_libs = grep { $_ !~ /\.a$/ } @$object_files;
+      my @object_files_no_static_libs = grep { $_ = "$_"; $_ !~ /\.a$/ } @$object_file_infos_;
       my $spvm_object_rel_file = SPVM::Builder::Util::convert_class_name_to_rel_file($class_name);
       $spvm_object_rel_file .= '.o';
       @object_files_no_static_libs = grep { $_ !~ m|\Q$spvm_object_rel_file\E$| } @object_files_no_static_libs;
