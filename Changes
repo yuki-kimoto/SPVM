@@ -1,6 +1,6 @@
 Revision history for SPVM
 
-0.9134  2021-02-01
+0.9500  2021-02-01
         [CHANGE]
         * Add SPVM::Builder::LinkInfo.
         * Add is_lib_file field to SPVM::Builder::ObjectFileInfo.
