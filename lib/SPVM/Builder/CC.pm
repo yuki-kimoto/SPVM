@@ -773,12 +773,6 @@ sub link {
     }
   }
 
-  # Execute the callback before this link
-  my $before_link = $config->before_link;
-  if ($before_link) {
-    $object_file_infos = $before_link->($config, $object_file_infos);
-  }
-
   my $object_files = [map { $_->to_string } @$object_file_infos];
 
   # Libraries
@@ -861,6 +855,19 @@ sub link {
     output_file => $shared_lib_file,
     input_files => [$config_file, @$object_files],
   });
+
+  # Execute the callback before this link
+  my $before_link = $config->before_link;
+  if ($before_link) {
+    my $link_info = SPVM::Builder::LinkInfo->new(
+      class_name => $class_name,
+      object_file_infos => $object_file_infos,
+      ld => $ld,
+      ldflags => $ldflags_str,
+      output_file => $shared_lib_file,
+    );
+    $object_file_infos = $before_link->($config, $link_info);
+  }
 
   if ($need_generate) {
     # Create shared library

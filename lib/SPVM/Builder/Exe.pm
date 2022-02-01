@@ -10,6 +10,8 @@ use SPVM::Builder;
 use SPVM::Builder::CC;
 use SPVM::Builder::Util;
 use SPVM::Builder::Config::Exe;
+use SPVM::Builder::LinkInfo;
+
 use File::Spec;
 use File::Find 'find';
 
@@ -913,11 +915,6 @@ sub link {
   
   my $config = $self->config;
 
-  my $before_link = $config->before_link;
-  if ($before_link) {
-    $object_file_infos = $before_link->($config, $object_file_infos);
-  }
-  
   # CBuilder configs
   my $output_file = $self->{output_file};
   
@@ -967,6 +964,20 @@ sub link {
     output_file => $output_file,
     input_files => $object_file_infos,
   });
+
+  my $before_link = $config->before_link;
+  if ($before_link) {
+    my $link_info = SPVM::Builder::LinkInfo->new(
+      class_name => $class_name,
+      object_file_infos => $object_file_infos,
+      ld => $ld,
+      ldflags => $ldflags_str,
+      is_exe => 1,
+      output_file => $output_file,
+    );
+    
+    $object_file_infos = $before_link->($config, $link_info);
+  }
   
   if ($need_generate) {
     my $object_files = [map { $_->to_string } @$object_file_infos];

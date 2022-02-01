@@ -406,6 +406,7 @@ lib/SPVM/Builder/include/spvm_var.h
 lib/SPVM/Builder/include/spvm_weaken_backref.h
 lib/SPVM/Builder/include/spvm_yacc.h
 lib/SPVM/Builder/include/spvm_yacc_util.h
+lib/SPVM/Builder/LinkInfo.pm
 lib/SPVM/Builder/ObjectFileInfo.pm
 lib/SPVM/Builder/src/spvm_allocator.c
 lib/SPVM/Builder/src/spvm_allow.c
@@ -583,6 +584,8 @@ t/builder_config.t
 t/builder_config/libpng.def
 t/builder_config/zlib.def
 t/builder_config_exe.t
+t/builder_link_info.pl
+t/builder_object_file_info.t
 t/copy_default_to_precompile.pl
 t/default/000_use_spvm.t
 t/default/001_use_empty_class.t

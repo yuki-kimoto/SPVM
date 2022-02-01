@@ -902,18 +902,17 @@ Get and set the flag to force compiles and links without caching.
   my $before_link = $config->before_link;
   $config->before_link($before_link);
 
-Get and set the callback that is executed before the link. The callback receives L<SPVM::Builder::Config> object and the array reference of L<SPVM::Builder::ObjectFileInfo> objects.
-
-This callback must be return the array reference of L<SPVM::Builder::ObjectFileInfo> objects that is used by the linker.
+Get and set the callback that is executed before the link. The callback receives L<SPVM::Builder::Config> object and the L<SPVM::Builder::LinkInfo> object used by the linker.
 
 B<Examples:>
 
   $config->before_link(sub {
-    my ($config, $object_infos) = @_;
+    my ($config, $link_info) = @_;
+    
+    my $object_file_infos = $link_info->object_file_infos;
     
     # Do something
-
-    return $object_infos;
+    
   });
 
 =head2 quiet
