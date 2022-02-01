@@ -959,7 +959,6 @@ t/get_native_api_indexes.pl
 t/lib/TestAuto.pm
 t/lib/TestFile.pm
 t/memory.t
-t/object_file_info.t
 t/sort_method_name_native.pl
 t/sort_method_name_pod.pl
 t/sort_method_name_spvm.pl
