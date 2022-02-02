@@ -5290,7 +5290,8 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   int32_t scope_id = env->enter_scope(env);
   void* type_name_byte_array = env->new_byte_array(env, length + 1);
   
-  int8_t* cur = env->get_elems_byte(env, type_name_byte_array);
+  
+  char* cur = SPVM_API_alloc_memory_block_zero(env, length + 1);
   
   int32_t cur_index = 0;
   sprintf((char*)cur, "%s", basic_type_name);
@@ -5303,6 +5304,8 @@ SPVM_OBJECT* SPVM_API_get_type_name_raw(SPVM_ENV* env, SPVM_OBJECT* object) {
   }
   
   void* sv_type_name = env->new_string_raw(env, (const char*)cur, length);
+  
+  SPVM_API_free_memory_block(env, cur);
   
   env->leave_scope(env, scope_id);
   
@@ -5349,7 +5352,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   const char* at_part = " at ";
 
   // Exception
-  int8_t* exception_bytes = env->get_elems_byte(env, exception);
+  const char* exception_bytes = env->get_chars(env, exception);
   int32_t exception_length = env->length(env, exception);
   
   // Total string length
@@ -5371,7 +5374,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace_raw(SPVM_ENV* env, SPVM_OBJECT* exception,
   
   // Create exception message
   void* new_exception = env->new_string_raw(env, NULL, total_length);
-  int8_t* new_exception_bytes = env->get_elems_byte(env, new_exception);
+  const char* new_exception_bytes = env->get_chars(env, new_exception);
   
   memcpy(
     (void*)(new_exception_bytes),
@@ -5408,7 +5411,7 @@ SPVM_OBJECT* SPVM_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* exception, con
 void SPVM_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
   (void)env;
   
-  int8_t* bytes = env->get_elems_byte(env, string);
+  const char* bytes = env->get_chars(env, string);
   int32_t string_length = env->length(env, string);
   
   {
@@ -5432,9 +5435,9 @@ SPVM_OBJECT* SPVM_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJEC
   string3->type_dimension = 0;
   string3->type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
 
-  int8_t* string1_bytes = SPVM_API_get_elems_byte(env, string1);
-  int8_t* string2_bytes = SPVM_API_get_elems_byte(env, string2);
-  int8_t* string3_bytes = SPVM_API_get_elems_byte(env, string3);
+  const char* string1_bytes = SPVM_API_get_chars(env, string1);
+  const char* string2_bytes = SPVM_API_get_chars(env, string2);
+  char* string3_bytes = (char*)SPVM_API_get_chars(env, string3);
   
   if (string1_length > 0) {
     memcpy(string3_bytes, string1_bytes, string1_length);
