@@ -2140,12 +2140,27 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], byte_array);
         break;
       }
+      case SPVM_OPCODE_C_ID_CONVERT_STRING_OBJECT_TO_BYTE_ARRAY:
+      {
+        void* string = object_vars[opcode->operand1];
+        void* byte_array = (void*)env->get_elems_byte(env, string);
+        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], byte_array);
+        break;
+      }
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING:
       {
         void* src_byte_array = object_vars[opcode->operand1];
         int32_t src_byte_array_length = env->length(env, src_byte_array);
         int8_t* src_byte_array_data = env->get_elems_byte(env, src_byte_array);
         void* string = env->new_string_raw(env, (const char*)src_byte_array_data, src_byte_array_length);
+        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        break;
+      }
+      case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_OBJECT:
+      {
+        void* byte_array = object_vars[opcode->operand1];
+        void* string = env->new_object_raw(env, (intptr_t)env->string_object_basic_type_id);
+        SPVM_API_OBJECT_ASSIGN((void**)((intptr_t)string + object_header_byte_size), byte_array);
         SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
         break;
       }
