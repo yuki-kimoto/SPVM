@@ -1952,8 +1952,8 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_STRING_BUFFER_add(string_buffer, "    else {\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t lenght2 = *(int32_t*)((intptr_t)object2 + (intptr_t)env->object_length_offset);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int8_t* bytes1 = env->get_elems_byte(env, object1);\n");
-        SPVM_STRING_BUFFER_add(string_buffer, "      int8_t* bytes2 = env->get_elems_byte(env, object2);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      const char* bytes1 = env->get_chars(env, object1);\n");
+        SPVM_STRING_BUFFER_add(string_buffer, "      const char* bytes2 = env->get_chars(env, object2);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t short_string_length = length1 < lenght2 ? length1 : lenght2;\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t retval = memcmp(bytes1, bytes2, short_string_length);\n");
         SPVM_STRING_BUFFER_add(string_buffer, "      int32_t cmp;\n");
@@ -2209,7 +2209,7 @@ void SPVM_CSOURCE_BUILDER_PRECOMPILE_build_method_implementation(SPVM_COMPILER* 
         SPVM_CSOURCE_BUILDER_PRECOMPILE_add_operand(compiler, string_buffer, SPVM_CSOURCE_BUILDER_PRECOMPILE_C_CTYPE_ID_OBJECT, opcode->operand1);
         SPVM_STRING_BUFFER_add(string_buffer, ";\n");
         SPVM_STRING_BUFFER_add(string_buffer, "    int32_t src_string_length = env->length(env, src_string);");
-        SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* src_string_data = env->get_elems_byte(env, src_string);");
+        SPVM_STRING_BUFFER_add(string_buffer, "    const char* src_string_data = env->get_chars(env, src_string);");
         SPVM_STRING_BUFFER_add(string_buffer, "    void* byte_array = env->new_byte_array_raw(env, src_string_length);");
         SPVM_STRING_BUFFER_add(string_buffer, "    int8_t* byte_array_data = env->get_elems_byte(env, byte_array);");
         SPVM_STRING_BUFFER_add(string_buffer, "    memcpy(byte_array_data, src_string_data, src_string_length);");
