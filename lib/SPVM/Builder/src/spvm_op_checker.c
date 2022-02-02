@@ -111,7 +111,7 @@ SPVM_OP* SPVM_OP_CHECKER_new_op_var_tmp(SPVM_COMPILER* compiler, SPVM_METHOD* me
   assert(type);
   SPVM_OP* op_type = SPVM_OP_new_op_type(compiler, type, file, line);
   
-  SPVM_OP_build_my(compiler, op_my, op_var, op_type, NULL);
+  SPVM_OP_build_my(compiler, op_my, op_var, op_type);
   
   op_my->uv.my->is_tmp = 1;
   op_var->uv.var->is_initialized = 1;

@@ -369,9 +369,9 @@ args
   | arg
 
 arg
-  : var ':' opt_descriptors type
+  : var ':' type
     {
-      $$ = SPVM_OP_build_arg(compiler, $1, $4, $3);
+      $$ = SPVM_OP_build_arg(compiler, $1, $3);
     }
 
 opt_vaarg
@@ -1106,17 +1106,13 @@ array_length
     }
 
 my_var
-  : MY var ':' opt_descriptors type
+  : MY var ':' type
     {
-      $$ = SPVM_OP_build_my(compiler, $1, $2, $5, $4);
+      $$ = SPVM_OP_build_my(compiler, $1, $2, $4);
     }
   | MY var
     {
-      $$ = SPVM_OP_build_my(compiler, $1, $2, NULL, NULL);
-    }
-  | MY var ':' descriptors
-    {
-      $$ = SPVM_OP_build_my(compiler, $1, $2, NULL, $4);
+      $$ = SPVM_OP_build_my(compiler, $1, $2, NULL);
     }
 
 var
