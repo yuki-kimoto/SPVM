@@ -2272,10 +2272,10 @@ class Foo {
 Local Variable is declared using <b>my</b> <a href="#language-token-keyword">Keyword</a>.
 
 <pre>
-my LEXICAL_VARIABLE_NAME : TYPE;
+my LOCAL_VARIABLE_NAME : TYPE;
 </pre>
 
-Lexical variable name must be follow the rule of <a href="#language-token-identifier-local-var-name">Local Variable Name</a>.
+The local variable name must be follow the rule of <a href="#language-token-identifier-local-var-name">Local Variable Name</a>.
 
 <a href="#language-type">Type</a> must be specified. Type must be <a href="#language-type-numeric">Numeric Type</a>, <a href="#language-type-object">Object Type</a>, <a href="#language-type-multi-numeric">Multi Numeric Type</a>, or <a href="#language-type-ref">Reference Type</a>.
 
