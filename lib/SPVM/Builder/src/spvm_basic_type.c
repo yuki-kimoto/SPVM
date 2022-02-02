@@ -28,6 +28,7 @@ const char* const* SPVM_BASIC_TYPE_C_ID_NAMES(void) {
     "Float",
     "Double",
     "Bool",
+    "String",
   };
   
   return id_names;

@@ -89,6 +89,10 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   const char* spvm_double_module_source = "class Double {\n  has value : ro double;\n  static method new : Double ($value : double) {\n    my $self = new Double;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
   SPVM_HASH_insert(compiler->module_source_symtable, "Double", strlen("Double"), (void*)spvm_double_module_source);
 
+  // Add String source
+  const char* spvm_string_module_source = "class String {\n  has value : ro byte[];\n  static method new : String ($value : byte[]) {\n    my $self = new String;\n    $self->{value} = $value;\n    return $self;\n  }\n}";
+  SPVM_HASH_insert(compiler->module_source_symtable, "String", strlen("String"), (void*)spvm_string_module_source);
+
   // use Bool module
   {
     SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Bool", "Bool", 0);
@@ -146,6 +150,15 @@ SPVM_COMPILER* SPVM_COMPILER_new() {
   // use Double module
   {
     SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "Double", "Double", 0);
+    SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
+    SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
+    SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
+    SPVM_LIST_push(compiler->op_use_stack, op_use);
+  }
+
+  // use String module
+  {
+    SPVM_OP* op_name = SPVM_OP_new_op_name(compiler, "String", "String", 0);
     SPVM_OP* op_type = SPVM_OP_build_basic_type(compiler, op_name);
     SPVM_OP* op_use = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, op_name->file, op_name->line);
     SPVM_OP_build_use(compiler, op_use, op_type, NULL, 0);
