@@ -1687,10 +1687,11 @@ SPVM_OP* SPVM_OP_build_class(SPVM_COMPILER* compiler, SPVM_OP* op_class, SPVM_OP
     // Class name must start with upper case, otherwise compiler error occur.
     // (Invalid example) Foo::bar
     if (islower(class_name[0])) {
-      SPVM_COMPILER_error(compiler, "class name \"%s\" must start with upper case at %s line %d", class_name, op_class->file, op_class->line);
+      if(strcmp(class_name, "string") != 0) {
+        SPVM_COMPILER_error(compiler, "Class name \"%s\" must start with upper case at %s line %d", class_name, op_class->file, op_class->line);
+      }
     }
     else {
-      
       // If class part name start with lower case, compiler error occur.
       // (Invalid example) Foo::bar
       int32_t class_part_name_is_invalid = 0;

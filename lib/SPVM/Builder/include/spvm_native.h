@@ -217,7 +217,7 @@ struct spvm_env {
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
   void (*free_env)(SPVM_ENV* env);
   void* memory_blocks_count;
-  const char* (*get_chars)(SPVM_ENV* env, void* string_object);
+  const char* (*get_chars)(SPVM_ENV* env, void* string);
   int32_t (*die)(SPVM_ENV* env, const char* message, ...);
   void* (*new_object_by_name)(SPVM_ENV* env, const char* class_name, int32_t* exception_flag, const char* file, int32_t line);
   void* (*new_pointer_by_name)(SPVM_ENV* env, const char* class_name, void* pointer, int32_t* exception_flag, const char* file, int32_t line);
@@ -259,10 +259,6 @@ struct spvm_env {
   int32_t (*call_instance_method)(SPVM_ENV* env, int32_t method_id, SPVM_VALUE* args);
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
   int32_t (*get_bool_object_value)(SPVM_ENV* env, void* bool_object);
-  void* string_object_basic_type_id;
-  void* (*new_string_object_nolen_raw)(SPVM_ENV* env, const char* bytes);
-  void* (*new_string_object_nolen)(SPVM_ENV* env, const char* bytes);
-  void* (*new_string_object_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
-  void* (*new_string_object)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* string_basic_type_id;
 };
 #endif

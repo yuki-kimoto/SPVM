@@ -79,7 +79,7 @@ SPVM::Test - SPVM test module
       $bytes->[1] = 'b';
       $bytes->[2] = 'c';
       
-      my $string_object = (String)$bytes;
+      my $string_object = (string)$bytes;
       
       my $bytes1 = $string_object->value;
       

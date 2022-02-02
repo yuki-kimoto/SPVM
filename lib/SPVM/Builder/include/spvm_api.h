@@ -139,8 +139,6 @@ SPVM_OBJECT* SPVM_API_new_muldim_array(SPVM_ENV* env, int32_t basic_type_id, int
 SPVM_OBJECT* SPVM_API_new_mulnum_array(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, const char* bytes);
 SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length);
-SPVM_OBJECT* SPVM_API_new_string_object_nolen(SPVM_ENV* env, const char* bytes);
-SPVM_OBJECT* SPVM_API_new_string_object(SPVM_ENV* env, const char* bytes, int32_t length);
 
 int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_OBJECT* bool_object);
 
@@ -158,8 +156,6 @@ SPVM_OBJECT* SPVM_API_new_muldim_array_raw(SPVM_ENV* env, int32_t basic_type_id,
 SPVM_OBJECT* SPVM_API_new_mulnum_array_raw(SPVM_ENV* env, int32_t basic_type_id, int32_t length);
 SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, const char* bytes);
 SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t length);
-SPVM_OBJECT* SPVM_API_new_string_object_nolen_raw(SPVM_ENV* env, const char* bytes);
-SPVM_OBJECT* SPVM_API_new_string_object_raw(SPVM_ENV* env, const char* bytes, int32_t length);
 
 // Exception
 int32_t SPVM_API_set_exception(SPVM_ENV* env, SPVM_OBJECT* exception);
