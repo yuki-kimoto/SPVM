@@ -12,7 +12,7 @@ use Test::More;
 my $file = 't/' . basename $0;
 
 use FindBin;
-use lib "$FindBin::Bin/lib";
+use lib "$FindBin::Bin/default/lib";
 
 # SPVM compile error
 {
