@@ -1710,6 +1710,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               SPVM_TYPE* dist_type = SPVM_OP_get_type(compiler, op_term_dist);
 
               // Type inference
+              int32_t is_string_mutable = 0;
               if (op_term_dist->id == SPVM_OP_C_ID_VAR) {
                 SPVM_MY* my = op_term_dist->uv.var->my;
                 if (my->type == NULL) {
@@ -1720,6 +1721,7 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                   return;
                 }
                 op_term_dist->uv.var->is_initialized = 1;
+                is_string_mutable = my->is_mutable;
               }
               
               // Check if source can be assigned to dist
@@ -1731,8 +1733,8 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
               }
 
               // If dist is string access and const, it is invalid
-              if (op_term_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_term_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST) {
-                SPVM_COMPILER_error(compiler, "Can't change each character of string at %s line %d", op_term_dist->file, op_term_dist->line);
+              if (op_term_dist->id == SPVM_OP_C_ID_ARRAY_ACCESS && op_term_dist->flag & SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING && !is_string_mutable) {
+                SPVM_COMPILER_error(compiler, "Can't set the character of non-mutable string at %s line %d", op_term_dist->file, op_term_dist->line);
                 return;
               }
               
@@ -2779,9 +2781,9 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                 return;
               }
               
-              // String access is const
+              // String access
               if (SPVM_TYPE_is_string_type(compiler, first_type->basic_type->id, first_type->dimension, first_type->flag)) {
-                op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_CONST;
+                op_cur->flag |= SPVM_OP_C_FLAG_ARRAY_ACCESS_STRING;
               }
               
               // Right operand must be integer
