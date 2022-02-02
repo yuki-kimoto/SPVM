@@ -1831,8 +1831,8 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
           int32_t length1 = *(int32_t*)((intptr_t)object1 + (intptr_t)env->object_length_offset);
           int32_t length2 = *(int32_t*)((intptr_t)object2 + (intptr_t)env->object_length_offset);
           
-          int8_t* bytes1 = env->get_elems_byte(env, object1);
-          int8_t* bytes2 = env->get_elems_byte(env, object2);
+          const char* bytes1 = env->get_chars(env, object1);
+          const char* bytes2 = env->get_chars(env, object2);
           
           int32_t short_string_length = length1 < length2 ? length1 : length2;
           int32_t retval = memcmp(bytes1, bytes2, short_string_length);
@@ -2132,7 +2132,7 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       {
         void* src_string = object_vars[opcode->operand1];
         int32_t src_string_length = env->length(env, src_string);
-        int8_t* src_string_data = env->get_elems_byte(env, src_string);
+        const char* src_string_data = env->get_chars(env, src_string);
         void* byte_array = env->new_byte_array_raw(env, src_string_length);
         int8_t* byte_array_data = env->get_elems_byte(env, byte_array);
         memcpy(byte_array_data, src_string_data, src_string_length);
