@@ -586,6 +586,9 @@ t/builder_config/zlib.def
 t/builder_config_exe.t
 t/builder_link_info.pl
 t/builder_object_file_info.t
+t/compile_error.pl
+t/compile_error.t
+t/compile_error_dist.pl
 t/copy_default_to_precompile.pl
 t/default/000_use_spvm.t
 t/default/001_use_empty_class.t
@@ -607,9 +610,6 @@ t/default/callback.t
 t/default/class_var.t
 t/default/comment.t
 t/default/comparison_operator.t
-t/default/compile_error.pl
-t/default/compile_error.t
-t/default/compile_error_dist.pl
 t/default/compile_native_api.pl
 t/default/concat.t
 t/default/constant.t
@@ -953,6 +953,7 @@ t/exe/lib/SPVM/TestCase/NativeAPI2.native/src/noneed.txt
 t/exe/lib/SPVM/TestCase/NativeAPI2.spvm
 t/exe/myexe.config
 t/exe/myexe.pl
+t/exe/SPVM_Builder_Exe.t
 t/exe/spvmcc.t
 t/exe/spvmgenlib.t
 t/get_native_api_indexes.pl
