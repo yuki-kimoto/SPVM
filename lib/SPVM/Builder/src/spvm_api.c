@@ -5730,7 +5730,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen_raw(SPVM_ENV* env, const char* bytes) {
   
   int32_t length = strlen((char*)bytes);
 
-  SPVM_OBJECT* byte_array = SPVM_API_new_byte_array_raw(env, length);
+  SPVM_OBJECT* byte_array = SPVM_API_new_byte_array(env, length);
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)byte_array + env->object_header_byte_size), (char*)bytes, length);
   }
@@ -5755,7 +5755,7 @@ SPVM_OBJECT* SPVM_API_new_string_nolen(SPVM_ENV* env, const char* bytes) {
 
 SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
   (void)env;
-
+  
   SPVM_OBJECT* byte_array = SPVM_API_new_byte_array_raw(env, length);
   if (bytes != NULL && length > 0) {
     memcpy((void*)((intptr_t)byte_array + env->object_header_byte_size), (char*)bytes, length);
@@ -6257,7 +6257,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       }
     }
     // Free class object
-    else if (object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_CLASS) {
+    else if (object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_CLASS || object->type_category == SPVM_TYPE_C_TYPE_CATEGORY_STRING) {
 
       // Class
       SPVM_COMPILER* compiler = env->compiler;
@@ -6296,6 +6296,7 @@ void SPVM_API_dec_ref_count(SPVM_ENV* env, SPVM_OBJECT* object) {
       // Free object fields
       int32_t object_fields_offset = class->object_fields_offset;
       int32_t object_fields_length = class->object_fields_length;
+      
       for (int32_t index = 0; index < object_fields_length; index++) {
         SPVM_OBJECT** get_field_object_address = &(((SPVM_OBJECT**)((intptr_t)object + (intptr_t)env->object_header_byte_size + object_fields_offset))[index]);
         if (*get_field_object_address != NULL) {
