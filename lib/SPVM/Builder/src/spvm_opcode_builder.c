@@ -1219,7 +1219,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                           // String length logic is same as ARRAY_LENGTH opcode
                           SPVM_OPCODE opcode;
                           memset(&opcode, 0, sizeof(SPVM_OPCODE));
-                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_LENGTH);
+                          SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_LENGTH);
                           
                           int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                           int32_t mem_id_in = SPVM_OP_get_mem_id(compiler, op_assign_src->first);

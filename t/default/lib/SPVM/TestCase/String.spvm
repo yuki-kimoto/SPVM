@@ -21,7 +21,6 @@ class TestCase::String {
     # String length
     {
       my $string_length = length "abc";
-      
       unless ($string_length == 3) {
         return 0;
       }
