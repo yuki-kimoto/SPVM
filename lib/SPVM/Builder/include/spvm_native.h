@@ -260,5 +260,9 @@ struct spvm_env {
   int32_t (*get_instance_method_id_static)(SPVM_ENV* env, const char* class_name, const char* method_name, const char* signature);
   int32_t (*get_bool_object_value)(SPVM_ENV* env, void* bool_object);
   void* string_object_basic_type_id;
+  void* (*new_string_object_nolen_raw)(SPVM_ENV* env, const char* bytes);
+  void* (*new_string_object_nolen)(SPVM_ENV* env, const char* bytes);
+  void* (*new_string_object_raw)(SPVM_ENV* env, const char* bytes, int32_t length);
+  void* (*new_string_object)(SPVM_ENV* env, const char* bytes, int32_t length);
 };
 #endif

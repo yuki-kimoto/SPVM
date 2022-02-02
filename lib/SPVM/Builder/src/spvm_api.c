@@ -261,6 +261,10 @@ SPVM_ENV* SPVM_API_create_env(SPVM_COMPILER* compiler) {
     SPVM_API_get_instance_method_id_static,
     SPVM_API_get_bool_object_value,
     (void*)(intptr_t)SPVM_BASIC_TYPE_C_ID_STRING_OBJECT, // string_object_basic_type_id
+    SPVM_API_new_string_object_nolen_raw,
+    SPVM_API_new_string_object_nolen,
+    SPVM_API_new_string_object_raw,
+    SPVM_API_new_string_object,
   };
   
   SPVM_ENV* env = SPVM_ALLOCATOR_new_block_runtime_noenv(compiler, sizeof(env_init));
@@ -5725,6 +5729,71 @@ SPVM_OBJECT* SPVM_API_new_string_raw(SPVM_ENV* env, const char* bytes, int32_t l
   return object;
 }
 
+SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_API_new_string_raw(env, bytes, length);
+  
+  SPVM_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_string_object_nolen_raw(SPVM_ENV* env, const char* bytes) {
+  (void)env;
+  
+  int32_t length = strlen((char*)bytes);
+  
+  SPVM_OBJECT* object = SPVM_API_new_byte_array_raw(env, length);
+  
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING_OBJECT;
+  object->type_dimension = 0;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
+  
+  if (bytes != NULL && length > 0) {
+    memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
+  }
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_string_object_nolen(SPVM_ENV* env, const char* bytes) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_API_new_string_object_nolen_raw(env, bytes);
+  
+  SPVM_API_push_mortal(env, object);
+  
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_string_object_raw(SPVM_ENV* env, const char* bytes, int32_t length) {
+  (void)env;
+
+  SPVM_OBJECT* object = SPVM_API_new_byte_array_raw(env, length);
+  
+  object->basic_type_id = SPVM_BASIC_TYPE_C_ID_STRING_OBJECT;
+  object->type_dimension = 0;
+  object->type_category = SPVM_TYPE_C_TYPE_CATEGORY_STRING;
+
+  if (bytes != NULL && length > 0) {
+    memcpy((void*)((intptr_t)object + env->object_header_byte_size), (char*)bytes, length);
+  }
+
+  return object;
+}
+
+SPVM_OBJECT* SPVM_API_new_string_object(SPVM_ENV* env, const char* bytes, int32_t length) {
+  (void)env;
+  
+  SPVM_OBJECT* object = SPVM_API_new_string_object_raw(env, bytes, length);
+  
+  SPVM_API_push_mortal(env, object);
+  
+  return object;
+}
+
+
 int32_t SPVM_API_get_filed_first_int(SPVM_ENV* env, SPVM_OBJECT* object) {
 
   int32_t value = *(int32_t*)((intptr_t)object + env->object_header_byte_size);
@@ -5738,16 +5807,6 @@ int32_t SPVM_API_get_bool_object_value(SPVM_ENV* env, SPVM_OBJECT* bool_object) 
   int32_t value = SPVM_API_get_filed_first_int(env, bool_object);
   
   return value;
-}
-
-SPVM_OBJECT* SPVM_API_new_string(SPVM_ENV* env, const char* bytes, int32_t length) {
-  (void)env;
-  
-  SPVM_OBJECT* object = SPVM_API_new_string_raw(env, bytes, length);
-  
-  SPVM_API_push_mortal(env, object);
-  
-  return object;
 }
 
 SPVM_OBJECT* SPVM_API_new_byte_array_raw(SPVM_ENV* env, int32_t length) {
