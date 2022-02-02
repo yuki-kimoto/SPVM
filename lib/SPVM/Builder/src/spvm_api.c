@@ -2276,6 +2276,28 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         double_vars[opcode->operand0] = constant->value.dval;
         break;
       }
+      case SPVM_OPCODE_C_ID_STRING_FETCH: {
+        void* string = *(void**)&object_vars[opcode->operand1];
+        int32_t index = int_vars[opcode->operand2];
+        if (__builtin_expect(string == NULL, 0)) {
+          void* exception = env->new_string_nolen_raw(env, "String must not be undef");
+          env->set_exception(env, exception);
+          exception_flag = 1;
+        }
+        else {
+          int32_t length = env->length(env, string);
+          if (__builtin_expect(index < 0 || index >= length, 0)) {
+            void* exception = env->new_string_nolen_raw(env, "Index is out of range");
+            env->set_exception(env, exception);
+            exception_flag = 1;
+          }
+          else {
+            int8_t* chars = (int8_t*)env->get_chars(env, string);
+            byte_vars[opcode->operand0] = chars[index];
+          }
+        }
+        break;
+      }
       case SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE: {
         void* array = *(void**)&object_vars[opcode->operand1];
         int32_t index = int_vars[opcode->operand2];

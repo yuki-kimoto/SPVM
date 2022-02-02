@@ -1581,43 +1581,49 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_OPCODE_BUILDER_push_if_die(compiler, opcode_array, push_eval_opcode_rel_index_stack, if_die_catch_goto_opcode_rel_index_stack, if_die_return_goto_opcode_rel_index_stack, method->op_method, op_cur->line);
                           }
                           else {
-                            SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_access);
-                          
                             SPVM_OPCODE opcode;
                             memset(&opcode, 0, sizeof(SPVM_OPCODE));
                             int32_t mem_id_out;
-                            if (SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
-                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT);
+
+                            if (SPVM_TYPE_is_string_type(compiler, array_type->basic_type->id, array_type->dimension, array_type->flag)) {
+                              SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_STRING_FETCH);
                               mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                             }
                             else {
-                              switch (element_type->basic_type->id) {
-                                case SPVM_BASIC_TYPE_C_ID_BYTE:
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE);
-                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_SHORT:
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_SHORT);
-                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_INT:
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_INT);
-                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_LONG:
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_LONG);
-                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_FLOAT:
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_FLOAT);
-                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                  break;
-                                case SPVM_BASIC_TYPE_C_ID_DOUBLE:
-                                  SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE);
-                                  mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
-                                  break;
-                                default:
-                                  assert(0);
+                              SPVM_TYPE* element_type = SPVM_OP_get_type(compiler, op_array_access);
+                              if (SPVM_TYPE_is_object_type(compiler, element_type->basic_type->id, element_type->dimension, element_type->flag)) {
+                                SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_OBJECT);
+                                mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                              }
+                              else {
+                                switch (element_type->basic_type->id) {
+                                  case SPVM_BASIC_TYPE_C_ID_BYTE:
+                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_BYTE);
+                                    mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                    break;
+                                  case SPVM_BASIC_TYPE_C_ID_SHORT:
+                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_SHORT);
+                                    mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                    break;
+                                  case SPVM_BASIC_TYPE_C_ID_INT:
+                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_INT);
+                                    mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                    break;
+                                  case SPVM_BASIC_TYPE_C_ID_LONG:
+                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_LONG);
+                                    mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                    break;
+                                  case SPVM_BASIC_TYPE_C_ID_FLOAT:
+                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_FLOAT);
+                                    mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                    break;
+                                  case SPVM_BASIC_TYPE_C_ID_DOUBLE:
+                                    SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_ARRAY_FETCH_DOUBLE);
+                                    mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
+                                    break;
+                                  default:
+                                    assert(0);
+                                }
                               }
                             }
 
