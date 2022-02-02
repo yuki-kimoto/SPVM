@@ -73,6 +73,21 @@ SPVM::Test - SPVM test module
   static method DOUBLE_PRECICE : double () { return 2147483647.0; }
 
   static method main : int ($start_file : string, $args : string[]) {
+    {
+      my $bytes = new byte[3];
+      $bytes->[0] = 'a';
+      $bytes->[1] = 'b';
+      $bytes->[2] = 'c';
+      
+      my $string_object = (String)$bytes;
+      
+      my $bytes1 = $string_object->value;
+      
+      my $bytes_re = (byte[])$string_object;
+      
+      warn (string)$bytes_re;
+    }
+    
     # Starting file
     warn $start_file;
     

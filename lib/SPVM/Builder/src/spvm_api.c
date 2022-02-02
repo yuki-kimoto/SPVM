@@ -2143,8 +2143,14 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CONVERT_STRING_OBJECT_TO_BYTE_ARRAY:
       {
         void* string = object_vars[opcode->operand1];
-        void* byte_array = (void*)env->get_elems_byte(env, string);
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], byte_array);
+        if (string == NULL) {
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
+        }
+        else {
+          SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)string + object_header_byte_size);
+          void* byte_array = *(void**)&fields[0];
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], byte_array);
+        }
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING:
@@ -2159,9 +2165,15 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
       case SPVM_OPCODE_C_ID_CONVERT_BYTE_ARRAY_TO_STRING_OBJECT:
       {
         void* byte_array = object_vars[opcode->operand1];
-        void* string = env->new_object_raw(env, (intptr_t)env->string_object_basic_type_id);
-        SPVM_API_OBJECT_ASSIGN((void**)((intptr_t)string + object_header_byte_size), byte_array);
-        SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        if (byte_array == NULL) {
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], NULL);
+        }
+        else {
+          void* string = env->new_object_raw(env, (intptr_t)env->string_object_basic_type_id);
+          SPVM_API_OBJECT_ASSIGN((void**)((intptr_t)string + object_header_byte_size), byte_array);
+          SPVM_API_OBJECT_ASSIGN((void**)&object_vars[opcode->operand0], string);
+        }
+        
         break;
       }
       case SPVM_OPCODE_C_ID_CONVERT_SHORT_TO_STRING: {
@@ -6170,7 +6182,17 @@ int32_t SPVM_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object) {
 int32_t SPVM_API_length(SPVM_ENV* env, SPVM_OBJECT* object) {
   (void)env;
   
-  int32_t length = object->length;
+  int32_t length;
+  
+  int32_t basic_type_id = object->basic_type_id;
+  if (basic_type_id == (intptr_t)env->string_object_basic_type_id) {
+    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)object + env->object_header_byte_size);
+    SPVM_OBJECT* byte_array = *(void**)&fields[0];
+    length = byte_array->length;
+  }
+  else {
+    length = object->length;
+  }
   
   return length;
 }
@@ -6183,8 +6205,16 @@ int8_t* SPVM_API_get_elems_byte(SPVM_ENV* env, SPVM_OBJECT* object) {
 
 const char* SPVM_API_get_chars(SPVM_ENV* env, SPVM_OBJECT* string) {
   (void)env;
-
-  return (const char*)((intptr_t)string + env->object_header_byte_size);
+  
+  int32_t basic_type_id = string->basic_type_id;
+  if (basic_type_id == (intptr_t)env->string_object_basic_type_id) {
+    SPVM_VALUE* fields = (SPVM_VALUE*)((intptr_t)string + env->object_header_byte_size);
+    void* byte_array = *(void**)&fields[0];
+    return (const char*)((intptr_t)byte_array + env->object_header_byte_size);
+  }
+  else {
+    return (const char*)((intptr_t)string + env->object_header_byte_size);
+  }
 }
 
 int16_t* SPVM_API_get_elems_short(SPVM_ENV* env, SPVM_OBJECT* object) {
