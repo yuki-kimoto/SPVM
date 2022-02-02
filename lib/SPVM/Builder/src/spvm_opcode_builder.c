@@ -2991,8 +2991,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_CALLBACK);
                                 mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
-                                int32_t runtime_basic_type_id;
-                                int32_t runtime_type_dimension;
                                 opcode.operand2 = op_dist_type->uv.type->basic_type->id;
                               }
                               // CHECK_OBJECT_TYPE
@@ -3000,8 +2998,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 SPVM_OPCODE_BUILDER_set_opcode_id(compiler, &opcode, SPVM_OPCODE_C_ID_CHECK_OBJECT_TYPE);
                                 mem_id_out = SPVM_OP_get_mem_id(compiler, op_dist_term);
                                 mem_id_in = SPVM_OP_get_mem_id(compiler, op_src_term);
-                                int32_t runtime_basic_type_id;
-                                int32_t runtime_type_dimension;
                                 opcode.operand2 = op_dist_type->uv.type->basic_type->id;
                                 opcode.operand3 = op_dist_type->uv.type->dimension;
                               }
@@ -3042,18 +3038,10 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                             SPVM_TYPE* type = SPVM_OP_get_type(compiler, op_assign_src->first);
 
                             // Runtime type
-                            int32_t runtime_basic_type_id;
-                            int32_t runtime_type_dimension;
-                            if (type->basic_type->id == SPVM_BASIC_TYPE_C_ID_STRING) {
-                              runtime_basic_type_id = SPVM_BASIC_TYPE_C_ID_BYTE;
-                              runtime_type_dimension = type->dimension + 1;
-                            }
-                            else {
-                              runtime_basic_type_id = type->basic_type->id;
-                              runtime_type_dimension = type->dimension;
-                            }
+                            int32_t basic_type_id = type->basic_type->id;
+                            int32_t type_dimension = type->dimension;
                             
-                            if (runtime_type_dimension > 0) {
+                            if (type_dimension > 0) {
                               /*
                                 NEW op_assign_src
                                    TYPE op_assign_src->first
@@ -3061,8 +3049,8 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                      INDEX op_assign_src->first->last
                               */
                               
-                              if (runtime_type_dimension == 1) {
-                                switch (runtime_basic_type_id) {
+                              if (type_dimension == 1) {
+                                switch (basic_type_id) {
                                   case SPVM_BASIC_TYPE_C_ID_BYTE: {
                                     SPVM_OPCODE opcode;
                                     memset(&opcode, 0, sizeof(SPVM_OPCODE));
@@ -3170,7 +3158,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                     break;
                                   }
                                   default: {
-                                    if (SPVM_TYPE_is_value_array_type(compiler, runtime_basic_type_id, runtime_type_dimension, type->flag)) {
+                                    if (SPVM_TYPE_is_value_array_type(compiler, basic_type_id, type_dimension, type->flag)) {
                                       SPVM_OPCODE opcode;
                                       memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
@@ -3207,7 +3195,7 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                   }
                                 }
                               }
-                              else if (runtime_type_dimension > 1) {
+                              else if (type_dimension > 1) {
                                 SPVM_OPCODE opcode;
                                 memset(&opcode, 0, sizeof(SPVM_OPCODE));
 
@@ -3216,9 +3204,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
                                 int32_t mem_id_out = SPVM_OP_get_mem_id(compiler, op_assign_dist);
                                 int32_t mem_id_index = SPVM_OP_get_mem_id(compiler, op_assign_src->first->last);
 
-                                int32_t runtime_basic_type_id;
-                                int32_t runtime_type_dimension;
-                                
                                 opcode.operand0 = mem_id_out;
                                 opcode.operand1 = op_type->uv.type->basic_type->id;
                                 opcode.operand2 = mem_id_index;
@@ -3873,8 +3858,6 @@ void SPVM_OPCODE_BUILDER_build_opcode_array(SPVM_COMPILER* compiler) {
 
                           opcode.operand1 = mem_id_in;
 
-                          int32_t runtime_basic_type_id;
-                          int32_t runtime_type_dimension;
                           opcode.operand2 = type->basic_type->id;
                           opcode.operand3 = type->dimension;
                           
