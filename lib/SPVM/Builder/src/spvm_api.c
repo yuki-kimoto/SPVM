@@ -3736,20 +3736,21 @@ int32_t SPVM_API_call_spvm_method_vm(SPVM_ENV* env, int32_t method_id, SPVM_VALU
         break;
       }
       case SPVM_OPCODE_C_ID_ARRAY_LENGTH: {
-        if (*(void**)&object_vars[opcode->operand1] == NULL) {
-          void* exception = env->new_string_nolen_raw(env, "Can't get array length of undef value.");
+        void* array = *(void**)&object_vars[opcode->operand1];
+        if (__builtin_expect(array == NULL, 0)) {
+          void* exception = env->new_string_nolen_raw(env, "Can't get the array length of undef value");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
         else {
-          int_vars[opcode->operand0] = *(int32_t*)((intptr_t)*(void**)&object_vars[opcode->operand1] + (intptr_t)env->object_length_offset);
+          int_vars[opcode->operand0] = env->length(env, array);
         }
         break;
       }
       case SPVM_OPCODE_C_ID_STRING_LENGTH: {
         void* string = *(void**)&object_vars[opcode->operand1];
-        if (string == NULL) {
-          void* exception = env->new_string_nolen_raw(env, "Can't get string length of undef value.");
+        if (__builtin_expect(string == NULL, 0)) {
+          void* exception = env->new_string_nolen_raw(env, "Can't get the string length of undef value");
           env->set_exception(env, exception);
           exception_flag = 1;
         }
