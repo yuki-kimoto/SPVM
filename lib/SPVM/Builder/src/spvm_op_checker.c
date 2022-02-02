@@ -3184,9 +3184,30 @@ void SPVM_OP_CHECKER_check_tree(SPVM_COMPILER* compiler, SPVM_OP* op_root, SPVM_
                       is_valid = 0;
                     }
                   }
+                  // Dist type is string object type
+                  else if (SPVM_TYPE_is_string_object_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
+                    if (SPVM_TYPE_is_numeric_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                      is_valid = 1;
+                    }
+                    else if (SPVM_TYPE_is_string_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                      is_valid = 1;
+                    }
+                    else if (SPVM_TYPE_is_byte_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                      is_valid = 1;
+                    }
+                    else if (SPVM_TYPE_is_any_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                      is_valid = 1;
+                    }
+                    else {
+                      is_valid = 0;
+                    }
+                  }
                   // Dist type is byte array type
                   else if (SPVM_TYPE_is_byte_array_type(compiler, dist_type->basic_type->id, dist_type->dimension, dist_type->flag)) {
                     if (SPVM_TYPE_is_string_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
+                      is_valid = 1;
+                    }
+                    else if (SPVM_TYPE_is_string_object_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
                       is_valid = 1;
                     }
                     else if (SPVM_TYPE_is_byte_array_type(compiler, src_type->basic_type->id, src_type->dimension, src_type->flag)) {
