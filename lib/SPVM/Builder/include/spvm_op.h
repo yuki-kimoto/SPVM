@@ -186,6 +186,7 @@ enum {
   SPVM_OP_C_ID_FALSE,
   SPVM_OP_C_ID_CURRENT_CLASS,
   SPVM_OP_C_ID_AS,
+  SPVM_OP_C_ID_MUTABLE,
 };
 
 const char* const* SPVM_OP_C_ID_NAMES(void);
@@ -249,6 +250,11 @@ enum {
 enum {
   // ARRAY_INIT flag
   SPVM_OP_C_FLAG_CONVERT_IS_MUTABLE = 1,
+};
+
+enum {
+  // ARRAY_INIT flag
+  SPVM_OP_C_FLAG_TYPE_MUTABLE = 1,
 };
 
 /* Binary operation */

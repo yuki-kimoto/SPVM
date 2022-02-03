@@ -186,6 +186,7 @@ const char* const* SPVM_OP_C_ID_NAMES(void) {
     "FALSE",
     "CURRENT_CLASS",
     "AS",
+    "MUTABLE",
   };
   
   return id_names;
@@ -1626,30 +1627,6 @@ SPVM_OP* SPVM_OP_build_convert(SPVM_COMPILER* compiler, SPVM_OP* op_convert, SPV
   op_convert->file = op_type->file;
   op_convert->line = op_type->line;
 
-  // Descriptors
-  int32_t access_control_descriptors_count = 0;
-  if (op_descriptors) {
-    if (op_descriptors->id != SPVM_OP_C_ID_LIST) {
-      SPVM_OP* op_list = SPVM_OP_new_op_list(compiler, op_descriptors->file, op_descriptors->line);
-      SPVM_OP_insert_child(compiler, op_list, op_list->last, op_descriptors);
-      op_descriptors = op_list;
-    }
-    SPVM_OP* op_descriptor = op_descriptors->first;
-    while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
-      SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
-      
-      switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_MUTABLE: {
-          op_convert->flag |= SPVM_OP_C_FLAG_CONVERT_IS_MUTABLE;
-          break;
-        }
-        default: {
-          SPVM_COMPILER_error(compiler, "Invalid convert descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
-        }
-      }
-    }
-  }
-
   return op_convert;
 }
 
@@ -2748,25 +2725,6 @@ SPVM_OP* SPVM_OP_build_my(SPVM_COMPILER* compiler, SPVM_OP* op_my, SPVM_OP* op_v
   SPVM_OP* op_name = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_NAME, op_var->file, op_var->line);
   op_name->uv.name = op_var->uv.var->op_name->uv.name;
   my->op_name = op_name;
-
-  // Descriptors
-  int32_t access_control_descriptors_count = 0;
-  if (op_descriptors) {
-    SPVM_OP* op_descriptor = op_descriptors->first;
-    while ((op_descriptor = SPVM_OP_sibling(compiler, op_descriptor))) {
-      SPVM_DESCRIPTOR* descriptor = op_descriptor->uv.descriptor;
-      
-      switch (descriptor->id) {
-        case SPVM_DESCRIPTOR_C_ID_MUTABLE: {
-          my->is_mutable = 1;
-          break;
-        }
-        default: {
-          SPVM_COMPILER_error(compiler, "Invalid local variable descriptor \"%s\" at %s line %d", (SPVM_DESCRIPTOR_C_ID_NAMES())[descriptor->id], op_descriptors->file, op_descriptors->line);
-        }
-      }
-    }
-  }
 
   op_var->uv.var->my = my;
 

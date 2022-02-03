@@ -1966,9 +1966,8 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   return METHOD;
                 }
                 else if (strcmp(keyword, "mutable") == 0) {
-                  SPVM_OP* op_descriptor = SPVM_OP_new_op_descriptor(compiler, SPVM_DESCRIPTOR_C_ID_MUTABLE, compiler->cur_file, compiler->cur_line);
-                  yylvalp->opval = op_descriptor;
-                  return DESCRIPTOR;
+                  SPVM_OP* op_mutable = SPVM_TOKE_newOP(compiler, SPVM_OP_C_ID_MUTABLE);
+                  return MUTABLE;
                 }
                 break;
               }

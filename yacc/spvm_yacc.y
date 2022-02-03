@@ -18,7 +18,7 @@
   #include "spvm_descriptor.h"
 %}
 
-%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS
+%token <opval> CLASS HAS METHOD OUR ENUM MY USE AS REQUIRE ALLOW CURRENT_CLASS MUTABLE
 %token <opval> DESCRIPTOR
 %token <opval> IF UNLESS ELSIF ELSE FOR WHILE LAST NEXT SWITCH CASE DEFAULT BREAK EVAL
 %token <opval> NAME VAR_NAME CONSTANT EXCEPTION_VAR
@@ -1122,6 +1122,9 @@ var
 
 qualified_type
   : type
+  | MUTABLE type {
+    $2->uv.type->is_mutable = 1;
+  }
 
 type
   : basic_type
