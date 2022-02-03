@@ -1462,6 +1462,8 @@ FB->sum(1, 2);
 
 The followings are Automatically Loaded Modules. They can be used without <a href="#language-module-use">use</a>.
 
+=begin html
+
 <ul>
   <li>Byte</li>
   <li>Short</li>
@@ -1470,6 +1472,8 @@ The followings are Automatically Loaded Modules. They can be used without <a hre
   <li>Float</li>
   <li>Double</li>
 </ul>
+
+=end html
 
 
 =head2 Load Module Selective
@@ -3091,6 +3095,8 @@ Array is a data structure for continuous multiple values.
 
 There are the following types of Array.
 
+=begin html
+
 <ul>
   <li>
     Numeric Type Array
@@ -3102,6 +3108,8 @@ There are the following types of Array.
     Multi Numeric Type Array
  </li>
 </ul>
+
+=end html
 
 Numeric Type Array is Array that element type is <a href="#language-type-numeric">Numeric Type</a>.
 
@@ -3832,12 +3840,16 @@ my $object = new Foo;
 
 Create Object has the following information.
 
+=begin html
+
 <ul>
   <li>Reference Count</li>
   <li>Back references of <a href="#language-weak-ref">Weaken Reference</a></li>
   <li>Basic Type ID</li>
   <li>Type Dimension(Always 0)</li>
 </ul>
+
+=end html
 
 
 =head2 Create Array
@@ -3874,12 +3886,16 @@ my $values = new Complex_2d[3]
 
 Created Array has the following information.
 
+=begin html
+
 <ul>
   <li>Reference Count</li>
   <li>Basic Type ID</li>
   <li>Type Dimension(the value is 1)</li>
   <li>Array Length</li>
 </ul>
+
+=end html
 
 Multi-Dimention Array is created by the following syntax.
 
@@ -4801,6 +4817,7 @@ LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
 <p>
   A list of Numeric Comparison Operators.
 </p>
+
 =begin html
 
 <table>
@@ -4889,6 +4906,7 @@ LEFT_EXPRESSION NUMERIC_COMPARISON_OPERATOR RIGHT_EXPRESSION
 </table>
 
 =end html
+
 <p>
   The Types of Left Expression and Right Expression Comparable Types, otherwise Compile Error occurs.
 </p>
@@ -4938,6 +4956,7 @@ LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 <p>
   A list of String Comparison Operators.
 </p>
+
 =begin html
 
 <table>
@@ -5004,6 +5023,7 @@ LEFT_EXPRESSION STRING_COMPARISON_OPERATOR RIGHT_EXPRESSION
 </table>
 
 =end html
+
 <p>
   The Type of Return Value of the String Comparison Operator is <a href="#language-type-int">int Type</a>. If the condition is met, returns 1, otherwise 0.
 </p>
@@ -5222,6 +5242,7 @@ LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
 <p>
   List of Special Assignment Operators
 </p>
+
 =begin html
 
 <table>
@@ -5272,6 +5293,7 @@ LEFT_EXPRESSION SPECIAL_ASSIGNMENT_OPERATOR  RIGHT_EXPRESSION
 </table>
 
 =end html
+
 <p>
   The Special Assignment Operator is deployed as follows:
 </p>
@@ -5460,6 +5482,7 @@ isweak VARIABLE->{FIELD_NAME};
 <p>
   Operator Precidence is the following street. The lower you go, the higher your priority.
 </p>
+
 =begin html
 
 <table>
@@ -5472,7 +5495,6 @@ isweak VARIABLE->{FIELD_NAME};
       Right Join
     </td>
     <td>
-      <ul>
       Assignment Operator"=" <br>
       Add Assignment Operator"+=" <br>
       Subtraction Assignment Operator "-="<br>
@@ -5618,6 +5640,7 @@ isweak VARIABLE->{FIELD_NAME};
 </table>
 
 =end html
+
 <p>
   Operator Precidence can be a top priority by using "()".
 </p>
@@ -6328,6 +6351,8 @@ my $num = 1 + 2;
   <li><a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a></li>
 </ul>
 
+=end html
+
 =head2 Type Summary
 
 
@@ -6349,6 +6374,7 @@ In <a href="#language-local-var-declaration">Local Variable Declaration</a>, <a 
   A list of Type Initial Value. All Bit columns in the data are set to 0.
 </p>
 </p>
+
 =begin html
 
 <table>
@@ -6663,6 +6689,7 @@ The size of Object Type must match the value of "sizeof (void *)" in C99.
 <p>
 <b>Numeric Object Type</b> are the following six.
 </p>
+
 =begin html
 
 <table>
@@ -6968,6 +6995,9 @@ my $nums = new int[] [3];
     double[]
   </li>
 </ul>
+
+=end html
+
 <p>
   Data represented by Numeric Array Type must have elements whose size is <a href="#language-type-numeric">Numeric Type</a>, and must be consecutive by the number of Array Length.
 </p>
@@ -6996,6 +7026,9 @@ byte[]
 <p>
   <b>Object Array TypeのExample</b>
 </p>
+
+=begin html
+
 <ul>
   <li>
     Foo[]
@@ -7010,6 +7043,9 @@ byte[]
     object[]
  </li>
 </ul>
+
+=end html
+
 <p>
   The data represented by Object Array Type must have elements of size of <a href="#language-type-object">Object Type</a> and consecutive by the number of Array Length.
 </p>
@@ -7026,6 +7062,9 @@ byte[]
 <p>
   <b>Multi Numeric Array Type Example</b>
 </p>
+
+=begin html
+
 <ul>
   <li>
     Complex_2d[]
@@ -7034,6 +7073,9 @@ byte[]
     Complex_2f[]
  </li>
 </ul>
+
+=end html
+
 <p>
   Data represented by Multi Numeric Array Type must have elements whose size is <a href="#language-type-numeric">Multi Numeric Type</a> and must be contiguous with the number of Array Length ..
 </p>
@@ -7327,6 +7369,7 @@ my $num : int = (int)4;
 <p>
   It is a list of Type Conversion in Type Cast. If a Type Cast not listed in this table is performed, Compile Error occurs.
 </p>
+
 =begin html
 
 <table>
@@ -7439,11 +7482,17 @@ my $num : int = (int)4;
 <p>
   Implicit type conversion is automatic type conversion performed by SPVM. The following are the places where implicit Type Conversion may occur.
 </p>
+
+=begin html
+
 <ul>
   <li>When assigning to a different Type</li>
   <li>When passing to Method Arguments of different Type</li>
   <li>When returning a Type different from Return Value</li>
 </ul>
+
+=end html
+
 <p>
   Implicit Type Conversion occurs when:
 </p>
@@ -7538,16 +7587,24 @@ SPVM has two Numeric Type Convertions.
 
 There are some rules for automatic type conversion of Numeric Type.
 
+=begin html
+
 <ul>
   <li><a href="#language-type-convertion-unary-numeric-widening">Unary Numeric Widening Type Conversion</a></li>
   <li><a href="#language-type-convertion-binary-numeric-widening">Binary Numeric Widening Type Conversion</a></li>
 </ul>
 
+=end html
+
 Numeric types have an order.
+
+=begin html
 
 <ul>
   <li><a href="#language-type-convertion-numeric-type-order">Numeric Type Order</a></li>
 </ul>
+
+=end html
 
 
 =head2 Numeric Type Order
@@ -7564,6 +7621,9 @@ Numeric types have an order.
 <p>
   Unary Numeric Widening Type Conversion is performed in the following cases.
 </p>
+
+=begin html
+
 <ul>
   <li>Array Index</li>
   <li>Dimension when creating Array</li>
@@ -7571,6 +7631,8 @@ Numeric types have an order.
   <li>Unary Minus Operator operands</li>
   <li>Left and Right operands of Shift Operator "<<" ">>" ">>>"</li>
 </ul>
+
+=end html
 
 =head2 Binary Numeric Widening Type Conversion
 
@@ -8122,6 +8184,8 @@ As a syntax related to Weaken Reference, Weaken Reference can be released <a hre
 
 
 SPVM loads the following modules just after the program start. These modules are deeply relataed to core features, such as type conversion.
+
+=begin html
 
 <ul>
   <li><a href="https://metacpan.org/pod/SPVM::Byte">Byte</a></li>
