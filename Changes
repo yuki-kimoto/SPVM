@@ -7,8 +7,6 @@ Revision history for SPVM
         * Improve a assignment compilation error messege. "argument 2" -> "2th argument".
         * Use native api "get_chars" more instead of "get_elems_byte" in the right places.
         * Add mutable type qualifier.
-        * Add Native::Fn module.
-        
         [NON BACKWORD COMPATIBLE CHANGES]
         * string type become mutable using mutable type qualifir.
           This means string is no more immutable.

@@ -21,9 +21,9 @@
 #include <ctype.h>
 #include <errno.h>
 
-static const char* MFILE = "Native/Fn.c";
+static const char* MFILE = "SPVM/Fn.c";
 
-int32_t SPVM__Native__Fn__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -32,7 +32,7 @@ int32_t SPVM__Native__Fn__FLT_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -41,7 +41,7 @@ int32_t SPVM__Native__Fn__FLT_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -50,7 +50,7 @@ int32_t SPVM__Native__Fn__DBL_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
   (void)stack;
   
@@ -59,7 +59,7 @@ int32_t SPVM__Native__Fn__DBL_MIN(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   int64_t seed = stack[0].lval;
   
@@ -68,14 +68,14 @@ int32_t SPVM__Native__Fn__srand(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__crand(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = rand();
 
   return 0;
 }
 
-int32_t SPVM__Native__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   stack[0].ival = RAND_MAX;
 
@@ -86,7 +86,7 @@ int32_t SPVM__Native__Fn__RAND_MAX(SPVM_ENV* env, SPVM_VALUE* stack) {
 #define SPRINTF_MAX_RESULT_LEN 256
 #define UINT64_MAX_LEN 20
 
-int32_t SPVM__Native__Fn___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   void* obj_format = stack[0].oval;
@@ -105,7 +105,7 @@ int32_t SPVM__Native__Fn___snsprintf_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* stack) {
   (void)env;
 
   unsigned long long value = stack[0].lval;
@@ -121,7 +121,7 @@ int32_t SPVM__Native__Fn___long_to_unsigned_digits(SPVM_ENV* env, SPVM_VALUE* st
   return 0;
 }
 
-int32_t SPVM__Native__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -150,7 +150,7 @@ int32_t SPVM__Native__Fn__to_int_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -179,7 +179,7 @@ int32_t SPVM__Native__Fn__to_long_with_base(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -202,7 +202,7 @@ int32_t SPVM__Native__Fn__to_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* obj_string = stack[0].oval;
   if (!obj_string) {
@@ -225,7 +225,7 @@ int32_t SPVM__Native__Fn__to_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -267,7 +267,7 @@ int32_t SPVM__Native__Fn__memcpy_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -305,7 +305,7 @@ int32_t SPVM__Native__Fn__memmove_byte(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -343,7 +343,7 @@ int32_t SPVM__Native__Fn__memcpy_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -381,7 +381,7 @@ int32_t SPVM__Native__Fn__memmove_short(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -419,7 +419,7 @@ int32_t SPVM__Native__Fn__memcpy_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -457,7 +457,7 @@ int32_t SPVM__Native__Fn__memmove_int(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -495,7 +495,7 @@ int32_t SPVM__Native__Fn__memcpy_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -533,7 +533,7 @@ int32_t SPVM__Native__Fn__memmove_long(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -571,7 +571,7 @@ int32_t SPVM__Native__Fn__memcpy_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -610,7 +610,7 @@ int32_t SPVM__Native__Fn__memmove_float(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -649,7 +649,7 @@ int32_t SPVM__Native__Fn__memcpy_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* sv_dest = stack[0].oval;
   int32_t dest_offset = stack[1].ival;
@@ -687,7 +687,7 @@ int32_t SPVM__Native__Fn__memmove_double(SPVM_ENV* env, SPVM_VALUE* stack) {
   return 0;
 }
 
-int32_t SPVM__Native__Fn__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
+int32_t SPVM__Fn__new_array_proto(SPVM_ENV* env, SPVM_VALUE* stack) {
   
   void* oarray = stack[0].oval;
   int32_t length = stack[1].ival;
