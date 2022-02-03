@@ -4383,7 +4383,7 @@ L<"int Type"> Operation, L<"long Type"> Operation, L<"float Type"> Operation, an
 
 Return Type of Division Operator is the Type after L<"Binary Numeric Widening Type Conversion"> is applied.
 
-In the operation to L<"Integral Type">, Division Operator throw L<"Exception"> if Right Expression is 0.
+In the operation to L<"Integral Types">, Division Operator throw L<"Exception"> if Right Expression is 0.
 
 In the operation to L<"Floating Point Type">, Division Operator dose not throw L<"Exception">.
 
@@ -4397,7 +4397,7 @@ B<Remainder Operator> is a L<"Binary Operator"> represtented by "%" to perform D
   LEFT_EXPRESSION % RIGHT_EXPRESSION
 
 
-Left Expression and Right Expression must be L<"Integral Type">, otherwise Compile Error occurs.
+Left Expression and Right Expression must be L<"Integral Types">, otherwise Compile Error occurs.
 
 L<"Binary Numeric Widening Type Conversion"> is applied to Left Expression and Right Expression.
 
@@ -4555,7 +4555,7 @@ Bit AND is L<"Binary Operator"> represented by "&".
 
   LEFT_EXPRESSION & RIGHT_EXPRESSION
 
-Left Expression and Right Expression must be L<"Integral Type">, otherwise Compile Error occurs.
+Left Expression and Right Expression must be L<"Integral Types">, otherwise Compile Error occurs.
 <p>
 <p>
   L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Expression.
@@ -4582,7 +4582,7 @@ Bit OR is L<"Binary Operator"> represented by "|".
 
   LEFT_EXPRESSION | RIGHT_EXPRESSION
 
-Left Expression and Right Expression must be L<"Integral Type">, otherwise Compile Error occurs.
+Left Expression and Right Expression must be L<"Integral Types">, otherwise Compile Error occurs.
 <p>
 <p>
   L<"Binary Numeric Widening Type Conversion"> is performed on Left Expression and Right Expression.
@@ -4609,7 +4609,7 @@ Bit NOT Operator is L<"Unary Operator"> represented by "~".
 
   ~EXPRESSION
 
-Expression must be L<"Integral Type">, otherwise Compile Error occurs.
+Expression must be L<"Integral Types">, otherwise Compile Error occurs.
 
 L<"Unary Numeric Widening Type Conversion"> is performed to Expression before Operation.
 
@@ -4644,7 +4644,7 @@ The Left shift is L<"Binary Operator"> represented by "<<".
 
   LEFT_EXPRESSION << RIGHT_EXPRESSION
 
-Left Expression must be L<"Integral Type">, otherwise Compile Error occurs.
+Left Expression must be L<"Integral Types">, otherwise Compile Error occurs.
 <p>
 <p>
   Right Expression must be L<"int Type">, otherwise Compile Error occurs.
@@ -4669,7 +4669,7 @@ Arithmetic Right Shift Operator is L<"Binary Operator"> represented by ">>".
 
   LEFT_EXPRESSION >> RIGHT_EXPRESSION
 
-Left Expression must be L<"Integral Type">, otherwise Compile Error occurs.
+Left Expression must be L<"Integral Types">, otherwise Compile Error occurs.
 <p>
 <p>
   First, for L<"Left Expression">, L<"Unary Numeric Widening Type Conversion"> is performed.
@@ -4696,7 +4696,7 @@ Logical Right Shift Operator is L<"Binary Operator"> represented by ">>>".
 
   LEFT_EXPRESSION >>> RIGHT_EXPRESSION
 
-Left Expression must be L<"Integral Type">, otherwise Compile Error occurs.
+Left Expression must be L<"Integral Types">, otherwise Compile Error occurs.
 
 Right Expression must be L<"int Type">, otherwise Compile Error occurs.
 <p>
@@ -6144,13 +6144,13 @@ A list of Type Initial Value. All Bit columns in the data are set to 0.
 =head2 Numeric Type
 
 
-Numeric Type is L<"Integral Type"> or L<"Floating Point Type">.
+Numeric Type is L<"Integral Types"> or L<"Floating Point Type">.
 
 
-=head2 Integral Type
+=head2 Integral Types
 
 
-Integral Type are the following four types.
+Integral Types are the following four types.
 
 =begin html
 
@@ -6214,42 +6214,28 @@ Integral Type are the following four types.
 
 =end html
 
-See L<"Arithmetic Operator"> for integer calculation rules.
+See L<"Arithmetic Operator"> for integer calculation.
 
-Note that SPVM has only B<singed> Integral Type, and don't has B<unsigned> Integral Type.
+Note that SPVM has only B<singed> Integral Types, and don't has B<unsigned> Integral Types.
 
 
 =head2 byte Type
 
-L<"byte Type"> is L<"Integral Type"> that represents a signed 8-bit integer. It is the same Type as int8_tType of C99.
-
+C<byte> type is a L<"Integral Types"> that represents a signed 8-bit integer. This is the same type as C<int8_t> type of C language.
 
 =head2 short Type
 
-L<"byte Type"> is L<"Integral Type"> that represents a signed 16-bit integer. It is the same Type as int16_tType of C99.
-
-
+C<short> type  is a L<"Integral Types"> that represents a signed 16-bit integer. This is the same type as C<int16_t> type of C language.
 
 =head2 int Type
 
-
-=head2 int Type
-
-B<int Type> is a type that represents signed 32-bit integer.
-
-This is same as B<C99 int32_t Type>.
-
-This is a L<"Integral Type">.
-
+C<int> type is  is a L<"Integral Types"> that represents signed 32-bit integer. This is same as C<int32_t> type of C language.
 
 =head2 long Type
 
-L<"long Type"> is L<"Integral Type"> that represents a signed 64-bit integer. It is the same Type as int64_tType of C99.
-
-
+C<long> type is a L<"Integral Types"> that represents a signed 64-bit integer. This is the same type as C<int64_t> type of C language.
 
 =head2 Floating Point Type
-
 
 B<Floating Point Type> are the following two.
 
@@ -6293,18 +6279,17 @@ B<Floating Point Type> are the following two.
 
 =end html
 
-See L<"Arithmetic Operator"> for floating-point calculation rules.
-
+See L<"Arithmetic Operator"> for floating-point calculation.
 
 =head2 float Type
 
-L<"Floating Point Type <a represents a single precision floating point (32bit). / a> It is the same Type as <a href="#language-type-float">float Type"> of C99.
+L<"Floating Point Type <a represents a single precision floating point (32bit). / a> It is the same type as <a href="#language-type-float">float Type"> of C99.
 
 
 
 =head2 double Type
 
-B<double Type> represents a double precision floating point (64bit) L<"Floating Point Type"> It is the same Type as L<"double Type"> of C99.
+B<double Type> represents a double precision floating point (64bit) L<"Floating Point Type"> It is the same type as L<"double Type"> of C99.
 
 
 
