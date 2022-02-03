@@ -6317,44 +6317,7 @@ my $num = 1 + 2;
 
 =head1 Type
 
-<ul class = "list">
-  <li><a href="#language-type-summary">Type Summary</a></li>
-  <li><a href="#language-type-initial-value">Type Initial Value</a></li>
-  <li><a href="#language-type-void">void Type</a></li>
-  <li><a href="#language-type-numeric">Numeric Type</a></li>
-  <li><a href="#language-type-integral">Integral Type</a></li>  <li><a href="#language-type-byte">byte Type</a></li>
-  <li><a href="#language-type-short">short Type</a></li>
-  <li><a href="#language-type-int"><a href="#language-type-int">int Type</a></a></li>
-  <li><a href="#language-type-long">long Type</a></li>
-  <li><a href="#language-type-floating-point">Floating Point Type</a></li>
-  <li><a href="#language-type-float">float Type</a></li>
-  <li><a href="#language-type-double">double Type</a></li>
-  <li><a href="#language-type-class">Class Type</a></li>
-  <li><a href="#language-type-object">Object Type</a></li>
-  <li><a href="#language-type-numeric-object">Numeric Object Type</a></li>
-  <li><a href="#language-type-undef">Undefined Type</a></li>
-  <li><a href="#language-type-class">Class Type</a></li>
-  <li><a href="#language-type-callback">Callback Type</a></li>
-  <li><a href="#language-type-any-object">Any Object Type</a></li>
-  <li><a href="#language-type-self">self Type</a></li>
-  <li><a href="#language-type-array">Array Type</a></li>
-  <li><a href="#language-type-array-numeric">Numeric Array Type</a></li>
-  <li><a href="#language-type-array-byte">byte[] Type</a></li>
-  <li><a href="#language-type-array-object">Object Array Type</a></li>
-  <li><a href="#language-type-array-mulnum">Multi Numeric Array Type</a></li>
-  <li><a href="#language-type-any-object-array">Any Object Array Type</a></li>
-  <li><a href="#language-type-string">String Type</a></li>
-  <li><a href="#language-type-string">String Type</a></li>
-  <li><a href="#language-type-multi-numeric">Multi Numeric Type</a></li>
-  <li><a href="#language-type-ref">Reference Type</a></li>
-  <li><a href="#language-type-ref-numeric">Numeric Reference Type</a></li>
-  <li><a href="#language-type-ref-multi-numeric">Multi Numeric Reference Type</a></li>
-</ul>
-
-=end html
-
 =head2 Type Summary
-
 
 SPVM is a static type language. All data has a static type.
 
@@ -6975,7 +6938,10 @@ my $nums = new int[] [3];
 <p>
   <b>Numeric Array Type list</b>
 </p>
-<ul class = "list">
+
+=begin html
+
+<ul>
   <li>
     byte[]
   </li>
